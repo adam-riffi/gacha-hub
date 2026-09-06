@@ -1,0 +1,150 @@
+// Gacha Tracker — data model (Postgres).
+// Structure of each game lives as JSON in Template.definition (a TemplateDef).
+// These tables store users, their installed games, and their tracked data.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// A person, created on first Discord OAuth sign-in.
+model User {
+  id        String   @id @default(cuid())
+  discordId String   @unique
+  username  String
+  avatarUrl String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  sessions      Session[]
+  gameInstances GameInstance[]
+  tasks         Task[]
+  reminderRules ReminderRule[]
+}
+
+/// Server-side session backing the signed cookie.
+model Session {
+  id        String   @id
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+/// A user's installed game. `gameKey` references a hardcoded game module in
+/// packages/shared/src/games (no data-driven templates — games live in code).
+model GameInstance {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  gameKey   String
+  createdAt DateTime @default(now())
+
+  accounts Account[]
+
+  @@index([userId])
+}
+
+/// An in-game account (main / alt), tied to a server region for resets.
+model Account {
+  id             String       @id @default(cuid())
+  gameInstanceId String
+  gameInstance   GameInstance @relation(fields: [gameInstanceId], references: [id], onDelete: Cascade)
+  label          String
+  regionKey      String?
+  createdAt      DateTime     @default(now())
+
+  currencies CurrencyState[]
+  characters Character[]
+
+  @@index([gameInstanceId])
+}
+
+/// Current value of one currency for one account.
+model CurrencyState {
+  id        String   @id @default(cuid())
+  accountId String
+  account   Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  key       String
+  value     Float    @default(0)
+  updatedAt DateTime @updatedAt
+
+  @@unique([accountId, key])
+  @@index([accountId])
+}
+
+/// A tracked character; `doc` is a CharacterDoc validated against the template.
+model Character {
+  id          String   @id @default(cuid())
+  accountId   String
+  account     Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  name        String
+  portraitUrl String?
+  doc         Json
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([accountId])
+}
+
+/// A user-created task: recurring daily/weekly, farming goal, or checklist.
+model Task {
+  id              String    @id @default(cuid())
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  scope           String // game | account | character
+  refId           String
+  type            String // recurring | goal | checklist
+  title           String
+  cadence         String? // daily | weekly
+  regionAware     Boolean   @default(false)
+  target          Float?
+  progress        Float     @default(0)
+  items           Json? // ChecklistItem[]
+  lastCompletedAt DateTime?
+  reminder        Json? // ReminderConfig
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  reminderRules ReminderRule[]
+
+  @@index([userId])
+  @@index([scope, refId])
+}
+
+/// A reminder that the scheduler evaluates. Fires for an account's recurring
+/// reset (accountId set) or for a specific task's due window (taskId set).
+model ReminderRule {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accountId String?
+  taskId    String?
+  task      Task?    @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  config    Json // ReminderConfig
+  enabled   Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  logs ReminderLog[]
+
+  @@index([userId])
+}
+
+/// Idempotency log: one row per (rule, reset boundary) so the minute-tick
+/// scheduler never sends the same reminder twice.
+model ReminderLog {
+  id        String       @id @default(cuid())
+  ruleId    String
+  rule      ReminderRule @relation(fields: [ruleId], references: [id], onDelete: Cascade)
+  firedFor  DateTime
+  createdAt DateTime     @default(now())
+
+  @@unique([ruleId, firedFor])
+  @@index([ruleId])
+}
