@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
@@ -24,17 +24,6 @@ export function TasksPage() {
     queryFn: () => api.get<InstanceListItem[]>("/api/instances"),
   });
 
-  const accountOptions = useMemo(
-    () =>
-      (instances ?? []).flatMap((gi) =>
-        gi.accounts.map((a) => ({
-          value: a.id,
-          label: `${gi.name} — ${a.label}`,
-        })),
-      ),
-    [instances],
-  );
-
   const invalidate = () => {
     qc.invalidateQueries({ queryKey: ["tasks"] });
     qc.invalidateQueries({ queryKey: ["dashboard"] });
@@ -43,7 +32,7 @@ export function TasksPage() {
   const create = useMutation({
     mutationFn: () =>
       api.post("/api/tasks", {
-        scope: "account",
+        scope: "game",
         refId: form.refId,
         type: form.type,
         title: form.title,
@@ -56,7 +45,7 @@ export function TasksPage() {
       setForm((f) => ({ ...f, title: "" }));
       invalidate();
     },
-    onError: () => toast("Create failed — pick a target account", "err"),
+    onError: () => toast("Create failed — check the values", "err"),
   });
 
   const complete = useMutation({
@@ -76,6 +65,7 @@ export function TasksPage() {
 
   const recurring = tasks?.filter((t) => t.type === "recurring") ?? [];
   const goals = tasks?.filter((t) => t.type === "goal") ?? [];
+  const gameName = (refId: string) => instances?.find((i) => i.id === refId)?.name;
 
   return (
     <>
@@ -91,6 +81,7 @@ export function TasksPage() {
             <input
               value={form.title}
               placeholder="Farm 20 artifacts"
+              maxLength={200}
               onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))}
             />
           </div>
@@ -124,20 +115,22 @@ export function TasksPage() {
               <label>Target</label>
               <input
                 type="number"
+                min={1}
+                max={1_000_000}
                 value={form.target}
                 onChange={(e) => setForm((f) => ({ ...f, target: Number(e.target.value) }))}
               />
             </div>
           )}
           <div style={{ minWidth: 200 }}>
-            <label>Attach to</label>
+            <label>Game</label>
             <select
               value={form.refId}
               onChange={(e) => setForm((f) => ({ ...f, refId: e.target.value }))}
             >
-              <option value="">Select account…</option>
-              {accountOptions.map((o) => (
-                <option key={o.value} value={o.value}>{o.label}</option>
+              <option value="">Select game…</option>
+              {(instances ?? []).map((gi) => (
+                <option key={gi.id} value={gi.id}>{gi.name}</option>
               ))}
             </select>
           </div>
@@ -149,8 +142,8 @@ export function TasksPage() {
             Add
           </button>
         </div>
-        {accountOptions.length === 0 && (
-          <p className="small">Install a game and add an account first.</p>
+        {(instances ?? []).length === 0 && (
+          <p className="small">Install a game first.</p>
         )}
       </div>
 
@@ -160,10 +153,14 @@ export function TasksPage() {
           <div className="stack">
             {goals.map((g) => (
               <div className="task-row" key={g.id}>
-                <span>{g.title}</span>
+                <div>
+                  <span>{g.title}</span>{" "}
+                  {gameName(g.refId) && <span className="badge">{gameName(g.refId)}</span>}
+                </div>
                 <div className="row">
                   <input
                     type="number"
+                    min={0}
                     style={{ width: 80 }}
                     defaultValue={g.progress}
                     onBlur={(e) => progress.mutate({ id: g.id, progress: Number(e.target.value) })}
@@ -185,7 +182,8 @@ export function TasksPage() {
             <div className="task-row" key={t.id}>
               <div>
                 <span>{t.title}</span>{" "}
-                <span className="badge">{t.cadence}</span>
+                <span className="badge">{t.cadence}</span>{" "}
+                {gameName(t.refId) && <span className="badge">{gameName(t.refId)}</span>}
               </div>
               <div className="row">
                 <button

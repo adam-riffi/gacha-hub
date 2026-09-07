@@ -1,63 +1,61 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getGame } from "@gacha/shared";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
-import { resolveSheet } from "../render";
+import { GameSheet, hasSheet } from "../render";
 import type { CharacterDetail } from "../lib/types";
 
 export function CharacterPage() {
   const { id } = useParams();
-  const nav = useNavigate();
-  const qc = useQueryClient();
-  const toast = useToast();
-
   const { data, isLoading } = useQuery({
     queryKey: ["character", id],
     queryFn: () => api.get<CharacterDetail>(`/api/characters/${id}`),
     enabled: Boolean(id),
   });
 
-  const [state, setState] = useState<{
-    name: string;
-    portraitUrl: string | null;
-    doc: Record<string, unknown>;
-  } | null>(null);
+  if (isLoading || !data) return <div className="muted">Loading…</div>;
+  // Keyed by id so the editor re-initializes when navigating between characters.
+  return <CharacterEditor key={data.id} data={data} />;
+}
 
-  useEffect(() => {
-    if (data) {
-      setState({ name: data.name, portraitUrl: data.portraitUrl, doc: data.doc ?? {} });
-    }
-  }, [data?.id]);
+function CharacterEditor({ data }: { data: CharacterDetail }) {
+  const nav = useNavigate();
+  const qc = useQueryClient();
+  const toast = useToast();
+
+  // Local editable copy, seeded once from the fetched character.
+  const [state, setState] = useState(() => ({
+    name: data.name,
+    portraitUrl: data.portraitUrl,
+    doc: (data.doc as Record<string, unknown>) ?? {},
+  }));
+
+  const game = getGame(data.gameKey);
 
   const save = useMutation({
     mutationFn: () =>
-      api.put(`/api/characters/${id}`, {
-        name: state!.name,
-        portraitUrl: state!.portraitUrl,
-        doc: state!.doc,
+      api.put(`/api/characters/${data.id}`, {
+        name: state.name,
+        portraitUrl: state.portraitUrl,
+        doc: state.doc,
       }),
     onSuccess: () => {
       toast("Saved");
-      qc.invalidateQueries({ queryKey: ["character", id] });
+      qc.invalidateQueries({ queryKey: ["character", data.id] });
     },
-    onError: () => toast("Save failed", "err"),
+    onError: () => toast("Save failed — check the values (limits apply)", "err"),
   });
 
   const del = useMutation({
-    mutationFn: () => api.del(`/api/characters/${id}`),
+    mutationFn: () => api.del(`/api/characters/${data.id}`),
     onSuccess: () => {
       toast("Character deleted");
       qc.invalidateQueries();
       nav(-1);
     },
   });
-
-  if (isLoading || !data || !state) return <div className="muted">Loading…</div>;
-
-  const Sheet = resolveSheet(data.gameKey);
-  const game = getGame(data.gameKey);
 
   return (
     <>
@@ -73,23 +71,26 @@ export function CharacterPage() {
           </button>
           <button
             className="btn danger sm"
-            onClick={() => { if (confirm("Delete this character?")) del.mutate(); }}
+            onClick={() => {
+              if (confirm("Delete this character?")) del.mutate();
+            }}
           >
             Delete
           </button>
         </div>
       </div>
 
-      {Sheet ? (
-        <Sheet
+      {hasSheet(data.gameKey) ? (
+        <GameSheet
+          gameKey={data.gameKey}
           doc={state.doc}
           setDoc={(updater) =>
-            setState((s) => (s ? { ...s, doc: updater(s.doc) as Record<string, unknown> } : s))
+            setState((s) => ({ ...s, doc: updater(s.doc) as Record<string, unknown> }))
           }
           name={state.name}
           portraitUrl={state.portraitUrl}
-          onName={(name) => setState((s) => (s ? { ...s, name } : s))}
-          onPortrait={(url) => setState((s) => (s ? { ...s, portraitUrl: url } : s))}
+          onName={(name) => setState((s) => ({ ...s, name }))}
+          onPortrait={(url) => setState((s) => ({ ...s, portraitUrl: url }))}
         />
       ) : (
         <div className="card empty">No sheet is registered for game "{data.gameKey}".</div>

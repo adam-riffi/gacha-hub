@@ -1,9 +1,9 @@
-import type { Account, Prisma } from "@prisma/client";
+import type { GameInstance, Prisma } from "@prisma/client";
 import { getGame, type GameDefinition } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
 import { toRegionReset, type RegionReset } from "../lib/resets.js";
 
-/** Look up a hardcoded game module by key, or throw a 404-ish error. */
+/** Look up a hardcoded game module by key, or throw a 404. */
 export function gameOrThrow(gameKey: string): GameDefinition {
   const game = getGame(gameKey);
   if (!game) {
@@ -14,15 +14,17 @@ export function gameOrThrow(gameKey: string): GameDefinition {
   return game;
 }
 
-/** Resolve reset timing for an account from its game + regionKey. */
-export function regionForAccount(
+/**
+ * Resolve reset timing for a profile. Falls back to the game's first region
+ * when its regionKey isn't offered (single-region games, or a stale key).
+ */
+export function regionForInstance(
   game: GameDefinition,
-  account: Pick<Account, "regionKey">,
+  instance: Pick<GameInstance, "regionKey">,
 ): RegionReset {
-  const region = account.regionKey
-    ? game.regions.find((r) => r.key === account.regionKey)
-    : game.regions[0];
-  return toRegionReset(region ?? game.regions[0]);
+  const region =
+    game.regions.find((r) => r.key === instance.regionKey) ?? game.regions[0];
+  return toRegionReset(region);
 }
 
 /** Validate a character document against its game's bespoke schema. */
@@ -34,17 +36,10 @@ export function loadInstance(userId: string, id: string) {
   return prisma.gameInstance.findFirst({ where: { id, userId } });
 }
 
-export function loadAccount(userId: string, id: string) {
-  return prisma.account.findFirst({
-    where: { id, gameInstance: { userId } },
-    include: { gameInstance: true },
-  });
-}
-
 export function loadCharacter(userId: string, id: string) {
   return prisma.character.findFirst({
-    where: { id, account: { gameInstance: { userId } } },
-    include: { account: { include: { gameInstance: true } } },
+    where: { id, gameInstance: { userId } },
+    include: { gameInstance: true },
   });
 }
 

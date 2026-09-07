@@ -1,74 +1,45 @@
 import type { FastifyInstance } from "fastify";
 import type { Task } from "@prisma/client";
-import { z } from "zod";
 import {
-  checklistItemSchema,
+  completeTaskInput,
+  createTaskInput,
   getGame,
-  reminderConfigSchema,
-  taskInputSchema,
+  taskChecklistInput,
+  taskDto,
+  taskProgressInput,
+  updateTaskInput,
   type TaskCadence,
 } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
 import { requireUser } from "../auth/plugin.js";
-import {
-  DEFAULT_REGION,
-  isDoneThisCycle,
-  nextReset,
-  toRegionReset,
-  type RegionReset,
-} from "../lib/resets.js";
-import {
-  loadAccount,
-  loadCharacter,
-  loadInstance,
-  regionForAccount,
-  type PrismaJson,
-} from "./util.js";
+import { DEFAULT_REGION, isDoneThisCycle, nextReset, type RegionReset } from "../lib/resets.js";
+import { loadCharacter, loadInstance, regionForInstance, type PrismaJson } from "./util.js";
 
 /** Verify the task's target entity belongs to the user. */
-async function assertRefOwnership(
-  userId: string,
-  scope: string,
-  refId: string,
-): Promise<boolean> {
-  if (scope === "account") return Boolean(await loadAccount(userId, refId));
+async function assertRefOwnership(userId: string, scope: string, refId: string) {
   if (scope === "character") return Boolean(await loadCharacter(userId, refId));
   if (scope === "game") return Boolean(await loadInstance(userId, refId));
   return false;
 }
 
-/** Batch-resolve reset regions for a set of tasks. */
+/** Batch-resolve reset regions for a set of tasks (by profile). */
 export async function buildRegionContext(tasks: Task[]) {
-  const accountIds = new Set<string>();
   const characterIds = new Set<string>();
   const instanceIds = new Set<string>();
   for (const t of tasks) {
     if (t.type !== "recurring") continue;
-    if (t.scope === "account") accountIds.add(t.refId);
-    else if (t.scope === "character") characterIds.add(t.refId);
+    if (t.scope === "character") characterIds.add(t.refId);
     else if (t.scope === "game") instanceIds.add(t.refId);
   }
 
   const characters = characterIds.size
     ? await prisma.character.findMany({
         where: { id: { in: [...characterIds] } },
-        select: { id: true, accountId: true },
+        select: { id: true, gameInstanceId: true },
       })
     : [];
-  const charToAccount = new Map(characters.map((c) => [c.id, c.accountId]));
-  for (const c of characters) accountIds.add(c.accountId);
-
-  const accounts = accountIds.size
-    ? await prisma.account.findMany({
-        where: { id: { in: [...accountIds] } },
-        include: { gameInstance: true },
-      })
-    : [];
-  const accountRegion = new Map<string, RegionReset>();
-  for (const a of accounts) {
-    const game = getGame(a.gameInstance.gameKey);
-    accountRegion.set(a.id, game ? regionForAccount(game, a) : DEFAULT_REGION);
-  }
+  const charToInstance = new Map(characters.map((c) => [c.id, c.gameInstanceId]));
+  for (const c of characters) instanceIds.add(c.gameInstanceId);
 
   const instances = instanceIds.size
     ? await prisma.gameInstance.findMany({ where: { id: { in: [...instanceIds] } } })
@@ -76,51 +47,38 @@ export async function buildRegionContext(tasks: Task[]) {
   const instanceRegion = new Map<string, RegionReset>();
   for (const gi of instances) {
     const game = getGame(gi.gameKey);
-    instanceRegion.set(gi.id, toRegionReset(game?.regions[0]));
+    instanceRegion.set(gi.id, game ? regionForInstance(game, gi) : DEFAULT_REGION);
   }
 
-  return { charToAccount, accountRegion, instanceRegion };
+  return { charToInstance, instanceRegion };
 }
 
 type RegionCtx = Awaited<ReturnType<typeof buildRegionContext>>;
 
 function regionForTask(task: Task, ctx: RegionCtx): RegionReset {
-  if (task.scope === "account")
-    return ctx.accountRegion.get(task.refId) ?? DEFAULT_REGION;
-  if (task.scope === "character") {
-    const acc = ctx.charToAccount.get(task.refId);
-    const region = acc ? ctx.accountRegion.get(acc) : undefined;
-    return region ?? DEFAULT_REGION;
-  }
-  if (task.scope === "game")
-    return ctx.instanceRegion.get(task.refId) ?? DEFAULT_REGION;
-  return DEFAULT_REGION;
+  const instanceId =
+    task.scope === "character" ? ctx.charToInstance.get(task.refId) : task.refId;
+  return (instanceId && ctx.instanceRegion.get(instanceId)) || DEFAULT_REGION;
 }
 
+/** Serialize a task through the shared DTO (adds cycle state for recurring). */
 export function serializeTask(task: Task, ctx: RegionCtx, now: Date) {
-  const base = {
-    id: task.id,
-    scope: task.scope,
-    refId: task.refId,
-    type: task.type,
-    title: task.title,
-    cadence: task.cadence,
-    target: task.target,
-    progress: task.progress,
-    items: task.items,
-    reminder: task.reminder,
-    lastCompletedAt: task.lastCompletedAt,
-  };
-  if (task.type === "recurring") {
-    const region = regionForTask(task, ctx);
-    const cadence = (task.cadence as TaskCadence) ?? "daily";
-    return {
-      ...base,
-      doneThisCycle: isDoneThisCycle(task.lastCompletedAt, now, region, cadence),
-      nextReset: nextReset(now, region, cadence),
-    };
-  }
-  return base;
+  const extra =
+    task.type === "recurring"
+      ? (() => {
+          const region = regionForTask(task, ctx);
+          const cadence = (task.cadence as TaskCadence) ?? "daily";
+          return {
+            doneThisCycle: isDoneThisCycle(task.lastCompletedAt, now, region, cadence),
+            nextReset: nextReset(now, region, cadence),
+          };
+        })()
+      : {};
+  return taskDto.parse({ ...task, ...extra });
+}
+
+async function ownedTask(userId: string, id: string) {
+  return prisma.task.findFirst({ where: { id, userId } });
 }
 
 export async function registerTaskRoutes(app: FastifyInstance) {
@@ -145,7 +103,7 @@ export async function registerTaskRoutes(app: FastifyInstance) {
 
   app.post("/api/tasks", { preHandler: requireUser }, async (req, reply) => {
     const userId = req.user!.id;
-    const body = taskInputSchema.parse(req.body);
+    const body = createTaskInput.parse(req.body);
     if (!(await assertRefOwnership(userId, body.scope, body.refId))) {
       return reply.code(404).send({ error: "ref_not_found" });
     }
@@ -162,49 +120,47 @@ export async function registerTaskRoutes(app: FastifyInstance) {
         progress: body.progress ?? 0,
         items: (body.items ?? undefined) as PrismaJson | undefined,
         reminder: (body.reminder ?? undefined) as PrismaJson | undefined,
+        materialId: body.materialId ?? null,
+        origin: (body.origin ?? undefined) as PrismaJson | undefined,
       },
     });
-    return reply.code(201).send({ id: created.id });
+    const ctx = await buildRegionContext([created]);
+    return reply.code(201).send(serializeTask(created, ctx, new Date()));
   });
 
   app.put<{ Params: { id: string } }>(
     "/api/tasks/:id",
     { preHandler: requireUser },
     async (req, reply) => {
-      const task = await prisma.task.findFirst({
-        where: { id: req.params.id, userId: req.user!.id },
-      });
+      const task = await ownedTask(req.user!.id, req.params.id);
       if (!task) return reply.code(404).send({ error: "not_found" });
-      const body = taskInputSchema.partial().parse(req.body);
-      await prisma.task.update({
+      const body = updateTaskInput.parse(req.body);
+      const updated = await prisma.task.update({
         where: { id: task.id },
         data: {
           ...(body.title !== undefined ? { title: body.title } : {}),
           ...(body.cadence !== undefined ? { cadence: body.cadence } : {}),
           ...(body.target !== undefined ? { target: body.target } : {}),
           ...(body.progress !== undefined ? { progress: body.progress } : {}),
-          ...(body.items !== undefined
-            ? { items: body.items as PrismaJson }
-            : {}),
-          ...(body.reminder !== undefined
-            ? { reminder: body.reminder as PrismaJson }
-            : {}),
+          ...(body.items !== undefined ? { items: body.items as PrismaJson } : {}),
+          ...(body.reminder !== undefined ? { reminder: body.reminder as PrismaJson } : {}),
+          ...(body.materialId !== undefined ? { materialId: body.materialId } : {}),
+          ...(body.origin !== undefined ? { origin: body.origin as PrismaJson } : {}),
         },
       });
-      return { ok: true };
+      const ctx = await buildRegionContext([updated]);
+      return serializeTask(updated, ctx, new Date());
     },
   );
 
   // Mark a recurring task done for this cycle (or toggle back).
-  app.post<{ Params: { id: string }; Body: { done?: boolean } }>(
+  app.post<{ Params: { id: string } }>(
     "/api/tasks/:id/complete",
     { preHandler: requireUser },
     async (req, reply) => {
-      const task = await prisma.task.findFirst({
-        where: { id: req.params.id, userId: req.user!.id },
-      });
+      const task = await ownedTask(req.user!.id, req.params.id);
       if (!task) return reply.code(404).send({ error: "not_found" });
-      const done = req.body?.done ?? true;
+      const { done } = completeTaskInput.parse(req.body ?? {});
       await prisma.task.update({
         where: { id: task.id },
         data: { lastCompletedAt: done ? new Date() : null },
@@ -214,19 +170,14 @@ export async function registerTaskRoutes(app: FastifyInstance) {
   );
 
   // Update a farming goal's progress.
-  app.post<{ Params: { id: string }; Body: { progress: number } }>(
+  app.post<{ Params: { id: string } }>(
     "/api/tasks/:id/progress",
     { preHandler: requireUser },
     async (req, reply) => {
-      const task = await prisma.task.findFirst({
-        where: { id: req.params.id, userId: req.user!.id },
-      });
+      const task = await ownedTask(req.user!.id, req.params.id);
       if (!task) return reply.code(404).send({ error: "not_found" });
-      const progress = z.number().min(0).parse(req.body?.progress);
-      await prisma.task.update({
-        where: { id: task.id },
-        data: { progress },
-      });
+      const { progress } = taskProgressInput.parse(req.body);
+      await prisma.task.update({ where: { id: task.id }, data: { progress } });
       return { ok: true };
     },
   );
@@ -236,17 +187,10 @@ export async function registerTaskRoutes(app: FastifyInstance) {
     "/api/tasks/:id/checklist",
     { preHandler: requireUser },
     async (req, reply) => {
-      const task = await prisma.task.findFirst({
-        where: { id: req.params.id, userId: req.user!.id },
-      });
+      const task = await ownedTask(req.user!.id, req.params.id);
       if (!task) return reply.code(404).send({ error: "not_found" });
-      const items = z
-        .array(checklistItemSchema)
-        .parse((req.body as { items?: unknown })?.items);
-      await prisma.task.update({
-        where: { id: task.id },
-        data: { items: items as PrismaJson },
-      });
+      const { items } = taskChecklistInput.parse(req.body);
+      await prisma.task.update({ where: { id: task.id }, data: { items: items as PrismaJson } });
       return { ok: true };
     },
   );
@@ -255,14 +199,10 @@ export async function registerTaskRoutes(app: FastifyInstance) {
     "/api/tasks/:id",
     { preHandler: requireUser },
     async (req, reply) => {
-      const task = await prisma.task.findFirst({
-        where: { id: req.params.id, userId: req.user!.id },
-      });
+      const task = await ownedTask(req.user!.id, req.params.id);
       if (!task) return reply.code(404).send({ error: "not_found" });
       await prisma.task.delete({ where: { id: task.id } });
       return { ok: true };
     },
   );
 }
-
-export { reminderConfigSchema };
