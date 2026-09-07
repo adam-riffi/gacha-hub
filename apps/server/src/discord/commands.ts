@@ -1,8 +1,3 @@
-import {
-  SlashCommandBuilder,
-  type ChatInputCommandInteraction,
-  type Interaction,
-} from "discord.js";
 import type { Account, GameInstance } from "@prisma/client";
 import { getGame, type GameDefinition, type TaskCadence } from "@gacha/shared";
 import { config } from "../config.js";
@@ -10,45 +5,60 @@ import { prisma } from "../lib/prisma.js";
 import { isDoneThisCycle } from "../lib/resets.js";
 import { regionForAccount } from "../api/util.js";
 
+/* Slash command definitions as plain Discord API JSON (no discord.js).
+ * Option types: 3 = STRING, 10 = NUMBER. */
+const STRING = 3;
+const NUMBER = 10;
+const opt = (name: string, description: string, type: number, required = true) => ({
+  name,
+  description,
+  type,
+  required,
+});
+
 export const commands = [
-  new SlashCommandBuilder()
-    .setName("status")
-    .setDescription("Overview of your currencies and outstanding dailies")
-    .addStringOption((o) => o.setName("game").setDescription("Filter to one game").setRequired(false)),
-  new SlashCommandBuilder()
-    .setName("currency")
-    .setDescription("Show currencies for a game")
-    .addStringOption((o) => o.setName("game").setDescription("Game name").setRequired(true)),
-  new SlashCommandBuilder()
-    .setName("update")
-    .setDescription("Set a currency value")
-    .addStringOption((o) => o.setName("game").setDescription("Game name").setRequired(true))
-    .addStringOption((o) => o.setName("currency").setDescription("Currency name/key").setRequired(true))
-    .addNumberOption((o) => o.setName("value").setDescription("New value").setRequired(true)),
-  new SlashCommandBuilder()
-    .setName("done")
-    .setDescription("Mark a recurring task complete for this cycle")
-    .addStringOption((o) => o.setName("game").setDescription("Game name").setRequired(true))
-    .addStringOption((o) => o.setName("task").setDescription("Task title").setRequired(true)),
-  new SlashCommandBuilder()
-    .setName("goal")
-    .setDescription("Update a farming goal's progress")
-    .addStringOption((o) => o.setName("task").setDescription("Goal title").setRequired(true))
-    .addNumberOption((o) => o.setName("progress").setDescription("Current progress").setRequired(true)),
-  new SlashCommandBuilder()
-    .setName("build")
-    .setDescription("Show a character's build summary")
-    .addStringOption((o) => o.setName("game").setDescription("Game name").setRequired(true))
-    .addStringOption((o) => o.setName("character").setDescription("Character name").setRequired(true)),
-].map((c) => c.toJSON());
+  {
+    name: "status",
+    description: "Overview of your currencies and outstanding dailies",
+    options: [opt("game", "Filter to one game", STRING, false)],
+  },
+  {
+    name: "currency",
+    description: "Show currencies for a game",
+    options: [opt("game", "Game name", STRING)],
+  },
+  {
+    name: "update",
+    description: "Set a currency value",
+    options: [
+      opt("game", "Game name", STRING),
+      opt("currency", "Currency name/key", STRING),
+      opt("value", "New value", NUMBER),
+    ],
+  },
+  {
+    name: "done",
+    description: "Mark a recurring task complete for this cycle",
+    options: [opt("game", "Game name", STRING), opt("task", "Task title", STRING)],
+  },
+  {
+    name: "goal",
+    description: "Update a farming goal's progress",
+    options: [opt("task", "Goal title", STRING), opt("progress", "Current progress", NUMBER)],
+  },
+  {
+    name: "build",
+    description: "Show a character's build summary",
+    options: [opt("game", "Game name", STRING), opt("character", "Character name", STRING)],
+  },
+];
+
+/** Normalized options from an interaction payload. */
+export type CommandOptions = Record<string, string | number | undefined>;
 
 type InstanceWithData = GameInstance & {
   accounts: (Account & { currencies: { key: string; value: number }[] })[];
 };
-
-async function findUser(discordId: string) {
-  return prisma.user.findUnique({ where: { discordId } });
-}
 
 async function allInstances(userId: string): Promise<InstanceWithData[]> {
   return (await prisma.gameInstance.findMany({
@@ -94,28 +104,41 @@ async function undoneDailies(userId: string, account: Account, game: GameDefinit
 }
 
 const LINK_HINT = `You have no linked account yet. Sign in with Discord at ${config.appBaseUrl} first.`;
+const str = (o: CommandOptions, k: string) => (typeof o[k] === "string" ? (o[k] as string) : "");
+const num = (o: CommandOptions, k: string) => (typeof o[k] === "number" ? (o[k] as number) : Number.NaN);
 
-export async function handleInteraction(interaction: Interaction) {
-  if (!interaction.isChatInputCommand()) return;
-  const i = interaction as ChatInputCommandInteraction;
-  const user = await findUser(i.user.id);
-  if (!user) {
-    await i.reply({ content: LINK_HINT, ephemeral: true });
-    return;
-  }
-  switch (i.commandName) {
-    case "status": return handleStatus(i, user.id);
-    case "currency": return handleCurrency(i, user.id);
-    case "update": return handleUpdate(i, user.id);
-    case "done": return handleDone(i, user.id);
-    case "goal": return handleGoal(i, user.id);
-    case "build": return handleBuild(i, user.id);
-    default: await i.reply({ content: "Unknown command.", ephemeral: true });
+/**
+ * Transport-agnostic command dispatcher: takes the command name, normalized
+ * options, and the invoking Discord user id; returns the reply text.
+ */
+export async function handleCommand(
+  name: string,
+  options: CommandOptions,
+  discordUserId: string,
+): Promise<string> {
+  const user = await prisma.user.findUnique({ where: { discordId: discordUserId } });
+  if (!user) return LINK_HINT;
+
+  switch (name) {
+    case "status":
+      return handleStatus(options, user.id);
+    case "currency":
+      return handleCurrency(options, user.id);
+    case "update":
+      return handleUpdate(options, user.id);
+    case "done":
+      return handleDone(options, user.id);
+    case "goal":
+      return handleGoal(options, user.id);
+    case "build":
+      return handleBuild(options, user.id);
+    default:
+      return "Unknown command.";
   }
 }
 
-async function handleStatus(i: ChatInputCommandInteraction, userId: string) {
-  const filter = i.options.getString("game");
+async function handleStatus(o: CommandOptions, userId: string) {
+  const filter = str(o, "game");
   const instances = await allInstances(userId);
   const lines: string[] = [];
   for (const gi of instances) {
@@ -129,92 +152,67 @@ async function handleStatus(i: ChatInputCommandInteraction, userId: string) {
       lines.push(left.length ? `   dailies left: ${left.join(", ")}` : "   ✅ dailies done");
     }
   }
-  await i.reply({
-    content: lines.length ? lines.join("\n").slice(0, 1900) : "No games found.",
-    ephemeral: true,
-  });
+  return lines.length ? lines.join("\n").slice(0, 1900) : "No games found.";
 }
 
-async function handleCurrency(i: ChatInputCommandInteraction, userId: string) {
-  const name = i.options.getString("game", true);
+async function handleCurrency(o: CommandOptions, userId: string) {
+  const name = str(o, "game");
   const found = resolveInstance(await allInstances(userId), name);
-  if (!found) {
-    await i.reply({ content: `No game matching "${name}".`, ephemeral: true });
-    return;
-  }
+  if (!found) return `No game matching "${name}".`;
   const lines = found.gi.accounts.map(
     (acc) => `**${acc.label}** — ${fmtCurrencies(found.game, acc.currencies)}`,
   );
-  await i.reply({
-    content: `**${found.game.name}**\n${lines.join("\n")}`.slice(0, 1900),
-    ephemeral: true,
-  });
+  return `**${found.game.name}**\n${lines.join("\n")}`.slice(0, 1900);
 }
 
-async function handleUpdate(i: ChatInputCommandInteraction, userId: string) {
-  const name = i.options.getString("game", true);
-  const currencyName = i.options.getString("currency", true);
-  const value = i.options.getNumber("value", true);
+async function handleUpdate(o: CommandOptions, userId: string) {
+  const name = str(o, "game");
+  const currencyName = str(o, "currency");
+  const value = num(o, "value");
+  if (Number.isNaN(value) || value < 0) return "Value must be a non-negative number.";
   const found = resolveInstance(await allInstances(userId), name);
-  if (!found || found.gi.accounts.length === 0) {
-    await i.reply({ content: `No game/account for "${name}".`, ephemeral: true });
-    return;
-  }
+  if (!found || found.gi.accounts.length === 0) return `No game/account for "${name}".`;
   const lower = currencyName.toLowerCase();
   const cur = found.game.currencies.find(
     (c) => c.key.toLowerCase() === lower || c.label.toLowerCase() === lower,
   );
-  if (!cur) {
-    await i.reply({ content: `No currency "${currencyName}" in ${found.game.name}.`, ephemeral: true });
-    return;
-  }
+  if (!cur) return `No currency "${currencyName}" in ${found.game.name}.`;
   const account = found.gi.accounts[0]!;
   await prisma.currencyState.upsert({
     where: { accountId_key: { accountId: account.id, key: cur.key } },
     create: { accountId: account.id, key: cur.key, value },
     update: { value },
   });
-  await i.reply({
-    content: `✅ ${found.game.name} · ${account.label}: **${cur.label}** = ${value}`,
-    ephemeral: true,
-  });
+  return `✅ ${found.game.name} · ${account.label}: **${cur.label}** = ${value}`;
 }
 
-async function handleDone(i: ChatInputCommandInteraction, userId: string) {
-  const name = i.options.getString("game", true);
-  const taskName = i.options.getString("task", true);
+async function handleDone(o: CommandOptions, userId: string) {
+  const name = str(o, "game");
+  const taskName = str(o, "task");
   const found = resolveInstance(await allInstances(userId), name);
-  if (!found || found.gi.accounts.length === 0) {
-    await i.reply({ content: `No game/account for "${name}".`, ephemeral: true });
-    return;
-  }
+  if (!found || found.gi.accounts.length === 0) return `No game/account for "${name}".`;
   const accountIds = found.gi.accounts.map((a) => a.id);
   const tasks = await prisma.task.findMany({
     where: { userId, scope: "account", refId: { in: accountIds }, type: "recurring" },
   });
   const lower = taskName.toLowerCase();
   const task = tasks.find((t) => t.title.toLowerCase().includes(lower));
-  if (!task) {
-    await i.reply({ content: `No task matching "${taskName}".`, ephemeral: true });
-    return;
-  }
+  if (!task) return `No task matching "${taskName}".`;
   await prisma.task.update({ where: { id: task.id }, data: { lastCompletedAt: new Date() } });
-  await i.reply({ content: `✅ Marked done: **${task.title}**`, ephemeral: true });
+  return `✅ Marked done: **${task.title}**`;
 }
 
-async function handleGoal(i: ChatInputCommandInteraction, userId: string) {
-  const taskName = i.options.getString("task", true);
-  const progress = i.options.getNumber("progress", true);
+async function handleGoal(o: CommandOptions, userId: string) {
+  const taskName = str(o, "task");
+  const progress = num(o, "progress");
+  if (Number.isNaN(progress) || progress < 0) return "Progress must be a non-negative number.";
   const tasks = await prisma.task.findMany({ where: { userId, type: "goal" } });
   const lower = taskName.toLowerCase();
   const task = tasks.find((t) => t.title.toLowerCase().includes(lower));
-  if (!task) {
-    await i.reply({ content: `No goal matching "${taskName}".`, ephemeral: true });
-    return;
-  }
+  if (!task) return `No goal matching "${taskName}".`;
   await prisma.task.update({ where: { id: task.id }, data: { progress } });
   const target = task.target ? `/${task.target}` : "";
-  await i.reply({ content: `🎯 **${task.title}**: ${progress}${target}`, ephemeral: true });
+  return `🎯 **${task.title}**: ${progress}${target}`;
 }
 
 /** Generic summary that works for any game's bespoke character doc. */
@@ -233,24 +231,15 @@ function summarizeDoc(doc: unknown): string {
   return lines.join(" · ") || "_empty_";
 }
 
-async function handleBuild(i: ChatInputCommandInteraction, userId: string) {
-  const name = i.options.getString("game", true);
-  const charName = i.options.getString("character", true);
+async function handleBuild(o: CommandOptions, userId: string) {
+  const name = str(o, "game");
+  const charName = str(o, "character");
   const found = resolveInstance(await allInstances(userId), name);
-  if (!found) {
-    await i.reply({ content: `No game matching "${name}".`, ephemeral: true });
-    return;
-  }
+  if (!found) return `No game matching "${name}".`;
   const accountIds = found.gi.accounts.map((a) => a.id);
   const candidates = await prisma.character.findMany({ where: { accountId: { in: accountIds } } });
   const lc = charName.toLowerCase();
   const character = candidates.find((c) => c.name.toLowerCase().includes(lc)) ?? null;
-  if (!character) {
-    await i.reply({ content: `No character matching "${charName}".`, ephemeral: true });
-    return;
-  }
-  await i.reply({
-    content: `**${character.name}** — ${found.game.name}\n${summarizeDoc(character.doc)}`.slice(0, 1900),
-    ephemeral: true,
-  });
+  if (!character) return `No character matching "${charName}".`;
+  return `**${character.name}** — ${found.game.name}\n${summarizeDoc(character.doc)}`.slice(0, 1900);
 }

@@ -8,7 +8,7 @@ import {
 import { prisma } from "../lib/prisma.js";
 import { isDoneThisCycle, nextDailyReset } from "../lib/resets.js";
 import { regionForAccount } from "../api/util.js";
-import { sendDirectMessage } from "../discord/bot.js";
+import { sendDirectMessage } from "../discord/rest.js";
 
 function fmtCurrencies(
   game: GameDefinition,

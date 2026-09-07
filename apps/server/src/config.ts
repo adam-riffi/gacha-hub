@@ -47,6 +47,18 @@ export const config = {
   cookieSecure: bool("COOKIE_SECURE", isProd),
   databaseUrl: str("DATABASE_URL"),
   uploadDir: str("UPLOAD_DIR", "./uploads"),
+  /** Vercel Blob token; when set, uploads go to Blob instead of local disk. */
+  blobToken: str("BLOB_READ_WRITE_TOKEN"),
+
+  /** Shared secret the external cron (GitHub Actions) sends to /api/cron/tick. */
+  cronSecret: str("CRON_SECRET"),
+  /** Run node-cron in-process (only for always-on hosts like Docker). */
+  inProcessCron: bool("ENABLE_INPROCESS_CRON", false),
+  /** Discord user ids granted the admin role (comma-separated). */
+  adminDiscordIds: str("ADMIN_DISCORD_IDS")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean),
 
   discord: {
     clientId: str("DISCORD_CLIENT_ID"),
@@ -57,6 +69,8 @@ export const config = {
     ),
     botToken: str("DISCORD_BOT_TOKEN"),
     appId: str("DISCORD_APP_ID"),
+    /** Application public key — verifies HTTP Interactions signatures. */
+    publicKey: str("DISCORD_PUBLIC_KEY"),
     devGuildId: str("DISCORD_DEV_GUILD_ID"),
   },
 
@@ -66,5 +80,8 @@ export const config = {
 
 export const hasDiscordOAuth = () =>
   Boolean(config.discord.clientId && config.discord.clientSecret);
+/** Bot token + app id: needed for REST (DMs) and slash-command registration. */
 export const hasDiscordBot = () =>
   Boolean(config.discord.botToken && config.discord.appId);
+/** Public key: needed to accept slash commands over HTTP Interactions. */
+export const hasDiscordInteractions = () => Boolean(config.discord.publicKey);

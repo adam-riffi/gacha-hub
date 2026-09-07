@@ -1,30 +1,27 @@
 import { pathToFileURL } from "node:url";
-import { REST, Routes } from "discord.js";
 import { config, hasDiscordBot } from "../config.js";
 import { commands } from "./commands.js";
+import { discordFetch } from "./rest.js";
 
 /** Register slash commands with Discord (guild-scoped in dev, else global). */
 export async function registerCommands(): Promise<void> {
   if (!hasDiscordBot()) {
-    console.warn("[bot] cannot register commands — token/app id missing.");
+    console.warn("[discord] cannot register commands — token/app id missing.");
     return;
   }
-  const rest = new REST({ version: "10" }).setToken(config.discord.botToken);
-  if (config.discord.devGuildId) {
-    await rest.put(
-      Routes.applicationGuildCommands(
-        config.discord.appId,
-        config.discord.devGuildId,
-      ),
-      { body: commands },
-    );
-    console.log("[bot] registered guild slash commands (instant).");
-  } else {
-    await rest.put(Routes.applicationCommands(config.discord.appId), {
-      body: commands,
-    });
-    console.log("[bot] registered global slash commands (may take ~1h).");
+  const { appId, devGuildId } = config.discord;
+  const path = devGuildId
+    ? `/applications/${appId}/guilds/${devGuildId}/commands`
+    : `/applications/${appId}/commands`;
+  const res = await discordFetch(path, { method: "PUT", body: JSON.stringify(commands) });
+  if (!res.ok) {
+    throw new Error(`Command registration failed: ${res.status} ${await res.text()}`);
   }
+  console.log(
+    devGuildId
+      ? "[discord] registered guild slash commands (instant)."
+      : "[discord] registered global slash commands (may take ~1h).",
+  );
 }
 
 // Allow: npm run discord:register

@@ -36,22 +36,34 @@ export async function requireUser(req: FastifyRequest, reply: FastifyReply) {
   }
 }
 
+/** preHandler that 403s non-admins (admins = ADMIN_DISCORD_IDS). */
+export async function requireAdmin(req: FastifyRequest, reply: FastifyReply) {
+  if (!req.user) {
+    reply.code(401).send({ error: "unauthorized" });
+    return;
+  }
+  if (!req.isAdmin) {
+    reply.code(403).send({ error: "forbidden" });
+  }
+}
+
 export async function registerAuth(app: FastifyInstance) {
   await app.register(cookie, { secret: config.sessionSecret });
 
   app.decorateRequest("user", null);
+  app.decorateRequest("isAdmin", false);
 
-  // Populate req.user from the signed session cookie on every request.
+  // Populate req.user / req.isAdmin from the signed session cookie.
   app.addHook("onRequest", async (req) => {
+    req.user = null;
+    req.isAdmin = false;
     const raw = req.cookies[SESSION_COOKIE];
-    if (!raw) {
-      req.user = null;
-      return;
-    }
+    if (!raw) return;
     const unsigned = req.unsignCookie(raw);
-    req.user = unsigned.valid && unsigned.value
-      ? await getSessionUser(unsigned.value)
-      : null;
+    if (!unsigned.valid || !unsigned.value) return;
+    req.user = await getSessionUser(unsigned.value);
+    req.isAdmin =
+      req.user !== null && config.adminDiscordIds.includes(req.user.discordId);
   });
 
   // ---- Discord OAuth (only if credentials are configured) ----
@@ -110,7 +122,12 @@ export async function registerAuth(app: FastifyInstance) {
 
   // ---- Current user ----
   app.get("/api/me", async (req) => {
-    return { user: req.user, oauth: hasDiscordOAuth(), devLogin: config.devLoginEnabled };
+    return {
+      user: req.user,
+      isAdmin: req.isAdmin,
+      oauth: hasDiscordOAuth(),
+      devLogin: config.devLoginEnabled,
+    };
   });
 
   // ---- Logout ----

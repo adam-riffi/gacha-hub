@@ -1,0 +1,27 @@
+# Free external scheduler for the serverless deployment: calls the reminder
+# tick endpoint every 10 minutes. The endpoint is idempotent per reset
+# boundary, so best-effort timing and duplicate runs are safe.
+#
+# Repo secrets required:
+#   CRON_URL    e.g. https://your-app.vercel.app/api/cron/tick
+#   CRON_SECRET must match the CRON_SECRET env var on the deployment
+name: reminder-tick
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+jobs:
+  tick:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call cron tick
+        env:
+          CRON_URL: ${{ secrets.CRON_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          if [ -z "$CRON_URL" ] || [ -z "$CRON_SECRET" ]; then
+            echo "CRON_URL / CRON_SECRET secrets not set; skipping."; exit 0
+          fi
+          curl -fsS -X POST "$CRON_URL" -H "x-cron-secret: $CRON_SECRET"

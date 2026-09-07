@@ -17,3 +17,7 @@ uploads/
 
 # Local editor/agent settings
 .claude/settings.local.json
+
+# Serverless function bundle (built by scripts/build-server-bundle.mjs)
+dist-server/
+.vercel/

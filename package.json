@@ -1,8 +1,8 @@
 {
-  "name": "gacha-tracker",
+  "name": "gacha-hub",
   "private": true,
-  "version": "0.1.0",
-  "description": "Cross-game gacha progress, build, and daily tracker with Discord bot + reminders.",
+  "version": "0.2.0",
+  "description": "Cross-game gacha tracker with hardcoded per-game modules, a Discord bot, and reset reminders. Serverless-ready (Vercel).",
   "workspaces": [
     "packages/*",
     "apps/*"
@@ -11,7 +11,9 @@
     "dev": "concurrently -n server,web -c blue,green \"npm:dev:server\" \"npm:dev:web\"",
     "dev:server": "npm run dev -w @gacha/server",
     "dev:web": "npm run dev -w @gacha/web",
-    "build": "npm run build -w @gacha/web && npm run build -w @gacha/server",
+    "build": "npm run build -w @gacha/web && npm run build:server",
+    "build:server": "node scripts/build-server-bundle.mjs",
+    "vercel-build": "node scripts/vercel-build.mjs",
     "start": "npm run start -w @gacha/server",
     "test": "npm run test -w @gacha/server",
     "typecheck": "npm run typecheck -w @gacha/shared && npm run typecheck -w @gacha/server && npm run typecheck -w @gacha/web",
@@ -21,6 +23,7 @@
     "setup:sqlite": "npm run db:sqlite",
     "prisma:generate": "prisma generate --schema prisma/schema.prisma",
     "prisma:migrate": "prisma migrate dev --schema prisma/schema.prisma",
+    "prisma:deploy": "prisma migrate deploy --schema prisma/schema.prisma",
     "prisma:studio": "prisma studio --schema prisma/schema.prisma"
   },
   "dependencies": {
@@ -29,6 +32,7 @@
   "devDependencies": {
     "@types/node": "^22.10.5",
     "concurrently": "^9.1.2",
+    "esbuild": "^0.25.0",
     "prisma": "^6.2.1",
     "tsx": "^4.19.2",
     "typescript": "^5.7.3"
