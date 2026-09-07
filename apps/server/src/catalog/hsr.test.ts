@@ -28,7 +28,10 @@ describe("hsr catalog", () => {
 
   it("has sane caps, per-trace costs, and unique keys", async () => {
     const catalog = catalogSchema.parse(await hsr.loadCatalog!());
-    const march = catalog.characters.find((c) => c.key === "march-7th");
+    // Two characters share the display name "March 7th" (1001 Ice, 1224
+    // Imaginary), so their keys are id-suffixed; look up by id.
+    const march = catalog.characters.find((c) => c.id === "1001");
+    expect(march?.name).toBe("March 7th");
     expect(march?.maxLevel).toBe(80);
     expect(march?.ascension.at(-1)?.atLevel).toBe(80);
     expect(march?.talents.keys).toEqual(["basic", "skill", "ultimate", "talent"]);
