@@ -10,6 +10,9 @@ export const dashboardCurrencyDto = z.object({
   value: z.number(),
   cap: z.number().nullable(),
   regenPerHour: z.number().nullable(),
+  /** Premium currency: units per pull + the pull's name (for a wish count). */
+  pullCost: z.number().nullable(),
+  pullLabel: z.string().nullable(),
 });
 
 export const dashboardGameDto = z.object({

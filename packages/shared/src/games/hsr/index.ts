@@ -83,7 +83,7 @@ export const hsr: GameDefinition = {
   regions: hoyoRegions,
   currencies: [
     { key: "trailblazePower", label: "Trailblaze Power", cap: 300, regenPerHour: 10 },
-    { key: "stellarJade", label: "Stellar Jade" },
+    { key: "stellarJade", label: "Stellar Jade", pullCost: 160, pullLabel: "warp" },
     { key: "credits", label: "Credits" },
   ],
   defaultTasks: [

@@ -5,6 +5,7 @@ import { getGame, type OwnershipDto } from "@gacha/shared";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
 import { useCatalog } from "../lib/catalog";
+import { pullText } from "../lib/format";
 import type { InstanceDetail, ReminderRule } from "../lib/types";
 
 function ReminderControl({ instanceId }: { instanceId: string }) {
@@ -113,6 +114,16 @@ export function InstancePage() {
     },
   });
 
+  const restoreDefaults = useMutation({
+    mutationFn: () => api.post<{ created: number }>(`/api/instances/${id}/tasks/defaults`),
+    onSuccess: (r) => {
+      toast(r.created ? `Restored ${r.created} default task(s)` : "All default tasks already present");
+      qc.invalidateQueries({ queryKey: ["tasks"] });
+      qc.invalidateQueries({ queryKey: ["dashboard"] });
+    },
+    onError: () => toast("Could not restore defaults", "err"),
+  });
+
   // Owned catalog characters that don't have a build yet.
   const buildable = useMemo(() => {
     if (!index || !owned || !data) return [];
@@ -129,6 +140,7 @@ export function InstancePage() {
   const game = getGame(data.gameKey);
   const currencyLabel = (key: string) => game?.currencies.find((c) => c.key === key)?.label ?? key;
   const currencyCap = (key: string) => game?.currencies.find((c) => c.key === key)?.cap;
+  const currencyDef = (key: string) => game?.currencies.find((c) => c.key === key);
   const catalogName = (catalogId: string | null) =>
     catalogId && index ? index.characters.get(catalogId)?.name : undefined;
 
@@ -161,6 +173,14 @@ export function InstancePage() {
             </>
           )}
           <button
+            className="btn sm"
+            disabled={restoreDefaults.isPending}
+            onClick={() => restoreDefaults.mutate()}
+            title="Recreate any deleted default daily/weekly tasks"
+          >
+            Restore default tasks
+          </button>
+          <button
             className="btn danger sm"
             onClick={() => {
               if (confirm("Remove this game and all its data?")) uninstall.mutate();
@@ -179,9 +199,15 @@ export function InstancePage() {
         <div className="card">
           <h3>Currencies</h3>
           {data.currencies.length === 0 && <p className="small">No currencies.</p>}
-          {data.currencies.map((c) => (
+          {data.currencies.map((c) => {
+            const def = currencyDef(c.key);
+            const pulls = pullText(c.value, def?.pullCost, def?.pullLabel);
+            return (
             <div className="currency-row" key={c.key}>
-              <span>{currencyLabel(c.key)}</span>
+              <span>
+                {currencyLabel(c.key)}
+                {pulls && <span className="small muted"> · ≈ {pulls}</span>}
+              </span>
               <div className="currency-val">
                 <input
                   type="number"
@@ -196,7 +222,8 @@ export function InstancePage() {
                 {currencyCap(c.key) ? <span className="small muted">/ {currencyCap(c.key)}</span> : null}
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
 
         <div className="card">

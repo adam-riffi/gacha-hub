@@ -25,6 +25,10 @@ export interface GameCurrency {
   label: string;
   cap?: number;
   regenPerHour?: number;
+  /** Premium currency: units per single pull (e.g. 160), for a wish count. */
+  pullCost?: number;
+  /** What one pull is called in this game: "wish", "warp", "convene"… */
+  pullLabel?: string;
 }
 
 export interface GameTaskSeed {

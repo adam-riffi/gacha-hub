@@ -87,6 +87,37 @@ describe("auth + instances (routes)", () => {
     expect(list.json.length).toBe(0);
   });
 
+  it("restores deleted default tasks idempotently", async () => {
+    const id = await installGame(c, "genshin");
+    const before = (await c.req<{ id: string; type: string }[]>("GET", `/api/tasks?scope=game&refId=${id}`)).json.filter(
+      (t) => t.type === "recurring",
+    );
+    expect(before.length).toBeGreaterThan(0);
+
+    await c.req("DELETE", `/api/tasks/${before[0]!.id}`);
+    const restore = await c.req<{ created: number; restored: string[] }>("POST", `/api/instances/${id}/tasks/defaults`);
+    expect(restore.json.created).toBe(1);
+
+    const again = await c.req<{ created: number }>("POST", `/api/instances/${id}/tasks/defaults`);
+    expect(again.json.created).toBe(0); // nothing missing now
+
+    const after = (await c.req<{ type: string }[]>("GET", `/api/tasks?scope=game&refId=${id}`)).json.filter(
+      (t) => t.type === "recurring",
+    );
+    expect(after.length).toBe(before.length);
+  });
+
+  it("exposes premium-currency pull cost on the dashboard", async () => {
+    const id = await installGame(c, "genshin");
+    const dash = await c.req<{ games: { instanceId: string; currencies: { key: string; pullCost: number | null; pullLabel: string | null }[] }[] }>(
+      "GET",
+      "/api/dashboard",
+    );
+    const primo = dash.json.games.find((g) => g.instanceId === id)!.currencies.find((cur) => cur.key === "primogems")!;
+    expect(primo.pullCost).toBe(160);
+    expect(primo.pullLabel).toBe("wish");
+  });
+
   it("scopes instances to their owner", async () => {
     const id = await installGame(c, "genshin");
     // A second, separate session cannot be created for a different dev user

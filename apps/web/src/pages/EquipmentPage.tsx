@@ -50,6 +50,8 @@ export function EquipmentPage() {
   const toast = useToast();
   const [tab, setTab] = useState<"weapons" | "gear">("weapons");
   const [search, setSearch] = useState("");
+  const [rarity, setRarity] = useState<number | null>(null);
+  const [wType, setWType] = useState<string | null>(null);
   const [open, setOpen] = useState<string | null>(null);
 
   const { data: instance } = useQuery({
@@ -87,7 +89,14 @@ export function EquipmentPage() {
   if (!catalog) return <div className="card empty">This game has no equipment catalog.</div>;
 
   const q = search.toLowerCase();
-  const weapons = catalog.weapons.filter((w) => !q || w.name.toLowerCase().includes(q));
+  const weaponRarities = [...new Set(catalog.weapons.map((w) => w.rarity))].sort((a, b) => b - a);
+  const weaponTypes = [...new Set(catalog.weapons.map((w) => w.type).filter((t): t is string => Boolean(t)))].sort();
+  const weapons = catalog.weapons.filter(
+    (w) =>
+      (!q || w.name.toLowerCase().includes(q)) &&
+      (rarity === null || w.rarity === rarity) &&
+      (wType === null || w.type === wType),
+  );
   const gear = catalog.gear.filter((g) => !q || g.name.toLowerCase().includes(q));
 
   return (
@@ -104,7 +113,27 @@ export function EquipmentPage() {
       </div>
 
       <div className="card" style={{ marginBottom: 16 }}>
-        <input placeholder="Search…" value={search} onChange={(e) => setSearch(e.target.value)} style={{ maxWidth: 300 }} />
+        <div className="row">
+          <input placeholder="Search…" value={search} onChange={(e) => setSearch(e.target.value)} style={{ maxWidth: 240 }} />
+          {tab === "weapons" && (
+            <>
+              <select value={rarity ?? ""} onChange={(e) => setRarity(e.target.value ? Number(e.target.value) : null)} style={{ maxWidth: 140 }}>
+                <option value="">Any rarity</option>
+                {weaponRarities.map((r) => (
+                  <option key={r} value={r}>{stars(r)}</option>
+                ))}
+              </select>
+              {weaponTypes.length > 0 && (
+                <select value={wType ?? ""} onChange={(e) => setWType(e.target.value || null)} style={{ maxWidth: 160 }}>
+                  <option value="">Any type</option>
+                  {weaponTypes.map((t) => (
+                    <option key={t} value={t}>{t}</option>
+                  ))}
+                </select>
+              )}
+            </>
+          )}
+        </div>
       </div>
 
       {tab === "weapons" ? (

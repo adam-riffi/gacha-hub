@@ -68,7 +68,7 @@ export const wuwa: GameDefinition = {
   regions: hoyoRegions,
   currencies: [
     { key: "waveplate", label: "Waveplate", cap: 240, regenPerHour: 10 },
-    { key: "astrite", label: "Astrite" },
+    { key: "astrite", label: "Astrite", pullCost: 160, pullLabel: "convene" },
     { key: "shellCredits", label: "Shell Credits" },
   ],
   defaultTasks: [

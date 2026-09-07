@@ -58,6 +58,8 @@ export async function registerDashboardRoutes(app: FastifyInstance) {
             value: c.value,
             cap: d?.cap ?? null,
             regenPerHour: d?.regenPerHour ?? null,
+            pullCost: d?.pullCost ?? null,
+            pullLabel: d?.pullLabel ?? null,
           };
         }),
         dailies,

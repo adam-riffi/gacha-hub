@@ -17,6 +17,7 @@ export function MaterialsPage() {
   const toast = useToast();
   const [search, setSearch] = useState("");
   const [neededOnly, setNeededOnly] = useState(false);
+  const [category, setCategory] = useState("");
 
   const { data: instance } = useQuery({
     queryKey: ["instance", id],
@@ -53,8 +54,12 @@ export function MaterialsPage() {
   if (!catalog) return <div className="card empty">This game has no materials catalog.</div>;
 
   const q = search.toLowerCase();
+  const categories = [...new Set(catalog.materials.map((m) => m.category))].sort();
   const rows = catalog.materials.filter(
-    (m) => (!q || m.name.toLowerCase().includes(q)) && (!neededOnly || (need.get(m.id)?.needed ?? 0) > 0),
+    (m) =>
+      (!q || m.name.toLowerCase().includes(q)) &&
+      (!neededOnly || (need.get(m.id)?.needed ?? 0) > 0) &&
+      (!category || m.category === category),
   );
   const byCategory = new Map<string, typeof rows>();
   for (const m of rows) {
@@ -75,7 +80,13 @@ export function MaterialsPage() {
 
       <div className="card" style={{ marginBottom: 16 }}>
         <div className="row">
-          <input placeholder="Search…" value={search} onChange={(e) => setSearch(e.target.value)} style={{ maxWidth: 300 }} />
+          <input placeholder="Search…" value={search} onChange={(e) => setSearch(e.target.value)} style={{ maxWidth: 240 }} />
+          <select value={category} onChange={(e) => setCategory(e.target.value)} style={{ maxWidth: 200 }}>
+            <option value="">All categories</option>
+            {categories.map((cat) => (
+              <option key={cat} value={cat}>{cat}</option>
+            ))}
+          </select>
           <label className="row small" style={{ margin: 0, gap: 6 }}>
             <input type="checkbox" style={{ width: "auto" }} checked={neededOnly} onChange={(e) => setNeededOnly(e.target.checked)} />
             Needed only

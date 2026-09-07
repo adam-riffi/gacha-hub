@@ -4,6 +4,7 @@ import { getGame, type GameDashboardExtras } from "@gacha/shared";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
 import { formatRemaining } from "../lib/time";
+import { pullText } from "../lib/format";
 import type { DashboardData } from "../lib/types";
 
 /** Per-game extras from the server module (e.g. Genshin resin projection). */
@@ -138,9 +139,14 @@ export function DashboardPage() {
 
             {game.currencies.length > 0 && (
               <div style={{ marginBottom: 12 }}>
-                {game.currencies.map((c) => (
+                {game.currencies.map((c) => {
+                  const pulls = pullText(c.value, c.pullCost, c.pullLabel);
+                  return (
                   <div className="currency-row" key={c.key}>
-                    <span>{c.label}</span>
+                    <span>
+                      {c.label}
+                      {pulls && <span className="small muted"> · ≈ {pulls}</span>}
+                    </span>
                     <div className="currency-val">
                       <input
                         type="number"
@@ -156,7 +162,8 @@ export function DashboardPage() {
                       {c.cap ? <span className="small muted">/ {c.cap}</span> : null}
                     </div>
                   </div>
-                ))}
+                  );
+                })}
               </div>
             )}
 

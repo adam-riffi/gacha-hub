@@ -14,6 +14,9 @@ export function TasksPage() {
     target: 20,
     refId: "",
   });
+  const [filterGame, setFilterGame] = useState("");
+  const [filterText, setFilterText] = useState("");
+  const [hideDone, setHideDone] = useState(false);
 
   const { data: tasks } = useQuery({
     queryKey: ["tasks"],
@@ -63,8 +66,13 @@ export function TasksPage() {
     onSuccess: invalidate,
   });
 
-  const recurring = tasks?.filter((t) => t.type === "recurring") ?? [];
-  const goals = tasks?.filter((t) => t.type === "goal") ?? [];
+  const matches = (t: TaskItem) =>
+    (!filterGame || t.refId === filterGame) &&
+    (!filterText || t.title.toLowerCase().includes(filterText.toLowerCase()));
+  const recurring = (tasks ?? []).filter(
+    (t) => t.type === "recurring" && matches(t) && (!hideDone || !t.doneThisCycle),
+  );
+  const goals = (tasks ?? []).filter((t) => t.type === "goal" && matches(t));
   const gameName = (refId: string) => instances?.find((i) => i.id === refId)?.name;
 
   return (
@@ -145,6 +153,27 @@ export function TasksPage() {
         {(instances ?? []).length === 0 && (
           <p className="small">Install a game first.</p>
         )}
+      </div>
+
+      <div className="card" style={{ marginBottom: 18 }}>
+        <div className="row">
+          <input
+            placeholder="Filter tasks…"
+            value={filterText}
+            onChange={(e) => setFilterText(e.target.value)}
+            style={{ maxWidth: 240 }}
+          />
+          <select value={filterGame} onChange={(e) => setFilterGame(e.target.value)} style={{ maxWidth: 200 }}>
+            <option value="">All games</option>
+            {(instances ?? []).map((gi) => (
+              <option key={gi.id} value={gi.id}>{gi.name}</option>
+            ))}
+          </select>
+          <label className="row small" style={{ margin: 0, gap: 6 }}>
+            <input type="checkbox" style={{ width: "auto" }} checked={hideDone} onChange={(e) => setHideDone(e.target.checked)} />
+            Hide completed
+          </label>
+        </div>
       </div>
 
       {goals.length > 0 && (

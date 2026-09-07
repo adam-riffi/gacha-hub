@@ -14,6 +14,9 @@ import {
   upsertDiscordUser,
 } from "./sessions.js";
 
+/** Discord id of the dev-login shortcut user (dev builds only). */
+export const DEV_LOGIN_DISCORD_ID = "dev-local-user";
+
 function setSessionCookie(reply: FastifyReply, id: string, expiresAt: Date) {
   reply.setCookie(SESSION_COOKIE, id, {
     path: "/",
@@ -62,8 +65,13 @@ export async function registerAuth(app: FastifyInstance) {
     const unsigned = req.unsignCookie(raw);
     if (!unsigned.valid || !unsigned.value) return;
     req.user = await getSessionUser(unsigned.value);
+    // Admins come from ADMIN_DISCORD_IDS. As a dev convenience (never in
+    // production), the dev-login user is treated as admin so the Admin page —
+    // and banner/event uploads — are reachable without configuring ids.
     req.isAdmin =
-      req.user !== null && config.adminDiscordIds.includes(req.user.discordId);
+      req.user !== null &&
+      (config.adminDiscordIds.includes(req.user.discordId) ||
+        (config.devLoginEnabled && req.user.discordId === DEV_LOGIN_DISCORD_ID));
   });
 
   // ---- Discord OAuth (only if credentials are configured) ----
@@ -145,7 +153,7 @@ export async function registerAuth(app: FastifyInstance) {
   if (config.devLoginEnabled) {
     app.post("/api/auth/dev-login", async (_req, reply) => {
       const user = await upsertDiscordUser({
-        id: "dev-local-user",
+        id: DEV_LOGIN_DISCORD_ID,
         username: "Dev User",
         avatarUrl: null,
       });

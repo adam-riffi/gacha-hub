@@ -20,6 +20,7 @@ export function OwnershipPage() {
   const [search, setSearch] = useState("");
   const [rarity, setRarity] = useState<number | null>(null);
   const [tag, setTag] = useState<string | null>(null);
+  const [ownState, setOwnState] = useState<"all" | "owned" | "unowned">("all");
 
   const { data: instance } = useQuery({
     queryKey: ["instance", id],
@@ -74,7 +75,8 @@ export function OwnershipPage() {
     (e) =>
       (!search || e.name.toLowerCase().includes(search.toLowerCase())) &&
       (rarity === null || e.rarity === rarity) &&
-      (tag === null || tagOf(e) === tag),
+      (tag === null || tagOf(e) === tag) &&
+      (ownState === "all" || (ownState === "owned") === ownedIds.has(e.id)),
   );
 
   if (!instance) return <div className="muted">Loading…</div>;
@@ -127,6 +129,11 @@ export function OwnershipPage() {
               ))}
             </select>
           )}
+          <select value={ownState} onChange={(e) => setOwnState(e.target.value as typeof ownState)} style={{ maxWidth: 140 }}>
+            <option value="all">All</option>
+            <option value="owned">Owned</option>
+            <option value="unowned">Not owned</option>
+          </select>
           <span style={{ flex: 1 }} />
           <button
             className="btn sm"
