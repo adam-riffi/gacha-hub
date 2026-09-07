@@ -1,5 +1,6 @@
 import type { GameInstance } from "@prisma/client";
 import type { CommandOptions } from "../discord/commands.js";
+import { genshinServer } from "./genshin.js";
 
 /**
  * Server-side counterpart of the client sheet registry: a game module can
@@ -27,8 +28,7 @@ export interface GameServerModule {
 }
 
 export const gameServerModules: Record<string, GameServerModule> = {
-  // genshin: genshinServer,
-  // hsr: hsrServer,
+  genshin: genshinServer,
 };
 
 export function getGameServerModule(key: string): GameServerModule | undefined {

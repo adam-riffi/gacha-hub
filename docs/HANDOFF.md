@@ -221,8 +221,11 @@ with `&&` only. Never trust `PIPESTATUS` after an intervening `echo`.
 2. **Real deploy.** Nothing has been deployed to Vercel yet in this history;
    do a preview deploy, point the GitHub Actions cron at it, register the
    slash commands (`apps/server/src/discord/register.ts`).
-3. **Per-game server hooks.** `apps/server/src/games/index.ts` is wired but
-   empty; add e.g. Genshin resin projections as `dashboardExtras`.
+3. **Per-game server hooks.** `apps/server/src/games/index.ts` is the registry;
+   `genshin.ts` is the first module — a `/resin` bot command and a resin
+   `dashboardExtras` projection (pure `projectRegen`, unit + route tested).
+   Copy that shape for more (e.g. HSR trailblaze power once its currency has
+   `regenPerHour`, or richer Genshin widgets).
 4. **Nice-to-haves the owner listed:** pull history + pity per banner, team
    builder with combined planning, "farm today" morning DM, resin overflow
    alerts, public showcase pages, PWA, per-user JSON export, i18n via dataset

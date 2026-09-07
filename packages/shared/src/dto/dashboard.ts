@@ -33,6 +33,24 @@ export const timelineDto = z.object({
 });
 export type TimelineDto = z.infer<typeof timelineDto>;
 
+/** A regenerating resource (Genshin resin, HSR trailblaze power…) projected to now. */
+export const regenProjectionDto = z.object({
+  key: z.string(),
+  label: z.string(),
+  value: z.number(),
+  cap: z.number(),
+  regenPerHour: z.number(),
+  full: z.boolean(),
+  fullAt: isoDateNullable,
+});
+export type RegenProjectionDto = z.infer<typeof regenProjectionDto>;
+
+/** Per-game dashboard extras from a GameServerModule (shape is game-specific). */
+export const gameDashboardExtrasDto = z.object({
+  regen: regenProjectionDto.optional(),
+});
+export type GameDashboardExtras = z.infer<typeof gameDashboardExtrasDto>;
+
 export const dashboardDto = z.object({
   games: z.array(dashboardGameDto),
   goals: z.array(taskDto),

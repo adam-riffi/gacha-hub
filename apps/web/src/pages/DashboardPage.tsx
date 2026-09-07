@@ -1,10 +1,26 @@
 import { Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getGame } from "@gacha/shared";
+import { getGame, type GameDashboardExtras } from "@gacha/shared";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
 import { formatRemaining } from "../lib/time";
 import type { DashboardData } from "../lib/types";
+
+/** Per-game extras from the server module (e.g. Genshin resin projection). */
+function GameExtras({ extras }: { extras: unknown }) {
+  const regen = (extras as GameDashboardExtras | undefined)?.regen;
+  if (!regen) return null;
+  return (
+    <div className="spread small" style={{ marginBottom: 10 }}>
+      <span>
+        ⛲ {regen.label}: <strong>{regen.value}</strong> / {regen.cap}
+      </span>
+      <span className={regen.full ? "badge done" : "badge"}>
+        {regen.full || !regen.fullAt ? "full" : `full in ${formatRemaining(regen.fullAt)}`}
+      </span>
+    </div>
+  );
+}
 
 const untilReset = (iso: string | null) => (iso ? formatRemaining(iso) : "");
 
@@ -117,6 +133,8 @@ export function DashboardPage() {
                 <span className="badge">reset in {untilReset(game.nextReset)}</span>
               )}
             </div>
+
+            <GameExtras extras={game.extras} />
 
             {game.currencies.length > 0 && (
               <div style={{ marginBottom: 12 }}>

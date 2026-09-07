@@ -187,3 +187,4 @@ the user to share a server with the bot (Discord limitation).
 | `/events [game]` | Active + upcoming events |
 | `/farm [game]` | Rotating materials you're short on that are farmable today |
 | `/own <game> <character> [owned]` | Mark a catalog character as owned / not owned |
+| `/resin` | (Genshin) projected Original Resin and time to cap |
