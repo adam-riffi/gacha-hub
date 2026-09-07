@@ -65,12 +65,10 @@ export function OwnershipPage() {
   const tagOf = (e: CatalogCharacter | CatalogWeapon) =>
     kind === "character" ? (e as CatalogCharacter).tag : (e as CatalogWeapon).type;
 
-  const tags = useMemo(
-    () => [...new Set(entries.map(tagOf).filter((t): t is string => Boolean(t)))].sort(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [entries, kind],
-  );
-  const rarities = useMemo(() => [...new Set(entries.map((e) => e.rarity))].sort((a, b) => b - a), [entries]);
+  // Cheap enough to recompute per render (a few hundred entries); avoids
+  // memo dependencies on values that change identity every render.
+  const tags = [...new Set(entries.map(tagOf).filter((t): t is string => Boolean(t)))].sort();
+  const rarities = [...new Set(entries.map((e) => e.rarity))].sort((a, b) => b - a);
 
   const shown = entries.filter(
     (e) =>

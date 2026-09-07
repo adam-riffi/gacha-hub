@@ -44,3 +44,11 @@ export const auditLogDto = z.object({
   createdAt: isoDate,
 });
 export type AuditLogDto = z.infer<typeof auditLogDto>;
+
+/** Audit row with the actor's display name for the admin page. */
+export const adminAuditEntryDto = auditLogDto.extend({ actorName: z.string() });
+export type AdminAuditEntryDto = z.infer<typeof adminAuditEntryDto>;
+
+/** What GET /api/admin/export returns: exactly an uploadable payload. */
+export const adminExportKindSchema = z.enum(["banners", "events"]);
+export type AdminExportKind = z.infer<typeof adminExportKindSchema>;
