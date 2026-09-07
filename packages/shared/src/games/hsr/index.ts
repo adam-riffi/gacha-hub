@@ -1,7 +1,11 @@
 import { z } from "zod";
-import { statRowSchema } from "../common.js";
-import type { GameDefinition } from "./types.js";
-import { hoyoRegions } from "./regions.js";
+import { statRowSchema } from "../../common.js";
+import type { Catalog } from "../../catalog/types.js";
+import type { GameDefinition } from "../types.js";
+import { hoyoRegions } from "../regions.js";
+import { HSR_LIMITS as L } from "./limits.js";
+
+export { HSR_LIMITS } from "./limits.js";
 
 export const HSR_PATHS = [
   "Destruction", "Hunt", "Erudition", "Harmony", "Nihility",
@@ -21,26 +25,30 @@ export const HSR_RELIC_SLOTS = [
   { key: "rope", label: "Link Rope" },
 ] as const;
 
+/** Trace keys — match the catalog's `talents.keys`. */
+export const HSR_TRACE_KEYS = ["basic", "skill", "ultimate", "talent"] as const;
+
 const relicSchema = z
   .object({
     setName: z.string(),
     mainStat: z.string(),
-    level: z.number().min(0).max(15),
+    level: z.number().int().min(0).max(L.maxRelicLevel),
     substats: z.array(statRowSchema),
   })
   .partial();
 
 export const hsrDocSchema = z
   .object({
-    level: z.number().min(1).max(80),
+    level: z.number().int().min(1).max(L.maxLevel),
     path: z.enum(HSR_PATHS),
     element: z.enum(HSR_ELEMENTS),
-    eidolon: z.number().min(0).max(6),
+    eidolon: z.number().int().min(0).max(L.maxEidolon),
     lightCone: z
       .object({
+        catalogId: z.string(),
         name: z.string(),
-        level: z.number().min(1).max(80),
-        superimposition: z.number().min(1).max(5),
+        level: z.number().int().min(1).max(L.maxLightConeLevel),
+        superimposition: z.number().int().min(1).max(L.maxSuperimposition),
       })
       .partial(),
     relics: z
@@ -55,10 +63,10 @@ export const hsrDocSchema = z
       .partial(),
     traces: z
       .object({
-        basic: z.number().min(1).max(10),
-        skill: z.number().min(1).max(12),
-        ultimate: z.number().min(1).max(12),
-        talent: z.number().min(1).max(12),
+        basic: z.number().int().min(1).max(L.maxBasic),
+        skill: z.number().int().min(1).max(L.maxTrace),
+        ultimate: z.number().int().min(1).max(L.maxTrace),
+        talent: z.number().int().min(1).max(L.maxTrace),
       })
       .partial(),
     stats: z.record(z.union([z.number(), z.string()])),
@@ -85,4 +93,6 @@ export const hsr: GameDefinition = {
   ],
   docSchema: hsrDocSchema,
   emptyDoc: (): HsrDoc => ({ relics: {}, traces: {}, lightCone: {}, stats: {} }),
+  loadCatalog: async () =>
+    (await import("./catalog.json")).default as unknown as Catalog,
 };

@@ -9,5 +9,10 @@ Genshin Impact
   Source:  genshin-db (https://github.com/theBowja/genshin-db), MIT License.
   Content: © HoYoverse / COGNOSPHERE.
 
-Honkai: Star Rail, Zenless Zone Zero, Wuthering Waves, Arknights: Endfield
+Honkai: Star Rail
+  Source:  Project Yatta public JSON API (https://sr.yatta.moe), a community
+           database; fetched at import time, cached, rate-limited.
+  Content: © HoYoverse / COGNOSPHERE.
+
+Zenless Zone Zero, Wuthering Waves, Arknights: Endfield
   Sources are recorded here when their importers land.
