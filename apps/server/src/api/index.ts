@@ -2,6 +2,8 @@ import type { FastifyInstance } from "fastify";
 import { registerGameRoutes } from "./games.js";
 import { registerCharacterRoutes } from "./characters.js";
 import { registerOwnershipRoutes } from "./ownership.js";
+import { registerPlanningRoutes } from "./planning.js";
+import { registerMaterialRoutes } from "./materials.js";
 import { registerTaskRoutes } from "./tasks.js";
 import { registerDashboardRoutes } from "./dashboard.js";
 import { registerUploadRoutes } from "./uploads.js";
@@ -13,6 +15,8 @@ export async function registerApi(app: FastifyInstance) {
   await registerGameRoutes(app);
   await registerCharacterRoutes(app);
   await registerOwnershipRoutes(app);
+  await registerPlanningRoutes(app);
+  await registerMaterialRoutes(app);
   await registerTaskRoutes(app);
   await registerDashboardRoutes(app);
   await registerUploadRoutes(app);

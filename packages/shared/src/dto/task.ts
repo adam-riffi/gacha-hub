@@ -9,11 +9,22 @@ import {
 } from "../common.js";
 import { idSchema, isoDate, isoDateNullable, jsonValue } from "./common.js";
 
-/** Where a generated task came from (character/weapon/gear goal). */
-export const taskOriginSchema = z.object({
+/** One contributor to a generated task: a character/weapon/gear goal + its quantity. */
+export const taskOriginSourceSchema = z.object({
   kind: z.enum(["character", "weapon", "gear"]),
   catalogId: z.string(),
   goal: jsonValue.optional(),
+  qty: z.number().int().min(0).optional(),
+});
+export type TaskOriginSource = z.infer<typeof taskOriginSourceSchema>;
+
+/**
+ * Where a generated task came from. `sources` lets several goals share one
+ * material task: the target is the sum of source quantities, and re-planning
+ * the same source replaces its contribution (idempotent).
+ */
+export const taskOriginSchema = taskOriginSourceSchema.extend({
+  sources: z.array(taskOriginSourceSchema).optional(),
 });
 export type TaskOrigin = z.infer<typeof taskOriginSchema>;
 

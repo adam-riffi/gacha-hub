@@ -223,3 +223,9 @@ textarea { resize: vertical; min-height: 90px; font-family: ui-monospace, "SFMon
 .toast.err { border-color: #4a2b33; }
 
 hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
+
+/* ---- Tables ---- */
+.table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.table th { text-align: left; color: var(--muted); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; padding: 6px 8px; border-bottom: 1px solid var(--border); }
+.table td { padding: 7px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.table tr:last-child td { border-bottom: none; }
