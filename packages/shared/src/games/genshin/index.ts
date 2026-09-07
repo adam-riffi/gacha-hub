@@ -85,5 +85,5 @@ export const genshin: GameDefinition = {
   emptyDoc: (): GenshinDoc => ({ artifacts: {}, talents: {}, weapon: {}, stats: {} }),
   // Lazy: the catalog is a separate chunk, loaded only when a screen needs it.
   loadCatalog: async () =>
-    (await import("./catalog.json")).default as unknown as Catalog,
+    (await import("./catalog.js")).default as Catalog,
 };

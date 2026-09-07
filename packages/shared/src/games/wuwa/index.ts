@@ -78,5 +78,5 @@ export const wuwa: GameDefinition = {
   docSchema: wuwaDocSchema,
   emptyDoc: (): WuwaDoc => ({ echoes: {}, skills: {}, weapon: {}, stats: {} }),
   loadCatalog: async () =>
-    (await import("./catalog.json")).default as unknown as Catalog,
+    (await import("./catalog.js")).default as Catalog,
 };
