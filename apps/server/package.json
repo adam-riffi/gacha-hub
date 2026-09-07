@@ -15,6 +15,7 @@
     "@fastify/cookie": "^11.0.2",
     "@fastify/multipart": "^9.0.3",
     "@fastify/oauth2": "^8.1.0",
+    "@fastify/rate-limit": "^10.3.0",
     "@fastify/static": "^8.0.4",
     "@gacha/shared": "*",
     "@prisma/client": "^6.2.1",
@@ -23,7 +24,8 @@
     "fastify": "^5.2.1",
     "luxon": "^3.5.0",
     "node-cron": "^3.0.3",
-    "zod": "^3.24.1"
+    "zod": "^3.24.1",
+    "zod-to-json-schema": "^3.25.2"
   },
   "devDependencies": {
     "@types/luxon": "^3.4.2",

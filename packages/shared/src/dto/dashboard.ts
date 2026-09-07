@@ -1,5 +1,7 @@
 import { z } from "zod";
 import { taskDto } from "./task.js";
+import { bannerDto } from "./banner.js";
+import { eventDto } from "./event.js";
 import { gameKeySchema, idSchema, isoDateNullable } from "./common.js";
 
 export const dashboardCurrencyDto = z.object({
@@ -24,8 +26,16 @@ export const dashboardGameDto = z.object({
   extras: z.unknown().optional(),
 });
 
+/** Active + upcoming banners/events across the user's installed games. */
+export const timelineDto = z.object({
+  banners: z.array(bannerDto),
+  events: z.array(eventDto),
+});
+export type TimelineDto = z.infer<typeof timelineDto>;
+
 export const dashboardDto = z.object({
   games: z.array(dashboardGameDto),
   goals: z.array(taskDto),
+  timeline: timelineDto,
 });
 export type DashboardDto = z.infer<typeof dashboardDto>;

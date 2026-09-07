@@ -5,6 +5,8 @@ import { registerOwnershipRoutes } from "./ownership.js";
 import { registerPlanningRoutes } from "./planning.js";
 import { registerMaterialRoutes } from "./materials.js";
 import { registerTaskRoutes } from "./tasks.js";
+import { registerTimelineRoutes } from "./timeline.js";
+import { registerAdminRoutes } from "./admin.js";
 import { registerDashboardRoutes } from "./dashboard.js";
 import { registerUploadRoutes } from "./uploads.js";
 import { registerReminderRoutes } from "./reminders.js";
@@ -18,6 +20,8 @@ export async function registerApi(app: FastifyInstance) {
   await registerPlanningRoutes(app);
   await registerMaterialRoutes(app);
   await registerTaskRoutes(app);
+  await registerTimelineRoutes(app);
+  await registerAdminRoutes(app);
   await registerDashboardRoutes(app);
   await registerUploadRoutes(app);
   await registerReminderRoutes(app);

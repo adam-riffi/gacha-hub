@@ -18,7 +18,10 @@ const ALLOWED = new Map<string, string>([
  * writes to the local upload directory served by the always-on server.
  */
 export async function registerUploadRoutes(app: FastifyInstance) {
-  app.post("/api/uploads", { preHandler: requireUser }, async (req, reply) => {
+  app.post(
+    "/api/uploads",
+    { preHandler: requireUser, config: { rateLimit: { max: 20, timeWindow: "1 minute" } } },
+    async (req, reply) => {
     const data = await req.file();
     if (!data) return reply.code(400).send({ error: "no_file" });
 
@@ -44,5 +47,6 @@ export async function registerUploadRoutes(app: FastifyInstance) {
     await mkdir(dir, { recursive: true });
     await writeFile(resolve(dir, name), buf);
     return { url: `/uploads/${name}` };
-  });
+    },
+  );
 }

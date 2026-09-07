@@ -31,7 +31,7 @@ interface InteractionPayload {
   type: number;
   data?: {
     name?: string;
-    options?: { name: string; type: number; value: string | number }[];
+    options?: { name: string; type: number; value: string | number | boolean }[];
   };
   member?: { user?: { id: string } };
   user?: { id: string };
@@ -62,7 +62,10 @@ export async function registerDiscordInteractions(app: FastifyInstance) {
       },
     );
 
-    scope.post("/api/discord/interactions", async (req, reply) => {
+    scope.post(
+      "/api/discord/interactions",
+      { config: { rateLimit: { max: 120, timeWindow: "1 minute" } } },
+      async (req, reply) => {
       const { raw, json } = req.body as { raw: string; json: InteractionPayload };
       const sig = req.headers["x-signature-ed25519"];
       const ts = req.headers["x-signature-timestamp"];
@@ -91,6 +94,7 @@ export async function registerDiscordInteractions(app: FastifyInstance) {
       }
 
       return reply.code(400).send({ error: "unsupported_interaction" });
-    });
+      },
+    );
   });
 }
