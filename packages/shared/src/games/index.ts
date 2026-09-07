@@ -1,6 +1,6 @@
 import type { GameDefinition } from "./types.js";
 import { genshin } from "./genshin/index.js";
-import { hsr } from "./hsr.js";
+import { hsr } from "./hsr/index.js";
 import { zzz } from "./zzz.js";
 import { endfield } from "./endfield.js";
 
@@ -25,6 +25,6 @@ export function isGameKey(key: string): boolean {
 export * from "./types.js";
 export * from "./regions.js";
 export * from "./genshin/index.js";
-export * from "./hsr.js";
+export * from "./hsr/index.js";
 export * from "./zzz.js";
 export * from "./endfield.js";
