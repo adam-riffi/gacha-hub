@@ -114,8 +114,9 @@ the chain clean, or rebase each branch onto `main` in order.
 | #5 | `feat/phase-6-ownership` → #4 | ownership, catalog-backed builds, docVersion migrations |
 | #6 | `feat/phase-7-planning` → #5 | planning lib, task generation, Equipment/Materials, GameServerModule registry |
 | #7 | `feat/phase-8-banners-events` → #6 | banners/events, admin uploads, audit log, rate limiting, bot commands, handoff docs |
+| #8 | `feat/phase-9-integration-tests` → #7 | route integration tests vs SQLite in CI (72 tests) |
 
-All seven are open and green as of this note (`gh pr list`).
+All are open and green as of this note (`gh pr list`).
 
 Phase 1 (serverless pivot) landed directly on `main` before the branch rule
 existed. `git log --oneline main..feat/phase-8-banners-events` shows the whole
@@ -143,11 +144,23 @@ user's Discord id).
 
 ```bash
 npm run typecheck -w packages/shared && npm run typecheck -w apps/server && npm run typecheck -w apps/web
-npm test                       # vitest in apps/server (40 tests)
+npm test                       # vitest in apps/server (72 tests: unit + route integration)
 npm run lint                   # eslint flat config; currently zero warnings
 npm run build -w apps/web
 node scripts/build-server-bundle.mjs
 ```
+
+`npm test`'s `pretest` runs `scripts/setup-test-db.mjs`: it derives the SQLite
+schema, `db push`es a fresh `prisma/test.db`, and regenerates the Prisma client
+for sqlite. The route integration tests (`src/api/*.integration.test.ts`) build
+the real Fastify app and drive it with `app.inject()`; shared helpers live in
+`src/test/` (`env.ts` sets `DATABASE_URL`/admin id/Discord key before any module
+loads; `helpers.ts` has `login`, `resetDb`, `installGame`, signed `interaction`).
+Test files run sequentially (`fileParallelism: false`) and reset every table in
+`beforeEach`, so they share one sqlite file safely. On Windows a running dev
+server locks the engine DLL so `prisma generate` can't refresh it — the setup
+script tolerates that and reuses the existing (already sqlite) client. CI has no
+such lock; it regenerates the Postgres client after tests, before the build.
 
 Then the harnesses (they boot the bundle in-process over SQLite, dev-log in,
 exercise the API, and clean up):
@@ -200,10 +213,11 @@ with `&&` only. Never trust `PIPESTATUS` after an intervening `echo`.
 
 ## 10. What's next
 
-1. **Phase 9 — integration test sweep + docs.** Route tests in vitest against
-   a throwaway SQLite DB (the harnesses show every flow worth covering:
-   ownership, builds from catalog, planning/generation, materials, admin
-   payloads, interactions). Refresh `README.md` for the new pages/commands.
+1. ~~**Phase 9 — integration test sweep + docs.**~~ **Done** (PR #8): 72 vitest
+   tests, including route integration tests against a throwaway SQLite DB
+   (auth/instances, ownership + catalog builds, planning/generation + materials,
+   admin payloads + audit + export, banners/events, signed Discord interactions).
+   README and this doc refreshed. Add more cases here as routes grow.
 2. **Real deploy.** Nothing has been deployed to Vercel yet in this history;
    do a preview deploy, point the GitHub Actions cron at it, register the
    slash commands (`apps/server/src/discord/register.ts`).

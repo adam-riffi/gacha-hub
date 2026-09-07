@@ -90,11 +90,16 @@ docker-compose URL in `.env`, then `npm run db:up && npm run prisma:migrate`.
 
 ```bash
 npm run typecheck # all workspaces
-npm test          # planning math, catalogs, doc migrations, resets, timeline, Discord signatures
+npm test          # unit + route integration tests (spins up a throwaway SQLite DB)
 npm run lint
 npm run build     # web + serverless bundle
 npm run harness   # end-to-end: boots the bundle over SQLite and walks every flow
 ```
+
+`npm test` provisions a disposable `prisma/test.db` first (via the server's
+`pretest`), then runs vitest: unit tests (planning, catalogs, resets, doc
+migrations, timeline, Discord signatures) plus route integration tests that
+drive the real Fastify app with `app.inject()`.
 
 ### Catalog data
 
