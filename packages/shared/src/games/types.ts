@@ -1,5 +1,6 @@
 import type { z } from "zod";
 import type { TaskCadence } from "../common.js";
+import type { Catalog } from "../catalog/types.js";
 
 /**
  * Thin contract every hardcoded game module implements. The host app (auth,
@@ -53,4 +54,9 @@ export interface GameDefinition {
   docSchema: z.ZodTypeAny;
   /** A blank character document for this game. */
   emptyDoc: () => unknown;
+  /**
+   * Lazily load the game's normalized catalog (characters, weapons, gear,
+   * materials + costs). Absent until the game's importer has run.
+   */
+  loadCatalog?: () => Promise<Catalog>;
 }
