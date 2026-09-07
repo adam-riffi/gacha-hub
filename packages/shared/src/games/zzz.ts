@@ -74,4 +74,5 @@ export const zzz: GameDefinition = {
   ],
   docSchema: zzzDocSchema,
   emptyDoc: (): ZzzDoc => ({ discs: {}, skills: {}, wEngine: {}, stats: {} }),
+  docVersion: 1,
 };
