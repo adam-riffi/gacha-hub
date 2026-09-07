@@ -98,6 +98,26 @@ export async function fetchJson<T = unknown>(
   }
 }
 
+/** GET a binary asset (e.g. a release zip) with the same on-disk cache. */
+export async function fetchBuffer(url: string, opts: { cacheKey?: string } = {}): Promise<Buffer> {
+  const dir = resolve(CACHE_ROOT, opts.cacheKey ?? "default");
+  mkdirSync(dir, { recursive: true });
+  const file = resolve(dir, createHash("sha1").update(url).digest("hex") + ".bin");
+  if (existsSync(file)) return readFileSync(file);
+  const res = await fetch(url, {
+    headers: { "user-agent": "gacha-hub catalog importer (+https://github.com/adam-riffi/gacha-hub)" },
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
+  const buf = Buffer.from(await res.arrayBuffer());
+  writeFileSync(file, buf);
+  return buf;
+}
+
+/** Parse JSON whose int64 `id` values would lose precision: quote them first. */
+export function parseInt64Safe<T = unknown>(text: string): T {
+  return JSON.parse(text.replace(/"id":\s*(-?\d{15,})/g, '"id":"$1"')) as T;
+}
+
 /** Validate against the shared schema and write pretty JSON to a game's catalog path. */
 export function writeCatalog(catalog: Catalog, gameKey: string): void {
   const parsed = catalogSchema.parse(catalog);

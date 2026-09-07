@@ -1,0 +1,618 @@
+{
+  "gameKey": "endfield",
+  "source": "EndFieldGameData@v0.3.0 (ownership-only; no cost data published)",
+  "characters": [
+    {
+      "id": "chr_0002_endminm",
+      "key": "endministrator-chr_0002_endminm",
+      "name": "Endministrator",
+      "rarity": 6,
+      "tag": "Physical",
+      "weaponType": "Guard",
+      "maxLevel": 80,
+      "ascension": [],
+      "talents": {
+        "keys": [],
+        "costs": []
+      },
+      "extra": {
+        "profession": "Guard",
+        "charTypeId": "Physical",
+        "weaponTypeId": 1,
+        "defaultWeaponId": "wpn_sword_0003",
+        "costsAvailable": false
+      }
+    },
+    {
+      "id": "chr_0003_endminf",
+      "key": "endministrator-chr_0003_endminf",
+      "name": "Endministrator",
+      "rarity": 6,
+      "tag": "Physical",
+      "weaponType": "Guard",
+      "maxLevel": 80,
+      "ascension": [],
+      "talents": {
+        "keys": [],
+        "costs": []
+      },
+      "extra": {
+        "profession": "Guard",
+        "charTypeId": "Physical",
+        "weaponTypeId": 1,
+        "defaultWeaponId": "wpn_sword_0003",
+        "costsAvailable": false
+      }
+    },
+    {
+      "id": "chr_0004_pelica",
+      "key": "perlica",
+      "name": "Perlica",
+      "rarity": 5,
+      "tag": "Electric",
+      "weaponType": "Caster",
+      "maxLevel": 80,
+      "ascension": [],
+      "talents": {
+        "keys": [],
+        "costs": []
+      },
+      "extra": {
+        "profession": "Caster",
+        "charTypeId": "Pulse",
+        "weaponTypeId": 2,
+        "defaultWeaponId": "wpn_funnel_0002",
+        "costsAvailable": false
+      }
+    },
+    {
+      "id": "chr_0005_chen",
+      "key": "chen-qianyu",
+      "name": "Chen Qianyu",
+      "rarity": 5,
+      "tag": "Physical",
+      "weaponType": "Guard",
+      "maxLevel": 80,
+      "ascension": [],
+      "talents": {
+        "keys": [],
+        "costs": []
+      },
+      "extra": {
+        "profession": "Guard",
+        "charTypeId": "Physical",
+        "weaponTypeId": 1,
+        "defaultWeaponId": "wpn_sword_0003",
+        "costsAvailable": false
+      }
+    },
+    {
+      "id": "chr_0006_wolfgd",
+      "key": "wulfgard",
+      "name": "Wulfgard",
+      "rarity": 5,
+      "tag": "Heat",
+      "weaponType": "Caster",
+      "maxLevel": 80,
+      "ascension": [],
+      "talents": {
+        "keys": [],
+        "costs": []
+      },
+      "extra": {
+        "profession": "Caster",
+        "charTypeId": "Fire",
+        "weaponTypeId": 6,
+        "defaultWeaponId": "wpn_pistol_0001",
+        "costsAvailable": false
+      }
+    },
+    {
+      "id": "chr_0007_ikut",
+      "key": "arclight",
+      "name": "Arclight",
+      "rarity": 5,
+      "tag": "Electric",
+      "weaponType": "Vanguard",
+      "maxLevel": 80,
+      "ascension": [],
+      "talents": {
+        "keys": [],
+        "costs": []
+      },
+      "extra": {
+        "profession": "Vanguard",
+        "charTypeId": "Pulse",
+        "weaponTypeId": 1,
+        "defaultWeaponId": "wpn_sword_0003",
+        "costsAvailable": false
+      }
+    },
+    {
+      "id": "chr_0009_azrila",
+      "key": "ember",
+      "name": "Ember",
+      "rarity": 6,
+      "tag": "Heat",
+      "weaponType": "Defender",
+      "maxLevel": 80,
+      "ascension": [],
+      "talents": {
+        "keys": [],
+        "costs": []
+      },
+      "extra": {
+        "profession": "Defender",
+        "charTypeId": "Fire",
+        "weaponTypeId": 3,
+        "defaultWeaponId": "wpn_claym_0010",
+        "costsAvailable": false
+      }
+    },
+    {
+      "id": "chr_0011_seraph",
+      "key": "xaihi",
+      "name": "Xaihi",
+      "rarity": 5,
+      "tag": "Cryo",
+      "weaponType": "Supporter",
+      "maxLevel": 80,
+      "ascension": [],
+      "talents": {
+        "keys": [],
+        "costs": []
+      },
+      "extra": {
+        "profession": "Supporter",
+        "charTypeId": "Cryst",
+        "weaponTypeId": 2,
+        "defaultWeaponId": "wpn_funnel_0002",
+        "costsAvailable": false
+      }
+    },
+    {
+      "id": "chr_0012_avywen",
+      "key": "avywenna",
+      "name": "Avywenna",
+      "rarity": 5,
+      "tag": "Electric",
+      "weaponType": "Striker",
+      "maxLevel": 80,
+      "ascension": [],
+      "talents": {
+        "keys": [],
+        "costs": []
+      },
+      "extra": {
+        "profession": "Striker",
+        "charTypeId": "Pulse",
+        "weaponTypeId": 5,
+        "defaultWeaponId": "wpn_lance_0009",
+        "costsAvailable": false
+      }
+    },
+    {
+      "id": "chr_0013_aglina",
+      "key": "gilberta",
+      "name": "Gilberta",
+      "rarity": 6,
+      "tag": "Nature",
+      "weaponType": "Supporter",
+      "maxLevel": 80,
+      "ascension": [],
+      "talents": {
+        "keys": [],
+        "costs": []
+      },
+      "extra": {
+        "profession": "Supporter",
+        "charTypeId": "Natural",
+        "weaponTypeId": 2,
+        "defaultWeaponId": "wpn_funnel_0002",
+        "costsAvailable": false
+      }
+    },
+    {
+      "id": "chr_0014_aurora",
+      "key": "snowshine",
+      "name": "Snowshine",
+      "rarity": 5,
+      "tag": "Cryo",
+      "weaponType": "Defender",
+      "maxLevel": 80,
+      "ascension": [],
+      "talents": {
+        "keys": [],
+        "costs": []
+      },
+      "extra": {
+        "profession": "Defender",
+        "charTypeId": "Cryst",
+        "weaponTypeId": 3,
+        "defaultWeaponId": "wpn_claym_0010",
+        "costsAvailable": false
+      }
+    },
+    {
+      "id": "chr_0015_lifeng",
+      "key": "lifeng",
+      "name": "Lifeng",
+      "rarity": 6,
+      "tag": "Physical",
+      "weaponType": "Guard",
+      "maxLevel": 80,
+      "ascension": [],
+      "talents": {
+        "keys": [],
+        "costs": []
+      },
+      "extra": {
+        "profession": "Guard",
+        "charTypeId": "Physical",
+        "weaponTypeId": 5,
+        "defaultWeaponId": "wpn_lance_0009",
+        "costsAvailable": false
+      }
+    },
+    {
+      "id": "chr_0016_laevat",
+      "key": "laevatain",
+      "name": "Laevatain",
+      "rarity": 6,
+      "tag": "Heat",
+      "weaponType": "Striker",
+      "maxLevel": 80,
+      "ascension": [],
+      "talents": {
+        "keys": [],
+        "costs": []
+      },
+      "extra": {
+        "profession": "Striker",
+        "charTypeId": "Fire",
+        "weaponTypeId": 1,
+        "defaultWeaponId": "wpn_sword_0003",
+        "costsAvailable": false
+      }
+    },
+    {
+      "id": "chr_0017_yvonne",
+      "key": "yvonne",
+      "name": "Yvonne",
+      "rarity": 6,
+      "tag": "Cryo",
+      "weaponType": "Striker",
+      "maxLevel": 80,
+      "ascension": [],
+      "talents": {
+        "keys": [],
+        "costs": []
+      },
+      "extra": {
+        "profession": "Striker",
+        "charTypeId": "Cryst",
+        "weaponTypeId": 6,
+        "defaultWeaponId": "wpn_pistol_0001",
+        "costsAvailable": false
+      }
+    },
+    {
+      "id": "chr_0018_dapan",
+      "key": "da-pan",
+      "name": "Da Pan",
+      "rarity": 5,
+      "tag": "Physical",
+      "weaponType": "Striker",
+      "maxLevel": 80,
+      "ascension": [],
+      "talents": {
+        "keys": [],
+        "costs": []
+      },
+      "extra": {
+        "profession": "Striker",
+        "charTypeId": "Physical",
+        "weaponTypeId": 3,
+        "defaultWeaponId": "wpn_claym_0010",
+        "costsAvailable": false
+      }
+    },
+    {
+      "id": "chr_0019_karin",
+      "key": "akekuri",
+      "name": "Akekuri",
+      "rarity": 4,
+      "tag": "Heat",
+      "weaponType": "Vanguard",
+      "maxLevel": 80,
+      "ascension": [],
+      "talents": {
+        "keys": [],
+        "costs": []
+      },
+      "extra": {
+        "profession": "Vanguard",
+        "charTypeId": "Fire",
+        "weaponTypeId": 1,
+        "defaultWeaponId": "wpn_sword_0003",
+        "costsAvailable": false
+      }
+    },
+    {
+      "id": "chr_0020_meurs",
+      "key": "catcher",
+      "name": "Catcher",
+      "rarity": 4,
+      "tag": "Physical",
+      "weaponType": "Defender",
+      "maxLevel": 80,
+      "ascension": [],
+      "talents": {
+        "keys": [],
+        "costs": []
+      },
+      "extra": {
+        "profession": "Defender",
+        "charTypeId": "Physical",
+        "weaponTypeId": 3,
+        "defaultWeaponId": "wpn_claym_0010",
+        "costsAvailable": false
+      }
+    },
+    {
+      "id": "chr_0021_whiten",
+      "key": "estella",
+      "name": "Estella",
+      "rarity": 4,
+      "tag": "Cryo",
+      "weaponType": "Guard",
+      "maxLevel": 80,
+      "ascension": [],
+      "talents": {
+        "keys": [],
+        "costs": []
+      },
+      "extra": {
+        "profession": "Guard",
+        "charTypeId": "Cryst",
+        "weaponTypeId": 5,
+        "defaultWeaponId": "wpn_lance_0009",
+        "costsAvailable": false
+      }
+    },
+    {
+      "id": "chr_0022_bounda",
+      "key": "fluorite",
+      "name": "Fluorite",
+      "rarity": 4,
+      "tag": "Nature",
+      "weaponType": "Caster",
+      "maxLevel": 80,
+      "ascension": [],
+      "talents": {
+        "keys": [],
+        "costs": []
+      },
+      "extra": {
+        "profession": "Caster",
+        "charTypeId": "Natural",
+        "weaponTypeId": 6,
+        "defaultWeaponId": "wpn_pistol_0001",
+        "costsAvailable": false
+      }
+    },
+    {
+      "id": "chr_0023_antal",
+      "key": "antal",
+      "name": "Antal",
+      "rarity": 4,
+      "tag": "Electric",
+      "weaponType": "Supporter",
+      "maxLevel": 80,
+      "ascension": [],
+      "talents": {
+        "keys": [],
+        "costs": []
+      },
+      "extra": {
+        "profession": "Supporter",
+        "charTypeId": "Pulse",
+        "weaponTypeId": 2,
+        "defaultWeaponId": "wpn_funnel_0002",
+        "costsAvailable": false
+      }
+    },
+    {
+      "id": "chr_0024_deepfin",
+      "key": "alesh",
+      "name": "Alesh",
+      "rarity": 5,
+      "tag": "Cryo",
+      "weaponType": "Vanguard",
+      "maxLevel": 80,
+      "ascension": [],
+      "talents": {
+        "keys": [],
+        "costs": []
+      },
+      "extra": {
+        "profession": "Vanguard",
+        "charTypeId": "Cryst",
+        "weaponTypeId": 1,
+        "defaultWeaponId": "wpn_sword_0003",
+        "costsAvailable": false
+      }
+    },
+    {
+      "id": "chr_0025_ardelia",
+      "key": "ardelia",
+      "name": "Ardelia",
+      "rarity": 6,
+      "tag": "Nature",
+      "weaponType": "Supporter",
+      "maxLevel": 80,
+      "ascension": [],
+      "talents": {
+        "keys": [],
+        "costs": []
+      },
+      "extra": {
+        "profession": "Supporter",
+        "charTypeId": "Natural",
+        "weaponTypeId": 2,
+        "defaultWeaponId": "wpn_funnel_0002",
+        "costsAvailable": false
+      }
+    },
+    {
+      "id": "chr_0026_lastrite",
+      "key": "last-rite",
+      "name": "Last Rite",
+      "rarity": 6,
+      "tag": "Cryo",
+      "weaponType": "Striker",
+      "maxLevel": 80,
+      "ascension": [],
+      "talents": {
+        "keys": [],
+        "costs": []
+      },
+      "extra": {
+        "profession": "Striker",
+        "charTypeId": "Cryst",
+        "weaponTypeId": 3,
+        "defaultWeaponId": "wpn_claym_0010",
+        "costsAvailable": false
+      }
+    },
+    {
+      "id": "chr_0027_tangtang",
+      "key": "tangtang",
+      "name": "Tangtang",
+      "rarity": 6,
+      "tag": "Cryo",
+      "weaponType": "Caster",
+      "maxLevel": 80,
+      "ascension": [],
+      "talents": {
+        "keys": [],
+        "costs": []
+      },
+      "extra": {
+        "profession": "Caster",
+        "charTypeId": "Cryst",
+        "weaponTypeId": 6,
+        "defaultWeaponId": "wpn_pistol_0001",
+        "costsAvailable": false
+      }
+    },
+    {
+      "id": "chr_0028_wulfa",
+      "key": "rossi",
+      "name": "Rossi",
+      "rarity": 6,
+      "tag": "Physical",
+      "weaponType": "Guard",
+      "maxLevel": 80,
+      "ascension": [],
+      "talents": {
+        "keys": [],
+        "costs": []
+      },
+      "extra": {
+        "profession": "Guard",
+        "charTypeId": "Physical",
+        "weaponTypeId": 1,
+        "defaultWeaponId": "wpn_sword_0003",
+        "costsAvailable": false
+      }
+    },
+    {
+      "id": "chr_0029_pograni",
+      "key": "pogranichnik",
+      "name": "Pogranichnik",
+      "rarity": 6,
+      "tag": "Physical",
+      "weaponType": "Vanguard",
+      "maxLevel": 80,
+      "ascension": [],
+      "talents": {
+        "keys": [],
+        "costs": []
+      },
+      "extra": {
+        "profession": "Vanguard",
+        "charTypeId": "Physical",
+        "weaponTypeId": 1,
+        "defaultWeaponId": "wpn_sword_0003",
+        "costsAvailable": false
+      }
+    },
+    {
+      "id": "chr_0030_zhuangfy",
+      "key": "zhuang-fangyi",
+      "name": "Zhuang Fangyi",
+      "rarity": 6,
+      "tag": "Electric",
+      "weaponType": "Striker",
+      "maxLevel": 80,
+      "ascension": [],
+      "talents": {
+        "keys": [],
+        "costs": []
+      },
+      "extra": {
+        "profession": "Striker",
+        "charTypeId": "Pulse",
+        "weaponTypeId": 2,
+        "defaultWeaponId": "wpn_funnel_0002",
+        "costsAvailable": false
+      }
+    },
+    {
+      "id": "chr_0031_mifu",
+      "key": "mifu",
+      "name": "Mifu",
+      "rarity": 6,
+      "tag": "Physical",
+      "weaponType": "Guard",
+      "maxLevel": 80,
+      "ascension": [],
+      "talents": {
+        "keys": [],
+        "costs": []
+      },
+      "extra": {
+        "profession": "Guard",
+        "charTypeId": "Physical",
+        "weaponTypeId": 3,
+        "defaultWeaponId": "wpn_claym_0010",
+        "costsAvailable": false
+      }
+    },
+    {
+      "id": "chr_9000_endmin",
+      "key": "endministrator-chr_9000_endmin",
+      "name": "Endministrator",
+      "rarity": 6,
+      "tag": "Physical",
+      "weaponType": "Guard",
+      "maxLevel": 80,
+      "ascension": [],
+      "talents": {
+        "keys": [],
+        "costs": []
+      },
+      "extra": {
+        "profession": "Guard",
+        "charTypeId": "Physical",
+        "weaponTypeId": 1,
+        "defaultWeaponId": "wpn_sword_0003",
+        "costsAvailable": false
+      }
+    }
+  ],
+  "weapons": [],
+  "gear": [],
+  "materials": []
+}
