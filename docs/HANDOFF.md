@@ -218,9 +218,12 @@ with `&&` only. Never trust `PIPESTATUS` after an intervening `echo`.
    (auth/instances, ownership + catalog builds, planning/generation + materials,
    admin payloads + audit + export, banners/events, signed Discord interactions).
    README and this doc refreshed. Add more cases here as routes grow.
-2. **Real deploy.** Nothing has been deployed to Vercel yet in this history;
-   do a preview deploy, point the GitHub Actions cron at it, register the
-   slash commands (`apps/server/src/discord/register.ts`).
+2. **Real deploy.** Nothing has been deployed to Vercel yet in this history.
+   The wiring is verified turnkey (bundle exports the named `handler` the
+   Vercel function imports; the handler serves `/api/*`, guards the cron, and
+   404s unknown api routes) — the only missing piece is your accounts and
+   secrets. Follow the runbook in **[docs/DEPLOY.md](DEPLOY.md)**: Neon +
+   Vercel + Discord + the GitHub cron, with the exact env vars and gotchas.
 3. **Per-game server hooks.** `apps/server/src/games/index.ts` is wired but
    empty; add e.g. Genshin resin projections as `dashboardExtras`.
 4. **Nice-to-haves the owner listed:** pull history + pity per banner, team

@@ -120,6 +120,8 @@ Every write is recorded in the audit log.
 
 ## Deploy to Vercel (free tier)
 
+**Full step-by-step runbook: [docs/DEPLOY.md](docs/DEPLOY.md).** The short version:
+
 1. **Database** — create a free Postgres (Neon or Supabase). Note both the
    **pooled** URL and the **direct** URL.
 2. **Import the repo** into Vercel (root directory = repo root). `vercel.json`
