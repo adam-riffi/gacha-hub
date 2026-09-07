@@ -152,9 +152,13 @@ export function InstancePage() {
         </div>
         <div className="row">
           {catalog && (
-            <Link className="btn sm" to={`/games/${id}/ownership`}>
-              Ownership ({(owned ?? []).filter((o) => o.kind === "character").length} chars)
-            </Link>
+            <>
+              <Link className="btn sm" to={`/games/${id}/ownership`}>
+                Ownership ({(owned ?? []).filter((o) => o.kind === "character").length} chars)
+              </Link>
+              <Link className="btn sm" to={`/games/${id}/equipment`}>Equipment</Link>
+              <Link className="btn sm" to={`/games/${id}/materials`}>Materials</Link>
+            </>
           )}
           <button
             className="btn danger sm"

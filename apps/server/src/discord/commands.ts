@@ -131,8 +131,19 @@ export async function handleCommand(
       return handleGoal(options, user.id);
     case "build":
       return handleBuild(options, user.id);
-    default:
+    default: {
+      // Per-game modules may contribute their own commands.
+      const { gameServerModules } = await import("../games/index.js");
+      for (const mod of Object.values(gameServerModules)) {
+        if (!mod.handleBotCommand || !mod.botCommands?.some((c) => c.name === name)) continue;
+        const instance = await prisma.gameInstance.findUnique({
+          where: { userId_gameKey: { userId: user.id, gameKey: mod.key } },
+        });
+        const reply = await mod.handleBotCommand(name, options, { userId: user.id, instance });
+        if (reply !== null) return reply;
+      }
       return "Unknown command.";
+    }
   }
 }
 

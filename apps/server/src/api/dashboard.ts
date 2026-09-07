@@ -2,6 +2,7 @@ import type { FastifyInstance } from "fastify";
 import { dashboardDto, getGame } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
 import { requireUser } from "../auth/plugin.js";
+import { getGameServerModule } from "../games/index.js";
 import { buildRegionContext, serializeTask } from "./tasks.js";
 
 /**
@@ -29,7 +30,11 @@ export async function registerDashboardRoutes(app: FastifyInstance) {
       byRef.set(t.refId, arr);
     }
 
-    const games = instances.map((gi) => {
+    const extras = await Promise.all(
+      instances.map((gi) => getGameServerModule(gi.gameKey)?.dashboardExtras?.(gi).catch(() => undefined)),
+    );
+
+    const games = instances.map((gi, i) => {
       const game = getGame(gi.gameKey);
       const currencyByKey = new Map((game?.currencies ?? []).map((c) => [c.key, c]));
       const dailies = (byRef.get(gi.id) ?? []).filter((t) => t.type === "recurring");
@@ -56,6 +61,7 @@ export async function registerDashboardRoutes(app: FastifyInstance) {
         }),
         dailies,
         nextReset: soonest ?? null,
+        extras: extras[i],
       };
     });
 

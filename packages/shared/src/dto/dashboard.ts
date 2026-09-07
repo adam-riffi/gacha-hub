@@ -20,6 +20,8 @@ export const dashboardGameDto = z.object({
   currencies: z.array(dashboardCurrencyDto),
   dailies: z.array(taskDto),
   nextReset: isoDateNullable,
+  /** Per-game extras from the game's server module (bespoke widgets). */
+  extras: z.unknown().optional(),
 });
 
 export const dashboardDto = z.object({
