@@ -14,5 +14,16 @@ Honkai: Star Rail
            database; fetched at import time, cached, rate-limited.
   Content: © HoYoverse / COGNOSPHERE.
 
-Zenless Zone Zero, Wuthering Waves, Arknights: Endfield
-  Sources are recorded here when their importers land.
+Wuthering Waves
+  Source:  Dimbreath/WutheringData (raw game tables + text maps); only the
+           needed ConfigDB/TextMap files are fetched at import time.
+  Content: © Kuro Games.
+
+Arknights: Endfield
+  Source:  3aKHP/EndFieldGameData release tables (MIT wrapper). Ownership-only:
+           the public tables carry no upgrade costs or weapon table.
+  Content: © Hypergryph / Gryphline.
+
+Zenless Zone Zero
+  Deferred — no source with material costs is available under any license
+  (see scripts/catalog/zzz.ts).
