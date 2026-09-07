@@ -93,6 +93,11 @@ export const hsr: GameDefinition = {
   ],
   docSchema: hsrDocSchema,
   emptyDoc: (): HsrDoc => ({ relics: {}, traces: {}, lightCone: {}, stats: {} }),
+  docVersion: 1,
+  seedDoc: (c) => ({
+    ...((HSR_PATHS as readonly string[]).includes(c.weaponType ?? "") ? { path: c.weaponType } : {}),
+    ...((HSR_ELEMENTS as readonly string[]).includes(c.tag ?? "") ? { element: c.tag } : {}),
+  }),
   loadCatalog: async () =>
     (await import("./catalog.js")).default as Catalog,
 };

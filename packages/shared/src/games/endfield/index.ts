@@ -67,6 +67,11 @@ export const endfield: GameDefinition = {
   defaultTasks: [{ key: "dailies", title: "Daily Tasks", cadence: "daily" }],
   docSchema: endfieldDocSchema,
   emptyDoc: (): EndfieldDoc => ({ gear: {}, skills: {}, weapon: {}, stats: {} }),
+  docVersion: 1,
+  seedDoc: (c) => ({
+    ...((ENDFIELD_CLASSES as readonly string[]).includes(c.weaponType ?? "") ? { class: c.weaponType } : {}),
+    ...((ENDFIELD_ELEMENTS as readonly string[]).includes(c.tag ?? "") ? { element: c.tag } : {}),
+  }),
   // Ownership-only catalog: the public data has no upgrade costs.
   loadCatalog: async () =>
     (await import("./catalog.js")).default as Catalog,

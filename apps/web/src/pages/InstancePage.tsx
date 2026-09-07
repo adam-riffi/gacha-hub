@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getGame } from "@gacha/shared";
+import { getGame, type OwnershipDto } from "@gacha/shared";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
+import { useCatalog } from "../lib/catalog";
 import type { InstanceDetail, ReminderRule } from "../lib/types";
 
 function ReminderControl({ instanceId }: { instanceId: string }) {
@@ -24,7 +25,7 @@ function ReminderControl({ instanceId }: { instanceId: string }) {
   const enabled = data?.enabled ?? false;
   const lead = data?.config?.leadMinutes ?? 60;
   return (
-    <div className="row small" style={{ marginTop: 8 }}>
+    <div className="row small">
       <label className="row" style={{ margin: 0, gap: 6 }}>
         <input
           type="checkbox"
@@ -56,12 +57,19 @@ export function InstancePage() {
   const nav = useNavigate();
   const qc = useQueryClient();
   const toast = useToast();
-  const [newChar, setNewChar] = useState("");
+  const [newName, setNewName] = useState("");
+  const [pick, setPick] = useState("");
 
   const { data, isLoading } = useQuery({
     queryKey: ["instance", id],
     queryFn: () => api.get<InstanceDetail>(`/api/instances/${id}`),
     enabled: Boolean(id),
+  });
+  const { catalog, index } = useCatalog(data?.gameKey);
+  const { data: owned } = useQuery({
+    queryKey: ["ownership", id],
+    queryFn: () => api.get<OwnershipDto[]>(`/api/instances/${id}/ownership`),
+    enabled: Boolean(id) && Boolean(catalog),
   });
 
   const invalidate = () => {
@@ -79,14 +87,14 @@ export function InstancePage() {
   });
 
   const addCharacter = useMutation({
-    mutationFn: () =>
-      api.post<{ id: string }>(`/api/instances/${id}/characters`, {
-        name: newChar || "New Character",
-      }),
+    mutationFn: (body: { catalogId?: string; name?: string }) =>
+      api.post<{ id: string }>(`/api/instances/${id}/characters`, body),
     onSuccess: (r) => {
       invalidate();
+      qc.invalidateQueries({ queryKey: ["ownership", id] });
       nav(`/characters/${r.id}`);
     },
+    onError: () => toast("Could not create build", "err"),
   });
 
   const setCurrency = useMutation({
@@ -105,12 +113,24 @@ export function InstancePage() {
     },
   });
 
+  // Owned catalog characters that don't have a build yet.
+  const buildable = useMemo(() => {
+    if (!index || !owned || !data) return [];
+    const built = new Set(data.characters.map((c) => c.catalogId));
+    return owned
+      .filter((o) => o.kind === "character" && !built.has(o.catalogId))
+      .map((o) => index.characters.get(o.catalogId))
+      .filter((c): c is NonNullable<typeof c> => Boolean(c))
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [index, owned, data]);
+
   if (isLoading || !data) return <div className="muted">Loading…</div>;
 
   const game = getGame(data.gameKey);
-  const currencyLabel = (key: string) =>
-    game?.currencies.find((c) => c.key === key)?.label ?? key;
+  const currencyLabel = (key: string) => game?.currencies.find((c) => c.key === key)?.label ?? key;
   const currencyCap = (key: string) => game?.currencies.find((c) => c.key === key)?.cap;
+  const catalogName = (catalogId: string | null) =>
+    catalogId && index ? index.characters.get(catalogId)?.name : undefined;
 
   return (
     <>
@@ -130,14 +150,21 @@ export function InstancePage() {
             </select>
           )}
         </div>
-        <button
-          className="btn danger sm"
-          onClick={() => {
-            if (confirm("Remove this game and all its data?")) uninstall.mutate();
-          }}
-        >
-          Uninstall
-        </button>
+        <div className="row">
+          {catalog && (
+            <Link className="btn sm" to={`/games/${id}/ownership`}>
+              Ownership ({(owned ?? []).filter((o) => o.kind === "character").length} chars)
+            </Link>
+          )}
+          <button
+            className="btn danger sm"
+            onClick={() => {
+              if (confirm("Remove this game and all its data?")) uninstall.mutate();
+            }}
+          >
+            Uninstall
+          </button>
+        </div>
       </div>
 
       <div className="card" style={{ marginBottom: 18 }}>
@@ -162,39 +189,59 @@ export function InstancePage() {
                     if (value !== c.value) setCurrency.mutate({ key: c.key, value });
                   }}
                 />
-                {currencyCap(c.key) ? (
-                  <span className="small muted">/ {currencyCap(c.key)}</span>
-                ) : null}
+                {currencyCap(c.key) ? <span className="small muted">/ {currencyCap(c.key)}</span> : null}
               </div>
             </div>
           ))}
         </div>
 
         <div className="card">
-          <h3>Characters</h3>
+          <h3>Builds</h3>
           <div className="stack" style={{ gap: 6 }}>
-            {data.characters.length === 0 && <p className="small">No characters yet.</p>}
+            {data.characters.length === 0 && <p className="small">No builds yet.</p>}
             {data.characters.map((ch) => (
               <Link key={ch.id} className="task-row" to={`/characters/${ch.id}`}>
-                <span>{ch.name}</span>
+                <span>
+                  {ch.name}
+                  {catalogName(ch.catalogId) && catalogName(ch.catalogId) !== ch.name ? (
+                    <span className="muted small"> · {catalogName(ch.catalogId)}</span>
+                  ) : null}
+                </span>
                 <span className="muted small">edit →</span>
               </Link>
             ))}
           </div>
-          <div className="row" style={{ marginTop: 10 }}>
-            <input
-              placeholder="Character name"
-              value={newChar}
-              onChange={(e) => setNewChar(e.target.value)}
-            />
-            <button
-              className="btn sm"
-              disabled={addCharacter.isPending}
-              onClick={() => addCharacter.mutate()}
-            >
-              + Add
-            </button>
-          </div>
+
+          {catalog ? (
+            <div className="row" style={{ marginTop: 10 }}>
+              <select value={pick} onChange={(e) => setPick(e.target.value)} style={{ flex: 1 }}>
+                <option value="">
+                  {buildable.length ? "Pick an owned character…" : "No owned characters without a build"}
+                </option>
+                {buildable.map((c) => (
+                  <option key={c.id} value={c.id}>{c.name}</option>
+                ))}
+              </select>
+              <button
+                className="btn sm"
+                disabled={!pick || addCharacter.isPending}
+                onClick={() => addCharacter.mutate({ catalogId: pick })}
+              >
+                + Build
+              </button>
+            </div>
+          ) : (
+            <div className="row" style={{ marginTop: 10 }}>
+              <input placeholder="Character name" value={newName} onChange={(e) => setNewName(e.target.value)} />
+              <button
+                className="btn sm"
+                disabled={!newName || addCharacter.isPending}
+                onClick={() => addCharacter.mutate({ name: newName })}
+              >
+                + Add
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </>
