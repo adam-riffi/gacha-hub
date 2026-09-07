@@ -94,5 +94,5 @@ export const hsr: GameDefinition = {
   docSchema: hsrDocSchema,
   emptyDoc: (): HsrDoc => ({ relics: {}, traces: {}, lightCone: {}, stats: {} }),
   loadCatalog: async () =>
-    (await import("./catalog.json")).default as unknown as Catalog,
+    (await import("./catalog.js")).default as Catalog,
 };

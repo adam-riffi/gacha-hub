@@ -69,5 +69,5 @@ export const endfield: GameDefinition = {
   emptyDoc: (): EndfieldDoc => ({ gear: {}, skills: {}, weapon: {}, stats: {} }),
   // Ownership-only catalog: the public data has no upgrade costs.
   loadCatalog: async () =>
-    (await import("./catalog.json")).default as unknown as Catalog,
+    (await import("./catalog.js")).default as Catalog,
 };
