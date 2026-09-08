@@ -12,7 +12,6 @@ import {
   type PlanPreviewDto,
   type PlanRequestInput,
   type TaskOrigin,
-  type TaskOriginSource,
 } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
 import { farmableToday, gameWeekday } from "../lib/availability.js";
@@ -95,10 +94,11 @@ export async function registerPlanningRoutes(app: FastifyInstance) {
   );
 
   /**
-   * Turn the plan into farming goals: one goal task per material per profile,
-   * whose target is the RAW total across contributing sources (inventory is
-   * subtracted at read time, once, via the profile's stock). Re-planning the
-   * same source replaces its contribution, so generation is idempotent.
+   * Turn the plan into a farming goal TREE: one parent goal per character or
+   * weapon ("Farm Venti") with a material subtask under it for each required
+   * material. Targets are the RAW total needed (inventory is subtracted once,
+   * at read time, from the profile's stock). Re-planning the same entry updates
+   * its subtasks in place and drops ones no longer needed — idempotent.
    */
   app.post<{ Params: { id: string } }>(
     "/api/instances/:id/plans/generate",
@@ -113,32 +113,50 @@ export async function registerPlanningRoutes(app: FastifyInstance) {
       if (!result.ok) return reply.code(result.status).send({ error: result.code });
       const { preview } = result;
 
+      const cat = await getCatalog(game);
+      const entry =
+        body.kind === "character" ? cat?.index.characters.get(body.catalogId) : cat?.index.weapons.get(body.catalogId);
+      const entryName = entry?.name ?? body.catalogId;
       const goal = body.kind === "character" ? { level: body.level, talents: body.talents } : { level: body.level };
+      const parentOrigin = { kind: body.kind, catalogId: body.catalogId, goal } as PrismaJson;
+
       let created = 0;
       let updated = 0;
-      const touched: string[] = [];
 
-      for (const need of preview.requirements) {
-        const source: TaskOriginSource = { kind: body.kind, catalogId: body.catalogId, goal, qty: need.qty };
-        const existing = await prisma.task.findFirst({
-          where: { userId, scope: "game", refId: gi.id, type: "goal", materialId: need.materialId },
+      // Find or create the parent goal for this entry (matched by origin).
+      const parents = await prisma.task.findMany({
+        where: { userId, scope: "game", refId: gi.id, type: "goal", parentId: null, materialId: null },
+      });
+      const existingParent = parents.find((p) => {
+        const o = (p.origin ?? {}) as Partial<TaskOrigin>;
+        return o.kind === body.kind && o.catalogId === body.catalogId;
+      });
+      let parent;
+      if (existingParent) {
+        parent = await prisma.task.update({
+          where: { id: existingParent.id },
+          data: { title: `Farm ${entryName}`, origin: parentOrigin },
         });
-        if (existing) {
-          const origin = (existing.origin ?? {}) as Partial<TaskOrigin>;
-          const sources = (origin.sources ?? []).filter(
-            (s) => !(s.kind === source.kind && s.catalogId === source.catalogId),
-          );
-          sources.push(source);
-          const target = sources.reduce((sum, s) => sum + (s.qty ?? 0), 0);
-          const row = await prisma.task.update({
-            where: { id: existing.id },
-            data: { target, origin: { ...source, sources } as PrismaJson },
-          });
-          touched.push(row.id);
+        updated += 1;
+      } else {
+        parent = await prisma.task.create({
+          data: { userId, scope: "game", refId: gi.id, type: "goal", title: `Farm ${entryName}`, origin: parentOrigin },
+        });
+        created += 1;
+      }
+
+      // Sync one material subtask per required material under the parent.
+      const existingChildren = await prisma.task.findMany({ where: { parentId: parent.id } });
+      const byMaterial = new Map(existingChildren.map((c) => [c.materialId, c]));
+      const wanted = new Set(preview.requirements.map((r) => r.materialId));
+      for (const need of preview.requirements) {
+        const name = preview.materials[need.materialId]?.name ?? need.materialId;
+        const child = byMaterial.get(need.materialId);
+        if (child) {
+          await prisma.task.update({ where: { id: child.id }, data: { target: need.qty, title: `Farm ${name}` } });
           updated += 1;
         } else {
-          const name = preview.materials[need.materialId]?.name ?? need.materialId;
-          const row = await prisma.task.create({
+          await prisma.task.create({
             data: {
               userId,
               scope: "game",
@@ -146,17 +164,20 @@ export async function registerPlanningRoutes(app: FastifyInstance) {
               type: "goal",
               title: `Farm ${name}`,
               target: need.qty,
-              progress: 0,
               materialId: need.materialId,
-              origin: { ...source, sources: [source] } as PrismaJson,
+              parentId: parent.id,
             },
           });
-          touched.push(row.id);
           created += 1;
         }
       }
+      const stale = existingChildren.filter((c) => c.materialId && !wanted.has(c.materialId)).map((c) => c.id);
+      if (stale.length) await prisma.task.deleteMany({ where: { id: { in: stale } } });
 
-      const rows = await prisma.task.findMany({ where: { id: { in: touched } }, orderBy: { createdAt: "asc" } });
+      const rows = await prisma.task.findMany({
+        where: { OR: [{ id: parent.id }, { parentId: parent.id }] },
+        orderBy: { createdAt: "asc" },
+      });
       const ctx = await buildRegionContext(rows);
       const now = new Date();
       return planGenerateResultDto.parse({ created, updated, tasks: rows.map((t) => serializeTask(t, ctx, now)) });

@@ -14,6 +14,11 @@ export type TaskType = z.infer<typeof taskTypeSchema>;
 export const taskScopeSchema = z.enum(["game", "character"]);
 export type TaskScope = z.infer<typeof taskScopeSchema>;
 
+export const taskPrioritySchema = z.enum(["low", "normal", "high"]);
+export type TaskPriority = z.infer<typeof taskPrioritySchema>;
+/** Sort weight: high first, then normal, then low. */
+export const PRIORITY_RANK: Record<TaskPriority, number> = { high: 0, normal: 1, low: 2 };
+
 export const checklistItemSchema = z.object({
   label: z.string().min(1).max(200),
   done: z.boolean().default(false),

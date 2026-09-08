@@ -77,7 +77,8 @@ export async function registerDashboardRoutes(app: FastifyInstance) {
 
     return dashboardDto.parse({
       games,
-      goals: enriched.filter((t) => t.type === "goal"),
+      // Top-level goals only — material subtasks live under their parent.
+      goals: enriched.filter((t) => t.type === "goal" && !t.parentId),
       timeline: { banners, events },
     });
   });

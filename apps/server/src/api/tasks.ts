@@ -144,6 +144,8 @@ export async function registerTaskRoutes(app: FastifyInstance) {
         reminder: (body.reminder ?? undefined) as PrismaJson | undefined,
         materialId: body.materialId ?? null,
         origin: (body.origin ?? undefined) as PrismaJson | undefined,
+        ...(body.priority ? { priority: body.priority } : {}),
+        parentId: body.parentId ?? null,
       },
     });
     const ctx = await buildRegionContext([created]);
@@ -168,6 +170,7 @@ export async function registerTaskRoutes(app: FastifyInstance) {
           ...(body.reminder !== undefined ? { reminder: body.reminder as PrismaJson } : {}),
           ...(body.materialId !== undefined ? { materialId: body.materialId } : {}),
           ...(body.origin !== undefined ? { origin: body.origin as PrismaJson } : {}),
+          ...(body.priority !== undefined ? { priority: body.priority } : {}),
         },
       });
       const ctx = await buildRegionContext([updated]);
