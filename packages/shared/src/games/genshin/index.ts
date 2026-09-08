@@ -83,7 +83,11 @@ export const genshin: GameDefinition = {
   ],
   docSchema: genshinDocSchema,
   emptyDoc: (): GenshinDoc => ({ artifacts: {}, talents: {}, weapon: {}, stats: {} }),
+  docVersion: 1,
+  // Guarded: the catalog's tag isn't always a playable element (e.g. Traveler).
+  seedDoc: (c) =>
+    (GENSHIN_ELEMENTS as readonly string[]).includes(c.tag ?? "") ? { element: c.tag } : {},
   // Lazy: the catalog is a separate chunk, loaded only when a screen needs it.
   loadCatalog: async () =>
-    (await import("./catalog.json")).default as unknown as Catalog,
+    (await import("./catalog.js")).default as Catalog,
 };

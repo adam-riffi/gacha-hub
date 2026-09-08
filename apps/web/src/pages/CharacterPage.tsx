@@ -5,6 +5,7 @@ import { getGame } from "@gacha/shared";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
 import { GameSheet, hasSheet } from "../render";
+import { TaskGeneratorPanel } from "../components/TaskGeneratorPanel";
 import type { CharacterDetail } from "../lib/types";
 
 export function CharacterPage() {
@@ -94,6 +95,15 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
         />
       ) : (
         <div className="card empty">No sheet is registered for game "{data.gameKey}".</div>
+      )}
+
+      {data.catalogId && (
+        <TaskGeneratorPanel
+          instanceId={data.gameInstanceId}
+          gameKey={data.gameKey}
+          catalogId={data.catalogId}
+          doc={state.doc}
+        />
       )}
     </>
   );

@@ -34,8 +34,10 @@ export const catalogCharacterSchema = z.object({
   talents: z.object({
     /** Talent keys in the game's build doc (e.g. normal/skill/burst). */
     keys: z.array(z.string()),
-    /** Cost table for leveling ONE talent; multiply per talent. */
+    /** Default cost table for leveling ONE talent (shared across keys). */
     costs: z.array(costStepSchema),
+    /** Per-talent tables when they differ (HSR: Basic ATK is cheaper). */
+    costsByKey: z.record(z.array(costStepSchema)).optional(),
   }),
   extra: z.record(z.unknown()).optional(),
 });

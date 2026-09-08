@@ -18,5 +18,9 @@ jobs:
       - run: npm run prisma:generate
       - run: npm run lint --if-present
       - run: npm run typecheck
+      # `npm test` provisions a throwaway SQLite DB (regenerating the Prisma
+      # client for sqlite) via the server's pretest hook, then runs vitest.
       - run: npm test
+      # Restore the Postgres client for the production build.
+      - run: npm run prisma:generate
       - run: npm run build

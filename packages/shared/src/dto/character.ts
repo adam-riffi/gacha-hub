@@ -28,9 +28,13 @@ export const characterSummaryDto = characterDto.pick({
 });
 export type CharacterSummaryDto = z.infer<typeof characterSummaryDto>;
 
+/**
+ * Games with a catalog require `catalogId` (name defaults to the catalog
+ * name); games without one require `name`. The server enforces which.
+ */
 export const createCharacterInput = z.object({
   catalogId: catalogIdSchema.optional(),
-  name: z.string().min(1).max(120),
+  name: z.string().min(1).max(120).optional(),
   portraitUrl: z.string().max(2048).nullable().optional(),
   doc: jsonValue.optional(),
 });

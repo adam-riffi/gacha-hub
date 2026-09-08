@@ -22,15 +22,29 @@ async function assertRefOwnership(userId: string, scope: string, refId: string) 
   return false;
 }
 
-/** Batch-resolve reset regions for a set of tasks (by profile). */
+/** Stock lookup key for a material task: profile + material. */
+const stockKey = (instanceId: string, materialId: string) => `${instanceId}:${materialId}`;
+
+/**
+ * Batch-resolve reset regions (recurring tasks) and material stock (material
+ * goals) for a set of tasks. Inventory is the source of truth for farming
+ * goals: a material task's progress is derived from the profile's stock.
+ */
 export async function buildRegionContext(tasks: Task[]) {
   const characterIds = new Set<string>();
   const instanceIds = new Set<string>();
+  const stockInstanceIds = new Set<string>();
   for (const t of tasks) {
+    if (t.materialId && t.scope === "game") stockInstanceIds.add(t.refId);
     if (t.type !== "recurring") continue;
     if (t.scope === "character") characterIds.add(t.refId);
     else if (t.scope === "game") instanceIds.add(t.refId);
   }
+
+  const stockRows = stockInstanceIds.size
+    ? await prisma.materialStock.findMany({ where: { gameInstanceId: { in: [...stockInstanceIds] } } })
+    : [];
+  const stock = new Map(stockRows.map((r) => [stockKey(r.gameInstanceId, r.materialId), r.qty]));
 
   const characters = characterIds.size
     ? await prisma.character.findMany({
@@ -50,7 +64,7 @@ export async function buildRegionContext(tasks: Task[]) {
     instanceRegion.set(gi.id, game ? regionForInstance(game, gi) : DEFAULT_REGION);
   }
 
-  return { charToInstance, instanceRegion };
+  return { charToInstance, instanceRegion, stock };
 }
 
 type RegionCtx = Awaited<ReturnType<typeof buildRegionContext>>;
@@ -61,7 +75,11 @@ function regionForTask(task: Task, ctx: RegionCtx): RegionReset {
   return (instanceId && ctx.instanceRegion.get(instanceId)) || DEFAULT_REGION;
 }
 
-/** Serialize a task through the shared DTO (adds cycle state for recurring). */
+/**
+ * Serialize a task through the shared DTO: adds cycle state for recurring
+ * tasks, and reports a material goal's progress as its stock (capped at the
+ * target) so it completes the moment the inventory covers the need.
+ */
 export function serializeTask(task: Task, ctx: RegionCtx, now: Date) {
   const extra =
     task.type === "recurring"
@@ -74,7 +92,11 @@ export function serializeTask(task: Task, ctx: RegionCtx, now: Date) {
           };
         })()
       : {};
-  return taskDto.parse({ ...task, ...extra });
+  const progress =
+    task.materialId && task.scope === "game"
+      ? Math.min(task.target ?? Infinity, ctx.stock.get(stockKey(task.refId, task.materialId)) ?? 0)
+      : task.progress;
+  return taskDto.parse({ ...task, ...extra, progress });
 }
 
 async function ownedTask(userId: string, id: string) {
@@ -169,7 +191,8 @@ export async function registerTaskRoutes(app: FastifyInstance) {
     },
   );
 
-  // Update a farming goal's progress.
+  // Update a goal's progress. For material goals the progress IS the stock,
+  // so "I now have 120 books" is written to the profile's inventory.
   app.post<{ Params: { id: string } }>(
     "/api/tasks/:id/progress",
     { preHandler: requireUser },
@@ -177,7 +200,15 @@ export async function registerTaskRoutes(app: FastifyInstance) {
       const task = await ownedTask(req.user!.id, req.params.id);
       if (!task) return reply.code(404).send({ error: "not_found" });
       const { progress } = taskProgressInput.parse(req.body);
-      await prisma.task.update({ where: { id: task.id }, data: { progress } });
+      if (task.materialId && task.scope === "game") {
+        await prisma.materialStock.upsert({
+          where: { gameInstanceId_materialId: { gameInstanceId: task.refId, materialId: task.materialId } },
+          create: { gameInstanceId: task.refId, materialId: task.materialId, qty: progress },
+          update: { qty: progress },
+        });
+      } else {
+        await prisma.task.update({ where: { id: task.id }, data: { progress } });
+      }
       return { ok: true };
     },
   );

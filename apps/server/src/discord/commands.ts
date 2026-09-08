@@ -3,11 +3,14 @@ import { getGame, type GameDefinition, type TaskCadence } from "@gacha/shared";
 import { config } from "../config.js";
 import { prisma } from "../lib/prisma.js";
 import { isDoneThisCycle } from "../lib/resets.js";
-import { regionForInstance } from "../api/util.js";
+import { farmableToday, gameWeekday } from "../lib/availability.js";
+import { formatRemaining, listBanners, listEvents } from "../lib/timeline.js";
+import { getCatalog, regionForInstance } from "../api/util.js";
 
 /* Slash command definitions as plain Discord API JSON (no discord.js).
- * Option types: 3 = STRING, 10 = NUMBER. */
+ * Option types: 3 = STRING, 5 = BOOLEAN, 10 = NUMBER. */
 const STRING = 3;
+const BOOLEAN = 5;
 const NUMBER = 10;
 const opt = (name: string, description: string, type: number, required = true) => ({
   name,
@@ -51,10 +54,34 @@ export const commands = [
     description: "Show a character's build summary",
     options: [opt("game", "Game name", STRING), opt("character", "Character name", STRING)],
   },
+  {
+    name: "banner",
+    description: "Current and upcoming banners for your games",
+    options: [opt("game", "Filter to one game", STRING, false)],
+  },
+  {
+    name: "events",
+    description: "Current and upcoming events for your games",
+    options: [opt("game", "Filter to one game", STRING, false)],
+  },
+  {
+    name: "farm",
+    description: "Materials you still need that are farmable today",
+    options: [opt("game", "Filter to one game", STRING, false)],
+  },
+  {
+    name: "own",
+    description: "Mark a character as owned (or not)",
+    options: [
+      opt("game", "Game name", STRING),
+      opt("character", "Character name", STRING),
+      opt("owned", "Owned? (default: yes)", BOOLEAN, false),
+    ],
+  },
 ];
 
 /** Normalized options from an interaction payload. */
-export type CommandOptions = Record<string, string | number | undefined>;
+export type CommandOptions = Record<string, string | number | boolean | undefined>;
 
 type InstanceWithData = GameInstance & { currencies: { key: string; value: number }[] };
 
@@ -131,8 +158,27 @@ export async function handleCommand(
       return handleGoal(options, user.id);
     case "build":
       return handleBuild(options, user.id);
-    default:
+    case "banner":
+      return handleTimeline(options, user.id, "banners");
+    case "events":
+      return handleTimeline(options, user.id, "events");
+    case "farm":
+      return handleFarm(options, user.id);
+    case "own":
+      return handleOwn(options, user.id);
+    default: {
+      // Per-game modules may contribute their own commands.
+      const { gameServerModules } = await import("../games/index.js");
+      for (const mod of Object.values(gameServerModules)) {
+        if (!mod.handleBotCommand || !mod.botCommands?.some((c) => c.name === name)) continue;
+        const instance = await prisma.gameInstance.findUnique({
+          where: { userId_gameKey: { userId: user.id, gameKey: mod.key } },
+        });
+        const reply = await mod.handleBotCommand(name, options, { userId: user.id, instance });
+        if (reply !== null) return reply;
+      }
       return "Unknown command.";
+    }
   }
 }
 
@@ -231,4 +277,96 @@ async function handleBuild(o: CommandOptions, userId: string) {
   const character = candidates.find((c) => c.name.toLowerCase().includes(lc)) ?? null;
   if (!character) return `No character matching "${charName}".`;
   return `**${character.name}** — ${found.game.name}\n${summarizeDoc(character.doc)}`.slice(0, 1900);
+}
+
+/** The user's installed games, optionally narrowed by a name filter. */
+async function gamesFor(userId: string, filter: string) {
+  const out: { gi: InstanceWithData; game: GameDefinition }[] = [];
+  for (const gi of await allInstances(userId)) {
+    const game = getGame(gi.gameKey);
+    if (!game) continue;
+    if (filter && !game.name.toLowerCase().includes(filter.toLowerCase()) && game.key !== filter.toLowerCase()) continue;
+    out.push({ gi, game });
+  }
+  return out;
+}
+
+const STATUS_ICON = { active: "🟢", upcoming: "🕒", ended: "⚫" } as const;
+
+async function handleTimeline(o: CommandOptions, userId: string, kind: "banners" | "events") {
+  const games = await gamesFor(userId, str(o, "game"));
+  if (games.length === 0) return "No games found.";
+  const now = new Date();
+  const lines: string[] = [];
+  for (const { game } of games) {
+    const items = kind === "banners" ? await listBanners([game.key], "current", now) : await listEvents([game.key], "current", now);
+    if (items.length === 0) continue;
+    lines.push(`__**${game.name}**__`);
+    const cat = kind === "banners" ? await getCatalog(game) : null;
+    for (const it of items) {
+      const when = it.status === "upcoming" ? `starts in ${formatRemaining(it.startsAt, now)}` : `ends in ${formatRemaining(it.endsAt, now)}`;
+      let line = `${STATUS_ICON[it.status]} **${it.name}** — ${when}`;
+      if ("featured" in it && it.featured.length) {
+        const names = it.featured.map((f) =>
+          (f.kind === "character" ? cat?.index.characters.get(f.catalogId)?.name : cat?.index.weapons.get(f.catalogId)?.name) ?? f.catalogId,
+        );
+        line += `\n   featured: ${names.join(", ")}`;
+      }
+      lines.push(line);
+    }
+  }
+  return lines.length ? lines.join("\n").slice(0, 1900) : `No current or upcoming ${kind}.`;
+}
+
+/** Rotating materials you're short on that are farmable today (per region). */
+async function handleFarm(o: CommandOptions, userId: string) {
+  const games = await gamesFor(userId, str(o, "game"));
+  if (games.length === 0) return "No games found.";
+  const lines: string[] = [];
+  for (const { gi, game } of games) {
+    const cat = await getCatalog(game);
+    if (!cat) continue;
+    const [tasks, stock] = await Promise.all([
+      prisma.task.findMany({ where: { userId, scope: "game", refId: gi.id, type: "goal", materialId: { not: null } } }),
+      prisma.materialStock.findMany({ where: { gameInstanceId: gi.id } }),
+    ]);
+    const have = new Map(stock.map((s) => [s.materialId, s.qty]));
+    const need = new Map<string, number>();
+    for (const t of tasks) need.set(t.materialId!, (need.get(t.materialId!) ?? 0) + Math.max(0, t.target ?? 0));
+    const weekday = gameWeekday(regionForInstance(game, gi));
+    const today: string[] = [];
+    let missingRotating = 0;
+    for (const [id, n] of need) {
+      const missing = n - (have.get(id) ?? 0);
+      const m = cat.index.materials.get(id);
+      if (missing <= 0 || !m?.availability?.length) continue;
+      missingRotating += 1;
+      if (farmableToday(m.availability, weekday)) today.push(`${m.name} ×${missing}`);
+    }
+    if (today.length) lines.push(`__**${game.name}**__ today: ${today.join(", ")}`);
+    else if (missingRotating) lines.push(`__**${game.name}**__: nothing you're short on rotates in today`);
+  }
+  return lines.length ? lines.join("\n").slice(0, 1900) : "No rotating materials needed — plan something from a character screen first.";
+}
+
+async function handleOwn(o: CommandOptions, userId: string) {
+  const name = str(o, "game");
+  const charName = str(o, "character");
+  const owned = typeof o.owned === "boolean" ? o.owned : true;
+  const found = resolveInstance(await allInstances(userId), name);
+  if (!found) return `No game matching "${name}".`;
+  const cat = await getCatalog(found.game);
+  if (!cat) return `${found.game.name} has no character catalog yet.`;
+  const lc = charName.toLowerCase();
+  const entry =
+    cat.catalog.characters.find((c) => c.name.toLowerCase() === lc) ??
+    cat.catalog.characters.find((c) => c.name.toLowerCase().includes(lc));
+  if (!entry) return `No character matching "${charName}" in ${found.game.name}.`;
+  const where = { gameInstanceId_kind_catalogId: { gameInstanceId: found.gi.id, kind: "character", catalogId: entry.id } };
+  if (owned) {
+    await prisma.ownership.upsert({ where, create: { gameInstanceId: found.gi.id, kind: "character", catalogId: entry.id }, update: {} });
+    return `✅ ${found.game.name}: you now own **${entry.name}**.`;
+  }
+  await prisma.ownership.deleteMany({ where: { gameInstanceId: found.gi.id, kind: "character", catalogId: entry.id } });
+  return `➖ ${found.game.name}: **${entry.name}** marked as not owned.`;
 }

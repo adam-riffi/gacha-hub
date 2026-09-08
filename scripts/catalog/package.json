@@ -4,12 +4,18 @@
   "type": "module",
   "description": "Isolated importer toolchain. NOT an npm workspace on purpose: the upstream datasets are huge (genshin-db alone is ~185 MB), so they never enter the main install that CI and Vercel run. `npm install` here, then run an importer.",
   "scripts": {
-    "genshin": "tsx genshin.ts"
+    "genshin": "tsx genshin.ts",
+    "hsr": "tsx hsr.ts",
+    "wuwa": "tsx wuwa.ts",
+    "endfield": "tsx endfield.ts",
+    "zzz": "tsx zzz.ts"
   },
   "dependencies": {
+    "adm-zip": "^0.5.16",
     "genshin-db": "5.2.13"
   },
   "devDependencies": {
+    "@types/adm-zip": "^0.5.7",
     "tsx": "^4.19.2"
   }
 }
