@@ -4,6 +4,7 @@ import {
   checklistItemSchema,
   reminderConfigSchema,
   taskCadenceSchema,
+  taskPrioritySchema,
   taskScopeSchema,
   taskTypeSchema,
 } from "../common.js";
@@ -41,6 +42,8 @@ export const taskDto = z.object({
   reminder: jsonValue.nullable(),
   materialId: z.string().nullable(),
   origin: jsonValue.nullable(),
+  priority: taskPrioritySchema,
+  parentId: idSchema.nullable(),
   lastCompletedAt: isoDateNullable,
   /** Recurring tasks only. */
   doneThisCycle: z.boolean().optional(),
@@ -61,6 +64,8 @@ export const createTaskInput = z.object({
   reminder: reminderConfigSchema.optional(),
   materialId: z.string().max(200).optional(),
   origin: taskOriginSchema.optional(),
+  priority: taskPrioritySchema.optional(),
+  parentId: idSchema.optional(),
 });
 export type CreateTaskInput = z.infer<typeof createTaskInput>;
 

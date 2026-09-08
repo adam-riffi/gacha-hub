@@ -139,26 +139,32 @@ try {
     `${moraDef?.qty}`,
   );
 
-  // ---- Generate ----
+  // ---- Generate (parent goal + material subtasks) ----
   const gen1 = await call("POST", `/api/instances/${G}/plans/generate`, planReq);
   ok("generate 200", gen1.status === 200, JSON.stringify(gen1.json).slice(0, 300));
   ok(
-    "created == requirement rows, 0 updated",
-    gen1.json.created === prev.json.requirements.length && gen1.json.updated === 0,
+    "created == parent + requirement rows, 0 updated",
+    gen1.json.created === prev.json.requirements.length + 1 && gen1.json.updated === 0,
     `${gen1.json.created}/${gen1.json.updated}`,
   );
-  created.tasks.push(...gen1.json.tasks.map((t) => t.id));
+  const parent1 = gen1.json.tasks.find((t) => !t.parentId);
+  created.tasks.push(parent1.id); // children cascade-delete with the parent
+  ok(
+    "parent goal titled Farm Amber, no materialId",
+    parent1?.title === "Farm Amber" && parent1.materialId === null,
+    JSON.stringify(parent1),
+  );
   const moraTask = gen1.json.tasks.find((t) => t.materialId === "202");
   ok(
-    "Mora task target = raw need, progress = stock, titled, one source",
-    moraTask?.target === mora.qty &&
+    "Mora subtask nested under parent, target = raw need, progress = stock",
+    moraTask?.parentId === parent1.id &&
+      moraTask.target === mora.qty &&
       moraTask.progress === 100000 &&
-      moraTask.title === "Farm Mora" &&
-      moraTask.origin?.sources?.length === 1,
+      moraTask.title === "Farm Mora",
     JSON.stringify(moraTask),
   );
-  const covered = gen1.json.tasks.find((t) => t.materialId !== "202");
-  ok("uncovered material task has progress 0", covered?.progress === 0, JSON.stringify(covered));
+  const covered = gen1.json.tasks.find((t) => t.materialId && t.materialId !== "202");
+  ok("uncovered material subtask has progress 0", covered?.progress === 0, JSON.stringify(covered));
 
   // ---- Regenerate the same plan: idempotent ----
   const gen2 = await call("POST", `/api/instances/${G}/plans/generate`, planReq);
@@ -168,33 +174,26 @@ try {
     `${gen2.json.created}/${gen2.json.updated}`,
   );
   const moraTask2 = gen2.json.tasks.find((t) => t.materialId === "202");
-  ok(
-    "regenerate keeps target + 1 source",
-    moraTask2.target === mora.qty &&
-      moraTask2.origin.sources.length === 1 &&
-      moraTask2.id === moraTask.id,
-  );
+  ok("regenerate keeps target + same task", moraTask2.target === mora.qty && moraTask2.id === moraTask.id);
 
-  // ---- Weapon plan merges into the same Mora task ----
+  // ---- Weapon plan is its own parent (separate Mora subtask) ----
   const wReq = { kind: "weapon", catalogId: weapon.id, level: { from: 20, to: 90 } };
   const gen3 = await call("POST", `/api/instances/${G}/plans/generate`, wReq);
   ok("weapon generate 200", gen3.status === 200, JSON.stringify(gen3.json).slice(0, 300));
-  created.tasks.push(...gen3.json.tasks.map((t) => t.id));
+  created.tasks.push(gen3.json.tasks.find((t) => !t.parentId).id);
   const moraTask3 = gen3.json.tasks.find((t) => t.materialId === "202");
   ok(
-    "Mora task merged: 2 sources, target = char + weapon (stock not double-counted)",
-    moraTask3?.id === moraTask.id &&
-      moraTask3.origin.sources.length === 2 &&
-      moraTask3.target === mora.qty + weaponMora,
-    `${moraTask3?.target} vs ${mora.qty + weaponMora}`,
+    "weapon Mora is a distinct subtask under its own parent",
+    moraTask3?.id !== moraTask.id && moraTask3.target === weaponMora,
+    `${moraTask3?.target} vs ${weaponMora}`,
   );
 
-  // ---- Needed ----
+  // ---- Needed (deduped aggregate across both parents) ----
   const needed = await call("GET", `/api/instances/${G}/materials/needed`);
   const moraNeed = needed.json.find((n) => n.materialId === "202");
   ok(
-    "needed: Mora = task target, have = 100000, described",
-    moraNeed?.needed === moraTask3.target &&
+    "needed: Mora = amber + weapon aggregate, have = 100000, described",
+    moraNeed?.needed === mora.qty + weaponMora &&
       moraNeed.have === 100000 &&
       moraNeed.material?.name === "Mora",
     JSON.stringify(moraNeed),
@@ -221,7 +220,7 @@ try {
   ok(
     "needed unchanged, have = 105000",
     needed2.json.find((n) => n.materialId === "202")?.have === 105000 &&
-      needed2.json.find((n) => n.materialId === "202")?.needed === moraTask3.target,
+      needed2.json.find((n) => n.materialId === "202")?.needed === mora.qty + weaponMora,
   );
   // Stock ≥ target → task reads as complete (progress capped at target).
   await call("PUT", `/api/instances/${G}/materials`, {
@@ -230,7 +229,7 @@ try {
   const tasks3 = (await call("GET", `/api/tasks?scope=game&refId=${G}`)).json;
   ok(
     "stock ≥ target caps progress at target",
-    tasks3.find((t) => t.id === moraTask.id)?.progress === moraTask3.target,
+    tasks3.find((t) => t.id === moraTask.id)?.progress === moraTask.target,
   );
 
   // ---- Error paths ----

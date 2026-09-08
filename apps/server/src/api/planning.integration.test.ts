@@ -12,10 +12,18 @@ interface Preview {
   stock: Record<string, number>;
   materials: Record<string, { name: string; farmableToday: boolean }>;
 }
+interface GenTask {
+  id: string;
+  materialId: string | null;
+  parentId: string | null;
+  title: string;
+  target: number | null;
+  progress: number;
+}
 interface GenResult {
   created: number;
   updated: number;
-  tasks: { id: string; materialId: string | null; title: string; target: number | null; progress: number; origin: { sources?: unknown[] } | null }[];
+  tasks: GenTask[];
 }
 
 describe("planning + materials (routes)", () => {
@@ -65,34 +73,43 @@ describe("planning + materials (routes)", () => {
     expect(withStock.json.stock[MORA]).toBe(100000);
   });
 
-  it("generates goal tasks with raw targets, idempotently, merging sources", async () => {
+  it("generates a goal tree (parent + material subtasks), idempotently", async () => {
     await c.req("PUT", `/api/instances/${gid}/materials`, { items: [{ materialId: MORA, qty: 100000 }] });
 
     const gen1 = await c.req<GenResult>("POST", `/api/instances/${gid}/plans/generate`, plan);
     expect(gen1.status).toBe(200);
     expect(gen1.json.updated).toBe(0);
+    const parent = gen1.json.tasks.find((t) => !t.parentId)!;
+    expect(parent.title).toBe("Farm Amber");
+    expect(parent.materialId).toBeNull();
     const mora1 = gen1.json.tasks.find((t) => t.materialId === MORA)!;
+    expect(mora1.parentId).toBe(parent.id); // nested under the character goal
     expect(mora1.title).toBe("Farm Mora");
     expect(mora1.target).toBe(amberMora); // raw need, stock not subtracted from target
     expect(mora1.progress).toBe(100000); // progress derived from stock
-    expect(mora1.origin?.sources?.length).toBe(1);
+    expect(gen1.json.created).toBe(gen1.json.tasks.length); // parent + every child are new
 
-    // Re-planning the same character changes nothing new.
+    // Re-planning the same character updates in place, creates nothing.
     const gen2 = await c.req<GenResult>("POST", `/api/instances/${gid}/plans/generate`, plan);
     expect(gen2.json.created).toBe(0);
     expect(gen2.json.updated).toBe(gen1.json.created);
-    expect(gen2.json.tasks.find((t) => t.materialId === MORA)?.target).toBe(amberMora);
+    expect(gen2.json.tasks.find((t) => !t.parentId)!.id).toBe(parent.id);
 
-    // A weapon plan merges into the same Mora task (target = sum, no double count).
+    // A weapon plan is its OWN parent — Mora is a separate subtask under it.
     const gen3 = await c.req<GenResult>("POST", `/api/instances/${gid}/plans/generate`, {
       kind: "weapon",
       catalogId: moraWeaponId,
       level: { from: 20, to: 90 },
     });
+    const weaponParent = gen3.json.tasks.find((t) => !t.parentId)!;
+    expect(weaponParent.id).not.toBe(parent.id);
     const mora3 = gen3.json.tasks.find((t) => t.materialId === MORA)!;
-    expect(mora3.id).toBe(mora1.id);
-    expect(mora3.origin?.sources?.length).toBe(2);
-    expect(mora3.target).toBe(amberMora + weaponMora);
+    expect(mora3.id).not.toBe(mora1.id); // distinct task, under the weapon parent
+    expect(mora3.target).toBe(weaponMora);
+
+    // The Materials screen keeps the deduped aggregate across both subtasks.
+    const needed = await c.req<{ materialId: string; needed: number }[]>("GET", `/api/instances/${gid}/materials/needed`);
+    expect(needed.json.find((n) => n.materialId === MORA)?.needed).toBe(amberMora + weaponMora);
   });
 
   it("treats inventory as the source of truth for material-task progress", async () => {
