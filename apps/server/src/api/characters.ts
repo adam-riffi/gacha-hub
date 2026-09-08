@@ -1,53 +1,43 @@
 import type { FastifyInstance } from "fastify";
-import { z } from "zod";
+import { characterDto, createCharacterInput, updateCharacterInput } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
 import { requireUser } from "../auth/plugin.js";
-import { gameOrThrow, loadAccount, loadCharacter, validateDoc, type PrismaJson } from "./util.js";
-
-const createInput = z.object({
-  name: z.string().min(1).max(120),
-  portraitUrl: z.string().max(2048).optional().nullable(),
-  doc: z.unknown().optional(),
-});
-
-const updateInput = z.object({
-  name: z.string().min(1).max(120).optional(),
-  portraitUrl: z.string().max(2048).optional().nullable(),
-  doc: z.unknown().optional(),
-});
+import { gameOrThrow, loadCharacter, loadInstance, validateDoc, type PrismaJson } from "./util.js";
 
 export async function registerCharacterRoutes(app: FastifyInstance) {
   app.get<{ Params: { id: string } }>(
-    "/api/accounts/:id/characters",
+    "/api/instances/:id/characters",
     { preHandler: requireUser },
     async (req, reply) => {
-      const account = await loadAccount(req.user!.id, req.params.id);
-      if (!account) return reply.code(404).send({ error: "not_found" });
-      return prisma.character.findMany({
-        where: { accountId: account.id },
+      const gi = await loadInstance(req.user!.id, req.params.id);
+      if (!gi) return reply.code(404).send({ error: "not_found" });
+      const rows = await prisma.character.findMany({
+        where: { gameInstanceId: gi.id },
         orderBy: { createdAt: "asc" },
       });
+      return rows.map((r) => characterDto.parse(r));
     },
   );
 
   app.post<{ Params: { id: string } }>(
-    "/api/accounts/:id/characters",
+    "/api/instances/:id/characters",
     { preHandler: requireUser },
     async (req, reply) => {
-      const account = await loadAccount(req.user!.id, req.params.id);
-      if (!account) return reply.code(404).send({ error: "not_found" });
-      const game = gameOrThrow(account.gameInstance.gameKey);
-      const body = createInput.parse(req.body);
+      const gi = await loadInstance(req.user!.id, req.params.id);
+      if (!gi) return reply.code(404).send({ error: "not_found" });
+      const game = gameOrThrow(gi.gameKey);
+      const body = createCharacterInput.parse(req.body);
       const doc = validateDoc(game, body.doc ?? game.emptyDoc());
       const created = await prisma.character.create({
         data: {
-          accountId: account.id,
+          gameInstanceId: gi.id,
+          catalogId: body.catalogId ?? null,
           name: body.name,
           portraitUrl: body.portraitUrl ?? null,
           doc: doc as PrismaJson,
         },
       });
-      return reply.code(201).send(created);
+      return reply.code(201).send(characterDto.parse(created));
     },
   );
 
@@ -57,14 +47,7 @@ export async function registerCharacterRoutes(app: FastifyInstance) {
     async (req, reply) => {
       const character = await loadCharacter(req.user!.id, req.params.id);
       if (!character) return reply.code(404).send({ error: "not_found" });
-      return {
-        id: character.id,
-        accountId: character.accountId,
-        gameKey: character.account.gameInstance.gameKey,
-        name: character.name,
-        portraitUrl: character.portraitUrl,
-        doc: character.doc,
-      };
+      return { ...characterDto.parse(character), gameKey: character.gameInstance.gameKey };
     },
   );
 
@@ -74,19 +57,18 @@ export async function registerCharacterRoutes(app: FastifyInstance) {
     async (req, reply) => {
       const character = await loadCharacter(req.user!.id, req.params.id);
       if (!character) return reply.code(404).send({ error: "not_found" });
-      const game = gameOrThrow(character.account.gameInstance.gameKey);
-      const body = updateInput.parse(req.body);
-      await prisma.character.update({
+      const game = gameOrThrow(character.gameInstance.gameKey);
+      const body = updateCharacterInput.parse(req.body);
+      const updated = await prisma.character.update({
         where: { id: character.id },
         data: {
           ...(body.name !== undefined ? { name: body.name } : {}),
+          ...(body.catalogId !== undefined ? { catalogId: body.catalogId } : {}),
           ...(body.portraitUrl !== undefined ? { portraitUrl: body.portraitUrl } : {}),
-          ...(body.doc !== undefined
-            ? { doc: validateDoc(game, body.doc) as PrismaJson }
-            : {}),
+          ...(body.doc !== undefined ? { doc: validateDoc(game, body.doc) as PrismaJson } : {}),
         },
       });
-      return { ok: true };
+      return characterDto.parse(updated);
     },
   );
 

@@ -17,6 +17,10 @@
     "start": "npm run start -w @gacha/server",
     "test": "npm run test -w @gacha/server",
     "typecheck": "npm run typecheck -w @gacha/shared && npm run typecheck -w @gacha/server && npm run typecheck -w @gacha/web",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "db:up": "docker compose up -d",
     "db:down": "docker compose down",
     "db:sqlite": "node scripts/gen-sqlite-schema.mjs && prisma db push --schema prisma/schema.sqlite.prisma --accept-data-loss",
@@ -30,12 +34,19 @@
     "@prisma/client": "^6.2.1"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/node": "^22.10.5",
     "concurrently": "^9.1.2",
     "esbuild": "^0.25.0",
+    "eslint": "^10.10.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.12.0",
+    "prettier": "^3.9.6",
     "prisma": "^6.2.1",
     "tsx": "^4.19.2",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.69.0"
   },
   "engines": {
     "node": ">=20"

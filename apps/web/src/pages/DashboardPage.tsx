@@ -22,8 +22,8 @@ export function DashboardPage() {
   });
 
   const setCurrency = useMutation({
-    mutationFn: (v: { accountId: string; key: string; value: number }) =>
-      api.put(`/api/accounts/${v.accountId}/currencies/${v.key}`, { value: v.value }),
+    mutationFn: (v: { instanceId: string; key: string; value: number }) =>
+      api.put(`/api/instances/${v.instanceId}/currencies/${v.key}`, { value: v.value }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["dashboard"] }),
     onError: () => toast("Update failed", "err"),
   });
@@ -75,67 +75,65 @@ export function DashboardPage() {
       )}
 
       <div className="grid cols-2">
-        {data.games.map((game) =>
-          game.accounts.map((acc) => (
-            <div className="card" key={acc.id}>
-              <div className="spread" style={{ marginBottom: 10 }}>
-                <div>
-                  <h3 style={{ marginBottom: 2 }}>
-                    <Link to={`/games/${game.instanceId}`}>{game.name}</Link>
-                  </h3>
-                  <span className="small muted">
-                    {acc.label} · {acc.characterCount} chars
-                  </span>
-                </div>
-                {acc.nextReset && (
-                  <span className="badge">reset in {untilReset(acc.nextReset)}</span>
-                )}
+        {data.games.map((game) => (
+          <div className="card" key={game.instanceId} style={{ borderTop: `3px solid ${game.accent}` }}>
+            <div className="spread" style={{ marginBottom: 10 }}>
+              <div>
+                <h3 style={{ marginBottom: 2 }}>
+                  <Link to={`/games/${game.instanceId}`}>{game.name}</Link>
+                </h3>
+                <span className="small muted">
+                  {game.regionKey.toUpperCase()} · {game.characterCount} chars
+                </span>
               </div>
-
-              {acc.currencies.length > 0 && (
-                <div style={{ marginBottom: 12 }}>
-                  {acc.currencies.map((c) => (
-                    <div className="currency-row" key={c.key}>
-                      <span>{c.label}</span>
-                      <div className="currency-val">
-                        <input
-                          type="number"
-                          defaultValue={c.value}
-                          onBlur={(e) => {
-                            const value = Number(e.target.value);
-                            if (value !== c.value)
-                              setCurrency.mutate({ accountId: acc.id, key: c.key, value });
-                          }}
-                        />
-                        {c.cap ? <span className="small muted">/ {c.cap}</span> : null}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {acc.dailies.length > 0 && (
-                <div>
-                  <div className="small muted" style={{ marginBottom: 6 }}>Dailies</div>
-                  {acc.dailies.map((d) => (
-                    <div className="task-row" key={d.id}>
-                      <span>{d.title}</span>
-                      <button
-                        className={`checkbtn ${d.doneThisCycle ? "on" : ""}`}
-                        title={d.doneThisCycle ? "Done" : "Mark done"}
-                        onClick={() =>
-                          toggleDaily.mutate({ id: d.id, done: !d.doneThisCycle })
-                        }
-                      >
-                        ✓
-                      </button>
-                    </div>
-                  ))}
-                </div>
+              {game.nextReset && (
+                <span className="badge">reset in {untilReset(game.nextReset)}</span>
               )}
             </div>
-          )),
-        )}
+
+            {game.currencies.length > 0 && (
+              <div style={{ marginBottom: 12 }}>
+                {game.currencies.map((c) => (
+                  <div className="currency-row" key={c.key}>
+                    <span>{c.label}</span>
+                    <div className="currency-val">
+                      <input
+                        type="number"
+                        min={0}
+                        max={c.cap ?? undefined}
+                        defaultValue={c.value}
+                        onBlur={(e) => {
+                          const value = Number(e.target.value);
+                          if (value !== c.value)
+                            setCurrency.mutate({ instanceId: game.instanceId, key: c.key, value });
+                        }}
+                      />
+                      {c.cap ? <span className="small muted">/ {c.cap}</span> : null}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {game.dailies.length > 0 && (
+              <div>
+                <div className="small muted" style={{ marginBottom: 6 }}>Dailies</div>
+                {game.dailies.map((d) => (
+                  <div className="task-row" key={d.id}>
+                    <span>{d.title}</span>
+                    <button
+                      className={`checkbtn ${d.doneThisCycle ? "on" : ""}`}
+                      title={d.doneThisCycle ? "Done" : "Mark done"}
+                      onClick={() => toggleDaily.mutate({ id: d.id, done: !d.doneThisCycle })}
+                    >
+                      ✓
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
       </div>
     </>
   );

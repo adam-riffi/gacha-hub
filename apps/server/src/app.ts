@@ -19,9 +19,11 @@ export async function buildApp(): Promise<FastifyInstance> {
     if (err instanceof ZodError) {
       return reply.code(400).send({ error: "validation_error", issues: err.issues });
     }
-    app.log.error(err);
-    return reply.code(err.statusCode ?? 500).send({
-      error: err.code ?? "internal_error",
+    const status = err.statusCode ?? 500;
+    // Expected client errors (e.g. lookup 404s) aren't worth an error-level log.
+    if (status >= 500) app.log.error(err);
+    return reply.code(status).send({
+      error: err.code ?? (status >= 500 ? "internal_error" : err.message),
       message: config.isProd ? undefined : err.message,
     });
   });

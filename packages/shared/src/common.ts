@@ -10,7 +10,8 @@ export type TaskCadence = z.infer<typeof taskCadenceSchema>;
 export const taskTypeSchema = z.enum(["recurring", "goal", "checklist"]);
 export type TaskType = z.infer<typeof taskTypeSchema>;
 
-export const taskScopeSchema = z.enum(["game", "account", "character"]);
+/** A task attaches to a game profile or to one of its characters. */
+export const taskScopeSchema = z.enum(["game", "character"]);
 export type TaskScope = z.infer<typeof taskScopeSchema>;
 
 export const checklistItemSchema = z.object({
@@ -27,19 +28,15 @@ export const reminderConfigSchema = z.object({
 });
 export type ReminderConfig = z.infer<typeof reminderConfigSchema>;
 
-export const taskInputSchema = z.object({
-  scope: taskScopeSchema,
-  refId: z.string().min(1),
-  type: taskTypeSchema,
-  title: z.string().min(1).max(200),
-  cadence: taskCadenceSchema.optional(),
-  regionAware: z.boolean().optional(),
-  target: z.number().positive().optional(),
-  progress: z.number().min(0).optional(),
-  items: z.array(checklistItemSchema).optional(),
-  reminder: reminderConfigSchema.optional(),
-});
-export type TaskInput = z.infer<typeof taskInputSchema>;
+/** Hard ceilings so no value can run away (e.g. no goal of 10^12 items). */
+export const LIMITS = {
+  taskTarget: 1_000_000,
+  taskProgress: 1_000_000,
+  currencyValue: 1_000_000_000,
+  ownershipQty: 999,
+  materialQty: 9_999_999,
+  checklistItems: 100,
+} as const;
 
 /** A single {stat, value} row — reused by several games' gear substats. */
 export const statRowSchema = z.object({

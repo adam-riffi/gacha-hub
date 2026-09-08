@@ -1,0 +1,9 @@
+node_modules
+dist
+dist-server
+.vercel
+package-lock.json
+prisma/migrations
+prisma/schema.sqlite.prisma
+apps/web/public
+*.md

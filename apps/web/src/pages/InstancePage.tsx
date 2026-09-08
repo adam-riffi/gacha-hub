@@ -4,24 +4,21 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getGame } from "@gacha/shared";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
-import type { InstanceDetail } from "../lib/types";
+import type { InstanceDetail, ReminderRule } from "../lib/types";
 
-function ReminderControl({ accountId }: { accountId: string }) {
+function ReminderControl({ instanceId }: { instanceId: string }) {
   const toast = useToast();
   const qc = useQueryClient();
   const { data } = useQuery({
-    queryKey: ["reminder", accountId],
-    queryFn: () =>
-      api.get<{ enabled: boolean; config: { leadMinutes: number } } | null>(
-        `/api/accounts/${accountId}/reminder`,
-      ),
+    queryKey: ["reminder", instanceId],
+    queryFn: () => api.get<ReminderRule | null>(`/api/instances/${instanceId}/reminder`),
   });
   const save = useMutation({
     mutationFn: (v: { enabled: boolean; leadMinutes: number }) =>
-      api.put(`/api/accounts/${accountId}/reminder`, { enabled: v.enabled, leadMinutes: v.leadMinutes }),
+      api.put(`/api/instances/${instanceId}/reminder`, v),
     onSuccess: () => {
       toast("Reminder saved");
-      qc.invalidateQueries({ queryKey: ["reminder", accountId] });
+      qc.invalidateQueries({ queryKey: ["reminder", instanceId] });
     },
   });
   const enabled = data?.enabled ?? false;
@@ -42,6 +39,8 @@ function ReminderControl({ accountId }: { accountId: string }) {
           <input
             type="number"
             style={{ width: 70 }}
+            min={0}
+            max={1440}
             defaultValue={lead}
             onBlur={(e) => save.mutate({ enabled: true, leadMinutes: Number(e.target.value) })}
           />
@@ -57,9 +56,7 @@ export function InstancePage() {
   const nav = useNavigate();
   const qc = useQueryClient();
   const toast = useToast();
-  const [newAccount, setNewAccount] = useState("");
-  const [newRegion, setNewRegion] = useState("");
-  const [newChar, setNewChar] = useState<Record<string, string>>({});
+  const [newChar, setNewChar] = useState("");
 
   const { data, isLoading } = useQuery({
     queryKey: ["instance", id],
@@ -67,31 +64,36 @@ export function InstancePage() {
     enabled: Boolean(id),
   });
 
-  const addAccount = useMutation({
-    mutationFn: () =>
-      api.post(`/api/instances/${id}/accounts`, { label: newAccount, regionKey: newRegion || null }),
+  const invalidate = () => {
+    qc.invalidateQueries({ queryKey: ["instance", id] });
+    qc.invalidateQueries({ queryKey: ["dashboard"] });
+    qc.invalidateQueries({ queryKey: ["instances"] });
+  };
+
+  const setRegion = useMutation({
+    mutationFn: (regionKey: string) => api.put(`/api/instances/${id}`, { regionKey }),
     onSuccess: () => {
-      setNewAccount("");
-      qc.invalidateQueries({ queryKey: ["instance", id] });
-      qc.invalidateQueries({ queryKey: ["dashboard"] });
+      toast("Region updated");
+      invalidate();
     },
   });
 
   const addCharacter = useMutation({
-    mutationFn: (accountId: string) =>
-      api.post<{ id: string }>(`/api/accounts/${accountId}/characters`, {
-        name: newChar[accountId] || "New Character",
+    mutationFn: () =>
+      api.post<{ id: string }>(`/api/instances/${id}/characters`, {
+        name: newChar || "New Character",
       }),
     onSuccess: (r) => {
-      qc.invalidateQueries({ queryKey: ["instance", id] });
+      invalidate();
       nav(`/characters/${r.id}`);
     },
   });
 
   const setCurrency = useMutation({
-    mutationFn: (v: { accountId: string; key: string; value: number }) =>
-      api.put(`/api/accounts/${v.accountId}/currencies/${v.key}`, { value: v.value }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["instance", id] }),
+    mutationFn: (v: { key: string; value: number }) =>
+      api.put(`/api/instances/${id}/currencies/${v.key}`, { value: v.value }),
+    onSuccess: invalidate,
+    onError: () => toast("Update failed", "err"),
   });
 
   const uninstall = useMutation({
@@ -108,11 +110,26 @@ export function InstancePage() {
   const game = getGame(data.gameKey);
   const currencyLabel = (key: string) =>
     game?.currencies.find((c) => c.key === key)?.label ?? key;
+  const currencyCap = (key: string) => game?.currencies.find((c) => c.key === key)?.cap;
 
   return (
     <>
       <div className="page-head">
-        <h1>{game?.name ?? data.gameKey}</h1>
+        <div className="row">
+          <h1 style={{ margin: 0 }}>{data.name}</h1>
+          {game && game.regions.length > 1 && (
+            <select
+              value={data.regionKey}
+              onChange={(e) => setRegion.mutate(e.target.value)}
+              style={{ maxWidth: 160 }}
+              title="Server region (controls reset timing)"
+            >
+              {game.regions.map((r) => (
+                <option key={r.key} value={r.key}>{r.label}</option>
+              ))}
+            </select>
+          )}
+        </div>
         <button
           className="btn danger sm"
           onClick={() => {
@@ -124,79 +141,61 @@ export function InstancePage() {
       </div>
 
       <div className="card" style={{ marginBottom: 18 }}>
-        <h3>Add account</h3>
-        <div className="row">
-          <input
-            placeholder="e.g. NA Main"
-            value={newAccount}
-            onChange={(e) => setNewAccount(e.target.value)}
-            style={{ maxWidth: 220 }}
-          />
-          {game && game.regions.length > 0 && (
-            <select value={newRegion} onChange={(e) => setNewRegion(e.target.value)} style={{ maxWidth: 200 }}>
-              <option value="">Default region</option>
-              {game.regions.map((r) => (
-                <option key={r.key} value={r.key}>{r.label}</option>
-              ))}
-            </select>
-          )}
-          <button className="btn primary" disabled={!newAccount || addAccount.isPending} onClick={() => addAccount.mutate()}>
-            Add
-          </button>
-        </div>
+        <ReminderControl instanceId={data.id} />
       </div>
 
-      <div className="stack">
-        {data.accounts.map((acc) => (
-          <div className="card" key={acc.id}>
-            <div className="spread">
-              <h3 style={{ margin: 0 }}>{acc.label}</h3>
-              <span className="badge">{acc.regionKey ?? "default"}</span>
-            </div>
-            <ReminderControl accountId={acc.id} />
-
-            <div className="grid cols-2" style={{ marginTop: 14 }}>
-              <div>
-                <div className="small muted" style={{ marginBottom: 6 }}>Currencies</div>
-                {acc.currencies.length === 0 && <p className="small">No currencies.</p>}
-                {acc.currencies.map((c) => (
-                  <div className="currency-row" key={c.key}>
-                    <span>{currencyLabel(c.key)}</span>
-                    <input
-                      type="number"
-                      style={{ width: 100 }}
-                      defaultValue={c.value}
-                      onBlur={(e) => {
-                        const value = Number(e.target.value);
-                        if (value !== c.value) setCurrency.mutate({ accountId: acc.id, key: c.key, value });
-                      }}
-                    />
-                  </div>
-                ))}
-              </div>
-
-              <div>
-                <div className="small muted" style={{ marginBottom: 6 }}>Characters</div>
-                <div className="stack" style={{ gap: 6 }}>
-                  {acc.characters.map((ch) => (
-                    <Link key={ch.id} className="task-row" to={`/characters/${ch.id}`}>
-                      <span>{ch.name}</span>
-                      <span className="muted small">edit →</span>
-                    </Link>
-                  ))}
-                </div>
-                <div className="row" style={{ marginTop: 8 }}>
-                  <input
-                    placeholder="Character name"
-                    value={newChar[acc.id] ?? ""}
-                    onChange={(e) => setNewChar((s) => ({ ...s, [acc.id]: e.target.value }))}
-                  />
-                  <button className="btn sm" onClick={() => addCharacter.mutate(acc.id)}>+ Add</button>
-                </div>
+      <div className="grid cols-2">
+        <div className="card">
+          <h3>Currencies</h3>
+          {data.currencies.length === 0 && <p className="small">No currencies.</p>}
+          {data.currencies.map((c) => (
+            <div className="currency-row" key={c.key}>
+              <span>{currencyLabel(c.key)}</span>
+              <div className="currency-val">
+                <input
+                  type="number"
+                  min={0}
+                  max={currencyCap(c.key) ?? undefined}
+                  defaultValue={c.value}
+                  onBlur={(e) => {
+                    const value = Number(e.target.value);
+                    if (value !== c.value) setCurrency.mutate({ key: c.key, value });
+                  }}
+                />
+                {currencyCap(c.key) ? (
+                  <span className="small muted">/ {currencyCap(c.key)}</span>
+                ) : null}
               </div>
             </div>
+          ))}
+        </div>
+
+        <div className="card">
+          <h3>Characters</h3>
+          <div className="stack" style={{ gap: 6 }}>
+            {data.characters.length === 0 && <p className="small">No characters yet.</p>}
+            {data.characters.map((ch) => (
+              <Link key={ch.id} className="task-row" to={`/characters/${ch.id}`}>
+                <span>{ch.name}</span>
+                <span className="muted small">edit →</span>
+              </Link>
+            ))}
           </div>
-        ))}
+          <div className="row" style={{ marginTop: 10 }}>
+            <input
+              placeholder="Character name"
+              value={newChar}
+              onChange={(e) => setNewChar(e.target.value)}
+            />
+            <button
+              className="btn sm"
+              disabled={addCharacter.isPending}
+              onClick={() => addCharacter.mutate()}
+            >
+              + Add
+            </button>
+          </div>
+        </div>
       </div>
     </>
   );

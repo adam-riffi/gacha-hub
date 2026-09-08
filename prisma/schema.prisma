@@ -1,6 +1,8 @@
-// Gacha Tracker — data model (Postgres).
-// Structure of each game lives as JSON in Template.definition (a TemplateDef).
-// These tables store users, their installed games, and their tracked data.
+// Gacha Hub — data model (Postgres; a SQLite variant is generated for local dev).
+// Game structure lives in code (packages/shared/src/games). These tables hold
+// users, their per-game profiles, and tracked data. Catalog entities
+// (characters, weapons, materials) are JSON in the shared package and are
+// referenced here by their catalog ids.
 
 generator client {
   provider      = "prisma-client-js"
@@ -29,6 +31,7 @@ model User {
   gameInstances GameInstance[]
   tasks         Task[]
   reminderRules ReminderRule[]
+  auditLogs     AuditLog[]
 }
 
 /// Server-side session backing the signed cookie.
@@ -42,68 +45,93 @@ model Session {
   @@index([userId])
 }
 
-/// A user's installed game. `gameKey` references a hardcoded game module in
-/// packages/shared/src/games (no data-driven templates — games live in code).
+/// A user's profile for one game — exactly one per user per game.
+/// `gameKey` references a hardcoded module; `regionKey` picks reset timing.
 model GameInstance {
   id        String   @id @default(cuid())
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   gameKey   String
+  regionKey String   @default("eu")
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  accounts Account[]
+  currencies    CurrencyState[]
+  characters    Character[]
+  ownerships    Ownership[]
+  materials     MaterialStock[]
+  reminderRules ReminderRule[]
 
+  @@unique([userId, gameKey])
   @@index([userId])
 }
 
-/// An in-game account (main / alt), tied to a server region for resets.
-model Account {
+/// Current value of one currency for one profile.
+model CurrencyState {
   id             String       @id @default(cuid())
   gameInstanceId String
   gameInstance   GameInstance @relation(fields: [gameInstanceId], references: [id], onDelete: Cascade)
-  label          String
-  regionKey      String?
-  createdAt      DateTime     @default(now())
+  key            String
+  value          Float        @default(0)
+  updatedAt      DateTime     @updatedAt
 
-  currencies CurrencyState[]
-  characters Character[]
+  @@unique([gameInstanceId, key])
+}
+
+/// A tracked character build. `catalogId` links to the game's catalog entry
+/// (optional until catalogs ship). `doc` is the game's bespoke build document;
+/// `docVersion` lets per-game migrations upgrade old documents on read.
+model Character {
+  id             String       @id @default(cuid())
+  gameInstanceId String
+  gameInstance   GameInstance @relation(fields: [gameInstanceId], references: [id], onDelete: Cascade)
+  catalogId      String?
+  name           String
+  portraitUrl    String?
+  doc            Json
+  docVersion     Int          @default(1)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
 
   @@index([gameInstanceId])
+  @@index([gameInstanceId, catalogId])
 }
 
-/// Current value of one currency for one account.
-model CurrencyState {
-  id        String   @id @default(cuid())
-  accountId String
-  account   Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
-  key       String
-  value     Float    @default(0)
-  updatedAt DateTime @updatedAt
+/// Which catalog entries (characters / weapons / items) a profile owns.
+model Ownership {
+  id             String       @id @default(cuid())
+  gameInstanceId String
+  gameInstance   GameInstance @relation(fields: [gameInstanceId], references: [id], onDelete: Cascade)
+  kind           String // character | weapon | item
+  catalogId      String
+  qty            Int          @default(1)
+  meta           Json?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
 
-  @@unique([accountId, key])
-  @@index([accountId])
+  @@unique([gameInstanceId, kind, catalogId])
 }
 
-/// A tracked character; `doc` is a CharacterDoc validated against the template.
-model Character {
-  id          String   @id @default(cuid())
-  accountId   String
-  account     Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
-  name        String
-  portraitUrl String?
-  doc         Json
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+/// How many of each catalog material a profile currently holds.
+model MaterialStock {
+  id             String       @id @default(cuid())
+  gameInstanceId String
+  gameInstance   GameInstance @relation(fields: [gameInstanceId], references: [id], onDelete: Cascade)
+  materialId     String
+  qty            Int          @default(0)
+  updatedAt      DateTime     @updatedAt
 
-  @@index([accountId])
+  @@unique([gameInstanceId, materialId])
 }
 
-/// A user-created task: recurring daily/weekly, farming goal, or checklist.
+/// A user-created (or generated) task: recurring daily/weekly, farming goal,
+/// or checklist. `scope`/`refId` attach it to a profile or a character.
+/// Generated farming tasks carry `materialId` + `origin` for grouping/merging.
 model Task {
   id              String    @id @default(cuid())
   userId          String
   user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  scope           String // game | account | character
+  scope           String // game | character
   refId           String
   type            String // recurring | goal | checklist
   title           String
@@ -112,6 +140,8 @@ model Task {
   target          Float?
   progress        Float     @default(0)
   items           Json? // ChecklistItem[]
+  materialId      String?
+  origin          Json? // TaskOrigin
   lastCompletedAt DateTime?
   reminder        Json? // ReminderConfig
   createdAt       DateTime  @default(now())
@@ -121,28 +151,31 @@ model Task {
 
   @@index([userId])
   @@index([scope, refId])
+  @@index([userId, materialId])
 }
 
-/// A reminder that the scheduler evaluates. Fires for an account's recurring
-/// reset (accountId set) or for a specific task's due window (taskId set).
+/// A reminder the cron tick evaluates: a profile's daily reset
+/// (gameInstanceId set) or a specific task's due window (taskId set).
 model ReminderRule {
-  id        String   @id @default(cuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  accountId String?
-  taskId    String?
-  task      Task?    @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  config    Json // ReminderConfig
-  enabled   Boolean  @default(true)
-  createdAt DateTime @default(now())
+  id             String        @id @default(cuid())
+  userId         String
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  gameInstanceId String?
+  gameInstance   GameInstance? @relation(fields: [gameInstanceId], references: [id], onDelete: Cascade)
+  taskId         String?
+  task           Task?         @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  config         Json // ReminderConfig
+  enabled        Boolean       @default(true)
+  createdAt      DateTime      @default(now())
 
   logs ReminderLog[]
 
   @@index([userId])
+  @@index([gameInstanceId])
 }
 
-/// Idempotency log: one row per (rule, reset boundary) so the minute-tick
-/// scheduler never sends the same reminder twice.
+/// Idempotency log: one row per (rule, reset boundary) so coarse or repeated
+/// cron ticks never send the same reminder twice.
 model ReminderLog {
   id        String       @id @default(cuid())
   ruleId    String
@@ -152,4 +185,57 @@ model ReminderLog {
 
   @@unique([ruleId, firedFor])
   @@index([ruleId])
+}
+
+/// Time-boxed gacha banner, global per game, uploaded by an admin.
+model Banner {
+  id        String   @id @default(cuid())
+  gameKey   String
+  key       String
+  name      String
+  kind      String // character | weapon | other
+  startsAt  DateTime
+  endsAt    DateTime
+  featured  Json // BannerFeatured[]
+  payload   Json?
+  version   Int      @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([gameKey, key])
+  @@index([gameKey, endsAt])
+}
+
+/// Time-boxed in-game event, global per game, uploaded by an admin.
+model Event {
+  id          String   @id @default(cuid())
+  gameKey     String
+  key         String
+  name        String
+  startsAt    DateTime
+  endsAt      DateTime
+  description String?
+  rewards     Json?
+  url         String?
+  payload     Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([gameKey, key])
+  @@index([gameKey, endsAt])
+}
+
+/// Who changed what via admin uploads.
+model AuditLog {
+  id          String   @id @default(cuid())
+  actorUserId String
+  actor       User     @relation(fields: [actorUserId], references: [id], onDelete: Cascade)
+  action      String
+  targetKind  String
+  targetKey   String
+  diff        Json?
+  createdAt   DateTime @default(now())
+
+  @@index([actorUserId])
+  @@index([createdAt])
 }
