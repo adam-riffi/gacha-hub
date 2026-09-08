@@ -44,6 +44,8 @@ export const taskDto = z.object({
   origin: jsonValue.nullable(),
   priority: taskPrioritySchema,
   parentId: idSchema.nullable(),
+  backlog: z.boolean(),
+  notify: z.boolean(),
   lastCompletedAt: isoDateNullable,
   /** Recurring tasks only. */
   doneThisCycle: z.boolean().optional(),
@@ -66,6 +68,7 @@ export const createTaskInput = z.object({
   origin: taskOriginSchema.optional(),
   priority: taskPrioritySchema.optional(),
   parentId: idSchema.optional(),
+  notify: z.boolean().optional(),
 });
 export type CreateTaskInput = z.infer<typeof createTaskInput>;
 

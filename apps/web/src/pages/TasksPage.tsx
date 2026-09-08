@@ -36,6 +36,7 @@ export function TasksPage() {
     refId: "",
   });
   const [filterText, setFilterText] = useState("");
+  const [showBacklog, setShowBacklog] = useState(false);
 
   const { data: tasks } = useQuery({ queryKey: ["tasks"], queryFn: () => api.get<TaskItem[]>("/api/tasks") });
   const { data: instances } = useQuery({
@@ -79,6 +80,10 @@ export function TasksPage() {
     mutationFn: (v: { id: string; priority: TaskPriority }) => api.put(`/api/tasks/${v.id}`, { priority: v.priority }),
     onSuccess: invalidate,
   });
+  const setNotify = useMutation({
+    mutationFn: (v: { id: string; notify: boolean }) => api.put(`/api/tasks/${v.id}`, { notify: v.notify }),
+    onSuccess: invalidate,
+  });
   const remove = useMutation({
     mutationFn: (id: string) => api.del(`/api/tasks/${id}`),
     onSuccess: invalidate,
@@ -98,23 +103,25 @@ export function TasksPage() {
         .filter((t) => t.type === "recurring")
         .sort((a, b) => PRIORITY_RANK[a.priority] - PRIORITY_RANK[b.priority]);
       const goals = mine
-        .filter((t) => t.type === "goal" && !t.parentId)
+        .filter((t) => t.type === "goal" && !t.parentId && (showBacklog || !t.backlog))
         .sort((a, b) => PRIORITY_RANK[a.priority] - PRIORITY_RANK[b.priority]);
       const checklists = mine.filter((t) => t.type === "checklist");
-      return { gi, recurring, goals, checklists, byParent, count: mine.length };
+      const backlogCount = mine.filter((t) => t.type === "goal" && !t.parentId && t.backlog).length;
+      return { gi, recurring, goals, checklists, byParent, backlogCount, count: mine.length };
     });
-  }, [tasks, instances, filterText]);
+  }, [tasks, instances, filterText, showBacklog]);
 
   return (
     <>
       <div className="page-head">
         <h1>Tasks</h1>
-        <input
-          placeholder="Filter…"
-          value={filterText}
-          onChange={(e) => setFilterText(e.target.value)}
-          style={{ maxWidth: 220 }}
-        />
+        <div className="row">
+          <label className="row small" style={{ margin: 0, gap: 6 }}>
+            <input type="checkbox" style={{ width: "auto" }} checked={showBacklog} onChange={(e) => setShowBacklog(e.target.checked)} />
+            Show backlog
+          </label>
+          <input placeholder="Filter…" value={filterText} onChange={(e) => setFilterText(e.target.value)} style={{ maxWidth: 200 }} />
+        </div>
       </div>
 
       <div className="card" style={{ marginBottom: 18 }}>
@@ -168,11 +175,14 @@ export function TasksPage() {
 
       {(instances ?? []).length > 0 && (
         <div className="board">
-          {columns.map(({ gi, recurring, goals, checklists, byParent, count }) => (
+          {columns.map(({ gi, recurring, goals, checklists, byParent, backlogCount, count }) => (
             <div className="board-col" key={gi.id} style={{ borderTop: `3px solid ${gi.accent}` }}>
               <div className="spread" style={{ marginBottom: 8 }}>
                 <Link to={`/games/${gi.id}`} style={{ fontWeight: 650 }}>{gi.name}</Link>
-                <span className="small muted">{count}</span>
+                <span className="small muted">
+                  {count}
+                  {!showBacklog && backlogCount > 0 && <span title="Hidden backlog goals"> · +{backlogCount} backlog</span>}
+                </span>
               </div>
 
               {recurring.length > 0 && (
@@ -182,6 +192,7 @@ export function TasksPage() {
                     <div className="subrow" key={t.id}>
                       <button className={`checkbtn sm ${t.doneThisCycle ? "on" : ""}`} onClick={() => complete.mutate({ id: t.id, done: !t.doneThisCycle })}>✓</button>
                       <span style={{ flex: 1 }}>{t.title} <span className="badge">{t.cadence}</span></span>
+                      <button className="btn ghost sm" title="Include in Discord reminders" onClick={() => setNotify.mutate({ id: t.id, notify: !t.notify })}>{t.notify ? "🔔" : "🔕"}</button>
                       <PriorityPill value={t.priority} onChange={(p) => setPriority.mutate({ id: t.id, priority: p })} />
                       <button className="btn ghost sm" onClick={() => remove.mutate(t.id)}>✕</button>
                     </div>
@@ -196,10 +207,14 @@ export function TasksPage() {
                     const kids = byParent.get(g.id) ?? [];
                     const done = kids.filter((k) => (k.target ?? 0) > 0 && k.progress >= (k.target ?? 0)).length;
                     return (
-                      <div className="goal-card" key={g.id}>
+                      <div className="goal-card" key={g.id} style={g.backlog ? { opacity: 0.75 } : undefined}>
                         <div className="spread">
-                          <strong>{g.title}</strong>
+                          <strong>
+                            {g.title}
+                            {g.backlog && <span className="badge" style={{ marginLeft: 6 }}>backlog</span>}
+                          </strong>
                           <div className="row" style={{ gap: 4 }}>
+                            <button className="btn ghost sm" title="Include in Discord reminders" onClick={() => setNotify.mutate({ id: g.id, notify: !g.notify })}>{g.notify ? "🔔" : "🔕"}</button>
                             <PriorityPill value={g.priority} onChange={(p) => setPriority.mutate({ id: g.id, priority: p })} />
                             <button className="btn ghost sm" onClick={() => remove.mutate(g.id)}>✕</button>
                           </div>

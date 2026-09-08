@@ -144,6 +144,8 @@ model Task {
   materialId      String?
   origin          Json? // TaskOrigin
   priority        String    @default("normal") // low | normal | high
+  backlog         Boolean   @default(false) // hidden completionist backlog goal
+  notify          Boolean   @default(false) // include in the Discord digest
   lastCompletedAt DateTime?
   reminder        Json? // ReminderConfig
   createdAt       DateTime  @default(now())

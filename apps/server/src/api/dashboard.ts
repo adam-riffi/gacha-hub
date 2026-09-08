@@ -90,8 +90,9 @@ export async function registerDashboardRoutes(app: FastifyInstance) {
 
     return dashboardDto.parse({
       games,
-      // Top-level goals only — material subtasks live under their parent.
-      goals: enriched.filter((t) => t.type === "goal" && !t.parentId),
+      // Top-level, non-backlog goals — subtasks live under their parent, and
+      // completionist backlog goals stay out of the active list.
+      goals: enriched.filter((t) => t.type === "goal" && !t.parentId && !t.backlog),
       timeline: { banners, events },
     });
   });
