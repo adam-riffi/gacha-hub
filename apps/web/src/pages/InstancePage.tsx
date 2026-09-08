@@ -7,6 +7,7 @@ import { useToast } from "../lib/toast";
 import { useCatalog } from "../lib/catalog";
 import { pullText } from "../lib/format";
 import { GameTabs } from "../components/GameTabs";
+import { TeamsCard } from "../components/TeamsCard";
 import type { InstanceDetail, ReminderRule } from "../lib/types";
 
 function ReminderControl({ instanceId }: { instanceId: string }) {
@@ -310,6 +311,12 @@ export function InstancePage() {
           )}
         </div>
       </div>
+
+      {catalog && (
+        <div style={{ marginTop: 16 }}>
+          <TeamsCard instanceId={data.id} gameKey={data.gameKey} />
+        </div>
+      )}
     </>
   );
 }

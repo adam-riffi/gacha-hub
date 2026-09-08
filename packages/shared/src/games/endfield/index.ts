@@ -56,6 +56,7 @@ export type EndfieldDoc = z.infer<typeof endfieldDocSchema>;
 
 export const endfield: GameDefinition = {
   key: "endfield",
+  teamSize: 4,
   name: "Arknights: Endfield",
   accent: "#2dd4bf",
   art: { icon: "/games/endfield/icon.png", background: "/games/endfield/background.jpg" },

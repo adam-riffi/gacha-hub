@@ -59,6 +59,7 @@ export type ZzzDoc = z.infer<typeof zzzDocSchema>;
 
 export const zzz: GameDefinition = {
   key: "zzz",
+  teamSize: 3,
   name: "Zenless Zone Zero",
   accent: "#f5e02c",
   art: { icon: "/games/zzz/icon.png", background: "/games/zzz/background.jpg" },

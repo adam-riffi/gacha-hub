@@ -61,6 +61,7 @@ export type WuwaDoc = z.infer<typeof wuwaDocSchema>;
 
 export const wuwa: GameDefinition = {
   key: "wuwa",
+  teamSize: 3,
   name: "Wuthering Waves",
   accent: "#9ad0ff",
   art: { icon: "/games/wuwa/icon.png", background: "/games/wuwa/background.jpg" },

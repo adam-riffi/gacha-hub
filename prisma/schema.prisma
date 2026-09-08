@@ -61,9 +61,23 @@ model GameInstance {
   ownerships    Ownership[]
   materials     MaterialStock[]
   reminderRules ReminderRule[]
+  teams         Team[]
 
   @@unique([userId, gameKey])
   @@index([userId])
+}
+
+/// A saved team / party preset for one profile (members are catalog ids).
+model Team {
+  id             String       @id @default(cuid())
+  gameInstanceId String
+  gameInstance   GameInstance @relation(fields: [gameInstanceId], references: [id], onDelete: Cascade)
+  name           String
+  members        Json // string[] of character catalog ids
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@index([gameInstanceId])
 }
 
 /// Current value of one currency for one profile.
