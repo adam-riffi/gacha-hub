@@ -78641,7 +78641,7 @@
           },
           {
             "id": "1406102",
-            "name": "<unbreak>300</unbreak> Rogues",
+            "name": "300 Rogues",
             "costs": [
               {
                 "atLevel": 1,
@@ -92917,7 +92917,7 @@
     {
       "id": "1506",
       "key": "silver-wolf-lv-unbreak-999-unbreak",
-      "name": "Silver Wolf LV.<unbreak>999</unbreak>",
+      "name": "Silver Wolf LV.999",
       "rarity": 5,
       "tag": "Imaginary",
       "weaponType": "Elation",
@@ -134411,7 +134411,7 @@
     {
       "id": "110261",
       "key": "i-the-fluffy-i-hand-drawn-storyboards",
-      "name": "<i>The Fluffy</i> Hand-drawn Storyboards",
+      "name": "The Fluffy Hand-drawn Storyboards",
       "category": "Trace Material\\nLight Cone Ascension Material",
       "rarity": 2,
       "icon": "110261",
@@ -134432,7 +134432,7 @@
     {
       "id": "110262",
       "key": "i-the-fluffy-i-serialization-memorial-issue",
-      "name": "<i>The Fluffy</i> Serialization Memorial Issue",
+      "name": "The Fluffy Serialization Memorial Issue",
       "category": "Trace Material\\nLight Cone Ascension Material",
       "rarity": 3,
       "icon": "110262",
@@ -134454,7 +134454,7 @@
     {
       "id": "110263",
       "key": "i-the-fluffy-i-collectors-edition",
-      "name": "<i>The Fluffy</i> Collector's Edition",
+      "name": "The Fluffy Collector's Edition",
       "category": "Trace Material\\nLight Cone Ascension Material",
       "rarity": 4,
       "icon": "110263",

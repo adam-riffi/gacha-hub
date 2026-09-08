@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getGame, type BuildStatus } from "@gacha/shared";
+import { getGame, type BuildStatus, type CatalogCharacter } from "@gacha/shared";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
 import { GameSheet, hasSheet } from "../render";
@@ -126,6 +126,52 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
           doc={state.doc}
         />
       )}
+
+      {entry && <CatalogInfo entry={entry} />}
     </>
+  );
+}
+
+/** Read-only reference from the catalog: constellations/eidolons + talents. */
+function CatalogInfo({ entry }: { entry: CatalogCharacter }) {
+  const cons = entry.constellations ?? [];
+  const talentInfo = entry.talents.info ?? [];
+  if (cons.length === 0 && talentInfo.length === 0) {
+    return (
+      <div className="card" style={{ marginTop: 16 }}>
+        <h3>Reference</h3>
+        <p className="small muted">Constellation / talent details aren’t in the catalog yet — they’ll appear here once the catalog import includes them.</p>
+      </div>
+    );
+  }
+  return (
+    <div className="card" style={{ marginTop: 16 }}>
+      {talentInfo.length > 0 && (
+        <>
+          <h3>Talents</h3>
+          <div className="stack" style={{ gap: 8 }}>
+            {talentInfo.map((t, i) => (
+              <div key={i}>
+                <strong>{t.name ?? t.key ?? `Talent ${i + 1}`}</strong>
+                <p className="small" style={{ margin: "2px 0 0" }}>{t.description}</p>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+      {cons.length > 0 && (
+        <>
+          <h3 style={{ marginTop: talentInfo.length ? 16 : 0 }}>Constellations</h3>
+          <div className="stack" style={{ gap: 8 }}>
+            {cons.map((c, i) => (
+              <div key={i}>
+                <strong>C{i + 1}{c.name ? ` · ${c.name}` : ""}</strong>
+                <p className="small" style={{ margin: "2px 0 0" }}>{c.description}</p>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
   );
 }
