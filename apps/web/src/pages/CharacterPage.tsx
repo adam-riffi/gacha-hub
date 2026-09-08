@@ -6,6 +6,8 @@ import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
 import { GameSheet, hasSheet } from "../render";
 import { TaskGeneratorPanel } from "../components/TaskGeneratorPanel";
+import { useCatalog } from "../lib/catalog";
+import type { SheetCatalog } from "../render";
 import type { CharacterDetail } from "../lib/types";
 
 export function CharacterPage() {
@@ -35,6 +37,11 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
   }));
 
   const game = getGame(data.gameKey);
+  const { index, catalog } = useCatalog(data.gameKey);
+  const entry = data.catalogId ? index?.characters.get(data.catalogId) : undefined;
+  const sheetCatalog: SheetCatalog | undefined = entry
+    ? { element: entry.tag, weaponType: entry.weaponType, gearSets: catalog?.gear.map((g) => g.name) }
+    : undefined;
 
   const save = useMutation({
     mutationFn: () =>
@@ -105,6 +112,7 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
           portraitUrl={state.portraitUrl}
           onName={(name) => setState((s) => ({ ...s, name }))}
           onPortrait={(url) => setState((s) => ({ ...s, portraitUrl: url }))}
+          catalog={sheetCatalog}
         />
       ) : (
         <div className="card empty">No sheet is registered for game "{data.gameKey}".</div>

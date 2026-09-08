@@ -38,4 +38,4 @@ export function GameSheet({ gameKey, ...props }: HostProps) {
   }
 }
 
-export type { SheetProps };
+export type { SheetProps, SheetCatalog } from "./types";
