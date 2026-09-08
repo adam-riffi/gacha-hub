@@ -22,6 +22,8 @@ export const dashboardGameDto = z.object({
   accent: z.string(),
   regionKey: z.string(),
   characterCount: z.number().int(),
+  ownedCharacters: z.number().int(),
+  builtCharacters: z.number().int(),
   currencies: z.array(dashboardCurrencyDto),
   dailies: z.array(taskDto),
   nextReset: isoDateNullable,

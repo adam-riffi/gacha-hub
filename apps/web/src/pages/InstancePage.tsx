@@ -61,6 +61,7 @@ export function InstancePage() {
   const toast = useToast();
   const [newName, setNewName] = useState("");
   const [pick, setPick] = useState("");
+  const [buildName, setBuildName] = useState("");
 
   const { data, isLoading } = useQuery({
     queryKey: ["instance", id],
@@ -125,16 +126,20 @@ export function InstancePage() {
     onError: () => toast("Could not restore defaults", "err"),
   });
 
-  // Owned catalog characters that don't have a build yet.
-  const buildable = useMemo(() => {
-    if (!index || !owned || !data) return [];
-    const built = new Set(data.characters.map((c) => c.catalogId));
+  // Every owned catalog character (a character can have multiple named builds).
+  const ownedChars = useMemo(() => {
+    if (!index || !owned) return [];
     return owned
-      .filter((o) => o.kind === "character" && !built.has(o.catalogId))
+      .filter((o) => o.kind === "character")
       .map((o) => index.characters.get(o.catalogId))
       .filter((c): c is NonNullable<typeof c> => Boolean(c))
       .sort((a, b) => a.name.localeCompare(b.name));
-  }, [index, owned, data]);
+  }, [index, owned]);
+  const buildsByCatalog = useMemo(() => {
+    const m = new Map<string, number>();
+    for (const c of data?.characters ?? []) if (c.catalogId) m.set(c.catalogId, (m.get(c.catalogId) ?? 0) + 1);
+    return m;
+  }, [data]);
 
   if (isLoading || !data) return <div className="muted">Loading…</div>;
 
@@ -237,6 +242,9 @@ export function InstancePage() {
                   {catalogName(ch.catalogId) && catalogName(ch.catalogId) !== ch.name ? (
                     <span className="muted small"> · {catalogName(ch.catalogId)}</span>
                   ) : null}
+                  {ch.buildStatus !== "none" && (
+                    <span className={`badge build-${ch.buildStatus}`} style={{ marginLeft: 6 }}>{ch.buildStatus}</span>
+                  )}
                 </span>
                 <span className="muted small">edit →</span>
               </Link>
@@ -245,18 +253,26 @@ export function InstancePage() {
 
           {catalog ? (
             <div className="row" style={{ marginTop: 10 }}>
-              <select value={pick} onChange={(e) => setPick(e.target.value)} style={{ flex: 1 }}>
-                <option value="">
-                  {buildable.length ? "Pick an owned character…" : "No owned characters without a build"}
-                </option>
-                {buildable.map((c) => (
-                  <option key={c.id} value={c.id}>{c.name}</option>
-                ))}
+              <select value={pick} onChange={(e) => setPick(e.target.value)} style={{ flex: 1, minWidth: 140 }}>
+                <option value="">{ownedChars.length ? "Pick an owned character…" : "No owned characters"}</option>
+                {ownedChars.map((c) => {
+                  const n = buildsByCatalog.get(c.id) ?? 0;
+                  return <option key={c.id} value={c.id}>{c.name}{n ? ` (${n} build${n > 1 ? "s" : ""})` : ""}</option>;
+                })}
               </select>
+              <input
+                placeholder="Build name (optional)"
+                value={buildName}
+                onChange={(e) => setBuildName(e.target.value)}
+                style={{ maxWidth: 160 }}
+              />
               <button
                 className="btn sm"
                 disabled={!pick || addCharacter.isPending}
-                onClick={() => addCharacter.mutate({ catalogId: pick })}
+                onClick={() => {
+                  addCharacter.mutate({ catalogId: pick, ...(buildName ? { name: buildName } : {}) });
+                  setBuildName("");
+                }}
               >
                 + Build
               </button>

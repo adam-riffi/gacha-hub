@@ -127,7 +127,8 @@ export function DashboardPage() {
                   <Link to={`/games/${game.instanceId}`}>{game.name}</Link>
                 </h3>
                 <span className="small muted">
-                  {game.regionKey.toUpperCase()} · {game.characterCount} chars
+                  {game.regionKey.toUpperCase()}
+                  {game.ownedCharacters > 0 && ` · ${game.builtCharacters}/${game.ownedCharacters} built`}
                 </span>
               </div>
               {game.nextReset && (

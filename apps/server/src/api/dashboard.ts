@@ -1,5 +1,5 @@
 import type { FastifyInstance } from "fastify";
-import { dashboardDto, getGame } from "@gacha/shared";
+import { BUILT_STATUSES, dashboardDto, getGame } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
 import { requireUser } from "../auth/plugin.js";
 import { getGameServerModule } from "../games/index.js";
@@ -17,9 +17,17 @@ export async function registerDashboardRoutes(app: FastifyInstance) {
 
     const instances = await prisma.gameInstance.findMany({
       where: { userId },
-      include: { currencies: true, characters: { select: { id: true } } },
+      include: { currencies: true, characters: { select: { id: true, catalogId: true, buildStatus: true } } },
       orderBy: { createdAt: "asc" },
     });
+
+    // Owned characters per profile, for the "X built / Y owned" analytic.
+    const ownedRows = await prisma.ownership.groupBy({
+      by: ["gameInstanceId"],
+      where: { gameInstanceId: { in: instances.map((g) => g.id) }, kind: "character" },
+      _count: true,
+    });
+    const ownedByInstance = new Map(ownedRows.map((r) => [r.gameInstanceId, r._count]));
 
     const tasks = await prisma.task.findMany({ where: { userId } });
     const ctx = await buildRegionContext(tasks);
@@ -50,6 +58,11 @@ export async function registerDashboardRoutes(app: FastifyInstance) {
         accent: game?.accent ?? "#7c8cff",
         regionKey: gi.regionKey,
         characterCount: gi.characters.length,
+        ownedCharacters: ownedByInstance.get(gi.id) ?? 0,
+        // Distinct catalog characters marked good/perfect.
+        builtCharacters: new Set(
+          gi.characters.filter((c) => c.catalogId && BUILT_STATUSES.includes(c.buildStatus as never)).map((c) => c.catalogId),
+        ).size,
         currencies: gi.currencies.map((c) => {
           const d = currencyByKey.get(c.key);
           return {

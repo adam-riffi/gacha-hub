@@ -248,3 +248,12 @@ select.prio { width: auto; padding: 2px 6px; font-size: 0.72rem; border-radius: 
 select.prio-high { color: var(--danger); border-color: #4a2b33; }
 select.prio-low { color: var(--muted); }
 select.prio-normal { color: var(--text); }
+
+/* ---- Build status ---- */
+.badge.build-building { color: var(--accent); border-color: #4a4326; }
+.badge.build-good { color: var(--success); border-color: #234a30; }
+.badge.build-perfect { color: var(--primary); border-color: var(--primary-dim); }
+select.prio.build-good { color: var(--success); }
+select.prio.build-perfect { color: var(--primary); }
+select.prio.build-building { color: var(--accent); }
+select.prio.build-none { color: var(--muted); }
