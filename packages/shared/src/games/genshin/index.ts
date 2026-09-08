@@ -1,7 +1,11 @@
 import { z } from "zod";
-import { statRowSchema } from "../common.js";
-import type { GameDefinition } from "./types.js";
-import { hoyoRegions } from "./regions.js";
+import { statRowSchema } from "../../common.js";
+import type { Catalog } from "../../catalog/types.js";
+import type { GameDefinition } from "../types.js";
+import { hoyoRegions } from "../regions.js";
+import { GENSHIN_LIMITS as L } from "./limits.js";
+
+export { GENSHIN_LIMITS } from "./limits.js";
 
 export const GENSHIN_ELEMENTS = [
   "Anemo", "Geo", "Electro", "Dendro", "Hydro", "Pyro", "Cryo",
@@ -15,25 +19,29 @@ export const GENSHIN_ARTIFACT_SLOTS = [
   { key: "circlet", label: "Circlet of Logos" },
 ] as const;
 
+/** Talent keys — match the catalog's `talents.keys` order (combat1..3). */
+export const GENSHIN_TALENT_KEYS = ["normal", "skill", "burst"] as const;
+
 const artifactSchema = z
   .object({
     setName: z.string(),
     mainStat: z.string(),
-    level: z.number().min(0).max(20),
+    level: z.number().int().min(0).max(L.maxArtifactLevel),
     substats: z.array(statRowSchema),
   })
   .partial();
 
 export const genshinDocSchema = z
   .object({
-    level: z.number().min(1).max(90),
+    level: z.number().int().min(1).max(L.maxLevel),
     element: z.enum(GENSHIN_ELEMENTS),
-    constellation: z.number().min(0).max(6),
+    constellation: z.number().int().min(0).max(L.maxConstellation),
     weapon: z
       .object({
+        catalogId: z.string(),
         name: z.string(),
-        level: z.number().min(1).max(90),
-        refinement: z.number().min(1).max(5),
+        level: z.number().int().min(1).max(L.maxWeaponLevel),
+        refinement: z.number().int().min(1).max(L.maxRefinement),
       })
       .partial(),
     artifacts: z
@@ -47,9 +55,9 @@ export const genshinDocSchema = z
       .partial(),
     talents: z
       .object({
-        normal: z.number().min(1).max(10),
-        skill: z.number().min(1).max(10),
-        burst: z.number().min(1).max(10),
+        normal: z.number().int().min(1).max(L.maxTalent),
+        skill: z.number().int().min(1).max(L.maxTalent),
+        burst: z.number().int().min(1).max(L.maxTalent),
       })
       .partial(),
     stats: z.record(z.union([z.number(), z.string()])),
@@ -75,4 +83,7 @@ export const genshin: GameDefinition = {
   ],
   docSchema: genshinDocSchema,
   emptyDoc: (): GenshinDoc => ({ artifacts: {}, talents: {}, weapon: {}, stats: {} }),
+  // Lazy: the catalog is a separate chunk, loaded only when a screen needs it.
+  loadCatalog: async () =>
+    (await import("./catalog.json")).default as unknown as Catalog,
 };

@@ -21,6 +21,8 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "catalog:install": "npm --prefix scripts/catalog install",
+    "catalog:genshin": "npm --prefix scripts/catalog run genshin",
     "db:up": "docker compose up -d",
     "db:down": "docker compose down",
     "db:sqlite": "node scripts/gen-sqlite-schema.mjs && prisma db push --schema prisma/schema.sqlite.prisma --accept-data-loss",
