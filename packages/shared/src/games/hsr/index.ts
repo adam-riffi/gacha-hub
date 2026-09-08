@@ -77,6 +77,7 @@ export type HsrDoc = z.infer<typeof hsrDocSchema>;
 
 export const hsr: GameDefinition = {
   key: "hsr",
+  teamSize: 4,
   name: "Honkai: Star Rail",
   accent: "#8a7dff",
   art: { icon: "/games/hsr/icon.png", background: "/games/hsr/background.jpg" },

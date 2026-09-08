@@ -52,6 +52,8 @@ export interface GameDefinition {
   art?: GameArt;
   currencies: GameCurrency[];
   regions: GameRegion[];
+  /** Party size for the team builder (Genshin/HSR 4, ZZZ/WuWa 3…). Default 4. */
+  teamSize?: number;
   /** Recurring tasks seeded when a new profile is created. */
   defaultTasks: GameTaskSeed[];
   /** Bespoke validation for this game's character document. */

@@ -68,6 +68,7 @@ export type GenshinDoc = z.infer<typeof genshinDocSchema>;
 
 export const genshin: GameDefinition = {
   key: "genshin",
+  teamSize: 4,
   name: "Genshin Impact",
   accent: "#d9a441",
   art: { icon: "/games/genshin/icon.png", background: "/games/genshin/background.jpg" },
