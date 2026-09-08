@@ -16,7 +16,20 @@ const FINAL_STATS = [
   "HP", "ATK", "DEF", "CRIT Rate", "CRIT DMG", "Elemental Mastery", "Energy Recharge",
 ];
 
-export function GenshinSheet({ doc, setDoc, name, portraitUrl, onName, onPortrait }: SheetProps<GenshinDoc>) {
+// Valid main stats per artifact slot (flower/plume are fixed).
+const ELEMENTAL_DMG = GENSHIN_ELEMENTS.map((e) => `${e} DMG`);
+const MAIN_STATS: Record<string, string[]> = {
+  flower: ["HP"],
+  plume: ["ATK"],
+  sands: ["HP%", "ATK%", "DEF%", "Elemental Mastery", "Energy Recharge"],
+  goblet: ["HP%", "ATK%", "DEF%", "Elemental Mastery", "Physical DMG", ...ELEMENTAL_DMG],
+  circlet: ["HP%", "ATK%", "DEF%", "Elemental Mastery", "CRIT Rate", "CRIT DMG", "Healing Bonus"],
+};
+
+export function GenshinSheet({ doc, setDoc, name, portraitUrl, onName, onPortrait, catalog }: SheetProps<GenshinDoc>) {
+  // Element is fixed by the character unless the catalog gives none (Traveler).
+  const fixedElement =
+    catalog?.element && (GENSHIN_ELEMENTS as readonly string[]).includes(catalog.element) ? catalog.element : undefined;
   const artifacts = (doc.artifacts ?? {}) as Record<string, GearPiece>;
   const setArtifact = (slot: string, piece: GearPiece) =>
     setDoc((d) => ({ ...d, artifacts: { ...(d.artifacts ?? {}), [slot]: piece } }));
@@ -38,7 +51,11 @@ export function GenshinSheet({ doc, setDoc, name, portraitUrl, onName, onPortrai
           <Num value={doc.level} min={1} max={90} onChange={(v) => setDoc((d) => ({ ...d, level: v }))} />
         </Labeled>
         <Labeled label="Element">
-          <Select value={doc.element} options={GENSHIN_ELEMENTS} onChange={(v) => setDoc((d) => ({ ...d, element: v as GenshinDoc["element"] }))} />
+          {fixedElement ? (
+            <span className="badge" style={{ marginTop: 4 }}>{fixedElement}</span>
+          ) : (
+            <Select value={doc.element} options={GENSHIN_ELEMENTS} onChange={(v) => setDoc((d) => ({ ...d, element: v as GenshinDoc["element"] }))} />
+          )}
         </Labeled>
         <Labeled label="Constellation">
           <Num value={doc.constellation} min={0} max={6} onChange={(v) => setDoc((d) => ({ ...d, constellation: v }))} />
@@ -47,7 +64,7 @@ export function GenshinSheet({ doc, setDoc, name, portraitUrl, onName, onPortrai
 
       <div className="stack">
         <div className="card">
-          <h3>Weapon</h3>
+          <h3>Weapon{catalog?.weaponType ? <span className="small muted"> · {catalog.weaponType}</span> : null}</h3>
           <div className="slot-grid">
             <Labeled label="Name"><input value={doc.weapon?.name ?? ""} onChange={(e) => setWeapon({ name: e.target.value || undefined })} /></Labeled>
             <Labeled label="Level"><Num value={doc.weapon?.level} min={1} max={90} onChange={(v) => setWeapon({ level: v })} /></Labeled>
@@ -65,6 +82,8 @@ export function GenshinSheet({ doc, setDoc, name, portraitUrl, onName, onPortrai
                 piece={artifacts[slot.key]}
                 maxLevel={20}
                 substatOptions={SUBSTATS}
+                mainStatOptions={MAIN_STATS[slot.key]}
+                setOptions={catalog?.gearSets}
                 onChange={(p) => setArtifact(slot.key, p)}
               />
             ))}
