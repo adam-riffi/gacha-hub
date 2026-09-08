@@ -161,4 +161,40 @@ describe("planning + materials (routes)", () => {
     const needed = await c.req<unknown[]>("GET", `/api/instances/${zid}/materials/needed`);
     expect(needed.json).toEqual([]);
   });
+
+  it("generates a hidden completionist backlog, idempotently, skipping built characters", async () => {
+    await c.req("PUT", `/api/instances/${gid}/ownership`, { items: [{ kind: "character", catalogId: AMBER, owned: true }] });
+
+    const gen = await c.req<{ characters: number; created: number }>("POST", `/api/instances/${gid}/backlog/generate`);
+    expect(gen.status).toBe(200);
+    expect(gen.json.characters).toBe(1);
+    expect(gen.json.created).toBeGreaterThan(1); // parent + subtasks
+
+    const tasks = await c.req<{ id: string; title: string; backlog: boolean; parentId: string | null }[]>("GET", `/api/tasks?scope=game&refId=${gid}`);
+    const parent = tasks.json.find((t) => t.title === "Farm Amber (max)" && !t.parentId)!;
+    expect(parent.backlog).toBe(true);
+    expect(tasks.json.some((t) => t.parentId === parent.id && t.backlog)).toBe(true);
+
+    // Backlog goals are excluded from the dashboard's active goals.
+    const dash = await c.req<{ goals: { title: string }[] }>("GET", "/api/dashboard");
+    expect(dash.json.goals.some((g) => g.title.startsWith("Farm Amber"))).toBe(false);
+
+    // Idempotent.
+    expect((await c.req<{ created: number }>("POST", `/api/instances/${gid}/backlog/generate`)).json.created).toBe(0);
+
+    // A built (perfect) character is skipped next run.
+    const build = await c.req<{ id: string }>("POST", `/api/instances/${gid}/characters`, { catalogId: AMBER });
+    await c.req("PUT", `/api/characters/${build.json.id}`, { buildStatus: "perfect" });
+    expect((await c.req<{ characters: number }>("POST", `/api/instances/${gid}/backlog/generate`)).json.characters).toBe(0);
+  });
+
+  it("round-trips the notify flag on a task", async () => {
+    const t = await c.req<{ id: string; notify: boolean }>("POST", "/api/tasks", {
+      scope: "game", refId: gid, type: "goal", title: "Flag me", target: 5,
+    });
+    expect(t.json.notify).toBe(false);
+    await c.req("PUT", `/api/tasks/${t.json.id}`, { notify: true });
+    const list = await c.req<{ id: string; notify: boolean }[]>("GET", `/api/tasks?scope=game&refId=${gid}`);
+    expect(list.json.find((x) => x.id === t.json.id)?.notify).toBe(true);
+  });
 });

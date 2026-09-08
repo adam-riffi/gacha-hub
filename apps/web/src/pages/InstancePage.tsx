@@ -126,6 +126,15 @@ export function InstancePage() {
     onError: () => toast("Could not restore defaults", "err"),
   });
 
+  const genBacklog = useMutation({
+    mutationFn: () => api.post<{ characters: number; created: number }>(`/api/instances/${id}/backlog/generate`),
+    onSuccess: (r) => {
+      toast(`Backlog: ${r.characters} character(s) to max — see the Tasks board (Show backlog)`);
+      qc.invalidateQueries({ queryKey: ["tasks"] });
+    },
+    onError: () => toast("Could not generate backlog", "err"),
+  });
+
   // Every owned catalog character (a character can have multiple named builds).
   const ownedChars = useMemo(() => {
     if (!index || !owned) return [];
@@ -185,6 +194,16 @@ export function InstancePage() {
           >
             Restore default tasks
           </button>
+          {catalog && (
+            <button
+              className="btn sm"
+              disabled={genBacklog.isPending}
+              onClick={() => genBacklog.mutate()}
+              title="Create hidden 'to max' backlog goals for every owned, unbuilt character"
+            >
+              Generate backlog
+            </button>
+          )}
           <button
             className="btn danger sm"
             onClick={() => {

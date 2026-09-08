@@ -84,6 +84,15 @@ export async function runReminderTick(now = new Date()): Promise<void> {
         parts.push(left.length ? `Dailies left: ${left.join(", ")}` : "✅ dailies done");
       }
 
+      // Tasks the user flagged with the notify toggle ride along in the DM.
+      const flagged = await prisma.task.findMany({
+        where: { userId: rule.userId, scope: "game", refId: instance.id, notify: true, backlog: false, parentId: null },
+        select: { title: true },
+      });
+      if (flagged.length) {
+        parts.push(`🔔 Flagged: ${flagged.map((t) => t.title).join(", ")}`.slice(0, 400));
+      }
+
       await sendDirectMessage(rule.user.discordId, parts.join("\n"));
       await prisma.reminderLog.create({ data: { ruleId: rule.id, firedFor: boundary } });
     } catch (err) {
