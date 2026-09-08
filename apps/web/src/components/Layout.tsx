@@ -1,6 +1,9 @@
 import type { ReactNode } from "react";
 import { NavLink } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "../lib/auth";
+import { api } from "../lib/api";
+import type { InstanceListItem } from "../lib/types";
 
 interface NavItem {
   to: string;
@@ -21,6 +24,11 @@ const adminLink: NavItem = { to: "/admin", label: "Admin", icon: "🛠️" };
 export function Layout({ children }: { children: ReactNode }) {
   const { me, logout } = useAuth();
   const nav = me?.isAdmin ? [...links, adminLink] : links;
+  const { data: instances } = useQuery({
+    queryKey: ["instances"],
+    queryFn: () => api.get<InstanceListItem[]>("/api/instances"),
+    enabled: Boolean(me?.user),
+  });
   return (
     <div className="app">
       <aside className="sidebar">
@@ -36,6 +44,22 @@ export function Layout({ children }: { children: ReactNode }) {
             {l.label}
           </NavLink>
         ))}
+
+        {(instances ?? []).length > 0 && (
+          <div className="nav-section">
+            <div className="nav-section-title">Your games</div>
+            {instances!.map((gi) => (
+              <NavLink
+                key={gi.id}
+                to={`/games/${gi.id}`}
+                className={({ isActive }) => `nav-link nav-sub ${isActive ? "active" : ""}`}
+              >
+                <span className="dot" style={{ background: gi.accent }} />
+                {gi.name}
+              </NavLink>
+            ))}
+          </div>
+        )}
         <div className="sidebar-footer">
           <div className="row" style={{ marginBottom: 8 }}>
             {me?.user?.avatarUrl && (
