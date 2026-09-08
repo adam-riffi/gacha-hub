@@ -1,5 +1,5 @@
 import type { GameInstance, Prisma } from "@prisma/client";
-import { getGame, type GameDefinition } from "@gacha/shared";
+import { getGame, indexCatalog, type Catalog, type GameDefinition } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
 import { toRegionReset, type RegionReset } from "../lib/resets.js";
 
@@ -30,6 +30,20 @@ export function regionForInstance(
 /** Validate a character document against its game's bespoke schema. */
 export function validateDoc(game: GameDefinition, doc: unknown): unknown {
   return game.docSchema.parse(doc ?? game.emptyDoc());
+}
+
+export type LoadedCatalog = { catalog: Catalog; index: ReturnType<typeof indexCatalog> };
+const catalogCache = new Map<string, Promise<LoadedCatalog>>();
+
+/** The game's catalog + id indexes, loaded once per process (null if none). */
+export function getCatalog(game: GameDefinition): Promise<LoadedCatalog | null> {
+  if (!game.loadCatalog) return Promise.resolve(null);
+  let p = catalogCache.get(game.key);
+  if (!p) {
+    p = game.loadCatalog().then((catalog) => ({ catalog, index: indexCatalog(catalog) }));
+    catalogCache.set(game.key, p);
+  }
+  return p;
 }
 
 export function loadInstance(userId: string, id: string) {

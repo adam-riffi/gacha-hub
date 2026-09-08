@@ -65,7 +65,7 @@ export const zzz: GameDefinition = {
   regions: hoyoRegions,
   currencies: [
     { key: "battery", label: "Battery Charge", cap: 240, regenPerHour: 10 },
-    { key: "polychrome", label: "Polychrome" },
+    { key: "polychrome", label: "Polychrome", pullCost: 160, pullLabel: "signal" },
     { key: "denny", label: "Denny" },
   ],
   defaultTasks: [
@@ -74,4 +74,5 @@ export const zzz: GameDefinition = {
   ],
   docSchema: zzzDocSchema,
   emptyDoc: (): ZzzDoc => ({ discs: {}, skills: {}, wEngine: {}, stats: {} }),
+  docVersion: 1,
 };

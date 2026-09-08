@@ -1,5 +1,6 @@
 import type { z } from "zod";
 import type { TaskCadence } from "../common.js";
+import type { Catalog, CatalogCharacter } from "../catalog/types.js";
 
 /**
  * Thin contract every hardcoded game module implements. The host app (auth,
@@ -24,6 +25,10 @@ export interface GameCurrency {
   label: string;
   cap?: number;
   regenPerHour?: number;
+  /** Premium currency: units per single pull (e.g. 160), for a wish count. */
+  pullCost?: number;
+  /** What one pull is called in this game: "wish", "warp", "convene"… */
+  pullLabel?: string;
 }
 
 export interface GameTaskSeed {
@@ -47,10 +52,24 @@ export interface GameDefinition {
   art?: GameArt;
   currencies: GameCurrency[];
   regions: GameRegion[];
-  /** Recurring tasks seeded when a new account is created. */
+  /** Recurring tasks seeded when a new profile is created. */
   defaultTasks: GameTaskSeed[];
   /** Bespoke validation for this game's character document. */
   docSchema: z.ZodTypeAny;
   /** A blank character document for this game. */
   emptyDoc: () => unknown;
+  /**
+   * Current version of the build document shape. Stored on every character;
+   * bump it together with a `migrations` step when the shape changes.
+   */
+  docVersion: number;
+  /** Migrations keyed by the version they upgrade FROM (n → n+1). */
+  migrations?: Record<number, (doc: unknown) => unknown>;
+  /** Seed a new build document from its catalog entry (element, path, …). */
+  seedDoc?: (entry: CatalogCharacter) => unknown;
+  /**
+   * Lazily load the game's normalized catalog (characters, weapons, gear,
+   * materials + costs). Absent for games without a catalog.
+   */
+  loadCatalog?: () => Promise<Catalog>;
 }

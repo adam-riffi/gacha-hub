@@ -7,3 +7,4 @@ prisma/migrations
 prisma/schema.sqlite.prisma
 apps/web/public
 *.md
+**/catalog.json

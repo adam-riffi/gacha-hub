@@ -1,7 +1,10 @@
 import { pathToFileURL } from "node:url";
 import { config, hasDiscordBot } from "../config.js";
-import { commands } from "./commands.js";
+import { commands as coreCommands } from "./commands.js";
+import { allGameBotCommands } from "../games/index.js";
 import { discordFetch } from "./rest.js";
+
+const commands = [...coreCommands, ...allGameBotCommands()];
 
 /** Register slash commands with Discord (guild-scoped in dev, else global). */
 export async function registerCommands(): Promise<void> {

@@ -1,16 +1,58 @@
 import { Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getGame, type GameDashboardExtras } from "@gacha/shared";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
+import { formatRemaining } from "../lib/time";
+import { pullText } from "../lib/format";
 import type { DashboardData } from "../lib/types";
 
-function untilReset(iso: string | null): string {
-  if (!iso) return "";
-  const ms = new Date(iso).getTime() - Date.now();
-  if (ms <= 0) return "now";
-  const h = Math.floor(ms / 3_600_000);
-  const m = Math.floor((ms % 3_600_000) / 60_000);
-  return h > 0 ? `${h}h ${m}m` : `${m}m`;
+/** Per-game extras from the server module (e.g. Genshin resin projection). */
+function GameExtras({ extras }: { extras: unknown }) {
+  const regen = (extras as GameDashboardExtras | undefined)?.regen;
+  if (!regen) return null;
+  return (
+    <div className="spread small" style={{ marginBottom: 10 }}>
+      <span>
+        ⛲ {regen.label}: <strong>{regen.value}</strong> / {regen.cap}
+      </span>
+      <span className={regen.full ? "badge done" : "badge"}>
+        {regen.full || !regen.fullAt ? "full" : `full in ${formatRemaining(regen.fullAt)}`}
+      </span>
+    </div>
+  );
+}
+
+const untilReset = (iso: string | null) => (iso ? formatRemaining(iso) : "");
+
+/** Countdown strip: active + upcoming banners/events across installed games. */
+function TimelineWidget({ timeline }: { timeline: DashboardData["timeline"] }) {
+  const items = [
+    ...timeline.banners.map((b) => ({ id: `b:${b.id}`, gameKey: b.gameKey, name: b.name, tag: b.kind, status: b.status, startsAt: b.startsAt, endsAt: b.endsAt })),
+    ...timeline.events.map((e) => ({ id: `e:${e.id}`, gameKey: e.gameKey, name: e.name, tag: "event", status: e.status, startsAt: e.startsAt, endsAt: e.endsAt })),
+  ].sort((a, b) => (a.status === b.status ? a.endsAt.localeCompare(b.endsAt) : a.status === "active" ? -1 : 1));
+  if (items.length === 0) return null;
+  return (
+    <div className="card" style={{ marginBottom: 18 }}>
+      <div className="spread">
+        <h3 style={{ margin: 0 }}>Banners &amp; events</h3>
+        <Link className="small" to="/timeline">See all →</Link>
+      </div>
+      <div className="stack" style={{ gap: 6, marginTop: 10 }}>
+        {items.slice(0, 8).map((it) => (
+          <div className="spread small" key={it.id}>
+            <span>
+              <span className="muted">{getGame(it.gameKey)?.name ?? it.gameKey} · </span>
+              {it.name} <span className="badge">{it.tag}</span>
+            </span>
+            <span className={it.status === "active" ? "badge done" : "badge todo"}>
+              {it.status === "active" ? `ends in ${formatRemaining(it.endsAt)}` : `starts in ${formatRemaining(it.startsAt)}`}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 export function DashboardPage() {
@@ -57,6 +99,8 @@ export function DashboardPage() {
         <Link className="btn" to="/library">+ Add game</Link>
       </div>
 
+      <TimelineWidget timeline={data.timeline} />
+
       {data.goals.length > 0 && (
         <div className="card" style={{ marginBottom: 18 }}>
           <h3>Active goals</h3>
@@ -91,11 +135,18 @@ export function DashboardPage() {
               )}
             </div>
 
+            <GameExtras extras={game.extras} />
+
             {game.currencies.length > 0 && (
               <div style={{ marginBottom: 12 }}>
-                {game.currencies.map((c) => (
+                {game.currencies.map((c) => {
+                  const pulls = pullText(c.value, c.pullCost, c.pullLabel);
+                  return (
                   <div className="currency-row" key={c.key}>
-                    <span>{c.label}</span>
+                    <span>
+                      {c.label}
+                      {pulls && <span className="small muted"> · ≈ {pulls}</span>}
+                    </span>
                     <div className="currency-val">
                       <input
                         type="number"
@@ -111,7 +162,8 @@ export function DashboardPage() {
                       {c.cap ? <span className="small muted">/ {c.cap}</span> : null}
                     </div>
                   </div>
-                ))}
+                  );
+                })}
               </div>
             )}
 

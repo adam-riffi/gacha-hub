@@ -12,19 +12,32 @@ and a sheet. The shared host (auth, storage, cron tick, Discord bot, dashboard)
 loads these modules through a thin registry.
 
 Ships with: **Genshin Impact**, **Honkai: Star Rail**, **Zenless Zone Zero**,
-**Arknights: Endfield**.
+**Wuthering Waves**, **Arknights: Endfield**.
+
+> Picking this up? Start with [docs/HANDOFF.md](docs/HANDOFF.md) — decisions,
+> PR stack, gotchas, and what's next.
 
 ## Highlights
 
 - **Bespoke per game.** Each game owns its schema + sheet — Genshin's artifacts,
-  HSR's relics + light cone, ZZZ's drive discs + W-Engine, Endfield's gear + a
-  weapon-with-nested-essence are all hand-built.
-- **Cross-game dashboard.** Currencies (with caps), outstanding dailies, and
-  active farming goals, sorted by soonest reset.
+  HSR's relics + light cone, ZZZ's drive discs + W-Engine, WuWa's echoes,
+  Endfield's gear + a weapon-with-nested-essence are all hand-built.
+- **The app knows the games.** Characters, weapons, gear sets and materials
+  (with upgrade costs and farm days) come from a catalog pipeline over open
+  datasets; you just tick what you **own**, and builds start from the catalog.
+- **Farm planning.** Pick level / talent targets on a character (or a weapon on
+  the Equipment screen) → material breakdown against your stock → one farming
+  task per material. Inventory is the source of truth; the Materials screen
+  shows need vs. have and what's farmable today for your region.
+- **Cross-game dashboard.** Currencies (with caps), outstanding dailies, active
+  goals, and countdowns for banners & events.
+- **Banners & events** are uploaded by admins as JSON (validated, audited,
+  round-trippable exports) and show up with countdowns, featured characters
+  and ownership badges.
 - **Discord bot over HTTP.** Slash commands arrive via Discord's *Interactions
   Endpoint* and DMs go out via REST — no always-on gateway process, so it works
-  on serverless. `/status`, `/currency`, `/update`, `/done`, `/goal`, `/build`.
-- **Reset-timed reminders.** Per-account rules DM you before daily reset with
+  on serverless.
+- **Reset-timed reminders.** Per-game rules DM you before daily reset with
   currencies and undone dailies. A free GitHub Actions schedule drives the tick.
 
 ## Tech stack
@@ -36,17 +49,25 @@ Interactions · zod.
 ## Project layout
 
 ```
-packages/shared/src/games   One module per game (currencies, regions, tasks,
-                            bespoke character-doc zod schema). Registry in games/index.ts.
-apps/server                 Fastify API, Discord OAuth/sessions, interactions endpoint,
-                            cron tick, reminder logic. app.ts builds the app; index.ts
-                            runs it always-on; serverless.ts exports the Vercel handler.
-apps/web/src/games/<key>    Bespoke React character sheet per game
-apps/web/public/games/<key> Image assets per game
-api/index.ts                Vercel function entry → bundled server (dist-server/)
-scripts/                    SQLite schema derivation, server bundling, Vercel build
-prisma                      schema.prisma + migrations
-.github/workflows           reminder cron tick
+packages/shared/src/games/<key>  One module per game (currencies, regions, tasks, limits,
+                                 bespoke character-doc zod schema, docVersion migrations,
+                                 catalog.json). Registry in games/index.ts.
+packages/shared/src/{catalog,planning,dto}
+                                 Normalized catalog schema · requirement/deficit math ·
+                                 zod DTOs for every request/response (client types derive)
+apps/server                      Fastify API, Discord OAuth/sessions, interactions endpoint,
+                                 admin uploads + audit, cron tick, reminders. app.ts builds
+                                 the app; index.ts runs it always-on; serverless.ts = Vercel.
+apps/server/src/games            Per-game server hooks (bot commands, dashboard extras)
+apps/web/src/games/<key>         Bespoke React character sheet per game
+apps/web/public/games/<key>      Image assets per game
+api/index.ts                     Vercel function entry → bundled server (dist-server/)
+scripts/catalog                  Catalog importers (isolated package; see NOTICE for sources)
+scripts/harness                  End-to-end harnesses against the bundled server
+scripts/                         SQLite schema derivation, server bundling, Vercel build
+prisma                           schema.prisma + migrations
+docs/HANDOFF.md                  Decisions, PR stack, gotchas, next steps
+.github/workflows                CI (lint, typecheck, test, build) + reminder cron tick
 ```
 
 ## Local development
@@ -68,10 +89,34 @@ docker-compose URL in `.env`, then `npm run db:up && npm run prisma:migrate`.
 ### Tests & checks
 
 ```bash
-npm test          # reset math + Discord signature verification
 npm run typecheck # all workspaces
+npm test          # unit + route integration tests (spins up a throwaway SQLite DB)
+npm run lint
 npm run build     # web + serverless bundle
+npm run harness   # end-to-end: boots the bundle over SQLite and walks every flow
 ```
+
+`npm test` provisions a disposable `prisma/test.db` first (via the server's
+`pretest`), then runs vitest: unit tests (planning, catalogs, resets, doc
+migrations, timeline, Discord signatures) plus route integration tests that
+drive the real Fastify app with `app.inject()`.
+
+### Catalog data
+
+Catalogs are committed JSON produced by `scripts/catalog/` (sources and
+licenses in [NOTICE](NOTICE)). To refresh one:
+
+```bash
+npm run catalog:install     # once
+npm run catalog:genshin     # or catalog:hsr / catalog:wuwa / catalog:endfield
+```
+
+### Admin uploads
+
+Add your Discord id to `ADMIN_DISCORD_IDS` (locally: `dev-local-user`) and the
+**Admin** page appears: paste a banners/events JSON payload → validate & apply.
+"Load current" exports what's live in the same shape, so edits round-trip.
+Every write is recorded in the audit log.
 
 ## Deploy to Vercel (free tier)
 
@@ -115,12 +160,18 @@ the user to share a server with the bot (Discord limitation).
 
 ## Adding a new game
 
-1. `packages/shared/src/games/<key>.ts` — export a `GameDefinition` (key,
-   name, accent, currencies, regions, defaultTasks, bespoke `docSchema`,
-   `emptyDoc`); register in `games/index.ts`.
-2. `apps/web/src/games/<key>/Sheet.tsx` — the bespoke sheet; register in
+1. `packages/shared/src/games/<key>/index.ts` — export a `GameDefinition`
+   (key, name, accent, currencies, regions, defaultTasks, bespoke `docSchema`,
+   `emptyDoc`, `docVersion`, optional `seedDoc` / `loadCatalog`); register in
+   `games/index.ts`.
+2. `scripts/catalog/<key>.ts` — an importer producing `catalog.json` in the
+   normalized schema (`packages/shared/src/catalog/types.ts`), plus the
+   `catalog.js` / `catalog.d.ts` shim pair next to it.
+3. `apps/web/src/games/<key>/Sheet.tsx` — the bespoke sheet; register in
    `apps/web/src/render/index.tsx`.
-3. Drop `icon.png` / `background.jpg` in `apps/web/public/games/<key>/`.
+4. Drop `icon.png` / `background.jpg` in `apps/web/public/games/<key>/`.
+5. Optional: `apps/server/src/games/<key>.ts` — bot commands / dashboard
+   extras, registered in `apps/server/src/games/index.ts`.
 
 ## Discord bot commands
 
@@ -132,3 +183,8 @@ the user to share a server with the bot (Discord limitation).
 | `/done <game> <task>` | Mark a recurring task done this cycle |
 | `/goal <task> <progress>` | Update a farming goal's progress |
 | `/build <game> <character>` | Character build summary |
+| `/banner [game]` | Active + upcoming banners with featured characters and countdowns |
+| `/events [game]` | Active + upcoming events |
+| `/farm [game]` | Rotating materials you're short on that are farmable today |
+| `/own <game> <character> [owned]` | Mark a catalog character as owned / not owned |
+| `/resin` | (Genshin) projected Original Resin and time to cap |

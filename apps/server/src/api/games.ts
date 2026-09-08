@@ -169,4 +169,37 @@ export async function registerGameRoutes(app: FastifyInstance) {
       return currencyStateDto.parse(row);
     },
   );
+
+  // Recreate any of the game's default recurring tasks that are missing
+  // (idempotent by title) — a "restore defaults" for deleted dailies/weeklies.
+  app.post<{ Params: { id: string } }>(
+    "/api/instances/:id/tasks/defaults",
+    { preHandler: requireUser },
+    async (req, reply) => {
+      const userId = req.user!.id;
+      const gi = await loadInstance(userId, req.params.id);
+      if (!gi) return reply.code(404).send({ error: "not_found" });
+      const game = gameOrThrow(gi.gameKey);
+      const existing = await prisma.task.findMany({
+        where: { userId, scope: "game", refId: gi.id, type: "recurring" },
+        select: { title: true },
+      });
+      const have = new Set(existing.map((t) => t.title.toLowerCase()));
+      const missing = game.defaultTasks.filter((t) => !have.has(t.title.toLowerCase()));
+      if (missing.length > 0) {
+        await prisma.task.createMany({
+          data: missing.map((t) => ({
+            userId,
+            scope: "game",
+            refId: gi.id,
+            type: "recurring",
+            title: t.title,
+            cadence: t.cadence,
+            regionAware: true,
+          })),
+        });
+      }
+      return { created: missing.length, restored: missing.map((t) => t.title) };
+    },
+  );
 }
