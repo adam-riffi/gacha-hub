@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getGame, type GameDashboardExtras } from "@gacha/shared";
+import { getGame, PRIORITY_RANK, type GameDashboardExtras } from "@gacha/shared";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
 import { formatRemaining } from "../lib/time";
@@ -99,21 +99,56 @@ export function DashboardPage() {
         <Link className="btn" to="/library">+ Add game</Link>
       </div>
 
+      {(() => {
+        const dailiesLeft = data.games.flatMap((g) => g.dailies).filter((d) => !d.doneThisCycle).length;
+        const unbuilt = data.games.reduce((n, g) => n + Math.max(0, g.ownedCharacters - g.builtCharacters), 0);
+        const timed = data.timeline.banners.length + data.timeline.events.length;
+        const tiles = [
+          { label: "Games", value: data.games.length },
+          { label: "Dailies left", value: dailiesLeft, tone: dailiesLeft ? "accent" : "success" },
+          { label: "Active goals", value: data.goals.length },
+          { label: "Unbuilt", value: unbuilt, tone: unbuilt ? "accent" : "success" },
+          { label: "Banners/events", value: timed },
+        ];
+        return (
+          <div className="stat-row">
+            {tiles.map((t) => (
+              <div className="stat-tile" key={t.label}>
+                <div className={`stat-value ${t.tone ?? ""}`}>{t.value}</div>
+                <div className="stat-label">{t.label}</div>
+              </div>
+            ))}
+          </div>
+        );
+      })()}
+
       <TimelineWidget timeline={data.timeline} />
 
       {data.goals.length > 0 && (
         <div className="card" style={{ marginBottom: 18 }}>
-          <h3>Active goals</h3>
-          <div className="stack">
-            {data.goals.map((g) => (
-              <div className="spread" key={g.id}>
-                <span>{g.title}</span>
-                <span className="muted">
-                  {g.progress}
-                  {g.target ? ` / ${g.target}` : ""}
-                </span>
-              </div>
-            ))}
+          <div className="spread">
+            <h3 style={{ margin: 0 }}>Active goals</h3>
+            <Link className="small" to="/tasks">Board →</Link>
+          </div>
+          <div className="stack" style={{ marginTop: 10 }}>
+            {[...data.goals]
+              .sort((a, b) => PRIORITY_RANK[a.priority] - PRIORITY_RANK[b.priority])
+              .map((g) => {
+                const gameName = data.games.find((x) => x.instanceId === g.refId)?.name;
+                return (
+                  <div className="spread" key={g.id}>
+                    <span>
+                      {g.priority !== "normal" && <span className={`badge prio-${g.priority}`}>{g.priority}</span>}{" "}
+                      {g.title}
+                      {gameName && <span className="muted small"> · {gameName}</span>}
+                    </span>
+                    <span className="muted">
+                      {g.progress}
+                      {g.target ? ` / ${g.target}` : ""}
+                    </span>
+                  </div>
+                );
+              })}
           </div>
         </div>
       )}
