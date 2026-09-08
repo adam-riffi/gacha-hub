@@ -74,6 +74,10 @@ p { color: var(--muted); }
 }
 .nav-link:hover { background: var(--surface); color: var(--text); }
 .nav-link.active { background: var(--surface-2); color: var(--text); }
+.nav-section { margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 2px; }
+.nav-section-title { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); padding: 2px 12px 6px; }
+.nav-link.nav-sub { font-size: 0.86rem; padding: 7px 12px; }
+.nav-link .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
 .sidebar-footer { margin-top: auto; font-size: 0.8rem; color: var(--muted); }
 
 .main { flex: 1; padding: 28px 34px; max-width: 1200px; width: 100%; }

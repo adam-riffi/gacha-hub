@@ -1,11 +1,12 @@
 import { useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { levelCaps, type CatalogWeapon, type OwnershipDto, type PlanGenerateResultDto, type PlanPreviewDto } from "@gacha/shared";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
 import { useCatalog } from "../lib/catalog";
 import { PlanTable } from "../components/TaskGeneratorPanel";
+import { GameTabs } from "../components/GameTabs";
 import type { InstanceDetail } from "../lib/types";
 
 const stars = (n: number) => "★".repeat(Math.max(0, Math.min(6, n)));
@@ -45,7 +46,6 @@ function WeaponFarm({ instanceId, weapon, onDone }: { instanceId: string; weapon
 /** Weapons + gear sets for a game: ownership, and farm / pre-farm planning. */
 export function EquipmentPage() {
   const { id } = useParams();
-  const nav = useNavigate();
   const qc = useQueryClient();
   const toast = useToast();
   const [tab, setTab] = useState<"weapons" | "gear">("weapons");
@@ -101,10 +101,13 @@ export function EquipmentPage() {
 
   return (
     <>
+      <div style={{ marginBottom: 14 }}>
+        <GameTabs instanceId={id!} active="equipment" />
+      </div>
       <div className="page-head">
         <div className="row">
-          <button className="btn ghost sm" onClick={() => nav(`/games/${id}`)}>← {instance.name}</button>
-          <h1 style={{ margin: 0 }}>Equipment</h1>
+          <h1 style={{ margin: 0 }}>{instance.name}</h1>
+          <span className="badge">Equipment</span>
         </div>
         <div className="row">
           <button className={`btn sm ${tab === "weapons" ? "primary" : ""}`} onClick={() => setTab("weapons")}>Weapons ({catalog.weapons.length})</button>

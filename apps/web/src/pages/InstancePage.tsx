@@ -6,6 +6,7 @@ import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
 import { useCatalog } from "../lib/catalog";
 import { pullText } from "../lib/format";
+import { GameTabs } from "../components/GameTabs";
 import type { InstanceDetail, ReminderRule } from "../lib/types";
 
 function ReminderControl({ instanceId }: { instanceId: string }) {
@@ -146,9 +147,17 @@ export function InstancePage() {
 
   return (
     <>
+      <div style={{ marginBottom: 14 }}>
+        <GameTabs instanceId={id!} active="overview" hasCatalog={Boolean(catalog)} />
+      </div>
       <div className="page-head">
         <div className="row">
           <h1 style={{ margin: 0 }}>{data.name}</h1>
+          {catalog && (
+            <span className="badge">
+              {(owned ?? []).filter((o) => o.kind === "character").length} owned
+            </span>
+          )}
           {game && game.regions.length > 1 && (
             <select
               value={data.regionKey}
@@ -163,15 +172,6 @@ export function InstancePage() {
           )}
         </div>
         <div className="row">
-          {catalog && (
-            <>
-              <Link className="btn sm" to={`/games/${id}/ownership`}>
-                Ownership ({(owned ?? []).filter((o) => o.kind === "character").length} chars)
-              </Link>
-              <Link className="btn sm" to={`/games/${id}/equipment`}>Equipment</Link>
-              <Link className="btn sm" to={`/games/${id}/materials`}>Materials</Link>
-            </>
-          )}
           <button
             className="btn sm"
             disabled={restoreDefaults.isPending}

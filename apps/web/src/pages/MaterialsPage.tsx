@@ -1,10 +1,11 @@
 import { useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { MaterialNeedDto, MaterialStockDto } from "@gacha/shared";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
 import { useCatalog } from "../lib/catalog";
+import { GameTabs } from "../components/GameTabs";
 import type { InstanceDetail } from "../lib/types";
 
 const DAYS = ["", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -12,7 +13,6 @@ const DAYS = ["", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 /** Your material stock for a game, and what your farming goals still need. */
 export function MaterialsPage() {
   const { id } = useParams();
-  const nav = useNavigate();
   const qc = useQueryClient();
   const toast = useToast();
   const [search, setSearch] = useState("");
@@ -70,10 +70,13 @@ export function MaterialsPage() {
 
   return (
     <>
+      <div style={{ marginBottom: 14 }}>
+        <GameTabs instanceId={id!} active="materials" />
+      </div>
       <div className="page-head">
         <div className="row">
-          <button className="btn ghost sm" onClick={() => nav(`/games/${id}`)}>← {instance.name}</button>
-          <h1 style={{ margin: 0 }}>Materials</h1>
+          <h1 style={{ margin: 0 }}>{instance.name}</h1>
+          <span className="badge">Materials</span>
           {needed && needed.length > 0 && <span className="badge todo">{needed.length} needed</span>}
         </div>
       </div>

@@ -1,10 +1,11 @@
 import { useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { CatalogCharacter, CatalogWeapon, OwnershipDto } from "@gacha/shared";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
 import { useCatalog } from "../lib/catalog";
+import { GameTabs } from "../components/GameTabs";
 import type { InstanceDetail } from "../lib/types";
 
 type Kind = "character" | "weapon";
@@ -38,8 +39,15 @@ export function OwnershipPage() {
     () => new Set((owned ?? []).filter((o) => o.kind === kind).map((o) => o.catalogId)),
     [owned, kind],
   );
-  const builtIds = useMemo(
-    () => new Set((instance?.characters ?? []).map((c) => c.catalogId).filter(Boolean)),
+  // catalogId → the existing build's character id, so owned characters with a
+  // build link straight to it (instead of the edit affordance disappearing).
+  const buildByCatalog = useMemo(
+    () =>
+      new Map(
+        (instance?.characters ?? [])
+          .filter((c): c is typeof c & { catalogId: string } => Boolean(c.catalogId))
+          .map((c) => [c.catalogId, c.id]),
+      ),
     [instance],
   );
 
@@ -94,10 +102,13 @@ export function OwnershipPage() {
 
   return (
     <>
+      <div style={{ marginBottom: 14 }}>
+        <GameTabs instanceId={id!} active="ownership" />
+      </div>
       <div className="page-head">
         <div className="row">
-          <button className="btn ghost sm" onClick={() => nav(`/games/${id}`)}>← {instance.name}</button>
-          <h1 style={{ margin: 0 }}>Ownership</h1>
+          <h1 style={{ margin: 0 }}>{instance.name}</h1>
+          <span className="badge">Ownership</span>
           <span className="badge">
             {ownedIds.size} / {entries.length} owned
           </span>
@@ -155,7 +166,7 @@ export function OwnershipPage() {
       <div className="grid cols-3">
         {shown.map((e) => {
           const isOwned = ownedIds.has(e.id);
-          const hasBuild = kind === "character" && builtIds.has(e.id);
+          const buildId = kind === "character" ? buildByCatalog.get(e.id) : undefined;
           return (
             <div className="card" key={e.id} style={{ opacity: isOwned ? 1 : 0.7 }}>
               <div className="spread">
@@ -177,8 +188,10 @@ export function OwnershipPage() {
               </div>
               {kind === "character" && isOwned && (
                 <div style={{ marginTop: 10 }}>
-                  {hasBuild ? (
-                    <span className="badge done">build exists</span>
+                  {buildId ? (
+                    <Link className="btn sm" to={`/characters/${buildId}`}>
+                      Edit build →
+                    </Link>
                   ) : (
                     <button className="btn sm" disabled={createBuild.isPending} onClick={() => createBuild.mutate(e.id)}>
                       + Create build

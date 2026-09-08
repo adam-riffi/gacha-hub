@@ -106,6 +106,34 @@ export function AdminPage() {
     },
   });
 
+  // One-click sample data so banners/events can be previewed immediately.
+  const seed = useMutation({
+    mutationFn: async () => {
+      const iso = (days: number) => new Date(Date.now() + days * 86_400_000).toISOString();
+      await api.post("/api/admin/payload", {
+        kind: "banners",
+        gameKey,
+        items: [
+          { key: "sample-active", name: "Sample Featured Banner", kind: "character", startsAt: iso(-2), endsAt: iso(12), version: 1 },
+          { key: "sample-upcoming", name: "Sample Upcoming Banner", kind: "weapon", startsAt: iso(3), endsAt: iso(20), version: 1 },
+        ],
+      });
+      await api.post("/api/admin/payload", {
+        kind: "events",
+        gameKey,
+        items: [
+          { key: "sample-event", name: "Sample Event", startsAt: iso(-1), endsAt: iso(9), description: "A sample event so you can see the timeline and countdowns.", rewards: [{ label: "Primogems", qty: 800 }] },
+          { key: "sample-event-soon", name: "Sample Upcoming Event", startsAt: iso(4), endsAt: iso(18) },
+        ],
+      });
+    },
+    onSuccess: () => {
+      toast("Sample banners + events added — see the Banners & events page");
+      invalidate();
+    },
+    onError: () => toast("Seed failed", "err"),
+  });
+
   if (!me?.isAdmin) return <div className="card empty">Admins only. Add your Discord id to ADMIN_DISCORD_IDS.</div>;
 
   const submit = () => {
@@ -125,6 +153,9 @@ export function AdminPage() {
       <div className="page-head">
         <h1>Admin</h1>
         <div className="row">
+          <button className="btn sm primary" disabled={seed.isPending} onClick={() => seed.mutate()} title="Add a couple of sample banners + events so you can preview them">
+            Seed sample data
+          </button>
           <select value={kind} onChange={(e) => { setKind(e.target.value as AdminExportKind); setResult(null); }} style={{ width: "auto" }}>
             <option value="banners">Banners</option>
             <option value="events">Events</option>
