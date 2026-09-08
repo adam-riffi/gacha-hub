@@ -81,6 +81,7 @@ export async function registerCharacterRoutes(app: FastifyInstance) {
           portraitUrl: body.portraitUrl ?? null,
           doc: doc as PrismaJson,
           docVersion: game.docVersion,
+          ...(body.buildStatus ? { buildStatus: body.buildStatus } : {}),
         },
       });
       return reply.code(201).send(characterDto.parse(created));
@@ -122,6 +123,7 @@ export async function registerCharacterRoutes(app: FastifyInstance) {
           ...(body.doc !== undefined
             ? { doc: validateDoc(game, body.doc) as PrismaJson, docVersion: game.docVersion }
             : {}),
+          ...(body.buildStatus !== undefined ? { buildStatus: body.buildStatus } : {}),
         },
       });
       return characterDto.parse(updated);

@@ -19,6 +19,12 @@ export type TaskPriority = z.infer<typeof taskPrioritySchema>;
 /** Sort weight: high first, then normal, then low. */
 export const PRIORITY_RANK: Record<TaskPriority, number> = { high: 0, normal: 1, low: 2 };
 
+/** How finished a character build is, set by the user; drives unbuilt analytics. */
+export const buildStatusSchema = z.enum(["none", "building", "good", "perfect"]);
+export type BuildStatus = z.infer<typeof buildStatusSchema>;
+/** Statuses that count a character as "built enough" for analytics. */
+export const BUILT_STATUSES: BuildStatus[] = ["good", "perfect"];
+
 export const checklistItemSchema = z.object({
   label: z.string().min(1).max(200),
   done: z.boolean().default(false),

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { buildStatusSchema } from "../common.js";
 import { catalogIdSchema, idSchema, isoDate, jsonValue } from "./common.js";
 
 /**
@@ -14,6 +15,7 @@ export const characterDto = z.object({
   portraitUrl: z.string().nullable(),
   doc: jsonValue,
   docVersion: z.number().int(),
+  buildStatus: buildStatusSchema,
   createdAt: isoDate,
   updatedAt: isoDate,
 });
@@ -25,6 +27,7 @@ export const characterSummaryDto = characterDto.pick({
   catalogId: true,
   name: true,
   portraitUrl: true,
+  buildStatus: true,
 });
 export type CharacterSummaryDto = z.infer<typeof characterSummaryDto>;
 
@@ -37,6 +40,7 @@ export const createCharacterInput = z.object({
   name: z.string().min(1).max(120).optional(),
   portraitUrl: z.string().max(2048).nullable().optional(),
   doc: jsonValue.optional(),
+  buildStatus: buildStatusSchema.optional(),
 });
 export type CreateCharacterInput = z.infer<typeof createCharacterInput>;
 

@@ -90,6 +90,7 @@ model Character {
   portraitUrl    String?
   doc            Json
   docVersion     Int          @default(1)
+  buildStatus    String       @default("none") // none | building | good | perfect
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
 

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getGame } from "@gacha/shared";
+import { getGame, type BuildStatus } from "@gacha/shared";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
 import { GameSheet, hasSheet } from "../render";
@@ -31,6 +31,7 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
     name: data.name,
     portraitUrl: data.portraitUrl,
     doc: (data.doc as Record<string, unknown>) ?? {},
+    buildStatus: data.buildStatus,
   }));
 
   const game = getGame(data.gameKey);
@@ -41,6 +42,7 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
         name: state.name,
         portraitUrl: state.portraitUrl,
         doc: state.doc,
+        buildStatus: state.buildStatus,
       }),
     onSuccess: () => {
       toast("Saved");
@@ -67,6 +69,17 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
           {game && <span className="badge" style={{ color: game.accent }}>{game.name}</span>}
         </div>
         <div className="row">
+          <select
+            className={`prio build-${state.buildStatus}`}
+            value={state.buildStatus}
+            onChange={(e) => setState((s) => ({ ...s, buildStatus: e.target.value as BuildStatus }))}
+            title="Build status (for unbuilt analytics)"
+          >
+            <option value="none">Unbuilt</option>
+            <option value="building">Building</option>
+            <option value="good">Good</option>
+            <option value="perfect">Perfect</option>
+          </select>
           <button className="btn primary" onClick={() => save.mutate()} disabled={save.isPending}>
             {save.isPending ? "Saving…" : "Save"}
           </button>

@@ -94,4 +94,32 @@ describe("ownership + catalog-backed builds (routes)", () => {
     const after = await c.req<unknown[]>("GET", `/api/instances/${gid}/characters`);
     expect(after.json.length).toBe(0);
   });
+
+  it("tracks build status and surfaces it in dashboard analytics", async () => {
+    const build = await c.req<{ id: string; buildStatus: string }>("POST", `/api/instances/${gid}/characters`, { catalogId: AMBER });
+    expect(build.json.buildStatus).toBe("none");
+
+    await c.req("PUT", `/api/characters/${build.json.id}`, { buildStatus: "good" });
+    const reload = await c.req<{ buildStatus: string }>("GET", `/api/characters/${build.json.id}`);
+    expect(reload.json.buildStatus).toBe("good");
+
+    const dash = await c.req<{ games: { instanceId: string; ownedCharacters: number; builtCharacters: number }[] }>("GET", "/api/dashboard");
+    const g = dash.json.games.find((x) => x.instanceId === gid)!;
+    expect(g.ownedCharacters).toBe(1); // Amber auto-owned
+    expect(g.builtCharacters).toBe(1); // marked good
+  });
+
+  it("allows multiple named builds for one character", async () => {
+    const a = await c.req<{ id: string; name: string }>("POST", `/api/instances/${gid}/characters`, { catalogId: AMBER });
+    expect(a.json.name).toBe("Amber"); // first defaults to catalog name
+    const b = await c.req<{ id: string; name: string }>("POST", `/api/instances/${gid}/characters`, { catalogId: AMBER, name: "Amber (Pyro DPS)" });
+    expect(b.json.name).toBe("Amber (Pyro DPS)");
+    expect(b.json.id).not.toBe(a.json.id);
+
+    const list = await c.req<{ catalogId: string | null }[]>("GET", `/api/instances/${gid}/characters`);
+    expect(list.json.filter((ch) => ch.catalogId === AMBER).length).toBe(2);
+    // Still counts as one owned character despite two builds.
+    const dash = await c.req<{ games: { instanceId: string; ownedCharacters: number }[] }>("GET", "/api/dashboard");
+    expect(dash.json.games.find((x) => x.instanceId === gid)!.ownedCharacters).toBe(1);
+  });
 });
