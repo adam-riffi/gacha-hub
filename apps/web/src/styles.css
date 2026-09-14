@@ -242,6 +242,11 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 .subrow { display: flex; align-items: center; gap: 8px; padding: 5px 0; border-top: 1px solid var(--border); font-size: 0.86rem; }
 .checkbtn.sm { width: 20px; height: 20px; border-radius: 5px; font-size: 0.7rem; }
 .goal-card { background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px; margin-bottom: 8px; }
+.goal-toggle { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; padding: 0; background: none; border: none; color: var(--text); cursor: pointer; text-align: left; font: inherit; }
+.goal-toggle strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.goal-toggle:hover .gc-caret { color: var(--text); }
+.gc-caret { color: var(--muted); font-size: 0.8rem; width: 0.9em; flex-shrink: 0; }
+.goal-kids { margin-top: 6px; }
 .subtask { display: flex; align-items: center; gap: 8px; padding: 4px 0; border-top: 1px solid var(--border); font-size: 0.82rem; }
 .subtask:first-of-type { border-top: none; }
 select.prio { width: auto; padding: 2px 6px; font-size: 0.72rem; border-radius: 999px; text-transform: capitalize; }

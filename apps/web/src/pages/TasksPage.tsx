@@ -37,6 +37,10 @@ export function TasksPage() {
   });
   const [filterText, setFilterText] = useState("");
   const [showBacklog, setShowBacklog] = useState(false);
+  // Which goal cards are unrolled (materials shown). Keyed by goal id; goals
+  // with subtasks start rolled up so a character reads as one compact row.
+  const [openGoals, setOpenGoals] = useState<Record<string, boolean>>({});
+  const toggleGoal = (id: string) => setOpenGoals((s) => ({ ...s, [id]: !s[id] }));
 
   const { data: tasks } = useQuery({ queryKey: ["tasks"], queryFn: () => api.get<TaskItem[]>("/api/tasks") });
   const { data: instances } = useQuery({
@@ -206,39 +210,51 @@ export function TasksPage() {
                   {goals.map((g) => {
                     const kids = byParent.get(g.id) ?? [];
                     const done = kids.filter((k) => (k.target ?? 0) > 0 && k.progress >= (k.target ?? 0)).length;
+                    const hasKids = kids.length > 0;
+                    const isOpen = openGoals[g.id] ?? false;
                     return (
                       <div className="goal-card" key={g.id} style={g.backlog ? { opacity: 0.75 } : undefined}>
                         <div className="spread">
-                          <strong>
-                            {g.title}
-                            {g.backlog && <span className="badge" style={{ marginLeft: 6 }}>backlog</span>}
-                          </strong>
+                          {hasKids ? (
+                            <button type="button" className="goal-toggle" aria-expanded={isOpen} onClick={() => toggleGoal(g.id)}>
+                              <span className="gc-caret">{isOpen ? "▾" : "▸"}</span>
+                              <strong>{g.title}</strong>
+                              <span className="muted small">{done}/{kids.length} mats</span>
+                              {g.backlog && <span className="badge">backlog</span>}
+                            </button>
+                          ) : (
+                            <strong>
+                              {g.title}
+                              {g.backlog && <span className="badge" style={{ marginLeft: 6 }}>backlog</span>}
+                            </strong>
+                          )}
                           <div className="row" style={{ gap: 4 }}>
                             <button className="btn ghost sm" title="Include in Discord reminders" onClick={() => setNotify.mutate({ id: g.id, notify: !g.notify })}>{g.notify ? "🔔" : "🔕"}</button>
                             <PriorityPill value={g.priority} onChange={(p) => setPriority.mutate({ id: g.id, priority: p })} />
                             <button className="btn ghost sm" onClick={() => remove.mutate(g.id)}>✕</button>
                           </div>
                         </div>
-                        {kids.length > 0 ? (
-                          <>
-                            <div className="small muted" style={{ margin: "2px 0 6px" }}>{done}/{kids.length} materials done</div>
-                            {kids.map((k) => (
-                              <div className="subtask" key={k.id}>
-                                <span style={{ flex: 1 }}>{k.title.replace(/^Farm /, "")}</span>
-                                <input type="number" min={0} style={{ width: 84 }} defaultValue={k.progress}
-                                  onBlur={(e) => { const v = Number(e.target.value); if (v !== k.progress) progress.mutate({ id: k.id, progress: v }); }} />
-                                <span className="muted small">/ {k.target ?? "∞"}</span>
+                        {hasKids
+                          ? isOpen && (
+                              <div className="goal-kids">
+                                {kids.map((k) => (
+                                  <div className="subtask" key={k.id}>
+                                    <span style={{ flex: 1 }}>{k.title.replace(/^Farm /, "")}</span>
+                                    <input type="number" min={0} style={{ width: 84 }} defaultValue={k.progress}
+                                      onBlur={(e) => { const v = Number(e.target.value); if (v !== k.progress) progress.mutate({ id: k.id, progress: v }); }} />
+                                    <span className="muted small">/ {k.target ?? "∞"}</span>
+                                  </div>
+                                ))}
                               </div>
-                            ))}
-                          </>
-                        ) : (
-                          <div className="subtask">
-                            <span style={{ flex: 1 }} className="muted small">no subtasks</span>
-                            <input type="number" min={0} style={{ width: 84 }} defaultValue={g.progress}
-                              onBlur={(e) => { const v = Number(e.target.value); if (v !== g.progress) progress.mutate({ id: g.id, progress: v }); }} />
-                            <span className="muted small">/ {g.target ?? "∞"}</span>
-                          </div>
-                        )}
+                            )
+                          : (
+                            <div className="subtask">
+                              <span style={{ flex: 1 }} className="muted small">no subtasks</span>
+                              <input type="number" min={0} style={{ width: 84 }} defaultValue={g.progress}
+                                onBlur={(e) => { const v = Number(e.target.value); if (v !== g.progress) progress.mutate({ id: g.id, progress: v }); }} />
+                              <span className="muted small">/ {g.target ?? "∞"}</span>
+                            </div>
+                          )}
                       </div>
                     );
                   })}
