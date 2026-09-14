@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getGame, type BuildStatus, type CatalogCharacter } from "@gacha/shared";
+import { getGame, type BuildStatus, type CatalogCharacter, type CatalogWeapon } from "@gacha/shared";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
 import { GameSheet, hasSheet } from "../render";
@@ -39,8 +39,35 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
   const game = getGame(data.gameKey);
   const { index, catalog } = useCatalog(data.gameKey);
   const entry = data.catalogId ? index?.characters.get(data.catalogId) : undefined;
+
+  // Index weapons by display name so the sheet can render the equipped weapon's
+  // icon/rarity/base stats from the catalog (the build doc only stores its name).
+  const weaponsByName = useMemo(() => {
+    const m = new Map<string, CatalogWeapon>();
+    for (const w of catalog?.weapons ?? []) m.set(w.name, w);
+    return m;
+  }, [catalog]);
+
   const sheetCatalog: SheetCatalog | undefined = entry
-    ? { element: entry.tag, weaponType: entry.weaponType, gearSets: catalog?.gear.map((g) => g.name) }
+    ? {
+        element: entry.tag,
+        weaponType: entry.weaponType,
+        gearSets: catalog?.gear.map((g) => g.name),
+        rarity: entry.rarity,
+        iconKey: entry.icon,
+        maxConstellation: entry.constellations?.length || undefined,
+        resolveWeapon: (name) => {
+          const w = weaponsByName.get(name);
+          if (!w) return undefined;
+          const extra = (w.extra ?? {}) as Record<string, unknown>;
+          return {
+            rarity: w.rarity,
+            iconKey: w.icon,
+            baseAtk: typeof extra.baseAtk === "number" ? extra.baseAtk : undefined,
+            subStat: typeof extra.subStat === "string" ? extra.subStat : undefined,
+          };
+        },
+      }
     : undefined;
 
   const save = useMutation({
