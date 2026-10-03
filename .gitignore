@@ -24,3 +24,12 @@ dist-server/
 
 # Catalog importer HTTP cache
 scripts/catalog/.cache/
+
+# Game art assets (HoYoverse-owned): kept out of git — populate locally,
+# via Vercel Blob, or with scripts/assets/sync-drive.mjs. Placeholders render
+# for anything missing. The README/manifest under assets/ stay tracked.
+apps/web/public/assets/**/*.webp
+apps/web/public/assets/**/*.png
+apps/web/public/assets/**/*.jpg
+apps/web/public/assets/**/*.jpeg
+apps/web/public/assets/**/*.avif
