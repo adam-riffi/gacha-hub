@@ -105,7 +105,7 @@ export function OwnershipPage() {
   return (
     <>
       <div style={{ marginBottom: 14 }}>
-        <GameTabs instanceId={id!} active="ownership" />
+        <GameTabs instanceId={id!} active="ownership" gameKey={instance.gameKey} />
       </div>
       <div className="page-head">
         <div className="row">

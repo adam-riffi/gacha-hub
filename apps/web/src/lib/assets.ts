@@ -41,7 +41,7 @@ export function assetUrl(gameKey: string, kind: AssetKind, key?: string | null):
  */
 export function communityAssetUrl(gameKey: string, kind: AssetKind, key?: string | null): string | null {
   if (!key || gameKey !== "genshin") return null;
-  if (kind === "character" || kind === "portrait" || kind === "weapon") {
+  if (kind === "character" || kind === "portrait" || kind === "weapon" || kind === "gear") {
     return `https://enka.network/ui/${encodeURIComponent(key)}.png`;
   }
   return null;

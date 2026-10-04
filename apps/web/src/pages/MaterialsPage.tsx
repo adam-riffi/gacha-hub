@@ -71,7 +71,7 @@ export function MaterialsPage() {
   return (
     <>
       <div style={{ marginBottom: 14 }}>
-        <GameTabs instanceId={id!} active="materials" />
+        <GameTabs instanceId={id!} active="materials" gameKey={instance?.gameKey} />
       </div>
       <div className="page-head">
         <div className="row">

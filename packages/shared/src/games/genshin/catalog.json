@@ -75661,6 +75661,8 @@
         "ATK +18%.",
         "Increases Charged Attack CRIT Rate by 30%."
       ],
+      "icon": "UI_RelicIcon_10001_4",
+      "source": "Midsummer Courtyard",
       "extra": {
         "rarityList": [
           3,
@@ -75672,6 +75674,13 @@
           "sands": "Sundial of the Sojourner",
           "goblet": "Goblet of the Sojourner",
           "circlet": "Crown of Parting"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_10001_4",
+          "plume": "UI_RelicIcon_10001_2",
+          "sands": "UI_RelicIcon_10001_5",
+          "goblet": "UI_RelicIcon_10001_1",
+          "circlet": "UI_RelicIcon_10001_3"
         },
         "version": "1.0"
       }
@@ -75691,6 +75700,8 @@
         "ATK +18%.",
         "Increases DMG by 30% against opponents with more than 50% HP."
       ],
+      "icon": "UI_RelicIcon_10002_4",
+      "source": "Domain of Guyun",
       "extra": {
         "rarityList": [
           3,
@@ -75702,6 +75713,13 @@
           "sands": "Fortitude of the Brave",
           "goblet": "Outset of the Brave",
           "circlet": "Crown of the Brave"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_10002_4",
+          "plume": "UI_RelicIcon_10002_2",
+          "sands": "UI_RelicIcon_10002_5",
+          "goblet": "UI_RelicIcon_10002_1",
+          "circlet": "UI_RelicIcon_10002_3"
         },
         "version": "1.0"
       }
@@ -75721,6 +75739,7 @@
         "DEF +30%",
         "For each different element present in your own party, the wearer's Elemental RES to that corresponding element is increased by 30%."
       ],
+      "icon": "UI_RelicIcon_10003_4",
       "extra": {
         "rarityList": [
           3,
@@ -75732,6 +75751,13 @@
           "sands": "Guardian's Clock",
           "goblet": "Guardian's Vessel",
           "circlet": "Guardian's Band"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_10003_4",
+          "plume": "UI_RelicIcon_10003_2",
+          "sands": "UI_RelicIcon_10003_5",
+          "goblet": "UI_RelicIcon_10003_1",
+          "circlet": "UI_RelicIcon_10003_3"
         },
         "version": "1.0"
       }
@@ -75751,6 +75777,8 @@
         "All Elemental RES increased by 20%.",
         "Incoming elemental DMG increases corresponding Elemental RES by 30% for 10s. Can only occur once every 10s."
       ],
+      "icon": "UI_RelicIcon_10004_4",
+      "source": "Valley of Remembrance",
       "extra": {
         "rarityList": [
           3,
@@ -75762,6 +75790,13 @@
           "sands": "Tiny Miracle's Hourglass",
           "goblet": "Tiny Miracle's Goblet",
           "circlet": "Tiny Miracle's Earrings"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_10004_4",
+          "plume": "UI_RelicIcon_10004_2",
+          "sands": "UI_RelicIcon_10004_5",
+          "goblet": "UI_RelicIcon_10004_1",
+          "circlet": "UI_RelicIcon_10004_3"
         },
         "version": "1.0"
       }
@@ -75781,6 +75816,7 @@
         "CRIT Rate +12%",
         "When HP is below 70%, CRIT Rate increases by an additional 24%."
       ],
+      "icon": "UI_RelicIcon_10005_4",
       "extra": {
         "rarityList": [
           3,
@@ -75792,6 +75828,13 @@
           "sands": "Berserker's Timepiece",
           "goblet": "Berserker's Bone Goblet",
           "circlet": "Berserker's Battle Mask"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_10005_4",
+          "plume": "UI_RelicIcon_10005_2",
+          "sands": "UI_RelicIcon_10005_5",
+          "goblet": "UI_RelicIcon_10005_1",
+          "circlet": "UI_RelicIcon_10005_3"
         },
         "version": "1.0"
       }
@@ -75811,6 +75854,7 @@
         "Normal and Charged Attack DMG +15%",
         "After using Elemental Skill, increases Normal Attack and Charged Attack DMG by 25% for 8s."
       ],
+      "icon": "UI_RelicIcon_10006_4",
       "extra": {
         "rarityList": [
           3,
@@ -75822,6 +75866,13 @@
           "sands": "Martial Artist's Water Hourglass",
           "goblet": "Martial Artist's Wine Cup",
           "circlet": "Martial Artist's Bandana"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_10006_4",
+          "plume": "UI_RelicIcon_10006_2",
+          "sands": "UI_RelicIcon_10006_5",
+          "goblet": "UI_RelicIcon_10006_1",
+          "circlet": "UI_RelicIcon_10006_3"
         },
         "version": "1.0"
       }
@@ -75841,6 +75892,7 @@
         "Increases Elemental Mastery by 80.",
         "Upon triggering an Elemental Reaction, increases all party members' Elemental Mastery by 120 for 8s."
       ],
+      "icon": "UI_RelicIcon_10007_4",
       "extra": {
         "rarityList": [
           3,
@@ -75852,6 +75904,13 @@
           "sands": "Instructor's Pocket Watch",
           "goblet": "Instructor's Tea Cup",
           "circlet": "Instructor's Cap"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_10007_4",
+          "plume": "UI_RelicIcon_10007_2",
+          "sands": "UI_RelicIcon_10007_5",
+          "goblet": "UI_RelicIcon_10007_1",
+          "circlet": "UI_RelicIcon_10007_3"
         },
         "version": "1.0"
       }
@@ -75871,6 +75930,7 @@
         "Increases Elemental Skill DMG by 20%.",
         "Defeating an opponent has a 100% chance to remove Elemental Skill CD. Can only occur once every 15s."
       ],
+      "icon": "UI_RelicIcon_10008_4",
       "extra": {
         "rarityList": [
           3,
@@ -75882,6 +75942,13 @@
           "sands": "Gambler's Pocket Watch",
           "goblet": "Gambler's Dice Cup",
           "circlet": "Gambler's Earrings"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_10008_4",
+          "plume": "UI_RelicIcon_10008_2",
+          "sands": "UI_RelicIcon_10008_5",
+          "goblet": "UI_RelicIcon_10008_1",
+          "circlet": "UI_RelicIcon_10008_3"
         },
         "version": "1.0"
       }
@@ -75901,6 +75968,7 @@
         "Energy Recharge +20%",
         "Using an Elemental Burst regenerates 2 Energy for all party members (excluding the wearer) every 2s for 6s. This effect cannot stack."
       ],
+      "icon": "UI_RelicIcon_10009_4",
       "extra": {
         "rarityList": [
           3,
@@ -75912,6 +75980,13 @@
           "sands": "Exile's Pocket Watch",
           "goblet": "Exile's Goblet",
           "circlet": "Exile's Circlet"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_10009_4",
+          "plume": "UI_RelicIcon_10009_2",
+          "sands": "UI_RelicIcon_10009_5",
+          "goblet": "UI_RelicIcon_10009_1",
+          "circlet": "UI_RelicIcon_10009_3"
         },
         "version": "1.0"
       }
@@ -75931,6 +76006,8 @@
         "Max HP increased by 1,000.",
         "Opening a chest regenerates 30% Max HP over 5s."
       ],
+      "icon": "UI_RelicIcon_10010_4",
+      "source": "Midsummer Courtyard",
       "extra": {
         "rarityList": [
           1,
@@ -75943,6 +76020,13 @@
           "sands": "Adventurer's Pocket Watch",
           "goblet": "Adventurer's Golden Goblet",
           "circlet": "Adventurer's Bandana"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_10010_4",
+          "plume": "UI_RelicIcon_10010_2",
+          "sands": "UI_RelicIcon_10010_5",
+          "goblet": "UI_RelicIcon_10010_1",
+          "circlet": "UI_RelicIcon_10010_3"
         },
         "version": "1.0"
       }
@@ -75962,6 +76046,8 @@
         "DEF increased by 100.",
         "Picking up Mora restores 300 HP."
       ],
+      "icon": "UI_RelicIcon_10011_4",
+      "source": "Domain of Guyun",
       "extra": {
         "rarityList": [
           1,
@@ -75974,6 +76060,13 @@
           "sands": "Lucky Dog's Hourglass",
           "goblet": "Lucky Dog's Goblet",
           "circlet": "Lucky Dog's Silver Circlet"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_10011_4",
+          "plume": "UI_RelicIcon_10011_2",
+          "sands": "UI_RelicIcon_10011_5",
+          "goblet": "UI_RelicIcon_10011_1",
+          "circlet": "UI_RelicIcon_10011_3"
         },
         "version": "1.0"
       }
@@ -75993,6 +76086,7 @@
         "Energy Recharge +20%",
         "Gaining Elemental Particles or Orbs gives 3 Energy to all party members who have a bow or a catalyst equipped. Can only occur once every 3s."
       ],
+      "icon": "UI_RelicIcon_10012_4",
       "extra": {
         "rarityList": [
           3,
@@ -76004,6 +76098,13 @@
           "sands": "Scholar's Clock",
           "goblet": "Scholar's Ink Cup",
           "circlet": "Scholar's Lens"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_10012_4",
+          "plume": "UI_RelicIcon_10012_2",
+          "sands": "UI_RelicIcon_10012_5",
+          "goblet": "UI_RelicIcon_10012_1",
+          "circlet": "UI_RelicIcon_10012_3"
         },
         "version": "1.0"
       }
@@ -76023,6 +76124,8 @@
         "Increases incoming healing by 20%.",
         "Using Elemental Burst restores 20% HP."
       ],
+      "icon": "UI_RelicIcon_10013_4",
+      "source": "Valley of Remembrance",
       "extra": {
         "rarityList": [
           1,
@@ -76035,6 +76138,13 @@
           "sands": "Traveling Doctor's Pocket Watch",
           "goblet": "Traveling Doctor's Medicine Pot",
           "circlet": "Traveling Doctor's Handkerchief"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_10013_4",
+          "plume": "UI_RelicIcon_10013_2",
+          "sands": "UI_RelicIcon_10013_5",
+          "goblet": "UI_RelicIcon_10013_1",
+          "circlet": "UI_RelicIcon_10013_3"
         },
         "version": "1.0"
       }
@@ -76054,6 +76164,8 @@
         "Cryo DMG Bonus +15%",
         "When a character attacks an opponent affected by Cryo, their CRIT Rate is increased by 20%. If the opponent is Frozen, CRIT Rate is increased by an additional 20%."
       ],
+      "icon": "UI_RelicIcon_14001_4",
+      "source": "Peak of Vindagnyr",
       "extra": {
         "rarityList": [
           4,
@@ -76065,6 +76177,13 @@
           "sands": "Frozen Homeland's Demise",
           "goblet": "Frost-Weaved Dignity",
           "circlet": "Broken Rime's Echo"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_14001_4",
+          "plume": "UI_RelicIcon_14001_2",
+          "sands": "UI_RelicIcon_14001_5",
+          "goblet": "UI_RelicIcon_14001_1",
+          "circlet": "UI_RelicIcon_14001_3"
         },
         "version": "1.2"
       }
@@ -76084,6 +76203,8 @@
         "Electro RES increased by 40%.",
         "Increases DMG against opponents affected by Electro by 35%."
       ],
+      "icon": "UI_RelicIcon_14002_4",
+      "source": "Midsummer Courtyard",
       "extra": {
         "rarityList": [
           4,
@@ -76095,6 +76216,13 @@
           "sands": "Hour of Soothing Thunder",
           "goblet": "Thundersoother's Goblet",
           "circlet": "Thundersoother's Diadem"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_14002_4",
+          "plume": "UI_RelicIcon_14002_2",
+          "sands": "UI_RelicIcon_14002_5",
+          "goblet": "UI_RelicIcon_14002_1",
+          "circlet": "UI_RelicIcon_14002_3"
         },
         "version": "1.0"
       }
@@ -76114,6 +76242,8 @@
         "Pyro RES increased by 40%.",
         "Increases DMG against opponents affected by Pyro by 35%."
       ],
+      "icon": "UI_RelicIcon_14003_4",
+      "source": "Hidden Palace of Zhou Formula",
       "extra": {
         "rarityList": [
           4,
@@ -76125,6 +76255,13 @@
           "sands": "Lavawalker's Torment",
           "goblet": "Lavawalker's Epiphany",
           "circlet": "Lavawalker's Wisdom"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_14003_4",
+          "plume": "UI_RelicIcon_14003_2",
+          "sands": "UI_RelicIcon_14003_5",
+          "goblet": "UI_RelicIcon_14003_1",
+          "circlet": "UI_RelicIcon_14003_3"
         },
         "version": "1.0"
       }
@@ -76144,6 +76281,8 @@
         "Character Healing Effectiveness +15%",
         "Using an Elemental Skill or Burst increases healing received by all party members by 20% for 10s."
       ],
+      "icon": "UI_RelicIcon_14004_4",
+      "source": "Valley of Remembrance",
       "extra": {
         "rarityList": [
           4,
@@ -76155,6 +76294,13 @@
           "sands": "Maiden's Passing Youth",
           "goblet": "Maiden's Fleeting Leisure",
           "circlet": "Maiden's Fading Beauty"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_14004_4",
+          "plume": "UI_RelicIcon_14004_2",
+          "sands": "UI_RelicIcon_14004_5",
+          "goblet": "UI_RelicIcon_14004_1",
+          "circlet": "UI_RelicIcon_14004_3"
         },
         "version": "1.0"
       }
@@ -76174,6 +76320,7 @@
         "ATK +18%.",
         "If the wielder of this artifact set uses a Sword, Claymore or Polearm, increases their Normal Attack DMG by 35%."
       ],
+      "icon": "UI_RelicIcon_15001_4",
       "extra": {
         "rarityList": [
           4,
@@ -76185,6 +76332,13 @@
           "sands": "Gladiator's Longing",
           "goblet": "Gladiator's Intoxication",
           "circlet": "Gladiator's Triumphus"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15001_4",
+          "plume": "UI_RelicIcon_15001_2",
+          "sands": "UI_RelicIcon_15001_5",
+          "goblet": "UI_RelicIcon_15001_1",
+          "circlet": "UI_RelicIcon_15001_3"
         },
         "version": "1.0"
       }
@@ -76204,6 +76358,8 @@
         "Anemo DMG Bonus +15%",
         "Increases Swirl reaction DMG dealt by 60%, and Stellar Swirl reaction DMG dealt by 20%. Decreases opponent's Elemental RES to the element infused in the Swirl by 40% for 10s. Upon triggering a Stellar Swirl in the opponent, will also decrease their Cryo RES by 40%. RES debuffs of the same elemental type do not stack."
       ],
+      "icon": "UI_RelicIcon_15002_4",
+      "source": "Valley of Remembrance",
       "extra": {
         "rarityList": [
           4,
@@ -76215,6 +76371,13 @@
           "sands": "Viridescent Venerer's Determination",
           "goblet": "Viridescent Venerer's Vessel",
           "circlet": "Viridescent Venerer's Diadem"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15002_4",
+          "plume": "UI_RelicIcon_15002_2",
+          "sands": "UI_RelicIcon_15002_5",
+          "goblet": "UI_RelicIcon_15002_1",
+          "circlet": "UI_RelicIcon_15002_3"
         },
         "version": "1.0"
       }
@@ -76234,6 +76397,7 @@
         "Increases Elemental Mastery by 80.",
         "Increases Charged Attack DMG by 35% if the character uses a Catalyst or a Bow."
       ],
+      "icon": "UI_RelicIcon_15003_4",
       "extra": {
         "rarityList": [
           4,
@@ -76245,6 +76409,13 @@
           "sands": "Concert's Final Hour",
           "goblet": "Wanderer's String-Kettle",
           "circlet": "Conductor's Top Hat"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15003_4",
+          "plume": "UI_RelicIcon_15003_2",
+          "sands": "UI_RelicIcon_15003_5",
+          "goblet": "UI_RelicIcon_15003_1",
+          "circlet": "UI_RelicIcon_15003_3"
         },
         "version": "1.0"
       }
@@ -76264,6 +76435,8 @@
         "Electro DMG Bonus +15%",
         "Increases the DMG caused by Overloaded, Electro-Charged, Superconduct, and Hyperbloom by 40%, the DMG Bonus conferred by Aggravate by 20%, and the DMG caused by Lunar-Charged and Stellar-Conduct by 20%. When Quicken or the aforementioned Elemental Reactions are triggered, Elemental Skill CD is decreased by 1s. Can only occur once every 0.8s."
       ],
+      "icon": "UI_RelicIcon_15005_4",
+      "source": "Midsummer Courtyard",
       "extra": {
         "rarityList": [
           4,
@@ -76275,6 +76448,13 @@
           "sands": "Hourglass of Thunder",
           "goblet": "Omen of Thunderstorm",
           "circlet": "Thunder Summoner's Crown"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15005_4",
+          "plume": "UI_RelicIcon_15005_2",
+          "sands": "UI_RelicIcon_15005_5",
+          "goblet": "UI_RelicIcon_15005_1",
+          "circlet": "UI_RelicIcon_15005_3"
         },
         "version": "1.0"
       }
@@ -76294,6 +76474,8 @@
         "Pyro DMG Bonus +15%",
         "Increases Overloaded, Burning, and Burgeon DMG by 40%. Increases Vaporize and Melt DMG by 15%. Using Elemental Skill increases the 2-Piece Set Bonus by 50% of its starting value for 10s. Max 3 stacks."
       ],
+      "icon": "UI_RelicIcon_15006_4",
+      "source": "Hidden Palace of Zhou Formula",
       "extra": {
         "rarityList": [
           4,
@@ -76305,6 +76487,13 @@
           "sands": "Witch's End Time",
           "goblet": "Witch's Heart Flames",
           "circlet": "Witch's Scorching Hat"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15006_4",
+          "plume": "UI_RelicIcon_15006_2",
+          "sands": "UI_RelicIcon_15006_5",
+          "goblet": "UI_RelicIcon_15006_1",
+          "circlet": "UI_RelicIcon_15006_3"
         },
         "version": "1.0"
       }
@@ -76324,6 +76513,8 @@
         "Elemental Burst DMG +20%",
         "Using an Elemental Burst increases all party members' ATK by 20% for 12s. This effect cannot stack."
       ],
+      "icon": "UI_RelicIcon_15007_4",
+      "source": "Clear Pool and Mountain Cavern",
       "extra": {
         "rarityList": [
           4,
@@ -76335,6 +76526,13 @@
           "sands": "Royal Pocket Watch",
           "goblet": "Royal Silver Urn",
           "circlet": "Royal Masque"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15007_4",
+          "plume": "UI_RelicIcon_15007_2",
+          "sands": "UI_RelicIcon_15007_5",
+          "goblet": "UI_RelicIcon_15007_1",
+          "circlet": "UI_RelicIcon_15007_3"
         },
         "version": "1.0"
       }
@@ -76354,6 +76552,8 @@
         "Physical DMG +25%",
         "After defeating an opponent, increases Charged Attack DMG by 50%, and reduces its Stamina cost to 0 for 10s."
       ],
+      "icon": "UI_RelicIcon_15008_4",
+      "source": "Clear Pool and Mountain Cavern",
       "extra": {
         "rarityList": [
           4,
@@ -76366,6 +76566,13 @@
           "goblet": "Bloodstained Chevalier's Goblet",
           "circlet": "Bloodstained Iron Mask"
         },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15008_4",
+          "plume": "UI_RelicIcon_15008_2",
+          "sands": "UI_RelicIcon_15008_5",
+          "goblet": "UI_RelicIcon_15008_1",
+          "circlet": "UI_RelicIcon_15008_3"
+        },
         "version": "1.0"
       }
     },
@@ -76377,6 +76584,7 @@
         "circlet"
       ],
       "bonuses": [],
+      "icon": "UI_RelicIcon_15009_3",
       "extra": {
         "rarityList": [
           3,
@@ -76384,6 +76592,9 @@
         ],
         "pieceNames": {
           "circlet": "Tiara of Flame"
+        },
+        "pieceIcons": {
+          "circlet": "UI_RelicIcon_15009_3"
         },
         "version": "1.0"
       }
@@ -76396,6 +76607,7 @@
         "circlet"
       ],
       "bonuses": [],
+      "icon": "UI_RelicIcon_15010_3",
       "extra": {
         "rarityList": [
           3,
@@ -76403,6 +76615,9 @@
         ],
         "pieceNames": {
           "circlet": "Tiara of Torrents"
+        },
+        "pieceIcons": {
+          "circlet": "UI_RelicIcon_15010_3"
         },
         "version": "1.0"
       }
@@ -76415,6 +76630,7 @@
         "circlet"
       ],
       "bonuses": [],
+      "icon": "UI_RelicIcon_15011_3",
       "extra": {
         "rarityList": [
           3,
@@ -76422,6 +76638,9 @@
         ],
         "pieceNames": {
           "circlet": "Tiara of Thunder"
+        },
+        "pieceIcons": {
+          "circlet": "UI_RelicIcon_15011_3"
         },
         "version": "1.0"
       }
@@ -76434,6 +76653,7 @@
         "circlet"
       ],
       "bonuses": [],
+      "icon": "UI_RelicIcon_15013_3",
       "extra": {
         "rarityList": [
           3,
@@ -76441,6 +76661,9 @@
         ],
         "pieceNames": {
           "circlet": "Tiara of Frost"
+        },
+        "pieceIcons": {
+          "circlet": "UI_RelicIcon_15013_3"
         },
         "version": "1.0"
       }
@@ -76460,6 +76683,8 @@
         "Gain a 15% Geo DMG Bonus.",
         "Upon obtaining an Elemental Shard created through Crystallize or triggering a Lunar-Crystallize reaction, all party members gain a 35% DMG Bonus for that particular element for 10s. Only one form of Elemental DMG Bonus can be gained in this manner at any one time."
       ],
+      "icon": "UI_RelicIcon_15014_4",
+      "source": "Domain of Guyun",
       "extra": {
         "rarityList": [
           4,
@@ -76471,6 +76696,13 @@
           "sands": "Sundial of Enduring Jade",
           "goblet": "Goblet of Chiseled Crag",
           "circlet": "Mask of Solitude Basalt"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15014_4",
+          "plume": "UI_RelicIcon_15014_2",
+          "sands": "UI_RelicIcon_15014_5",
+          "goblet": "UI_RelicIcon_15014_1",
+          "circlet": "UI_RelicIcon_15014_3"
         },
         "version": "1.0"
       }
@@ -76490,6 +76722,8 @@
         "Increases Shield Strength by 35%.",
         "While protected by a shield, gain an additional 40% Normal and Charged Attack DMG."
       ],
+      "icon": "UI_RelicIcon_15015_4",
+      "source": "Domain of Guyun",
       "extra": {
         "rarityList": [
           4,
@@ -76501,6 +76735,13 @@
           "sands": "Summer Night's Moment",
           "goblet": "Summer Night's Waterballoon",
           "circlet": "Summer Night's Mask"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15015_4",
+          "plume": "UI_RelicIcon_15015_2",
+          "sands": "UI_RelicIcon_15015_5",
+          "goblet": "UI_RelicIcon_15015_1",
+          "circlet": "UI_RelicIcon_15015_3"
         },
         "version": "1.0"
       }
@@ -76520,6 +76761,8 @@
         "Hydro DMG Bonus +15%",
         "After using Elemental Skill, increases Normal Attack and Charged Attack DMG by 30% for 15s."
       ],
+      "icon": "UI_RelicIcon_15016_4",
+      "source": "Peak of Vindagnyr",
       "extra": {
         "rarityList": [
           4,
@@ -76531,6 +76774,13 @@
           "sands": "Copper Compass",
           "goblet": "Goblet of Thundering Deep",
           "circlet": "Wine-Stained Tricorne"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15016_4",
+          "plume": "UI_RelicIcon_15016_2",
+          "sands": "UI_RelicIcon_15016_5",
+          "goblet": "UI_RelicIcon_15016_1",
+          "circlet": "UI_RelicIcon_15016_3"
         },
         "version": "1.2"
       }
@@ -76550,6 +76800,8 @@
         "HP +20%",
         "When an Elemental Skill hits an opponent, the ATK of all nearby party members is increased by 20% and their Shield Strength is increased by 30% for 3s. This effect can be triggered once every 0.5s. This effect can still be triggered even when the character who is using this artifact set is not on the field."
       ],
+      "icon": "UI_RelicIcon_15017_4",
+      "source": "Ridge Watch",
       "extra": {
         "rarityList": [
           4,
@@ -76561,6 +76813,13 @@
           "sands": "Orichalceous Time-Dial",
           "goblet": "Noble's Pledging Vessel",
           "circlet": "General's Ancient Helm"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15017_4",
+          "plume": "UI_RelicIcon_15017_2",
+          "sands": "UI_RelicIcon_15017_5",
+          "goblet": "UI_RelicIcon_15017_1",
+          "circlet": "UI_RelicIcon_15017_3"
         },
         "version": "1.5"
       }
@@ -76580,6 +76839,8 @@
         "Physical DMG is increased by 25%.",
         "When an Elemental Skill hits an opponent, ATK is increased by 9% for 7s. This effect stacks up to 2 times and can be triggered once every 0.3s. Once 2 stacks are reached, the 2-set effect is increased by 100%."
       ],
+      "icon": "UI_RelicIcon_15018_4",
+      "source": "Ridge Watch",
       "extra": {
         "rarityList": [
           4,
@@ -76591,6 +76852,13 @@
           "sands": "Moment of Cessation",
           "goblet": "Surpassing Cup",
           "circlet": "Mocking Mask"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15018_4",
+          "plume": "UI_RelicIcon_15018_2",
+          "sands": "UI_RelicIcon_15018_5",
+          "goblet": "UI_RelicIcon_15018_1",
+          "circlet": "UI_RelicIcon_15018_3"
         },
         "version": "1.5"
       }
@@ -76610,6 +76878,8 @@
         "ATK +18%.",
         "When casting an Elemental Skill, if the character has 15 or more Energy, they lose 15 Energy and Normal/Charged/Plunging Attack DMG is increased by 50% for 10s. This effect will not trigger again during that duration."
       ],
+      "icon": "UI_RelicIcon_15019_4",
+      "source": "Momiji-Dyed Court",
       "extra": {
         "rarityList": [
           4,
@@ -76621,6 +76891,13 @@
           "sands": "Morning Dew's Moment",
           "goblet": "Hopeful Heart",
           "circlet": "Capricious Visage"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15019_4",
+          "plume": "UI_RelicIcon_15019_2",
+          "sands": "UI_RelicIcon_15019_5",
+          "goblet": "UI_RelicIcon_15019_1",
+          "circlet": "UI_RelicIcon_15019_3"
         },
         "version": "2.0"
       }
@@ -76640,6 +76917,8 @@
         "Energy Recharge +20%",
         "Increases Elemental Burst DMG by 25% of Energy Recharge. A maximum of 75% bonus DMG can be obtained in this way."
       ],
+      "icon": "UI_RelicIcon_15020_4",
+      "source": "Momiji-Dyed Court",
       "extra": {
         "rarityList": [
           4,
@@ -76651,6 +76930,13 @@
           "sands": "Storm Cage",
           "goblet": "Scarlet Vessel",
           "circlet": "Ornate Kabuto"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15020_4",
+          "plume": "UI_RelicIcon_15020_2",
+          "sands": "UI_RelicIcon_15020_5",
+          "goblet": "UI_RelicIcon_15020_1",
+          "circlet": "UI_RelicIcon_15020_3"
         },
         "version": "2.0"
       }
@@ -76670,6 +76956,8 @@
         "DEF +30%",
         "A character equipped with this Artifact set will obtain the Curiosity effect in the following conditions: When on the field, the character gains 1 stack after hitting an opponent with a Geo attack, triggering a maximum of once every 0.3s. When off the field, the character gains 1 stack every 3s. Curiosity can stack up to 4 times, each providing 6% DEF and a 6% Geo DMG Bonus. When 6 seconds pass without gaining a Curiosity stack, 1 stack is lost."
       ],
+      "icon": "UI_RelicIcon_15021_4",
+      "source": "Slumbering Court",
       "extra": {
         "rarityList": [
           4,
@@ -76681,6 +76969,13 @@
           "sands": "Song of Life",
           "goblet": "Calabash of Awakening",
           "circlet": "Skeletal Hat"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15021_4",
+          "plume": "UI_RelicIcon_15021_2",
+          "sands": "UI_RelicIcon_15021_5",
+          "goblet": "UI_RelicIcon_15021_1",
+          "circlet": "UI_RelicIcon_15021_3"
         },
         "version": "2.3"
       }
@@ -76700,6 +76995,8 @@
         "Healing Bonus +15%.",
         "When the character equipping this artifact set heals a character in the party, a Sea-Dyed Foam will appear for 3 seconds, accumulating the amount of HP recovered from healing (including overflow healing). At the end of the duration, the Sea-Dyed Foam will explode, dealing DMG to nearby opponents based on 90% of the accumulated healing. (This DMG is calculated similarly to Reactions such as Electro-Charged, and Superconduct, but is not affected by Elemental Mastery, Character Levels, or Reaction DMG Bonuses). Only one Sea-Dyed Foam can be produced every 3.5 seconds. Each Sea-Dyed Foam can accumulate up to 30,000 HP (including overflow healing). There can be no more than one Sea-Dyed Foam active at any given time. This effect can still be triggered even when the character who is using this artifact set is not on the field."
       ],
+      "icon": "UI_RelicIcon_15022_4",
+      "source": "Slumbering Court",
       "extra": {
         "rarityList": [
           4,
@@ -76711,6 +77008,13 @@
           "sands": "Cowry of Parting",
           "goblet": "Pearl Cage",
           "circlet": "Crown of Watatsumi"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15022_4",
+          "plume": "UI_RelicIcon_15022_2",
+          "sands": "UI_RelicIcon_15022_5",
+          "goblet": "UI_RelicIcon_15022_1",
+          "circlet": "UI_RelicIcon_15022_3"
         },
         "version": "2.3"
       }
@@ -76730,6 +77034,8 @@
         "ATK +18%.",
         "After using an Elemental Burst, this character will gain the Nascent Light effect, increasing their ATK by 8% for 16s. When the character's HP decreases, their ATK will further increase by 10%. This further increase can occur this way a maximum of 4 times. This effect can be triggered once every 0.8s. Nascent Light will be dispelled when the character leaves the field. If an Elemental Burst is used again during the duration of Nascent Light, the original Nascent Light will be dispelled."
       ],
+      "icon": "UI_RelicIcon_15023_4",
+      "source": "The Lost Valley",
       "extra": {
         "rarityList": [
           4,
@@ -76741,6 +77047,13 @@
           "sands": "Solar Relic",
           "goblet": "Moment of the Pact",
           "circlet": "Thundering Poise"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15023_4",
+          "plume": "UI_RelicIcon_15023_2",
+          "sands": "UI_RelicIcon_15023_5",
+          "goblet": "UI_RelicIcon_15023_1",
+          "circlet": "UI_RelicIcon_15023_3"
         },
         "version": "2.6"
       }
@@ -76760,6 +77073,8 @@
         "ATK +18%.",
         "When Normal Attacks hit opponents, there is a 36% chance that it will trigger Valley Rite, which will increase Normal Attack DMG by 70% of ATK. This effect will be dispelled 0.05s after a Normal Attack deals DMG. If a Normal Attack fails to trigger Valley Rite, the odds of it triggering the next time will increase by 20%. This trigger can occur once every 0.2s."
       ],
+      "icon": "UI_RelicIcon_15024_4",
+      "source": "The Lost Valley",
       "extra": {
         "rarityList": [
           4,
@@ -76771,6 +77086,13 @@
           "sands": "Symbol of Felicitation",
           "goblet": "Chalice of the Font",
           "circlet": "Flowing Rings"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15024_4",
+          "plume": "UI_RelicIcon_15024_2",
+          "sands": "UI_RelicIcon_15024_5",
+          "goblet": "UI_RelicIcon_15024_1",
+          "circlet": "UI_RelicIcon_15024_3"
         },
         "version": "2.6"
       }
@@ -76790,6 +77112,8 @@
         "Dendro DMG Bonus +15%.",
         "After Elemental Skills or Bursts hit opponents, the targets' Dendro RES will be decreased by 30% for 8s. This effect can be triggered even if the equipping character is not on the field."
       ],
+      "icon": "UI_RelicIcon_15025_4",
+      "source": "Spire of Solitary Enlightenment",
       "extra": {
         "rarityList": [
           4,
@@ -76801,6 +77125,13 @@
           "sands": "A Time of Insight",
           "goblet": "Lamp of the Lost",
           "circlet": "Laurel Coronet"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15025_4",
+          "plume": "UI_RelicIcon_15025_2",
+          "sands": "UI_RelicIcon_15025_5",
+          "goblet": "UI_RelicIcon_15025_1",
+          "circlet": "UI_RelicIcon_15025_3"
         },
         "version": "3.0"
       }
@@ -76820,6 +77151,8 @@
         "Increases Elemental Mastery by 80.",
         "Within 8s of triggering an Elemental Reaction, the character equipping this will obtain buffs based on the Elemental Type of the other party members. ATK is increased by 14% for each party member whose Elemental Type is the same as the equipping character, and Elemental Mastery is increased by 50 for every party member with a different Elemental Type. Each of the aforementioned buffs will count up to 3 characters. This effect can be triggered once every 8s. The character who equips this can still trigger its effects when not on the field."
       ],
+      "icon": "UI_RelicIcon_15026_4",
+      "source": "Spire of Solitary Enlightenment",
       "extra": {
         "rarityList": [
           4,
@@ -76831,6 +77164,13 @@
           "sands": "The Sunken Years",
           "goblet": "Honeyed Final Feast",
           "circlet": "Shadow of the Sand King"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15026_4",
+          "plume": "UI_RelicIcon_15026_2",
+          "sands": "UI_RelicIcon_15026_5",
+          "goblet": "UI_RelicIcon_15026_1",
+          "circlet": "UI_RelicIcon_15026_3"
         },
         "version": "3.0"
       }
@@ -76850,6 +77190,8 @@
         "Anemo DMG Bonus +15%",
         "When Charged Attacks hit opponents, the equipping character's Normal Attack SPD will increase by 10% while Normal, Charged, and Plunging Attack DMG will increase by 40% for 15s."
       ],
+      "icon": "UI_RelicIcon_15027_4",
+      "source": "City of Gold",
       "extra": {
         "rarityList": [
           4,
@@ -76861,6 +77203,13 @@
           "sands": "Timepiece of the Lost Path",
           "goblet": "Defender of the Enchanting Dream",
           "circlet": "Legacy of the Desert High-Born"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15027_4",
+          "plume": "UI_RelicIcon_15027_2",
+          "sands": "UI_RelicIcon_15027_5",
+          "goblet": "UI_RelicIcon_15027_1",
+          "circlet": "UI_RelicIcon_15027_3"
         },
         "version": "3.3"
       }
@@ -76880,6 +77229,8 @@
         "Increases Elemental Mastery by 80.",
         "The equipping character's Bloom, Hyperbloom, and Burgeon reaction DMG are increased by 40%, and their Lunar-Bloom reaction DMG is increased by 10%. Additionally, after the equipping character triggers Bloom, Hyperbloom, Lunar-Bloom, or Burgeon, they will gain another 25% bonus to the effects mentioned prior. Each stack of this lasts 10s. Max 4 stacks simultaneously. This effect can only be triggered once per second. The character who equips this can still trigger its effects when not on the field."
       ],
+      "icon": "UI_RelicIcon_15028_4",
+      "source": "City of Gold",
       "extra": {
         "rarityList": [
           4,
@@ -76891,6 +77242,13 @@
           "sands": "A Moment Congealed",
           "goblet": "Secret-Keeper's Magic Bottle",
           "circlet": "Amethyst Crown"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15028_4",
+          "plume": "UI_RelicIcon_15028_2",
+          "sands": "UI_RelicIcon_15028_5",
+          "goblet": "UI_RelicIcon_15028_1",
+          "circlet": "UI_RelicIcon_15028_3"
         },
         "version": "3.3"
       }
@@ -76910,6 +77268,8 @@
         "Hydro DMG Bonus +15%",
         "After Normal, Charged, and Plunging Attacks, Elemental Skills, and Elemental Bursts hit opponents, 1 stack of Mirrored Nymph will be triggered, lasting 8s. When under the effect of 1, 2, or 3 or more Mirrored Nymph stacks, ATK will be increased by 7%/16%/25%, and Hydro DMG Bonus will be increased by 4%/9%/15%. Mirrored Nymph stacks created by Normal, Charged, and Plunging Attacks, Elemental Skills, and Elemental Bursts exist independently."
       ],
+      "icon": "UI_RelicIcon_15029_4",
+      "source": "Molten Iron Fortress",
       "extra": {
         "rarityList": [
           4,
@@ -76921,6 +77281,13 @@
           "sands": "Nymph's Constancy",
           "goblet": "Heroes' Tea Party",
           "circlet": "Fell Dragon's Monocle"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15029_4",
+          "plume": "UI_RelicIcon_15029_2",
+          "sands": "UI_RelicIcon_15029_5",
+          "goblet": "UI_RelicIcon_15029_1",
+          "circlet": "UI_RelicIcon_15029_3"
         },
         "version": "3.6"
       }
@@ -76940,6 +77307,8 @@
         "HP +20%",
         "Elemental Skill and Elemental Burst DMG will be increased by 10%. After the equipping character takes DMG, the aforementioned DMG Bonus is increased by 80% for 5s. This effect increase can have 5 stacks. The duration of each stack is counted independently. These effects can be triggered even when the equipping character is not on the field."
       ],
+      "icon": "UI_RelicIcon_15030_4",
+      "source": "Molten Iron Fortress",
       "extra": {
         "rarityList": [
           4,
@@ -76951,6 +77320,13 @@
           "sands": "Ancient Abscission",
           "goblet": "Feast of Boundless Joy",
           "circlet": "Heart of Khvarena's Brilliance"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15030_4",
+          "plume": "UI_RelicIcon_15030_2",
+          "sands": "UI_RelicIcon_15030_5",
+          "goblet": "UI_RelicIcon_15030_1",
+          "circlet": "UI_RelicIcon_15030_3"
         },
         "version": "3.6"
       }
@@ -76970,6 +77346,8 @@
         "Normal and Charged Attack DMG +15%",
         "When current HP increases or decreases, CRIT Rate will be increased by 12% for 5s. Max 3 stacks."
       ],
+      "icon": "UI_RelicIcon_15031_4",
+      "source": "Denouement of Sin",
       "extra": {
         "rarityList": [
           4,
@@ -76981,6 +77359,13 @@
           "sands": "Moment of Judgment",
           "goblet": "Forgotten Vessel",
           "circlet": "Veteran's Visage"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15031_4",
+          "plume": "UI_RelicIcon_15031_2",
+          "sands": "UI_RelicIcon_15031_5",
+          "goblet": "UI_RelicIcon_15031_1",
+          "circlet": "UI_RelicIcon_15031_3"
         },
         "version": "4.0"
       }
@@ -77000,6 +77385,8 @@
         "Increases Elemental Skill DMG by 20%.",
         "Increases Elemental Skill DMG by 25%. Additionally, when not on the field, Elemental Skill DMG will be further increased by 25%. This effect will be cleared 2s after taking the field."
       ],
+      "icon": "UI_RelicIcon_15032_4",
+      "source": "Denouement of Sin",
       "extra": {
         "rarityList": [
           4,
@@ -77011,6 +77398,13 @@
           "sands": "Golden Era's Prelude",
           "goblet": "Golden Night's Bustle",
           "circlet": "Golden Troupe's Reward"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15032_4",
+          "plume": "UI_RelicIcon_15032_2",
+          "sands": "UI_RelicIcon_15032_5",
+          "goblet": "UI_RelicIcon_15032_1",
+          "circlet": "UI_RelicIcon_15032_3"
         },
         "version": "4.0"
       }
@@ -77030,6 +77424,8 @@
         "Healing Bonus +15%.",
         "When the equipping character heals a party member, the Yearning effect will be created for 6s, which records the total amount of healing provided (including overflow healing). When the duration expires, the Yearning effect will be transformed into the \"Waves of Days Past\" effect: When your active party member hits an opponent with a Normal Attack, Charged Attack, Plunging Attack, Elemental Skill, or Elemental Burst, the DMG dealt will be increased by 8% of the total healing amount recorded by the Yearning effect. The \"Waves of Days Past\" effect is removed after it has taken effect 5 times or after 10s. A single instance of the Yearning effect can record up to 15,000 healing, and only a single instance can exist at once, but it can record the healing from multiple equipping characters. Equipping characters on standby can still trigger this effect."
       ],
+      "icon": "UI_RelicIcon_15033_4",
+      "source": "Waterfall Wen",
       "extra": {
         "rarityList": [
           4,
@@ -77041,6 +77437,13 @@
           "sands": "Echoing Sound From Days Past",
           "goblet": "Promised Dream of Days Past",
           "circlet": "Poetry of Days Past"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15033_4",
+          "plume": "UI_RelicIcon_15033_2",
+          "sands": "UI_RelicIcon_15033_5",
+          "goblet": "UI_RelicIcon_15033_1",
+          "circlet": "UI_RelicIcon_15033_3"
         },
         "version": "4.3"
       }
@@ -77060,6 +77463,8 @@
         "ATK +18%.",
         "After using an Elemental Skill, gain a 20% Geo DMG Bonus for 10s. When under a shield granted by the Crystallize reaction, or when Moondrifts formed by Lunar-Crystallize reactions are nearby, the above effect is increased by 150%. When these conditions are no longer met, this additional increase disappears after 1s."
       ],
+      "icon": "UI_RelicIcon_15034_4",
+      "source": "Waterfall Wen",
       "extra": {
         "rarityList": [
           4,
@@ -77071,6 +77476,13 @@
           "sands": "Faithful Hourglass",
           "goblet": "Magnanimous Ink Bottle",
           "circlet": "Compassionate Ladies' Hat"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15034_4",
+          "plume": "UI_RelicIcon_15034_2",
+          "sands": "UI_RelicIcon_15034_5",
+          "goblet": "UI_RelicIcon_15034_1",
+          "circlet": "UI_RelicIcon_15034_3"
         },
         "version": "4.3"
       }
@@ -77090,6 +77502,8 @@
         "ATK +18%.",
         "When the value of a Bond of Life increases or decreases, this character deals 18% increased DMG for 6s. Max 3 stacks."
       ],
+      "icon": "UI_RelicIcon_15035_4",
+      "source": "Faded Theater",
       "extra": {
         "rarityList": [
           4,
@@ -77101,6 +77515,13 @@
           "sands": "The Grand Jape of the Turning of Fate",
           "goblet": "Ichor Shower Rhapsody",
           "circlet": "Whimsical Dance of the Withered"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15035_4",
+          "plume": "UI_RelicIcon_15035_2",
+          "sands": "UI_RelicIcon_15035_5",
+          "goblet": "UI_RelicIcon_15035_1",
+          "circlet": "UI_RelicIcon_15035_3"
         },
         "version": "4.6"
       }
@@ -77120,6 +77541,8 @@
         "ATK +18%.",
         "After leaving combat for 3s, DMG dealt increased by 50%. In combat, if no Burning opponents are nearby for more than 6s, this DMG Bonus will decrease by 10% per second until it reaches 0%. When a Burning opponent exists, it will increase by 10% instead until it reaches 50%. This effect still triggers if the equipping character is off-field."
       ],
+      "icon": "UI_RelicIcon_15036_4",
+      "source": "Faded Theater",
       "extra": {
         "rarityList": [
           4,
@@ -77131,6 +77554,13 @@
           "sands": "Moment of Attainment",
           "goblet": "The Wine-Flask Over Which the Plan Was Hatched",
           "circlet": "Crownless Crown"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15036_4",
+          "plume": "UI_RelicIcon_15036_2",
+          "sands": "UI_RelicIcon_15036_5",
+          "goblet": "UI_RelicIcon_15036_1",
+          "circlet": "UI_RelicIcon_15036_3"
         },
         "version": "4.6"
       }
@@ -77150,6 +77580,8 @@
         "When a nearby party member triggers a Nightsoul Burst, the equipping character regenerates 6 Elemental Energy.",
         "After the equipping character triggers a reaction related to their Elemental Type, all nearby party members gain a 12% Elemental DMG Bonus for the Elemental Types involved in the elemental reaction for 15s. If the equipping character is in the Nightsoul's Blessing state when triggering this effect, all nearby party members gain an additional 28% Elemental DMG Bonus for the Elemental Types involved in the elemental reaction for 20s. The equipping character can trigger this effect while off-field, and the DMG bonus from Artifact Sets with the same name do not stack."
       ],
+      "icon": "UI_RelicIcon_15037_4",
+      "source": "Sanctum of Rainbow Spirits",
       "extra": {
         "rarityList": [
           4,
@@ -77161,6 +77593,13 @@
           "sands": "Mystic's Gold Dial",
           "goblet": "Wandering Scholar's Claw Cup",
           "circlet": "Demon-Warrior's Feather Mask"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15037_4",
+          "plume": "UI_RelicIcon_15037_2",
+          "sands": "UI_RelicIcon_15037_5",
+          "goblet": "UI_RelicIcon_15037_1",
+          "circlet": "UI_RelicIcon_15037_3"
         },
         "version": "5.0"
       }
@@ -77180,6 +77619,8 @@
         "While the equipping character is in Nightsoul's Blessing and is on the field, their DMG dealt is increased by 15%.",
         "After the equipping character consumes 1 Nightsoul point while on the field, CRIT Rate increases by 40% for 6s. This effect can trigger once every second."
       ],
+      "icon": "UI_RelicIcon_15038_4",
+      "source": "Sanctum of Rainbow Spirits",
       "extra": {
         "rarityList": [
           4,
@@ -77191,6 +77632,13 @@
           "sands": "Myths of the Night Realm",
           "goblet": "Pre-Banquet of the Contenders",
           "circlet": "Crown of the Saints"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15038_4",
+          "plume": "UI_RelicIcon_15038_2",
+          "sands": "UI_RelicIcon_15038_5",
+          "goblet": "UI_RelicIcon_15038_1",
+          "circlet": "UI_RelicIcon_15038_3"
         },
         "version": "5.0"
       }
@@ -77210,6 +77658,8 @@
         "Plunging Attack DMG increased by 25%.",
         "After the equipping character's Plunging Attack/Charged Attack/Elemental Skill hits an opponent, they will gain 1/2/2 stack(s) of \"Radiance Everlasting.\" Plunging Attacks, Charged Attacks, or Elemental Skills can each trigger this effect once every 1s. Radiance Everlasting: Plunging Attacks deal 15% increased DMG for 6s. Max 5 stacks. Each stack's duration is counted independently."
       ],
+      "icon": "UI_RelicIcon_15039_4",
+      "source": "Derelict Masonry Dock",
       "extra": {
         "rarityList": [
           4,
@@ -77221,6 +77671,13 @@
           "sands": "Undying One's Mourning Bell",
           "goblet": "A Horn Unwinded",
           "circlet": "Dyed Tassel"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15039_4",
+          "plume": "UI_RelicIcon_15039_2",
+          "sands": "UI_RelicIcon_15039_5",
+          "goblet": "UI_RelicIcon_15039_1",
+          "circlet": "UI_RelicIcon_15039_3"
         },
         "version": "5.5"
       }
@@ -77240,6 +77697,8 @@
         "Cryo DMG Bonus +15%",
         "When the equipping character has 0 Elemental Energy, Normal Attack DMG is increased by 60% and Elemental Burst DMG is increased by 60%. After the equipping character deals Normal Attack DMG, the aforementioned Elemental Burst effect will stop applying for 6s. After the equipping character deals Elemental Burst DMG, the aforementioned Normal Attack effect will stop applying for 6s. This effect can trigger even if the equipping character is off the field."
       ],
+      "icon": "UI_RelicIcon_15040_4",
+      "source": "Derelict Masonry Dock",
       "extra": {
         "rarityList": [
           4,
@@ -77251,6 +77710,13 @@
           "sands": "Deep Gallery's Moment of Oblivion",
           "goblet": "Deep Gallery's Bestowed Banquet",
           "circlet": "Deep Gallery's Lost Crown"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15040_4",
+          "plume": "UI_RelicIcon_15040_2",
+          "sands": "UI_RelicIcon_15040_5",
+          "goblet": "UI_RelicIcon_15040_1",
+          "circlet": "UI_RelicIcon_15040_3"
         },
         "version": "5.5"
       }
@@ -77270,6 +77736,8 @@
         "Increases Elemental Mastery by 80.",
         "When nearby party members trigger Lunar Reactions, if the equipping character is on the field, gain the Gleaming Moon: Intent effect for 4s: Increases CRIT Rate by 15%/30% when the party's Moonsign is Nascent Gleam/Ascendant Gleam. All party members' Lunar Reaction DMG is increased by 10% for each different Gleaming Moon effect that party members have. Effects from Gleaming Moon cannot stack."
       ],
+      "icon": "UI_RelicIcon_15041_4",
+      "source": "Frostladen Machinery",
       "extra": {
         "rarityList": [
           4,
@@ -77281,6 +77749,13 @@
           "sands": "Revelation's Toll",
           "goblet": "Vessel of Plenty",
           "circlet": "Crown of the Befallen"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15041_4",
+          "plume": "UI_RelicIcon_15041_2",
+          "sands": "UI_RelicIcon_15041_5",
+          "goblet": "UI_RelicIcon_15041_1",
+          "circlet": "UI_RelicIcon_15041_3"
         },
         "version": "6.0"
       }
@@ -77300,6 +77775,8 @@
         "Energy Recharge +20%.",
         "When dealing Elemental DMG, gain the Gleaming Moon: Devotion effect for 8s: Increases all party members' Elemental Mastery by 60/120 when the party's Moonsign is Nascent Gleam/Ascendant Gleam. The equipping character can trigger this effect while off-field. All party members' Lunar Reaction DMG is increased by 10% for each different Gleaming Moon effect that party members have. Effects from Gleaming Moon cannot stack."
       ],
+      "icon": "UI_RelicIcon_15042_4",
+      "source": "Frostladen Machinery",
       "extra": {
         "rarityList": [
           4,
@@ -77311,6 +77788,13 @@
           "sands": "Frost Devotee's Delirium",
           "goblet": "Joyous Glory of the Pure",
           "circlet": "Holy Crown of the Believer"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15042_4",
+          "plume": "UI_RelicIcon_15042_2",
+          "sands": "UI_RelicIcon_15042_5",
+          "goblet": "UI_RelicIcon_15042_1",
+          "circlet": "UI_RelicIcon_15042_3"
         },
         "version": "6.0"
       }
@@ -77330,6 +77814,8 @@
         "Increases Elemental Mastery by 80.",
         "When the equipping character is off-field, Lunar Reaction DMG is increased by 20%. When the party's Moonsign Level is at least Ascendant Gleam, Lunar Reaction DMG will be further increased by 40%. This effect will disappear after the equipping character is active for 3s."
       ],
+      "icon": "UI_RelicIcon_15043_4",
+      "source": "Moonchild's Treasures",
       "extra": {
         "rarityList": [
           4,
@@ -77341,6 +77827,13 @@
           "sands": "Moonlit Offering's Final Hour",
           "goblet": "Moonlit Offering's Libation",
           "circlet": "Moonlit Offering's Silver Crown"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15043_4",
+          "plume": "UI_RelicIcon_15043_2",
+          "sands": "UI_RelicIcon_15043_5",
+          "goblet": "UI_RelicIcon_15043_1",
+          "circlet": "UI_RelicIcon_15043_3"
         },
         "version": "6.3"
       }
@@ -77360,6 +77853,8 @@
         "ATK +18%.",
         "After a Normal Attack, Charged Attack, Elemental Skill, or Elemental Burst hits an opponent, gain the Blessing of Pastoral Winds effect for 6s: ATK is increased by 25%. If the equipping character has completed Witch's Homework, Blessing of Pastoral Winds will be upgraded to Resolve of Pastoral Winds, which additionally increases the CRIT Rate of the equipping character by 20%. This effect can be triggered even when the character is off-field."
       ],
+      "icon": "UI_RelicIcon_15044_4",
+      "source": "Moonchild's Treasures",
       "extra": {
         "rarityList": [
           4,
@@ -77371,6 +77866,13 @@
           "sands": "A Note in Spring's Leich",
           "goblet": "Heldenepos's Unspoken Tale",
           "circlet": "Minnesang of Love and Lament"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15044_4",
+          "plume": "UI_RelicIcon_15044_2",
+          "sands": "UI_RelicIcon_15044_5",
+          "goblet": "UI_RelicIcon_15044_1",
+          "circlet": "UI_RelicIcon_15044_3"
         },
         "version": "6.3"
       }
@@ -77390,6 +77892,8 @@
         "Energy Recharge +20%.",
         "If the equipping character has completed Witch's Homework, after they use an Elemental Skill, they gain \"Light's Guidance\" for 20s: All nearby party members gain a 20% Elemental DMG Bonus corresponding to the equipping character's Elemental Type. The equipping character can trigger this effect while off-field. DMG Bonuses provided by Artifact Sets with the same name do not stack.\n· When your party has the Hexerei: Secret Rite effect, Light's Guidance is upgraded to \"Mortal Hymn\": All nearby party members gain a 40% Elemental DMG Bonus corresponding to both the equipping character and the current active party member's Elemental Type instead. If both characters have the same Elemental Type, these bonuses will not stack."
       ],
+      "icon": "UI_RelicIcon_15045_4",
+      "source": "Thorny Crown of the Mountain Wind",
       "extra": {
         "rarityList": [
           4,
@@ -77401,6 +77905,13 @@
           "sands": "Heavensent Decree",
           "goblet": "Heavensent Reward",
           "circlet": "Heavensent Crown"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15045_4",
+          "plume": "UI_RelicIcon_15045_2",
+          "sands": "UI_RelicIcon_15045_5",
+          "goblet": "UI_RelicIcon_15045_1",
+          "circlet": "UI_RelicIcon_15045_3"
         },
         "version": "6.6"
       }
@@ -77420,6 +77931,8 @@
         "ATK +18%.",
         "Increases Superconduct Reaction DMG by 80% and Stellar-Conduct Reaction DMG by 40%. When the wielder attacks opponents affected by Superconduct or Stellar-Conduct, this attack's CRIT Rate is increased by 16%."
       ],
+      "icon": "UI_RelicIcon_15046_4",
+      "source": "Thorny Crown of the Mountain Wind",
       "extra": {
         "rarityList": [
           4,
@@ -77431,6 +77944,13 @@
           "sands": "Moment That Ceased Upon Waking From Grand Dreams",
           "goblet": "Ovations That Ceased Upon Festivity",
           "circlet": "Pendulum That Ceased Amidst a Great Fall"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15046_4",
+          "plume": "UI_RelicIcon_15046_2",
+          "sands": "UI_RelicIcon_15046_5",
+          "goblet": "UI_RelicIcon_15046_1",
+          "circlet": "UI_RelicIcon_15046_3"
         },
         "version": "6.6"
       }
@@ -77450,6 +77970,8 @@
         "ATK +18%.",
         "Increases the equipping character's CRIT Rate by 16%, and their Stellar Swirl reaction dealt by 40%, for 10s after they trigger a Stellar Swirl reaction."
       ],
+      "icon": "UI_RelicIcon_15047_4",
+      "source": "Inverted Glacier",
       "extra": {
         "rarityList": [
           4,
@@ -77461,6 +77983,13 @@
           "sands": "Time Gifted Unto You",
           "goblet": "Chalice of Your Blood and Sorrow",
           "circlet": "Testament to Your Faith"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15047_4",
+          "plume": "UI_RelicIcon_15047_2",
+          "sands": "UI_RelicIcon_15047_5",
+          "goblet": "UI_RelicIcon_15047_1",
+          "circlet": "UI_RelicIcon_15047_3"
         },
         "version": "7.0"
       }
@@ -77480,6 +78009,8 @@
         "ATK +18%.",
         "Increases the equipping character's ATK by 12% for 12s when they trigger a Stellar Glimmer reaction or deal Stellar Glimmer reaction DMG. Also increases Stellar Glimmer reaction DMG dealt by all nearby party members by 50%. The above effects can trigger even when the equipping character is not on the field, and he DMG bonus from multiple Artifact Sets with the same name do not stack."
       ],
+      "icon": "UI_RelicIcon_15048_4",
+      "source": "Inverted Glacier",
       "extra": {
         "rarityList": [
           4,
@@ -77491,6 +78022,13 @@
           "sands": "Foundryman's Calculus",
           "goblet": "Foundryman's Magnanimity",
           "circlet": "Foundryman's Legacy"
+        },
+        "pieceIcons": {
+          "flower": "UI_RelicIcon_15048_4",
+          "plume": "UI_RelicIcon_15048_2",
+          "sands": "UI_RelicIcon_15048_5",
+          "goblet": "UI_RelicIcon_15048_1",
+          "circlet": "UI_RelicIcon_15048_3"
         },
         "version": "7.0"
       }

@@ -201,7 +201,7 @@ export function InstancePage() {
   return (
     <>
       <div style={{ marginBottom: 14 }}>
-        <GameTabs instanceId={id!} active="overview" hasCatalog={Boolean(catalog)} />
+        <GameTabs instanceId={id!} active="overview" gameKey={data.gameKey} hasCatalog={Boolean(catalog)} />
       </div>
       <div className="page-head">
         <div className="row">
