@@ -6,7 +6,8 @@ import {
   type TaskCadence,
 } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
-import { isDoneThisCycle, nextDailyReset } from "../lib/resets.js";
+import { isDoneThisCycle } from "../lib/resets.js";
+import { dueReminders } from "./due.js";
 import { regionForInstance } from "../api/util.js";
 import { sendDirectMessage } from "../discord/rest.js";
 
@@ -64,17 +65,16 @@ export async function runReminderTick(now = new Date()): Promise<void> {
       if (!cfg.enabled) continue;
 
       const region = regionForInstance(game, instance);
-      const boundary = nextDailyReset(now, region);
-      const fireAt = new Date(boundary.getTime() - cfg.leadMinutes * 60_000);
-      if (now < fireAt || now >= boundary) continue;
+      const pending = [];
+      for (const d of dueReminders(cfg, region, game.name, now)) {
+        const already = await prisma.reminderLog.findUnique({
+          where: { ruleId_firedFor: { ruleId: rule.id, firedFor: d.firedFor } },
+        });
+        if (!already) pending.push(d);
+      }
+      if (pending.length === 0) continue;
 
-      const already = await prisma.reminderLog.findUnique({
-        where: { ruleId_firedFor: { ruleId: rule.id, firedFor: boundary } },
-      });
-      if (already) continue;
-
-      const mins = Math.max(0, Math.round((boundary.getTime() - now.getTime()) / 60_000));
-      const parts: string[] = [`⏰ **${game.name}** resets in ${mins}m`];
+      const parts: string[] = [];
       if (cfg.includeCurrencies) {
         const cur = fmtCurrencies(game, instance.currencies);
         if (cur) parts.push(cur);
@@ -93,8 +93,12 @@ export async function runReminderTick(now = new Date()): Promise<void> {
         parts.push(`🔔 Flagged: ${flagged.map((t) => t.title).join(", ")}`.slice(0, 400));
       }
 
-      await sendDirectMessage(rule.user.discordId, parts.join("\n"));
-      await prisma.reminderLog.create({ data: { ruleId: rule.id, firedFor: boundary } });
+      // Usually one; if a late tick finds several due (e.g. a check-in right
+      // before reset), each gets its own DM and log row.
+      for (const d of pending) {
+        await sendDirectMessage(rule.user.discordId, [d.headline, ...parts].join("\n"));
+        await prisma.reminderLog.create({ data: { ruleId: rule.id, firedFor: d.firedFor } });
+      }
     } catch (err) {
       console.error(`[scheduler] rule ${rule.id} failed:`, err);
     }
