@@ -33,7 +33,13 @@ export type ChecklistItem = z.infer<typeof checklistItemSchema>;
 
 export const reminderConfigSchema = z.object({
   enabled: z.boolean().default(true),
+  /** DM `leadMinutes` before the game's daily reset. */
+  beforeReset: z.boolean().default(true),
   leadMinutes: z.number().int().min(0).max(24 * 60).default(60),
+  /** Extra daily DMs at these local times ("HH:MM", in `timezone`). */
+  atTimes: z.array(z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/)).max(6).default([]),
+  /** IANA zone for `atTimes` (sent by the browser, e.g. "Europe/Paris"). */
+  timezone: z.string().max(64).default("UTC"),
   includeCurrencies: z.boolean().default(true),
   includeDailies: z.boolean().default(true),
 });
