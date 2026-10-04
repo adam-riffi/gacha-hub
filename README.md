@@ -61,7 +61,7 @@ apps/server                      Fastify API, Discord OAuth/sessions, interactio
 apps/server/src/games            Per-game server hooks (bot commands, dashboard extras)
 apps/web/src/games/<key>         Bespoke React character sheet per game
 apps/web/public/games/<key>      Image assets per game
-api/index.ts                     Vercel function entry → bundled server (dist-server/)
+api/index.mjs                     Vercel function entry → bundled server (dist-server/)
 scripts/catalog                  Catalog importers (isolated package; see NOTICE for sources)
 scripts/harness                  End-to-end harnesses against the bundled server
 scripts/                         SQLite schema derivation, server bundling, Vercel build
