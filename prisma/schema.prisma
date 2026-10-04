@@ -62,9 +62,27 @@ model GameInstance {
   materials     MaterialStock[]
   reminderRules ReminderRule[]
   teams         Team[]
+  gearPieces    GearPiece[]
 
   @@unique([userId, gameKey])
   @@index([userId])
+}
+
+/// A gear piece in the bag (Genshin artifact, HSR relic…). Equipped pieces live
+/// in their build's doc instead; equipping moves a piece between the two, so
+/// each piece exists in exactly one place.
+model GearPiece {
+  id             String       @id @default(cuid())
+  gameInstanceId String
+  gameInstance   GameInstance @relation(fields: [gameInstanceId], references: [id], onDelete: Cascade)
+  setName        String       @default("")
+  slot           String
+  level          Int          @default(0)
+  mainStat       String       @default("")
+  substats       Json // StatRow[]
+  createdAt      DateTime     @default(now())
+
+  @@index([gameInstanceId])
 }
 
 /// A saved team / party preset for one profile (members are catalog ids).

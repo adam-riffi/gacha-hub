@@ -24,7 +24,7 @@ assets/<gameKey>/<kind>/<key>.webp
   `icon` field (e.g. `UI_AvatarIcon_Arlecchino`). Derived keys:
   - talents: `<charIconKey>_<normal|skill|burst>`
   - constellations: `<charIconKey>_c<1..6>`
-  - gear pieces: `<SetName>_<flower|plume|sands|goblet|circlet>`
+  - gear pieces: the catalog's per-piece icon key (`extra.pieceIcons`, e.g. `UI_RelicIcon_15035_4`)
 
 Example (Genshin / Arlecchino):
 
@@ -34,7 +34,7 @@ genshin/portrait/UI_AvatarIcon_Arlecchino.webp
 genshin/weapon/UI_EquipIcon_Pole_BloodMoon.webp
 genshin/talent/UI_AvatarIcon_Arlecchino_skill.webp
 genshin/constellation/UI_AvatarIcon_Arlecchino_c1.webp
-genshin/gear/Fragment of Harmonic Whimsy_flower.webp
+genshin/gear/UI_RelicIcon_15035_4.webp
 ```
 
 ## Where images come from

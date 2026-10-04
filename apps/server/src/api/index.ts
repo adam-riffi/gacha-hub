@@ -11,6 +11,7 @@ import { registerAdminRoutes } from "./admin.js";
 import { registerDashboardRoutes } from "./dashboard.js";
 import { registerUploadRoutes } from "./uploads.js";
 import { registerReminderRoutes } from "./reminders.js";
+import { registerGearRoutes } from "./gear.js";
 import { registerCronRoutes } from "./cron.js";
 import { registerDiscordInteractions } from "../discord/interactions.js";
 
@@ -27,6 +28,7 @@ export async function registerApi(app: FastifyInstance) {
   await registerDashboardRoutes(app);
   await registerUploadRoutes(app);
   await registerReminderRoutes(app);
+  await registerGearRoutes(app);
   await registerCronRoutes(app);
   await registerDiscordInteractions(app);
 }

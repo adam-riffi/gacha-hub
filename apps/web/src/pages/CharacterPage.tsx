@@ -56,6 +56,8 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
         rarity: entry.rarity,
         iconKey: entry.icon,
         maxConstellation: entry.constellations?.length || undefined,
+        gearPieceIcon: (setName, slot) =>
+          (catalog?.gear.find((g) => g.name === setName)?.extra?.pieceIcons as Record<string, string> | undefined)?.[slot],
         resolveWeapon: (name) => {
           const w = weaponsByName.get(name);
           if (!w) return undefined;
