@@ -120,7 +120,7 @@ export function TaskGeneratorPanel({
     <div className="card" style={{ marginTop: 16 }}>
       <div className="spread">
         <h3 style={{ margin: 0 }}>Plan farming</h3>
-        <Link className="small" to="/tasks">View tasks →</Link>
+        <Link className="small" to="/">View on Home →</Link>
       </div>
       <div className="row" style={{ marginTop: 10, alignItems: "flex-end" }}>
         <div>

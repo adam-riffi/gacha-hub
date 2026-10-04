@@ -34,6 +34,14 @@ export const bannerFeaturedSchema = z.object({
 });
 export type BannerFeatured = z.infer<typeof bannerFeaturedSchema>;
 
+/** Output shape: a featured unit plus catalog details (and ownership) when the server knows them. */
+export const bannerFeaturedDto = bannerFeaturedSchema.extend({
+  name: z.string().optional(),
+  icon: z.string().optional(),
+  rarity: z.number().int().optional(),
+  owned: z.boolean().optional(),
+});
+
 /** Admin-authored banner (also the export shape, so payloads round-trip). */
 export const bannerInput = z
   .object({
@@ -60,7 +68,7 @@ export const bannerDto = z.object({
   kind: bannerKindSchema,
   startsAt: isoDate,
   endsAt: isoDate,
-  featured: z.array(bannerFeaturedSchema),
+  featured: z.array(bannerFeaturedDto),
   payload: jsonValue.nullable(),
   version: z.number().int(),
   status: timedStatusSchema,
