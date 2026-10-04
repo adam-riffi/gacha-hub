@@ -57,7 +57,7 @@ apps/web/src/
 scripts/catalog/       importers (isolated, NOT a workspace; `npm run catalog:install`)
 scripts/harness/       end-to-end harnesses against the esbuild bundle
 prisma/schema.prisma   Postgres schema; schema.sqlite.prisma is generated
-api/index.mts           Vercel function importing dist-server/index.js
+api/index.mjs           Vercel function importing dist-server/index.js
 ```
 
 ## 3. Architecture in five sentences
