@@ -542,3 +542,22 @@ select.prio.build-none { color: var(--muted); }
 .cal-bar.cut-l { border-left-style: dashed; }
 .cal-bar.cut-r { mask-image: linear-gradient(90deg, #000 85%, transparent); }
 .cal-now { position: absolute; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: var(--accent); pointer-events: none; }
+
+/* ---- Per-game overview ---- */
+.ov-grid { display: grid; grid-template-columns: 1.15fr 1fr 1fr; gap: 16px; margin-bottom: 18px; align-items: start; }
+@media (max-width: 1100px) { .ov-grid { grid-template-columns: 1fr 1fr; } }
+.ov-title { font-family: var(--font-display); font-weight: 600; font-size: 0.92rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ov-ellipsis { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ov-banner { display: flex; gap: 10px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.ov-feat { display: flex; gap: 4px; flex-shrink: 0; }
+.ov-unit { position: relative; display: inline-flex; }
+.ov-unit-art { width: 30px; height: 30px; background: var(--surface-2); }
+.ov-unit-art.r5 { width: 44px; height: 44px; background: linear-gradient(160deg, #b8782f, #6e4520); }
+.ov-unit.owned .ov-unit-art { outline: 2px solid var(--success); outline-offset: -2px; }
+.ov-events { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+.ov-goals { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+.ov-goal { display: grid; grid-template-columns: 1fr 80px auto; gap: 8px; align-items: center; color: var(--text); font-size: 0.85rem; }
+.ov-goal:hover { color: var(--primary); }
+.ov-domain { display: grid; grid-template-columns: 40px 1fr; gap: 10px; align-items: start; }
+.ov-mat { width: 40px; height: 40px; background: linear-gradient(160deg, #8a6cc4, #47386e); }
+.ov-users { display: flex; flex-wrap: wrap; gap: 3px; align-items: center; margin-top: 5px; }

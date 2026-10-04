@@ -8,6 +8,7 @@ import { useCatalog } from "../lib/catalog";
 import { pullText } from "../lib/format";
 import { GameTabs } from "../components/GameTabs";
 import { TeamsCard } from "../components/TeamsCard";
+import { GameOverview } from "../components/GameOverview";
 import type { InstanceDetail, ReminderRule } from "../lib/types";
 
 const REMINDER_DEFAULTS: ReminderConfig = {
@@ -254,9 +255,7 @@ export function InstancePage() {
         </div>
       </div>
 
-      <div className="card" style={{ marginBottom: 18 }}>
-        <ReminderControl instanceId={data.id} />
-      </div>
+      <GameOverview instance={data} catalog={catalog} owned={owned ?? []} />
 
       <div className="grid cols-2">
         <div className="card">
@@ -348,6 +347,10 @@ export function InstancePage() {
             </div>
           )}
         </div>
+      </div>
+
+      <div className="card" style={{ marginTop: 16 }}>
+        <ReminderControl instanceId={data.id} />
       </div>
 
       {catalog && (
