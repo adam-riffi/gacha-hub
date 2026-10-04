@@ -5,7 +5,7 @@ A step-by-step runbook for the first production deploy. Target: **Vercel Hobby**
 (auth + bot) + **GitHub Actions** (free cron). Everything here is on a free tier.
 
 The app code and build are already wired for this (`vercel.json`,
-`scripts/vercel-build.mjs`, `api/index.ts`, the cron workflow). This runbook is
+`scripts/vercel-build.mjs`, `api/index.mts`, the cron workflow). This runbook is
 only the parts that need **your** accounts and secrets — the steps an automated
 agent can't and shouldn't do for you (creating accounts, entering credentials,
 accepting terms).

@@ -1,5 +1,5 @@
 // Bundle the Fastify app into one ESM file for the Vercel serverless function
-// (api/index.ts imports it). Bundling avoids TypeScript-in-node_modules issues
+// (api/index.mts imports it). Bundling avoids TypeScript-in-node_modules issues
 // with the workspace package; Prisma stays external so its engine is traced.
 import { mkdirSync, writeFileSync } from "node:fs";
 import { build } from "esbuild";
