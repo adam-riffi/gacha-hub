@@ -102,7 +102,7 @@ export function EquipmentPage() {
   return (
     <>
       <div style={{ marginBottom: 14 }}>
-        <GameTabs instanceId={id!} active="equipment" />
+        <GameTabs instanceId={id!} active="equipment" gameKey={instance?.gameKey} />
       </div>
       <div className="page-head">
         <div className="row">

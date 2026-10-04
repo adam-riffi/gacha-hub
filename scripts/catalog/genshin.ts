@@ -113,16 +113,35 @@ const weapons: CatalogWeapon[] = all("weapons")
 
 // ---- Artifact sets ----
 const PIECES = ["flower", "plume", "sands", "goblet", "circlet"] as const;
-const gear: CatalogGearSet[] = all("artifacts").map((a) => ({
+const artifactSets = all("artifacts");
+
+// Where each set drops: a domain's first two set rewards are its featured sets
+// (the rest are low-rarity filler). Boss-drop sets get no domain.
+const setNames = new Set(artifactSets.map((a) => a.name as string));
+const homeDomains = new Map<string, Set<string>>();
+for (const d of all("domains")) {
+  const names = (d.rewardPreview ?? []).map((r: { name: string }) => r.name).filter((n: string) => setNames.has(n));
+  for (const n of [...new Set<string>(names)].slice(0, 2)) {
+    if (!homeDomains.has(n)) homeDomains.set(n, new Set());
+    homeDomains.get(n)!.add(d.entranceName ?? d.name);
+  }
+}
+
+const gear: CatalogGearSet[] = artifactSets.map((a) => ({
   id: String(a.id),
   key: slugify(a.name),
   name: a.name,
   slots: PIECES.filter((p) => a[p]),
   bonuses: [a.effect2Pc, a.effect4Pc].filter((x): x is string => Boolean(x)),
-  icon: a.images?.filename_icon ?? a.images?.icon,
+  // Sets have no icon of their own; the flower piece stands for the set (as in-game).
+  icon: a.images?.filename_flower ?? a.images?.[`filename_${PIECES.find((p) => a[p])}`],
+  source: [...(homeDomains.get(a.name) ?? [])].join(" / ") || undefined,
   extra: {
     rarityList: a.rarityList,
     pieceNames: Object.fromEntries(PIECES.filter((p) => a[p]).map((p) => [p, a[p].name])),
+    pieceIcons: Object.fromEntries(
+      PIECES.filter((p) => a.images?.[`filename_${p}`]).map((p) => [p, a.images[`filename_${p}`]]),
+    ),
     version: a.version,
   },
 }));
