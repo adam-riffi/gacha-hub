@@ -5,28 +5,13 @@ import { getGame, type GameDashboardExtras } from "@gacha/shared";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
 import { formatRemaining } from "../lib/time";
-import { pullCount, pullText } from "../lib/format";
+import { pullCount, pullText, pullsFor } from "../lib/format";
 import { assetUrl, communityAssetUrl } from "../lib/assets";
 import { GameIcon } from "../components/GameIcon";
 import { TaskBoard } from "../components/TaskBoard";
 import type { DashboardData, TaskItem } from "../lib/types";
 
 type DashGame = DashboardData["games"][number];
-
-/** Limited pulls (premium currency + limited tickets) and standard tickets for one game. */
-function pullsFor(game: DashGame) {
-  let limited = 0;
-  let standard = 0;
-  let label: string | null = null;
-  for (const c of game.currencies) {
-    if (!c.pullCost) continue;
-    const n = Math.floor(c.value / c.pullCost);
-    if (c.standardOnly) standard += n;
-    else limited += n;
-    label ??= c.pullLabel;
-  }
-  return { limited, standard, label };
-}
 
 // ---- KPI strip (user picks which tiles to show) ----
 
@@ -61,9 +46,9 @@ function kpiValues(data: DashboardData, tasks: TaskItem[]): Record<KpiId, { valu
   const mats = Object.values(data.goalMaterials);
   const matsDone = mats.reduce((n, m) => n + m.done, 0);
   const matsTotal = mats.reduce((n, m) => n + m.total, 0);
-  const pullGames = data.games.filter((g) => pullsFor(g).label);
+  const pullGames = data.games.filter((g) => pullsFor(g.currencies).label);
   return {
-    pulls: { value: String(pullGames.reduce((n, g) => n + pullsFor(g).limited, 0)), sub: `across ${pullGames.length} games` },
+    pulls: { value: String(pullGames.reduce((n, g) => n + pullsFor(g.currencies).limited, 0)), sub: `across ${pullGames.length} games` },
     dailies: { value: `${dailies.filter((d) => d.doneThisCycle).length}/${dailies.length}`, sub: "this reset" },
     owned: { value: catalog ? `${Math.round((owned / catalog) * 100)}%` : String(owned), sub: `${owned} of ${catalog}` },
     built: { value: `${built}/${owned}`, sub: "good or perfect" },
@@ -204,7 +189,7 @@ function TodayCard({ games, onToggle }: { games: DashGame[]; onToggle: (id: stri
 
 /** Pulls you can do right now, per game and in total. */
 function PullsCard({ games }: { games: DashGame[] }) {
-  const rows = games.map((g) => ({ g, ...pullsFor(g) })).filter((r) => r.label);
+  const rows = games.map((g) => ({ g, ...pullsFor(g.currencies) })).filter((r) => r.label);
   if (rows.length === 0) return null;
   const total = rows.reduce((n, r) => n + r.limited, 0);
   return (
@@ -325,7 +310,18 @@ export function DashboardPage() {
 
   if (isLoading) return <div className="muted">Loading…</div>;
 
-  if (!data || data.games.length === 0) {
+  // Sleeping games stay out of Home entirely (their banners and events too).
+  const asleep = new Set(data?.games.filter((g) => g.sleeping).map((g) => g.gameKey));
+  const view: DashboardData | undefined = data && {
+    ...data,
+    games: data.games.filter((g) => !g.sleeping),
+    timeline: {
+      banners: data.timeline.banners.filter((b) => !asleep.has(b.gameKey)),
+      events: data.timeline.events.filter((e) => !asleep.has(e.gameKey)),
+    },
+  };
+
+  if (!view || view.games.length === 0) {
     return (
       <>
         <div className="page-head"><h1>Home</h1></div>
@@ -344,18 +340,18 @@ export function DashboardPage() {
         <Link className="btn" to="/library">+ Add game</Link>
       </div>
 
-      <KpiStrip data={data} tasks={tasks ?? []} />
+      <KpiStrip data={view} tasks={tasks ?? []} />
 
       <div className="dash">
         <div className="dash-main">
-          <BannersNow timeline={data.timeline} />
-          <TodayCard games={data.games} onToggle={(id, done) => toggleDaily.mutate({ id, done })} />
+          <BannersNow timeline={view.timeline} />
+          <TodayCard games={view.games} onToggle={(id, done) => toggleDaily.mutate({ id, done })} />
           <TaskBoard />
         </div>
         <aside className="dash-rail">
-          <PullsCard games={data.games} />
-          <ComingUpCard timeline={data.timeline} />
-          <WalletCard games={data.games} onSet={(instanceId, key, value) => setCurrency.mutate({ instanceId, key, value })} />
+          <PullsCard games={view.games} />
+          <ComingUpCard timeline={view.timeline} />
+          <WalletCard games={view.games} onSet={(instanceId, key, value) => setCurrency.mutate({ instanceId, key, value })} />
         </aside>
       </div>
     </>

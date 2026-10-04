@@ -23,6 +23,7 @@ export const dashboardGameDto = z.object({
   name: z.string(),
   accent: z.string(),
   regionKey: z.string(),
+  sleeping: z.boolean(),
   characterCount: z.number().int(),
   ownedCharacters: z.number().int(),
   builtCharacters: z.number().int(),
