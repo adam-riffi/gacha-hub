@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "adm-zip": "^0.5.16",
-    "genshin-db": "5.2.13"
+    "genshin-db": "5.2.14"
   },
   "devDependencies": {
     "@types/adm-zip": "^0.5.7",

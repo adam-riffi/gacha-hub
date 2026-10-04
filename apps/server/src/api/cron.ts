@@ -1,11 +1,13 @@
 import type { FastifyInstance } from "fastify";
 import { config } from "../config.js";
 import { runReminderTick } from "../scheduler/reminders.js";
+import { importFeedsIfStale } from "../lib/officialFeed.js";
 
 /**
  * External cron entrypoint. A GitHub Actions schedule (free) calls this every
  * few minutes with the shared secret; the reminder logic is idempotent per
- * reset boundary, so coarse or duplicated ticks are safe.
+ * reset boundary, so coarse or duplicated ticks are safe. Also refreshes the
+ * official banner/event feeds about once an hour.
  */
 export async function registerCronRoutes(app: FastifyInstance) {
   app.post("/api/cron/tick", async (req, reply) => {
@@ -17,6 +19,7 @@ export async function registerCronRoutes(app: FastifyInstance) {
     }
     const started = Date.now();
     await runReminderTick();
-    return { ok: true, ms: Date.now() - started };
+    const feeds = await importFeedsIfStale().catch((err: Error) => [{ error: err.message }]);
+    return { ok: true, ms: Date.now() - started, feeds };
   });
 }

@@ -1,147 +1,138 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import type { BannerDto, EventDto, OwnershipDto } from "@gacha/shared";
 import { api } from "../lib/api";
-import { useCatalog } from "../lib/catalog";
 import { formatDate, formatRemaining } from "../lib/time";
-import type { InstanceListItem } from "../lib/types";
+import { assetUrl, communityAssetUrl } from "../lib/assets";
+import { GameIcon } from "../components/GameIcon";
+import type { DashboardData } from "../lib/types";
 
-type Filter = "current" | "active" | "upcoming" | "ended" | "all";
+const DAYS = 42;
+const DAY = 86_400_000;
+const MONTH = new Intl.DateTimeFormat(undefined, { month: "short" });
 
-function StatusBadge({ status }: { status: BannerDto["status"] }) {
-  const cls = status === "active" ? "badge done" : status === "upcoming" ? "badge todo" : "badge";
-  return <span className={cls}>{status}</span>;
-}
+type Banner = DashboardData["timeline"]["banners"][number];
+type Row = { id: string; name: string; startsAt: string; endsAt: string; status: string; banner?: Banner };
 
-function When({ item }: { item: { status: BannerDto["status"]; startsAt: string; endsAt: string } }) {
-  if (item.status === "upcoming") return <span className="small muted">starts in {formatRemaining(item.startsAt)} · {formatDate(item.startsAt)}</span>;
-  if (item.status === "active") return <span className="small muted">ends in {formatRemaining(item.endsAt)} · {formatDate(item.endsAt)}</span>;
-  return <span className="small muted">ended {formatDate(item.endsAt)}</span>;
-}
-
-/** Banners and events for your games, with countdowns and ownership badges. */
+/** Banners and events as bars on a six-week calendar, one block per game. */
 export function TimelinePage() {
-  const [filter, setFilter] = useState<Filter>("current");
-  const [picked, setPicked] = useState<string | null>(null);
+  const [offset, setOffset] = useState(0);
+  const [hidden, setHidden] = useState<Set<string>>(new Set());
+  const [now] = useState(() => Date.now());
+  const { data: dash } = useQuery({ queryKey: ["dashboard"], queryFn: () => api.get<DashboardData>("/api/dashboard") });
 
-  const { data: instances } = useQuery({
-    queryKey: ["instances"],
-    queryFn: () => api.get<InstanceListItem[]>("/api/instances"),
-  });
-  const instance = useMemo(
-    () => (instances ?? []).find((i) => i.gameKey === picked) ?? instances?.[0] ?? null,
-    [instances, picked],
-  );
-  const gameKey = instance?.gameKey;
-
-  const { data: banners } = useQuery({
-    queryKey: ["banners", gameKey, filter],
-    queryFn: () => api.get<BannerDto[]>(`/api/games/${gameKey}/banners?status=${filter}`),
-    enabled: Boolean(gameKey),
-  });
-  const { data: events } = useQuery({
-    queryKey: ["events", gameKey, filter],
-    queryFn: () => api.get<EventDto[]>(`/api/games/${gameKey}/events?status=${filter}`),
-    enabled: Boolean(gameKey),
-  });
-  const { data: owned } = useQuery({
-    queryKey: ["ownership", instance?.id],
-    queryFn: () => api.get<OwnershipDto[]>(`/api/instances/${instance!.id}/ownership`),
-    enabled: Boolean(instance),
-  });
-  const { index } = useCatalog(gameKey);
-  const ownedSet = useMemo(() => new Set((owned ?? []).map((o) => `${o.kind}:${o.catalogId}`)), [owned]);
-
-  if (!instances) return <div className="muted">Loading…</div>;
-  if (instances.length === 0) {
+  if (!dash) return <div className="muted">Loading…</div>;
+  if (dash.games.length === 0) {
     return (
       <div className="card empty">
-        <p>Install a game first to see its banners and events.</p>
+        <p>Add a game first to see its banners and events.</p>
         <Link className="btn primary" to="/library">Browse games</Link>
       </div>
     );
   }
 
-  const nameOf = (kind: "character" | "weapon", id: string) =>
-    (kind === "character" ? index?.characters.get(id)?.name : index?.weapons.get(id)?.name) ?? id;
+  const today = new Date(now);
+  today.setHours(0, 0, 0, 0);
+  const start = today.getTime() + (offset - 3) * DAY;
+  const end = start + DAYS * DAY;
+  const pct = (t: number) => ((Math.min(Math.max(t, start), end) - start) / (end - start)) * 100;
+  const days = Array.from({ length: DAYS }, (_, i) => new Date(start + i * DAY));
+  const nowPct = pct(now);
+  const inWindow = (r: Row) => new Date(r.endsAt).getTime() > start && new Date(r.startsAt).getTime() < end;
+
+  const games = dash.games.filter((g) => !g.sleeping);
+  const blocks = games
+    .filter((g) => !hidden.has(g.gameKey))
+    .map((g) => {
+      const banners: Row[] = dash.timeline.banners.filter((b) => b.gameKey === g.gameKey).map((b) => ({ ...b, id: `b:${b.id}`, banner: b }));
+      const events: Row[] = dash.timeline.events.filter((e) => e.gameKey === g.gameKey).map((e) => ({ ...e, id: `e:${e.id}` }));
+      const byEnd = (a: Row, b: Row) => a.endsAt.localeCompare(b.endsAt);
+      return { g, rows: [...banners.sort(byEnd), ...events.sort(byEnd)].filter(inWindow) };
+    });
+
+  const toggle = (key: string) =>
+    setHidden((h) => {
+      const next = new Set(h);
+      if (!next.delete(key)) next.add(key);
+      return next;
+    });
 
   return (
     <>
       <div className="page-head">
         <h1>Banners &amp; events</h1>
         <div className="row">
-          {instances.map((i) => (
-            <button key={i.id} className={`btn sm ${i.gameKey === gameKey ? "primary" : ""}`} onClick={() => setPicked(i.gameKey)}>
-              {i.name}
+          {games.map((g) => (
+            <button key={g.gameKey} className={`btn sm ${hidden.has(g.gameKey) ? "ghost" : ""}`} style={{ borderLeft: `3px solid ${g.accent}` }} onClick={() => toggle(g.gameKey)}>
+              {g.name}
             </button>
           ))}
-          <select value={filter} onChange={(e) => setFilter(e.target.value as Filter)} style={{ width: "auto" }}>
-            <option value="current">Active + upcoming</option>
-            <option value="active">Active</option>
-            <option value="upcoming">Upcoming</option>
-            <option value="ended">Ended</option>
-            <option value="all">All</option>
-          </select>
+          <span style={{ width: 12 }} />
+          <button className="btn sm" disabled={offset === 0} onClick={() => setOffset(offset - 14)}>‹ 2 weeks</button>
+          <button className="btn sm" disabled={offset === 0} onClick={() => setOffset(0)}>Today</button>
+          <button className="btn sm" onClick={() => setOffset(offset + 14)}>2 weeks ›</button>
         </div>
       </div>
 
-      <div className="grid cols-2" style={{ alignItems: "start" }}>
-        <div className="stack">
-          <h2>Banners</h2>
-          {(banners ?? []).length === 0 && <div className="card empty">No banners for this filter.</div>}
-          {(banners ?? []).map((b) => (
-            <div className="card" key={b.id}>
-              <div className="spread">
-                <div>
-                  <strong>{b.name}</strong> <span className="badge">{b.kind}</span>
-                </div>
-                <StatusBadge status={b.status} />
-              </div>
-              <div style={{ marginTop: 4 }}><When item={b} /></div>
-              {b.featured.length > 0 && (
-                <div className="row" style={{ marginTop: 10 }}>
-                  {b.featured.map((f) => {
-                    const isOwned = ownedSet.has(`${f.kind}:${f.catalogId}`);
-                    return (
-                      <Link
-                        key={`${f.kind}:${f.catalogId}`}
-                        to={`/games/${instance!.id}/ownership`}
-                        className={`badge ${isOwned ? "done" : ""}`}
-                        title={isOwned ? "Owned" : "Not owned"}
-                      >
-                        {f.rateUp ? "★ " : ""}{nameOf(f.kind, f.catalogId)} {isOwned ? "✓" : "·"}
-                      </Link>
-                    );
-                  })}
-                </div>
-              )}
+      <div className="cal">
+        <div className="cal-row cal-head">
+          <div className="cal-label" />
+          <div className="cal-track">
+            {days.map((d, i) =>
+              i === 0 || d.getDate() === 1 ? (
+                <span key={i} className="cal-month" style={{ left: `${(i / DAYS) * 100}%` }}>{MONTH.format(d)}</span>
+              ) : null,
+            )}
+            <div className="cal-days">
+              {days.map((d, i) => (
+                <span key={i} className={`${d.getTime() === today.getTime() ? "is-today" : ""} ${d.getDay() % 6 === 0 ? "is-weekend" : ""}`}>{d.getDate()}</span>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
 
-        <div className="stack">
-          <h2>Events</h2>
-          {(events ?? []).length === 0 && <div className="card empty">No events for this filter.</div>}
-          {(events ?? []).map((e) => (
-            <div className="card" key={e.id}>
-              <div className="spread">
-                <strong>{e.url ? <a href={e.url} target="_blank" rel="noreferrer">{e.name} ↗</a> : e.name}</strong>
-                <StatusBadge status={e.status} />
-              </div>
-              <div style={{ marginTop: 4 }}><When item={e} /></div>
-              {e.description && <p className="small" style={{ marginTop: 8, whiteSpace: "pre-wrap" }}>{e.description}</p>}
-              {Array.isArray(e.rewards) && e.rewards.length > 0 && (
-                <div className="row" style={{ marginTop: 8 }}>
-                  {(e.rewards as { label: string; qty?: number }[]).map((r, i) => (
-                    <span className="badge" key={i}>{r.label}{r.qty ? ` ×${r.qty}` : ""}</span>
-                  ))}
-                </div>
-              )}
+        {blocks.map(({ g, rows }) => (
+          <div className="cal-game" key={g.gameKey}>
+            <div className="cal-game-name" style={{ borderLeftColor: g.accent }}>
+              <Link to={`/games/${g.instanceId}`}>{g.name}</Link>
+              {rows.length === 0 && <span className="small muted"> · nothing in these weeks</span>}
             </div>
-          ))}
-        </div>
+            {rows.map((r) => {
+              const s = new Date(r.startsAt).getTime();
+              const e = new Date(r.endsAt).getTime();
+              const featured = [...(r.banner?.featured ?? [])].filter((f) => (f.rarity ?? 0) >= 5);
+              return (
+                <div className="cal-row" key={r.id} title={`${r.name}\n${formatDate(r.startsAt)} → ${formatDate(r.endsAt)}`}>
+                  <div className="cal-label">
+                    {featured.map((f) => (
+                      <GameIcon
+                        key={f.catalogId}
+                        src={assetUrl(g.gameKey, f.kind, f.icon)}
+                        fallback={communityAssetUrl(g.gameKey, f.kind, f.icon)}
+                        alt={f.name ?? f.catalogId}
+                        className={`cal-feat ${f.owned ? "owned" : ""}`}
+                      />
+                    ))}
+                    <span className="cal-name">{r.name}</span>
+                  </div>
+                  <div className="cal-track">
+                    <div
+                      className={`cal-bar ${r.banner ? "is-banner" : ""} ${s < start ? "cut-l" : ""} ${e > end ? "cut-r" : ""}`}
+                      style={{ left: `${pct(s)}%`, width: `${pct(e) - pct(s)}%`, ["--c" as string]: g.accent }}
+                    >
+                      {r.status === "upcoming" ? `starts in ${formatRemaining(r.startsAt)}` : `ends in ${formatRemaining(r.endsAt)}`}
+                    </div>
+                    {nowPct > 0 && nowPct < 100 && <div className="cal-now" style={{ left: `${nowPct}%` }} />}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ))}
       </div>
+      <p className="small muted" style={{ marginTop: 10 }}>
+        Genshin banners and events update hourly from the official in-game notices. Hover a row for exact dates; ringed portraits are units you own.
+      </p>
     </>
   );
 }
