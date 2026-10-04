@@ -61,6 +61,13 @@ export const genshinDocSchema = z
       })
       .partial(),
     stats: z.record(z.union([z.number(), z.string()])),
+    /** Artifact farming target: the 4-pc set and wanted main stats (planner). */
+    artifactPlan: z
+      .object({
+        set: z.string().max(120),
+        mains: z.object({ sands: z.string().max(60), goblet: z.string().max(60), circlet: z.string().max(60) }).partial(),
+      })
+      .partial(),
   })
   .partial();
 
