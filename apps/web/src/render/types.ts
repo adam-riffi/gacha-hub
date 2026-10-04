@@ -23,6 +23,8 @@ export interface SheetCatalog {
   maxConstellation?: number;
   /** Look up a weapon's catalog info by its display name (icon, rarity, base stats). */
   resolveWeapon?: (name: string) => SheetWeaponInfo | undefined;
+  /** Catalog icon key of one gear piece (set + slot), e.g. "UI_RelicIcon_15035_4". */
+  gearPieceIcon?: (setName: string, slot: string) => string | undefined;
 }
 
 export interface SheetProps<Doc = Record<string, unknown>> {

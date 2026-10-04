@@ -7,6 +7,7 @@ import { useCatalog } from "../lib/catalog";
 import { assetUrl, communityAssetUrl } from "../lib/assets";
 import { GameIcon } from "../components/GameIcon";
 import { GameTabs, gearLabel } from "../components/GameTabs";
+import { GearInventory } from "../components/GearInventory";
 import type { InstanceDetail } from "../lib/types";
 
 /** Pieces per set name anywhere in a build doc (every game's gear pieces carry `setName`). */
@@ -29,6 +30,7 @@ export function GearSetsPage() {
   const [search, setSearch] = useState("");
   const [rarity, setRarity] = useState<number | null>(null);
   const [usedOnly, setUsedOnly] = useState(false);
+  const [view, setView] = useState<"sets" | "inventory">("sets");
 
   const { data: instance } = useQuery({
     queryKey: ["instance", id],
@@ -80,9 +82,17 @@ export function GearSetsPage() {
           <span className="badge">{label}</span>
           <span className="badge">{usedBy.size} used by your builds</span>
         </div>
+        {instance.gameKey === "genshin" && (
+          <div className="row" style={{ gap: 6 }}>
+            <button className={`btn sm ${view === "sets" ? "primary" : ""}`} onClick={() => setView("sets")}>Sets</button>
+            <button className={`btn sm ${view === "inventory" ? "primary" : ""}`} onClick={() => setView("inventory")}>Inventory</button>
+          </div>
+        )}
       </div>
 
-      {sets.length === 0 ? (
+      {view === "inventory" ? (
+        <GearInventory instanceId={id!} gameKey={instance.gameKey} sets={sets} builds={builds ?? []} />
+      ) : sets.length === 0 ? (
         <div className="card empty">No {label.toLowerCase()} in this game's catalog yet.</div>
       ) : (
         <>

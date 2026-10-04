@@ -12,7 +12,7 @@ import { assetUrl, communityAssetUrl } from "../../lib/assets";
 import { api } from "../../lib/api";
 import { useToast } from "../../lib/toast";
 
-const SUBSTATS = [
+export const SUBSTATS = [
   "HP", "HP%", "ATK", "ATK%", "DEF", "DEF%",
   "Elemental Mastery", "Energy Recharge", "CRIT Rate", "CRIT DMG",
 ];
@@ -22,7 +22,7 @@ const FINAL_STATS = [
 
 // Valid main stats per artifact slot (flower/plume are fixed).
 const ELEMENTAL_DMG = GENSHIN_ELEMENTS.map((e) => `${e} DMG`);
-const MAIN_STATS: Record<string, string[]> = {
+export const MAIN_STATS: Record<string, string[]> = {
   flower: ["HP"],
   plume: ["ATK"],
   sands: ["HP%", "ATK%", "DEF%", "Elemental Mastery", "Energy Recharge"],
@@ -302,7 +302,8 @@ export function GenshinSheet({
                 <div className="gs-art" key={slot.key}>
                   <div className="gs-art-top">
                     <GameIcon
-                      src={assetUrl("genshin", "gear", p.setName ? `${p.setName}_${slot.key}` : null)}
+                      src={assetUrl("genshin", "gear", p.setName ? catalog?.gearPieceIcon?.(p.setName, slot.key) : null)}
+                      fallback={communityAssetUrl("genshin", "gear", p.setName ? catalog?.gearPieceIcon?.(p.setName, slot.key) : null)}
                       alt={slot.label}
                       label={SLOT_ABBR[slot.key]}
                       tint={theme.solid}
