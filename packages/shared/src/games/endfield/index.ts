@@ -63,7 +63,7 @@ export const endfield: GameDefinition = {
   regions: endfieldRegions,
   currencies: [
     { key: "sanity", label: "Sanity", cap: 240, regenPerHour: 10 },
-    { key: "oroberyl", label: "Oroberyl" },
+    { key: "oroberyl", label: "Oroberyl", pullCost: 500, pullLabel: "headhunt" },
   ],
   defaultTasks: [{ key: "dailies", title: "Daily Tasks", cadence: "daily" }],
   docSchema: endfieldDocSchema,
