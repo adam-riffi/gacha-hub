@@ -4,50 +4,212 @@ import { getGame, PRIORITY_RANK, type GameDashboardExtras } from "@gacha/shared"
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
 import { formatRemaining } from "../lib/time";
-import { pullText } from "../lib/format";
+import { pullCount, pullText } from "../lib/format";
 import type { DashboardData } from "../lib/types";
 
-/** Per-game extras from the server module (e.g. Genshin resin projection). */
-function GameExtras({ extras }: { extras: unknown }) {
-  const regen = (extras as GameDashboardExtras | undefined)?.regen;
-  if (!regen) return null;
+type DashGame = DashboardData["games"][number];
+
+/** Limited pulls (premium currency + limited tickets) and standard tickets for one game. */
+function pullsFor(game: DashGame) {
+  let limited = 0;
+  let standard = 0;
+  let label: string | null = null;
+  for (const c of game.currencies) {
+    if (!c.pullCost) continue;
+    const n = Math.floor(c.value / c.pullCost);
+    if (c.standardOnly) standard += n;
+    else limited += n;
+    label ??= c.pullLabel;
+  }
+  return { limited, standard, label };
+}
+
+/** Per game: reset countdown, regen resource, and dailies as one-click toggles. */
+function TodayCard({ games, onToggle }: { games: DashGame[]; onToggle: (id: string, done: boolean) => void }) {
   return (
-    <div className="spread small" style={{ marginBottom: 10 }}>
-      <span>
-        ⛲ {regen.label}: <strong>{regen.value}</strong> / {regen.cap}
-      </span>
-      <span className={regen.full ? "badge done" : "badge"}>
-        {regen.full || !regen.fullAt ? "full" : `full in ${formatRemaining(regen.fullAt)}`}
-      </span>
+    <div className="card">
+      <h3>Today</h3>
+      {games.map((g) => {
+        const regen = (g.extras as GameDashboardExtras | undefined)?.regen;
+        const left = g.dailies.filter((d) => !d.doneThisCycle).length;
+        return (
+          <div className={`today-game ${left === 0 && !regen?.full ? "settled" : ""}`} key={g.instanceId}>
+            <span className="today-stripe" style={{ background: g.accent }} />
+            <div style={{ minWidth: 0 }}>
+              <div className="spread">
+                <Link to={`/games/${g.instanceId}`}><strong>{g.name}</strong></Link>
+                {g.nextReset && <span className="small muted">reset in {formatRemaining(g.nextReset)}</span>}
+              </div>
+              {regen && (
+                <div className="today-regen small">
+                  <span>{regen.label}</span>
+                  <div className="meter"><span style={{ width: `${Math.min(100, (regen.value / regen.cap) * 100)}%` }} /></div>
+                  <span><strong>{regen.value}</strong> / {regen.cap}</span>
+                  <span className={regen.full ? "badge todo" : "muted"}>
+                    {regen.full || !regen.fullAt ? "full — spend it" : `full in ${formatRemaining(regen.fullAt)}`}
+                  </span>
+                </div>
+              )}
+              {g.dailies.length > 0 && (
+                <div className="chips">
+                  {g.dailies.map((d) => (
+                    <button
+                      key={d.id}
+                      type="button"
+                      className={`chip-toggle ${d.doneThisCycle ? "on" : ""}`}
+                      onClick={() => onToggle(d.id, !d.doneThisCycle)}
+                    >
+                      {d.doneThisCycle ? "✓ " : ""}{d.title}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }
 
-const untilReset = (iso: string | null) => (iso ? formatRemaining(iso) : "");
+/** Active goals, highest priority first, with real progress (materials done for farming goals). */
+function GoalsCard({ data }: { data: DashboardData }) {
+  if (data.goals.length === 0) return null;
+  return (
+    <div className="card">
+      <div className="spread">
+        <h3 style={{ margin: 0 }}>Priority farming</h3>
+        <Link className="small" to="/tasks">Board →</Link>
+      </div>
+      <div className="stack" style={{ marginTop: 12 }}>
+        {[...data.goals]
+          .sort((a, b) => PRIORITY_RANK[a.priority] - PRIORITY_RANK[b.priority])
+          .map((g) => {
+            const game = data.games.find((x) => x.instanceId === g.refId);
+            const mats = data.goalMaterials[g.id];
+            const [done, total] = mats ? [mats.done, mats.total] : [g.progress, g.target ?? 0];
+            return (
+              <div key={g.id}>
+                <div className="spread small">
+                  <span>
+                    {g.priority !== "normal" && <span className={`badge prio-${g.priority}`}>{g.priority}</span>}{" "}
+                    <strong>{g.title}</strong>
+                    {game && <span className="muted"> · {game.name}</span>}
+                  </span>
+                  <span className="muted">
+                    {total ? `${done} / ${total}${mats ? " mats" : ""}` : done}
+                  </span>
+                </div>
+                {total > 0 && (
+                  <div className="meter">
+                    <span style={{ width: `${Math.min(100, (done / total) * 100)}%`, background: game?.accent }} />
+                  </div>
+                )}
+              </div>
+            );
+          })}
+      </div>
+    </div>
+  );
+}
 
-/** Countdown strip: active + upcoming banners/events across installed games. */
-function TimelineWidget({ timeline }: { timeline: DashboardData["timeline"] }) {
+/** Pulls you can do right now, per game and in total. */
+function PullsCard({ games }: { games: DashGame[] }) {
+  const rows = games.map((g) => ({ g, ...pullsFor(g) })).filter((r) => r.label);
+  if (rows.length === 0) return null;
+  const total = rows.reduce((n, r) => n + r.limited, 0);
+  return (
+    <div className="card">
+      <div className="spread">
+        <h3 style={{ margin: 0 }}>Pulls</h3>
+        <span className="pull-total">{total}</span>
+      </div>
+      <div className="small muted" style={{ marginBottom: 10 }}>limited pulls across games</div>
+      {rows.map(({ g, limited, standard, label }) => (
+        <div className="pull-row" key={g.instanceId}>
+          <span className="dot" style={{ background: g.accent }} />
+          <span className="pull-game">{g.name}</span>
+          <span>
+            <strong>{pullCount(limited, label!)}</strong>
+            {standard > 0 && <span className="small muted"> +{standard} std</span>}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** Active + upcoming banners/events across installed games. */
+function TimelineCard({ timeline }: { timeline: DashboardData["timeline"] }) {
   const items = [
     ...timeline.banners.map((b) => ({ id: `b:${b.id}`, gameKey: b.gameKey, name: b.name, tag: b.kind, status: b.status, startsAt: b.startsAt, endsAt: b.endsAt })),
     ...timeline.events.map((e) => ({ id: `e:${e.id}`, gameKey: e.gameKey, name: e.name, tag: "event", status: e.status, startsAt: e.startsAt, endsAt: e.endsAt })),
   ].sort((a, b) => (a.status === b.status ? a.endsAt.localeCompare(b.endsAt) : a.status === "active" ? -1 : 1));
-  if (items.length === 0) return null;
   return (
-    <div className="card" style={{ marginBottom: 18 }}>
+    <div className="card">
       <div className="spread">
         <h3 style={{ margin: 0 }}>Banners &amp; events</h3>
-        <Link className="small" to="/timeline">See all →</Link>
+        <Link className="small" to="/timeline">Timeline →</Link>
       </div>
-      <div className="stack" style={{ gap: 6, marginTop: 10 }}>
-        {items.slice(0, 8).map((it) => (
-          <div className="spread small" key={it.id}>
-            <span>
-              <span className="muted">{getGame(it.gameKey)?.name ?? it.gameKey} · </span>
-              {it.name} <span className="badge">{it.tag}</span>
-            </span>
-            <span className={it.status === "active" ? "badge done" : "badge todo"}>
-              {it.status === "active" ? `ends in ${formatRemaining(it.endsAt)}` : `starts in ${formatRemaining(it.startsAt)}`}
-            </span>
+      {items.length === 0 ? (
+        <p className="small">Nothing scheduled.</p>
+      ) : (
+        <div className="stack" style={{ gap: 10, marginTop: 12 }}>
+          {items.slice(0, 12).map((it) => {
+            const game = getGame(it.gameKey);
+            return (
+              <div key={it.id} className="tl-item" style={{ borderLeftColor: game?.accent }}>
+                <div className="small">
+                  <strong>{it.name}</strong> <span className="badge">{it.tag}</span>
+                </div>
+                <div className="spread small muted">
+                  <span>{game?.name ?? it.gameKey}</span>
+                  <span className={it.status === "active" ? "" : "tl-upcoming"}>
+                    {it.status === "active" ? `ends in ${formatRemaining(it.endsAt)}` : `starts in ${formatRemaining(it.startsAt)}`}
+                  </span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/** Per-game currency balances (edit inline; blur saves). */
+function WalletCard({ games, onSet }: { games: DashGame[]; onSet: (instanceId: string, key: string, value: number) => void }) {
+  return (
+    <div className="card">
+      <h3>Wallet</h3>
+      <div className="wallet-grid">
+        {games.map((g) => (
+          <div key={g.instanceId}>
+            <div className="small" style={{ color: g.accent, fontWeight: 600, marginBottom: 4 }}>{g.name}</div>
+            {g.currencies.map((c) => {
+              const pulls = pullText(c.value, c.pullCost, c.pullLabel);
+              return (
+                <div className="currency-row" key={c.key}>
+                  <span className="small">
+                    {c.label}
+                    {pulls && <span className="muted"> · ≈ {pulls}</span>}
+                  </span>
+                  <div className="currency-val">
+                    <input
+                      type="number"
+                      min={0}
+                      max={c.cap ?? undefined}
+                      defaultValue={c.value}
+                      onBlur={(e) => {
+                        const value = Number(e.target.value);
+                        if (value !== c.value) onSet(g.instanceId, c.key, value);
+                      }}
+                    />
+                    {c.cap ? <span className="small muted">/ {c.cap}</span> : null}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         ))}
       </div>
@@ -85,7 +247,7 @@ export function DashboardPage() {
           <h1>Dashboard</h1>
         </div>
         <div className="card empty">
-          <p>No games yet. Head to the Games library to install your first tracker.</p>
+          <p>No games yet. Add the games you play to start tracking.</p>
           <Link className="btn primary" to="/library">Browse games</Link>
         </div>
       </>
@@ -99,129 +261,19 @@ export function DashboardPage() {
         <Link className="btn" to="/library">+ Add game</Link>
       </div>
 
-      {(() => {
-        const dailiesLeft = data.games.flatMap((g) => g.dailies).filter((d) => !d.doneThisCycle).length;
-        const unbuilt = data.games.reduce((n, g) => n + Math.max(0, g.ownedCharacters - g.builtCharacters), 0);
-        const timed = data.timeline.banners.length + data.timeline.events.length;
-        const tiles = [
-          { label: "Games", value: data.games.length },
-          { label: "Dailies left", value: dailiesLeft, tone: dailiesLeft ? "accent" : "success" },
-          { label: "Active goals", value: data.goals.length },
-          { label: "Unbuilt", value: unbuilt, tone: unbuilt ? "accent" : "success" },
-          { label: "Banners/events", value: timed },
-        ];
-        return (
-          <div className="stat-row">
-            {tiles.map((t) => (
-              <div className="stat-tile" key={t.label}>
-                <div className={`stat-value ${t.tone ?? ""}`}>{t.value}</div>
-                <div className="stat-label">{t.label}</div>
-              </div>
-            ))}
-          </div>
-        );
-      })()}
-
-      <TimelineWidget timeline={data.timeline} />
-
-      {data.goals.length > 0 && (
-        <div className="card" style={{ marginBottom: 18 }}>
-          <div className="spread">
-            <h3 style={{ margin: 0 }}>Active goals</h3>
-            <Link className="small" to="/tasks">Board →</Link>
-          </div>
-          <div className="stack" style={{ marginTop: 10 }}>
-            {[...data.goals]
-              .sort((a, b) => PRIORITY_RANK[a.priority] - PRIORITY_RANK[b.priority])
-              .map((g) => {
-                const gameName = data.games.find((x) => x.instanceId === g.refId)?.name;
-                return (
-                  <div className="spread" key={g.id}>
-                    <span>
-                      {g.priority !== "normal" && <span className={`badge prio-${g.priority}`}>{g.priority}</span>}{" "}
-                      {g.title}
-                      {gameName && <span className="muted small"> · {gameName}</span>}
-                    </span>
-                    <span className="muted">
-                      {g.progress}
-                      {g.target ? ` / ${g.target}` : ""}
-                    </span>
-                  </div>
-                );
-              })}
-          </div>
+      <div className="dash">
+        <div className="dash-main">
+          <TodayCard games={data.games} onToggle={(id, done) => toggleDaily.mutate({ id, done })} />
+          <GoalsCard data={data} />
+          <WalletCard
+            games={data.games}
+            onSet={(instanceId, key, value) => setCurrency.mutate({ instanceId, key, value })}
+          />
         </div>
-      )}
-
-      <div className="grid cols-2">
-        {data.games.map((game) => (
-          <div className="card" key={game.instanceId} style={{ borderTop: `3px solid ${game.accent}` }}>
-            <div className="spread" style={{ marginBottom: 10 }}>
-              <div>
-                <h3 style={{ marginBottom: 2 }}>
-                  <Link to={`/games/${game.instanceId}`}>{game.name}</Link>
-                </h3>
-                <span className="small muted">
-                  {game.regionKey.toUpperCase()}
-                  {game.ownedCharacters > 0 && ` · ${game.builtCharacters}/${game.ownedCharacters} built`}
-                </span>
-              </div>
-              {game.nextReset && (
-                <span className="badge">reset in {untilReset(game.nextReset)}</span>
-              )}
-            </div>
-
-            <GameExtras extras={game.extras} />
-
-            {game.currencies.length > 0 && (
-              <div style={{ marginBottom: 12 }}>
-                {game.currencies.map((c) => {
-                  const pulls = pullText(c.value, c.pullCost, c.pullLabel);
-                  return (
-                  <div className="currency-row" key={c.key}>
-                    <span>
-                      {c.label}
-                      {pulls && <span className="small muted"> · ≈ {pulls}</span>}
-                    </span>
-                    <div className="currency-val">
-                      <input
-                        type="number"
-                        min={0}
-                        max={c.cap ?? undefined}
-                        defaultValue={c.value}
-                        onBlur={(e) => {
-                          const value = Number(e.target.value);
-                          if (value !== c.value)
-                            setCurrency.mutate({ instanceId: game.instanceId, key: c.key, value });
-                        }}
-                      />
-                      {c.cap ? <span className="small muted">/ {c.cap}</span> : null}
-                    </div>
-                  </div>
-                  );
-                })}
-              </div>
-            )}
-
-            {game.dailies.length > 0 && (
-              <div>
-                <div className="small muted" style={{ marginBottom: 6 }}>Dailies</div>
-                {game.dailies.map((d) => (
-                  <div className="task-row" key={d.id}>
-                    <span>{d.title}</span>
-                    <button
-                      className={`checkbtn ${d.doneThisCycle ? "on" : ""}`}
-                      title={d.doneThisCycle ? "Done" : "Mark done"}
-                      onClick={() => toggleDaily.mutate({ id: d.id, done: !d.doneThisCycle })}
-                    >
-                      ✓
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        ))}
+        <aside className="dash-rail">
+          <PullsCard games={data.games} />
+          <TimelineCard timeline={data.timeline} />
+        </aside>
       </div>
     </>
   );

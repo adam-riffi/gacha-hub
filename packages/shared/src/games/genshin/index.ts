@@ -76,6 +76,8 @@ export const genshin: GameDefinition = {
   currencies: [
     { key: "resin", label: "Original Resin", cap: 200, regenPerHour: 7.5 },
     { key: "primogems", label: "Primogems", pullCost: 160, pullLabel: "wish" },
+    { key: "intertwinedFate", label: "Intertwined Fate", pullCost: 1, pullLabel: "wish" },
+    { key: "acquaintFate", label: "Acquaint Fate", pullCost: 1, pullLabel: "wish", standardOnly: true },
     { key: "mora", label: "Mora" },
   ],
   defaultTasks: [

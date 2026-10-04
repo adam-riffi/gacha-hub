@@ -85,6 +85,8 @@ export const hsr: GameDefinition = {
   currencies: [
     { key: "trailblazePower", label: "Trailblaze Power", cap: 300, regenPerHour: 10 },
     { key: "stellarJade", label: "Stellar Jade", pullCost: 160, pullLabel: "warp" },
+    { key: "specialPass", label: "Star Rail Special Pass", pullCost: 1, pullLabel: "warp" },
+    { key: "railPass", label: "Star Rail Pass", pullCost: 1, pullLabel: "warp", standardOnly: true },
     { key: "credits", label: "Credits" },
   ],
   defaultTasks: [
