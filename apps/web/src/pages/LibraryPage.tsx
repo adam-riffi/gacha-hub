@@ -37,7 +37,7 @@ export function LibraryPage() {
       <div className="page-head">
         <h1>Games</h1>
       </div>
-      <p>Each game is hardcoded with its own tracker and character sheet. Install one to start.</p>
+      <p>Add the games you play.</p>
 
       <div className="grid cols-3">
         {games?.map((g) => {
@@ -47,9 +47,6 @@ export function LibraryPage() {
               <div className="spread" style={{ marginBottom: 8 }}>
                 <h3 style={{ margin: 0 }}>{g.name}</h3>
               </div>
-              <p className="small">
-                {g.currencies} currencies · {g.regions.length} region{g.regions.length === 1 ? "" : "s"}
-              </p>
               <div className="row" style={{ marginTop: 12 }}>
                 {installed ? (
                   <button className="btn sm" onClick={() => nav(`/games/${installed.id}`)}>Open</button>
