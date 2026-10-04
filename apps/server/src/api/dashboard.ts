@@ -6,6 +6,7 @@ import { getGameServerModule } from "../games/index.js";
 import { listBanners, listEvents } from "../lib/timeline.js";
 import { buildRegionContext, serializeTask } from "./tasks.js";
 import { allCurrencies } from "../lib/currencies.js";
+import { getCatalog } from "./util.js";
 
 /**
  * Cross-game overview: one card per profile with currencies (labels/caps from
@@ -29,6 +30,21 @@ export async function registerDashboardRoutes(app: FastifyInstance) {
       _count: true,
     });
     const ownedByInstance = new Map(ownedRows.map((r) => [r.gameInstanceId, r._count]));
+    const gearRows = await prisma.gearPiece.groupBy({
+      by: ["gameInstanceId"],
+      where: { gameInstanceId: { in: instances.map((g) => g.id) } },
+      _count: true,
+    });
+    const gearByInstance = new Map(gearRows.map((r) => [r.gameInstanceId, r._count]));
+    // Catalogs are cached per process after the first load.
+    const catalogs = new Map(
+      await Promise.all(
+        [...new Set(instances.map((gi) => gi.gameKey))].map(async (k) => {
+          const game = getGame(k);
+          return [k, game ? await getCatalog(game) : null] as const;
+        }),
+      ),
+    );
 
     const tasks = await prisma.task.findMany({ where: { userId } });
     const ctx = await buildRegionContext(tasks);
@@ -60,6 +76,8 @@ export async function registerDashboardRoutes(app: FastifyInstance) {
         regionKey: gi.regionKey,
         characterCount: gi.characters.length,
         ownedCharacters: ownedByInstance.get(gi.id) ?? 0,
+        catalogCharacters: catalogs.get(gi.gameKey)?.catalog.characters.length ?? null,
+        gearPieces: gearByInstance.get(gi.id) ?? 0,
         // Distinct catalog characters marked good/perfect.
         builtCharacters: new Set(
           gi.characters.filter((c) => c.catalogId && BUILT_STATUSES.includes(c.buildStatus as never)).map((c) => c.catalogId),
@@ -85,10 +103,35 @@ export async function registerDashboardRoutes(app: FastifyInstance) {
 
     // Countdowns: active + upcoming banners/events across the installed games.
     const gameKeys = [...new Set(instances.map((gi) => gi.gameKey))];
-    const [banners, events] = await Promise.all([
+    const [rawBanners, events] = await Promise.all([
       listBanners(gameKeys, "current", now, 24),
       listEvents(gameKeys, "current", now, 24),
     ]);
+
+    // Featured units get catalog name/icon/rarity and whether you own them.
+    const featuredIds = rawBanners.flatMap((b) => b.featured.map((f) => f.catalogId));
+    const ownedFeatured = featuredIds.length
+      ? await prisma.ownership.findMany({
+          where: { gameInstanceId: { in: instances.map((g) => g.id) }, catalogId: { in: featuredIds } },
+          select: { gameInstanceId: true, kind: true, catalogId: true },
+        })
+      : [];
+    const instanceByGame = new Map(instances.map((gi) => [gi.gameKey, gi.id]));
+    const owns = new Set(ownedFeatured.map((o) => `${o.gameInstanceId}:${o.kind}:${o.catalogId}`));
+    const banners = rawBanners.map((b) => {
+      const cat = catalogs.get(b.gameKey)?.index;
+      return {
+        ...b,
+        featured: b.featured.map((f) => {
+          const e = f.kind === "character" ? cat?.characters.get(f.catalogId) : cat?.weapons.get(f.catalogId);
+          return {
+            ...f,
+            ...(e ? { name: e.name, icon: e.icon, rarity: e.rarity } : {}),
+            owned: owns.has(`${instanceByGame.get(b.gameKey)}:${f.kind}:${f.catalogId}`),
+          };
+        }),
+      };
+    });
 
     // Material subtasks done/total per parent goal (same "done" rule as the board).
     const goalMaterials: Record<string, { done: number; total: number }> = {};

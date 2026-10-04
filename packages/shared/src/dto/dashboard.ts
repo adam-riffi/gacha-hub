@@ -26,6 +26,10 @@ export const dashboardGameDto = z.object({
   characterCount: z.number().int(),
   ownedCharacters: z.number().int(),
   builtCharacters: z.number().int(),
+  /** Characters in the game's catalog (null when the game has none). */
+  catalogCharacters: z.number().int().nullable(),
+  /** Gear pieces in the bag (artifact inventory). */
+  gearPieces: z.number().int(),
   currencies: z.array(dashboardCurrencyDto),
   dailies: z.array(taskDto),
   nextReset: isoDateNullable,
