@@ -7,7 +7,7 @@ import { useToast } from "../lib/toast";
 import { useCatalog } from "../lib/catalog";
 import { GameTabs } from "../components/GameTabs";
 import { GameIcon } from "../components/GameIcon";
-import { assetUrl } from "../lib/assets";
+import { assetUrl, communityAssetUrl } from "../lib/assets";
 import type { InstanceDetail } from "../lib/types";
 
 type Kind = "character" | "weapon";
@@ -176,7 +176,11 @@ export function OwnershipPage() {
                 title={isOwned ? "Owned — click to unmark" : "Click to mark owned"}
                 onClick={() => setOwnership.mutate([{ kind, catalogId: e.id, owned: !isOwned }])}
               >
-                <GameIcon src={assetUrl(instance.gameKey, kind, e.icon)} alt={e.name} />
+                <GameIcon
+                  src={assetUrl(instance.gameKey, kind, e.icon)}
+                  fallback={communityAssetUrl(instance.gameKey, kind, e.icon)}
+                  alt={e.name}
+                />
                 {isOwned && <span className="rtile-check">✓</span>}
               </button>
               <div className="rtile-name" title={e.name}>{e.name}</div>

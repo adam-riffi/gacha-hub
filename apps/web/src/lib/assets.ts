@@ -32,3 +32,17 @@ export function assetUrl(gameKey: string, kind: AssetKind, key?: string | null):
   if (/^https?:\/\//.test(key) || key.startsWith("/")) return key;
   return `${BASE}/${gameKey}/${kind}/${encodeURIComponent(key)}.webp`;
 }
+
+/**
+ * Fallback: the same icon from a public community CDN, used when we host no
+ * copy (<GameIcon fallback>). Enka serves Genshin character/weapon icons under
+ * the exact catalog keys. ponytail: hotlinks a third party; mirror into our own
+ * store (VITE_ASSET_BASE) if Enka ever blocks or goes down.
+ */
+export function communityAssetUrl(gameKey: string, kind: AssetKind, key?: string | null): string | null {
+  if (!key || gameKey !== "genshin") return null;
+  if (kind === "character" || kind === "portrait" || kind === "weapon") {
+    return `https://enka.network/ui/${encodeURIComponent(key)}.png`;
+  }
+  return null;
+}

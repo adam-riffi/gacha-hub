@@ -8,7 +8,7 @@ import type { SheetProps } from "../../render/types";
 import type { GearPiece } from "../../components/GearPieceCard";
 import { Labeled, Num, Select, StatList } from "../../components/inputs";
 import { GameIcon } from "../../components/GameIcon";
-import { assetUrl } from "../../lib/assets";
+import { assetUrl, communityAssetUrl } from "../../lib/assets";
 import { api } from "../../lib/api";
 import { useToast } from "../../lib/toast";
 
@@ -125,7 +125,13 @@ export function GenshinSheet({
       {/* ---------- Left rail ---------- */}
       <div className="gs-rail">
         <div className="gs-splash">
-          <GameIcon src={splashSrc} alt={name || "Character"} tint={theme.solid} className="gs-splash-img" />
+          <GameIcon
+            src={splashSrc}
+            fallback={communityAssetUrl("genshin", "portrait", catalog?.iconKey)}
+            alt={name || "Character"}
+            tint={theme.solid}
+            className="gs-splash-img"
+          />
           {rarity > 0 && (
             <div className="gs-stars">
               {Array.from({ length: rarity }).map((_, i) => (
@@ -156,6 +162,9 @@ export function GenshinSheet({
 
         <div className="gs-card">
           <div className="gs-card-h">Identity</div>
+          <Labeled label="Build name">
+            <input value={name} onChange={(e) => onName(e.target.value)} />
+          </Labeled>
           <div className="gs-id-grid">
             <Labeled label="Level">
               <Num value={doc.level} min={1} max={90} onChange={(v) => setDoc((d) => ({ ...d, level: v }))} />
@@ -226,6 +235,7 @@ export function GenshinSheet({
           <div className="gs-wep">
             <GameIcon
               src={assetUrl("genshin", "weapon", weaponInfo?.iconKey)}
+              fallback={communityAssetUrl("genshin", "weapon", weaponInfo?.iconKey)}
               alt={doc.weapon?.name || "Weapon"}
               tint={theme.solid}
               className="gs-wep-ico"
