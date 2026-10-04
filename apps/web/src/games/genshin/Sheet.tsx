@@ -85,6 +85,9 @@ export function GenshinSheet({
 
   const talents = (doc.talents ?? {}) as Record<string, number | undefined>;
   const stats = (doc.stats ?? {}) as Record<string, number | string | undefined>;
+  const plan = doc.artifactPlan ?? {};
+  const setPlan = (p: Partial<NonNullable<GenshinDoc["artifactPlan"]>>) =>
+    setDoc((d) => ({ ...d, artifactPlan: { ...(d.artifactPlan ?? {}), ...p } }));
 
   const rarity = catalog?.rarity ?? 5;
   const maxCons = catalog?.maxConstellation ?? 6;
@@ -294,6 +297,20 @@ export function GenshinSheet({
 
         <div className="gs-card">
           <div className="gs-card-h">Artifacts</div>
+          <div className="gs-plan">
+            <Labeled label="Farming target (4-pc)">
+              <Select value={plan.set} options={catalog?.gearSets ?? []} onChange={(v) => setPlan({ set: v })} />
+            </Labeled>
+            {(["sands", "goblet", "circlet"] as const).map((s) => (
+              <Labeled key={s} label={`Wanted ${s} main`}>
+                <Select
+                  value={plan.mains?.[s]}
+                  options={MAIN_STATS[s] ?? []}
+                  onChange={(v) => setPlan({ mains: { ...(plan.mains ?? {}), [s]: v } })}
+                />
+              </Labeled>
+            ))}
+          </div>
           <div className="gs-arts">
             {GENSHIN_ARTIFACT_SLOTS.map((slot) => {
               const p = artifacts[slot.key] ?? {};

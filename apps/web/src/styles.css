@@ -307,6 +307,8 @@ img.gicon { object-fit: cover; }
 .gs-talent-lab { min-height: 2.2em; }
 
 /* artifacts */
+.gs-plan { display: grid; grid-template-columns: 2fr repeat(3, 1fr); gap: 0 10px; margin-bottom: 4px; }
+@media (max-width: 900px) { .gs-plan { grid-template-columns: 1fr 1fr; } }
 .gs-arts { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; }
 .gs-art { background: var(--bg-elev); border: 1px solid var(--border); padding: 11px; }
 .gs-art-top { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
@@ -413,6 +415,15 @@ select.prio.build-none { color: var(--muted); }
 .inv-subs { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 10px; color: var(--muted); }
 .inv-crit { color: var(--text); }
 .inv-cv { color: var(--accent); }
+
+/* ---- Artifact planner ---- */
+.plan-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); gap: 14px; align-items: start; }
+.plan-card { display: flex; flex-direction: column; gap: 12px; }
+.plan-row { display: flex; gap: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+.plan-icon { width: 40px; height: 40px; flex-shrink: 0; border-radius: var(--radius-sm); background: linear-gradient(160deg, #b8782f, #6e4520); }
+.plan-icon.gicon-ph { font-size: 0.7rem; color: rgba(255, 255, 255, 0.85); border: none; }
+.plan-set { margin: 1px 0 4px; }
+.plan-ok { color: var(--success); }
 
 /* ---- Ownership roster: compact art tiles ---- */
 .toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 16px; }
