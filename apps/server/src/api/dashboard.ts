@@ -5,6 +5,7 @@ import { requireUser } from "../auth/plugin.js";
 import { getGameServerModule } from "../games/index.js";
 import { listBanners, listEvents } from "../lib/timeline.js";
 import { buildRegionContext, serializeTask } from "./tasks.js";
+import { allCurrencies } from "../lib/currencies.js";
 
 /**
  * Cross-game overview: one card per profile with currencies (labels/caps from
@@ -63,7 +64,7 @@ export async function registerDashboardRoutes(app: FastifyInstance) {
         builtCharacters: new Set(
           gi.characters.filter((c) => c.catalogId && BUILT_STATUSES.includes(c.buildStatus as never)).map((c) => c.catalogId),
         ).size,
-        currencies: gi.currencies.map((c) => {
+        currencies: (game ? allCurrencies(game.currencies, gi.currencies, gi.createdAt) : gi.currencies).map((c) => {
           const d = currencyByKey.get(c.key);
           return {
             key: c.key,
@@ -73,6 +74,7 @@ export async function registerDashboardRoutes(app: FastifyInstance) {
             regenPerHour: d?.regenPerHour ?? null,
             pullCost: d?.pullCost ?? null,
             pullLabel: d?.pullLabel ?? null,
+            standardOnly: d?.standardOnly ?? false,
           };
         }),
         dailies,
@@ -88,11 +90,21 @@ export async function registerDashboardRoutes(app: FastifyInstance) {
       listEvents(gameKeys, "current", now, 24),
     ]);
 
+    // Material subtasks done/total per parent goal (same "done" rule as the board).
+    const goalMaterials: Record<string, { done: number; total: number }> = {};
+    for (const t of enriched) {
+      if (!t.parentId) continue;
+      const m = (goalMaterials[t.parentId] ??= { done: 0, total: 0 });
+      m.total += 1;
+      if ((t.target ?? 0) > 0 && t.progress >= (t.target ?? 0)) m.done += 1;
+    }
+
     return dashboardDto.parse({
       games,
       // Top-level, non-backlog goals — subtasks live under their parent, and
       // completionist backlog goals stay out of the active list.
       goals: enriched.filter((t) => t.type === "goal" && !t.parentId && !t.backlog),
+      goalMaterials,
       timeline: { banners, events },
     });
   });

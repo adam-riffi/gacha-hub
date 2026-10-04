@@ -29,6 +29,8 @@ export interface GameCurrency {
   pullCost?: number;
   /** What one pull is called in this game: "wish", "warp", "convene"… */
   pullLabel?: string;
+  /** Ticket only usable on the standard banner — excluded from limited pull counts. */
+  standardOnly?: boolean;
 }
 
 export interface GameTaskSeed {

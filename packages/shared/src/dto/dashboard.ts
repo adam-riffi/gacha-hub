@@ -13,6 +13,8 @@ export const dashboardCurrencyDto = z.object({
   /** Premium currency: units per pull + the pull's name (for a wish count). */
   pullCost: z.number().nullable(),
   pullLabel: z.string().nullable(),
+  /** Standard-banner ticket: not counted toward limited pulls. */
+  standardOnly: z.boolean(),
 });
 
 export const dashboardGameDto = z.object({
@@ -59,6 +61,8 @@ export type GameDashboardExtras = z.infer<typeof gameDashboardExtrasDto>;
 export const dashboardDto = z.object({
   games: z.array(dashboardGameDto),
   goals: z.array(taskDto),
+  /** Per goal id: material subtasks done / total (goals without subtasks are absent). */
+  goalMaterials: z.record(z.object({ done: z.number().int(), total: z.number().int() })),
   timeline: timelineDto,
 });
 export type DashboardDto = z.infer<typeof dashboardDto>;

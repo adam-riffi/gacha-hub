@@ -1,11 +1,15 @@
-/** "12 wishes" from a premium-currency balance, or null if the game has no pulls. */
+/** "12 wishes" — the game's pull name, pluralized. */
+export function pullCount(n: number, pullLabel: string): string {
+  const plural = /(?:s|sh|ch|x|z)$/i.test(pullLabel) ? `${pullLabel}es` : `${pullLabel}s`;
+  return `${n} ${n === 1 ? pullLabel : plural}`;
+}
+
+/** "12 wishes" from a premium-currency balance; null for tickets (1 = 1 pull) or games without pulls. */
 export function pullText(
   value: number,
   pullCost?: number | null,
   pullLabel?: string | null,
 ): string | null {
-  if (!pullCost || !pullLabel) return null;
-  const n = Math.floor(value / pullCost);
-  const plural = /(?:s|sh|ch|x|z)$/i.test(pullLabel) ? `${pullLabel}es` : `${pullLabel}s`;
-  return `${n} ${n === 1 ? pullLabel : plural}`;
+  if (!pullCost || pullCost <= 1 || !pullLabel) return null;
+  return pullCount(Math.floor(value / pullCost), pullLabel);
 }

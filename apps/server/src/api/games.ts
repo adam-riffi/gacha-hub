@@ -13,6 +13,7 @@ import {
 import { prisma } from "../lib/prisma.js";
 import { requireUser } from "../auth/plugin.js";
 import { gameOrThrow, loadInstance } from "./util.js";
+import { allCurrencies } from "../lib/currencies.js";
 
 /** Attach the game module's display info to an instance row. */
 function withGame<T extends { gameKey: string }>(row: T) {
@@ -94,9 +95,11 @@ export async function registerGameRoutes(app: FastifyInstance) {
         },
       });
       if (!gi) return reply.code(404).send({ error: "not_found" });
+      const game = getGame(gi.gameKey);
+      const currencies = game ? allCurrencies(game.currencies, gi.currencies, gi.createdAt) : gi.currencies;
       return {
         ...withGame(instanceDto.parse(gi)),
-        currencies: gi.currencies.map((c) => currencyStateDto.parse(c)),
+        currencies: currencies.map((c) => currencyStateDto.parse(c)),
         characters: gi.characters.map((c) => characterSummaryDto.parse(c)),
       };
     },

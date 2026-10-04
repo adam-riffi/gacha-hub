@@ -67,6 +67,8 @@ export const zzz: GameDefinition = {
   currencies: [
     { key: "battery", label: "Battery Charge", cap: 240, regenPerHour: 10 },
     { key: "polychrome", label: "Polychrome", pullCost: 160, pullLabel: "signal" },
+    { key: "encryptedTape", label: "Encrypted Master Tape", pullCost: 1, pullLabel: "signal" },
+    { key: "masterTape", label: "Master Tape", pullCost: 1, pullLabel: "signal", standardOnly: true },
     { key: "denny", label: "Denny" },
   ],
   defaultTasks: [

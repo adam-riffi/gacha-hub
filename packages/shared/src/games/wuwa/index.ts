@@ -70,6 +70,8 @@ export const wuwa: GameDefinition = {
   currencies: [
     { key: "waveplate", label: "Waveplate", cap: 240, regenPerHour: 10 },
     { key: "astrite", label: "Astrite", pullCost: 160, pullLabel: "convene" },
+    { key: "radiantTide", label: "Radiant Tide", pullCost: 1, pullLabel: "convene" },
+    { key: "lustrousTide", label: "Lustrous Tide", pullCost: 1, pullLabel: "convene", standardOnly: true },
     { key: "shellCredits", label: "Shell Credits" },
   ],
   defaultTasks: [
