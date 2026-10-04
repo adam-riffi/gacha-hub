@@ -47,7 +47,8 @@ async function undoneDailies(userId: string, instance: GameInstance, game: GameD
  */
 export async function runReminderTick(now = new Date()): Promise<void> {
   const rules = await prisma.reminderRule.findMany({
-    where: { enabled: true, gameInstanceId: { not: null } },
+    // Sleeping games get no reminders.
+    where: { enabled: true, gameInstanceId: { not: null }, gameInstance: { is: { sleeping: false } } },
     include: { user: true },
   });
 

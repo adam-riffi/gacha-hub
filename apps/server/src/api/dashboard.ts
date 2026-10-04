@@ -74,6 +74,7 @@ export async function registerDashboardRoutes(app: FastifyInstance) {
         name: game?.name ?? gi.gameKey,
         accent: game?.accent ?? "#7c8cff",
         regionKey: gi.regionKey,
+        sleeping: gi.sleeping,
         characterCount: gi.characters.length,
         ownedCharacters: ownedByInstance.get(gi.id) ?? 0,
         catalogCharacters: catalogs.get(gi.gameKey)?.catalog.characters.length ?? null,

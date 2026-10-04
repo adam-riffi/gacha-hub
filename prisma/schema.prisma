@@ -53,6 +53,8 @@ model GameInstance {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   gameKey   String
   regionKey String   @default("eu")
+  /// Asleep = hidden from Home and skipped by reminders, without uninstalling.
+  sleeping  Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

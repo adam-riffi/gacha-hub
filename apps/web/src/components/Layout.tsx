@@ -62,7 +62,8 @@ export function Layout({ children }: { children: ReactNode }) {
               <NavLink
                 key={gi.id}
                 to={`/games/${gi.id}`}
-                className={({ isActive }) => `nav-link nav-sub ${isActive ? "active" : ""}`}
+                className={({ isActive }) => `nav-link nav-sub ${isActive ? "active" : ""} ${gi.sleeping ? "asleep" : ""}`}
+                title={gi.sleeping ? "Asleep" : undefined}
               >
                 <span className="dot" style={{ background: gi.accent }} />
                 {gi.name}

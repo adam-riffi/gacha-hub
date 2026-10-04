@@ -89,7 +89,7 @@ export function TaskBoard() {
     const byParent = new Map<string, TaskItem[]>();
     for (const t of all) if (t.parentId) byParent.set(t.parentId, [...(byParent.get(t.parentId) ?? []), t]);
     const byPriority = (a: TaskItem, b: TaskItem) => PRIORITY_RANK[a.priority] - PRIORITY_RANK[b.priority];
-    return (instances ?? []).map((gi) => {
+    return (instances ?? []).filter((gi) => !gi.sleeping).map((gi) => {
       const mine = all.filter((t) => t.scope === "game" && t.refId === gi.id);
       return {
         gi,
