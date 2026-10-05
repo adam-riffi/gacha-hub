@@ -36,6 +36,8 @@ export const dashboardGameDto = z.object({
   nextReset: isoDateNullable,
   /** Per-game extras from the game's server module (bespoke widgets). */
   extras: z.unknown().optional(),
+  /** Pity per banner type (empty for games without pull rules). */
+  pity: z.array(z.object({ key: z.string(), label: z.string(), pity: z.number().int(), hardPity: z.number().int(), guaranteed: z.boolean() })),
 });
 
 /** Active + upcoming banners/events across the user's installed games. */
