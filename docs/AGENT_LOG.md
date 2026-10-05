@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-06 · claude · stack/art/02-asset-paths · pending
+- Done: `assetPath` (shared, tested) only passes through full URLs and our own public paths; source-internal keys such as WuWa's Unreal paths return null, so no wasted request before the initials placeholder.
+- Tests: Red before the fix; `art.test.ts` 7 tests.
+- Scope/decisions: No public mirror serves WuWa's UI paths (encore.moe, wuthery and data repos checked); WuWa keeps initials until art is hosted in `VITE_ASSET_BASE`.
+- Next: production deploy once Vercel's quota frees (~2026-10-06 21:00 UTC).
+
 ## 2026-10-06 · claude · ci/dependabot-minor-patch · #63
 - Done: Merged #60 (pull-log page), #62 (pity on Home, F5 complete) and Dependabot #59 (first-party actions). Closed Dependabot #54 (27 updates, seven majors, CI red); Dependabot now groups npm minor/patch and ignores majors (ADR 0001 row).
 - Tests: CI green on each merged PR (lint, typecheck, test, build, e2e).
