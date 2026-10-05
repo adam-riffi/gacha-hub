@@ -22,4 +22,8 @@ test("logging pulls updates pity and the 50/50 guarantee @smoke", async ({ page 
   await expect(banner.getByTestId("pity")).toHaveText("3");
   await expect(banner.getByText("Guaranteed")).toBeVisible();
   await expect(banner.locator(".pull-drop")).toContainText("17");
+
+  // Home shows the pity next to the game's pulls.
+  await page.goto("/");
+  await expect(page.locator(".pull-row-pity", { hasText: "Character 3/90" })).toContainText("guaranteed");
 });
