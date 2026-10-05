@@ -131,7 +131,7 @@ export function TimelinePage() {
         ))}
       </div>
       <p className="small muted" style={{ marginTop: 10 }}>
-        Genshin banners and events update hourly from the official in-game notices. Hover a row for exact dates; ringed portraits are units you own.
+        Genshin and HSR banners and events update hourly from the official in-game notices. Hover a row for exact dates; ringed portraits are units you own.
       </p>
     </>
   );

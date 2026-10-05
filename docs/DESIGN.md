@@ -32,7 +32,7 @@ A whitelisted player signs in with Discord, adds Genshin and HSR, sets currencie
 - Ownership roster; catalog-backed builds with bespoke per-game sheets; gear bag and set planner (Genshin artifacts).
 - Planning: material requirements, goal tasks with material subtasks, inventory as source of truth.
 - Home: KPI strip, banners now, today, task board, pulls, coming up, wallet.
-- Banners and events: admin uploads with audit log; Genshin official-feed import (#40); calendar view.
+- Banners and events: admin uploads with audit log; Genshin and HSR official-feed import; calendar view.
 - Discord: OAuth sign-in, slash commands, DM reminders before reset and at custom times.
 
 **Next (should)** — milestones in §9.
@@ -82,7 +82,7 @@ gacha/
 - Reminders are idempotent per `(rule, firedFor)`; the cron may tick at any cadence.
 - Admin payloads round-trip: export returns exactly what upload accepts; every admin write is audited.
 - Catalog JSON is typed `unknown` behind `catalog.js` + `catalog.d.ts` shims (literal inference over 4 MB of JSON made `tsc` run out of memory).
-- Official-feed rows use keys `hoyo-<annId>` and never overwrite admin rows; a 7-hour time flip keeps the earlier value.
+- Official-feed rows use keys `hoyo-<annId>` (HSR warps: `hoyo-<annId>-<warp>`) and never overwrite admin rows. The feed randomly serves Asia, Europe or America clock values labelled +1; `settle` recovers Europe from any two observations (6, 7 or 13 hours apart).
 
 **Hand-written core** (pure, unit tested): per-game definitions and limits; reset math (`lib/resets.ts`); game day and domains today (`packages/shared/src/domains.ts`); reminder due logic (`scheduler/due.ts`); planning and cost math (`packages/shared/src/planning`); currency and pull math; official-feed parsing (`lib/officialFeed.ts`); build-document migrations.
 

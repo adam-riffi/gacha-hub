@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-05 · claude · stack/hsr-feed/02-parser · pending
+- Done: HSR joins the official-feed import: each `During "<warp>" Character|Light Cone Event Warp` section becomes its own banner with its own dates and featured units; other notices become events (shop, patch notes and collab warps skipped).
+- Tests: Red 312dfcd before 4bae26c (parser); red e6b1de1 before the settle fix. Live smoke: 4 warps (Pearl, Colors for Tomorrow, Evanescia, Until the Flowers Bloom Again) and 4 events.
+- Scope/decisions: The HSR feed flipped by 13 h, revealing three clock variants (Asia +8, Europe +1, America -5, all labelled +1); `settle` now recovers Europe from any pair.
+- Next: F5 pull log needs the owner's go-ahead; meanwhile the stack waits for review.
+
 ## 2026-10-05 · claude · stack/hsr-feed/01-catalog · pending
 - Done: HSR catalog refreshed from Yatta (adds Pearl, Colors for Tomorrow, two relic sets; no ids removed); the importer strips the markup Yatta now puts in some names.
 - Tests: Red commit before the fix ("Pearl" missing); `hsr.test.ts` now also asserts plain-text names.
