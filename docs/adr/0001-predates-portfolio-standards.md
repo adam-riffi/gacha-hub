@@ -21,7 +21,6 @@ Adopt the workflow now (test first, small stacked draft PRs, Conventional Commit
 | Drizzle Kit migrations (§11) | Prisma migrations, applied in the Vercel build | Prisma is the ORM throughout the server. |
 | Functions in `cdg1` (§10) | `dub1` | Next to the database in eu-west-1. |
 | Mode B deploy for apps with migrations (§10) | Mode A (Git integration) with `prisma migrate deploy` inside `vercel-build` | Migrations still run before the new code serves traffic; switching needs Vercel tokens in GitHub. |
-| Node current LTS pinned in `.nvmrc` (§7) | CI on Node 20, local Node 24 | To be aligned in the CI milestone (`stack/process/03-ci`). |
 | Playwright E2E and smoke workflow (§8, §9) | Vitest route integration tests and bundle harnesses | No test identity for Discord-only sign-in yet. |
 | pr-meme caller workflow (§14) | Local pr-meme skill | `portfolio-infra` has not tagged `v1`. |
 
