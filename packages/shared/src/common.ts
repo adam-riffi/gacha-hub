@@ -42,6 +42,8 @@ export const reminderConfigSchema = z.object({
   timezone: z.string().max(64).default("UTC"),
   includeCurrencies: z.boolean().default(true),
   includeDailies: z.boolean().default(true),
+  /** Add the rotating domains open today for the units you own. */
+  includeDomains: z.boolean().default(false),
 });
 export type ReminderConfig = z.infer<typeof reminderConfigSchema>;
 
