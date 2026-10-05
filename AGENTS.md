@@ -39,7 +39,7 @@ Keep this table accurate: when you add or change a script, update the table in t
 
 1. **Test first.** Write the failing test, run it, confirm it fails for the expected reason, commit it (`test(<area>): …`), then implement (`feat|fix(<area>): …`), then refactor. Never weaken, skip or delete a test to get a green build; if a test is wrong, explain why in the PR.
 2. **Small stacked PRs.** One concern per PR, about 400 changed lines at most (excluding lockfiles, catalogs, fixtures and generated files). Larger work becomes a stack of `stack/<topic>/<nn>-<slug>` branches, each PR based on the previous one (`docs/ENGINEERING.md` §3).
-3. **Branches.** Never push to `main`. Force-push only your own branches, only with `--force-with-lease`.
+3. **Branches.** Never push to `main`. Force-push only your own branches, only with `--force-with-lease`. When a stack's bottom PR merges, retarget the next PR to `main` (`gh pr edit <n> --base main`) **before** deleting the merged branch: deleting it first closes the dependent PR, and a closed PR whose branch was then force-pushed cannot be reopened.
 4. **Conventional Commits** for commit messages and PR titles; PR bodies follow `.github/pull_request_template.md`.
 5. **Scope.** Build what `docs/DESIGN.md` specifies for the current milestone. If the design is ambiguous, wrong or incomplete, do not invent scope: propose the change in the PR and add a draft ADR in `docs/adr/` (copy `0000-template.md`).
 6. **Dependencies.** Only the libraries allowed in `docs/DESIGN.md` §6, plus development tooling. Anything else needs a one-line justification in the PR, and an ADR if it touches the hand-written core.
