@@ -1,6 +1,21 @@
 /** Kinds of catalog art the UI asks for. */
 export type ArtKind = "character" | "portrait" | "weapon" | "gear" | "material" | "talent" | "constellation";
 
+/** Public folders of the web app; other root-relative keys are source-internal paths (e.g. Unreal's "/Game/…"). */
+const OWN_PATHS = /^\/(assets|games|uploads)\//;
+
+/**
+ * Where we host a catalog icon: `{base}/{game}/{kind}/{key}.webp`. Full URLs and
+ * our own public paths pass through; source-internal paths that no server hosts
+ * return null, so the UI goes straight to its placeholder.
+ */
+export function assetPath(base: string, gameKey: string, kind: ArtKind, key?: string | null): string | null {
+  if (!key) return null;
+  if (/^https?:\/\//.test(key) || OWN_PATHS.test(key)) return key;
+  if (key.startsWith("/")) return null;
+  return `${base}/${gameKey}/${kind}/${encodeURIComponent(key)}.webp`;
+}
+
 const YATTA = "https://sr.yatta.moe/hsr/assets/UI";
 const HSR_PATHS: Partial<Record<ArtKind, string>> = {
   character: "avatar/medium",
