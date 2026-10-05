@@ -149,12 +149,26 @@ async function getJson<T>(url: string): Promise<T> {
   return body.data;
 }
 
-const SHIFT = 7 * 3_600_000;
-/** The feed randomly serves the same notice with times shifted by exactly 7h
- * (UTC+8 values labelled UTC+1). Keep the earlier of such a pair so imports
- * don't flip-flop; any other change (an extension) is taken as-is. */
+const HOUR = 3_600_000;
+/**
+ * The feed randomly serves a notice's times in Asia (+8), Europe (+1) or
+ * America (-5) clock values, all labelled +1. With Europe as X, Asia reads as
+ * X+7h and America as X-6h, so any two observations 6, 7 or 13 hours apart
+ * give X back. Any other difference is a real change (an extension) and wins.
+ */
 export function settle(prev: Date | undefined, next: Date): Date {
-  return prev && Math.abs(prev.getTime() - next.getTime()) === SHIFT && prev < next ? prev : next;
+  if (!prev) return next;
+  const lo = Math.min(prev.getTime(), next.getTime());
+  switch (Math.abs(prev.getTime() - next.getTime()) / HOUR) {
+    case 7:
+      return new Date(lo); // Europe vs Asia
+    case 6:
+      return new Date(lo + 6 * HOUR); // America vs Europe
+    case 13:
+      return new Date(lo + 6 * HOUR); // America vs Asia
+    default:
+      return next;
+  }
 }
 
 /** Fetch one game's feed and upsert its banners/events by key. */
