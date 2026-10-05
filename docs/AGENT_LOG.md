@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-06 · claude · stack/pulls/01-core · pending
+- Done: Pure pity core (`pityState`, `splitPulls`, `calibration`) and per-game banner rules (Genshin, HSR, ZZZ, WuWa); ADR 0002 (Proposed) stores pulls as entries and derives pity.
+- Tests: Red baf4c6e before 1f5a84e; `pity.test.ts` (9 tests, seeded properties). 95b7465 corrects the red commit's property oracle, which contradicted the calibration test written with it.
+- Scope/decisions: Endfield has no banner rules until they are known; soft-pity values are community-documented approximations used only for a hint.
+- Next: `02-store` (PullEntry table with RLS, routes, integration tests), then `03-ui`.
+
 ## 2026-10-06 · claude · stack/docs/01-readme · pending
 - Done: README rewritten in the ENGINEERING.md §15 order (pitch, badges, why, how it works, evaluation, testing, running, structure, limitations, licence); MIT LICENSE added; NOTICE lists the art and feed sources; DEPLOY.md no longer says to set `NODE_ENV=production` (it breaks the Vercel build).
 - Tests: Documentation only; every command and number in the README checked against the repo and the last build.
