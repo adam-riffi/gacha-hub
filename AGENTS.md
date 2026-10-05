@@ -29,7 +29,7 @@ Operating manual for coding agents in this repository. Codex and Copilot read th
 | Lint / format | `npm run lint` / `npm run format` |
 | Type check | `npm run typecheck` |
 | Build (web + server bundle) | `npm run build` |
-| Regenerate a catalog | `npm run catalog:install` then `npm run catalog:<game>` |
+| Regenerate a catalog (delete `scripts/catalog/.cache/<game>` first for fresh data) | `npm run catalog:install` then `npm run catalog:<game>` |
 | New migration (offline) | `npx prisma migrate diff --from-schema-datamodel <before> --to-schema-datamodel prisma/schema.prisma --script` |
 | Lint workflows (actionlint 1.7+ on PATH) | `actionlint` |
 | Check all | `npm run check` |

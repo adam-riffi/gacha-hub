@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-05 · claude · stack/hsr-feed/01-catalog · pending
+- Done: HSR catalog refreshed from Yatta (adds Pearl, Colors for Tomorrow, two relic sets; no ids removed); the importer strips the markup Yatta now puts in some names.
+- Tests: Red commit before the fix ("Pearl" missing); `hsr.test.ts` now also asserts plain-text names.
+- Scope/decisions: The importer's on-disk cache (`scripts/catalog/.cache/hsr`) served stale lists; clear it before a refresh.
+- Next: `02-parser` splits HSR Event Warp notices into one banner per warp.
+
 ## 2026-10-05 · claude · stack/farm-dm/01-domains-in-reminders · pending
 - Done: Reminder option `includeDomains` (default off) adds "🗺️ Domains today: Frosted Altar (Amber, …)" to the DM; the reminder card gets an "Include" row (currencies, dailies left, domains open today).
 - Tests: Red cc32ca5 before ba3ff94; `reminders.integration.test.ts` runs the real tick over SQLite with Discord mocked (Monday line present, Tuesday absent, off by default) plus formatter caps.

@@ -78641,7 +78641,7 @@
           },
           {
             "id": "1406102",
-            "name": "300 Rogues",
+            "name": "<unbreak>300</unbreak> Rogues",
             "costs": [
               {
                 "atLevel": 1,
@@ -90583,6 +90583,1172 @@
       }
     },
     {
+      "id": "1503",
+      "key": "pearl",
+      "name": "Pearl",
+      "rarity": 5,
+      "tag": "Ice",
+      "weaponType": "Elation",
+      "maxLevel": 80,
+      "icon": "1503",
+      "ascension": [
+        {
+          "atLevel": 30,
+          "materials": [
+            {
+              "materialId": "2",
+              "qty": 4000
+            },
+            {
+              "materialId": "116001",
+              "qty": 5
+            }
+          ]
+        },
+        {
+          "atLevel": 40,
+          "materials": [
+            {
+              "materialId": "2",
+              "qty": 8000
+            },
+            {
+              "materialId": "116001",
+              "qty": 10
+            }
+          ]
+        },
+        {
+          "atLevel": 50,
+          "materials": [
+            {
+              "materialId": "2",
+              "qty": 16000
+            },
+            {
+              "materialId": "110433",
+              "qty": 3
+            },
+            {
+              "materialId": "116002",
+              "qty": 6
+            }
+          ]
+        },
+        {
+          "atLevel": 60,
+          "materials": [
+            {
+              "materialId": "2",
+              "qty": 40000
+            },
+            {
+              "materialId": "110433",
+              "qty": 7
+            },
+            {
+              "materialId": "116002",
+              "qty": 9
+            }
+          ]
+        },
+        {
+          "atLevel": 70,
+          "materials": [
+            {
+              "materialId": "2",
+              "qty": 80000
+            },
+            {
+              "materialId": "110433",
+              "qty": 20
+            },
+            {
+              "materialId": "116003",
+              "qty": 6
+            }
+          ]
+        },
+        {
+          "atLevel": 80,
+          "materials": [
+            {
+              "materialId": "2",
+              "qty": 160000
+            },
+            {
+              "materialId": "110433",
+              "qty": 35
+            },
+            {
+              "materialId": "116003",
+              "qty": 9
+            }
+          ]
+        }
+      ],
+      "talents": {
+        "keys": [
+          "basic",
+          "skill",
+          "ultimate",
+          "talent"
+        ],
+        "costs": [
+          {
+            "atLevel": 2,
+            "materials": [
+              {
+                "materialId": "2",
+                "qty": 2000
+              },
+              {
+                "materialId": "116001",
+                "qty": 2
+              }
+            ]
+          },
+          {
+            "atLevel": 3,
+            "materials": [
+              {
+                "materialId": "2",
+                "qty": 4000
+              },
+              {
+                "materialId": "110261",
+                "qty": 3
+              },
+              {
+                "materialId": "116001",
+                "qty": 5
+              }
+            ]
+          },
+          {
+            "atLevel": 4,
+            "materials": [
+              {
+                "materialId": "2",
+                "qty": 8000
+              },
+              {
+                "materialId": "110262",
+                "qty": 2
+              },
+              {
+                "materialId": "116002",
+                "qty": 3
+              }
+            ]
+          },
+          {
+            "atLevel": 5,
+            "materials": [
+              {
+                "materialId": "2",
+                "qty": 15000
+              },
+              {
+                "materialId": "110262",
+                "qty": 4
+              },
+              {
+                "materialId": "116002",
+                "qty": 3
+              }
+            ]
+          },
+          {
+            "atLevel": 6,
+            "materials": [
+              {
+                "materialId": "2",
+                "qty": 24000
+              },
+              {
+                "materialId": "110262",
+                "qty": 6
+              },
+              {
+                "materialId": "116002",
+                "qty": 5
+              }
+            ]
+          },
+          {
+            "atLevel": 7,
+            "materials": [
+              {
+                "materialId": "2",
+                "qty": 32000
+              },
+              {
+                "materialId": "110263",
+                "qty": 2
+              },
+              {
+                "materialId": "116003",
+                "qty": 2
+              }
+            ]
+          },
+          {
+            "atLevel": 8,
+            "materials": [
+              {
+                "materialId": "2",
+                "qty": 65000
+              },
+              {
+                "materialId": "110263",
+                "qty": 4
+              },
+              {
+                "materialId": "110509",
+                "qty": 1
+              },
+              {
+                "materialId": "116003",
+                "qty": 4
+              }
+            ]
+          },
+          {
+            "atLevel": 9,
+            "materials": [
+              {
+                "materialId": "2",
+                "qty": 120000
+              },
+              {
+                "materialId": "241",
+                "qty": 1
+              },
+              {
+                "materialId": "110263",
+                "qty": 6
+              },
+              {
+                "materialId": "110509",
+                "qty": 1
+              }
+            ]
+          },
+          {
+            "atLevel": 10,
+            "materials": [
+              {
+                "materialId": "2",
+                "qty": 250000
+              },
+              {
+                "materialId": "241",
+                "qty": 1
+              },
+              {
+                "materialId": "110263",
+                "qty": 12
+              },
+              {
+                "materialId": "110509",
+                "qty": 1
+              }
+            ]
+          }
+        ],
+        "costsByKey": {
+          "basic": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "2",
+                  "qty": 4000
+                },
+                {
+                  "materialId": "110261",
+                  "qty": 2
+                },
+                {
+                  "materialId": "116001",
+                  "qty": 5
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "2",
+                  "qty": 8000
+                },
+                {
+                  "materialId": "110262",
+                  "qty": 2
+                },
+                {
+                  "materialId": "116002",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "2",
+                  "qty": 16000
+                },
+                {
+                  "materialId": "110262",
+                  "qty": 3
+                },
+                {
+                  "materialId": "116002",
+                  "qty": 3
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "2",
+                  "qty": 32000
+                },
+                {
+                  "materialId": "110263",
+                  "qty": 3
+                },
+                {
+                  "materialId": "116003",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "2",
+                  "qty": 120000
+                },
+                {
+                  "materialId": "110263",
+                  "qty": 5
+                },
+                {
+                  "materialId": "116003",
+                  "qty": 2
+                }
+              ]
+            }
+          ],
+          "skill": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "2",
+                  "qty": 2000
+                },
+                {
+                  "materialId": "116001",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "2",
+                  "qty": 4000
+                },
+                {
+                  "materialId": "110261",
+                  "qty": 3
+                },
+                {
+                  "materialId": "116001",
+                  "qty": 5
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "2",
+                  "qty": 8000
+                },
+                {
+                  "materialId": "110262",
+                  "qty": 2
+                },
+                {
+                  "materialId": "116002",
+                  "qty": 3
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "2",
+                  "qty": 15000
+                },
+                {
+                  "materialId": "110262",
+                  "qty": 4
+                },
+                {
+                  "materialId": "116002",
+                  "qty": 3
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "2",
+                  "qty": 24000
+                },
+                {
+                  "materialId": "110262",
+                  "qty": 6
+                },
+                {
+                  "materialId": "116002",
+                  "qty": 5
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "2",
+                  "qty": 32000
+                },
+                {
+                  "materialId": "110263",
+                  "qty": 2
+                },
+                {
+                  "materialId": "116003",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 8,
+              "materials": [
+                {
+                  "materialId": "2",
+                  "qty": 65000
+                },
+                {
+                  "materialId": "110263",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110509",
+                  "qty": 1
+                },
+                {
+                  "materialId": "116003",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 9,
+              "materials": [
+                {
+                  "materialId": "2",
+                  "qty": 120000
+                },
+                {
+                  "materialId": "241",
+                  "qty": 1
+                },
+                {
+                  "materialId": "110263",
+                  "qty": 6
+                },
+                {
+                  "materialId": "110509",
+                  "qty": 1
+                }
+              ]
+            },
+            {
+              "atLevel": 10,
+              "materials": [
+                {
+                  "materialId": "2",
+                  "qty": 250000
+                },
+                {
+                  "materialId": "241",
+                  "qty": 1
+                },
+                {
+                  "materialId": "110263",
+                  "qty": 12
+                },
+                {
+                  "materialId": "110509",
+                  "qty": 1
+                }
+              ]
+            }
+          ],
+          "ultimate": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "2",
+                  "qty": 2000
+                },
+                {
+                  "materialId": "116001",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "2",
+                  "qty": 4000
+                },
+                {
+                  "materialId": "110261",
+                  "qty": 3
+                },
+                {
+                  "materialId": "116001",
+                  "qty": 5
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "2",
+                  "qty": 8000
+                },
+                {
+                  "materialId": "110262",
+                  "qty": 2
+                },
+                {
+                  "materialId": "116002",
+                  "qty": 3
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "2",
+                  "qty": 15000
+                },
+                {
+                  "materialId": "110262",
+                  "qty": 4
+                },
+                {
+                  "materialId": "116002",
+                  "qty": 3
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "2",
+                  "qty": 24000
+                },
+                {
+                  "materialId": "110262",
+                  "qty": 6
+                },
+                {
+                  "materialId": "116002",
+                  "qty": 5
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "2",
+                  "qty": 32000
+                },
+                {
+                  "materialId": "110263",
+                  "qty": 2
+                },
+                {
+                  "materialId": "116003",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 8,
+              "materials": [
+                {
+                  "materialId": "2",
+                  "qty": 65000
+                },
+                {
+                  "materialId": "110263",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110509",
+                  "qty": 1
+                },
+                {
+                  "materialId": "116003",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 9,
+              "materials": [
+                {
+                  "materialId": "2",
+                  "qty": 120000
+                },
+                {
+                  "materialId": "241",
+                  "qty": 1
+                },
+                {
+                  "materialId": "110263",
+                  "qty": 6
+                },
+                {
+                  "materialId": "110509",
+                  "qty": 1
+                }
+              ]
+            },
+            {
+              "atLevel": 10,
+              "materials": [
+                {
+                  "materialId": "2",
+                  "qty": 250000
+                },
+                {
+                  "materialId": "241",
+                  "qty": 1
+                },
+                {
+                  "materialId": "110263",
+                  "qty": 12
+                },
+                {
+                  "materialId": "110509",
+                  "qty": 1
+                }
+              ]
+            }
+          ],
+          "talent": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "2",
+                  "qty": 2000
+                },
+                {
+                  "materialId": "116001",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "2",
+                  "qty": 4000
+                },
+                {
+                  "materialId": "110261",
+                  "qty": 3
+                },
+                {
+                  "materialId": "116001",
+                  "qty": 5
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "2",
+                  "qty": 8000
+                },
+                {
+                  "materialId": "110262",
+                  "qty": 2
+                },
+                {
+                  "materialId": "116002",
+                  "qty": 3
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "2",
+                  "qty": 15000
+                },
+                {
+                  "materialId": "110262",
+                  "qty": 4
+                },
+                {
+                  "materialId": "116002",
+                  "qty": 3
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "2",
+                  "qty": 24000
+                },
+                {
+                  "materialId": "110262",
+                  "qty": 6
+                },
+                {
+                  "materialId": "116002",
+                  "qty": 5
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "2",
+                  "qty": 32000
+                },
+                {
+                  "materialId": "110263",
+                  "qty": 2
+                },
+                {
+                  "materialId": "116003",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 8,
+              "materials": [
+                {
+                  "materialId": "2",
+                  "qty": 65000
+                },
+                {
+                  "materialId": "110263",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110509",
+                  "qty": 1
+                },
+                {
+                  "materialId": "116003",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 9,
+              "materials": [
+                {
+                  "materialId": "2",
+                  "qty": 120000
+                },
+                {
+                  "materialId": "241",
+                  "qty": 1
+                },
+                {
+                  "materialId": "110263",
+                  "qty": 6
+                },
+                {
+                  "materialId": "110509",
+                  "qty": 1
+                }
+              ]
+            },
+            {
+              "atLevel": 10,
+              "materials": [
+                {
+                  "materialId": "2",
+                  "qty": 250000
+                },
+                {
+                  "materialId": "241",
+                  "qty": 1
+                },
+                {
+                  "materialId": "110263",
+                  "qty": 12
+                },
+                {
+                  "materialId": "110509",
+                  "qty": 1
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "extra": {
+        "path": "Elation",
+        "element": "Ice",
+        "release": 1790586000,
+        "unreleased": false,
+        "subTraces": [
+          {
+            "id": "1503101",
+            "name": "Panoptic Vision",
+            "costs": [
+              {
+                "atLevel": 1,
+                "materials": [
+                  {
+                    "materialId": "2",
+                    "qty": 5000
+                  },
+                  {
+                    "materialId": "110261",
+                    "qty": 2
+                  },
+                  {
+                    "materialId": "110509",
+                    "qty": 1
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "1503102",
+            "name": "Sensory Latitude",
+            "costs": [
+              {
+                "atLevel": 1,
+                "materials": [
+                  {
+                    "materialId": "2",
+                    "qty": 20000
+                  },
+                  {
+                    "materialId": "241",
+                    "qty": 1
+                  },
+                  {
+                    "materialId": "110262",
+                    "qty": 4
+                  },
+                  {
+                    "materialId": "110509",
+                    "qty": 1
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "1503103",
+            "name": "Aesthetic Firewall",
+            "costs": [
+              {
+                "atLevel": 1,
+                "materials": [
+                  {
+                    "materialId": "2",
+                    "qty": 140000
+                  },
+                  {
+                    "materialId": "241",
+                    "qty": 1
+                  },
+                  {
+                    "materialId": "110263",
+                    "qty": 8
+                  },
+                  {
+                    "materialId": "110509",
+                    "qty": 1
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "1503201",
+            "name": "DEF Boost",
+            "costs": [
+              {
+                "atLevel": 1,
+                "materials": [
+                  {
+                    "materialId": "2",
+                    "qty": 2000
+                  },
+                  {
+                    "materialId": "116001",
+                    "qty": 2
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "1503202",
+            "name": "SPD Boost",
+            "costs": [
+              {
+                "atLevel": 1,
+                "materials": [
+                  {
+                    "materialId": "2",
+                    "qty": 5000
+                  },
+                  {
+                    "materialId": "110261",
+                    "qty": 2
+                  },
+                  {
+                    "materialId": "116001",
+                    "qty": 6
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "1503203",
+            "name": "Effect RES Boost",
+            "costs": [
+              {
+                "atLevel": 1,
+                "materials": [
+                  {
+                    "materialId": "2",
+                    "qty": 10000
+                  },
+                  {
+                    "materialId": "110262",
+                    "qty": 4
+                  },
+                  {
+                    "materialId": "116002",
+                    "qty": 2
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "1503204",
+            "name": "Elation Boost",
+            "costs": [
+              {
+                "atLevel": 1,
+                "materials": [
+                  {
+                    "materialId": "2",
+                    "qty": 10000
+                  },
+                  {
+                    "materialId": "110262",
+                    "qty": 4
+                  },
+                  {
+                    "materialId": "116002",
+                    "qty": 2
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "1503205",
+            "name": "DEF Boost",
+            "costs": [
+              {
+                "atLevel": 1,
+                "materials": [
+                  {
+                    "materialId": "2",
+                    "qty": 18000
+                  },
+                  {
+                    "materialId": "110262",
+                    "qty": 4
+                  },
+                  {
+                    "materialId": "116002",
+                    "qty": 3
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "1503206",
+            "name": "SPD Boost",
+            "costs": [
+              {
+                "atLevel": 1,
+                "materials": [
+                  {
+                    "materialId": "2",
+                    "qty": 45000
+                  },
+                  {
+                    "materialId": "110263",
+                    "qty": 3
+                  },
+                  {
+                    "materialId": "116003",
+                    "qty": 2
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "1503207",
+            "name": "Effect RES Boost",
+            "costs": [
+              {
+                "atLevel": 1,
+                "materials": [
+                  {
+                    "materialId": "2",
+                    "qty": 45000
+                  },
+                  {
+                    "materialId": "110263",
+                    "qty": 3
+                  },
+                  {
+                    "materialId": "116003",
+                    "qty": 2
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "1503208",
+            "name": "Elation Boost",
+            "costs": [
+              {
+                "atLevel": 1,
+                "materials": [
+                  {
+                    "materialId": "2",
+                    "qty": 120000
+                  },
+                  {
+                    "materialId": "110263",
+                    "qty": 5
+                  },
+                  {
+                    "materialId": "116003",
+                    "qty": 2
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "1503209",
+            "name": "SPD Boost",
+            "costs": [
+              {
+                "atLevel": 1,
+                "materials": [
+                  {
+                    "materialId": "2",
+                    "qty": 160000
+                  },
+                  {
+                    "materialId": "110263",
+                    "qty": 8
+                  },
+                  {
+                    "materialId": "116003",
+                    "qty": 8
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "1503210",
+            "name": "DEF Boost",
+            "costs": [
+              {
+                "atLevel": 1,
+                "materials": [
+                  {
+                    "materialId": "2",
+                    "qty": 160000
+                  },
+                  {
+                    "materialId": "110263",
+                    "qty": 8
+                  },
+                  {
+                    "materialId": "116003",
+                    "qty": 8
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
       "id": "1504",
       "key": "ashveil",
       "name": "Ashveil",
@@ -92916,7 +94082,7 @@
     },
     {
       "id": "1506",
-      "key": "silver-wolf-lv-unbreak-999-unbreak",
+      "key": "silver-wolf-lv-999",
       "name": "Silver Wolf LV.999",
       "rarity": 5,
       "tag": "Imaginary",
@@ -100768,7 +101934,7 @@
         "path": "Elation",
         "element": "Quantum",
         "release": 1789203600,
-        "unreleased": true,
+        "unreleased": false,
         "subTraces": [
           {
             "id": "1513101",
@@ -129868,6 +131034,119 @@
       }
     },
     {
+      "id": "23055",
+      "key": "colors-for-tomorrow",
+      "name": "Colors for Tomorrow",
+      "rarity": 5,
+      "type": "Elation",
+      "maxLevel": 80,
+      "icon": "23055",
+      "ascension": [
+        {
+          "atLevel": 30,
+          "materials": [
+            {
+              "materialId": "2",
+              "qty": 5000
+            },
+            {
+              "materialId": "116001",
+              "qty": 8
+            }
+          ]
+        },
+        {
+          "atLevel": 40,
+          "materials": [
+            {
+              "materialId": "2",
+              "qty": 10000
+            },
+            {
+              "materialId": "110261",
+              "qty": 4
+            },
+            {
+              "materialId": "116001",
+              "qty": 12
+            }
+          ]
+        },
+        {
+          "atLevel": 50,
+          "materials": [
+            {
+              "materialId": "2",
+              "qty": 20000
+            },
+            {
+              "materialId": "110262",
+              "qty": 4
+            },
+            {
+              "materialId": "116002",
+              "qty": 8
+            }
+          ]
+        },
+        {
+          "atLevel": 60,
+          "materials": [
+            {
+              "materialId": "2",
+              "qty": 50000
+            },
+            {
+              "materialId": "110262",
+              "qty": 8
+            },
+            {
+              "materialId": "116002",
+              "qty": 12
+            }
+          ]
+        },
+        {
+          "atLevel": 70,
+          "materials": [
+            {
+              "materialId": "2",
+              "qty": 100000
+            },
+            {
+              "materialId": "110263",
+              "qty": 5
+            },
+            {
+              "materialId": "116003",
+              "qty": 6
+            }
+          ]
+        },
+        {
+          "atLevel": 80,
+          "materials": [
+            {
+              "materialId": "2",
+              "qty": 200000
+            },
+            {
+              "materialId": "110263",
+              "qty": 10
+            },
+            {
+              "materialId": "116003",
+              "qty": 8
+            }
+          ]
+        }
+      ],
+      "extra": {
+        "path": "Elation",
+        "skill": "Ink Splash"
+      }
+    },
+    {
       "id": "23056",
       "key": "the-finale-of-a-lie",
       "name": "The Finale of a Lie",
@@ -132670,6 +133949,68 @@
       }
     },
     {
+      "id": "133",
+      "key": "dreamlit-actor",
+      "name": "Dreamlit Actor",
+      "slots": [
+        "head",
+        "hands",
+        "body",
+        "feet"
+      ],
+      "bonuses": [
+        "2pc: Increases SPD by #1[i]%.",
+        "4pc: When the wearer uses their Skill or Ultimate on one other ally target, increases the ability target's Elation by #1[i]%, lasting for #2[i] turn(s). If the wearer has #3[i] or more points of Certified Banger, additionally increases all ally targets' CRIT DMG by #4[i]%, lasting for #5[i] turn(s)."
+      ],
+      "icon": "71060",
+      "extra": {
+        "isPlanarSuit": false,
+        "rarityList": [
+          2,
+          3,
+          4,
+          5
+        ],
+        "pieceNames": {
+          "head": "Actor's Weeping Masque",
+          "hands": "Actor's Vibrant Handfan",
+          "body": "Actor's Jester Garb",
+          "feet": "Actor's Crescent Dance Boots"
+        }
+      }
+    },
+    {
+      "id": "134",
+      "key": "the-edacious-heretic",
+      "name": "The Edacious Heretic",
+      "slots": [
+        "head",
+        "hands",
+        "body",
+        "feet"
+      ],
+      "bonuses": [
+        "2pc: Increases CRIT DMG by #1[i]%.",
+        "4pc: Increases DMG dealt by the wearer's Basic ATK by #1[i]%. When the wearer uses Basic ATK, increases the wearer's ATK by #2[i]%, lasting for #3[i] turn(s)."
+      ],
+      "icon": "71061",
+      "extra": {
+        "isPlanarSuit": false,
+        "rarityList": [
+          2,
+          3,
+          4,
+          5
+        ],
+        "pieceNames": {
+          "head": "Heretic's Cranial Apparatus",
+          "hands": "Heretic's Injection Gloves",
+          "body": "Heretic's Straitjacket of Reason",
+          "feet": "Heretic's Ravenous Ankle-Boots"
+        }
+      }
+    },
+    {
       "id": "301",
       "key": "space-sealing-station",
       "name": "Space Sealing Station",
@@ -134410,7 +135751,7 @@
     },
     {
       "id": "110261",
-      "key": "i-the-fluffy-i-hand-drawn-storyboards",
+      "key": "the-fluffy-hand-drawn-storyboards",
       "name": "The Fluffy Hand-drawn Storyboards",
       "category": "Trace Material\\nLight Cone Ascension Material",
       "rarity": 2,
@@ -134431,7 +135772,7 @@
     },
     {
       "id": "110262",
-      "key": "i-the-fluffy-i-serialization-memorial-issue",
+      "key": "the-fluffy-serialization-memorial-issue",
       "name": "The Fluffy Serialization Memorial Issue",
       "category": "Trace Material\\nLight Cone Ascension Material",
       "rarity": 3,
@@ -134453,7 +135794,7 @@
     },
     {
       "id": "110263",
-      "key": "i-the-fluffy-i-collectors-edition",
+      "key": "the-fluffy-collectors-edition",
       "name": "The Fluffy Collector's Edition",
       "category": "Trace Material\\nLight Cone Ascension Material",
       "rarity": 4,
