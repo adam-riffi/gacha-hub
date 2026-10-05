@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-05 · claude · stack/farm-dm/01-domains-in-reminders · pending
+- Done: Reminder option `includeDomains` (default off) adds "🗺️ Domains today: Frosted Altar (Amber, …)" to the DM; the reminder card gets an "Include" row (currencies, dailies left, domains open today).
+- Tests: Red cc32ca5 before ba3ff94; `reminders.integration.test.ts` runs the real tick over SQLite with Discord mocked (Monday line present, Tuesday absent, off by default) plus formatter caps.
+- Scope/decisions: F3 acceptance in DESIGN.md §9 reworded: the domains line rides on the existing reminder times instead of a separate DM type.
+- Next: F4 HSR feed parsing; F5 pull log waits for the owner.
+
 ## 2026-10-05 · claude · stack/domains/01-core · pending
 - Done: Game day, farmable-today and domains-today now live once in `packages/shared/src/domains.ts`; the server (materials, planning, `/farm` command) and the web game page use it; the luxon copy is gone.
 - Tests: Red e0857b5 before the implementation; 9 tests in `domains.test.ts`, including 500-case seeded properties comparing the game day with the old luxon logic.

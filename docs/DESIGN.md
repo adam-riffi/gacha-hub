@@ -105,7 +105,7 @@ Postgres on Supabase (own project `gacha-hub`, eu-west-1; ADR 0001). Migrations 
 | P Process | standards and agent manual; DESIGN.md + ADR 0001; CI job names and hardening | `npm run check` green; CI jobs `lint`, `typecheck`, `test`, `build` |
 | F1 Feed and calendar | #40 official feed + calendar; #41 game overview | Banners and events import hourly; game page shows today's domains |
 | F2 Domain core | move game-day and domains-today logic into `packages/shared`, tested; server and web share it | One implementation, property-tested across regions and reset hours |
-| F3 Farm-today DM | reminder option "domains today" listing the open domains your owned characters need | One DM per game day per rule; skipped when nothing is farmable |
+| F3 Farm-today DM | reminder option "domains open today" listing the open domains your owned units level from | With the option on, a reminder at any time (e.g. 09:00) carries the line; the line is left out when nothing you own needs an open domain |
 | F4 HSR feed | per-section warp parsing for HSR notices | Each warp in a notice becomes its own banner with its own dates |
 | F5 Pull log | record pulls per banner; pity and guarantee per banner type | Pity matches a recorded history fixture; Home shows pity next to pulls |
 
