@@ -43,4 +43,16 @@ describe("hsr catalog", () => {
       expect(new Set(list.map((x) => x.key)).size).toBe(list.length);
     }
   });
+
+  it("keeps names as plain text (the source sometimes wraps them in markup)", async () => {
+    const catalog = catalogSchema.parse(await hsr.loadCatalog!());
+    const marked = [catalog.characters, catalog.weapons, catalog.gear, catalog.materials].flat().filter((x) => /[<>]/.test(x.name));
+    expect(marked.map((x) => x.name)).toEqual([]);
+  });
+
+  it("covers version 4.6 (featured on the current Event Warp)", async () => {
+    const catalog = catalogSchema.parse(await hsr.loadCatalog!());
+    expect(catalog.characters.map((c) => c.name)).toContain("Pearl");
+    expect(catalog.weapons.map((w) => w.name)).toContain("Colors for Tomorrow");
+  });
 });
