@@ -105,8 +105,8 @@ export async function registerDashboardRoutes(app: FastifyInstance) {
     // Countdowns: active + upcoming banners/events across the installed games.
     const gameKeys = [...new Set(instances.map((gi) => gi.gameKey))];
     const [rawBanners, events] = await Promise.all([
-      listBanners(gameKeys, "current", now, 24),
-      listEvents(gameKeys, "current", now, 24),
+      listBanners(gameKeys, "current", now, 100),
+      listEvents(gameKeys, "current", now, 100),
     ]);
 
     // Featured units get catalog name/icon/rarity and whether you own them.

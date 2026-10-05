@@ -15,6 +15,7 @@ import { prisma } from "../lib/prisma.js";
 import { requireAdmin } from "../auth/plugin.js";
 import { exportBanner, exportEvent } from "../lib/timeline.js";
 import { getCatalog, type PrismaJson } from "./util.js";
+import { FEED_GAMES, importOfficialFeed } from "../lib/officialFeed.js";
 
 /* Admin uploads: JSON payloads (banners, events) validated by the shared
  * DTOs, upserted by key within a game, every change audited. The export
@@ -160,6 +161,16 @@ export async function registerAdminRoutes(app: FastifyInstance) {
       });
 
       return adminPayloadResult.parse({ kind: body.kind, gameKey, created, updated });
+    },
+  );
+
+  // Pull banners/events from the official announcement feed right now.
+  app.post<{ Params: { gameKey: string } }>(
+    "/api/admin/feed/:gameKey",
+    { preHandler: requireAdmin, config: RATE },
+    async (req, reply) => {
+      if (!FEED_GAMES.includes(req.params.gameKey)) return reply.code(404).send({ error: "no_feed" });
+      return importOfficialFeed(req.params.gameKey);
     },
   );
 

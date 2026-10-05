@@ -1,6 +1,6 @@
 {
   "gameKey": "genshin",
-  "source": "genshin-db@5.2.13",
+  "source": "genshin-db@5.2.14",
   "characters": [
     {
       "id": "10000002",
@@ -40265,6 +40265,692 @@
       }
     },
     {
+      "id": "10000140",
+      "key": "vodyanitsa",
+      "name": "Vodyanitsa",
+      "rarity": 5,
+      "tag": "Hydro",
+      "weaponType": "Catalyst",
+      "maxLevel": 90,
+      "icon": "UI_AvatarIcon_Vodyanitsa",
+      "ascension": [
+        {
+          "atLevel": 40,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 20000
+            },
+            {
+              "materialId": "104121",
+              "qty": 1
+            },
+            {
+              "materialId": "101275",
+              "qty": 3
+            },
+            {
+              "materialId": "112149",
+              "qty": 3
+            }
+          ]
+        },
+        {
+          "atLevel": 50,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 40000
+            },
+            {
+              "materialId": "104122",
+              "qty": 3
+            },
+            {
+              "materialId": "113090",
+              "qty": 2
+            },
+            {
+              "materialId": "101275",
+              "qty": 10
+            },
+            {
+              "materialId": "112149",
+              "qty": 15
+            }
+          ]
+        },
+        {
+          "atLevel": 60,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 60000
+            },
+            {
+              "materialId": "104122",
+              "qty": 6
+            },
+            {
+              "materialId": "113090",
+              "qty": 4
+            },
+            {
+              "materialId": "101275",
+              "qty": 20
+            },
+            {
+              "materialId": "112150",
+              "qty": 12
+            }
+          ]
+        },
+        {
+          "atLevel": 70,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 80000
+            },
+            {
+              "materialId": "104123",
+              "qty": 3
+            },
+            {
+              "materialId": "113090",
+              "qty": 8
+            },
+            {
+              "materialId": "101275",
+              "qty": 30
+            },
+            {
+              "materialId": "112150",
+              "qty": 18
+            }
+          ]
+        },
+        {
+          "atLevel": 80,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 100000
+            },
+            {
+              "materialId": "104123",
+              "qty": 6
+            },
+            {
+              "materialId": "113090",
+              "qty": 12
+            },
+            {
+              "materialId": "101275",
+              "qty": 45
+            },
+            {
+              "materialId": "112151",
+              "qty": 12
+            }
+          ]
+        },
+        {
+          "atLevel": 90,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 120000
+            },
+            {
+              "materialId": "104124",
+              "qty": 6
+            },
+            {
+              "materialId": "113090",
+              "qty": 20
+            },
+            {
+              "materialId": "101275",
+              "qty": 60
+            },
+            {
+              "materialId": "112151",
+              "qty": 24
+            }
+          ]
+        }
+      ],
+      "talents": {
+        "keys": [
+          "normal",
+          "skill",
+          "burst"
+        ],
+        "costs": [
+          {
+            "atLevel": 2,
+            "materials": [
+              {
+                "materialId": "202",
+                "qty": 12500
+              },
+              {
+                "materialId": "104368",
+                "qty": 3
+              },
+              {
+                "materialId": "112149",
+                "qty": 6
+              }
+            ]
+          },
+          {
+            "atLevel": 3,
+            "materials": [
+              {
+                "materialId": "202",
+                "qty": 17500
+              },
+              {
+                "materialId": "104369",
+                "qty": 2
+              },
+              {
+                "materialId": "112150",
+                "qty": 3
+              }
+            ]
+          },
+          {
+            "atLevel": 4,
+            "materials": [
+              {
+                "materialId": "202",
+                "qty": 25000
+              },
+              {
+                "materialId": "104369",
+                "qty": 4
+              },
+              {
+                "materialId": "112150",
+                "qty": 4
+              }
+            ]
+          },
+          {
+            "atLevel": 5,
+            "materials": [
+              {
+                "materialId": "202",
+                "qty": 30000
+              },
+              {
+                "materialId": "104369",
+                "qty": 6
+              },
+              {
+                "materialId": "112150",
+                "qty": 6
+              }
+            ]
+          },
+          {
+            "atLevel": 6,
+            "materials": [
+              {
+                "materialId": "202",
+                "qty": 37500
+              },
+              {
+                "materialId": "104369",
+                "qty": 9
+              },
+              {
+                "materialId": "112150",
+                "qty": 9
+              }
+            ]
+          },
+          {
+            "atLevel": 7,
+            "materials": [
+              {
+                "materialId": "202",
+                "qty": 120000
+              },
+              {
+                "materialId": "104370",
+                "qty": 4
+              },
+              {
+                "materialId": "112151",
+                "qty": 4
+              },
+              {
+                "materialId": "113082",
+                "qty": 1
+              }
+            ]
+          },
+          {
+            "atLevel": 8,
+            "materials": [
+              {
+                "materialId": "202",
+                "qty": 260000
+              },
+              {
+                "materialId": "104370",
+                "qty": 6
+              },
+              {
+                "materialId": "112151",
+                "qty": 6
+              },
+              {
+                "materialId": "113082",
+                "qty": 1
+              }
+            ]
+          },
+          {
+            "atLevel": 9,
+            "materials": [
+              {
+                "materialId": "202",
+                "qty": 450000
+              },
+              {
+                "materialId": "104370",
+                "qty": 12
+              },
+              {
+                "materialId": "112151",
+                "qty": 9
+              },
+              {
+                "materialId": "113082",
+                "qty": 2
+              }
+            ]
+          },
+          {
+            "atLevel": 10,
+            "materials": [
+              {
+                "materialId": "202",
+                "qty": 700000
+              },
+              {
+                "materialId": "104370",
+                "qty": 16
+              },
+              {
+                "materialId": "112151",
+                "qty": 12
+              },
+              {
+                "materialId": "113082",
+                "qty": 2
+              },
+              {
+                "materialId": "104319",
+                "qty": 1
+              }
+            ]
+          }
+        ]
+      },
+      "extra": {
+        "version": "7.1"
+      }
+    },
+    {
+      "id": "10000143",
+      "key": "vesna",
+      "name": "Vesna",
+      "rarity": 5,
+      "tag": "Anemo",
+      "weaponType": "Sword",
+      "maxLevel": 90,
+      "icon": "UI_AvatarIcon_Vesna",
+      "ascension": [
+        {
+          "atLevel": 40,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 20000
+            },
+            {
+              "materialId": "104151",
+              "qty": 1
+            },
+            {
+              "materialId": "101277",
+              "qty": 3
+            },
+            {
+              "materialId": "112146",
+              "qty": 3
+            }
+          ]
+        },
+        {
+          "atLevel": 50,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 40000
+            },
+            {
+              "materialId": "104152",
+              "qty": 3
+            },
+            {
+              "materialId": "113092",
+              "qty": 2
+            },
+            {
+              "materialId": "101277",
+              "qty": 10
+            },
+            {
+              "materialId": "112146",
+              "qty": 15
+            }
+          ]
+        },
+        {
+          "atLevel": 60,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 60000
+            },
+            {
+              "materialId": "104152",
+              "qty": 6
+            },
+            {
+              "materialId": "113092",
+              "qty": 4
+            },
+            {
+              "materialId": "101277",
+              "qty": 20
+            },
+            {
+              "materialId": "112147",
+              "qty": 12
+            }
+          ]
+        },
+        {
+          "atLevel": 70,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 80000
+            },
+            {
+              "materialId": "104153",
+              "qty": 3
+            },
+            {
+              "materialId": "113092",
+              "qty": 8
+            },
+            {
+              "materialId": "101277",
+              "qty": 30
+            },
+            {
+              "materialId": "112147",
+              "qty": 18
+            }
+          ]
+        },
+        {
+          "atLevel": 80,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 100000
+            },
+            {
+              "materialId": "104153",
+              "qty": 6
+            },
+            {
+              "materialId": "113092",
+              "qty": 12
+            },
+            {
+              "materialId": "101277",
+              "qty": 45
+            },
+            {
+              "materialId": "112148",
+              "qty": 12
+            }
+          ]
+        },
+        {
+          "atLevel": 90,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 120000
+            },
+            {
+              "materialId": "104154",
+              "qty": 6
+            },
+            {
+              "materialId": "113092",
+              "qty": 20
+            },
+            {
+              "materialId": "101277",
+              "qty": 60
+            },
+            {
+              "materialId": "112148",
+              "qty": 24
+            }
+          ]
+        }
+      ],
+      "talents": {
+        "keys": [
+          "normal",
+          "skill",
+          "burst"
+        ],
+        "costs": [
+          {
+            "atLevel": 2,
+            "materials": [
+              {
+                "materialId": "202",
+                "qty": 12500
+              },
+              {
+                "materialId": "104371",
+                "qty": 3
+              },
+              {
+                "materialId": "112146",
+                "qty": 6
+              }
+            ]
+          },
+          {
+            "atLevel": 3,
+            "materials": [
+              {
+                "materialId": "202",
+                "qty": 17500
+              },
+              {
+                "materialId": "104372",
+                "qty": 2
+              },
+              {
+                "materialId": "112147",
+                "qty": 3
+              }
+            ]
+          },
+          {
+            "atLevel": 4,
+            "materials": [
+              {
+                "materialId": "202",
+                "qty": 25000
+              },
+              {
+                "materialId": "104372",
+                "qty": 4
+              },
+              {
+                "materialId": "112147",
+                "qty": 4
+              }
+            ]
+          },
+          {
+            "atLevel": 5,
+            "materials": [
+              {
+                "materialId": "202",
+                "qty": 30000
+              },
+              {
+                "materialId": "104372",
+                "qty": 6
+              },
+              {
+                "materialId": "112147",
+                "qty": 6
+              }
+            ]
+          },
+          {
+            "atLevel": 6,
+            "materials": [
+              {
+                "materialId": "202",
+                "qty": 37500
+              },
+              {
+                "materialId": "104372",
+                "qty": 9
+              },
+              {
+                "materialId": "112147",
+                "qty": 9
+              }
+            ]
+          },
+          {
+            "atLevel": 7,
+            "materials": [
+              {
+                "materialId": "202",
+                "qty": 120000
+              },
+              {
+                "materialId": "104373",
+                "qty": 4
+              },
+              {
+                "materialId": "112148",
+                "qty": 4
+              },
+              {
+                "materialId": "113089",
+                "qty": 1
+              }
+            ]
+          },
+          {
+            "atLevel": 8,
+            "materials": [
+              {
+                "materialId": "202",
+                "qty": 260000
+              },
+              {
+                "materialId": "104373",
+                "qty": 6
+              },
+              {
+                "materialId": "112148",
+                "qty": 6
+              },
+              {
+                "materialId": "113089",
+                "qty": 1
+              }
+            ]
+          },
+          {
+            "atLevel": 9,
+            "materials": [
+              {
+                "materialId": "202",
+                "qty": 450000
+              },
+              {
+                "materialId": "104373",
+                "qty": 12
+              },
+              {
+                "materialId": "112148",
+                "qty": 9
+              },
+              {
+                "materialId": "113089",
+                "qty": 2
+              }
+            ]
+          },
+          {
+            "atLevel": 10,
+            "materials": [
+              {
+                "materialId": "202",
+                "qty": 700000
+              },
+              {
+                "materialId": "104373",
+                "qty": 16
+              },
+              {
+                "materialId": "112148",
+                "qty": 12
+              },
+              {
+                "materialId": "113089",
+                "qty": 2
+              },
+              {
+                "materialId": "104319",
+                "qty": 1
+              }
+            ]
+          }
+        ]
+      },
+      "extra": {
+        "version": "7.1"
+      }
+    },
+    {
       "id": "10000148",
       "key": "alyosha",
       "name": "Alyosha",
@@ -46469,6 +47155,290 @@
       }
     },
     {
+      "id": "11437",
+      "key": "new-bough",
+      "name": "New Bough",
+      "rarity": 4,
+      "type": "Sword",
+      "maxLevel": 90,
+      "icon": "UI_EquipIcon_Sword_SpikedStake",
+      "ascension": [
+        {
+          "atLevel": 40,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 5000
+            },
+            {
+              "materialId": "114089",
+              "qty": 3
+            },
+            {
+              "materialId": "112155",
+              "qty": 3
+            },
+            {
+              "materialId": "112149",
+              "qty": 2
+            }
+          ]
+        },
+        {
+          "atLevel": 50,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 15000
+            },
+            {
+              "materialId": "114090",
+              "qty": 3
+            },
+            {
+              "materialId": "112155",
+              "qty": 12
+            },
+            {
+              "materialId": "112149",
+              "qty": 8
+            }
+          ]
+        },
+        {
+          "atLevel": 60,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 20000
+            },
+            {
+              "materialId": "114090",
+              "qty": 6
+            },
+            {
+              "materialId": "112156",
+              "qty": 6
+            },
+            {
+              "materialId": "112150",
+              "qty": 6
+            }
+          ]
+        },
+        {
+          "atLevel": 70,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 30000
+            },
+            {
+              "materialId": "114091",
+              "qty": 3
+            },
+            {
+              "materialId": "112156",
+              "qty": 12
+            },
+            {
+              "materialId": "112150",
+              "qty": 9
+            }
+          ]
+        },
+        {
+          "atLevel": 80,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 35000
+            },
+            {
+              "materialId": "114091",
+              "qty": 6
+            },
+            {
+              "materialId": "112157",
+              "qty": 9
+            },
+            {
+              "materialId": "112151",
+              "qty": 6
+            }
+          ]
+        },
+        {
+          "atLevel": 90,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 45000
+            },
+            {
+              "materialId": "114092",
+              "qty": 4
+            },
+            {
+              "materialId": "112157",
+              "qty": 18
+            },
+            {
+              "materialId": "112151",
+              "qty": 12
+            }
+          ]
+        }
+      ],
+      "extra": {
+        "baseAtk": 42.401,
+        "subStat": "CRIT DMG",
+        "version": "7.1"
+      }
+    },
+    {
+      "id": "11438",
+      "key": "silver-light",
+      "name": "Silver Light",
+      "rarity": 4,
+      "type": "Sword",
+      "maxLevel": 90,
+      "icon": "UI_EquipIcon_Sword_Fajian",
+      "ascension": [
+        {
+          "atLevel": 40,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 5000
+            },
+            {
+              "materialId": "114021",
+              "qty": 3
+            },
+            {
+              "materialId": "112041",
+              "qty": 3
+            },
+            {
+              "materialId": "112032",
+              "qty": 2
+            }
+          ]
+        },
+        {
+          "atLevel": 50,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 15000
+            },
+            {
+              "materialId": "114022",
+              "qty": 3
+            },
+            {
+              "materialId": "112041",
+              "qty": 12
+            },
+            {
+              "materialId": "112032",
+              "qty": 8
+            }
+          ]
+        },
+        {
+          "atLevel": 60,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 20000
+            },
+            {
+              "materialId": "114022",
+              "qty": 6
+            },
+            {
+              "materialId": "112042",
+              "qty": 6
+            },
+            {
+              "materialId": "112033",
+              "qty": 6
+            }
+          ]
+        },
+        {
+          "atLevel": 70,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 30000
+            },
+            {
+              "materialId": "114023",
+              "qty": 3
+            },
+            {
+              "materialId": "112042",
+              "qty": 12
+            },
+            {
+              "materialId": "112033",
+              "qty": 9
+            }
+          ]
+        },
+        {
+          "atLevel": 80,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 35000
+            },
+            {
+              "materialId": "114023",
+              "qty": 6
+            },
+            {
+              "materialId": "112043",
+              "qty": 9
+            },
+            {
+              "materialId": "112034",
+              "qty": 6
+            }
+          ]
+        },
+        {
+          "atLevel": 90,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 45000
+            },
+            {
+              "materialId": "114024",
+              "qty": 4
+            },
+            {
+              "materialId": "112043",
+              "qty": 18
+            },
+            {
+              "materialId": "112034",
+              "qty": 12
+            }
+          ]
+        }
+      ],
+      "extra": {
+        "baseAtk": 42.401,
+        "subStat": "ATK",
+        "version": "7.1"
+      }
+    },
+    {
       "id": "11501",
       "key": "aquila-favonia",
       "name": "Aquila Favonia",
@@ -48890,6 +49860,21 @@
       "type": "Sword",
       "maxLevel": 90,
       "icon": "UI_EquipIcon_Sword_WeaponQuestSnezhnaya",
+      "ascension": [],
+      "extra": {
+        "baseAtk": 45.9364,
+        "subStat": "CRIT Rate",
+        "version": "7.0"
+      }
+    },
+    {
+      "id": "11522",
+      "key": "beyond-the-chrysalis",
+      "name": "Beyond the Chrysalis",
+      "rarity": 5,
+      "type": "Sword",
+      "maxLevel": 90,
+      "icon": "UI_EquipIcon_Sword_Samosvist",
       "ascension": [
         {
           "atLevel": 40,
@@ -48899,15 +49884,15 @@
               "qty": 10000
             },
             {
-              "materialId": "114093",
+              "materialId": "114085",
               "qty": 5
             },
             {
-              "materialId": "112152",
+              "materialId": "112155",
               "qty": 5
             },
             {
-              "materialId": "112146",
+              "materialId": "112149",
               "qty": 3
             }
           ]
@@ -48920,15 +49905,15 @@
               "qty": 20000
             },
             {
-              "materialId": "114094",
+              "materialId": "114086",
               "qty": 5
             },
             {
-              "materialId": "112152",
+              "materialId": "112155",
               "qty": 18
             },
             {
-              "materialId": "112146",
+              "materialId": "112149",
               "qty": 12
             }
           ]
@@ -48941,15 +49926,15 @@
               "qty": 30000
             },
             {
-              "materialId": "114094",
+              "materialId": "114086",
               "qty": 9
             },
             {
-              "materialId": "112153",
+              "materialId": "112156",
               "qty": 9
             },
             {
-              "materialId": "112147",
+              "materialId": "112150",
               "qty": 9
             }
           ]
@@ -48962,15 +49947,15 @@
               "qty": 45000
             },
             {
-              "materialId": "114095",
+              "materialId": "114087",
               "qty": 5
             },
             {
-              "materialId": "112153",
+              "materialId": "112156",
               "qty": 18
             },
             {
-              "materialId": "112147",
+              "materialId": "112150",
               "qty": 14
             }
           ]
@@ -48983,15 +49968,15 @@
               "qty": 55000
             },
             {
-              "materialId": "114095",
+              "materialId": "114087",
               "qty": 9
             },
             {
-              "materialId": "112154",
+              "materialId": "112157",
               "qty": 14
             },
             {
-              "materialId": "112148",
+              "materialId": "112151",
               "qty": 9
             }
           ]
@@ -49004,24 +49989,24 @@
               "qty": 65000
             },
             {
-              "materialId": "114096",
+              "materialId": "114088",
               "qty": 6
             },
             {
-              "materialId": "112154",
+              "materialId": "112157",
               "qty": 27
             },
             {
-              "materialId": "112148",
+              "materialId": "112151",
               "qty": 18
             }
           ]
         }
       ],
       "extra": {
-        "baseAtk": 45.9364,
-        "subStat": "CRIT Rate",
-        "version": "7.0"
+        "baseAtk": 47.537,
+        "subStat": "CRIT DMG",
+        "version": "7.1"
       }
     },
     {
@@ -66079,6 +67064,148 @@
       }
     },
     {
+      "id": "14437",
+      "key": "winters-heavy-heart",
+      "name": "Winter's Heavy Heart",
+      "rarity": 4,
+      "type": "Catalyst",
+      "maxLevel": 90,
+      "icon": "UI_EquipIcon_Catalyst_FrostScepter",
+      "ascension": [
+        {
+          "atLevel": 40,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 5000
+            },
+            {
+              "materialId": "114093",
+              "qty": 3
+            },
+            {
+              "materialId": "112155",
+              "qty": 3
+            },
+            {
+              "materialId": "112146",
+              "qty": 2
+            }
+          ]
+        },
+        {
+          "atLevel": 50,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 15000
+            },
+            {
+              "materialId": "114094",
+              "qty": 3
+            },
+            {
+              "materialId": "112155",
+              "qty": 12
+            },
+            {
+              "materialId": "112146",
+              "qty": 8
+            }
+          ]
+        },
+        {
+          "atLevel": 60,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 20000
+            },
+            {
+              "materialId": "114094",
+              "qty": 6
+            },
+            {
+              "materialId": "112156",
+              "qty": 6
+            },
+            {
+              "materialId": "112147",
+              "qty": 6
+            }
+          ]
+        },
+        {
+          "atLevel": 70,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 30000
+            },
+            {
+              "materialId": "114095",
+              "qty": 3
+            },
+            {
+              "materialId": "112156",
+              "qty": 12
+            },
+            {
+              "materialId": "112147",
+              "qty": 9
+            }
+          ]
+        },
+        {
+          "atLevel": 80,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 35000
+            },
+            {
+              "materialId": "114095",
+              "qty": 6
+            },
+            {
+              "materialId": "112157",
+              "qty": 9
+            },
+            {
+              "materialId": "112148",
+              "qty": 6
+            }
+          ]
+        },
+        {
+          "atLevel": 90,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 45000
+            },
+            {
+              "materialId": "114096",
+              "qty": 4
+            },
+            {
+              "materialId": "112157",
+              "qty": 18
+            },
+            {
+              "materialId": "112148",
+              "qty": 12
+            }
+          ]
+        }
+      ],
+      "extra": {
+        "baseAtk": 42.401,
+        "subStat": "CRIT DMG",
+        "version": "7.1"
+      }
+    },
+    {
       "id": "14501",
       "key": "skyward-atlas",
       "name": "Skyward Atlas",
@@ -68774,6 +69901,148 @@
         "baseAtk": 49.1377,
         "subStat": "ATK",
         "version": "6.6"
+      }
+    },
+    {
+      "id": "14524",
+      "key": "hymn-of-the-maelstrom",
+      "name": "Hymn of the Maelstrom",
+      "rarity": 5,
+      "type": "Catalyst",
+      "maxLevel": 90,
+      "icon": "UI_EquipIcon_Catalyst_Bludnye",
+      "ascension": [
+        {
+          "atLevel": 40,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 10000
+            },
+            {
+              "materialId": "114089",
+              "qty": 5
+            },
+            {
+              "materialId": "112152",
+              "qty": 5
+            },
+            {
+              "materialId": "112146",
+              "qty": 3
+            }
+          ]
+        },
+        {
+          "atLevel": 50,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 20000
+            },
+            {
+              "materialId": "114090",
+              "qty": 5
+            },
+            {
+              "materialId": "112152",
+              "qty": 18
+            },
+            {
+              "materialId": "112146",
+              "qty": 12
+            }
+          ]
+        },
+        {
+          "atLevel": 60,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 30000
+            },
+            {
+              "materialId": "114090",
+              "qty": 9
+            },
+            {
+              "materialId": "112153",
+              "qty": 9
+            },
+            {
+              "materialId": "112147",
+              "qty": 9
+            }
+          ]
+        },
+        {
+          "atLevel": 70,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 45000
+            },
+            {
+              "materialId": "114091",
+              "qty": 5
+            },
+            {
+              "materialId": "112153",
+              "qty": 18
+            },
+            {
+              "materialId": "112147",
+              "qty": 14
+            }
+          ]
+        },
+        {
+          "atLevel": 80,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 55000
+            },
+            {
+              "materialId": "114091",
+              "qty": 9
+            },
+            {
+              "materialId": "112154",
+              "qty": 14
+            },
+            {
+              "materialId": "112148",
+              "qty": 9
+            }
+          ]
+        },
+        {
+          "atLevel": 90,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 65000
+            },
+            {
+              "materialId": "114092",
+              "qty": 6
+            },
+            {
+              "materialId": "112154",
+              "qty": 27
+            },
+            {
+              "materialId": "112148",
+              "qty": 18
+            }
+          ]
+        }
+      ],
+      "extra": {
+        "baseAtk": 44.3358,
+        "subStat": "HP",
+        "version": "7.1"
       }
     },
     {
@@ -73941,6 +75210,148 @@
       }
     },
     {
+      "id": "15437",
+      "key": "breezeborne-refrain",
+      "name": "Breezeborne Refrain",
+      "rarity": 4,
+      "type": "Bow",
+      "maxLevel": 90,
+      "icon": "UI_EquipIcon_Bow_Windtalker",
+      "ascension": [
+        {
+          "atLevel": 40,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 5000
+            },
+            {
+              "materialId": "114093",
+              "qty": 3
+            },
+            {
+              "materialId": "112152",
+              "qty": 3
+            },
+            {
+              "materialId": "112149",
+              "qty": 2
+            }
+          ]
+        },
+        {
+          "atLevel": 50,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 15000
+            },
+            {
+              "materialId": "114094",
+              "qty": 3
+            },
+            {
+              "materialId": "112152",
+              "qty": 12
+            },
+            {
+              "materialId": "112149",
+              "qty": 8
+            }
+          ]
+        },
+        {
+          "atLevel": 60,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 20000
+            },
+            {
+              "materialId": "114094",
+              "qty": 6
+            },
+            {
+              "materialId": "112153",
+              "qty": 6
+            },
+            {
+              "materialId": "112150",
+              "qty": 6
+            }
+          ]
+        },
+        {
+          "atLevel": 70,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 30000
+            },
+            {
+              "materialId": "114095",
+              "qty": 3
+            },
+            {
+              "materialId": "112153",
+              "qty": 12
+            },
+            {
+              "materialId": "112150",
+              "qty": 9
+            }
+          ]
+        },
+        {
+          "atLevel": 80,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 35000
+            },
+            {
+              "materialId": "114095",
+              "qty": 6
+            },
+            {
+              "materialId": "112154",
+              "qty": 9
+            },
+            {
+              "materialId": "112151",
+              "qty": 6
+            }
+          ]
+        },
+        {
+          "atLevel": 90,
+          "materials": [
+            {
+              "materialId": "202",
+              "qty": 45000
+            },
+            {
+              "materialId": "114096",
+              "qty": 4
+            },
+            {
+              "materialId": "112154",
+              "qty": 18
+            },
+            {
+              "materialId": "112151",
+              "qty": 12
+            }
+          ]
+        }
+      ],
+      "extra": {
+        "baseAtk": 42.401,
+        "subStat": "CRIT Rate",
+        "version": "7.1"
+      }
+    },
+    {
       "id": "15501",
       "key": "skyward-harp",
       "name": "Skyward Harp",
@@ -77968,7 +79379,7 @@
       ],
       "bonuses": [
         "ATK +18%.",
-        "Increases the equipping character's CRIT Rate by 16%, and their Stellar Swirl reaction dealt by 40%, for 10s after they trigger a Stellar Swirl reaction."
+        "Increases the equipping character's CRIT Rate by 16%, and their Stellar Swirl reaction DMG dealt by 40%, for 10s after they trigger a Stellar Swirl reaction."
       ],
       "icon": "UI_RelicIcon_15047_4",
       "source": "Inverted Glacier",
@@ -78007,7 +79418,7 @@
       ],
       "bonuses": [
         "ATK +18%.",
-        "Increases the equipping character's ATK by 12% for 12s when they trigger a Stellar Glimmer reaction or deal Stellar Glimmer reaction DMG. Also increases Stellar Glimmer reaction DMG dealt by all nearby party members by 50%. The above effects can trigger even when the equipping character is not on the field, and he DMG bonus from multiple Artifact Sets with the same name do not stack."
+        "Increases the equipping character's ATK by 12% for 12s when they trigger a Stellar Glimmer reaction or deal Stellar Glimmer reaction DMG. Also increases Stellar Glimmer reaction DMG dealt by all nearby party members by 50%. The above effects can trigger even when the equipping character is not on the field, and the DMG bonus from multiple Artifact Sets with the same name do not stack."
       ],
       "icon": "UI_RelicIcon_15048_4",
       "source": "Inverted Glacier",
@@ -79040,6 +80451,23 @@
         "sortRank": 318,
         "sources": [
           "Recommendation: Found in Fellfrost Peak",
+          "Go to collect"
+        ]
+      }
+    },
+    {
+      "id": "101277",
+      "key": "golden-fern",
+      "name": "Golden Fern",
+      "category": "Local Specialty (Snezhnaya)",
+      "icon": "UI_ItemIcon_101277",
+      "source": "Recommendation: Found in Flamefeather Valley",
+      "extra": {
+        "categoryEnum": "EXCHANGE",
+        "sortRank": 318,
+        "sources": [
+          "Recommendation: Found in Flamefeather Valley",
+          "Recommendation: Found in Rankova Zorya",
           "Go to collect"
         ]
       }
@@ -85417,6 +86845,22 @@
       }
     },
     {
+      "id": "113092",
+      "key": "vagabonds-cracked-armor",
+      "name": "Vagabond's Cracked Armor",
+      "category": "Character Level-Up Material",
+      "rarity": 4,
+      "icon": "UI_ItemIcon_113092",
+      "source": "Dropped by Lv. 30+ Guardian Blade of Drifting Snow",
+      "extra": {
+        "categoryEnum": "AVATAR_MATERIAL",
+        "sortRank": 11101,
+        "sources": [
+          "Dropped by Lv. 30+ Guardian Blade of Drifting Snow"
+        ]
+      }
+    },
+    {
       "id": "114001",
       "key": "tile-of-decarabians-tower",
       "name": "Tile of Decarabian's Tower",
@@ -87770,6 +89214,19 @@
       "category": "Refinement Material",
       "rarity": 4,
       "icon": "UI_ItemIcon_200128",
+      "extra": {
+        "categoryEnum": "AVATAR_MATERIAL",
+        "sortRank": 90,
+        "sources": []
+      }
+    },
+    {
+      "id": "200129",
+      "key": "tea-scented-tassel",
+      "name": "Tea-Scented Tassel",
+      "category": "Refinement Material",
+      "rarity": 4,
+      "icon": "UI_ItemIcon_200129",
       "extra": {
         "categoryEnum": "AVATAR_MATERIAL",
         "sortRank": 90,

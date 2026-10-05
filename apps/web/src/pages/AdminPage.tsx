@@ -134,6 +134,15 @@ export function AdminPage() {
     onError: () => toast("Seed failed", "err"),
   });
 
+  const importFeed = useMutation({
+    mutationFn: () => api.post<{ banners: number; events: number; created: number; updated: number }>(`/api/admin/feed/${gameKey}`, {}),
+    onSuccess: (r) => {
+      toast(`Official feed: ${r.banners} banners, ${r.events} events (${r.created} new)`);
+      invalidate();
+    },
+    onError: () => toast("No official feed for this game yet", "err"),
+  });
+
   if (!me?.isAdmin) return <div className="card empty">Admins only. Add your Discord id to ADMIN_DISCORD_IDS.</div>;
 
   const submit = () => {
@@ -153,7 +162,10 @@ export function AdminPage() {
       <div className="page-head">
         <h1>Admin</h1>
         <div className="row">
-          <button className="btn sm primary" disabled={seed.isPending} onClick={() => seed.mutate()} title="Add a couple of sample banners + events so you can preview them">
+          <button className="btn sm primary" disabled={importFeed.isPending} onClick={() => importFeed.mutate()} title="Pull current banners + events from the in-game announcement feed (also runs hourly)">
+            {importFeed.isPending ? "Importing…" : "Import official feed"}
+          </button>
+          <button className="btn sm" disabled={seed.isPending} onClick={() => seed.mutate()} title="Add a couple of sample banners + events so you can preview them">
             Seed sample data
           </button>
           <select value={kind} onChange={(e) => { setKind(e.target.value as AdminExportKind); setResult(null); }} style={{ width: "auto" }}>
