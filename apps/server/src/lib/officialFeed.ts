@@ -3,12 +3,21 @@ import { prisma } from "./prisma.js";
 import { getCatalog, type PrismaJson } from "../api/util.js";
 
 /* Banners and events from HoYoverse's public announcement feed — the JSON the
- * game client's notice board reads. Genshin only: HSR packs several warps with
- * different end dates into one notice, so it needs per-section parsing first. */
+ * game client's notice board reads. Genshin lists one notice per wish; HSR
+ * packs several warps, each with its own dates, into one "Event Warp" notice. */
 
-const FEEDS: Record<string, string> = {
-  genshin:
-    "https://sg-hk4e-api.hoyoverse.com/common/hk4e_global/announcement/api/{fn}?game=hk4e&game_biz=hk4e_global&lang=en&bundle_id=hk4e_global&platform=pc&region=os_euro&level=55&uid=100000000",
+type Parsed = { banners: BannerInput[]; events: EventInput[] };
+type Feed = { url: string; parse: (data: unknown, contents: Map<number, string>, catalog: Catalog | null) => Parsed };
+
+const FEEDS: Record<string, Feed> = {
+  genshin: {
+    url: "https://sg-hk4e-api.hoyoverse.com/common/hk4e_global/announcement/api/{fn}?game=hk4e&game_biz=hk4e_global&lang=en&bundle_id=hk4e_global&platform=pc&region=os_euro&level=55&uid=100000000",
+    parse: (data, contents, catalog) => parseFeed(data as AnnList, contents, catalog),
+  },
+  hsr: {
+    url: "https://sg-hkrpg-api.hoyoverse.com/common/hkrpg_global/announcement/api/{fn}?game=hkrpg&game_biz=hkrpg_global&lang=en&bundle_id=hkrpg_global&platform=pc&region=prod_official_eur&level=70&uid=100000000",
+    parse: (data, contents, catalog) => parseHsrFeed(data as HsrAnnList, contents, catalog),
+  },
 };
 export const FEED_GAMES = Object.keys(FEEDS);
 
@@ -19,7 +28,13 @@ const EVENT_TYPE = 1; // "Event" tab: wishes + time-limited events
 const WISH = /^(Event|Chronicled) Wish\b/;
 const NOISE = /Top-Up|Bundle/i;
 
-const strip = (s: string) => s.replace(/<[^>]+>/g, " ").replace(/&[a-z#0-9]+;/gi, " ").replace(/\s+/g, " ").trim();
+const ENTITIES: Record<string, string> = { "&amp;": "&", "&quot;": '"', "&#39;": "'", "&apos;": "'", "&lt;": "<", "&gt;": ">" };
+const strip = (s: string) =>
+  s
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&[a-z#0-9]+;/gi, (e) => ENTITIES[e] ?? " ")
+    .replace(/\s+/g, " ")
+    .trim();
 const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 /** "2026-09-21 12:00:00" in server time (UTC+tz hours) → ISO with offset. */
@@ -66,6 +81,66 @@ export function parseFeed(data: AnnList, contents: Map<number, string>, catalog:
   return { banners, events };
 }
 
+type HsrAnn = { ann_id: number; title: string; start_time: string; end_time: string };
+export type HsrAnnList = { timezone: number; list: unknown[]; pic_list: { type_list: { list: HsrAnn[] }[] }[] };
+
+const WARP = /During (?:the )?"([^"]+)" (Character|Light Cone) Event Warp/g;
+const WARP_DATE = /(\d{4})\/(\d{2})\/(\d{2}) (\d{2}:\d{2}:\d{2})/g;
+const HSR_NOISE = /Warp|Store Update|Update Details|Top-Up/i;
+const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40);
+/** Short event name: the quoted part of the title, else what precedes ": ". */
+const shortName = (title: string) => /^"([^"]+)"/.exec(title)?.[1] ?? title.split(": ")[0] ?? title;
+
+/** HSR: one banner per `During "<name>" Character|Light Cone Event Warp` section of a notice. */
+function warps(a: HsrAnn, text: string, tz: number, catalog: Catalog | null): BannerInput[] {
+  const sections = [...text.matchAll(WARP)];
+  const details = text.indexOf("Event Warp Details");
+  return sections.flatMap((m, i) => {
+    const from = (m.index ?? 0) + m[0].length;
+    const boosted = text.indexOf("will be boosted", from);
+    const sentenceEnd = boosted < 0 ? from : boosted;
+    // Units are named in the section's sentence; its period follows it.
+    const sentence = text.slice(from, sentenceEnd);
+    const next = Math.min(sections[i + 1]?.index ?? text.length, details > sentenceEnd ? details : text.length);
+    const dates = [...text.slice(sentenceEnd, next).matchAll(WARP_DATE)].map((d) => iso(`${d[1]}-${d[2]}-${d[3]} ${d[4]}`, tz));
+    const kind = m[2] === "Light Cone" ? ("weapon" as const) : ("character" as const);
+    const pool: { id: string; name: string; rarity: number }[] = (kind === "weapon" ? catalog?.weapons : catalog?.characters) ?? [];
+    const units = named(pool, sentence);
+    const parsed = bannerInput.safeParse({
+      key: `hoyo-${a.ann_id}-${slug(m[1] ?? "")}`,
+      name: m[1],
+      kind,
+      startsAt: dates.length >= 2 ? dates[0] : iso(a.start_time, tz),
+      endsAt: dates.at(-1) ?? iso(a.end_time, tz),
+      featured: units.map((u) => ({ catalogId: u.id, kind })),
+      payload: { source: "hoyoverse", annId: a.ann_id },
+    });
+    return parsed.success ? [parsed.data] : [];
+  });
+}
+
+/** Pure mapping from the HSR feed (its "pic_list" tabs) to banners/events. */
+export function parseHsrFeed(data: HsrAnnList, contents: Map<number, string>, catalog: Catalog | null): Parsed {
+  const banners: BannerInput[] = [];
+  const events: EventInput[] = [];
+  for (const a of data.pic_list.flatMap((g) => g.type_list).flatMap((t) => t.list)) {
+    const title = strip(a.title);
+    if (/Event Warp/.test(title)) {
+      banners.push(...warps(a, strip(contents.get(a.ann_id) ?? ""), data.timezone, catalog));
+    } else if (title && !HSR_NOISE.test(title)) {
+      const parsed = eventInput.safeParse({
+        key: `hoyo-${a.ann_id}`,
+        name: shortName(title),
+        startsAt: iso(a.start_time, data.timezone),
+        endsAt: iso(a.end_time, data.timezone),
+        payload: { source: "hoyoverse", annId: a.ann_id },
+      });
+      if (parsed.success) events.push(parsed.data);
+    }
+  }
+  return { banners, events };
+}
+
 async function getJson<T>(url: string): Promise<T> {
   const res = await fetch(url, { signal: AbortSignal.timeout(10_000) });
   if (!res.ok) throw new Error(`feed ${res.status}`);
@@ -85,14 +160,16 @@ export function settle(prev: Date | undefined, next: Date): Date {
 /** Fetch one game's feed and upsert its banners/events by key. */
 export async function importOfficialFeed(gameKey: string) {
   const game = getGame(gameKey);
-  const url = FEEDS[gameKey];
-  if (!game || !url) throw new Error(`no feed for ${gameKey}`);
+  const feed = FEEDS[gameKey];
+  if (!game || !feed) throw new Error(`no feed for ${gameKey}`);
+  type Content = { ann_id: number; content: string };
   const [list, content, cat] = await Promise.all([
-    getJson<AnnList>(url.replace("{fn}", "getAnnList")),
-    getJson<{ list: { ann_id: number; content: string }[] }>(url.replace("{fn}", "getAnnContent")),
+    getJson<unknown>(feed.url.replace("{fn}", "getAnnList")),
+    getJson<{ list: Content[]; pic_list?: Content[] }>(feed.url.replace("{fn}", "getAnnContent")),
     getCatalog(game),
   ]);
-  const { banners, events } = parseFeed(list, new Map(content.list.map((c) => [c.ann_id, c.content])), cat?.catalog ?? null);
+  const contents = new Map([...content.list, ...(content.pic_list ?? [])].map((c) => [c.ann_id, c.content]));
+  const { banners, events } = feed.parse(list, contents, cat?.catalog ?? null);
 
   let created = 0;
   let updated = 0;
