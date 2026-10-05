@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-06 · claude · stack/pulls/04-home · pending
+- Done: The dashboard returns pity per banner for each game; Home's Pulls card shows "Character 22/90 · guaranteed · Weapon 30/80…" under each game and links to its pull log. F5 complete.
+- Tests: Red route test before the dashboard change; red Playwright assertion before the Home line; 8 pull-log route tests and 4 E2E journeys pass.
+- Scope/decisions: Only banners with pity above zero or a guarantee are listed, to keep Home quiet.
+- Next: owner records the README demo GIF; review Dependabot #54 (Prisma 7 and other majors) separately.
+
 ## 2026-10-06 · claude · stack/pulls/03-ui · pending
 - Done: Incident: #57 (meant to be one line of `vercel.json`) was opened without `--head` right after a rebase that ended on `stack/pulls/02-store`, so its head was the whole stack. Squash-merging it put #45–#56 on `main` as ede0c06, titled after #57. CI (lint, typecheck, test, build, e2e) had passed on that combined content. #45–#55 were closed with an explanation, #56 and #58 were closed by GitHub, the pull-log page is re-opened from this branch.
 - Tests: `npm run check` on this branch (main + the pull-log page).
