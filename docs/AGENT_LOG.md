@@ -14,6 +14,18 @@ Entry format:
 
 ---
 
+## 2026-10-06 · claude · stack/pulls/03-ui · pending
+- Done: Incident: #57 (meant to be one line of `vercel.json`) was opened without `--head` right after a rebase that ended on `stack/pulls/02-store`, so its head was the whole stack. Squash-merging it put #45–#56 on `main` as ede0c06, titled after #57. CI (lint, typecheck, test, build, e2e) had passed on that combined content. #45–#55 were closed with an explanation, #56 and #58 were closed by GitHub, the pull-log page is re-opened from this branch.
+- Tests: `npm run check` on this branch (main + the pull-log page).
+- Scope/decisions: `main` is not rewritten; ede0c06's message under-describes it, this entry is the record. AGENTS.md rule 3 now requires `--head` and a diff-size check. Production is still at #44: Vercel's daily quota blocked the ede0c06 deploy; the next push to `main` after the quota frees deploys it (and applies the `PullEntry` migration).
+- Next: merge the pull-log page; Home pity (F5 part 4).
+
+## 2026-10-06 · claude · stack/pulls/03-ui · pending
+- Done: "Pulls" tab per game (games with banner rules): pity / hard pity, soft-pity and guaranteed badges, +1/+10, "Log a 5★" (batch, position, featured, unit), "Set pity", undo, and the 5★ history with the pity each dropped at.
+- Tests: Red Playwright journey before the page (HSR: +10 → 10, lost 50/50 at pull 7 → pity 3, guaranteed, drop at 17); 4 E2E journeys pass. The smoke nav assertion is now exact, and the pulls journey uses HSR so journeys never share a game.
+- Scope/decisions: Preview deployments for `stack/**` are off (#57) after restacks hit Vercel Hobby's 100-a-day limit; production deployed every merge.
+- Next: `04-home`: pity next to pulls on Home.
+
 ## 2026-10-06 · claude · stack/pulls/02-store · pending
 - Done: `PullEntry` table (migration `20261006000000_pull_log`, RLS on) and routes: GET the log per banner (state, 5★ drops with pity, recent entries), POST a batch, POST a calibration, DELETE an entry.
 - Tests: Red before the routes; `pulls.integration.test.ts` (7 tests): per-banner pity, guarantee after a lost 50/50, calibration, delete recomputes, validation (unknown banner, 5★ outside the batch, unknown unit, past hard pity), privacy, games without rules.
