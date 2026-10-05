@@ -33,3 +33,8 @@ apps/web/public/assets/**/*.png
 apps/web/public/assets/**/*.jpg
 apps/web/public/assets/**/*.jpeg
 apps/web/public/assets/**/*.avif
+
+# Playwright
+test-results/
+playwright-report/
+prisma/e2e.db*

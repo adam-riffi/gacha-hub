@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-06 · claude · stack/e2e/01-smoke · pending
+- Done: Playwright smoke suite (`e2e/smoke.spec.ts`, 3 journeys) against the built app on a throwaway SQLite DB with the dev login; `scripts/e2e-server.mjs` prepares the DB and starts the server; CI job `e2e` uploads traces on failure.
+- Tests: `npm run e2e` locally, 3 passed; the "add Genshin" journey proves the dev database is not used.
+- Scope/decisions: ADR 0001 row narrowed: E2E now runs in CI; smoke against deployed URLs still has no test identity.
+- Next: owner adds `e2e` to the required checks with the others.
+
 ## 2026-10-06 · claude · stack/art/01-hsr-icons · pending
 - Done: HSR art (characters, light cones, relics, materials) falls back to Yatta's public icons; the community-art mapping moved to `packages/shared/src/art.ts` and the web resolver re-exports it.
 - Tests: Red test before the mapping; `art.test.ts` covers Enka, every Yatta kind, nulls and key encoding. Local: all 98 HSR roster portraits load.

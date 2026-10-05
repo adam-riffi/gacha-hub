@@ -86,7 +86,7 @@ gacha/
 
 **Hand-written core** (pure, unit tested): per-game definitions and limits; reset math (`lib/resets.ts`); game day and domains today (`packages/shared/src/domains.ts`); reminder due logic (`scheduler/due.ts`); planning and cost math (`packages/shared/src/planning`); currency and pull math; official-feed parsing (`lib/officialFeed.ts`); build-document migrations.
 
-**Allowed libraries**: React, React Router, TanStack Query, Vite; Fastify and its first-party plugins (cookie, oauth2, rate-limit, multipart, static); Prisma; zod and zod-to-json-schema; luxon; discord-interactions; `@vercel/blob`; node-cron (always-on hosts only); Vitest, fast-check, ESLint, Prettier, esbuild, tsx. Importers may use their dataset packages (`genshin-db`, `adm-zip`) inside `scripts/catalog` only.
+**Allowed libraries**: React, React Router, TanStack Query, Vite; Fastify and its first-party plugins (cookie, oauth2, rate-limit, multipart, static); Prisma; zod and zod-to-json-schema; luxon; discord-interactions; `@vercel/blob`; node-cron (always-on hosts only); Vitest, fast-check, Playwright, ESLint, Prettier, esbuild, tsx. Importers may use their dataset packages (`genshin-db`, `adm-zip`) inside `scripts/catalog` only.
 
 ## 7. Visual identity
 
@@ -117,17 +117,17 @@ F5 and any account import need the owner's go-ahead before planning (§14).
 - **Property:** game-day math across all regions, offsets and reset hours, against a luxon reference (`domains.test.ts`, seeded).
 - **Integration:** route tests build the real Fastify app over a throwaway SQLite database (`*.integration.test.ts`, run sequentially).
 - **Harness:** `scripts/harness/phase7.mjs` and `phase8.mjs` exercise the built bundle end to end.
-- **End-to-end:** none yet; a Playwright smoke of sign-in → Home is a candidate once a test identity exists.
+- **End-to-end:** Playwright `@smoke` journeys (`e2e/`) against the built app on a throwaway SQLite database, signed in with the dev login: Home, adding Genshin opens its overview, the calendar. Traces are uploaded when CI fails.
 - Coverage: new core modules at least 90% of lines.
 
 ## 11. CI/CD
 
 | Workflow | Trigger | Jobs |
 | --- | --- | --- |
-| `ci.yml` | PRs, pushes to `main` | `lint`, `typecheck`, `test`, `build` |
+| `ci.yml` | PRs, pushes to `main` | `lint`, `typecheck`, `test`, `build`, `e2e` |
 | `cron-tick.yml` | Every 10 min, `workflow_dispatch` | `tick`: reminders, and the hourly feed import |
 
-Required checks: `lint`, `typecheck`, `test`, `build`. Vercel builds each push (preview per PR, production on `main`) and runs migrations in the build.
+Required checks: `lint`, `typecheck`, `test`, `build`, `e2e`. Vercel builds each push (preview per PR, production on `main`) and runs migrations in the build.
 
 ## 12. Deployment and configuration
 

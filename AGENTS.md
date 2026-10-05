@@ -31,10 +31,11 @@ Operating manual for coding agents in this repository. Codex and Copilot read th
 | Build (web + server bundle) | `npm run build` |
 | Regenerate a catalog (delete `scripts/catalog/.cache/<game>` first for fresh data) | `npm run catalog:install` then `npm run catalog:<game>` |
 | New migration (offline) | `npx prisma migrate diff --from-schema-datamodel <before> --to-schema-datamodel prisma/schema.prisma --script` |
+| E2E smoke (Playwright; `npx playwright install chromium` once) | `npm run build -w @gacha/web && npm run e2e` |
 | Lint workflows (actionlint 1.7+ on PATH) | `actionlint` |
 | Check all | `npm run check` |
 
-Keep this table accurate: when you add or change a script, update the table in the same PR. `npm test` regenerates the Prisma client for SQLite; `npm run check` regenerates the Postgres client before building. On Windows a running dev server locks the engine DLL, so stop it before `npm run check`.
+Keep this table accurate: when you add or change a script, update the table in the same PR. `npm test` regenerates the Prisma client for SQLite; `npm run check` regenerates the Postgres client before building, then its E2E step switches back to SQLite. On Windows a running dev server locks the engine DLL, so stop it before `npm run check`.
 
 ## Rules
 
