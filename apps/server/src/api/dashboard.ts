@@ -1,5 +1,5 @@
 import type { FastifyInstance } from "fastify";
-import { BUILT_STATUSES, dashboardDto, getGame } from "@gacha/shared";
+import { BUILT_STATUSES, dashboardDto, getGame, pityState } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
 import { requireUser } from "../auth/plugin.js";
 import { getGameServerModule } from "../games/index.js";
@@ -36,6 +36,12 @@ export async function registerDashboardRoutes(app: FastifyInstance) {
       _count: true,
     });
     const gearByInstance = new Map(gearRows.map((r) => [r.gameInstanceId, r._count]));
+    // Pull entries in order, for pity per banner (derived, ADR 0002).
+    const pullRows = await prisma.pullEntry.findMany({
+      where: { gameInstanceId: { in: instances.map((g) => g.id) } },
+      orderBy: [{ createdAt: "asc" }, { id: "asc" }],
+      select: { gameInstanceId: true, bannerKey: true, count: true, fiveStar: true, featured: true },
+    });
     // Catalogs are cached per process after the first load.
     const catalogs = new Map(
       await Promise.all(
@@ -99,6 +105,10 @@ export async function registerDashboardRoutes(app: FastifyInstance) {
         dailies,
         nextReset: soonest ?? null,
         extras: extras[i],
+        pity: (game?.pullBanners ?? []).map((rules) => {
+          const s = pityState(pullRows.filter((p) => p.gameInstanceId === gi.id && p.bannerKey === rules.key), rules);
+          return { key: rules.key, label: rules.label, pity: s.pity, hardPity: rules.hardPity, guaranteed: s.guaranteed };
+        }),
       };
     });
 

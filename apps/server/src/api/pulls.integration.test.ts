@@ -76,6 +76,17 @@ describe("pull log (routes)", () => {
     expect((await other.req("GET", `/api/instances/not-mine/pulls`)).status).toBe(404);
   });
 
+  it("reports pity per banner on the dashboard", async () => {
+    await c.req("POST", `/api/instances/${gid}/pulls/calibrate`, { bannerKey: "character", pity: 40, guaranteed: true });
+    await c.req("POST", `/api/instances/${gid}/pulls`, { bannerKey: "weapon", count: 10 });
+    const dash = await c.req<{ games: { gameKey: string; pity: { key: string; pity: number; hardPity: number; guaranteed: boolean }[] }[] }>("GET", "/api/dashboard");
+    expect(dash.json.games.find((g) => g.gameKey === "genshin")?.pity).toEqual([
+      { key: "character", label: "Character event wish", pity: 40, hardPity: 90, guaranteed: true },
+      { key: "weapon", label: "Weapon event wish", pity: 10, hardPity: 80, guaranteed: false },
+      { key: "standard", label: "Standard wish", pity: 0, hardPity: 90, guaranteed: false },
+    ]);
+  });
+
   it("has no banners for a game without pull rules", async () => {
     const endfield = await installGame(c, "endfield");
     expect((await c.req<PullLogDto>("GET", `/api/instances/${endfield}/pulls`)).json.banners).toEqual([]);

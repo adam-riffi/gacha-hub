@@ -573,3 +573,4 @@ select.prio.build-none { color: var(--muted); }
 .pull-drop { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto auto; gap: 8px; align-items: center; font-size: 0.85rem; }
 .pull-drop-art { width: 28px; height: 28px; background: linear-gradient(160deg, #b8782f, #6e4520); }
 .pull-form label.row { flex-direction: row; align-items: center; color: var(--text); }
+.pull-row-pity { display: block; padding: 0 0 6px 18px; }

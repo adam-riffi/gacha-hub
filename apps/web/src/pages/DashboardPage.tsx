@@ -199,16 +199,27 @@ function PullsCard({ games }: { games: DashGame[] }) {
         <span className="pull-total">{total}</span>
       </div>
       <div className="small muted" style={{ marginBottom: 10 }}>limited pulls across games</div>
-      {rows.map(({ g, limited, standard, label }) => (
-        <div className="pull-row" key={g.instanceId}>
-          <span className="dot" style={{ background: g.accent }} />
-          <span className="pull-game">{g.name}</span>
-          <span>
-            <strong>{pullCount(limited, label!)}</strong>
-            {standard > 0 && <span className="small muted"> +{standard} std</span>}
-          </span>
-        </div>
-      ))}
+      {rows.map(({ g, limited, standard, label }) => {
+        // Banners with something to say: pity building up or a 50/50 lost.
+        const pity = g.pity.filter((p) => p.pity > 0 || p.guaranteed);
+        return (
+          <div key={g.instanceId}>
+            <div className="pull-row">
+              <span className="dot" style={{ background: g.accent }} />
+              <span className="pull-game">{g.name}</span>
+              <span>
+                <strong>{pullCount(limited, label!)}</strong>
+                {standard > 0 && <span className="small muted"> +{standard} std</span>}
+              </span>
+            </div>
+            {pity.length > 0 && (
+              <Link to={`/games/${g.instanceId}/pulls`} className="pull-row-pity small muted">
+                {pity.map((p) => `${p.label.split(" ")[0]} ${p.pity}/${p.hardPity}${p.guaranteed ? " · guaranteed" : ""}`).join("  ·  ")}
+              </Link>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }
