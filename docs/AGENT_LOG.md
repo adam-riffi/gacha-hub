@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-06 · claude · stack/hsr-feed/02-parser · #48
+- Done: #40 squash-merged and the stack restacked onto `main`. Deleting #40's branch closed #41, which could not be reopened after the restack force-push, so #49 replaces it (same branch).
+- Tests: CI re-run on every restacked PR (earlier failures were cancelled jobs during a GitHub Actions outage, not code).
+- Scope/decisions: AGENTS.md rule 3 (in #42) now says to retarget the next PR before deleting a merged branch.
+- Next: merge #49, then #42–#48 bottom-up as CI turns green.
+
 ## 2026-10-05 · claude · stack/hsr-feed/02-parser · pending
 - Done: HSR joins the official-feed import: each `During "<warp>" Character|Light Cone Event Warp` section becomes its own banner with its own dates and featured units; other notices become events (shop, patch notes and collab warps skipped).
 - Tests: Red 312dfcd before 4bae26c (parser); red e6b1de1 before the settle fix. Live smoke: 4 warps (Pearl, Colors for Tomorrow, Evanescia, Until the Flowers Bloom Again) and 4 events.
