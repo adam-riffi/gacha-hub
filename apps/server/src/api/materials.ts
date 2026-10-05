@@ -1,7 +1,7 @@
 import type { FastifyInstance } from "fastify";
 import { materialNeedDto, materialStockDto, setMaterialStockInput } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
-import { gameWeekday } from "../lib/availability.js";
+import { gameWeekday } from "@gacha/shared";
 import { requireUser } from "../auth/plugin.js";
 import { gameOrThrow, getCatalog, loadInstance, regionForInstance } from "./util.js";
 import { describeMaterials } from "./planning.js";
@@ -76,7 +76,7 @@ export async function registerMaterialRoutes(app: FastifyInstance) {
         if (total > 0) needed.set(t.materialId!, (needed.get(t.materialId!) ?? 0) + total);
       }
       const have = new Map(stockRows.map((r) => [r.materialId, r.qty]));
-      const weekday = gameWeekday(regionForInstance(game, gi));
+      const weekday = gameWeekday(regionForInstance(game, gi), new Date());
       const described = cat ? describeMaterials(cat, needed.keys(), weekday) : {};
       return [...needed.entries()]
         .map(([materialId, n]) =>

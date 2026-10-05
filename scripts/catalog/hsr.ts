@@ -97,8 +97,8 @@ const characters: CatalogCharacter[] = avatars
     const ascension = promotionSteps(d.upgrade, 80);
     return {
       id: String(d.id),
-      key: slugify(d.name),
-      name: d.name,
+      key: slugify(stripTags(d.name)),
+      name: stripTags(d.name),
       rarity: d.rank,
       tag: label(d.types?.combatType),
       weaponType: label(d.types?.pathType),
@@ -128,8 +128,8 @@ const weapons: CatalogWeapon[] = cones
     const ascension = promotionSteps(d.upgrade, 80);
     return {
       id: String(d.id),
-      key: slugify(d.name),
-      name: d.name,
+      key: slugify(stripTags(d.name)),
+      name: stripTags(d.name),
       rarity: d.rank,
       type: label(d.types?.pathType),
       maxLevel: ascension.at(-1)?.atLevel ?? 80,
@@ -148,8 +148,8 @@ console.log(`[catalog:hsr] ${relicList.length} relic sets…`);
 const relics = await mapLimit(relicList, CONCURRENCY, (r) => detail<RelicDetail>(`/relic/${r.id}`));
 const gear: CatalogGearSet[] = relics.map((d) => ({
   id: String(d.id),
-  key: slugify(d.name),
-  name: d.name,
+  key: slugify(stripTags(d.name)),
+  name: stripTags(d.name),
   slots: Object.keys(d.suite ?? {}).map((k) => SLOT[k] ?? k.toLowerCase()),
   bonuses: Object.entries(d.skillList ?? {}).map(([n, s]) => `${n}pc: ${stripTags(s.description)}`),
   icon: d.icon ? String(d.icon) : undefined,
@@ -181,8 +181,8 @@ const materials: CatalogMaterial[] = itemDetails.map((d) => {
   const sources = (d.source ?? []).map((s) => stripTags(s.description)).filter(Boolean);
   return {
     id: String(d.id),
-    key: slugify(d.name),
-    name: d.name,
+    key: slugify(stripTags(d.name)),
+    name: stripTags(d.name),
     category: typeName?.split("\n")[0]?.trim() || "Material",
     rarity: d.rank >= 1 && d.rank <= 6 ? d.rank : undefined,
     icon: d.icon ? String(d.icon) : undefined,

@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getGame, type Catalog, type OwnershipDto } from "@gacha/shared";
+import { domainsToday, gameWeekday, getGame, type Catalog, type OwnershipDto } from "@gacha/shared";
 import { api } from "../lib/api";
 import { formatRemaining } from "../lib/time";
 import { assetUrl, communityAssetUrl, type AssetKind } from "../lib/assets";
@@ -11,46 +11,6 @@ import type { DashboardData, InstanceDetail } from "../lib/types";
 const WEEKDAY = ["", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 const UNITS_SHOWN = 8;
 const DOMAINS_SHOWN = 6;
-
-type Unit = { kind: "character" | "weapon"; id: string; name: string; icon?: string; built: boolean };
-
-/** ISO weekday of the "game day" — rotating domains flip at the daily reset. */
-function gameWeekday(region: { utcOffsetMinutes: number; dailyResetHour: number }, now: number): number {
-  return new Date(now + (region.utcOffsetMinutes - region.dailyResetHour * 60) * 60_000).getUTCDay() || 7;
-}
-
-const built = (d: { units: Unit[] }) => d.units.filter((u) => u.built).length;
-
-/** Rotating domains open today, each with the owned units that level from it (built ones first). */
-function domainsToday(catalog: Catalog, owned: OwnershipDto[], builtIds: Set<string>, weekday: number) {
-  const usedBy = new Map<string, Unit[]>();
-  const add = (materialIds: string[], u: Unit) => {
-    for (const m of new Set(materialIds)) usedBy.set(m, [...(usedBy.get(m) ?? []), u]);
-  };
-  const ownedSet = new Set(owned.map((o) => `${o.kind}:${o.catalogId}`));
-  for (const c of catalog.characters) {
-    if (!ownedSet.has(`character:${c.id}`)) continue;
-    const steps = [...c.talents.costs, ...Object.values(c.talents.costsByKey ?? {}).flat()];
-    add(steps.flatMap((s) => s.materials.map((m) => m.materialId)), { kind: "character", id: c.id, name: c.name, icon: c.icon, built: builtIds.has(c.id) });
-  }
-  for (const w of catalog.weapons) {
-    if (!ownedSet.has(`weapon:${w.id}`)) continue;
-    add(w.ascension.flatMap((s) => s.materials.map((m) => m.materialId)), { kind: "weapon", id: w.id, name: w.name, icon: w.icon, built: false });
-  }
-
-  const domains = new Map<string, { source: string; top: Catalog["materials"][number]; units: Map<string, Unit> }>();
-  for (const m of catalog.materials) {
-    if (!m.source || !m.availability?.includes(weekday) || m.availability.length >= 7) continue;
-    const d = domains.get(m.source) ?? { source: m.source, top: m, units: new Map() };
-    if ((m.rarity ?? 0) > (d.top.rarity ?? 0)) d.top = m;
-    for (const u of usedBy.get(m.id) ?? []) d.units.set(`${u.kind}:${u.id}`, u);
-    domains.set(m.source, d);
-  }
-  return [...domains.values()]
-    .map((d) => ({ ...d, units: [...d.units.values()].sort((a, b) => Number(b.built) - Number(a.built) || a.name.localeCompare(b.name)) }))
-    .filter((d) => d.units.length > 0)
-    .sort((a, b) => built(b) - built(a) || b.units.length - a.units.length);
-}
 
 function Icon({ gameKey, kind, icon, name, className }: { gameKey: string; kind: AssetKind; icon?: string; name: string; className: string }) {
   return <GameIcon src={assetUrl(gameKey, kind, icon)} fallback={communityAssetUrl(gameKey, kind, icon)} alt={name} className={className} />;
@@ -69,7 +29,7 @@ export function GameOverview({ instance, catalog, owned }: { instance: InstanceD
   const region = game?.regions.find((r) => r.key === instance.regionKey) ?? game?.regions[0];
   const [now] = useState(() => Date.now());
   const [allDomains, setAllDomains] = useState(false);
-  const weekday = region ? gameWeekday(region, now) : 1;
+  const weekday = region ? gameWeekday(region, new Date(now)) : 1;
   const builtIds = useMemo(() => new Set(instance.characters.map((c) => c.catalogId).filter((x): x is string => Boolean(x))), [instance.characters]);
   const domains = useMemo(
     () => (catalog ? domainsToday(catalog, owned, builtIds, weekday) : []),

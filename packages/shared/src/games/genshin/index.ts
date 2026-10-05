@@ -76,6 +76,12 @@ export type GenshinDoc = z.infer<typeof genshinDocSchema>;
 export const genshin: GameDefinition = {
   key: "genshin",
   teamSize: 4,
+  // Pity rules (community-documented): hard pity, soft pity, featured-unit rate.
+  pullBanners: [
+    { key: "character", label: "Character event wish", hardPity: 90, softPity: 74, featuredRate: 0.5 },
+    { key: "weapon", label: "Weapon event wish", hardPity: 80, softPity: 63, featuredRate: 0.75 },
+    { key: "standard", label: "Standard wish", hardPity: 90, softPity: 74, featuredRate: 1 },
+  ],
   name: "Genshin Impact",
   accent: "#d9a441",
   art: { icon: "/games/genshin/icon.png", background: "/games/genshin/background.jpg" },

@@ -1,3 +1,5 @@
+import type { ArtKind } from "@gacha/shared";
+
 /**
  * Asset resolver — turns a catalog asset *key* (a source-provided filename such
  * as `UI_AvatarIcon_Arlecchino`) into a URL, without hardcoding where the images
@@ -13,14 +15,8 @@
  */
 const BASE = (import.meta.env.VITE_ASSET_BASE ?? "/assets").replace(/\/+$/, "");
 
-export type AssetKind =
-  | "character" // square avatar icon
-  | "portrait" // large splash / card art
-  | "weapon"
-  | "gear" // artifact / relic / disc set
-  | "material"
-  | "talent"
-  | "constellation";
+/** character = square avatar, portrait = large art, gear = artifact / relic / disc set. */
+export type AssetKind = ArtKind;
 
 /**
  * Resolve a catalog asset key to a URL, or `null` when there is no key.
@@ -33,16 +29,5 @@ export function assetUrl(gameKey: string, kind: AssetKind, key?: string | null):
   return `${BASE}/${gameKey}/${kind}/${encodeURIComponent(key)}.webp`;
 }
 
-/**
- * Fallback: the same icon from a public community CDN, used when we host no
- * copy (<GameIcon fallback>). Enka serves Genshin character/weapon/material icons under
- * the exact catalog keys. ponytail: hotlinks a third party; mirror into our own
- * store (VITE_ASSET_BASE) if Enka ever blocks or goes down.
- */
-export function communityAssetUrl(gameKey: string, kind: AssetKind, key?: string | null): string | null {
-  if (!key || gameKey !== "genshin") return null;
-  if (kind === "character" || kind === "portrait" || kind === "weapon" || kind === "gear" || kind === "material") {
-    return `https://enka.network/ui/${encodeURIComponent(key)}.png`;
-  }
-  return null;
-}
+/** Fallback when we host no copy (<GameIcon fallback>): Enka for Genshin, Yatta for HSR. */
+export { communityArtUrl as communityAssetUrl } from "@gacha/shared";

@@ -27,3 +27,13 @@ Arknights: Endfield
 Zenless Zone Zero
   Deferred — no source with material costs is available under any license
   (see scripts/catalog/zzz.ts).
+
+Artwork fallbacks (hotlinked, not redistributed)
+  Genshin Impact icons: Enka.Network (https://enka.network/ui/).
+  Honkai: Star Rail icons: Project Yatta (https://sr.yatta.moe/hsr/assets/).
+  Content: © HoYoverse / COGNOSPHERE.
+
+Banners and events
+  Imported from HoYoverse's public in-game announcement feed
+  (sg-hk4e-api / sg-hkrpg-api .hoyoverse.com); only titles, dates and the
+  names of featured units are stored.

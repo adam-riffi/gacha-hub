@@ -1,14 +1,17 @@
 import type { GameInstance } from "@prisma/client";
 import {
+  domainsToday,
+  gameWeekday,
   getGame,
   reminderConfigSchema,
   type GameDefinition,
+  type OpenDomain,
   type TaskCadence,
 } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
 import { isDoneThisCycle } from "../lib/resets.js";
 import { dueReminders } from "./due.js";
-import { regionForInstance } from "../api/util.js";
+import { getCatalog, regionForInstance } from "../api/util.js";
 import { sendDirectMessage } from "../discord/rest.js";
 
 function fmtCurrencies(
@@ -24,6 +27,31 @@ function fmtCurrencies(
       return d?.cap ? `${label} ${c.value}/${d.cap}` : `${label} ${c.value}`;
     })
     .join(" · ");
+}
+
+const MAX_DOMAINS = 4;
+const MAX_UNITS = 3;
+const more = (n: number, label = "") => (n > 0 ? ` +${n}${label}` : "");
+
+/** One DM line for today's domains, or null when none is open for you. */
+export function fmtDomains(domains: OpenDomain[]): string | null {
+  if (domains.length === 0) return null;
+  const parts = domains.slice(0, MAX_DOMAINS).map((d) => {
+    const names = d.units.slice(0, MAX_UNITS).map((u) => u.name).join(", ");
+    return `${d.source.replace(/^Domain of \w+: /, "")} (${names}${more(d.units.length - MAX_UNITS)})`;
+  });
+  return `🗺️ Domains today: ${parts.join(", ")}${more(domains.length - MAX_DOMAINS, " more")}`;
+}
+
+async function openDomains(instance: GameInstance, game: GameDefinition, now: Date): Promise<OpenDomain[]> {
+  const cat = await getCatalog(game);
+  if (!cat) return [];
+  const [owned, builds] = await Promise.all([
+    prisma.ownership.findMany({ where: { gameInstanceId: instance.id }, select: { kind: true, catalogId: true } }),
+    prisma.character.findMany({ where: { gameInstanceId: instance.id, catalogId: { not: null } }, select: { catalogId: true } }),
+  ]);
+  const builtIds = new Set(builds.map((b) => b.catalogId!));
+  return domainsToday(cat.catalog, owned, builtIds, gameWeekday(regionForInstance(game, instance), now));
 }
 
 async function undoneDailies(userId: string, instance: GameInstance, game: GameDefinition) {
@@ -83,6 +111,11 @@ export async function runReminderTick(now = new Date()): Promise<void> {
       if (cfg.includeDailies) {
         const left = await undoneDailies(rule.userId, instance, game);
         parts.push(left.length ? `Dailies left: ${left.join(", ")}` : "✅ dailies done");
+      }
+
+      if (cfg.includeDomains) {
+        const line = fmtDomains(await openDomains(instance, game, now));
+        if (line) parts.push(line);
       }
 
       // Tasks the user flagged with the notify toggle ride along in the DM.

@@ -62,6 +62,12 @@ export type WuwaDoc = z.infer<typeof wuwaDocSchema>;
 export const wuwa: GameDefinition = {
   key: "wuwa",
   teamSize: 3,
+  // Pity rules (community-documented): hard pity, soft pity, featured-unit rate.
+  pullBanners: [
+    { key: "character", label: "Featured resonator convene", hardPity: 80, softPity: 66, featuredRate: 0.5 },
+    { key: "weapon", label: "Featured weapon convene", hardPity: 80, softPity: 66, featuredRate: 1 },
+    { key: "standard", label: "Standard convene", hardPity: 80, softPity: 66, featuredRate: 1 },
+  ],
   name: "Wuthering Waves",
   accent: "#9ad0ff",
   art: { icon: "/games/wuwa/icon.png", background: "/games/wuwa/background.jpg" },

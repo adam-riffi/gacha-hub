@@ -14,6 +14,66 @@ Entry format:
 
 ---
 
+## 2026-10-06 · claude · stack/pulls/02-store · pending
+- Done: `PullEntry` table (migration `20261006000000_pull_log`, RLS on) and routes: GET the log per banner (state, 5★ drops with pity, recent entries), POST a batch, POST a calibration, DELETE an entry.
+- Tests: Red before the routes; `pulls.integration.test.ts` (7 tests): per-banner pity, guarantee after a lost 50/50, calibration, delete recomputes, validation (unknown banner, 5★ outside the batch, unknown unit, past hard pity), privacy, games without rules.
+- Scope/decisions: Additive migration; it runs on the next production deploy after merge.
+- Next: `03-ui`: the pull log on the game page and pity next to pulls on Home.
+
+## 2026-10-06 · claude · stack/pulls/01-core · pending
+- Done: Pure pity core (`pityState`, `splitPulls`, `calibration`) and per-game banner rules (Genshin, HSR, ZZZ, WuWa); ADR 0002 (Proposed) stores pulls as entries and derives pity.
+- Tests: Red baf4c6e before 1f5a84e; `pity.test.ts` (9 tests, seeded properties). 95b7465 corrects the red commit's property oracle, which contradicted the calibration test written with it.
+- Scope/decisions: Endfield has no banner rules until they are known; soft-pity values are community-documented approximations used only for a hint.
+- Next: `02-store` (PullEntry table with RLS, routes, integration tests), then `03-ui`.
+
+## 2026-10-06 · claude · stack/docs/01-readme · pending
+- Done: README rewritten in the ENGINEERING.md §15 order (pitch, badges, why, how it works, evaluation, testing, running, structure, limitations, licence); MIT LICENSE added; NOTICE lists the art and feed sources; DEPLOY.md no longer says to set `NODE_ENV=production` (it breaks the Vercel build).
+- Tests: Documentation only; every command and number in the README checked against the repo and the last build.
+- Scope/decisions: No demo GIF yet (needs a recording on the live app with real art).
+- Next: the owner records the demo GIF; pull log milestone (F5).
+
+## 2026-10-06 · claude · stack/e2e/01-smoke · pending
+- Done: Playwright smoke suite (`e2e/smoke.spec.ts`, 3 journeys) against the built app on a throwaway SQLite DB with the dev login; `scripts/e2e-server.mjs` prepares the DB and starts the server; CI job `e2e` uploads traces on failure.
+- Tests: `npm run e2e` locally, 3 passed; the "add Genshin" journey proves the dev database is not used.
+- Scope/decisions: ADR 0001 row narrowed: E2E now runs in CI; smoke against deployed URLs still has no test identity.
+- Next: owner adds `e2e` to the required checks with the others.
+
+## 2026-10-06 · claude · stack/art/01-hsr-icons · pending
+- Done: HSR art (characters, light cones, relics, materials) falls back to Yatta's public icons; the community-art mapping moved to `packages/shared/src/art.ts` and the web resolver re-exports it.
+- Tests: Red test before the mapping; `art.test.ts` covers Enka, every Yatta kind, nulls and key encoding. Local: all 98 HSR roster portraits load.
+- Scope/decisions: Hotlinks Yatta like Enka (DESIGN.md §14 risk); mirror into `VITE_ASSET_BASE` if blocked.
+- Next: WuWa, ZZZ and Endfield still show initials.
+
+## 2026-10-06 · claude · stack/hsr-feed/02-parser · #48
+- Done: #40 squash-merged and the stack restacked onto `main`. Deleting #40's branch closed #41, which could not be reopened after the restack force-push, so #49 replaces it (same branch).
+- Tests: CI re-run on every restacked PR (earlier failures were cancelled jobs during a GitHub Actions outage, not code).
+- Scope/decisions: AGENTS.md rule 3 (in #42) now says to retarget the next PR before deleting a merged branch.
+- Next: merge #49, then #42–#48 bottom-up as CI turns green.
+
+## 2026-10-05 · claude · stack/hsr-feed/02-parser · pending
+- Done: HSR joins the official-feed import: each `During "<warp>" Character|Light Cone Event Warp` section becomes its own banner with its own dates and featured units; other notices become events (shop, patch notes and collab warps skipped).
+- Tests: Red 312dfcd before 4bae26c (parser); red e6b1de1 before the settle fix. Live smoke: 4 warps (Pearl, Colors for Tomorrow, Evanescia, Until the Flowers Bloom Again) and 4 events.
+- Scope/decisions: The HSR feed flipped by 13 h, revealing three clock variants (Asia +8, Europe +1, America -5, all labelled +1); `settle` now recovers Europe from any pair.
+- Next: F5 pull log needs the owner's go-ahead; meanwhile the stack waits for review.
+
+## 2026-10-05 · claude · stack/hsr-feed/01-catalog · pending
+- Done: HSR catalog refreshed from Yatta (adds Pearl, Colors for Tomorrow, two relic sets; no ids removed); the importer strips the markup Yatta now puts in some names.
+- Tests: Red commit before the fix ("Pearl" missing); `hsr.test.ts` now also asserts plain-text names.
+- Scope/decisions: The importer's on-disk cache (`scripts/catalog/.cache/hsr`) served stale lists; clear it before a refresh.
+- Next: `02-parser` splits HSR Event Warp notices into one banner per warp.
+
+## 2026-10-05 · claude · stack/farm-dm/01-domains-in-reminders · pending
+- Done: Reminder option `includeDomains` (default off) adds "🗺️ Domains today: Frosted Altar (Amber, …)" to the DM; the reminder card gets an "Include" row (currencies, dailies left, domains open today).
+- Tests: Red cc32ca5 before ba3ff94; `reminders.integration.test.ts` runs the real tick over SQLite with Discord mocked (Monday line present, Tuesday absent, off by default) plus formatter caps.
+- Scope/decisions: F3 acceptance in DESIGN.md §9 reworded: the domains line rides on the existing reminder times instead of a separate DM type.
+- Next: F4 HSR feed parsing; F5 pull log waits for the owner.
+
+## 2026-10-05 · claude · stack/domains/01-core · pending
+- Done: Game day, farmable-today and domains-today now live once in `packages/shared/src/domains.ts`; the server (materials, planning, `/farm` command) and the web game page use it; the luxon copy is gone.
+- Tests: Red e0857b5 before the implementation; 9 tests in `domains.test.ts`, including 500-case seeded properties comparing the game day with the old luxon logic.
+- Scope/decisions: F2 shipped as one PR (one concern, under 200 lines). fast-check added as a dev dependency (DESIGN.md §6).
+- Next: F3 — a reminder option that DMs today's domains for owned characters.
+
 ## 2026-10-05 · claude · stack/process/03-ci · pending
 - Done: CI split into the required jobs `lint`, `typecheck`, `test`, `build` with read-only permissions, per-ref concurrency, timeouts and Node from `.nvmrc` (24); the cron workflow got the same hardening.
 - Tests: `actionlint` clean; `npm run check` locally; CI on this PR.

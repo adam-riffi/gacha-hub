@@ -45,7 +45,7 @@ Mode in Discord (Settings → Advanced), right-click your name → Copy User ID
 ## 3. Deploy to Vercel
 
 1. Import the GitHub repo at <https://vercel.com/new>. Vercel reads
-   `vercel.json`; leave the build/output settings as detected.
+   `vercel.json`; set the framework preset to **Other**.
 2. Before the first deploy, add **Environment Variables** (Project → Settings →
    Environment Variables), all for **Production**:
 
@@ -53,7 +53,7 @@ Mode in Discord (Settings → Advanced), right-click your name → Copy User ID
    |----------|-------|
    | `DATABASE_URL` | pooled Neon URL (step 1) |
    | `DIRECT_DATABASE_URL` | direct Neon URL (step 1) |
-   | `NODE_ENV` | `production` |
+   | `DEV_LOGIN_ENABLED` | `false` |
    | `APP_BASE_URL` | your Vercel URL, e.g. `https://gacha-hub.vercel.app` (no trailing slash) |
    | `SESSION_SECRET` | a long random string (`openssl rand -hex 32`) |
    | `COOKIE_SECURE` | `true` |
@@ -62,6 +62,11 @@ Mode in Discord (Settings → Advanced), right-click your name → Copy User ID
    | `DISCORD_CLIENT_ID` / `DISCORD_CLIENT_SECRET` | step 2 |
    | `DISCORD_OAUTH_REDIRECT` | `${APP_BASE_URL}/api/auth/discord/callback` |
    | `DISCORD_APP_ID` / `DISCORD_BOT_TOKEN` / `DISCORD_PUBLIC_KEY` | step 2 |
+
+   **Never set `NODE_ENV`**: Vercel's `npm ci` would then skip dev dependencies the
+   build needs. `DEV_LOGIN_ENABLED=false` and `COOKIE_SECURE=true` are what make
+   production safe. Keep the project's framework preset on **Other** (Vercel may
+   detect the Dockerfile and ignore `vercel.json`).
 
    `APP_BASE_URL` is a chicken-and-egg: deploy once to learn the URL, then set it
    and redeploy (or set a custom domain first and use that).

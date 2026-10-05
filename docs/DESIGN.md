@@ -32,7 +32,7 @@ A whitelisted player signs in with Discord, adds Genshin and HSR, sets currencie
 - Ownership roster; catalog-backed builds with bespoke per-game sheets; gear bag and set planner (Genshin artifacts).
 - Planning: material requirements, goal tasks with material subtasks, inventory as source of truth.
 - Home: KPI strip, banners now, today, task board, pulls, coming up, wallet.
-- Banners and events: admin uploads with audit log; Genshin official-feed import (#40); calendar view.
+- Banners and events: admin uploads with audit log; Genshin and HSR official-feed import; calendar view.
 - Discord: OAuth sign-in, slash commands, DM reminders before reset and at custom times.
 
 **Next (should)** — milestones in §9.
@@ -82,11 +82,11 @@ gacha/
 - Reminders are idempotent per `(rule, firedFor)`; the cron may tick at any cadence.
 - Admin payloads round-trip: export returns exactly what upload accepts; every admin write is audited.
 - Catalog JSON is typed `unknown` behind `catalog.js` + `catalog.d.ts` shims (literal inference over 4 MB of JSON made `tsc` run out of memory).
-- Official-feed rows use keys `hoyo-<annId>` and never overwrite admin rows; a 7-hour time flip keeps the earlier value.
+- Official-feed rows use keys `hoyo-<annId>` (HSR warps: `hoyo-<annId>-<warp>`) and never overwrite admin rows. The feed randomly serves Asia, Europe or America clock values labelled +1; `settle` recovers Europe from any two observations (6, 7 or 13 hours apart).
 
-**Hand-written core** (pure, unit tested): per-game definitions and limits; reset and game-day math (`lib/resets.ts`, `lib/availability.ts`); reminder due logic (`scheduler/due.ts`); planning and cost math (`packages/shared/src/planning`); currency and pull math; official-feed parsing (`lib/officialFeed.ts`); build-document migrations.
+**Hand-written core** (pure, unit tested): per-game definitions and limits; reset math (`lib/resets.ts`); game day and domains today (`packages/shared/src/domains.ts`); reminder due logic (`scheduler/due.ts`); planning and cost math (`packages/shared/src/planning`); currency and pull math; official-feed parsing (`lib/officialFeed.ts`); pity and guarantee (`packages/shared/src/pity.ts`); build-document migrations.
 
-**Allowed libraries**: React, React Router, TanStack Query, Vite; Fastify and its first-party plugins (cookie, oauth2, rate-limit, multipart, static); Prisma; zod and zod-to-json-schema; luxon; discord-interactions; `@vercel/blob`; node-cron (always-on hosts only); Vitest, ESLint, Prettier, esbuild, tsx. Importers may use their dataset packages (`genshin-db`, `adm-zip`) inside `scripts/catalog` only.
+**Allowed libraries**: React, React Router, TanStack Query, Vite; Fastify and its first-party plugins (cookie, oauth2, rate-limit, multipart, static); Prisma; zod and zod-to-json-schema; luxon; discord-interactions; `@vercel/blob`; node-cron (always-on hosts only); Vitest, fast-check, Playwright, ESLint, Prettier, esbuild, tsx. Importers may use their dataset packages (`genshin-db`, `adm-zip`) inside `scripts/catalog` only.
 
 ## 7. Visual identity
 
@@ -105,33 +105,33 @@ Postgres on Supabase (own project `gacha-hub`, eu-west-1; ADR 0001). Migrations 
 | P Process | standards and agent manual; DESIGN.md + ADR 0001; CI job names and hardening | `npm run check` green; CI jobs `lint`, `typecheck`, `test`, `build` |
 | F1 Feed and calendar | #40 official feed + calendar; #41 game overview | Banners and events import hourly; game page shows today's domains |
 | F2 Domain core | move game-day and domains-today logic into `packages/shared`, tested; server and web share it | One implementation, property-tested across regions and reset hours |
-| F3 Farm-today DM | reminder option "domains today" listing the open domains your owned characters need | One DM per game day per rule; skipped when nothing is farmable |
+| F3 Farm-today DM | reminder option "domains open today" listing the open domains your owned units level from | With the option on, a reminder at any time (e.g. 09:00) carries the line; the line is left out when nothing you own needs an open domain |
 | F4 HSR feed | per-section warp parsing for HSR notices | Each warp in a notice becomes its own banner with its own dates |
-| F5 Pull log | record pulls per banner; pity and guarantee per banner type | Pity matches a recorded history fixture; Home shows pity next to pulls |
+| F5 Pull log | pure pity core + banner rules (ADR 0002); `PullEntry` table and routes; game-page pull log and pity on Home | Pity matches a recorded history fixture; Home shows pity next to pulls |
 
-F5 and any account import need the owner's go-ahead before planning (§14).
+F5 follows the owner's listed nice-to-have (HANDOFF.md §10) under ADR 0002 (Proposed); account import still needs the owner's go-ahead (§14).
 
 ## 10. Testing strategy
 
 - **Unit:** pure core in §6: resets and game day, reminder due logic, planning math, currency math, feed parsing, document migrations.
-- **Property:** game-day math across all regions, offsets and reset hours (add `fast-check` with F2).
+- **Property:** game-day math across all regions, offsets and reset hours, against a luxon reference (`domains.test.ts`, seeded).
 - **Integration:** route tests build the real Fastify app over a throwaway SQLite database (`*.integration.test.ts`, run sequentially).
 - **Harness:** `scripts/harness/phase7.mjs` and `phase8.mjs` exercise the built bundle end to end.
-- **End-to-end:** none yet; a Playwright smoke of sign-in → Home is a candidate once a test identity exists.
+- **End-to-end:** Playwright `@smoke` journeys (`e2e/`) against the built app on a throwaway SQLite database, signed in with the dev login: Home, adding Genshin opens its overview, the calendar. Traces are uploaded when CI fails.
 - Coverage: new core modules at least 90% of lines.
 
 ## 11. CI/CD
 
 | Workflow | Trigger | Jobs |
 | --- | --- | --- |
-| `ci.yml` | PRs, pushes to `main` | `lint`, `typecheck`, `test`, `build` |
+| `ci.yml` | PRs, pushes to `main` | `lint`, `typecheck`, `test`, `build`, `e2e` |
 | `cron-tick.yml` | Every 10 min, `workflow_dispatch` | `tick`: reminders, and the hourly feed import |
 
-Required checks: `lint`, `typecheck`, `test`, `build`. Vercel builds each push (preview per PR, production on `main`) and runs migrations in the build.
+Required checks: `lint`, `typecheck`, `test`, `build`, `e2e`. Vercel builds each push (preview per PR, production on `main`) and runs migrations in the build.
 
 ## 12. Deployment and configuration
 
-Vercel project `gacha-hub` (framework preset "Other", functions in `dub1` next to the database). Environment variables are set by the owner in Vercel (`.env.example` lists them): `DATABASE_URL` (transaction pooler), `DIRECT_DATABASE_URL`, `SESSION_SECRET`, `COOKIE_SECURE=true`, `APP_BASE_URL`, `DISCORD_*`, `ADMIN_DISCORD_IDS`, `CRON_SECRET`, `BLOB_READ_WRITE_TOKEN`, `DEV_LOGIN_ENABLED=false`. Never set `NODE_ENV`. GitHub secrets: `CRON_URL`, `CRON_SECRET`. Full steps: `docs/DEPLOY.md`.
+Vercel project `gacha-hub` (framework preset "Other", functions in `dub1` next to the database). Preview deployments are off for `stack/**` and `dependabot/**` branches (`vercel.json`): the Hobby plan allows 100 deployments a day, and restacking a stack redeploys every branch; CI and the E2E suite cover those PRs. Environment variables are set by the owner in Vercel (`.env.example` lists them): `DATABASE_URL` (transaction pooler), `DIRECT_DATABASE_URL`, `SESSION_SECRET`, `COOKIE_SECURE=true`, `APP_BASE_URL`, `DISCORD_*`, `ADMIN_DISCORD_IDS`, `CRON_SECRET`, `BLOB_READ_WRITE_TOKEN`, `DEV_LOGIN_ENABLED=false`. Never set `NODE_ENV`. GitHub secrets: `CRON_URL`, `CRON_SECRET`. Full steps: `docs/DEPLOY.md`.
 
 **Smoke checks:** `/api/me` answers `oauth: true, devLogin: false`; sign-in reaches Home; `cron-tick` run returns `ok: true`.
 
@@ -144,7 +144,7 @@ Vercel project `gacha-hub` (framework preset "Other", functions in `dub1` next t
 
 ## 14. Risks and open questions
 
-- Enka art is hotlinked; mirror into our own store (`VITE_ASSET_BASE`) if it blocks us.
+- Enka (Genshin) and Yatta (HSR) art is hotlinked; mirror into our own store (`VITE_ASSET_BASE`) if either blocks us.
 - The HoYoverse feed is undocumented and serves inconsistent times; imports fail soft and the admin can edit rows.
 - Account import (Enka showcase, HoYoLAB) was deferred by the owner; needs a decision and an ADR before any work.
 - `docs/HANDOFF.md` and `docs/DESIGN-*.md` predate this file; this file wins where they differ.

@@ -19,11 +19,12 @@ const REMINDER_DEFAULTS: ReminderConfig = {
   timezone: "UTC",
   includeCurrencies: true,
   includeDailies: true,
+  includeDomains: false,
 };
 // Custom times are in the browser's zone; it's re-sent on every save.
 const LOCAL_ZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-function ReminderControl({ instanceId }: { instanceId: string }) {
+function ReminderControl({ instanceId, hasDomains }: { instanceId: string; hasDomains: boolean }) {
   const toast = useToast();
   const qc = useQueryClient();
   const [newTime, setNewTime] = useState("21:00");
@@ -87,6 +88,21 @@ function ReminderControl({ instanceId }: { instanceId: string }) {
               </>
             )}
             <span className="muted">{LOCAL_ZONE}</span>
+          </div>
+          <div className="row">
+            <span>Include</span>
+            {([
+              ["includeCurrencies", "currencies", true],
+              ["includeDailies", "dailies left", true],
+              ["includeDomains", "domains open today", hasDomains],
+            ] as const).map(([key, label, shown]) =>
+              shown ? (
+                <label key={key} className="row" style={{ margin: 0, gap: 6 }}>
+                  <input type="checkbox" style={{ width: "auto" }} checked={cfg[key]} onChange={(e) => update({ [key]: e.target.checked })} />
+                  {label}
+                </label>
+              ) : null,
+            )}
           </div>
         </>
       )}
@@ -350,7 +366,7 @@ export function InstancePage() {
       </div>
 
       <div className="card" style={{ marginTop: 16 }}>
-        <ReminderControl instanceId={data.id} />
+        <ReminderControl instanceId={data.id} hasDomains={Boolean(catalog?.materials.some((m) => m.availability?.length))} />
       </div>
 
       {catalog && (
