@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-05 · claude · stack/process/02-design · pending
+- Done: `docs/DESIGN.md` in the portfolio format (scope, architecture, locked decisions, allowed libraries, milestones P and F1–F5); ADR 0001 lists where this repository keeps its pre-standards stack; HANDOFF.md points here.
+- Tests: Documentation only.
+- Scope/decisions: ADR 0001 (Proposed). F5 (pull log) and any account import wait for the owner's go-ahead.
+- Next: `stack/process/03-ci` (named CI jobs, read-only permissions, concurrency, timeouts, Node LTS), then F2 test-first.
+
 ## 2026-10-05 · claude · stack/process/01-standards · pending
 - Done: Adopted the portfolio engineering standards: `docs/ENGINEERING.md` (verbatim copy), `AGENTS.md`, `CLAUDE.md`, Copilot summary, PR template, Dependabot, this log, `npm run check`.
 - Tests: Documentation and scaffolding only; `npm run check` runs lint, typecheck, tests and build.
