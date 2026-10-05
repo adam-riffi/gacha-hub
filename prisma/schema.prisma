@@ -65,9 +65,27 @@ model GameInstance {
   reminderRules ReminderRule[]
   teams         Team[]
   gearPieces    GearPiece[]
+  pullEntries   PullEntry[]
 
   @@unique([userId, gameKey])
   @@index([userId])
+}
+
+/// One logged run of pulls on a banner type; when `fiveStar`, its last pull was
+/// a 5★ (a zero-count 5★ is a calibration marker). Pity is derived (ADR 0002).
+model PullEntry {
+  id             String       @id @default(cuid())
+  gameInstanceId String
+  gameInstance   GameInstance @relation(fields: [gameInstanceId], references: [id], onDelete: Cascade)
+  /// A `pullBanners` key of the game module (character, weapon, standard…).
+  bannerKey      String
+  count          Int
+  fiveStar       Boolean      @default(false)
+  featured       Boolean?
+  catalogId      String?
+  createdAt      DateTime     @default(now())
+
+  @@index([gameInstanceId, bannerKey, createdAt])
 }
 
 /// A gear piece in the bag (Genshin artifact, HSR relic…). Equipped pieces live

@@ -13,3 +13,4 @@ export * from "./dashboard.js";
 export * from "./planning.js";
 export * from "./team.js";
 export * from "./gear.js";
+export * from "./pulls.js";

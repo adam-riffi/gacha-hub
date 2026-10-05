@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-06 · claude · stack/pulls/02-store · pending
+- Done: `PullEntry` table (migration `20261006000000_pull_log`, RLS on) and routes: GET the log per banner (state, 5★ drops with pity, recent entries), POST a batch, POST a calibration, DELETE an entry.
+- Tests: Red before the routes; `pulls.integration.test.ts` (7 tests): per-banner pity, guarantee after a lost 50/50, calibration, delete recomputes, validation (unknown banner, 5★ outside the batch, unknown unit, past hard pity), privacy, games without rules.
+- Scope/decisions: Additive migration; it runs on the next production deploy after merge.
+- Next: `03-ui`: the pull log on the game page and pity next to pulls on Home.
+
 ## 2026-10-06 · claude · stack/pulls/01-core · pending
 - Done: Pure pity core (`pityState`, `splitPulls`, `calibration`) and per-game banner rules (Genshin, HSR, ZZZ, WuWa); ADR 0002 (Proposed) stores pulls as entries and derives pity.
 - Tests: Red baf4c6e before 1f5a84e; `pity.test.ts` (9 tests, seeded properties). 95b7465 corrects the red commit's property oracle, which contradicted the calibration test written with it.
