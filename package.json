@@ -17,6 +17,7 @@
     "start": "npm run start -w @gacha/server",
     "test": "npm run test -w @gacha/server",
     "typecheck": "npm run typecheck -w @gacha/shared && npm run typecheck -w @gacha/server && npm run typecheck -w @gacha/web",
+    "check": "npm run lint && npm run typecheck && npm test && npm run prisma:generate && npm run build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "harness": "npm run build:server && node scripts/harness/phase7.mjs && node scripts/harness/phase8.mjs",
