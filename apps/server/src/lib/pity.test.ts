@@ -37,7 +37,7 @@ describe("pityState", () => {
         const last = entries.map((e) => e.fiveStar).lastIndexOf(true);
         const expected = entries.slice(last + 1).reduce((n, e) => n + e.count, 0);
         const s = pityState(entries, character);
-        return s.pity === expected && s.fiveStars === entries.filter((e) => e.fiveStar).length;
+        return s.pity === expected && s.fiveStars === entries.filter((e) => e.fiveStar && e.count > 0).length; // zero-pull 5★ = calibration marker
       }),
       RUNS,
     );
