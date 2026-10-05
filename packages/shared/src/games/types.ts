@@ -1,6 +1,7 @@
 import type { z } from "zod";
 import type { TaskCadence } from "../common.js";
 import type { Catalog, CatalogCharacter } from "../catalog/types.js";
+import type { PullBannerRules } from "../pity.js";
 
 /**
  * Thin contract every hardcoded game module implements. The host app (auth,
@@ -54,6 +55,8 @@ export interface GameDefinition {
   art?: GameArt;
   currencies: GameCurrency[];
   regions: GameRegion[];
+  /** Banner types with pity rules, for the pull log. Absent = no pull log. */
+  pullBanners?: PullBannerRules[];
   /** Party size for the team builder (Genshin/HSR 4, ZZZ/WuWa 3…). Default 4. */
   teamSize?: number;
   /** Recurring tasks seeded when a new profile is created. */

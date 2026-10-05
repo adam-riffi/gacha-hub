@@ -60,6 +60,12 @@ export type ZzzDoc = z.infer<typeof zzzDocSchema>;
 export const zzz: GameDefinition = {
   key: "zzz",
   teamSize: 3,
+  // Pity rules (community-documented): hard pity, soft pity, featured-unit rate.
+  pullBanners: [
+    { key: "character", label: "Exclusive channel", hardPity: 90, softPity: 74, featuredRate: 0.5 },
+    { key: "weapon", label: "W-Engine channel", hardPity: 80, softPity: 64, featuredRate: 0.75 },
+    { key: "standard", label: "Stable channel", hardPity: 90, softPity: 74, featuredRate: 1 },
+  ],
   name: "Zenless Zone Zero",
   accent: "#f5e02c",
   art: { icon: "/games/zzz/icon.png", background: "/games/zzz/background.jpg" },
