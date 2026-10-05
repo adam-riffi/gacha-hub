@@ -1,5 +1,7 @@
 # Gacha Hub — handoff notes
 
+> Superseded by `docs/DESIGN.md` (the specification) and `docs/AGENT_LOG.md` (current state). Kept for history and the gotchas in §8.
+
 Written 2026-09-07 at the end of Phase 8 so another engineer (or model) can
 pick the project up cold. Read this before touching anything; it records the
 decisions and pitfalls that are *not* derivable from the code.
