@@ -74,6 +74,22 @@ describe("settle", () => {
     expect(settle(t("2026-10-13T16:59:00Z"), t("2026-10-20T16:59:00Z"))).toEqual(t("2026-10-20T16:59:00Z"));
     expect(settle(undefined, t("2026-10-13T16:59:00Z"))).toEqual(t("2026-10-13T16:59:00Z"));
   });
+
+  // The feed serves Asia (+8), Europe (+1) or America (-5) clock values, all
+  // labelled +1. Europe is X; Asia reads as X+7h, America as X-6h.
+  const X = Date.parse("2026-09-27T06:00:00Z");
+  const h = (n: number) => new Date(X + n * 3_600_000);
+  it("keeps the later time of a 6h pair (Europe vs America)", () => {
+    expect(settle(h(-6), h(0))).toEqual(h(0));
+    expect(settle(h(0), h(-6))).toEqual(h(0));
+  });
+  it("recovers Europe from a 13h pair (Asia vs America)", () => {
+    expect(settle(h(7), h(-6))).toEqual(h(0));
+    expect(settle(h(-6), h(7))).toEqual(h(0));
+  });
+  it("stays on Europe once found, whatever variant comes next", () => {
+    for (const next of [h(7), h(0), h(-6)]) expect(settle(h(0), next)).toEqual(h(0));
+  });
 });
 
 // ---- HSR: one "Event Warp" notice holds several warps with their own dates ----
