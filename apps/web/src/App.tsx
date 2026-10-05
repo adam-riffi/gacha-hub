@@ -9,6 +9,7 @@ import { OwnershipPage } from "./pages/OwnershipPage";
 import { EquipmentPage } from "./pages/EquipmentPage";
 import { GearSetsPage } from "./pages/GearSetsPage";
 import { MaterialsPage } from "./pages/MaterialsPage";
+import { PullsPage } from "./pages/PullsPage";
 import { CharacterPage } from "./pages/CharacterPage";
 import { TimelinePage } from "./pages/TimelinePage";
 import { AdminPage } from "./pages/AdminPage";
@@ -34,6 +35,7 @@ export function App() {
         <Route path="/games/:id/equipment" element={<EquipmentPage />} />
         <Route path="/games/:id/gear" element={<GearSetsPage />} />
         <Route path="/games/:id/materials" element={<MaterialsPage />} />
+        <Route path="/games/:id/pulls" element={<PullsPage />} />
         <Route path="/characters/:id" element={<CharacterPage />} />
         <Route path="/tasks" element={<Navigate to="/" replace />} />
         <Route path="/timeline" element={<TimelinePage />} />

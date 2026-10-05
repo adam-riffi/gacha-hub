@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
+import { getGame } from "@gacha/shared";
 
-type Screen = "overview" | "ownership" | "equipment" | "gear" | "materials";
+type Screen = "overview" | "ownership" | "equipment" | "gear" | "materials" | "pulls";
 
 /** What each game calls its gear sets. */
 const GEAR_LABEL: Record<string, string> = {
@@ -32,6 +33,7 @@ export function GameTabs({
           { key: "materials", label: "Materials", to: `/games/${instanceId}/materials` },
         ] as { key: Screen; label: string; to: string }[])
       : []),
+    ...(gameKey && getGame(gameKey)?.pullBanners?.length ? [{ key: "pulls" as const, label: "Pulls", to: `/games/${instanceId}/pulls` }] : []),
   ];
   return (
     <div className="row" style={{ gap: 6 }}>
