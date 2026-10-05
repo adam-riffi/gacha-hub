@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-06 · claude · stack/art/01-hsr-icons · pending
+- Done: HSR art (characters, light cones, relics, materials) falls back to Yatta's public icons; the community-art mapping moved to `packages/shared/src/art.ts` and the web resolver re-exports it.
+- Tests: Red test before the mapping; `art.test.ts` covers Enka, every Yatta kind, nulls and key encoding. Local: all 98 HSR roster portraits load.
+- Scope/decisions: Hotlinks Yatta like Enka (DESIGN.md §14 risk); mirror into `VITE_ASSET_BASE` if blocked.
+- Next: WuWa, ZZZ and Endfield still show initials.
+
 ## 2026-10-06 · claude · stack/hsr-feed/02-parser · #48
 - Done: #40 squash-merged and the stack restacked onto `main`. Deleting #40's branch closed #41, which could not be reopened after the restack force-push, so #49 replaces it (same branch).
 - Tests: CI re-run on every restacked PR (earlier failures were cancelled jobs during a GitHub Actions outage, not code).

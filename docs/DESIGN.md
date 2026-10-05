@@ -144,7 +144,7 @@ Vercel project `gacha-hub` (framework preset "Other", functions in `dub1` next t
 
 ## 14. Risks and open questions
 
-- Enka art is hotlinked; mirror into our own store (`VITE_ASSET_BASE`) if it blocks us.
+- Enka (Genshin) and Yatta (HSR) art is hotlinked; mirror into our own store (`VITE_ASSET_BASE`) if either blocks us.
 - The HoYoverse feed is undocumented and serves inconsistent times; imports fail soft and the admin can edit rows.
 - Account import (Enka showcase, HoYoLAB) was deferred by the owner; needs a decision and an ADR before any work.
 - `docs/HANDOFF.md` and `docs/DESIGN-*.md` predate this file; this file wins where they differ.
