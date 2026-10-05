@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-06 · claude · stack/docs/01-readme · pending
+- Done: README rewritten in the ENGINEERING.md §15 order (pitch, badges, why, how it works, evaluation, testing, running, structure, limitations, licence); MIT LICENSE added; NOTICE lists the art and feed sources; DEPLOY.md no longer says to set `NODE_ENV=production` (it breaks the Vercel build).
+- Tests: Documentation only; every command and number in the README checked against the repo and the last build.
+- Scope/decisions: No demo GIF yet (needs a recording on the live app with real art).
+- Next: the owner records the demo GIF; pull log milestone (F5).
+
 ## 2026-10-06 · claude · stack/e2e/01-smoke · pending
 - Done: Playwright smoke suite (`e2e/smoke.spec.ts`, 3 journeys) against the built app on a throwaway SQLite DB with the dev login; `scripts/e2e-server.mjs` prepares the DB and starts the server; CI job `e2e` uploads traces on failure.
 - Tests: `npm run e2e` locally, 3 passed; the "add Genshin" journey proves the dev database is not used.
