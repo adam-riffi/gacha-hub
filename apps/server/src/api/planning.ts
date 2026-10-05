@@ -14,7 +14,7 @@ import {
   type TaskOrigin,
 } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
-import { farmableToday, gameWeekday } from "../lib/availability.js";
+import { farmableToday, gameWeekday } from "@gacha/shared";
 import { requireUser } from "../auth/plugin.js";
 import { gameOrThrow, getCatalog, loadInstance, regionForInstance, type LoadedCatalog, type PrismaJson } from "./util.js";
 import { buildRegionContext, serializeTask } from "./tasks.js";
@@ -70,7 +70,7 @@ async function buildPlan(game: GameDefinition, gi: GameInstance, req: PlanReques
 
   const stock = await stockOf(gi.id);
   const missing = deficit(requirements, stock);
-  const weekday = gameWeekday(regionForInstance(game, gi));
+  const weekday = gameWeekday(regionForInstance(game, gi), new Date());
   const preview: PlanPreviewDto = {
     requirements,
     deficit: missing,

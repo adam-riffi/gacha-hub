@@ -3,7 +3,7 @@ import { getGame, type GameDefinition, type TaskCadence } from "@gacha/shared";
 import { config } from "../config.js";
 import { prisma } from "../lib/prisma.js";
 import { isDoneThisCycle } from "../lib/resets.js";
-import { farmableToday, gameWeekday } from "../lib/availability.js";
+import { farmableToday, gameWeekday } from "@gacha/shared";
 import { formatRemaining, listBanners, listEvents } from "../lib/timeline.js";
 import { getCatalog, regionForInstance } from "../api/util.js";
 
@@ -333,7 +333,7 @@ async function handleFarm(o: CommandOptions, userId: string) {
     const have = new Map(stock.map((s) => [s.materialId, s.qty]));
     const need = new Map<string, number>();
     for (const t of tasks) need.set(t.materialId!, (need.get(t.materialId!) ?? 0) + Math.max(0, t.target ?? 0));
-    const weekday = gameWeekday(regionForInstance(game, gi));
+    const weekday = gameWeekday(regionForInstance(game, gi), new Date());
     const today: string[] = [];
     let missingRotating = 0;
     for (const [id, n] of need) {

@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-05 · claude · stack/domains/01-core · pending
+- Done: Game day, farmable-today and domains-today now live once in `packages/shared/src/domains.ts`; the server (materials, planning, `/farm` command) and the web game page use it; the luxon copy is gone.
+- Tests: Red e0857b5 before the implementation; 9 tests in `domains.test.ts`, including 500-case seeded properties comparing the game day with the old luxon logic.
+- Scope/decisions: F2 shipped as one PR (one concern, under 200 lines). fast-check added as a dev dependency (DESIGN.md §6).
+- Next: F3 — a reminder option that DMs today's domains for owned characters.
+
 ## 2026-10-05 · claude · stack/process/03-ci · pending
 - Done: CI split into the required jobs `lint`, `typecheck`, `test`, `build` with read-only permissions, per-ref concurrency, timeouts and Node from `.nvmrc` (24); the cron workflow got the same hardening.
 - Tests: `actionlint` clean; `npm run check` locally; CI on this PR.

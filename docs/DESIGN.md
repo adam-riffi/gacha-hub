@@ -84,9 +84,9 @@ gacha/
 - Catalog JSON is typed `unknown` behind `catalog.js` + `catalog.d.ts` shims (literal inference over 4 MB of JSON made `tsc` run out of memory).
 - Official-feed rows use keys `hoyo-<annId>` and never overwrite admin rows; a 7-hour time flip keeps the earlier value.
 
-**Hand-written core** (pure, unit tested): per-game definitions and limits; reset and game-day math (`lib/resets.ts`, `lib/availability.ts`); reminder due logic (`scheduler/due.ts`); planning and cost math (`packages/shared/src/planning`); currency and pull math; official-feed parsing (`lib/officialFeed.ts`); build-document migrations.
+**Hand-written core** (pure, unit tested): per-game definitions and limits; reset math (`lib/resets.ts`); game day and domains today (`packages/shared/src/domains.ts`); reminder due logic (`scheduler/due.ts`); planning and cost math (`packages/shared/src/planning`); currency and pull math; official-feed parsing (`lib/officialFeed.ts`); build-document migrations.
 
-**Allowed libraries**: React, React Router, TanStack Query, Vite; Fastify and its first-party plugins (cookie, oauth2, rate-limit, multipart, static); Prisma; zod and zod-to-json-schema; luxon; discord-interactions; `@vercel/blob`; node-cron (always-on hosts only); Vitest, ESLint, Prettier, esbuild, tsx. Importers may use their dataset packages (`genshin-db`, `adm-zip`) inside `scripts/catalog` only.
+**Allowed libraries**: React, React Router, TanStack Query, Vite; Fastify and its first-party plugins (cookie, oauth2, rate-limit, multipart, static); Prisma; zod and zod-to-json-schema; luxon; discord-interactions; `@vercel/blob`; node-cron (always-on hosts only); Vitest, fast-check, ESLint, Prettier, esbuild, tsx. Importers may use their dataset packages (`genshin-db`, `adm-zip`) inside `scripts/catalog` only.
 
 ## 7. Visual identity
 
@@ -114,7 +114,7 @@ F5 and any account import need the owner's go-ahead before planning (§14).
 ## 10. Testing strategy
 
 - **Unit:** pure core in §6: resets and game day, reminder due logic, planning math, currency math, feed parsing, document migrations.
-- **Property:** game-day math across all regions, offsets and reset hours (add `fast-check` with F2).
+- **Property:** game-day math across all regions, offsets and reset hours, against a luxon reference (`domains.test.ts`, seeded).
 - **Integration:** route tests build the real Fastify app over a throwaway SQLite database (`*.integration.test.ts`, run sequentially).
 - **Harness:** `scripts/harness/phase7.mjs` and `phase8.mjs` exercise the built bundle end to end.
 - **End-to-end:** none yet; a Playwright smoke of sign-in → Home is a candidate once a test identity exists.
