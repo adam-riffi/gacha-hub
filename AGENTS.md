@@ -21,7 +21,7 @@ Operating manual for coding agents in this repository. Codex and Copilot read th
 
 | Task | Command |
 | --- | --- |
-| Install | `npm ci` |
+| Install (Node version in `.nvmrc`) | `npm ci` |
 | Local database (SQLite, once and after schema changes) | `npm run db:sqlite` |
 | Dev server (web :5173, API :3000) | `npm run dev` |
 | Unit and integration tests | `npm test` |
@@ -31,6 +31,7 @@ Operating manual for coding agents in this repository. Codex and Copilot read th
 | Build (web + server bundle) | `npm run build` |
 | Regenerate a catalog | `npm run catalog:install` then `npm run catalog:<game>` |
 | New migration (offline) | `npx prisma migrate diff --from-schema-datamodel <before> --to-schema-datamodel prisma/schema.prisma --script` |
+| Lint workflows (actionlint 1.7+ on PATH) | `actionlint` |
 | Check all | `npm run check` |
 
 Keep this table accurate: when you add or change a script, update the table in the same PR. `npm test` regenerates the Prisma client for SQLite; `npm run check` regenerates the Postgres client before building. On Windows a running dev server locks the engine DLL, so stop it before `npm run check`.

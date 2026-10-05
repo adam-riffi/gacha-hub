@@ -1,5 +1,6 @@
 # Free external scheduler for the serverless deployment: calls the reminder
-# tick endpoint every 10 minutes. The endpoint is idempotent per reset
+# tick endpoint every 10 minutes (it also refreshes the official banner feed
+# about once an hour). The endpoint is idempotent per reset
 # boundary, so best-effort timing and duplicate runs are safe.
 #
 # Repo secrets required:
@@ -12,9 +13,17 @@ on:
     - cron: "*/10 * * * *"
   workflow_dispatch:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: reminder-tick
+  cancel-in-progress: false
+
 jobs:
   tick:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Call cron tick
         env:

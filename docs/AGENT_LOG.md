@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-05 · claude · stack/process/03-ci · pending
+- Done: CI split into the required jobs `lint`, `typecheck`, `test`, `build` with read-only permissions, per-ref concurrency, timeouts and Node from `.nvmrc` (24); the cron workflow got the same hardening.
+- Tests: `actionlint` clean; `npm run check` locally; CI on this PR.
+- Scope/decisions: No branch ruleset exists on `main` yet; the owner sets the required checks (ENGINEERING.md §16).
+- Next: F2 — move game-day and domains-today logic into `packages/shared`, test-first.
+
 ## 2026-10-05 · claude · stack/process/02-design · pending
 - Done: `docs/DESIGN.md` in the portfolio format (scope, architecture, locked decisions, allowed libraries, milestones P and F1–F5); ADR 0001 lists where this repository keeps its pre-standards stack; HANDOFF.md points here.
 - Tests: Documentation only.
