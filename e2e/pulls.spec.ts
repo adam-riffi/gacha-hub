@@ -4,11 +4,12 @@ test("logging pulls updates pity and the 50/50 guarantee @smoke", async ({ page 
   await page.goto("/");
   await page.getByRole("button", { name: "Continue as Dev User" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
-  // Idempotent: returns the existing profile when another journey added it.
-  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "genshin" } })).json()) as { id: string };
+  // HSR, not Genshin: the smoke journey adds Genshin through the library, and
+  // journeys share one database. The install call is idempotent.
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
 
   await page.goto(`/games/${id}/pulls`);
-  const banner = page.locator(".pull-banner", { hasText: "Character event wish" });
+  const banner = page.locator(".pull-banner", { hasText: "Character event warp" });
   await expect(banner.getByTestId("pity")).toHaveText("0");
 
   await banner.getByRole("button", { name: "+10" }).click();
