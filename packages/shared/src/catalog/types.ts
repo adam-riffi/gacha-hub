@@ -37,7 +37,7 @@ export const catalogCharacterSchema = z.object({
     /** Default cost table for leveling ONE talent (shared across keys). */
     costs: z.array(costStepSchema),
     /** Per-talent tables when they differ (HSR: Basic ATK is cheaper). */
-    costsByKey: z.record(z.array(costStepSchema)).optional(),
+    costsByKey: z.record(z.string(), z.array(costStepSchema)).optional(),
     /** Human-readable talent info (name + what it does); filled by importers. */
     info: z.array(z.object({ key: z.string().optional(), name: z.string().optional(), description: z.string() })).optional(),
   }),
@@ -45,7 +45,7 @@ export const catalogCharacterSchema = z.object({
   constellations: z
     .array(z.object({ name: z.string().optional(), description: z.string() }))
     .optional(),
-  extra: z.record(z.unknown()).optional(),
+  extra: z.record(z.string(), z.unknown()).optional(),
 });
 export type CatalogCharacter = z.infer<typeof catalogCharacterSchema>;
 
@@ -58,7 +58,7 @@ export const catalogWeaponSchema = z.object({
   maxLevel: z.number().int().positive(),
   icon: z.string().optional(),
   ascension: z.array(costStepSchema),
-  extra: z.record(z.unknown()).optional(),
+  extra: z.record(z.string(), z.unknown()).optional(),
 });
 export type CatalogWeapon = z.infer<typeof catalogWeaponSchema>;
 
@@ -72,7 +72,7 @@ export const catalogGearSetSchema = z.object({
   icon: z.string().optional(),
   /** Where it drops (domain / mode), if known. */
   source: z.string().optional(),
-  extra: z.record(z.unknown()).optional(),
+  extra: z.record(z.string(), z.unknown()).optional(),
 });
 export type CatalogGearSet = z.infer<typeof catalogGearSetSchema>;
 
@@ -89,7 +89,7 @@ export const catalogMaterialSchema = z.object({
   /** Weekdays it can be farmed (rotating domains); absent = always/n.a. */
   availability: z.array(weekdaySchema).optional(),
   source: z.string().optional(),
-  extra: z.record(z.unknown()).optional(),
+  extra: z.record(z.string(), z.unknown()).optional(),
 });
 export type CatalogMaterial = z.infer<typeof catalogMaterialSchema>;
 

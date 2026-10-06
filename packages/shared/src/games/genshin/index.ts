@@ -60,7 +60,7 @@ export const genshinDocSchema = z
         burst: z.number().int().min(1).max(L.maxTalent),
       })
       .partial(),
-    stats: z.record(z.union([z.number(), z.string()])),
+    stats: z.record(z.string(), z.union([z.number(), z.string()])),
     /** Artifact farming target: the 4-pc set and wanted main stats (planner). */
     artifactPlan: z
       .object({

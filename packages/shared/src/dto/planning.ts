@@ -15,7 +15,7 @@ export const planRequestInput = z.discriminatedUnion("kind", [
     kind: z.literal("character"),
     catalogId: catalogIdSchema,
     level: levelRangeSchema.optional(),
-    talents: z.record(levelRangeSchema).optional(),
+    talents: z.record(z.string(), levelRangeSchema).optional(),
   }),
   z.object({
     kind: z.literal("weapon"),
@@ -41,8 +41,8 @@ export const planMaterialDto = z.object({
 export const planPreviewDto = z.object({
   requirements: z.array(materialReqDto),
   deficit: z.array(materialReqDto),
-  stock: z.record(z.number()),
-  materials: z.record(planMaterialDto),
+  stock: z.record(z.string(), z.number()),
+  materials: z.record(z.string(), planMaterialDto),
 });
 export type PlanPreviewDto = z.infer<typeof planPreviewDto>;
 

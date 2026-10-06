@@ -51,7 +51,7 @@ export const zzzDocSchema = z
         chain: z.number().min(1).max(12),
       })
       .partial(),
-    stats: z.record(z.union([z.number(), z.string()])),
+    stats: z.record(z.string(), z.union([z.number(), z.string()])),
   })
   .partial();
 

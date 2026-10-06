@@ -21,7 +21,7 @@ export const adminPayloadInput = z.discriminatedUnion("kind", [
   z.object({
     kind: z.literal("catalog-patch"),
     gameKey: gameKeySchema,
-    items: z.array(z.record(jsonValue)).min(1).max(5000),
+    items: z.array(z.record(z.string(), jsonValue)).min(1).max(5000),
   }),
 ]);
 export type AdminPayloadInput = z.infer<typeof adminPayloadInput>;

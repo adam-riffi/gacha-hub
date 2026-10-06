@@ -69,7 +69,7 @@ export const hsrDocSchema = z
         talent: z.number().int().min(1).max(L.maxTrace),
       })
       .partial(),
-    stats: z.record(z.union([z.number(), z.string()])),
+    stats: z.record(z.string(), z.union([z.number(), z.string()])),
   })
   .partial();
 

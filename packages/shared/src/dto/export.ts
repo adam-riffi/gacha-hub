@@ -2,7 +2,7 @@ import { z } from "zod";
 import { idSchema, isoDate } from "./common.js";
 
 /** A stored row as-is, minus its owner foreign keys. */
-const row = z.record(z.unknown());
+const row = z.record(z.string(), z.unknown());
 
 /** Everything a user entered, as one portable JSON document (DESIGN.md §9 F6). */
 export const userExportSchema = z.object({
