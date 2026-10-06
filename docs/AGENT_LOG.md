@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-06 · claude · stack/deps/02-small-majors · pending
+- Done: node-cron 3→4 (ships its own types; @types/node-cron removed), concurrently 9→10, @types/node 22→24 (matches the Node 24 runtime).
+- Tests: `npm run check`; node-cron 4 schedules and stops our minute expression; `npm run dev` starts web and API under concurrently 10.
+- Scope/decisions: Three tiny majors in one PR (none reaches the Vercel runtime: node-cron only runs on always-on hosts, concurrently is dev-only, types are compile-time).
+- Next: Vitest, Vite, React, React Router, zod, Prisma, TypeScript, each in its own PR.
+
 ## 2026-10-06 · claude · stack/tooling/01-harness-db · pending
 - Done: `npm run harness` runs both bundle harnesses through `scripts/harness/run.mjs` on a throwaway SQLite database (created, used, deleted), so a used dev database no longer breaks it.
 - Tests: Both harnesses pass with a used dev database present; the throwaway file is gone afterwards.
