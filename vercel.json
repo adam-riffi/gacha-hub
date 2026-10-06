@@ -3,7 +3,7 @@
   "buildCommand": "npm run vercel-build",
   "outputDirectory": "apps/web/dist",
   "installCommand": "npm ci",
-  "git": { "deploymentEnabled": { "stack/**": false, "dependabot/**": false } },
+  "git": { "deploymentEnabled": { "stack/**": false, "spike/**": false, "dependabot/**": false } },
   "functions": {
     "api/index.mjs": { "maxDuration": 30 }
   },

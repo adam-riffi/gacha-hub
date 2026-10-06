@@ -1,4 +1,4 @@
-import type { GameInstance, Prisma } from "@prisma/client";
+import type { GameInstance, Prisma } from "../generated/prisma/client.js";
 import { getGame, indexCatalog, type Catalog, type GameDefinition } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
 import { toRegionReset, type RegionReset } from "../lib/resets.js";

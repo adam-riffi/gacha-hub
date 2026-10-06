@@ -12,7 +12,7 @@ const src = readFileSync(resolve(root, "prisma/schema.prisma"), "utf8");
 const out =
   "// GENERATED from schema.prisma by scripts/gen-sqlite-schema.mjs — do not edit.\n" +
   src
-    .replace('provider  = "postgresql"', 'provider  = "sqlite"')
+    .replace(/provider\s*=\s*"postgresql"/, 'provider = "sqlite"')
     .replace(/^\s*directUrl\s*=.*$\n?/m, "");
 
 writeFileSync(resolve(root, "prisma/schema.sqlite.prisma"), out);

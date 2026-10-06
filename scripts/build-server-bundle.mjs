@@ -13,7 +13,7 @@ await build({
   format: "esm",
   target: "node20",
   outfile: `${outdir}/index.js`,
-  external: ["@prisma/client", ".prisma/client", "@vercel/blob"],
+  external: ["@prisma/client", ".prisma/client", "@vercel/blob", "@prisma/adapter-better-sqlite3", "better-sqlite3"],
   // CommonJS deps (fastify plugins etc.) need `require` inside an ESM bundle.
   banner: {
     js: "import { createRequire } from 'node:module'; const require = createRequire(import.meta.url);",
