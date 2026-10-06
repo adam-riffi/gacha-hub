@@ -108,6 +108,9 @@ Postgres on Supabase (own project `gacha-hub`, eu-west-1; ADR 0001). Migrations 
 | F3 Farm-today DM | reminder option "domains open today" listing the open domains your owned units level from | With the option on, a reminder at any time (e.g. 09:00) carries the line; the line is left out when nothing you own needs an open domain |
 | F4 HSR feed | per-section warp parsing for HSR notices | Each warp in a notice becomes its own banner with its own dates |
 | F5 Pull log | pure pity core + banner rules (ADR 0002); `PullEntry` table and routes; game-page pull log and pity on Home | Pity matches a recorded history fixture; Home shows pity next to pulls |
+| P2 Production smoke | `scripts/smoke.mjs` + `smoke.yml` on production deployments | A wrong or dev-login deployment fails the check; production passes |
+| F6 Data export | `GET /api/export` (everything the user entered) + a Settings download | The export round-trips every user-owned table and contains nothing of other users or secrets |
+| F7 Calendar history | ended banners/events load when paging back | Paging back two weeks shows what ended then |
 
 F5 follows the owner's listed nice-to-have (HANDOFF.md §10) under ADR 0002 (Proposed); account import still needs the owner's go-ahead (§14).
 
@@ -126,6 +129,7 @@ F5 follows the owner's listed nice-to-have (HANDOFF.md §10) under ADR 0002 (Pro
 | --- | --- | --- |
 | `ci.yml` | PRs, pushes to `main` | `lint`, `typecheck`, `test`, `build`, `e2e` |
 | `cron-tick.yml` | Every 10 min, `workflow_dispatch` | `tick`: reminders, and the hourly feed import |
+| `smoke.yml` | Successful production deployment, `workflow_dispatch` | `smoke`: `scripts/smoke.mjs` against the production domain |
 
 Required checks: `lint`, `typecheck`, `test`, `build`, `e2e`. Vercel builds each push (preview per PR, production on `main`) and runs migrations in the build.
 
@@ -133,7 +137,7 @@ Required checks: `lint`, `typecheck`, `test`, `build`, `e2e`. Vercel builds each
 
 Vercel project `gacha-hub` (framework preset "Other", functions in `dub1` next to the database). Preview deployments are off for `stack/**` and `dependabot/**` branches (`vercel.json`): the Hobby plan allows 100 deployments a day, and restacking a stack redeploys every branch; CI and the E2E suite cover those PRs. Environment variables are set by the owner in Vercel (`.env.example` lists them): `DATABASE_URL` (transaction pooler), `DIRECT_DATABASE_URL`, `SESSION_SECRET`, `COOKIE_SECURE=true`, `APP_BASE_URL`, `DISCORD_*`, `ADMIN_DISCORD_IDS`, `CRON_SECRET`, `BLOB_READ_WRITE_TOKEN`, `DEV_LOGIN_ENABLED=false`. Never set `NODE_ENV`. GitHub secrets: `CRON_URL`, `CRON_SECRET`. Full steps: `docs/DEPLOY.md`.
 
-**Smoke checks:** `/api/me` answers `oauth: true, devLogin: false`; sign-in reaches Home; `cron-tick` run returns `ok: true`.
+**Smoke checks** (`npm run smoke -- <url>`, run by `smoke.yml` after every production deploy): the app shell loads; `/api/me` answers anonymously with `oauth: true, devLogin: false`; `/api/instances` refuses anonymous reads. Manually: sign-in reaches Home; a `cron-tick` run returns `ok: true`.
 
 ## 13. Performance, security and observability
 

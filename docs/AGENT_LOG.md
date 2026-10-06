@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-06 · claude · stack/ops/02-prod-smoke · pending
+- Done: `scripts/smoke.mjs` (`npm run smoke -- <url>`) checks the app shell, anonymous `/api/me` with `oauth: true, devLogin: false`, and that `/api/instances` refuses anonymous reads; `smoke.yml` runs it after every successful production deployment. DESIGN.md §9 gains P2, F6 (data export), F7 (calendar history).
+- Tests: passes against production; fails all five checks against a wrong site (negative control); actionlint clean.
+- Scope/decisions: Production is checked on its domain (per-deployment URLs are behind Vercel's login, as are previews). Supabase advisors: only "RLS on, no policies" notes, by design; `PullEntry` already exists in production (a preview applied the additive migration before previews were turned off).
+- Next: F6 data export.
+
 ## 2026-10-06 · claude · stack/art/02-asset-paths · pending
 - Done: `assetPath` (shared, tested) only passes through full URLs and our own public paths; source-internal keys such as WuWa's Unreal paths return null, so no wasted request before the initials placeholder.
 - Tests: Red before the fix; `art.test.ts` 7 tests.
