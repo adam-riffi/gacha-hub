@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-06 · claude · stack/deps/03-vitest · pending
+- Done: Vitest 2→5 (dev only). The config needed no change.
+- Tests: all 152 tests pass under Vitest 5.0.3 with no deprecation warnings; `npm run check`.
+- Scope/decisions: None.
+- Next: Vite 5→8 with @vitejs/plugin-react, then React 19.
+
 ## 2026-10-06 · claude · stack/deps/02-small-majors · pending
 - Done: node-cron 3→4 (ships its own types; @types/node-cron removed), concurrently 9→10, @types/node 22→24 (matches the Node 24 runtime).
 - Tests: `npm run check`; node-cron 4 schedules and stops our minute expression; `npm run dev` starts web and API under concurrently 10.
