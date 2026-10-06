@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-06 · claude · ci/dependabot-minor-patch · #63
+- Done: Merged #60 (pull-log page), #62 (pity on Home, F5 complete) and Dependabot #59 (first-party actions). Closed Dependabot #54 (27 updates, seven majors, CI red); Dependabot now groups npm minor/patch and ignores majors (ADR 0001 row).
+- Tests: CI green on each merged PR (lint, typecheck, test, build, e2e).
+- Scope/decisions: Production is still at #44 (a8f3292): Vercel's daily deployment quota, exhausted by stack restacks before #57, blocked the deploys of ede0c06, #60, #59 and #62. The first push to `main` after the quota frees deploys all of it and applies the `PullEntry` migration.
+- Next: confirm the production deploy and `/api/me`; owner sets required checks (lint, typecheck, test, build, e2e) and records the README GIF; npm majors one at a time (Prisma 7 needs a plan).
+
 ## 2026-10-06 · claude · stack/pulls/04-home · pending
 - Done: The dashboard returns pity per banner for each game; Home's Pulls card shows "Character 22/90 · guaranteed · Weapon 30/80…" under each game and links to its pull log. F5 complete.
 - Tests: Red route test before the dashboard change; red Playwright assertion before the Home line; 8 pull-log route tests and 4 E2E journeys pass.
