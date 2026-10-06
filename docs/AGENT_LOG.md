@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-06 · claude · stack/deps/06-react-router7 · pending
+- Done: react-router-dom 6→7 (still the re-export package; imports unchanged). Only declarative APIs are used (BrowserRouter, Routes, Link, NavLink, useParams, useNavigate, Navigate), so no v7 behaviour change applies.
+- Tests: `npm run check` (6 E2E journeys); in the dev app nav links and their active state, game tabs, Back and the unknown-path redirect work with no console errors.
+- Scope/decisions: Switching imports to `react-router` can wait; `react-router-dom` 7 re-exports it.
+- Next: zod 4 (pervasive: every DTO), then Prisma 7 and TypeScript 7, each needing an ADR-sized look.
+
 ## 2026-10-06 · claude · stack/deps/05-react19 · pending
 - Done: React and react-dom 18→19, @types/react(-dom) 19. The code needed no change.
 - Tests: `npm run check` (6 E2E journeys); every main page and a Genshin character sheet render under React 19 with no console errors.
