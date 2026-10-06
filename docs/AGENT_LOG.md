@@ -26,6 +26,12 @@ Entry format:
 - Scope/decisions: ENGINEERING §14 and portfolio-infra M4 rollout; application behavior and commands are unchanged.
 - Next: Keep draft until portfolio-infra v1 is published and independent review/CI pass; verify the action on this PR afterwards.
 
+## 2026-10-06 · claude · stack/perf/01-budget · #78
+- Done: `scripts/budget.mjs` (`npm run budget`) gzips the JavaScript the built shell loads up front and fails above 200 KB; CI's `build` job and `npm run check` run it. README numbers refreshed.
+- Tests: 149.0 KB passes; `BUDGET_KB=100` fails with the overage (negative control); actionlint clean.
+- Scope/decisions: Initial JS grew from 112 KB to 149 KB with React 19, React Router 7 and zod 4; still 51 KB under budget.
+- Next: production deploy and smoke once Vercel's quota frees.
+
 ## 2026-10-06 · claude · stack/deps/07-zod4 · pending
 - Done: zod 3→4 in shared and server; every `z.record` takes an explicit key schema (a zod-3-compatible first commit); the admin payload JSON schema comes from zod's built-in `toJSONSchema` (zod-to-json-schema removed). ADR 0003 (Proposed): TypeScript 7 waits for typescript-eslint; Prisma 7 becomes its own planned milestone.
 - Tests: Typecheck clean on zod 4 everywhere; 157 tests; `npm run check` with 7 E2E journeys; both harnesses.
