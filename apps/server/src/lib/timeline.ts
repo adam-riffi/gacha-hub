@@ -4,6 +4,7 @@ import {
   bannerInput,
   eventDto,
   eventInput,
+  getGame,
   timedStatus,
   type BannerDto,
   type BannerInput,
@@ -11,6 +12,7 @@ import {
   type EventInput,
 } from "@gacha/shared";
 import { prisma } from "./prisma.js";
+import { getCatalog } from "../api/util.js";
 
 /* Banners and events are global per game (uploaded by admins) and read by
  * everyone: these helpers serialize rows, export them in the upload shape,
@@ -103,4 +105,51 @@ export function formatRemaining(until: Date | string, now = new Date()): string 
   if (d > 0) return `${d}d ${h}h`;
   if (h > 0) return `${h}h ${String(m).padStart(2, "0")}m`;
   return `${m}m`;
+}
+
+/** Banners and events overlapping [from, to) for these games, ended ones included. */
+export async function listWindow(gameKeys: string[], from: Date, to: Date, now = new Date()) {
+  if (gameKeys.length === 0) return { banners: [], events: [] };
+  const where = { gameKey: { in: gameKeys }, endsAt: { gt: from }, startsAt: { lt: to } };
+  const orderBy = [{ startsAt: "asc" as const }, { key: "asc" as const }];
+  const [banners, events] = await Promise.all([
+    prisma.banner.findMany({ where, orderBy, take: 300 }),
+    prisma.event.findMany({ where, orderBy, take: 300 }),
+  ]);
+  return { banners: banners.map((r) => serializeBanner(r, now)), events: events.map((r) => serializeEvent(r, now)) };
+}
+
+/** Featured units get catalog name/icon/rarity and whether the user owns them. */
+export async function withFeaturedDetails(banners: BannerDto[], instances: { id: string; gameKey: string }[]): Promise<BannerDto[]> {
+  const featuredIds = banners.flatMap((b) => b.featured.map((f) => f.catalogId));
+  const owned = featuredIds.length
+    ? await prisma.ownership.findMany({
+        where: { gameInstanceId: { in: instances.map((g) => g.id) }, catalogId: { in: featuredIds } },
+        select: { gameInstanceId: true, kind: true, catalogId: true },
+      })
+    : [];
+  const instanceByGame = new Map(instances.map((gi) => [gi.gameKey, gi.id]));
+  const owns = new Set(owned.map((o) => `${o.gameInstanceId}:${o.kind}:${o.catalogId}`));
+  const catalogs = new Map(
+    await Promise.all(
+      [...new Set(banners.map((b) => b.gameKey))].map(async (k) => {
+        const game = getGame(k);
+        return [k, game ? await getCatalog(game) : null] as const;
+      }),
+    ),
+  );
+  return banners.map((b) => {
+    const cat = catalogs.get(b.gameKey)?.index;
+    return {
+      ...b,
+      featured: b.featured.map((f) => {
+        const e = f.kind === "character" ? cat?.characters.get(f.catalogId) : cat?.weapons.get(f.catalogId);
+        return {
+          ...f,
+          ...(e ? { name: e.name, icon: e.icon, rarity: e.rarity } : {}),
+          owned: owns.has(`${instanceByGame.get(b.gameKey)}:${f.kind}:${f.catalogId}`),
+        };
+      }),
+    };
+  });
 }

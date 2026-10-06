@@ -3,7 +3,7 @@ import { BUILT_STATUSES, dashboardDto, getGame, pityState } from "@gacha/shared"
 import { prisma } from "../lib/prisma.js";
 import { requireUser } from "../auth/plugin.js";
 import { getGameServerModule } from "../games/index.js";
-import { listBanners, listEvents } from "../lib/timeline.js";
+import { listBanners, listEvents, withFeaturedDetails } from "../lib/timeline.js";
 import { buildRegionContext, serializeTask } from "./tasks.js";
 import { allCurrencies } from "../lib/currencies.js";
 import { getCatalog } from "./util.js";
@@ -119,30 +119,7 @@ export async function registerDashboardRoutes(app: FastifyInstance) {
       listEvents(gameKeys, "current", now, 100),
     ]);
 
-    // Featured units get catalog name/icon/rarity and whether you own them.
-    const featuredIds = rawBanners.flatMap((b) => b.featured.map((f) => f.catalogId));
-    const ownedFeatured = featuredIds.length
-      ? await prisma.ownership.findMany({
-          where: { gameInstanceId: { in: instances.map((g) => g.id) }, catalogId: { in: featuredIds } },
-          select: { gameInstanceId: true, kind: true, catalogId: true },
-        })
-      : [];
-    const instanceByGame = new Map(instances.map((gi) => [gi.gameKey, gi.id]));
-    const owns = new Set(ownedFeatured.map((o) => `${o.gameInstanceId}:${o.kind}:${o.catalogId}`));
-    const banners = rawBanners.map((b) => {
-      const cat = catalogs.get(b.gameKey)?.index;
-      return {
-        ...b,
-        featured: b.featured.map((f) => {
-          const e = f.kind === "character" ? cat?.characters.get(f.catalogId) : cat?.weapons.get(f.catalogId);
-          return {
-            ...f,
-            ...(e ? { name: e.name, icon: e.icon, rarity: e.rarity } : {}),
-            owned: owns.has(`${instanceByGame.get(b.gameKey)}:${f.kind}:${f.catalogId}`),
-          };
-        }),
-      };
-    });
+    const banners = await withFeaturedDetails(rawBanners, instances);
 
     // Material subtasks done/total per parent goal (same "done" rule as the board).
     const goalMaterials: Record<string, { done: number; total: number }> = {};
