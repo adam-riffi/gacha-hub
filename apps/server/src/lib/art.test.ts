@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { communityArtUrl } from "@gacha/shared";
+import { assetPath, communityArtUrl } from "@gacha/shared";
 
 describe("communityArtUrl", () => {
   it("serves Genshin icons from Enka under the catalog key", () => {
@@ -24,5 +24,21 @@ describe("communityArtUrl", () => {
 
   it("encodes keys so a catalog value cannot change the path", () => {
     expect(communityArtUrl("genshin", "weapon", "a/b?c")).toBe("https://enka.network/ui/a%2Fb%3Fc.png");
+  });
+});
+
+describe("assetPath", () => {
+  it("builds our own store's path for plain catalog keys", () => {
+    expect(assetPath("/assets", "genshin", "character", "UI_AvatarIcon_Arlecchino")).toBe("/assets/genshin/character/UI_AvatarIcon_Arlecchino.webp");
+  });
+
+  it("passes full URLs and our own public paths through", () => {
+    expect(assetPath("/assets", "x", "character", "https://cdn.example/a.png")).toBe("https://cdn.example/a.png");
+    expect(assetPath("/assets", "x", "character", "/games/genshin/icon.png")).toBe("/games/genshin/icon.png");
+  });
+
+  it("does not request source-internal paths that no server hosts", () => {
+    expect(assetPath("/assets", "wuwa", "character", "/Game/Aki/UI/UIResources/Common/Image/IconRoleHead80/T_IconRoleHead80_7_UI.T_IconRoleHead80_7_UI")).toBeNull();
+    expect(assetPath("/assets", "wuwa", "character", undefined)).toBeNull();
   });
 });

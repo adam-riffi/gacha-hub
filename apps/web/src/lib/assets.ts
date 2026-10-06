@@ -1,4 +1,4 @@
-import type { ArtKind } from "@gacha/shared";
+import { assetPath, type ArtKind } from "@gacha/shared";
 
 /**
  * Asset resolver — turns a catalog asset *key* (a source-provided filename such
@@ -18,16 +18,8 @@ const BASE = (import.meta.env.VITE_ASSET_BASE ?? "/assets").replace(/\/+$/, "");
 /** character = square avatar, portrait = large art, gear = artifact / relic / disc set. */
 export type AssetKind = ArtKind;
 
-/**
- * Resolve a catalog asset key to a URL, or `null` when there is no key.
- * If the key is already an absolute URL or root-relative path, it's used as-is
- * (some game sources ship full URLs), so this stays correct across games.
- */
-export function assetUrl(gameKey: string, kind: AssetKind, key?: string | null): string | null {
-  if (!key) return null;
-  if (/^https?:\/\//.test(key) || key.startsWith("/")) return key;
-  return `${BASE}/${gameKey}/${kind}/${encodeURIComponent(key)}.webp`;
-}
+/** Resolve a catalog asset key to a URL in our store, or null (see `assetPath`). */
+export const assetUrl = (gameKey: string, kind: AssetKind, key?: string | null): string | null => assetPath(BASE, gameKey, kind, key);
 
 /** Fallback when we host no copy (<GameIcon fallback>): Enka for Genshin, Yatta for HSR. */
 export { communityArtUrl as communityAssetUrl } from "@gacha/shared";
