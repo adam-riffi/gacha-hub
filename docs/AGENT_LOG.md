@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-06 · codex · stack/infra/01-pr-meme · pending
+- Done: Installed the canonical portfolio-infra v1 PR meme caller, with same-repository and owner guards and no per-repository secrets.
+- Tests: Configuration exception to test-first; actionlint checks the exact template, followed by the repository check and CI.
+- Scope/decisions: ENGINEERING §14 and portfolio-infra M4 rollout; application behavior and commands are unchanged.
+- Next: Keep draft until portfolio-infra v1 is published and independent review/CI pass; verify the action on this PR afterwards.
+
 ## 2026-10-06 · claude · stack/deps/07-zod4 · pending
 - Done: zod 3→4 in shared and server; every `z.record` takes an explicit key schema (a zod-3-compatible first commit); the admin payload JSON schema comes from zod's built-in `toJSONSchema` (zod-to-json-schema removed). ADR 0003 (Proposed): TypeScript 7 waits for typescript-eslint; Prisma 7 becomes its own planned milestone.
 - Tests: Typecheck clean on zod 4 everywhere; 157 tests; `npm run check` with 7 E2E journeys; both harnesses.
