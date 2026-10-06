@@ -32,6 +32,7 @@ Operating manual for coding agents in this repository. Codex and Copilot read th
 | Regenerate a catalog (delete `scripts/catalog/.cache/<game>` first for fresh data) | `npm run catalog:install` then `npm run catalog:<game>` |
 | New migration (offline) | `npx prisma migrate diff --from-schema-datamodel <before> --to-schema-datamodel prisma/schema.prisma --script` |
 | E2E smoke (Playwright; `npx playwright install chromium` once) | `npm run build -w @gacha/web && npm run e2e` |
+| Smoke-check a deployment (no sign-in) | `npm run smoke -- https://gacha-hub-two.vercel.app` |
 | Lint workflows (actionlint 1.7+ on PATH) | `actionlint` |
 | Check all | `npm run check` |
 

@@ -1,0 +1,28 @@
+# Smoke checks after every successful production deployment (DESIGN.md §12).
+# Vercel reports deployments to GitHub; production is checked on its public
+# domain because the per-deployment URLs sit behind Vercel's login.
+name: smoke
+
+on:
+  deployment_status:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.deployment_status.state == 'success' &&
+       github.event.deployment_status.environment == 'Production')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+      - run: node scripts/smoke.mjs "${SMOKE_URL}"
+        env:
+          SMOKE_URL: ${{ vars.SMOKE_URL || 'https://gacha-hub-two.vercel.app' }}
