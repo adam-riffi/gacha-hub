@@ -22,7 +22,7 @@
     "smoke": "node scripts/smoke.mjs",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "harness": "npm run build:server && node scripts/harness/phase7.mjs && node scripts/harness/phase8.mjs",
+    "harness": "npm run build:server && node scripts/harness/run.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "catalog:install": "npm --prefix scripts/catalog install",
