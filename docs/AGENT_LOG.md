@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-06 · claude · stack/deps/04-vite · pending
+- Done: Vite 5→8 and @vitejs/plugin-react 4→6; one Vite copy now (Vitest 5 already brought 8.3.3). The config needed no change.
+- Tests: production build in ~0.25 s (Rolldown), initial JS 113 KB gzipped; `npm run check` with 6 E2E journeys on the new build; dev server renders Home with no console errors.
+- Scope/decisions: HANDOFF.md's "Vite pinned to ^5" gotcha is obsolete (it was about a duplicate v5/v6 install; there is a single v8 now).
+- Next: React 19.
+
 ## 2026-10-06 · claude · stack/deps/03-vitest · pending
 - Done: Vitest 2→5 (dev only). The config needed no change.
 - Tests: all 152 tests pass under Vitest 5.0.3 with no deprecation warnings; `npm run check`.
