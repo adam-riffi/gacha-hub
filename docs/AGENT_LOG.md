@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-06 · claude · stack/security/01-headers · pending
+- Done: Security headers (ENGINEERING.md §12) on every response: CSP (`script-src 'self'`, images from the app, Enka, Yatta, Discord avatars and Vercel Blob, `frame-ancestors 'none'`), `nosniff`, referrer and permissions policies. Fastify sends them; `vercel.json` sends the same for static files; a test keeps the two equal. The production smoke check asserts them.
+- Tests: Red unit, route and Playwright tests before the change; 7 E2E journeys pass under the CSP with no violations; the production build over the dev database loads every image (Home 35/35, HSR roster 98/98, calendar 9/9).
+- Scope/decisions: `style-src` allows `'unsafe-inline'` because React renders `style` props. A future `VITE_ASSET_BASE` host must be added to `img-src`.
+- Next: zod 4, Prisma 7 and TypeScript 7 each need a migration plan (ADR) rather than a bump.
+
 ## 2026-10-06 · claude · stack/deps/06-react-router7 · pending
 - Done: react-router-dom 6→7 (still the re-export package; imports unchanged). Only declarative APIs are used (BrowserRouter, Routes, Link, NavLink, useParams, useNavigate, Navigate), so no v7 behaviour change applies.
 - Tests: `npm run check` (6 E2E journeys); in the dev app nav links and their active state, game tabs, Back and the unknown-path redirect work with no console errors.

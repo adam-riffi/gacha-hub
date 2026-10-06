@@ -139,7 +139,7 @@ Required checks: `lint`, `typecheck`, `test`, `build`, `e2e`. Vercel builds each
 
 Vercel project `gacha-hub` (framework preset "Other", functions in `dub1` next to the database). Preview deployments are off for `stack/**` and `dependabot/**` branches (`vercel.json`): the Hobby plan allows 100 deployments a day, and restacking a stack redeploys every branch; CI and the E2E suite cover those PRs. Environment variables are set by the owner in Vercel (`.env.example` lists them): `DATABASE_URL` (transaction pooler), `DIRECT_DATABASE_URL`, `SESSION_SECRET`, `COOKIE_SECURE=true`, `APP_BASE_URL`, `DISCORD_*`, `ADMIN_DISCORD_IDS`, `CRON_SECRET`, `BLOB_READ_WRITE_TOKEN`, `DEV_LOGIN_ENABLED=false`. Never set `NODE_ENV`. GitHub secrets: `CRON_URL`, `CRON_SECRET`. Full steps: `docs/DEPLOY.md`.
 
-**Smoke checks** (`npm run smoke -- <url>`, run by `smoke.yml` after every production deploy): the app shell loads; `/api/me` answers anonymously with `oauth: true, devLogin: false`; `/api/instances` refuses anonymous reads. Manually: sign-in reaches Home; a `cron-tick` run returns `ok: true`.
+**Smoke checks** (`npm run smoke -- <url>`, run by `smoke.yml` after every production deploy): the app shell loads; `/api/me` answers anonymously with `oauth: true, devLogin: false`; `/api/instances` refuses anonymous reads; the security headers are sent. Manually: sign-in reaches Home; a `cron-tick` run returns `ok: true`.
 
 ## 13. Performance, security and observability
 
@@ -147,6 +147,7 @@ Vercel project `gacha-hub` (framework preset "Other", functions in `dub1` next t
 - Every view has loading, empty and error states.
 - Inputs validated with zod at the boundary; admin routes rate-limited and audited; the cron endpoint requires `CRON_SECRET`.
 - No secrets in the client bundle; credentials are entered by the owner only.
+- Every response carries a Content-Security-Policy (own scripts only; images from the app, Enka, Yatta, Discord avatars and Vercel Blob), `frame-ancestors 'none'`, `nosniff`, a strict referrer policy and a minimal permissions policy (`apps/server/src/lib/securityHeaders.ts`, mirrored in `vercel.json`).
 
 ## 14. Risks and open questions
 

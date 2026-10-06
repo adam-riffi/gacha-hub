@@ -17,6 +17,7 @@ const check = (ok, what) => {
 
 const shell = await get("/");
 check(shell.status === 200 && (await shell.text()).includes("<title>Gacha Hub</title>"), "GET / serves the app shell");
+check((shell.headers.get("content-security-policy") ?? "").includes("frame-ancestors 'none'"), "security headers are sent");
 
 const me = await get("/api/me");
 const meBody = me.status === 200 ? await me.json() : null;

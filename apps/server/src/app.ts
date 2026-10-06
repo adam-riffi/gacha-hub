@@ -6,6 +6,7 @@ import "./types.js";
 import { config } from "./config.js";
 import { registerAuth } from "./auth/plugin.js";
 import { registerApi } from "./api/index.js";
+import { SECURITY_HEADERS } from "./lib/securityHeaders.js";
 
 /**
  * Builds the Fastify app (routes, auth, parsers) without binding a port.
@@ -18,6 +19,12 @@ export async function buildApp(): Promise<FastifyInstance> {
   const app = Fastify({
     logger: { level: config.isProd ? "info" : "warn" },
     trustProxy: config.isProd,
+  });
+
+  // Hardening headers on every response (CSP, nosniff, referrer, permissions).
+  app.addHook("onSend", async (_req, reply, payload) => {
+    reply.headers(SECURITY_HEADERS);
+    return payload;
   });
 
   // Turn zod validation failures into clean 400s.
