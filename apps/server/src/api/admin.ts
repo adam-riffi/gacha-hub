@@ -1,6 +1,6 @@
 import type { FastifyInstance } from "fastify";
 import { Prisma } from "@prisma/client";
-import { zodToJsonSchema } from "zod-to-json-schema";
+import { z } from "zod";
 import {
   adminAuditEntryDto,
   adminExportKindSchema,
@@ -35,7 +35,7 @@ const jsonOrNull = (v: unknown) => (v === undefined ? Prisma.JsonNull : (v as Pr
 export async function registerAdminRoutes(app: FastifyInstance) {
   // JSON Schema of the upload payload (for editors / validation tooling).
   app.get("/api/admin/payload/schema", { preHandler: requireAdmin }, async () =>
-    zodToJsonSchema(adminPayloadInput, { name: "AdminPayload", $refStrategy: "none" }),
+    ({ title: "AdminPayload", ...z.toJSONSchema(adminPayloadInput, { io: "input", unrepresentable: "any" }) }),
   );
 
   // Current items in the upload shape.
