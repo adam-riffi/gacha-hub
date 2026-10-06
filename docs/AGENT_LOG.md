@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-06 · claude · stack/deps/01-fastify-plugins · pending
+- Done: @fastify/rate-limit 10→11, @fastify/static 8→10, @fastify/multipart 9→10 (the first npm majors under the one-per-PR policy).
+- Tests: `npm run check` (152 tests, 6 E2E journeys); both bundle harnesses pass on a clean database (rate limiting, admin uploads).
+- Scope/decisions: Breaking notes checked: `setHeaders` now receives the reply (unused here), removed deprecated rate-limit types (none used). `npm run harness` runs against whatever `DATABASE_URL` points to and fails on a used dev database; next PR gives it a throwaway one.
+- Next: harness on a throwaway database; then the larger majors (Vitest, Vite, React, zod, Prisma, TypeScript) one at a time.
+
 ## 2026-10-06 · claude · stack/calendar/01-history · pending
 - Done: `GET /api/timeline?from&to` returns banners and events overlapping a window (ended included, at most 120 days) with featured-unit details; the calendar reads it, pages back freely, dims ended items ("ended Sep 30"). The featured-details code moved from the dashboard into `lib/timeline.ts`. The day row no longer widens the page on narrow windows.
 - Tests: Red route tests before the endpoint (window overlap, ended items, other games excluded, ownership details, validation, 401); red Playwright journey (paging back shows a banner that ended 10 days ago). E2E dev user is an admin on its throwaway database.
