@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-06 · claude · stack/deps/07-zod4 · pending
+- Done: zod 3→4 in shared and server; every `z.record` takes an explicit key schema (a zod-3-compatible first commit); the admin payload JSON schema comes from zod's built-in `toJSONSchema` (zod-to-json-schema removed). ADR 0003 (Proposed): TypeScript 7 waits for typescript-eslint; Prisma 7 becomes its own planned milestone.
+- Tests: Typecheck clean on zod 4 everywhere; 157 tests; `npm run check` with 7 E2E journeys; both harnesses.
+- Scope/decisions: One zod copy for our code (4.6.5); `@vercel/blob` carries its own.
+- Next: production deploy once Vercel's quota frees; Prisma 7 spike if Georges accepts ADR 0003.
+
 ## 2026-10-06 · claude · stack/security/01-headers · pending
 - Done: Security headers (ENGINEERING.md §12) on every response: CSP (`script-src 'self'`, images from the app, Enka, Yatta, Discord avatars and Vercel Blob, `frame-ancestors 'none'`), `nosniff`, referrer and permissions policies. Fastify sends them; `vercel.json` sends the same for static files; a test keeps the two equal. The production smoke check asserts them.
 - Tests: Red unit, route and Playwright tests before the change; 7 E2E journeys pass under the CSP with no violations; the production build over the dev database loads every image (Home 35/35, HSR roster 98/98, calendar 9/9).
