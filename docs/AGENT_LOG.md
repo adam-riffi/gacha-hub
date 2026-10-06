@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-06 · claude · stack/tooling/01-harness-db · pending
+- Done: `npm run harness` runs both bundle harnesses through `scripts/harness/run.mjs` on a throwaway SQLite database (created, used, deleted), so a used dev database no longer breaks it.
+- Tests: Both harnesses pass with a used dev database present; the throwaway file is gone afterwards.
+- Scope/decisions: None.
+- Next: the larger npm majors one at a time.
+
 ## 2026-10-06 · claude · stack/deps/01-fastify-plugins · pending
 - Done: @fastify/rate-limit 10→11, @fastify/static 8→10, @fastify/multipart 9→10 (the first npm majors under the one-per-PR policy).
 - Tests: `npm run check` (152 tests, 6 E2E journeys); both bundle harnesses pass on a clean database (rate limiting, admin uploads).

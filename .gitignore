@@ -38,3 +38,4 @@ apps/web/public/assets/**/*.avif
 test-results/
 playwright-report/
 prisma/e2e.db*
+prisma/harness.db*
