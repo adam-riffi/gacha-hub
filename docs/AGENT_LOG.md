@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-06 · claude · stack/export/01-api · pending
+- Done: `GET /api/export` returns everything the signed-in user entered (profiles with currencies, builds, ownership, materials, gear, teams, pulls, reminder; tasks) as an attachment; Settings has "Download my data". DESIGN.md §4 and the README reflect F5 and F6.
+- Tests: Red route tests before the route (content, nothing of other users or sessions, sign-in required); red Playwright download journey before the link. 5 E2E journeys pass.
+- Scope/decisions: Internal ids are kept so task `refId`s resolve; owner keys (`userId`, `gameInstanceId`) are dropped; sessions, audit logs and global banners/events are left out. Rate-limited to 10 a minute.
+- Next: F7 calendar history.
+
 ## 2026-10-06 · claude · stack/ops/02-prod-smoke · pending
 - Done: `scripts/smoke.mjs` (`npm run smoke -- <url>`) checks the app shell, anonymous `/api/me` with `oauth: true, devLogin: false`, and that `/api/instances` refuses anonymous reads; `smoke.yml` runs it after every successful production deployment. DESIGN.md §9 gains P2, F6 (data export), F7 (calendar history).
 - Tests: passes against production; fails all five checks against a wrong site (negative control); actionlint clean.
