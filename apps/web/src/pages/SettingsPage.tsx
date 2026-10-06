@@ -21,6 +21,15 @@ export function SettingsPage() {
         <button className="btn danger sm" onClick={() => logout()}>Sign out</button>
       </div>
 
+      <div className="card" style={{ marginBottom: 16 }}>
+        <h3>Your data</h3>
+        <p className="small">
+          Everything you entered — games, currencies, builds, ownership, materials, gear, teams, pulls,
+          tasks and reminders — as one JSON file.
+        </p>
+        <a className="btn sm" href="/api/export" download>Download my data</a>
+      </div>
+
       <div className="card">
         <h3>Discord bot</h3>
         {isDev ? (
