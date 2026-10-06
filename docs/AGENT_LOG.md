@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-06 · claude · stack/deps/05-react19 · pending
+- Done: React and react-dom 18→19, @types/react(-dom) 19. The code needed no change.
+- Tests: `npm run check` (6 E2E journeys); every main page and a Genshin character sheet render under React 19 with no console errors.
+- Scope/decisions: Gotcha: installing into the workspace left React 18 hoisted at the root (used by react-router and react-query) and the React 19 types only under `apps/web`, so react-router's props turned `any`. Fixed by dropping those lock entries and reinstalling: one hoisted React 19 and one @types/react 19. Check `npm ls react @types/react` after React upgrades.
+- Next: React Router 7.
+
 ## 2026-10-06 · claude · stack/deps/04-vite · pending
 - Done: Vite 5→8 and @vitejs/plugin-react 4→6; one Vite copy now (Vitest 5 already brought 8.3.3). The config needed no change.
 - Tests: production build in ~0.25 s (Rolldown), initial JS 113 KB gzipped; `npm run check` with 6 E2E journeys on the new build; dev server renders Home with no console errors.
