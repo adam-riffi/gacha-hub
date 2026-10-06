@@ -37,7 +37,7 @@ const prisma = (...args) => execFileSync(process.execPath, [prismaCli, ...args],
 
 // The db file was just removed above, so a plain push builds fresh tables —
 // no --force-reset (which Prisma blocks as a destructive action) needed.
-prisma("db", "push", "--schema", schema, "--skip-generate", "--accept-data-loss");
+prisma("db", "push", "--schema", schema, "--skip-generate");
 
 // Generate the sqlite client. On Windows a running dev server can hold the
 // engine DLL (EPERM on rename); in that case the existing client is already
