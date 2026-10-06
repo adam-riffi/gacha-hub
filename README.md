@@ -11,7 +11,7 @@ One place to run several gacha games at once: pulls you can afford, dailies left
 
 - **The hard problem:** every game resets, rotates its farming domains and announces banners on its own clock, and the official announcement feed serves the same notice in Asia, Europe or America time while labelling all of them UTC+1.
 - **The approach:** each game is a hardcoded module with a bespoke sheet; game data comes only from importers over open datasets; pure, property-tested cores do the clock math (game day, reset, domains today) and recover the European time from any two feed observations.
-- **A measured result:** the whole app runs on free tiers (one Vercel function, Supabase, a GitHub Actions cron) with 112 KB of initial JavaScript gzipped; catalogs load per game on demand.
+- **A measured result:** the whole app runs on free tiers (one Vercel function, Supabase, a GitHub Actions cron) with 149 KB of initial JavaScript gzipped (budget 200 KB, checked in CI); catalogs load per game on demand.
 
 ## How it works
 
@@ -38,8 +38,8 @@ The full specification is [docs/DESIGN.md](docs/DESIGN.md).
 
 | Measure | Value |
 | --- | --- |
-| Initial JavaScript (gzipped) | 112 KB; each game catalog loads lazily (1–73 KB gzipped) |
-| Tests | 149 unit, property and route-integration tests; 5 Playwright journeys |
+| Initial JavaScript (gzipped) | 149 KB (React 19, React Router 7, zod 4); budget 200 KB; each game catalog loads lazily (1–73 KB gzipped) |
+| Tests | 157 unit, property and route-integration tests; 7 Playwright journeys |
 | Feed import (2026-10-05) | Genshin: 3 banners and 13 events; HSR: 4 warps and 4 events |
 
 ## Testing approach

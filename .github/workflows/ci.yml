@@ -66,6 +66,8 @@ jobs:
       - run: npm ci
       - run: npm run prisma:generate
       - run: npm run build
+      # Initial JavaScript must stay under the DESIGN.md §13 budget.
+      - run: npm run budget
 
   e2e:
     runs-on: ubuntu-latest
