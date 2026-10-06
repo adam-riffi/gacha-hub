@@ -1,0 +1,35 @@
+import { readFileSync } from "node:fs";
+import { describe, expect, it } from "vitest";
+import { SECURITY_HEADERS } from "./securityHeaders.js";
+
+const vercel = JSON.parse(readFileSync(new URL("../../../../vercel.json", import.meta.url), "utf8")) as {
+  headers?: { source: string; headers: { key: string; value: string }[] }[];
+};
+const csp = SECURITY_HEADERS["Content-Security-Policy"] ?? "";
+const directive = (name: string) => csp.split(";").map((d) => d.trim()).find((d) => d.startsWith(`${name} `)) ?? "";
+
+describe("security headers", () => {
+  it("are the same on Vercel's static files as on every server response", () => {
+    const all = vercel.headers?.find((h) => h.source === "/(.*)");
+    expect(Object.fromEntries((all?.headers ?? []).map((h) => [h.key, h.value]))).toEqual(SECURITY_HEADERS);
+  });
+
+  it("forbid framing, sniffing and leaking full referrers", () => {
+    expect(directive("frame-ancestors")).toBe("frame-ancestors 'none'");
+    expect(SECURITY_HEADERS["X-Content-Type-Options"]).toBe("nosniff");
+    expect(SECURITY_HEADERS["Referrer-Policy"]).toBe("strict-origin-when-cross-origin");
+  });
+
+  it("only run the app's own scripts", () => {
+    expect(directive("script-src")).toBe("script-src 'self'");
+    expect(directive("object-src")).toBe("object-src 'none'");
+  });
+
+  it("allow the image and font hosts the app really uses", () => {
+    for (const host of ["https://enka.network", "https://sr.yatta.moe", "https://cdn.discordapp.com", "https://*.public.blob.vercel-storage.com"]) {
+      expect(directive("img-src")).toContain(host);
+    }
+    expect(directive("font-src")).toContain("https://fonts.gstatic.com");
+    expect(directive("style-src")).toContain("https://fonts.googleapis.com");
+  });
+});
