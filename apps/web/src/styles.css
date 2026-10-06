@@ -574,3 +574,4 @@ select.prio.build-none { color: var(--muted); }
 .pull-drop-art { width: 28px; height: 28px; background: linear-gradient(160deg, #b8782f, #6e4520); }
 .pull-form label.row { flex-direction: row; align-items: center; color: var(--text); }
 .pull-row-pity { display: block; padding: 0 0 6px 18px; }
+.cal-bar.is-ended { opacity: 0.5; }
