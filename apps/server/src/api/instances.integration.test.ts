@@ -127,3 +127,13 @@ describe("auth + instances (routes)", () => {
     expect(anon.statusCode).toBe(401);
   });
 });
+
+describe("security headers (routes)", () => {
+  it("come with every API response, signed in or not", async () => {
+    const app = await makeApp();
+    const r = await app.inject({ method: "GET", url: "/api/me" });
+    expect(r.headers["content-security-policy"]).toContain("frame-ancestors 'none'");
+    expect(r.headers["x-content-type-options"]).toBe("nosniff");
+    await app.close();
+  });
+});
