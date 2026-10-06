@@ -39,14 +39,15 @@ The full specification is [docs/DESIGN.md](docs/DESIGN.md).
 | Measure | Value |
 | --- | --- |
 | Initial JavaScript (gzipped) | 112 KB; each game catalog loads lazily (1–73 KB gzipped) |
-| Tests | 126 unit, property and route-integration tests; 3 Playwright journeys |
+| Tests | 149 unit, property and route-integration tests; 5 Playwright journeys |
 | Feed import (2026-10-05) | Genshin: 3 banners and 13 events; HSR: 4 warps and 4 events |
 
 ## Testing approach
 
 - **Unit and property tests** (Vitest, fast-check) for the pure cores: resets and game day (500 seeded cases against a luxon reference), planning math, feed parsing and the time-variant rule, document migrations.
 - **Route integration tests** build the real Fastify app over a throwaway SQLite database (`*.integration.test.ts`), including a reminder tick with Discord mocked.
-- **End-to-end:** Playwright smoke journeys against the built app on a fresh SQLite database, signed in with the dev login.
+- **End-to-end:** Playwright journeys against the built app on a fresh SQLite database, signed in with the dev login (Home, game overview, calendar, pull log, data export).
+- **Production smoke:** after every production deploy, `scripts/smoke.mjs` checks the shell, the API's auth guard and that the dev login is off.
 - CI runs `lint`, `typecheck`, `test`, `build` and `e2e` on every pull request.
 
 ## Running locally
@@ -93,7 +94,7 @@ docs/                             DESIGN · ENGINEERING · AGENT_LOG · adr/ · 
 - Art falls back to Enka (Genshin) and Yatta (HSR); WuWa, ZZZ and Endfield show initials.
 - No account import (HoYoLAB, Enka showcases): deferred until the owner decides.
 - No mobile layout; ZZZ has no catalog (no dataset with costs).
-- Next milestone: a pull log with pity per banner (docs/DESIGN.md §9).
+- Next milestone: paging the calendar back through ended banners and events (docs/DESIGN.md §9).
 
 ## License
 

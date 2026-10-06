@@ -33,12 +33,14 @@ A whitelisted player signs in with Discord, adds Genshin and HSR, sets currencie
 - Planning: material requirements, goal tasks with material subtasks, inventory as source of truth.
 - Home: KPI strip, banners now, today, task board, pulls, coming up, wallet.
 - Banners and events: admin uploads with audit log; Genshin and HSR official-feed import; calendar view.
-- Discord: OAuth sign-in, slash commands, DM reminders before reset and at custom times.
+- Discord: OAuth sign-in, slash commands, DM reminders before reset and at custom times (optionally listing today's domains).
+- Pull log per banner type with pity and the 50/50 guarantee (ADR 0002); pity next to pulls on Home.
+- Data export: everything a user entered as one JSON file (Settings → Download my data).
 
 **Next (should)** — milestones in §9.
 
 **Later**
-- Pull history and pity per banner; public showcase pages; per-user JSON export; PWA; i18n through dataset text maps.
+- Public showcase pages; PWA; i18n through dataset text maps.
 
 ## 5. Architecture
 
