@@ -52,7 +52,7 @@ export const bannerInput = z
     endsAt: z.string().datetime({ offset: true }),
     featured: z.array(bannerFeaturedSchema).max(50).default([]),
     version: z.number().int().positive().default(1),
-    payload: z.record(jsonValue).optional(),
+    payload: z.record(z.string(), jsonValue).optional(),
   })
   .refine((b) => new Date(b.endsAt) > new Date(b.startsAt), {
     message: "endsAt must be after startsAt",

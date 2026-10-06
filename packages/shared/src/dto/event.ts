@@ -12,7 +12,7 @@ export const eventInput = z
     description: z.string().max(4000).optional(),
     rewards: z.array(z.object({ label: z.string().min(1).max(120), qty: z.number().int().min(0).optional() })).max(50).optional(),
     url: z.string().url().max(2048).optional(),
-    payload: z.record(jsonValue).optional(),
+    payload: z.record(z.string(), jsonValue).optional(),
   })
   .refine((e) => new Date(e.endsAt) > new Date(e.startsAt), {
     message: "endsAt must be after startsAt",
