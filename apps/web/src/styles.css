@@ -526,7 +526,7 @@ select.prio.build-none { color: var(--muted); }
 .cal-head { position: sticky; top: 0; z-index: 2; background: var(--bg-elev); border-bottom: 1px solid var(--border); }
 .cal-head .cal-track { height: 40px; background: none; }
 .cal-month { position: absolute; top: 3px; padding-left: 3px; font-family: var(--font-display); font-size: 0.75rem; font-weight: 600; color: var(--text); }
-.cal-days { position: absolute; inset: auto 0 3px 0; display: grid; grid-template-columns: repeat(42, 1fr); }
+.cal-days { position: absolute; inset: auto 0 3px 0; display: grid; grid-template-columns: repeat(42, minmax(0, 1fr)); }
 .cal-days span { text-align: center; font-size: 0.68rem; color: var(--muted); }
 .cal-days .is-weekend { color: #6b7086; }
 .cal-days .is-today { background: var(--primary); color: #0c0d12; font-weight: 700; }
@@ -575,3 +575,6 @@ select.prio.build-none { color: var(--muted); }
 .pull-form label.row { flex-direction: row; align-items: center; color: var(--text); }
 .pull-row-pity { display: block; padding: 0 0 6px 18px; }
 .cal-bar.is-ended { opacity: 0.5; }
+.cal-days span { overflow: hidden; }
+/* Narrow windows: every other day number, so the row never forces a sideways scroll. */
+@media (max-width: 1200px) { .cal-days span:nth-child(even):not(.is-today) { color: transparent; } }

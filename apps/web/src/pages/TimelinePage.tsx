@@ -11,6 +11,7 @@ import type { DashboardData } from "../lib/types";
 const DAYS = 42;
 const DAY = 86_400_000;
 const MONTH = new Intl.DateTimeFormat(undefined, { month: "short" });
+const DAY_MONTH = new Intl.DateTimeFormat(undefined, { month: "short", day: "numeric" });
 
 type Banner = TimelineDto["banners"][number];
 type Row = { id: string; name: string; startsAt: string; endsAt: string; status: string; banner?: Banner };
@@ -128,7 +129,7 @@ export function TimelinePage() {
                       className={`cal-bar ${r.banner ? "is-banner" : ""} ${r.status === "ended" ? "is-ended" : ""} ${s < start ? "cut-l" : ""} ${e > end ? "cut-r" : ""}`}
                       style={{ left: `${pct(s)}%`, width: `${pct(e) - pct(s)}%`, ["--c" as string]: g.accent }}
                     >
-                      {r.status === "upcoming" ? `starts in ${formatRemaining(r.startsAt)}` : r.status === "ended" ? `ended ${formatDate(r.endsAt)}` : `ends in ${formatRemaining(r.endsAt)}`}
+                      {r.status === "upcoming" ? `starts in ${formatRemaining(r.startsAt)}` : r.status === "ended" ? `ended ${DAY_MONTH.format(new Date(r.endsAt))}` : `ends in ${formatRemaining(r.endsAt)}`}
                     </div>
                     {nowPct > 0 && nowPct < 100 && <div className="cal-now" style={{ left: `${nowPct}%` }} />}
                   </div>
