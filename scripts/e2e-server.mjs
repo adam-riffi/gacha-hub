@@ -7,7 +7,8 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const env = { ...process.env, DATABASE_URL: "file:./e2e.db", DEV_LOGIN_ENABLED: "true", PORT: process.env.PORT ?? "3100" };
+// The dev user is an admin here so journeys can upload banners and events.
+const env = { ...process.env, DATABASE_URL: "file:./e2e.db", DEV_LOGIN_ENABLED: "true", ADMIN_DISCORD_IDS: "dev-local-user", PORT: process.env.PORT ?? "3100" };
 
 for (const suffix of ["", "-journal"]) rmSync(resolve(root, `prisma/e2e.db${suffix}`), { force: true });
 execFileSync(process.execPath, [resolve(root, "scripts/gen-sqlite-schema.mjs")], { stdio: "inherit" });

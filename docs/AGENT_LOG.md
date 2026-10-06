@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-06 · claude · stack/calendar/01-history · pending
+- Done: `GET /api/timeline?from&to` returns banners and events overlapping a window (ended included, at most 120 days) with featured-unit details; the calendar reads it, pages back freely, dims ended items ("ended Sep 30"). The featured-details code moved from the dashboard into `lib/timeline.ts`. The day row no longer widens the page on narrow windows.
+- Tests: Red route tests before the endpoint (window overlap, ended items, other games excluded, ownership details, validation, 401); red Playwright journey (paging back shows a banner that ended 10 days ago). E2E dev user is an admin on its throwaway database.
+- Scope/decisions: F7 done; the calendar no longer depends on the dashboard's 100-item cap.
+- Next: npm majors one PR at a time; owner steps unchanged (ruleset, ADRs, README GIF, reminder secrets).
+
 ## 2026-10-06 · claude · stack/export/01-api · pending
 - Done: `GET /api/export` returns everything the signed-in user entered (profiles with currencies, builds, ownership, materials, gear, teams, pulls, reminder; tasks) as an attachment; Settings has "Download my data". DESIGN.md §4 and the README reflect F5 and F6.
 - Tests: Red route tests before the route (content, nothing of other users or sessions, sign-in required); red Playwright download journey before the link. 5 E2E journeys pass.

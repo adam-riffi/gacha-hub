@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import type { TimelineDto } from "@gacha/shared";
 import { api } from "../lib/api";
 import { formatDate, formatRemaining } from "../lib/time";
 import { assetUrl, communityAssetUrl } from "../lib/assets";
@@ -10,8 +11,9 @@ import type { DashboardData } from "../lib/types";
 const DAYS = 42;
 const DAY = 86_400_000;
 const MONTH = new Intl.DateTimeFormat(undefined, { month: "short" });
+const DAY_MONTH = new Intl.DateTimeFormat(undefined, { month: "short", day: "numeric" });
 
-type Banner = DashboardData["timeline"]["banners"][number];
+type Banner = TimelineDto["banners"][number];
 type Row = { id: string; name: string; startsAt: string; endsAt: string; status: string; banner?: Banner };
 
 /** Banners and events as bars on a six-week calendar, one block per game. */
@@ -21,7 +23,18 @@ export function TimelinePage() {
   const [now] = useState(() => Date.now());
   const { data: dash } = useQuery({ queryKey: ["dashboard"], queryFn: () => api.get<DashboardData>("/api/dashboard") });
 
-  if (!dash) return <div className="muted">Loading…</div>;
+  const today = new Date(now);
+  today.setHours(0, 0, 0, 0);
+  const start = today.getTime() + (offset - 3) * DAY;
+  const end = start + DAYS * DAY;
+  // Everything overlapping the six weeks shown, ended items included.
+  const { data: win } = useQuery({
+    queryKey: ["timeline", start, end],
+    queryFn: () => api.get<TimelineDto>(`/api/timeline?from=${new Date(start).toISOString()}&to=${new Date(end).toISOString()}`),
+    placeholderData: keepPreviousData,
+  });
+
+  if (!dash || !win) return <div className="muted">Loading…</div>;
   if (dash.games.length === 0) {
     return (
       <div className="card empty">
@@ -31,10 +44,6 @@ export function TimelinePage() {
     );
   }
 
-  const today = new Date(now);
-  today.setHours(0, 0, 0, 0);
-  const start = today.getTime() + (offset - 3) * DAY;
-  const end = start + DAYS * DAY;
   const pct = (t: number) => ((Math.min(Math.max(t, start), end) - start) / (end - start)) * 100;
   const days = Array.from({ length: DAYS }, (_, i) => new Date(start + i * DAY));
   const nowPct = pct(now);
@@ -44,8 +53,8 @@ export function TimelinePage() {
   const blocks = games
     .filter((g) => !hidden.has(g.gameKey))
     .map((g) => {
-      const banners: Row[] = dash.timeline.banners.filter((b) => b.gameKey === g.gameKey).map((b) => ({ ...b, id: `b:${b.id}`, banner: b }));
-      const events: Row[] = dash.timeline.events.filter((e) => e.gameKey === g.gameKey).map((e) => ({ ...e, id: `e:${e.id}` }));
+      const banners: Row[] = win.banners.filter((b) => b.gameKey === g.gameKey).map((b) => ({ ...b, id: `b:${b.id}`, banner: b }));
+      const events: Row[] = win.events.filter((e) => e.gameKey === g.gameKey).map((e) => ({ ...e, id: `e:${e.id}` }));
       const byEnd = (a: Row, b: Row) => a.endsAt.localeCompare(b.endsAt);
       return { g, rows: [...banners.sort(byEnd), ...events.sort(byEnd)].filter(inWindow) };
     });
@@ -68,7 +77,7 @@ export function TimelinePage() {
             </button>
           ))}
           <span style={{ width: 12 }} />
-          <button className="btn sm" disabled={offset === 0} onClick={() => setOffset(offset - 14)}>‹ 2 weeks</button>
+          <button className="btn sm" onClick={() => setOffset(offset - 14)}>‹ 2 weeks</button>
           <button className="btn sm" disabled={offset === 0} onClick={() => setOffset(0)}>Today</button>
           <button className="btn sm" onClick={() => setOffset(offset + 14)}>2 weeks ›</button>
         </div>
@@ -117,10 +126,10 @@ export function TimelinePage() {
                   </div>
                   <div className="cal-track">
                     <div
-                      className={`cal-bar ${r.banner ? "is-banner" : ""} ${s < start ? "cut-l" : ""} ${e > end ? "cut-r" : ""}`}
+                      className={`cal-bar ${r.banner ? "is-banner" : ""} ${r.status === "ended" ? "is-ended" : ""} ${s < start ? "cut-l" : ""} ${e > end ? "cut-r" : ""}`}
                       style={{ left: `${pct(s)}%`, width: `${pct(e) - pct(s)}%`, ["--c" as string]: g.accent }}
                     >
-                      {r.status === "upcoming" ? `starts in ${formatRemaining(r.startsAt)}` : `ends in ${formatRemaining(r.endsAt)}`}
+                      {r.status === "upcoming" ? `starts in ${formatRemaining(r.startsAt)}` : r.status === "ended" ? `ended ${DAY_MONTH.format(new Date(r.endsAt))}` : `ends in ${formatRemaining(r.endsAt)}`}
                     </div>
                     {nowPct > 0 && nowPct < 100 && <div className="cal-now" style={{ left: `${nowPct}%` }} />}
                   </div>
