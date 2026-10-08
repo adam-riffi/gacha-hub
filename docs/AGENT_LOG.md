@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-08 · claude · stack/docs/01-guide · pending
+- Done: `docs/PROJECT-GUIDE.md` (scope, architecture and flow diagrams, every screen with a screenshot in `docs/screens/`, per-game features and why, API map, work state, full to-do split owner/agent, known issues, gotchas) and the first root `HANDOFF.md`. The Phase 8 `docs/HANDOFF.md` is removed; its gotchas moved to the guide.
+- Tests: Documentation only; claims checked against the code, `gh` and the latest cron and smoke runs.
+- Scope/decisions: No behavior change. DESIGN.md and ADR 0002 references to the old file now point at git history.
+- Next: owner sets `CRON_SECRET` (GitHub + Vercel) and the bot token; agent finishes `stack/a11y/01-axe`, then page error states.
+
 ## 2026-10-07 · claude · docs/handoff-steps · pending
 - Done: AGENTS.md and the Copilot summary now start every session with `HANDOFF.md` (read it, check it against `main` and the open PRs) and end it by rewriting `HANDOFF.md`, matching ENGINEERING.md §5 from portfolio-infra.
 - Tests: Documentation only.
