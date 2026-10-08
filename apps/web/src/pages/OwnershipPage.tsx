@@ -126,22 +126,22 @@ export function OwnershipPage() {
       </div>
 
       <div className="toolbar">
-        <input placeholder="Search…" value={search} onChange={(e) => setSearch(e.target.value)} style={{ width: 200 }} />
-        <select value={rarity ?? ""} onChange={(e) => setRarity(e.target.value ? Number(e.target.value) : null)}>
+        <input aria-label="Search" placeholder="Search…" value={search} onChange={(e) => setSearch(e.target.value)} style={{ width: 200 }} />
+        <select aria-label="Rarity" value={rarity ?? ""} onChange={(e) => setRarity(e.target.value ? Number(e.target.value) : null)}>
           <option value="">Any rarity</option>
           {rarities.map((r) => (
             <option key={r} value={r}>{stars(r)}</option>
           ))}
         </select>
         {tags.length > 0 && (
-          <select value={tag ?? ""} onChange={(e) => setTag(e.target.value || null)}>
+          <select aria-label="Element" value={tag ?? ""} onChange={(e) => setTag(e.target.value || null)}>
             <option value="">Any {kind === "character" ? "element" : "type"}</option>
             {tags.map((t) => (
               <option key={t} value={t}>{t}</option>
             ))}
           </select>
         )}
-        <select value={ownState} onChange={(e) => setOwnState(e.target.value as typeof ownState)}>
+        <select aria-label="Owned or not" value={ownState} onChange={(e) => setOwnState(e.target.value as typeof ownState)}>
           <option value="all">All</option>
           <option value="owned">Owned</option>
           <option value="unowned">Not owned</option>

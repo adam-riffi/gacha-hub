@@ -16,7 +16,7 @@ function EchoCard({ title, echo, onChange }: { title: string; echo: Echo | undef
       <Labeled label="Sonata set"><Txt value={e.setName} onChange={(v) => set({ setName: v })} /></Labeled>
       <div className="field-inline">
         <Labeled label="Cost">
-          <select value={e.cost ?? ""} onChange={(ev) => set({ cost: ev.target.value ? (Number(ev.target.value) as 1 | 3 | 4) : undefined })}>
+          <select aria-label="Cost" value={e.cost ?? ""} onChange={(ev) => set({ cost: ev.target.value ? (Number(ev.target.value) as 1 | 3 | 4) : undefined })}>
             <option value="">—</option>
             <option value="4">4</option>
             <option value="3">3</option>
@@ -53,7 +53,7 @@ export function WuwaSheet({ doc, setDoc, name, portraitUrl, onName, onPortrait }
         <div className="card">
           <h3>Weapon</h3>
           <div className="slot-grid">
-            <Labeled label="Name"><input value={doc.weapon?.name ?? ""} onChange={(e) => setWeapon({ name: e.target.value || undefined })} /></Labeled>
+            <Labeled label="Name"><input aria-label="Name" value={doc.weapon?.name ?? ""} onChange={(e) => setWeapon({ name: e.target.value || undefined })} /></Labeled>
             <Labeled label="Level"><Num value={doc.weapon?.level} min={1} max={90} onChange={(v) => setWeapon({ level: v })} /></Labeled>
             <Labeled label="Syntonize"><Num value={doc.weapon?.syntonize} min={1} max={5} onChange={(v) => setWeapon({ syntonize: v })} /></Labeled>
           </div>

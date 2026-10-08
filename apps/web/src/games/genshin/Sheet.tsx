@@ -166,7 +166,7 @@ export function GenshinSheet({
         <div className="gs-card">
           <div className="gs-card-h">Identity</div>
           <Labeled label="Build name">
-            <input value={name} onChange={(e) => onName(e.target.value)} />
+            <input aria-label="Build name" value={name} onChange={(e) => onName(e.target.value)} />
           </Labeled>
           <div className="gs-id-grid">
             <Labeled label="Level">
@@ -246,7 +246,7 @@ export function GenshinSheet({
             <div className="gs-wep-body">
               <div className="gs-wep-top">
                 <Labeled label="Name">
-                  <input
+                  <input aria-label="Name"
                     value={doc.weapon?.name ?? ""}
                     onChange={(e) => setWeapon({ name: e.target.value || undefined })}
                     placeholder="Weapon name"

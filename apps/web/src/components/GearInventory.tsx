@@ -97,15 +97,15 @@ export function GearInventory({
   return (
     <>
       <div className="toolbar">
-        <select value={setFilter} onChange={(e) => setSetFilter(e.target.value)}>
+        <select aria-label="Set" value={setFilter} onChange={(e) => setSetFilter(e.target.value)}>
           <option value="">All sets</option>
           {usedSets.sort().map((s) => <option key={s} value={s}>{s}</option>)}
         </select>
-        <select value={slotFilter} onChange={(e) => setSlotFilter(e.target.value)}>
+        <select aria-label="Slot" value={slotFilter} onChange={(e) => setSlotFilter(e.target.value)}>
           <option value="">All slots</option>
           {SLOTS.map((s) => <option key={s} value={s}>{SLOT_LABEL[s]}</option>)}
         </select>
-        <select value={where} onChange={(e) => setWhere(e.target.value as typeof where)}>
+        <select aria-label="Where" value={where} onChange={(e) => setWhere(e.target.value as typeof where)}>
           <option value="all">Bag + equipped</option>
           <option value="bag">In bag</option>
           <option value="equipped">Equipped</option>
@@ -124,6 +124,7 @@ export function GearInventory({
             </Labeled>
             <Labeled label="Slot">
               <select
+                aria-label="Slot"
                 value={draft.slot}
                 onChange={(e) => setDraft({ ...draft, slot: e.target.value, mainStat: MAIN_STATS[e.target.value]?.[0] ?? "" })}
               >
@@ -183,6 +184,7 @@ export function GearInventory({
                   ) : (
                     <span className="row" style={{ gap: 6 }}>
                       <select
+                        aria-label="Equip on"
                         value=""
                         onChange={(e) => e.target.value && equip.mutate({ id: bagId!, characterId: e.target.value })}
                         style={{ width: "auto", padding: "3px 6px" }}
