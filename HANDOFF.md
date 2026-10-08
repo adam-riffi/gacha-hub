@@ -5,7 +5,7 @@
 - Open PRs:
   - #78 ci(budget): fail the build over 200 KB gzipped initial JS. Draft, CI green, waits for the owner.
   - #79 build(db): Prisma-7-ready scripts + ADR 0003 spike notes. Draft on #78, CI green, waits for #78.
-  - This session's PR: docs(guide), the project guide and this file.
+  - #84 docs(guide): the project guide and this file. Draft, waits for CI and the owner.
 - Unmerged branch `stack/a11y/01-axe` (on #79): axe E2E test + WIP accessible names. Not a PR yet; the test still fails.
 
 ## Done this session

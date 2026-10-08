@@ -14,7 +14,7 @@ Entry format:
 
 ---
 
-## 2026-10-08 · claude · stack/docs/01-guide · pending
+## 2026-10-08 · claude · stack/docs/01-guide · #84
 - Done: `docs/PROJECT-GUIDE.md` (scope, architecture and flow diagrams, every screen with a screenshot in `docs/screens/`, per-game features and why, API map, work state, full to-do split owner/agent, known issues, gotchas) and the first root `HANDOFF.md`. The Phase 8 `docs/HANDOFF.md` is removed; its gotchas moved to the guide.
 - Tests: Documentation only; claims checked against the code, `gh` and the latest cron and smoke runs.
 - Scope/decisions: No behavior change. DESIGN.md and ADR 0002 references to the old file now point at git history.
