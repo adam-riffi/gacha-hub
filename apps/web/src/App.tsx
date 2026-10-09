@@ -5,6 +5,7 @@ import { LoginPage } from "./pages/LoginPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { LibraryPage } from "./pages/LibraryPage";
 import { InstancePage } from "./pages/InstancePage";
+import { ActivitiesPage } from "./pages/ActivitiesPage";
 import { OwnershipPage } from "./pages/OwnershipPage";
 import { EquipmentPage } from "./pages/EquipmentPage";
 import { GearSetsPage } from "./pages/GearSetsPage";
@@ -31,7 +32,8 @@ export function App() {
       <Routes>
         <Route path="/" element={<DashboardPage />} />
         <Route path="/library" element={<LibraryPage />} />
-        <Route path="/games/:id" element={<InstancePage />} />
+        <Route path="/games/:id" element={<ActivitiesPage />} />
+        <Route path="/games/:id/overview" element={<InstancePage />} />
         <Route path="/games/:id/ownership" element={<OwnershipPage />} />
         <Route path="/games/:id/equipment" element={<EquipmentPage />} />
         <Route path="/games/:id/gear" element={<GearSetsPage />} />

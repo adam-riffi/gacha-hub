@@ -91,6 +91,7 @@ export const hsr: GameDefinition = {
   regions: hoyoRegions,
   currencies: [
     { key: "trailblazePower", label: "Trailblaze Power", cap: 300, regenPerHour: 10 },
+    { key: "reservedTrailblazePower", label: "Reserved Trailblaze Power", cap: 2400 },
     { key: "stellarJade", label: "Stellar Jade", pullCost: 160, pullLabel: "warp" },
     { key: "specialPass", label: "Star Rail Special Pass", pullCost: 1, pullLabel: "warp" },
     { key: "railPass", label: "Star Rail Pass", pullCost: 1, pullLabel: "warp", standardOnly: true },
@@ -98,7 +99,7 @@ export const hsr: GameDefinition = {
   ],
   // Sources per value: docs/games/hsr.md.
   manifest: {
-    stamina: { currency: "trailblazePower", reserve: { name: "Reserved Trailblaze Power", cap: 2400, regenPerHour: 60 / 18 } },
+    stamina: { currency: "trailblazePower", reserve: { currency: "reservedTrailblazePower", regenPerHour: 60 / 18 } },
     monthlyShops: [{ key: "embers", name: "Embers Exchange", day: 1 }],
     // Since 4.5 the three modes run cycles of different lengths; refresh the anchors each version.
     endgame: [

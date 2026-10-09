@@ -56,7 +56,8 @@ describe.each(gameList.map((g) => [g.key, g] as const))("%s manifest", (key, g) 
     const c = g.currencies.find((x) => x.key === stamina.currency);
     expect(c?.cap).toBeGreaterThan(0);
     expect(c?.regenPerHour).toBeGreaterThan(0);
-    if (stamina.reserve) expect(stamina.reserve.cap).toBeGreaterThan(0);
+    // The reserve is a currency of its own, so it is stored, edited and exported like one.
+    if (stamina.reserve) expect(g.currencies.find((x) => x.key === stamina.reserve!.currency)?.cap).toBeGreaterThan(0);
     if (stamina.capAt) {
       const caps = Array.from({ length: 200 }, (_, l) => stamina.capAt!(l + 1));
       expect(caps.every((cap, i) => cap > 0 && (i === 0 || cap >= caps[i - 1]!))).toBe(true);
@@ -88,7 +89,7 @@ describe.each(gameList.map((g) => [g.key, g] as const))("%s manifest", (key, g) 
     const m = g.manifest;
     const names = [
       g.currencies.find((c) => c.key === m.stamina.currency)?.label,
-      m.stamina.reserve?.name,
+      g.currencies.find((c) => c.key === m.stamina.reserve?.currency)?.label,
       ...m.monthlyShops.map((s) => s.name),
       ...m.endgame.map((e) => e.name),
       m.battlePass?.name,

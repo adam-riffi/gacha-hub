@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f8/08-activities · #113
+- Done: the hub's Activities tab per G1, first and the landing (old overview last): stamina with meter, full-at and reserve; Daily, Weekly and Monthly cards with resets, ticking and adding (monthly picks a shop or monthly mode); cycles with reset or close chips; version end, battle pass on record, running events. Reserves became currencies (manifest points at the key). #112 merged.
+- Tests: written first: reserves as currencies in the conformance suite; E2E `activities.spec.ts`; the smoke journey opens Overview for the domains.
+- Scope/decisions: AUTO rows, per-item progress, world level, Fragile Resin and the Spend-it link are left out; pass level, results and remind-when-full come next.
+- Next: `09-passes` (PassState routes; battle pass level, weekly XP, levels a day; 30-day pass days left).
+
 ## 2026-10-10 · claude · stack/f8/07-hub-header · #112
 - Done: the game hub's header and tabs on every hub screen (icon or accent tile, name, server and UTC offset, masked UID, account level named per game, MANUAL tag, Edit for server/UID/level; next daily and weekly resets and the version's end on the profile's server); `hubResets`, `utcLabel`, manifest `accountLevel` with sources. #111 merged.
 - Tests: written first: account levels in the conformance suite, `hubResets`, `utcLabel`, E2E `hub.spec.ts` (header, edit, tabs); whole E2E suite green.

@@ -73,6 +73,7 @@ export const zzz: GameDefinition = {
   regions: hoyoRegions,
   currencies: [
     { key: "battery", label: "Battery Charge", cap: 240, regenPerHour: 10 },
+    { key: "backupBattery", label: "Backup Battery Charge", cap: 2400 },
     { key: "polychrome", label: "Polychrome", pullCost: 160, pullLabel: "signal" },
     { key: "encryptedTape", label: "Encrypted Master Tape", pullCost: 1, pullLabel: "signal" },
     { key: "masterTape", label: "Master Tape", pullCost: 1, pullLabel: "signal", standardOnly: true },
@@ -80,7 +81,7 @@ export const zzz: GameDefinition = {
   ],
   // Sources per value: docs/games/zzz.md.
   manifest: {
-    stamina: { currency: "battery", reserve: { name: "Backup Battery Charge", cap: 2400, regenPerHour: 60 / 18 } },
+    stamina: { currency: "battery", reserve: { currency: "backupBattery", regenPerHour: 60 / 18 } },
     monthlyShops: [{ key: "signal", name: "Signal Store", day: 1 }],
     // Two 14-day cycles on alternate Fridays.
     endgame: [

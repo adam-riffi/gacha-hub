@@ -76,6 +76,7 @@ export const wuwa: GameDefinition = {
   regions: hoyoRegions,
   currencies: [
     { key: "waveplate", label: "Waveplate", cap: 240, regenPerHour: 10 },
+    { key: "waveplateCrystals", label: "Waveplate Crystals", cap: 480 },
     { key: "astrite", label: "Astrite", pullCost: 160, pullLabel: "convene" },
     { key: "radiantTide", label: "Radiant Tide", pullCost: 1, pullLabel: "convene" },
     { key: "lustrousTide", label: "Lustrous Tide", pullCost: 1, pullLabel: "convene", standardOnly: true },
@@ -83,7 +84,7 @@ export const wuwa: GameDefinition = {
   ],
   // Sources per value: docs/games/wuwa.md.
   manifest: {
-    stamina: { currency: "waveplate", reserve: { name: "Waveplate Crystals", cap: 480, regenPerHour: 5 } },
+    stamina: { currency: "waveplate", reserve: { currency: "waveplateCrystals", regenPerHour: 5 } },
     monthlyShops: [{ key: "coral", name: "Coral Shop", day: 1 }],
     endgame: [
       { key: "tower", name: "Tower of Adversity", anchor: { cadence: "cycle", start: "2026-09-14", days: 28 }, metric: { label: "crests" }, maxPremium: 800 },
