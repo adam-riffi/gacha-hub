@@ -52,7 +52,7 @@ describe("segmentedBar", () => {
     expect(track.startsWith("M4 0H24L20 8H0Z")).toBe(true);
     // four full segments and a tenth of the fifth
     expect((fill.match(/M/g) ?? []).length).toBe(5);
-    expect(fill.endsWith("M100 0H105.6L101.6 8H96Z")).toBe(true);
+    expect(fill.endsWith("M100 0H102L98 8H96Z")).toBe(true);
   });
 
   it("fills nothing at zero and everything at the maximum", () => {
