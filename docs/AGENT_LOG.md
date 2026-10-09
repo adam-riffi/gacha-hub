@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f8/04-day-record · #108
+- Done: `lib/dayRecord.ts`; an `onSend` hook rewrites today's `DayRecord` per profile after any successful change by a signed-in user (Discord `/update`, `/done`, `/goal` too): daily items done/total, open goals as Home counts them, limited pulls on hand, under the server's game day. `/api/dashboard` returns 26 weeks per game. `pullsFor` moved to shared. #107 merged.
+- Tests: written first: `dayRecordFor` (game day at the reset hour, dailies only, open goals incl. farming goals, pulls) and `dayRecord.integration.test.ts` (write-through, rejected change writes nothing, 26-week window); the export fixture moved to a past day.
+- Scope/decisions: one hook instead of a call per route; ~10 queries per change for all of a user's profiles, fine for a few friends. The plan's `04-day-record` is split: this server PR, then the Home UI.
+- Next: `05-home-history`: heatmap from the records, streaks, open goals and pulls gained over time, pin a past day (VIEWING chip, BACK TO TODAY, DAY CLOSED), screenshot beside `dashboard.png`.
+
 ## 2026-10-10 · claude · stack/f8/03-schema · #107
 - Done: recurring tasks on five cadences, a monthly or cycle task following a manifest shop or endgame mode by `anchorKey` (`taskAnchor` in the cadence core; tasks, `/dailies` and reminders use it); `GameInstance.uid` and `accountLevel` (limits in `LIMITS`); `CycleResult`, `PassState`, `DayRecord` (dailies done/total, open goals, pulls on hand) with RLS; all in the export. AGENTS.md migration command updated for Prisma 7 (`--from-schema`). #106 merged.
 - Tests: written first: `taskAnchor`, `tasks.integration.test.ts` (monthly, cycle, version windows), UID and level limits, the export; `migrations.test.ts` guards RLS on every created table (it caught the three new ones before the migration enabled it).
