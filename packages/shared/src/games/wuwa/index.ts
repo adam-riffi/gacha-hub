@@ -81,6 +81,18 @@ export const wuwa: GameDefinition = {
     { key: "lustrousTide", label: "Lustrous Tide", pullCost: 1, pullLabel: "convene", standardOnly: true },
     { key: "shellCredits", label: "Shell Credits" },
   ],
+  // Sources per value: docs/games/wuwa.md.
+  manifest: {
+    stamina: { currency: "waveplate", reserve: { name: "Waveplate Crystals", cap: 480, regenPerHour: 5 } },
+    monthlyShops: [{ key: "coral", name: "Coral Shop", day: 1 }],
+    endgame: [
+      { key: "tower", name: "Tower of Adversity", anchor: { cadence: "cycle", start: "2026-09-14", days: 28 }, metric: { label: "crests" }, maxPremium: 800 },
+      { key: "wastes", name: "Whimpering Wastes", anchor: { cadence: "cycle", start: "2026-09-28", days: 28 }, metric: { label: "points" }, maxPremium: 800 },
+    ],
+    battlePass: { name: "Pioneer Podcast", maxLevel: 70 },
+    monthlyPass: { name: "Lunite Subscription", days: 30, maxDays: 180 },
+    version: { name: "3.7", start: "2026-09-30", days: 42 },
+  },
   defaultTasks: [
     { key: "dailyActivity", title: "Daily Activity", cadence: "daily" },
     { key: "weeklyBosses", title: "Weekly Bosses", cadence: "weekly" },

@@ -94,6 +94,26 @@ export const genshin: GameDefinition = {
     { key: "acquaintFate", label: "Acquaint Fate", pullCost: 1, pullLabel: "wish", standardOnly: true },
     { key: "mora", label: "Mora" },
   ],
+  // Sources per value: docs/games/genshin.md.
+  manifest: {
+    stamina: { currency: "resin", reserve: { name: "Condensed Resin", cap: 5 } },
+    monthlyShops: [{ key: "bargains", name: "Paimon's Bargains", day: 1 }],
+    endgame: [
+      { key: "abyss", name: "Spiral Abyss", anchor: { cadence: "monthly", day: 16 }, metric: { label: "stars", max: 36 }, maxPremium: 800 },
+      { key: "theater", name: "Imaginarium Theater", anchor: { cadence: "monthly", day: 1 }, metric: { label: "acts", max: 10 }, maxPremium: 1000 },
+      {
+        key: "stygian",
+        name: "Stygian Onslaught",
+        anchor: { cadence: "version", start: "2026-09-30", days: 42 },
+        openDays: 35,
+        metric: { label: "difficulty", max: 6 },
+        maxPremium: 450,
+      },
+    ],
+    battlePass: { name: "Gnostic Hymn", maxLevel: 50, weeklyXpCap: 10_000 },
+    monthlyPass: { name: "Blessing of the Welkin Moon", days: 30, maxDays: 180 },
+    version: { name: "7.1", start: "2026-09-23", days: 42 },
+  },
   defaultTasks: [
     { key: "commissions", title: "Daily Commissions", cadence: "daily" },
     { key: "weeklyBosses", title: "Weekly Bosses", cadence: "weekly" },
