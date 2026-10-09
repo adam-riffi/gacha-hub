@@ -11,7 +11,7 @@ DESIGN.md §7 describes the look the app has today: Space Grotesk headings, the 
 ## Decision
 
 - `docs/VISUAL-DESIGN.md` is the source of truth for the look: tokens, type, panels, components, charts, motion and the Overview layout. DESIGN.md §7 summarises it and WIREFRAMES.md keeps screen structure.
-- Only `--accent` changes with scope: magenta `#FF2D95` on the Overview, the game's colour on a game (new values for Genshin, ZZZ, WuWa and Endfield, and `#1F9BFF` for NTE), and the character's element or attribute colour on a character's pages. HSR keeps `#8A7DFF` until Georges picks.
+- Only `--accent` changes with scope: magenta `#FF2D95` on the Overview, the game's colour on a game (new values for Genshin, ZZZ, WuWa and Endfield, and `#1F9BFF` for NTE), and the character's element or attribute colour on a character's pages. HSR takes light pink `#FF8FD1` (Georges, 2026-10-09).
 - Fonts (Barlow Condensed, IBM Plex Mono, Hanken Grotesk, Bodoni Moda; all SIL OFL) are self-hosted as woff2. No third-party font requests, so the CSP does not change for fonts.
 - Charts stay hand-written inline SVG; no chart or UI-kit library is added.
 - A new milestone **V** in DESIGN.md §9 lands the system (tokens, fonts, shell, panels, components, chart parts) and restyles Home before F8 to F10 build their screens.

@@ -41,16 +41,16 @@ Only `--accent` changes with scope; greys, paper and type never do. It is set on
 
 | Scope | Accent |
 | --- | --- |
-| Overview (all games) | `#FF2D95` magenta. The design also tried `#FF4A3D`, `#FF8A2B` and `#3FD6E8`. |
+| Overview (all games) | `#FF2D95` magenta, with no colour setting. The design also tried `#FF4A3D`, `#FF8A2B` and `#3FD6E8`. |
 | Genshin Impact | `#FFAA33` |
-| Honkai: Star Rail | Not in the design; keeps today's `#8A7DFF` until Georges picks. |
+| Honkai: Star Rail | `#FF8FD1` light pink (not in the design; Georges's choice), lighter than the Overview's magenta so the two stay distinct. |
 | Zenless Zone Zero | `#8CFF3A` |
 | Wuthering Waves | `#2EE6C8` |
 | Neverness to Everness | `#1F9BFF` |
 | Arknights: Endfield | `#FFE600` |
 | A character's pages | The character's element or attribute colour from the game module ("green on a green character's page"), else the game's accent. |
 
-These replace today's module accents (`#d9a441` Genshin, `#f5e02c` ZZZ, `#9ad0ff` WuWa, `#2dd4bf` Endfield).
+These replace today's module accents (`#d9a441` Genshin, `#8a7dff` HSR, `#f5e02c` ZZZ, `#9ad0ff` WuWa, `#2dd4bf` Endfield).
 
 ## 4. Type
 
@@ -170,10 +170,15 @@ Guidance for F8 to F10, to adjust in review:
 - Art in the strip, banners and passes comes from the art store (ADR 0006); the design used placeholder art.
 - Each screen PR is checked at 1920×1204 against this file and by the axe job, with a screenshot attached.
 
-## 13. Open questions for Georges
+## 13. Decisions and defaults
 
-1. HSR's accent.
-2. The Overview accent: magenta only, or a setting offering the four colours the design tried?
-3. The page pattern: always on, or a setting?
-4. The Proposed items: primary button, form controls, segmented switches, rotation pause and tilt under reduced motion.
-5. Pinning a past day needs a per-day history of dailies, pulls and passes: with milestone V, or later?
+Decided by Georges on 2026-10-09:
+
+- HSR's accent is light pink `#FF8FD1`.
+- The Overview accent stays magenta; there is no colour setting.
+
+Defaults to build until Georges says otherwise (each shows in the PR screenshots, where he can change it):
+
+- The page pattern is always on.
+- The items marked **Proposed** in this file are built as written: primary button, form controls, segmented switches, rotation pause, no tilt under reduced motion.
+- The heatmap needs a per-day record of completed dailies, which does not exist yet (`Task` keeps only `lastCompletedAt`). Milestone V builds the heatmap and its readout with today filled in; F8 adds the record (DESIGN.md §8) to fill past days. Pinning a past day waits for that record.

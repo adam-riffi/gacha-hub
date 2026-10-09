@@ -17,7 +17,7 @@ Entry format:
 ## 2026-10-09 · claude · stack/docs-v2/04-visual-design · #88
 - Done: `docs/VISUAL-DESIGN.md` writes Georges's 2026-10-08 dashboard design down as the app's visual system (tokens, type, panels, components, charts, motion, the Overview layout, an accent per game); ADR 0007; DESIGN.md §7 rewritten and milestone V added before F8; WIREFRAMES.md, AGENTS.md, README and the old design docs point to it. #78, #79 and #84 restacked onto `main` with #85–#87 as one chain.
 - Tests: Documentation only. Values come from the design file's stylesheet and script (tilt angles, rotation timing, urgency thresholds, heatmap levels).
-- Scope/decisions: What the design lacks is marked Proposed (primary button, form controls, segmented switches, rotation pause and tilt under reduced motion). HSR has no accent in the design and keeps `#8A7DFF`. Proposed in ADR 0007.
+- Scope/decisions: What the design lacks is marked Proposed (primary button, form controls, segmented switches, rotation pause and tilt under reduced motion). HSR takes light pink `#FF8FD1` and the Overview stays magenta (Georges); open items get defaults in VISUAL-DESIGN.md §13. Proposed in ADR 0007.
 - Next: Georges merges the chain bottom-up and decides ADRs 0001–0007; the build session starts with milestone V.
 
 ## 2026-10-09 · claude · stack/docs-v2/03-nte-handoff · #87
