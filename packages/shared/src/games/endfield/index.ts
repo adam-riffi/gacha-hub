@@ -58,7 +58,7 @@ export const endfield: GameDefinition = {
   key: "endfield",
   teamSize: 4,
   name: "Arknights: Endfield",
-  accent: "#2dd4bf",
+  accent: "#FFE600",
   art: { icon: "/games/endfield/icon.png", background: "/games/endfield/background.jpg" },
   regions: endfieldRegions,
   currencies: [

@@ -85,7 +85,7 @@ export const hsr: GameDefinition = {
     { key: "standard", label: "Stellar warp", hardPity: 90, softPity: 74, featuredRate: 1 },
   ],
   name: "Honkai: Star Rail",
-  accent: "#8a7dff",
+  accent: "#FF8FD1",
   art: { icon: "/games/hsr/icon.png", background: "/games/hsr/background.jpg" },
   regions: hoyoRegions,
   currencies: [

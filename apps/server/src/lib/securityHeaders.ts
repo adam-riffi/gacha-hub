@@ -2,13 +2,14 @@
  * Content-Security-Policy (ENGINEERING.md §12). Scripts are the app's own;
  * images also come from the community art CDNs, Discord avatars and Vercel
  * Blob uploads; inline styles are allowed because React renders `style` props.
+ * Fonts are self-hosted (VISUAL-DESIGN.md §12).
  * vercel.json sends the same headers for static files (a test keeps them equal).
  */
 const CSP: Record<string, string[]> = {
   "default-src": ["'self'"],
   "script-src": ["'self'"],
-  "style-src": ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-  "font-src": ["'self'", "https://fonts.gstatic.com"],
+  "style-src": ["'self'", "'unsafe-inline'"],
+  "font-src": ["'self'"],
   "img-src": [
     "'self'",
     "data:",
