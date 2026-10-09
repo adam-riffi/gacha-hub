@@ -1,5 +1,6 @@
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
+import { posix } from "node:path";
 import { fileURLToPath } from "node:url";
 import { nodeFileTrace } from "@vercel/nft";
 import { describe, expect, it } from "vitest";
@@ -16,12 +17,14 @@ describe("Vercel function trace", () => {
       stdio: "ignore",
     });
     const vercel = JSON.parse(readFileSync(`${root}vercel.json`, "utf8"));
+    const excludeFiles: string = vercel.functions["api/index.mjs"].excludeFiles;
     const { fileList } = await nodeFileTrace([`${root}api/index.mjs`], {
       base: root,
       processCwd: root,
       ts: true,
       mixedModules: true,
-      ignore: vercel.functions["api/index.mjs"].excludeFiles,
+      // A function, not the glob itself: nft would turn it into a Windows path.
+      ignore: (f) => posix.matchesGlob(f.replaceAll("\\", "/"), excludeFiles),
     });
     const unexpected = [...fileList].filter(
       (f) => !/^(api|dist-server|node_modules)[\\/]/.test(f) || /(?<!\.d)\.[cm]?tsx?$/.test(f),

@@ -5,7 +5,7 @@
   "installCommand": "npm ci",
   "git": { "deploymentEnabled": false },
   "functions": {
-    "api/index.mjs": { "maxDuration": 30 }
+    "api/index.mjs": { "maxDuration": 30, "excludeFiles": "prisma/**" }
   },
   "headers": [
     {
