@@ -150,7 +150,7 @@ F5 follows the owner's listed nice-to-have (the Phase 8 handoff notes, in git hi
 
 | Workflow | Trigger | Jobs |
 | --- | --- | --- |
-| `ci.yml` | PRs, pushes to `main` | `lint`, `typecheck`, `test`, `build`, `e2e` |
+| `ci.yml` | PRs, pushes to `main` | `lint`, `typecheck`, `test`, `test-postgres` (the route tests on a Postgres service), `build`, `e2e` |
 | `cron-tick.yml` | Every 10 min, `workflow_dispatch` | `tick`: reminders, and the hourly feed import |
 | `smoke.yml` | Successful production deployment, `workflow_dispatch` | `smoke`: `scripts/smoke.mjs` against the production domain |
 
@@ -160,7 +160,7 @@ Required checks: `lint`, `typecheck`, `test`, `build`, `e2e`. Vercel builds each
 
 Vercel project `gacha-hub` (framework preset "Other", functions in `dub1` next to the database). Preview deployments are off for `stack/**`, `spike/**` and `dependabot/**` branches (`vercel.json`): the Hobby plan allows 100 deployments a day, and restacking a stack redeploys every branch; CI and the E2E suite cover those PRs. Environment variables are set by the owner in Vercel (`.env.example` lists them): `DATABASE_URL` (transaction pooler), `DIRECT_DATABASE_URL`, `SESSION_SECRET`, `COOKIE_SECURE=true`, `APP_BASE_URL`, `DISCORD_*`, `ADMIN_DISCORD_IDS`, `CRON_SECRET`, `BLOB_READ_WRITE_TOKEN`, `DEV_LOGIN_ENABLED=false`; from F11 `LINK_SECRET_KEY` (ADR 0005); from F12 `VITE_ASSET_BASE` (ADR 0006). Never set `NODE_ENV`. GitHub secrets: `CRON_URL`, `CRON_SECRET`. Full steps: `docs/DEPLOY.md`.
 
-**Smoke checks** (`npm run smoke -- <url>`, run by `smoke.yml` after every production deploy): the app shell loads; `/api/me` answers anonymously with `oauth: true, devLogin: false`; `/api/instances` refuses anonymous reads; the security headers are sent. Manually: sign-in reaches Home; a `cron-tick` run returns `ok: true`.
+**Smoke checks** (`npm run smoke -- <url>`, run by `smoke.yml` after every production deploy): the app shell loads; `/api/health` reads through the database; `/api/me` answers anonymously with `oauth: true, devLogin: false`; `/api/instances` refuses anonymous reads; the security headers are sent. Manually: sign-in reaches Home; a `cron-tick` run returns `ok: true`.
 
 ## 13. Performance, security and observability
 

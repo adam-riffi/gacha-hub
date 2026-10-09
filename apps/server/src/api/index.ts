@@ -1,4 +1,5 @@
 import type { FastifyInstance } from "fastify";
+import { registerHealthRoutes } from "./health.js";
 import { registerGameRoutes } from "./games.js";
 import { registerCharacterRoutes } from "./characters.js";
 import { registerOwnershipRoutes } from "./ownership.js";
@@ -18,6 +19,7 @@ import { registerCronRoutes } from "./cron.js";
 import { registerDiscordInteractions } from "../discord/interactions.js";
 
 export async function registerApi(app: FastifyInstance) {
+  await registerHealthRoutes(app);
   await registerGameRoutes(app);
   await registerCharacterRoutes(app);
   await registerOwnershipRoutes(app);

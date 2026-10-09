@@ -12,6 +12,8 @@
   - #99 feat(charts): line, paired bars, segmented bar, the heatmap. Ready, CI green.
   - #100 feat(dashboard): stamina for every game, the pull log, the recurring split. Draft until CI is green.
   - #101 feat(home): Home is the dashboard. Draft until CI is green; carries this file. **It asks Georges one question:** DESIGN.md F5 wants pity next to pulls on Home, the design's PULLS card has none; a mono line under each game's row keeps F5 until he decides.
+  - #102 build(db): Prisma 7 with driver adapters (milestone D, on #101). Draft until CI is green.
+  - #103 ci(db): the route tests on a Postgres service; `/api/health` in the smoke check (on #102). Draft until CI is green; carries this file. **It asks Georges how to verify Supabase's pooler:** Preview-scoped `DATABASE_URL` and one preview, or the first production deploy guarded by the health smoke check.
 - ADRs 0001–0007 accepted; ADR 0008 (events as data) still Proposed, needed before F10.
 
 ## Done this session
@@ -24,7 +26,7 @@
 - Still true: `CRON_SECRET` is empty, so reminders and the hourly feed import never run in production.
 
 ## Next
-1. Milestone D (DESIGN.md §9, ADR 0003): `prisma.config.ts`, the `prisma-client` generator, driver adapters (`@prisma/adapter-pg` through the pooler, `@prisma/adapter-better-sqlite3` locally), the moved imports; verify on a disposable Postgres and a preview deployment. The spike on `spike/prisma7` and ADR 0003 hold the findings (its AI-agent guard blocks `db push --accept-data-loss`; absolute SQLite URLs; `better-sqlite3` externalized in the bundle).
+1. Milestone D is in #102 and #103. Verified: the route tests on Postgres 16 in CI (9 migrations, 207 tests through `pg`), and a Vercel preview build on Prisma 7 (READY; every module loaded; it stopped at the expected missing `DATABASE_URL`; details on #103). Only Supabase's pooler is left (Georges's choice on #103).
 2. F8 (cadences, endgame, passes, stamina reserve, the per-day record that fills the heatmap, Backlog and GAINED; Endfield regions and Sanity cap), then F9–F12, each screen from its wireframe board in the kit.
 3. When Georges answers the pity question on #101, settle the PULLS card and DESIGN.md F5 together.
 
@@ -39,5 +41,5 @@
 - Never alias `--accent` from a `:root` variable: it resolves before the shell sets a game's colour.
 - The axe journey scans under reduced motion; its old "wait for animations" step waited on the carousel bar, which restarts as soon as it ends.
 - Screenshot helpers live in the scratchpad, not the repo: a Playwright script that signs in as the dev user and shoots `name=/path` at 1920×1204, and one that puts a shot beside a design PNG. In Git Bash set `MSYS_NO_PATHCONV=1` so `/path` arguments survive.
-- Windows: stop the dev server before `npm run check`. Always `gh pr create --head <branch>`; retarget a stacked PR to `main` before deleting its merged base.
+- Stop the dev server before `npm run check`: the generated client is provider-specific (no engine DLL since Prisma 7). Always `gh pr create --head <branch>`; retarget a stacked PR to `main` before deleting its merged base.
 - Owner files stay uncommitted: `gacha-wireframes/`, `index.html`, `pull-log-gacha-tracker.html*`, `design-canvas/`, `.claude/`.
