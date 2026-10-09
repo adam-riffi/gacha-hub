@@ -14,7 +14,7 @@ Entry format:
 
 ---
 
-## 2026-10-09 · claude · stack/v/07-charts-more · pending
+## 2026-10-09 · claude · stack/v/07-charts-more · #99
 - Done: `packages/shared/src/series.ts` (heat levels, streaks, slanted segments, line points); `LineChart`, `PairedBars`, `SegmentedBar` and `Heatmap` (tooltip, keyboard, pin, the day's games, the streak readout; never tilts). On Home the charts row sits under the goals (BACKLOG with today's point, PULL HISTORY empty until `08-home-data`) and DAILIES, LAST 26 WEEKS follows the banners with today filled in.
 - Tests: `series.test.ts` (thresholds, streaks with a property, segment geometry and clamping, line points with a property); `e2e/heatmap.spec.ts` (labelled map, only today recorded, tooltip on hover, keyboard pin and Escape, the readout).
 - Scope/decisions: Pinning shows the day's games; switching the dashboard to a past day waits for F8's record (VISUAL-DESIGN.md §13). DAYS ALL DONE counts recorded days. The map's focus ring shows for the keyboard only.
