@@ -1,6 +1,6 @@
 # 0007 — Visual system from the 2026-10-08 dashboard
 
-- Status: Proposed
+- Status: Accepted (2026-10-09)
 - Date: 2026-10-09
 - Proposed by: claude; decided by: Georges
 

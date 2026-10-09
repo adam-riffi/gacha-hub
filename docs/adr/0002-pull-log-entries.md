@@ -1,6 +1,6 @@
 # 0002 — Pull log as entries; pity and guarantee derived
 
-- Status: Proposed
+- Status: Accepted (2026-10-09)
 - Date: 2026-10-06
 - Proposed by: claude; decided by: Georges
 

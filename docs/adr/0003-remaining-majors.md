@@ -1,6 +1,6 @@
 # 0003 — Plan for the npm majors not yet taken
 
-- Status: Proposed
+- Status: Accepted (2026-10-09)
 - Date: 2026-10-06
 - Proposed by: claude; decided by: Georges
 
