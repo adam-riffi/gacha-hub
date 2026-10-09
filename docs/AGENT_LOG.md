@@ -14,7 +14,7 @@ Entry format:
 
 ---
 
-## 2026-10-09 · claude · stack/v/08-home-data · pending
+## 2026-10-09 · claude · stack/v/08-home-data · #100
 - Done: `/api/dashboard` gives each game `stamina` (its regenerating currency projected to now, from `lib/regen.ts`, which took over Genshin's resin projection), `pullLog` (batches of the last six weeks) and `recurring` (own dailies and weeklies against added tasks, matched by title like the restore route). Home's PULL HISTORY shows spent pulls per day or ISO week in the viewer's calendar.
 - Tests: `dashboard.integration.test.ts` (resin projection and time to full, a never-set HSR profile, the pull log in order, the recurring split before and after completions); Genshin's regen tests unchanged.
 - Scope/decisions: No schema change. GAINED waits for F8's daily record. Bucketing happens in the browser so the server stays zone-free.
