@@ -25,11 +25,14 @@ describe("security headers", () => {
     expect(directive("object-src")).toBe("object-src 'none'");
   });
 
-  it("allow the image and font hosts the app really uses", () => {
+  it("allow the image hosts the app really uses", () => {
     for (const host of ["https://enka.network", "https://sr.yatta.moe", "https://cdn.discordapp.com", "https://*.public.blob.vercel-storage.com"]) {
       expect(directive("img-src")).toContain(host);
     }
-    expect(directive("font-src")).toContain("https://fonts.gstatic.com");
-    expect(directive("style-src")).toContain("https://fonts.googleapis.com");
+  });
+
+  it("keep fonts and styles on the app's own origin (self-hosted fonts, VISUAL-DESIGN.md §12)", () => {
+    expect(directive("font-src")).toBe("font-src 'self'");
+    expect(directive("style-src")).toBe("style-src 'self' 'unsafe-inline'");
   });
 });
