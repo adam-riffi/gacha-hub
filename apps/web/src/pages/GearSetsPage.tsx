@@ -10,6 +10,7 @@ import { GameTabs, gearLabel } from "../components/GameTabs";
 import { GearInventory } from "../components/GearInventory";
 import { ArtifactPlanner } from "../components/ArtifactPlanner";
 import type { InstanceDetail } from "../lib/types";
+import { Segmented } from "../components/ui";
 
 /** Pieces per set name anywhere in a build doc (every game's gear pieces carry `setName`). */
 function setCounts(node: unknown, out = new Map<string, number>()): Map<string, number> {
@@ -84,11 +85,16 @@ export function GearSetsPage() {
           <span className="badge">{usedBy.size} used by your builds</span>
         </div>
         {instance.gameKey === "genshin" && (
-          <div className="row" style={{ gap: 6 }}>
-            <button className={`btn sm ${view === "sets" ? "primary" : ""}`} onClick={() => setView("sets")}>Sets</button>
-            <button className={`btn sm ${view === "inventory" ? "primary" : ""}`} onClick={() => setView("inventory")}>Inventory</button>
-            <button className={`btn sm ${view === "plan" ? "primary" : ""}`} onClick={() => setView("plan")}>Plan</button>
-          </div>
+          <Segmented
+            label="View"
+            value={view}
+            onChange={setView}
+            options={[
+              { value: "sets", label: "Sets" },
+              { value: "inventory", label: "Inventory" },
+              { value: "plan", label: "Plan" },
+            ]}
+          />
         )}
       </div>
 

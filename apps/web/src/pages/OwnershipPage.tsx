@@ -9,6 +9,7 @@ import { GameTabs } from "../components/GameTabs";
 import { GameIcon } from "../components/GameIcon";
 import { assetUrl, communityAssetUrl } from "../lib/assets";
 import type { InstanceDetail } from "../lib/types";
+import { Segmented } from "../components/ui";
 
 type Kind = "character" | "weapon";
 const stars = (n: number) => "★".repeat(Math.max(0, Math.min(6, n)));
@@ -116,12 +117,15 @@ export function OwnershipPage() {
           </span>
         </div>
         <div className="row">
-          <button className={`btn sm ${kind === "character" ? "primary" : ""}`} onClick={() => setKind("character")}>
-            Characters
-          </button>
-          <button className={`btn sm ${kind === "weapon" ? "primary" : ""}`} onClick={() => setKind("weapon")}>
-            Weapons
-          </button>
+          <Segmented
+            label="Show"
+            value={kind}
+            onChange={setKind}
+            options={[
+              { value: "character", label: "Characters" },
+              { value: "weapon", label: "Weapons" },
+            ]}
+          />
         </div>
       </div>
 

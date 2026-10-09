@@ -8,6 +8,7 @@ import { useCatalog } from "../lib/catalog";
 import { PlanTable } from "../components/TaskGeneratorPanel";
 import { GameTabs } from "../components/GameTabs";
 import type { InstanceDetail } from "../lib/types";
+import { Segmented } from "../components/ui";
 
 const stars = (n: number) => "★".repeat(Math.max(0, Math.min(6, n)));
 
@@ -110,8 +111,15 @@ export function EquipmentPage() {
           <span className="badge">Equipment</span>
         </div>
         <div className="row">
-          <button className={`btn sm ${tab === "weapons" ? "primary" : ""}`} onClick={() => setTab("weapons")}>Weapons ({catalog.weapons.length})</button>
-          <button className={`btn sm ${tab === "gear" ? "primary" : ""}`} onClick={() => setTab("gear")}>Gear sets ({catalog.gear.length})</button>
+          <Segmented
+            label="Show"
+            value={tab}
+            onChange={setTab}
+            options={[
+              { value: "weapons", label: `Weapons (${catalog.weapons.length})` },
+              { value: "gear", label: `Gear sets (${catalog.gear.length})` },
+            ]}
+          />
         </div>
       </div>
 
