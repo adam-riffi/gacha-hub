@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · fix/db-sqlite-path · #110
+- Done: `prisma.config.ts` resolves a relative SQLite URL against `prisma/`, as the app does; `npm run db:sqlite` updates `prisma/dev.db` again instead of creating `dev.db` at the root (a #102 regression under Prisma 7).
+- Tests: written first in `database.test.ts`: the CLI and the app open the same file for `file:./dev.db`; absolute paths pass through.
+- Scope/decisions: none.
+- Next: back to F8 (`06-pin-day`).
+
 ## 2026-10-10 · claude · stack/f8/05-home-history · #109
 - Done: Home's heatmap from the day records (current game day live; the map's today is the latest game day), streaks over 26 weeks, the Backlog line (open goals carried forward, 10 days, last point live), GAINED in Pull history (day-over-day increases of pulls on hand; weekly buckets now end today). Dashboard returns each game's `gameDay`. #108 merged.
 - Tests: written first: `carryForward`, `dailyGains`, `gameDay` on the dashboard; heatmap E2E unchanged and green.
