@@ -2,10 +2,28 @@ import type { ReactNode } from "react";
 import { isUrgent } from "@gacha/shared";
 import { formatRemaining } from "../lib/time";
 
-/** A countdown chip ("ENDS IN 1d 22h"); paper when the deadline or reset is close (VISUAL-DESIGN.md §7). */
-export function Countdown({ at, kind = "deadline", prefix = "ends in" }: { at: string; kind?: "deadline" | "reset"; prefix?: string }) {
+/** A countdown ("ENDS IN 1d 22h") as a chip, or a dark tag over art; paper when the deadline or reset is close (VISUAL-DESIGN.md §7). */
+export function Countdown({
+  at,
+  kind = "deadline",
+  prefix = "ends in",
+  variant = "chip",
+}: {
+  at: string;
+  kind?: "deadline" | "reset";
+  prefix?: string;
+  variant?: "chip" | "tag";
+}) {
+  const hot = isUrgent(at, kind);
+  if (variant === "tag") {
+    return (
+      <span className={`tag ${hot ? "hot" : ""}`}>
+        {prefix} {formatRemaining(at)}
+      </span>
+    );
+  }
   return (
-    <span className={`chip ${isUrgent(at, kind) ? "hot" : ""}`}>
+    <span className={`chip ${hot ? "hot" : ""}`}>
       <i aria-hidden="true" />
       {prefix} {formatRemaining(at)}
     </span>

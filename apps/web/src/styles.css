@@ -290,17 +290,6 @@ select.prio.build-none { color: var(--muted); }
 .kpi-edit:hover { color: var(--text); background: var(--surface-2); }
 
 /* ---- Home: banners now ---- */
-.banners-now { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; }
-.banner-card { display: flex; flex-direction: column; gap: 12px; }
-.banner-name { font-family: var(--font-display); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.feat-row { display: flex; gap: 10px; flex-wrap: wrap; }
-.feat { position: relative; width: 76px; display: flex; flex-direction: column; gap: 4px; }
-.feat-art { width: 76px; height: 76px; background: var(--surface-2); border: 1px solid var(--border); }
-.feat.r5 .feat-art { background: linear-gradient(160deg, #b8782f, #6e4520); }
-.feat.r4 .feat-art { background: linear-gradient(160deg, #8a6cc4, #47386e); }
-.feat-art.gicon-ph { font-size: 1.1rem; color: rgba(255, 255, 255, 0.85); }
-.feat-name { font-size: 0.72rem; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.feat-owned { position: absolute; top: 4px; left: 4px; font-size: 0.62rem; font-weight: 700; padding: 1px 5px; background: #000; color: var(--text); }
 
 /* ---- Task board: quiet rows, actions on hover ---- */
 .new-task { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; padding: 12px; margin-bottom: 12px; background: var(--bg-elev); border: 1px solid var(--border); }

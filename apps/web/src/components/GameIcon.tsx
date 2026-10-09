@@ -22,8 +22,8 @@ export function GameIcon({
   className = "",
 }: {
   src: string | null;
-  /** Tried when `src` is missing or fails to load (e.g. a community CDN copy). */
-  fallback?: string | null;
+  /** Tried in order when `src` is missing or fails to load (e.g. community CDN copies). */
+  fallback?: string | null | (string | null | undefined)[];
   alt: string;
   /** Short text for the placeholder (defaults to initials of `alt`). */
   label?: string;
@@ -31,7 +31,7 @@ export function GameIcon({
   tint?: string;
   className?: string;
 }) {
-  const sources = [src, fallback].filter((s): s is string => Boolean(s));
+  const sources = [src, ...(Array.isArray(fallback) ? fallback : [fallback])].filter((s): s is string => Boolean(s));
   // Reset to the first source whenever the sources change (e.g. a new upload),
   // without an effect: the failure index is only valid for the same sources.
   const sig = sources.join("|");

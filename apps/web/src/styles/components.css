@@ -87,6 +87,8 @@ input[type="checkbox"]:checked { background: var(--accent); border-color: var(--
   clip-path: polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%);
 }
 .tag::before { content: ""; width: 6px; height: 6px; background: var(--paper); }
+.tag.hot { background: var(--paper); color: var(--on-paper); }
+.tag.hot::before { background: var(--on-paper); }
 .band { background: var(--paper); color: var(--on-paper); padding: 10px 34px 10px 18px; clip-path: polygon(0 0, 100% 0, calc(100% - 14px) 100%, 0 100%); }
 .tip { background: var(--paper); color: var(--on-paper); padding: 8px 16px 9px 12px; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 9px), calc(100% - 9px) 100%, 0 100%); }
 .badge {
@@ -101,6 +103,7 @@ input[type="checkbox"]:checked { background: var(--accent); border-color: var(--
 .pips { display: flex; align-items: center; gap: 4px; }
 .pips > i { display: block; width: 16px; height: 4px; background: var(--hairline); }
 .pips > i.on { background: var(--accent); }
+.pips.pips-s > i { width: 8px; }
 .kpi { position: relative; padding-bottom: 10px; }
 .kpi::after { content: ""; position: absolute; left: 0; bottom: 0; width: 100%; height: 2px; background: var(--hairline); clip-path: polygon(0 0, 100% 0, calc(100% - 6px) 100%, 0 100%); }
 .kpi-label { color: var(--text-muted); font: 400 12px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
@@ -126,3 +129,33 @@ tbody tr:hover { background: var(--surface-2); }
 .lst::-webkit-scrollbar-thumb { background-color: var(--hairline-strong); border: 3px solid transparent; background-clip: padding-box; min-height: 48px; }
 .lst::-webkit-scrollbar-thumb:hover, .lst::-webkit-scrollbar-thumb:active { background-color: var(--accent); }
 @supports (-moz-appearance: none) { .lst { scrollbar-width: thin; scrollbar-color: var(--hairline-strong) transparent; } }
+
+/* ---- Carousels: the item fills the card under a 40 % dark layer, chevrons inside the edges, a 4 px accent bar while rotating. ---- */
+.carousel { display: flex; flex-direction: column; padding: 0; overflow: hidden; }
+.carousel-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex: 0 0 40px; height: 40px; padding: 0 16px; }
+.carousel-head h3 { margin: 0; }
+.carousel-stage { position: relative; flex: 1; min-height: 0; background: var(--surface-2); }
+.carousel-art { position: absolute; inset: 0; }
+.carousel-art .gicon { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; }
+.carousel-art .gicon-ph { display: grid; place-items: center; border: 0; font: 600 48px/1 var(--font-display); background: repeating-linear-gradient(45deg, var(--surface-3) 0 2px, var(--surface-2) 2px 14px); }
+.carousel-art::after { content: ""; position: absolute; inset: 0; background: var(--bg); opacity: 0.4; }
+.carousel-tag { position: absolute; right: 16px; top: 16px; }
+.carousel-tag .tag { padding: 8px 14px 8px 12px; font-size: 13px; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 9px), calc(100% - 9px) 100%, 0 100%); }
+.carousel-band { position: absolute; left: 0; bottom: 28px; min-width: 210px; }
+.carousel-title { font-size: 26px; line-height: 1.1; }
+.carousel-sub { margin-top: 4px; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+.carousel-empty { position: absolute; inset: 0; display: grid; place-items: center; margin: 0; color: var(--text-muted); }
+.carousel-bar { position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: var(--hairline); }
+.carousel-bar > i { display: block; width: 0; height: 100%; background: var(--accent); animation: carousel-bar linear forwards; }
+@keyframes carousel-bar { from { width: 0; } to { width: 100%; } }
+.cvs { position: absolute; left: 0; right: 0; top: 40px; bottom: 0; display: flex; align-items: center; justify-content: space-between; pointer-events: none; }
+.cv { display: block; width: 44px; height: 88px; padding: 0; border: 0; background: transparent; opacity: 0.4; cursor: pointer; pointer-events: auto; transition: opacity 0.2s, background-color 0.2s; }
+.cv svg { display: block; transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.carousel:hover .cv { opacity: 0.8; }
+.cv:hover, .cv:focus-visible { opacity: 1; background: rgba(5, 5, 5, 0.55); }
+.cv.l:hover svg { transform: translateX(-4px); }
+.cv.r:hover svg { transform: translateX(4px); }
+.cvh { fill: none; stroke: var(--bg); stroke-opacity: 0.75; stroke-width: 7; stroke-linecap: square; stroke-linejoin: miter; }
+.cvl { fill: none; stroke: var(--text); stroke-width: 2.5; stroke-linecap: square; stroke-linejoin: miter; transition: stroke 0.2s; }
+.cv:hover .cvl, .cv:focus-visible .cvl { stroke: var(--accent); }
+.carousel.banner-card { height: 330px; }
