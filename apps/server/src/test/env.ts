@@ -8,7 +8,8 @@ import { fileURLToPath } from "node:url";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "../../../..");
 // Forward slashes so the file: URL is valid for the Prisma client on Windows.
-process.env.DATABASE_URL = `file:${resolve(root, "prisma/test.db").replace(/\\/g, "/")}`;
+// CI's Postgres job sets TEST_DATABASE_URL to run the same suite on Postgres (ADR 0003).
+process.env.DATABASE_URL = process.env.TEST_DATABASE_URL ?? `file:${resolve(root, "prisma/test.db").replace(/\\/g, "/")}`;
 process.env.DIRECT_DATABASE_URL = process.env.DATABASE_URL;
 
 // The dev-login user is our admin in tests.

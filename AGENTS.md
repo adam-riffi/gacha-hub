@@ -40,7 +40,7 @@ Operating manual for coding agents in this repository. Codex and Copilot read th
 | Lint workflows (actionlint 1.7+ on PATH) | `actionlint` |
 | Check all | `npm run check` |
 
-Keep this table accurate: when you add or change a script, update the table in the same PR. `npm test` regenerates the Prisma client for SQLite; `npm run check` regenerates the Postgres client before building, then its E2E step switches back to SQLite. On Windows a running dev server locks the engine DLL, so stop it before `npm run check`.
+Keep this table accurate: when you add or change a script, update the table in the same PR. `npm test` regenerates the Prisma client for SQLite; `npm run check` regenerates the Postgres client before building, then its E2E step switches back to SQLite. Stop the dev server before `npm run check`: the generated client is provider-specific, and the check's Postgres client would crash a dev server running on SQLite (Prisma 7 has no engine DLL to lock any more).
 
 ## Rules
 

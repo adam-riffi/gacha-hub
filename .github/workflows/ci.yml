@@ -54,6 +54,40 @@ jobs:
       # regenerates the Prisma client for it.
       - run: npm test
 
+  # The same route tests on Postgres through the pg adapter and the committed
+  # migrations (ADR 0003): what production runs, on a disposable database.
+  test-postgres:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: gacha
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/gacha
+      DIRECT_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/gacha
+      TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/gacha
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run prisma:generate
+      - run: npm run prisma:deploy
+      # --ignore-scripts skips the SQLite pretest; TEST_DATABASE_URL points the suite at the service.
+      - run: npm run test -w @gacha/server --ignore-scripts
+
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 15

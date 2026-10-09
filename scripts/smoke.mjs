@@ -1,7 +1,7 @@
 // Smoke checks against a deployed URL (DESIGN.md §12). No sign-in needed:
-// the app shell loads, the API refuses anonymous reads, and /api/me reports
-// Discord sign-in on and the dev login off (a dev login in production would
-// let anyone in). Usage: node scripts/smoke.mjs https://gacha-hub-two.vercel.app
+// the app shell loads, the database answers, the API refuses anonymous reads,
+// and /api/me reports Discord sign-in on and the dev login off (a dev login in
+// production would let anyone in). Usage: node scripts/smoke.mjs https://gacha-hub-two.vercel.app
 const base = (process.argv[2] ?? process.env.SMOKE_URL ?? "").replace(/\/+$/, "");
 if (!/^https?:\/\//.test(base)) {
   console.error("usage: node scripts/smoke.mjs <deployment URL>");
@@ -18,6 +18,9 @@ const check = (ok, what) => {
 const shell = await get("/");
 check(shell.status === 200 && (await shell.text()).includes("<title>Gacha Hub</title>"), "GET / serves the app shell");
 check((shell.headers.get("content-security-policy") ?? "").includes("frame-ancestors 'none'"), "security headers are sent");
+
+const health = await get("/api/health");
+check(health.status === 200 && (await health.json()).database === "ok", "GET /api/health reads through the database");
 
 const me = await get("/api/me");
 const meBody = me.status === 200 ? await me.json() : null;
