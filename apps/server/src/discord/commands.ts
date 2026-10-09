@@ -3,6 +3,7 @@ import { getGame, taskAnchor, type GameDefinition, type TaskCadence } from "@gac
 import { config } from "../config.js";
 import { prisma } from "../lib/prisma.js";
 import { isDoneThisCycle } from "../lib/resets.js";
+import { recordDays } from "../lib/dayRecord.js";
 import { farmableToday, gameWeekday } from "@gacha/shared";
 import { formatRemaining, listBanners, listEvents } from "../lib/timeline.js";
 import { getCatalog, regionForInstance } from "../api/util.js";
@@ -220,6 +221,7 @@ async function handleUpdate(o: CommandOptions, userId: string) {
     create: { gameInstanceId: found.gi.id, key: cur.key, value },
     update: { value },
   });
+  await recordDays(userId);
   return `✅ ${found.game.name}: **${cur.label}** = ${value}`;
 }
 
@@ -235,6 +237,7 @@ async function handleDone(o: CommandOptions, userId: string) {
   const task = tasks.find((t) => t.title.toLowerCase().includes(lower));
   if (!task) return `No task matching "${taskName}".`;
   await prisma.task.update({ where: { id: task.id }, data: { lastCompletedAt: new Date() } });
+  await recordDays(userId);
   return `✅ Marked done: **${task.title}**`;
 }
 
@@ -247,6 +250,7 @@ async function handleGoal(o: CommandOptions, userId: string) {
   const task = tasks.find((t) => t.title.toLowerCase().includes(lower));
   if (!task) return `No goal matching "${taskName}".`;
   await prisma.task.update({ where: { id: task.id }, data: { progress } });
+  await recordDays(userId);
   const target = task.target ? `/${task.target}` : "";
   return `🎯 **${task.title}**: ${progress}${target}`;
 }

@@ -45,6 +45,12 @@ export async function registerDashboardRoutes(app: FastifyInstance) {
       orderBy: [{ createdAt: "asc" }, { id: "asc" }],
       select: { gameInstanceId: true, bannerKey: true, count: true, fiveStar: true, featured: true, createdAt: true },
     });
+    // The last 26 weeks of day records (the Home heatmap, open goals, pulls gained).
+    const dayRows = await prisma.dayRecord.findMany({
+      where: { gameInstanceId: { in: instances.map((g) => g.id) }, day: { gte: new Date(now.getTime() - 181 * DAY).toISOString().slice(0, 10) } },
+      orderBy: { day: "asc" },
+      select: { gameInstanceId: true, day: true, dailiesDone: true, dailiesTotal: true, goalsOpen: true, pulls: true },
+    });
     // Catalogs are cached per process after the first load.
     const catalogs = new Map(
       await Promise.all(
@@ -122,6 +128,7 @@ export async function registerDashboardRoutes(app: FastifyInstance) {
         pullLog: pullRows
           .filter((p) => p.gameInstanceId === gi.id && p.createdAt.getTime() >= now.getTime() - 42 * DAY)
           .map((p) => ({ at: p.createdAt.toISOString(), count: p.count })),
+        days: dayRows.filter((d) => d.gameInstanceId === gi.id).map(({ gameInstanceId: _g, ...d }) => d),
         recurring: { daily: tally("daily", true), dailyTasks: tally("daily", false), weekly: tally("weekly", true), weeklyTasks: tally("weekly", false) },
       };
     });
