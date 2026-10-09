@@ -1,12 +1,11 @@
 :root {
   /* Legacy names mapped onto the visual-system tokens (styles/tokens.css) until
-     milestone V's component PRs retire them. */
+     milestone V's component PRs retire them. Never alias --accent here: an alias
+     resolves on :root, so a game's scope would not reach it. */
   --bg-elev: var(--card);
   --surface: var(--surface-2);
   --border: var(--edge);
   --muted: var(--text-muted);
-  --primary: var(--accent);
-  --primary-dim: var(--hairline-strong);
   --danger: #ff6b6b;
   --success: #4ade80;
   --radius: 0;
@@ -117,7 +116,7 @@ textarea { resize: vertical; min-height: 90px; font-family: var(--font-mono); }
 
 /* ---- Currency / meter ---- */
 .meter { height: 6px; border-radius: 0; background: var(--bg-elev); overflow: hidden; margin-top: 6px; }
-.meter > span { display: block; height: 100%; background: var(--primary); }
+.meter > span { display: block; height: 100%; background: var(--accent); }
 /* Numbers and names that carry the page use the display face. */
 .pull-total, .gs-crit-v, .gs-splash-name, .set-name, .stat-num { font-family: var(--font-display); }
 .currency-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--border); }
@@ -307,9 +306,9 @@ select.prio-normal { color: var(--text); }
 /* ---- Build status ---- */
 .badge.build-building { color: var(--accent); border-color: #4a4326; }
 .badge.build-good { color: var(--success); border-color: #234a30; }
-.badge.build-perfect { color: var(--primary); border-color: var(--primary-dim); }
+.badge.build-perfect { color: var(--accent); border-color: var(--hairline-strong); }
 select.prio.build-good { color: var(--success); }
-select.prio.build-perfect { color: var(--primary); }
+select.prio.build-perfect { color: var(--accent); }
 select.prio.build-building { color: var(--accent); }
 select.prio.build-none { color: var(--muted); }
 
@@ -444,7 +443,7 @@ select.prio.build-none { color: var(--muted); }
 .rtile-name { font-size: 0.85rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .rtile.off .rtile-name { color: var(--muted); }
 .rtile-meta { font-size: 0.72rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.rtile-build { align-self: flex-start; padding: 0; border: none; background: none; color: var(--primary); font-size: 0.78rem; cursor: pointer; }
+.rtile-build { align-self: flex-start; padding: 0; border: none; background: none; color: var(--accent); font-size: 0.78rem; cursor: pointer; }
 .rtile-build:hover { color: var(--accent); }
 .badge.prio-high { color: var(--danger); border-color: #4a2b33; }
 .badge.prio-low { color: var(--muted); }
@@ -496,7 +495,7 @@ select.prio.build-none { color: var(--muted); }
 .ov-events { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
 .ov-goals { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
 .ov-goal { display: grid; grid-template-columns: 1fr 80px auto; gap: 8px; align-items: center; color: var(--text); font-size: 0.85rem; }
-.ov-goal:hover { color: var(--primary); }
+.ov-goal:hover { color: var(--accent); }
 .ov-domain { display: grid; grid-template-columns: 40px 1fr; gap: 10px; align-items: start; }
 .ov-mat { width: 40px; height: 40px; background: linear-gradient(160deg, #8a6cc4, #47386e); }
 .ov-users { display: flex; flex-wrap: wrap; gap: 3px; align-items: center; margin-top: 5px; }
