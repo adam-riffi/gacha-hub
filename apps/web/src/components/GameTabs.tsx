@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { getGame } from "@gacha/shared";
+import { HubHeader } from "./hub/HubHeader";
 
 type Screen = "overview" | "ownership" | "equipment" | "gear" | "materials" | "pulls";
 
@@ -11,7 +12,7 @@ const GEAR_LABEL: Record<string, string> = {
   wuwa: "Echoes",
 };
 
-/** Sub-navigation for a game's screens, so you can move between them directly. */
+/** The game hub's header and its tabs, on every screen of the hub. */
 export function GameTabs({
   instanceId,
   active,
@@ -36,13 +37,16 @@ export function GameTabs({
     ...(gameKey && getGame(gameKey)?.pullBanners?.length ? [{ key: "pulls" as const, label: "Pulls", to: `/games/${instanceId}/pulls` }] : []),
   ];
   return (
-    <div className="row" style={{ gap: 6 }}>
-      {tabs.map((t) => (
-        <Link key={t.key} to={t.to} className={`btn sm ${active === t.key ? "primary" : ""}`}>
-          {t.label}
-        </Link>
-      ))}
-    </div>
+    <>
+      <HubHeader instanceId={instanceId} />
+      <nav className="hub-tabs" aria-label="Game screens">
+        {tabs.map((t) => (
+          <Link key={t.key} to={t.to} aria-current={active === t.key ? "page" : undefined}>
+            {t.label}
+          </Link>
+        ))}
+      </nav>
+    </>
   );
 }
 

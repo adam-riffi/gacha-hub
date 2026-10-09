@@ -89,6 +89,7 @@ export const zzz: GameDefinition = {
     ],
     battlePass: { name: "New Eridu City Fund", maxLevel: 50 },
     monthlyPass: { name: "Inter-Knot Membership", days: 30 },
+    accountLevel: { label: "IKL", name: "Inter-Knot Level" },
     version: { name: "3.2", start: "2026-09-09", days: 42 },
   },
   defaultTasks: [

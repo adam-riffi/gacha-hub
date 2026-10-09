@@ -80,7 +80,6 @@ export function GearSetsPage() {
       </div>
       <div className="page-head">
         <div className="row">
-          <h1 style={{ margin: 0 }}>{instance.name}</h1>
           <span className="badge">{label}</span>
           <span className="badge">{usedBy.size} used by your builds</span>
         </div>

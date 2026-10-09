@@ -26,6 +26,7 @@ export function isGameKey(key: string): boolean {
 
 export * from "./types.js";
 export * from "./regions.js";
+export * from "./hub.js";
 export * from "./genshin/index.js";
 export * from "./hsr/index.js";
 export * from "./zzz.js";

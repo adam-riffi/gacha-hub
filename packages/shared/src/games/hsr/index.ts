@@ -108,6 +108,7 @@ export const hsr: GameDefinition = {
     ],
     battlePass: { name: "Nameless Honor", maxLevel: 70, weeklyXpCap: 8000 },
     monthlyPass: { name: "Express Supply Pass", days: 30 },
+    accountLevel: { label: "TL", name: "Trailblaze Level" },
     version: { name: "4.6", start: "2026-09-28", days: 42 },
   },
   defaultTasks: [

@@ -14,4 +14,5 @@
 | Endgame | Stygian Onslaught: one season per version, from the version's second Wednesday to the day before the next version (7.1: 30 Sep – 3 Nov 2026); 6 difficulties; 150 Primogems for each of the first three | [Stygian Onslaught](https://genshin-impact.fandom.com/wiki/Stygian_Onslaught) |
 | Battle pass | Gnostic Hymn, 50 levels, weekly cap 10,000 EXP from daily and weekly missions | [Battle Pass](https://genshin-impact.fandom.com/wiki/Battle_Pass) |
 | 30-day pass | Blessing of the Welkin Moon, 30 days, stacks to 180 | [Blessing of the Welkin Moon](https://genshin-impact.fandom.com/wiki/Blessing_of_the_Welkin_Moon) |
+| Account level | Adventure Rank (AR); the abbreviation is the community's | [Adventure Rank](https://genshin-impact.fandom.com/wiki/Adventure_Rank) |
 | Version | 7.1 from 23 Sep 2026; 42 days (7.0 started 12 Aug 2026) | [Version](https://genshin-impact.fandom.com/wiki/Version) |

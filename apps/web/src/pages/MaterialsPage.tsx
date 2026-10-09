@@ -75,7 +75,6 @@ export function MaterialsPage() {
       </div>
       <div className="page-head">
         <div className="row">
-          <h1 style={{ margin: 0 }}>{instance.name}</h1>
           <span className="badge">Materials</span>
           {needed && needed.length > 0 && <span className="badge todo">{needed.length} needed</span>}
         </div>

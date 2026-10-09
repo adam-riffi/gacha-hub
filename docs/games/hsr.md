@@ -14,4 +14,5 @@
 | Endgame rewards | 800 Stellar Jade per cycle for each mode ~ | [Buffget, 2026](https://buffget.com/news/hsr-apocalyptic-shadow-guide-e1-vs-relic-farming-2026) for Apocalyptic Shadow; per-version estimates for the other two |
 | Battle pass | Nameless Honor, 70 levels ~, weekly cap 8,000 EXP ~ | [Icy Veins](https://www.icy-veins.com/honkai-star-rail/battle-pass); one guide for the weekly cap |
 | 30-day pass | Express Supply Pass, 30 days ~ | wireframe X1, unverified |
+| Account level | Trailblaze Level (TL); the abbreviation is the community's | [Trailblaze Level](https://honkai-star-rail.fandom.com/wiki/Trailblaze_Level) |
 | Version | 4.6 from 28 Sep 2026; 42 days ~ (4.5 ran 33) | [Version](https://honkai-star-rail.fandom.com/wiki/Version) |

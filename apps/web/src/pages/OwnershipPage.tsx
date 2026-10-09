@@ -110,7 +110,6 @@ export function OwnershipPage() {
       </div>
       <div className="page-head">
         <div className="row">
-          <h1 style={{ margin: 0 }}>{instance.name}</h1>
           <span className="badge">Ownership</span>
           <span className="badge">
             {ownedIds.size} / {entries.length} owned

@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import fc from "fast-check";
-import { cadenceWindow, gameList, getGame, type CadenceAnchor, type GameDefinition, type GameRegion } from "@gacha/shared";
+import { cadenceWindow, gameList, getGame, hubResets, utcLabel, type CadenceAnchor, type GameDefinition, type GameRegion } from "@gacha/shared";
 
 // Conformance suite (ADR 0004): every registered game's manifest, checked the same way.
 const RUNS = { seed: 20261010, numRuns: 200 };
@@ -94,6 +94,7 @@ describe.each(gameList.map((g) => [g.key, g] as const))("%s manifest", (key, g) 
       m.battlePass?.name,
       m.monthlyPass?.name,
       m.version.name,
+      m.accountLevel.name,
     ].filter((n): n is string => !!n);
     for (const n of names) expect(text, n).toContain(n);
   });
@@ -134,6 +135,24 @@ describe("game facts", () => {
       );
       expect(got, key).toEqual(modes);
     }
+  });
+
+  it("names each game's account level, as the hub header shows it", () => {
+    expect(Object.fromEntries(gameList.map((g) => [g.key, `${g.manifest.accountLevel.label} ${g.manifest.accountLevel.name}`]))).toEqual({
+      genshin: "AR Adventure Rank",
+      hsr: "TL Trailblaze Level",
+      zzz: "IKL Inter-Knot Level",
+      wuwa: "UL Union Level",
+      endfield: "AL Authority Level",
+    });
+  });
+
+  it("gives the hub header its next daily and weekly resets and the version's end, on the profile's server", () => {
+    const g = getGame("genshin")!;
+    const eu = g.regions.find((r) => r.key === "eu")!;
+    const r = hubResets(g, eu, new Date("2026-10-10T12:00:00Z"));
+    expect([r.daily, r.weekly, r.versionEnd].map((d) => d.toISOString())).toEqual(["2026-10-11T03:00:00.000Z", "2026-10-12T03:00:00.000Z", "2026-11-04T03:00:00.000Z"]);
+    expect([utcLabel(60), utcLabel(-300), utcLabel(480), utcLabel(345), utcLabel(0)]).toEqual(["UTC+1", "UTC−5", "UTC+8", "UTC+5:45", "UTC"]);
   });
 
   it("closes Stygian Onslaught a week before the next version, as the wiki's season table shows", () => {

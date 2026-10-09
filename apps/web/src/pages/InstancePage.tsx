@@ -138,13 +138,6 @@ export function InstancePage() {
     qc.invalidateQueries({ queryKey: ["instances"] });
   };
 
-  const setRegion = useMutation({
-    mutationFn: (regionKey: string) => api.put(`/api/instances/${id}`, { regionKey }),
-    onSuccess: () => {
-      toast("Region updated");
-      invalidate();
-    },
-  });
 
   const addCharacter = useMutation({
     mutationFn: (body: { catalogId?: string; name?: string }) =>
@@ -223,24 +216,10 @@ export function InstancePage() {
       </div>
       <div className="page-head">
         <div className="row">
-          <h1 style={{ margin: 0 }}>{data.name}</h1>
           {catalog && (
             <span className="badge">
               {(owned ?? []).filter((o) => o.kind === "character").length} owned
             </span>
-          )}
-          {game && game.regions.length > 1 && (
-            <select
-              aria-label="Server region"
-              value={data.regionKey}
-              onChange={(e) => setRegion.mutate(e.target.value)}
-              style={{ maxWidth: 160 }}
-              title="Server region (controls reset timing)"
-            >
-              {game.regions.map((r) => (
-                <option key={r.key} value={r.key}>{r.label}</option>
-              ))}
-            </select>
           )}
         </div>
         <div className="row">

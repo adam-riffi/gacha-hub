@@ -12,4 +12,5 @@
 | Endgame | Whimpering Wastes: Respawning Waters every 28 days ~, from 28 Sep 2026 ~; points; 800 Astrite a cycle ~ | [Game8](https://game8.co/games/Wuthering-Waves/archives/498614), [September calendar](https://topuplist.com/blogs/detail/wuthering-waves-september-2026-events-3-6-phase-2-version-3-7) |
 | Battle pass | Pioneer Podcast, 70 levels; weekly cap: | [Pioneer Podcast](https://wutheringwaves.fandom.com/wiki/Pioneer_Podcast) |
 | 30-day pass | Lunite Subscription, 30 days, stacks to 180 | [Lunite Subscription](https://wutheringwaves.fandom.com/wiki/Lunite_Subscription) |
+| Account level | Union Level (UL); the abbreviation is the community's | [Union Level](https://wutheringwaves.fandom.com/wiki/Union_Level) |
 | Version | 3.7 from 30 Sep 2026; 42 days ~ (3.6 ran 41) | [Version](https://wutheringwaves.fandom.com/wiki/Version) |

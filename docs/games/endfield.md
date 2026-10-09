@@ -12,4 +12,5 @@
 | Endgame | Echoes of War: seasons of three weekly cycles, each from 04:00 Thursday (Cycle of Illusion III: 8 – 15 Oct 2026); 9 stars a cycle; premium reward: | [Echoes of War](https://endfield.wiki.gg/wiki/Echoes_of_War), [Season of Illusion](https://endfield.wiki.gg/wiki/Season_of_Illusion) |
 | Battle pass | Protocol Pass; maximum level: ; weekly cap: | [Icy Veins](https://www.icy-veins.com/arknights-endfield/protocol-pass) |
 | 30-day pass | | |
+| Account level | Authority Level (AL); the abbreviation is the community's | [Authority Level](https://endfield.wiki.gg/wiki/Authority_Level) |
 | Version | Dreamscape of Wind and Snow, 2 Sep – 14 Oct 2026 (43 days) | [Version](https://endfield.wiki.gg/wiki/Version) |
