@@ -4,6 +4,9 @@ import { expect, test, type Page } from "@playwright/test";
 /** Serious and critical WCAG 2 A/AA violations on the current page, one line each. */
 async function violations(page: Page, label: string): Promise<string[]> {
   await expect(page.getByRole("heading").first()).toBeVisible();
+  // Scan the settled page: off any hover, after finite transitions (a button turning primary) end.
+  await page.mouse.move(0, 0);
+  await page.waitForFunction(() => document.getAnimations().every((a) => a.effect?.getTiming().iterations === Infinity || a.playState !== "running"));
   const { violations: found } = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
   return found
     .filter((v) => v.impact === "serious" || v.impact === "critical")

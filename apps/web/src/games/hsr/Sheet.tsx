@@ -34,7 +34,7 @@ export function HsrSheet({ doc, setDoc, name, portraitUrl, onName, onPortrait }:
         <div className="card">
           <h3>Light Cone</h3>
           <div className="slot-grid">
-            <Labeled label="Name"><input value={doc.lightCone?.name ?? ""} onChange={(e) => setCone({ name: e.target.value || undefined })} /></Labeled>
+            <Labeled label="Name"><input aria-label="Name" value={doc.lightCone?.name ?? ""} onChange={(e) => setCone({ name: e.target.value || undefined })} /></Labeled>
             <Labeled label="Level"><Num value={doc.lightCone?.level} min={1} max={80} onChange={(v) => setCone({ level: v })} /></Labeled>
             <Labeled label="Superimposition"><Num value={doc.lightCone?.superimposition} min={1} max={5} onChange={(v) => setCone({ superimposition: v })} /></Labeled>
           </div>

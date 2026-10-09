@@ -35,7 +35,7 @@ export function EndfieldSheet({ doc, setDoc, name, portraitUrl, onName, onPortra
         <div className="card">
           <h3>Weapon &amp; Essence</h3>
           <div className="slot-grid">
-            <Labeled label="Weapon Name"><input value={doc.weapon?.name ?? ""} onChange={(e) => setWeapon({ name: e.target.value || undefined })} /></Labeled>
+            <Labeled label="Weapon Name"><input aria-label="Weapon Name" value={doc.weapon?.name ?? ""} onChange={(e) => setWeapon({ name: e.target.value || undefined })} /></Labeled>
             <Labeled label="Weapon Level"><Num value={doc.weapon?.level} min={1} max={80} onChange={(v) => setWeapon({ level: v })} /></Labeled>
           </div>
           <div className="slot-card" style={{ marginTop: 8 }}>

@@ -33,7 +33,7 @@ export function ZzzSheet({ doc, setDoc, name, portraitUrl, onName, onPortrait }:
         <div className="card">
           <h3>W-Engine</h3>
           <div className="slot-grid">
-            <Labeled label="Name"><input value={doc.wEngine?.name ?? ""} onChange={(e) => setEngine({ name: e.target.value || undefined })} /></Labeled>
+            <Labeled label="Name"><input aria-label="Name" value={doc.wEngine?.name ?? ""} onChange={(e) => setEngine({ name: e.target.value || undefined })} /></Labeled>
             <Labeled label="Level"><Num value={doc.wEngine?.level} min={1} max={60} onChange={(v) => setEngine({ level: v })} /></Labeled>
             <Labeled label="Phase"><Num value={doc.wEngine?.phase} min={1} max={5} onChange={(v) => setEngine({ phase: v })} /></Labeled>
           </div>

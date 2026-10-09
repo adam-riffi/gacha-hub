@@ -63,6 +63,7 @@ function ReminderControl({ instanceId, hasDomains }: { instanceId: string; hasDo
               <>
                 <input
                   type="number"
+                  aria-label="Minutes before reset"
                   style={{ width: 70 }}
                   min={0}
                   max={1440}
@@ -83,7 +84,7 @@ function ReminderControl({ instanceId, hasDomains }: { instanceId: string; hasDo
             ))}
             {cfg.atTimes.length < 6 && (
               <>
-                <input type="time" style={{ width: "auto" }} value={newTime} onChange={(e) => setNewTime(e.target.value)} />
+                <input type="time" aria-label="Reminder time" style={{ width: "auto" }} value={newTime} onChange={(e) => setNewTime(e.target.value)} />
                 <button className="btn sm" onClick={addTime}>Add</button>
               </>
             )}
@@ -230,6 +231,7 @@ export function InstancePage() {
           )}
           {game && game.regions.length > 1 && (
             <select
+              aria-label="Server region"
               value={data.regionKey}
               onChange={(e) => setRegion.mutate(e.target.value)}
               style={{ maxWidth: 160 }}
@@ -289,6 +291,7 @@ export function InstancePage() {
               <div className="currency-val">
                 <input
                   type="number"
+                  aria-label={currencyLabel(c.key)}
                   min={0}
                   max={currencyCap(c.key) ?? undefined}
                   defaultValue={c.value}
@@ -326,7 +329,7 @@ export function InstancePage() {
 
           {catalog ? (
             <div className="row" style={{ marginTop: 10 }}>
-              <select value={pick} onChange={(e) => setPick(e.target.value)} style={{ flex: 1, minWidth: 140 }}>
+              <select aria-label="Owned character for a new build" value={pick} onChange={(e) => setPick(e.target.value)} style={{ flex: 1, minWidth: 140 }}>
                 <option value="">{ownedChars.length ? "Pick an owned character…" : "No owned characters"}</option>
                 {ownedChars.map((c) => {
                   const n = buildsByCatalog.get(c.id) ?? 0;
@@ -334,6 +337,7 @@ export function InstancePage() {
                 })}
               </select>
               <input
+                aria-label="Build name"
                 placeholder="Build name (optional)"
                 value={buildName}
                 onChange={(e) => setBuildName(e.target.value)}
@@ -352,7 +356,7 @@ export function InstancePage() {
             </div>
           ) : (
             <div className="row" style={{ marginTop: 10 }}>
-              <input placeholder="Character name" value={newName} onChange={(e) => setNewName(e.target.value)} />
+              <input aria-label="Character name" placeholder="Character name" value={newName} onChange={(e) => setNewName(e.target.value)} />
               <button
                 className="btn sm"
                 disabled={!newName || addCharacter.isPending}

@@ -52,7 +52,7 @@ export function PortraitPanel({
       </label>
       <div className="field" style={{ marginBottom: 0 }}>
         <label>Name</label>
-        <input value={name} onChange={(e) => onName(e.target.value)} />
+        <input aria-label="Build name" value={name} onChange={(e) => onName(e.target.value)} />
       </div>
       {children}
     </div>

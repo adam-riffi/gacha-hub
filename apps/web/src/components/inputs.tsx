@@ -1,13 +1,17 @@
-import type { ReactNode } from "react";
+import { createContext, useContext, useId, type ReactNode } from "react";
 import type { StatRow } from "@gacha/shared";
 
 /** Small reusable form primitives that bespoke game sheets compose. */
 
+/** The id of the enclosing `Labeled` label, so the controls inside are named by it. */
+const FieldLabel = createContext<string | undefined>(undefined);
+
 export function Labeled({ label, children }: { label: string; children: ReactNode }) {
+  const id = useId();
   return (
     <div className="field">
-      <label>{label}</label>
-      {children}
+      <label id={id}>{label}</label>
+      <FieldLabel.Provider value={id}>{children}</FieldLabel.Provider>
     </div>
   );
 }
@@ -18,16 +22,22 @@ export function Num({
   min,
   max,
   placeholder,
+  label,
 }: {
   value: number | undefined;
   onChange: (v: number | undefined) => void;
   min?: number;
   max?: number;
   placeholder?: string;
+  /** Accessible name when the input is not inside a `Labeled`. */
+  label?: string;
 }) {
+  const labelledBy = useContext(FieldLabel);
   return (
     <input
       type="number"
+      aria-label={label}
+      aria-labelledby={label ? undefined : labelledBy}
       min={min}
       max={max}
       placeholder={placeholder}
@@ -46,8 +56,10 @@ export function Txt({
   onChange: (v: string | undefined) => void;
   placeholder?: string;
 }) {
+  const labelledBy = useContext(FieldLabel);
   return (
     <input
+      aria-labelledby={labelledBy}
       placeholder={placeholder}
       value={value ?? ""}
       onChange={(e) => onChange(e.target.value || undefined)}
@@ -64,8 +76,9 @@ export function Select({
   onChange: (v: string | undefined) => void;
   options: readonly string[];
 }) {
+  const labelledBy = useContext(FieldLabel);
   return (
-    <select value={value ?? ""} onChange={(e) => onChange(e.target.value || undefined)}>
+    <select aria-labelledby={labelledBy} value={value ?? ""} onChange={(e) => onChange(e.target.value || undefined)}>
       <option value="">—</option>
       {options.map((o) => (
         <option key={o} value={o}>
@@ -93,6 +106,7 @@ export function StatList({
         <div className="statrow" key={idx}>
           {options ? (
             <select
+              aria-label={`Stat ${idx + 1}`}
               value={row.stat}
               onChange={(e) =>
                 onChange(rows.map((r, i) => (i === idx ? { ...r, stat: e.target.value } : r)))
@@ -105,6 +119,7 @@ export function StatList({
             </select>
           ) : (
             <input
+              aria-label={`Stat ${idx + 1}`}
               placeholder="Stat"
               value={row.stat}
               onChange={(e) =>
@@ -113,6 +128,7 @@ export function StatList({
             />
           )}
           <input
+            aria-label={`Stat ${idx + 1} value`}
             placeholder="Value"
             value={String(row.value ?? "")}
             onChange={(e) => {
@@ -125,6 +141,7 @@ export function StatList({
           <button
             type="button"
             className="btn sm ghost"
+            aria-label={`Remove stat ${idx + 1}`}
             onClick={() => onChange(rows.filter((_, i) => i !== idx))}
           >
             ✕

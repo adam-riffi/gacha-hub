@@ -106,6 +106,7 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
         </div>
         <div className="row">
           <select
+            aria-label="Build status"
             className={`prio build-${state.buildStatus}`}
             value={state.buildStatus}
             onChange={(e) => setState((s) => ({ ...s, buildStatus: e.target.value as BuildStatus }))}

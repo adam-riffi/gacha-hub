@@ -528,7 +528,8 @@ select.prio.build-none { color: var(--muted); }
 .cal-month { position: absolute; top: 3px; padding-left: 3px; font-family: var(--font-display); font-size: 0.75rem; font-weight: 600; color: var(--text); }
 .cal-days { position: absolute; inset: auto 0 3px 0; display: grid; grid-template-columns: repeat(42, minmax(0, 1fr)); }
 .cal-days span { text-align: center; font-size: 0.68rem; color: var(--muted); }
-.cal-days .is-weekend { color: #6b7086; }
+/* Weekends: a tint, not dimmer text (text must keep 4.5:1 contrast). */
+.cal-days .is-weekend { background: rgba(255, 255, 255, 0.06); }
 .cal-days .is-today { background: var(--primary); color: #0c0d12; font-weight: 700; }
 .cal-game { border-top: 1px solid var(--border); padding-bottom: 4px; }
 .cal-game-name { font-family: var(--font-display); font-weight: 600; padding: 8px 10px 4px; border-left: 3px solid; }
@@ -578,3 +579,6 @@ select.prio.build-none { color: var(--muted); }
 .cal-days span { overflow: hidden; }
 /* Narrow windows: every other day number, so the row never forces a sideways scroll. */
 @media (max-width: 1200px) { .cal-days span:nth-child(even):not(.is-today) { color: transparent; } }
+
+/* Links inside running text are underlined, not told apart by colour alone. */
+p a { text-decoration: underline; text-underline-offset: 2px; }
