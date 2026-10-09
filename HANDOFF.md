@@ -26,7 +26,7 @@
 - Still true: `CRON_SECRET` is empty, so reminders and the hourly feed import never run in production.
 
 ## Next
-1. Milestone D is in #102 and #103; only the pooler check is left (Georges's choice on #103). A throwaway branch `preview/prisma7-build` exists to test the Vercel build; delete it once read.
+1. Milestone D is in #102 and #103. Verified: the route tests on Postgres 16 in CI (9 migrations, 207 tests through `pg`), and a Vercel preview build on Prisma 7 (READY; every module loaded; it stopped at the expected missing `DATABASE_URL`; details on #103). Only Supabase's pooler is left (Georges's choice on #103).
 2. F8 (cadences, endgame, passes, stamina reserve, the per-day record that fills the heatmap, Backlog and GAINED; Endfield regions and Sanity cap), then F9–F12, each screen from its wireframe board in the kit.
 3. When Georges answers the pity question on #101, settle the PULLS card and DESIGN.md F5 together.
 
