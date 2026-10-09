@@ -8,3 +8,4 @@ prisma/schema.sqlite.prisma
 apps/web/public
 *.md
 **/catalog.json
+docs/design
