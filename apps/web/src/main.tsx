@@ -9,6 +9,7 @@ import "./styles/tokens.css";
 import "./styles/shell.css";
 import "./styles.css";
 import "./styles/components.css";
+import "./styles/charts.css";
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: false, refetchOnWindowFocus: false } },

@@ -1,0 +1,83 @@
+/*
+ * Graph panels and chart marks (docs/VISUAL-DESIGN.md §6, §8, §9), ported from
+ * the dashboard design: neutral structure, accent data, a layered tilt on hover.
+ */
+
+.graph { display: flex; flex-direction: column; }
+.ph { display: flex; align-items: center; gap: 12px; flex: 0 0 40px; height: 40px; }
+.ph h3 { margin: 0; }
+.ph .sp { flex: 1; }
+
+/* The stage and its layers: only the graph area reacts to the pointer; each layer lifts and shrinks to keep its apparent size. */
+.gp { position: relative; flex: 1 1 auto; min-height: 0; perspective: 1200px; }
+.stage { position: absolute; inset: 0; transform-style: preserve-3d; transition: transform 0.18s ease-out; }
+.lay { position: absolute; inset: 0; pointer-events: none; transition: transform 0.18s ease-out; }
+@media (prefers-reduced-motion: no-preference) {
+  .gp:hover .stage { transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); }
+  .gp:hover .zR { transform: translateZ(10px) scale(0.9917); }
+  .gp:hover .zB { transform: translateZ(48px) scale(0.96); }
+  .gp:hover .zC { transform: translateZ(80px) scale(0.9333); }
+  .gp:hover .zD { transform: translateZ(112px) scale(0.9067); }
+  .gp:hover .zE { transform: translateZ(140px) scale(0.8833); }
+}
+.frm { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+.cb { position: relative; flex: 0 0 auto; }
+.fill { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block; }
+
+/* Marks: neutral greys, the accent only on the data itself. */
+.gl { fill: none; stroke: var(--grid); stroke-width: 1; }
+.dash { stroke-dasharray: 3 4; }
+.rg { fill: none; stroke: var(--surface-3); stroke-width: 1; }
+.rg.rd { stroke: var(--hairline); stroke-dasharray: 2 6; }
+.ns { fill: none; stroke: var(--paper); stroke-width: 3; }
+.ns2 { fill: none; stroke: var(--bg); stroke-width: 7; }
+.dia { fill: var(--hairline-strong); }
+.gst { fill: var(--surface-3); }
+.trk { fill: var(--surface-2); stroke: var(--hairline); stroke-width: 1; }
+.acf { fill: var(--accent); }
+.mk { fill: var(--paper); }
+.seg { fill: none; stroke: var(--bg); stroke-width: 2; }
+.spf { fill: var(--paper); }
+.ar { fill: var(--text); fill-opacity: 0.16; }
+.gb { fill: none; stroke: var(--hairline-strong); stroke-width: 2; }
+.stem { fill: none; stroke: var(--hairline-strong); stroke-width: 1; stroke-dasharray: 2 4; }
+.mr { fill: var(--bg); stroke: var(--paper); stroke-width: 3; }
+.rt { fill: none; stroke: var(--accent); stroke-width: 2; }
+.rx { fill: none; stroke: var(--text); stroke-width: 2; }
+.ghl { fill: none; stroke: var(--ext); stroke-width: 4; stroke-linejoin: round; }
+.gh1 { fill: var(--ext); }
+.gh2 { fill: var(--hairline); }
+
+/* Figures in the centre of a gauge. */
+.gauge-figure { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.gauge-hero { font-size: 80px; font-weight: 600; line-height: 1; }
+.gauge-hero .mu { font-size: 32px; font-weight: 500; }
+.gauge-sub { font-size: 16px; margin-top: 6px; }
+.gauge-small { font-size: 38px; font-weight: 600; line-height: 1; }
+.gauge-small .mu { font-size: 16px; font-weight: 500; }
+.gauge-sub-small { font-size: 13px; margin-top: 3px; }
+
+/* Percentage bars: the figures above, the labels below. */
+.bars-row { position: absolute; left: 0; width: 100%; display: flex; }
+.bars-pct { top: -2px; }
+.bars-labels { top: 122px; }
+.bars-labels > div { flex: 1; text-align: center; font-size: 12px; }
+.pct { flex: 1; text-align: center; font: 600 28px/1 var(--font-display); }
+
+/* Period switch: the label you are on sits top right, big and in front; the other waits bottom left, tucked beneath it. */
+.pw { position: relative; z-index: 2; align-self: flex-start; flex: 0 0 160px; width: 160px; height: 72px; display: block; padding: 0; border: 0; background: none; cursor: pointer; }
+.po { position: absolute; left: 64px; top: 36px; width: 0; height: 0; transition: transform 0.7s cubic-bezier(0.65, 0, 0.25, 1); }
+.pl { position: absolute; left: -36px; top: -41.6px; width: 112px; height: 32px; display: flex; align-items: center; justify-content: center; transition: transform 0.7s cubic-bezier(0.65, 0, 0.25, 1); }
+.pl.p2 { left: -76px; top: 9.6px; }
+.pl.big { z-index: 2; }
+.pt { position: relative; display: block; font: 600 32px/32px var(--font-display); letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; color: var(--text-muted); transition: color 0.5s; }
+.pt::after { content: ""; position: absolute; left: 0; bottom: -6px; width: calc(100% + 16px); height: 3px; background: var(--hairline-strong); clip-path: polygon(0 0, 100% 0, calc(100% - 3px) 100%, 0 100%); transition: background-color 0.5s; }
+.pl.big .pt { color: var(--text); }
+.pl.big .pt::after { background: var(--accent); }
+.pw:hover .pl .pt { color: var(--text); }
+.pw .ph, .ph .pw { margin: 0; }
+
+/* Home's top row until 09-home lays the whole page out. */
+.home-top { display: flex; gap: 24px; margin: 16px 0 24px; }
+.home-top-side { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 24px; }
+.home-top-strip { display: flex; gap: 24px; height: 192px; }
