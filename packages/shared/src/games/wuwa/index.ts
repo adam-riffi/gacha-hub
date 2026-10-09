@@ -69,7 +69,7 @@ export const wuwa: GameDefinition = {
     { key: "standard", label: "Standard convene", hardPity: 80, softPity: 66, featuredRate: 1 },
   ],
   name: "Wuthering Waves",
-  accent: "#9ad0ff",
+  accent: "#2EE6C8",
   art: { icon: "/games/wuwa/icon.png", background: "/games/wuwa/background.jpg" },
   // Kuro servers reset 04:00 local like HoYo's; same na/eu/asia keys.
   regions: hoyoRegions,

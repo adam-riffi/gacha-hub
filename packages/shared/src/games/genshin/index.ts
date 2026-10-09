@@ -83,7 +83,7 @@ export const genshin: GameDefinition = {
     { key: "standard", label: "Standard wish", hardPity: 90, softPity: 74, featuredRate: 1 },
   ],
   name: "Genshin Impact",
-  accent: "#d9a441",
+  accent: "#FFAA33",
   art: { icon: "/games/genshin/icon.png", background: "/games/genshin/background.jpg" },
   regions: hoyoRegions,
   currencies: [

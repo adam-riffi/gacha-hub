@@ -1,40 +1,28 @@
 :root {
-  --bg: #0c0d12;
-  --bg-elev: #14161f;
-  --surface: #1a1d29;
-  --surface-2: #222634;
-  --border: #2b2f40;
-  --text: #e7e9f0;
-  --muted: #9aa0b4;
-  --primary: #7c8cff;
-  --primary-dim: #5561c9;
-  --accent: #ffd166;
+  /* Legacy names mapped onto the visual-system tokens (styles/tokens.css) until
+     milestone V's component PRs retire them. */
+  --bg-elev: var(--card);
+  --surface: var(--surface-2);
+  --border: var(--edge);
+  --muted: var(--text-muted);
+  --primary: var(--accent);
+  --primary-dim: var(--hairline-strong);
   --danger: #ff6b6b;
   --success: #4ade80;
-  /* Sharp, flat surfaces — the agreed direction (the design canvas). */
   --radius: 0;
   --radius-sm: 0;
   --shadow: none;
-  --font-display: "Space Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
-  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
 
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  min-height: 100vh;
-}
-
-a { color: var(--primary); text-decoration: none; }
+/* Body, page pattern, focus and selection: styles/tokens.css. The accent marks data and state, not running text. */
+a { color: var(--text); text-decoration: none; }
 a:hover { color: var(--accent); }
-h1, h2, h3 { margin: 0 0 0.4em; font-family: var(--font-display); font-weight: 600; letter-spacing: -0.01em; }
-h1 { font-size: 1.6rem; }
-h2 { font-size: 1.25rem; }
-h3 { font-size: 1rem; }
+h1, h2, h3 { margin: 0 0 0.4em; font-family: var(--font-display); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; line-height: 1.1; }
+h1 { font-size: 32px; }
+h2 { font-size: 24px; }
+h3 { font-size: 20px; }
 p { color: var(--muted); }
 
 /* ---- Layout ---- */
@@ -124,14 +112,14 @@ p { color: var(--muted); }
   cursor: pointer;
   transition: transform 0.05s ease, background 0.15s ease, border-color 0.15s;
 }
-.btn:hover { background: #2a2f42; border-color: #3a4059; }
+.btn:hover { background: var(--surface-3); border-color: var(--hairline); }
 .btn:active { transform: translateY(1px); }
 .btn.primary {
-  background: var(--primary);
-  border-color: transparent;
-  color: #0b0d13;
+  background: var(--paper);
+  border-color: var(--paper);
+  color: var(--on-paper);
 }
-.btn.primary:hover { filter: brightness(1.08); }
+.btn.primary:hover { background: var(--text); border-color: var(--text); }
 .btn.ghost { background: transparent; }
 .btn.danger { color: var(--danger); border-color: #4a2b33; }
 .btn.danger:hover { background: #3a232a; }
@@ -150,12 +138,8 @@ input, select, textarea {
   font-size: 0.9rem;
   font-family: inherit;
 }
-input:focus, select:focus, textarea:focus {
-  outline: none;
-  border-color: var(--primary-dim);
-  box-shadow: 0 0 0 3px rgba(124, 140, 255, 0.15);
-}
-textarea { resize: vertical; min-height: 90px; font-family: ui-monospace, "SFMono-Regular", monospace; }
+input:focus, select:focus, textarea:focus { border-color: var(--text-muted); }
+textarea { resize: vertical; min-height: 90px; font-family: var(--font-mono); }
 .field { margin-bottom: 14px; }
 .field-inline { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
@@ -390,7 +374,7 @@ select.prio.build-none { color: var(--muted); }
 .today-regen .meter { margin-top: 0; }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
 .chip-toggle { padding: 4px 10px; border-radius: 0; border: 1px solid var(--border); background: var(--surface-2); color: var(--text); font-size: 0.8rem; cursor: pointer; }
-.chip-toggle:hover { border-color: #3a4059; }
+.chip-toggle:hover { border-color: var(--hairline); }
 .chip-toggle.on { color: var(--success); border-color: #234a30; background: #16281c; }
 .pull-total { font-size: 1.8rem; font-weight: 750; letter-spacing: -0.02em; }
 .pull-row { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-top: 1px solid var(--border); font-size: 0.9rem; }
@@ -530,7 +514,7 @@ select.prio.build-none { color: var(--muted); }
 .cal-days span { text-align: center; font-size: 0.68rem; color: var(--muted); }
 /* Weekends: a tint, not dimmer text (text must keep 4.5:1 contrast). */
 .cal-days .is-weekend { background: rgba(255, 255, 255, 0.06); }
-.cal-days .is-today { background: var(--primary); color: #0c0d12; font-weight: 700; }
+.cal-days .is-today { background: var(--paper); color: var(--on-paper); font-weight: 700; }
 .cal-game { border-top: 1px solid var(--border); padding-bottom: 4px; }
 .cal-game-name { font-family: var(--font-display); font-weight: 600; padding: 8px 10px 4px; border-left: 3px solid; }
 .cal-game-name a { color: var(--text); }

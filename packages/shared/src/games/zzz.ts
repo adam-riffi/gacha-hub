@@ -67,7 +67,7 @@ export const zzz: GameDefinition = {
     { key: "standard", label: "Stable channel", hardPity: 90, softPity: 74, featuredRate: 1 },
   ],
   name: "Zenless Zone Zero",
-  accent: "#f5e02c",
+  accent: "#8CFF3A",
   art: { icon: "/games/zzz/icon.png", background: "/games/zzz/background.jpg" },
   regions: hoyoRegions,
   currencies: [
