@@ -14,7 +14,7 @@ Entry format:
 
 ---
 
-## 2026-10-10 · claude · stack/f8/01-cadence-core · pending
+## 2026-10-10 · claude · stack/f8/01-cadence-core · #104
 - Done: `packages/shared/src/cadence.ts`, the current window of the daily, weekly, monthly, cycle and version cadences on a server's fixed-offset clock (ADR 0004); `lib/resets.ts` now delegates to it. Milestones V and D merged with Georges's approval; production on Prisma 7, smoke green through the pooler. HANDOFF.md rewritten.
 - Tests: `cadence.test.ts` (fast-check over offsets in 15-minute steps, reset hours and weekdays: windows contain now and start at the reset hour, chain end to start, match luxon for daily and weekly, monthly clamps to the month's last day, cycles repeat from their anchor also before it; identical results in four viewer time zones across 2026's clock changes; Genshin Europe's real windows).
 - Scope/decisions: Plain arithmetic instead of luxon so the browser shares it; luxon stays as the test oracle and for user time zones in reminders.
