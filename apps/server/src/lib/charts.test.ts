@@ -21,7 +21,7 @@ describe("arcPath", () => {
   it("stops just short of a full circle so the path still draws", () => {
     const full = arcPath(100, 100, 50, 100);
     expect(full).toBe(arcPath(100, 100, 50, 99.99));
-    expect(full).toMatch(/ 0 1 0 0\.0\d 50\.00$/);
+    expect(full).toMatch(/ 0 1 0 100\.0\d 50\.00$/);
   });
 });
 
