@@ -132,3 +132,6 @@
 .hg, .cb { user-select: none; }
 .home-heat { height: 232px; margin-bottom: 24px; }
 .home-top-charts { display: flex; gap: 24px; height: 260px; }
+/* The map takes focus for the keyboard: no ring after a click, the accent ring when tabbed to. */
+.hg:focus:not(:focus-visible) { outline: none; }
+.hg:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
