@@ -57,6 +57,10 @@ export const dashboardGameDto = z.object({
   stamina: regenProjectionDto.nullable(),
   /** Pull batches of the last six weeks, oldest first. */
   pullLog: z.array(z.object({ at: isoDate, count: z.number().int() })),
+  /** Day records of the last 26 weeks, oldest first: the server's game day and its tallies. */
+  days: z.array(
+    z.object({ day: z.string(), dailiesDone: z.number().int(), dailiesTotal: z.number().int(), goalsOpen: z.number().int(), pulls: z.number().int() }),
+  ),
   /** Recurring items this cycle: the game's own dailies and weeklies, and the ones you added. */
   recurring: z.object({ daily: tallyDto, dailyTasks: tallyDto, weekly: tallyDto, weeklyTasks: tallyDto }),
 });

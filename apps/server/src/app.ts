@@ -7,6 +7,7 @@ import { config } from "./config.js";
 import { registerAuth } from "./auth/plugin.js";
 import { registerApi } from "./api/index.js";
 import { SECURITY_HEADERS } from "./lib/securityHeaders.js";
+import { recordDays } from "./lib/dayRecord.js";
 
 /**
  * Builds the Fastify app (routes, auth, parsers) without binding a port.
@@ -24,6 +25,16 @@ export async function buildApp(): Promise<FastifyInstance> {
   // Hardening headers on every response (CSP, nosniff, referrer, permissions).
   app.addHook("onSend", async (_req, reply, payload) => {
     reply.headers(SECURITY_HEADERS);
+    return payload;
+  });
+
+  // The day record (F8) is written through: any change a signed-in user makes
+  // rewrites today's row per profile, before the response leaves (serverless
+  // functions may stop once it has).
+  app.addHook("onSend", async (req, reply, payload) => {
+    if (req.user && !["GET", "HEAD", "OPTIONS"].includes(req.method) && reply.statusCode < 400) {
+      await recordDays(req.user.id).catch((err: unknown) => req.log.error({ err }, "day record failed"));
+    }
     return payload;
   });
 

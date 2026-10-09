@@ -30,7 +30,7 @@ describe("data export (routes)", () => {
     // F8 tables, written here directly until their routes land.
     await prisma.cycleResult.create({ data: { gameInstanceId: gid, modeKey: "abyss", cycleStart: new Date("2026-09-16T03:00:00Z"), result: 36, premium: 800 } });
     await prisma.passState.create({ data: { gameInstanceId: gid, kind: "battle", level: 30, weeklyXp: 4000 } });
-    await prisma.dayRecord.create({ data: { gameInstanceId: gid, day: "2026-10-09", dailiesDone: 1, dailiesTotal: 1 } });
+    await prisma.dayRecord.create({ data: { gameInstanceId: gid, day: "2026-01-01", dailiesDone: 1, dailiesTotal: 1 } }); // a past day: today's is written by the requests above
     // Someone else's data, which must never appear.
     await prisma.user.create({
       data: { discordId: "someone-else", username: "Someone Else", gameInstances: { create: { gameKey: "hsr" } } },
@@ -53,7 +53,7 @@ describe("data export (routes)", () => {
     expect(g).toMatchObject({ uid: "700123456", accountLevel: 58 });
     expect(g.cycleResults).toEqual([expect.objectContaining({ modeKey: "abyss", result: 36, premium: 800, source: "manual" })]);
     expect(g.passStates).toEqual([expect.objectContaining({ kind: "battle", level: 30, weeklyXp: 4000 })]);
-    expect(g.dayRecords).toEqual([expect.objectContaining({ day: "2026-10-09", dailiesDone: 1, dailiesTotal: 1 })]);
+    expect(g.dayRecords).toEqual([expect.objectContaining({ day: "2026-01-01", dailiesDone: 1, dailiesTotal: 1 }), expect.objectContaining({ day: expect.any(String) })]);
     expect(data.tasks.length).toBeGreaterThan(0); // the game's default dailies
   });
 
