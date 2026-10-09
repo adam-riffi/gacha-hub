@@ -21,9 +21,9 @@ test("the rail moves between sections and the strip sets the scope @smoke", asyn
     ["Admin", /\/admin$/],
     ["Home, all games", /\/$/],
   ] as const) {
-    await rail.getByRole("link", { name }).click();
+    await rail.getByRole("link", { name, exact: true }).click();
     await expect(page).toHaveURL(url);
-    await expect(rail.getByRole("link", { name })).toHaveAttribute("aria-current", "page");
+    await expect(rail.getByRole("link", { name, exact: true })).toHaveAttribute("aria-current", "page");
   }
 
   // On Home a game shows the same page for that game: only the accent changes.
@@ -39,7 +39,7 @@ test("the rail moves between sections and the strip sets the scope @smoke", asyn
   await expect(page).toHaveURL(/\/timeline\?game=hsr$/);
   await expect(page.locator(".cal-game-name", { hasText: "Honkai: Star Rail" })).toBeVisible();
   await expect(page.locator(".cal-game-name")).toHaveCount(1);
-  await rail.getByRole("link", { name: "Games" }).click();
+  await rail.getByRole("link", { name: "Games", exact: true }).click();
   await expect(page).toHaveURL(new RegExp(`/games/${id}$`));
   expect(await accent(page)).toBe("#ff8fd1");
 
@@ -47,6 +47,6 @@ test("the rail moves between sections and the strip sets the scope @smoke", asyn
   await strip.getByRole("link", { name: "Overview" }).click();
   await expect(page).toHaveURL(/\/library$/);
   await rail.getByRole("link", { name: "Tasks and goals" }).click();
-  await expect(page.getByRole("heading", { name: "Tasks" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Tasks", level: 1 })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Today" })).toBeVisible();
 });
