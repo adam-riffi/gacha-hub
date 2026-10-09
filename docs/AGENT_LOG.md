@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f8/01-cadence-core · pending
+- Done: `packages/shared/src/cadence.ts`, the current window of the daily, weekly, monthly, cycle and version cadences on a server's fixed-offset clock (ADR 0004); `lib/resets.ts` now delegates to it. Milestones V and D merged with Georges's approval; production on Prisma 7, smoke green through the pooler. HANDOFF.md rewritten.
+- Tests: `cadence.test.ts` (fast-check over offsets in 15-minute steps, reset hours and weekdays: windows contain now and start at the reset hour, chain end to start, match luxon for daily and weekly, monthly clamps to the month's last day, cycles repeat from their anchor also before it; identical results in four viewer time zones across 2026's clock changes; Genshin Europe's real windows).
+- Scope/decisions: Plain arithmetic instead of luxon so the browser shares it; luxon stays as the test oracle and for user time zones in reminders.
+- Next: `stack/f8/02-manifests`.
+
 ## 2026-10-10 · claude · stack/d/02-postgres-check · #103
 - Done: CI job `test-postgres` (Postgres 16 service, `migrate deploy`, the server's route tests through the pg adapter via `TEST_DATABASE_URL`); `/api/health` (an anonymous read through the database, `no-store`, 503 when unreachable) added to the production smoke check; AGENTS.md's dev-server note reworded (the client is provider-specific; there is no engine DLL any more).
 - Tests: `health.integration.test.ts` first; Check all; the CI job itself is the Postgres verification.
