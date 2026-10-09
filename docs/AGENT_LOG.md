@@ -14,7 +14,7 @@ Entry format:
 
 ---
 
-## 2026-10-09 · claude · stack/v/01-a11y · pending
+## 2026-10-09 · claude · stack/v/01-a11y · #93
 - Done: First PR of milestone V. Every control has an accessible name (`Labeled` names its inputs through `aria-labelledby`; standalone inputs and selects got labels); weekend days use a tint, text links are underlined, placeholder initials keep 4.5:1. Re-applies the two commits of the old `stack/a11y/01-axe` branch, which conflicted with `main`.
 - Tests: The axe journey (`e2e/a11y.spec.ts`) now covers Home, library, calendar, settings, Admin, every HSR game tab, an HSR and a Genshin character sheet and the Genshin gear views; no serious or critical WCAG 2 A/AA violations. It scans after hover and finite transitions settle.
 - Scope/decisions: `@axe-core/playwright` is development tooling. The test installs Genshin and removes it again, since the smoke journey adds Genshin through the library.
