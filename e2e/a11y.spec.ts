@@ -4,9 +4,8 @@ import { expect, test, type Page } from "@playwright/test";
 /** Serious and critical WCAG 2 A/AA violations on the current page, one line each. */
 async function violations(page: Page, label: string): Promise<string[]> {
   await expect(page.getByRole("heading").first()).toBeVisible();
-  // Scan the settled page: off any hover, after finite transitions (a button turning primary) end.
+  // Off any hover; under reduced motion nothing animates, so the page is already settled.
   await page.mouse.move(0, 0);
-  await page.waitForFunction(() => document.getAnimations().every((a) => a.effect?.getTiming().iterations === Infinity || a.playState !== "running"));
   const { violations: found } = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
   return found
     .filter((v) => v.impact === "serious" || v.impact === "critical")
@@ -20,6 +19,9 @@ async function violations(page: Page, label: string): Promise<string[]> {
 }
 
 test("every screen has no serious accessibility violations @smoke", async ({ page }) => {
+  test.slow(); // fourteen pages scanned in one journey
+  // Reduced motion: no auto-rotation or transitions, so every page scans in its settled state.
+  await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
   await page.getByRole("button", { name: "Continue as Dev User" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
