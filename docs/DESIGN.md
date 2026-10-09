@@ -68,7 +68,7 @@ gacha/
 ├── scripts/catalog/     # dataset importers (isolated install, not a workspace)
 ├── scripts/harness/     # end-to-end harnesses against the server bundle
 ├── api/index.mjs        # Vercel function entry
-└── docs/                # DESIGN.md, ENGINEERING.md, AGENT_LOG.md, adr/, DEPLOY.md
+└── docs/                # DESIGN.md, ENGINEERING.md, AGENT_LOG.md, PROJECT-GUIDE.md, screens/, adr/, DEPLOY.md
 ```
 
 ## 6. Core design decisions
@@ -114,7 +114,7 @@ Postgres on Supabase (own project `gacha-hub`, eu-west-1; ADR 0001). Migrations 
 | F6 Data export | `GET /api/export` (everything the user entered) + a Settings download | The export round-trips every user-owned table and contains nothing of other users or secrets |
 | F7 Calendar history | ended banners/events load when paging back | Paging back two weeks shows what ended then |
 
-F5 follows the owner's listed nice-to-have (HANDOFF.md §10) under ADR 0002 (Proposed); account import still needs the owner's go-ahead (§14).
+F5 follows the owner's listed nice-to-have (the Phase 8 handoff notes, in git history before 2026-10-08) under ADR 0002 (Proposed); account import still needs the owner's go-ahead (§14).
 
 ## 10. Testing strategy
 
@@ -154,7 +154,7 @@ Vercel project `gacha-hub` (framework preset "Other", functions in `dub1` next t
 - Enka (Genshin) and Yatta (HSR) art is hotlinked; mirror into our own store (`VITE_ASSET_BASE`) if either blocks us.
 - The HoYoverse feed is undocumented and serves inconsistent times; imports fail soft and the admin can edit rows.
 - Account import (Enka showcase, HoYoLAB) was deferred by the owner; needs a decision and an ADR before any work.
-- `docs/HANDOFF.md` and `docs/DESIGN-*.md` predate this file; this file wins where they differ.
+- `docs/DESIGN-*.md` predate this file; this file wins where they differ. `docs/PROJECT-GUIDE.md` walks through the shipped screens and per-game features; this file wins on scope.
 
 ## 15. Definition of done
 

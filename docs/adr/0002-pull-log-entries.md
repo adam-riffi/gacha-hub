@@ -6,7 +6,7 @@
 
 ## Context
 
-Milestone F5 adds a pull log with pity per banner (the owner listed "pull history + pity per banner" in `docs/HANDOFF.md` §10). Account import of wish history is deferred (DESIGN.md §14), so pulls are entered by hand and entry must stay quick. Each game resets pity per banner type (character, weapon, standard), a 5★ can be the featured unit or not, and losing a 50/50 (or 75/25) guarantees the next one.
+Milestone F5 adds a pull log with pity per banner (the owner listed "pull history + pity per banner" in the Phase 8 handoff notes, `docs/HANDOFF.md` §10, removed 2026-10-08 and kept in git history). Account import of wish history is deferred (DESIGN.md §14), so pulls are entered by hand and entry must stay quick. Each game resets pity per banner type (character, weapon, standard), a 5★ can be the featured unit or not, and losing a 50/50 (or 75/25) guarantees the next one.
 
 ## Decision
 

@@ -16,6 +16,7 @@ Operating manual for coding agents in this repository. Codex and Copilot read th
 - **Hosting:** Vercel (`gacha-hub-two.vercel.app`), Supabase Postgres, GitHub Actions as the cron.
 - **Hand-written core:** per-game modules, reset and domain-day math, reminder due logic, planning and cost math, official-feed parsing. Full list and allowed libraries: `docs/DESIGN.md` §6.
 - **Repository layout:** `docs/DESIGN.md` §5.
+- **Full picture:** `docs/PROJECT-GUIDE.md`: every screen with a screenshot, why each game has its own features, flows and diagrams, the whole to-do list.
 
 ## Commands
 
