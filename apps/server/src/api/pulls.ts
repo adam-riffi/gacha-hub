@@ -1,5 +1,5 @@
 import type { FastifyInstance } from "fastify";
-import type { PullEntry } from "@prisma/client";
+import type { PullEntry } from "../generated/prisma/client.js";
 import {
   addPullsInput,
   calibratePullsInput,

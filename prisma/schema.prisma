@@ -5,17 +5,15 @@
 // referenced here by their catalog ids.
 
 generator client {
-  provider      = "prisma-client-js"
-  // "native" for local machines; rhel target for Vercel's serverless runtime.
-  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+  provider     = "prisma-client"
+  // TypeScript, bundled with the server; the connection comes from a driver
+  // adapter (apps/server/src/lib/prisma.ts) and the URLs from prisma.config.ts.
+  output       = "../apps/server/src/generated/prisma"
+  moduleFormat = "esm"
 }
 
 datasource db {
-  provider  = "postgresql"
-  // Pooled connection (Neon/Supabase pooler) for serverless functions…
-  url       = env("DATABASE_URL")
-  // …and a direct connection for migrations.
-  directUrl = env("DIRECT_DATABASE_URL")
+  provider = "postgresql"
 }
 
 /// A person, created on first Discord OAuth sign-in.

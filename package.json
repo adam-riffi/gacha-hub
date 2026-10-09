@@ -33,7 +33,7 @@
     "catalog:endfield": "npm --prefix scripts/catalog run endfield",
     "db:up": "docker compose up -d",
     "db:down": "docker compose down",
-    "db:sqlite": "node scripts/gen-sqlite-schema.mjs && prisma db push --schema prisma/schema.sqlite.prisma --accept-data-loss",
+    "db:sqlite": "node scripts/gen-sqlite-schema.mjs && prisma db push --schema prisma/schema.sqlite.prisma && prisma generate --schema prisma/schema.sqlite.prisma",
     "setup:sqlite": "npm run db:sqlite",
     "prisma:generate": "prisma generate --schema prisma/schema.prisma",
     "prisma:migrate": "prisma migrate dev --schema prisma/schema.prisma",
@@ -41,7 +41,9 @@
     "prisma:studio": "prisma studio --schema prisma/schema.prisma"
   },
   "dependencies": {
-    "@prisma/client": "^6.2.1"
+    "@prisma/adapter-better-sqlite3": "^7.10.0",
+    "@prisma/adapter-pg": "^7.10.0",
+    "@prisma/client": "^7.10.0"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
@@ -55,7 +57,7 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "globals": "^17.13.0",
     "prettier": "^3.9.9",
-    "prisma": "^6.2.1",
+    "prisma": "^7.10.0",
     "tsx": "^4.23.15",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.71.0"

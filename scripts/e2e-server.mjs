@@ -15,12 +15,10 @@ for (const suffix of ["", "-journal"]) rmSync(resolve(root, `prisma/e2e.db${suff
 execFileSync(process.execPath, [resolve(root, "scripts/gen-sqlite-schema.mjs")], { stdio: "inherit" });
 // CLIs run through node directly: no shell, the same on every OS.
 const bin = (path) => resolve(root, "node_modules", path);
-// A fresh file, so no --accept-data-loss.
-execFileSync(process.execPath, [bin("prisma/build/index.js"), "db", "push", "--schema", "prisma/schema.sqlite.prisma"], {
-  cwd: root,
-  env,
-  stdio: "inherit",
-});
+// A fresh file, so no --accept-data-loss. Prisma 7's push does not generate the client: do it after.
+for (const args of [["db", "push"], ["generate"]]) {
+  execFileSync(process.execPath, [bin("prisma/build/index.js"), ...args, "--schema", "prisma/schema.sqlite.prisma"], { cwd: root, env, stdio: "inherit" });
+}
 
 const server = spawn(process.execPath, [bin("tsx/dist/cli.mjs"), "src/index.ts"], {
   cwd: resolve(root, "apps/server"),

@@ -14,6 +14,7 @@ export default tseslint.config(
       "**/node_modules/**",
       "api/**", // Vercel entry imports a build artifact via @ts-ignore
       "prisma/**",
+      "**/generated/**", // the Prisma client
       "**/*.config.*",
       "apps/web/public/**",
     ],

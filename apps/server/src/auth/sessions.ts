@@ -1,5 +1,5 @@
 import { randomBytes } from "node:crypto";
-import type { User } from "@prisma/client";
+import type { User } from "../generated/prisma/client.js";
 import { prisma } from "../lib/prisma.js";
 
 export const SESSION_COOKIE = "gacha_session";

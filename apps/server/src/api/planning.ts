@@ -1,5 +1,5 @@
 import type { FastifyInstance } from "fastify";
-import type { GameInstance } from "@prisma/client";
+import type { GameInstance } from "../generated/prisma/client.js";
 import {
   characterRequirements,
   deficit,

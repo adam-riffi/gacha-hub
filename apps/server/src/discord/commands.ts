@@ -1,4 +1,4 @@
-import type { GameInstance } from "@prisma/client";
+import type { GameInstance } from "../generated/prisma/client.js";
 import { getGame, type GameDefinition, type TaskCadence } from "@gacha/shared";
 import { config } from "../config.js";
 import { prisma } from "../lib/prisma.js";
