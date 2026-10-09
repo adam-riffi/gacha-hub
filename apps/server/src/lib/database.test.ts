@@ -1,4 +1,6 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+import { resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { resolveDatabase } from "./database.js";
 
 // Prisma 7 talks to the database through a driver adapter chosen by the URL
@@ -45,5 +47,33 @@ describe("resolveDatabase", () => {
   it("refuses an empty URL with a clear message", () => {
     expect(() => resolveDatabase("", prismaDir)).toThrow(/DATABASE_URL/);
     expect(() => resolveDatabase(undefined, prismaDir)).toThrow(/DATABASE_URL/);
+  });
+});
+
+// Outside this package's rootDir, so loaded by URL rather than typed.
+const loadConfig = async (): Promise<{ datasource?: { url?: string } }> =>
+  (await import(/* @vite-ignore */ new URL("../../../../prisma.config.ts", import.meta.url).href)).default;
+
+describe("prisma.config.ts", () => {
+  it("points the Prisma CLI at the SQLite file the app opens (prisma/, not the repository root)", async () => {
+    const before = { ...process.env };
+    try {
+      delete process.env.DIRECT_DATABASE_URL;
+      process.env.DATABASE_URL = "file:./dev.db";
+      vi.resetModules();
+      const config = await loadConfig();
+      const root = fileURLToPath(new URL("../../../../", import.meta.url));
+      const cli = resolve(root, (config.datasource?.url ?? "").slice("file:".length));
+      const app = (resolveDatabase("file:./dev.db", resolve(root, "prisma")) as { path: string }).path;
+      expect(cli).toBe(resolve(app));
+      // Absolute paths, as the test, E2E and harness scripts give, pass through.
+      for (const abs of ["file:C:\\db\\test.db", "file:C:/db/test.db", "file:/db/test.db"]) {
+        process.env.DATABASE_URL = abs;
+        vi.resetModules();
+        expect((await loadConfig()).datasource?.url).toBe(abs);
+      }
+    } finally {
+      process.env = before;
+    }
   });
 });
