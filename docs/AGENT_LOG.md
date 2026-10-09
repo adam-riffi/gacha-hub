@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-09 · claude · stack/v/09-home · #101
+- Done: Home is the dashboard: the 1232 + 528 layout, DAILIES & WEEKLIES (name, reset chip, gauge, four KPI tiles) beside BATTLE PASS (empty until F8), the heatmap below; BANNERS, PULLS (limited total, limited and permanent, a row per game) and STAMINA (current over cap, reserve, full) in the side column. The three carousels share one clock and one roster (`lib/roster.ts`, `useCarousel` with a game tick). The KPI strip, Today, Coming up, Wallet and the board left Home; a hidden "Home" heading stays.
+- Tests: `e2e/home.spec.ts` (every design panel and none of the old ones; the Dailies card's split tiles, reset chip and labelled gauge; 10 limited warps from 1600 jade; the stamina row and its fill time); the banners, heatmap and axe journeys still pass.
+- Scope/decisions: VIEWING a pinned day and BACK TO TODAY wait for F8's record; Endgame and Expiring soon come with F8/F10; game art with F12. Milestone V's acceptance: Home matches the design at 1920×1204, a scope changes only the accent, axe clean, reduced motion stops transitions and rotation.
+- Next: Milestone D (Prisma 7), then F8.
+
 ## 2026-10-09 · claude · stack/v/08-home-data · #100
 - Done: `/api/dashboard` gives each game `stamina` (its regenerating currency projected to now, from `lib/regen.ts`, which took over Genshin's resin projection), `pullLog` (batches of the last six weeks) and `recurring` (own dailies and weeklies against added tasks, matched by title like the restore route). Home's PULL HISTORY shows spent pulls per day or ISO week in the viewer's calendar.
 - Tests: `dashboard.integration.test.ts` (resin projection and time to full, a never-set HSR profile, the pull log in order, the recurring split before and after completions); Genshin's regen tests unchanged.

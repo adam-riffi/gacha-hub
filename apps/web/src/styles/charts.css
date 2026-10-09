@@ -77,8 +77,8 @@
 .pw:hover .pl .pt { color: var(--text); }
 .pw .ph, .ph .pw { margin: 0; }
 
-/* Home's top row until 09-home lays the whole page out. */
-.home-top { display: flex; gap: 24px; margin: 16px 0 24px; }
+/* Home's top row: the hero gauge, then the goals strip over the charts. */
+.home-top { display: flex; gap: 24px; }
 .home-top-side { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 24px; }
 .home-top-strip { display: flex; gap: 24px; height: 192px; }
 
@@ -130,7 +130,7 @@
 .dg.on { color: var(--text); }
 .dg.on i { background: var(--accent); border-color: var(--accent); }
 .hg, .cb { user-select: none; }
-.home-heat { height: 232px; margin-bottom: 24px; }
+.home-heat { height: 232px; }
 .home-top-charts { display: flex; gap: 24px; height: 260px; }
 /* The map takes focus for the keyboard: no ring after a click, the accent ring when tabbed to. */
 .hg:focus:not(:focus-visible) { outline: none; }
