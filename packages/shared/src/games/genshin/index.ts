@@ -112,6 +112,7 @@ export const genshin: GameDefinition = {
     ],
     battlePass: { name: "Gnostic Hymn", maxLevel: 50, weeklyXpCap: 10_000 },
     monthlyPass: { name: "Blessing of the Welkin Moon", days: 30, maxDays: 180 },
+    accountLevel: { label: "AR", name: "Adventure Rank" },
     version: { name: "7.1", start: "2026-09-23", days: 42 },
   },
   defaultTasks: [

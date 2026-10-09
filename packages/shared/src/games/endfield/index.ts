@@ -83,6 +83,7 @@ export const endfield: GameDefinition = {
     // Seasons of three weekly cycles; a season's first cycle opens with its phase, mid-day.
     endgame: [{ key: "echoes", name: "Echoes of War", anchor: { cadence: "cycle", start: "2026-10-01", days: 7 }, metric: { label: "stars", max: 9 } }],
     battlePass: { name: "Protocol Pass" },
+    accountLevel: { label: "AL", name: "Authority Level" },
     version: { name: "Dreamscape of Wind and Snow", start: "2026-09-02", days: 43 },
   },
   defaultTasks: [{ key: "dailies", title: "Daily Tasks", cadence: "daily" }],

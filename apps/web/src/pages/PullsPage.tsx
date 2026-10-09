@@ -179,9 +179,6 @@ export function PullsPage() {
       <div style={{ marginBottom: 14 }}>
         <GameTabs instanceId={instance.id} active="pulls" gameKey={instance.gameKey} hasCatalog={Boolean(catalog)} />
       </div>
-      <div className="page-head">
-        <h1>{instance.name} · Pulls</h1>
-      </div>
       {log.banners.length === 0 ? (
         <div className="card empty">This game has no pity rules yet.</div>
       ) : (

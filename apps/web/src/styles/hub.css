@@ -1,0 +1,38 @@
+/*
+ * The game hub's header and tabs (WIREFRAMES.md, Game hub), in the dashboard's
+ * type: the name in Barlow, labels and chips in mono, the current tab under an
+ * accent bar like a panel title's.
+ */
+.hub-head { display: flex; align-items: center; gap: 24px; padding: 8px 0 20px; }
+.hub-icon { width: 72px; height: 72px; flex: 0 0 72px; object-fit: cover; clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%); }
+.hub-icon-ph { display: block; background: var(--accent); }
+.hub-id { min-width: 0; }
+.hub-name { margin: 0; font: 600 44px/1 var(--font-display); letter-spacing: 0.04em; text-transform: uppercase; }
+.hub-chips, .hub-edit { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 12px; }
+.hub-chips .badge { height: 24px; font-size: 12px; }
+.hub-edit { align-items: flex-end; gap: 12px; }
+.hub-edit label { display: flex; flex-direction: column; gap: 6px; color: var(--text-muted); font: 400 11px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
+.hub-edit input, .hub-edit select { width: 160px; }
+.hub-error { color: var(--text); font: 400 12px/1 var(--font-mono); }
+.hub-resets { display: flex; gap: 40px; margin: 0 0 0 auto; }
+.hub-resets dt { color: var(--text-muted); font: 400 12px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
+.hub-resets dd { margin: 10px 0 0; font: 600 24px/1 var(--font-display); letter-spacing: 0.04em; text-transform: uppercase; font-variant-numeric: tabular-nums; }
+.hub-resets dd .chip { font: inherit; letter-spacing: inherit; color: var(--text); }
+.hub-resets dd .chip > i { display: none; }
+
+.hub-tabs { display: flex; gap: 32px; margin-bottom: 24px; border-bottom: 1px solid var(--hairline); overflow-x: auto; }
+.hub-tabs a {
+  position: relative; padding: 4px 0 14px; white-space: nowrap; text-decoration: none;
+  color: var(--text-muted); font: 400 12px/1 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase;
+  transition: color 0.2s;
+}
+.hub-tabs a:hover, .hub-tabs a[aria-current="page"] { color: var(--text); }
+.hub-tabs a[aria-current="page"]::after {
+  content: ""; position: absolute; left: 0; bottom: -1px; width: calc(100% + 12px); height: 3px;
+  background: var(--accent); clip-path: polygon(0 0, 100% 0, calc(100% - 3px) 100%, 0 100%);
+}
+
+@media (max-width: 900px) {
+  .hub-head { flex-wrap: wrap; }
+  .hub-resets { margin-left: 0; gap: 24px; }
+}

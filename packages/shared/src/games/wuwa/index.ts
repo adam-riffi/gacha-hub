@@ -91,6 +91,7 @@ export const wuwa: GameDefinition = {
     ],
     battlePass: { name: "Pioneer Podcast", maxLevel: 70 },
     monthlyPass: { name: "Lunite Subscription", days: 30, maxDays: 180 },
+    accountLevel: { label: "UL", name: "Union Level" },
     version: { name: "3.7", start: "2026-09-30", days: 42 },
   },
   defaultTasks: [

@@ -12,4 +12,5 @@
 | Endgame | Deadly Assault: every 14 days on the other Fridays (25 Sep – 9 Oct 2026, then 9 – 23 Oct); 9 stars; 300 Polychrome | [Deadly Assault](https://zenless-zone-zero.fandom.com/wiki/Deadly_Assault), [history](https://zenless-zone-zero.fandom.com/wiki/Deadly_Assault/History) |
 | Battle pass | New Eridu City Fund, 50 levels; weekly cap: | [New Eridu City Fund](https://zenless-zone-zero.fandom.com/wiki/New_Eridu_City_Fund) |
 | 30-day pass | Inter-Knot Membership, 30 days | [Inter-Knot Membership](https://zenless-zone-zero.fandom.com/wiki/Inter-Knot_Membership) |
+| Account level | Inter-Knot Level (IKL); the abbreviation is the community's | [Inter-Knot Level](https://zenless-zone-zero.fandom.com/wiki/Inter-Knot_Level) |
 | Version | 3.2 from 9 Sep 2026; 42 days (3.3 on 21 Oct 2026) | [Version](https://zenless-zone-zero.fandom.com/wiki/Version) |

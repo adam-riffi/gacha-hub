@@ -69,6 +69,8 @@ export interface GameManifest {
   }[];
   battlePass?: { name: string; maxLevel?: number; weeklyXpCap?: number };
   monthlyPass?: { name: string; days: number; maxDays?: number };
+  /** What the game calls the account level, short and in full (AR, Adventure Rank). */
+  accountLevel: { label: string; name: string };
   /** The current version; `days` until the next one, estimated until announced. */
   version: { name: string; start: string; days: number };
 }
