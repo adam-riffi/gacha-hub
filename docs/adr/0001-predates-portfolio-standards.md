@@ -1,6 +1,6 @@
 # 0001 — Keep the existing stack where it predates the portfolio standards
 
-- Status: Proposed
+- Status: Accepted (2026-10-09)
 - Date: 2026-10-05
 - Proposed by: claude; decided by: Georges
 

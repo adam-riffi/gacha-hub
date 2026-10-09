@@ -1,6 +1,6 @@
 # 0005 — Account linking and imports
 
-- Status: Proposed
+- Status: Accepted (2026-10-09)
 - Date: 2026-10-09
 - Proposed by: claude; decided by: Georges
 
