@@ -6,6 +6,7 @@ import { useToast } from "../lib/toast";
 import { formatRemaining } from "../lib/time";
 import { pullCount, pullText, pullsFor } from "../lib/format";
 import { BannersCarousel } from "../components/BannersCarousel";
+import { HomeHeat } from "../components/HomeHeat";
 import { HomeTop } from "../components/HomeTop";
 import { TaskBoard } from "../components/TaskBoard";
 import { TodayCard } from "../components/TodayCard";
@@ -175,6 +176,7 @@ export function DashboardPage() {
       <div className="dash">
         <div className="dash-main">
           <BannersCarousel banners={view.timeline.banners} />
+          <HomeHeat games={view.games} />
           <TodayCard games={view.games} />
           <TaskBoard gameKey={game} />
         </div>

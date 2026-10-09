@@ -81,3 +81,57 @@
 .home-top { display: flex; gap: 24px; margin: 16px 0 24px; }
 .home-top-side { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 24px; }
 .home-top-strip { display: flex; gap: 24px; height: 192px; }
+
+/* Labels laid over charts. */
+.lb { position: absolute; font: 400 13px/13px var(--font-mono); color: var(--text-muted); white-space: nowrap; }
+.lb.lh { color: var(--text); font-weight: 500; font-size: 15px; line-height: 15px; }
+.lb.lt { background: var(--paper); color: var(--on-paper); font-weight: 500; font-size: 15px; line-height: 15px; padding: 3px 7px; }
+.lb.wd { font-size: 12px; line-height: 12px; }
+.t-c { transform: translate(-50%, -50%); }
+.t-e { transform: translate(-100%, -50%); }
+.t-s { transform: translate(0, -50%); }
+.t-a { transform: translate(-50%, -100%); }
+.t-b { transform: translate(-50%, 0); }
+.legend { display: flex; align-items: center; gap: 16px; font: 400 12px/1 var(--font-mono); letter-spacing: 0.08em; color: var(--text-muted); white-space: nowrap; }
+.legend i { display: inline-block; width: 10px; height: 10px; margin-right: 8px; vertical-align: 1px; }
+
+/* Heatmap: an empty day on surface-2 with a grid edge, the accent at 34, 56, 78 and 100 %. */
+.l0 { fill: var(--surface-2); stroke: var(--grid); stroke-width: 1; }
+.l1 { fill: var(--accent); fill-opacity: 0.34; }
+.l2 { fill: var(--accent); fill-opacity: 0.56; }
+.l3 { fill: var(--accent); fill-opacity: 0.78; }
+.l4 { fill: var(--accent); }
+.sl { fill: none; stroke: var(--paper); stroke-width: 2; }
+.hv { fill: none; stroke: var(--text); stroke-width: 3; }
+.hv2 { fill: none; stroke: var(--bg); stroke-width: 1.5; }
+.heat { display: flex; align-items: center; flex: 1; min-height: 0; padding-left: 24px; }
+.heat-map { width: 868px; height: 188px; }
+.heat-tip { position: absolute; pointer-events: none; white-space: nowrap; }
+.heat-tip-date { font-size: 11px; letter-spacing: 0.06em; }
+.heat-tip-n { font-size: 24px; font-weight: 600; line-height: 1.1; }
+.heat-tip-n span { font-size: 15px; font-weight: 500; }
+.heat-readout { margin-left: 56px; width: 268px; height: 168px; position: relative; }
+.heat-stats { height: 168px; display: flex; flex-direction: column; justify-content: space-between; }
+.heat-stat { display: flex; align-items: baseline; justify-content: space-between; border-bottom: 1px solid var(--hairline); padding-bottom: 6px; }
+.heat-stat .mn { font-size: 12px; }
+.heat-stat .cd { font-size: 26px; font-weight: 600; line-height: 1; }
+.heat-stat .cd .mu { font-size: 14px; font-weight: 500; }
+.heat-sel { height: 168px; display: flex; flex-direction: column; }
+.heat-sel-head { display: flex; align-items: center; justify-content: space-between; height: 24px; flex: 0 0 24px; font-size: 12px; letter-spacing: 0.06em; }
+.heat-sel-n { display: flex; align-items: baseline; gap: 8px; margin-top: 6px; padding-bottom: 6px; border-bottom: 1px solid var(--hairline); }
+.heat-sel-n .cd { font-size: 36px; font-weight: 600; line-height: 1; }
+.heat-sel-n .cd .mu { font-size: 18px; font-weight: 500; }
+.heat-sel-n .mn { font-size: 12px; }
+.xb { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; padding: 0; color: var(--text-muted); background: transparent; border: 1px solid var(--hairline); cursor: pointer; }
+.xb:hover { background: var(--surface-2); color: var(--text); border-color: var(--text); }
+.dgs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(5, 17px); grid-auto-flow: column; column-gap: 12px; margin-top: 8px; }
+.dg { display: flex; align-items: center; gap: 8px; min-width: 0; font-size: 13px; line-height: 17px; color: var(--text-muted); white-space: nowrap; }
+.dg i { display: block; flex: 0 0 10px; width: 10px; height: 10px; box-sizing: border-box; border: 1.5px solid var(--hairline-strong); }
+.dg.on { color: var(--text); }
+.dg.on i { background: var(--accent); border-color: var(--accent); }
+.hg, .cb { user-select: none; }
+.home-heat { height: 232px; margin-bottom: 24px; }
+.home-top-charts { display: flex; gap: 24px; height: 260px; }
+/* The map takes focus for the keyboard: no ring after a click, the accent ring when tabbed to. */
+.hg:focus:not(:focus-visible) { outline: none; }
+.hg:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
