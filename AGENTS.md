@@ -33,7 +33,7 @@ Operating manual for coding agents in this repository. Codex and Copilot read th
 | Build (web + server bundle) | `npm run build` |
 | Initial JavaScript budget (after a build) | `npm run budget` |
 | Regenerate a catalog (delete `scripts/catalog/.cache/<game>` first for fresh data) | `npm run catalog:install` then `npm run catalog:<game>` |
-| New migration (offline) | `npx prisma migrate diff --from-schema-datamodel <before> --to-schema-datamodel prisma/schema.prisma --script` |
+| New migration (offline) | `npx prisma migrate diff --from-schema <before> --to-schema prisma/schema.prisma --script` |
 | E2E smoke (Playwright; `npx playwright install chromium` once) | `npm run build -w @gacha/web && npm run e2e` |
 | Bundle harnesses (throwaway SQLite database) | `npm run harness` |
 | Smoke-check a deployment (no sign-in) | `npm run smoke -- https://gacha-hub-two.vercel.app` |

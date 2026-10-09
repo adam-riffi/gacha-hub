@@ -1,4 +1,4 @@
-import { cadenceWindow, type GameRegion, type TaskCadence } from "@gacha/shared";
+import { cadenceWindow, type CadenceAnchor, type GameRegion } from "@gacha/shared";
 
 /**
  * The subset of a region needed to compute reset boundaries. Gacha servers use
@@ -42,36 +42,22 @@ export const previousWeeklyReset = (now: Date, region: RegionReset): Date => cad
 /** Next weekly reset strictly after `now`. */
 export const nextWeeklyReset = (now: Date, region: RegionReset): Date => cadenceWindow({ cadence: "weekly" }, region, now).end;
 
-export function previousReset(
-  now: Date,
-  region: RegionReset,
-  cadence: TaskCadence,
-): Date {
-  return cadence === "weekly"
-    ? previousWeeklyReset(now, region)
-    : previousDailyReset(now, region);
-}
+/** Start of the current window of a recurring task's anchor (see `taskAnchor`). */
+export const previousReset = (now: Date, region: RegionReset, anchor: CadenceAnchor): Date => cadenceWindow(anchor, region, now).start;
 
-export function nextReset(
-  now: Date,
-  region: RegionReset,
-  cadence: TaskCadence,
-): Date {
-  return cadence === "weekly"
-    ? nextWeeklyReset(now, region)
-    : nextDailyReset(now, region);
-}
+/** End of that window: when the task resets. */
+export const nextReset = (now: Date, region: RegionReset, anchor: CadenceAnchor): Date => cadenceWindow(anchor, region, now).end;
 
 /**
  * Whether a recurring task counts as done for the current cycle: it was last
- * completed at or after the most recent reset boundary.
+ * completed at or after the start of its current window.
  */
 export function isDoneThisCycle(
   lastCompletedAt: Date | null | undefined,
   now: Date,
   region: RegionReset,
-  cadence: TaskCadence,
+  anchor: CadenceAnchor,
 ): boolean {
   if (!lastCompletedAt) return false;
-  return lastCompletedAt.getTime() >= previousReset(now, region, cadence).getTime();
+  return lastCompletedAt.getTime() >= previousReset(now, region, anchor).getTime();
 }

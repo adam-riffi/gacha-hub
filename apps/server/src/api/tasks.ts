@@ -6,8 +6,10 @@ import {
   getGame,
   taskChecklistInput,
   taskDto,
+  taskAnchor,
   taskProgressInput,
   updateTaskInput,
+  type GameManifest,
   type TaskCadence,
 } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
@@ -59,20 +61,20 @@ export async function buildRegionContext(tasks: Task[]) {
     ? await prisma.gameInstance.findMany({ where: { id: { in: [...instanceIds] } } })
     : [];
   const instanceRegion = new Map<string, RegionReset>();
+  const instanceManifest = new Map<string, GameManifest>();
   for (const gi of instances) {
     const game = getGame(gi.gameKey);
     instanceRegion.set(gi.id, game ? regionForInstance(game, gi) : DEFAULT_REGION);
+    if (game) instanceManifest.set(gi.id, game.manifest);
   }
 
-  return { charToInstance, instanceRegion, stock };
+  return { charToInstance, instanceRegion, instanceManifest, stock };
 }
 
 type RegionCtx = Awaited<ReturnType<typeof buildRegionContext>>;
 
-function regionForTask(task: Task, ctx: RegionCtx): RegionReset {
-  const instanceId =
-    task.scope === "character" ? ctx.charToInstance.get(task.refId) : task.refId;
-  return (instanceId && ctx.instanceRegion.get(instanceId)) || DEFAULT_REGION;
+function instanceForTask(task: Task, ctx: RegionCtx): string | undefined {
+  return task.scope === "character" ? ctx.charToInstance.get(task.refId) : task.refId;
 }
 
 /**
@@ -84,11 +86,12 @@ export function serializeTask(task: Task, ctx: RegionCtx, now: Date) {
   const extra =
     task.type === "recurring"
       ? (() => {
-          const region = regionForTask(task, ctx);
-          const cadence = (task.cadence as TaskCadence) ?? "daily";
+          const instanceId = instanceForTask(task, ctx);
+          const region = (instanceId && ctx.instanceRegion.get(instanceId)) || DEFAULT_REGION;
+          const anchor = taskAnchor(instanceId ? ctx.instanceManifest.get(instanceId) : undefined, (task.cadence as TaskCadence) ?? "daily", task.anchorKey);
           return {
-            doneThisCycle: isDoneThisCycle(task.lastCompletedAt, now, region, cadence),
-            nextReset: nextReset(now, region, cadence),
+            doneThisCycle: isDoneThisCycle(task.lastCompletedAt, now, region, anchor),
+            nextReset: nextReset(now, region, anchor),
           };
         })()
       : {};
@@ -137,6 +140,7 @@ export async function registerTaskRoutes(app: FastifyInstance) {
         type: body.type,
         title: body.title,
         cadence: body.cadence ?? null,
+        anchorKey: body.anchorKey ?? null,
         regionAware: body.regionAware ?? false,
         target: body.target ?? null,
         progress: body.progress ?? 0,
@@ -165,6 +169,7 @@ export async function registerTaskRoutes(app: FastifyInstance) {
         data: {
           ...(body.title !== undefined ? { title: body.title } : {}),
           ...(body.cadence !== undefined ? { cadence: body.cadence } : {}),
+          ...(body.anchorKey !== undefined ? { anchorKey: body.anchorKey } : {}),
           ...(body.target !== undefined ? { target: body.target } : {}),
           ...(body.progress !== undefined ? { progress: body.progress } : {}),
           ...(body.items !== undefined ? { items: body.items as PrismaJson } : {}),

@@ -4,7 +4,8 @@ import { z } from "zod";
  * (currencies, dailies, goals, reminders) are common to all gacha games; the
  * per-game character build is what's bespoke (see ./games). */
 
-export const taskCadenceSchema = z.enum(["daily", "weekly"]);
+/** Recurring cadences (ADR 0004); monthly and cycle tasks follow a manifest entry by `anchorKey`. */
+export const taskCadenceSchema = z.enum(["daily", "weekly", "monthly", "cycle", "version"]);
 export type TaskCadence = z.infer<typeof taskCadenceSchema>;
 
 export const taskTypeSchema = z.enum(["recurring", "goal", "checklist"]);
@@ -55,6 +56,8 @@ export const LIMITS = {
   ownershipQty: 999,
   materialQty: 9_999_999,
   checklistItems: 100,
+  accountLevel: 100,
+  uidLength: 32,
 } as const;
 
 /** A single {stat, value} row — reused by several games' gear substats. */

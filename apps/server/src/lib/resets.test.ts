@@ -77,15 +77,15 @@ describe("weekly resets", () => {
 describe("isDoneThisCycle", () => {
   const now = new Date("2026-09-06T10:00:00Z"); // 18:00 Asia; prev daily = Sep5 20:00 UTC
   it("is false when never completed", () => {
-    expect(isDoneThisCycle(null, now, ASIA, "daily")).toBe(false);
+    expect(isDoneThisCycle(null, now, ASIA, { cadence: "daily" })).toBe(false);
   });
   it("is true when completed after the last reset", () => {
     const done = new Date("2026-09-06T05:00:00Z");
-    expect(isDoneThisCycle(done, now, ASIA, "daily")).toBe(true);
+    expect(isDoneThisCycle(done, now, ASIA, { cadence: "daily" })).toBe(true);
   });
   it("is false when completed before the last reset (new cycle)", () => {
     const done = new Date("2026-09-05T12:00:00Z"); // before Sep5 20:00 UTC boundary
-    expect(isDoneThisCycle(done, now, ASIA, "daily")).toBe(false);
+    expect(isDoneThisCycle(done, now, ASIA, { cadence: "daily" })).toBe(false);
   });
 });
 
