@@ -132,7 +132,7 @@ model PassState {
 }
 
 /// A profile's game day (server-local date, YYYY-MM-DD), written on every
-/// change: the Home heatmap and streaks, the backlog line and pulls gained.
+/// change: the Home heatmap and streaks, the open-goals line and pulls gained.
 model DayRecord {
   id             String       @id @default(cuid())
   gameInstanceId String
@@ -140,7 +140,7 @@ model DayRecord {
   day            String
   dailiesDone    Int          @default(0)
   dailiesTotal   Int          @default(0)
-  backlogOpen    Int          @default(0)
+  goalsOpen      Int          @default(0)
   /// Pulls on hand at the day's last change (premium currency and tickets).
   pulls          Int          @default(0)
   updatedAt      DateTime     @updatedAt

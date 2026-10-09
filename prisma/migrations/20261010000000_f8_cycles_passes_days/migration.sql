@@ -43,7 +43,7 @@ CREATE TABLE "DayRecord" (
     "day" TEXT NOT NULL,
     "dailiesDone" INTEGER NOT NULL DEFAULT 0,
     "dailiesTotal" INTEGER NOT NULL DEFAULT 0,
-    "backlogOpen" INTEGER NOT NULL DEFAULT 0,
+    "goalsOpen" INTEGER NOT NULL DEFAULT 0,
     "pulls" INTEGER NOT NULL DEFAULT 0,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
