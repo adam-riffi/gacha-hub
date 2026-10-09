@@ -582,7 +582,7 @@ As of 2026-10-08, `main` at `36edfc0` (docs(agents): read and rewrite HANDOFF.md
 | Endfield shows empty Equipment, Gear and Materials tabs | `GameTabs.tsx` only checks for a catalog | §14.2 item 6 |
 | Rate limiter is in memory per serverless instance | `@fastify/rate-limit` | Best effort; accepted |
 | Feed times are inconsistent upstream | HoYoverse API | `settle()` handles it; admins can edit rows |
-| Old design docs predate DESIGN.md | `docs/DESIGN-BRIEF.md`, `docs/DESIGN-HANDOFF.md` | DESIGN.md wins |
+| Old design docs predate DESIGN.md | `docs/DESIGN-BRIEF.md`, `docs/DESIGN-HANDOFF.md` | DESIGN.md and VISUAL-DESIGN.md win |
 
 ## 16. Gotchas
 

@@ -1,6 +1,6 @@
 # Wireframes
 
-> The target screens, from the "Gacha Hub Wireframes" canvas (2026-10-09, private to Georges). This file is the specification for screen structure; DESIGN.md §7 sets the visual style, and `docs/PROJECT-GUIDE.md` shows what is built today. Numbers in examples are sample data. Milestones are in DESIGN.md §9.
+> The target screens, from the "Gacha Hub Wireframes" canvas (2026-10-09, private to Georges). This file is the specification for screen structure; `docs/VISUAL-DESIGN.md` sets the look (DESIGN.md §7), and `docs/PROJECT-GUIDE.md` shows what is built today. Numbers in examples are sample data. Milestones are in DESIGN.md §9.
 
 ## Conventions
 
@@ -77,7 +77,7 @@ Shared by every tab when one game is picked (examples use Genshin).
   - **Status** as a two-state switch: `50/50 | GUARANTEED`, or for weapons `75/25 · PATH 0/1 | PATH 1/1 · GUARANTEED`, with the reason ("you lost the 50/50 on 2 Sep, Diluc at pity 76").
   - 5★ pity bar with the soft-pity tick; 4★ pity bar.
   - **Odds** for 5★ and 4★: next pull, next 10 pulls, and either "by soft pity" or "target by your pulls". Labelled as estimates.
-  - **Curve** on the pity axis: the part already pulled is shaded, a magenta line marks the current pity, dashed lines mark soft and hard pity, and a marker shows where the pulls you have reach.
+  - **Curve** on the pity axis: the part already pulled is shaded, an accent line marks the current pity, dashed lines mark soft and hard pity, and a marker shows where the pulls you have reach.
   - Headline chance with your pulls ("100% chance of Vodyanitsa with your 90 pulls · 48 on average · 68 at most").
   - Actions: +1, +10, Log a 5★, Set pity, Undo.
 - Compact rows for the other banners (Chronicled, Standard).

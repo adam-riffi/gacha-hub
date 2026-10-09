@@ -1,5 +1,7 @@
 # Gacha Hub — UI design handoff
 
+> Superseded for the look by `docs/VISUAL-DESIGN.md` (2026-10-09, ADR 0007); kept for history.
+
 Everything a designer (human or Claude Design) needs to design the front end:
 what the app is, every screen, the data behind each, the states to cover, and
 what's bespoke per game. Paired with **[DESIGN-BRIEF.md](DESIGN-BRIEF.md)**,

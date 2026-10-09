@@ -81,7 +81,8 @@ apps/web/src/                     pages/ · components/ · games/<key>/ (bespoke
 e2e/                              Playwright smoke journeys
 scripts/                          catalog importers · e2e server · build and SQLite helpers
 prisma/                           schema.prisma + migrations
-docs/                             DESIGN · ENGINEERING · AGENT_LOG · adr/ · DEPLOY
+docs/                             DESIGN · VISUAL-DESIGN · WIREFRAMES · PROJECT-GUIDE ·
+                                  ENGINEERING · AGENT_LOG · adr/ · games/ · DEPLOY
 ```
 
 **Adding a game:** a `GameDefinition` in `packages/shared/src/games/<key>/` (registered in `games/index.ts`), an importer in `scripts/catalog/<key>.ts`, a sheet in `apps/web/src/games/<key>/Sheet.tsx` (registered in `apps/web/src/render/index.tsx`), and optional bot hooks in `apps/server/src/games/<key>.ts`.

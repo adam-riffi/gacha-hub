@@ -1,5 +1,7 @@
 # Gacha Hub — design brief & Claude Design prompt
 
+> Superseded for the look by `docs/VISUAL-DESIGN.md` (2026-10-09, ADR 0007); kept for history.
+
 Two things: a **ready-to-paste prompt** for Claude Design, and my **direction
 suggestions** for the main (game-agnostic) UI and the per-game UIs. The full
 spec is in **[DESIGN-HANDOFF.md](DESIGN-HANDOFF.md)** — hand that over alongside
