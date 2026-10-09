@@ -8,6 +8,7 @@ import { App } from "./App";
 import "./styles/tokens.css";
 import "./styles/shell.css";
 import "./styles.css";
+import "./styles/components.css";
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: false, refetchOnWindowFocus: false } },

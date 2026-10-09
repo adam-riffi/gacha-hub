@@ -10,6 +10,7 @@ import { assetUrl, communityAssetUrl } from "../lib/assets";
 import { GameIcon } from "../components/GameIcon";
 import { TaskBoard } from "../components/TaskBoard";
 import { TodayCard } from "../components/TodayCard";
+import { Countdown } from "../components/ui";
 import type { DashboardData, TaskItem } from "../lib/types";
 
 type DashGame = DashboardData["games"][number];
@@ -120,7 +121,7 @@ function BannersNow({ timeline }: { timeline: DashboardData["timeline"] }) {
                 <div className="banner-name">{b.name}</div>
                 <div className="small muted">{game?.name ?? b.gameKey}</div>
               </div>
-              <span className="small muted" style={{ whiteSpace: "nowrap" }}>ends in {formatRemaining(b.endsAt)}</span>
+              <Countdown at={b.endsAt} />
             </div>
             {b.featured.length > 0 && (
               <div className="feat-row">
@@ -205,9 +206,7 @@ function ComingUpCard({ timeline }: { timeline: DashboardData["timeline"] }) {
                 <div className="small"><strong>{it.name}</strong> <span className="muted">· {it.tag}</span></div>
                 <div className="spread small muted">
                   <span>{game?.name ?? it.gameKey}</span>
-                  <span className={it.status === "active" ? "" : "tl-upcoming"}>
-                    {it.status === "active" ? `ends in ${formatRemaining(it.endsAt)}` : `starts in ${formatRemaining(it.startsAt)}`}
-                  </span>
+                  {it.status === "active" ? <Countdown at={it.endsAt} /> : <span className="tl-upcoming">starts in {formatRemaining(it.startsAt)}</span>}
                 </div>
               </div>
             );

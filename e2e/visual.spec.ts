@@ -27,3 +27,36 @@ test("the app uses its self-hosted type and the dark tokens @smoke", async ({ pa
   expect(look.faces).toEqual([true, true, true, true]);
   expect(new Set(fontHosts)).toEqual(new Set([new URL(page.url()).host]));
 });
+
+test("deadlines within 48 hours are paper chips; view switches expose their state @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  // HSR, not Genshin: the smoke journey adds Genshin through the library.
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  const iso = (hours: number) => new Date(Date.now() + hours * 3_600_000).toISOString();
+  const upload = await page.request.post("/api/admin/payload", {
+    data: {
+      kind: "banners",
+      gameKey: "hsr",
+      items: [
+        { key: "e2e-soon", name: "E2E ends soon", kind: "character", startsAt: iso(-24), endsAt: iso(10) },
+        { key: "e2e-later", name: "E2E ends later", kind: "character", startsAt: iso(-24), endsAt: iso(24 * 9) },
+      ],
+    },
+  });
+  expect(upload.ok()).toBe(true);
+
+  await page.goto("/?game=hsr");
+  const chip = (name: string) => page.locator(".banner-card", { hasText: name }).locator(".chip");
+  await expect(chip("E2E ends soon")).toHaveCSS("background-color", "rgb(237, 237, 237)");
+  await expect(chip("E2E ends later")).not.toHaveCSS("background-color", "rgb(237, 237, 237)");
+
+  await page.goto(`/games/${id}/ownership`);
+  const view = page.getByRole("group", { name: "Show" });
+  await expect(view.getByRole("button", { name: /Characters/, pressed: true })).toBeVisible();
+  await view.getByRole("button", { name: /Weapons/ }).click();
+  await expect(view.getByRole("button", { name: /Weapons/, pressed: true })).toBeVisible();
+  await expect(view.getByRole("button", { name: /Characters/, pressed: false })).toBeVisible();
+});
+

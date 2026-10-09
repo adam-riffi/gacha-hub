@@ -41,7 +41,7 @@ export function PlanTable({ preview }: { preview: PlanPreviewDto }) {
                 </td>
                 <td>{r.qty}</td>
                 <td>{preview.stock[r.materialId] ?? 0}</td>
-                <td style={{ color: missing ? "var(--accent)" : "var(--success)" }}>{missing || "✓"}</td>
+                <td className={missing ? "" : "muted"}>{missing || "✓"}</td>
                 <td>{m?.availability ? (m.farmableToday ? <span className="badge done">farmable</span> : <span className="badge">not today</span>) : <span className="muted small">—</span>}</td>
               </tr>
             );

@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { GameDashboardExtras } from "@gacha/shared";
 import { api } from "../lib/api";
 import { formatRemaining } from "../lib/time";
+import { Countdown } from "./ui";
 import type { DashboardData } from "../lib/types";
 
 type DashGame = DashboardData["games"][number];
@@ -29,7 +30,7 @@ export function TodayCard({ games }: { games: DashGame[] }) {
             <div style={{ minWidth: 0 }}>
               <div className="spread">
                 <Link to={`/games/${g.instanceId}`}><strong>{g.name}</strong></Link>
-                {g.nextReset && <span className="small muted">reset in {formatRemaining(g.nextReset)}</span>}
+                {g.nextReset && <Countdown at={g.nextReset} kind="reset" prefix="resets in" />}
               </div>
               {regen && (
                 <div className="today-regen small">

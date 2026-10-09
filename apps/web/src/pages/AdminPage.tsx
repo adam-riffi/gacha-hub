@@ -205,8 +205,8 @@ export function AdminPage() {
             <span className="small muted">Items are upserted by key within the game. Everything is audited.</span>
           </div>
           {errorText && (
-            <div className="card" style={{ marginTop: 10, borderColor: "#4a2b33" }}>
-              <strong style={{ color: "var(--danger)" }}>{errorText}</strong>
+            <div className="card" style={{ marginTop: 10 }}>
+              <strong className="chip hot">{errorText}</strong>
               {issues && (
                 <ul className="small" style={{ margin: "6px 0 0", paddingLeft: 18 }}>
                   {issues.map((i, n) => <li key={n}><code>{i.path.join(".") || "(root)"}</code>: {i.message}</li>)}
@@ -215,8 +215,8 @@ export function AdminPage() {
             </div>
           )}
           {result && (
-            <div className="card" style={{ marginTop: 10, borderColor: "#234a30" }}>
-              <span style={{ color: "var(--success)" }}>✓ {result.kind} for {result.gameKey}: {result.created} created, {result.updated} updated</span>
+            <div className="card" style={{ marginTop: 10 }}>
+              <span>✓ {result.kind} for {result.gameKey}: {result.created} created, {result.updated} updated</span>
             </div>
           )}
           {schema && <pre className="small" style={{ marginTop: 10, maxHeight: 300, overflow: "auto" }}>{schema}</pre>}
