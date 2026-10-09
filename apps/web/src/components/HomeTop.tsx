@@ -4,6 +4,8 @@ import { GraphPanel } from "./charts/GraphPanel";
 import { HeroGauge, SmallGauge } from "./charts/Gauge";
 import { PercentBars } from "./charts/Bars";
 import { PeriodSwitch, type Period } from "./charts/PeriodSwitch";
+import { LineChart } from "./charts/LineChart";
+import { PairedBars } from "./charts/PairedBars";
 
 type DashGame = DashboardData["games"][number];
 type GoalType = "character" | "gear" | "weapons" | "gameplay";
@@ -21,10 +23,13 @@ function goalType(t: TaskItem): GoalType {
   return kind === "character" ? "character" : kind === "weapon" ? "weapons" : "gameplay";
 }
 
+const MD = (d: Date) => `${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+
 /**
  * Home's top row (VISUAL-DESIGN.md §10): the dailies gauge with the period
- * switch, the goals gauge and the goal-type bars. Backlog and pull history
- * join in the next PR.
+ * switch; the goals gauge and the goal-type bars; the backlog line and the
+ * pulls gained against spent. Until F8 keeps a daily record, the backlog
+ * shows today's point and pull history waits for 08-home-data.
  */
 export function HomeTop({ games, tasks, goalMaterials }: { games: DashGame[]; tasks: TaskItem[]; goalMaterials: DashboardData["goalMaterials"] }) {
   const [period, setPeriod] = useState<Period>("daily");
@@ -57,6 +62,26 @@ export function HomeTop({ games, tasks, goalMaterials }: { games: DashGame[]; ta
           </GraphPanel>
           <GraphPanel title="Goal types" style={{ flex: 1, minWidth: 0 }}>
             <PercentBars items={byType} label="Goal completion by type" />
+          </GraphPanel>
+        </div>
+        <div className="home-top-charts">
+          <GraphPanel title="Backlog" style={{ flex: 1, minWidth: 0 }}>
+            <LineChart values={[goals.length - goalsDone]} labels={[MD(new Date())]} label="Open goals over time" />
+          </GraphPanel>
+          <GraphPanel
+            title="Pull history"
+            style={{ flex: 1, minWidth: 0 }}
+            head={
+              <>
+                <span className="sp" />
+                <span className="legend">
+                  <span><i style={{ background: "var(--accent)" }} />GAINED</span>
+                  <span><i style={{ background: "var(--paper)" }} />SPENT</span>
+                </span>
+              </>
+            }
+          >
+            <PairedBars a={[]} b={[]} labels={[]} label="Pulls" names={["gained", "spent"]} />
           </GraphPanel>
         </div>
       </div>
