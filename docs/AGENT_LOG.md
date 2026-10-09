@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-09 · claude · stack/v/06-charts-core · pending
+- Done: `packages/shared/src/charts.ts` (arcs counter-clockwise from 12 o'clock, the ring of lit strips, polar points, closed paths, round axis maxima); `GraphPanel` with depth layers and the pointer tilt (off under reduced motion); `HeroGauge`, `SmallGauge`, `PercentBars`, `PeriodSwitch`; `styles/charts.css`. On Home the dailies gauge with the period switch, the goals gauge and the goal-type bars replace the KPI strip, computed from the dailies, goals and goal types Home already loads.
+- Tests: `charts.test.ts` (arc endpoints and flags, strips drawn and lit, the exponential rise, polar, paths, `niceMax` with a fast-check property); the E2E journeys and axe pass over the new panels, every chart labelled with its numbers.
+- Scope/decisions: No chart library (ADR 0007). Goal types: character and weapon plans by origin, checklists as gear, hand-typed goals as gameplay (V plan). Backlog and pull history come with `07-charts-more`.
+- Next: `stack/v/07-charts-more`.
+
 ## 2026-10-09 · claude · stack/v/05-carousel · #97
 - Done: `packages/shared/src/carousel.ts` (nearest deadline first; 6 s + 3 s per extra banner, split between a game's banners; stepping per banner or game, wrapping), `useCarousel` (one clock, held on hover and focus, off under reduced motion), `CarouselCard` (pips, chevrons, 4 px accent bar) and `BannersCarousel` on Home (one banner over its featured unit's art: Enka gacha splash, Yatta large portrait, hatching otherwise; ENDS IN as a dark or paper tag; Bodoni title band). `Countdown` gains a tag variant, `GameIcon` a list of fallbacks.
 - Tests: `carousel.test.ts` (timing, ordering, stepping, a fast-check lap property); `visual.spec.ts` (nearest deadline first as a paper tag, Next shows the later banner as a dark tag, hover and focus hold, reduced motion stops).
