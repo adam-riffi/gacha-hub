@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getGame } from "@gacha/shared";
@@ -7,95 +6,13 @@ import { useToast } from "../lib/toast";
 import { formatRemaining } from "../lib/time";
 import { pullCount, pullText, pullsFor } from "../lib/format";
 import { BannersCarousel } from "../components/BannersCarousel";
+import { HomeTop } from "../components/HomeTop";
 import { TaskBoard } from "../components/TaskBoard";
 import { TodayCard } from "../components/TodayCard";
 import { Countdown } from "../components/ui";
 import type { DashboardData, TaskItem } from "../lib/types";
 
 type DashGame = DashboardData["games"][number];
-
-// ---- KPI strip (user picks which tiles to show) ----
-
-const KPIS = [
-  { id: "pulls", label: "Pulls available" },
-  { id: "dailies", label: "Dailies done" },
-  { id: "owned", label: "Characters owned" },
-  { id: "built", label: "Builds finished" },
-  { id: "goals", label: "Goal materials" },
-  { id: "backlog", label: "Backlog goals" },
-  { id: "artifacts", label: "Artifacts in bag" },
-] as const;
-type KpiId = (typeof KPIS)[number]["id"];
-const DEFAULT_KPIS: KpiId[] = ["pulls", "dailies", "owned", "built", "goals"];
-// ponytail: per-browser choice; move to a user preference if you use several devices.
-const KPI_KEY = "home.kpis";
-function loadKpis(): KpiId[] {
-  try {
-    const saved = JSON.parse(localStorage.getItem(KPI_KEY) ?? "null");
-    return Array.isArray(saved) ? saved : DEFAULT_KPIS;
-  } catch {
-    return DEFAULT_KPIS;
-  }
-}
-
-function kpiValues(data: DashboardData, tasks: TaskItem[]): Record<KpiId, { value: string; sub: string }> {
-  const sum = (f: (g: DashGame) => number) => data.games.reduce((n, g) => n + f(g), 0);
-  const dailies = data.games.flatMap((g) => g.dailies);
-  const owned = sum((g) => g.ownedCharacters);
-  const catalog = sum((g) => g.catalogCharacters ?? 0);
-  const built = sum((g) => g.builtCharacters);
-  const mats = Object.values(data.goalMaterials);
-  const matsDone = mats.reduce((n, m) => n + m.done, 0);
-  const matsTotal = mats.reduce((n, m) => n + m.total, 0);
-  const pullGames = data.games.filter((g) => pullsFor(g.currencies).label);
-  return {
-    pulls: { value: String(pullGames.reduce((n, g) => n + pullsFor(g.currencies).limited, 0)), sub: `across ${pullGames.length} games` },
-    dailies: { value: `${dailies.filter((d) => d.doneThisCycle).length}/${dailies.length}`, sub: "this reset" },
-    owned: { value: catalog ? `${Math.round((owned / catalog) * 100)}%` : String(owned), sub: `${owned} of ${catalog}` },
-    built: { value: `${built}/${owned}`, sub: "good or perfect" },
-    goals: { value: `${matsDone}/${matsTotal}`, sub: "materials farmed" },
-    backlog: { value: String(tasks.filter((t) => t.type === "goal" && !t.parentId && t.backlog).length), sub: "goals parked" },
-    artifacts: { value: String(sum((g) => g.gearPieces)), sub: "unequipped pieces" },
-  };
-}
-
-function KpiStrip({ data, tasks }: { data: DashboardData; tasks: TaskItem[] }) {
-  const [shown, setShown] = useState<KpiId[]>(loadKpis);
-  const [editing, setEditing] = useState(false);
-  const values = kpiValues(data, tasks);
-  const toggle = (id: KpiId) => {
-    const next = shown.includes(id) ? shown.filter((x) => x !== id) : KPIS.map((k) => k.id).filter((k) => k === id || shown.includes(k));
-    setShown(next);
-    try {
-      localStorage.setItem(KPI_KEY, JSON.stringify(next));
-    } catch {
-      /* storage unavailable: keep the in-memory choice */
-    }
-  };
-  return (
-    <div className="kpi-wrap">
-      <div className="kpi-strip">
-        {KPIS.filter((k) => shown.includes(k.id)).map((k) => (
-          <div className="kpi" key={k.id}>
-            <div className="kpi-value stat-num">{values[k.id].value}</div>
-            <div className="kpi-label">{k.label}</div>
-            <div className="kpi-sub">{values[k.id].sub}</div>
-          </div>
-        ))}
-        <button className="kpi kpi-edit" onClick={() => setEditing((e) => !e)}>{editing ? "Done" : "Customize"}</button>
-      </div>
-      {editing && (
-        <div className="chips" style={{ marginTop: 10 }}>
-          {KPIS.map((k) => (
-            <button key={k.id} className={`chip-toggle ${shown.includes(k.id) ? "on" : ""}`} onClick={() => toggle(k.id)}>
-              {shown.includes(k.id) ? "✓ " : ""}{k.label}
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
 
 /** Pulls you can do right now, per game and in total. */
 function PullsCard({ games }: { games: DashGame[] }) {
@@ -253,7 +170,7 @@ export function DashboardPage() {
         <Link className="btn" to="/library">+ Add game</Link>
       </div>
 
-      <KpiStrip data={view} tasks={tasks ?? []} />
+      <HomeTop games={view.games} tasks={tasks ?? []} goalMaterials={view.goalMaterials} />
 
       <div className="dash">
         <div className="dash-main">
