@@ -1,31 +1,19 @@
-import { useMemo } from "react";
 import { Link } from "react-router-dom";
-import { byNearestDeadline, getGame, type TimelineDto } from "@gacha/shared";
-import { useCarousel } from "../lib/carousel";
+import { getGame } from "@gacha/shared";
+import type { HomeCarousel } from "../lib/carousel";
+import type { RosterEntry } from "../lib/roster";
 import { assetUrl, communityAssetUrl, splashKey } from "../lib/assets";
 import { CarouselCard } from "./Carousel";
 import { GameIcon } from "./GameIcon";
 import { Countdown } from "./ui";
 
-type Banner = TimelineDto["banners"][number];
-
-/** Running banners grouped by game, nearest deadline first, each game's banners by end date. */
-export function groupBanners(banners: Banner[]) {
-  const byGame = new Map<string, Banner[]>();
-  for (const b of banners) if (b.status === "active") byGame.set(b.gameKey, [...(byGame.get(b.gameKey) ?? []), b]);
-  const groups = [...byGame.entries()].map(([gameKey, list]) => ({ gameKey, banners: list.sort((a, b) => a.endsAt.localeCompare(b.endsAt)) }));
-  return byNearestDeadline(groups, (g) => g.banners.map((b) => Date.parse(b.endsAt)));
-}
-
-/** The Banners card on Home: one running banner at a time, its featured unit's art under a dark layer. */
-export function BannersCarousel({ banners }: { banners: Banner[] }) {
-  const groups = useMemo(() => groupBanners(banners), [banners]);
-  const counts = useMemo(() => groups.map((g) => g.banners.length), [groups]);
-  const c = useCarousel(counts);
+/** The Banners card on Home: one running banner at a time, its featured unit's art under a dark layer; it steps per banner on the shared clock. */
+export function BannersCarousel({ roster, c }: { roster: RosterEntry[]; c: HomeCarousel }) {
+  const counts = roster.map((r) => Math.max(1, r.banners.length));
   const total = counts.reduce((s, n) => s + n, 0);
   const before = counts.slice(0, c.pos.game).reduce((s, n) => s + n, 0);
-  const group = groups[c.pos.game];
-  const banner = group?.banners[c.pos.banner];
+  const entry = roster[c.pos.game];
+  const banner = entry?.banners[c.pos.banner];
   const game = banner && getGame(banner.gameKey);
   const lead = banner && [...banner.featured].sort((x, y) => (y.rarity ?? 0) - (x.rarity ?? 0))[0];
 
@@ -51,8 +39,7 @@ export function BannersCarousel({ banners }: { banners: Banner[] }) {
               <GameIcon
                 src={assetUrl(banner.gameKey, "portrait", lead.icon)}
                 fallback={[communityAssetUrl(banner.gameKey, "portrait", splashKey(banner.gameKey, lead.icon)), communityAssetUrl(banner.gameKey, "portrait", lead.icon)]}
-                alt=""
-                label=""
+                alt={lead.name ?? ""}
               />
             )}
           </div>
@@ -66,7 +53,7 @@ export function BannersCarousel({ banners }: { banners: Banner[] }) {
         </>
       ) : (
         <p className="carousel-empty">
-          No banners running. <Link to="/timeline">Banners &amp; events →</Link>
+          {entry ? `No banner running for ${entry.game.name}.` : "No banners running."} <Link to="/timeline">Banners &amp; events →</Link>
         </p>
       )}
     </CarouselCard>

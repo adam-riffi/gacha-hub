@@ -1,0 +1,50 @@
+/* Home: the dashboard's layout (docs/VISUAL-DESIGN.md §10): a 1232 px main column and a 528 px side column at 1920, 24 px gaps. */
+
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+.home { display: grid; grid-template-columns: minmax(0, 1fr) 528px; gap: 24px; align-items: start; padding-top: 8px; }
+.home-main, .home-side { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
+.home-carousels { display: flex; gap: 36px; height: 352px; }
+.home-carousels > .carousel { flex: 1; min-width: 0; }
+@media (max-width: 1500px) {
+  .home { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Dailies and weeklies: a text card, the gauge beside four KPI tiles. */
+.dailies-card .carousel-stage { background: transparent; }
+.dailies-body { display: flex; flex-direction: column; gap: 18px; height: 100%; padding: 10px 16px 18px; }
+.dailies-head { display: flex; justify-content: space-between; align-items: center; }
+.dailies-game { font-size: 32px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+.dailies-row { display: flex; gap: 36px; align-items: center; flex: 1; min-height: 0; padding: 0 12px; }
+.dailies-gauge { position: relative; width: 176px; height: 176px; flex: 0 0 176px; }
+.dailies-kpis { flex: 1; min-width: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 28px; }
+
+/* Battle pass: hatching where the art goes until F8 tracks passes. */
+.carousel-hatch { position: absolute; inset: 0; background: repeating-linear-gradient(45deg, var(--surface-3) 0 2px, var(--surface-2) 2px 14px); }
+.pass-game { font-size: 26px; font-weight: 600; line-height: 1.1; letter-spacing: 0.04em; text-transform: uppercase; }
+
+/* Pulls and stamina: cards holding a table, rows edge to edge. */
+.table-card { display: flex; flex-direction: column; padding: 0; }
+.table-card .ph { padding: 0 16px; }
+.table-card .lst { flex: 1; }
+.pulls-card { height: 400px; }
+.stamina-card { height: 330px; }
+.pulls-head { display: flex; align-items: flex-end; justify-content: space-between; padding: 8px 16px 14px; }
+.pulls-total { font-size: 56px; font-weight: 600; line-height: 1; }
+.pulls-split { font-size: 13px; line-height: 1.7; text-align: right; text-transform: uppercase; letter-spacing: 0.04em; }
+.pulls-split .mu { margin-right: 12px; }
+.thead { display: flex; align-items: center; height: 28px; flex: 0 0 28px; padding: 0 26px 0 16px; border-top: 1px solid var(--hairline); color: var(--text-muted); font: 400 11px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
+.thead > span, .table-card .rw > span { flex: 0 0 auto; text-align: right; }
+.thead > span:first-child, .table-card .rw > span:first-child { flex: 1; text-align: left; }
+.table-card .rw { padding-right: 26px; font-size: 15px; }
+.table-card .rw .mn { font-size: 15px; }
+.table-card .rw .mn .mu { font-size: 13px; }
+.col-100 { width: 100px; }
+.col-110 { width: 110px; }
+.col-70 { width: 70px; }
+.stamina-full .chip.hot { padding: 3px 12px 4px 8px; }
+.table-empty { margin: 0; padding: 12px 16px; color: var(--text-muted); }
+
+/* Pity under a game, kept from F5 until the Pulls card decision. */
+.pull-row-pity { display: block; padding: 0 26px 8px 16px; margin-top: -4px; font-size: 12px; letter-spacing: 0.04em; color: var(--text-muted); text-decoration: none; }
+.pull-row-pity:hover { color: var(--text); }
