@@ -83,3 +83,22 @@ function latest(records: readonly { day: string; value: number }[], date: string
   for (let k = records.length - 1; k >= 0; k--) if (records[k]!.day <= date) return records[k]!.value;
   return undefined;
 }
+
+/** One game's tallies on one game day (a DayRecord without its keys). */
+export interface DayTally {
+  day: string;
+  dailiesDone: number;
+  dailiesTotal: number;
+  goalsOpen: number;
+  pulls: number;
+}
+
+/** A game's day from its records (sorted by day): as recorded, or on a day without a change, nothing done and the rest carried from before. */
+export function dayOf(days: readonly DayTally[], date: string): Omit<DayTally, "day"> {
+  let prev: DayTally | undefined;
+  for (const d of days) {
+    if (d.day === date) return { dailiesDone: d.dailiesDone, dailiesTotal: d.dailiesTotal, goalsOpen: d.goalsOpen, pulls: d.pulls };
+    if (d.day < date) prev = d;
+  }
+  return { dailiesDone: 0, dailiesTotal: prev?.dailiesTotal ?? 0, goalsOpen: prev?.goalsOpen ?? 0, pulls: prev?.pulls ?? 0 };
+}

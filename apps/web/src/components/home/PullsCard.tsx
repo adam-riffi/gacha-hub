@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { dayOf } from "@gacha/shared";
 import { pullsFor } from "../../lib/format";
 import type { DashGame } from "../../lib/roster";
 
@@ -8,13 +9,17 @@ import type { DashGame } from "../../lib/roster";
  * something to say stays under the game (DESIGN.md F5: pity next to pulls on
  * Home) until the Pulls card's design settles it.
  */
-export function PullsCard({ games }: { games: DashGame[] }) {
+export function PullsCard({ games, day = null }: { games: DashGame[]; day?: string | null }) {
+  // A pinned past day: limited pulls on hand from its records; permanent tickets and pity have no history.
   const rows = games
-    .map((g) => ({ g, ...pullsFor(g.currencies) }))
+    .map((g) => {
+      const now = pullsFor(g.currencies);
+      return { g, ...now, limited: day ? dayOf(g.days, day).pulls : now.limited, standard: day ? null : now.standard };
+    })
     .filter((r) => r.label)
-    .sort((a, b) => b.limited + b.standard - (a.limited + a.standard));
+    .sort((a, b) => b.limited + (b.standard ?? 0) - (a.limited + (a.standard ?? 0)));
   const limited = rows.reduce((n, r) => n + r.limited, 0);
-  const permanent = rows.reduce((n, r) => n + r.standard, 0);
+  const permanent = day ? "—" : rows.reduce((n, r) => n + (r.standard ?? 0), 0);
   return (
     <section className="card table-card pulls-card">
       <div className="ph">
@@ -46,9 +51,9 @@ export function PullsCard({ games }: { games: DashGame[] }) {
               <div className="rw">
                 <span>{g.name}</span>
                 <span className="mn col-100">{lim}</span>
-                <span className="mn mu col-100">{standard}</span>
+                <span className="mn mu col-100">{standard ?? "—"}</span>
               </div>
-              {pity.length > 0 && (
+              {!day && pity.length > 0 && (
                 <Link to={`/games/${g.instanceId}/pulls`} className="pull-row-pity mn">
                   {pity.map((p) => `${p.label.split(" ")[0]} ${p.pity}/${p.hardPity}${p.guaranteed ? " · guaranteed" : ""}`).join("  ·  ")}
                 </Link>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { carryForward, dailyGains } from "@gacha/shared";
+import { carryForward, dailyGains, dayOf } from "@gacha/shared";
 import type { DashboardData, TaskItem } from "../lib/types";
 import { GraphPanel } from "./charts/GraphPanel";
 import { HeroGauge, SmallGauge } from "./charts/Gauge";
@@ -45,9 +45,9 @@ function buckets(period: Period, now = new Date()) {
   return Array.from({ length: n }, (_, k) => Array.from({ length: len }, (_, j) => daysBefore(now, (n - 1 - k) * len + (len - 1 - j))));
 }
 
-/** Pulls spent (logged) and gained (pulls on hand going up, from the day records) per bucket, with the period's labels. */
-function pullSeries(games: DashGame[], period: Period) {
-  const bs = buckets(period);
+/** Pulls spent (logged) and gained (pulls on hand going up, from the day records) per bucket ending on `now`, with the period's labels. */
+function pullSeries(games: DashGame[], period: Period, now: Date) {
+  const bs = buckets(period, now);
   const dates = bs.flat().map(ISO);
   const gains = dates.map(() => 0);
   for (const g of games) dailyGains(g.days.map((d) => ({ day: d.day, value: d.pulls })), dates).forEach((v, k) => (gains[k]! += v));
@@ -63,13 +63,17 @@ function pullSeries(games: DashGame[], period: Period) {
   return { gained, spent, labels };
 }
 
-/** Open goals on each of the last 10 days, from the day records; the last point is live. */
-function backlogSeries(games: DashGame[], openNow: number, now = new Date()) {
-  const days = Array.from({ length: 10 }, (_, k) => daysBefore(now, 9 - k));
+/**
+ * Open goals from the day records, ending on `now`: each of the last 10 days,
+ * or the last 8 weeks at their end. The last point is live unless `openNow` is null (a past day).
+ */
+function backlogSeries(games: DashGame[], period: Period, openNow: number | null, now: Date) {
+  const [n, step] = period === "daily" ? [10, 1] : [8, 7];
+  const days = Array.from({ length: n }, (_, k) => daysBefore(now, (n - 1 - k) * step));
   const values = days.map(() => 0);
   for (const g of games) carryForward(g.days.map((d) => ({ day: d.day, value: d.goalsOpen })), days.map(ISO)).forEach((v, k) => (values[k]! += v));
-  values[9] = openNow;
-  return { values, labels: days.map(MD) };
+  if (openNow !== null) values[n - 1] = openNow;
+  return { values, labels: days.map((d) => (period === "daily" ? MD(d) : `W${isoWeek(d)}`)) };
 }
 
 /**
@@ -77,7 +81,18 @@ function backlogSeries(games: DashGame[], openNow: number, now = new Date()) {
  * switch; the goals gauge and the goal-type bars; the backlog line and the
  * pulls gained against spent, both from the day records.
  */
-export function HomeTop({ games, tasks, goalMaterials }: { games: DashGame[]; tasks: TaskItem[]; goalMaterials: DashboardData["goalMaterials"] }) {
+export function HomeTop({
+  games,
+  tasks,
+  goalMaterials,
+  day = null,
+}: {
+  games: DashGame[];
+  tasks: TaskItem[];
+  goalMaterials: DashboardData["goalMaterials"];
+  /** A pinned past day (YYYY-MM-DD): the gauge shows its dailies and the charts end on it. */
+  day?: string | null;
+}) {
   const [period, setPeriod] = useState<Period>("daily");
   const recurring = games.flatMap((g) => g.dailies).filter((t) => (t.cadence ?? "daily") === period);
   const recDone = recurring.filter((t) => t.doneThisCycle).length;
@@ -95,13 +110,19 @@ export function HomeTop({ games, tasks, goalMaterials }: { games: DashGame[]; ta
     return { label, done: mine.filter(finished).length, total: mine.length };
   });
   const goalsDone = byType.reduce((s, b) => s + b.done, 0);
-  const pulls = pullSeries(games, period);
-  const backlog = backlogSeries(games, goals.length - goalsDone);
+  const at = day ? new Date(+day.slice(0, 4), +day.slice(5, 7) - 1, +day.slice(8, 10)) : new Date();
+  const pulls = pullSeries(games, period, at);
+  const backlog = backlogSeries(games, period, day ? null : goals.length - goalsDone, at);
+  // Weeklies have no day record: a past day shows its dailies in either period.
+  const past = day ? games.map((g) => dayOf(g.days, day)) : null;
+  const hero = past
+    ? { done: past.reduce((s, t) => s + t.dailiesDone, 0), total: past.reduce((s, t) => s + t.dailiesTotal, 0), label: "Dailies" }
+    : { done: recDone, total: recurring.length, label: period === "daily" ? "Dailies" : "Weeklies" };
 
   return (
     <div className="home-top">
       <GraphPanel className="home-top-hero" style={{ width: 496, flex: "0 0 496px", height: 476 }} head={<PeriodSwitch value={period} onChange={setPeriod} />}>
-        <HeroGauge done={recDone} total={recurring.length} label={period === "daily" ? "Dailies" : "Weeklies"} />
+        <HeroGauge done={hero.done} total={hero.total} label={hero.label} />
       </GraphPanel>
       <div className="home-top-side">
         <div className="home-top-strip">

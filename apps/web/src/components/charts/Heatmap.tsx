@@ -37,7 +37,18 @@ interface Cell {
  * its games listed beside the map); the arrow keys move between recorded
  * days and Enter pins. The map never tilts.
  */
-export function Heatmap({ days, today = new Date() }: { days: HeatDay[]; today?: Date }) {
+export function Heatmap({
+  days,
+  today = new Date(),
+  pinned = null,
+  onPin,
+}: {
+  days: HeatDay[];
+  today?: Date;
+  /** The pinned day from outside (Home keeps it in the URL); null clears the pin. */
+  pinned?: string | null;
+  onPin?: (date: string | null) => void;
+}) {
   const [hover, setHover] = useState(-1);
   const [sel, setSel] = useState(-1);
 
@@ -65,6 +76,18 @@ export function Heatmap({ days, today = new Date() }: { days: HeatDay[]; today?:
     }
     return { cells, months, todayIdx };
   }, [days, today]);
+
+  // Follow the pin from outside when it changes (a reload, BACK TO TODAY); report our own pins.
+  // Cleared from outside, a past day's pin goes and today's stays (pinning today clears the URL's day too).
+  const [followed, setFollowed] = useState<string | null>(null);
+  if (pinned !== followed) {
+    setFollowed(pinned);
+    setSel(pinned ? cells.findIndex((c) => c.date === pinned) : (cells[sel]?.i ?? todayIdx) < todayIdx ? -1 : sel);
+  }
+  const pin = (idx: number) => {
+    setSel(idx);
+    onPin?.(idx >= 0 ? cells[idx]!.date : null);
+  };
 
   const recorded = cells.filter((c) => c.day);
   const doneOf = (d: HeatDay) => d.games.filter((g) => g.done).length;
@@ -94,12 +117,12 @@ export function Heatmap({ days, today = new Date() }: { days: HeatDay[]; today?:
     if (e.key === "Enter" || e.key === " ") {
       if (hover >= 0) {
         e.preventDefault();
-        setSel(hover === sel ? -1 : hover);
+        pin(hover === sel ? -1 : hover);
       }
       return;
     }
     if (e.key === "Escape") {
-      setSel(-1);
+      pin(-1);
       setHover(-1);
       return;
     }
@@ -128,7 +151,7 @@ export function Heatmap({ days, today = new Date() }: { days: HeatDay[]; today?:
           onMouseLeave={() => setHover(-1)}
           onClick={(e) => {
             const idx = pick(e);
-            if (idx >= 0) setSel(idx === sel ? -1 : idx);
+            if (idx >= 0) pin(idx === sel ? -1 : idx);
           }}
           onKeyDown={key}
         >
@@ -171,7 +194,7 @@ export function Heatmap({ days, today = new Date() }: { days: HeatDay[]; today?:
           <div role="group" aria-label={`${dayLabel(sc)}: ${doneOf(sc.day)} of ${sc.day.games.length} games done.`} className="heat-sel">
             <div className="heat-sel-head">
               <span className="mn">{dayLabel(sc)}</span>
-              <button type="button" className="xb" aria-label="Clear the selected day" onClick={() => setSel(-1)}>
+              <button type="button" className="xb" aria-label="Clear the selected day" onClick={() => pin(-1)}>
                 <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
                   <path d="M1 1L9 9M9 1L1 9" style={{ fill: "none", stroke: "currentColor", strokeWidth: 1.5 }} />
                 </svg>

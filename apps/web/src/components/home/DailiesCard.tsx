@@ -1,4 +1,4 @@
-import { arcPath, percent } from "@gacha/shared";
+import { arcPath, dayOf, percent } from "@gacha/shared";
 import type { HomeCarousel } from "../../lib/carousel";
 import type { RosterEntry } from "../../lib/roster";
 import { CarouselCard } from "../Carousel";
@@ -9,20 +9,19 @@ import { Countdown } from "../ui";
  * reset chip, a gauge over every recurring item, and four KPI tiles: the
  * game's own dailies and weeklies, and the daily and weekly tasks you added.
  */
-export function DailiesCard({ roster, c }: { roster: RosterEntry[]; c: HomeCarousel }) {
+export function DailiesCard({ roster, c, day = null }: { roster: RosterEntry[]; c: HomeCarousel; day?: string | null }) {
   const entry = roster[c.pos.game];
   const g = entry?.game;
   const r = g?.recurring;
-  const tiles = r
-    ? ([
-        ["Dailies", r.daily],
-        ["Daily tasks", r.dailyTasks],
-        ["Weeklies", r.weekly],
-        ["Weekly tasks", r.weeklyTasks],
-      ] as const)
-    : [];
-  const done = tiles.reduce((s, [, t]) => s + t.done, 0);
-  const total = tiles.reduce((s, [, t]) => s + t.total, 0);
+  // A pinned past day: its record has the daily items only; the reset chip reads DAY CLOSED.
+  const past = day && g ? dayOf(g.days, day) : null;
+  const tiles: (readonly [string, { done: number; total: number } | null])[] = past
+    ? [["Dailies", { done: past.dailiesDone, total: past.dailiesTotal }], ["Daily tasks", null], ["Weeklies", null], ["Weekly tasks", null]]
+    : r
+      ? [["Dailies", r.daily], ["Daily tasks", r.dailyTasks], ["Weeklies", r.weekly], ["Weekly tasks", r.weeklyTasks]]
+      : [];
+  const done = tiles.reduce((s, [, t]) => s + (t?.done ?? 0), 0);
+  const total = tiles.reduce((s, [, t]) => s + (t?.total ?? 0), 0);
   const raw = total > 0 ? (done / total) * 100 : 0;
   return (
     <CarouselCard
@@ -43,7 +42,14 @@ export function DailiesCard({ roster, c }: { roster: RosterEntry[]; c: HomeCarou
         <div className="dailies-body">
           <div className="dailies-head">
             <span className="cd dailies-game">{g.name}</span>
-            {g.nextReset && <Countdown at={g.nextReset} kind="reset" prefix="resets in" />}
+            {past ? (
+              <span className="chip">
+                <i aria-hidden="true" />
+                Day closed
+              </span>
+            ) : (
+              g.nextReset && <Countdown at={g.nextReset} kind="reset" prefix="resets in" />
+            )}
           </div>
           <div className="dailies-row">
             <div className="dailies-gauge">
@@ -66,8 +72,16 @@ export function DailiesCard({ roster, c }: { roster: RosterEntry[]; c: HomeCarou
                 <div className="kpi" key={label}>
                   <div className="kpi-label">{label}</div>
                   <div className="kpi-value">
-                    {t.done}
-                    <small> / {t.total}</small>
+                    {t ? (
+                      <>
+                        {t.done}
+                        <small> / {t.total}</small>
+                      </>
+                    ) : (
+                      <span className="mu" aria-label="not recorded">
+                        —
+                      </span>
+                    )}
                   </div>
                 </div>
               ))}
