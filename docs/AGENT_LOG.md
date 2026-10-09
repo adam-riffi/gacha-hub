@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-09 · claude · stack/docs-v2/02-wireframes · #86
+- Done: `docs/WIREFRAMES.md` turns the 2026-10-09 wireframe canvas into a written spec: shell, Home, library, tasks, calendar, settings, and the game hub's eight tabs, plus the across-games reference.
+- Tests: Documentation only.
+- Scope/decisions: The canvas is private to Georges, so build sessions work from this file; it wins over the canvas where they differ. `docs/PROJECT-GUIDE.md` stays the reference for what is built.
+- Next: NTE notes and the handoff (#87).
+
 ## 2026-10-09 · claude · stack/docs-v2/01-design-adrs · #85
 - Done: DESIGN.md plans F8–F12 from the 2026-10-09 wireframes (cadences, endgame history, passes, stamina, pull odds, splash-art characters, event-reward goals, account linking, art store, NTE). ADRs 0004 (game manifest and pipeline), 0005 (account linking and imports) and 0006 (game art in R2), all Proposed.
 - Tests: Documentation only.
