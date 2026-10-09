@@ -26,6 +26,12 @@ Entry format:
 - Scope/decisions: ENGINEERING §14 and portfolio-infra M4 rollout; application behavior and commands are unchanged.
 - Next: Keep draft until portfolio-infra v1 is published and independent review/CI pass; verify the action on this PR afterwards.
 
+## 2026-10-06 · claude · stack/ops/03-prisma7-prep · #79
+- Done: Prisma 7 spike on `spike/prisma7` (never merged): works on SQLite with driver adapters (157 tests, harnesses, 7 E2E journeys). Findings and a recommended stack in ADR 0003. This PR takes the Prisma-6-compatible part: absolute SQLite URLs in the harness and E2E scripts, no `--accept-data-loss` when pushing into fresh files, and no previews for `spike/**` branches.
+- Tests: Both harnesses pass on Prisma 6 with no file left behind; test DB setup works; `npm run check`.
+- Scope/decisions: Prisma 7's agent guard refused `db push --accept-data-loss`; I did not override it (it asks for the user's consent). The flag was never needed on freshly deleted files.
+- Next: Georges decides ADR 0001, 0002 and 0003; Postgres verification for Prisma 7 needs a disposable database.
+
 ## 2026-10-06 · claude · stack/perf/01-budget · #78
 - Done: `scripts/budget.mjs` (`npm run budget`) gzips the JavaScript the built shell loads up front and fails above 200 KB; CI's `build` job and `npm run check` run it. README numbers refreshed.
 - Tests: 149.0 KB passes; `BUDGET_KB=100` fails with the overage (negative control); actionlint clean.
