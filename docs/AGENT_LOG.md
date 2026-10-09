@@ -14,7 +14,7 @@ Entry format:
 
 ---
 
-## 2026-10-09 · claude · stack/v/04-panels · pending
+## 2026-10-09 · claude · stack/v/04-panels · #96
 - Done: `styles/components.css`, the dashboard's parts for every page: braced cards with accent-underlined titles, graph panels with corner marks, mono buttons (paper primary), the two-state switch, square form controls, dark tags, paper chips, bands, tooltips, pips, KPI tiles, table rows and the ruled scrollbar. Green and red are gone. `isUrgent` (shared) and `Countdown` make near deadlines paper chips; `Segmented` replaces the view toggles.
 - Tests: `urgency.test.ts` (48 h and 3 h windows, past times); `e2e/visual.spec.ts` (a banner ending in 10 h is a paper chip, one ending in 9 days is not; the ownership switch reports its state); axe still clean.
 - Scope/decisions: Georges asked mid-PR why Home does not look like the dashboard yet: the layout comes with the Home PRs; every later screen follows its wireframe board in this kit, not today's layouts. Status colours map to accent (done, owned, in use), paper (high priority, errors) or dark tags (owned over art).
