@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import fc from "fast-check";
 import { DateTime, FixedOffsetZone } from "luxon";
-import { cadenceWindow, type CadenceAnchor, type ServerClock } from "@gacha/shared";
+import { cadenceWindow, getGame, taskAnchor, type CadenceAnchor, type ServerClock } from "@gacha/shared";
 
 const RUNS = { seed: 20261010, numRuns: 400 };
 const H = 3_600_000;
@@ -122,5 +122,23 @@ describe("cadenceWindow", () => {
     // Paimon's Bargains resets on the 1st; Spiral Abyss on the 16th.
     expect(w({ cadence: "monthly", day: 1 })).toEqual(["2026-10-01T03:00:00.000Z", "2026-11-01T03:00:00.000Z"]);
     expect(w({ cadence: "monthly", day: 16 })).toEqual(["2026-09-16T03:00:00.000Z", "2026-10-16T03:00:00.000Z"]);
+  });
+});
+
+describe("taskAnchor", () => {
+  const m = getGame("genshin")!.manifest;
+  it("anchors daily and weekly tasks on the region's resets", () => {
+    expect(taskAnchor(m, "daily")).toEqual({ cadence: "daily" });
+    expect(taskAnchor(m, "weekly")).toEqual({ cadence: "weekly" });
+  });
+  it("anchors a monthly task on its shop or monthly mode, else on the 1st", () => {
+    expect(taskAnchor(m, "monthly", "bargains")).toEqual({ cadence: "monthly", day: 1 });
+    expect(taskAnchor(m, "monthly", "abyss")).toEqual({ cadence: "monthly", day: 16 });
+    expect(taskAnchor(m, "monthly")).toEqual({ cadence: "monthly", day: 1 });
+  });
+  it("anchors a cycle task on its endgame mode, and a version task on the version", () => {
+    expect(taskAnchor(m, "cycle", "stygian")).toEqual({ cadence: "version", start: "2026-09-30", days: 42 });
+    expect(taskAnchor(m, "version")).toEqual({ cadence: "version", start: "2026-09-23", days: 42 });
+    expect(taskAnchor(m, "cycle", "unknown")).toEqual(taskAnchor(m, "version")); // ponytail fallback, see cadence.ts
   });
 });
