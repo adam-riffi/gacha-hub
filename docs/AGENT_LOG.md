@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-09 · claude · stack/docs-v2/04-visual-design · #88
+- Done: `docs/VISUAL-DESIGN.md` writes Georges's 2026-10-08 dashboard design down as the app's visual system (tokens, type, panels, components, charts, motion, the Overview layout, an accent per game); ADR 0007; DESIGN.md §7 rewritten and milestone V added before F8; WIREFRAMES.md, AGENTS.md, README and the old design docs point to it. #78, #79 and #84 restacked onto `main` with #85–#87 as one chain.
+- Tests: Documentation only. Values come from the design file's stylesheet and script (tilt angles, rotation timing, urgency thresholds, heatmap levels).
+- Scope/decisions: What the design lacks is marked Proposed (primary button, form controls, segmented switches, rotation pause and tilt under reduced motion). HSR has no accent in the design and keeps `#8A7DFF`. Proposed in ADR 0007.
+- Next: Georges merges the chain bottom-up and decides ADRs 0001–0007; the build session starts with milestone V.
+
 ## 2026-10-09 · claude · stack/docs-v2/03-nte-handoff · #87
 - Done: `docs/games/nte.md`, NTE research notes with a confidence mark per line, as the start of its manifest; `HANDOFF.md` rewritten for 2026-10-09.
 - Tests: Documentation only.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: Typecheck and lint; checked in the local app on a Sunday (23 relevant domains, 6 shown). No unit test for `domainsToday` yet (written before the test-first rule was adopted).
 - Scope/decisions: Stacked on #40. Material icons fall back to Enka.
 - Next: Extract `domainsToday` and `gameWeekday` into `packages/shared` with tests.
-
-## 2026-10-04 · claude · feat/official-feed · #40
-- Done: Genshin banners and events import hourly from HoYoverse's public announcement feed (plus an Admin button); Banners & events page is a six-week calendar; genshin-db 5.2.14.
-- Tests: `officialFeed.test.ts` (parser, 7-hour settle rule); live smoke import created 3 banners and 13 events.
-- Scope/decisions: Genshin only; the feed randomly serves times shifted by 7 h, so imports keep the earlier time of such a pair.
-- Next: HSR needs per-section parsing (one notice holds several warps). The hourly run needs `CRON_SECRET` set in Vercel and GitHub.

@@ -38,7 +38,8 @@ A whitelisted player signs in with Discord, adds Genshin and HSR, sets currencie
 - Pull log per banner type with pity and the 50/50 guarantee (ADR 0002); pity next to pulls on Home.
 - Data export: everything a user entered as one JSON file (Settings → Download my data).
 
-**Next (should)** — the screens in `docs/WIREFRAMES.md` (wireframed 2026-10-09), delivered by milestones F8–F12 in §9:
+**Next (should)** — the screens in `docs/WIREFRAMES.md` (wireframed 2026-10-09), delivered by milestones V and F8–F12 in §9:
+- The look of the 2026-10-08 dashboard on every screen (`docs/VISUAL-DESIGN.md`, ADR 0007).
 - Activities on five cadences (daily, weekly, monthly, endgame cycle, version); stamina with its reserve, back in scope; battle pass, 30-day pass and monthly shops.
 - Endgame modes with a history per cycle.
 - Pulls: 5★ and 4★ odds, guarantee status, savings planner with chances.
@@ -78,7 +79,7 @@ gacha/
 ├── scripts/harness/     # end-to-end harnesses against the server bundle
 ├── scripts/assets/      # art mirror to the art store (isolated install, ADR 0006)
 ├── api/index.mjs        # Vercel function entry
-└── docs/                # DESIGN.md, WIREFRAMES.md, games/<key>.md, ENGINEERING.md, AGENT_LOG.md, PROJECT-GUIDE.md, screens/, adr/, DEPLOY.md
+└── docs/                # DESIGN.md, WIREFRAMES.md, VISUAL-DESIGN.md, games/<key>.md, ENGINEERING.md, AGENT_LOG.md, PROJECT-GUIDE.md, screens/, adr/, DEPLOY.md
 ```
 
 ## 6. Core design decisions
@@ -102,7 +103,7 @@ gacha/
 
 ## 7. Visual identity
 
-Dark, flat and sharp: radius 0, no shadows, flat elevated surfaces (`--bg`, `--bg-elev`, `--surface`). Display type is Space Grotesk; body is the system stack. Each game reskins accents with its own colour (Genshin gold, HSR violet, ZZZ yellow, WuWa sky blue, Endfield teal). Art leads where it exists: character portraits, 5★ gradients, ringed portraits for owned units. Icons are inline SVG. No mobile layout for now. Screen structure follows `docs/WIREFRAMES.md`; character art leads as splash art on character cards and in the left column of the character sheet.
+An industrial HUD from Georges's 2026-10-08 dashboard design; the full system is `docs/VISUAL-DESIGN.md` (ADR 0007, Proposed). A near-black page with flat, opaque, square panels: graphs float on the page between corner marks, content sits on `#121212` cards clamped by a corner brace. Type: Barlow Condensed for titles and figures, IBM Plex Mono for labels and numbers, Hanken Grotesk for body text, Bodoni Moda for banner titles only; all self-hosted. One accent carries the data and the current state: magenta `#FF2D95` on the Overview, the game's colour on a game, the character's element colour on a character's pages. Urgency is a paper-white chip, never a colour. Charts are hand-written SVG with a layered tilt on hover; icons are inline SVG. Art leads where it exists: splash art on character cards and in the left column of the character sheet. Desktop first, no separate mobile design yet. Screen structure follows `docs/WIREFRAMES.md`.
 
 ## 8. Data model and storage
 
@@ -125,13 +126,14 @@ Postgres on Supabase (own project `gacha-hub`, eu-west-1; ADR 0001). Migrations 
 | P2 Production smoke | `scripts/smoke.mjs` + `smoke.yml` on production deployments | A wrong or dev-login deployment fails the check; production passes |
 | F6 Data export | `GET /api/export` (everything the user entered) + a Settings download | The export round-trips every user-owned table and contains nothing of other users or secrets |
 | F7 Calendar history | ended banners/events load when paging back | Paging back two weeks shows what ended then |
+| V Visual system | tokens and self-hosted fonts; shell (rail, scope strip, top bar); panels, chips, buttons, lists and carousels; SVG chart parts; game accents; Home restyled (`docs/VISUAL-DESIGN.md`, ADR 0007) | Home at 1920×1204 matches the 2026-10-08 design, screenshot in the PR; a game scope changes only the accent; no serious axe violations; reduced motion turns off transitions and auto-rotation |
 | F8 Cadences, endgame and passes | cadence core and manifest fields (ADR 0004); Activities tab; endgame modes with `CycleResult` history; battle pass and 30-day pass; stamina and reserve on Home and the game hub; Endfield regions and Sanity cap fixed | Each game shows its five cadences with correct countdowns in every region (property-tested); the Endgame tab lists past cycles; stamina "full at" matches the regeneration math |
 | F9 Game pipeline | manifest type and conformance suite; `npm run game:new`; `docs/games/<key>.md` per game; NTE at capability M; ZZZ official feed | A scaffolded game passes the conformance suite; NTE works by hand on every screen |
 | F10 Screens and build parity | the remaining screens in `docs/WIREFRAMES.md`: Home proposals, Library, Tasks with event goals, Calendar layers and reward goals, Pulls odds and guarantee, Characters splash cards and KPIs, character sheet, gear, planner, profile; gear blocks for every game | Each screen matches its section in WIREFRAMES.md, with loading, empty and error states; odds match a seeded simulation within 0.5 points |
 | F11 Automatic data | `LinkedAccount` and encryption; HoYoLAB notes and chronicle sync; pull-history imports (history link, UIGF v4.2, WuWa convene, Endfield SKPORT); Enka showcase sync (ADR 0005) | Link, sync and revoke work end to end against recorded fixtures; tokens never appear in logs, responses or exports |
 | F12 Art store | `splash` art kind; `scripts/assets` mirror to R2; CSP update (ADR 0006) | Every game shows art for owned characters from our store; a missing file falls back to the placeholder |
 
-F5 follows the owner's listed nice-to-have (the Phase 8 handoff notes, in git history before 2026-10-08) under ADR 0002 (Proposed). Account import was approved on 2026-10-09 (ADR 0005). Each milestone ships its own screens; F10 covers the screens no earlier milestone owns.
+F5 follows the owner's listed nice-to-have (the Phase 8 handoff notes, in git history before 2026-10-08) under ADR 0002 (Proposed). Account import was approved on 2026-10-09 (ADR 0005). Each milestone ships its own screens; F10 covers the screens no earlier milestone owns. V comes first so the later screens are built in the new look.
 
 ## 10. Testing strategy
 
@@ -175,7 +177,7 @@ Vercel project `gacha-hub` (framework preset "Other", functions in `dub1` next t
 - Account import (ADR 0005) relies on undocumented endpoints and on HoYoverse tolerating read-only tools; every import fails soft.
 - Pull odds follow the community model of soft pity; they are estimates and the UI says so.
 - Endfield's weekly, monthly, endgame and pass rules are still to research before its manifest is complete.
-- `docs/DESIGN-*.md` predate this file; this file wins where they differ. `docs/PROJECT-GUIDE.md` walks through the shipped screens and per-game features; this file wins on scope.
+- `docs/DESIGN-BRIEF.md` and `docs/DESIGN-HANDOFF.md` predate this file and `docs/VISUAL-DESIGN.md`; those two win where they differ. `docs/PROJECT-GUIDE.md` walks through the shipped screens and per-game features; this file wins on scope.
 
 ## 15. Definition of done
 
