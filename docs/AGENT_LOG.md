@@ -14,7 +14,7 @@ Entry format:
 
 ---
 
-## 2026-10-09 · claude · stack/v/05-carousel · pending
+## 2026-10-09 · claude · stack/v/05-carousel · #97
 - Done: `packages/shared/src/carousel.ts` (nearest deadline first; 6 s + 3 s per extra banner, split between a game's banners; stepping per banner or game, wrapping), `useCarousel` (one clock, held on hover and focus, off under reduced motion), `CarouselCard` (pips, chevrons, 4 px accent bar) and `BannersCarousel` on Home (one banner over its featured unit's art: Enka gacha splash, Yatta large portrait, hatching otherwise; ENDS IN as a dark or paper tag; Bodoni title band). `Countdown` gains a tag variant, `GameIcon` a list of fallbacks.
 - Tests: `carousel.test.ts` (timing, ordering, stepping, a fast-check lap property); `visual.spec.ts` (nearest deadline first as a paper tag, Next shows the later banner as a dark tag, hover and focus hold, reduced motion stops).
 - Scope/decisions: No carousel library (ADR 0007). The Dailies and Battle-pass cards join the same clock in `09-home`.
