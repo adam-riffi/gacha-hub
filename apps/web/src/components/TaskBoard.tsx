@@ -16,8 +16,8 @@ const Bell = ({ on }: { on: boolean }) => (
   </svg>
 );
 
-/** Every task, one column per game: goals (roll-up), checklists (tickable), dailies on demand. */
-export function TaskBoard() {
+/** Every task, one column per game (or only `gameKey`'s): goals (roll-up), checklists (tickable), dailies on demand. */
+export function TaskBoard({ gameKey }: { gameKey?: string | null }) {
   const qc = useQueryClient();
   const toast = useToast();
   const [formOpen, setFormOpen] = useState(false);
@@ -89,7 +89,7 @@ export function TaskBoard() {
     const byParent = new Map<string, TaskItem[]>();
     for (const t of all) if (t.parentId) byParent.set(t.parentId, [...(byParent.get(t.parentId) ?? []), t]);
     const byPriority = (a: TaskItem, b: TaskItem) => PRIORITY_RANK[a.priority] - PRIORITY_RANK[b.priority];
-    return (instances ?? []).filter((gi) => !gi.sleeping).map((gi) => {
+    return (instances ?? []).filter((gi) => !gi.sleeping && (!gameKey || gi.gameKey === gameKey)).map((gi) => {
       const mine = all.filter((t) => t.scope === "game" && t.refId === gi.id);
       return {
         gi,
@@ -100,7 +100,7 @@ export function TaskBoard() {
         backlogCount: mine.filter((t) => t.type === "goal" && !t.parentId && t.backlog).length,
       };
     });
-  }, [tasks, instances, filterText, showBacklog]);
+  }, [tasks, instances, filterText, showBacklog, gameKey]);
 
   /** Priority label (click cycles) + reminder bell + delete; quiet until hovered. */
   const actions = (t: TaskItem) => (

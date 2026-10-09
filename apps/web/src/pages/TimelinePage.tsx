@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import type { TimelineDto } from "@gacha/shared";
 import { api } from "../lib/api";
@@ -19,7 +19,8 @@ type Row = { id: string; name: string; startsAt: string; endsAt: string; status:
 /** Banners and events as bars on a six-week calendar, one block per game. */
 export function TimelinePage() {
   const [offset, setOffset] = useState(0);
-  const [hidden, setHidden] = useState<Set<string>>(new Set());
+  // The scope strip picks one game (`?game=`); the Overview shows them all.
+  const scope = useSearchParams()[0].get("game");
   const [now] = useState(() => Date.now());
   const { data: dash } = useQuery({ queryKey: ["dashboard"], queryFn: () => api.get<DashboardData>("/api/dashboard") });
 
@@ -49,9 +50,8 @@ export function TimelinePage() {
   const nowPct = pct(now);
   const inWindow = (r: Row) => new Date(r.endsAt).getTime() > start && new Date(r.startsAt).getTime() < end;
 
-  const games = dash.games.filter((g) => !g.sleeping);
-  const blocks = games
-    .filter((g) => !hidden.has(g.gameKey))
+  const blocks = dash.games
+    .filter((g) => !g.sleeping && (!scope || g.gameKey === scope))
     .map((g) => {
       const banners: Row[] = win.banners.filter((b) => b.gameKey === g.gameKey).map((b) => ({ ...b, id: `b:${b.id}`, banner: b }));
       const events: Row[] = win.events.filter((e) => e.gameKey === g.gameKey).map((e) => ({ ...e, id: `e:${e.id}` }));
@@ -59,24 +59,11 @@ export function TimelinePage() {
       return { g, rows: [...banners.sort(byEnd), ...events.sort(byEnd)].filter(inWindow) };
     });
 
-  const toggle = (key: string) =>
-    setHidden((h) => {
-      const next = new Set(h);
-      if (!next.delete(key)) next.add(key);
-      return next;
-    });
-
   return (
     <>
       <div className="page-head">
         <h1>Banners &amp; events</h1>
         <div className="row">
-          {games.map((g) => (
-            <button key={g.gameKey} className={`btn sm ${hidden.has(g.gameKey) ? "ghost" : ""}`} style={{ borderLeft: `3px solid ${g.accent}` }} onClick={() => toggle(g.gameKey)}>
-              {g.name}
-            </button>
-          ))}
-          <span style={{ width: 12 }} />
           <button className="btn sm" onClick={() => setOffset(offset - 14)}>‹ 2 weeks</button>
           <button className="btn sm" disabled={offset === 0} onClick={() => setOffset(0)}>Today</button>
           <button className="btn sm" onClick={() => setOffset(offset + 14)}>2 weeks ›</button>

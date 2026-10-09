@@ -14,6 +14,7 @@ import { CharacterPage } from "./pages/CharacterPage";
 import { TimelinePage } from "./pages/TimelinePage";
 import { AdminPage } from "./pages/AdminPage";
 import { SettingsPage } from "./pages/SettingsPage";
+import { TasksPage } from "./pages/TasksPage";
 
 export function App() {
   const { me, loading } = useAuth();
@@ -37,7 +38,7 @@ export function App() {
         <Route path="/games/:id/materials" element={<MaterialsPage />} />
         <Route path="/games/:id/pulls" element={<PullsPage />} />
         <Route path="/characters/:id" element={<CharacterPage />} />
-        <Route path="/tasks" element={<Navigate to="/" replace />} />
+        <Route path="/tasks" element={<TasksPage />} />
         <Route path="/timeline" element={<TimelinePage />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/settings" element={<SettingsPage />} />

@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getGame, type GameDashboardExtras } from "@gacha/shared";
+import { getGame } from "@gacha/shared";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
 import { formatRemaining } from "../lib/time";
@@ -9,6 +9,7 @@ import { pullCount, pullText, pullsFor } from "../lib/format";
 import { assetUrl, communityAssetUrl } from "../lib/assets";
 import { GameIcon } from "../components/GameIcon";
 import { TaskBoard } from "../components/TaskBoard";
+import { TodayCard } from "../components/TodayCard";
 import type { DashboardData, TaskItem } from "../lib/types";
 
 type DashGame = DashboardData["games"][number];
@@ -144,49 +145,6 @@ function BannersNow({ timeline }: { timeline: DashboardData["timeline"] }) {
   );
 }
 
-/** Per game: reset countdown, regen resource, and dailies as one-click toggles. */
-function TodayCard({ games, onToggle }: { games: DashGame[]; onToggle: (id: string, done: boolean) => void }) {
-  return (
-    <div className="card">
-      <h3>Today</h3>
-      {games.map((g) => {
-        const regen = (g.extras as GameDashboardExtras | undefined)?.regen;
-        const left = g.dailies.filter((d) => !d.doneThisCycle).length;
-        return (
-          <div className={`today-game ${left === 0 && !regen?.full ? "settled" : ""}`} key={g.instanceId}>
-            <span className="today-stripe" style={{ background: g.accent }} />
-            <div style={{ minWidth: 0 }}>
-              <div className="spread">
-                <Link to={`/games/${g.instanceId}`}><strong>{g.name}</strong></Link>
-                {g.nextReset && <span className="small muted">reset in {formatRemaining(g.nextReset)}</span>}
-              </div>
-              {regen && (
-                <div className="today-regen small">
-                  <span>{regen.label}</span>
-                  <div className="meter"><span style={{ width: `${Math.min(100, (regen.value / regen.cap) * 100)}%` }} /></div>
-                  <span><strong>{regen.value}</strong> / {regen.cap}</span>
-                  <span className={regen.full ? "badge todo" : "muted"}>
-                    {regen.full || !regen.fullAt ? "full — spend it" : `full in ${formatRemaining(regen.fullAt)}`}
-                  </span>
-                </div>
-              )}
-              {g.dailies.length > 0 && (
-                <div className="chips">
-                  {g.dailies.map((d) => (
-                    <button key={d.id} type="button" className={`chip-toggle ${d.doneThisCycle ? "on" : ""}`} onClick={() => onToggle(d.id, !d.doneThisCycle)}>
-                      {d.doneThisCycle ? "✓ " : ""}{d.title}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
 /** Pulls you can do right now, per game and in total. */
 function PullsCard({ games }: { games: DashGame[] }) {
   const rows = games.map((g) => ({ g, ...pullsFor(g.currencies) })).filter((r) => r.label);
@@ -300,6 +258,7 @@ function WalletCard({ games, onSet }: { games: DashGame[]; onSet: (instanceId: s
 
 /** Home: what to do now (today, banners, tasks) plus the numbers you chose to track. */
 export function DashboardPage() {
+  const game = useSearchParams()[0].get("game");
   const qc = useQueryClient();
   const toast = useToast();
   const { data, isLoading } = useQuery({ queryKey: ["dashboard"], queryFn: () => api.get<DashboardData>("/api/dashboard") });
@@ -311,24 +270,17 @@ export function DashboardPage() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ["dashboard"] }),
     onError: () => toast("Update failed", "err"),
   });
-  const toggleDaily = useMutation({
-    mutationFn: (v: { id: string; done: boolean }) => api.post(`/api/tasks/${v.id}/complete`, { done: v.done }),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["dashboard"] });
-      qc.invalidateQueries({ queryKey: ["tasks"] });
-    },
-  });
 
   if (isLoading) return <div className="muted">Loading…</div>;
 
-  // Sleeping games stay out of Home entirely (their banners and events too).
-  const asleep = new Set(data?.games.filter((g) => g.sleeping).map((g) => g.gameKey));
+  // Sleeping games stay out of Home entirely (their banners and events too); a scope keeps one game.
+  const shown = new Set(data?.games.filter((g) => !g.sleeping && (!game || g.gameKey === game)).map((g) => g.gameKey));
   const view: DashboardData | undefined = data && {
     ...data,
-    games: data.games.filter((g) => !g.sleeping),
+    games: data.games.filter((g) => shown.has(g.gameKey)),
     timeline: {
-      banners: data.timeline.banners.filter((b) => !asleep.has(b.gameKey)),
-      events: data.timeline.events.filter((e) => !asleep.has(e.gameKey)),
+      banners: data.timeline.banners.filter((b) => shown.has(b.gameKey)),
+      events: data.timeline.events.filter((e) => shown.has(e.gameKey)),
     },
   };
 
@@ -356,8 +308,8 @@ export function DashboardPage() {
       <div className="dash">
         <div className="dash-main">
           <BannersNow timeline={view.timeline} />
-          <TodayCard games={view.games} onToggle={(id, done) => toggleDaily.mutate({ id, done })} />
-          <TaskBoard />
+          <TodayCard games={view.games} />
+          <TaskBoard gameKey={game} />
         </div>
         <aside className="dash-rail">
           <PullsCard games={view.games} />
