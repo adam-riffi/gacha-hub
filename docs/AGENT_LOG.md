@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f8/09-passes · #114
+- Done: PassState routes (battle pass level and weekly XP within the manifest's caps; 30-day pass days left stored as an end at a daily reset, within its stacking limit); shared `passView` (level within the version, XP within the week, levels a day to finish, days left); Activities shows and updates both. #113 merged.
+- Tests: written first: `passView`, `passes.integration.test.ts`, the Activities journey's pass steps.
+- Scope/decisions: values typed before the current version or week read as 0 instead of carrying stale.
+- Next: `10-endgame` (CycleResult routes, the Endgame tab per G2, the 24 h reminder).
+
 ## 2026-10-10 · claude · stack/f8/08-activities · #113
 - Done: the hub's Activities tab per G1, first and the landing (old overview last): stamina with meter, full-at and reserve; Daily, Weekly and Monthly cards with resets, ticking and adding (monthly picks a shop or monthly mode); cycles with reset or close chips; version end, battle pass on record, running events. Reserves became currencies (manifest points at the key). #112 merged.
 - Tests: written first: reserves as currencies in the conformance suite; E2E `activities.spec.ts`; the smoke journey opens Overview for the domains.
