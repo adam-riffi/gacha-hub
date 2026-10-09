@@ -77,6 +77,19 @@ describe("auth + instances (routes)", () => {
     expect(game.currencies.find((x) => x.key === key)?.value).toBe(8080);
   });
 
+  it("keeps the in-game UID and account level, within limits", async () => {
+    const id = await installGame(c, "genshin");
+    const set = await c.req<{ uid: string | null; accountLevel: number | null }>("PUT", `/api/instances/${id}`, { uid: "700123456", accountLevel: 58 });
+    expect(set.json).toMatchObject({ uid: "700123456", accountLevel: 58 });
+    expect((await c.req("GET", `/api/instances/${id}`)).json).toMatchObject({ uid: "700123456", accountLevel: 58 });
+    expect((await c.req("PUT", `/api/instances/${id}`, { accountLevel: 0 })).status).toBe(400);
+    expect((await c.req("PUT", `/api/instances/${id}`, { accountLevel: 101 })).status).toBe(400);
+    expect((await c.req("PUT", `/api/instances/${id}`, { uid: "1".repeat(33) })).status).toBe(400);
+    expect((await c.req("PUT", `/api/instances/${id}`, { uid: "<script>" })).status).toBe(400);
+    const cleared = await c.req("PUT", `/api/instances/${id}`, { uid: null, accountLevel: null });
+    expect(cleared.json).toMatchObject({ uid: null, accountLevel: null });
+  });
+
   it("uninstalls a game and its data", async () => {
     const id = await installGame(c, "genshin");
     const del = await c.req("DELETE", `/api/instances/${id}`);

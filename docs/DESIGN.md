@@ -107,11 +107,11 @@ An industrial HUD from Georges's 2026-10-08 dashboard design; the full system is
 
 ## 8. Data model and storage
 
-Prisma models: `User`, `Session`, `GameInstance` (one per user per game; region, sleeping), `CurrencyState`, `Character` (build document JSON + `docVersion`), `Ownership`, `GearPiece` (unequipped pieces only), `Team`, `MaterialStock`, `Task` (recurring, goal, material subtasks), `ReminderRule`, `ReminderLog`, `Banner`, `Event`, `AuditLog`.
+Prisma models: `User`, `Session`, `GameInstance` (one per user per game; region, sleeping, UID, account level), `CurrencyState`, `Character` (build document JSON + `docVersion`), `Ownership`, `GearPiece` (unequipped pieces only), `Team`, `MaterialStock`, `Task` (recurring on five cadences, goal, material subtasks; a monthly or cycle task follows a manifest entry by `anchorKey`), `CycleResult` (one row per endgame mode and cycle: result, detail, premium earned, teams, source), `PassState` (battle pass or 30-day pass: level, weekly XP, end date, source), `DayRecord` (a profile's game day: dailies done and total, open goals, pulls on hand), `ReminderRule`, `ReminderLog`, `Banner`, `Event`, `AuditLog`.
 
 Postgres on Supabase (own project `gacha-hub`, eu-west-1; ADR 0001). Migrations are committed SQL under `prisma/migrations`, generated offline with `prisma migrate diff` and applied by `prisma migrate deploy` during the Vercel build. Row-level security is enabled on every table with no policies; the server connects as the table owner, and the Data API exposes nothing. Local development and tests use SQLite (`schema.sqlite.prisma` generated from the Postgres schema).
 
-**Planned (F8–F12):** a per-day record of completed dailies per game (the Home heatmap and streaks, VISUAL-DESIGN.md §13), `CycleResult` (one row per endgame mode and cycle: result, rewards, teams, source), `PassState` (battle pass and 30-day pass: level, weekly XP, end date), `WishlistItem`, and `LinkedAccount` and `ImportRun` (ADR 0005). `GameInstance` gains `uid` and `accountLevel`; `Task.cadence` gains `monthly`, `cycle` and `version`; `PullEntry` gains `source` and the game's record id for deduplication. Every new table enables RLS in its migration. Exact columns are settled in each milestone's PRs.
+**Planned (F10–F12):** `WishlistItem`, and `LinkedAccount` and `ImportRun` (ADR 0005); `PullEntry` gains `source` and the game's record id for deduplication. Every new table enables RLS in its migration. Exact columns are settled in each milestone's PRs.
 
 ## 9. Development plan
 

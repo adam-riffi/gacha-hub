@@ -26,6 +26,11 @@ describe("data export (routes)", () => {
     await c.req("POST", `/api/instances/${gid}/characters`, { catalogId: AMBER });
     await c.req("POST", `/api/instances/${gid}/pulls`, { bannerKey: "character", count: 10 });
     await c.req("PUT", `/api/instances/${gid}/reminder`, { enabled: true, atTimes: ["09:00"], timezone: "UTC" });
+    await c.req("PUT", `/api/instances/${gid}`, { uid: "700123456", accountLevel: 58 });
+    // F8 tables, written here directly until their routes land.
+    await prisma.cycleResult.create({ data: { gameInstanceId: gid, modeKey: "abyss", cycleStart: new Date("2026-09-16T03:00:00Z"), result: 36, premium: 800 } });
+    await prisma.passState.create({ data: { gameInstanceId: gid, kind: "battle", level: 30, weeklyXp: 4000 } });
+    await prisma.dayRecord.create({ data: { gameInstanceId: gid, day: "2026-10-09", dailiesDone: 1, dailiesTotal: 1 } });
     // Someone else's data, which must never appear.
     await prisma.user.create({
       data: { discordId: "someone-else", username: "Someone Else", gameInstances: { create: { gameKey: "hsr" } } },
@@ -45,6 +50,10 @@ describe("data export (routes)", () => {
     expect(g.characters).toEqual([expect.objectContaining({ catalogId: AMBER })]);
     expect(g.pullEntries).toEqual([expect.objectContaining({ bannerKey: "character", count: 10 })]);
     expect(g.reminderRule).toMatchObject({ enabled: true });
+    expect(g).toMatchObject({ uid: "700123456", accountLevel: 58 });
+    expect(g.cycleResults).toEqual([expect.objectContaining({ modeKey: "abyss", result: 36, premium: 800, source: "manual" })]);
+    expect(g.passStates).toEqual([expect.objectContaining({ kind: "battle", level: 30, weeklyXp: 4000 })]);
+    expect(g.dayRecords).toEqual([expect.objectContaining({ day: "2026-10-09", dailiesDone: 1, dailiesTotal: 1 })]);
     expect(data.tasks.length).toBeGreaterThan(0); // the game's default dailies
   });
 

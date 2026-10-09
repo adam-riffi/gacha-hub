@@ -4,6 +4,8 @@
  * UTC offset with no daylight saving, so every boundary is plain arithmetic on
  * the server's wall clock: the viewer's time zone never enters into it.
  */
+import type { GameManifest } from "./games/types.js";
+
 export type Cadence = "daily" | "weekly" | "monthly" | "cycle" | "version";
 
 /** A server region's clock: its fixed offset, daily reset hour and weekly reset weekday (1 = Mon … 7 = Sun). */
@@ -68,4 +70,19 @@ export function cadenceWindow(anchor: CadenceAnchor, clock: ServerClock, now: Da
       return { start: at(first + k * anchor.days), end: at(first + (k + 1) * anchor.days) };
     }
   }
+}
+
+/**
+ * The anchor a recurring task's window follows: daily and weekly on the
+ * region's resets; monthly on its shop or monthly endgame mode, else the 1st;
+ * cycle on its endgame mode; version on the game's current version.
+ */
+export function taskAnchor(m: GameManifest | undefined, cadence: Cadence, anchorKey?: string | null): CadenceAnchor {
+  if (cadence === "daily" || cadence === "weekly") return { cadence };
+  const shop = m?.monthlyShops.find((s) => s.key === anchorKey);
+  const mode = m?.endgame.find((e) => e.key === anchorKey);
+  if (cadence === "monthly") return shop ? { cadence, day: shop.day } : mode?.anchor.cadence === "monthly" ? mode.anchor : { cadence, day: 1 };
+  if (cadence === "cycle" && mode) return mode.anchor;
+  // ponytail: a cycle task whose mode left the manifest follows the version until edited.
+  return m ? { cadence: "version", start: m.version.start, days: m.version.days } : { cadence: "daily" };
 }

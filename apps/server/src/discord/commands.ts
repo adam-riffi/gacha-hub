@@ -1,5 +1,5 @@
 import type { GameInstance } from "../generated/prisma/client.js";
-import { getGame, type GameDefinition, type TaskCadence } from "@gacha/shared";
+import { getGame, taskAnchor, type GameDefinition, type TaskCadence } from "@gacha/shared";
 import { config } from "../config.js";
 import { prisma } from "../lib/prisma.js";
 import { isDoneThisCycle } from "../lib/resets.js";
@@ -124,7 +124,7 @@ async function undoneDailies(userId: string, gi: GameInstance, game: GameDefinit
   const now = new Date();
   return tasks
     .filter(
-      (t) => !isDoneThisCycle(t.lastCompletedAt, now, region, (t.cadence as TaskCadence) ?? "daily"),
+      (t) => !isDoneThisCycle(t.lastCompletedAt, now, region, taskAnchor(game.manifest, (t.cadence as TaskCadence) ?? "daily", t.anchorKey)),
     )
     .map((t) => t.title);
 }

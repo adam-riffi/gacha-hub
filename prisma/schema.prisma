@@ -53,6 +53,9 @@ model GameInstance {
   regionKey String   @default("eu")
   /// Asleep = hidden from Home and skipped by reminders, without uninstalling.
   sleeping  Boolean  @default(false)
+  /// The in-game UID and account level (Adventure Rank, Trailblaze Level…), typed or synced.
+  uid          String?
+  accountLevel Int?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -64,6 +67,9 @@ model GameInstance {
   teams         Team[]
   gearPieces    GearPiece[]
   pullEntries   PullEntry[]
+  cycleResults  CycleResult[]
+  passStates    PassState[]
+  dayRecords    DayRecord[]
 
   @@unique([userId, gameKey])
   @@index([userId])
@@ -84,6 +90,62 @@ model PullEntry {
   createdAt      DateTime     @default(now())
 
   @@index([gameInstanceId, bannerKey, createdAt])
+}
+
+/// One endgame mode's result for one cycle (a manifest `endgame` key). `source`
+/// is manual or auto (ADR 0005); editing an auto row makes it manual.
+model CycleResult {
+  id             String       @id @default(cuid())
+  gameInstanceId String
+  gameInstance   GameInstance @relation(fields: [gameInstanceId], references: [id], onDelete: Cascade)
+  modeKey        String
+  /// The cycle window's start instant.
+  cycleStart     DateTime
+  /// The mode's metric (stars, acts…) and a sub-metric such as "floor 12".
+  result         Int?
+  detail         String?
+  /// Premium currency earned this cycle.
+  premium        Int?
+  /// Teams used: lists of character catalog ids.
+  teams          Json?
+  source         String       @default("manual")
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@unique([gameInstanceId, modeKey, cycleStart])
+}
+
+/// A profile's battle pass (`battle`) or 30-day pass (`monthly`).
+model PassState {
+  id             String       @id @default(cuid())
+  gameInstanceId String
+  gameInstance   GameInstance @relation(fields: [gameInstanceId], references: [id], onDelete: Cascade)
+  kind           String
+  level          Int?
+  weeklyXp       Int?
+  /// When a 30-day pass runs out; a battle pass ends with the version.
+  endsAt         DateTime?
+  source         String       @default("manual")
+  updatedAt      DateTime     @updatedAt
+
+  @@unique([gameInstanceId, kind])
+}
+
+/// A profile's game day (server-local date, YYYY-MM-DD), written on every
+/// change: the Home heatmap and streaks, the open-goals line and pulls gained.
+model DayRecord {
+  id             String       @id @default(cuid())
+  gameInstanceId String
+  gameInstance   GameInstance @relation(fields: [gameInstanceId], references: [id], onDelete: Cascade)
+  day            String
+  dailiesDone    Int          @default(0)
+  dailiesTotal   Int          @default(0)
+  goalsOpen      Int          @default(0)
+  /// Pulls on hand at the day's last change (premium currency and tickets).
+  pulls          Int          @default(0)
+  updatedAt      DateTime     @updatedAt
+
+  @@unique([gameInstanceId, day])
 }
 
 /// A gear piece in the bag (Genshin artifact, HSR relic…). Equipped pieces live
@@ -186,7 +248,9 @@ model Task {
   refId           String
   type            String // recurring | goal | checklist
   title           String
-  cadence         String? // daily | weekly
+  cadence         String? // daily | weekly | monthly | cycle | version
+  /// The manifest entry a monthly or cycle task follows (a shop or endgame mode key).
+  anchorKey       String?
   regionAware     Boolean   @default(false)
   target          Float?
   progress        Float     @default(0)

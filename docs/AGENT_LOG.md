@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f8/03-schema · #107
+- Done: recurring tasks on five cadences, a monthly or cycle task following a manifest shop or endgame mode by `anchorKey` (`taskAnchor` in the cadence core; tasks, `/dailies` and reminders use it); `GameInstance.uid` and `accountLevel` (limits in `LIMITS`); `CycleResult`, `PassState`, `DayRecord` (dailies done/total, open goals, pulls on hand) with RLS; all in the export. AGENTS.md migration command updated for Prisma 7 (`--from-schema`). #106 merged.
+- Tests: written first: `taskAnchor`, `tasks.integration.test.ts` (monthly, cycle, version windows), UID and level limits, the export; `migrations.test.ts` guards RLS on every created table (it caught the three new ones before the migration enabled it).
+- Scope/decisions: tasks name their manifest entry rather than store dates, so a manifest refresh moves them; a cycle task whose mode left the manifest follows the version. No routes for the new tables yet.
+- Next: `04-day-record` (write-through on every change, history on the dashboard), then the Home history UI (heatmap, open goals, pulls gained, pin a day).
+
 ## 2026-10-10 · claude · stack/f8/02-manifests · #106
 - Done: `GameDefinition.manifest` (ADR 0004): stamina with its reserve and cap by level, monthly shops, endgame modes on cadence anchors (open days, metric, premium on offer), battle pass, 30-day pass, current version; values for the five games with a source per value in `docs/games/<key>.md` (`~` unverified, empty unsourced). Endfield: Asia UTC+8 and Americas / Europe UTC−5 at 04:00, Sanity cap by Authority Level (125–360), 1 per 7 min 12 s. #104 merged.
 - Tests: `games/manifest.test.ts` first: a conformance suite over every game (regions, every cadence in every region by fast-check, stamina, bounds, names in the reference sheet) and the facts players saw on 10 Oct 2026 (each endgame window, Endfield servers, the Sanity table).

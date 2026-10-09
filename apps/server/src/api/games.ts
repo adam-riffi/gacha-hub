@@ -105,21 +105,26 @@ export async function registerGameRoutes(app: FastifyInstance) {
     },
   );
 
-  // Change region (must be one the game offers) and/or put the game to sleep.
+  // Change region (must be one the game offers), put the game to sleep, or set the UID and account level.
   app.put<{ Params: { id: string } }>(
     "/api/instances/:id",
     { preHandler: requireUser },
     async (req, reply) => {
       const gi = await loadInstance(req.user!.id, req.params.id);
       if (!gi) return reply.code(404).send({ error: "not_found" });
-      const { regionKey, sleeping } = updateInstanceInput.parse(req.body);
+      const { regionKey, sleeping, uid, accountLevel } = updateInstanceInput.parse(req.body);
       const game = gameOrThrow(gi.gameKey);
       if (regionKey !== undefined && !game.regions.some((r) => r.key === regionKey)) {
         return reply.code(400).send({ error: "unknown_region" });
       }
       const updated = await prisma.gameInstance.update({
         where: { id: gi.id },
-        data: { ...(regionKey !== undefined ? { regionKey } : {}), ...(sleeping !== undefined ? { sleeping } : {}) },
+        data: {
+          ...(regionKey !== undefined ? { regionKey } : {}),
+          ...(sleeping !== undefined ? { sleeping } : {}),
+          ...(uid !== undefined ? { uid } : {}),
+          ...(accountLevel !== undefined ? { accountLevel } : {}),
+        },
       });
       return withGame(instanceDto.parse(updated));
     },

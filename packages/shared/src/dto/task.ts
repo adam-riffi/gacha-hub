@@ -36,6 +36,7 @@ export const taskDto = z.object({
   type: taskTypeSchema,
   title: z.string(),
   cadence: taskCadenceSchema.nullable(),
+  anchorKey: z.string().nullable(),
   target: z.number().nullable(),
   progress: z.number(),
   items: z.array(checklistItemSchema).nullable(),
@@ -59,6 +60,8 @@ export const createTaskInput = z.object({
   type: taskTypeSchema,
   title: z.string().min(1).max(200),
   cadence: taskCadenceSchema.optional(),
+  /** A manifest shop or endgame mode key, for monthly and cycle tasks. */
+  anchorKey: z.string().regex(/^[A-Za-z0-9-]{1,64}$/).optional(),
   regionAware: z.boolean().optional(),
   target: z.number().positive().max(LIMITS.taskTarget).optional(),
   progress: z.number().min(0).max(LIMITS.taskProgress).optional(),

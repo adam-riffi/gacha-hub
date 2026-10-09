@@ -6,6 +6,7 @@ import {
   reminderConfigSchema,
   type GameDefinition,
   type OpenDomain,
+  taskAnchor,
   type TaskCadence,
 } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
@@ -63,7 +64,7 @@ async function undoneDailies(userId: string, instance: GameInstance, game: GameD
   return tasks
     .filter(
       (t) =>
-        !isDoneThisCycle(t.lastCompletedAt, now, region, (t.cadence as TaskCadence) ?? "daily"),
+        !isDoneThisCycle(t.lastCompletedAt, now, region, taskAnchor(game.manifest, (t.cadence as TaskCadence) ?? "daily", t.anchorKey)),
     )
     .map((t) => t.title);
 }
