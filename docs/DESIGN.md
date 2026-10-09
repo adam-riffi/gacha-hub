@@ -1,6 +1,6 @@
 # gacha-hub — a cross-game gacha tracker
 
-> Status: v1 live, iterating · Owner: Georges · Updated: 2026-10-05 · Language: TypeScript · Hosting: Vercel + Supabase + GitHub Actions · Live: https://gacha-hub-two.vercel.app
+> Status: v1 live, iterating · Owner: Georges · Updated: 2026-10-09 · Language: TypeScript · Hosting: Vercel + Supabase + GitHub Actions · Live: https://gacha-hub-two.vercel.app
 
 ## 1. Summary
 
@@ -13,11 +13,12 @@ One place to run several gacha games at once: how many pulls you can afford, whi
 - Fast data entry: pick from a catalog, toggle, tick; almost never type.
 - Free to run: Vercel Hobby, Supabase Free, GitHub Actions cron. No always-on process, no queue.
 - Game data is accurate because it is imported, never hand-typed.
+- Account data fills in automatically wherever a source allows it (ADR 0005); manual entry works everywhere else.
 
 **Non-goals**
-- A generic "build your own game" tracker; every game is hardcoded.
-- Account sync through HoYoLAB or game logins (deferred; needs an owner decision, §14).
-- Mobile layout and stamina (resin) tracking (dropped 2026-10-04).
+- A generic "build your own game" tracker; every game is hardcoded (ADR 0004 standardizes what each module declares).
+- Writing to game accounts: no check-in, no code redemption. Linking is read-only (ADR 0005).
+- A mobile-first layout; screens collapse to one column, nothing more.
 - Monetization, public sign-up.
 
 ## 3. Users and demo story
@@ -37,7 +38,13 @@ A whitelisted player signs in with Discord, adds Genshin and HSR, sets currencie
 - Pull log per banner type with pity and the 50/50 guarantee (ADR 0002); pity next to pulls on Home.
 - Data export: everything a user entered as one JSON file (Settings → Download my data).
 
-**Next (should)** — milestones in §9.
+**Next (should)** — the screens in `docs/WIREFRAMES.md` (wireframed 2026-10-09), delivered by milestones F8–F12 in §9:
+- Activities on five cadences (daily, weekly, monthly, endgame cycle, version); stamina with its reserve, back in scope; battle pass, 30-day pass and monthly shops.
+- Endgame modes with a history per cycle.
+- Pulls: 5★ and 4★ odds, guarantee status, savings planner with chances.
+- Characters: splash-art cards with role-based KPIs (crit value, energy recharge, elemental mastery, healing); a character sheet with the art on the left.
+- Calendar: banners and events by default; event rewards (a free 4★, an event weapon) become goals that update constellation or refinement.
+- Account linking and imports (ADR 0005); game art in our own store (ADR 0006); a game manifest and a pipeline for new games, starting with Neverness to Everness (ADR 0004).
 
 **Later**
 - Public showcase pages; PWA; i18n through dataset text maps.
@@ -53,7 +60,9 @@ flowchart LR
   GH[GitHub Actions<br/>every 10 min] -- POST /api/cron/tick --> F
   F -- reminders --> D[Discord REST]
   F -- hourly --> H[HoYoverse announcement feed]
-  W -- art fallback --> E[enka.network/ui]
+  W -- art --> R[(Art store<br/>Cloudflare R2)]
+  W -. fallback .-> E[Enka and Yatta CDNs]
+  F -- read-only sync --> X[HoYoLAB, Enka,<br/>Kuro, SKPORT]
 ```
 
 The shared package owns the contracts: inputs are validated and outputs parsed through the same zod DTOs, so client types cannot drift. Catalog JSON loads lazily per game on both sides and is indexed once.
@@ -67,13 +76,14 @@ gacha/
 ├── prisma/              # schema.prisma, migrations/ (schema.sqlite.prisma is generated)
 ├── scripts/catalog/     # dataset importers (isolated install, not a workspace)
 ├── scripts/harness/     # end-to-end harnesses against the server bundle
+├── scripts/assets/      # art mirror to the art store (isolated install, ADR 0006)
 ├── api/index.mjs        # Vercel function entry
-└── docs/                # DESIGN.md, ENGINEERING.md, AGENT_LOG.md, PROJECT-GUIDE.md, screens/, adr/, DEPLOY.md
+└── docs/                # DESIGN.md, WIREFRAMES.md, games/<key>.md, ENGINEERING.md, AGENT_LOG.md, PROJECT-GUIDE.md, screens/, adr/, DEPLOY.md
 ```
 
 ## 6. Core design decisions
 
-**Locked product decisions** (owner, 2026-09; not relitigated): every game is a bespoke module and sheet; Discord-only sign-in, admins listed in `ADMIN_DISCORD_IDS`; one profile per user per game, region defaults to EU; free hosting only; catalogs come from open datasets through `scripts/catalog`; hard limits on every number (`LIMITS`).
+**Locked product decisions** (owner, 2026-09; not relitigated): every game is a bespoke module and sheet; Discord-only sign-in, admins listed in `ADMIN_DISCORD_IDS`; one profile per user per game, region defaults to EU; free hosting only; catalogs come from open datasets through `scripts/catalog`; hard limits on every number (`LIMITS`). ADR 0004 keeps the first one: each module declares a typed manifest in code.
 
 **Semantics that must not break**
 - Inventory is the source of truth: a "Farm X" task stores the raw total; its progress is derived from `MaterialStock` at read time.
@@ -86,19 +96,21 @@ gacha/
 - Catalog JSON is typed `unknown` behind `catalog.js` + `catalog.d.ts` shims (literal inference over 4 MB of JSON made `tsc` run out of memory).
 - Official-feed rows use keys `hoyo-<annId>` (HSR warps: `hoyo-<annId>-<warp>`) and never overwrite admin rows. The feed randomly serves Asia, Europe or America clock values labelled +1; `settle` recovers Europe from any two observations (6, 7 or 13 hours apart).
 
-**Hand-written core** (pure, unit tested): per-game definitions and limits; reset math (`lib/resets.ts`); game day and domains today (`packages/shared/src/domains.ts`); reminder due logic (`scheduler/due.ts`); planning and cost math (`packages/shared/src/planning`); currency and pull math; official-feed parsing (`lib/officialFeed.ts`); pity and guarantee (`packages/shared/src/pity.ts`); build-document migrations.
+**Hand-written core** (pure, unit tested): per-game definitions and limits; reset math (`lib/resets.ts`); game day and domains today (`packages/shared/src/domains.ts`); reminder due logic (`scheduler/due.ts`); planning and cost math (`packages/shared/src/planning`); currency and pull math; official-feed parsing (`lib/officialFeed.ts`); pity and guarantee (`packages/shared/src/pity.ts`); build-document migrations; cadence windows (`packages/shared/src/cadence.ts`); pull odds (`packages/shared/src/odds.ts`); stamina projection; import parsers (UIGF, convene records); token encryption.
 
-**Allowed libraries**: React, React Router, TanStack Query, Vite; Fastify and its first-party plugins (cookie, oauth2, rate-limit, multipart, static); Prisma; zod; luxon; discord-interactions; `@vercel/blob`; node-cron (always-on hosts only); Vitest, fast-check, Playwright, ESLint, Prettier, esbuild, tsx. Importers may use their dataset packages (`genshin-db`, `adm-zip`) inside `scripts/catalog` only.
+**Allowed libraries**: React, React Router, TanStack Query, Vite; Fastify and its first-party plugins (cookie, oauth2, rate-limit, multipart, static); Prisma; zod; luxon; discord-interactions; `@vercel/blob`; node-cron (always-on hosts only); Vitest, fast-check, Playwright, ESLint, Prettier, esbuild, tsx. Importers may use their dataset packages (`genshin-db`, `adm-zip`) inside `scripts/catalog` only. Token encryption uses `node:crypto` (built in). The art mirror may use `sharp` and an S3 client inside `scripts/assets` only (ADR 0006).
 
 ## 7. Visual identity
 
-Dark, flat and sharp: radius 0, no shadows, flat elevated surfaces (`--bg`, `--bg-elev`, `--surface`). Display type is Space Grotesk; body is the system stack. Each game reskins accents with its own colour (Genshin gold, HSR violet, ZZZ yellow, WuWa sky blue, Endfield teal). Art leads where it exists: character portraits, 5★ gradients, ringed portraits for owned units. Icons are inline SVG. No mobile layout for now.
+Dark, flat and sharp: radius 0, no shadows, flat elevated surfaces (`--bg`, `--bg-elev`, `--surface`). Display type is Space Grotesk; body is the system stack. Each game reskins accents with its own colour (Genshin gold, HSR violet, ZZZ yellow, WuWa sky blue, Endfield teal). Art leads where it exists: character portraits, 5★ gradients, ringed portraits for owned units. Icons are inline SVG. No mobile layout for now. Screen structure follows `docs/WIREFRAMES.md`; character art leads as splash art on character cards and in the left column of the character sheet.
 
 ## 8. Data model and storage
 
 Prisma models: `User`, `Session`, `GameInstance` (one per user per game; region, sleeping), `CurrencyState`, `Character` (build document JSON + `docVersion`), `Ownership`, `GearPiece` (unequipped pieces only), `Team`, `MaterialStock`, `Task` (recurring, goal, material subtasks), `ReminderRule`, `ReminderLog`, `Banner`, `Event`, `AuditLog`.
 
 Postgres on Supabase (own project `gacha-hub`, eu-west-1; ADR 0001). Migrations are committed SQL under `prisma/migrations`, generated offline with `prisma migrate diff` and applied by `prisma migrate deploy` during the Vercel build. Row-level security is enabled on every table with no policies; the server connects as the table owner, and the Data API exposes nothing. Local development and tests use SQLite (`schema.sqlite.prisma` generated from the Postgres schema).
+
+**Planned (F8–F12):** `CycleResult` (one row per endgame mode and cycle: result, rewards, teams, source), `PassState` (battle pass and 30-day pass: level, weekly XP, end date), `WishlistItem`, and `LinkedAccount` and `ImportRun` (ADR 0005). `GameInstance` gains `uid` and `accountLevel`; `Task.cadence` gains `monthly`, `cycle` and `version`; `PullEntry` gains `source` and the game's record id for deduplication. Every new table enables RLS in its migration. Exact columns are settled in each milestone's PRs.
 
 ## 9. Development plan
 
@@ -113,13 +125,19 @@ Postgres on Supabase (own project `gacha-hub`, eu-west-1; ADR 0001). Migrations 
 | P2 Production smoke | `scripts/smoke.mjs` + `smoke.yml` on production deployments | A wrong or dev-login deployment fails the check; production passes |
 | F6 Data export | `GET /api/export` (everything the user entered) + a Settings download | The export round-trips every user-owned table and contains nothing of other users or secrets |
 | F7 Calendar history | ended banners/events load when paging back | Paging back two weeks shows what ended then |
+| F8 Cadences, endgame and passes | cadence core and manifest fields (ADR 0004); Activities tab; endgame modes with `CycleResult` history; battle pass and 30-day pass; stamina and reserve on Home and the game hub; Endfield regions and Sanity cap fixed | Each game shows its five cadences with correct countdowns in every region (property-tested); the Endgame tab lists past cycles; stamina "full at" matches the regeneration math |
+| F9 Game pipeline | manifest type and conformance suite; `npm run game:new`; `docs/games/<key>.md` per game; NTE at capability M; ZZZ official feed | A scaffolded game passes the conformance suite; NTE works by hand on every screen |
+| F10 Screens and build parity | the remaining screens in `docs/WIREFRAMES.md`: Home proposals, Library, Tasks with event goals, Calendar layers and reward goals, Pulls odds and guarantee, Characters splash cards and KPIs, character sheet, gear, planner, profile; gear blocks for every game | Each screen matches its section in WIREFRAMES.md, with loading, empty and error states; odds match a seeded simulation within 0.5 points |
+| F11 Automatic data | `LinkedAccount` and encryption; HoYoLAB notes and chronicle sync; pull-history imports (history link, UIGF v4.2, WuWa convene, Endfield SKPORT); Enka showcase sync (ADR 0005) | Link, sync and revoke work end to end against recorded fixtures; tokens never appear in logs, responses or exports |
+| F12 Art store | `splash` art kind; `scripts/assets` mirror to R2; CSP update (ADR 0006) | Every game shows art for owned characters from our store; a missing file falls back to the placeholder |
 
-F5 follows the owner's listed nice-to-have (the Phase 8 handoff notes, in git history before 2026-10-08) under ADR 0002 (Proposed); account import still needs the owner's go-ahead (§14).
+F5 follows the owner's listed nice-to-have (the Phase 8 handoff notes, in git history before 2026-10-08) under ADR 0002 (Proposed). Account import was approved on 2026-10-09 (ADR 0005). Each milestone ships its own screens; F10 covers the screens no earlier milestone owns.
 
 ## 10. Testing strategy
 
 - **Unit:** pure core in §6: resets and game day, reminder due logic, planning math, currency math, feed parsing, document migrations.
-- **Property:** game-day math across all regions, offsets and reset hours, against a luxon reference (`domains.test.ts`, seeded).
+- **Property:** game-day math across all regions, offsets and reset hours, against a luxon reference (`domains.test.ts`, seeded). Cadence windows across regions and the viewer's daylight-saving changes; odds distributions sum to 1 and match a seeded simulation.
+- **Conformance:** one suite runs over every registered game module (ADR 0004).
 - **Integration:** route tests build the real Fastify app over a throwaway SQLite database (`*.integration.test.ts`, run sequentially).
 - **Harness:** `scripts/harness/phase7.mjs` and `phase8.mjs` exercise the built bundle end to end.
 - **End-to-end:** Playwright `@smoke` journeys (`e2e/`) against the built app on a throwaway SQLite database, signed in with the dev login: Home, adding Genshin opens its overview, the calendar. Traces are uploaded when CI fails.
@@ -137,7 +155,7 @@ Required checks: `lint`, `typecheck`, `test`, `build`, `e2e`. Vercel builds each
 
 ## 12. Deployment and configuration
 
-Vercel project `gacha-hub` (framework preset "Other", functions in `dub1` next to the database). Preview deployments are off for `stack/**`, `spike/**` and `dependabot/**` branches (`vercel.json`): the Hobby plan allows 100 deployments a day, and restacking a stack redeploys every branch; CI and the E2E suite cover those PRs. Environment variables are set by the owner in Vercel (`.env.example` lists them): `DATABASE_URL` (transaction pooler), `DIRECT_DATABASE_URL`, `SESSION_SECRET`, `COOKIE_SECURE=true`, `APP_BASE_URL`, `DISCORD_*`, `ADMIN_DISCORD_IDS`, `CRON_SECRET`, `BLOB_READ_WRITE_TOKEN`, `DEV_LOGIN_ENABLED=false`. Never set `NODE_ENV`. GitHub secrets: `CRON_URL`, `CRON_SECRET`. Full steps: `docs/DEPLOY.md`.
+Vercel project `gacha-hub` (framework preset "Other", functions in `dub1` next to the database). Preview deployments are off for `stack/**`, `spike/**` and `dependabot/**` branches (`vercel.json`): the Hobby plan allows 100 deployments a day, and restacking a stack redeploys every branch; CI and the E2E suite cover those PRs. Environment variables are set by the owner in Vercel (`.env.example` lists them): `DATABASE_URL` (transaction pooler), `DIRECT_DATABASE_URL`, `SESSION_SECRET`, `COOKIE_SECURE=true`, `APP_BASE_URL`, `DISCORD_*`, `ADMIN_DISCORD_IDS`, `CRON_SECRET`, `BLOB_READ_WRITE_TOKEN`, `DEV_LOGIN_ENABLED=false`; from F11 `LINK_SECRET_KEY` (ADR 0005); from F12 `VITE_ASSET_BASE` (ADR 0006). Never set `NODE_ENV`. GitHub secrets: `CRON_URL`, `CRON_SECRET`. Full steps: `docs/DEPLOY.md`.
 
 **Smoke checks** (`npm run smoke -- <url>`, run by `smoke.yml` after every production deploy): the app shell loads; `/api/me` answers anonymously with `oauth: true, devLogin: false`; `/api/instances` refuses anonymous reads; the security headers are sent. Manually: sign-in reaches Home; a `cron-tick` run returns `ok: true`.
 
@@ -147,13 +165,16 @@ Vercel project `gacha-hub` (framework preset "Other", functions in `dub1` next t
 - Every view has loading, empty and error states.
 - Inputs validated with zod at the boundary; admin routes rate-limited and audited; the cron endpoint requires `CRON_SECRET`.
 - No secrets in the client bundle; credentials are entered by the owner only.
-- Every response carries a Content-Security-Policy (own scripts only; images from the app, Enka, Yatta, Discord avatars and Vercel Blob), `frame-ancestors 'none'`, `nosniff`, a strict referrer policy and a minimal permissions policy (`apps/server/src/lib/securityHeaders.ts`, mirrored in `vercel.json`).
+- Linked-account tokens are encrypted at rest (AES-256-GCM, `LINK_SECRET_KEY`), never logged, never sent to the browser and never exported (ADR 0005).
+- Every response carries a Content-Security-Policy (own scripts only; images from the app, Enka, Yatta, Discord avatars, Vercel Blob and, from F12, the art store), `frame-ancestors 'none'`, `nosniff`, a strict referrer policy and a minimal permissions policy (`apps/server/src/lib/securityHeaders.ts`, mirrored in `vercel.json`).
 
 ## 14. Risks and open questions
 
-- Enka (Genshin) and Yatta (HSR) art is hotlinked; mirror into our own store (`VITE_ASSET_BASE`) if either blocks us.
+- Art moves to our own store in F12 (ADR 0006); until then Enka (Genshin) and Yatta (HSR) are hotlinked.
 - The HoYoverse feed is undocumented and serves inconsistent times; imports fail soft and the admin can edit rows.
-- Account import (Enka showcase, HoYoLAB) was deferred by the owner; needs a decision and an ADR before any work.
+- Account import (ADR 0005) relies on undocumented endpoints and on HoYoverse tolerating read-only tools; every import fails soft.
+- Pull odds follow the community model of soft pity; they are estimates and the UI says so.
+- Endfield's weekly, monthly, endgame and pass rules are still to research before its manifest is complete.
 - `docs/DESIGN-*.md` predate this file; this file wins where they differ. `docs/PROJECT-GUIDE.md` walks through the shipped screens and per-game features; this file wins on scope.
 
 ## 15. Definition of done
