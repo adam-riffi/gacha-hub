@@ -57,6 +57,8 @@ export const dashboardGameDto = z.object({
   stamina: regenProjectionDto.nullable(),
   /** Pull batches of the last six weeks, oldest first. */
   pullLog: z.array(z.object({ at: isoDate, count: z.number().int() })),
+  /** The server's current game day (YYYY-MM-DD), where today's live tallies belong. */
+  gameDay: z.string().nullable(),
   /** Day records of the last 26 weeks, oldest first: the server's game day and its tallies. */
   days: z.array(
     z.object({ day: z.string(), dailiesDone: z.number().int(), dailiesTotal: z.number().int(), goalsOpen: z.number().int(), pulls: z.number().int() }),

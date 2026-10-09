@@ -65,3 +65,21 @@ export function linePoints(values: readonly number[], box: ChartBox, max: number
     v,
   }));
 }
+
+/** A value per date from day records (sorted by day): the latest record on or before each date, 0 before the first. */
+export function carryForward(records: readonly { day: string; value: number }[], dates: readonly string[]): number[] {
+  return dates.map((d) => latest(records, d) ?? 0);
+}
+
+/** What each date added over the date before: increases only, and nothing on a profile's first record. */
+export function dailyGains(records: readonly { day: string; value: number }[], dates: readonly string[]): number[] {
+  return dates.map((d) => {
+    const before = latest(records, new Date(Date.parse(`${d}T00:00:00Z`) - 86_400_000).toISOString().slice(0, 10));
+    return before === undefined ? 0 : Math.max(0, (latest(records, d) ?? before) - before);
+  });
+}
+
+function latest(records: readonly { day: string; value: number }[], date: string): number | undefined {
+  for (let k = records.length - 1; k >= 0; k--) if (records[k]!.day <= date) return records[k]!.value;
+  return undefined;
+}

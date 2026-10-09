@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { carryForward, dailyGains } from "@gacha/shared";
 import type { DashboardData, TaskItem } from "../lib/types";
 import { GraphPanel } from "./charts/GraphPanel";
 import { HeroGauge, SmallGauge } from "./charts/Gauge";
@@ -25,36 +26,56 @@ function goalType(t: TaskItem): GoalType {
 
 const DAY = 86_400_000;
 const MD = (d: Date) => `${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-const localDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
 const isoWeek = (d: Date) => {
   const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
   t.setUTCDate(t.getUTCDate() + 4 - (t.getUTCDay() || 7));
   return Math.ceil(((t.getTime() - Date.UTC(t.getUTCFullYear(), 0, 1)) / DAY + 1) / 7);
 };
 
-/** Pulls spent per day (the last 7) or per week (the last 6), in the viewer's calendar, with the period's labels. */
-function spentSeries(log: { at: string; count: number }[], period: Period, now = new Date()) {
-  const n = period === "daily" ? 7 : 6;
-  const span = period === "daily" ? DAY : 7 * DAY;
-  const today = localDay(now);
-  // Weeks end on today's weekday, so the last bucket is the current week so far.
-  const starts = Array.from({ length: n }, (_, k) => new Date(today.getTime() - (n - 1 - k) * span));
-  const values = starts.map((s, k) => {
-    const end = k === n - 1 ? Infinity : starts[k + 1]!.getTime();
-    return log.filter((e) => {
-      const t = Date.parse(e.at);
-      return t >= s.getTime() && t < end;
-    }).reduce((sum, e) => sum + e.count, 0);
-  });
-  const labels = starts.map((s) => (period === "daily" ? MD(s) : `W${isoWeek(s)}`));
-  return { values, labels };
+const ISO = (d: Date) => `${d.getFullYear()}-${MD(d)}`;
+/** The day `k` days before `d`, in the viewer's calendar (daylight-saving safe). */
+const daysBefore = (d: Date, k: number) => new Date(d.getFullYear(), d.getMonth(), d.getDate() - k);
+
+/**
+ * The pull history's buckets in the viewer's calendar, oldest first: each of
+ * the last 7 days, or the last 6 weeks with the last one ending today.
+ */
+function buckets(period: Period, now = new Date()) {
+  const [n, len] = period === "daily" ? [7, 1] : [6, 7];
+  return Array.from({ length: n }, (_, k) => Array.from({ length: len }, (_, j) => daysBefore(now, (n - 1 - k) * len + (len - 1 - j))));
+}
+
+/** Pulls spent (logged) and gained (pulls on hand going up, from the day records) per bucket, with the period's labels. */
+function pullSeries(games: DashGame[], period: Period) {
+  const bs = buckets(period);
+  const dates = bs.flat().map(ISO);
+  const gains = dates.map(() => 0);
+  for (const g of games) dailyGains(g.days.map((d) => ({ day: d.day, value: d.pulls })), dates).forEach((v, k) => (gains[k]! += v));
+  const spentOn = new Map<string, number>();
+  for (const e of games.flatMap((g) => g.pullLog)) {
+    const day = ISO(new Date(e.at));
+    spentOn.set(day, (spentOn.get(day) ?? 0) + e.count);
+  }
+  let k = 0;
+  const gained = bs.map((b) => b.reduce((sum) => sum + gains[k++]!, 0));
+  const spent = bs.map((b) => b.reduce((sum, d) => sum + (spentOn.get(ISO(d)) ?? 0), 0));
+  const labels = bs.map((b) => (period === "daily" ? MD(b[0]!) : `W${isoWeek(b.at(-1)!)}`));
+  return { gained, spent, labels };
+}
+
+/** Open goals on each of the last 10 days, from the day records; the last point is live. */
+function backlogSeries(games: DashGame[], openNow: number, now = new Date()) {
+  const days = Array.from({ length: 10 }, (_, k) => daysBefore(now, 9 - k));
+  const values = days.map(() => 0);
+  for (const g of games) carryForward(g.days.map((d) => ({ day: d.day, value: d.goalsOpen })), days.map(ISO)).forEach((v, k) => (values[k]! += v));
+  values[9] = openNow;
+  return { values, labels: days.map(MD) };
 }
 
 /**
  * Home's top row (VISUAL-DESIGN.md §10): the dailies gauge with the period
  * switch; the goals gauge and the goal-type bars; the backlog line and the
- * pulls gained against spent. Until F8 keeps a daily record, the backlog
- * shows today's point and pull history waits for 08-home-data.
+ * pulls gained against spent, both from the day records.
  */
 export function HomeTop({ games, tasks, goalMaterials }: { games: DashGame[]; tasks: TaskItem[]; goalMaterials: DashboardData["goalMaterials"] }) {
   const [period, setPeriod] = useState<Period>("daily");
@@ -74,7 +95,8 @@ export function HomeTop({ games, tasks, goalMaterials }: { games: DashGame[]; ta
     return { label, done: mine.filter(finished).length, total: mine.length };
   });
   const goalsDone = byType.reduce((s, b) => s + b.done, 0);
-  const spent = spentSeries(games.flatMap((g) => g.pullLog), period);
+  const pulls = pullSeries(games, period);
+  const backlog = backlogSeries(games, goals.length - goalsDone);
 
   return (
     <div className="home-top">
@@ -92,7 +114,7 @@ export function HomeTop({ games, tasks, goalMaterials }: { games: DashGame[]; ta
         </div>
         <div className="home-top-charts">
           <GraphPanel title="Backlog" style={{ flex: 1, minWidth: 0 }}>
-            <LineChart values={[goals.length - goalsDone]} labels={[MD(new Date())]} label="Open goals over time" />
+            <LineChart values={backlog.values} labels={backlog.labels} label="Open goals over time" />
           </GraphPanel>
           <GraphPanel
             title="Pull history"
@@ -107,7 +129,7 @@ export function HomeTop({ games, tasks, goalMaterials }: { games: DashGame[]; ta
               </>
             }
           >
-            <PairedBars a={[]} b={spent.values} labels={spent.labels} label="Pulls" names={["gained", "spent"]} />
+            <PairedBars a={pulls.gained} b={pulls.spent} labels={pulls.labels} label="Pulls" names={["gained", "spent"]} />
           </GraphPanel>
         </div>
       </div>

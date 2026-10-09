@@ -7,7 +7,8 @@ import { listBanners, listEvents, withFeaturedDetails } from "../lib/timeline.js
 import { buildRegionContext, serializeTask } from "./tasks.js";
 import { allCurrencies } from "../lib/currencies.js";
 import { staminaProjection } from "../lib/regen.js";
-import { getCatalog } from "./util.js";
+import { getCatalog, regionForInstance } from "./util.js";
+import { gameDay } from "../lib/dayRecord.js";
 
 const DAY = 86_400_000;
 
@@ -128,6 +129,7 @@ export async function registerDashboardRoutes(app: FastifyInstance) {
         pullLog: pullRows
           .filter((p) => p.gameInstanceId === gi.id && p.createdAt.getTime() >= now.getTime() - 42 * DAY)
           .map((p) => ({ at: p.createdAt.toISOString(), count: p.count })),
+        gameDay: game ? gameDay(regionForInstance(game, gi), now) : null,
         days: dayRows.filter((d) => d.gameInstanceId === gi.id).map(({ gameInstanceId: _g, ...d }) => d),
         recurring: { daily: tally("daily", true), dailyTasks: tally("daily", false), weekly: tally("weekly", true), weeklyTasks: tally("weekly", false) },
       };
