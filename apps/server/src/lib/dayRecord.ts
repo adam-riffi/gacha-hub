@@ -4,6 +4,12 @@ import type { RegionReset } from "./resets.js";
 import { buildRegionContext, serializeTask } from "../api/tasks.js";
 import { regionForInstance } from "../api/util.js";
 
+/** The server's game day (YYYY-MM-DD): the date its daily window started on, in server time. */
+export function gameDay(region: RegionReset, now: Date): string {
+  const start = cadenceWindow({ cadence: "daily" }, region, now).start;
+  return new Date(start.getTime() + region.utcOffsetMinutes * 60_000).toISOString().slice(0, 10);
+}
+
 export interface DayValues {
   day: string;
   dailiesDone: number;
@@ -17,8 +23,7 @@ export interface DayValues {
  * items, its open goals (counted as Home counts them) and its pulls on hand.
  */
 export function dayRecordFor(region: RegionReset, tasks: TaskDto[], pulls: number, now: Date): DayValues {
-  const start = cadenceWindow({ cadence: "daily" }, region, now).start;
-  const day = new Date(start.getTime() + region.utcOffsetMinutes * 60_000).toISOString().slice(0, 10);
+  const day = gameDay(region, now);
   const dailies = tasks.filter((t) => t.type === "recurring" && (t.cadence ?? "daily") === "daily");
   const met = (t: TaskDto) => (t.target ?? 0) > 0 && t.progress >= (t.target ?? 0);
   const finished = (t: TaskDto) => {

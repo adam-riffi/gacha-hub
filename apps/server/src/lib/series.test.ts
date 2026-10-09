@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import fc from "fast-check";
-import { heatLevel, linePoints, segmentedBar, streaks } from "@gacha/shared";
+import { carryForward, dailyGains, heatLevel, linePoints, segmentedBar, streaks } from "@gacha/shared";
 
 // VISUAL-DESIGN.md §8: heatmap levels by the share of games with every daily done.
 describe("heatLevel", () => {
@@ -89,5 +89,34 @@ describe("linePoints", () => {
         }
       }),
     );
+  });
+});
+
+describe("carryForward", () => {
+  const rec = [
+    { day: "2026-10-02", value: 5 },
+    { day: "2026-10-04", value: 9 },
+  ];
+  it("gives each date the latest record on or before it, and 0 before the first", () => {
+    expect(carryForward(rec, ["2026-10-01", "2026-10-02", "2026-10-03", "2026-10-04", "2026-10-06"])).toEqual([0, 5, 5, 9, 9]);
+  });
+  it("handles no records and no dates", () => {
+    expect(carryForward([], ["2026-10-01"])).toEqual([0]);
+    expect(carryForward(rec, [])).toEqual([]);
+  });
+});
+
+describe("dailyGains", () => {
+  it("adds up each day's increase over the day before, ignoring decreases", () => {
+    const rec = [
+      { day: "2026-09-30", value: 10 },
+      { day: "2026-10-02", value: 14 },
+      { day: "2026-10-03", value: 4 },
+      { day: "2026-10-04", value: 7 },
+    ];
+    expect(dailyGains(rec, ["2026-10-01", "2026-10-02", "2026-10-03", "2026-10-04"])).toEqual([0, 4, 0, 3]);
+  });
+  it("counts nothing gained on a profile's first record", () => {
+    expect(dailyGains([{ day: "2026-10-02", value: 40 }], ["2026-10-01", "2026-10-02"])).toEqual([0, 0]);
   });
 });

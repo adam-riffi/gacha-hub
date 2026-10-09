@@ -51,6 +51,7 @@ describe("day record (routes)", () => {
     await prisma.dayRecord.create({ data: { gameInstanceId: gid, day: gameDay(1), dailiesDone: 1, dailiesTotal: 1, pulls: 4 } });
     await c.req("PUT", `/api/instances/${gid}/currencies/primogems`, { value: 1600 });
     const dash = await c.req<DashboardDto>("GET", "/api/dashboard");
+    expect(dash.json.games[0]!.gameDay).toBe(gameDay()); // today's cell on the heatmap is live, under this day
     expect(dash.json.games[0]!.days).toEqual([
       { day: gameDay(1), dailiesDone: 1, dailiesTotal: 1, goalsOpen: 0, pulls: 4 },
       { day: gameDay(), dailiesDone: 0, dailiesTotal: 1, goalsOpen: 0, pulls: 10 },
