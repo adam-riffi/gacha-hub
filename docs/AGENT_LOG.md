@@ -14,7 +14,7 @@ Entry format:
 
 ---
 
-## 2026-10-10 · claude · stack/d/02-postgres-check · pending
+## 2026-10-10 · claude · stack/d/02-postgres-check · #103
 - Done: CI job `test-postgres` (Postgres 16 service, `migrate deploy`, the server's route tests through the pg adapter via `TEST_DATABASE_URL`); `/api/health` (an anonymous read through the database, `no-store`, 503 when unreachable) added to the production smoke check; AGENTS.md's dev-server note reworded (the client is provider-specific; there is no engine DLL any more).
 - Tests: `health.integration.test.ts` first; Check all; the CI job itself is the Postgres verification.
 - Scope/decisions: The Supabase pooler is still unverified: Preview deployments have no `DATABASE_URL` (production-only variables), and branching Supabase costs money. Georges either adds Preview-scoped database variables or the first production deploy is the pooler test, guarded by the health smoke check.
