@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f8/06-pin-day · #111
+- Done: pinning a past heatmap day moves Home to it, kept in the URL (`?day=`): VIEWING chip and BACK TO TODAY in the top bar, the day's dailies on the gauge, Backlog and Pull history ending on it (Backlog follows the period: 10 days or 8 weeks), DAY CLOSED and recorded dailies on the dailies card, the day's limited pulls. `dayOf` in shared. #109 merged.
+- Tests: written first: `dayOf` (recorded, unchanged, before any record) and E2E `pin-day.spec.ts`; the heatmap journey still pins today.
+- Scope/decisions: weeklies, goals gauge, permanent tickets, pity, banners, pass and stamina have no history, so they stay live (the design moves them with made-up data). Vercel's Hobby build rate limit refused production deploys of #108 and #109 today; production is at #107 until the next merge after the reset.
+- Next: merge #110 and #111; then `07-hub-activities` (hub header, Activities tab per G1).
+
 ## 2026-10-10 · claude · fix/db-sqlite-path · #110
 - Done: `prisma.config.ts` resolves a relative SQLite URL against `prisma/`, as the app does; `npm run db:sqlite` updates `prisma/dev.db` again instead of creating `dev.db` at the root (a #102 regression under Prisma 7).
 - Tests: written first in `database.test.ts`: the CLI and the app open the same file for `file:./dev.db`; absolute paths pass through.
