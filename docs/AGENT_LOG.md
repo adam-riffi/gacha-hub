@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-09 · claude · stack/v/03-shell · pending
+- Done: The sidebar becomes the 72 px rail (ALL, GAMES, TASKS, BANNERS, ADMIN for admins, SETTINGS) and a top bar with the scope strip and the date. Home, Tasks and the calendar take `?game=`; Games opens the hub; the scope's game sets `--accent` on the shell. `/tasks` shows today's dailies (`TodayCard`, now a component) above the board; the calendar's game chips gave way to the strip. Game cards show `shortName` until art arrives (F12).
+- Tests: `e2e/shell.spec.ts` (every rail link and its current state, Overview and a game on the strip, accent per scope, the scope following the rail, the Tasks page); the smoke journey's nav link updated.
+- Scope/decisions: Defaults from the V plan: Admin in the rail for admins; Settings and Admin open a game's hub; strip in install order; no drag-to-scroll yet (five games fit). Old rules now read `--accent` directly: an alias on `:root` hid the scope's colour.
+- Next: `stack/v/04-panels`.
+
 ## 2026-10-09 · claude · stack/v/02-tokens-fonts · #94
 - Done: `apps/web/src/styles/tokens.css` with VISUAL-DESIGN.md §2 colours, the four OFL families self-hosted as Latin woff2 (152 KB, two preloaded), body type, the dotted-wave page pattern, the accent focus ring, paper selection and a reduced-motion rule; old variable names alias the tokens until the component PRs; game accents take the §3 values; Google Fonts removed, so the CSP keeps fonts and styles on `'self'`.
 - Tests: `e2e/visual.spec.ts` (fonts load from our own host only, body type, page colour, Overview accent); `accents.test.ts`; the CSP test now requires fonts and styles on `'self'`.
