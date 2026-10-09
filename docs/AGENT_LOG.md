@@ -14,7 +14,7 @@ Entry format:
 
 ---
 
-## 2026-10-09 · claude · stack/v/02-tokens-fonts · pending
+## 2026-10-09 · claude · stack/v/02-tokens-fonts · #94
 - Done: `apps/web/src/styles/tokens.css` with VISUAL-DESIGN.md §2 colours, the four OFL families self-hosted as Latin woff2 (152 KB, two preloaded), body type, the dotted-wave page pattern, the accent focus ring, paper selection and a reduced-motion rule; old variable names alias the tokens until the component PRs; game accents take the §3 values; Google Fonts removed, so the CSP keeps fonts and styles on `'self'`.
 - Tests: `e2e/visual.spec.ts` (fonts load from our own host only, body type, page colour, Overview accent); `accents.test.ts`; the CSP test now requires fonts and styles on `'self'`.
 - Scope/decisions: Fonts are copied from the Fontsource 5.3.0 packages (Google Fonts builds) with their OFL texts; not added as dependencies. Success and danger colours stay until `04-panels` reworks the components.
