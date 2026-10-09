@@ -2,7 +2,7 @@ import { z } from "zod";
 import { taskDto } from "./task.js";
 import { bannerDto } from "./banner.js";
 import { eventDto } from "./event.js";
-import { gameKeySchema, idSchema, isoDateNullable } from "./common.js";
+import { gameKeySchema, idSchema, isoDate, isoDateNullable } from "./common.js";
 
 export const dashboardCurrencyDto = z.object({
   key: z.string(),
@@ -16,6 +16,21 @@ export const dashboardCurrencyDto = z.object({
   /** Standard-banner ticket: not counted toward limited pulls. */
   standardOnly: z.boolean(),
 });
+
+/** A regenerating resource (Genshin resin, HSR trailblaze power…) projected to now. */
+export const regenProjectionDto = z.object({
+  key: z.string(),
+  label: z.string(),
+  value: z.number(),
+  cap: z.number(),
+  regenPerHour: z.number(),
+  full: z.boolean(),
+  fullAt: isoDateNullable,
+});
+export type RegenProjectionDto = z.infer<typeof regenProjectionDto>;
+
+/** Items done this cycle over the items there are. */
+export const tallyDto = z.object({ done: z.number().int(), total: z.number().int() });
 
 export const dashboardGameDto = z.object({
   instanceId: idSchema,
@@ -38,6 +53,12 @@ export const dashboardGameDto = z.object({
   extras: z.unknown().optional(),
   /** Pity per banner type (empty for games without pull rules). */
   pity: z.array(z.object({ key: z.string(), label: z.string(), pity: z.number().int(), hardPity: z.number().int(), guaranteed: z.boolean() })),
+  /** The game's regenerating currency projected to now; null for a game without one. */
+  stamina: regenProjectionDto.nullable(),
+  /** Pull batches of the last six weeks, oldest first. */
+  pullLog: z.array(z.object({ at: isoDate, count: z.number().int() })),
+  /** Recurring items this cycle: the game's own dailies and weeklies, and the ones you added. */
+  recurring: z.object({ daily: tallyDto, dailyTasks: tallyDto, weekly: tallyDto, weeklyTasks: tallyDto }),
 });
 
 /** Active + upcoming banners/events across the user's installed games. */
@@ -46,18 +67,6 @@ export const timelineDto = z.object({
   events: z.array(eventDto),
 });
 export type TimelineDto = z.infer<typeof timelineDto>;
-
-/** A regenerating resource (Genshin resin, HSR trailblaze power…) projected to now. */
-export const regenProjectionDto = z.object({
-  key: z.string(),
-  label: z.string(),
-  value: z.number(),
-  cap: z.number(),
-  regenPerHour: z.number(),
-  full: z.boolean(),
-  fullAt: isoDateNullable,
-});
-export type RegenProjectionDto = z.infer<typeof regenProjectionDto>;
 
 /** Per-game dashboard extras from a GameServerModule (shape is game-specific). */
 export const gameDashboardExtrasDto = z.object({
