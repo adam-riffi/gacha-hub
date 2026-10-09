@@ -14,7 +14,7 @@ Entry format:
 
 ---
 
-## 2026-10-09 · claude · stack/v/03-shell · pending
+## 2026-10-09 · claude · stack/v/03-shell · #95
 - Done: The sidebar becomes the 72 px rail (ALL, GAMES, TASKS, BANNERS, ADMIN for admins, SETTINGS) and a top bar with the scope strip and the date. Home, Tasks and the calendar take `?game=`; Games opens the hub; the scope's game sets `--accent` on the shell. `/tasks` shows today's dailies (`TodayCard`, now a component) above the board; the calendar's game chips gave way to the strip. Game cards show `shortName` until art arrives (F12).
 - Tests: `e2e/shell.spec.ts` (every rail link and its current state, Overview and a game on the strip, accent per scope, the scope following the rail, the Tasks page); the smoke journey's nav link updated.
 - Scope/decisions: Defaults from the V plan: Admin in the rail for admins; Settings and Admin open a game's hub; strip in install order; no drag-to-scroll yet (five games fit). Old rules now read `--accent` directly: an alias on `:root` hid the scope's colour.
