@@ -96,6 +96,20 @@ export const hsr: GameDefinition = {
     { key: "railPass", label: "Star Rail Pass", pullCost: 1, pullLabel: "warp", standardOnly: true },
     { key: "credits", label: "Credits" },
   ],
+  // Sources per value: docs/games/hsr.md.
+  manifest: {
+    stamina: { currency: "trailblazePower", reserve: { name: "Reserved Trailblaze Power", cap: 2400, regenPerHour: 60 / 18 } },
+    monthlyShops: [{ key: "embers", name: "Embers Exchange", day: 1 }],
+    // Since 4.5 the three modes run cycles of different lengths; refresh the anchors each version.
+    endgame: [
+      { key: "moc", name: "Memory of Chaos", anchor: { cadence: "cycle", start: "2026-09-28", days: 77 }, metric: { label: "stars", max: 36 }, maxPremium: 800 },
+      { key: "pf", name: "Pure Fiction", anchor: { cadence: "cycle", start: "2026-09-14", days: 35 }, metric: { label: "stars", max: 12 }, maxPremium: 800 },
+      { key: "as", name: "Apocalyptic Shadow", anchor: { cadence: "cycle", start: "2026-10-05", days: 42 }, metric: { label: "stars", max: 12 }, maxPremium: 800 },
+    ],
+    battlePass: { name: "Nameless Honor", maxLevel: 70, weeklyXpCap: 8000 },
+    monthlyPass: { name: "Express Supply Pass", days: 30 },
+    version: { name: "4.6", start: "2026-09-28", days: 42 },
+  },
   defaultTasks: [
     { key: "dailyTraining", title: "Daily Training", cadence: "daily" },
     { key: "assignments", title: "Assignments", cadence: "daily" },

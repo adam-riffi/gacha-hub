@@ -2,6 +2,7 @@ import type { z } from "zod";
 import type { TaskCadence } from "../common.js";
 import type { Catalog, CatalogCharacter } from "../catalog/types.js";
 import type { PullBannerRules } from "../pity.js";
+import type { CadenceAnchor } from "../cadence.js";
 
 /**
  * Thin contract every hardcoded game module implements. The host app (auth,
@@ -40,6 +41,38 @@ export interface GameTaskSeed {
   cadence: TaskCadence;
 }
 
+/**
+ * A game's recurring structure (ADR 0004): what the hub and Home count down to.
+ * Every value cites its source in `docs/games/<key>.md`; dates are server-local
+ * and are refreshed at each version.
+ */
+export interface GameManifest {
+  stamina: {
+    /** Key of the regenerating currency; its `cap` (the highest) and `regenPerHour` are the base values. */
+    currency: string;
+    /** Cap by account level, when the game raises it (Endfield's Sanity by Authority Level). */
+    capAt?: (accountLevel: number) => number;
+    /** Where stamina goes once full (Reserved Trailblaze Power), or a crafted store (Condensed Resin). */
+    reserve?: { name: string; cap: number; regenPerHour?: number };
+  };
+  monthlyShops: { key: string; name: string; day: number }[];
+  endgame: {
+    key: string;
+    name: string;
+    anchor: CadenceAnchor;
+    /** Days the mode stays open when it closes before the next cycle starts (Stygian Onslaught). */
+    openDays?: number;
+    /** What a result counts, and its best value (36 stars, 10 acts…). */
+    metric: { label: string; max?: number };
+    /** Premium currency on offer per cycle; absent when unsourced. */
+    maxPremium?: number;
+  }[];
+  battlePass?: { name: string; maxLevel?: number; weeklyXpCap?: number };
+  monthlyPass?: { name: string; days: number; maxDays?: number };
+  /** The current version; `days` until the next one, estimated until announced. */
+  version: { name: string; start: string; days: number };
+}
+
 export interface GameArt {
   /** Served from apps/web/public — e.g. "/games/genshin/icon.png". */
   icon?: string;
@@ -61,6 +94,7 @@ export interface GameDefinition {
   pullBanners?: PullBannerRules[];
   /** Party size for the team builder (Genshin/HSR 4, ZZZ/WuWa 3…). Default 4. */
   teamSize?: number;
+  manifest: GameManifest;
   /** Recurring tasks seeded when a new profile is created. */
   defaultTasks: GameTaskSeed[];
   /** Bespoke validation for this game's character document. */

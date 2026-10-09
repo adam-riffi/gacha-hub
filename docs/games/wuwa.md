@@ -1,0 +1,15 @@
+# Wuthering Waves
+
+> Manifest sources (ADR 0004), checked 2026-10-10. `~` marks a value not yet verified against the wiki or an official notice; a field with no value has no source yet and stays out of the manifest. Dates are server-local. The Fandom wiki stops tracking the endgame in early 2026, so those rows lean on guides. Refresh at each version: the version row, the endgame anchors, the battle pass level cap.
+
+| Field | Value | Source |
+| --- | --- | --- |
+| Servers | America UTC−5, Europe UTC+1, Asia UTC+8; 04:00 server time, weekly on Monday | [Lunite Subscription](https://wutheringwaves.fandom.com/wiki/Lunite_Subscription) (the day turns at 04:00 server time) |
+| Stamina | Waveplate, cap 240, 1 every 6 minutes | [Waveplate](https://wutheringwaves.fandom.com/wiki/Waveplate) |
+| Reserve | Waveplate Crystals, cap 480, 1 every 12 minutes while Waveplates are full | [Waveplate](https://wutheringwaves.fandom.com/wiki/Waveplate) |
+| Monthly shop | Coral Shop, on the 1st ~ | wireframe X1, unverified |
+| Endgame | Tower of Adversity: the Hazard Zone repeats every 28 days ~, from 14 Sep 2026 ~; crests; 800 Astrite ~ | [Gamemarket](https://gamemarket.gg/news/wuthering-waves/wuthering-waves-tower-of-adversity-guide-zones-vigor-rewards), [September calendar](https://topuplist.com/blogs/detail/wuthering-waves-september-2026-events-3-6-phase-2-version-3-7); the wiki's last listed cycle (5 Jan 2026) is nine cycles earlier: [floors](https://wutheringwaves.fandom.com/wiki/Tower_of_Adversity/Floors) |
+| Endgame | Whimpering Wastes: Respawning Waters every 28 days ~, from 28 Sep 2026 ~; points; 800 Astrite a cycle ~ | [Game8](https://game8.co/games/Wuthering-Waves/archives/498614), [September calendar](https://topuplist.com/blogs/detail/wuthering-waves-september-2026-events-3-6-phase-2-version-3-7) |
+| Battle pass | Pioneer Podcast, 70 levels; weekly cap: | [Pioneer Podcast](https://wutheringwaves.fandom.com/wiki/Pioneer_Podcast) |
+| 30-day pass | Lunite Subscription, 30 days, stacks to 180 | [Lunite Subscription](https://wutheringwaves.fandom.com/wiki/Lunite_Subscription) |
+| Version | 3.7 from 30 Sep 2026; 42 days ~ (3.6 ran 41) | [Version](https://wutheringwaves.fandom.com/wiki/Version) |

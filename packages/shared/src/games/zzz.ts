@@ -78,6 +78,19 @@ export const zzz: GameDefinition = {
     { key: "masterTape", label: "Master Tape", pullCost: 1, pullLabel: "signal", standardOnly: true },
     { key: "denny", label: "Denny" },
   ],
+  // Sources per value: docs/games/zzz.md.
+  manifest: {
+    stamina: { currency: "battery", reserve: { name: "Backup Battery Charge", cap: 2400, regenPerHour: 60 / 18 } },
+    monthlyShops: [{ key: "signal", name: "Signal Store", day: 1 }],
+    // Two 14-day cycles on alternate Fridays.
+    endgame: [
+      { key: "shiyu", name: "Shiyu Defense", anchor: { cadence: "cycle", start: "2026-10-02", days: 14 }, metric: { label: "S-rank frontiers", max: 5 }, maxPremium: 780 },
+      { key: "assault", name: "Deadly Assault", anchor: { cadence: "cycle", start: "2026-10-09", days: 14 }, metric: { label: "stars", max: 9 }, maxPremium: 300 },
+    ],
+    battlePass: { name: "New Eridu City Fund", maxLevel: 50 },
+    monthlyPass: { name: "Inter-Knot Membership", days: 30 },
+    version: { name: "3.2", start: "2026-09-09", days: 42 },
+  },
   defaultTasks: [
     { key: "dailies", title: "Daily Missions", cadence: "daily" },
     { key: "scratch", title: "Scratch Card", cadence: "daily" },
