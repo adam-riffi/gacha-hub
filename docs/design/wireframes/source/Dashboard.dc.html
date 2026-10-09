@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Dashboard, all games</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans+Condensed:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#15171A}a:hover{color:#4A5058}
+.mono{font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace}
+.cond{font-family:'IBM Plex Sans Condensed','Arial Narrow',sans-serif}
+.rail{flex:0 0 72px;display:flex;flex-direction:column;gap:4px;padding:16px 0;background:#FFFFFF;border-right:1px solid #B4BAC2}
+.logo{width:32px;height:32px;margin:0 auto 16px;background:#15171A}
+.ri{height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.06em;text-decoration:none;color:#4A5058;border-left:3px solid transparent}
+.ri.on{color:#15171A;border-left-color:#15171A;background:#EEF0F2}
+.ic{width:20px;height:20px;border:1.5px solid currentColor}
+.fill{flex:1 1 0}
+.main{flex:999 1 560px;min-width:0;display:flex;flex-direction:column}
+.top{min-height:56px;display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:10px 24px;background:#FFFFFF;border-bottom:1px solid #B4BAC2}
+.scope{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.sc{height:36px;min-width:44px;padding:0 10px;display:inline-flex;align-items:center;justify-content:center;border:1px solid #B4BAC2;background:#FFFFFF;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;color:#15171A;text-decoration:none;cursor:pointer}
+.sc.on{background:#15171A;color:#FFFFFF;border-color:#15171A}
+.pg{padding:24px;display:flex;flex-direction:column;gap:16px;width:100%;max-width:1368px}
+.pn{background:#FFFFFF;border:1px solid #B4BAC2;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.pn.prop{border:1.5px dashed #C2185B}
+.ph{display:flex;align-items:center;gap:8px;min-height:22px;flex-wrap:wrap}
+.t{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase}
+.mu{color:#4A5058}
+.sm{font-size:12px}
+.bar{height:8px;background:#DCE0E5;position:relative;overflow:hidden}
+.bar>i{position:absolute;left:0;top:0;bottom:0;background:#15171A}
+.chip{display:inline-flex;align-items:center;height:22px;padding:0 8px;border:1px solid #B4BAC2;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.04em;white-space:nowrap;color:#15171A;background:#FFFFFF}
+.chip.auto{border-color:#15171A;background:#15171A;color:#FFFFFF}
+.chip.hot{border-color:#C2185B;color:#C2185B}
+.img{background-color:#DCE0E5;background-image:linear-gradient(to top right,transparent calc(50% - 1px),#B4BAC2 calc(50% - 1px),#B4BAC2 calc(50% + 1px),transparent calc(50% + 1px)),linear-gradient(to bottom right,transparent calc(50% - 1px),#B4BAC2 calc(50% - 1px),#B4BAC2 calc(50% + 1px),transparent calc(50% + 1px))}
+.btn{min-height:40px;padding:0 14px;border:1px solid #15171A;background:#FFFFFF;font-family:'IBM Plex Sans',sans-serif;font-size:13px;color:#15171A;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;cursor:pointer}
+.btn.pri{background:#15171A;color:#FFFFFF}
+.btn.sm{min-height:32px;padding:0 10px;font-size:12px}
+.row{display:flex;align-items:center;gap:10px;min-height:40px;border-top:1px solid #E1E4E8}
+.big{font-family:'IBM Plex Sans Condensed','Arial Narrow',sans-serif;font-weight:600;font-size:40px;line-height:1}
+.mk{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:#C2185B;color:#FFFFFF;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;font-weight:500;flex:0 0 20px}
+.nomk .mk{display:none}
+.pip{display:block;width:6px;height:6px;background:#DCE0E5}
+.pip.on{background:#15171A}
+@media (max-width:700px){.rail{flex:1 1 100%;flex-direction:row;padding:0 8px;border-right:0;border-bottom:1px solid #B4BAC2}.logo{display:none}.ri{flex:1;height:56px;border-left:0}}
+</style>
+</helmet>
+<div class="{{rootCls}}" style="min-height: 100vh; display: flex; flex-wrap: wrap; align-items: stretch; background: #E6E8EB; color: #15171A; font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif; font-size: 14px; line-height: 20px">
+
+<nav aria-label="Sections" class="rail">
+<span class="logo" aria-hidden="true"></span>
+<a class="ri on" href="Dashboard.dc.html" aria-current="page"><span class="ic"></span>ALL</a>
+<a class="ri" href="Library.dc.html"><span class="ic"></span>GAMES</a>
+<a class="ri" href="Tasks.dc.html"><span class="ic"></span>TASKS</a>
+<a class="ri" href="Calendar.dc.html"><span class="ic"></span>BANNERS</a>
+<span class="fill"></span>
+<a class="ri" href="Settings.dc.html"><span class="ic"></span>SETTINGS</a>
+</nav>
+
+<div class="main">
+<header class="top">
+<nav aria-label="Scope" class="scope">
+<a class="sc on" href="Dashboard.dc.html" aria-current="page">Overview</a>
+<button class="sc" type="button" aria-label="Genshin Impact">GI</button>
+<button class="sc" type="button" aria-label="Honkai: Star Rail">HSR</button>
+<button class="sc" type="button" aria-label="Zenless Zone Zero">ZZZ</button>
+<button class="sc" type="button" aria-label="Wuthering Waves">WuWa</button>
+<button class="sc" type="button" aria-label="Neverness to Everness">NTE</button>
+<button class="sc" type="button" aria-label="Arknights: Endfield">AE</button>
+</nav>
+<span class="mk">1</span>
+<span class="fill"></span>
+<span class="mono sm mu">2026-10-09 · FRI · 08:00</span>
+</header>
+
+<main class="pg">
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+
+<div style="flex: 999 1 600px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px">
+<section class="pn" style="flex: 1 1 280px; min-height: 380px">
+<div class="ph"><span class="t">Dailies</span><span class="fill"></span><div style="display: flex"><button class="btn sm pri" type="button">Daily</button><button class="btn sm" type="button">Weekly</button></div></div>
+<div style="flex: 1; display: flex; align-items: center; justify-content: center">
+<div style="width: 220px; height: 220px; border-radius: 50%; background: conic-gradient(#15171A 0 64%, #DCE0E5 64% 100%); display: flex; align-items: center; justify-content: center">
+<div style="width: 168px; height: 168px; border-radius: 50%; background: #FFFFFF; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px"><span class="big">64%</span><span class="mono sm mu">14 / 22 done</span></div>
+</div>
+</div>
+<div class="mono sm mu" style="text-align: center">3 of 6 games fully done today</div>
+</section>
+
+<div style="flex: 2 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-wrap: wrap; gap: 16px">
+<section class="pn" style="flex: 1 1 160px">
+<div class="ph"><span class="t">Goals</span></div>
+<div style="display: flex; align-items: center; justify-content: center">
+<div style="width: 112px; height: 112px; border-radius: 50%; background: conic-gradient(#15171A 0 41%, #DCE0E5 41% 100%); display: flex; align-items: center; justify-content: center"><div style="width: 80px; height: 80px; border-radius: 50%; background: #FFFFFF; display: flex; flex-direction: column; align-items: center; justify-content: center"><span class="cond" style="font-size: 24px; font-weight: 600">41%</span><span class="mono sm mu">9 / 22</span></div></div>
+</div>
+</section>
+<section class="pn" style="flex: 2 1 260px">
+<div class="ph"><span class="t">Goal types</span></div>
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; align-items: end; height: 112px">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px"><span class="mono sm">50%</span><span style="width: 24px; height: 40px; background: #15171A"></span><span class="mono mu" style="font-size: 10px">CHARACTER</span></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px"><span class="mono sm">30%</span><span style="width: 24px; height: 24px; background: #15171A"></span><span class="mono mu" style="font-size: 10px">GEAR</span></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px"><span class="mono sm">20%</span><span style="width: 24px; height: 16px; background: #15171A"></span><span class="mono mu" style="font-size: 10px">WEAPONS</span></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px"><span class="mono sm">60%</span><span style="width: 24px; height: 48px; background: #15171A"></span><span class="mono mu" style="font-size: 10px">GAMEPLAY</span></div>
+</div>
+</section>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 16px">
+<section class="pn" style="flex: 1 1 220px">
+<div class="ph"><span class="t">Backlog</span><span class="fill"></span><span class="mono sm mu">open tasks over time</span></div>
+<div aria-hidden="true" style="height: 120px; display: flex; align-items: flex-end; gap: 6px; border-bottom: 1px solid #B4BAC2">
+<span style="flex: 1; height: 100px; background: #9AA1AB"></span><span style="flex: 1; height: 96px; background: #9AA1AB"></span><span style="flex: 1; height: 98px; background: #9AA1AB"></span><span style="flex: 1; height: 90px; background: #9AA1AB"></span><span style="flex: 1; height: 84px; background: #9AA1AB"></span><span style="flex: 1; height: 86px; background: #9AA1AB"></span><span style="flex: 1; height: 78px; background: #9AA1AB"></span><span style="flex: 1; height: 72px; background: #9AA1AB"></span><span style="flex: 1; height: 74px; background: #9AA1AB"></span><span style="flex: 1; height: 66px; background: #9AA1AB"></span><span style="flex: 1; height: 60px; background: #15171A"></span>
+</div>
+</section>
+<section class="pn" style="flex: 1 1 220px">
+<div class="ph"><span class="t">Pull history</span><span class="fill"></span><span class="mono sm mu">gained · spent</span></div>
+<div aria-hidden="true" style="height: 120px; display: flex; align-items: flex-end; gap: 10px; border-bottom: 1px solid #B4BAC2">
+<span style="flex: 1; display: flex; align-items: flex-end; gap: 2px; height: 100%"><span style="flex: 1; height: 60%; background: #15171A"></span><span style="flex: 1; height: 30%; background: #B4BAC2"></span></span>
+<span style="flex: 1; display: flex; align-items: flex-end; gap: 2px; height: 100%"><span style="flex: 1; height: 55%; background: #15171A"></span><span style="flex: 1; height: 80%; background: #B4BAC2"></span></span>
+<span style="flex: 1; display: flex; align-items: flex-end; gap: 2px; height: 100%"><span style="flex: 1; height: 70%; background: #15171A"></span><span style="flex: 1; height: 10%; background: #B4BAC2"></span></span>
+<span style="flex: 1; display: flex; align-items: flex-end; gap: 2px; height: 100%"><span style="flex: 1; height: 50%; background: #15171A"></span><span style="flex: 1; height: 0%; background: #B4BAC2"></span></span>
+<span style="flex: 1; display: flex; align-items: flex-end; gap: 2px; height: 100%"><span style="flex: 1; height: 65%; background: #15171A"></span><span style="flex: 1; height: 95%; background: #B4BAC2"></span></span>
+<span style="flex: 1; display: flex; align-items: flex-end; gap: 2px; height: 100%"><span style="flex: 1; height: 58%; background: #15171A"></span><span style="flex: 1; height: 20%; background: #B4BAC2"></span></span>
+</div>
+</section>
+</div>
+</div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px">
+<section class="pn" style="flex: 1 1 320px">
+<div class="ph"><span class="t">Dailies and weeklies</span><span class="fill"></span><div style="display: flex; gap: 4px" aria-label="Game 1 of 6"><i class="pip on"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i></div></div>
+<div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap"><span class="cond" style="font-size: 24px; font-weight: 600">Genshin Impact</span><span class="fill"></span><span class="chip">reset in 21h 00m</span></div>
+<div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap">
+<div style="width: 104px; height: 104px; border-radius: 50%; background: conic-gradient(#15171A 0 57%, #DCE0E5 57% 100%); display: flex; align-items: center; justify-content: center; flex: 0 0 104px"><div style="width: 76px; height: 76px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center"><span class="cond" style="font-size: 22px; font-weight: 600">57%</span></div></div>
+<div style="flex: 1 1 180px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+<div><div class="mono mu" style="font-size: 11px">DAILIES</div><div class="cond" style="font-size: 26px; font-weight: 600">3 <span class="mu" style="font-size: 16px">/ 4</span></div></div>
+<div><div class="mono mu" style="font-size: 11px">DAILY TASKS</div><div class="cond" style="font-size: 26px; font-weight: 600">2 <span class="mu" style="font-size: 16px">/ 3</span></div></div>
+<div><div class="mono mu" style="font-size: 11px">WEEKLIES</div><div class="cond" style="font-size: 26px; font-weight: 600">2 <span class="mu" style="font-size: 16px">/ 5</span></div></div>
+<div><div class="mono mu" style="font-size: 11px">WEEKLY TASKS</div><div class="cond" style="font-size: 26px; font-weight: 600">1 <span class="mu" style="font-size: 16px">/ 2</span></div></div>
+</div>
+</div>
+<div style="display: flex; gap: 8px; justify-content: flex-end"><button class="btn sm" type="button" aria-label="Previous game">‹</button><button class="btn sm" type="button" aria-label="Next game">›</button></div>
+</section>
+
+<section class="pn" style="flex: 1 1 320px">
+<div class="ph"><span class="t">Battle pass</span><span class="fill"></span><div style="display: flex; gap: 4px" aria-label="Pass 1 of 6"><i class="pip on"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i></div></div>
+<div class="img" style="height: 96px; position: relative"><span class="chip" style="position: absolute; right: 8px; top: 8px">ENDS IN 23d</span></div>
+<div style="display: flex; align-items: flex-end; gap: 12px; flex-wrap: wrap">
+<div><div class="cond" style="font-size: 22px; font-weight: 600">Genshin Impact</div><div class="mono sm mu">GNOSTIC HYMN · VERSION 7.1</div></div>
+<span class="fill"></span>
+<div><span class="mono sm mu">LEVEL </span><span class="cond" style="font-size: 26px; font-weight: 600">34</span><span class="mu"> / 50</span></div>
+</div>
+<div class="bar"><i style="width: 68%"></i></div>
+<div style="display: flex; gap: 8px; justify-content: flex-end"><button class="btn sm" type="button" aria-label="Previous battle pass">‹</button><button class="btn sm" type="button" aria-label="Next battle pass">›</button></div>
+</section>
+</div>
+
+<section class="pn">
+<div class="ph"><span class="t">Dailies, last 26 weeks</span></div>
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: center">
+<div style="display: flex; gap: 8px; max-width: 100%; overflow-x: auto">
+<div class="mono mu" style="font-size: 10px; display: grid; grid-template-rows: repeat(7, 18px); align-items: center"><span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span><span>SAT</span><span>SUN</span></div>
+<div role="img" aria-label="Grid of the last 182 days, one square per day" style="width: 471px; max-width: 100%; height: 129px; background-color: #9AA1AB; background-image: linear-gradient(to right, #FFFFFF 3px, transparent 3px), linear-gradient(to bottom, #FFFFFF 3px, transparent 3px); background-size: 18px 18px"></div>
+</div>
+<div style="flex: 1 1 200px; display: flex; flex-direction: column; gap: 6px">
+<div class="row" style="border-top: 0"><span class="mono sm mu">DAYS ALL DONE</span><span class="fill"></span><span class="cond" style="font-size: 22px; font-weight: 600">96</span><span class="mu"> / 182</span></div>
+<div class="row"><span class="mono sm mu">CURRENT STREAK</span><span class="fill"></span><span class="cond" style="font-size: 22px; font-weight: 600">6</span><span class="mu"> days</span></div>
+<div class="row"><span class="mono sm mu">BEST STREAK</span><span class="fill"></span><span class="cond" style="font-size: 22px; font-weight: 600">21</span><span class="mu"> days</span></div>
+</div>
+</div>
+</section>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px">
+<section class="pn prop" style="flex: 1 1 320px">
+<div class="ph"><span class="t">Endgame · next resets</span><span class="mk">3</span><span class="fill"></span><span class="chip hot">PROPOSED</span></div>
+<div>
+<div class="row" style="border-top: 0"><span class="mono sm" style="width: 44px">WuWa</span><span style="flex: 1 1 0">Tower of Adversity</span><span class="mono sm mu">Mon 12 Oct</span><span class="mono sm" style="width: 120px; text-align: right">30/36 · 100 left</span></div>
+<div class="row"><span class="mono sm" style="width: 44px">GI</span><span style="flex: 1 1 0">Spiral Abyss</span><span class="mono sm mu">Fri 16 Oct</span><span class="mono sm" style="width: 120px; text-align: right">33/36 · 100 left</span></div>
+<div class="row"><span class="mono sm" style="width: 44px">ZZZ</span><span style="flex: 1 1 0">Shiyu Defense</span><span class="mono sm mu">Fri 16 Oct</span><span class="mono sm" style="width: 120px; text-align: right">4/5 S</span></div>
+<div class="row"><span class="mono sm" style="width: 44px">AE</span><span style="flex: 1 1 0">Monumental Etching</span><span class="mono sm mu">Mon 19 Oct</span><span class="mono sm" style="width: 120px; text-align: right">5/8 · 450 left</span></div>
+<div class="row"><span class="mono sm" style="width: 44px">ZZZ</span><span style="flex: 1 1 0">Deadly Assault</span><span class="mono sm mu">Fri 23 Oct</span><span class="mono sm" style="width: 120px; text-align: right">0/9 · 300 left</span></div>
+</div>
+</section>
+<section class="pn prop" style="flex: 1 1 320px">
+<div class="ph"><span class="t">Expiring soon</span><span class="mk">4</span><span class="fill"></span><span class="chip hot">PROPOSED</span></div>
+<div>
+<div class="row" style="border-top: 0"><span class="mono sm" style="width: 44px">ZZZ</span><span style="flex: 1 1 0">3.3 livestream codes</span><span class="mono sm mu">today 13:30</span></div>
+<div class="row"><span class="mono sm" style="width: 44px">GI</span><span style="flex: 1 1 0">Silverwing in Pursuit of the Moon · 2/4</span><span class="mono sm mu">Mon 12 Oct</span></div>
+<div class="row"><span class="mono sm" style="width: 44px">ZZZ</span><span style="flex: 1 1 0">Inter-Knot Membership</span><span class="mono sm mu">5 days left</span></div>
+<div class="row"><span class="mono sm" style="width: 44px">AE</span><span style="flex: 1 1 0">Protocol Pass · Lv 52/60</span><span class="mono sm mu">Thu 15 Oct</span></div>
+<div class="row"><span class="mono sm" style="width: 44px">ZZZ</span><span style="flex: 1 1 0">City Fund · Lv 52/60</span><span class="mono sm mu">Mon 19 Oct</span></div>
+</div>
+</section>
+</div>
+
+</div>
+
+<div style="flex: 1 1 360px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<section class="pn">
+<div class="ph"><span class="t">Banners</span><span class="fill"></span><div style="display: flex; gap: 4px" aria-label="Banner 1 of 10"><i class="pip on"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i></div></div>
+<div class="img" style="height: 200px; position: relative"><span class="chip" style="position: absolute; right: 8px; top: 8px">ENDS IN 4d 10h</span></div>
+<div><div class="cond" style="font-size: 22px; font-weight: 600">Surging Ballad</div><div class="mono sm mu">GENSHIN IMPACT · CHARACTER BANNER</div></div>
+<div style="display: flex; gap: 8px; justify-content: flex-end"><button class="btn sm" type="button" aria-label="Previous banner">‹</button><button class="btn sm" type="button" aria-label="Next banner">›</button></div>
+</section>
+
+<section class="pn">
+<div class="ph"><span class="t">Pulls</span><span class="mk">2</span><span class="fill"></span><span class="chip">MANUAL · balances</span></div>
+<div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 12px"><span class="big" style="font-size: 52px">343</span><div class="mono sm" style="text-align: right"><div><span class="mu">LIMITED</span> 327</div><div><span class="mu">PERMANENT</span> 16</div></div></div>
+<div>
+<div class="row mono sm mu" style="border-top: 0; min-height: 28px"><span style="flex: 1 1 0">GAME</span><span style="width: 80px; text-align: right">LIMITED</span><span style="width: 80px; text-align: right">PERM.</span></div>
+<div class="row"><span style="flex: 1 1 0">Genshin Impact</span><span class="mono" style="width: 80px; text-align: right">90</span><span class="mono mu" style="width: 80px; text-align: right">3</span></div>
+<div class="row"><span style="flex: 1 1 0">Honkai: Star Rail</span><span class="mono" style="width: 80px; text-align: right">68</span><span class="mono mu" style="width: 80px; text-align: right">5</span></div>
+<div class="row"><span style="flex: 1 1 0">Zenless Zone Zero</span><span class="mono" style="width: 80px; text-align: right">40</span><span class="mono mu" style="width: 80px; text-align: right">2</span></div>
+<div class="row"><span style="flex: 1 1 0">Wuthering Waves</span><span class="mono" style="width: 80px; text-align: right">46</span><span class="mono mu" style="width: 80px; text-align: right">4</span></div>
+<div class="row"><span style="flex: 1 1 0">Neverness to Everness</span><span class="mono" style="width: 80px; text-align: right">54</span><span class="mono mu" style="width: 80px; text-align: right">2</span></div>
+<div class="row"><span style="flex: 1 1 0">Arknights: Endfield</span><span class="mono" style="width: 80px; text-align: right">29</span><span class="mono mu" style="width: 80px; text-align: right">0</span></div>
+</div>
+</section>
+
+<section class="pn">
+<div class="ph"><span class="t">Stamina</span><span class="mk">5</span></div>
+<div>
+<div class="row mono sm mu" style="border-top: 0; min-height: 28px"><span style="flex: 1 1 0">GAME</span><span style="width: 72px; text-align: right">NOW/CAP</span><span style="width: 64px; text-align: right">RESERVE</span><span style="width: 48px; text-align: right">FULL</span></div>
+<div class="row"><span style="flex: 1 1 0; min-width: 0; display: flex; align-items: center; gap: 6px">GI<span class="chip auto" style="font-size: 10px; height: 18px; padding: 0 5px">AUTO</span></span><span class="mono" style="width: 72px; text-align: right">163/200</span><span class="mono mu" style="width: 64px; text-align: right">—</span><span class="mono" style="width: 48px; text-align: right">12:56</span></div>
+<div class="row"><span style="flex: 1 1 0; min-width: 0; display: flex; align-items: center; gap: 6px">HSR<span class="chip auto" style="font-size: 10px; height: 18px; padding: 0 5px">AUTO</span></span><span class="mono" style="width: 72px; text-align: right">240/300</span><span class="mono mu" style="width: 64px; text-align: right">1860</span><span class="mono" style="width: 48px; text-align: right">14:00</span></div>
+<div class="row"><span style="flex: 1 1 0; min-width: 0; display: flex; align-items: center; gap: 6px">ZZZ<span class="chip auto" style="font-size: 10px; height: 18px; padding: 0 5px">AUTO</span></span><span class="mono" style="width: 72px; text-align: right">96/240</span><span class="mono mu" style="width: 64px; text-align: right">1200</span><span class="mono" style="width: 48px; text-align: right">22:24</span></div>
+<div class="row"><span style="flex: 1 1 0; min-width: 0; display: flex; align-items: center; gap: 6px">WuWa<span class="chip" style="font-size: 10px; height: 18px; padding: 0 5px">MANUAL</span></span><span class="mono" style="width: 72px; text-align: right">180/240</span><span class="mono" style="width: 64px; text-align: right; color: #C2185B">480 ■</span><span class="mono" style="width: 48px; text-align: right">14:00</span></div>
+<div class="row"><span style="flex: 1 1 0; min-width: 0; display: flex; align-items: center; gap: 6px">NTE<span class="chip" style="font-size: 10px; height: 18px; padding: 0 5px">MANUAL</span></span><span class="mono" style="width: 72px; text-align: right">210/240</span><span class="mono mu" style="width: 64px; text-align: right">—</span><span class="mono" style="width: 48px; text-align: right">11:00</span></div>
+<div class="row"><span style="flex: 1 1 0; min-width: 0; display: flex; align-items: center; gap: 6px">AE<span class="chip" style="font-size: 10px; height: 18px; padding: 0 5px">MANUAL</span></span><span class="mono" style="width: 72px; text-align: right">214/320</span><span class="mono mu" style="width: 64px; text-align: right">—</span><span class="mono" style="width: 48px; text-align: right">20:43</span></div>
+<div class="mono mu" style="font-size: 11px">■ reserve full · MANUAL rows are projected from your last entry</div>
+</div>
+</section>
+</div>
+
+</div>
+</main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"markers":{"editor":"boolean","default":true,"section":"Wireframe"},"$preview":{"width":1440,"height":1350}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const on = this.props.markers ?? true;
+    return { rootCls: on ? 'wf' : 'wf nomk' };
+  }
+}
+</script>
+</body>
+</html>

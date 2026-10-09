@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Arlecchino build sheet</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans+Condensed:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#15171A}a:hover{color:#4A5058}
+.mono{font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace}
+.cond{font-family:'IBM Plex Sans Condensed','Arial Narrow',sans-serif}
+.rail{flex:0 0 72px;display:flex;flex-direction:column;gap:4px;padding:16px 0;background:#FFFFFF;border-right:1px solid #B4BAC2}
+.logo{width:32px;height:32px;margin:0 auto 16px;background:#15171A}
+.ri{height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.06em;text-decoration:none;color:#4A5058;border-left:3px solid transparent}
+.ri.on{color:#15171A;border-left-color:#15171A;background:#EEF0F2}
+.ic{width:20px;height:20px;border:1.5px solid currentColor}
+.fill{flex:1 1 0}
+.main{flex:999 1 560px;min-width:0;display:flex;flex-direction:column}
+.top{min-height:56px;display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:10px 24px;background:#FFFFFF;border-bottom:1px solid #B4BAC2}
+.scope{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.sc{height:36px;min-width:44px;padding:0 10px;display:inline-flex;align-items:center;justify-content:center;border:1px solid #B4BAC2;background:#FFFFFF;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;color:#15171A;text-decoration:none;cursor:pointer}
+.sc.on{background:#15171A;color:#FFFFFF;border-color:#15171A}
+.gh{background:#FFFFFF;border-bottom:1px solid #B4BAC2;padding:16px 24px;display:flex;flex-wrap:wrap;align-items:center;gap:16px}
+.tabs{display:flex;flex-wrap:wrap;align-items:center;border-bottom:1px solid #B4BAC2;background:#FFFFFF;padding:0 24px}
+.tab{height:44px;padding:0 14px;display:flex;align-items:center;font-size:13px;color:#4A5058;text-decoration:none;border-bottom:2px solid transparent}
+.tab.on{color:#15171A;border-bottom-color:#15171A;font-weight:600}
+.pg{padding:24px;display:flex;flex-direction:column;gap:16px;width:100%;max-width:1368px}
+.pn{background:#FFFFFF;border:1px solid #B4BAC2;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.ph{display:flex;align-items:center;gap:8px;min-height:22px;flex-wrap:wrap}
+.t{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase}
+.cl{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.06em;color:#4A5058}
+.mu{color:#4A5058}
+.sm{font-size:12px}
+.bar{height:8px;background:#DCE0E5;position:relative;overflow:hidden}
+.bar>i{position:absolute;left:0;top:0;bottom:0;background:#15171A}
+.chip{display:inline-flex;align-items:center;height:22px;padding:0 8px;border:1px solid #B4BAC2;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.04em;white-space:nowrap;color:#15171A;background:#FFFFFF}
+.chip.auto{border-color:#15171A;background:#15171A;color:#FFFFFF}
+.chip.hot{border-color:#C2185B;color:#C2185B}
+.src{display:inline-flex;align-items:center;height:18px;padding:0 5px;border:1px solid #B4BAC2;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.04em;white-space:nowrap;color:#4A5058}
+.src.a{background:#15171A;border-color:#15171A;color:#FFFFFF}
+.img{background-color:#DCE0E5;background-image:linear-gradient(to top right,transparent calc(50% - 1px),#B4BAC2 calc(50% - 1px),#B4BAC2 calc(50% + 1px),transparent calc(50% + 1px)),linear-gradient(to bottom right,transparent calc(50% - 1px),#B4BAC2 calc(50% - 1px),#B4BAC2 calc(50% + 1px),transparent calc(50% + 1px))}
+.btn{min-height:40px;padding:0 14px;border:1px solid #15171A;background:#FFFFFF;font-family:'IBM Plex Sans',sans-serif;font-size:13px;color:#15171A;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;cursor:pointer}
+.btn.pri{background:#15171A;color:#FFFFFF}
+.btn.sm{min-height:32px;padding:0 10px;font-size:12px}
+.row{display:flex;align-items:center;gap:10px;min-height:40px;border-top:1px solid #E1E4E8}
+.mk{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:#C2185B;color:#FFFFFF;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;font-weight:500;flex:0 0 20px}
+.nomk .mk{display:none}
+.inp{min-height:36px;padding:0 10px;border:1px solid #B4BAC2;background:#FFFFFF;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:13px;color:#15171A;min-width:0}
+.dots{display:inline-flex;gap:4px}
+.dots i{width:12px;height:12px;border:1.5px solid #15171A;display:block}
+.dots i.f{background:#15171A}
+.slot{border:1px solid #B4BAC2;padding:10px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.slot.miss{border:1.5px dashed #4A5058;background:#F4F5F7}
+.subs{display:grid;grid-template-columns:1fr auto;column-gap:8px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;line-height:18px;color:#4A5058}
+.subs b{font-weight:500;color:#15171A;text-align:right}
+.sheet{display:flex;flex-wrap:wrap;gap:16px;align-items:stretch}
+.side{position:relative;flex:1 1 420px;max-width:420px;min-height:520px;border:1px solid #B4BAC2;background:#DCE0E5}
+.side>.img{position:absolute;inset:0}
+.side>.lab{position:absolute;top:12px;left:12px}
+.side>.lab2{position:absolute;top:13px;left:112px}
+.data{flex:999 1 640px;min-width:0;display:flex;flex-direction:column;gap:16px}
+@media (max-width:700px){.side{max-width:none;min-height:360px}}
+.kts{display:flex;flex-wrap:wrap;gap:8px}
+.kt{background:#FFFFFF;border:1px solid #15171A;padding:10px 12px;display:flex;flex-direction:column;gap:2px;flex:1 1 150px}
+.kt b{font-family:'IBM Plex Sans Condensed','Arial Narrow',sans-serif;font-size:26px;line-height:30px;font-weight:600}
+.kv{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:0 16px}
+.kv>div{display:flex;justify-content:space-between;align-items:center;min-height:36px;border-top:1px solid #E1E4E8;gap:8px}
+@media (max-width:700px){.rail{flex:1 1 100%;flex-direction:row;padding:0 8px;border-right:0;border-bottom:1px solid #B4BAC2}.logo{display:none}.ri{flex:1;height:56px;border-left:0}}
+</style>
+</helmet>
+<div class="{{rootCls}}" style="min-height: 100vh; display: flex; flex-wrap: wrap; align-items: stretch; background: #E6E8EB; color: #15171A; font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif; font-size: 14px; line-height: 20px">
+
+<nav aria-label="Sections" class="rail">
+<span class="logo" aria-hidden="true"></span>
+<a class="ri" href="Dashboard.dc.html"><span class="ic"></span>ALL</a>
+<a class="ri on" href="Library.dc.html" aria-current="page"><span class="ic"></span>GAMES</a>
+<a class="ri" href="Tasks.dc.html"><span class="ic"></span>TASKS</a>
+<a class="ri" href="Calendar.dc.html"><span class="ic"></span>BANNERS</a>
+<span class="fill"></span>
+<a class="ri" href="Settings.dc.html"><span class="ic"></span>SETTINGS</a>
+</nav>
+
+<div class="main">
+<header class="top">
+<nav aria-label="Scope" class="scope">
+<a class="sc" href="Library.dc.html">Overview</a>
+<a class="sc on" href="Activities.dc.html" aria-current="page" aria-label="Genshin Impact">GI</a>
+<button class="sc" type="button" aria-label="Honkai: Star Rail">HSR</button>
+<button class="sc" type="button" aria-label="Zenless Zone Zero">ZZZ</button>
+<button class="sc" type="button" aria-label="Wuthering Waves">WuWa</button>
+<button class="sc" type="button" aria-label="Neverness to Everness">NTE</button>
+<button class="sc" type="button" aria-label="Arknights: Endfield">AE</button>
+</nav>
+<span class="fill"></span>
+<span class="mono sm mu">2026-10-09 · FRI · 08:00</span>
+</header>
+
+<section class="gh">
+<span class="img" style="width: 48px; height: 48px; flex: 0 0 48px"></span>
+<div style="display: flex; flex-direction: column; gap: 6px; min-width: 0">
+<h1 class="cond" style="margin: 0; font-size: 28px; line-height: 32px; font-weight: 600">Genshin Impact</h1>
+<div style="display: flex; flex-wrap: wrap; gap: 6px"><span class="chip">EU · UTC+1</span><span class="chip">UID 7•••••••2</span><span class="chip">AR 58 · WL 8</span><span class="chip auto">AUTO · HoYoLAB · 3 min ago</span></div>
+</div>
+<span class="fill"></span>
+<div style="display: flex; flex-wrap: wrap; gap: 24px">
+<div><div class="cl">DAILY RESET</div><div class="mono">in 21h 00m</div></div>
+<div><div class="cl">WEEKLY RESET</div><div class="mono">Mon 12 Oct</div></div>
+<div><div class="cl">VERSION 7.1</div><div class="mono">ends 4 Nov</div></div>
+</div>
+</section>
+<nav aria-label="Genshin Impact sections" class="tabs">
+<a class="tab" href="Activities.dc.html">Activities</a>
+<a class="tab" href="Endgame.dc.html">Endgame</a>
+<a class="tab" href="Pulls.dc.html">Pulls</a>
+<a class="tab on" href="Characters.dc.html" aria-current="page">Characters</a>
+<a class="tab" href="Gear.dc.html">Artifacts</a>
+<a class="tab" href="Planner.dc.html">Planner</a>
+<a class="tab" href="Profile.dc.html">Profile</a>
+</nav>
+
+<main class="pg">
+
+<div class="sheet">
+
+<aside class="side" aria-label="Arlecchino splash art">
+<span class="img"></span>
+<span class="chip lab">SPLASH ART</span><span class="mk lab2">5</span>
+</aside>
+
+<div class="data">
+
+<section class="pn" style="gap: 10px">
+<div class="ph"><a class="sm" href="Characters.dc.html">← Characters</a><span class="fill"></span><label class="sm" style="display: flex; align-items: center; gap: 8px">Build status<select class="inp"><option>Good</option></select></label><button class="btn pri" type="button">Save</button><button class="btn" type="button">Delete build</button></div>
+<div class="ph" style="gap: 12px"><h2 class="cond" style="margin: 0; font-size: 36px; line-height: 40px; font-weight: 600">Arlecchino</h2><span class="mk">1</span><div style="display: flex; flex-wrap: wrap; gap: 6px"><span class="chip">★5</span><span class="chip">PYRO</span><span class="chip">POLEARM</span><span class="chip">C0</span><span class="chip">LV 90 / 90</span></div><span class="fill"></span><span class="src a">AUTO · Enka showcase · 3 min ago</span><span class="mk">4</span></div>
+</section>
+
+<div class="kts"><div class="kt"><span class="cl">CRIT VALUE</span><b>145</b><span class="sm mu">target 180+</span></div><div class="kt"><span class="cl">CRIT RATE / DMG</span><b>68.4 / 198.6</b><span class="sm mu">ratio 1 : 2.9</span></div><div class="kt"><span class="cl">ENERGY RECHARGE</span><b>112.3%</b><span class="sm mu">target 110%</span></div><div class="kt"><span class="cl">ATK</span><b>2,342</b><span class="sm mu">scaling stat</span></div></div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px">
+<section class="pn" style="flex: 1 1 240px">
+<div class="ph"><span class="t">Character</span><span class="fill"></span><span class="src a">AUTO</span></div>
+<div>
+<div class="row" style="border-top: 0"><span class="cl" style="flex: 1 1 0">LEVEL</span><input class="inp" type="text" value="90" aria-label="Level" style="width: 56px"><span class="mono sm mu">/ 90</span></div>
+<div class="row"><span class="cl" style="flex: 1 1 0">ASCENSION</span><span class="dots" aria-label="6 of 6"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i></span></div>
+<div class="row"><span class="cl" style="flex: 1 1 0">CONSTELLATION</span><span class="dots" aria-label="C0"><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="mono sm">C0</span></div>
+<div class="row"><span class="cl" style="flex: 1 1 0">FRIENDSHIP</span><span class="mono">10</span></div>
+</div>
+<div class="sm mu">Editing a synced field switches it to MANUAL until the next sync.</div>
+</section>
+
+<section class="pn" style="flex: 1 1 270px">
+<div class="ph"><span class="t">Talents</span><span class="fill"></span><span class="mono sm mu">now → target</span></div>
+<div>
+<div class="row" style="border-top: 0"><span style="flex: 1 1 0">Normal Attack</span><input class="inp" type="text" value="9" aria-label="Normal Attack level" style="width: 48px"><span class="mu">→</span><input class="inp" type="text" value="10" aria-label="Normal Attack target" style="width: 48px"></div>
+<div class="row"><span style="flex: 1 1 0">Elemental Skill</span><input class="inp" type="text" value="9" aria-label="Elemental Skill level" style="width: 48px"><span class="mu">→</span><input class="inp" type="text" value="10" aria-label="Elemental Skill target" style="width: 48px"></div>
+<div class="row"><span style="flex: 1 1 0">Elemental Burst</span><input class="inp" type="text" value="9" aria-label="Elemental Burst level" style="width: 48px"><span class="mu">→</span><input class="inp" type="text" value="10" aria-label="Elemental Burst target" style="width: 48px"></div>
+</div>
+</section>
+
+<section class="pn" style="flex: 1 1 270px">
+<div class="ph"><span class="t">Weapon</span><span class="fill"></span><span class="src a">AUTO</span></div>
+<div style="display: flex; gap: 12px; align-items: center"><span class="img" style="width: 56px; height: 56px; flex: 0 0 56px"></span><div><div style="font-weight: 600">Deathmatch</div><div class="mono sm mu">★4 · R1 · Lv 90 / 90</div></div></div>
+<div class="row" style="flex-wrap: wrap; padding: 6px 0"><span class="cl">TARGET</span><span style="flex: 1 1 160px">Crimson Moon's Semblance <span class="chip hot">WISHLIST</span></span><a class="sm" href="Pulls.dc.html">86 pulls short · plan →</a></div>
+</section>
+</div>
+
+<section class="pn">
+<div class="ph"><span class="t">Combat stats</span><span class="fill"></span><span class="src a">AUTO</span></div>
+<div class="kv">
+<div><span class="sm">Max HP</span><span class="mono">18,920</span></div>
+<div><span class="sm">ATK</span><span class="mono">2,342</span></div>
+<div><span class="sm">DEF</span><span class="mono">812</span></div>
+<div><span class="sm">Elemental Mastery</span><span class="mono">40</span></div>
+<div><span class="sm">CRIT Rate</span><span class="mono">68.4%</span></div>
+<div><span class="sm">CRIT DMG</span><span class="mono">198.6%</span></div>
+<div><span class="sm">Energy Recharge</span><span class="mono">112.3%</span></div>
+<div><span class="sm">Pyro DMG Bonus</span><span class="mono">46.6%</span></div>
+</div>
+</section>
+
+</div>
+</div>
+
+<section class="pn">
+<div class="ph"><span class="t">Artifacts</span><span class="mk">2</span><span class="chip">FRAGMENT OF HARMONIC WHIMSY · 4PC</span><span class="fill"></span><span class="mono sm mu">crit value 145</span><a class="btn sm" href="Gear.dc.html">Open Artifacts</a></div>
+<div style="display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr))">
+<div class="slot"><div class="ph"><span class="cl">FLOWER</span><span class="fill"></span><span class="mono sm">CV 35.8</span></div><div style="display: flex; gap: 8px; align-items: center"><span class="img" style="width: 36px; height: 36px; flex: 0 0 36px"></span><div style="min-width: 0"><div class="sm mu">Whimsy · +20</div><div style="font-weight: 600">HP 4,780</div></div></div><div class="subs"><span>CRIT DMG</span><b>21.8%</b><span>CRIT Rate</span><b>7.0%</b><span>ATK</span><b>9.9%</b><span>Energy Rech.</span><b>5.8%</b></div></div>
+<div class="slot"><div class="ph"><span class="cl">PLUME</span><span class="fill"></span><span class="mono sm">CV 35.0</span></div><div style="display: flex; gap: 8px; align-items: center"><span class="img" style="width: 36px; height: 36px; flex: 0 0 36px"></span><div style="min-width: 0"><div class="sm mu">Whimsy · +20</div><div style="font-weight: 600">ATK 311</div></div></div><div class="subs"><span>CRIT Rate</span><b>10.5%</b><span>CRIT DMG</span><b>14.0%</b><span>HP</span><b>538</b><span>DEF</span><b>23</b></div></div>
+<div class="slot"><div class="ph"><span class="cl">SANDS</span><span class="fill"></span><span class="mono sm">CV 26.4</span></div><div style="display: flex; gap: 8px; align-items: center"><span class="img" style="width: 36px; height: 36px; flex: 0 0 36px"></span><div style="min-width: 0"><div class="sm mu">Whimsy · +20</div><div style="font-weight: 600">ATK 46.6%</div></div></div><div class="subs"><span>CRIT DMG</span><b>13.2%</b><span>CRIT Rate</span><b>6.6%</b><span>Elem. Mastery</span><b>40</b><span>DEF</span><b>7.3%</b></div></div>
+<div class="slot"><div class="ph"><span class="cl">GOBLET</span><span class="fill"></span><span class="mono sm">CV 28.0</span></div><div style="display: flex; gap: 8px; align-items: center"><span class="img" style="width: 36px; height: 36px; flex: 0 0 36px"></span><div style="min-width: 0"><div class="sm mu">Whimsy · +20</div><div style="font-weight: 600">Pyro DMG 46.6%</div></div></div><div class="subs"><span>CRIT DMG</span><b>20.2%</b><span>CRIT Rate</span><b>3.9%</b><span>ATK</span><b>33</b><span>HP</span><b>4.7%</b></div></div>
+<div class="slot miss"><div class="ph"><span class="cl">CIRCLET</span><span class="fill"></span><span class="mono sm">CV 19.4</span></div><div style="display: flex; gap: 8px; align-items: center"><span class="img" style="width: 36px; height: 36px; flex: 0 0 36px"></span><div style="min-width: 0"><div class="sm mu">Gladiator's · off-set</div><div style="font-weight: 600">CRIT Rate 31.1%</div></div></div><div class="subs"><span>CRIT DMG</span><b>19.4%</b><span>ATK</span><b>11.1%</b><span>Energy Rech.</span><b>6.5%</b><span>HP</span><b>299</b></div><span class="chip hot" style="align-self: flex-start">FARM · CRIT DMG</span></div>
+</div>
+</section>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+<section class="pn" style="flex: 2 1 520px">
+<div class="ph"><span class="t">Plan farming</span><span class="mk">3</span><span class="fill"></span><span class="mono sm mu">targets above</span></div>
+<div>
+<div class="row mono sm mu" style="border-top: 0; min-height: 28px"><span style="flex: 1 1 0">MATERIAL</span><span style="width: 72px; text-align: right">HAVE</span><span style="width: 56px; text-align: right">NEED</span></div>
+<div class="row" style="flex-wrap: wrap"><span style="flex: 1 1 160px">Philosophies of Order <span class="mono sm mu">· Wed/Sat/Sun</span></span><span class="mono" style="width: 72px; text-align: right">21</span><span class="mono" style="width: 56px; text-align: right">48</span></div>
+<div class="row" style="flex-wrap: wrap"><span style="flex: 1 1 160px">Fading Candle <span class="mono sm mu">· The Knave, weekly</span></span><span class="mono" style="width: 72px; text-align: right">2</span><span class="mono" style="width: 56px; text-align: right">6</span></div>
+<div class="row" style="flex-wrap: wrap"><span style="flex: 1 1 160px">Crown of Insight <span class="mono sm mu">· events only</span></span><span class="mono" style="width: 72px; text-align: right">1</span><span class="mono" style="width: 56px; text-align: right">3</span></div>
+<div class="row" style="flex-wrap: wrap"><span style="flex: 1 1 160px">Lieutenant's Insignia</span><span class="mono" style="width: 72px; text-align: right">41 ✓</span><span class="mono" style="width: 56px; text-align: right">36</span></div>
+<div class="row" style="flex-wrap: wrap"><span style="flex: 1 1 160px">Mora</span><span class="mono" style="width: 72px; text-align: right">5.2M ✓</span><span class="mono" style="width: 56px; text-align: right">2.1M</span></div>
+</div>
+<div class="sm" style="background: #EEF0F2; padding: 8px 10px">≈ 480 Resin (2.7 days of regen) on book days, plus 2 weekly boss runs. Circlet: Faded Theater.</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center"><button class="btn" type="button">Preview tasks</button><a class="btn pri" href="Tasks.dc.html">Update goal</a><span class="sm mu">Linked: Arlecchino crowns · 2 / 5</span></div>
+</section>
+
+<section class="pn" style="flex: 1 1 320px">
+<div class="ph"><span class="t">Used in</span><span class="fill"></span><a class="sm" href="Endgame.dc.html">Endgame →</a></div>
+<div style="display: flex; flex-wrap: wrap; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 6px"><span class="cl">SPIRAL ABYSS 12 · FIRST HALF</span><div style="display: flex; gap: 4px"><span class="img" style="width: 40px; height: 40px; border: 2px solid #15171A"></span><span class="img" style="width: 40px; height: 40px"></span><span class="img" style="width: 40px; height: 40px"></span><span class="img" style="width: 40px; height: 40px"></span></div><span class="sm mu">Arlecchino · Bennett · Xingqiu · Chevreuse</span></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><span class="cl">IMAGINARIUM THEATER</span><span class="sm">Not eligible this month (Hydro, Cryo, Anemo).</span></div>
+</div>
+</section>
+</div>
+
+</main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"markers":{"editor":"boolean","default":true,"section":"Wireframe"},"$preview":{"width":1440,"height":1700}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const on = this.props.markers ?? true;
+    return { rootCls: on ? 'wf' : 'wf nomk' };
+  }
+}
+</script>
+</body>
+</html>

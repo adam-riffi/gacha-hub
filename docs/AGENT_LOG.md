@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-09 · claude · stack/docs-v2/06-design-files · #90
+- Done: `docs/design/` holds both canvases for agents who cannot open claude.ai: the dashboard and the 15 wireframe boards as PNG renders, static HTML pages and the original `.dc.html` sources, with the canvas notes that explain the numbered markers. WIREFRAMES.md, VISUAL-DESIGN.md, AGENTS.md, DESIGN.md §5 and README link to it; `HANDOFF.md` rewritten for the handoff to a coding agent.
+- Tests: Rendered with the canvas runtime and the real fonts; the static pages open without scripts and match the renders.
+- Scope/decisions: The canvas runtime is not committed (not ours to publish), so the sources are for reading; the static pages replace the dashboard's placeholder art with hatching, while the PNG keeps it.
+- Next: Georges merges #78 to #90; the build starts with milestone V.
+
 ## 2026-10-09 · claude · stack/docs-v2/05-adrs · #89
 - Done: ADRs 0001–0007 accepted by Georges; ADR 0008 (events and rewards as data: typed effects acting through existing features, applied once, unknown kinds shown as notes) written as Proposed. DESIGN.md gains milestone D (Prisma 7, from ADR 0003) and the adapters in §6; the guide's owner to-dos are updated.
 - Tests: Documentation only.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: Documentation only.
 - Scope/decisions: ADR 0001 (Proposed). F5 (pull log) and any account import wait for the owner's go-ahead.
 - Next: `stack/process/03-ci` (named CI jobs, read-only permissions, concurrency, timeouts, Node LTS), then F2 test-first.
-
-## 2026-10-05 · claude · stack/process/01-standards · pending
-- Done: Adopted the portfolio engineering standards: `docs/ENGINEERING.md` (verbatim copy), `AGENTS.md`, `CLAUDE.md`, Copilot summary, PR template, Dependabot, this log, `npm run check`.
-- Tests: Documentation and scaffolding only; `npm run check` runs lint, typecheck, tests and build.
-- Scope/decisions: The pr-meme caller workflow waits for `portfolio-infra` to tag `v1`; memes come from the local pr-meme skill until then.
-- Next: `stack/process/02-design` writes `docs/DESIGN.md` from `docs/HANDOFF.md` plus ADR 0001 for where this repository differs from the standards; `03-ci` aligns CI jobs.

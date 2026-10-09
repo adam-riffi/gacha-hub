@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Genshin Impact planner</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans+Condensed:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#15171A}a:hover{color:#4A5058}
+.mono{font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace}
+.cond{font-family:'IBM Plex Sans Condensed','Arial Narrow',sans-serif}
+.rail{flex:0 0 72px;display:flex;flex-direction:column;gap:4px;padding:16px 0;background:#FFFFFF;border-right:1px solid #B4BAC2}
+.logo{width:32px;height:32px;margin:0 auto 16px;background:#15171A}
+.ri{height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.06em;text-decoration:none;color:#4A5058;border-left:3px solid transparent}
+.ri.on{color:#15171A;border-left-color:#15171A;background:#EEF0F2}
+.ic{width:20px;height:20px;border:1.5px solid currentColor}
+.fill{flex:1 1 0}
+.main{flex:999 1 560px;min-width:0;display:flex;flex-direction:column}
+.top{min-height:56px;display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:10px 24px;background:#FFFFFF;border-bottom:1px solid #B4BAC2}
+.scope{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.sc{height:36px;min-width:44px;padding:0 10px;display:inline-flex;align-items:center;justify-content:center;border:1px solid #B4BAC2;background:#FFFFFF;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;color:#15171A;text-decoration:none;cursor:pointer}
+.sc.on{background:#15171A;color:#FFFFFF;border-color:#15171A}
+.gh{background:#FFFFFF;border-bottom:1px solid #B4BAC2;padding:16px 24px;display:flex;flex-wrap:wrap;align-items:center;gap:16px}
+.tabs{display:flex;flex-wrap:wrap;align-items:center;border-bottom:1px solid #B4BAC2;background:#FFFFFF;padding:0 24px}
+.tab{height:44px;padding:0 14px;display:flex;align-items:center;font-size:13px;color:#4A5058;text-decoration:none;border-bottom:2px solid transparent}
+.tab.on{color:#15171A;border-bottom-color:#15171A;font-weight:600}
+.pg{padding:24px;display:flex;flex-direction:column;gap:16px;width:100%;max-width:1368px}
+.pn{background:#FFFFFF;border:1px solid #B4BAC2;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.ph{display:flex;align-items:center;gap:8px;min-height:22px;flex-wrap:wrap}
+.t{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase}
+.cl{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.06em;color:#4A5058}
+.mu{color:#4A5058}
+.sm{font-size:12px}
+.bar{height:8px;background:#DCE0E5;position:relative;overflow:hidden}
+.bar>i{position:absolute;left:0;top:0;bottom:0;background:#15171A}
+.chip{display:inline-flex;align-items:center;height:22px;padding:0 8px;border:1px solid #B4BAC2;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.04em;white-space:nowrap;color:#15171A;background:#FFFFFF}
+.chip.auto{border-color:#15171A;background:#15171A;color:#FFFFFF}
+.chip.hot{border-color:#C2185B;color:#C2185B}
+.src{display:inline-flex;align-items:center;height:18px;padding:0 5px;border:1px solid #B4BAC2;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.04em;white-space:nowrap;color:#4A5058}
+.src.a{background:#15171A;border-color:#15171A;color:#FFFFFF}
+.img{background-color:#DCE0E5;background-image:linear-gradient(to top right,transparent calc(50% - 1px),#B4BAC2 calc(50% - 1px),#B4BAC2 calc(50% + 1px),transparent calc(50% + 1px)),linear-gradient(to bottom right,transparent calc(50% - 1px),#B4BAC2 calc(50% - 1px),#B4BAC2 calc(50% + 1px),transparent calc(50% + 1px))}
+.btn{min-height:40px;padding:0 14px;border:1px solid #15171A;background:#FFFFFF;font-family:'IBM Plex Sans',sans-serif;font-size:13px;color:#15171A;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;cursor:pointer}
+.btn.pri{background:#15171A;color:#FFFFFF}
+.btn.sm{min-height:32px;padding:0 10px;font-size:12px}
+.row{display:flex;align-items:center;gap:10px;min-height:40px;border-top:1px solid #E1E4E8}
+.mk{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:#C2185B;color:#FFFFFF;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;font-weight:500;flex:0 0 20px}
+.nomk .mk{display:none}
+.inp{min-height:36px;padding:0 10px;border:1px solid #B4BAC2;background:#FFFFFF;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:13px;color:#15171A;min-width:0}
+.dots{display:inline-flex;gap:4px}
+.dots i{width:12px;height:12px;border:1.5px solid #15171A;display:block}
+.dots i.f{background:#15171A}
+.slot{border:1px solid #B4BAC2;padding:10px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.slot.miss{border:1.5px dashed #4A5058;background:#F4F5F7}
+.subs{display:grid;grid-template-columns:1fr auto;column-gap:8px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;line-height:18px;color:#4A5058}
+.subs b{font-weight:500;color:#15171A;text-align:right}
+.kv{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:0 16px}
+.kv>div{display:flex;justify-content:space-between;align-items:center;min-height:36px;border-top:1px solid #E1E4E8;gap:8px}
+.wd{display:inline-flex;gap:2px}
+.wd i{width:14px;height:16px;display:inline-flex;align-items:center;justify-content:center;font-style:normal;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:9px;color:#4A5058;background:#EEF0F2}
+.wd i.on{background:#15171A;color:#FFFFFF}
+.wd i.td{outline:2px solid #15171A;outline-offset:1px}
+@media (max-width:700px){.rail{flex:1 1 100%;flex-direction:row;padding:0 8px;border-right:0;border-bottom:1px solid #B4BAC2}.logo{display:none}.ri{flex:1;height:56px;border-left:0}}
+</style>
+</helmet>
+<div class="{{rootCls}}" style="min-height: 100vh; display: flex; flex-wrap: wrap; align-items: stretch; background: #E6E8EB; color: #15171A; font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif; font-size: 14px; line-height: 20px">
+
+<nav aria-label="Sections" class="rail">
+<span class="logo" aria-hidden="true"></span>
+<a class="ri" href="Dashboard.dc.html"><span class="ic"></span>ALL</a>
+<a class="ri on" href="Library.dc.html" aria-current="page"><span class="ic"></span>GAMES</a>
+<a class="ri" href="Tasks.dc.html"><span class="ic"></span>TASKS</a>
+<a class="ri" href="Calendar.dc.html"><span class="ic"></span>BANNERS</a>
+<span class="fill"></span>
+<a class="ri" href="Settings.dc.html"><span class="ic"></span>SETTINGS</a>
+</nav>
+
+<div class="main">
+<header class="top">
+<nav aria-label="Scope" class="scope">
+<a class="sc" href="Library.dc.html">Overview</a>
+<a class="sc on" href="Activities.dc.html" aria-current="page" aria-label="Genshin Impact">GI</a>
+<button class="sc" type="button" aria-label="Honkai: Star Rail">HSR</button>
+<button class="sc" type="button" aria-label="Zenless Zone Zero">ZZZ</button>
+<button class="sc" type="button" aria-label="Wuthering Waves">WuWa</button>
+<button class="sc" type="button" aria-label="Neverness to Everness">NTE</button>
+<button class="sc" type="button" aria-label="Arknights: Endfield">AE</button>
+</nav>
+<span class="fill"></span>
+<span class="mono sm mu">2026-10-09 · FRI · 08:00</span>
+</header>
+
+<section class="gh">
+<span class="img" style="width: 48px; height: 48px; flex: 0 0 48px"></span>
+<div style="display: flex; flex-direction: column; gap: 6px; min-width: 0">
+<h1 class="cond" style="margin: 0; font-size: 28px; line-height: 32px; font-weight: 600">Genshin Impact</h1>
+<div style="display: flex; flex-wrap: wrap; gap: 6px"><span class="chip">EU · UTC+1</span><span class="chip">UID 7•••••••2</span><span class="chip">AR 58 · WL 8</span><span class="chip auto">AUTO · HoYoLAB · 3 min ago</span></div>
+</div>
+<span class="fill"></span>
+<div style="display: flex; flex-wrap: wrap; gap: 24px">
+<div><div class="cl">DAILY RESET</div><div class="mono">in 21h 00m</div></div>
+<div><div class="cl">WEEKLY RESET</div><div class="mono">Mon 12 Oct</div></div>
+<div><div class="cl">VERSION 7.1</div><div class="mono">ends 4 Nov</div></div>
+</div>
+</section>
+<nav aria-label="Genshin Impact sections" class="tabs">
+<a class="tab" href="Activities.dc.html">Activities</a>
+<a class="tab" href="Endgame.dc.html">Endgame</a>
+<a class="tab" href="Pulls.dc.html">Pulls</a>
+<a class="tab" href="Characters.dc.html">Characters</a>
+<a class="tab" href="Gear.dc.html">Artifacts</a>
+<a class="tab on" href="Planner.dc.html" aria-current="page">Planner</a>
+<a class="tab" href="Profile.dc.html">Profile</a>
+</nav>
+
+<main class="pg">
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+
+<section class="pn" style="flex: 1 1 300px">
+<div class="ph"><span class="t">Goals</span><span class="mk">1</span><span class="fill"></span><button class="btn sm" type="button">New goal</button></div>
+
+<article style="border: 1.5px solid #15171A; padding: 12px; display: flex; flex-direction: column; gap: 8px">
+<div class="ph"><span class="img" style="width: 32px; height: 32px; flex: 0 0 32px"></span><span style="font-weight: 600; flex: 1 1 0">Pre-farm Vodyanitsa</span><span class="chip hot">HIGH</span></div>
+<div class="mono sm mu">Lv 1 → 90 · talents 1 → 9 / 9 / 9</div>
+<div class="sm">Not owned yet · on banner until Tue 13 Oct</div>
+<div style="display: flex; align-items: center; gap: 8px"><div class="bar" style="flex: 1"><i style="width: 43%"></i></div><span class="mono sm">6 / 14</span></div>
+</article>
+
+<article style="border: 1px solid #B4BAC2; padding: 12px; display: flex; flex-direction: column; gap: 8px">
+<div class="ph"><span class="img" style="width: 32px; height: 32px; flex: 0 0 32px"></span><span style="font-weight: 600; flex: 1 1 0">Arlecchino crowns</span><span class="chip">NORMAL</span></div>
+<div class="mono sm mu">talents 9 / 9 / 9 → 10 / 10 / 10</div>
+<div style="display: flex; align-items: center; gap: 8px"><div class="bar" style="flex: 1"><i style="width: 40%"></i></div><span class="mono sm">2 / 5</span></div>
+</article>
+
+<article style="border: 1px solid #B4BAC2; padding: 12px; display: flex; flex-direction: column; gap: 8px">
+<div class="ph"><span class="img" style="width: 32px; height: 32px; flex: 0 0 32px"></span><span style="font-weight: 600; flex: 1 1 0">Build Jean</span><span class="chip">BACKLOG</span></div>
+<div class="mono sm mu">Lv 80 → 90 · talents 6 / 8 / 8 → 9 / 9 / 9</div>
+<div style="display: flex; align-items: center; gap: 8px"><div class="bar" style="flex: 1"><i style="width: 33%"></i></div><span class="mono sm">3 / 9</span></div>
+</article>
+
+<div class="sm mu">Artifact goals (Faded Theater pieces) live on the Artifacts tab.</div>
+</section>
+
+<div style="flex: 999 1 620px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+
+<section class="pn">
+<div class="ph"><span class="t">Materials · Pre-farm Vodyanitsa</span><span class="mk">2</span><span class="fill"></span><div style="display: flex"><button class="btn sm pri" type="button">This goal</button><button class="btn sm" type="button">All goals</button></div></div>
+<div style="overflow-x: auto">
+<div style="min-width: 680px">
+<div class="row mono sm mu" style="border-top: 0; min-height: 28px"><span style="flex: 1 1 0">MATERIAL</span><span style="width: 160px">SOURCE</span><span style="width: 120px">DAYS</span><span style="width: 64px; text-align: right">HAVE</span><span style="width: 64px; text-align: right">NEED</span><span style="width: 76px; text-align: right">MISSING</span></div>
+<div class="row"><span style="flex: 1 1 0">Philosophies of Fortitude</span><span class="sm" style="width: 160px">Hermitage</span><span style="width: 120px" class="wd"><i>M</i><i class="on">T</i><i>W</i><i>T</i><i class="on td">F</i><i>S</i><i class="on">S</i></span><span class="mono" style="width: 64px; text-align: right">9</span><span class="mono" style="width: 64px; text-align: right">66</span><span class="mono" style="width: 76px; text-align: right; font-weight: 600">57</span></div>
+<div class="row"><span style="flex: 1 1 0">Guide to Fortitude</span><span class="sm" style="width: 160px">Hermitage</span><span style="width: 120px" class="wd"><i>M</i><i class="on">T</i><i>W</i><i>T</i><i class="on td">F</i><i>S</i><i class="on">S</i></span><span class="mono" style="width: 64px; text-align: right">38</span><span class="mono" style="width: 64px; text-align: right">63</span><span class="mono" style="width: 76px; text-align: right; font-weight: 600">25</span></div>
+<div class="row"><span style="flex: 1 1 0">Teachings of Fortitude</span><span class="sm" style="width: 160px">Hermitage</span><span style="width: 120px" class="wd"><i>M</i><i class="on">T</i><i>W</i><i>T</i><i class="on td">F</i><i>S</i><i class="on">S</i></span><span class="mono" style="width: 64px; text-align: right">14</span><span class="mono" style="width: 64px; text-align: right">9</span><span class="mono mu" style="width: 76px; text-align: right">✓</span></div>
+<div class="row"><span style="flex: 1 1 0">Madman's Restraint</span><span class="sm" style="width: 160px">The Doctor · weekly</span><span class="sm mu" style="width: 120px">2 of 3 runs left</span><span class="mono" style="width: 64px; text-align: right">3</span><span class="mono" style="width: 64px; text-align: right">12</span><span class="mono" style="width: 76px; text-align: right; font-weight: 600">9</span></div>
+<div class="row"><span style="flex: 1 1 0">Unscorched Blossom Branch</span><span class="sm" style="width: 160px">Boss · 40 Resin</span><span class="sm mu" style="width: 120px">any day</span><span class="mono" style="width: 64px; text-align: right">0</span><span class="mono" style="width: 64px; text-align: right">46</span><span class="mono" style="width: 76px; text-align: right; font-weight: 600">46</span></div>
+<div class="row"><span style="flex: 1 1 0">Varunada Lazurite Gemstone</span><span class="sm" style="width: 160px">Bosses</span><span class="sm mu" style="width: 120px">any day</span><span class="mono" style="width: 64px; text-align: right">2</span><span class="mono" style="width: 64px; text-align: right">6</span><span class="mono" style="width: 76px; text-align: right; font-weight: 600">4</span></div>
+<div class="row"><span style="flex: 1 1 0">Varunada Lazurite Chunk</span><span class="sm" style="width: 160px">Bosses</span><span class="sm mu" style="width: 120px">any day</span><span class="mono" style="width: 64px; text-align: right">5</span><span class="mono" style="width: 64px; text-align: right">9</span><span class="mono" style="width: 76px; text-align: right; font-weight: 600">4</span></div>
+<div class="row"><span style="flex: 1 1 0">Prime Chimeric Nexus</span><span class="sm" style="width: 160px">Lv 60+ Chimeric</span><span class="sm mu" style="width: 120px">any day</span><span class="mono" style="width: 64px; text-align: right">12</span><span class="mono" style="width: 64px; text-align: right">93</span><span class="mono" style="width: 76px; text-align: right; font-weight: 600">81</span></div>
+<div class="row"><span style="flex: 1 1 0">Symbiotic Chimeric Nucleus</span><span class="sm" style="width: 160px">Lv 40+ Chimeric</span><span class="sm mu" style="width: 120px">any day</span><span class="mono" style="width: 64px; text-align: right">42</span><span class="mono" style="width: 64px; text-align: right">96</span><span class="mono" style="width: 76px; text-align: right; font-weight: 600">54</span></div>
+<div class="row" style="color: #4A5058"><span style="flex: 1 1 0">5 more complete · Frostfairy Flower, Chimeric Core, Lazurite Fragment and Sliver, Mora</span><span class="mono" style="width: 76px; text-align: right">✓</span></div>
+</div>
+</div>
+</section>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+<section class="pn" style="flex: 1 1 300px">
+<div class="ph"><span class="t">Stamina estimate</span><span class="mk">3</span></div>
+<div style="display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap"><span class="cond" style="font-size: 28px; line-height: 32px; font-weight: 600">≈ 1,900</span><span class="mono sm mu">Resin · 10.6 days at 180 / day</span></div>
+<div style="display: flex; height: 12px; gap: 2px"><span style="flex: 1160 1 0; background: #15171A"></span><span style="flex: 740 1 0; background: #4A5058"></span></div>
+<div>
+<div class="row" style="border-top: 0; min-height: 32px"><span style="width: 10px; height: 10px; background: #15171A; flex: 0 0 10px"></span><span style="flex: 1 1 0" class="sm">Talent books · ~58 domain runs</span><span class="mono sm">1,160</span></div>
+<div class="row" style="min-height: 32px"><span style="width: 10px; height: 10px; background: #4A5058; flex: 0 0 10px"></span><span style="flex: 1 1 0" class="sm">Boss material · ~18 runs</span><span class="mono sm">740</span></div>
+<div class="row" style="min-height: 32px"><span style="width: 10px; height: 10px; border: 1px solid #4A5058; flex: 0 0 10px"></span><span style="flex: 1 1 0" class="sm">Weekly boss · ~5 kills</span><span class="mono sm">2 weeks</span></div>
+</div>
+<div class="sm mu">Now 163 / 200 Resin · 3 Condensed. Drop rates use World Level 8 averages.</div>
+</section>
+
+<section class="pn" style="flex: 1 1 300px">
+<div class="ph"><span class="t">Farm today · Friday</span><span class="fill"></span><span class="mono sm mu">all goals</span></div>
+<div>
+<div class="row" style="border-top: 0; flex-wrap: wrap"><span class="chip auto">TODAY</span><span style="flex: 1 1 160px">Hermitage · Fortitude</span><span class="sm mu">Vodyanitsa</span></div>
+<div class="row" style="flex-wrap: wrap"><span class="chip auto">TODAY</span><span style="flex: 1 1 160px">Frozen Abyss · Resistance</span><span class="sm mu">Jean</span></div>
+<div class="row" style="flex-wrap: wrap"><span class="chip">WEEKLY</span><span style="flex: 1 1 160px">The Doctor · 2 runs left</span><span class="sm mu">Vodyanitsa</span></div>
+<div class="row" style="flex-wrap: wrap"><span class="chip">SAT</span><span style="flex: 1 1 160px">Chiming Recitation · Order</span><span class="sm mu">Arlecchino</span></div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px"><a class="btn pri sm" href="Tasks.dc.html">Generate tasks</a><button class="btn sm" type="button">Preview</button></div>
+</section>
+</div>
+
+</div>
+</div>
+
+</main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"markers":{"editor":"boolean","default":true,"section":"Wireframe"},"$preview":{"width":1440,"height":1100}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const on = this.props.markers ?? true;
+    return { rootCls: on ? 'wf' : 'wf nomk' };
+  }
+}
+</script>
+</body>
+</html>

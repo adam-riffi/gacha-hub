@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Games library</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans+Condensed:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#15171A}a:hover{color:#4A5058}
+.mono{font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace}
+.cond{font-family:'IBM Plex Sans Condensed','Arial Narrow',sans-serif}
+.rail{flex:0 0 72px;display:flex;flex-direction:column;gap:4px;padding:16px 0;background:#FFFFFF;border-right:1px solid #B4BAC2}
+.logo{width:32px;height:32px;margin:0 auto 16px;background:#15171A}
+.ri{height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.06em;text-decoration:none;color:#4A5058;border-left:3px solid transparent}
+.ri.on{color:#15171A;border-left-color:#15171A;background:#EEF0F2}
+.ic{width:20px;height:20px;border:1.5px solid currentColor}
+.fill{flex:1 1 0}
+.main{flex:999 1 560px;min-width:0;display:flex;flex-direction:column}
+.top{min-height:56px;display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:10px 24px;background:#FFFFFF;border-bottom:1px solid #B4BAC2}
+.scope{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.sc{height:36px;min-width:44px;padding:0 10px;display:inline-flex;align-items:center;justify-content:center;border:1px solid #B4BAC2;background:#FFFFFF;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;color:#15171A;text-decoration:none;cursor:pointer}
+.sc.on{background:#15171A;color:#FFFFFF;border-color:#15171A}
+.pg{padding:24px;display:flex;flex-direction:column;gap:16px;width:100%;max-width:1368px}
+.pn{background:#FFFFFF;border:1px solid #B4BAC2;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.pn.prop{border:1.5px dashed #C2185B}
+.ph{display:flex;align-items:center;gap:8px;min-height:22px;flex-wrap:wrap}
+.t{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase}
+.mu{color:#4A5058}
+.sm{font-size:12px}
+.chip{display:inline-flex;align-items:center;height:22px;padding:0 8px;border:1px solid #B4BAC2;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.04em;white-space:nowrap;color:#15171A;background:#FFFFFF}
+.chip.auto{border-color:#15171A;background:#15171A;color:#FFFFFF}
+.chip.hot{border-color:#C2185B;color:#C2185B}
+.img{background-color:#DCE0E5;background-image:linear-gradient(to top right,transparent calc(50% - 1px),#B4BAC2 calc(50% - 1px),#B4BAC2 calc(50% + 1px),transparent calc(50% + 1px)),linear-gradient(to bottom right,transparent calc(50% - 1px),#B4BAC2 calc(50% - 1px),#B4BAC2 calc(50% + 1px),transparent calc(50% + 1px))}
+.btn{min-height:40px;padding:0 14px;border:1px solid #15171A;background:#FFFFFF;font-family:'IBM Plex Sans',sans-serif;font-size:13px;color:#15171A;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;cursor:pointer}
+.btn.pri{background:#15171A;color:#FFFFFF}
+.btn.sm{min-height:32px;padding:0 10px;font-size:12px}
+.row{display:flex;align-items:center;gap:10px;min-height:40px;border-top:1px solid #E1E4E8}
+.mk{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:#C2185B;color:#FFFFFF;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;font-weight:500;flex:0 0 20px}
+.nomk .mk{display:none}
+.cap{border:1px solid #B4BAC2;padding:6px 8px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.cap.no{border-style:dashed;color:#4A5058}
+.cl{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.06em;color:#4A5058}
+input[type=checkbox]{width:16px;height:16px;accent-color:#15171A;margin:0;flex:0 0 16px}
+@media (max-width:700px){.rail{flex:1 1 100%;flex-direction:row;padding:0 8px;border-right:0;border-bottom:1px solid #B4BAC2}.logo{display:none}.ri{flex:1;height:56px;border-left:0}}
+</style>
+</helmet>
+<div class="{{rootCls}}" style="min-height: 100vh; display: flex; flex-wrap: wrap; align-items: stretch; background: #E6E8EB; color: #15171A; font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif; font-size: 14px; line-height: 20px">
+
+<nav aria-label="Sections" class="rail">
+<span class="logo" aria-hidden="true"></span>
+<a class="ri" href="Dashboard.dc.html"><span class="ic"></span>ALL</a>
+<a class="ri on" href="Library.dc.html" aria-current="page"><span class="ic"></span>GAMES</a>
+<a class="ri" href="Tasks.dc.html"><span class="ic"></span>TASKS</a>
+<a class="ri" href="Calendar.dc.html"><span class="ic"></span>BANNERS</a>
+<span class="fill"></span>
+<a class="ri" href="Settings.dc.html"><span class="ic"></span>SETTINGS</a>
+</nav>
+
+<div class="main">
+<header class="top">
+<nav aria-label="Scope" class="scope">
+<a class="sc on" href="Library.dc.html" aria-current="page">Overview</a>
+<a class="sc" href="Activities.dc.html" aria-label="Genshin Impact">GI</a>
+<button class="sc" type="button" aria-label="Honkai: Star Rail">HSR</button>
+<button class="sc" type="button" aria-label="Zenless Zone Zero">ZZZ</button>
+<button class="sc" type="button" aria-label="Wuthering Waves">WuWa</button>
+<button class="sc" type="button" aria-label="Neverness to Everness">NTE</button>
+<button class="sc" type="button" aria-label="Arknights: Endfield">AE</button>
+</nav>
+<span class="fill"></span>
+<span class="mono sm mu">2026-10-09 · FRI · 08:00</span>
+</header>
+
+<main class="pg">
+<div class="ph"><h1 class="cond" style="margin: 0; font-size: 28px; line-height: 34px; font-weight: 600">Games</h1><span class="chip">6 installed</span><span class="mk">1</span><span class="fill"></span><span class="mono sm mu">Drag a row to reorder the top strip</span></div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+
+<div style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+
+<article class="pn" style="flex-direction: row; flex-wrap: wrap; align-items: center; gap: 16px">
+<span class="mono mu" aria-hidden="true" style="font-size: 18px">≡</span>
+<span class="img" style="width: 44px; height: 44px; flex: 0 0 44px"></span>
+<div style="flex: 1 1 200px; min-width: 0"><div class="cond" style="font-size: 20px; line-height: 26px; font-weight: 600">Genshin Impact</div><div class="mono sm mu">EU · UTC+1 · version 7.1</div></div>
+<div style="flex: 2 1 380px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+<div class="cap"><span class="cl">MANIFEST</span><span>✓ manual tracking</span></div>
+<div class="cap"><span class="cl">CATALOG</span><span>✓ 122 characters</span></div>
+<div class="cap"><span class="cl">LIVE DATA</span><span>HoYoLAB · link</span></div>
+</div>
+<div style="flex: 1 1 150px"><div class="cl">TODAY</div><div>Dailies 3/4 · reset 21h</div></div>
+<div style="display: flex; gap: 12px; align-items: center"><a class="btn sm" href="Activities.dc.html">Open hub</a><label style="display: flex; gap: 6px; align-items: center"><input type="checkbox">Sleep</label></div>
+</article>
+
+<article class="pn" style="flex-direction: row; flex-wrap: wrap; align-items: center; gap: 16px">
+<span class="mono mu" aria-hidden="true" style="font-size: 18px">≡</span>
+<span class="img" style="width: 44px; height: 44px; flex: 0 0 44px"></span>
+<div style="flex: 1 1 200px; min-width: 0"><div class="cond" style="font-size: 20px; line-height: 26px; font-weight: 600">Honkai: Star Rail</div><div class="mono sm mu">EU · UTC+1 · version 4.6</div></div>
+<div style="flex: 2 1 380px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+<div class="cap"><span class="cl">MANIFEST</span><span>✓ manual tracking</span></div>
+<div class="cap"><span class="cl">CATALOG</span><span>✓ 98 characters</span></div>
+<div class="cap"><span class="cl">LIVE DATA</span><span>HoYoLAB · link</span></div>
+</div>
+<div style="flex: 1 1 150px"><div class="cl">TODAY</div><div>Training 400/500 · 21h</div></div>
+<div style="display: flex; gap: 12px; align-items: center"><button class="btn sm" type="button">Open hub</button><label style="display: flex; gap: 6px; align-items: center"><input type="checkbox">Sleep</label></div>
+</article>
+
+<article class="pn" style="flex-direction: row; flex-wrap: wrap; align-items: center; gap: 16px">
+<span class="mono mu" aria-hidden="true" style="font-size: 18px">≡</span>
+<span class="img" style="width: 44px; height: 44px; flex: 0 0 44px"></span>
+<div style="flex: 1 1 200px; min-width: 0"><div class="cond" style="font-size: 20px; line-height: 26px; font-weight: 600">Zenless Zone Zero</div><div class="mono sm mu">EU · UTC+1 · version 3.2</div></div>
+<div style="flex: 2 1 380px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+<div class="cap"><span class="cl">MANIFEST</span><span>✓ manual tracking</span></div>
+<div class="cap no"><span class="cl">CATALOG</span><span>— no cost data yet</span></div>
+<div class="cap"><span class="cl">LIVE DATA</span><span>HoYoLAB · link</span></div>
+</div>
+<div style="flex: 1 1 150px"><div class="cl">TODAY</div><div>Engagement 300/400 · 21h</div></div>
+<div style="display: flex; gap: 12px; align-items: center"><button class="btn sm" type="button">Open hub</button><label style="display: flex; gap: 6px; align-items: center"><input type="checkbox">Sleep</label></div>
+</article>
+
+<article class="pn" style="flex-direction: row; flex-wrap: wrap; align-items: center; gap: 16px">
+<span class="mono mu" aria-hidden="true" style="font-size: 18px">≡</span>
+<span class="img" style="width: 44px; height: 44px; flex: 0 0 44px"></span>
+<div style="flex: 1 1 200px; min-width: 0"><div class="cond" style="font-size: 20px; line-height: 26px; font-weight: 600">Wuthering Waves</div><div class="mono sm mu">EU · UTC+1 · version 3.7</div></div>
+<div style="flex: 2 1 380px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+<div class="cap"><span class="cl">MANIFEST</span><span>✓ manual tracking</span></div>
+<div class="cap"><span class="cl">CATALOG</span><span>✓ 50 characters</span></div>
+<div class="cap"><span class="cl">LIVE DATA</span><span>history link only</span></div>
+</div>
+<div style="flex: 1 1 150px"><div class="cl">TODAY</div><div>Activity 100/100 · done</div></div>
+<div style="display: flex; gap: 12px; align-items: center"><button class="btn sm" type="button">Open hub</button><label style="display: flex; gap: 6px; align-items: center"><input type="checkbox">Sleep</label></div>
+</article>
+
+<article class="pn" style="flex-direction: row; flex-wrap: wrap; align-items: center; gap: 16px">
+<span class="mono mu" aria-hidden="true" style="font-size: 18px">≡</span>
+<span class="img" style="width: 44px; height: 44px; flex: 0 0 44px"></span>
+<div style="flex: 1 1 200px; min-width: 0"><div class="cond" style="font-size: 20px; line-height: 26px; font-weight: 600">Neverness to Everness</div><div class="mono sm mu">Europe · UTC+1 · version 1.4</div></div>
+<div style="flex: 2 1 380px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+<div class="cap"><span class="cl">MANIFEST</span><span>✓ manual tracking</span></div>
+<div class="cap no"><span class="cl">CATALOG</span><span>— no open dataset</span></div>
+<div class="cap no"><span class="cl">LIVE DATA</span><span>— terms forbid tools</span></div>
+</div>
+<div style="flex: 1 1 150px"><div class="cl">TODAY</div><div>Dailies 4/4 · reset 22h</div></div>
+<div style="display: flex; gap: 12px; align-items: center"><button class="btn sm" type="button">Open hub</button><label style="display: flex; gap: 6px; align-items: center"><input type="checkbox">Sleep</label></div>
+</article>
+
+<article class="pn" style="flex-direction: row; flex-wrap: wrap; align-items: center; gap: 16px">
+<span class="mono mu" aria-hidden="true" style="font-size: 18px">≡</span>
+<span class="img" style="width: 44px; height: 44px; flex: 0 0 44px"></span>
+<div style="flex: 1 1 200px; min-width: 0"><div class="cond" style="font-size: 20px; line-height: 26px; font-weight: 600">Arknights: Endfield</div><div class="mono sm mu">Americas/Europe · UTC−5 · version 1.5</div></div>
+<div style="flex: 2 1 380px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+<div class="cap"><span class="cl">MANIFEST</span><span>✓ manual tracking</span></div>
+<div class="cap"><span class="cl">CATALOG</span><span>✓ operators, costs pending</span></div>
+<div class="cap"><span class="cl">LIVE DATA</span><span>SKPORT token · pulls</span></div>
+</div>
+<div style="flex: 1 1 150px"><div class="cl">TODAY</div><div>Missions 100/100 · reset 3h</div></div>
+<div style="display: flex; gap: 12px; align-items: center"><button class="btn sm" type="button">Open hub</button><label style="display: flex; gap: 6px; align-items: center"><input type="checkbox">Sleep</label><span class="mk">3</span></div>
+</article>
+
+</div>
+
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<section class="pn">
+<div class="ph"><span class="t">Capabilities</span><span class="mk">2</span></div>
+<div class="row" style="border-top: 0; align-items: flex-start; padding-top: 4px"><span class="chip" style="flex: 0 0 auto">MANIFEST</span><span>Resets, currencies, stamina, activities, endgame, battle pass and banner rules. Everything works with manual entry.</span></div>
+<div class="row" style="align-items: flex-start; padding-top: 10px"><span class="chip" style="flex: 0 0 auto">CATALOG</span><span>Characters, weapons, gear and material costs from an open dataset. Adds ownership, build sheets and planning.</span></div>
+<div class="row" style="align-items: flex-start; padding-top: 10px"><span class="chip auto" style="flex: 0 0 auto">LIVE DATA</span><span>Sync and imports. Items fill in and tick themselves (AUTO).</span></div>
+</section>
+
+<section class="pn">
+<div class="ph"><span class="t">Add a game</span><span class="mk">4</span></div>
+<p style="margin: 0">All six supported games are installed.</p>
+<p class="mu" style="margin: 0">New games are added through the pipeline: the manifest first, then the catalog, then live data.</p>
+<div style="display: flex; gap: 8px; flex-wrap: wrap"><button class="btn" type="button">Request a game</button></div>
+</section>
+</div>
+
+</div>
+</main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"markers":{"editor":"boolean","default":true,"section":"Wireframe"},"$preview":{"width":1440,"height":1230}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const on = this.props.markers ?? true;
+    return { rootCls: on ? 'wf' : 'wf nomk' };
+  }
+}
+</script>
+</body>
+</html>

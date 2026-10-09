@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tasks and reminders</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans+Condensed:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#15171A}a:hover{color:#4A5058}
+.mono{font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace}
+.cond{font-family:'IBM Plex Sans Condensed','Arial Narrow',sans-serif}
+.rail{flex:0 0 72px;display:flex;flex-direction:column;gap:4px;padding:16px 0;background:#FFFFFF;border-right:1px solid #B4BAC2}
+.logo{width:32px;height:32px;margin:0 auto 16px;background:#15171A}
+.ri{height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.06em;text-decoration:none;color:#4A5058;border-left:3px solid transparent}
+.ri.on{color:#15171A;border-left-color:#15171A;background:#EEF0F2}
+.ic{width:20px;height:20px;border:1.5px solid currentColor}
+.fill{flex:1 1 0}
+.main{flex:999 1 560px;min-width:0;display:flex;flex-direction:column}
+.top{min-height:56px;display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:10px 24px;background:#FFFFFF;border-bottom:1px solid #B4BAC2}
+.scope{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.sc{height:36px;min-width:44px;padding:0 10px;display:inline-flex;align-items:center;justify-content:center;border:1px solid #B4BAC2;background:#FFFFFF;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;color:#15171A;text-decoration:none;cursor:pointer}
+.sc.on{background:#15171A;color:#FFFFFF;border-color:#15171A}
+.pg{padding:24px;display:flex;flex-direction:column;gap:16px;width:100%;max-width:1368px}
+.pn{background:#FFFFFF;border:1px solid #B4BAC2;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.ph{display:flex;align-items:center;gap:8px;min-height:22px;flex-wrap:wrap}
+.t{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase}
+.mu{color:#4A5058}
+.sm{font-size:12px}
+.bar{height:8px;background:#DCE0E5;position:relative;overflow:hidden}
+.bar>i{position:absolute;left:0;top:0;bottom:0;background:#15171A}
+.chip{display:inline-flex;align-items:center;height:22px;padding:0 8px;border:1px solid #B4BAC2;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.04em;white-space:nowrap;color:#15171A;background:#FFFFFF}
+.chip.auto{border-color:#15171A;background:#15171A;color:#FFFFFF}
+.chip.hot{border-color:#C2185B;color:#C2185B}
+.img{background-color:#DCE0E5;background-image:linear-gradient(to top right,transparent calc(50% - 1px),#B4BAC2 calc(50% - 1px),#B4BAC2 calc(50% + 1px),transparent calc(50% + 1px)),linear-gradient(to bottom right,transparent calc(50% - 1px),#B4BAC2 calc(50% - 1px),#B4BAC2 calc(50% + 1px),transparent calc(50% + 1px))}
+.btn{min-height:40px;padding:0 14px;border:1px solid #15171A;background:#FFFFFF;font-family:'IBM Plex Sans',sans-serif;font-size:13px;color:#15171A;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;cursor:pointer}
+.btn.pri{background:#15171A;color:#FFFFFF}
+.btn.sm{min-height:32px;padding:0 10px;font-size:12px}
+.row{display:flex;align-items:center;gap:10px;min-height:44px;border-top:1px solid #E1E4E8}
+.mk{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:#C2185B;color:#FFFFFF;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;font-weight:500;flex:0 0 20px}
+.nomk .mk{display:none}
+.inp{min-height:40px;padding:0 12px;border:1px solid #B4BAC2;background:#FFFFFF;font-family:'IBM Plex Sans',sans-serif;font-size:13px;color:#15171A}
+input[type=checkbox]{width:16px;height:16px;accent-color:#15171A;margin:0;flex:0 0 16px}
+@media (max-width:700px){.rail{flex:1 1 100%;flex-direction:row;padding:0 8px;border-right:0;border-bottom:1px solid #B4BAC2}.logo{display:none}.ri{flex:1;height:56px;border-left:0}}
+</style>
+</helmet>
+<div class="{{rootCls}}" style="min-height: 100vh; display: flex; flex-wrap: wrap; align-items: stretch; background: #E6E8EB; color: #15171A; font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif; font-size: 14px; line-height: 20px">
+
+<nav aria-label="Sections" class="rail">
+<span class="logo" aria-hidden="true"></span>
+<a class="ri" href="Dashboard.dc.html"><span class="ic"></span>ALL</a>
+<a class="ri" href="Library.dc.html"><span class="ic"></span>GAMES</a>
+<a class="ri on" href="Tasks.dc.html" aria-current="page"><span class="ic"></span>TASKS</a>
+<a class="ri" href="Calendar.dc.html"><span class="ic"></span>BANNERS</a>
+<span class="fill"></span>
+<a class="ri" href="Settings.dc.html"><span class="ic"></span>SETTINGS</a>
+</nav>
+
+<div class="main">
+<header class="top">
+<nav aria-label="Scope" class="scope">
+<a class="sc on" href="Tasks.dc.html" aria-current="page">Overview</a>
+<button class="sc" type="button" aria-label="Genshin Impact">GI</button>
+<button class="sc" type="button" aria-label="Honkai: Star Rail">HSR</button>
+<button class="sc" type="button" aria-label="Zenless Zone Zero">ZZZ</button>
+<button class="sc" type="button" aria-label="Wuthering Waves">WuWa</button>
+<button class="sc" type="button" aria-label="Neverness to Everness">NTE</button>
+<button class="sc" type="button" aria-label="Arknights: Endfield">AE</button>
+</nav>
+<span class="fill"></span>
+<span class="mono sm mu">2026-10-09 · FRI · 08:00</span>
+</header>
+
+<main class="pg">
+<div class="ph"><h1 class="cond" style="margin: 0; font-size: 28px; line-height: 34px; font-weight: 600">Tasks and reminders</h1><span class="fill"></span><label class="mu sm" for="task-filter">Filter</label><input id="task-filter" class="inp" type="text" placeholder="Character, material, game"><label style="display: flex; gap: 6px; align-items: center"><input type="checkbox">Show backlog</label><button class="btn pri" type="button">New goal</button></div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+
+<div style="flex: 999 1 600px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+
+<section class="pn" style="flex-direction: row; flex-wrap: wrap; align-items: center; gap: 12px">
+<span class="t">Farm today</span><span class="mk">2</span>
+<span class="chip">GI · talent books (Tue/Fri) for Vodyanitsa</span>
+<span class="chip">GI · 2 weekly bosses left</span>
+<span class="chip">HSR · traces for Pearl (any day)</span>
+<span class="chip">WuWa · Hsin ascension (any day)</span>
+<span class="fill"></span><span class="mono sm mu">game day: Friday</span>
+</section>
+
+<section class="pn">
+<div class="ph"><span class="t">Goals</span><span class="mk">1</span><span class="fill"></span><span class="mono sm mu">7 active · 34 in backlog</span></div>
+
+<article style="border: 1px solid #15171A; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px"><span class="img" style="width: 40px; height: 40px; flex: 0 0 40px"></span><div style="flex: 1 1 200px; min-width: 0"><div style="font-weight: 600">Pre-farm Vodyanitsa</div><div class="mono sm mu">GI · from Plan farming · level 1→90, talents 1→9/9/9</div></div><span class="chip hot">HIGH</span><label style="display: flex; gap: 6px; align-items: center" class="sm"><input type="checkbox" checked>Notify</label><button class="btn sm" type="button" aria-expanded="true">Collapse</button></div>
+<div style="display: flex; align-items: center; gap: 10px"><div class="bar" style="flex: 1"><i style="width: 43%"></i></div><span class="mono sm">6 / 14 materials</span></div>
+<div style="display: flex; flex-direction: column; border-top: 1px solid #E1E4E8">
+<div class="row" style="border-top: 0; padding-left: 50px"><span style="flex: 1 1 0">Ascension and level · 1 → 90</span><span class="mono sm">2 / 4</span><div class="bar" style="width: 120px"><i style="width: 50%"></i></div></div>
+<div class="row" style="padding-left: 50px"><span style="flex: 1 1 0">Talents · 1 → 9 / 9 / 9 <span class="chip auto" style="margin-left: 6px">TODAY</span></span><span class="mono sm">3 / 6</span><div class="bar" style="width: 120px"><i style="width: 50%"></i></div></div>
+<div class="row" style="padding-left: 50px"><span style="flex: 1 1 0">Weapon · 1 → 90</span><span class="mono sm">1 / 4</span><div class="bar" style="width: 120px"><i style="width: 25%"></i></div></div>
+</div>
+</article>
+
+<article class="row" style="border: 1px solid #B4BAC2; padding: 8px 14px; flex-wrap: wrap"><span class="img" style="width: 32px; height: 32px; flex: 0 0 32px"></span><div style="flex: 1 1 200px; min-width: 0"><div style="font-weight: 600">Arlecchino crowns</div><div class="mono sm mu">GI · talents 9/9/9 → 10/10/10</div></div><span class="mono sm">2 / 5</span><div class="bar" style="width: 120px"><i style="width: 40%"></i></div><span class="chip">NORMAL</span><button class="btn sm" type="button" aria-expanded="false">Expand</button></article>
+<article class="row" style="border: 1px solid #B4BAC2; padding: 8px 14px; flex-wrap: wrap"><span class="img" style="width: 32px; height: 32px; flex: 0 0 32px"></span><div style="flex: 1 1 200px; min-width: 0"><div style="font-weight: 600">Build Pearl</div><div class="mono sm mu">HSR · traces → 8</div></div><span class="mono sm">5 / 8</span><div class="bar" style="width: 120px"><i style="width: 62%"></i></div><span class="chip">NORMAL</span><button class="btn sm" type="button" aria-expanded="false">Expand</button></article>
+<article class="row" style="border: 1px solid #B4BAC2; padding: 8px 14px; flex-wrap: wrap"><span class="img" style="width: 32px; height: 32px; flex: 0 0 32px"></span><div style="flex: 1 1 200px; min-width: 0"><div style="font-weight: 600">Build Hsin</div><div class="mono sm mu">WuWa · to max</div></div><span class="mono sm">1 / 7</span><div class="bar" style="width: 120px"><i style="width: 14%"></i></div><span class="chip hot">HIGH</span><button class="btn sm" type="button" aria-expanded="false">Expand</button></article>
+<article class="row" style="border: 1px solid #B4BAC2; padding: 8px 14px; flex-wrap: wrap"><span class="img" style="width: 32px; height: 32px; flex: 0 0 32px"></span><div style="flex: 1 1 200px; min-width: 0"><div style="font-weight: 600">Faded Theater pieces for Arlecchino</div><div class="mono sm mu">GI · checklist · circlet CRIT DMG missing</div></div><span class="mono sm">4 / 5</span><div class="bar" style="width: 120px"><i style="width: 80%"></i></div><span class="chip">NORMAL</span><button class="btn sm" type="button" aria-expanded="false">Expand</button></article>
+<article class="row" style="border: 1.5px solid #15171A; padding: 8px 14px; flex-wrap: wrap"><span class="img" style="width: 32px; height: 32px; flex: 0 0 32px"></span><div style="flex: 1 1 200px; min-width: 0"><div style="font-weight: 600">Claim Lisa from Rainbow's End</div><div class="mono sm mu">GI · event goal · ends Tue 3 Nov · when done: Lisa C3 → C4</div></div><span class="mono sm">0 / 5</span><div class="bar" style="width: 120px"><i style="width: 0%"></i></div><span class="chip hot">NEW</span><button class="btn sm" type="button" aria-expanded="false">Expand</button></article>
+<article class="row" style="border: 1px solid #B4BAC2; padding: 8px 14px; flex-wrap: wrap"><span class="img" style="width: 32px; height: 32px; flex: 0 0 32px"></span><div style="flex: 1 1 200px; min-width: 0"><div style="font-weight: 600">Finish the 1.4 story quests</div><div class="mono sm mu">NTE · manual task · before 11 Nov</div></div><span class="mono sm">1 / 3</span><div class="bar" style="width: 120px"><i style="width: 33%"></i></div><span class="chip">LOW</span><button class="btn sm" type="button" aria-expanded="false">Expand</button></article>
+</section>
+</div>
+
+<div style="flex: 1 1 380px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<section class="pn">
+<div class="ph"><span class="t">Reminders</span><span class="mk">3</span><span class="fill"></span><span class="chip">Discord DM</span><button class="btn sm" type="button">New rule</button></div>
+<div>
+<label class="row" style="border-top: 0"><input type="checkbox" checked><span style="flex: 1 1 0">30 min before daily reset, if dailies are left</span><span class="chip">ALL</span></label>
+<label class="row"><input type="checkbox" checked><span style="flex: 1 1 0">Daily digest at 21:00: stamina, dailies left, farm today</span><span class="chip">ALL</span></label>
+<label class="row"><input type="checkbox" checked><span style="flex: 1 1 0">Stamina full (synced for GI, HSR, ZZZ; projected for others)</span><span class="chip">ALL</span></label>
+<label class="row"><input type="checkbox" checked><span style="flex: 1 1 0">24 h before an endgame reset with rewards unclaimed</span><span class="chip">ALL</span></label>
+<label class="row"><input type="checkbox" checked><span style="flex: 1 1 0">Banner ends in 24 h, wishlisted units only</span><span class="chip">ALL</span></label>
+<label class="row"><input type="checkbox" checked><span style="flex: 1 1 0">30-day pass ends in 3 days</span><span class="chip">ALL</span></label>
+<label class="row"><input type="checkbox"><span style="flex: 1 1 0">Parametric Transformer ready</span><span class="chip">GI</span></label>
+</div>
+<div class="row" style="flex-wrap: wrap"><span class="t">Quiet hours</span><span class="mk">4</span><span class="fill"></span><span class="mono sm">00:00–08:00 · Europe/Paris</span><button class="btn sm" type="button">Edit</button></div>
+</section>
+
+<section class="pn">
+<div class="ph"><span class="t">Preview</span><span class="mk">5</span><span class="fill"></span><button class="btn sm" type="button">Send a test DM</button></div>
+<div style="border-left: 3px solid #15171A; background: #EEF0F2; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px">
+<div class="mono sm mu">Gacha Hub · today 21:00 · daily digest</div>
+<div><b>Left before reset (05:00)</b><br>GI commissions 1 · HSR training 100 · ZZZ engagement 100</div>
+<div><b>Stamina</b><br>GI full since 12:56 · ZZZ 236/240 · WuWa reserve full</div>
+<div><b>Farm today</b><br>GI talent books for Vodyanitsa</div>
+<div><b>Ending soon</b><br>Silverwing event (Mon) · Tower of Adversity resets Mon (30/36)</div>
+</div>
+</section>
+</div>
+
+</div>
+</main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"markers":{"editor":"boolean","default":true,"section":"Wireframe"},"$preview":{"width":1440,"height":1070}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const on = this.props.markers ?? true;
+    return { rootCls: on ? 'wf' : 'wf nomk' };
+  }
+}
+</script>
+</body>
+</html>
