@@ -1,12 +1,13 @@
-import { useState, type FormEvent } from "react";
+import { useState, type FormEvent, type ReactNode } from "react";
 import { useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { cadenceWindow, getGame, hubResets, isUrgent, type GameDefinition, type GameRegion, type TaskDto } from "@gacha/shared";
+import { cadenceWindow, getGame, hubResets, isUrgent, passView, type GameDefinition, type GameRegion, type PassesDto, type TaskDto } from "@gacha/shared";
 import { api } from "../lib/api";
 import { formatRemaining } from "../lib/time";
 import type { DashboardData, InstanceDetail } from "../lib/types";
 import { GameTabs } from "../components/GameTabs";
 import { Countdown } from "../components/ui";
+import { SegmentedBar } from "../components/charts/SegmentedBar";
 
 const DATE = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
 const CLOCK = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit" });
@@ -34,6 +35,7 @@ export function ActivitiesPage() {
   const { data: instance } = useQuery({ queryKey: ["instance", id], queryFn: () => api.get<InstanceDetail>(`/api/instances/${id}`) });
   const { data: dash } = useQuery({ queryKey: ["dashboard"], queryFn: () => api.get<DashboardData>("/api/dashboard") });
   const { data: tasks = [] } = useQuery({ queryKey: ["tasks", "game", id], queryFn: () => api.get<TaskDto[]>(`/api/tasks?scope=game&refId=${id}`) });
+  const { data: passes } = useQuery({ queryKey: ["passes", id], queryFn: () => api.get<PassesDto>(`/api/instances/${id}/passes`) });
   const game = instance && getGame(instance.gameKey);
   if (!instance || !game) return <div className="muted">Loading…</div>;
 
@@ -43,6 +45,13 @@ export function ActivitiesPage() {
   const now = new Date();
   const resets = hubResets(game, region, now);
   const monthlyEnd = cadenceWindow({ cadence: "monthly", day: 1 }, region, now).end;
+  const pv = passView(
+    game,
+    region,
+    now,
+    passes?.battle ? { ...passes.battle, updatedAt: new Date(passes.battle.updatedAt) } : null,
+    passes?.monthly ? { endsAt: new Date(passes.monthly.endsAt) } : null,
+  );
 
   return (
     <>
@@ -55,11 +64,13 @@ export function ActivitiesPage() {
         <div className="act-cadences">
           <CadenceList instanceId={id!} game={game} cadence="daily" title="Daily" items={recurring.filter((t) => (t.cadence ?? "daily") === "daily")} resetsAt={resets.daily} />
           <CadenceList instanceId={id!} game={game} cadence="weekly" title="Weekly" items={recurring.filter((t) => t.cadence === "weekly")} resetsAt={resets.weekly} />
-          <CadenceList instanceId={id!} game={game} cadence="monthly" title="Monthly" items={recurring.filter((t) => t.cadence === "monthly")} resetsAt={monthlyEnd} />
+          <CadenceList instanceId={id!} game={game} cadence="monthly" title="Monthly" items={recurring.filter((t) => t.cadence === "monthly")} resetsAt={monthlyEnd}>
+            {game.manifest.monthlyPass && <MonthlyPass instanceId={id!} name={game.manifest.monthlyPass.name} daysLeft={pv.monthlyDaysLeft} />}
+          </CadenceList>
         </div>
         <div className="act-bottom">
           <Cycles game={game} region={region} now={now} />
-          <Version game={game} endsAt={resets.versionEnd} events={(dash?.timeline.events ?? []).filter((e) => e.gameKey === game.key && Date.parse(e.startsAt) <= now.getTime())} />
+          <Version instanceId={id!} game={game} pv={pv} endsAt={resets.versionEnd} events={(dash?.timeline.events ?? []).filter((e) => e.gameKey === game.key && Date.parse(e.startsAt) <= now.getTime())} />
         </div>
       </div>
     </>
@@ -121,6 +132,7 @@ function CadenceList({
   title,
   items,
   resetsAt,
+  children,
 }: {
   instanceId: string;
   game: GameDefinition;
@@ -128,6 +140,7 @@ function CadenceList({
   title: string;
   items: TaskDto[];
   resetsAt: Date;
+  children?: ReactNode;
 }) {
   const qc = useQueryClient();
   const [adding, setAdding] = useState(false);
@@ -173,6 +186,7 @@ function CadenceList({
         ))}
         {items.length === 0 && <p className="mu act-empty">Nothing {title.toLowerCase()} yet.</p>}
       </div>
+      {children}
       {adding ? (
         <form className="act-add" onSubmit={submit}>
           <label>
@@ -234,8 +248,64 @@ function Cycles({ game, region, now }: { game: GameDefinition; region: GameRegio
   );
 }
 
-function Version({ game, endsAt, events }: { game: GameDefinition; endsAt: Date; events: DashboardData["timeline"]["events"] }) {
+type PassView = ReturnType<typeof passView>;
+const NUM = new Intl.NumberFormat("en-GB");
+
+/** Invalidate what a pass change touches. */
+function usePassSave(instanceId: string, path: string, close: () => void) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (body: object) => api.put(`/api/instances/${instanceId}/passes/${path}`, body),
+    onSuccess: () => {
+      close();
+      qc.invalidateQueries({ queryKey: ["passes", instanceId] });
+      qc.invalidateQueries({ queryKey: ["dashboard"] });
+    },
+  });
+}
+
+/** The 30-day pass under the monthly items: its days left, typed in place. */
+function MonthlyPass({ instanceId, name, daysLeft }: { instanceId: string; name: string; daysLeft: number | null }) {
+  const [editing, setEditing] = useState(false);
+  const save = usePassSave(instanceId, "monthly", () => setEditing(false));
+  const submit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    save.mutate({ daysLeft: Number(new FormData(e.currentTarget).get("days")) });
+  };
+  return editing ? (
+    <form className="act-add" onSubmit={submit}>
+      <label>
+        <span>Days left</span>
+        <input name="days" type="number" min={0} max={365} required defaultValue={daysLeft ?? ""} autoFocus />
+      </label>
+      <button type="submit" className="btn primary" disabled={save.isPending}>
+        Save
+      </button>
+      <button type="button" className="btn" onClick={() => setEditing(false)}>
+        Cancel
+      </button>
+      {save.isError && <span className="hub-error">Not saved: over the pass's limit.</span>}
+    </form>
+  ) : (
+    <div className="act-row act-pass-row">
+      <span className="act-title">{name}</span>
+      <span className="mn">{daysLeft === null ? "not tracked" : `${daysLeft} days left`}</span>
+      <button type="button" className="btn" aria-label={`Update ${name}`} onClick={() => setEditing(true)}>
+        Update
+      </button>
+    </div>
+  );
+}
+
+function Version({ instanceId, game, pv, endsAt, events }: { instanceId: string; game: GameDefinition; pv: PassView; endsAt: Date; events: DashboardData["timeline"]["events"] }) {
   const pass = game.manifest.battlePass;
+  const [editing, setEditing] = useState(false);
+  const save = usePassSave(instanceId, "battle", () => setEditing(false));
+  const submit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const f = new FormData(e.currentTarget);
+    save.mutate({ level: Number(f.get("level")), weeklyXp: Number(f.get("xp") || 0) });
+  };
   return (
     <section className="card act-version" aria-label={`Version ${game.manifest.version.name}`}>
       <div className="spread">
@@ -244,9 +314,65 @@ function Version({ game, endsAt, events }: { game: GameDefinition; endsAt: Date;
       </div>
       <div className="act-version-body">
         <div>
-          <div className="kpi-label">Battle pass</div>
-          <p className="act-pass">{pass ? `${pass.name}${pass.maxLevel ? ` · ${pass.maxLevel} levels` : ""}` : "No battle pass on record."}</p>
-          <p className="mu act-empty">Level and weekly XP tracking comes next.</p>
+          <div className="spread act-pass-head">
+            <div className="kpi-label">Battle pass</div>
+            {pass && (
+              <span className="mn mu">
+                {pass.name} <span className="tag">Manual</span>
+              </span>
+            )}
+          </div>
+          {!pass && <p className="mu act-empty">No battle pass on record.</p>}
+          {pass &&
+            (editing ? (
+              <form className="act-add" onSubmit={submit}>
+                <label>
+                  <span>Level</span>
+                  <input name="level" type="number" min={0} max={pass.maxLevel ?? 200} required defaultValue={pv.level} autoFocus />
+                </label>
+                <label>
+                  <span>Weekly XP</span>
+                  <input name="xp" type="number" min={0} max={pass.weeklyXpCap ?? 1_000_000} defaultValue={pv.weeklyXp} />
+                </label>
+                <button type="submit" className="btn primary" disabled={save.isPending}>
+                  Save
+                </button>
+                <button type="button" className="btn" onClick={() => setEditing(false)}>
+                  Cancel
+                </button>
+                {save.isError && <span className="hub-error">Not saved: over the pass's caps.</span>}
+              </form>
+            ) : (
+              <>
+                <div className="act-pass-level">
+                  <div className="kpi-value">
+                    {pv.level}
+                    {pv.maxLevel !== null && <small> / {pv.maxLevel}</small>}
+                  </div>
+                  {pv.levelsPerDay !== null && (
+                    <span className="mn mu">
+                      {pv.levelsPerDay.toFixed(1)} {pv.levelsPerDay === 1 ? "level" : "levels"} a day to finish
+                    </span>
+                  )}
+                </div>
+                {pv.maxLevel !== null && <SegmentedBar level={pv.level} max={pv.maxLevel} label={pass.name} />}
+                <div className="act-xp">
+                  <span className="kpi-label">Weekly XP</span>
+                  <span className="mn">
+                    {NUM.format(pv.weeklyXp)}
+                    {pv.weeklyXpCap !== null && ` / ${NUM.format(pv.weeklyXpCap)}`}
+                  </span>
+                </div>
+                {pv.weeklyXpCap !== null && (
+                  <div className="act-meter act-meter-thin" role="img" aria-label={`Weekly XP ${pv.weeklyXp} of ${pv.weeklyXpCap}`}>
+                    <span style={{ width: `${Math.min(100, (pv.weeklyXp / pv.weeklyXpCap) * 100)}%` }} />
+                  </div>
+                )}
+                <button type="button" className="btn act-add-btn" aria-label="Update the battle pass" onClick={() => setEditing(true)}>
+                  Update
+                </button>
+              </>
+            ))}
         </div>
         <div>
           <div className="kpi-label">Events</div>
