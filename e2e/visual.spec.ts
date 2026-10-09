@@ -48,9 +48,22 @@ test("deadlines within 48 hours are paper chips; view switches expose their stat
   expect(upload.ok()).toBe(true);
 
   await page.goto("/?game=hsr");
-  const chip = (name: string) => page.locator(".banner-card", { hasText: name }).locator(".chip");
-  await expect(chip("E2E ends soon")).toHaveCSS("background-color", "rgb(237, 237, 237)");
-  await expect(chip("E2E ends later")).not.toHaveCSS("background-color", "rgb(237, 237, 237)");
+  // The carousel shows the nearest deadline first, as a paper tag; the next banner is nine days out, a dark tag.
+  const card = page.locator(".banner-card");
+  await expect(card).toContainText("E2E ends soon");
+  await expect(card.locator(".tag")).toHaveCSS("background-color", "rgb(237, 237, 237)");
+  await expect(card).toHaveAttribute("data-rotating", "true");
+  await card.getByRole("button", { name: "Next banner" }).click();
+  await expect(card).toContainText("E2E ends later");
+  await expect(card.locator(".tag")).toHaveCSS("background-color", "rgb(0, 0, 0)");
+  // The pointer over the card, or focus inside it, holds the rotation; reduced motion stops it.
+  await expect(card).toHaveAttribute("data-rotating", "false");
+  await card.getByRole("button", { name: "Next banner" }).blur();
+  await page.mouse.move(0, 0);
+  await expect(card).toHaveAttribute("data-rotating", "true");
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect(card).toHaveAttribute("data-rotating", "false");
+  await page.emulateMedia({ reducedMotion: "no-preference" });
 
   await page.goto(`/games/${id}/ownership`);
   const view = page.getByRole("group", { name: "Show" });

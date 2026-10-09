@@ -6,8 +6,7 @@ import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
 import { formatRemaining } from "../lib/time";
 import { pullCount, pullText, pullsFor } from "../lib/format";
-import { assetUrl, communityAssetUrl } from "../lib/assets";
-import { GameIcon } from "../components/GameIcon";
+import { BannersCarousel } from "../components/BannersCarousel";
 import { TaskBoard } from "../components/TaskBoard";
 import { TodayCard } from "../components/TodayCard";
 import { Countdown } from "../components/ui";
@@ -94,54 +93,6 @@ function KpiStrip({ data, tasks }: { data: DashboardData; tasks: TaskItem[] }) {
           ))}
         </div>
       )}
-    </div>
-  );
-}
-
-// ---- Banners running now, with featured art ----
-
-function BannersNow({ timeline }: { timeline: DashboardData["timeline"] }) {
-  const active = timeline.banners.filter((b) => b.status === "active");
-  if (active.length === 0) {
-    return (
-      <div className="card">
-        <h3>Banners now</h3>
-        <p className="small" style={{ margin: 0 }}>No banners running. <Link to="/timeline">Banners &amp; events →</Link></p>
-      </div>
-    );
-  }
-  return (
-    <div className="banners-now">
-      {active.map((b) => {
-        const game = getGame(b.gameKey);
-        return (
-          <div className="card banner-card" key={b.id} style={{ borderTop: `3px solid ${game?.accent}` }}>
-            <div className="spread">
-              <div style={{ minWidth: 0 }}>
-                <div className="banner-name">{b.name}</div>
-                <div className="small muted">{game?.name ?? b.gameKey}</div>
-              </div>
-              <Countdown at={b.endsAt} />
-            </div>
-            {b.featured.length > 0 && (
-              <div className="feat-row">
-                {[...b.featured].sort((x, y) => (y.rarity ?? 0) - (x.rarity ?? 0)).map((f) => (
-                  <div className={`feat r${f.rarity ?? 0} ${f.owned ? "owned" : ""}`} key={`${f.kind}:${f.catalogId}`} title={f.name ?? f.catalogId}>
-                    <GameIcon
-                      src={assetUrl(b.gameKey, f.kind, f.icon)}
-                      fallback={communityAssetUrl(b.gameKey, f.kind, f.icon)}
-                      alt={f.name ?? f.catalogId}
-                      className="feat-art"
-                    />
-                    <span className="feat-name">{f.name ?? f.catalogId}</span>
-                    {f.owned && <span className="feat-owned">owned</span>}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        );
-      })}
     </div>
   );
 }
@@ -306,7 +257,7 @@ export function DashboardPage() {
 
       <div className="dash">
         <div className="dash-main">
-          <BannersNow timeline={view.timeline} />
+          <BannersCarousel banners={view.timeline.banners} />
           <TodayCard games={view.games} />
           <TaskBoard gameKey={game} />
         </div>

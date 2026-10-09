@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-09 · claude · stack/v/05-carousel · #97
+- Done: `packages/shared/src/carousel.ts` (nearest deadline first; 6 s + 3 s per extra banner, split between a game's banners; stepping per banner or game, wrapping), `useCarousel` (one clock, held on hover and focus, off under reduced motion), `CarouselCard` (pips, chevrons, 4 px accent bar) and `BannersCarousel` on Home (one banner over its featured unit's art: Enka gacha splash, Yatta large portrait, hatching otherwise; ENDS IN as a dark or paper tag; Bodoni title band). `Countdown` gains a tag variant, `GameIcon` a list of fallbacks.
+- Tests: `carousel.test.ts` (timing, ordering, stepping, a fast-check lap property); `visual.spec.ts` (nearest deadline first as a paper tag, Next shows the later banner as a dark tag, hover and focus hold, reduced motion stops).
+- Scope/decisions: No carousel library (ADR 0007). The Dailies and Battle-pass cards join the same clock in `09-home`.
+- Next: `stack/v/06-charts-core`.
+
 ## 2026-10-09 · claude · stack/v/04-panels · #96
 - Done: `styles/components.css`, the dashboard's parts for every page: braced cards with accent-underlined titles, graph panels with corner marks, mono buttons (paper primary), the two-state switch, square form controls, dark tags, paper chips, bands, tooltips, pips, KPI tiles, table rows and the ruled scrollbar. Green and red are gone. `isUrgent` (shared) and `Countdown` make near deadlines paper chips; `Segmented` replaces the view toggles.
 - Tests: `urgency.test.ts` (48 h and 3 h windows, past times); `e2e/visual.spec.ts` (a banner ending in 10 h is a paper chip, one ending in 9 days is not; the ownership switch reports its state); axe still clean.
