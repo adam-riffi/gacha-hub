@@ -79,7 +79,7 @@ gacha/
 ├── scripts/harness/     # end-to-end harnesses against the server bundle
 ├── scripts/assets/      # art mirror to the art store (isolated install, ADR 0006)
 ├── api/index.mjs        # Vercel function entry
-└── docs/                # DESIGN.md, WIREFRAMES.md, VISUAL-DESIGN.md, games/<key>.md, ENGINEERING.md, AGENT_LOG.md, PROJECT-GUIDE.md, screens/, adr/, DEPLOY.md
+└── docs/                # DESIGN.md, WIREFRAMES.md, VISUAL-DESIGN.md, design/, games/<key>.md, ENGINEERING.md, AGENT_LOG.md, PROJECT-GUIDE.md, screens/, adr/, DEPLOY.md
 ```
 
 ## 6. Core design decisions

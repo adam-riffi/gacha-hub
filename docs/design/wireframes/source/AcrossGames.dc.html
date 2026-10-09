@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Across six games</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans+Condensed:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#15171A}a:hover{color:#4A5058}
+.mono{font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace}
+.cond{font-family:'IBM Plex Sans Condensed','Arial Narrow',sans-serif}
+.fill{flex:1 1 0}
+.t{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase}
+.cl{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.06em;color:#4A5058}
+.mu{color:#4A5058}
+.sm{font-size:12px}
+.chip{display:inline-flex;align-items:center;height:22px;padding:0 8px;border:1px solid #B4BAC2;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.04em;white-space:nowrap;color:#15171A;background:#FFFFFF}
+.chip.auto{border-color:#15171A;background:#15171A;color:#FFFFFF}
+.chip.hot{border-color:#C2185B;color:#C2185B}
+.mk{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:#C2185B;color:#FFFFFF;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;font-weight:500;flex:0 0 20px}
+.nomk .mk{display:none}
+.mx{display:grid;grid-template-columns:168px repeat(7,minmax(0,1fr));min-width:1240px;background:#FFFFFF;border:1px solid #B4BAC2}
+.mx>div{padding:9px 10px;border-top:1px solid #E1E4E8;font-size:12px;line-height:17px;min-width:0}
+.mx>.hd{border-top:0;display:flex;flex-direction:column;gap:2px;padding:12px 10px}
+.mx>.lb{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.06em;color:#4A5058;text-transform:uppercase}
+.mx>.gp{grid-column:1 / -1;background:#EEF0F2;display:flex;align-items:center;gap:8px;padding:6px 10px;border-top:1px solid #B4BAC2}
+.mx>.nw{background:#F4F5F7;border-left:1.5px dashed #C2185B;border-right:1.5px dashed #C2185B;color:#4A5058;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px}
+.mx>.nw.hd{border-top:1.5px dashed #C2185B}
+.mx>.nw.end{border-bottom:1.5px dashed #C2185B}
+.q{color:#C2185B;font-family:'IBM Plex Mono',ui-monospace,monospace}
+.cap{display:flex;gap:3px;flex-wrap:wrap}
+.cap i{font-style:normal;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;height:18px;padding:0 5px;display:inline-flex;align-items:center;border:1px solid #15171A;background:#15171A;color:#FFFFFF}
+.cap i.no{background:#FFFFFF;color:#B4BAC2;border-color:#DCE0E5;text-decoration:line-through}
+.cap i.half{background:#FFFFFF;color:#15171A}
+.step{flex:1 1 170px;background:#FFFFFF;border:1.5px dashed #C2185B;padding:12px;display:flex;flex-direction:column;gap:4px;min-width:0}
+</style>
+</helmet>
+<div class="{{rootCls}}" style="min-height: 100vh; background: #E6E8EB; color: #15171A; font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif; font-size: 14px; line-height: 20px; padding: 40px 40px 48px; display: flex; flex-direction: column; gap: 20px">
+
+<header style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px">
+<div style="flex: 1 1 520px; min-width: 0">
+<div class="cl">X1 · REFERENCE</div>
+<h1 class="cond" style="margin: 4px 0 0; font-size: 40px; line-height: 44px; font-weight: 600">Same screens, six manifests</h1>
+<p class="mu" style="margin: 8px 0 0; max-width: 760px">Every game hub uses the screens on this canvas. What changes is the data each game module supplies. This table is that data for the six games, plus the empty manifest a new game starts from.</p>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 6px; align-items: center"><span class="chip auto">M · MANIFEST</span><span class="chip auto">C · CATALOG</span><span class="chip auto">L · LIVE DATA</span><span class="chip"><span class="q">~</span>&nbsp;NOT VERIFIED YET</span><span class="chip hot">DASHED · PROPOSED</span></div>
+</header>
+
+<div style="overflow-x: auto">
+<div class="mx">
+
+<div class="hd lb">Module <span class="mk" style="margin-top: 6px">1</span></div>
+<div class="hd"><span class="cond" style="font-size: 18px; line-height: 22px; font-weight: 600">Genshin Impact</span><span class="cl">GI · 7.1</span></div>
+<div class="hd"><span class="cond" style="font-size: 18px; line-height: 22px; font-weight: 600">Honkai: Star Rail</span><span class="cl">HSR · 4.6</span></div>
+<div class="hd"><span class="cond" style="font-size: 18px; line-height: 22px; font-weight: 600">Zenless Zone Zero</span><span class="cl">ZZZ · 3.2</span></div>
+<div class="hd"><span class="cond" style="font-size: 18px; line-height: 22px; font-weight: 600">Wuthering Waves</span><span class="cl">WUWA · 3.7</span></div>
+<div class="hd"><span class="cond" style="font-size: 18px; line-height: 22px; font-weight: 600">Neverness to Everness</span><span class="cl">NTE · 1.4</span></div>
+<div class="hd"><span class="cond" style="font-size: 18px; line-height: 22px; font-weight: 600">Arknights: Endfield</span><span class="cl">AE · 1.5</span></div>
+<div class="hd nw"><span class="cond" style="font-size: 18px; line-height: 22px; font-weight: 600; color: #15171A">+ New game</span><span class="cl">from the game:new scaffold</span></div>
+
+<div class="gp"><span class="t">Manifest</span><span class="sm mu">works with manual entry</span></div>
+
+<div class="lb">Reset</div>
+<div>04:00 server · weekly Mon</div>
+<div>04:00 server · weekly Mon</div>
+<div>04:00 server · weekly Mon</div>
+<div>04:00 server · weekly Mon</div>
+<div>05:00 server · weekly Mon</div>
+<div>04:00 server · UTC+8 or UTC−5 · weekly Mon<span class="q">~</span></div>
+<div class="nw">hour · weekday · servers</div>
+
+<div class="lb">Stamina</div>
+<div>Original Resin 200 · 1 per 8 min</div>
+<div>Trailblaze Power 300 · 1 per 6 min · reserve 2,400</div>
+<div>Battery Charge 240 · 1 per 6 min · backup 2,400</div>
+<div>Waveplates 240 · 1 per 6 min · reserve 480</div>
+<div>Character Pixels 240 · 1 per 6 min</div>
+<div>Sanity 125–360 by level · 1 per 7 min 12 s</div>
+<div class="nw">name · cap · regen · reserve</div>
+
+<div class="lb">Daily</div>
+<div>4 commissions</div>
+<div>Daily Training 500</div>
+<div>Engagement 400</div>
+<div>Activity 100</div>
+<div>4 daily quests</div>
+<div>Daily missions 100<span class="q">~</span></div>
+<div class="nw">checklist items</div>
+
+<div class="lb">Weekly</div>
+<div>3 discounted bosses</div>
+<div>Echo of War ×3 · Simulated Universe</div>
+<div>Notorious Hunt ×3</div>
+<div>Weekly bosses ×3</div>
+<div>Anomaly Pilgrimage ×3 · City Stamina refill</div>
+<div class="mu">to research</div>
+<div class="nw">checklist items</div>
+
+<div class="lb">Monthly</div>
+<div>Paimon's Bargains · 1st</div>
+<div>Embers Exchange<span class="q">~</span></div>
+<div>Signal Store<span class="q">~</span></div>
+<div>Coral shop<span class="q">~</span></div>
+<div>Lost Exchange · 1st</div>
+<div class="mu">to research</div>
+<div class="nw">shops · day of month</div>
+
+<div class="lb">Endgame cycles</div>
+<div>Spiral Abyss 16th · Theater 1st · Stygian per version</div>
+<div>MoC · Pure Fiction · Apocalyptic Shadow · 6 weeks, staggered</div>
+<div>Shiyu Defense · Deadly Assault · alternate Fridays</div>
+<div>Tower of Adversity · Whimpering Wastes · 28 days</div>
+<div>Beyond the Rails · special route every 14 days</div>
+<div class="mu">to research</div>
+<div class="nw">mode · anchor date · length · rewards</div>
+
+<div class="lb">Battle pass</div>
+<div>Gnostic Hymn · 50</div>
+<div>Nameless Honor · 70</div>
+<div>New Eridu City Fund · 50</div>
+<div>Pioneer Podcast · 70</div>
+<div>Circle Bounty · 80</div>
+<div class="mu">to research</div>
+<div class="nw">name · max level · weekly XP cap</div>
+
+<div class="lb">30-day pass</div>
+<div>Blessing of the Welkin Moon</div>
+<div>Express Supply Pass</div>
+<div>Inter-Knot Membership · synced</div>
+<div>Lunite Subscription</div>
+<div>Riftcrystal Mining Permit</div>
+<div class="mu">to research</div>
+<div class="nw">name · days</div>
+
+<div class="lb">Gacha</div>
+<div>Pity 90 / 80 · 50/50</div>
+<div>Pity 90 / 80 · 50/50</div>
+<div>Pity 90 / 80 · 50/50</div>
+<div>Pity 80 / 80 · 50/50</div>
+<div>Pity 90 · no 50/50 · Arc keys</div>
+<div>500 Oroberyl per pull · pity 80<span class="q">~</span></div>
+<div class="nw">banners · pity · rates · currency</div>
+
+<div class="gp"><span class="t">Catalog</span><span class="sm mu">ownership, build sheets, planning</span></div>
+
+<div class="lb">Character</div>
+<div>Lv 90 · talents · C0–C6</div>
+<div>Lv 80 · traces · E0–E6</div>
+<div>Lv 60 · skills · M0–M6</div>
+<div>Lv 90 · forte · S0–S6</div>
+<div>Lv 80 · 4 skills · A1–A6</div>
+<div>Lv 80 · 2 skills · potential 0–6</div>
+<div class="nw">level · skills · dupes</div>
+
+<div class="lb">Gear block</div>
+<div>5 artifacts</div>
+<div>4 relics + 2 ornaments</div>
+<div>6 drive discs</div>
+<div>5 echoes · COST 12</div>
+<div>Console grid</div>
+<div>4 gear + weapon essence</div>
+<div class="nw">slots · main stats · sets</div>
+
+<div class="lb">Material costs</div>
+<div>✓ open dataset</div>
+<div>✓ open dataset</div>
+<div class="mu">— none yet</div>
+<div>✓ open dataset</div>
+<div class="mu">— none found</div>
+<div class="mu">— ownership only</div>
+<div class="nw">optional</div>
+
+<div class="gp"><span class="t">Live data</span><span class="sm mu">sync and imports</span></div>
+
+<div class="lb">Sources</div>
+<div>HoYoLAB notes and chronicle · Enka · history link</div>
+<div>HoYoLAB notes and chronicle · Enka · history link</div>
+<div>HoYoLAB notes and chronicle · Enka · history link</div>
+<div>Convene history link</div>
+<div class="mu">Manual only · terms forbid tools</div>
+<div>SKPORT token · pulls</div>
+<div class="nw">optional</div>
+
+<div class="lb" style="display: flex; align-items: center; gap: 6px">Capabilities <span class="mk">2</span></div>
+<div class="cap"><i>M</i><i>C</i><i>L</i></div>
+<div class="cap"><i>M</i><i>C</i><i>L</i></div>
+<div class="cap"><i>M</i><i class="no">C</i><i>L</i></div>
+<div class="cap"><i>M</i><i>C</i><i class="half">L</i></div>
+<div class="cap"><i>M</i><i class="no">C</i><i class="no">L</i></div>
+<div class="cap"><i>M</i><i class="half">C</i><i class="half">L</i></div>
+<div class="nw end cap"><i>M</i><i class="no">C</i><i class="no">L</i></div>
+
+</div>
+</div>
+<div class="sm mu">Outlined letters mean partial support: WuWa live data is pull history only; Endfield's catalog is ownership only and its live data covers pulls.</div>
+
+<section style="display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: center; gap: 8px"><span class="t">Adding a game</span><span class="mk">3</span><span class="chip hot">PROPOSED · ADR 0004</span></div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: stretch">
+<div class="step"><span class="cl">1 · SCAFFOLD</span><span>Run game:new. It creates the module, an empty manifest and the tests.</span></div>
+<div class="step"><span class="cl">2 · MANIFEST</span><span>Fill the New game column above, with a source link for every value.</span></div>
+<div class="step"><span class="cl">3 · CONFORMANCE</span><span>Shared tests check resets, cadences and pity math against fixtures.</span></div>
+<div class="step"><span class="cl">4 · SHIP AS M</span><span>The game appears in Add a game. Tracking is manual.</span></div>
+<div class="step"><span class="cl">5 · CATALOG, THEN LIVE</span><span>Add C and L when an open dataset or a sync route exists.</span></div>
+<div class="step"><span class="cl">6 · EACH VERSION</span><span>Refresh checklist: banners, events, endgame anchors, pass level cap.</span></div>
+</div>
+</section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"markers":{"editor":"boolean","default":true,"section":"Wireframe"},"$preview":{"width":1440,"height":1380}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const on = this.props.markers ?? true;
+    return { rootCls: on ? 'wf' : 'wf nomk' };
+  }
+}
+</script>
+</body>
+</html>

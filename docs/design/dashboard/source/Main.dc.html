@@ -1,0 +1,1069 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>All games dashboard</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600&family=Hanken+Grotesk:wght@400;500&family=IBM+Plex+Mono:wght@400;500&family=Bodoni+Moda:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050505;--card:#121212;--edge:#262626;--surface-2:#1B1B1B;--surface-3:#2A2A2A;--hairline:#474747;--hairline-strong:#8F8F8F;--ext:#5C5C5C;--text:#FAFAFA;--text-muted:#BEBEBE;--paper:#EDEDED;--on-paper:#080808;--wave:#303030;--accent:#FF2D95}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'Hanken Grotesk',sans-serif;font-weight:400}
+.cd{font-family:'Barlow Condensed',sans-serif;font-weight:500;font-variant-numeric:tabular-nums}
+.mn{font-family:'IBM Plex Mono',monospace;font-weight:400;font-variant-numeric:tabular-nums}
+.mu{color:var(--text-muted)}
+.sf{font-family:'Bodoni Moda',serif;font-weight:500}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cursor:pointer;text-align:inherit}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+*{-webkit-tap-highlight-color:transparent}
+::selection{background:var(--paper);color:var(--on-paper)}
+
+/* graphs float on the page colour, content sits on cards; both are opaque so the page pattern shows only between them */
+.pn{position:relative;box-sizing:border-box;display:flex;flex-direction:column;background:var(--bg)}
+.pn.card{background:var(--card);border:1px solid var(--edge)}
+.pn .ph{padding:0 8px}
+.pn.card .ph{padding:0 16px}
+
+/* layered parallax: only the graph area reacts to the pointer */
+.gp{position:relative;flex:1 1 auto;min-height:0;perspective:1200px;box-sizing:border-box}
+.stage{position:absolute;left:0;top:0;right:0;bottom:0;transform-style:preserve-3d;transition:transform .18s ease-out}
+.gp:hover .stage{transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg))}
+.lay{position:absolute;left:0;top:0;right:0;bottom:0;pointer-events:none;transition:transform .18s ease-out}
+.gp:hover .zR{transform:translateZ(10px) scale(.9917)}
+.gp:hover .zB{transform:translateZ(48px) scale(.96)}
+.gp:hover .zC{transform:translateZ(80px) scale(.9333)}
+.gp:hover .zD{transform:translateZ(112px) scale(.9067)}
+.gp:hover .zE{transform:translateZ(140px) scale(.8833)}
+.frm{position:absolute;left:0;top:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center}
+.cb{position:relative;flex:0 0 auto}
+.fill{position:absolute;left:0;top:0;width:100%;height:100%;display:block}
+
+/* corner marks: two opposite angles frame a floating graph, one chunky corner brace clamps a card */
+.cn{position:absolute;width:22px;height:22px;border:0 solid var(--hairline-strong);pointer-events:none}
+.cn.tl{left:-9px;top:-9px;border-top-width:2px;border-left-width:2px}
+.cn.br{right:-9px;bottom:-9px;border-bottom-width:2px;border-right-width:2px}
+.sqk{position:absolute;right:-4px;top:-4px;width:18px;height:15px;background:var(--hairline-strong);clip-path:polygon(0 0,100% 0,100% 100%,calc(100% - 6px) 100%,calc(100% - 6px) 6px,0 6px);pointer-events:none}
+
+/* headers */
+.ph{display:flex;align-items:center;gap:12px;height:40px;flex:0 0 40px;box-sizing:border-box;position:relative}
+.ph .t{position:relative;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:20px;line-height:20px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.ph .t::after{content:"";position:absolute;left:0;bottom:-6px;width:calc(100% + 16px);height:3px;background:var(--accent);clip-path:polygon(0 0,100% 0,calc(100% - 3px) 100%,0 100%)}
+.ph .sp{flex:1}
+.kq{display:inline-block;width:10px;height:10px;margin-right:8px;vertical-align:1px}
+.pps{display:flex;align-items:center;gap:4px}
+.pp{display:block;width:16px;height:4px;background:var(--hairline)}
+.pp.on{background:var(--accent)}
+.pp.s{width:8px}
+/* period switch: the label you are on sits top right, big and in front; the other waits bottom left, tucked close beneath it; one click swaps them around the loop, counter-clockwise */
+.pw{position:relative;z-index:2;align-self:flex-start;flex:0 0 160px;width:160px;height:72px;display:block}
+.po{position:absolute;left:64px;top:36px;width:0;height:0;transition:transform .7s cubic-bezier(.65,0,.25,1)}
+.pl{position:absolute;left:-36px;top:-41.6px;width:112px;height:32px;display:flex;align-items:center;justify-content:center;transition:transform .7s cubic-bezier(.65,0,.25,1)}
+.pl.p2{left:-76px;top:9.6px}
+.pl.big{z-index:2}
+.pt{position:relative;display:block;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:32px;line-height:32px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;color:var(--text-muted);transition:color .5s}
+.pt::after{content:"";position:absolute;left:0;bottom:-6px;width:calc(100% + 16px);height:3px;background:var(--hairline-strong);clip-path:polygon(0 0,100% 0,calc(100% - 3px) 100%,0 100%);transition:background-color .5s}
+.pl.big .pt{color:var(--text)}
+.pl.big .pt::after{background:var(--accent)}
+.pw:hover .pl .pt{color:var(--text)}
+/* screen strip: Overview is pinned, set apart and always full size; the games are a row of cards you can drag, the card you are on grows and takes a corner brace, any card pops up under the pointer */
+.gs{position:relative;flex:0 0 1196px;width:1196px;height:56px}
+.ga{position:absolute;left:0;top:6px;width:176px;height:44px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;background:var(--card);border:1px solid var(--edge);font-family:'IBM Plex Mono',monospace;font-size:14px;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;color:var(--text-muted);transition:background-color .2s,border-color .2s,color .2s}
+.ga:hover{background:var(--surface-2);border-color:var(--hairline);color:var(--text)}
+.ga.on{background:var(--surface-2);border-color:var(--hairline-strong);color:var(--text)}
+.ga.on::before{content:"";position:absolute;right:-3px;top:-3px;width:12px;height:10px;background:var(--hairline-strong);clip-path:polygon(0 0,100% 0,100% 100%,calc(100% - 4px) 100%,calc(100% - 4px) 4px,0 4px);pointer-events:none}
+.gv{position:absolute;left:190px;top:14px;width:1px;height:28px;background:var(--hairline)}
+.gy{position:absolute;left:196px;top:0;width:1000px;height:56px;box-sizing:border-box;padding:0 10px;overflow:hidden;cursor:grab;-webkit-user-select:none;user-select:none;touch-action:pan-y}
+.gy.drg,.gy.drg .gt{cursor:grabbing}
+.gk{display:flex;align-items:center;gap:6px;height:100%;transition:transform .45s cubic-bezier(.22,.7,.2,1)}
+.gt{position:relative;flex:0 0 auto;width:128px;height:34px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;cursor:grab;background:var(--card);border:1px solid var(--edge);font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;color:var(--text-muted);transition:width .4s cubic-bezier(.2,.8,.2,1),height .4s cubic-bezier(.2,.8,.2,1),transform .3s cubic-bezier(.34,1.5,.64,1),background-color .2s,border-color .2s,color .2s,font-size .3s,box-shadow .3s}
+.gt:hover{transform:scale(1.14);z-index:2;background:var(--surface-2);border-color:var(--hairline-strong);color:var(--text);box-shadow:0 10px 22px rgba(0,0,0,.7)}
+.gt.on{width:176px;height:44px;font-size:14px;background:var(--surface-2);border-color:var(--hairline-strong);color:var(--text)}
+.gt.on:hover{transform:scale(1.04)}
+.gt::before{content:"";position:absolute;z-index:2;right:-3px;top:-3px;width:12px;height:10px;background:var(--hairline-strong);clip-path:polygon(0 0,100% 0,100% 100%,calc(100% - 4px) 100%,calc(100% - 4px) 4px,0 4px);transform:scale(0);transform-origin:100% 0;transition:transform .3s .12s cubic-bezier(.34,1.56,.64,1);pointer-events:none}
+.gt.on::before{transform:scale(1)}
+/* game cards are pictures: the art fills the card, a flat dark layer dims the cards you are not on */
+.gi{position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;display:block}
+.gi img{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;-webkit-user-drag:none}
+.gi::after{content:"";position:absolute;left:0;top:0;right:0;bottom:0;background:var(--bg);opacity:.5;transition:opacity .3s}
+.gt:hover .gi::after,.gt.on .gi::after{opacity:0}
+@media (prefers-reduced-motion:reduce){.gk,.gt,.gt::before,.gi::after,.ga,.po,.pl,.pt,.pt::after,.cv,.cv svg,.cvl{transition:none}}
+.vw{background:var(--paper);color:var(--on-paper);font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;white-space:nowrap;padding:7px 16px 8px 12px;clip-path:polygon(0 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%)}
+.bt{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;height:28px;padding:0 12px;white-space:nowrap;color:var(--text-muted);border:1px solid var(--hairline)}
+.bt:hover{background:var(--surface-2);color:var(--text);border-color:var(--text)}
+.nv{width:64px;height:60px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;color:var(--text-muted);border-left:2px solid transparent;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.06em}
+.nv:hover{color:var(--text)}
+.nv.on{color:var(--text);border-left-color:var(--accent)}
+
+/* carousel arrows: thin chevrons inside the card edges, a hint at rest, a dark zone and the accent when pointed at */
+.cvs{position:absolute;left:0;right:0;top:40px;bottom:0;display:flex;align-items:center;justify-content:space-between;pointer-events:none}
+.cv{display:block;width:44px;height:88px;pointer-events:auto;opacity:.4;background:transparent;transition:opacity .2s,background-color .2s}
+.cv svg{display:block;transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+.pn.card:hover .cv{opacity:.8}
+.pn.card .cv:hover,.pn.card .cv:focus-visible{opacity:1;background:rgba(5,5,5,.55)}
+.cv.l:hover svg{transform:translateX(-4px)}
+.cv.r:hover svg{transform:translateX(4px)}
+.cvh{fill:none;stroke:var(--bg);stroke-opacity:.75;stroke-width:7;stroke-linecap:square;stroke-linejoin:miter}
+.cvl{fill:none;stroke:var(--text);stroke-width:2.5;stroke-linecap:square;stroke-linejoin:miter;transition:stroke .2s}
+.cv:hover .cvl,.cv:focus-visible .cvl{stroke:var(--accent)}
+
+/* labels laid over charts */
+.lb{position:absolute;font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:13px;color:var(--text-muted);white-space:nowrap}
+.lb.lh{color:var(--text);font-weight:500;font-size:15px;line-height:15px}
+.lb.lt{background:var(--paper);color:var(--on-paper);font-weight:500;font-size:15px;line-height:15px;padding:3px 7px}
+.lb.wd{font-size:12px;line-height:12px}
+.t-c{transform:translate(-50%,-50%)}
+.t-e{transform:translate(-100%,-50%)}
+.t-s{transform:translate(0,-50%)}
+.t-a{transform:translate(-50%,-100%)}
+.t-b{transform:translate(-50%,0)}
+.pct{flex:1;text-align:center;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:28px;line-height:1}
+
+/* tags and bands over pictures; urgency is a paper-white chip, never a colour */
+.tg{position:absolute;background:#000;color:var(--text);padding:8px 14px 8px 12px;display:flex;align-items:center;gap:10px;clip-path:polygon(0 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%)}
+.tip{position:absolute;pointer-events:none;white-space:nowrap;background:var(--paper);color:var(--on-paper);padding:8px 16px 9px 12px;clip-path:polygon(0 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%)}
+.dot{display:block;width:8px;height:8px;flex:0 0 8px;background:var(--paper)}
+.rs{display:flex;align-items:center;gap:8px;padding:3px 0}
+.rs.hot{padding:3px 9px}
+.hot{background:var(--paper);color:var(--on-paper)}
+.hot .dot{background:var(--on-paper)}
+.bd{position:absolute;background:var(--paper);color:var(--on-paper);padding:10px 34px 10px 18px;min-width:210px;clip-path:polygon(0 0,100% 0,calc(100% - 14px) 100%,0 100%)}
+.ct{position:relative;padding-bottom:10px}
+.ct::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:2px;background:var(--hairline);clip-path:polygon(0 0,100% 0,calc(100% - 6px) 100%,0 100%)}
+
+/* auto-rotation loading bars */
+.lbar{height:100%;width:0;background:var(--accent);animation-timing-function:linear;animation-fill-mode:forwards}
+.bar-a{animation-name:ga}
+.bar-b{animation-name:gb}
+@keyframes ga{from{width:0}to{width:100%}}
+@keyframes gb{from{width:0}to{width:100%}}
+
+/* lists */
+.rw{display:flex;align-items:center;height:34px;flex:0 0 34px;padding:0 14px 0 16px;border-top:1px solid var(--surface-3);box-sizing:border-box}
+.rw:hover{background:var(--surface-2)}
+/* list scrollbar: a square grey slider on a ruled rail, the accent when held */
+.lst{overflow-y:scroll;min-height:0;flex:1;display:flex;flex-direction:column;scrollbar-width:auto;scrollbar-color:auto}
+.lst::-webkit-scrollbar{width:12px}
+.lst::-webkit-scrollbar-track{background:linear-gradient(var(--edge),var(--edge)) 0 0/1px 100% no-repeat,repeating-linear-gradient(to bottom,transparent 0,transparent 7px,var(--hairline) 7px,var(--hairline) 8px) 4px 0/4px 100% no-repeat}
+.lst::-webkit-scrollbar-thumb{background-color:var(--hairline-strong);border:3px solid transparent;background-clip:padding-box;min-height:48px}
+.lst::-webkit-scrollbar-thumb:hover,.lst::-webkit-scrollbar-thumb:active{background-color:var(--accent)}
+.lst::-webkit-scrollbar-button{display:none;width:0;height:0}
+@supports (-moz-appearance:none){.lst{scrollbar-width:thin;scrollbar-color:var(--hairline-strong) transparent}}
+
+/* chart marks: neutral greys, the accent only on the data itself */
+.gl{fill:none;stroke:#3A3A3A;stroke-width:1}
+.dash{stroke-dasharray:3 4}
+.l0{fill:#1B1B1B;stroke:#3A3A3A;stroke-width:1}
+.l1{fill:var(--accent);fill-opacity:.34}
+.l2{fill:var(--accent);fill-opacity:.56}
+.l3{fill:var(--accent);fill-opacity:.78}
+.l4{fill:var(--accent)}
+.trk{fill:var(--surface-2);stroke:var(--hairline);stroke-width:1}
+.acf{fill:var(--accent)}
+.mk{fill:var(--paper)}
+.ar{fill:var(--text);fill-opacity:.16}
+.spf{fill:var(--paper)}
+.dia{fill:var(--hairline-strong)}
+.sgt{fill:var(--surface-3)}
+/* depth artefacts: rings, extruded back faces, reticles */
+.rg{fill:none;stroke:var(--surface-3);stroke-width:1}
+.rg.rd{stroke:var(--hairline);stroke-dasharray:2 6}
+.ns{fill:none;stroke:var(--paper);stroke-width:3}
+.ns2{fill:none;stroke:var(--bg);stroke-width:7}
+.gst{fill:var(--surface-3)}
+.seg{fill:none;stroke:var(--bg);stroke-width:2}
+.gb{fill:none;stroke:var(--hairline-strong);stroke-width:2}
+.stem{fill:none;stroke:var(--hairline-strong);stroke-width:1;stroke-dasharray:2 4}
+.mr{fill:var(--bg);stroke:var(--paper);stroke-width:3}
+.rt{fill:none;stroke:var(--accent);stroke-width:2}
+.rx{fill:none;stroke:var(--text);stroke-width:2}
+.hv{fill:none;stroke:var(--text);stroke-width:3}
+.hv2{fill:none;stroke:var(--bg);stroke-width:1.5}
+.sl{fill:none;stroke:var(--paper);stroke-width:2}
+.ghl{fill:none;stroke:var(--ext);stroke-width:4;stroke-linejoin:round}
+.gh1{fill:var(--ext)}
+.gh2{fill:var(--hairline)}
+/* selected-day readout */
+.xb{width:24px;height:24px;display:flex;align-items:center;justify-content:center;color:var(--text-muted);border:1px solid var(--hairline)}
+.xb:hover{background:var(--surface-2);color:var(--text);border-color:var(--text)}
+.dgs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(5,17px);grid-auto-flow:column;column-gap:12px;margin-top:8px}
+.dg{display:flex;align-items:center;gap:8px;min-width:0;font-size:13px;line-height:17px;color:var(--text-muted);white-space:nowrap}
+.dg i{display:block;flex:0 0 10px;width:10px;height:10px;box-sizing:border-box;border:1.5px solid var(--hairline-strong)}
+.dg.on{color:var(--text)}
+.dg.on i{background:var(--accent);border-color:var(--accent)}
+.hg,.hg:focus,.hg:focus-visible{outline:none}
+.hg,.cb{-webkit-user-select:none;user-select:none}
+</style>
+</helmet>
+<div style="width:1920px;height:1204px;display:flex;background:var(--bg);overflow:hidden;position:relative;--accent:{{accent}}">
+
+<!-- NAV -->
+<nav aria-label="Primary" style="width:72px;flex:0 0 72px;height:1204px;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;padding:16px 0;gap:6px">
+<div aria-hidden="true" style="width:40px;height:40px;margin-bottom:22px;background:var(--accent);clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%)"></div>
+<button class="nv on" aria-label="Dashboard, all games"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 2h6v6H2zM10 2h6v6h-6zM2 10h6v6H2zM10 10h6v6h-6z" style="fill:none;stroke:currentColor;stroke-width:1.5"></path></svg><span>ALL</span></button>
+<button class="nv" aria-label="Games"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M9 1.5L16.5 9L9 16.5L1.5 9z" style="fill:none;stroke:currentColor;stroke-width:1.5"></path></svg><span>GAMES</span></button>
+<button class="nv" aria-label="Tasks and goals"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M9 2L16.5 16H1.5z" style="fill:none;stroke:currentColor;stroke-width:1.5"></path></svg><span>TASKS</span></button>
+<button class="nv" aria-label="Banners and events"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 3h14v12H2zM2 7h14" style="fill:none;stroke:currentColor;stroke-width:1.5"></path></svg><span>BANNERS</span></button>
+<div style="flex:1"></div>
+<button class="nv" aria-label="Settings"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 5h14M2 13h14M5 3v4M12 11v4" style="fill:none;stroke:currentColor;stroke-width:1.5"></path></svg><span>SETTINGS</span></button>
+</nav>
+
+<!-- MAIN -->
+<div style="flex:1;min-width:0;display:flex;flex-direction:column">
+
+<!-- TOP BAR -->
+<header style="height:56px;flex:0 0 56px;box-sizing:border-box;padding:0 32px;display:flex;align-items:center;gap:16px">
+<div class="gs" role="group" aria-label="Views">
+<button class="{{strip.allCls}}" aria-current="{{strip.allCur}}" onClick="{{strip.allPick}}">Overview</button>
+<i class="gv"></i>
+<div class="gy" onPointerDown="{{strip.down}}" onKeyDown="{{strip.key}}"><div class="gk" style="transform:translateX({{strip.x}}px)">
+<sc-for list="{{strip.items}}" as="tb" hint-placeholder-count="5"><button class="{{tb.cls}}" tabindex="{{tb.ti}}" aria-label="{{tb.name}}" aria-current="{{tb.cur}}" onClick="{{tb.pick}}"><span class="gi"><img src="{{tb.src}}" alt="" draggable="false" style="object-position:{{tb.pos}}"></span></button></sc-for>
+</div></div>
+</div>
+<div style="flex:1"></div>
+<sc-if value="{{view.past}}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;align-items:center;gap:12px"><span class="vw">VIEWING &#183; {{view.label}}</span><button class="bt" onClick="{{view.back}}">BACK TO TODAY</button></div>
+</sc-if>
+<span class="mn mu" style="font-size:12px;letter-spacing:.08em">2026-10-08 &#183; THU</span>
+</header>
+
+<!-- CONTENT: the same dashboard for the Overview and for every game; a game only changes the accent -->
+<div style="position:relative;display:flex;gap:24px;padding:8px 32px 32px;height:1148px;box-sizing:border-box">
+
+<!-- page pattern: faint dotted waves, visible only in the gaps between panels -->
+<svg width="1848" height="1148" viewBox="0 0 1848 1148" aria-hidden="true" style="position:absolute;left:0;top:0;pointer-events:none;opacity:{{patOp}}">
+<defs><pattern id="wv" width="160" height="56" patternUnits="userSpaceOnUse"><path d="M0 28C27 4 53 4 80 28S133 52 160 28" pathLength="160" style="fill:none;stroke:var(--wave);stroke-width:2.4;stroke-linecap:round;stroke-dasharray:.01 8;stroke-dashoffset:-4"></path></pattern></defs>
+<rect x="0" y="0" width="1848" height="1148" style="fill:url(#wv)"></rect>
+</svg>
+
+<!-- LEFT COLUMN -->
+<div style="position:relative;z-index:1;width:1232px;flex:0 0 1232px;display:flex;flex-direction:column;gap:24px">
+
+<!-- ROW A -->
+<div style="display:flex;gap:24px;height:476px;flex:0 0 476px">
+
+<!-- DAILIES DONUT -->
+<section class="pn" style="width:496px;flex:0 0 496px;height:476px">
+<div class="ph"><button class="pw" aria-label="{{psw.aria}}" onClick="{{psw.flip}}">
+<span class="po" style="transform:scaleY(.625) rotate({{psw.rot}}deg)"><span class="{{psw.c1}}" style="transform:rotate({{psw.cr}}deg) scaleY(1.6) scale({{psw.s1}})"><span class="pt">DAILY</span></span><span class="{{psw.c2}}" style="transform:rotate({{psw.cr}}deg) scaleY(1.6) scale({{psw.s2}})"><span class="pt">WEEKLY</span></span></span>
+</button></div>
+<div class="gp" onMouseMove="{{tiltMove}}" onMouseLeave="{{tiltLeave}}">
+<div class="stage">
+<div class="lay zR"><svg class="fill" viewBox="0 0 496 436" aria-hidden="true"><circle cx="248" cy="218" r="206" class="rg"></circle><circle cx="248" cy="218" r="216" class="rg rd"></circle><circle cx="256" cy="226" r="119" style="fill:none;stroke:var(--surface-2);stroke-width:22"></circle></svg></div>
+<div class="lay zB"><div class="frm"><div class="cb" style="width:340px;height:340px">
+<svg class="fill" viewBox="0 0 400 400" aria-hidden="true"><circle cx="200" cy="200" r="192" class="gl dash"></circle><circle cx="200" cy="200" r="140" style="fill:none;stroke:var(--surface-3);stroke-width:26"></circle><path d="{{donut.arc}}" transform="translate(7 7)" style="fill:none;stroke:var(--ext);stroke-width:26"></path><circle cx="200" cy="200" r="108" style="fill:none;stroke:var(--surface-3);stroke-width:4"></circle><circle cx="200" cy="200" r="96" class="rg rd"></circle></svg>
+</div></div></div>
+<div class="lay zC"><div class="frm"><div class="cb" style="width:340px;height:340px">
+<svg class="fill" viewBox="0 0 400 400" role="img" aria-label="{{donut.aria}}"><path d="{{donut.arc}}" style="fill:none;stroke:var(--accent);stroke-width:26;stroke-linecap:butt"></path><path d="{{donut.barsOff}}" style="fill:none;stroke:var(--hairline);stroke-width:2"></path><path d="{{donut.barsOn}}" style="fill:none;stroke:var(--accent);stroke-width:2"></path><path d="{{donut.ringIn}}" style="fill:none;stroke:var(--paper);stroke-width:4"></path><path d="{{donut.tickIn}}" style="fill:none;stroke:var(--bg);stroke-width:3"></path><path d="{{donut.strip}}" class="ns2"></path><path d="{{donut.strip}}" class="ns"></path></svg>
+</div></div></div>
+<div class="lay zD"><div class="frm"><div class="cb" style="width:340px;height:340px;display:flex;flex-direction:column;align-items:center;justify-content:center">
+<div class="cd" style="font-size:80px;font-weight:600;line-height:1">{{donut.pct}}<span style="font-size:32px;font-weight:500" class="mu">%</span></div>
+<div class="mn" style="font-size:16px;margin-top:6px">{{donut.done}} / {{donut.total}}</div>
+</div></div></div>
+<div class="lay zE"><div class="frm"><div class="cb" style="width:340px;height:340px">
+<svg class="fill" viewBox="0 0 400 400" aria-hidden="true"><path d="M200 1L206 7L200 13L194 7zM399 200L393 206L387 200L393 194zM200 399L206 393L200 387L194 393zM1 200L7 206L13 200L7 194z" class="dia"></path></svg>
+</div></div></div>
+</div>
+</div>
+<i class="cn tl"></i><i class="cn br"></i>
+</section>
+
+<!-- RIGHT OF DONUT -->
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:24px">
+
+<!-- STRIP: goals donut + goal types -->
+<div style="display:flex;gap:24px;height:192px;flex:0 0 192px">
+
+<!-- GOALS DONUT -->
+<section class="pn" style="width:240px;flex:0 0 240px;height:192px">
+<div class="ph"><span class="t">GOALS</span></div>
+<div class="gp" onMouseMove="{{tiltMove}}" onMouseLeave="{{tiltLeave}}">
+<div class="stage">
+<div class="lay zR"><svg class="fill" viewBox="0 0 240 152" aria-hidden="true"><circle cx="120" cy="76" r="72" class="rg"></circle><circle cx="125" cy="81" r="48" style="fill:none;stroke:var(--surface-2);stroke-width:12"></circle></svg></div>
+<div class="lay zB"><div class="frm"><div class="cb" style="width:128px;height:128px">
+<svg class="fill" viewBox="0 0 128 128" aria-hidden="true"><circle cx="64" cy="64" r="62" class="gl dash"></circle><circle cx="64" cy="64" r="48" style="fill:none;stroke:var(--surface-3);stroke-width:12"></circle><path d="{{goals.arc}}" transform="translate(4 4)" style="fill:none;stroke:var(--ext);stroke-width:12"></path><circle cx="64" cy="64" r="38" class="gl"></circle></svg>
+</div></div></div>
+<div class="lay zC"><div class="frm"><div class="cb" style="width:128px;height:128px">
+<svg class="fill" viewBox="0 0 128 128" role="img" aria-label="{{goals.aria}}"><path d="{{goals.arc}}" style="fill:none;stroke:var(--accent);stroke-width:12;stroke-linecap:butt"></path><path d="{{goals.ring}}" style="fill:none;stroke:var(--hairline-strong);stroke-width:2"></path></svg>
+</div></div></div>
+<div class="lay zD"><div class="frm"><div class="cb" style="width:128px;height:128px;display:flex;flex-direction:column;align-items:center;justify-content:center">
+<div class="cd" style="font-size:38px;font-weight:600;line-height:1">{{goals.pct}}<span style="font-size:16px;font-weight:500" class="mu">%</span></div>
+<div class="mn" style="font-size:13px;margin-top:3px">{{goals.done}} / {{goals.total}}</div>
+</div></div></div>
+</div>
+</div>
+<i class="cn tl"></i><i class="cn br"></i>
+</section>
+
+<!-- GOAL TYPES -->
+<section class="pn" style="flex:1;min-width:0;height:192px">
+<div class="ph"><span class="t">GOAL TYPES</span></div>
+<div class="gp" onMouseMove="{{tiltMove}}" onMouseLeave="{{tiltLeave}}">
+<div class="stage">
+<div class="lay zB"><div class="frm"><div class="cb" style="width:424px;height:140px">
+<svg class="fill" viewBox="0 0 424 140" aria-hidden="true">
+<rect x="33" y="20" width="52" height="84" class="gst"></rect>
+<rect x="139" y="20" width="52" height="84" class="gst"></rect>
+<rect x="245" y="20" width="52" height="84" class="gst"></rect>
+<rect x="351" y="20" width="52" height="84" class="gst"></rect>
+<rect x="27" y="26" width="52" height="84" class="trk"></rect>
+<rect x="133" y="26" width="52" height="84" class="trk"></rect>
+<rect x="239" y="26" width="52" height="84" class="trk"></rect>
+<rect x="345" y="26" width="52" height="84" class="trk"></rect>
+</svg>
+</div></div></div>
+<div class="lay zC"><div class="frm"><div class="cb" style="width:424px;height:140px">
+<svg class="fill" viewBox="0 0 424 140" role="img" aria-label="{{cats.aria}}">
+<rect x="28" y="{{cats.b0.y}}" width="50" height="{{cats.b0.h}}" class="acf"></rect>
+<rect x="134" y="{{cats.b1.y}}" width="50" height="{{cats.b1.h}}" class="acf"></rect>
+<rect x="240" y="{{cats.b2.y}}" width="50" height="{{cats.b2.h}}" class="acf"></rect>
+<rect x="346" y="{{cats.b3.y}}" width="50" height="{{cats.b3.h}}" class="acf"></rect>
+<rect x="28" y="{{cats.b0.y}}" width="50" height="4" class="mk"></rect>
+<rect x="134" y="{{cats.b1.y}}" width="50" height="4" class="mk"></rect>
+<rect x="240" y="{{cats.b2.y}}" width="50" height="4" class="mk"></rect>
+<rect x="346" y="{{cats.b3.y}}" width="50" height="4" class="mk"></rect>
+<path d="M27 89H79M27 68H79M27 47H79M133 89H185M133 68H185M133 47H185M239 89H291M239 68H291M239 47H291M345 89H397M345 68H397M345 47H397" class="seg"></path>
+</svg>
+</div></div></div>
+<div class="lay zD"><div class="frm"><div class="cb" style="width:424px;height:140px">
+<div style="position:absolute;left:0;top:-2px;width:424px;display:flex"><div class="pct">{{cats.b0.p}}%</div><div class="pct">{{cats.b1.p}}%</div><div class="pct">{{cats.b2.p}}%</div><div class="pct">{{cats.b3.p}}%</div></div>
+<div style="position:absolute;left:0;top:122px;width:424px;display:flex"><div class="mn mu" style="flex:1;text-align:center;font-size:12px">CHARACTER</div><div class="mn mu" style="flex:1;text-align:center;font-size:12px">GEAR</div><div class="mn mu" style="flex:1;text-align:center;font-size:12px">WEAPONS</div><div class="mn mu" style="flex:1;text-align:center;font-size:12px">GAMEPLAY</div></div>
+</div></div></div>
+</div>
+</div>
+<i class="cn tl"></i><i class="cn br"></i>
+</section>
+
+</div>
+
+<!-- CHARTS -->
+<div style="display:flex;gap:24px;flex:1;min-height:0">
+
+<!-- BACKLOG -->
+<section class="pn" style="flex:1;min-width:0;height:260px">
+<div class="ph"><span class="t">BACKLOG</span></div>
+<div class="gp" onMouseMove="{{tiltMove}}" onMouseLeave="{{tiltLeave}}">
+<div class="stage">
+<div class="lay zR"><svg class="fill" viewBox="0 0 344 220" aria-hidden="true"><circle cx="172" cy="112" r="96" class="rg"></circle><circle cx="172" cy="112" r="106" class="rg rd"></circle></svg></div>
+<div class="lay zB"><div class="frm"><div class="cb" style="width:328px;height:208px">
+<svg class="fill" viewBox="0 0 328 208" aria-hidden="true"><path d="{{bk.grid}}" class="gl"></path><path d="M40 28V168H304" class="gb"></path></svg>
+<sc-for list="{{bk.axis}}" as="lb" hint-placeholder-count="9"><span class="{{lb.cls}}" style="left:{{lb.x}}px;top:{{lb.y}}px">{{lb.t}}</span></sc-for>
+</div></div></div>
+<div class="lay zC"><div class="frm"><div class="cb" style="width:328px;height:208px">
+<svg class="fill" viewBox="0 0 328 208" role="img" aria-label="{{bk.aria}}"><path d="{{bk.area}}" class="ar"></path><polyline points="{{bk.line}}" transform="translate(0 6)" class="ghl"></polyline><path d="{{bk.stems}}" class="stem"></path><polyline points="{{bk.line}}" style="fill:none;stroke:var(--accent);stroke-width:4;stroke-linejoin:round"></polyline></svg>
+</div></div></div>
+<div class="lay zD"><div class="frm"><div class="cb" style="width:328px;height:208px">
+<svg class="fill" viewBox="0 0 328 208" aria-hidden="true"><path d="{{bk.rings}}" class="mr"></path><path d="{{bk.ret}}" class="rt"></path><path d="{{bk.cross}}" class="rx"></path></svg>
+<sc-for list="{{bk.vals}}" as="lb" hint-placeholder-count="7"><span class="{{lb.cls}}" style="left:{{lb.x}}px;top:{{lb.y}}px">{{lb.t}}</span></sc-for>
+</div></div></div>
+</div>
+</div>
+<i class="cn tl"></i><i class="cn br"></i>
+</section>
+
+<!-- PULL HISTORY -->
+<section class="pn" style="flex:1;min-width:0;height:260px">
+<div class="ph"><span class="t">PULL HISTORY</span><span class="sp"></span><span class="mn mu" style="font-size:12px;letter-spacing:.08em;white-space:nowrap"><i class="kq" style="background:var(--accent)"></i>GAINED<i class="kq" style="background:var(--paper);margin-left:16px"></i>SPENT</span></div>
+<div class="gp" onMouseMove="{{tiltMove}}" onMouseLeave="{{tiltLeave}}">
+<div class="stage">
+<div class="lay zR"><svg class="fill" viewBox="0 0 344 220" aria-hidden="true"><circle cx="172" cy="112" r="96" class="rg"></circle><circle cx="172" cy="112" r="106" class="rg rd"></circle></svg></div>
+<div class="lay zB"><div class="frm"><div class="cb" style="width:328px;height:208px">
+<svg class="fill" viewBox="0 0 328 208" aria-hidden="true"><path d="{{fl.grid}}" class="gl"></path><path d="M40 28V168H304" class="gb"></path><path d="{{fl.spent}}" transform="translate(5 -5)" class="gh2"></path><path d="{{fl.gained}}" transform="translate(5 -5)" class="gh1"></path></svg>
+<sc-for list="{{fl.axis}}" as="lb" hint-placeholder-count="9"><span class="{{lb.cls}}" style="left:{{lb.x}}px;top:{{lb.y}}px">{{lb.t}}</span></sc-for>
+</div></div></div>
+<div class="lay zC"><div class="frm"><div class="cb" style="width:328px;height:208px">
+<svg class="fill" viewBox="0 0 328 208" role="img" aria-label="{{fl.aria}}"><path d="{{fl.spent}}" class="spf"></path><path d="{{fl.gained}}" class="acf"></path><path d="{{fl.gcap}}" class="mk"></path></svg>
+</div></div></div>
+<div class="lay zD"><div class="frm"><div class="cb" style="width:328px;height:208px">
+<sc-for list="{{fl.vals}}" as="lb" hint-placeholder-count="12"><span class="{{lb.cls}}" style="left:{{lb.x}}px;top:{{lb.y}}px">{{lb.t}}</span></sc-for>
+</div></div></div>
+</div>
+</div>
+<i class="cn tl"></i><i class="cn br"></i>
+</section>
+
+</div>
+</div>
+</div>
+
+<!-- ROW C: CAROUSELS, on cards -->
+<div style="display:flex;gap:36px;height:352px;flex:0 0 352px">
+
+<!-- DAILIES AND WEEKLIES -->
+<section class="pn card" style="flex:1;min-width:0;height:352px">
+<div class="ph"><span class="t">DAILIES &amp; WEEKLIES</span><span class="sp"></span><div class="pps" role="img" aria-label="{{rec.idx}}"><sc-for list="{{rec.pips}}" as="pp" hint-placeholder-count="5"><i class="{{pp.cls}}"></i></sc-for></div></div>
+<div style="flex:1;min-height:0;display:flex;flex-direction:column;gap:18px;padding:10px 16px 18px">
+<div style="display:flex;justify-content:space-between;align-items:center"><span class="cd" style="font-size:32px;font-weight:600;letter-spacing:.04em">{{rec.game}}</span><span class="rs {{rec.rsc}}"><i class="dot"></i><span class="mn" style="font-size:13px">{{rec.reset}}</span></span></div>
+<div style="display:flex;gap:36px;align-items:center;flex:1;min-height:0;padding:0 12px">
+<div style="position:relative;width:176px;height:176px;flex:0 0 176px">
+<svg viewBox="0 0 140 140" width="176" height="176" role="img" aria-label="{{rec.aria}}" style="display:block"><circle cx="70" cy="70" r="67" class="gl dash"></circle><circle cx="70" cy="70" r="56" style="fill:none;stroke:var(--surface-3);stroke-width:14"></circle><path d="{{rec.arc}}" transform="translate(4 4)" style="fill:none;stroke:var(--ext);stroke-width:14"></path><path d="{{rec.arc}}" style="fill:none;stroke:var(--accent);stroke-width:14;stroke-linecap:butt"></path><circle cx="70" cy="70" r="44" class="gl"></circle></svg>
+<div style="position:absolute;left:0;top:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center"><div class="cd" style="font-size:38px;font-weight:600;line-height:1">{{rec.pct}}<span class="mu" style="font-size:16px;font-weight:500">%</span></div></div>
+</div>
+<div style="flex:1;min-width:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 28px">
+<div class="ct"><div class="mn mu" style="font-size:12px">DAILIES</div><div class="cd" style="font-size:44px;font-weight:600;line-height:1.1">{{rec.k0.d}}<span class="mu" style="font-size:22px;font-weight:500"> / {{rec.k0.t}}</span></div></div>
+<div class="ct"><div class="mn mu" style="font-size:12px">DAILY TASKS</div><div class="cd" style="font-size:44px;font-weight:600;line-height:1.1">{{rec.k1.d}}<span class="mu" style="font-size:22px;font-weight:500"> / {{rec.k1.t}}</span></div></div>
+<div class="ct"><div class="mn mu" style="font-size:12px">WEEKLIES</div><div class="cd" style="font-size:44px;font-weight:600;line-height:1.1">{{rec.k2.d}}<span class="mu" style="font-size:22px;font-weight:500"> / {{rec.k2.t}}</span></div></div>
+<div class="ct"><div class="mn mu" style="font-size:12px">WEEKLY TASKS</div><div class="cd" style="font-size:44px;font-weight:600;line-height:1.1">{{rec.k3.d}}<span class="mu" style="font-size:22px;font-weight:500"> / {{rec.k3.t}}</span></div></div>
+</div>
+</div>
+</div>
+<i class="sqk"></i>
+<div class="cvs"><button class="cv l" aria-label="Previous game" onClick="{{rec.prev}}"><svg width="44" height="88" viewBox="0 0 44 88" aria-hidden="true"><path d="M22 30L12 44L22 58" class="cvh"></path><path d="M22 30L12 44L22 58" class="cvl"></path></svg></button><button class="cv r" aria-label="Next game" onClick="{{rec.next}}"><svg width="44" height="88" viewBox="0 0 44 88" aria-hidden="true"><path d="M22 30L32 44L22 58" class="cvh"></path><path d="M22 30L32 44L22 58" class="cvl"></path></svg></button></div>
+</section>
+
+<!-- BATTLE PASS -->
+<section class="pn card" style="flex:1;min-width:0;height:352px">
+<div class="ph"><span class="t">BATTLE PASS</span><span class="sp"></span><div class="pps" role="img" aria-label="{{bp.idx}}"><sc-for list="{{bp.pips}}" as="pp" hint-placeholder-count="5"><i class="{{pp.cls}}"></i></sc-for></div></div>
+<div style="position:absolute;left:0;top:40px;right:0;bottom:0;overflow:hidden;background:var(--surface-2)">
+<img src="{{bp.src}}" alt="{{bp.alt}}" style="position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;display:block">
+<div style="position:absolute;left:0;top:0;width:100%;height:100%;background:var(--bg);opacity:.4"></div>
+<div style="position:absolute;left:0;right:0;bottom:0;height:4px;background:var(--hairline)"><div class="lbar {{bp.barCls}}" style="animation-duration:{{bp.dur}}ms"></div></div>
+</div>
+<div class="tg {{bp.tgc}}" style="right:16px;top:56px"><i class="dot"></i><span class="mn" style="font-size:13px;letter-spacing:.06em">ENDS IN {{bp.ends}}</span></div>
+<div class="bd" style="left:0;bottom:28px"><div class="cd" style="font-size:26px;font-weight:600;line-height:1.1;letter-spacing:.04em">{{bp.game}}</div><div class="mn" style="font-size:12px;margin-top:3px;letter-spacing:.06em">{{bp.season}}</div></div>
+<div class="tg" style="right:16px;bottom:28px;flex-direction:column;align-items:flex-start;gap:6px;padding:8px 20px 10px 14px"><div style="display:flex;align-items:baseline;gap:8px"><span class="mn mu" style="font-size:12px">LEVEL</span><span class="cd" style="font-size:28px;font-weight:600;line-height:1.1">{{bp.level}}<span class="mu" style="font-size:16px;font-weight:500"> / {{bp.max}}</span></span></div><svg viewBox="0 0 144 8" width="144" height="8" role="img" aria-label="{{bp.aria}}" style="display:block"><path d="{{bp.track}}" class="sgt"></path><path d="{{bp.fill}}" class="acf"></path></svg></div>
+<i class="sqk"></i>
+<div class="cvs"><button class="cv l" aria-label="Previous battle pass" onClick="{{bp.prev}}"><svg width="44" height="88" viewBox="0 0 44 88" aria-hidden="true"><path d="M22 30L12 44L22 58" class="cvh"></path><path d="M22 30L12 44L22 58" class="cvl"></path></svg></button><button class="cv r" aria-label="Next battle pass" onClick="{{bp.next}}"><svg width="44" height="88" viewBox="0 0 44 88" aria-hidden="true"><path d="M22 30L32 44L22 58" class="cvh"></path><path d="M22 30L32 44L22 58" class="cvl"></path></svg></button></div>
+</section>
+
+</div>
+
+<!-- ROW B: DAILIES HISTORY, at the bottom: hover readout per day, click pins a day, no tilt -->
+<section class="pn" style="height:232px;flex:0 0 232px">
+<div class="ph"><span class="t">DAILIES, LAST 26 WEEKS</span></div>
+<div style="display:flex;align-items:center;flex:1;min-height:0;padding-left:24px">
+<div class="cb" style="width:868px;height:188px">
+<svg class="fill hg" viewBox="0 0 868 188" role="group" tabindex="0" aria-label="{{heat.aria}}" style="cursor:{{heat.cursor}}" onMouseMove="{{heat.move}}" onMouseLeave="{{heat.leave}}" onClick="{{heat.click}}" onKeyDown="{{heat.key}}" onBlur="{{heat.leave}}">
+<path d="{{heat.p0}}" class="l0"></path>
+<path d="{{heat.p1}}" class="l1"></path>
+<path d="{{heat.p2}}" class="l2"></path>
+<path d="{{heat.p3}}" class="l3"></path>
+<path d="{{heat.p4}}" class="l4"></path>
+<path d="{{heat.sfr}}" class="sl"></path>
+<path d="{{heat.hov}}" class="hv"></path>
+<path d="{{heat.hov}}" class="hv2"></path>
+</svg>
+<sc-for list="{{heat.months}}" as="lb" hint-placeholder-count="7"><span class="{{lb.cls}}" style="left:{{lb.x}}px;top:{{lb.y}}px">{{lb.t}}</span></sc-for>
+<span class="lb t-s wd" style="left:0;top:30px">MON</span>
+<span class="lb t-s wd" style="left:0;top:54px">TUE</span>
+<span class="lb t-s wd" style="left:0;top:78px">WED</span>
+<span class="lb t-s wd" style="left:0;top:102px">THU</span>
+<span class="lb t-s wd" style="left:0;top:126px">FRI</span>
+<span class="lb t-s wd" style="left:0;top:150px">SAT</span>
+<span class="lb t-s wd" style="left:0;top:174px">SUN</span>
+<sc-if value="{{heat.tip}}" hint-placeholder-val="{{ false }}">
+<div class="tip {{heat.tipPos}}" style="left:{{heat.tipX}}px;top:{{heat.tipY}}px"><div class="mn" style="font-size:11px;letter-spacing:.06em">{{heat.tipDate}}</div><div class="cd" style="font-size:24px;font-weight:600;line-height:1.1">{{heat.tipN}}<span style="font-size:15px;font-weight:500"> / {{heat.ng}} GAMES DONE</span></div></div>
+</sc-if>
+</div>
+<div style="margin-left:56px;width:268px;height:168px;position:relative">
+<sc-if value="{{heat.none}}" hint-placeholder-val="{{ true }}">
+<div style="height:168px;display:flex;flex-direction:column;justify-content:space-between">
+<div style="display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid var(--hairline);padding-bottom:6px"><span class="mn mu" style="font-size:12px">DAYS ALL DONE</span><span class="cd" style="font-size:26px;font-weight:600;line-height:1">{{heat.full}}<span class="mu" style="font-size:14px;font-weight:500"> / {{heat.days}}</span></span></div>
+<div style="display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid var(--hairline);padding-bottom:6px"><span class="mn mu" style="font-size:12px">CURRENT STREAK</span><span class="cd" style="font-size:26px;font-weight:600;line-height:1">{{heat.cur}}<span class="mu" style="font-size:14px;font-weight:500"> DAYS</span></span></div>
+<div style="display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid var(--hairline);padding-bottom:6px"><span class="mn mu" style="font-size:12px">BEST STREAK</span><span class="cd" style="font-size:26px;font-weight:600;line-height:1">{{heat.best}}<span class="mu" style="font-size:14px;font-weight:500"> DAYS</span></span></div>
+</div>
+</sc-if>
+<sc-if value="{{heat.sel}}" hint-placeholder-val="{{ false }}">
+<div role="group" aria-label="{{heat.selAria}}" style="height:168px;display:flex;flex-direction:column">
+<div style="display:flex;align-items:center;justify-content:space-between;height:24px;flex:0 0 24px"><span class="mn" style="font-size:12px;letter-spacing:.06em">{{heat.selDate}}</span><button class="xb" aria-label="Clear the selected day" onClick="{{heat.clear}}"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 1L9 9M9 1L1 9" style="fill:none;stroke:currentColor;stroke-width:1.5"></path></svg></button></div>
+<div style="display:flex;align-items:baseline;gap:8px;margin-top:6px;padding-bottom:6px;border-bottom:1px solid var(--hairline)"><span class="cd" style="font-size:36px;font-weight:600;line-height:1">{{heat.selN}}<span class="mu" style="font-size:18px;font-weight:500"> / {{heat.ng}}</span></span><span class="mn mu" style="font-size:12px">GAMES DONE</span></div>
+<div class="dgs" aria-hidden="true"><sc-for list="{{heat.rows}}" as="dr" hint-placeholder-count="5"><div class="{{dr.cls}}"><i></i><span>{{dr.name}}</span></div></sc-for></div>
+</div>
+</sc-if>
+</div>
+</div>
+<i class="cn tl"></i><i class="cn br"></i>
+</section>
+
+</div>
+
+<!-- RIGHT COLUMN, all cards -->
+<div style="position:relative;z-index:1;width:528px;flex:0 0 528px;display:flex;flex-direction:column;gap:24px">
+
+<!-- BANNERS -->
+<section class="pn card" style="height:330px;flex:0 0 330px">
+<div class="ph"><span class="t">BANNERS</span><span class="sp"></span><div class="pps" role="img" aria-label="{{ban.idx}}"><sc-for list="{{ban.pips}}" as="pp" hint-placeholder-count="10"><i class="{{pp.cls}}"></i></sc-for></div></div>
+<div style="position:absolute;left:0;top:40px;right:0;bottom:0;overflow:hidden;background:var(--surface-2)">
+<img src="{{ban.src}}" alt="{{ban.alt}}" style="position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;display:block">
+<div style="position:absolute;left:0;top:0;width:100%;height:100%;background:var(--bg);opacity:.4"></div>
+<div style="position:absolute;left:0;right:0;bottom:0;height:4px;background:var(--hairline)"><div class="lbar {{ban.barCls}}" style="animation-duration:{{ban.dur}}ms"></div></div>
+</div>
+<div class="tg {{ban.tgc}}" style="right:16px;top:56px"><i class="dot"></i><span class="mn" style="font-size:13px;letter-spacing:.06em">{{ban.ends}}</span></div>
+<div class="bd" style="left:0;bottom:28px"><div class="sf" style="font-size:26px;line-height:1.1">{{ban.title}}</div><div class="mn" style="font-size:12px;margin-top:4px;letter-spacing:.06em">{{ban.game}}</div></div>
+<i class="sqk"></i>
+<div class="cvs"><button class="cv l" aria-label="Previous banner" onClick="{{ban.prev}}"><svg width="44" height="88" viewBox="0 0 44 88" aria-hidden="true"><path d="M22 30L12 44L22 58" class="cvh"></path><path d="M22 30L12 44L22 58" class="cvl"></path></svg></button><button class="cv r" aria-label="Next banner" onClick="{{ban.next}}"><svg width="44" height="88" viewBox="0 0 44 88" aria-hidden="true"><path d="M22 30L32 44L22 58" class="cvh"></path><path d="M22 30L32 44L22 58" class="cvl"></path></svg></button></div>
+</section>
+
+<!-- PULLS -->
+<section class="pn card" style="height:400px;flex:0 0 400px">
+<div class="ph"><span class="t">PULLS</span></div>
+<div style="display:flex;align-items:flex-end;justify-content:space-between;padding:8px 16px 14px;flex:0 0 auto">
+<div class="cd" style="font-size:56px;font-weight:600;line-height:1">{{pulls.total}}</div>
+<div class="mn" style="font-size:13px;text-align:right;line-height:1.7"><div><span class="mu">LIMITED</span>&nbsp;&nbsp;{{pulls.lim}}</div><div><span class="mu">PERMANENT</span>&nbsp;&nbsp;{{pulls.per}}</div></div>
+</div>
+<div class="mn mu" style="display:flex;height:28px;flex:0 0 28px;align-items:center;padding:0 26px 0 16px;font-size:11px;letter-spacing:.06em;border-top:1px solid var(--hairline);box-sizing:border-box"><span style="flex:1">GAME</span><span style="width:100px;text-align:right">LIMITED</span><span style="width:100px;text-align:right">PERMANENT</span></div>
+<div class="lst">
+<sc-for list="{{pulls.rows}}" as="pr" hint-placeholder-count="5"><div class="rw"><span style="flex:1;font-size:15px">{{pr.name}}</span><span class="mn" style="width:100px;text-align:right;font-size:15px">{{pr.lim}}</span><span class="mn mu" style="width:100px;text-align:right;font-size:15px">{{pr.per}}</span></div></sc-for>
+</div>
+<i class="sqk"></i>
+</section>
+
+<!-- STAMINA -->
+<section class="pn card" style="height:330px;flex:0 0 330px">
+<div class="ph"><span class="t">STAMINA</span></div>
+<div class="mn mu" style="display:flex;height:28px;flex:0 0 28px;align-items:center;padding:0 26px 0 16px;font-size:11px;letter-spacing:.06em;border-top:1px solid var(--hairline);box-sizing:border-box"><span style="flex:1">GAME</span><span style="width:130px;text-align:right">CURRENT / CAP</span><span style="width:90px;text-align:right">RESERVE</span></div>
+<div class="lst">
+<sc-for list="{{stam.rows}}" as="sr" hint-placeholder-count="5"><div class="rw"><span style="flex:1;font-size:15px">{{sr.name}}</span><span class="mn" style="width:130px;text-align:right;font-size:15px">{{sr.cur}}<span class="mu" style="font-size:13px"> / {{sr.cap}}</span></span><span class="mn mu" style="width:90px;text-align:right;font-size:15px">{{sr.res}}</span></div></sc-for>
+</div>
+<i class="sqk"></i>
+</section>
+
+</div>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#FF2D95","options":["#FF2D95","#FF4A3D","#FF8A2B","#3FD6E8"],"section":"Colour"},"pattern":{"editor":"boolean","default":true,"section":"Background"},"$preview":{"width":1920,"height":1204}}'>
+class Component extends DCLogic {
+
+  // ---- the tracked games in strip order: accent, card picture, sample figures, battle pass and banners
+  roster() {
+    const A = { mifu: '/_blob/da6f45d0bf073f91ed399394e6f0a461', camille: '/_blob/d8a51ae5f32b0c3a47c152235927b6f6', yvonne: '/_blob/f341ffc970db6c8205c74946a51b0c76', beta: '/_blob/526d5d34087d0fcf1456e0a072223821' };
+    const C = { genshin: '/_blob/29c1898d457add223d4a23f9fe66f7a0', zzz: '/_blob/8129900eea7bfcf5ab5890bd446303f2', wuwa: '/_blob/3056e4ea3da24cd4d339ec133535f30d', nte: '/_blob/37a6d91029e45ec7f91ee684999ace60', endfield: '/_blob/e8b71aed5cc8a4285d97429e7816806d' };
+    // rec.k is [dailies, daily tasks, weeklies, weekly tasks], each as [done, total]; the sums match the two donuts (15 of 23, 11 of 17)
+    return [
+      { name: 'Genshin Impact', accent: '#FFAA33', card: C.genshin, pos: '50% 84%', pulls: [12, 6], stamina: [148, 200, 3],
+        banners: [{ src: A.beta, title: 'Trial Armoury', ends: 'ENDS IN 1d 22h' }, { src: A.camille, title: 'Forged Rotation', ends: 'ENDS IN 1d 22h' }],
+        bp: { season: 'SEASON 9', level: 41, max: 60, ends: '6d 18h', src: A.beta },
+        rec: { reset: 'RESETS IN 11h 47m', k: [[2, 4], [1, 1], [2, 3], [1, 1]] } },
+      { name: 'Zenless Zone Zero', accent: '#8CFF3A', card: C.zzz, pos: '50% 52%', pulls: [9, 4], stamina: [232, 240, 1],
+        banners: [{ src: A.mifu, title: 'Crimson Edict', ends: 'ENDS IN 3d 04h' }, { src: A.yvonne, title: 'Cold Signal', ends: 'ENDS IN 3d 04h' }],
+        bp: { season: 'SEASON 12', level: 67, max: 100, ends: '2d 09h', src: A.mifu },
+        rec: { reset: 'RESETS IN 02h 41m', k: [[1, 4], [1, 2], [1, 2], [0, 1]] } },
+      { name: 'Wuthering Waves', accent: '#2EE6C8', card: C.wuwa, pos: '50% 50%', pulls: [7, 11], stamina: [60, 240, 6],
+        banners: [{ src: A.camille, title: 'Tidebreaker', ends: 'ENDS IN 5d 11h' }, { src: A.yvonne, title: 'Ember Court', ends: 'ENDS IN 5d 11h' }, { src: A.mifu, title: 'Ash Vigil', ends: 'ENDS IN 8d 20h' }],
+        bp: { season: 'SEASON 3', level: 12, max: 80, ends: '17d 20h', src: A.camille },
+        rec: { reset: 'RESETS IN 08h 03m', k: [[4, 4], [1, 1], [3, 3], [1, 1]] } },
+      { name: 'NTE', accent: '#1F9BFF', card: C.nte, pos: '50% 50%', pulls: [4, 3], stamina: [90, 120, 0],
+        banners: [{ src: A.yvonne, title: 'Midnight Frequency', ends: 'ENDS IN 8d 02h' }],
+        bp: { season: 'CYCLE 22', level: 28, max: 50, ends: '9d 02h', src: A.yvonne },
+        rec: { reset: 'RESETS IN 05h 12m', k: [[1, 2], [0, 1], [1, 2], [0, 1]] } },
+      { name: 'Arknights: Endfield', accent: '#FFE600', card: C.endfield, pos: '50% 18%', pulls: [3, 8], stamina: [41, 240, 0],
+        banners: [{ src: A.beta, title: 'Afterglow Run', ends: 'ENDS IN 9d 06h' }, { src: A.mifu, title: 'Null Choir', ends: 'ENDS IN 9d 06h' }],
+        bp: { season: 'SEASON 5', level: 33, max: 90, ends: '11d 12h', src: A.beta },
+        rec: { reset: 'RESETS IN 06h 20m', k: [[3, 3], [1, 1], [1, 2], [1, 1]] } }
+    ];
+  }
+  // banner / battle pass data, one entry per game, nearest deadline first
+  games() {
+    if (!this._games) {
+      const hrs = (t) => { const d = t.match(/(\d+)d/), h = t.match(/(\d+)h/); return (d ? +d[1] * 24 : 0) + (h ? +h[1] : 0); };
+      const next = (g) => Math.min.apply(null, [hrs(g.bp.ends)].concat(g.banners.map((b) => hrs(b.ends))));
+      this._games = this.roster().map((r) => Object.assign({}, r, { name: r.name.toUpperCase() })).sort((a, b) => next(a) - next(b));
+    }
+    return this._games;
+  }
+  // a game with more banners stays longer overall, but each of its banners is shown for less time
+  slot(g) { return 6000 + 3000 * (g.banners.length - 1); }
+  per(g) { return this.slot(g) / g.banners.length; }
+  cur() { return Object.assign({ gi: 0, bi: 0, sk: 0, gk: 0, sv: -1, gs: 0 }, this.state || {}); }
+  arm(gi) {
+    clearTimeout(this._t);
+    const G = this.games();
+    this._t = setTimeout(() => this.step(1), this.per(G[gi]));
+  }
+  step(dir) {
+    const s = this.cur(), G = this.games();
+    let gi = s.gi, bi = s.bi, gk = s.gk;
+    if (dir > 0) {
+      if (bi + 1 < G[gi].banners.length) bi++;
+      else { gi = (gi + 1) % G.length; bi = 0; gk++; }
+    } else {
+      if (bi > 0) bi--;
+      else { gi = (gi - 1 + G.length) % G.length; bi = G[gi].banners.length - 1; gk++; }
+    }
+    this.setState({ gi, bi, gk, sk: s.sk + 1 });
+    this.arm(gi);
+  }
+  jump(dir) {
+    const s = this.cur(), G = this.games();
+    const gi = (s.gi + dir + G.length) % G.length;
+    this.setState({ gi, bi: 0, gk: s.gk + 1, sk: s.sk + 1 });
+    this.arm(gi);
+  }
+  // which screen is showing: -1 is the Overview, otherwise a game; every screen is the same dashboard, so the rotation never stops
+  goScope(p) {
+    if (p === this.cur().sv) return;
+    this.setState({ sv: p });
+  }
+  // ---- games row: 128px cards with a 6px gap, the card you are on is 48px wider, seven cards in view
+  railOff(k, sv) { return k * 134 + (sv >= 0 && sv < k ? 48 : 0); }
+  // the start position nearest to rail offset o, carried a little further by the release speed rv (px per ms)
+  railSnap(o, sv, rv) {
+    const p = o + rv * 160, last = Math.max(0, this.games().length - 7);
+    let best = 0;
+    for (let k = 1; k <= last; k++) if (Math.abs(p - this.railOff(k, sv)) < Math.abs(p - this.railOff(best, sv))) best = k;
+    return best;
+  }
+  // drag the games row: it follows the pointer, gives a little at the ends and settles on a card when let go
+  dragDown(e) {
+    if (e.button > 0) return;
+    const s = this.cur(), o = this.railOff(s.gs, s.sv);
+    this._moved = false;
+    this._dr = { x0: e.clientX, x: e.clientX, t: performance.now(), v: 0, o, o0: o, sv: s.sv, id: e.pointerId, host: e.currentTarget, el: e.currentTarget.firstElementChild, on: false };
+    if (!this._dm) { this._dm = (ev) => this.dragMove(ev); this._du = () => this.dragEnd(); }
+    window.addEventListener('pointermove', this._dm);
+    window.addEventListener('pointerup', this._du);
+    window.addEventListener('pointercancel', this._du);
+  }
+  dragMove(ev) {
+    const d = this._dr;
+    if (!d) return;
+    if (ev.pointerType === 'mouse' && ev.buttons === 0) { this.dragEnd(); return; }
+    const dx = ev.clientX - d.x0;
+    if (!d.on) {
+      if (Math.abs(dx) < 5) return;
+      d.on = true; this._moved = true;
+      d.el.style.transition = 'none';
+      d.host.classList.add('drg');
+      try { d.host.setPointerCapture(d.id); } catch (err) { /* the window listeners still follow the pointer */ }
+    }
+    const now = performance.now();
+    if (now > d.t) d.v = 0.7 * d.v + 0.3 * ((ev.clientX - d.x) / (now - d.t));
+    d.x = ev.clientX; d.t = now;
+    const hi = Math.max(0, this.railOff(this.games().length - 7, d.sv));
+    let o = d.o0 - dx;
+    if (o < 0) o *= 0.35; else if (o > hi) o = hi + (o - hi) * 0.35;
+    d.o = o;
+    d.el.style.transform = 'translateX(' + (-o) + 'px)';
+  }
+  dragEnd() {
+    const d = this._dr;
+    window.removeEventListener('pointermove', this._dm);
+    window.removeEventListener('pointerup', this._du);
+    window.removeEventListener('pointercancel', this._du);
+    this._dr = null;
+    if (!d || !d.on) return;
+    d.host.classList.remove('drg');
+    try { d.host.releasePointerCapture(d.id); } catch (err) { /* already released */ }
+    const k = this.railSnap(d.o, d.sv, -d.v);
+    d.el.style.transition = '';
+    d.el.style.transform = 'translateX(' + (-this.railOff(k, d.sv)) + 'px)';
+    this.setState({ gs: k });
+    setTimeout(() => { this._moved = false; }, 60);
+  }
+  // the arrow keys move the row by one card
+  railKey(e) {
+    const k = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+    if (!k) return;
+    e.preventDefault();
+    this.setState({ gs: Math.max(0, Math.min(this.games().length - 7, this.cur().gs + k)) });
+  }
+  componentDidMount() { this.arm(this.cur().gi); }
+  componentWillUnmount() { clearTimeout(this._t); this.dragEnd(); }
+
+renderVals() {
+  const st = Object.assign({ period: 'daily', hover: -1, sel: -1, gi: 0, bi: 0, sk: 0, gk: 0, sv: -1, pw: 0, gs: 0 }, this.state || {});
+  const set = (o) => this.setState(o);
+  const R = this.roster();
+  const daily = st.period === 'daily';
+  const pad = (n) => String(n).padStart(2, '0');
+  const DAY = 86400000;
+  const TODAY = Date.UTC(2026, 9, 8);
+  const md = (t) => { const d = new Date(t); return pad(d.getUTCMonth() + 1) + '-' + pad(d.getUTCDate()); };
+  const iso = (t) => { const d = new Date(t); return d.getUTCFullYear() + '-' + pad(d.getUTCMonth() + 1) + '-' + pad(d.getUTCDate()); };
+  // ISO week number of a day
+  const isoWk = (t) => {
+    const d = new Date(t);
+    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+    return Math.ceil(((d.getTime() - Date.UTC(d.getUTCFullYear(), 0, 1)) / DAY + 1) / 7);
+  };
+  const cl = (v, a, b) => Math.max(a, Math.min(b, v));
+  const wrap = (i, n) => ((i % n) + n) % n;
+  const f1 = (v) => +v.toFixed(1);
+  const rp = (x, y, w, h) => 'M' + f1(x) + ' ' + f1(y) + 'h' + f1(w) + 'v' + f1(h) + 'h' + f1(-w) + 'z';
+  const LB = (cls, x, y, t) => ({ cls: 'lb ' + cls, x: f1(x), y: f1(y), t: String(t) });
+  // counter-clockwise arc starting at 12 o'clock
+  const arcD = (cx, cy, r, pct) => {
+    if (pct <= 0) return '';
+    const p = Math.min(pct, 99.99);
+    const a = (p / 100) * 2 * Math.PI;
+    const x = cx - r * Math.sin(a), y = cy - r * Math.cos(a);
+    return 'M ' + cx + ' ' + (cy - r) + ' A ' + r + ' ' + r + ' 0 ' + (p > 50 ? 1 : 0) + ' 0 ' + x.toFixed(2) + ' ' + y.toFixed(2);
+  };
+  const pt = (deg, r) => { const a = (deg - 90) * Math.PI / 180; return { x: f1(200 + r * Math.cos(a)), y: f1(200 + r * Math.sin(a)) }; };
+  // circle as a closed path
+  const cp = (x, y, r) => 'M' + f1(x - r) + ' ' + f1(y) + 'a' + r + ' ' + r + ' 0 1 0 ' + f1(2 * r) + ' 0a' + r + ' ' + r + ' 0 1 0 ' + f1(-2 * r) + ' 0z';
+
+  // ring of thin radial strips, counter-clockwise from 12 o'clock: lit up to the current status and rising exponentially over the last few strips, short and dim beyond it
+  const barsRing = (cx, cy, r0, n, pct, hBase, hMax, tau) => {
+    const step = 360 / n;
+    const now = Math.min(Math.max(pct, 0), 99.99) / 100 * 360;   // angle of the current status
+    const back = Math.floor(now / step);                         // lit strips behind the status strip
+    let off = '', lit = '';
+    for (let j = -back; j < n - back; j++) {
+      const deg = now + j * step;
+      const on = pct > 0 && j <= 0;
+      const h = on ? hBase + (hMax - hBase) * Math.exp(j / tau) : hBase;   // j <= 0: each strip behind the status loses a constant share of the rise
+      const a = deg * Math.PI / 180;
+      const seg = 'M' + f1(cx - r0 * Math.sin(a)) + ' ' + f1(cy - r0 * Math.cos(a)) + 'L' + f1(cx - (r0 + h) * Math.sin(a)) + ' ' + f1(cy - (r0 + h) * Math.cos(a));
+      if (on) lit += seg; else off += seg;
+    }
+    return { off, lit };
+  };
+
+  // parallax tilt, graph areas only (CSS variables, no re-render)
+  const tiltMove = (e) => {
+    const el = e.currentTarget;
+    const r = el.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5;
+    const y = (e.clientY - r.top) / r.height - 0.5;
+    el.style.setProperty('--ry', (x * 16).toFixed(2) + 'deg');
+    el.style.setProperty('--rx', (-y * 14).toFixed(2) + 'deg');
+  };
+  const tiltLeave = (e) => {
+    const el = e.currentTarget;
+    el.style.setProperty('--ry', '0deg');
+    el.style.setProperty('--rx', '0deg');
+  };
+
+  // ---- calendar data and the date context: the pinned day drives the whole dashboard
+  const COLS = 26, CW = 28, CH = 20, SX = 32, SY = 24, HX = 36, HY = 20;
+  const GN = R.map((r) => r.name);
+  const NG = GN.length;   // games tracked
+  const WD = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+  const dow = (new Date(TODAY).getUTCDay() + 6) % 7;
+  const startT = TODAY - (25 * 7 + dow) * DAY;
+  const tIdx = 25 * 7 + dow;
+  const hh = (i) => { const x = Math.sin(i * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+  // today: the games whose dailies and daily tasks are all done in the figures further down
+  const TD = R.map((r, k) => (r.rec.k[0][0] === r.rec.k[0][1] && r.rec.k[1][0] === r.rec.k[1][1] ? k : -1)).filter((k) => k >= 0);
+  const acedOf = (i) => {
+    if (i === tIdx) return TD.length;
+    if (i >= tIdx - 5 && i < tIdx) return NG;
+    if (i >= tIdx - 70 && i < tIdx - 58) return NG;   // an earlier run of twelve full days
+    const v = hh(i);
+    return v < 0.06 ? 0 : Math.min(NG, Math.round(1 + v * 4.4));
+  };
+  const lvl = (n) => n === 0 ? 0 : (n / NG <= 0.33 ? 1 : (n / NG <= 0.66 ? 2 : (n < NG ? 3 : 4)));
+  // which games were done on a given day: the n best-ranked games for that day
+  const doneOn = (i, n) => i === tIdx ? TD : GN.map((_, k) => k).sort((a, b) => hh(i * 31 + a) - hh(i * 31 + b)).slice(0, n);
+  const viewIdx = st.sel >= 0 && st.sel < tIdx ? st.sel : tIdx;   // today, unless an earlier day is pinned
+  const past = viewIdx < tIdx;
+  const ago = tIdx - viewIdx;                                     // days between the viewed day and today
+  const VT = startT + viewIdx * DAY;
+  const vr = viewIdx % 7;                                         // weekday row of the viewed day, Monday = 0
+  const vN = acedOf(viewIdx);
+  const vSet = doneOn(viewIdx, vN).map((k) => GN[k].toLowerCase());
+  const rnd = (s) => hh(viewIdx * 7.31 + s * 1.618);              // steady per-day noise, one stream per widget
+  const addDays = (s, n) => s.replace(/(\d+)d/, (m, d) => (+d + n) + 'd');
+
+  // ---- dailies donut: the viewed day's figures, today keeps the live ones
+  const dDone = past ? (vN === NG ? 23 : Math.min(22, Math.round(23 * (0.12 + 0.88 * vN / NG) * (0.86 + 0.14 * rnd(1))))) : 15;
+  const wDone = past ? Math.min(17, Math.round(17 * (0.14 + 0.86 * (vr + 1) / 7) * (0.8 + 0.2 * rnd(2)))) : 11;
+  const D = daily ? { title: 'DAILIES', done: dDone, total: 23 } : { title: 'WEEKLIES', done: wDone, total: 17 };
+  const dpctRaw = D.done / D.total * 100;
+  let tickIn = '';
+  [0, 90, 180, 270].forEach((g) => {
+    const a = pt(g, 124), b = pt(g, 156);
+    tickIn += 'M' + a.x + ' ' + a.y + 'L' + b.x + ' ' + b.y;
+  });
+  const dAng = Math.min(dpctRaw, 99.99) / 100 * 2 * Math.PI;
+  // thin strip across the ring at the end of the arc, drawn in the arc's own layer so it stays attached on hover
+  const sp = (r) => f1(200 - r * Math.sin(dAng)) + ' ' + f1(200 - r * Math.cos(dAng));
+  // thin strips around the donut: flat almost all the way round, then a steep exponential rise over the last eight or so
+  const dBars = barsRing(200, 200, 167, 144, dpctRaw, 8, 22, 2.2);
+  const donut = {
+    title: D.title, done: D.done, total: D.total, pct: Math.round(dpctRaw),
+    arc: arcD(200, 200, 140, dpctRaw), tickIn,
+    ringIn: arcD(200, 200, 108, dpctRaw),
+    barsOff: dBars.off, barsOn: dBars.lit,
+    strip: dpctRaw > 0 ? 'M' + sp(121) + 'L' + sp(159) : '',
+    aria: D.title + ' done: ' + D.done + ' of ' + D.total + ', ' + Math.round(dpctRaw) + ' percent'
+  };
+
+  // ---- goals donut, goal types
+  // goals only grow, so earlier days show fewer completed
+  const gv = [['character', 6, 10, 0.05], ['gear', 4, 12, 0.07], ['weapons', 5, 9, 0.06], ['gameplay', 7, 9, 0.04]]
+    .map((x) => [x[0], Math.max(0, x[1] - Math.round(ago * x[3])), x[2]]);
+  const gDone = gv.reduce((s, g) => s + g[1], 0), gTot = gv.reduce((s, g) => s + g[2], 0);
+  const gp = (done, tot) => Math.round(done / tot * 100);
+  const bar = (g) => { const p = gp(g[1], g[2]); const h = f1(84 * p / 100); return { p, h, y: f1(110 - h) }; };
+  const goals = {
+    pct: gp(gDone, gTot), done: gDone, total: gTot, arc: arcD(64, 64, 48, gDone / gTot * 100), ring: arcD(64, 64, 62, gDone / gTot * 100),
+    aria: 'Overall goal completion ' + gp(gDone, gTot) + ' percent'
+  };
+  const cats = {
+    b0: bar(gv[0]), b1: bar(gv[1]), b2: bar(gv[2]), b3: bar(gv[3]),
+    aria: 'Goal completion by type: ' + gv.map((g) => g[0] + ' ' + gp(g[1], g[2]) + ' percent').join(', ')
+  };
+
+  // ---- chart box 328 x 208
+  const X0 = 40, PW = 264, Y0 = 28, PH = 140;
+
+  // ---- backlog: a window of the series that ends on the viewed day (at most 10 days or 8 weeks), the scale starts at zero
+  const bkAt = (i) => i > tIdx - 7 ? [44, 46, 45, 49, 43, 40, 36][i - (tIdx - 6)] : Math.round(44 + 9 * Math.sin(i * 0.23) + 5 * Math.sin(i * 0.71 + 1.3) + 3 * (hh(i * 1.9) - 0.5));
+  const bIdx = [];
+  for (let k = daily ? 9 : 7; k >= 0; k--) { const i = viewIdx - k * (daily ? 1 : 7); if (i >= 0) bIdx.push(i); }
+  const bvals = bIdx.map(bkAt);
+  const bn = bvals.length;
+  const bTop = Math.max.apply(null, bvals);
+  const bstep = bTop <= 20 ? 5 : (bTop <= 50 ? 10 : (bTop <= 100 ? 20 : 50));
+  const bmax = Math.ceil(bTop / bstep) * bstep;
+  const bsx = (k) => f1(bn > 1 ? X0 + k * PW / (bn - 1) : X0 + PW / 2);
+  const bsy = (v) => f1(Y0 + PH * (1 - v / bmax));
+  const bpts = bvals.map((v, i) => ({ x: bsx(i), y: bsy(v), v }));
+  const bLab = (k) => daily ? md(VT - (bn - 1 - k) * DAY) : 'W' + isoWk(VT - (bn - 1 - k) * 7 * DAY);
+  let bGrid = '';
+  const bAxis = [];
+  for (let v = 0; v <= bmax; v += bstep) {
+    bGrid += 'M' + X0 + ' ' + bsy(v) + 'H' + (X0 + PW);
+    bAxis.push(LB('t-e', X0 - 10, bsy(v), v));
+  }
+  Array.from(new Set([0, 1, 2, 3].map((q) => Math.round(q * (bn - 1) / 3)))).forEach((k) => bAxis.push(LB('t-c', bsx(k), Y0 + PH + 20, bLab(k))));
+  const lastP = bpts[bn - 1];
+  const bk = {
+    grid: bGrid, axis: bAxis,
+    vals: bpts.map((p, i) => LB('t-c' + (i === bn - 1 ? ' lt' : ' lh'), p.x, p.y - (i === bn - 1 ? 26 : 18), p.v)),
+    area: 'M' + bpts[0].x + ' ' + (Y0 + PH) + bpts.map((p) => 'L' + p.x + ' ' + p.y).join('') + 'L' + lastP.x + ' ' + (Y0 + PH) + 'Z',
+    line: bpts.map((p) => p.x + ',' + p.y).join(' '),
+    stems: bpts.map((p) => 'M' + p.x + ' ' + p.y + 'V' + (Y0 + PH)).join(''),
+    rings: bpts.map((p) => cp(p.x, p.y, 6)).join(''),
+    ret: cp(lastP.x, lastP.y, 15),
+    cross: 'M' + f1(lastP.x - 24) + ' ' + lastP.y + 'H' + f1(lastP.x - 19) + 'M' + f1(lastP.x + 19) + ' ' + lastP.y + 'H' + f1(lastP.x + 24) + 'M' + lastP.x + ' ' + f1(lastP.y + 19) + 'V' + f1(lastP.y + 24),
+    aria: 'Open tasks over time, latest ' + lastP.v + ', ' + bn + ' points recorded'
+  };
+
+  // ---- pulls gained vs spent: one value per day, the window ends on the viewed day, a week is the sum of seven days
+  const gnAt = (i) => i > tIdx - 7 ? [3, 0, 5, 0, 8, 2, 6][i - (tIdx - 6)] : (hh(i * 2.3 + 9) < 0.35 ? 0 : Math.round(hh(i * 4.1 + 3) * 8));
+  const spAt = (i) => i > tIdx - 7 ? [0, 0, 0, 6, 0, 10, 0][i - (tIdx - 6)] : (hh(i * 3.7 + 5) < 0.72 ? 0 : [6, 10, 12][Math.floor(hh(i * 1.3 + 1) * 3)]);
+  const sumOver = (fn, end, len) => { let s = 0; for (let k = 0; k < len; k++) if (end - k >= 0) s += fn(end - k); return s; };
+  const FM = daily ? 7 : 6;
+  const gained = [], spent = [];
+  for (let k = 0; k < FM; k++) {
+    const end = viewIdx - (FM - 1 - k) * (daily ? 1 : 7);
+    gained.push(sumOver(gnAt, end, daily ? 1 : 7));
+    spent.push(sumOver(spAt, end, daily ? 1 : 7));
+  }
+  const fraw = Math.max.apply(null, gained.concat(spent));
+  const fstep = fraw <= 10 ? 5 : (fraw <= 50 ? 10 : 20);
+  const fmax = Math.max(2 * fstep, Math.ceil(fraw / fstep) * fstep);
+  const fy = (v) => f1(Y0 + PH * (1 - v / fmax));
+  const slot = PW / FM, bw = Math.floor(slot * 0.4);
+  let fGrid = '', gP = '', sP = '', gC = '';
+  const fAxis = [];
+  for (let v = 0; v <= fmax; v += fstep) {
+    fGrid += 'M' + X0 + ' ' + fy(v) + 'H' + (X0 + PW);
+    fAxis.push(LB('t-e', X0 - 10, fy(v), v));
+  }
+  const fcx = (k) => X0 + slot * (k + 0.5);
+  (daily ? [0, 2, 4, 6] : [0, 2, 4, 5]).forEach((k) => fAxis.push(LB('t-c', fcx(k), Y0 + PH + 20, daily ? md(VT - (FM - 1 - k) * DAY) : 'W' + isoWk(VT - (FM - 1 - k) * 7 * DAY))));
+  const fVals = [];
+  gained.forEach((g, i) => {
+    const cx = fcx(i);
+    const gh = PH * g / fmax, sh = PH * spent[i] / fmax;
+    if (gh > 0) { gP += rp(cx - bw - 1, Y0 + PH - gh, bw, gh); gC += rp(cx - bw - 1, Y0 + PH - gh, bw, 4); fVals.push(LB('t-c lh', cx - bw / 2 - 1, fy(g) - 16, g)); }
+    if (sh > 0) { sP += rp(cx + 1, Y0 + PH - sh, bw, sh); fVals.push(LB('t-c', cx + bw / 2 + 1, fy(spent[i]) - 16, spent[i])); }
+  });
+  const gSum = gained.reduce((a, b) => a + b, 0), sSum = spent.reduce((a, b) => a + b, 0);
+  const fl = {
+    grid: fGrid, axis: fAxis, vals: fVals, gained: gP, spent: sP, gcap: gC,
+    aria: 'Pulls gained ' + gSum + ' and spent ' + sSum + ' over the period'
+  };
+
+  // ---- dailies history, horizontal: 26 week columns, 7 weekday rows; hover for a readout, click to move the whole dashboard to that day, no tilt
+  const MON = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+  const cells = [];
+  const months = [];
+  let lastMonth = -1;
+  const lp = ['', '', '', '', ''];
+  for (let c = 0; c < COLS; c++) {
+    const mo = new Date(startT + c * 7 * DAY).getUTCMonth();
+    if (mo !== lastMonth) { months.push(LB('t-s', HX + c * SX, 8, MON[mo])); lastMonth = mo; }
+    for (let r = 0; r < 7; r++) {
+      const i = c * 7 + r;
+      if (i > tIdx) continue;
+      const n = acedOf(i);
+      lp[lvl(n)] += rp(HX + c * SX, HY + r * SY, CW, CH);
+      cells.push({ i, c, r, n, date: iso(startT + i * DAY) });
+    }
+  }
+  let full = 0, best = 0, run = 0;
+  cells.forEach((c) => { if (c.n === NG) { full++; run++; best = Math.max(best, run); } else run = 0; });
+  let cur = 0;
+  for (let k = cells.length - 1; k >= 0; k--) {
+    if (k === cells.length - 1 && cells[k].n < NG) continue;
+    if (cells[k].n === NG) cur++; else break;
+  }
+  const hc = st.hover >= 0 && st.hover < cells.length ? cells[st.hover] : null;
+  const sc = st.sel >= 0 && st.sel < cells.length ? cells[st.sel] : null;
+  const tipAbove = hc ? hc.r >= 3 : false;
+  const dayLabel = (c) => WD[c.r] + ' ' + c.date + (c.i === tIdx ? ' · TODAY' : '');
+  const selDone = sc ? doneOn(sc.i, sc.n) : [];
+  // the cell under the pointer, or -1 (the gaps between cells do not count)
+  const pick = (e) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - r.left) * 868 / r.width, y = (e.clientY - r.top) * 188 / r.height;
+    const c = Math.floor((x - HX) / SX), rr = Math.floor((y - HY) / SY);
+    if (c >= 0 && c < COLS && rr >= 0 && rr < 7 && ((x - HX) % SX) <= CW && ((y - HY) % SY) <= CH) {
+      const i = c * 7 + rr;
+      if (i <= tIdx) return i;
+    }
+    return -1;
+  };
+  const heat = {
+    p0: lp[0], p1: lp[1], p2: lp[2], p3: lp[3], p4: lp[4], months,
+    hov: hc ? rp(HX + hc.c * SX + 1, HY + hc.r * SY + 1, CW - 2, CH - 2) : '',
+    sfr: sc ? rp(HX + sc.c * SX - 3, HY + sc.r * SY - 3, CW + 6, CH + 6) : '',
+    tip: !!hc, tipPos: tipAbove ? 't-a' : 't-b',
+    tipX: hc ? f1(cl(HX + hc.c * SX + CW / 2, 90, 778)) : 0,
+    tipY: hc ? (tipAbove ? HY + hc.r * SY - 8 : HY + hc.r * SY + CH + 8) : 0,
+    tipDate: hc ? dayLabel(hc) : '',
+    tipN: hc ? hc.n : '', ng: NG,
+    sel: !!sc, none: !sc,
+    selDate: sc ? dayLabel(sc) : '', selN: sc ? sc.n : '',
+    rows: sc ? GN.map((name, k) => ({ name, cls: selDone.indexOf(k) >= 0 ? 'dg on' : 'dg' })) : [],
+    selAria: sc ? dayLabel(sc) + ': ' + sc.n + ' of ' + NG + ' games done. Done: ' + (selDone.map((k) => GN[k]).join(', ') || 'none') + '. Not done: ' + (GN.filter((_, k) => selDone.indexOf(k) < 0).join(', ') || 'none') + '.' : '',
+    full, days: cells.length, cur, best,
+    cursor: hc ? 'pointer' : 'default',
+    aria: 'Dailies over the last 26 weeks. ' + full + ' days with everything done, out of ' + cells.length + '. Current streak ' + cur + ' days. Click a day to see the whole dashboard as of that day; with the keyboard, use the arrow keys and Enter.',
+    move: (e) => { const idx = pick(e); if (idx !== st.hover) set({ hover: idx }); },
+    click: (e) => { const idx = pick(e); if (idx >= 0) set({ sel: idx === st.sel ? -1 : idx }); },
+    clear: () => set({ sel: -1 }),
+    leave: () => { if (st.hover !== -1) set({ hover: -1 }); },
+    key: (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        if (st.hover >= 0) { e.preventDefault(); set({ sel: st.hover === st.sel ? -1 : st.hover }); }
+        return;
+      }
+      if (e.key === 'Escape') { set({ sel: -1, hover: -1 }); return; }
+      const d = { ArrowLeft: -7, ArrowRight: 7, ArrowUp: -1, ArrowDown: 1 }[e.key];
+      if (d === undefined) return;
+      e.preventDefault();
+      set({ hover: st.hover < 0 ? cells.length - 1 : cl(st.hover + d, 0, cells.length - 1) });
+    }
+  };
+
+  // ---- dailies / weeklies, battle pass, banners: all follow the same game
+  const G = this.games();
+  const gi = wrap(st.gi, G.length);
+  const g = G[gi];
+  const rc = g.rec;
+  // as of the viewed day: a game finished that day has its dailies complete, the weeklies follow the weekday
+  const gone = vSet.indexOf(g.name.toLowerCase()) >= 0;
+  const rk = rc.k.map((x, k) => {
+    if (!past) return x;
+    if (k < 2) return gone ? [x[1], x[1]] : [Math.min(x[1] - 1, Math.floor(x[1] * rnd(100 + gi * 4 + k))), x[1]];
+    return [Math.min(x[1], Math.round(x[1] * (vr + 1) / 7 * (0.7 + 0.3 * rnd(100 + gi * 4 + k)))), x[1]];
+  });
+  const rDone = rk.reduce((s, x) => s + x[0], 0), rTot = rk.reduce((s, x) => s + x[1], 0);
+  const kk = (x) => ({ d: x[0], t: x[1] });
+  // urgency: a paper-white chip only when something ends in under two days or resets in under three hours
+  const isHot = (s) => { const d = s.match(/(\d+)d/); if (d) return +d[1] < 2; const h = s.match(/(\d+)h/); return h ? +h[1] < 3 : false; };
+  const pips = (n, a) => Array.from({ length: n }, (_, i) => ({ cls: (i === a ? 'pp on' : 'pp') + (n > 8 ? ' s' : '') }));
+  const rec = {
+    idx: (gi + 1) + ' of ' + G.length, pips: pips(G.length, gi), game: g.name, reset: past ? 'DAY CLOSED' : rc.reset,
+    rsc: !past && isHot(rc.reset) ? 'hot' : '',
+    pct: Math.round(rDone / rTot * 100), arc: arcD(70, 70, 56, rDone / rTot * 100),
+    aria: g.name + ': ' + rDone + ' of ' + rTot + ' recurring items done',
+    k0: kk(rk[0]), k1: kk(rk[1]), k2: kk(rk[2]), k3: kk(rk[3]),
+    prev: () => this.jump(-1), next: () => this.jump(1)
+  };
+  const bi = cl(st.bi, 0, g.banners.length - 1);
+  const bnr = g.banners[bi];
+  const bnEnds = past ? addDays(bnr.ends, ago) : bnr.ends;
+  let before = 0, total = 0;
+  G.forEach((x, i) => { if (i < gi) before += x.banners.length; total += x.banners.length; });
+  const bpLevel = past ? Math.max(1, g.bp.level - Math.round(ago * g.bp.level / 50)) : g.bp.level;
+  const bpEnds = past ? addDays(g.bp.ends, ago) : g.bp.ends;
+  // slanted segments, one per ten levels
+  const segN = Math.ceil(g.bp.max / 10), segGap = 4, sk = 4, segW = (140 - (segN - 1) * segGap) / segN;
+  const para = (x, w) => 'M' + f1(x + sk) + ' 0H' + f1(x + w + sk) + 'L' + f1(x + w) + ' 8H' + f1(x) + 'Z';
+  let sTrack = '', sFill = '';
+  for (let i = 0; i < segN; i++) {
+    const x = i * (segW + segGap);
+    sTrack += para(x, segW);
+    const fw = cl((bpLevel - i * 10) / 10, 0, 1) * segW;
+    if (fw > 0) sFill += para(x, fw);
+  }
+  const bp = {
+    idx: (gi + 1) + ' of ' + G.length, pips: pips(G.length, gi), game: g.name, season: g.bp.season,
+    tgc: isHot(bpEnds) ? 'hot' : '',
+    level: bpLevel, max: g.bp.max, ends: bpEnds, src: g.bp.src, alt: 'Placeholder art for ' + g.name,
+    track: sTrack, fill: sFill, aria: g.name + ' battle pass level ' + bpLevel + ' of ' + g.bp.max,
+    dur: this.slot(g), barCls: st.gk % 2 ? 'bar-b' : 'bar-a',
+    prev: () => this.jump(-1), next: () => this.jump(1)
+  };
+  const ban = {
+    idx: (before + bi + 1) + ' of ' + total, pips: pips(total, before + bi), src: bnr.src, alt: 'Placeholder banner art for ' + bnr.title,
+    tgc: isHot(bnEnds) ? 'hot' : '',
+    title: bnr.title, game: g.name, ends: bnEnds,
+    dur: this.per(g), barCls: st.sk % 2 ? 'bar-b' : 'bar-a',
+    prev: () => this.step(-1), next: () => this.step(1)
+  };
+
+  // ---- screen strip: Overview is pinned, set apart and always full size; the games are a row of cards you can drag, the one you are on is the big one
+  const strip = {
+    x: -this.railOff(st.gs, st.sv),
+    allCls: st.sv < 0 ? 'ga on' : 'ga',
+    allCur: st.sv < 0 ? 'true' : 'false',
+    allPick: () => this.goScope(-1),
+    down: (e) => this.dragDown(e),
+    key: (e) => this.railKey(e),
+    items: R.map((r, i) => ({
+      name: r.name, src: r.card, pos: r.pos,
+      cls: i === st.sv ? 'gt on' : 'gt',
+      cur: i === st.sv ? 'true' : 'false',
+      ti: i >= st.gs && i < st.gs + 7 ? '0' : '-1',
+      pick: () => { if (!this._moved) this.goScope(i); }
+    }))
+  };
+
+  // ---- period switch: the label you are on is big, one click swaps the two around the loop, always counter-clockwise
+  const psw = {
+    rot: -180 * st.pw,
+    cr: 180 * st.pw,
+    c1: daily ? 'pl big' : 'pl',
+    c2: daily ? 'pl p2' : 'pl p2 big',
+    s1: daily ? 1 : 0.625,
+    s2: daily ? 0.625 : 1,
+    aria: daily ? 'Daily view, switch to weekly' : 'Weekly view, switch to daily',
+    flip: () => set({ period: daily ? 'weekly' : 'daily', pw: st.pw + 1 })
+  };
+
+  // ---- pulls list (all rows, scrollable)
+  const PG = R.map((r) => [r.name, r.pulls[0], r.pulls[1]]);
+  // earlier days held fewer pulls
+  const pk = past ? Math.max(0.15, 1 - ago * 0.006) : 1;
+  const wob = (s) => past ? Math.round((rnd(s) - 0.5) * 4) : 0;
+  const PGv = PG.map((x, k) => [x[0], Math.max(0, Math.round(x[1] * pk) + wob(200 + k)), Math.max(0, Math.round(x[2] * pk) + wob(240 + k))]);
+  const pSorted = PGv.slice().sort((a, b) => (b[1] + b[2]) - (a[1] + a[2]));
+  const pLim = PGv.reduce((s, x) => s + x[1], 0), pPer = PGv.reduce((s, x) => s + x[2], 0);
+  const pulls = { total: pLim + pPer, lim: pLim, per: pPer, rows: pSorted.map((x) => ({ name: x[0], lim: x[1], per: x[2] })) };
+
+  // ---- stamina list (all rows, scrollable)
+  const SG = R.map((r) => [r.name, r.stamina[0], r.stamina[1], r.stamina[2]]);
+  // stamina on the viewed day: any fraction of the cap
+  const SGv = SG.map((x, k) => [x[0], past ? Math.round(x[2] * (0.12 + 0.88 * rnd(400 + k))) : x[1], x[2], past ? Math.max(0, Math.round(x[3] * pk) + (rnd(450 + k) > 0.6 ? 1 : 0)) : x[3]]);
+  const sSorted = SGv.slice().sort((a, b) => (b[1] / b[2]) - (a[1] / a[2]));
+  const stam = { rows: sSorted.map((x) => ({ name: x[0], cur: x[1], cap: x[2], res: x[3] })) };
+
+  // the date context shown in the top bar while an earlier day is pinned
+  const view = { past, label: WD[vr] + ' ' + iso(VT), back: () => set({ sel: -1 }) };
+
+  // tweaks: the Overview's accent colour, and the page pattern on or off; a game's screen takes that game's accent
+  const accent = st.sv >= 0 ? R[st.sv].accent : (this.props.accent ?? '#FF2D95');
+  const patOp = this.props.pattern === false ? 0 : 1;
+
+  return {
+    psw, tiltMove, tiltLeave, accent, patOp,
+    strip, view, donut, goals, cats, bk, fl, heat, rec, bp, ban, pulls, stam
+  };
+}
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Calendar: banners, events and cycles</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans+Condensed:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#15171A}a:hover{color:#4A5058}
+.mono{font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace}
+.cond{font-family:'IBM Plex Sans Condensed','Arial Narrow',sans-serif}
+.rail{flex:0 0 72px;display:flex;flex-direction:column;gap:4px;padding:16px 0;background:#FFFFFF;border-right:1px solid #B4BAC2}
+.logo{width:32px;height:32px;margin:0 auto 16px;background:#15171A}
+.ri{height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.06em;text-decoration:none;color:#4A5058;border-left:3px solid transparent}
+.ri.on{color:#15171A;border-left-color:#15171A;background:#EEF0F2}
+.ic{width:20px;height:20px;border:1.5px solid currentColor}
+.fill{flex:1 1 0}
+.main{flex:999 1 560px;min-width:0;display:flex;flex-direction:column}
+.top{min-height:56px;display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:10px 24px;background:#FFFFFF;border-bottom:1px solid #B4BAC2}
+.scope{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.sc{height:36px;min-width:44px;padding:0 10px;display:inline-flex;align-items:center;justify-content:center;border:1px solid #B4BAC2;background:#FFFFFF;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;color:#15171A;text-decoration:none;cursor:pointer}
+.sc.on{background:#15171A;color:#FFFFFF;border-color:#15171A}
+.pg{padding:24px;display:flex;flex-direction:column;gap:16px;width:100%;max-width:1368px}
+.pn{background:#FFFFFF;border:1px solid #B4BAC2;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.ph{display:flex;align-items:center;gap:8px;min-height:22px;flex-wrap:wrap}
+.t{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase}
+.mu{color:#4A5058}
+.sm{font-size:12px}
+.chip{display:inline-flex;align-items:center;height:22px;padding:0 8px;border:1px solid #B4BAC2;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.04em;white-space:nowrap;color:#15171A;background:#FFFFFF}
+.chip.auto{border-color:#15171A;background:#15171A;color:#FFFFFF}
+.chip.hot{border-color:#C2185B;color:#C2185B}
+.img{background-color:#DCE0E5;background-image:linear-gradient(to top right,transparent calc(50% - 1px),#B4BAC2 calc(50% - 1px),#B4BAC2 calc(50% + 1px),transparent calc(50% + 1px)),linear-gradient(to bottom right,transparent calc(50% - 1px),#B4BAC2 calc(50% - 1px),#B4BAC2 calc(50% + 1px),transparent calc(50% + 1px))}
+.btn{min-height:40px;padding:0 14px;border:1px solid #15171A;background:#FFFFFF;font-family:'IBM Plex Sans',sans-serif;font-size:13px;color:#15171A;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;cursor:pointer}
+.btn.pri{background:#15171A;color:#FFFFFF}
+.btn.sm{min-height:32px;padding:0 10px;font-size:12px}
+.row{display:flex;align-items:center;gap:10px;min-height:40px;border-top:1px solid #E1E4E8}
+.mk{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:#C2185B;color:#FFFFFF;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;font-weight:500;flex:0 0 20px}
+.nomk .mk{display:none}
+.tlr{display:grid;grid-template-columns:200px minmax(0,1fr);align-items:center;min-height:30px}
+.tln{padding:0 12px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;color:#4A5058;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tlt{position:relative;height:30px;background-image:linear-gradient(to right,#E1E4E8 1px,transparent 1px);background-size:calc(100% / 6) 100%}
+.b{position:absolute;top:5px;height:20px;display:flex;align-items:center;padding:0 6px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border:1px solid transparent}
+.ban{background:#15171A;color:#FFFFFF;box-shadow:inset -3px 0 0 #FFFFFF}
+.evt{background:#C9CED5;color:#15171A}
+.end{background:repeating-linear-gradient(135deg,#FFFFFF 0 5px,#DCE0E5 5px 10px);border-color:#4A5058;color:#15171A}
+.bp{background:#FFFFFF;border:1.5px solid #15171A;color:#15171A}
+.vt{position:absolute;top:4px;height:22px;border-left:2px solid #C2185B;padding-left:6px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;color:#C2185B;white-space:nowrap;display:flex;align-items:center}
+.sw{display:inline-block;width:18px;height:12px;border:1px solid transparent}
+input[type=checkbox]{width:16px;height:16px;accent-color:#15171A;margin:0;flex:0 0 16px}
+input[type=radio]{width:16px;height:16px;accent-color:#15171A;margin:0;flex:0 0 16px}
+.gm{border-top:1px solid #B4BAC2}
+.gn{color:#15171A;font-family:'IBM Plex Sans',sans-serif;font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px}
+.sv{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;font-weight:400;color:#4A5058}
+.tlt.two{height:52px}
+.b.lo{top:27px}
+.rw>i{font-style:normal;background:#15171A;color:#FFFFFF;padding:0 4px;margin:0 6px 0 -2px;height:14px;display:inline-flex;align-items:center;font-size:10px}
+.b.sel{outline:2px solid #15171A;outline-offset:1px}
+.rwk{font-family:'IBM Plex Mono',ui-monospace,monospace;background:#15171A;color:#FFFFFF;padding:0 4px;font-size:10px}
+@media (max-width:700px){.rail{flex:1 1 100%;flex-direction:row;padding:0 8px;border-right:0;border-bottom:1px solid #B4BAC2}.logo{display:none}.ri{flex:1;height:56px;border-left:0}}
+</style>
+</helmet>
+<div class="{{rootCls}}" style="min-height: 100vh; display: flex; flex-wrap: wrap; align-items: stretch; background: #E6E8EB; color: #15171A; font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif; font-size: 14px; line-height: 20px">
+
+<nav aria-label="Sections" class="rail">
+<span class="logo" aria-hidden="true"></span>
+<a class="ri" href="Dashboard.dc.html"><span class="ic"></span>ALL</a>
+<a class="ri" href="Library.dc.html"><span class="ic"></span>GAMES</a>
+<a class="ri" href="Tasks.dc.html"><span class="ic"></span>TASKS</a>
+<a class="ri on" href="Calendar.dc.html" aria-current="page"><span class="ic"></span>BANNERS</a>
+<span class="fill"></span>
+<a class="ri" href="Settings.dc.html"><span class="ic"></span>SETTINGS</a>
+</nav>
+
+<div class="main">
+<header class="top">
+<nav aria-label="Scope" class="scope">
+<a class="sc on" href="Calendar.dc.html" aria-current="page">Overview</a>
+<button class="sc" type="button" aria-label="Genshin Impact">GI</button>
+<button class="sc" type="button" aria-label="Honkai: Star Rail">HSR</button>
+<button class="sc" type="button" aria-label="Zenless Zone Zero">ZZZ</button>
+<button class="sc" type="button" aria-label="Wuthering Waves">WuWa</button>
+<button class="sc" type="button" aria-label="Neverness to Everness">NTE</button>
+<button class="sc" type="button" aria-label="Arknights: Endfield">AE</button>
+</nav>
+<span class="fill"></span>
+<span class="mono sm mu">2026-10-09 · FRI · 08:00</span>
+</header>
+
+<main class="pg">
+<div class="ph"><h1 class="cond" style="margin: 0; font-size: 28px; line-height: 34px; font-weight: 600">Banners and events</h1><span class="fill"></span><div style="display: flex"><button class="btn sm pri" type="button">Timeline</button><button class="btn sm" type="button">List</button></div><div style="display: flex; gap: 4px"><button class="btn sm" type="button">‹ 2 weeks</button><button class="btn sm" type="button">Today</button><button class="btn sm" type="button">2 weeks ›</button></div><span class="mk">2</span></div>
+
+<div class="ph" style="gap: 14px">
+<span class="mk">1</span>
+<label style="display: flex; gap: 6px; align-items: center"><input type="checkbox" checked><span class="sw ban"></span>Banners</label>
+<label style="display: flex; gap: 6px; align-items: center"><input type="checkbox" checked><span class="sw evt"></span>Events</label>
+<label style="display: flex; gap: 6px; align-items: center"><input type="checkbox" checked><span class="sw" style="border-left: 2px solid #C2185B"></span>Versions</label>
+<label class="mu" style="display: flex; gap: 6px; align-items: center"><input type="checkbox"><span class="sw end"></span>Endgame cycles</label>
+<label class="mu" style="display: flex; gap: 6px; align-items: center"><input type="checkbox"><span class="sw bp"></span>Battle passes</label>
+<span style="width: 1px; height: 20px; background: #B4BAC2"></span>
+<label style="display: flex; gap: 6px; align-items: center"><input type="checkbox">Only what I wishlisted</label>
+<span class="fill"></span><span class="mono sm mu">5 Oct – 15 Nov · your time (Europe/Paris)</span>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+
+<div style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<section class="pn" style="padding: 0; gap: 0; position: relative; overflow-x: auto">
+<div style="min-width: 800px; position: relative">
+<div class="tlr" style="border-bottom: 1px solid #B4BAC2"><span class="tln">Week of</span><div class="tlt" style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); align-items: center"><span class="mono sm" style="padding-left: 6px">5 Oct</span><span class="mono sm" style="padding-left: 6px">12 Oct</span><span class="mono sm" style="padding-left: 6px">19 Oct</span><span class="mono sm" style="padding-left: 6px">26 Oct</span><span class="mono sm" style="padding-left: 6px">2 Nov</span><span class="mono sm" style="padding-left: 6px">9 Nov</span></div></div>
+
+<div class="tlr gm"><span class="tln gn">Genshin Impact</span><div class="tlt"><span class="b ban" style="left: 0%; width: 20.8%">Vodyanitsa</span><span class="b ban" style="left: 20.8%; width: 50.6%">Phase II banners</span><span class="vt" style="left: 71.4%">7.2 · 4 Nov</span></div></div>
+<div class="tlr"><span class="tln">v7.1 · feed</span><div class="tlt two"><span class="b evt" style="left: 0%; width: 17.1%">Silverwing · 2/4</span><span class="b evt rw sel lo" style="left: 0%; width: 71.4%"><i>+1 C</i>Rainbow's End · free 4★</span><span class="b evt" style="left: 50%; width: 21.4%">Tabletop Troupe</span></div></div>
+
+<div class="tlr gm"><span class="tln gn">Honkai: Star Rail</span><div class="tlt"><span class="b ban" style="left: 0%; width: 88.1%">Pearl, with one rerun per half</span><span class="vt" style="left: 88.1%">4.7</span></div></div>
+<div class="tlr"><span class="tln">v4.6 · feed</span><div class="tlt"><span class="b evt" style="left: 35.7%; width: 16.7%">Planar Fissure</span></div></div>
+
+<div class="tlr gm"><span class="tln gn">Zenless Zone Zero</span><div class="tlt"><span class="b ban" style="left: 0%; width: 38.1%">Phase II</span><span class="vt" style="left: 38.1%">3.3 · 21 Oct</span></div></div>
+<div class="tlr"><span class="tln">v3.2 · feed</span><div class="tlt"><span class="b evt" style="left: 38.1%; width: 33.3%">3.3 login event</span></div></div>
+
+<div class="tlr gm"><span class="tln gn">Wuthering Waves</span><div class="tlt"><span class="b ban" style="left: 0%; width: 40.5%">Phase I · Hsin</span><span class="b ban" style="left: 40.5%; width: 47.6%">Phase II · Suoming</span><span class="vt" style="left: 88.1%">3.8</span></div></div>
+<div class="tlr"><span class="tln">v3.7 · admin <span class="mk" style="vertical-align: middle">4</span></span><div class="tlt"><span class="b evt rw" style="left: 26.2%; width: 47.6%"><i>+1 S</i>Free 4★ · choose 1</span></div></div>
+
+<div class="tlr gm"><span class="tln gn">Neverness to Everness</span><div class="tlt"><span class="b ban" style="left: 0%; width: 38.1%">Limited board · phase 1</span><span class="b ban" style="left: 38.1%; width: 50%">Phase 2</span><span class="vt" style="left: 88.1%">1.5</span></div></div>
+<div class="tlr"><span class="tln">v1.4 · admin</span><div class="tlt"><span class="b evt" style="left: 0%; width: 38.1%">Collab mystery boxes</span></div></div>
+
+<div class="tlr gm"><span class="tln gn">Arknights: Endfield</span><div class="tlt"><span class="b ban" style="left: 0%; width: 23.8%">Chartered</span><span class="b ban" style="left: 23.8%; width: 50%">1.6 · new banners</span><span class="vt" style="left: 23.8%"></span></div></div>
+<div class="tlr"><span class="tln">v1.5 · admin</span><div class="tlt"><span class="b evt" style="left: 23.8%; width: 50%">1.6 story event</span></div></div>
+
+<div aria-hidden="true" style="position: absolute; top: 0; bottom: 0; left: calc(200px + (100% - 200px) * 0.101); width: 2px; background: #C2185B"></div>
+<span class="mono" style="position: absolute; top: 6px; left: calc(204px + (100% - 200px) * 0.101); font-size: 10px; color: #C2185B; background: #FFFFFF; padding: 0 3px">TODAY</span>
+</div>
+<div class="sm mu" style="padding: 10px 12px; border-top: 1px solid #E1E4E8">Endgame cycles and battle passes are off; they live on each game's Endgame and Activities tabs. <span class="rwk">+1 C</span> marks a reward that can update your roster.</div>
+</section>
+<section class="pn">
+<div class="ph"><span class="t">Rewards that update your roster</span></div>
+<div>
+<div class="row" style="border-top: 0; flex-wrap: wrap; padding: 6px 0"><div style="flex: 1 1 180px; min-width: 0"><div>Free 4★ · Lisa</div><div class="mono sm mu">GI · C3 → C4 · ends 3 Nov</div></div><span class="chip auto">GOAL SET</span></div>
+<div class="row" style="flex-wrap: wrap; padding: 6px 0"><div style="flex: 1 1 180px; min-width: 0"><div>Event polearm · event shop</div><div class="mono sm mu">GI · R1 → R5 · ends 4 Nov</div></div><button class="btn sm" type="button">Make goal</button></div>
+<div class="row" style="flex-wrap: wrap; padding: 6px 0"><div style="flex: 1 1 180px; min-width: 0"><div>Free 4★ · choose 1</div><div class="mono sm mu">WuWa · +1 S · ends 5 Nov</div></div><button class="btn sm" type="button">Make goal</button></div>
+</div>
+<div class="sm mu">Character copies raise C, E, M or S by one; event weapons raise refinement.</div>
+</section>
+</div>
+
+<div style="flex: 1 1 360px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<section class="pn" style="border-color: #15171A">
+<div class="ph"><span class="t">Selected</span><span class="mk">3</span><span class="fill"></span><button class="btn sm" type="button" aria-label="Close detail">×</button></div>
+<div class="img" style="height: 100px"></div>
+<div><div class="cond" style="font-size: 22px; line-height: 28px; font-weight: 600">Rainbow's End: Resplendent Starlight</div><div class="mono sm mu">GENSHIN IMPACT · EVENT · FEED</div></div>
+<div class="row" style="border-top: 0"><span class="mu" style="width: 72px">Ends</span><span>Tue 3 Nov, 23:59 (server time = your time after 25 Oct)</span></div>
+<div class="row"><span class="mu" style="width: 72px">Progress</span><span>0 / 5 stages · <a href="Activities.dc.html">in Activities</a></span></div>
+<div style="border: 1.5px solid #15171A; padding: 12px; display: flex; flex-direction: column; gap: 6px">
+<div class="ph"><span class="t">Reward</span><span class="mk">5</span><span class="fill"></span><span class="chip">FREE 4★ · CHOOSE 1</span></div>
+<label class="row" style="border-top: 0"><input type="radio" name="pick"><span class="img" style="width: 28px; height: 28px; flex: 0 0 28px"></span><span style="flex: 1 1 0">Diona</span><span class="mono sm">C2 → C3</span></label>
+<label class="row"><input type="radio" name="pick"><span class="img" style="width: 28px; height: 28px; flex: 0 0 28px"></span><span style="flex: 1 1 0">Chongyun</span><span class="mono sm">C4 → C5</span></label>
+<label class="row"><input type="radio" name="pick" checked><span class="img" style="width: 28px; height: 28px; flex: 0 0 28px"></span><span style="flex: 1 1 0; font-weight: 600">Lisa</span><span class="mono sm" style="font-weight: 500">C3 → C4</span></label>
+<div class="sm mu">The goal "Claim Lisa" goes to Tasks with the event's deadline. Ticking it sets Lisa to C4 on her sheet.</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px"><a class="btn sm pri" href="Tasks.dc.html">Make goal</a><button class="btn sm" type="button">Remind 48 h before</button></div>
+</div>
+<div class="sm mu">Also in this event: 420 Primogems, added to the pulls forecast once claimed.</div>
+</section>
+
+
+</div>
+
+</div>
+</main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"markers":{"editor":"boolean","default":true,"section":"Wireframe"},"$preview":{"width":1440,"height":990}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const on = this.props.markers ?? true;
+    return { rootCls: on ? 'wf' : 'wf nomk' };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Genshin Impact activities</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans+Condensed:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#15171A}a:hover{color:#4A5058}
+.mono{font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace}
+.cond{font-family:'IBM Plex Sans Condensed','Arial Narrow',sans-serif}
+.rail{flex:0 0 72px;display:flex;flex-direction:column;gap:4px;padding:16px 0;background:#FFFFFF;border-right:1px solid #B4BAC2}
+.logo{width:32px;height:32px;margin:0 auto 16px;background:#15171A}
+.ri{height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.06em;text-decoration:none;color:#4A5058;border-left:3px solid transparent}
+.ri.on{color:#15171A;border-left-color:#15171A;background:#EEF0F2}
+.ic{width:20px;height:20px;border:1.5px solid currentColor}
+.fill{flex:1 1 0}
+.main{flex:999 1 560px;min-width:0;display:flex;flex-direction:column}
+.top{min-height:56px;display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:10px 24px;background:#FFFFFF;border-bottom:1px solid #B4BAC2}
+.scope{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.sc{height:36px;min-width:44px;padding:0 10px;display:inline-flex;align-items:center;justify-content:center;border:1px solid #B4BAC2;background:#FFFFFF;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;color:#15171A;text-decoration:none;cursor:pointer}
+.sc.on{background:#15171A;color:#FFFFFF;border-color:#15171A}
+.gh{background:#FFFFFF;border-bottom:1px solid #B4BAC2;padding:16px 24px;display:flex;flex-wrap:wrap;align-items:center;gap:16px}
+.tabs{display:flex;flex-wrap:wrap;align-items:center;border-bottom:1px solid #B4BAC2;background:#FFFFFF;padding:0 24px}
+.tab{height:44px;padding:0 14px;display:flex;align-items:center;font-size:13px;color:#4A5058;text-decoration:none;border-bottom:2px solid transparent}
+.tab.on{color:#15171A;border-bottom-color:#15171A;font-weight:600}
+.pg{padding:24px;display:flex;flex-direction:column;gap:16px;width:100%;max-width:1368px}
+.pn{background:#FFFFFF;border:1px solid #B4BAC2;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.ph{display:flex;align-items:center;gap:8px;min-height:22px;flex-wrap:wrap}
+.t{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase}
+.cl{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.06em;color:#4A5058}
+.mu{color:#4A5058}
+.sm{font-size:12px}
+.bar{height:8px;background:#DCE0E5;position:relative;overflow:hidden}
+.bar>i{position:absolute;left:0;top:0;bottom:0;background:#15171A}
+.chip{display:inline-flex;align-items:center;height:22px;padding:0 8px;border:1px solid #B4BAC2;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.04em;white-space:nowrap;color:#15171A;background:#FFFFFF}
+.chip.auto{border-color:#15171A;background:#15171A;color:#FFFFFF}
+.chip.hot{border-color:#C2185B;color:#C2185B}
+.src{display:inline-flex;align-items:center;height:18px;padding:0 5px;border:1px solid #B4BAC2;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.04em;white-space:nowrap;color:#4A5058}
+.src.a{background:#15171A;border-color:#15171A;color:#FFFFFF}
+.img{background-color:#DCE0E5;background-image:linear-gradient(to top right,transparent calc(50% - 1px),#B4BAC2 calc(50% - 1px),#B4BAC2 calc(50% + 1px),transparent calc(50% + 1px)),linear-gradient(to bottom right,transparent calc(50% - 1px),#B4BAC2 calc(50% - 1px),#B4BAC2 calc(50% + 1px),transparent calc(50% + 1px))}
+.btn{min-height:40px;padding:0 14px;border:1px solid #15171A;background:#FFFFFF;font-family:'IBM Plex Sans',sans-serif;font-size:13px;color:#15171A;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;cursor:pointer}
+.btn.pri{background:#15171A;color:#FFFFFF}
+.btn.sm{min-height:32px;padding:0 10px;font-size:12px}
+.row{display:flex;align-items:center;gap:10px;min-height:44px;border-top:1px solid #E1E4E8}
+.mk{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:#C2185B;color:#FFFFFF;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;font-weight:500;flex:0 0 20px}
+.nomk .mk{display:none}
+.done{color:#4A5058;text-decoration:line-through}
+input[type=checkbox]{width:16px;height:16px;accent-color:#15171A;margin:0;flex:0 0 16px}
+@media (max-width:700px){.rail{flex:1 1 100%;flex-direction:row;padding:0 8px;border-right:0;border-bottom:1px solid #B4BAC2}.logo{display:none}.ri{flex:1;height:56px;border-left:0}}
+</style>
+</helmet>
+<div class="{{rootCls}}" style="min-height: 100vh; display: flex; flex-wrap: wrap; align-items: stretch; background: #E6E8EB; color: #15171A; font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif; font-size: 14px; line-height: 20px">
+
+<nav aria-label="Sections" class="rail">
+<span class="logo" aria-hidden="true"></span>
+<a class="ri" href="Dashboard.dc.html"><span class="ic"></span>ALL</a>
+<a class="ri on" href="Library.dc.html" aria-current="page"><span class="ic"></span>GAMES</a>
+<a class="ri" href="Tasks.dc.html"><span class="ic"></span>TASKS</a>
+<a class="ri" href="Calendar.dc.html"><span class="ic"></span>BANNERS</a>
+<span class="fill"></span>
+<a class="ri" href="Settings.dc.html"><span class="ic"></span>SETTINGS</a>
+</nav>
+
+<div class="main">
+<header class="top">
+<nav aria-label="Scope" class="scope">
+<a class="sc" href="Library.dc.html">Overview</a>
+<a class="sc on" href="Activities.dc.html" aria-current="page" aria-label="Genshin Impact">GI</a>
+<button class="sc" type="button" aria-label="Honkai: Star Rail">HSR</button>
+<button class="sc" type="button" aria-label="Zenless Zone Zero">ZZZ</button>
+<button class="sc" type="button" aria-label="Wuthering Waves">WuWa</button>
+<button class="sc" type="button" aria-label="Neverness to Everness">NTE</button>
+<button class="sc" type="button" aria-label="Arknights: Endfield">AE</button>
+</nav>
+<span class="fill"></span>
+<span class="mono sm mu">2026-10-09 · FRI · 08:00</span>
+</header>
+
+<section class="gh">
+<span class="img" style="width: 48px; height: 48px; flex: 0 0 48px"></span>
+<div style="display: flex; flex-direction: column; gap: 6px; min-width: 0">
+<h1 class="cond" style="margin: 0; font-size: 28px; line-height: 32px; font-weight: 600">Genshin Impact</h1>
+<div style="display: flex; flex-wrap: wrap; gap: 6px"><span class="chip">EU · UTC+1</span><span class="chip">UID 7•••••••2</span><span class="chip">AR 58 · WL 8</span><span class="chip auto">AUTO · HoYoLAB · 3 min ago</span></div>
+</div>
+<span class="mk">1</span>
+<span class="fill"></span>
+<div style="display: flex; flex-wrap: wrap; gap: 24px">
+<div><div class="cl">DAILY RESET</div><div class="mono">in 21h 00m</div></div>
+<div><div class="cl">WEEKLY RESET</div><div class="mono">Mon 12 Oct</div></div>
+<div><div class="cl">VERSION 7.1</div><div class="mono">ends 4 Nov</div></div>
+</div>
+</section>
+<nav aria-label="Genshin Impact sections" class="tabs">
+<a class="tab on" href="Activities.dc.html" aria-current="page">Activities</a>
+<a class="tab" href="Endgame.dc.html">Endgame</a>
+<a class="tab" href="Pulls.dc.html">Pulls</a>
+<a class="tab" href="Characters.dc.html">Characters</a>
+<a class="tab" href="Gear.dc.html">Artifacts</a>
+<a class="tab" href="Planner.dc.html">Planner</a>
+<a class="tab" href="Profile.dc.html">Profile</a>
+<span class="mk" style="margin-left: 8px">2</span>
+</nav>
+
+<main class="pg">
+
+<section class="pn" style="flex-direction: row; flex-wrap: wrap; align-items: center; gap: 24px">
+<div style="flex: 2 1 360px; display: flex; flex-direction: column; gap: 8px">
+<div class="ph"><span class="t">Original Resin</span><span class="src a">AUTO</span><span class="fill"></span><span class="mono sm">full at 12:56 · in 4h 56m</span></div>
+<div style="display: flex; align-items: center; gap: 12px"><span class="cond" style="font-size: 34px; line-height: 36px; font-weight: 600">163</span><span class="mu">/ 200</span><div class="bar" style="flex: 1; height: 12px"><i style="width: 81.5%"></i></div></div>
+</div>
+<div style="flex: 1 1 200px; display: flex; gap: 20px">
+<div><div class="cl">CONDENSED</div><div class="mono">3 / 5</div></div>
+<div><div class="cl">FRAGILE</div><div class="mono">2</div></div>
+</div>
+<div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 6px">
+<label style="display: flex; gap: 8px; align-items: center"><input type="checkbox" checked>Remind me when full</label>
+<a class="sm" href="Planner.dc.html">Spend it: talent books open today →</a>
+</div>
+</section>
+
+<div class="ph"><span class="t">By cadence</span><span class="mk">3</span><span class="fill"></span><span class="src a">AUTO</span><span class="sm mu">synced</span><span class="src">MANUAL</span><span class="sm mu">ticked by you</span><span class="mk">4</span></div>
+
+<div style="display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(380px, 100%), 1fr))">
+
+<section class="pn">
+<div class="ph"><span class="t">Daily</span><span class="mono sm mu">2 / 5</span><span class="fill"></span><span class="chip">resets in 21h 00m</span></div>
+<div>
+<label class="row" style="border-top: 0"><input type="checkbox"><span style="flex: 1 1 0">Daily Commissions</span><span class="mono sm">3/4</span><span class="src a">AUTO</span></label>
+<label class="row"><input type="checkbox"><span style="flex: 1 1 0">Expeditions</span><span class="mono sm">5 ready</span><span class="src a">AUTO</span></label>
+<label class="row"><input type="checkbox" checked><span class="done" style="flex: 1 1 0">HoYoLAB check-in</span><span class="mono sm">day 9</span><span class="src a">AUTO</span></label>
+<label class="row"><input type="checkbox" checked><span class="done" style="flex: 1 1 0">Realm currency</span><span class="mono sm">1840/2400</span><span class="src a">AUTO</span></label>
+<label class="row"><input type="checkbox"><span style="flex: 1 1 0">Battle pass dailies</span><span class="mono sm">2/4</span><span class="src">MANUAL</span></label>
+</div>
+<button class="btn sm" type="button" style="align-self: flex-start">Add a daily</button>
+</section>
+
+<section class="pn">
+<div class="ph"><span class="t">Weekly</span><span class="mono sm mu">1 / 5</span><span class="fill"></span><span class="chip">resets Mon 12 Oct</span></div>
+<div>
+<label class="row" style="border-top: 0"><input type="checkbox"><span style="flex: 1 1 0">Weekly bosses, discounted</span><span class="mono sm">1/3</span><span class="src a">AUTO</span></label>
+<label class="row"><input type="checkbox"><span style="flex: 1 1 0">Parametric Transformer</span><span class="mono sm">in 2d 4h</span><span class="src a">AUTO</span></label>
+<label class="row"><input type="checkbox"><span style="flex: 1 1 0">Reputation bounties</span><span class="mono sm">0/3</span><span class="src">MANUAL</span></label>
+<label class="row"><input type="checkbox" checked><span class="done" style="flex: 1 1 0">To Temper Thyself, weekly goal</span><span class="mono sm">5/8</span><span class="src">MANUAL</span></label>
+<label class="row"><input type="checkbox"><span style="flex: 1 1 0">Realm Depot stock</span><span class="mono sm">0/1</span><span class="src">MANUAL</span></label>
+</div>
+<button class="btn sm" type="button" style="align-self: flex-start">Add a weekly</button>
+</section>
+
+<section class="pn">
+<div class="ph"><span class="t">Monthly</span><span class="mono sm mu">1 / 2</span><span class="fill"></span><span class="chip">resets Sun 1 Nov</span></div>
+<div>
+<label class="row" style="border-top: 0"><input type="checkbox"><span style="flex: 1 1 0">Paimon's Bargains · Intertwined Fate</span><span class="mono sm">2/5</span><span class="src">MANUAL</span></label>
+<label class="row"><input type="checkbox" checked><span class="done" style="flex: 1 1 0">Paimon's Bargains · Acquaint Fate</span><span class="mono sm">5/5</span><span class="src">MANUAL</span></label>
+</div>
+<div class="row"><span class="mu" style="flex: 1 1 0">Blessing of the Welkin Moon</span><span class="mono sm">23 days left</span></div>
+<button class="btn sm" type="button" style="align-self: flex-start">Add a monthly</button>
+</section>
+
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px">
+
+<section class="pn" style="flex: 1 1 380px">
+<div class="ph"><span class="t">Cycles · endgame</span><span class="fill"></span><a class="btn sm" href="Endgame.dc.html">Open endgame</a></div>
+<div>
+<div class="row" style="border-top: 0"><span style="flex: 1 1 0">Spiral Abyss</span><span class="mono sm">33/36</span><span class="chip">Fri 16 Oct</span><span class="src a">AUTO</span></div>
+<div class="row"><span style="flex: 1 1 0">Imaginarium Theater</span><span class="mono sm">Act 8/10</span><span class="chip">Sun 1 Nov</span><span class="src a">AUTO</span></div>
+<div class="row"><span style="flex: 1 1 0">Stygian Onslaught</span><span class="mono sm">2/6</span><span class="chip">Tue 3 Nov</span><span class="src a">AUTO</span></div>
+</div>
+</section>
+
+<section class="pn" style="flex: 2 1 560px">
+<div class="ph"><span class="t">Version 7.1</span><span class="fill"></span><span class="chip">ends Wed 4 Nov</span></div>
+<div style="display: flex; flex-wrap: wrap; gap: 24px">
+<div style="flex: 1 1 280px; display: flex; flex-direction: column; gap: 8px">
+<div class="ph"><span class="t">Battle pass</span><span class="mk">5</span><span class="fill"></span><span class="mono sm">Gnostic Hymn</span><span class="src">MANUAL</span></div>
+<div style="display: flex; align-items: baseline; gap: 6px"><span class="cond" style="font-size: 30px; font-weight: 600">34</span><span class="mu">/ 50</span><span class="fill"></span><span class="mono sm">0.7 level a day to finish</span></div>
+<div class="bar"><i style="width: 68%"></i></div>
+<div class="row" style="border-top: 0; min-height: 32px"><span class="mono sm mu" style="flex: 1 1 0">WEEKLY XP</span><span class="mono sm">6,000 / 10,000</span></div>
+<div class="bar"><i style="width: 60%"></i></div>
+</div>
+<div style="flex: 1 1 280px">
+<div class="cl" style="margin-bottom: 4px">EVENTS</div>
+<label class="row" style="border-top: 0"><input type="checkbox"><span style="flex: 1 1 0">Silverwing in Pursuit of the Moon</span><span class="mono sm">2/4</span><span class="chip hot">Mon 12 Oct</span></label>
+<label class="row"><input type="checkbox"><span style="flex: 1 1 0">Tabletop Troupe</span><span class="mono sm">1/3</span><span class="chip">4 Nov</span></label>
+<label class="row"><input type="checkbox"><span style="flex: 1 1 0">Rainbow's End: Resplendent Starlight</span><span class="mono sm">0/5</span><span class="chip">4 Nov</span></label>
+</div>
+</div>
+</section>
+
+</div>
+</main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"markers":{"editor":"boolean","default":true,"section":"Wireframe"},"$preview":{"width":1440,"height":1030}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const on = this.props.markers ?? true;
+    return { rootCls: on ? 'wf' : 'wf nomk' };
+  }
+}
+</script>
+</body>
+</html>

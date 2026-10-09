@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Genshin Impact profile</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans+Condensed:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#15171A}a:hover{color:#4A5058}
+.mono{font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace}
+.cond{font-family:'IBM Plex Sans Condensed','Arial Narrow',sans-serif}
+.rail{flex:0 0 72px;display:flex;flex-direction:column;gap:4px;padding:16px 0;background:#FFFFFF;border-right:1px solid #B4BAC2}
+.logo{width:32px;height:32px;margin:0 auto 16px;background:#15171A}
+.ri{height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.06em;text-decoration:none;color:#4A5058;border-left:3px solid transparent}
+.ri.on{color:#15171A;border-left-color:#15171A;background:#EEF0F2}
+.ic{width:20px;height:20px;border:1.5px solid currentColor}
+.fill{flex:1 1 0}
+.main{flex:999 1 560px;min-width:0;display:flex;flex-direction:column}
+.top{min-height:56px;display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:10px 24px;background:#FFFFFF;border-bottom:1px solid #B4BAC2}
+.scope{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.sc{height:36px;min-width:44px;padding:0 10px;display:inline-flex;align-items:center;justify-content:center;border:1px solid #B4BAC2;background:#FFFFFF;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;color:#15171A;text-decoration:none;cursor:pointer}
+.sc.on{background:#15171A;color:#FFFFFF;border-color:#15171A}
+.gh{background:#FFFFFF;border-bottom:1px solid #B4BAC2;padding:16px 24px;display:flex;flex-wrap:wrap;align-items:center;gap:16px}
+.tabs{display:flex;flex-wrap:wrap;align-items:center;border-bottom:1px solid #B4BAC2;background:#FFFFFF;padding:0 24px}
+.tab{height:44px;padding:0 14px;display:flex;align-items:center;font-size:13px;color:#4A5058;text-decoration:none;border-bottom:2px solid transparent}
+.tab.on{color:#15171A;border-bottom-color:#15171A;font-weight:600}
+.pg{padding:24px;display:flex;flex-direction:column;gap:16px;width:100%;max-width:1368px}
+.pn{background:#FFFFFF;border:1px solid #B4BAC2;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.ph{display:flex;align-items:center;gap:8px;min-height:22px;flex-wrap:wrap}
+.t{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase}
+.cl{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.06em;color:#4A5058}
+.mu{color:#4A5058}
+.sm{font-size:12px}
+.bar{height:8px;background:#DCE0E5;position:relative;overflow:hidden}
+.bar>i{position:absolute;left:0;top:0;bottom:0;background:#15171A}
+.chip{display:inline-flex;align-items:center;height:22px;padding:0 8px;border:1px solid #B4BAC2;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.04em;white-space:nowrap;color:#15171A;background:#FFFFFF}
+.chip.auto{border-color:#15171A;background:#15171A;color:#FFFFFF}
+.chip.hot{border-color:#C2185B;color:#C2185B}
+.src{display:inline-flex;align-items:center;height:18px;padding:0 5px;border:1px solid #B4BAC2;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.04em;white-space:nowrap;color:#4A5058}
+.src.a{background:#15171A;border-color:#15171A;color:#FFFFFF}
+.img{background-color:#DCE0E5;background-image:linear-gradient(to top right,transparent calc(50% - 1px),#B4BAC2 calc(50% - 1px),#B4BAC2 calc(50% + 1px),transparent calc(50% + 1px)),linear-gradient(to bottom right,transparent calc(50% - 1px),#B4BAC2 calc(50% - 1px),#B4BAC2 calc(50% + 1px),transparent calc(50% + 1px))}
+.btn{min-height:40px;padding:0 14px;border:1px solid #15171A;background:#FFFFFF;font-family:'IBM Plex Sans',sans-serif;font-size:13px;color:#15171A;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;cursor:pointer}
+.btn.pri{background:#15171A;color:#FFFFFF}
+.btn.sm{min-height:32px;padding:0 10px;font-size:12px}
+.row{display:flex;align-items:center;gap:10px;min-height:40px;border-top:1px solid #E1E4E8}
+.mk{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:#C2185B;color:#FFFFFF;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;font-weight:500;flex:0 0 20px}
+.nomk .mk{display:none}
+.inp{min-height:36px;padding:0 10px;border:1px solid #B4BAC2;background:#FFFFFF;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:13px;color:#15171A;min-width:0}
+.dots{display:inline-flex;gap:4px}
+.dots i{width:12px;height:12px;border:1.5px solid #15171A;display:block}
+.dots i.f{background:#15171A}
+.slot{border:1px solid #B4BAC2;padding:10px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.slot.miss{border:1.5px dashed #4A5058;background:#F4F5F7}
+.subs{display:grid;grid-template-columns:1fr auto;column-gap:8px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;line-height:18px;color:#4A5058}
+.subs b{font-weight:500;color:#15171A;text-align:right}
+.kv{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:0 16px}
+.kv>div{display:flex;justify-content:space-between;align-items:center;min-height:36px;border-top:1px solid #E1E4E8;gap:8px}
+input[type=checkbox]{width:16px;height:16px;accent-color:#15171A;margin:0;flex:0 0 16px}
+@media (max-width:700px){.rail{flex:1 1 100%;flex-direction:row;padding:0 8px;border-right:0;border-bottom:1px solid #B4BAC2}.logo{display:none}.ri{flex:1;height:56px;border-left:0}}
+</style>
+</helmet>
+<div class="{{rootCls}}" style="min-height: 100vh; display: flex; flex-wrap: wrap; align-items: stretch; background: #E6E8EB; color: #15171A; font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif; font-size: 14px; line-height: 20px">
+
+<nav aria-label="Sections" class="rail">
+<span class="logo" aria-hidden="true"></span>
+<a class="ri" href="Dashboard.dc.html"><span class="ic"></span>ALL</a>
+<a class="ri on" href="Library.dc.html" aria-current="page"><span class="ic"></span>GAMES</a>
+<a class="ri" href="Tasks.dc.html"><span class="ic"></span>TASKS</a>
+<a class="ri" href="Calendar.dc.html"><span class="ic"></span>BANNERS</a>
+<span class="fill"></span>
+<a class="ri" href="Settings.dc.html"><span class="ic"></span>SETTINGS</a>
+</nav>
+
+<div class="main">
+<header class="top">
+<nav aria-label="Scope" class="scope">
+<a class="sc" href="Library.dc.html">Overview</a>
+<a class="sc on" href="Activities.dc.html" aria-current="page" aria-label="Genshin Impact">GI</a>
+<button class="sc" type="button" aria-label="Honkai: Star Rail">HSR</button>
+<button class="sc" type="button" aria-label="Zenless Zone Zero">ZZZ</button>
+<button class="sc" type="button" aria-label="Wuthering Waves">WuWa</button>
+<button class="sc" type="button" aria-label="Neverness to Everness">NTE</button>
+<button class="sc" type="button" aria-label="Arknights: Endfield">AE</button>
+</nav>
+<span class="fill"></span>
+<span class="mono sm mu">2026-10-09 · FRI · 08:00</span>
+</header>
+
+<section class="gh">
+<span class="img" style="width: 48px; height: 48px; flex: 0 0 48px"></span>
+<div style="display: flex; flex-direction: column; gap: 6px; min-width: 0">
+<h1 class="cond" style="margin: 0; font-size: 28px; line-height: 32px; font-weight: 600">Genshin Impact</h1>
+<div style="display: flex; flex-wrap: wrap; gap: 6px"><span class="chip">EU · UTC+1</span><span class="chip">UID 7•••••••2</span><span class="chip">AR 58 · WL 8</span><span class="chip auto">AUTO · HoYoLAB · 3 min ago</span></div>
+</div>
+<span class="fill"></span>
+<div style="display: flex; flex-wrap: wrap; gap: 24px">
+<div><div class="cl">DAILY RESET</div><div class="mono">in 21h 00m</div></div>
+<div><div class="cl">WEEKLY RESET</div><div class="mono">Mon 12 Oct</div></div>
+<div><div class="cl">VERSION 7.1</div><div class="mono">ends 4 Nov</div></div>
+</div>
+</section>
+<nav aria-label="Genshin Impact sections" class="tabs">
+<a class="tab" href="Activities.dc.html">Activities</a>
+<a class="tab" href="Endgame.dc.html">Endgame</a>
+<a class="tab" href="Pulls.dc.html">Pulls</a>
+<a class="tab" href="Characters.dc.html">Characters</a>
+<a class="tab" href="Gear.dc.html">Artifacts</a>
+<a class="tab" href="Planner.dc.html">Planner</a>
+<a class="tab on" href="Profile.dc.html" aria-current="page">Profile</a>
+</nav>
+
+<main class="pg">
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+
+<section class="pn" style="flex: 1 1 380px">
+<div class="ph"><span class="t">Account</span><span class="mk">1</span><span class="fill"></span><span class="src a">AUTO · HoYoLAB · 3 min ago</span></div>
+<div>
+<div class="row" style="border-top: 0; flex-wrap: wrap"><span class="cl" style="width: 120px">SERVER</span><span style="flex: 1 1 200px">Europe · UTC+1 · resets 04:00 server time (05:00 for you)</span></div>
+<div class="row"><span class="cl" style="width: 120px">UID</span><span class="mono" style="flex: 1 1 0">7•••••••2</span><button class="btn sm" type="button">Show</button></div>
+<div class="row"><span class="cl" style="width: 120px">ADVENTURE RANK</span><span class="mono" style="flex: 1 1 0">58</span><span class="src a">AUTO</span></div>
+<div class="row"><span class="cl" style="width: 120px">WORLD LEVEL</span><span class="mono" style="flex: 1 1 0">8</span><span class="src a">AUTO</span></div>
+</div>
+<div class="sm mu">Without a linked account these fields are typed in. <a href="Settings.dc.html">Linked accounts →</a></div>
+</section>
+
+<section class="pn" style="flex: 1 1 380px">
+<div class="ph"><span class="t">Passes</span><span class="mk">2</span><span class="fill"></span><span class="src">MANUAL</span></div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div class="ph"><span style="font-weight: 600; flex: 1 1 0">Blessing of the Welkin Moon</span><span class="mono sm">23 days left · ends Sun 1 Nov</span></div>
+<div class="bar"><i style="width: 77%"></i></div>
+<label class="sm" style="display: flex; gap: 8px; align-items: center"><input type="checkbox" checked>Remind me 3 days before it ends</label>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px; border-top: 1px solid #E1E4E8; padding-top: 12px">
+<div class="ph"><span style="font-weight: 600; flex: 1 1 0">Gnostic Hymn</span><span class="mono sm">Lv 34 / 50 · ends Wed 4 Nov</span></div>
+<div class="bar"><i style="width: 68%"></i></div>
+<label class="sm" style="display: flex; gap: 8px; align-items: center"><input type="checkbox" checked>Remind me 48 h before the end if rewards are unclaimed</label>
+</div>
+<div class="sm mu">The game does not expose pass days. Re-enter after each purchase; the count runs down by itself.</div>
+</section>
+
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+
+<section class="pn" style="flex: 2 1 520px; border: 1.5px dashed #C2185B">
+<div class="ph"><span class="t">Long-term progress</span><span class="mk">3</span><span class="chip hot">OPTIONAL</span><span class="fill"></span><label class="sm" style="display: flex; gap: 6px; align-items: center"><input type="checkbox" checked>Show</label><span class="src a">AUTO · Battle Chronicle</span></div>
+<div style="display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr))">
+<div><div class="cl">ACHIEVEMENTS</div><div class="mono" style="font-size: 18px">1,204</div></div>
+<div><div class="cl">DAYS ACTIVE</div><div class="mono" style="font-size: 18px">1,288</div></div>
+<div><div class="cl">CHESTS</div><div class="mono" style="font-size: 18px">2,914</div></div>
+<div><div class="cl">WAYPOINTS</div><div class="mono" style="font-size: 18px">412</div></div>
+</div>
+<div class="cl">EXPLORATION</div>
+<div style="display: grid; gap: 4px 24px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr))">
+<div class="row" style="min-height: 32px"><span class="sm" style="width: 92px">Mondstadt</span><div class="bar" style="flex: 1"><i style="width: 100%"></i></div><span class="mono sm" style="width: 40px; text-align: right">100%</span></div>
+<div class="row" style="min-height: 32px"><span class="sm" style="width: 92px">Liyue</span><div class="bar" style="flex: 1"><i style="width: 100%"></i></div><span class="mono sm" style="width: 40px; text-align: right">100%</span></div>
+<div class="row" style="min-height: 32px"><span class="sm" style="width: 92px">Inazuma</span><div class="bar" style="flex: 1"><i style="width: 98%"></i></div><span class="mono sm" style="width: 40px; text-align: right">98%</span></div>
+<div class="row" style="min-height: 32px"><span class="sm" style="width: 92px">Sumeru</span><div class="bar" style="flex: 1"><i style="width: 96%"></i></div><span class="mono sm" style="width: 40px; text-align: right">96%</span></div>
+<div class="row" style="min-height: 32px"><span class="sm" style="width: 92px">Fontaine</span><div class="bar" style="flex: 1"><i style="width: 100%"></i></div><span class="mono sm" style="width: 40px; text-align: right">100%</span></div>
+<div class="row" style="min-height: 32px"><span class="sm" style="width: 92px">Natlan</span><div class="bar" style="flex: 1"><i style="width: 87%"></i></div><span class="mono sm" style="width: 40px; text-align: right">87%</span></div>
+<div class="row" style="min-height: 32px"><span class="sm" style="width: 92px">Nod-Krai</span><div class="bar" style="flex: 1"><i style="width: 72%"></i></div><span class="mono sm" style="width: 40px; text-align: right">72%</span></div>
+<div class="row" style="min-height: 32px"><span class="sm" style="width: 92px">Snezhnaya</span><div class="bar" style="flex: 1"><i style="width: 31%"></i></div><span class="mono sm" style="width: 40px; text-align: right">31%</span></div>
+</div>
+</section>
+
+<section class="pn" style="flex: 1 1 340px">
+<div class="ph"><span class="t">Game reminders</span><span class="mk">5</span><span class="fill"></span><a class="sm" href="Tasks.dc.html">Global rules →</a></div>
+<div>
+<label class="row" style="border-top: 0"><input type="checkbox" checked><span style="flex: 1 1 0">Resin full</span><span class="src a">SYNCED</span></label>
+<label class="row"><input type="checkbox" checked><span style="flex: 1 1 0">Commissions left, 1 h before reset</span><span class="src a">SYNCED</span></label>
+<label class="row"><input type="checkbox" checked><span style="flex: 1 1 0">Realm currency full</span><span class="src a">SYNCED</span></label>
+<label class="row"><input type="checkbox"><span style="flex: 1 1 0">Expeditions done</span><span class="src a">SYNCED</span></label>
+<label class="row"><input type="checkbox"><span style="flex: 1 1 0">Parametric Transformer ready</span><span class="src a">SYNCED</span></label>
+</div>
+<div class="sm mu">Overrides the global rules for this game only. Quiet hours still apply.</div>
+</section>
+
+</div>
+
+<section class="pn" style="flex-direction: row; flex-wrap: wrap; align-items: center; gap: 12px">
+<span class="t">Game status</span><span class="mk">4</span>
+<span class="sm mu" style="flex: 1 1 320px">Sleep hides the game from ALL and pauses its reminders; data and sync stay. Remove deletes it from the library after a confirmation.</span>
+<button class="btn" type="button">Export JSON</button>
+<button class="btn" type="button">Sleep this game</button>
+<button class="btn" type="button" style="border-color: #C2185B; color: #C2185B">Remove…</button>
+</section>
+
+</main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"markers":{"editor":"boolean","default":true,"section":"Wireframe"},"$preview":{"width":1440,"height":970}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const on = this.props.markers ?? true;
+    return { rootCls: on ? 'wf' : 'wf nomk' };
+  }
+}
+</script>
+</body>
+</html>

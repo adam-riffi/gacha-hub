@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Genshin Impact endgame</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans+Condensed:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#15171A}a:hover{color:#4A5058}
+.mono{font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace}
+.cond{font-family:'IBM Plex Sans Condensed','Arial Narrow',sans-serif}
+.rail{flex:0 0 72px;display:flex;flex-direction:column;gap:4px;padding:16px 0;background:#FFFFFF;border-right:1px solid #B4BAC2}
+.logo{width:32px;height:32px;margin:0 auto 16px;background:#15171A}
+.ri{height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.06em;text-decoration:none;color:#4A5058;border-left:3px solid transparent}
+.ri.on{color:#15171A;border-left-color:#15171A;background:#EEF0F2}
+.ic{width:20px;height:20px;border:1.5px solid currentColor}
+.fill{flex:1 1 0}
+.main{flex:999 1 560px;min-width:0;display:flex;flex-direction:column}
+.top{min-height:56px;display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:10px 24px;background:#FFFFFF;border-bottom:1px solid #B4BAC2}
+.scope{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.sc{height:36px;min-width:44px;padding:0 10px;display:inline-flex;align-items:center;justify-content:center;border:1px solid #B4BAC2;background:#FFFFFF;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;color:#15171A;text-decoration:none;cursor:pointer}
+.sc.on{background:#15171A;color:#FFFFFF;border-color:#15171A}
+.gh{background:#FFFFFF;border-bottom:1px solid #B4BAC2;padding:16px 24px;display:flex;flex-wrap:wrap;align-items:center;gap:16px}
+.tabs{display:flex;flex-wrap:wrap;align-items:center;border-bottom:1px solid #B4BAC2;background:#FFFFFF;padding:0 24px}
+.tab{height:44px;padding:0 14px;display:flex;align-items:center;font-size:13px;color:#4A5058;text-decoration:none;border-bottom:2px solid transparent}
+.tab.on{color:#15171A;border-bottom-color:#15171A;font-weight:600}
+.pg{padding:24px;display:flex;flex-direction:column;gap:16px;width:100%;max-width:1368px}
+.pn{background:#FFFFFF;border:1px solid #B4BAC2;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.ph{display:flex;align-items:center;gap:8px;min-height:22px;flex-wrap:wrap}
+.t{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase}
+.cl{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.06em;color:#4A5058}
+.mu{color:#4A5058}
+.sm{font-size:12px}
+.bar{height:8px;background:#DCE0E5;position:relative;overflow:hidden}
+.bar>i{position:absolute;left:0;top:0;bottom:0;background:#15171A}
+.win{position:relative;height:8px;background:#DCE0E5}
+.win>i{position:absolute;left:0;top:0;bottom:0;background:#9AA1AB}
+.win>b{position:absolute;top:-5px;width:2px;height:18px;background:#C2185B}
+.chip{display:inline-flex;align-items:center;height:22px;padding:0 8px;border:1px solid #B4BAC2;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.04em;white-space:nowrap;color:#15171A;background:#FFFFFF}
+.chip.auto{border-color:#15171A;background:#15171A;color:#FFFFFF}
+.chip.hot{border-color:#C2185B;color:#C2185B}
+.src{display:inline-flex;align-items:center;height:18px;padding:0 5px;border:1px solid #B4BAC2;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.04em;white-space:nowrap;color:#4A5058}
+.src.a{background:#15171A;border-color:#15171A;color:#FFFFFF}
+.img{background-color:#DCE0E5;background-image:linear-gradient(to top right,transparent calc(50% - 1px),#B4BAC2 calc(50% - 1px),#B4BAC2 calc(50% + 1px),transparent calc(50% + 1px)),linear-gradient(to bottom right,transparent calc(50% - 1px),#B4BAC2 calc(50% - 1px),#B4BAC2 calc(50% + 1px),transparent calc(50% + 1px))}
+.pt{width:40px;height:40px;flex:0 0 40px}
+.btn{min-height:40px;padding:0 14px;border:1px solid #15171A;background:#FFFFFF;font-family:'IBM Plex Sans',sans-serif;font-size:13px;color:#15171A;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;cursor:pointer}
+.btn.sm{min-height:32px;padding:0 10px;font-size:12px}
+.row{display:flex;align-items:center;gap:10px;min-height:40px;border-top:1px solid #E1E4E8}
+.cell{border:1px solid #B4BAC2;padding:6px 8px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.cell.full{background:#15171A;color:#FFFFFF;border-color:#15171A}
+.cell.full .cl{color:#DCE0E5}
+.hist{display:flex;align-items:flex-end;gap:6px;height:48px;border-bottom:1px solid #B4BAC2}
+.hist>span{flex:1;background:#9AA1AB}
+.hist>span.now{background:#15171A}
+.mk{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:#C2185B;color:#FFFFFF;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;font-weight:500;flex:0 0 20px}
+.nomk .mk{display:none}
+input[type=checkbox]{width:16px;height:16px;accent-color:#15171A;margin:0;flex:0 0 16px}
+.btn.pri{background:#15171A;color:#FFFFFF}
+.inp{min-height:32px;padding:0 10px;border:1px solid #B4BAC2;background:#FFFFFF;font-family:'IBM Plex Sans',sans-serif;font-size:12px;color:#15171A}
+.kpi{border:1px solid #B4BAC2;padding:10px 12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.big2{font-size:26px;line-height:30px;font-weight:600}
+.dot{width:10px;height:10px;border-radius:50%;border:2px solid #4A5058;display:inline-block;vertical-align:-1px;margin-right:6px}
+.dot.f{background:#15171A;border-color:#15171A}
+.tm{display:flex;gap:3px}.tm>span{width:24px;height:24px}
+@media (max-width:700px){.rail{flex:1 1 100%;flex-direction:row;padding:0 8px;border-right:0;border-bottom:1px solid #B4BAC2}.logo{display:none}.ri{flex:1;height:56px;border-left:0}}
+</style>
+</helmet>
+<div class="{{rootCls}}" style="min-height: 100vh; display: flex; flex-wrap: wrap; align-items: stretch; background: #E6E8EB; color: #15171A; font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif; font-size: 14px; line-height: 20px">
+
+<nav aria-label="Sections" class="rail">
+<span class="logo" aria-hidden="true"></span>
+<a class="ri" href="Dashboard.dc.html"><span class="ic"></span>ALL</a>
+<a class="ri on" href="Library.dc.html" aria-current="page"><span class="ic"></span>GAMES</a>
+<a class="ri" href="Tasks.dc.html"><span class="ic"></span>TASKS</a>
+<a class="ri" href="Calendar.dc.html"><span class="ic"></span>BANNERS</a>
+<span class="fill"></span>
+<a class="ri" href="Settings.dc.html"><span class="ic"></span>SETTINGS</a>
+</nav>
+
+<div class="main">
+<header class="top">
+<nav aria-label="Scope" class="scope">
+<a class="sc" href="Library.dc.html">Overview</a>
+<a class="sc on" href="Activities.dc.html" aria-current="page" aria-label="Genshin Impact">GI</a>
+<button class="sc" type="button" aria-label="Honkai: Star Rail">HSR</button>
+<button class="sc" type="button" aria-label="Zenless Zone Zero">ZZZ</button>
+<button class="sc" type="button" aria-label="Wuthering Waves">WuWa</button>
+<button class="sc" type="button" aria-label="Neverness to Everness">NTE</button>
+<button class="sc" type="button" aria-label="Arknights: Endfield">AE</button>
+</nav>
+<span class="fill"></span>
+<span class="mono sm mu">2026-10-09 · FRI · 08:00</span>
+</header>
+
+<section class="gh">
+<span class="img" style="width: 48px; height: 48px; flex: 0 0 48px"></span>
+<div style="display: flex; flex-direction: column; gap: 6px; min-width: 0">
+<h1 class="cond" style="margin: 0; font-size: 28px; line-height: 32px; font-weight: 600">Genshin Impact</h1>
+<div style="display: flex; flex-wrap: wrap; gap: 6px"><span class="chip">EU · UTC+1</span><span class="chip">UID 7•••••••2</span><span class="chip">AR 58 · WL 8</span><span class="chip auto">AUTO · HoYoLAB · 3 min ago</span></div>
+</div>
+<span class="fill"></span>
+<div style="display: flex; flex-wrap: wrap; gap: 24px">
+<div><div class="cl">DAILY RESET</div><div class="mono">in 21h 00m</div></div>
+<div><div class="cl">WEEKLY RESET</div><div class="mono">Mon 12 Oct</div></div>
+<div><div class="cl">VERSION 7.1</div><div class="mono">ends 4 Nov</div></div>
+</div>
+</section>
+<nav aria-label="Genshin Impact sections" class="tabs">
+<a class="tab" href="Activities.dc.html">Activities</a>
+<a class="tab on" href="Endgame.dc.html" aria-current="page">Endgame</a>
+<a class="tab" href="Pulls.dc.html">Pulls</a>
+<a class="tab" href="Characters.dc.html">Characters</a>
+<a class="tab" href="Gear.dc.html">Artifacts</a>
+<a class="tab" href="Planner.dc.html">Planner</a>
+<a class="tab" href="Profile.dc.html">Profile</a>
+</nav>
+
+<main class="pg">
+
+<section class="pn" style="flex-direction: row; flex-wrap: wrap; align-items: center; gap: 24px">
+<div style="flex: 2 1 360px; display: flex; flex-direction: column; gap: 8px">
+<div class="ph"><span class="t">This cycle</span><span class="mk">1</span><span class="fill"></span><span class="src a">AUTO</span><span class="sm mu">Battle Chronicle</span></div>
+<div style="display: flex; align-items: baseline; gap: 8px"><span class="cond" style="font-size: 34px; line-height: 36px; font-weight: 600">1,800</span><span class="mu">/ 2,250 Primogems claimed</span></div>
+<div class="bar" style="height: 12px"><i style="width: 80%"></i></div>
+</div>
+<div style="flex: 1 1 240px"><div class="cl">NEXT RESET</div><div>Spiral Abyss · Fri 16 Oct, 05:00</div><div class="mono sm mu">in 6d 21h · 100 Primogems unclaimed</div></div>
+<label style="display: flex; gap: 8px; align-items: center"><input type="checkbox" checked>Remind 24 h before a reset with rewards left</label>
+</section>
+
+<div style="display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(380px, 100%), 1fr))">
+
+<section class="pn">
+<div class="ph"><span class="t">Spiral Abyss</span><span class="mk">2</span><span class="fill"></span><span class="chip">monthly · 16th</span></div>
+<div><div class="win"><i style="width: 76.7%"></i><b style="left: 76.7%"></b></div><div class="mono sm mu" style="display: flex; justify-content: space-between; margin-top: 4px"><span>16 Sep</span><span>16 Oct</span></div></div>
+<div style="display: flex; align-items: baseline; gap: 6px"><span class="cond" style="font-size: 34px; line-height: 36px; font-weight: 600">33</span><span class="mu">/ 36 stars · floors 9–12</span></div>
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px">
+<div class="cell full"><span class="cl">FLOOR 9</span><span class="mono">9/9</span></div>
+<div class="cell full"><span class="cl">FLOOR 10</span><span class="mono">9/9</span></div>
+<div class="cell full"><span class="cl">FLOOR 11</span><span class="mono">9/9</span></div>
+<div class="cell"><span class="cl">FLOOR 12</span><span class="mono">6/9</span></div>
+</div>
+<div><div class="row" style="border-top: 0; min-height: 28px"><span class="cl" style="flex: 1 1 0">REWARDS</span><span class="mono sm">700 / 800</span></div><div class="bar"><i style="width: 87.5%"></i></div></div>
+<div class="cl">TEAMS USED</div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px"><div style="display: flex; gap: 4px"><span class="img pt"></span><span class="img pt"></span><span class="img pt"></span><span class="img pt"></span></div><div style="display: flex; gap: 4px"><span class="img pt"></span><span class="img pt"></span><span class="img pt"></span><span class="img pt"></span></div></div>
+<div class="ph"><span class="cl">LAST 6 CYCLES</span><span class="fill"></span><a class="sm" href="#history">History ↓</a></div>
+<div class="hist" aria-label="36, 36, 35, 36, 34, 33 stars"><span style="height: 100%"></span><span style="height: 100%"></span><span style="height: 97%"></span><span style="height: 100%"></span><span style="height: 94%"></span><span class="now" style="height: 92%"></span></div>
+</section>
+
+<section class="pn">
+<div class="ph"><span class="t">Imaginarium Theater</span><span class="fill"></span><span class="chip">monthly · 1st</span></div>
+<div><div class="win"><i style="width: 26.6%"></i><b style="left: 26.6%"></b></div><div class="mono sm mu" style="display: flex; justify-content: space-between; margin-top: 4px"><span>1 Oct</span><span>1 Nov</span></div></div>
+<div style="display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap"><span class="cond" style="font-size: 34px; line-height: 36px; font-weight: 600">Act 8</span><span class="mu">/ 10 · Visionary</span></div>
+<div style="display: flex; flex-wrap: wrap; gap: 6px"><span class="chip">Hydro</span><span class="chip">Cryo</span><span class="chip">Anemo</span><span class="chip hot">21 eligible owned · 22+ needed</span></div>
+<div><div class="row" style="border-top: 0; min-height: 28px"><span class="cl" style="flex: 1 1 0">REWARDS</span><span class="mono sm">800 / 1,000</span></div><div class="bar"><i style="width: 80%"></i></div></div>
+<div class="cl">OPENING CHARACTERS</div>
+<div style="display: flex; flex-wrap: wrap; gap: 4px"><span class="img pt"></span><span class="img pt"></span><span class="img pt"></span><span class="img pt"></span><span class="img pt"></span><span class="img pt"></span></div>
+<div class="cl">LAST 6 SEASONS · ACTS</div>
+<div class="hist" aria-label="10, 8, 10, 10, 8, 8 acts"><span style="height: 100%"></span><span style="height: 80%"></span><span style="height: 100%"></span><span style="height: 100%"></span><span style="height: 80%"></span><span class="now" style="height: 80%"></span></div>
+</section>
+
+<section class="pn">
+<div class="ph"><span class="t">Stygian Onslaught</span><span class="fill"></span><span class="chip">once per version</span></div>
+<div><div class="win"><i style="width: 27.2%"></i><b style="left: 27.2%"></b></div><div class="mono sm mu" style="display: flex; justify-content: space-between; margin-top: 4px"><span>30 Sep</span><span>3 Nov</span></div></div>
+<div style="display: flex; align-items: baseline; gap: 6px"><span class="cond" style="font-size: 34px; line-height: 36px; font-weight: 600">2</span><span class="mu">/ 6 difficulties cleared</span></div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px">
+<div class="cell full"><span class="cl">NORMAL</span><span class="mono sm">clear</span></div>
+<div class="cell full"><span class="cl">ADVANCING</span><span class="mono sm">clear</span></div>
+<div class="cell"><span class="cl">HARD</span><span class="mono sm">—</span></div>
+<div class="cell"><span class="cl">MENACING</span><span class="mono sm">—</span></div>
+<div class="cell"><span class="cl">FEARLESS</span><span class="mono sm">—</span></div>
+<div class="cell"><span class="cl">DIRE · SOLO</span><span class="mono sm">—</span></div>
+</div>
+<div><div class="row" style="border-top: 0; min-height: 28px"><span class="cl" style="flex: 1 1 0">REWARDS</span><span class="mono sm">300 / 450</span></div><div class="bar"><i style="width: 66.7%"></i></div></div>
+<div class="cl">BOSSES · BEST TIMES</div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px"><div style="display: flex; gap: 6px; align-items: center"><span class="img pt"></span><span class="mono sm">1:42</span></div><div style="display: flex; gap: 6px; align-items: center"><span class="img pt"></span><span class="mono sm">2:05</span></div><div style="display: flex; gap: 6px; align-items: center"><span class="img pt"></span><span class="mono sm">—</span></div></div>
+</section>
+
+</div>
+
+<section class="pn" id="history">
+<div class="ph"><span class="t">History</span><span class="mk">3</span><div style="display: flex; flex-wrap: wrap"><button class="btn sm pri" type="button">Spiral Abyss</button><button class="btn sm" type="button">Imaginarium Theater</button><button class="btn sm" type="button">Stygian Onslaught</button></div><span class="fill"></span><select class="inp" aria-label="Range"><option>Last 12 cycles</option></select><button class="btn sm" type="button">Export CSV</button></div>
+<div style="display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr))">
+<div class="kpi"><span class="cl">BEST</span><span class="cond big2">36 ★</span><span class="sm mu">5 times · last in July</span></div>
+<div class="kpi"><span class="cl">AVERAGE</span><span class="cond big2">34.5 ★</span><span class="sm mu">last 11 completed cycles</span></div>
+<div class="kpi"><span class="cl">PRIMOGEMS EARNED</span><span class="cond big2">8,100</span><span class="sm mu">of 8,800 · last 11 cycles</span></div>
+<div class="kpi"><span class="cl">FLOOR 12 NOW</span><span class="cond big2">6 / 9</span><span class="sm mu">best 9 / 9 · 5 times</span></div>
+</div>
+<div style="overflow-x: auto"><div style="min-width: 720px">
+<svg viewBox="0 0 1200 214" width="100%" role="img" aria-label="Spiral Abyss stars per cycle, October 2025 to September 2026: 30, 32, 33, 36, 35, 36, 36, 36, 35, 36, 34, 33" style="display: block; font-family: 'IBM Plex Mono', ui-monospace, monospace">
+<line x1="48" y1="24.0" x2="1192" y2="24.0" stroke="#DCE0E5" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="40" y="28.0" font-size="11" fill="#4A5058" text-anchor="end">36</text>
+<line x1="48" y1="94.0" x2="1192" y2="94.0" stroke="#DCE0E5" stroke-width="1"/>
+<text x="40" y="98.0" font-size="11" fill="#4A5058" text-anchor="end">30</text>
+<line x1="48" y1="164.0" x2="1192" y2="164.0" stroke="#DCE0E5" stroke-width="1"/>
+<text x="40" y="168.0" font-size="11" fill="#4A5058" text-anchor="end">24</text>
+<text x="1192" y="16.0" font-size="11" fill="#4A5058" text-anchor="end">full clear</text>
+<path d="M64.0 94.0 L165.1 70.7 L266.2 59.0 L367.3 24.0 L468.4 35.7 L569.5 24.0 L670.5 24.0 L771.6 24.0 L872.7 35.7 L973.8 24.0 L1074.9 47.3 L1176.0 59.0" fill="none" stroke="#4A5058" stroke-width="2"/>
+<g><title>16 Oct – 15 Nov 2025 · 30 stars · 650 Primogems</title><circle cx="64.0" cy="94.0" r="14" fill="transparent"/><circle cx="64.0" cy="94.0" r="5" fill="#FFFFFF" stroke="#4A5058" stroke-width="2"/></g>
+<text x="64.0" y="190" font-size="11" fill="#4A5058" text-anchor="middle">Oct</text>
+<g><title>16 Nov – 15 Dec 2025 · 32 stars · 650 Primogems</title><circle cx="165.1" cy="70.7" r="14" fill="transparent"/><circle cx="165.1" cy="70.7" r="5" fill="#FFFFFF" stroke="#4A5058" stroke-width="2"/></g>
+<text x="165.1" y="190" font-size="11" fill="#4A5058" text-anchor="middle">Nov</text>
+<g><title>16 Dec 2025 – 15 Jan 2026 · 33 stars · 700 Primogems</title><circle cx="266.2" cy="59.0" r="14" fill="transparent"/><circle cx="266.2" cy="59.0" r="5" fill="#FFFFFF" stroke="#4A5058" stroke-width="2"/></g>
+<text x="266.2" y="190" font-size="11" fill="#4A5058" text-anchor="middle">Dec</text>
+<g><title>16 Jan – 15 Feb · 36 stars · 800 Primogems</title><circle cx="367.3" cy="24.0" r="14" fill="transparent"/><circle cx="367.3" cy="24.0" r="5" fill="#15171A" stroke="#15171A" stroke-width="2"/></g>
+<text x="367.3" y="190" font-size="11" fill="#4A5058" text-anchor="middle">Jan</text>
+<g><title>16 Feb – 15 Mar · 35 stars · 700 Primogems</title><circle cx="468.4" cy="35.7" r="14" fill="transparent"/><circle cx="468.4" cy="35.7" r="5" fill="#FFFFFF" stroke="#4A5058" stroke-width="2"/></g>
+<text x="468.4" y="190" font-size="11" fill="#4A5058" text-anchor="middle">Feb</text>
+<g><title>16 Mar – 15 Apr · 36 stars · 800 Primogems</title><circle cx="569.5" cy="24.0" r="14" fill="transparent"/><circle cx="569.5" cy="24.0" r="5" fill="#15171A" stroke="#15171A" stroke-width="2"/></g>
+<text x="569.5" y="190" font-size="11" fill="#4A5058" text-anchor="middle">Mar</text>
+<g><title>16 Apr – 15 May · 36 stars · 800 Primogems</title><circle cx="670.5" cy="24.0" r="14" fill="transparent"/><circle cx="670.5" cy="24.0" r="5" fill="#15171A" stroke="#15171A" stroke-width="2"/></g>
+<text x="670.5" y="190" font-size="11" fill="#4A5058" text-anchor="middle">Apr</text>
+<g><title>16 May – 15 Jun · 36 stars · 800 Primogems</title><circle cx="771.6" cy="24.0" r="14" fill="transparent"/><circle cx="771.6" cy="24.0" r="5" fill="#15171A" stroke="#15171A" stroke-width="2"/></g>
+<text x="771.6" y="190" font-size="11" fill="#4A5058" text-anchor="middle">May</text>
+<g><title>16 Jun – 15 Jul · 35 stars · 700 Primogems</title><circle cx="872.7" cy="35.7" r="14" fill="transparent"/><circle cx="872.7" cy="35.7" r="5" fill="#FFFFFF" stroke="#4A5058" stroke-width="2"/></g>
+<text x="872.7" y="190" font-size="11" fill="#4A5058" text-anchor="middle">Jun</text>
+<g><title>16 Jul – 15 Aug · 36 stars · 800 Primogems</title><circle cx="973.8" cy="24.0" r="14" fill="transparent"/><circle cx="973.8" cy="24.0" r="5" fill="#15171A" stroke="#15171A" stroke-width="2"/></g>
+<text x="973.8" y="190" font-size="11" fill="#4A5058" text-anchor="middle">Jul</text>
+<g><title>16 Aug – 15 Sep · 34 stars · 700 Primogems</title><circle cx="1074.9" cy="47.3" r="14" fill="transparent"/><circle cx="1074.9" cy="47.3" r="5" fill="#FFFFFF" stroke="#4A5058" stroke-width="2"/></g>
+<text x="1074.9" y="190" font-size="11" fill="#4A5058" text-anchor="middle">Aug</text>
+<g><title>16 Sep – 15 Oct (now) · 33 stars · 700 Primogems</title><circle cx="1176.0" cy="59.0" r="14" fill="transparent"/><circle cx="1176.0" cy="59.0" r="6" fill="#FFFFFF" stroke="#15171A" stroke-width="3"/></g>
+<text x="1176.0" y="190" font-size="11" fill="#15171A" text-anchor="middle" font-weight="500">Sep</text>
+<text x="64.0" y="207" font-size="10" fill="#4A5058" text-anchor="middle">2025</text>
+<text x="367.3" y="207" font-size="10" fill="#4A5058" text-anchor="middle">2026</text>
+<text x="1164.0" y="81.0" font-size="12" fill="#15171A" text-anchor="end" font-weight="500">33 · now</text>
+</svg>
+</div></div>
+<div class="sm mu" style="display: flex; flex-wrap: wrap; gap: 16px"><span><span class="dot f"></span>36 stars, full clear</span><span><span class="dot"></span>partial clear</span><span>Hover a point for dates and rewards.</span></div>
+<div style="overflow-x: auto"><div style="min-width: 790px">
+<div class="row mono sm mu" style="border-top: 0; min-height: 28px"><span style="flex: 1 1 0">CYCLE</span><span style="width: 70px; text-align: right">STARS</span><span style="width: 80px; text-align: right">FLOOR 12</span><span style="width: 110px; text-align: right">PRIMOGEMS</span><span style="width: 264px; padding-left: 24px">TEAMS · 1ST / 2ND HALF</span><span style="width: 80px">SOURCE</span></div>
+<div class="row"><span style="flex: 1 1 0; min-width: 0">16 Sep – 15 Oct <span class="chip auto">NOW</span></span><span class="mono" style="width: 70px; text-align: right">33</span><span class="mono" style="width: 80px; text-align: right">6 / 9</span><span class="mono" style="width: 110px; text-align: right">700 / 800</span><div style="width: 264px; display: flex; gap: 12px; padding-left: 24px"><div class="tm" title="Arlecchino · Bennett · Xingqiu · Chevreuse"><span class="img"></span><span class="img"></span><span class="img"></span><span class="img"></span></div><div class="tm" title="Kamisato Ayaka · Venti · Chiori · Jean"><span class="img"></span><span class="img"></span><span class="img"></span><span class="img"></span></div></div><span style="width: 80px"><span class="src a">AUTO</span></span></div>
+<div class="row"><span style="flex: 1 1 0; min-width: 0">16 Aug – 15 Sep</span><span class="mono" style="width: 70px; text-align: right">34</span><span class="mono" style="width: 80px; text-align: right">7 / 9</span><span class="mono" style="width: 110px; text-align: right">700 / 800</span><div style="width: 264px; display: flex; gap: 12px; padding-left: 24px"><div class="tm" title="Arlecchino · Bennett · Xingqiu · Chevreuse"><span class="img"></span><span class="img"></span><span class="img"></span><span class="img"></span></div><div class="tm" title="Kamisato Ayaka · Venti · Chiori · Jean"><span class="img"></span><span class="img"></span><span class="img"></span><span class="img"></span></div></div><span style="width: 80px"><span class="src a">AUTO</span></span></div>
+<div class="row"><span style="flex: 1 1 0; min-width: 0">16 Jul – 15 Aug</span><span class="mono" style="width: 70px; text-align: right"><span class="dot f"></span>36</span><span class="mono" style="width: 80px; text-align: right">9 / 9</span><span class="mono" style="width: 110px; text-align: right">800 / 800</span><div style="width: 264px; display: flex; gap: 12px; padding-left: 24px"><div class="tm" title="Arlecchino · Bennett · Xingqiu · Chevreuse"><span class="img"></span><span class="img"></span><span class="img"></span><span class="img"></span></div><div class="tm" title="Kamisato Ayaka · Venti · Chiori · Jean"><span class="img"></span><span class="img"></span><span class="img"></span><span class="img"></span></div></div><span style="width: 80px"><span class="src a">AUTO</span></span></div>
+<div class="row"><span style="flex: 1 1 0; min-width: 0">16 Jun – 15 Jul</span><span class="mono" style="width: 70px; text-align: right">35</span><span class="mono" style="width: 80px; text-align: right">8 / 9</span><span class="mono" style="width: 110px; text-align: right">700 / 800</span><div style="width: 264px; display: flex; gap: 12px; padding-left: 24px"><div class="tm" title="Arlecchino · Bennett · Xingqiu · Chevreuse"><span class="img"></span><span class="img"></span><span class="img"></span><span class="img"></span></div><div class="tm" title="Kamisato Ayaka · Venti · Chiori · Jean"><span class="img"></span><span class="img"></span><span class="img"></span><span class="img"></span></div></div><span style="width: 80px"><span class="src a">AUTO</span></span></div>
+<div class="row"><span style="flex: 1 1 0; min-width: 0">16 May – 15 Jun</span><span class="mono" style="width: 70px; text-align: right"><span class="dot f"></span>36</span><span class="mono" style="width: 80px; text-align: right">9 / 9</span><span class="mono" style="width: 110px; text-align: right">800 / 800</span><div style="width: 264px; display: flex; gap: 12px; padding-left: 24px"><div class="tm" title="Arlecchino · Bennett · Xingqiu · Chevreuse"><span class="img"></span><span class="img"></span><span class="img"></span><span class="img"></span></div><div class="tm" title="Kamisato Ayaka · Venti · Chiori · Jean"><span class="img"></span><span class="img"></span><span class="img"></span><span class="img"></span></div></div><span style="width: 80px"><span class="src">MANUAL</span></span></div>
+<div class="row"><span style="flex: 1 1 0; min-width: 0">16 Apr – 15 May</span><span class="mono" style="width: 70px; text-align: right"><span class="dot f"></span>36</span><span class="mono" style="width: 80px; text-align: right">9 / 9</span><span class="mono" style="width: 110px; text-align: right">800 / 800</span><div style="width: 264px; display: flex; gap: 12px; padding-left: 24px"><div class="tm" title="Arlecchino · Bennett · Xingqiu · Chevreuse"><span class="img"></span><span class="img"></span><span class="img"></span><span class="img"></span></div><div class="tm" title="Kamisato Ayaka · Venti · Chiori · Jean"><span class="img"></span><span class="img"></span><span class="img"></span><span class="img"></span></div></div><span style="width: 80px"><span class="src">MANUAL</span></span></div>
+</div></div>
+<div class="ph"><button class="btn sm" type="button">Show 6 older cycles</button><span class="fill"></span><span class="sm mu" style="max-width: 760px">The official record only covers recent cycles. Gacha Hub saves a snapshot at every reset; cycles from before you linked HoYoLAB can be typed in.</span></div>
+</section>
+
+<section class="pn">
+<div class="ph"><span class="t">Upcoming resets</span><span class="fill"></span><span class="sm mu">Modes, cadences and rewards come from the game manifest</span><span class="mk">4</span></div>
+<div>
+<div class="row" style="border-top: 0"><span style="width: 200px">Spiral Abyss</span><span style="flex: 1 1 0" class="mu">New cycle with new Ley Line Disorder</span><span class="mono sm">Fri 16 Oct · 05:00</span></div>
+<div class="row"><span style="width: 200px">Imaginarium Theater</span><span style="flex: 1 1 0" class="mu">November season: Hydro, Electro, Geo</span><span class="mono sm">Sun 1 Nov · 05:00</span></div>
+<div class="row"><span style="width: 200px">Stygian Onslaught</span><span style="flex: 1 1 0" class="mu">Ends with 7.1; next cycle about a week into 7.2</span><span class="mono sm">Tue 3 Nov</span></div>
+</div>
+</section>
+
+</main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"markers":{"editor":"boolean","default":true,"section":"Wireframe"},"$preview":{"width":1440,"height":1880}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const on = this.props.markers ?? true;
+    return { rootCls: on ? 'wf' : 'wf nomk' };
+  }
+}
+</script>
+</body>
+</html>

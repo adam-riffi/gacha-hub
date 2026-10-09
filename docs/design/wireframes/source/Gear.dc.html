@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Genshin Impact artifacts</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans+Condensed:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#15171A}a:hover{color:#4A5058}
+.mono{font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace}
+.cond{font-family:'IBM Plex Sans Condensed','Arial Narrow',sans-serif}
+.rail{flex:0 0 72px;display:flex;flex-direction:column;gap:4px;padding:16px 0;background:#FFFFFF;border-right:1px solid #B4BAC2}
+.logo{width:32px;height:32px;margin:0 auto 16px;background:#15171A}
+.ri{height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.06em;text-decoration:none;color:#4A5058;border-left:3px solid transparent}
+.ri.on{color:#15171A;border-left-color:#15171A;background:#EEF0F2}
+.ic{width:20px;height:20px;border:1.5px solid currentColor}
+.fill{flex:1 1 0}
+.main{flex:999 1 560px;min-width:0;display:flex;flex-direction:column}
+.top{min-height:56px;display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:10px 24px;background:#FFFFFF;border-bottom:1px solid #B4BAC2}
+.scope{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.sc{height:36px;min-width:44px;padding:0 10px;display:inline-flex;align-items:center;justify-content:center;border:1px solid #B4BAC2;background:#FFFFFF;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;color:#15171A;text-decoration:none;cursor:pointer}
+.sc.on{background:#15171A;color:#FFFFFF;border-color:#15171A}
+.gh{background:#FFFFFF;border-bottom:1px solid #B4BAC2;padding:16px 24px;display:flex;flex-wrap:wrap;align-items:center;gap:16px}
+.tabs{display:flex;flex-wrap:wrap;align-items:center;border-bottom:1px solid #B4BAC2;background:#FFFFFF;padding:0 24px}
+.tab{height:44px;padding:0 14px;display:flex;align-items:center;font-size:13px;color:#4A5058;text-decoration:none;border-bottom:2px solid transparent}
+.tab.on{color:#15171A;border-bottom-color:#15171A;font-weight:600}
+.pg{padding:24px;display:flex;flex-direction:column;gap:16px;width:100%;max-width:1368px}
+.pn{background:#FFFFFF;border:1px solid #B4BAC2;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.ph{display:flex;align-items:center;gap:8px;min-height:22px;flex-wrap:wrap}
+.t{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase}
+.cl{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.06em;color:#4A5058}
+.mu{color:#4A5058}
+.sm{font-size:12px}
+.bar{height:8px;background:#DCE0E5;position:relative;overflow:hidden}
+.bar>i{position:absolute;left:0;top:0;bottom:0;background:#15171A}
+.chip{display:inline-flex;align-items:center;height:22px;padding:0 8px;border:1px solid #B4BAC2;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.04em;white-space:nowrap;color:#15171A;background:#FFFFFF}
+.chip.auto{border-color:#15171A;background:#15171A;color:#FFFFFF}
+.chip.hot{border-color:#C2185B;color:#C2185B}
+.src{display:inline-flex;align-items:center;height:18px;padding:0 5px;border:1px solid #B4BAC2;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.04em;white-space:nowrap;color:#4A5058}
+.src.a{background:#15171A;border-color:#15171A;color:#FFFFFF}
+.img{background-color:#DCE0E5;background-image:linear-gradient(to top right,transparent calc(50% - 1px),#B4BAC2 calc(50% - 1px),#B4BAC2 calc(50% + 1px),transparent calc(50% + 1px)),linear-gradient(to bottom right,transparent calc(50% - 1px),#B4BAC2 calc(50% - 1px),#B4BAC2 calc(50% + 1px),transparent calc(50% + 1px))}
+.btn{min-height:40px;padding:0 14px;border:1px solid #15171A;background:#FFFFFF;font-family:'IBM Plex Sans',sans-serif;font-size:13px;color:#15171A;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;cursor:pointer}
+.btn.pri{background:#15171A;color:#FFFFFF}
+.btn.sm{min-height:32px;padding:0 10px;font-size:12px}
+.row{display:flex;align-items:center;gap:10px;min-height:40px;border-top:1px solid #E1E4E8}
+.mk{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:#C2185B;color:#FFFFFF;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;font-weight:500;flex:0 0 20px}
+.nomk .mk{display:none}
+.inp{min-height:36px;padding:0 10px;border:1px solid #B4BAC2;background:#FFFFFF;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:13px;color:#15171A;min-width:0}
+.dots{display:inline-flex;gap:4px}
+.dots i{width:12px;height:12px;border:1.5px solid #15171A;display:block}
+.dots i.f{background:#15171A}
+.slot{border:1px solid #B4BAC2;padding:10px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.slot.miss{border:1.5px dashed #4A5058;background:#F4F5F7}
+.subs{display:grid;grid-template-columns:1fr auto;column-gap:8px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;line-height:18px;color:#4A5058}
+.subs b{font-weight:500;color:#15171A;text-align:right}
+.kv{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:0 16px}
+.kv>div{display:flex;justify-content:space-between;align-items:center;min-height:36px;border-top:1px solid #E1E4E8;gap:8px}
+@media (max-width:700px){.rail{flex:1 1 100%;flex-direction:row;padding:0 8px;border-right:0;border-bottom:1px solid #B4BAC2}.logo{display:none}.ri{flex:1;height:56px;border-left:0}}
+</style>
+</helmet>
+<div class="{{rootCls}}" style="min-height: 100vh; display: flex; flex-wrap: wrap; align-items: stretch; background: #E6E8EB; color: #15171A; font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif; font-size: 14px; line-height: 20px">
+
+<nav aria-label="Sections" class="rail">
+<span class="logo" aria-hidden="true"></span>
+<a class="ri" href="Dashboard.dc.html"><span class="ic"></span>ALL</a>
+<a class="ri on" href="Library.dc.html" aria-current="page"><span class="ic"></span>GAMES</a>
+<a class="ri" href="Tasks.dc.html"><span class="ic"></span>TASKS</a>
+<a class="ri" href="Calendar.dc.html"><span class="ic"></span>BANNERS</a>
+<span class="fill"></span>
+<a class="ri" href="Settings.dc.html"><span class="ic"></span>SETTINGS</a>
+</nav>
+
+<div class="main">
+<header class="top">
+<nav aria-label="Scope" class="scope">
+<a class="sc" href="Library.dc.html">Overview</a>
+<a class="sc on" href="Activities.dc.html" aria-current="page" aria-label="Genshin Impact">GI</a>
+<button class="sc" type="button" aria-label="Honkai: Star Rail">HSR</button>
+<button class="sc" type="button" aria-label="Zenless Zone Zero">ZZZ</button>
+<button class="sc" type="button" aria-label="Wuthering Waves">WuWa</button>
+<button class="sc" type="button" aria-label="Neverness to Everness">NTE</button>
+<button class="sc" type="button" aria-label="Arknights: Endfield">AE</button>
+</nav>
+<span class="fill"></span>
+<span class="mono sm mu">2026-10-09 · FRI · 08:00</span>
+</header>
+
+<section class="gh">
+<span class="img" style="width: 48px; height: 48px; flex: 0 0 48px"></span>
+<div style="display: flex; flex-direction: column; gap: 6px; min-width: 0">
+<h1 class="cond" style="margin: 0; font-size: 28px; line-height: 32px; font-weight: 600">Genshin Impact</h1>
+<div style="display: flex; flex-wrap: wrap; gap: 6px"><span class="chip">EU · UTC+1</span><span class="chip">UID 7•••••••2</span><span class="chip">AR 58 · WL 8</span><span class="chip auto">AUTO · HoYoLAB · 3 min ago</span></div>
+</div>
+<span class="fill"></span>
+<div style="display: flex; flex-wrap: wrap; gap: 24px">
+<div><div class="cl">DAILY RESET</div><div class="mono">in 21h 00m</div></div>
+<div><div class="cl">WEEKLY RESET</div><div class="mono">Mon 12 Oct</div></div>
+<div><div class="cl">VERSION 7.1</div><div class="mono">ends 4 Nov</div></div>
+</div>
+</section>
+<nav aria-label="Genshin Impact sections" class="tabs">
+<a class="tab" href="Activities.dc.html">Activities</a>
+<a class="tab" href="Endgame.dc.html">Endgame</a>
+<a class="tab" href="Pulls.dc.html">Pulls</a>
+<a class="tab" href="Characters.dc.html">Characters</a>
+<a class="tab on" href="Gear.dc.html" aria-current="page">Artifacts</a>
+<a class="tab" href="Planner.dc.html">Planner</a>
+<a class="tab" href="Profile.dc.html">Profile</a>
+</nav>
+
+<main class="pg">
+
+<section class="pn" style="flex-direction: row; flex-wrap: wrap; align-items: center; gap: 12px">
+<div style="display: flex"><button class="btn pri" type="button">Inventory</button><button class="btn" type="button">Sets</button><button class="btn" type="button">Farm targets</button></div>
+<span class="fill"></span>
+<span class="src a">AUTO · equipped pieces · showcase</span>
+<span class="src">IMPORT · full inventory · GOOD file · 2 Oct</span>
+<button class="btn sm" type="button">Import GOOD file</button>
+</section>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+
+<section class="pn" style="flex: 999 1 620px">
+<div class="ph"><span class="t">Inventory</span><span class="mk">1</span><span class="fill"></span><span class="mono sm mu">9 of 1,742 pieces</span></div>
+<div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end">
+<label class="sm" style="display: flex; flex-direction: column; gap: 4px; flex: 2 1 220px">Set<select class="inp"><option>Fragment of Harmonic Whimsy</option></select></label>
+<label class="sm" style="display: flex; flex-direction: column; gap: 4px; flex: 1 1 110px">Slot<select class="inp"><option>Any</option></select></label>
+<label class="sm" style="display: flex; flex-direction: column; gap: 4px; flex: 1 1 110px">Main stat<select class="inp"><option>Any</option></select></label>
+<label class="sm" style="display: flex; flex-direction: column; gap: 4px; flex: 1 1 110px">Equipped<select class="inp"><option>Any</option></select></label>
+<label class="sm" style="display: flex; flex-direction: column; gap: 4px; flex: 1 1 130px">Sort<select class="inp"><option>Crit value</option></select></label>
+</div>
+<div style="display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr))">
+
+<div class="slot"><div class="ph"><span class="cl">FLOWER</span><span class="fill"></span><span class="mono sm">CV 35.8</span></div><div style="display: flex; gap: 8px; align-items: center"><span class="img" style="width: 36px; height: 36px; flex: 0 0 36px"></span><div><div class="sm mu">★5 · +20</div><div style="font-weight: 600">HP 4,780</div></div></div><div class="subs"><span>CRIT DMG</span><b>21.8%</b><span>CRIT Rate</span><b>7.0%</b><span>ATK</span><b>9.9%</b><span>Energy Rech.</span><b>5.8%</b></div><div class="ph"><span class="img" style="width: 20px; height: 20px"></span><span class="sm">Arlecchino</span><span class="fill"></span><button class="btn sm" type="button">Move</button></div></div>
+
+<div class="slot"><div class="ph"><span class="cl">PLUME</span><span class="fill"></span><span class="mono sm">CV 35.0</span></div><div style="display: flex; gap: 8px; align-items: center"><span class="img" style="width: 36px; height: 36px; flex: 0 0 36px"></span><div><div class="sm mu">★5 · +20</div><div style="font-weight: 600">ATK 311</div></div></div><div class="subs"><span>CRIT Rate</span><b>10.5%</b><span>CRIT DMG</span><b>14.0%</b><span>HP</span><b>538</b><span>DEF</span><b>23</b></div><div class="ph"><span class="img" style="width: 20px; height: 20px"></span><span class="sm">Arlecchino</span><span class="fill"></span><button class="btn sm" type="button">Move</button></div></div>
+
+<div class="slot"><div class="ph"><span class="cl">GOBLET</span><span class="fill"></span><span class="mono sm">CV 28.0</span></div><div style="display: flex; gap: 8px; align-items: center"><span class="img" style="width: 36px; height: 36px; flex: 0 0 36px"></span><div><div class="sm mu">★5 · +20</div><div style="font-weight: 600">Pyro DMG 46.6%</div></div></div><div class="subs"><span>CRIT DMG</span><b>20.2%</b><span>CRIT Rate</span><b>3.9%</b><span>ATK</span><b>33</b><span>HP</span><b>4.7%</b></div><div class="ph"><span class="img" style="width: 20px; height: 20px"></span><span class="sm">Arlecchino</span><span class="fill"></span><button class="btn sm" type="button">Move</button></div></div>
+
+<div class="slot"><div class="ph"><span class="cl">SANDS</span><span class="fill"></span><span class="mono sm">CV 26.4</span></div><div style="display: flex; gap: 8px; align-items: center"><span class="img" style="width: 36px; height: 36px; flex: 0 0 36px"></span><div><div class="sm mu">★5 · +20</div><div style="font-weight: 600">ATK 46.6%</div></div></div><div class="subs"><span>CRIT DMG</span><b>13.2%</b><span>CRIT Rate</span><b>6.6%</b><span>Elem. Mastery</span><b>40</b><span>DEF</span><b>7.3%</b></div><div class="ph"><span class="img" style="width: 20px; height: 20px"></span><span class="sm">Arlecchino</span><span class="fill"></span><button class="btn sm" type="button">Move</button></div></div>
+
+<div class="slot"><div class="ph"><span class="cl">FLOWER</span><span class="fill"></span><span class="mono sm">CV 21.0</span></div><div style="display: flex; gap: 8px; align-items: center"><span class="img" style="width: 36px; height: 36px; flex: 0 0 36px"></span><div><div class="sm mu">★5 · +20</div><div style="font-weight: 600">HP 4,780</div></div></div><div class="subs"><span>CRIT Rate</span><b>6.2%</b><span>CRIT DMG</span><b>8.6%</b><span>ATK</span><b>14.0%</b><span>Elem. Mastery</span><b>56</b></div><div class="ph"><span class="sm mu">Unequipped</span><span class="fill"></span><button class="btn sm" type="button">Equip on…</button></div></div>
+
+<div class="slot"><div class="ph"><span class="cl">SANDS</span><span class="fill"></span><span class="mono sm">CV 18.6</span></div><div style="display: flex; gap: 8px; align-items: center"><span class="img" style="width: 36px; height: 36px; flex: 0 0 36px"></span><div><div class="sm mu">★5 · +20</div><div style="font-weight: 600">ATK 46.6%</div></div></div><div class="subs"><span>CRIT DMG</span><b>18.6%</b><span>HP</span><b>9.3%</b><span>DEF</span><b>42</b><span>Energy Rech.</span><b>11.0%</b></div><div class="ph"><span class="sm mu">Unequipped</span><span class="fill"></span><button class="btn sm" type="button">Equip on…</button></div></div>
+
+<div class="slot"><div class="ph"><span class="cl">CIRCLET</span><span class="fill"></span><span class="mono sm">CV 14.0</span></div><div style="display: flex; gap: 8px; align-items: center"><span class="img" style="width: 36px; height: 36px; flex: 0 0 36px"></span><div><div class="sm mu">★5 · +16</div><div style="font-weight: 600">CRIT Rate 27.0%</div></div></div><div class="subs"><span>CRIT DMG</span><b>14.0%</b><span>HP</span><b>10.5%</b><span>DEF</span><b>13.1%</b><span>Elem. Mastery</span><b>21</b></div><div class="ph"><span class="sm mu">Unequipped</span><span class="fill"></span><button class="btn sm" type="button">Equip on…</button></div></div>
+
+<div class="slot"><div class="ph"><span class="cl">GOBLET</span><span class="fill"></span><span class="mono sm">CV 12.4</span></div><div style="display: flex; gap: 8px; align-items: center"><span class="img" style="width: 36px; height: 36px; flex: 0 0 36px"></span><div><div class="sm mu">★5 · +20</div><div style="font-weight: 600">Physical DMG 58.3%</div></div></div><div class="subs"><span>CRIT DMG</span><b>12.4%</b><span>HP</span><b>538</b><span>DEF</span><b>16.0%</b><span>ATK</span><b>5.3%</b></div><div class="ph"><span class="chip">LOW CV</span><span class="fill"></span><button class="btn sm" type="button">Equip on…</button></div></div>
+
+<div class="slot"><div class="ph"><span class="cl">PLUME</span><span class="fill"></span><span class="mono sm">CV 7.8</span></div><div style="display: flex; gap: 8px; align-items: center"><span class="img" style="width: 36px; height: 36px; flex: 0 0 36px"></span><div><div class="sm mu">★5 · +12</div><div style="font-weight: 600">ATK 238</div></div></div><div class="subs"><span>CRIT DMG</span><b>7.8%</b><span>DEF</span><b>5.8%</b><span>HP</span><b>4.1%</b><span>Energy Rech.</span><b>5.2%</b></div><div class="ph"><span class="chip">LOW CV</span><span class="fill"></span><button class="btn sm" type="button">Equip on…</button></div></div>
+
+</div>
+</section>
+
+<div style="flex: 1 1 340px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+
+<section class="pn">
+<div class="ph"><span class="t">Farm targets</span><span class="mk">2</span><span class="fill"></span><span class="mono sm mu">from build targets</span></div>
+
+<div style="border: 1px solid #15171A; padding: 12px; display: flex; flex-direction: column; gap: 6px">
+<div class="ph"><span style="font-weight: 600">Faded Theater</span><span class="fill"></span><span class="mono sm mu">20 Resin · daily</span></div>
+<div class="sm mu">Fragment of Harmonic Whimsy · Unfinished Reverie</div>
+<div class="row" style="min-height: 36px"><span class="img" style="width: 24px; height: 24px; flex: 0 0 24px"></span><span style="flex: 1 1 0">Arlecchino</span><span class="mono sm">Circlet · CRIT DMG</span></div>
+<div class="ph"><span class="sm mu">1 piece wanted · goal 4 / 5</span><span class="fill"></span><span class="mk">3</span><a class="btn sm" href="Tasks.dc.html">Update task</a></div>
+</div>
+
+<div style="border: 1px solid #B4BAC2; padding: 12px; display: flex; flex-direction: column; gap: 6px">
+<div class="ph"><span style="font-weight: 600">Valley of Remembrance</span><span class="fill"></span><span class="mono sm mu">20 Resin · daily</span></div>
+<div class="sm mu">Viridescent Venerer · Maiden Beloved</div>
+<div class="row" style="min-height: 36px; flex-wrap: wrap"><span class="img" style="width: 24px; height: 24px; flex: 0 0 24px"></span><span style="flex: 1 1 0">Jean</span><span class="mono sm">Sands ATK% · Goblet Anemo · Circlet CRIT</span></div>
+<div class="ph"><span class="sm mu">4 pieces wanted · no task yet</span><span class="fill"></span><button class="btn sm" type="button">Create task</button></div>
+</div>
+</section>
+
+<section class="pn">
+<div class="ph"><span class="t">Storage</span><span class="mk">4</span><span class="fill"></span><span class="chip hot">58 SLOTS LEFT</span></div>
+<div style="display: flex; align-items: baseline; gap: 6px"><span class="cond" style="font-size: 28px; line-height: 32px; font-weight: 600">1,742</span><span class="mono sm mu">/ 1,800 artifacts</span></div>
+<div class="bar"><i style="width: 96.8%"></i></div>
+<div class="sm mu">Cap comes from the game manifest. Warns at 95%. Counts update on each GOOD import.</div>
+<div class="row" style="flex-wrap: wrap"><span style="flex: 1 1 0">Salvage candidates</span><span class="mono sm">96 low-CV ★5 · 312 ★4 and below</span></div>
+<button class="btn sm" type="button" style="align-self: flex-start">Show salvage list</button>
+</section>
+
+</div>
+</div>
+
+</main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"markers":{"editor":"boolean","default":true,"section":"Wireframe"},"$preview":{"width":1440,"height":1180}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const on = this.props.markers ?? true;
+    return { rootCls: on ? 'wf' : 'wf nomk' };
+  }
+}
+</script>
+</body>
+</html>

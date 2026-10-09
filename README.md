@@ -81,7 +81,7 @@ apps/web/src/                     pages/ · components/ · games/<key>/ (bespoke
 e2e/                              Playwright smoke journeys
 scripts/                          catalog importers · e2e server · build and SQLite helpers
 prisma/                           schema.prisma + migrations
-docs/                             DESIGN · VISUAL-DESIGN · WIREFRAMES · PROJECT-GUIDE ·
+docs/                             DESIGN · VISUAL-DESIGN · WIREFRAMES · design/ · PROJECT-GUIDE ·
                                   ENGINEERING · AGENT_LOG · adr/ · games/ · DEPLOY
 ```
 

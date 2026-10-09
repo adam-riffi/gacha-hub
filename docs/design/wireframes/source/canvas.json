@@ -1,0 +1,301 @@
+{
+  "v": 3,
+  "createdOnFiles": {
+    "v": 1,
+    "at": "2026-10-09T06:05:00Z"
+  },
+  "title": "Gacha Hub Wireframes",
+  "launch": {
+    "view": "canvas"
+  },
+  "pages": [],
+  "boards": {
+    "Main.dc.html": {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 1184,
+      "title": "00 · Screen map",
+      "is_interactive": true
+    },
+    "Dashboard.dc.html": {
+      "x": 0,
+      "y": 1644,
+      "w": 1440,
+      "h": 1350,
+      "title": "A1 · Dashboard (ALL)",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Library.dc.html": {
+      "x": 1960,
+      "y": 1644,
+      "w": 1440,
+      "h": 1230,
+      "title": "A2 · Games library (GAMES, Overview)",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Tasks.dc.html": {
+      "x": 3920,
+      "y": 1644,
+      "w": 1440,
+      "h": 1070,
+      "title": "A3 · Tasks and reminders (TASKS)",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Calendar.dc.html": {
+      "x": 5880,
+      "y": 1644,
+      "w": 1440,
+      "h": 990,
+      "title": "A4 · Calendar (BANNERS)",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Settings.dc.html": {
+      "x": 7840,
+      "y": 1644,
+      "w": 1440,
+      "h": 1560,
+      "title": "A5 · Settings (SETTINGS)",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Activities.dc.html": {
+      "x": 0,
+      "y": 3624,
+      "w": 1440,
+      "h": 1030,
+      "title": "G1 · Activities",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Endgame.dc.html": {
+      "x": 1960,
+      "y": 3624,
+      "w": 1440,
+      "h": 1880,
+      "title": "G2 · Endgame",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Pulls.dc.html": {
+      "x": 3920,
+      "y": 3624,
+      "w": 1440,
+      "h": 1730,
+      "title": "G3 · Pulls",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Characters.dc.html": {
+      "x": 5880,
+      "y": 3624,
+      "w": 1440,
+      "h": 1580,
+      "title": "G4 · Characters",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "CharacterSheet.dc.html": {
+      "x": 0,
+      "y": 5704,
+      "w": 1440,
+      "h": 1700,
+      "title": "G5 · Character sheet",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Gear.dc.html": {
+      "x": 1960,
+      "y": 5704,
+      "w": 1440,
+      "h": 1180,
+      "title": "G6 · Gear (Artifacts)",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Planner.dc.html": {
+      "x": 3920,
+      "y": 5704,
+      "w": 1440,
+      "h": 1100,
+      "title": "G7 · Planner",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Profile.dc.html": {
+      "x": 5880,
+      "y": 5704,
+      "w": 1440,
+      "h": 970,
+      "title": "G8 · Profile",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "AcrossGames.dc.html": {
+      "x": 0,
+      "y": 7824,
+      "w": 1440,
+      "h": 1380,
+      "title": "X1 · Across six games",
+      "expand": "fill",
+      "is_interactive": true
+    }
+  },
+  "order": [
+    "Main.dc.html",
+    "Dashboard.dc.html",
+    "Library.dc.html",
+    "Tasks.dc.html",
+    "Calendar.dc.html",
+    "Settings.dc.html",
+    "Activities.dc.html",
+    "Endgame.dc.html",
+    "Pulls.dc.html",
+    "Characters.dc.html",
+    "CharacterSheet.dc.html",
+    "Gear.dc.html",
+    "Planner.dc.html",
+    "Profile.dc.html",
+    "AcrossGames.dc.html"
+  ],
+  "notes": {
+    "t-everyday": {
+      "x": 0,
+      "y": 1384,
+      "text": "Everyday screens · ALL, GAMES, TASKS, BANNERS, SETTINGS",
+      "kind": "title1",
+      "maxW": 9720
+    },
+    "t-hub": {
+      "x": 0,
+      "y": 3364,
+      "text": "Game hub · Genshin Impact as the example",
+      "kind": "title1",
+      "maxW": 7760
+    },
+    "t-across": {
+      "x": 0,
+      "y": 7564,
+      "text": "Across six games",
+      "kind": "title1",
+      "maxW": 1880
+    },
+    "n-a1": {
+      "x": 1480,
+      "y": 1644,
+      "w": 400,
+      "maxH": 900,
+      "fill": "pink",
+      "text": "A1 · Dashboard\nMirrors your 8 October design. Dashed panels are proposals.\n\n1  The top strip sets the scope. Overview shows all six games; a game icon shows the same dashboard for that game only.\n2  Each panel says where its numbers come from: AUTO (synced) or MANUAL (entered by you).\n3  Proposed: Endgame, the next cycle resets with stars and premium currency still unclaimed.\n4  Proposed: Expiring, events, 30-day passes, battle passes and redemption codes ending within 72 hours.\n5  Stamina rows show the time it fills and the reserve where the game has one (HSR, ZZZ, WuWa)."
+    },
+    "n-a2": {
+      "x": 3440,
+      "y": 1644,
+      "w": 400,
+      "maxH": 900,
+      "fill": "pink",
+      "text": "A2 · Games library (GAMES with Overview selected)\n\n1  One row per installed game. Dragging a row reorders the top strip.\n2  Capabilities: Manifest (manual tracking), Catalog (ownership and planning), Live data (sync and imports). A game gains them as data becomes available.\n3  Sleep hides a game from the dashboard and pauses its reminders without deleting anything.\n4  New games arrive through the pipeline, starting with the manifest only."
+    },
+    "n-a3": {
+      "x": 5400,
+      "y": 1644,
+      "w": 400,
+      "maxH": 900,
+      "fill": "pink",
+      "text": "A3 · Tasks and reminders\n\n1  Goals come from a character's 'Plan farming', from event rewards on the calendar, or are added by hand. Progress is read from material stock or event stages.\n2  'Farm today' uses each game's own day (server time shifted by the reset hour).\n3  Reminder rules apply to one game or to all; each DM bundles everything due at that time.\n4  Quiet hours hold DMs until they end.\n5  The preview shows the exact DM before you save a rule."
+    },
+    "n-a4": {
+      "x": 7360,
+      "y": 1644,
+      "w": 400,
+      "maxH": 900,
+      "fill": "pink",
+      "text": "A4 · Calendar (BANNERS)\n\n1  Banners, events and versions by default. Endgame cycles and battle passes are off; they live on each game's tabs. 'Only what I wishlisted' trims it further.\n2  Timeline or List; page by two weeks, also back into history.\n3  Selecting a bar opens its detail with server and local times (daylight saving included).\n4  HoYoverse games import from the official feed; the others come from admin uploads until a news adapter exists.\n5  Events whose reward changes your roster (a free 4★, an event weapon) carry a +1 tag. 'Make goal' puts the claim on Tasks; ticking it raises the constellation (C, E, M or S) or the refinement."
+    },
+    "n-a5": {
+      "x": 9320,
+      "y": 1644,
+      "w": 400,
+      "maxH": 900,
+      "fill": "pink",
+      "text": "A5 · Settings\n\n1  HoYoLAB link: the cookie is stored encrypted on the server. It syncs stamina, dailies, weekly bosses, endgame results and roster for Genshin, HSR and ZZZ. Revoke deletes it.\n2  Pull history: Genshin, HSR, ZZZ and WuWa from a history link; Endfield from an SKPORT token; NTE by hand only, because its terms forbid third-party tools.\n3  UIGF v4.2 import and export for HoYoverse pull history.\n4  Discord: DMs, quiet hours and the daily digest."
+    },
+    "n-g1": {
+      "x": 1480,
+      "y": 3624,
+      "w": 400,
+      "maxH": 900,
+      "fill": "pink",
+      "text": "G1 · Activities (Genshin)\n\n1  Game header: server, UID, sync source and the next resets. Shared by every game-hub tab.\n2  Tabs use the game's own words: Artifacts, Relics, Drive Discs, Echoes, Gear, Console.\n3  Five cadences, each with its own countdown: daily, weekly, monthly, cycles (endgame) and version.\n4  AUTO items tick themselves after a sync; MANUAL items are ticked by you.\n5  Battle pass: level, weekly XP against the cap, and the levels per day needed before it ends."
+    },
+    "n-g2": {
+      "x": 3440,
+      "y": 3624,
+      "w": 400,
+      "maxH": 900,
+      "fill": "pink",
+      "text": "G2 · Endgame\n\n1  Premium currency claimed against the maximum across the current cycles.\n2  One card per mode: cycle window, result, rewards and the teams used.\n3  History per mode: result over time (filled dots are full clears), best, average and rewards earned, then every cycle with its teams. The official record only covers recent cycles, so Gacha Hub saves a snapshot at each reset; older cycles can be typed in.\n4  Each mode is defined in the game's manifest (cadence, anchor date, metric, maximum reward), so every game gets this same screen."
+    },
+    "n-g3": {
+      "x": 5400,
+      "y": 3624,
+      "w": 400,
+      "maxH": 900,
+      "fill": "pink",
+      "text": "G3 · Pulls\n\n1  Pulls available = premium currency ÷ pull cost + tickets; standard tickets shown apart.\n2  Guarantee status as a two-state switch: 50/50 or GUARANTEED (weapons: path 0/1 or 1/1), with the reason.\n3  Odds for 5★ and 4★: next pull and next 10. The curve runs on the pity axis: the shaded part is what you already pulled, the magenta line is where you are, and the marker shows where your pulls take you. Estimates from each game's published rates and the community soft-pity model, stored in the manifest.\n4  Savings planner: the chance and the worst case for each target, now and with the forecast.\n5  History: import from a link or a UIGF file, or log pulls by hand."
+    },
+    "n-g4": {
+      "x": 7360,
+      "y": 3624,
+      "w": 400,
+      "maxH": 900,
+      "fill": "pink",
+      "text": "G4 · Characters\n\n1  Ownership and build-status counts.\n2  Filters and sort; Characters and Weapons toggle.\n3  Unowned units can be wishlisted; the card shows your chance with the pulls you have.\n4  KPIs follow the game and the build's role: crit value (2 × CRIT Rate + CRIT DMG from gear) for damage dealers; EM, ER or healing for supports; the scaling stat where it differs (Chiori's DEF). HSR adds SPD, ZZZ Impact or Anomaly. The manifest lists them.\n5  Splash-art cards by default; Compact keeps the icon grid for large rosters."
+    },
+    "n-g5": {
+      "x": 1480,
+      "y": 5704,
+      "w": 400,
+      "maxH": 900,
+      "fill": "pink",
+      "text": "G5 · Character sheet\n\n1  Shared frame: identity, weapon, skills, gear, stats, plan farming.\n2  The gear block changes per game: 5 artifacts (Genshin), 4+2 relics (HSR), 6 drive discs (ZZZ), 5 echoes under COST 12 (WuWa), 4 gear plus an essence (Endfield), the Console grid (NTE).\n3  Plan farming lists what the targets still need and updates the linked goal on the Tasks board.\n4  AUTO fields come from the Enka showcase (Genshin, HSR, ZZZ). Editing one switches it to MANUAL until the next sync.\n5  Splash art on the left of the top section, with the character data beside it: name, KPIs, character, talents, weapon and combat stats. Artifacts, farming and teams run full width below. KPI targets come from an editable build template."
+    },
+    "n-g6": {
+      "x": 3440,
+      "y": 5704,
+      "w": 400,
+      "maxH": 900,
+      "fill": "pink",
+      "text": "G6 · Artifacts (gear)\n\n1  Inventory with crit value. Equipped pieces sync from the showcase; the full inventory comes from a GOOD file exported by a scanner. 'Equip on' moves a piece onto a build and swaps out the old one.\n2  Farm targets group each build's wanted set and main stats by the domain that drops them.\n3  'Update task' writes the missing pieces as a checklist goal.\n4  Storage meter warns near the game's cap, which comes from the manifest."
+    },
+    "n-g7": {
+      "x": 5400,
+      "y": 5704,
+      "w": 400,
+      "maxH": 900,
+      "fill": "pink",
+      "text": "G7 · Planner\n\n1  Goals per character: level, skills and weapon, including pre-farming for a banner you plan to pull.\n2  Materials: have, need, missing. The Days column shows weekday gating (Genshin only); today is outlined.\n3  The stamina estimate converts what is missing into days of stamina. 'Farm today' merges all goals for the current game day and can generate the tasks."
+    },
+    "n-g8": {
+      "x": 7360,
+      "y": 5704,
+      "w": 400,
+      "maxH": 900,
+      "fill": "pink",
+      "text": "G8 · Profile\n\n1  Server and UID; account level synced or entered.\n2  Passes: 30-day pass days left and battle pass level, with expiry reminders. Entered by hand unless the game exposes them (ZZZ membership syncs).\n3  Long-term progress (optional): exploration, achievements, chests.\n4  Sleep, export and remove.\n5  Game reminders override the global rules for this game only."
+    },
+    "n-x1": {
+      "x": 1480,
+      "y": 7824,
+      "w": 400,
+      "maxH": 900,
+      "fill": "pink",
+      "text": "X1 · Across six games\n\n1  Each column is one game's manifest; the screens stay the same.\n2  Capabilities show what each game supports. A new game starts with the manifest only (manual entry) and gains the catalog and live data later.\n3  Proposed pipeline for adding a game. '~' marks values still to verify; 'to research' cells are gaps in the Endfield manifest."
+    }
+  },
+  "designSystems": []
+}

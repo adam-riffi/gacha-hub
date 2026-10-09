@@ -1,6 +1,6 @@
 # Visual design
 
-> How the app looks, taken from Georges's "All games dashboard" design (Claude Design canvas, 2026-10-08, desktop 1920×1204). `docs/WIREFRAMES.md` sets what each screen holds; this file sets how everything looks, and its values are the source for `apps/web` styles. Items marked **Proposed** are not in the design and wait for Georges. Decision record: ADR 0007.
+> How the app looks, taken from Georges's "All games dashboard" design (Claude Design canvas, 2026-10-08, desktop 1920×1204). `docs/WIREFRAMES.md` sets what each screen holds; this file sets how everything looks, and its values are the source for `apps/web` styles. Items marked **Proposed** are not in the design and wait for Georges. Decision record: ADR 0007. The design itself (picture, static page and source) is in `docs/design/dashboard/`.
 
 ## 1. Direction
 
@@ -143,6 +143,8 @@ Hand-written inline SVG: neutral structure, accent data.
 ## 10. The Overview dashboard (A1)
 
 The reference screen; its content follows WIREFRAMES.md A1.
+
+![The Overview dashboard design, 1920×1204](design/dashboard/dashboard.png)
 
 - **Main column, 1232 px:**
   - Graphs, 476 px tall: the dailies gauge with the period switch (496 px wide); beside it the goals gauge (240×192) and goal-type bars, above backlog (line) and pull history (bars, gained against spent), each 260 px tall.
