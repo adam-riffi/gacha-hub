@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { getGame } from "@gacha/shared";
 import { HubHeader } from "./hub/HubHeader";
 
-type Screen = "overview" | "ownership" | "equipment" | "gear" | "materials" | "pulls";
+type Screen = "activities" | "overview" | "ownership" | "equipment" | "gear" | "materials" | "pulls";
 
 /** What each game calls its gear sets. */
 const GEAR_LABEL: Record<string, string> = {
@@ -25,7 +25,7 @@ export function GameTabs({
   hasCatalog?: boolean;
 }) {
   const tabs: { key: Screen; label: string; to: string }[] = [
-    { key: "overview", label: "Overview", to: `/games/${instanceId}` },
+    { key: "activities", label: "Activities", to: `/games/${instanceId}` },
     ...(hasCatalog
       ? ([
           { key: "ownership", label: "Ownership", to: `/games/${instanceId}/ownership` },
@@ -35,6 +35,8 @@ export function GameTabs({
         ] as { key: Screen; label: string; to: string }[])
       : []),
     ...(gameKey && getGame(gameKey)?.pullBanners?.length ? [{ key: "pulls" as const, label: "Pulls", to: `/games/${instanceId}/pulls` }] : []),
+    // The old overview stays last until F10 rebuilds its parts as their own screens.
+    { key: "overview", label: "Overview", to: `/games/${instanceId}/overview` },
   ];
   return (
     <>

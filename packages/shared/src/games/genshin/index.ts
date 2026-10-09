@@ -89,6 +89,7 @@ export const genshin: GameDefinition = {
   regions: hoyoRegions,
   currencies: [
     { key: "resin", label: "Original Resin", cap: 200, regenPerHour: 7.5 },
+    { key: "condensedResin", label: "Condensed Resin", cap: 5 },
     { key: "primogems", label: "Primogems", pullCost: 160, pullLabel: "wish" },
     { key: "intertwinedFate", label: "Intertwined Fate", pullCost: 1, pullLabel: "wish" },
     { key: "acquaintFate", label: "Acquaint Fate", pullCost: 1, pullLabel: "wish", standardOnly: true },
@@ -96,7 +97,7 @@ export const genshin: GameDefinition = {
   ],
   // Sources per value: docs/games/genshin.md.
   manifest: {
-    stamina: { currency: "resin", reserve: { name: "Condensed Resin", cap: 5 } },
+    stamina: { currency: "resin", reserve: { currency: "condensedResin" } },
     monthlyShops: [{ key: "bargains", name: "Paimon's Bargains", day: 1 }],
     endgame: [
       { key: "abyss", name: "Spiral Abyss", anchor: { cadence: "monthly", day: 16 }, metric: { label: "stars", max: 36 }, maxPremium: 800 },

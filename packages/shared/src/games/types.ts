@@ -52,8 +52,11 @@ export interface GameManifest {
     currency: string;
     /** Cap by account level, when the game raises it (Endfield's Sanity by Authority Level). */
     capAt?: (accountLevel: number) => number;
-    /** Where stamina goes once full (Reserved Trailblaze Power), or a crafted store (Condensed Resin). */
-    reserve?: { name: string; cap: number; regenPerHour?: number };
+    /**
+     * Where stamina goes once full (Reserved Trailblaze Power), or a crafted store
+     * (Condensed Resin): a currency key, and how fast it fills while stamina is full.
+     */
+    reserve?: { currency: string; regenPerHour?: number };
   };
   monthlyShops: { key: string; name: string; day: number }[];
   endgame: {

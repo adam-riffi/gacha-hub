@@ -13,12 +13,15 @@ test.describe.serial("smoke @smoke", () => {
     await expect(page.getByRole("navigation", { name: "Sections" }).getByRole("link", { name: "Banners and events" })).toBeVisible();
   });
 
-  test("adding Genshin opens its overview with today's domains", async ({ page }) => {
+  test("adding Genshin opens its hub, whose overview has today's domains", async ({ page }) => {
     await signIn(page);
     await page.goto("/library");
     await page.getByRole("button", { name: "+ Genshin Impact" }).click();
     await expect(page).toHaveURL(/\/games\/[^/]+$/);
     await expect(page.getByRole("heading", { name: "Genshin Impact" })).toBeVisible();
+    // The hub opens on Activities (WIREFRAMES.md G1); the old overview is its last tab until F10.
+    await expect(page.getByRole("region", { name: "Daily" })).toBeVisible();
+    await page.getByRole("navigation", { name: "Game screens" }).getByRole("link", { name: "Overview" }).click();
     await expect(page.getByRole("heading", { name: "Happening now" })).toBeVisible();
     await expect(page.getByRole("heading", { name: /Domains today/ })).toBeVisible();
   });

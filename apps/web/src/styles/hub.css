@@ -32,7 +32,41 @@
   background: var(--accent); clip-path: polygon(0 0, 100% 0, calc(100% - 3px) 100%, 0 100%);
 }
 
+/* ---- Activities (G1): stamina across the top, then the three cadences, then cycles and the version. ---- */
+.activities { display: flex; flex-direction: column; gap: 24px; }
+.act-stamina { padding-bottom: 16px; }
+.act-stamina .ph { display: flex; align-items: center; gap: 12px; padding-top: 8px; }
+.act-stamina .ph h3 { margin-bottom: 0; }
+.act-stamina .sp, .act-list .sp { flex: 1; }
+.act-full { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+.act-stamina-body { display: flex; align-items: center; gap: 32px; margin-top: 18px; }
+.act-meter { flex: 1; height: 10px; background: var(--surface-3); clip-path: polygon(0 0, 100% 0, calc(100% - 6px) 100%, 0 100%); }
+.act-meter > span { display: block; height: 100%; background: var(--accent); }
+.act-reserve { min-width: 220px; }
+.act-label { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: -12px; }
+.act-cadences { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: start; }
+.act-bottom { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 24px; align-items: start; }
+.act-list .spread, .act-version .spread { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+.act-list h3 .mu, .act-cycles h3 .mu { font-size: 16px; }
+.act-rows { display: flex; flex-direction: column; }
+.act-row { display: flex; align-items: center; gap: 12px; min-height: 40px; border-bottom: 1px solid var(--surface-3); cursor: default; }
+label.act-row { margin: 0; cursor: pointer; color: var(--text); font: 400 15px/1.3 var(--font-body); letter-spacing: 0; text-transform: none; }
+.act-row:hover { background: var(--surface-2); }
+.act-title { flex: 1; min-width: 0; font: 400 15px/1.3 var(--font-body); }
+.act-row.done .act-title { color: var(--text-muted); text-decoration: line-through; }
+.act-row .tag { font-size: 10px; }
+.act-row .mn { font-size: 12px; white-space: nowrap; }
+.act-empty { margin: 10px 0; font-size: 14px; }
+.act-add-btn { margin-top: 16px; }
+.act-add { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px; margin-top: 16px; }
+.act-add label { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 140px; color: var(--text-muted); font: 400 11px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
+.act-version-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; }
+.act-pass { margin: 10px 0 0; font: 600 24px/1.1 var(--font-display); letter-spacing: 0.04em; text-transform: uppercase; }
+.act-version .kpi-label { margin-bottom: 6px; }
+
 @media (max-width: 900px) {
   .hub-head { flex-wrap: wrap; }
   .hub-resets { margin-left: 0; gap: 24px; }
+  .act-cadences, .act-bottom, .act-version-body { grid-template-columns: minmax(0, 1fr); }
+  .act-stamina-body { flex-wrap: wrap; }
 }
