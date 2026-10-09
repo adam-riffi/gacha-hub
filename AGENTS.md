@@ -29,6 +29,7 @@ Operating manual for coding agents in this repository. Codex and Copilot read th
 | Lint / format | `npm run lint` / `npm run format` |
 | Type check | `npm run typecheck` |
 | Build (web + server bundle) | `npm run build` |
+| Initial JavaScript budget (after a build) | `npm run budget` |
 | Regenerate a catalog (delete `scripts/catalog/.cache/<game>` first for fresh data) | `npm run catalog:install` then `npm run catalog:<game>` |
 | New migration (offline) | `npx prisma migrate diff --from-schema-datamodel <before> --to-schema-datamodel prisma/schema.prisma --script` |
 | E2E smoke (Playwright; `npx playwright install chromium` once) | `npm run build -w @gacha/web && npm run e2e` |

@@ -143,7 +143,7 @@ Vercel project `gacha-hub` (framework preset "Other", functions in `dub1` next t
 
 ## 13. Performance, security and observability
 
-- Initial JavaScript at most 200 KB gzipped; catalogs load lazily per game.
+- Initial JavaScript at most 200 KB gzipped (`npm run budget`, enforced in CI's `build` job; 149 KB on 2026-10-06); catalogs load lazily per game.
 - Every view has loading, empty and error states.
 - Inputs validated with zod at the boundary; admin routes rate-limited and audited; the cron endpoint requires `CRON_SECRET`.
 - No secrets in the client bundle; credentials are entered by the owner only.
