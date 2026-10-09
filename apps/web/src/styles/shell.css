@@ -31,6 +31,12 @@
 /* Top bar: the Overview pinned, a rule, then the games; the current card grows and takes a corner brace. */
 .topbar { height: 56px; flex: 0 0 56px; padding: 0 32px; display: flex; align-items: center; gap: 16px; }
 .topbar-date { font-size: 12px; letter-spacing: 0.08em; white-space: nowrap; }
+/* A pinned past day (VISUAL-DESIGN.md §10): the paper VIEWING chip and BACK TO TODAY, before the date. */
+.topbar-view { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.viewing {
+  background: var(--paper); color: var(--on-paper); font: 400 12px/1 var(--font-mono); letter-spacing: 0.06em; white-space: nowrap;
+  padding: 7px 16px 8px 12px; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
+}
 .strip { flex: 1; min-width: 0; height: 56px; display: flex; align-items: center; gap: 14px; }
 .strip-rule { flex: 0 0 1px; width: 1px; height: 28px; background: var(--hairline); }
 .strip-games {

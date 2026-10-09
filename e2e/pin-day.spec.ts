@@ -14,7 +14,7 @@ test("pinning a past day switches Home to that day until BACK TO TODAY @smoke", 
   await page.goto(`/?game=hsr&day=${iso(d)}`);
   const banner = page.getByRole("status", { name: "Viewing a past day" });
   await expect(banner).toContainText(`VIEWING · ${["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"][d.getDay()]} ${iso(d)}`);
-  await expect(page.locator(".dailies-card")).toContainText("DAY CLOSED");
+  await expect(page.locator(".dailies-card")).toContainText(/day closed/i); // capitals come from CSS
 
   await page.getByRole("button", { name: "Back to today" }).click();
   await expect(banner).toHaveCount(0);

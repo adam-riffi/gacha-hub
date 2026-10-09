@@ -27,11 +27,14 @@ const WEEKDAY = new Intl.DateTimeFormat("en", { weekday: "short" });
 const today = (d = new Date()) =>
   `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")} · ${WEEKDAY.format(d).toUpperCase()}`;
 
-/** The rail of sections, the scope strip and the date; the scope's game sets --accent. */
+/** "MON 2026-09-14" for a YYYY-MM-DD day. */
+const dayLabel = (day: string) => `${["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"][new Date(+day.slice(0, 4), +day.slice(5, 7) - 1, +day.slice(8, 10)).getDay()]} ${day}`;
+
+/** The rail of sections, the scope strip and the date (and a pinned past day on Home); the scope's game sets --accent. */
 export function Layout({ children }: { children: ReactNode }) {
   const { me } = useAuth();
   const { pathname } = useLocation();
-  const [params] = useSearchParams();
+  const [params, setParams] = useSearchParams();
   const section = sectionOf(pathname);
   const { data: instances = [] } = useQuery({
     queryKey: ["instances"],
@@ -94,6 +97,24 @@ export function Layout({ children }: { children: ReactNode }) {
               })}
             </div>
           </nav>
+          {section === "all" && params.get("day") && (
+            <div className="topbar-view" role="status" aria-label="Viewing a past day">
+              <span className="viewing">VIEWING · {dayLabel(params.get("day")!)}</span>
+              <button
+                type="button"
+                className="btn"
+                aria-label="Back to today"
+                onClick={() =>
+                  setParams((p) => {
+                    p.delete("day");
+                    return p;
+                  })
+                }
+              >
+                Back to today
+              </button>
+            </div>
+          )}
           <span className="topbar-date mn mu">{today()}</span>
         </header>
         <main className="content">{children}</main>
