@@ -1,6 +1,7 @@
 // Bundle the Fastify app into one ESM file for the Vercel serverless function
 // (api/index.mjs imports it). Bundling avoids TypeScript-in-node_modules issues
-// with the workspace package; Prisma stays external so its engine is traced.
+// with the workspace package; Prisma's runtime, the adapters and the native
+// SQLite driver stay external so Vercel traces them from node_modules.
 import { mkdirSync, writeFileSync } from "node:fs";
 import { build } from "esbuild";
 
@@ -13,7 +14,7 @@ await build({
   format: "esm",
   target: "node20",
   outfile: `${outdir}/index.js`,
-  external: ["@prisma/client", ".prisma/client", "@vercel/blob"],
+  external: ["@prisma/client", ".prisma/client", "@vercel/blob", "@prisma/adapter-pg", "@prisma/adapter-better-sqlite3", "better-sqlite3"],
   // CommonJS deps (fastify plugins etc.) need `require` inside an ESM bundle.
   banner: {
     js: "import { createRequire } from 'node:module'; const require = createRequire(import.meta.url);",

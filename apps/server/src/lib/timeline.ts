@@ -1,4 +1,4 @@
-import type { Banner, Event } from "@prisma/client";
+import type { Banner, Event } from "../generated/prisma/client.js";
 import {
   bannerDto,
   bannerInput,

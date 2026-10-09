@@ -1,5 +1,5 @@
 import type { FastifyInstance } from "fastify";
-import type { Task } from "@prisma/client";
+import type { Task } from "../generated/prisma/client.js";
 import {
   completeTaskInput,
   createTaskInput,

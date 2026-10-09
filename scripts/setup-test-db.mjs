@@ -1,7 +1,7 @@
 // Provision a throwaway SQLite database for the server integration tests.
 // Derives the SQLite schema from the single-source Postgres schema, then
-// `db push`es it to prisma/test.db (dropping any prior state) — which also
-// regenerates the Prisma client for the sqlite provider. Run before vitest;
+// `db push`es it to prisma/test.db (dropping any prior state), then generates
+// the Prisma client for the sqlite provider. Run before vitest;
 // `npm test -w @gacha/server` does this automatically.
 import { execFileSync } from "node:child_process";
 import { existsSync, rmSync } from "node:fs";
@@ -33,11 +33,12 @@ for (const suffix of ["", "-journal"]) {
 //    (no .cmd shim, no shell quoting).
 const env = { ...process.env, DATABASE_URL: `file:${dbPath}` };
 const prismaCli = resolve(root, "node_modules/prisma/build/index.js");
-const prisma = (...args) => execFileSync(process.execPath, [prismaCli, ...args], { stdio: "inherit", env });
+// From the repository root: Prisma 7 reads prisma.config.ts from the working directory.
+const prisma = (...args) => execFileSync(process.execPath, [prismaCli, ...args], { stdio: "inherit", env, cwd: root });
 
 // The db file was just removed above, so a plain push builds fresh tables —
 // no --force-reset (which Prisma blocks as a destructive action) needed.
-prisma("db", "push", "--schema", schema, "--skip-generate");
+prisma("db", "push", "--schema", schema);
 
 // Generate the sqlite client. On Windows a running dev server can hold the
 // engine DLL (EPERM on rename); in that case the existing client is already
@@ -45,7 +46,7 @@ prisma("db", "push", "--schema", schema, "--skip-generate");
 try {
   prisma("generate", "--schema", schema);
 } catch (err) {
-  const clientExists = existsSync(resolve(root, "node_modules/.prisma/client/index.js"));
+  const clientExists = existsSync(resolve(root, "apps/server/src/generated/prisma/client.ts"));
   if (!clientExists) throw err;
   console.warn(
     "\n[setup-test-db] prisma generate could not overwrite the client " +

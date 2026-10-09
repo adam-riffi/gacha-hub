@@ -1,4 +1,4 @@
-import type { GameInstance } from "@prisma/client";
+import type { GameInstance } from "../generated/prisma/client.js";
 import type { CommandOptions } from "../discord/commands.js";
 import { genshinServer } from "./genshin.js";
 

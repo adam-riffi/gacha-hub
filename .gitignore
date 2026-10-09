@@ -39,3 +39,4 @@ test-results/
 playwright-report/
 prisma/e2e.db*
 prisma/harness.db*
+apps/server/src/generated/

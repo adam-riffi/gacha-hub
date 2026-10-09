@@ -1,5 +1,5 @@
 import type { FastifyInstance } from "fastify";
-import type { Character } from "@prisma/client";
+import type { Character } from "../generated/prisma/client.js";
 import { characterDto, createCharacterInput, updateCharacterInput, type GameDefinition } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
 import { migrateDoc } from "../lib/docMigrations.js";

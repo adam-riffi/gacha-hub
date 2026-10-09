@@ -16,8 +16,8 @@ const run = (args) => execFileSync(process.execPath, args, { cwd: root, env, std
 clean();
 try {
   run([resolve(root, "scripts/gen-sqlite-schema.mjs")]);
-  // A fresh file, so no --accept-data-loss. Also generates the SQLite client the bundle loads.
-  run([resolve(root, "node_modules/prisma/build/index.js"), "db", "push", "--schema", "prisma/schema.sqlite.prisma"]);
+  // A fresh file, so no --accept-data-loss; then the SQLite client the bundle loads (Prisma 7's push does not generate it).
+  for (const args of [["db", "push"], ["generate"]]) run([resolve(root, "node_modules/prisma/build/index.js"), ...args, "--schema", "prisma/schema.sqlite.prisma"]);
   for (const phase of ["phase7.mjs", "phase8.mjs"]) run([resolve(root, "scripts/harness", phase)]);
 } finally {
   clean();
