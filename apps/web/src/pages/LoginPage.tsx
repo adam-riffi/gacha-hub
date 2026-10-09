@@ -7,7 +7,7 @@ export function LoginPage() {
   return (
     <div className="center">
       <div className="card login-card">
-        <div className="brand" style={{ fontSize: "1.5rem", justifyContent: "center" }}><span className="brand-mark" />GACHA HUB</div>
+        <div className="login-brand"><span className="rail-logo" aria-hidden="true" />GACHA HUB</div>
         <p>Track currencies, dailies, and character builds across every gacha you play — and get nudged on Discord before reset.</p>
         {me?.oauth && (
           <button

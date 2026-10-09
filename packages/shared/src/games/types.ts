@@ -49,6 +49,8 @@ export interface GameArt {
 export interface GameDefinition {
   key: string;
   name: string;
+  /** Short label for tight spots such as the scope strip (defaults to `name`). */
+  shortName?: string;
   /** Accent color used by the UI (each game skins itself). */
   accent: string;
   /** Optional image assets (added under apps/web/public/games/<key>/). */

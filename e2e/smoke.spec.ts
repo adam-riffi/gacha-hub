@@ -10,7 +10,7 @@ async function signIn(page: Page) {
 test.describe.serial("smoke @smoke", () => {
   test("a signed-in user lands on Home", async ({ page }) => {
     await signIn(page);
-    await expect(page.getByRole("link", { name: "Banners & events", exact: true })).toBeVisible();
+    await expect(page.getByRole("navigation", { name: "Sections" }).getByRole("link", { name: "Banners and events" })).toBeVisible();
   });
 
   test("adding Genshin opens its overview with today's domains", async ({ page }) => {
