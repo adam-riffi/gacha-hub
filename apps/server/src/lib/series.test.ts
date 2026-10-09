@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import fc from "fast-check";
-import { carryForward, dailyGains, heatLevel, linePoints, segmentedBar, streaks } from "@gacha/shared";
+import { carryForward, dailyGains, dayOf, heatLevel, linePoints, segmentedBar, streaks } from "@gacha/shared";
 
 // VISUAL-DESIGN.md §8: heatmap levels by the share of games with every daily done.
 describe("heatLevel", () => {
@@ -118,5 +118,21 @@ describe("dailyGains", () => {
   });
   it("counts nothing gained on a profile's first record", () => {
     expect(dailyGains([{ day: "2026-10-02", value: 40 }], ["2026-10-01", "2026-10-02"])).toEqual([0, 0]);
+  });
+});
+
+describe("dayOf", () => {
+  const days = [
+    { day: "2026-10-01", dailiesDone: 2, dailiesTotal: 2, goalsOpen: 5, pulls: 30 },
+    { day: "2026-10-03", dailiesDone: 1, dailiesTotal: 3, goalsOpen: 4, pulls: 41 },
+  ];
+  it("gives a recorded day as recorded", () => {
+    expect(dayOf(days, "2026-10-03")).toEqual({ dailiesDone: 1, dailiesTotal: 3, goalsOpen: 4, pulls: 41 });
+  });
+  it("gives a day without a change nothing done, and carries the rest from the day before", () => {
+    expect(dayOf(days, "2026-10-02")).toEqual({ dailiesDone: 0, dailiesTotal: 2, goalsOpen: 5, pulls: 30 });
+  });
+  it("gives a day before any record zeros", () => {
+    expect(dayOf(days, "2026-09-30")).toEqual({ dailiesDone: 0, dailiesTotal: 0, goalsOpen: 0, pulls: 0 });
   });
 });
