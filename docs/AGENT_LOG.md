@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/d/02-postgres-check · pending
+- Done: CI job `test-postgres` (Postgres 16 service, `migrate deploy`, the server's route tests through the pg adapter via `TEST_DATABASE_URL`); `/api/health` (an anonymous read through the database, `no-store`, 503 when unreachable) added to the production smoke check; AGENTS.md's dev-server note reworded (the client is provider-specific; there is no engine DLL any more).
+- Tests: `health.integration.test.ts` first; Check all; the CI job itself is the Postgres verification.
+- Scope/decisions: The Supabase pooler is still unverified: Preview deployments have no `DATABASE_URL` (production-only variables), and branching Supabase costs money. Georges either adds Preview-scoped database variables or the first production deploy is the pooler test, guarded by the health smoke check.
+- Next: verify the Vercel build on a preview; then F8.
+
 ## 2026-10-10 · claude · stack/d/01-prisma7 · #102
 - Done: Prisma 7.10.0 with driver adapters (ADR 0003, ported from `spike/prisma7`): `prisma.config.ts` (URLs, and `.env` loaded there since Prisma 7 stopped reading it), the `prisma-client` generator into `apps/server/src/generated/prisma` (git- and lint-ignored), `lib/database.ts` choosing better-sqlite3 for `file:` URLs (relative to `prisma/`, as before) and pg otherwise, the thirteen imports moved, scripts generating after `db push` and running the CLI from the root, `db:sqlite` without `--accept-data-loss`, the bundle keeping adapters and the native driver external.
 - Tests: `database.test.ts` first; then the whole suite on the new data layer: 206 tests through the SQLite adapter, both harnesses on the 11.7 MB bundle, Check all.
