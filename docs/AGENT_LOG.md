@@ -14,7 +14,7 @@ Entry format:
 
 ---
 
-## 2026-10-10 · claude · stack/d/01-prisma7 · pending
+## 2026-10-10 · claude · stack/d/01-prisma7 · #102
 - Done: Prisma 7.10.0 with driver adapters (ADR 0003, ported from `spike/prisma7`): `prisma.config.ts` (URLs, and `.env` loaded there since Prisma 7 stopped reading it), the `prisma-client` generator into `apps/server/src/generated/prisma` (git- and lint-ignored), `lib/database.ts` choosing better-sqlite3 for `file:` URLs (relative to `prisma/`, as before) and pg otherwise, the thirteen imports moved, scripts generating after `db push` and running the CLI from the root, `db:sqlite` without `--accept-data-loss`, the bundle keeping adapters and the native driver external.
 - Tests: `database.test.ts` first; then the whole suite on the new data layer: 206 tests through the SQLite adapter, both harnesses on the 11.7 MB bundle, Check all.
 - Scope/decisions: `^7.10.0` pinned (npm's latest is an 8.0 rc). Postgres through the pooler, `migrate deploy` on Vercel and cold starts are PR 2 (ADR 0003 step 3); this PR must not reach production first.
