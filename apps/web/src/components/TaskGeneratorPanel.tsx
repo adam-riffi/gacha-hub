@@ -125,13 +125,13 @@ export function TaskGeneratorPanel({
       <div className="row" style={{ marginTop: 10, alignItems: "flex-end" }}>
         <div>
           <label>Level from (cap)</label>
-          <select value={levelFrom} onChange={(e) => setLevelFrom(Number(e.target.value))}>
+          <select aria-label="Level from (cap)" value={levelFrom} onChange={(e) => setLevelFrom(Number(e.target.value))}>
             {caps.map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
         </div>
         <div>
           <label>to</label>
-          <select value={levelTo} onChange={(e) => setLevelTo(Number(e.target.value))}>
+          <select aria-label="Level to (cap)" value={levelTo} onChange={(e) => setLevelTo(Number(e.target.value))}>
             {caps.map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
         </div>
@@ -142,13 +142,13 @@ export function TaskGeneratorPanel({
             <div key={k} className="row" style={{ gap: 4 }}>
               <div>
                 <label>{TALENT_LABELS[k] ?? k}</label>
-                <input type="number" min={1} max={max} value={t.from} style={{ width: 64 }}
+                <input type="number" aria-label={`${TALENT_LABELS[k] ?? k} from`} min={1} max={max} value={t.from} style={{ width: 64 }}
                   onChange={(e) => setTalents((s) => ({ ...s, [k]: { ...t, from: Number(e.target.value) } }))} />
               </div>
               <span className="muted" style={{ paddingBottom: 8 }}>→</span>
               <div>
                 <label>&nbsp;</label>
-                <input type="number" min={1} max={max} value={t.to} style={{ width: 64 }}
+                <input type="number" aria-label={`${TALENT_LABELS[k] ?? k} to`} min={1} max={max} value={t.to} style={{ width: 64 }}
                   onChange={(e) => setTalents((s) => ({ ...s, [k]: { ...t, to: Number(e.target.value) } }))} />
               </div>
             </div>

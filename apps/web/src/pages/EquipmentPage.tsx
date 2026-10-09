@@ -33,8 +33,8 @@ function WeaponFarm({ instanceId, weapon, onDone }: { instanceId: string; weapon
   return (
     <div style={{ marginTop: 10 }}>
       <div className="row" style={{ alignItems: "flex-end" }}>
-        <div><label>From cap</label><select value={from} onChange={(e) => setFrom(Number(e.target.value))}>{caps.map((c) => <option key={c} value={c}>{c}</option>)}</select></div>
-        <div><label>To</label><select value={to} onChange={(e) => setTo(Number(e.target.value))}>{caps.map((c) => <option key={c} value={c}>{c}</option>)}</select></div>
+        <div><label>From cap</label><select aria-label="From cap" value={from} onChange={(e) => setFrom(Number(e.target.value))}>{caps.map((c) => <option key={c} value={c}>{c}</option>)}</select></div>
+        <div><label>To</label><select aria-label="To" value={to} onChange={(e) => setTo(Number(e.target.value))}>{caps.map((c) => <option key={c} value={c}>{c}</option>)}</select></div>
         <button className="btn sm" disabled={to <= from || previewMut.isPending} onClick={() => previewMut.mutate()}>Preview</button>
         <button className="btn sm primary" disabled={to <= from || generate.isPending} onClick={() => generate.mutate()}>Farm</button>
       </div>
@@ -117,17 +117,17 @@ export function EquipmentPage() {
 
       <div className="card" style={{ marginBottom: 16 }}>
         <div className="row">
-          <input placeholder="Search…" value={search} onChange={(e) => setSearch(e.target.value)} style={{ maxWidth: 240 }} />
+          <input aria-label="Search" placeholder="Search…" value={search} onChange={(e) => setSearch(e.target.value)} style={{ maxWidth: 240 }} />
           {tab === "weapons" && (
             <>
-              <select value={rarity ?? ""} onChange={(e) => setRarity(e.target.value ? Number(e.target.value) : null)} style={{ maxWidth: 140 }}>
+              <select aria-label="Rarity" value={rarity ?? ""} onChange={(e) => setRarity(e.target.value ? Number(e.target.value) : null)} style={{ maxWidth: 140 }}>
                 <option value="">Any rarity</option>
                 {weaponRarities.map((r) => (
                   <option key={r} value={r}>{stars(r)}</option>
                 ))}
               </select>
               {weaponTypes.length > 0 && (
-                <select value={wType ?? ""} onChange={(e) => setWType(e.target.value || null)} style={{ maxWidth: 160 }}>
+                <select aria-label="Weapon type" value={wType ?? ""} onChange={(e) => setWType(e.target.value || null)} style={{ maxWidth: 160 }}>
                   <option value="">Any type</option>
                   {weaponTypes.map((t) => (
                     <option key={t} value={t}>{t}</option>

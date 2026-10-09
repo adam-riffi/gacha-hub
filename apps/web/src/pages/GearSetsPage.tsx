@@ -101,8 +101,8 @@ export function GearSetsPage() {
       ) : (
         <>
           <div className="toolbar">
-            <input placeholder="Search name or bonus…" value={search} onChange={(e) => setSearch(e.target.value)} style={{ width: 240 }} />
-            <select value={rarity ?? ""} onChange={(e) => setRarity(e.target.value ? Number(e.target.value) : null)}>
+            <input aria-label="Search" placeholder="Search name or bonus…" value={search} onChange={(e) => setSearch(e.target.value)} style={{ width: 240 }} />
+            <select aria-label="Rarity" value={rarity ?? ""} onChange={(e) => setRarity(e.target.value ? Number(e.target.value) : null)}>
               <option value="">Any rarity</option>
               {rarities.map((r) => (
                 <option key={r} value={r}>{"★".repeat(r)}</option>

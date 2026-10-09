@@ -55,6 +55,7 @@ const num = (v: number | string | undefined): number | undefined => {
 };
 
 const TALENT_ABBR: Record<string, string> = { normal: "NA", skill: "E", burst: "Q" };
+const TALENT_NAMES = { normal: "Normal Attack", skill: "Elemental Skill", burst: "Elemental Burst" } as const;
 const SLOT_ABBR: Record<string, string> = {
   flower: "FL", plume: "PL", sands: "SA", goblet: "GO", circlet: "CI",
 };
@@ -166,7 +167,7 @@ export function GenshinSheet({
         <div className="gs-card">
           <div className="gs-card-h">Identity</div>
           <Labeled label="Build name">
-            <input value={name} onChange={(e) => onName(e.target.value)} />
+            <input aria-label="Build name" value={name} onChange={(e) => onName(e.target.value)} />
           </Labeled>
           <div className="gs-id-grid">
             <Labeled label="Level">
@@ -246,7 +247,7 @@ export function GenshinSheet({
             <div className="gs-wep-body">
               <div className="gs-wep-top">
                 <Labeled label="Name">
-                  <input
+                  <input aria-label="Name"
                     value={doc.weapon?.name ?? ""}
                     onChange={(e) => setWeapon({ name: e.target.value || undefined })}
                     placeholder="Weapon name"
@@ -286,10 +287,8 @@ export function GenshinSheet({
                   tint={theme.solid}
                   className="gs-talent-ico"
                 />
-                <div className="gs-talent-lab small muted">
-                  {k === "normal" ? "Normal Attack" : k === "skill" ? "Elemental Skill" : "Elemental Burst"}
-                </div>
-                <Num value={talents[k]} min={1} max={10} onChange={(v) => setTalent(k, v)} />
+                <div className="gs-talent-lab small muted">{TALENT_NAMES[k]}</div>
+                <Num label={`${TALENT_NAMES[k]} level`} value={talents[k]} min={1} max={10} onChange={(v) => setTalent(k, v)} />
               </div>
             ))}
           </div>

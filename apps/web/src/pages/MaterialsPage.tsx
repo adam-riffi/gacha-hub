@@ -83,8 +83,8 @@ export function MaterialsPage() {
 
       <div className="card" style={{ marginBottom: 16 }}>
         <div className="row">
-          <input placeholder="Search…" value={search} onChange={(e) => setSearch(e.target.value)} style={{ maxWidth: 240 }} />
-          <select value={category} onChange={(e) => setCategory(e.target.value)} style={{ maxWidth: 200 }}>
+          <input aria-label="Search" placeholder="Search…" value={search} onChange={(e) => setSearch(e.target.value)} style={{ maxWidth: 240 }} />
+          <select aria-label="Category" value={category} onChange={(e) => setCategory(e.target.value)} style={{ maxWidth: 200 }}>
             <option value="">All categories</option>
             {categories.map((cat) => (
               <option key={cat} value={cat}>{cat}</option>
@@ -118,7 +118,7 @@ export function MaterialsPage() {
                         {m.source ? <div className="small muted">{m.source}</div> : null}
                       </td>
                       <td>
-                        <input type="number" min={0} style={{ width: 90 }} defaultValue={h}
+                        <input type="number" aria-label={`${m.name} in stock`} min={0} style={{ width: 90 }} defaultValue={h}
                           onBlur={(e) => { const qty = Math.max(0, Number(e.target.value)); if (qty !== h) setQty.mutate({ materialId: m.id, qty }); }} />
                       </td>
                       <td>{n?.needed ?? 0}</td>

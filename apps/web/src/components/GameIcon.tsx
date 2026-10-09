@@ -53,7 +53,8 @@ export function GameIcon({
   const tinted = tint
     ? {
         background: `color-mix(in srgb, ${tint} 20%, var(--bg-elev))`,
-        color: tint,
+        // Lightened so the initials keep 4.5:1 on the tinted tile.
+        color: `color-mix(in srgb, ${tint} 60%, white)`,
         borderColor: `color-mix(in srgb, ${tint} 40%, var(--border))`,
       }
     : undefined;

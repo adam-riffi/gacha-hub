@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-09 · claude · stack/v/01-a11y · #93
+- Done: First PR of milestone V. Every control has an accessible name (`Labeled` names its inputs through `aria-labelledby`; standalone inputs and selects got labels); weekend days use a tint, text links are underlined, placeholder initials keep 4.5:1. Re-applies the two commits of the old `stack/a11y/01-axe` branch, which conflicted with `main`.
+- Tests: The axe journey (`e2e/a11y.spec.ts`) now covers Home, library, calendar, settings, Admin, every HSR game tab, an HSR and a Genshin character sheet and the Genshin gear views; no serious or critical WCAG 2 A/AA violations. It scans after hover and finite transitions settle.
+- Scope/decisions: `@axe-core/playwright` is development tooling. The test installs Genshin and removes it again, since the smoke journey adds Genshin through the library.
+- Next: `stack/v/02-tokens-fonts`.
+
 ## 2026-10-09 · claude · stack/docs-v2/06-design-files · #90
 - Done: `docs/design/` holds both canvases for agents who cannot open claude.ai: the dashboard and the 15 wireframe boards as PNG renders, static HTML pages and the original `.dc.html` sources, with the canvas notes that explain the numbered markers. WIREFRAMES.md, VISUAL-DESIGN.md, AGENTS.md, DESIGN.md §5 and README link to it; `HANDOFF.md` rewritten for the handoff to a coding agent.
 - Tests: Rendered with the canvas runtime and the real fonts; the static pages open without scripts and match the renders.

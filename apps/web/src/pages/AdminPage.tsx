@@ -168,11 +168,11 @@ export function AdminPage() {
           <button className="btn sm" disabled={seed.isPending} onClick={() => seed.mutate()} title="Add a couple of sample banners + events so you can preview them">
             Seed sample data
           </button>
-          <select value={kind} onChange={(e) => { setKind(e.target.value as AdminExportKind); setResult(null); }} style={{ width: "auto" }}>
+          <select aria-label="Payload kind" value={kind} onChange={(e) => { setKind(e.target.value as AdminExportKind); setResult(null); }} style={{ width: "auto" }}>
             <option value="banners">Banners</option>
             <option value="events">Events</option>
           </select>
-          <select value={gameKey} onChange={(e) => setGameKey(e.target.value)} style={{ width: "auto" }}>
+          <select aria-label="Game" value={gameKey} onChange={(e) => setGameKey(e.target.value)} style={{ width: "auto" }}>
             {gameList.map((g) => <option key={g.key} value={g.key}>{g.name}</option>)}
           </select>
         </div>
