@@ -6,7 +6,10 @@ import { getGameServerModule } from "../games/index.js";
 import { listBanners, listEvents, withFeaturedDetails } from "../lib/timeline.js";
 import { buildRegionContext, serializeTask } from "./tasks.js";
 import { allCurrencies } from "../lib/currencies.js";
+import { staminaProjection } from "../lib/regen.js";
 import { getCatalog } from "./util.js";
+
+const DAY = 86_400_000;
 
 /**
  * Cross-game overview: one card per profile with currencies (labels/caps from
@@ -40,7 +43,7 @@ export async function registerDashboardRoutes(app: FastifyInstance) {
     const pullRows = await prisma.pullEntry.findMany({
       where: { gameInstanceId: { in: instances.map((g) => g.id) } },
       orderBy: [{ createdAt: "asc" }, { id: "asc" }],
-      select: { gameInstanceId: true, bannerKey: true, count: true, fiveStar: true, featured: true },
+      select: { gameInstanceId: true, bannerKey: true, count: true, fiveStar: true, featured: true, createdAt: true },
     });
     // Catalogs are cached per process after the first load.
     const catalogs = new Map(
@@ -74,6 +77,12 @@ export async function registerDashboardRoutes(app: FastifyInstance) {
         .map((d) => d.nextReset)
         .filter((x): x is string => Boolean(x))
         .sort()[0];
+      // The game's own recurring items are the ones it seeds (matched by title, as the restore route does).
+      const builtIn = new Set((game?.defaultTasks ?? []).map((t) => t.title.toLowerCase()));
+      const tally = (cadence: string, own: boolean) => {
+        const mine = dailies.filter((t) => (t.cadence ?? "daily") === cadence && builtIn.has(t.title.toLowerCase()) === own);
+        return { done: mine.filter((t) => t.doneThisCycle).length, total: mine.length };
+      };
       return {
         instanceId: gi.id,
         gameKey: gi.gameKey,
@@ -109,6 +118,11 @@ export async function registerDashboardRoutes(app: FastifyInstance) {
           const s = pityState(pullRows.filter((p) => p.gameInstanceId === gi.id && p.bannerKey === rules.key), rules);
           return { key: rules.key, label: rules.label, pity: s.pity, hardPity: rules.hardPity, guaranteed: s.guaranteed };
         }),
+        stamina: game ? staminaProjection(game, gi.currencies, now) : null,
+        pullLog: pullRows
+          .filter((p) => p.gameInstanceId === gi.id && p.createdAt.getTime() >= now.getTime() - 42 * DAY)
+          .map((p) => ({ at: p.createdAt.toISOString(), count: p.count })),
+        recurring: { daily: tally("daily", true), dailyTasks: tally("daily", false), weekly: tally("weekly", true), weeklyTasks: tally("weekly", false) },
       };
     });
 

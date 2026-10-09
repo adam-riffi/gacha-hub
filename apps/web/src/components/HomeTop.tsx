@@ -23,7 +23,32 @@ function goalType(t: TaskItem): GoalType {
   return kind === "character" ? "character" : kind === "weapon" ? "weapons" : "gameplay";
 }
 
+const DAY = 86_400_000;
 const MD = (d: Date) => `${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+const localDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+const isoWeek = (d: Date) => {
+  const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  t.setUTCDate(t.getUTCDate() + 4 - (t.getUTCDay() || 7));
+  return Math.ceil(((t.getTime() - Date.UTC(t.getUTCFullYear(), 0, 1)) / DAY + 1) / 7);
+};
+
+/** Pulls spent per day (the last 7) or per week (the last 6), in the viewer's calendar, with the period's labels. */
+function spentSeries(log: { at: string; count: number }[], period: Period, now = new Date()) {
+  const n = period === "daily" ? 7 : 6;
+  const span = period === "daily" ? DAY : 7 * DAY;
+  const today = localDay(now);
+  // Weeks end on today's weekday, so the last bucket is the current week so far.
+  const starts = Array.from({ length: n }, (_, k) => new Date(today.getTime() - (n - 1 - k) * span));
+  const values = starts.map((s, k) => {
+    const end = k === n - 1 ? Infinity : starts[k + 1]!.getTime();
+    return log.filter((e) => {
+      const t = Date.parse(e.at);
+      return t >= s.getTime() && t < end;
+    }).reduce((sum, e) => sum + e.count, 0);
+  });
+  const labels = starts.map((s) => (period === "daily" ? MD(s) : `W${isoWeek(s)}`));
+  return { values, labels };
+}
 
 /**
  * Home's top row (VISUAL-DESIGN.md §10): the dailies gauge with the period
@@ -49,6 +74,7 @@ export function HomeTop({ games, tasks, goalMaterials }: { games: DashGame[]; ta
     return { label, done: mine.filter(finished).length, total: mine.length };
   });
   const goalsDone = byType.reduce((s, b) => s + b.done, 0);
+  const spent = spentSeries(games.flatMap((g) => g.pullLog), period);
 
   return (
     <div className="home-top">
@@ -81,7 +107,7 @@ export function HomeTop({ games, tasks, goalMaterials }: { games: DashGame[]; ta
               </>
             }
           >
-            <PairedBars a={[]} b={[]} labels={[]} label="Pulls" names={["gained", "spent"]} />
+            <PairedBars a={[]} b={spent.values} labels={spent.labels} label="Pulls" names={["gained", "spent"]} />
           </GraphPanel>
         </div>
       </div>
