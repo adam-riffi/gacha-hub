@@ -62,6 +62,12 @@ describe("prisma.config.ts", () => {
       const cli = resolve(root, (config.datasource?.url ?? "").slice("file:".length));
       const app = resolveDatabase("file:./dev.db", resolve(root, "prisma")).path;
       expect(cli).toBe(resolve(app));
+      // Absolute paths, as the test, E2E and harness scripts give, pass through.
+      for (const abs of ["file:C:\\db\\test.db", "file:C:/db/test.db", "file:/db/test.db"]) {
+        process.env.DATABASE_URL = abs;
+        vi.resetModules();
+        expect((await import("../../../../prisma.config.ts")).default.datasource?.url).toBe(abs);
+      }
     } finally {
       process.env = before;
     }
