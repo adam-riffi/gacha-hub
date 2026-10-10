@@ -23,7 +23,7 @@ export async function registerDashboardRoutes(app: FastifyInstance) {
     const instances = await prisma.gameInstance.findMany({
       where: { userId },
       include: { currencies: true, characters: { select: { id: true, catalogId: true, buildStatus: true } } },
-      orderBy: { createdAt: "asc" },
+      orderBy: [{ position: "asc" }, { createdAt: "asc" }],
     });
 
     // Owned characters per profile, for the "X built / Y owned" analytic.

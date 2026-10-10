@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f10/09-game-order · #133
+- Done: `GameInstance.position` (migration `20261011010000_game_position`, a column on an existing table); `PUT /api/instances/order` takes every profile of the user in the new order; a new game goes last; the instances list, the dashboard, farm today and the reminder preview follow it.
+- Tests: written first: `instances.integration.test.ts` (order kept for the strip and the dashboard, a new game last, an incomplete order refused).
+- Scope/decisions: the order lives on the server, so it follows the user across devices.
+- Next: `stack/f10/10-library` (A2 rebuilt, with drag to reorder).
+
 ## 2026-10-10 · claude · stack/f10/08-reminders-panel · #132
 - Done: Tasks' right column from A3. Reminders: each rule (1 h before reset, the 21:00 digest, stamina full, endgame reset with rewards left, 30-day pass ends, domains today) with the games it is on for (ALL, their names, OFF), toggled across the games in scope; quiet hours edited for all of them. Preview: the DM each game with reminders on would send now (`GET /api/reminders/preview`, the tick's own composition, `dmParts` shared with it), and Send a test DM (`POST /api/reminders/test`; says when the bot is not set up).
 - Tests: written first: `reminderPreview.integration.test.ts` (the preview text per game; the test DM refused without the bot, sent with it), `e2e/tasks.spec.ts` (a rule turned on shows ALL, the preview, quiet hours saved, the test DM's reason).
@@ -247,9 +253,3 @@ Entry format:
 - Tests: The axe journey (`e2e/a11y.spec.ts`) now covers Home, library, calendar, settings, Admin, every HSR game tab, an HSR and a Genshin character sheet and the Genshin gear views; no serious or critical WCAG 2 A/AA violations. It scans after hover and finite transitions settle.
 - Scope/decisions: `@axe-core/playwright` is development tooling. The test installs Genshin and removes it again, since the smoke journey adds Genshin through the library.
 - Next: `stack/v/02-tokens-fonts`.
-
-## 2026-10-09 · claude · stack/docs-v2/06-design-files · #90
-- Done: `docs/design/` holds both canvases for agents who cannot open claude.ai: the dashboard and the 15 wireframe boards as PNG renders, static HTML pages and the original `.dc.html` sources, with the canvas notes that explain the numbered markers. WIREFRAMES.md, VISUAL-DESIGN.md, AGENTS.md, DESIGN.md §5 and README link to it; `HANDOFF.md` rewritten for the handoff to a coding agent.
-- Tests: Rendered with the canvas runtime and the real fonts; the static pages open without scripts and match the renders.
-- Scope/decisions: The canvas runtime is not committed (not ours to publish), so the sources are for reading; the static pages replace the dashboard's placeholder art with hatching, while the PNG keeps it.
-- Next: Georges merges #78 to #90; the build starts with milestone V.

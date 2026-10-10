@@ -18,6 +18,9 @@ export type InstanceDto = z.infer<typeof instanceDto>;
 export const createInstanceInput = z.object({ gameKey: gameKeySchema });
 export type CreateInstanceInput = z.infer<typeof createInstanceInput>;
 
+/** Every profile of the user, in the order the top strip shows them. */
+export const instanceOrderInput = z.object({ ids: z.array(idSchema).min(1).max(50) });
+
 export const updateInstanceInput = z.object({
   regionKey: z.string().min(1).max(64).optional(),
   sleeping: z.boolean().optional(),

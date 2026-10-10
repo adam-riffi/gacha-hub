@@ -3,6 +3,7 @@ import {
   DEFAULT_REGION_KEY,
   characterSummaryDto,
   createInstanceInput,
+  instanceOrderInput,
   currencyStateDto,
   gameList,
   getGame,
@@ -37,9 +38,20 @@ export async function registerGameRoutes(app: FastifyInstance) {
   app.get("/api/instances", { preHandler: requireUser }, async (req) => {
     const rows = await prisma.gameInstance.findMany({
       where: { userId: req.user!.id },
-      orderBy: { createdAt: "asc" },
+      orderBy: [{ position: "asc" }, { createdAt: "asc" }],
     });
     return rows.map((r) => withGame(instanceDto.parse(r)));
+  });
+
+  // Reorder the strip: every profile of the user, in the new order (the library's drag).
+  app.put("/api/instances/order", { preHandler: requireUser }, async (req, reply) => {
+    const { ids } = instanceOrderInput.parse(req.body);
+    const mine = await prisma.gameInstance.findMany({ where: { userId: req.user!.id }, select: { id: true } });
+    if (ids.length !== mine.length || new Set(ids).size !== ids.length || !mine.every((m) => ids.includes(m.id))) {
+      return reply.code(400).send({ error: "order_mismatch" });
+    }
+    await prisma.$transaction(ids.map((id, position) => prisma.gameInstance.update({ where: { id }, data: { position } })));
+    return { ok: true };
   });
 
   // Install a game. Idempotent: returns the existing profile if one exists.
@@ -57,11 +69,13 @@ export async function registerGameRoutes(app: FastifyInstance) {
       ? DEFAULT_REGION_KEY
       : (game.regions[0]?.key ?? DEFAULT_REGION_KEY);
 
+    const last = await prisma.gameInstance.aggregate({ where: { userId }, _max: { position: true } });
     const created = await prisma.gameInstance.create({
       data: {
         userId,
         gameKey,
         regionKey,
+        position: (last._max.position ?? -1) + 1,
         currencies: { create: game.currencies.map((c) => ({ key: c.key, value: 0 })) },
       },
     });

@@ -57,6 +57,8 @@ model GameInstance {
   /// The in-game UID and account level (Adventure Rank, Trailblaze Level…), typed or synced.
   uid          String?
   accountLevel Int?
+  /// Place in the user's top strip (the library's drag to reorder); new games go last.
+  position     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

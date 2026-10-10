@@ -140,7 +140,7 @@ export async function previewReminders(userId: string, now = new Date()) {
   const rules = await prisma.reminderRule.findMany({
     where: { userId, enabled: true, gameInstance: { is: { sleeping: false } } },
     include: { gameInstance: { include: { currencies: true } } },
-    orderBy: { gameInstance: { createdAt: "asc" } },
+    orderBy: [{ gameInstance: { position: "asc" } }, { gameInstance: { createdAt: "asc" } }],
   });
   const out = [];
   for (const rule of rules) {

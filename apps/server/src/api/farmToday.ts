@@ -13,7 +13,7 @@ import { buildRegionContext, serializeTask } from "./tasks.js";
 export async function registerFarmTodayRoutes(app: FastifyInstance) {
   app.get("/api/farm-today", { preHandler: requireUser }, async (req) => {
     const now = new Date();
-    const instances = await prisma.gameInstance.findMany({ where: { userId: req.user!.id, sleeping: false }, orderBy: { createdAt: "asc" } });
+    const instances = await prisma.gameInstance.findMany({ where: { userId: req.user!.id, sleeping: false }, orderBy: [{ position: "asc" }, { createdAt: "asc" }] });
     const rows = await prisma.task.findMany({ where: { userId: req.user!.id, scope: "game", backlog: false, refId: { in: instances.map((i) => i.id) } } });
     const ctx = await buildRegionContext(rows);
     const tasks = rows.map((t) => ({ row: t, dto: serializeTask(t, ctx, now) }));
