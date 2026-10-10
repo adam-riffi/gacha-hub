@@ -40,6 +40,7 @@ type Card = {
   tag: string | null;
   weaponType: string | null;
   icon: string | undefined;
+  splash?: string;
   entry: CatalogCharacter | undefined;
   build: CharacterDto | undefined;
   owned: boolean;
@@ -112,7 +113,7 @@ export function CharactersPage() {
   const ownedIds = new Set((ownership.data ?? []).filter((o) => o.kind === "character").map((o) => o.catalogId));
   const wishedIds = new Set((wishlist.data ?? []).filter((w) => w.kind === "character").map((w) => w.catalogId));
   const cards: Card[] = catalog
-    ? catalog.characters.map((c) => ({ id: c.id, name: c.name, rarity: c.rarity, tag: c.tag ?? null, weaponType: c.weaponType ?? null, icon: c.icon, entry: c, build: byCatalog.get(c.id), owned: ownedIds.has(c.id) || byCatalog.has(c.id), wished: wishedIds.has(c.id) }))
+    ? catalog.characters.map((c) => ({ id: c.id, name: c.name, rarity: c.rarity, tag: c.tag ?? null, weaponType: c.weaponType ?? null, icon: c.icon, splash: c.splash, entry: c, build: byCatalog.get(c.id), owned: ownedIds.has(c.id) || byCatalog.has(c.id), wished: wishedIds.has(c.id) }))
     : builds.data.map((b) => ({ id: b.id, name: b.name, rarity: null, tag: null, weaponType: null, icon: undefined, entry: undefined, build: b, owned: true, wished: false }));
 
   const live = (dash.data?.timeline.banners ?? []).filter((b) => b.gameKey === game.key && b.status === "active" && b.kind === "character");
@@ -314,7 +315,7 @@ export function CharactersPage() {
           const doc = (c.build?.doc ?? {}) as Record<string, unknown>;
           const onBanner = live.find((b) => b.featured.some((f) => f.catalogId === c.id));
           const step = eventStep(c.id);
-          const art = splashKey(game.key, c.icon);
+          const art = splashKey(game.key, c.icon, c.splash);
           return (
             <article key={c.id} className={`ch-card ${c.owned ? "" : "is-unowned"}`} aria-label={c.name}>
               <div className="ch-art">

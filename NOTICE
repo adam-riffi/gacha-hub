@@ -32,6 +32,8 @@ Artwork
   Genshin Impact art: Enka.Network (https://enka.network/ui/).
   Honkai: Star Rail art: Project Yatta (https://sr.yatta.moe/hsr/assets/).
   Content: © HoYoverse / COGNOSPHERE.
+  Wuthering Waves art: Wuthery (https://files.wuthery.com/p/GameData/).
+  Content: © Kuro Games.
   The app hotlinks these sources, or reads a copy mirrored into our own
   bucket (scripts/assets/mirror.ts, ADR 0006) for a non-commercial tool used
   by a few friends; art is removed on request.

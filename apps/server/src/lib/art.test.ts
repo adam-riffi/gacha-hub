@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { artJobs, assetPath, catalogSchema, communityArtUrl, genshin, getGame, splashKey } from "@gacha/shared";
+import { artJobs, assetPath, catalogSchema, communityArtUrl, genshin, getGame, splashKey, wuwa } from "@gacha/shared";
 
 describe("communityArtUrl", () => {
   it("serves Genshin icons from Enka under the catalog key", () => {
@@ -50,6 +50,18 @@ describe("splash art (ADR 0006)", () => {
     expect(communityArtUrl("genshin", "splash", splashKey("genshin", "UI_AvatarIcon_Ambor"))).toBe("https://enka.network/ui/UI_Gacha_AvatarImg_Ambor.png");
     expect(communityArtUrl("hsr", "splash", "1005")).toBe("https://sr.yatta.moe/hsr/assets/UI/avatar/large/1005.png");
   });
+
+  it("takes the character's own splash key when the source names it apart from the icon (Wuthering Waves)", () => {
+    expect(splashKey("wuwa", "T_IconRoleHead256_1_UI", "T_IconRole_Pile_yangyang_UI")).toBe("T_IconRole_Pile_yangyang_UI");
+    expect(splashKey("genshin", "UI_AvatarIcon_Ambor", undefined)).toBe("UI_Gacha_AvatarImg_Ambor");
+  });
+
+  it("serves Wuthering Waves art from Wuthery by the game's own file names", () => {
+    const ui = "https://files.wuthery.com/p/GameData/UIResources/Common/Image";
+    expect(communityArtUrl("wuwa", "character", "T_IconRoleHead256_1_UI")).toBe(`${ui}/IconRoleHead256/T_IconRoleHead256_1_UI.png`);
+    expect(communityArtUrl("wuwa", "splash", "T_IconRole_Pile_yangyang_UI")).toBe(`${ui}/IconRolePile/T_IconRole_Pile_yangyang_UI.png`);
+    expect(communityArtUrl("wuwa", "weapon", "T_IconWeapon160_21010074_UI")).toBe(`${ui}/IconWeapon160/T_IconWeapon160_21010074_UI.png`);
+  });
 });
 
 describe("artJobs (ADR 0006)", () => {
@@ -65,7 +77,19 @@ describe("artJobs (ADR 0006)", () => {
     expect(jobs.every((j) => j.source.startsWith("https://"))).toBe(true);
   });
 
+  it("covers every Wuthering Waves character's icon and splash art, and every weapon", async () => {
+    const catalog = catalogSchema.parse(await wuwa.loadCatalog!());
+    const jobs = artJobs(getGame("wuwa")!, catalog);
+    const yangyang = catalog.characters.find((c) => c.name === "Yangyang")!;
+    expect(jobs.find((j) => j.kind === "splash" && j.key === yangyang.splash)?.path).toBe("wuwa/splash/T_IconRole_Pile_yangyang_UI.webp");
+    for (const c of catalog.characters) {
+      expect(jobs.some((j) => j.kind === "character" && j.key === c.icon)).toBe(true);
+      expect(jobs.some((j) => j.kind === "splash" && j.key === c.splash)).toBe(true);
+    }
+    for (const w of catalog.weapons) expect(jobs.some((j) => j.kind === "weapon" && j.key === w.icon)).toBe(true);
+  });
+
   it("has nothing for a game without art sources", () => {
-    expect(artJobs(getGame("wuwa")!, { gameKey: "wuwa", source: "x", characters: [{ id: "1", key: "a", name: "A", rarity: 5, icon: "/Game/Aki/UI/x", talents: { keys: [], costs: [] }, ascension: [], maxLevel: 90 }] as never, weapons: [], gear: [], materials: [] })).toEqual([]);
+    expect(artJobs(getGame("endfield")!, { gameKey: "endfield", source: "x", characters: [{ id: "1", key: "a", name: "A", rarity: 5, icon: "/Game/Aki/UI/x", talents: { keys: [], costs: [] }, ascension: [], maxLevel: 90 }] as never, weapons: [], gear: [], materials: [] })).toEqual([]);
   });
 });

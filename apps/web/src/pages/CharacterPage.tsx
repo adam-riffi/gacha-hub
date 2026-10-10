@@ -128,7 +128,7 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
   const weaponDupe = game.manifest.dupes.weapon;
   const weaponDupeKey = weaponDupe?.field.split(".").at(-1);
   const weapons: CatalogWeapon[] = (catalog?.weapons ?? []).filter((w) => !entry?.weaponType || !w.type || w.type === entry.weaponType);
-  const art = splashKey(game.key, entry?.icon);
+  const art = splashKey(game.key, entry?.icon, entry?.splash);
 
   async function upload(file: File | undefined) {
     if (!file) return;

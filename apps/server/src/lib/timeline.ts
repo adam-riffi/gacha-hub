@@ -154,7 +154,7 @@ export async function withFeaturedDetails(banners: BannerDto[], instances: { id:
         const e = f.kind === "character" ? cat?.characters.get(f.catalogId) : cat?.weapons.get(f.catalogId);
         return {
           ...f,
-          ...(e ? { name: e.name, icon: e.icon, rarity: e.rarity } : {}),
+          ...(e ? { name: e.name, icon: e.icon, splash: "splash" in e ? e.splash : undefined, rarity: e.rarity } : {}),
           owned: owns.has(`${instanceByGame.get(b.gameKey)}:${f.kind}:${f.catalogId}`),
         };
       }),

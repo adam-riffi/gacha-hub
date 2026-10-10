@@ -32,9 +32,12 @@ export function communityArtUrl(gameKey: string, kind: ArtKind, key?: string | n
   return template ? template.replace("{key}", encodeURIComponent(key!)) : null;
 }
 
-/** A character's splash art key: Genshin keeps it under the gacha art's name; the others under the icon's. */
-export const splashKey = (gameKey: string, icon?: string | null): string | null | undefined =>
-  gameKey === "genshin" && icon?.startsWith("UI_AvatarIcon_") ? icon.replace("UI_AvatarIcon_", "UI_Gacha_AvatarImg_") : icon;
+/**
+ * A character's splash art key: its own when the catalog names one (Wuthering
+ * Waves), Genshin's gacha art by the icon's name, otherwise the icon's.
+ */
+export const splashKey = (gameKey: string, icon?: string | null, splash?: string | null): string | null | undefined =>
+  splash || (gameKey === "genshin" && icon?.startsWith("UI_AvatarIcon_") ? icon.replace("UI_AvatarIcon_", "UI_Gacha_AvatarImg_") : icon);
 
 /** One image the mirror copies into our store (ADR 0006): its kind and key, where it comes from, where it goes. */
 export interface ArtJob {
@@ -52,7 +55,7 @@ export interface ArtJob {
  */
 export function artJobs(game: GameDefinition, catalog: Catalog): ArtJob[] {
   const keys: [ArtKind, string | null | undefined][] = [
-    ...catalog.characters.flatMap((c): [ArtKind, string | null | undefined][] => [["character", c.icon], ["portrait", c.icon], ["splash", splashKey(game.key, c.icon)]]),
+    ...catalog.characters.flatMap((c): [ArtKind, string | null | undefined][] => [["character", c.icon], ["portrait", c.icon], ["splash", splashKey(game.key, c.icon, c.splash)]]),
     ...catalog.weapons.map((w): [ArtKind, string | undefined] => ["weapon", w.icon]),
     ...catalog.gear.flatMap((g): [ArtKind, string | undefined][] => [["gear", g.icon], ...Object.values((g.extra?.pieceIcons ?? {}) as Record<string, string>).map((k): [ArtKind, string] => ["gear", k])]),
     ...catalog.materials.map((m): [ArtKind, string | undefined] => ["material", m.icon]),

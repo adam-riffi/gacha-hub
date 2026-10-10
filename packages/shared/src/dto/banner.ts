@@ -38,6 +38,7 @@ export type BannerFeatured = z.infer<typeof bannerFeaturedSchema>;
 export const bannerFeaturedDto = bannerFeaturedSchema.extend({
   name: z.string().optional(),
   icon: z.string().optional(),
+  splash: z.string().optional(),
   rarity: z.number().int().optional(),
   owned: z.boolean().optional(),
 });
