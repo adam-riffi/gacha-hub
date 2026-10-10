@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/ui/01-pull-curve · #198
+- Done: Georges's feedback on the pull graph. The curve is now drawn whole and never changes shape: the 5★ rate on each pull since the last 5★, with the lost-50/50 run after it, shaded. Markers move along it: you, all your pulls, and a top-up. A legend gives each one's chance of the featured unit. "Simulate a top-up" on Pulls available adds an amount of one pull currency to every banner, its curve and the savings planner. Standard banners get the full card; the compact rows and Pulls' "Manual" tags are gone.
+- Tests: written first: the Pulls journey checks that the curve's path is the same after +10 while the label moves to pity 10, that a 1600-jade top-up gives +10 pulls and "With the top-up: 40 pulls", and that Stellar warp has a full card. `npm run check` passes: 558 tests and 40 journeys; initial JavaScript 196.3 KB.
+- Scope/decisions: the curve plots the per-pull rate, not the cumulative chance, so its shape never depends on your pity; the cumulative chances sit in the legend, the odds table and the headline.
+- Next: Home's pulls by type, the Characters page, teams, the goal maker, the banner timeline, the clean-up, Settings and Admin.
+
 ## 2026-10-10 · claude · stack/banners/01-every-banner · #197
 - Done: every banner type each game's history names gets a banner: Genshin's Chronicled and Beginners' wishes, Star Rail's two collaboration warps and Departure warp, ZZZ's Bangboo channel, WuWa's standard weapon, Novice and Beginner's Choice convenes, Endfield's Joint and Beginner headhunting. A banner's `fund` says which pulls it spends (standard tickets, or a currency the tracker does not count). Each banner has a Hide button on Pulls; hidden ones wait in a "Hidden" line with a Show button each, and Home leaves them out of its pity line (`GameInstance.hiddenBanners`, migration `20261011110000_hidden_banners`). The other event banners join the savings planner only while one is running.
 - Tests: written first: each game's banner types with their history types and funds; hiding and showing through `PUT /api/instances/:id` (an unknown key is refused) and Home's pity; the Pulls journey hides and shows Departure warp. Eight older tests expected three banner types per game (the importers now ask the new types too) and were updated. `npm run check` passes: 558 tests and 40 journeys.
@@ -297,9 +303,3 @@ Entry format:
 - Tests: written first: a second journey in `e2e/characters.spec.ts` (Kafka's Compact row with E1 and Lv 80 and Build →; Patience Is All You Need held by Kafka · S2, wishlisted and owned in place); the accessibility sweep passes. Checked at 1440 on the dev account.
 - Scope/decisions: the board pictures only the Splash view, so Compact and Weapons are built in the kit's table; weapon farming stays on Equipment until the overview's retirement PR.
 - Next: the wishlist on the calendar and as savings-planner targets.
-
-## 2026-10-10 · claude · stack/f11/11-enka · #157
-- Done: Enka showcase builds for Genshin (ADR 0005): shared `readEnkaGenshin` (level, constellation, weapon with name, level and refinement, artifacts per slot with the set from the icon's set id, main stat, level and substats, final stats) and `mergeSynced` (a field still as the last sync wrote it, or empty, takes the new value; one the user changed stays); `Character.synced` (migration `20261011070000_character_synced`); server `syncEnka` (signed User-Agent, Enka's codes named, new builds created and owned, existing ones merged, an `ImportRun` of kind showcase) and `POST /api/instances/:id/enka` (6 a minute); Settings' Enka card has Sync builds for Genshin.
-- Tests: written first: `enka.test.ts` (the showcase read, closed showcase, the merge keeping a changed level), `enka.integration.test.ts` (Enka asked by UID with our User-Agent, Amber created with C2, Raven Bow R5 and a Wanderer's Troupe flower, owned, the run recorded; a later sync keeps the edited level and takes C3; 404, closed and no UID named). The fixture lives in `test/fixtures/enka.ts`.
-- Scope/decisions: talents wait for skill ids in the catalog; Star Rail and ZZZ showcases are next; Enka's docs disagree on a few names (`avatarID`, `propValue`), so both spellings are read.
-- Next: Star Rail and ZZZ showcases, the battle chronicle, then SKPORT research and F12.

@@ -15,25 +15,26 @@ const pct = (v: number) => `${v >= 0.995 && v < 1 ? ">99" : (v * 100).toFixed(v 
 const split = (rate: number) => `${Math.round(rate * 100)}/${100 - Math.round(rate * 100)}`;
 
 /**
- * One banner on Pulls (WIREFRAMES.md G3). An event banner shows its status
- * as a two-state switch with the reason, the 5★ pity with soft pity marked,
- * the odds (estimates), the curve, the headline chance with your pulls, and
- * the actions; `compact` keeps the numbers and actions on one row.
+ * One banner on Pulls (WIREFRAMES.md G3), every banner type the same: an
+ * event banner's status as a two-state switch with the reason, the 5★ pity
+ * with soft pity marked, the odds (estimates), the curve, the headline chance
+ * with your pulls (and with a simulated top-up), and the actions.
  */
 export function BannerCard(props: {
   b: PullBannerLogDto;
   gameKey: string;
   available: number;
+  /** Pulls a simulated top-up adds to this banner's. */
+  extra?: number;
   live?: BannerDto;
   units: Unit[];
   unitOf: (id: string | null) => Unit | undefined;
-  compact?: boolean;
   onAdd: (body: AddBody) => void;
   onCalibrate: (body: CalibrateBody) => void;
   onUndo: (entryId: string) => void;
   onHide: () => void;
 }) {
-  const { b, live, available } = props;
+  const { b, live, available, extra = 0 } = props;
   const [mode, setMode] = useState<"five" | "set" | null>(null);
   const s = b.state;
   const state = { pity: s.pity, guaranteed: s.guaranteed };
@@ -67,23 +68,6 @@ export function BannerCard(props: {
       <span data-testid="pity">{s.pity}</span> / {b.hardPity}
     </span>
   );
-
-  if (props.compact) {
-    return (
-      <section className="card pl-compact" aria-label={b.label}>
-        <div className="pl-compact-row">
-          <div>
-            <strong>{b.label}</strong>
-            <div className="mn mu">{hasFeatured ? `${split(b.featuredRate)}${s.guaranteed ? " · guaranteed" : ""}` : "no 50/50"} · {s.toHardPity} to a certain {star}</div>
-          </div>
-          <span className="mn mu">next {star} {pct(rateAt(b, s.pity + 1))} · 10 pulls {pct(within(10))}</span>
-          {pity}
-        </div>
-        {actions}
-        {forms}
-      </section>
-    );
-  }
 
   const last = b.fiveStars[0];
   const lastName = last && (props.unitOf(last.catalogId)?.name ?? `a ${star}`);
@@ -140,16 +124,18 @@ export function BannerCard(props: {
           <tr><td>Next pull</td><td className="num">{pct(rateAt(b, s.pity + 1))}</td></tr>
           <tr><td>Next 10 pulls</td><td className="num">{pct(within(10))}</td></tr>
           {soft && <tr><td>By soft pity (pity {b.softPity})</td><td className="num">{pct(within(b.softPity! - s.pity))}</td></tr>}
-          <tr><td>Featured by your {available} pulls</td><td className="num">{pct(featuredWithin(b, state, available))}</td></tr>
+          <tr><td>{hasFeatured ? "Featured" : `A ${star}`} by your {available} pulls</td><td className="num">{pct(featuredWithin(b, state, available))}</td></tr>
+          {extra > 0 && <tr><td>With the top-up ({available + extra} pulls)</td><td className="num">{pct(featuredWithin(b, state, available + extra))}</td></tr>}
         </tbody>
       </table>
 
-      <PullCurve rules={b} state={state} available={available} star={star} />
+      <PullCurve rules={b} state={state} available={available} extra={extra} star={star} />
 
       <div className="pl-headline">
         <span className="kpi-value">{pct(worst!.chance)}</span>
         <span>
-          chance of {target} with your {available} pulls
+          chance of {hasFeatured ? target : `a ${star}`} with your {available} pulls
+          {extra > 0 && <strong> · {pct(featuredWithin(b, state, available + extra))} with the top-up</strong>}
           <span className="mn mu"> · {average!.needs} pulls on average · {Number.isFinite(worst!.needs) ? `${worst!.needs} at most` : "no cap"}</span>
         </span>
       </div>

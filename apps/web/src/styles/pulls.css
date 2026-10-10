@@ -15,15 +15,11 @@
 .pl-meter > i { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--text); }
 .pl-pity { font-size: 15px; }
 .pl-odds { margin-bottom: 10px; }
-.pl-curve { display: block; width: 100%; height: auto; margin: 6px 0 12px; overflow: visible; }
+.pl-curve { display: block; width: 100%; height: auto; overflow: visible; }
 .pl-curve text { fill: var(--text-muted); font: 400 10px var(--font-mono); }
-.pl-curve .pl-pulled { fill: var(--surface-2); }
 .pl-curve .pl-grid { stroke: var(--surface-3); }
 .pl-curve .pl-dash { stroke: var(--hairline-strong); stroke-dasharray: 3 3; }
 .pl-curve .pl-line { fill: none; stroke: var(--text); stroke-width: 2; }
-.pl-curve .pl-you { stroke: var(--accent); stroke-width: 2; }
-.pl-curve .pl-you-label { fill: var(--accent); }
-.pl-curve .pl-reach { fill: var(--bg); stroke: var(--text); stroke-width: 2; }
 .pl-headline { display: flex; align-items: baseline; gap: 12px; padding: 10px 14px; margin-bottom: 12px; background: var(--surface-2); font-size: 14px; }
 .pl-headline .kpi-value { font-size: 36px; }
 .pl-actions { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -33,8 +29,26 @@
 .pl-form input[type="number"] { width: 90px; }
 .pl-form .pl-check { flex-direction: row; align-items: center; color: var(--text); }
 .pl-form select { width: auto; }
-.pl-compact-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 16px; margin-bottom: 10px; }
-.pl-compact-row .mn { font-size: 12px; }
+.pl-sim { display: grid; grid-template-columns: auto 120px minmax(0, 1fr) auto; align-items: center; gap: 10px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--surface-3); }
+.pl-sim select { width: auto; }
+.pl-figure { margin: 6px 0 12px; }
+.pl-curve .pl-run2 { fill: var(--surface-2); }
+.pl-mark line { stroke-width: 1.5; }
+.pl-mark circle { stroke-width: 2; }
+.pl-mark.is-you line, .pl-mark.is-you circle { stroke: var(--accent); }
+.pl-mark.is-you circle { fill: var(--accent); }
+.pl-mark.is-you text { fill: var(--accent); }
+.pl-mark.is-all line { stroke: var(--text); }
+.pl-mark.is-all circle { fill: var(--bg); stroke: var(--text); }
+.pl-mark.is-all text { fill: var(--text); }
+.pl-mark.is-top line { stroke: var(--text-muted); stroke-dasharray: 3 3; }
+.pl-mark.is-top circle { fill: var(--bg); stroke: var(--text-muted); stroke-dasharray: 2 2; }
+.pl-legend { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; font-size: 12px; }
+.pl-legend span { display: flex; align-items: center; gap: 8px; }
+.pl-legend i { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.pl-legend .is-you i { background: var(--accent); }
+.pl-legend .is-all i { border: 2px solid var(--text); }
+.pl-legend .is-top i { border: 2px dashed var(--text-muted); }
 .pl-bottom { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; align-items: start; }
 .pl-modes { display: flex; gap: 14px; }
 .pl-modes label { display: inline-flex; align-items: center; gap: 6px; margin: 0; color: var(--text); text-transform: none; letter-spacing: 0; font: 400 13px var(--font-body); cursor: pointer; }

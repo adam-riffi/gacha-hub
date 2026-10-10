@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -41,6 +42,8 @@ export function PullsPage() {
   const { id } = useParams<{ id: string }>();
   const qc = useQueryClient();
   const toast = useToast();
+  // A simulated top-up: an amount of one pull currency, added on top of what you have.
+  const [topUp, setTopUp] = useState({ amount: 0, key: "" });
   const instance = useQuery({
     queryKey: ["instance", id],
     queryFn: () => api.get<InstanceDetail>(`/api/instances/${id}`),
@@ -98,6 +101,9 @@ export function PullsPage() {
     .filter((c) => c.pullCost)
     .map((c) => ({ ...c, value: values.get(c.key) ?? 0 }));
   const have = pullsFor(pullCurrencies);
+  const sim = pullCurrencies.find((c) => c.key === topUp.key) ?? pullCurrencies.find((c) => !c.standardOnly && !c.weaponOnly);
+  const topped = pullsFor(pullCurrencies.map((c) => (c === sim ? { ...c, value: c.value + topUp.amount } : c)));
+  const extra = { limited: topped.limited - have.limited, standard: topped.standard - have.standard, weapon: topped.weapon - have.weapon };
   const star = topStar(game.key);
   // Endfield's Arsenal spends its own tickets, so it is out of the limited pulls and the planner.
   const weaponTickets = pullCurrencies.some((c) => c.weaponOnly);
@@ -122,16 +128,17 @@ export function PullsPage() {
   const shown = log.data.banners.filter((b) => !hidden.includes(b.key));
   const event = shown.filter((b) => b.featuredRate < 1);
   const rest = shown.filter((b) => b.featuredRate >= 1);
-  const card = (b: (typeof event)[number], compact: boolean) => (
+  const fund = (b: (typeof event)[number]) => (b.fund === "none" ? null : b.fund === "standard" || b.key === "standard" ? "standard" : b.key === "weapon" && weaponTickets ? "weapon" : "limited");
+  const card = (b: (typeof event)[number]) => (
     <BannerCard
       key={b.key}
       b={b}
       gameKey={game.key}
-      available={b.fund === "none" ? 0 : b.fund === "standard" || b.key === "standard" ? have.standard : b.key === "weapon" && weaponTickets ? have.weapon : have.limited}
+      available={fund(b) ? have[fund(b)!] : 0}
+      extra={fund(b) ? extra[fund(b)!] : 0}
       live={live.find((l) => l.kind === b.key)}
       units={units}
       unitOf={unitOf}
-      compact={compact}
       onAdd={(body) => add.mutate(body)}
       onCalibrate={(body) => calibrate.mutate(body)}
       onUndo={(entryId) => undo.mutate(entryId)}
@@ -171,9 +178,9 @@ export function PullsPage() {
       endsAt: l?.endsAt,
       rules: b,
       state: stateFor(b),
-      available: have.limited,
+      available: have.limited + extra.limited,
     })),
-    ...wished.map(({ b, name }) => ({ label: name, sub: `Wishlist · ${b.label}`, rules: b, state: stateFor(b), available: have.limited })),
+    ...wished.map(({ b, name }) => ({ label: name, sub: `Wishlist · ${b.label}`, rules: b, state: stateFor(b), available: have.limited + extra.limited })),
   ];
 
   return (
@@ -188,10 +195,7 @@ export function PullsPage() {
       </div>
       <div className="pl-top">
         <section className="card" aria-label="Pulls available">
-          <div className="spread">
-            <h3>Pulls available</h3>
-            <span className="tag">Manual</span>
-          </div>
+          <h3>Pulls available</h3>
           <div className="kpi-value">
             {have.limited}{" "}
             <small>limited{have.standard ? ` · +${have.standard} standard` : ""}{have.weapon ? ` · +${have.weapon} ${weaponLabel}` : ""}</small>
@@ -210,6 +214,26 @@ export function PullsPage() {
               ))}
             </tbody>
           </table>
+          {sim && (
+            <div className="pl-sim">
+              <span className="kpi-label">Simulate a top-up</span>
+              <input
+                type="number"
+                min={0}
+                max={10_000_000}
+                aria-label="Top-up amount"
+                placeholder="0"
+                value={topUp.amount || ""}
+                onChange={(e) => setTopUp({ key: sim.key, amount: Math.max(0, Math.min(10_000_000, Number(e.target.value) || 0)) })}
+              />
+              <select aria-label="Top-up currency" value={sim.key} onChange={(e) => setTopUp({ ...topUp, key: e.target.value })}>
+                {pullCurrencies.map((c) => (
+                  <option key={c.key} value={c.key}>{c.label}</option>
+                ))}
+              </select>
+              <span className="mn">{topUp.amount > 0 ? `+${topped.limited + topped.standard + topped.weapon - have.limited - have.standard - have.weapon} pulls` : "what buying more would give"}</span>
+            </div>
+          )}
         </section>
         <section className="card" aria-label={`By the end of ${game.manifest.version.name}`}>
           <div className="spread">
@@ -247,10 +271,10 @@ export function PullsPage() {
 
       <div className="pl-label">
         <span className="kpi-label">Event banners</span>
-        <span className="mn mu">Manual · pity and status from your log</span>
+        <span className="mn mu">pity and status from your log</span>
       </div>
-      <div className="pl-banners">{event.map((b) => card(b, false))}</div>
-      {rest.length > 0 && <div className="pl-banners">{rest.map((b) => card(b, true))}</div>}
+      <div className="pl-banners">{event.map(card)}</div>
+      {rest.length > 0 && <div className="pl-banners">{rest.map(card)}</div>}
       {hidden.length > 0 && (
         <p className="mn mu pl-hidden">
           Hidden:{" "}
