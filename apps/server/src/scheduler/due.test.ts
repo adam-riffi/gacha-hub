@@ -76,6 +76,18 @@ describe("dueReminders", () => {
     expect(dueReminders(cfg({ beforeReset: false }), EU, "Genshin", at("2026-10-17T04:00:00Z"), extra)).toEqual([]);
     expect(dueReminders(on, EU, "Genshin", at("2026-10-20T03:00:00Z"), extra)).toEqual([]);
   });
+
+  it("DMs 48 h before the version ends while the battle pass is short of its last level", () => {
+    const ends = at("2026-11-04T03:00:00Z");
+    const extra = { battlePass: { name: "Gnostic Hymn", endsAt: ends, level: 34, maxLevel: 50 } };
+    const on = cfg({ beforeReset: false, beforeBattlePassEnds: true });
+    expect(dueReminders(on, EU, "Genshin", at("2026-11-02T02:00:00Z"), extra)).toEqual([]);
+    expect(dueReminders(on, EU, "Genshin", at("2026-11-02T04:00:00Z"), extra)).toEqual([
+      { key: "pass:battle", firedFor: ends, headline: "🎫 **Genshin** · Gnostic Hymn ends in 47h 0m at level 34 / 50" },
+    ]);
+    expect(dueReminders(on, EU, "Genshin", at("2026-11-02T04:00:00Z"), { battlePass: { ...extra.battlePass, level: 50 } })).toEqual([]);
+    expect(dueReminders(cfg({ beforeReset: false }), EU, "Genshin", at("2026-11-02T04:00:00Z"), extra)).toEqual([]);
+  });
 });
 
 describe("inQuietHours", () => {
