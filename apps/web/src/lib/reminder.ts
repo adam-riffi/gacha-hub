@@ -24,7 +24,10 @@ export const REMINDER_DEFAULTS: ReminderConfig = {
  * Activities, an endgame reset on Endgame). Turning it on where reminders are
  * off turns on this reminder only, not the daily ones.
  */
-export function useReminderFlag(instanceId: string, flag: "whenStaminaFull" | "beforeEndgameReset") {
+/** A reminder setting that is a plain switch. */
+export type ReminderFlag = { [K in keyof ReminderConfig]: ReminderConfig[K] extends boolean ? K : never }[keyof ReminderConfig];
+
+export function useReminderFlag(instanceId: string, flag: ReminderFlag) {
   const qc = useQueryClient();
   const { data } = useQuery({ queryKey: ["reminder", instanceId], queryFn: () => api.get<ReminderRule | null>(`/api/instances/${instanceId}/reminder`) });
   const on = Boolean(data?.enabled && data.config[flag]);

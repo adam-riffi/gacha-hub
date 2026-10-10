@@ -8,7 +8,7 @@ import { Countdown } from "../ui";
 const DATE = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
 const SHORT = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" });
 /** "7•••••••6": the hub shows a UID without spelling it out. */
-const masked = (uid: string) => (uid.length > 2 ? `${uid[0]}${"•".repeat(uid.length - 2)}${uid.at(-1)}` : uid);
+export const masked = (uid: string) => (uid.length > 2 ? `${uid[0]}${"•".repeat(uid.length - 2)}${uid.at(-1)}` : uid);
 
 /**
  * The game hub's header (WIREFRAMES.md, Game hub): the game's icon and name;
@@ -33,6 +33,7 @@ export function HubHeader({ instanceId }: { instanceId: string }) {
 
   const region = game.regions.find((r) => r.key === data.regionKey) ?? game.regions[0]!;
   const level = game.manifest.accountLevel;
+  const world = game.manifest.worldLevel;
   const resets = hubResets(game, region, new Date());
   const submit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -91,6 +92,7 @@ export function HubHeader({ instanceId }: { instanceId: string }) {
             {data.accountLevel !== null && (
               <span className="badge" title={level.name}>
                 {level.label} {data.accountLevel}
+                {world && data.worldLevel !== null && ` · ${world.label} ${data.worldLevel}`}
               </span>
             )}
             <span className="tag">Manual</span>
