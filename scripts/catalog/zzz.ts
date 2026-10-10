@@ -94,7 +94,9 @@ const characters: CatalogCharacter[] = await mapLimit(Object.keys(charIndex), 4,
     tag: Object.values(d.element_type)[0],
     weaponType: Object.values(d.weapon_type)[0],
     maxLevel: phases.at(-1)?.level_max ?? 60,
-    icon: charIndex[id]!.icon,
+    // The index names the full art (IconRole21); its square face crop is IconRoleCrop21.
+    icon: charIndex[id]!.icon.replace(/^IconRole/, "IconRoleCrop"),
+    splash: charIndex[id]!.icon,
     ascension,
     talents: { keys: Object.keys(costsByKey), costs: costsByKey.basic ?? [], costsByKey },
     constellations: Object.values(d.talent ?? {}).map((t) => ({

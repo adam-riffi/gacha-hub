@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/zzz/02-art · #182
+- Done: ZZZ art from the Hakushin assets (`static.nanoka.cc/assets/zzz/{key}.webp`). The catalog keeps each agent's face crop (`IconRoleCrop…`) as its icon and its full art (`IconRole…`) as its own splash key, as WuWa does. W-Engines, disc sets and materials use their icon names. The mirror copies them, the CSP allows the host, and NOTICE and the ZZZ sheet credit it.
+- Tests: written first: artJobs covers every ZZZ agent's face and full art, W-Engine, disc set and material; the CSP host. The "no art source" test uses NTE now. `npm run check` passes: 522 tests and 40 journeys.
+- Scope/decisions: the full art is large (about 350 KB); the mirror converts it but does not resize it.
+- Next: Enka for ZZZ.
+
 ## 2026-10-10 · claude · stack/zzz/01-catalog · #181
 - Done: a ZZZ catalog from the Hakushin data. It is the dataset behind hakush.in, back under `static.nanoka.cc`, and only its live version is read. It holds:
   - 60 agents, each with promotions to 60, five skill tables (basic, dodge, assist, special, chain) to 12, and Mindscapes;
@@ -269,9 +275,3 @@ Entry format:
 - Tests: written first: `sheet.test.ts` (skills and weapon fields per game, ascension pips, crit value per piece, off-set pieces), `e2e/character-sheet.spec.ts` (identity, KPIs, character, skills, weapon, the relic's CV, a level saved across a reload). The accessibility sweep caught an aria-label on the pips; they are an image now. Checked at 1440 beside `g5-character-sheet.png`.
 - Scope/decisions: KPI targets from a build template and "Used in" (endgame teams) are left for later; the per-game sheets stay as "More details" until they shrink to what the generic sheet does not cover (Path, element).
 - Next: Gear (G6), Planner (G7), Profile (G8).
-
-## 2026-10-10 · claude · stack/f10/15-characters · #139
-- Done: Characters rebuilt from its board (WIREFRAMES.md G4), a hub tab for every game in place of Ownership: filters (search, element, weapon, rarity, owned or wishlisted, build status, sort), counts (owned, perfect, good, building, unbuilt, wishlist), Own all shown; one splash card per unit (art with rarity, element and the dupe badge; the name box with level, skills and weapon dupes, `buildLine`; the role's three KPIs; status, set bonuses, Build → or Start a build); unowned units can be owned or wishlisted, and on a running banner show your chance with the pulls you have and Plan pulls →; a pending event goal shows "→ C4 · event"; 12 at a time, built characters first.
-- Tests: written first: `builds.test.ts` (`buildLine`, `dupeBadge`), `e2e/characters.spec.ts` (tab, counts, search, a card's dupes, level and KPIs, Build →, wishlist and own). The accessibility sweep now visits the tab. Checked at 1440 beside `g4-characters.png`.
-- Scope/decisions: the Weapons and Compact views are left for later (weapon ownership stays on Equipment); Ownership's route stays until G6/G7 take Equipment's place.
-- Next: the character sheet (G5).

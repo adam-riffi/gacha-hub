@@ -16,7 +16,7 @@
 | Premium income | Daily engagement, 60 Polychrome a day ~ | community figure, unverified |
 | Gear | Drive Discs, six slots: 1 HP, 2 ATK, 3 DEF, 4 (HP%/ATK%/DEF%, CRIT Rate, CRIT DMG, Anomaly Proficiency), 5 (HP%/ATK%/DEF%, PEN Ratio, Attribute DMG Bonus), 6 (HP%/ATK%/DEF%, Anomaly Mastery, Impact, Energy Regen); sets of 2 and 4; level 15 | [Drive Disc](https://zenless-zone-zero.fandom.com/wiki/Drive_Disc) |
 | Dupes | A character copy raises Mindscape by one (to M6); a W-Engine copy raises Phase by one (to 5) | [Mindscape Cinema](https://zenless-zone-zero.fandom.com/wiki/Mindscape_Cinema), [W-Engine](https://zenless-zone-zero.fandom.com/wiki/W-Engine) |
-| Art | | |
+| Art | The Hakushin assets by file name: an agent's face crop (`IconRoleCrop…`) as its icon, its full art (`IconRole…`) as its splash; W-Engines, disc sets and materials by their icon names | [Hakushin assets](https://static.nanoka.cc/assets/zzz/IconRole01.webp) |
 | KPIs per role | Our choice for the Characters cards (WIREFRAMES.md G4), listed in the module's manifest | |
 | Pull history types | character (exclusive) 2, W-Engine 3, standard 1; Bangboo (5) is not tracked | [UIGF v4.2](https://uigf.org/en/standards/uigf.html) |
 | Account level | Inter-Knot Level (IKL); the abbreviation is the community's | [Inter-Knot Level](https://zenless-zone-zero.fandom.com/wiki/Inter-Knot_Level) |

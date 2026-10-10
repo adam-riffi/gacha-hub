@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { artJobs, assetPath, catalogSchema, communityArtUrl, genshin, getGame, splashKey, wuwa } from "@gacha/shared";
+import { artJobs, assetPath, catalogSchema, communityArtUrl, genshin, getGame, splashKey, wuwa, zzz } from "@gacha/shared";
 
 describe("communityArtUrl", () => {
   it("serves Genshin icons from Enka under the catalog key", () => {
@@ -19,7 +19,7 @@ describe("communityArtUrl", () => {
   it("has nothing for missing keys, other kinds or games without a source", () => {
     expect(communityArtUrl("hsr", "character", undefined)).toBeNull();
     expect(communityArtUrl("hsr", "talent", "1503")).toBeNull();
-    expect(communityArtUrl("zzz", "character", "1191")).toBeNull();
+    expect(communityArtUrl("nte", "character", "1191")).toBeNull();
   });
 
   it("encodes keys so a catalog value cannot change the path", () => {
@@ -87,6 +87,21 @@ describe("artJobs (ADR 0006)", () => {
       expect(jobs.some((j) => j.kind === "splash" && j.key === c.splash)).toBe(true);
     }
     for (const w of catalog.weapons) expect(jobs.some((j) => j.kind === "weapon" && j.key === w.icon)).toBe(true);
+  });
+
+  it("covers every ZZZ agent's face and full art, every W-Engine, disc set and material, from the Hakushin assets", async () => {
+    const catalog = catalogSchema.parse(await zzz.loadCatalog!());
+    const jobs = artJobs(getGame("zzz")!, catalog);
+    const ellen = catalog.characters.find((c) => c.id === "1191")!;
+    expect([ellen.icon, ellen.splash]).toEqual(["IconRoleCrop21", "IconRole21"]);
+    expect(jobs.find((j) => j.kind === "splash" && j.key === "IconRole21")).toEqual({ kind: "splash", key: "IconRole21", source: "https://static.nanoka.cc/assets/zzz/IconRole21.webp", path: "zzz/splash/IconRole21.webp" });
+    for (const c of catalog.characters) {
+      expect(jobs.some((j) => j.kind === "character" && j.key === c.icon)).toBe(true);
+      expect(jobs.some((j) => j.kind === "splash" && j.key === c.splash)).toBe(true);
+    }
+    for (const [kind, list] of [["weapon", catalog.weapons], ["gear", catalog.gear], ["material", catalog.materials]] as const) {
+      for (const x of list) expect(jobs.some((j) => j.kind === kind && j.key === x.icon), `${kind} ${x.name}`).toBe(true);
+    }
   });
 
   it("has nothing for a game without art sources", () => {

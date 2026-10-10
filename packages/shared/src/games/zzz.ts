@@ -114,7 +114,8 @@ export const zzz: GameDefinition = {
     },
     kpis: { attack: ["Crit value", "CRIT Rate / CRIT DMG", "PEN Ratio"], anomaly: ["Anomaly Proficiency", "Anomaly Mastery", "PEN Ratio"], stun: ["Impact", "Energy Regen", "Crit value"], support: ["Energy Regen", "ATK", "Anomaly Proficiency"] },
     dupes: { character: { field: "mindscape", label: "Mindscape", max: 6 }, weapon: { field: "wEngine.phase", label: "Phase", max: 5 } },
-    art: {},
+    // The Hakushin assets (ADR 0006): an agent's face crop as its icon, its full art as its splash.
+    art: { character: "https://static.nanoka.cc/assets/zzz/{key}.webp", portrait: "https://static.nanoka.cc/assets/zzz/{key}.webp", splash: "https://static.nanoka.cc/assets/zzz/{key}.webp", weapon: "https://static.nanoka.cc/assets/zzz/{key}.webp", gear: "https://static.nanoka.cc/assets/zzz/{key}.webp", material: "https://static.nanoka.cc/assets/zzz/{key}.webp" },
     accountLevel: { label: "IKL", name: "Inter-Knot Level" },
     version: { name: "3.2", start: "2026-09-09", days: 42 },
   },
