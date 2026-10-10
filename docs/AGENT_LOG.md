@@ -14,6 +14,16 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/endfield/01-decisions · #177
+- Done:
+  - NTE is in every game list: the guide's TL;DR, shipped scope and per-game section; DESIGN.md §4; README.
+  - The guide's feature matrix gains an NTE column and is brought up to date (shared sheet, imports, live data, art, Endfield's banners).
+  - Georges delegated the open decisions on 2026-10-10. ADR 0009 is accepted, with the record shape that open-source trackers parse and Endfield's banner rules from the guides. Enka's store data is kept with credit in NOTICE and removed on request.
+  - Endfield's sheet gains Basic headhunting, Arsenal and the records link.
+- Tests: docs only.
+- Scope/decisions: the reader is written against the trackers' shape instead of a recorded sample. A real answer replaces the fixtures when one exists.
+- Next: Endfield's records reader and its three banners (#178).
+
 ## 2026-10-10 · claude · docs/handoff-f12 · #176
 - Done: HANDOFF.md rewritten: every milestone, V through F12, is built, and what is left waits on Georges or a data source. PROJECT-GUIDE §14 lists what is left now (owner steps for linking, R2, ADR 0009, the Enka licence, fixtures and stale branches; agent work that waits on data, and optional work) and what was done since the list was written. §15 drops the fixed issues, and the stale engine-DLL gotcha is gone. The 30 archived log entries marked "pending" now carry their PR numbers. ADR 0001's pr-meme row is resolved (#80).
 - Tests: docs only.
@@ -247,9 +257,3 @@ Entry format:
 - Tests: written first: `forecast.test.ts` (the board's 26 days × 60 and 23 × 90 = 22 pulls; no pass; the planner's covered and short-by figures; average mode); the odds against a seeded 200,000-trial simulation, within 0.5 points in four cases (F10's acceptance line; `featuredWithin` passed them as it was).
 - Scope/decisions: Endfield and NTE have no sourced income yet, so they show no forecast; events, endgame and codes are not counted, as on the board.
 - Next: `stack/f10/12-pulls` (G3 rebuilt).
-
-## 2026-10-10 · claude · stack/f10/10-library · #134
-- Done: Games rebuilt from its board (WIREFRAMES.md A2): one row per installed game in the strip's order, dragged (or moved with ↑ ↓) to reorder it; server, offset and version; capability cells Manifest (always), Catalog (character count, or why there is none) and Live data (the F11 route, dashed until it exists); today's dailies and the reset; Open hub and Sleep. Beside: the capabilities legend and Add a game. Old library styles removed.
-- Tests: written first: `e2e/library.spec.ts` (cells, today, moving the last game up swaps it in the strip, sleep and wake). Drag checked against the dev server with Playwright (and the order put back); checked at 1440 beside `a2-games-library.png`.
-- Scope/decisions: "Request a game" is left out (nothing receives the request); catalog-gap reasons and the planned live routes are a small map in the page, as capabilities themselves stay derived (ADR 0004).
-- Next: Pulls (G3): odds, curve, guarantee, savings planner.
