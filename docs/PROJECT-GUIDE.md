@@ -251,172 +251,248 @@ A `PullEntry` is `{bannerType, count, fiveStar?, featured?}`. Pity is the count 
 flowchart TB
   L["Sign-in<br/>/"] --> H["Home<br/>/"]
   H --- G["Games<br/>/library"]
-  H --- C["Banners & events<br/>/timeline"]
+  H --- T["Tasks and reminders<br/>/tasks"]
+  H --- C["Banners and events<br/>/timeline"]
   H --- S["Settings<br/>/settings"]
   H --- AD["Admin<br/>/admin (admins only)"]
-  G --> O["Game page · Overview<br/>/games/:id"]
-  O --- OW["Ownership<br/>/games/:id/ownership"]
-  O --- EQ["Equipment<br/>/games/:id/equipment"]
-  O --- GR["Artifacts / Relics / Echoes / Gear<br/>/games/:id/gear"]
-  O --- MA["Materials<br/>/games/:id/materials"]
-  O --- PU["Pulls<br/>/games/:id/pulls"]
-  O --> CH["Character sheet<br/>/characters/:id"]
-  OW --> CH
+  G --> A["Game hub · Activities<br/>/games/:id"]
+  A --- EG["Endgame<br/>/games/:id/endgame"]
+  A --- PU["Pulls<br/>/games/:id/pulls"]
+  A --- CH["Characters<br/>/games/:id/characters"]
+  A --- GR["Artifacts / Relics / Drive discs / Echoes<br/>/games/:id/gear"]
+  A --- PL["Planner<br/>/games/:id/planner"]
+  A --- PR["Profile<br/>/games/:id/profile"]
+  CH --> SH["Character sheet<br/>/characters/:id"]
 ```
 
-The left sidebar is on every signed-in page: Home, Games, Banners & events, Settings, Admin (hidden from non-admins), then one link per installed game. Which game tabs appear depends on the game (§9): no catalog means only Overview and Pulls; no `pullBanners` means no Pulls tab.
+The rail on the left is on every signed-in page: All (Home), Games, Tasks, Banners, then Admin (admins only) and Settings. The strip across the top scopes Home to one game or all of them, in the order set on the Games page.
+
+The game hub's tabs depend on the game (§9):
+- Pulls needs pull rules.
+- Gear and Planner need a catalog with gear and costs, so Endfield and NTE have neither.
+
+The old routes `/games/:id/overview` and `/games/:id/equipment` redirect to Profile and Characters. `/games/:id/ownership` and `/games/:id/materials` still answer but are no longer tabs.
 
 ## 8. Screen by screen
 
-Screenshots are from the local dev build (dev user, SQLite) on 2026-10-08, 1440×900. Several show test data typed during development (builds named "ok", an "Example Banner").
+The screenshots come from the local dev build (dev user, SQLite) on 2026-10-10, at 1440×900. Images from outside the app are blocked, so cards show their placeholders and no game art sits in the repository (ADR 0006).
 
 ### 8.1 Sign-in
 
-![Sign-in](screens/01-login.jpg)
+![Sign-in](screens/01-sign-in.jpg)
 
-**For:** getting in. One card: the product line ("Track currencies, dailies, and character builds across every gacha you play — and get nudged on Discord before reset") and one button. In production the button is "Sign in with Discord" (OAuth); locally it is "Continue as Dev User" when `DEV_LOGIN_ENABLED=true`. Whitelisting is by Discord account; there is no sign-up.
+**For:** getting in. In production the button is "Sign in with Discord" (OAuth, whitelisted accounts only). Locally, "Continue as Dev User" appears when `DEV_LOGIN_ENABLED=true`. There is no sign-up.
 
 ### 8.2 Home
 
 ![Home](screens/02-home.jpg)
 
-**For:** the one-screen answer to "what should I do today, across all my games?". It is the most important screen.
+**For:** "what should I do today, across my games?" (WIREFRAMES.md H1; VISUAL-DESIGN.md §10). Scope it to one game with the top strip. It holds:
+- **Daily and Weekly rings:** recurring items done this reset.
+- **Goals:** a ring.
+- **Goal types:** character, gear, weapons, gameplay.
+- **Backlog:** a 10-day line.
+- **Pull history:** premium currency gained and spent.
+- **Dailies & weeklies:** one carousel card per game.
+- **Battle pass:** level and time left.
+- **The heat map:** dailies over the last 26 weeks.
+- **Banners now:** a carousel with featured art and "owned" marks.
+- **Pulls:** limited pulls per game, with each banner's pity.
+- **Stamina:** "full at" times.
+- **Endgame · next resets.**
+- **Expiring soon.**
 
-- **KPI strip** (choose which with "Customize"): pulls available across games, dailies done this reset, characters owned (% of catalog), builds finished (good or perfect), goal materials farmed.
-- **Banners now:** one card per running banner across games, with the featured units' art; a green "owned" tag on units you already have. Helps decide whether a banner is worth pulls.
-- **Pulls (right):** limited pulls per game, converted from premium currency plus tickets (Genshin: Primogems ÷ 160 + Intertwined Fates; standard tickets shown apart as "+3 std"). Under each game with a pull log: current pity per banner and "guaranteed" when the next 5★ is the featured one.
-- **Coming up:** banners and events ending soonest, with countdowns; links to the calendar.
-- **Wallet:** every currency per game, collapsed by game.
-- **Today:** per game, the time to the next daily reset, the regenerating stamina bar (Genshin resin shows "full — spend it"), and the unticked dailies as chips you click to tick.
-- **Tasks:** the task board, one column per game: goal tasks ("Farm Venti" with a progress counter, "Farm Faded Theater" with artifact-piece subtasks), filter, Dailies and Backlog toggles, "+ New task".
-
-Data: `GET /api/dashboard` (games, currencies, pulls and pity, banners now, coming up, goals) and `GET /api/tasks`.
+Data: `GET /api/dashboard` and `GET /api/tasks`.
 
 ### 8.3 Games (library)
 
 ![Games](screens/03-games.jpg)
 
-**For:** managing which games you track, and a compact status line per game. One long card per installed game, coloured by the game's accent: region, owned/catalog size, builds finished, pulls (in the game's own word: wishes, warps, signals, convenes, headhunts), dailies done, goals, the current banner. Buttons: Open, Ownership, the game's gear page (Artifacts, Relics, Echoes, Gear) and **Put to sleep** (a sleeping game is hidden from Home and sends no reminders, without losing data; it sorts to the bottom here). "+ Add game" on Home installs a game; installing seeds its default dailies.
+**For:** which games you track, and what each can do (A2). One row per installed game, in the top strip's order: drag a row, or use its arrows, to reorder. Each row holds:
+- server, offset and version;
+- the capability cells: Manifest, Catalog (its size, or why there is none), and Live data (HoYoLAB, history links, Enka, the convene or records link; or why there is none);
+- today's dailies and the reset;
+- Open hub, and Sleep. A sleeping game leaves Home and gets no reminders, without losing data.
 
-### 8.4 Banners & events (calendar)
+The side panel explains the capabilities and lists games to add.
 
-![Calendar](screens/04-calendar.jpg)
+### 8.4 Tasks and reminders
 
-**For:** seeing what is running and what ends soon, across games, on one timeline. A Gantt-style view of four weeks around today (the yellow line), grouped by game; banners are solid bars, events lighter ones, each labelled with its countdown. Banner rows show the featured units' portraits (ringed when owned). Game chips filter; "‹ 2 weeks / Today / 2 weeks ›" pages, including back into ended banners (F7). Hover a row for exact dates. Genshin and HSR rows come from the hourly official-feed import; other games only have what an admin uploads.
+![Tasks](screens/04-tasks.jpg)
 
-Data: `GET /api/timeline?from&to` (window query; banners carry their featured details).
+**For:** what to farm today, every goal, and the reminders (T1).
+- **Farm today:** the game day, and what can be farmed in it (talent books on their weekdays, weekly tasks left).
+- **Goals:**
+  - from Plan farming, from an event reward (with its stages and what it gives when done), or by hand;
+  - each with its progress, priority, Notify and Expand. Expand lists the steps, marked TODAY where farming is possible.
+  - Show backlog adds the completionist goals generated on Profile.
+- **Reminders:** the global rules (before reset, a daily digest, stamina full, endgame, passes, domains), quiet hours, and a preview of the DM with "Send a test DM".
 
-### 8.5 Game page: Overview
+### 8.5 Banners and events (calendar)
 
-![Genshin overview](screens/05-genshin-overview.jpg)
+![Calendar](screens/05-calendar.jpg)
 
-**For:** "what should I do in this game right now?". Tabs at the top move between the game's screens.
+**For:** what runs and what ends soon, across games (C1). It is a timeline of weeks around today, a row per game:
+- banners are solid bars and events lighter ones;
+- the selected item opens beside it: art, dates, rewards and the goal they become;
+- filters cover games, kinds, and "Only what I wishlisted";
+- paging goes back into ended banners.
 
-- **Header:** region picker (sets reset times), owned count, **Restore default tasks**, **Generate backlog** (a "Farm X (max)" goal tree per owned character, everything needed to max it, kept in the Backlog out of the active list), **Uninstall**.
-- **Happening now:** running banners with featured art, then events with time left; "+N more" expands; links to the calendar.
-- **To-do:** dailies as chips, time to reset, active goals.
-- **Domains today** (Genshin only, §9): the talent and weapon domains open on today's *game day* (the server weekday shifted by the 04:00 reset), each with portraits of the owned characters who level from it. "Show all 8" expands.
-- **Currencies:** every currency with its cap; premium currency shows its pull equivalent ("≈ 78 wishes").
-- **Builds:** your builds; "Pick an owned character" + optional build name + "+ Build" adds one (catalog games). Games without a catalog (ZZZ) take a free-text name.
-- **Discord reminders:** on/off; "before daily reset" N minutes; "every day at" chosen times in your time zone; what to include: currencies, dailies left, domains open today (the last only where the game has domains).
-- **Teams:** saved party presets of the game's party size (4 for Genshin, HSR and Endfield, 3 for ZZZ and WuWa).
+Genshin, Star Rail and ZZZ rows come from the hourly official feed; the others come from admin uploads.
 
-The ZZZ overview shows the reduced version for a game without a catalog:
+### 8.6 Game hub · Activities
 
-![ZZZ overview](screens/14-zzz-overview.jpg)
+![Activities](screens/06-activities.jpg)
 
-### 8.6 Ownership
+**For:** a game's day (G1). The hub's header, on every tab, shows:
+- server and UID (masked);
+- account and world level;
+- daily and weekly resets;
+- the version's end;
+- the Edit button.
 
-![Genshin ownership](screens/06-genshin-ownership.jpg)
+Activities holds:
+- **stamina,** with its reserve and "remind me when full";
+- **a card per cadence** (daily, weekly, monthly shops and passes), each with its reset countdown and items to tick or add;
+- **this cycle's endgame** results;
+- **the version:** battle pass and events.
 
-**For:** the fastest possible "which characters (and weapons) do I have?" entry, which drives everything else (Home's "owned" tags, Domains today, Generate backlog). A portrait grid of the whole catalog; click a portrait to toggle owned (check mark, full colour; unowned is greyed). Filters: search, rarity, element, owned/unowned; **Own all shown** and **Clear shown** for bulk entry. Characters/Weapons toggle. Each card links to its build ("Build →") or creates one ("+ Build").
+### 8.7 Endgame
 
-HSR uses the same screen with Yatta art:
+![Endgame](screens/07-endgame.jpg)
 
-![HSR ownership](screens/13-hsr-ownership.jpg)
+**For:** each endgame mode's cycle (G2): this cycle's result (stars, acts, difficulty…) and reward, the next reset, and the history of past cycles. Results come from the HoYoLAB chronicle when linked, or are typed in. Saved teams sit here too.
 
-### 8.7 Equipment
+### 8.8 Pulls
 
-![Genshin equipment](screens/07-genshin-equipment.jpg)
+![Pulls](screens/08-pulls.jpg)
 
-**For:** browsing the weapon catalog (and gear sets) to mark owned weapons and to plan farming for one. Each card shows rarity, weapon type and max level; **Owned** toggles ownership; **Farm / pre-farm** opens the plan for that weapon's ascension materials, so you can pre-farm before a banner. Tabs: Weapons (255) and Gear sets (63).
+**For:** how close the next top pull is, and whether it will be the featured one (G3).
+- **The top cards:**
+  - "Pulls available" converts premium currency and tickets into pulls. Standard and weapon-only tickets are kept apart.
+  - "By the end of the version" forecasts income.
+- **One card per event banner:**
+  - the 50/50 or guaranteed status;
+  - pity against hard pity;
+  - the odds (estimates);
+  - the curve;
+  - your chance with what you have;
+  - the actions: +1, +10, Log a 5★ (6★ in Endfield), Set pity, Undo.
+- **The savings planner** orders the featured targets, worst case or on average.
+- **The history** lists every top pull with its pity.
 
-### 8.8 Gear: Artifacts (Genshin), Relics (HSR), Echoes (WuWa), Gear (Endfield)
+Imports come from Settings.
 
-Every catalog game has a set browser. Genshin has two more modes, because artifacts are the main grind there.
+### 8.9 Characters
 
-**Sets:** every set with its 2-piece and 4-piece bonus, rarity and the domain it drops from; a "used by my builds" filter, and green tags naming which of your builds wear it.
+![Characters](screens/09-characters.jpg)
 
-![Artifact sets](screens/08a-genshin-artifact-sets.jpg)
+**For:** the roster (G4). The filters are element, weapon, rarity, owned, build status, and sort. Characters/Weapons switches between them, and Splash/Compact changes the view.
+- **A splash card shows:**
+  - rarity and element;
+  - the dupe count (C, E, M, S or A in each game's words);
+  - level and talents;
+  - three KPIs chosen by the build's role;
+  - build status, and Build → to the sheet.
+- **Own** and **Wishlist** sit on unowned cards. The wishlist feeds the calendar filter and the savings planner.
 
-**Inventory (Genshin):** the bag of pieces you own: set, slot, main stat, level, substats, crit value (CV); filter by set, slot, bag or equipped; sorted by CV. **Equip on…** puts a bag piece on a build (swapping out what was there); **Unequip** returns it to the bag. Only unequipped pieces live in `GearPiece`; equipped ones live in the build document.
+### 8.10 Character sheet
 
-![Artifact inventory](screens/08b-genshin-artifact-inventory.jpg)
+![Character sheet](screens/10-character-sheet.jpg)
 
-**Plan (Genshin):** groups the farming targets set on each build (4-piece set plus wanted sands, goblet and circlet main stats) by the domain that drops them, shows which wanted pieces you already have (✓) or still need (✗), and **Update task** turns that into a goal task with one subtask per missing piece.
+**For:** one build (G5).
+- **Splash art**, which you can change with Change art.
+- **The KPI tiles:**
+  - each with its target: the build's own, or the game's default, marked "(default)";
+  - the Role picker;
+  - "Make these the game's defaults".
+- **Character:** level, ascension, dupes.
+- **Talents,** with their names, now → target.
+- **Weapon,** picked from the catalog by type.
+- **Combat stats.**
+- **The gear block** in the game's shape:
+  - 5 artifacts, 4 relics + 2 planar ornaments, 6 drive discs, 5 echoes under cost 12, 4 gear + an essence, the Console;
+  - main stats per slot, crit value, and pieces flagged FARM.
+- **Plan farming:** materials have and need, then the goal.
+- **Used in:** the saved teams that hold the character.
 
-![Artifact plan](screens/08c-genshin-artifact-plan.jpg)
+Values from a sync are marked AUTO; what you change stays yours.
 
-### 8.9 Materials
+### 8.11 Gear (Artifacts, Relics, Drive discs, Echoes)
 
-![Materials](screens/09-genshin-materials.jpg)
+![Gear](screens/11-gear.jpg)
 
-**For:** entering what you have, so goals know what is still missing. Grouped by category (Common currency, Local specialty per region, talent books, boss drops…), each row has **Have** (editable), **Needed** (from your goal tasks), **Missing**, and **Days** (the weekdays it can be farmed; "any" when always). "Needed only" hides what no goal uses. Editing "have" here is the same write as ticking progress on a "Farm X" task.
+**For:** set pieces (G6).
+- **Genshin** opens on the artifact inventory: pieces by crit value, add, equip, storage. It also has Sets, and a farming plan for a set and its main stats.
+- **The other games** show their sets, which builds wear them, and Farm.
 
-### 8.10 Pulls
+### 8.12 Planner
 
-![Pulls](screens/10-genshin-pulls.jpg)
+![Planner](screens/12-planner.jpg)
 
-**For:** knowing how close the next 5★ is and whether it is guaranteed to be the featured one. One card per banner type (Genshin: Character event wish 90, Weapon event wish 80, Standard wish 90). Each shows pity / hard pity, a bar, the plain-language outlook ("68 to a certain 5★, and it will be the featured one"), **+1**, **+10** (a ten-pull without a 5★), **Log a 5★** (who, and whether it was the featured unit), **Set pity** (start mid-pity) and **Undo**. The 5★ history lists who dropped at which pity and whether the 50/50 was lost. The Pulls tab exists for Genshin, HSR, ZZZ and WuWa (Endfield has no pull rules yet).
+**For:** what to farm (G7):
+- **Goals**, each with its steps;
+- **Materials** for the goal or for all goals, with have, need and missing;
+- **Farm today**, grouped by domain, where weekdays matter (Genshin).
 
-### 8.11 Character sheet
+Stock edits here are the source of truth for every goal's progress.
 
-**For:** recording a build and planning what it still needs. Every game has its own sheet, because builds differ in kind, not just in labels (§9). Common frame: Back, the build name and game tag, a status (Unbuilt, Building, Good, Perfect; Good and Perfect count as "builds finished"), Save and Delete.
+### 8.13 Profile
 
-**Genshin** (the reference sheet, catalog-backed):
+![Profile](screens/13-profile.jpg)
 
-![Genshin character](screens/11-genshin-character.jpg)
+**For:** the account (G8).
+- **Account:** server, UID, levels.
+- **Wallet:** every currency.
+- **Passes:** battle pass and 30-day pass.
+- **Long-term progress.**
+- **This game's reminders** and the finer reminder options.
+- **Tools:** restore the default tasks; generate the completionist backlog.
+- **Status.**
 
-- Portrait card with art (Enka fallback, or an uploaded image via "Change art"), rarity, element, weapon type, level.
-- Identity: build name, level, element (fixed from the catalog), constellation C0–C6 as icons.
-- Weapon (filtered to the character's weapon type), level, refinement.
-- Talents: Normal Attack, Elemental Skill, Elemental Burst with their icons.
-- Artifacts: five slots, each with set, main stat (only the main stats that slot can roll), level and substats; a **farming target** (4-piece set and wanted sands, goblet and circlet main stats) that the Artifacts → Plan mode reads.
-- Crit summary: CRIT Rate, CRIT DMG and the crit ratio; combat stats (HP, ATK, DEF, crit, EM, ER).
-- **Plan farming:** level cap from → to and talent levels from → to; **Preview** lists the materials, **Generate tasks** creates the goal (see §6). "View on Home" jumps to the board.
-- Reference: constellation and talent text (empty until the catalog import includes it).
+### 8.14 Settings
 
-**HSR** (plain form): Light Cone (name, level, superimposition), six relic slots (head, hands, body, feet, planar sphere, link rope), traces, eidolon, path, element, stats. The build name in the screenshot predates the HTML-stripping fix in #21.
+![Settings](screens/14-settings.jpg)
 
-![HSR character](screens/12-hsr-character.jpg)
+**For:** links, imports, notifications and your data (S1).
+- **Linked accounts:**
+  - HoYoLAB, read-only: notes every 30 minutes, the chronicle and roster on Sync now;
+  - Enka showcases by UID for Genshin, Star Rail and ZZZ;
+  - the Endfield, Wuthering Waves and NTE cards, which say what each allows.
+- **Pull history:** a row per game:
+  - paste the history, convene or records link (used once, never stored);
+  - UIGF files in and out;
+  - the last import.
+- **Notifications:** Discord DMs, quiet hours, digest.
+- **Account and data:** Download my data (every table you entered), and delete the account.
 
-**Endfield** (plain form): Weapon & Essence (an essence attaches to the weapon), four gear slots, combat skill and ultimate, class, potential.
+### 8.15 Admin
 
-![Endfield character](screens/12-endfield-character.jpg)
-
-**ZZZ** (free text, no catalog): W-Engine, drive discs, skills (basic, special, chain…), mindscape. **WuWa**: weapon, echoes (with cost, main stat, sonata set), forte (basic attack, resonance skill, forte circuit, liberation, intro skill), resonance chain.
-
-### 8.12 Settings
-
-![Settings](screens/15-settings.jpg)
-
-Account (username, Discord id, sign out); **Your data → Download my data** (one JSON file with every game, currency, build, ownership, material, gear piece, team, pull, task and reminder you entered; nothing of other users, no secrets); **Discord bot** (how to use `/status`, `/update`, `/done` and reminders; the dev user cannot link the bot).
-
-### 8.13 Admin
-
-![Admin](screens/16-admin.jpg)
+![Admin](screens/15-admin.jpg)
 
 **For:** keeping banners and events correct, for admins only (`ADMIN_DISCORD_IDS`).
 
 - **Import official feed** for the selected game (Genshin, HSR, ZZZ; also runs hourly from the cron).
 - **Seed sample data** (two sample banners and events, to preview the UI; delete them in production once the feed runs).
-- **Upload payload:** paste JSON (kind banners or events, a game, items), **Example** fills a template, **Load current** loads what is live for editing, **Schema** shows the JSON schema, **Validate & apply** upserts by key with precise errors (unknown catalog ids, duplicate keys, field issues).
-- **Current banners/events** with Delete; feed rows have `hoyo-…` keys.
-- **Audit log:** every admin write with actor, action and target.
+- **Upload payload:**
+  - paste JSON: banners or events (with their effects, ADR 0008), a game and the items;
+  - **Example** fills a template, **Load current** loads what is live, and **Schema** shows the JSON schema;
+  - **Validate & apply** upserts by key, with precise errors.
+- **Current banners and events**, with Delete. Feed rows have `hoyo-…` keys.
+- **Audit log:** every admin write, with actor, action and target.
 
-### 8.14 Discord bot (no screen)
+### 8.16 Discord bot (no screen)
 
-Slash commands through HTTP interactions (`POST /api/discord/interactions`, signature-checked): `/status`, `/update` (a currency), `/done` (tick a daily), `/currency`, `/own`, `/build`, `/goal`, `/farm` (materials you still need that are farmable today), `/banner`, `/events`, plus Genshin's `/resin`. Commands are registered with `npm run discord:register -w @gacha/server` once the bot variables are set. The same account links through Discord OAuth, so commands act on the signed-in user's data.
+Slash commands arrive through HTTP interactions (`POST /api/discord/interactions`, signature-checked):
+- `/status`;
+- `/update` (a currency) and `/currency`;
+- `/done` (tick a daily);
+- `/own`, `/build` and `/goal`;
+- `/farm`, the materials you still need that are farmable today;
+- `/banner` and `/events`;
+- Genshin's `/resin`.
+
+Commands are registered with `npm run discord:register -w @gacha/server` once the bot variables are set.
 
 ## 9. Game-specific features
 
