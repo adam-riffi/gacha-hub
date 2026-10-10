@@ -2,7 +2,9 @@ import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } 
 import type { FastifyInstance } from "fastify";
 import { installGame, login, makeApp, resetDb, type Client } from "../test/helpers.js";
 import { prisma } from "../lib/prisma.js";
-import { showcase } from "../test/fixtures/enka.js";
+import { hsrShowcase, showcase } from "../test/fixtures/enka.js";
+
+let ip = 0;
 
 describe("syncing builds from an Enka showcase (ADR 0005)", () => {
   let app: FastifyInstance;
@@ -20,7 +22,8 @@ describe("syncing builds from an Enka showcase (ADR 0005)", () => {
   });
   beforeEach(async () => {
     await resetDb();
-    c = await login(app);
+    // An address per test, so the route's rate limit (6 a minute) never carries over.
+    c = await login(app, `10.0.2.${++ip}`);
     gid = await installGame(c, "genshin");
     await c.req("PUT", `/api/instances/${gid}`, { uid: "700000001" });
     status = 200;
@@ -65,5 +68,15 @@ describe("syncing builds from an Enka showcase (ADR 0005)", () => {
     expect((await sync()).json).toEqual({ error: "showcase_closed" });
     await c.req("PUT", `/api/instances/${gid}`, { uid: null });
     expect((await sync()).json).toEqual({ error: "no_uid" });
+  });
+
+  it("syncs a Star Rail showcase too, its relics read with the catalog's tables", async () => {
+    const hsr = await installGame(c, "hsr");
+    await c.req("PUT", `/api/instances/${hsr}`, { uid: "800000001" });
+    body = hsrShowcase;
+    expect((await c.req("POST", `/api/instances/${hsr}/enka`)).json).toEqual({ created: 1, updated: 0 });
+    expect(asked.at(-1)!.url).toBe("https://enka.network/api/hsr/uid/800000001");
+    const kafka = await prisma.character.findFirstOrThrow({ where: { gameInstanceId: hsr, catalogId: "1005" } });
+    expect(kafka.doc).toMatchObject({ eidolon: 1, lightCone: { superimposition: 2 }, relics: { head: { mainStat: "HP", substats: [{ stat: "CRIT Rate", value: 5.5 }, { stat: "CRIT DMG", value: 5.2 }, { stat: "SPD", value: 2.6 }] } } });
   });
 });

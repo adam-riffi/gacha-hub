@@ -26,3 +26,26 @@ export const showcase = {
   ],
   ttl: 60,
 };
+
+/** One Star Rail showcase character in Enka's raw shape (Kafka E1 with Patience Is All You Need S2, two Hunter of Glacial Forest relics). */
+export const hsrShowcase = {
+  detailInfo: {
+    nickname: "Trailblazer",
+    level: 70,
+    worldLevel: 6,
+    avatarDetailList: [
+      {
+        avatarId: 1005,
+        level: 80,
+        rank: 1,
+        promotion: 6,
+        equipment: { tid: 23006, level: 80, rank: 2, promotion: 6 },
+        relicList: [
+          { type: 1, tid: 61041, level: 15, mainAffixId: 1, subAffixList: [{ affixId: 8, cnt: 2, step: 1 }, { affixId: 9, cnt: 1 }, { affixId: 7, cnt: 1, step: 2 }] },
+          { type: 3, tid: 61043, level: 15, mainAffixId: 5, subAffixList: [] },
+        ],
+      },
+    ],
+  },
+  ttl: 60,
+};

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { mergeSynced, readEnkaGenshin } from "@gacha/shared";
-import { showcase } from "../test/fixtures/enka.js";
+import { catalogSchema, hsr, mergeSynced, readEnkaGenshin, readEnkaHsr } from "@gacha/shared";
+import { hsrShowcase, showcase } from "../test/fixtures/enka.js";
 
 const lookups = { weaponName: (id: string) => ({ "15301": "Raven Bow" })[id], setName: (id: string) => ({ "15003": "Wanderer's Troupe" })[id] };
 
@@ -34,5 +34,33 @@ describe("Enka showcase (ADR 0005)", () => {
     const incoming = { level: 90, weapon: { level: 90, refinement: 2, name: "Raven Bow" }, stats: { HP: 16000, ATK: 1900 } };
     expect(mergeSynced(current, synced, incoming)).toEqual({ level: 85, weapon: { level: 90, refinement: 2, name: "Raven Bow" }, stats: { HP: 16000, ATK: 1900 }, element: "Pyro" });
     expect(mergeSynced({ element: "Pyro" }, null, incoming)).toEqual({ ...incoming, element: "Pyro" });
+  });
+
+  it("reads a Star Rail showcase with the catalog's relic tables: a +15 5★ head is 705.6 HP, its rolls summed", async () => {
+    const cat = catalogSchema.parse(await hsr.loadCatalog!());
+    const read = readEnkaHsr(hsrShowcase, {
+      weaponName: (id) => cat.weapons.find((w) => w.id === id)?.name,
+      setName: (id) => cat.gear.find((g) => g.id === id)?.name,
+      relicStats: cat.relicStats!,
+    });
+    expect(read).toEqual({
+      level: 70,
+      worldLevel: 6,
+      builds: [
+        {
+          catalogId: "1005",
+          doc: {
+            level: 80,
+            eidolon: 1,
+            lightCone: { catalogId: "23006", name: "Patience Is All You Need", level: 80, superimposition: 2 },
+            relics: {
+              head: { setName: "Hunter of Glacial Forest", mainStat: "HP", level: 15, substats: [{ stat: "CRIT Rate", value: 5.5 }, { stat: "CRIT DMG", value: 5.2 }, { stat: "SPD", value: 2.6 }] },
+              body: { setName: "Hunter of Glacial Forest", mainStat: "CRIT DMG", level: 15, substats: [] },
+            },
+          },
+        },
+      ],
+    });
+    expect(readEnkaHsr({ detailInfo: { nickname: "x", avatarDetailList: [] } }, { weaponName: () => undefined, setName: () => undefined, relicStats: cat.relicStats! })).toEqual({ error: "showcase_closed" });
   });
 });

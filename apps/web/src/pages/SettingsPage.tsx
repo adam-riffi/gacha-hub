@@ -92,7 +92,7 @@ function LinkedAccounts({ links, games }: { links: LinkedAccountDto[]; games: In
             <span key={g.id}>
               <span className="kpi-label">{getGame(g.gameKey)?.shortName} UID</span>
               <span className="mn">{g.uid ? masked(g.uid) : "not set"}</span>
-              {g.gameKey === "genshin" && g.uid && <EnkaSync instanceId={g.id} />}
+              {(g.gameKey === "genshin" || g.gameKey === "hsr") && g.uid && <EnkaSync instanceId={g.id} />}
             </span>
           ))}
           {!hoyo.length && <span className="mu">No HoYoverse game added.</span>}
