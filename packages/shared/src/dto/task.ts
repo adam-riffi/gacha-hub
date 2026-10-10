@@ -96,3 +96,15 @@ export const taskProgressInput = z.object({
 export const taskChecklistInput = z.object({
   items: z.array(checklistItemSchema).max(LIMITS.checklistItems),
 });
+
+/** Farm today (WIREFRAMES.md A3), per awake profile: what its game day opens for your goals, and the weeklies left. */
+export const farmTodayDto = z.array(
+  z.object({
+    gameKey: z.string(),
+    instanceId: idSchema,
+    /** ISO weekday of the profile's game day (1 = Mon … 7 = Sun). */
+    weekday: z.number().int().min(1).max(7),
+    lines: z.array(z.object({ kind: z.enum(["domain", "anyday", "weekly"]), text: z.string() })),
+  }),
+);
+export type FarmTodayDto = z.infer<typeof farmTodayDto>;
