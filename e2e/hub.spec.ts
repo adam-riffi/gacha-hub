@@ -26,7 +26,7 @@ test("a game hub's header shows the server, UID, account level and next resets, 
   await expect(tabs.getByRole("link", { name: "Pulls" })).toBeVisible();
 });
 
-test("Endfield's hub has no Gear or Planner tab: its catalog lists characters only", async ({ page }) => {
+test("Endfield's hub has no Gear or Planner tab: its catalog lists characters only, enough for Teams", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue as Dev User" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
@@ -34,7 +34,7 @@ test("Endfield's hub has no Gear or Planner tab: its catalog lists characters on
   try {
     await page.goto(`/games/${id}`);
     const tabs = page.getByRole("navigation", { name: "Game screens" }).getByRole("link");
-    await expect(tabs).toHaveText(["Activities", "Endgame", "Pulls", "Characters", "Profile"]);
+    await expect(tabs).toHaveText(["Activities", "Endgame", "Pulls", "Characters", "Teams", "Profile"]);
   } finally {
     await page.request.delete(`/api/instances/${id}`);
   }
