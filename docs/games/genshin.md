@@ -15,4 +15,7 @@
 | Battle pass | Gnostic Hymn, 50 levels, weekly cap 10,000 EXP from daily and weekly missions | [Battle Pass](https://genshin-impact.fandom.com/wiki/Battle_Pass) |
 | 30-day pass | Blessing of the Welkin Moon, 30 days, stacks to 180 | [Blessing of the Welkin Moon](https://genshin-impact.fandom.com/wiki/Blessing_of_the_Welkin_Moon) |
 | Account level | Adventure Rank (AR); the abbreviation is the community's | [Adventure Rank](https://genshin-impact.fandom.com/wiki/Adventure_Rank) |
+| Gacha · character | 5★ 0.6% a wish to 73, then +6 points a wish from 74, certain at 90; 1.6% consolidated. 50/50, a lost one guarantees the next; Capturing Radiance makes it 55% overall | [Wish](https://genshin-impact.fandom.com/wiki/Wish) |
+| Gacha · weapon | 5★ 0.7% to 62, then +7 points a wish from 63, certain by 77 (hard pity 80); 1.85% consolidated. 75/25 | [Wish](https://genshin-impact.fandom.com/wiki/Wish) |
+| Gacha · standard | 5★ as the character banner, no featured unit | [Wish](https://genshin-impact.fandom.com/wiki/Wish) |
 | Version | 7.1 from 23 Sep 2026; 42 days (7.0 started 12 Aug 2026) | [Version](https://genshin-impact.fandom.com/wiki/Version) |

@@ -3,8 +3,8 @@ import fc from "fast-check";
 import { calibration, gameList, pityState, splitPulls, type PullBannerRules, type PullEntryLike } from "@gacha/shared";
 
 const RUNS = { seed: 20261006, numRuns: 500 };
-const character: PullBannerRules = { key: "character", label: "Character", hardPity: 90, softPity: 74, featuredRate: 0.5 };
-const standard: PullBannerRules = { key: "standard", label: "Standard", hardPity: 90, softPity: 74, featuredRate: 1 };
+const character: PullBannerRules = { key: "character", label: "Character", baseRate: 0.006, hardPity: 90, softPity: 74, featuredRate: 0.5 };
+const standard: PullBannerRules = { key: "standard", label: "Standard", baseRate: 0.006, hardPity: 90, softPity: 74, featuredRate: 1 };
 const pulls = (count: number): PullEntryLike => ({ count, fiveStar: false });
 const five = (count: number, featured: boolean): PullEntryLike => ({ count, fiveStar: true, featured });
 

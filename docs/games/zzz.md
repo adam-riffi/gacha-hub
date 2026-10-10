@@ -13,4 +13,7 @@
 | Battle pass | New Eridu City Fund, 50 levels; weekly cap: | [New Eridu City Fund](https://zenless-zone-zero.fandom.com/wiki/New_Eridu_City_Fund) |
 | 30-day pass | Inter-Knot Membership, 30 days | [Inter-Knot Membership](https://zenless-zone-zero.fandom.com/wiki/Inter-Knot_Membership) |
 | Account level | Inter-Knot Level (IKL); the abbreviation is the community's | [Inter-Knot Level](https://zenless-zone-zero.fandom.com/wiki/Inter-Knot_Level) |
+| Gacha · Exclusive Channel | S-Rank hard pity 90; 50/50, a lost one guarantees the next | [Exclusive Channel](https://zenless-zone-zero.fandom.com/wiki/Exclusive_Channel) |
+| Gacha · W-Engine Channel | S-Rank hard pity 80; 75/25, a lost one guarantees the next | [W-Engine Channel](https://zenless-zone-zero.fandom.com/wiki/W-Engine_Channel) |
+| Gacha · rates | S-Rank Agent 0.6% (1.6% with the guarantee) ~, W-Engine 1.0% (2.0%) ~; soft pity from about 74 (Agents) and 64 (W-Engines), climbing to certainty at hard pity ~ (no official curve) | [Icy Veins: W-Engine Channel](https://icy-veins.com/zenless-zone-zero/w-engine-channel), [GameWith](https://gamewith.net/zenless-zone-zero/46129) |
 | Version | 3.2 from 9 Sep 2026; 42 days (3.3 on 21 Oct 2026) | [Version](https://zenless-zone-zero.fandom.com/wiki/Version) |

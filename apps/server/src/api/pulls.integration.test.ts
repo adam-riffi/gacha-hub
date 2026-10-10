@@ -87,8 +87,11 @@ describe("pull log (routes)", () => {
     ]);
   });
 
-  it("has no banners for a game without pull rules", async () => {
+  // Endfield was the game without pull rules until F9 gave it Chartered headhunting; every game has rules now.
+  it("gives Endfield its Chartered headhunting banner, with no guarantee after a loss and a 120-pull spark", async () => {
     const endfield = await installGame(c, "endfield");
-    expect((await c.req<PullLogDto>("GET", `/api/instances/${endfield}/pulls`)).json.banners).toEqual([]);
+    expect((await c.req<PullLogDto>("GET", `/api/instances/${endfield}/pulls`)).json.banners).toEqual([
+      expect.objectContaining({ key: "character", hardPity: 80, featuredRate: 0.5, lossGuarantee: false, spark: 120 }),
+    ]);
   });
 });

@@ -66,6 +66,10 @@ export type EndfieldDoc = z.infer<typeof endfieldDocSchema>;
 export const endfield: GameDefinition = {
   key: "endfield",
   teamSize: 4,
+  // Chartered headhunting: no guarantee after a lost 50/50, but the 120th pull on a banner gives its featured operator.
+  pullBanners: [
+    { key: "character", label: "Chartered headhunting", baseRate: 0.008, softPity: 66, hardPity: 80, featuredRate: 0.5, lossGuarantee: false, spark: 120 },
+  ],
   name: "Arknights: Endfield",
   shortName: "Endfield",
   accent: "#FFE600",
