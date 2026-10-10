@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f8/13-home-f8 · #118
+- Done: F8 on Home: reserves in the stamina table (full flagged), Endfield's Sanity by Authority Level (Home and the full reminder; `staminaCap`), the battle pass card (name, version, ends-in tag, level over its bar), Endgame · next resets and Expiring soon (72 h) under the heatmap; the dashboard carries passes and 120 days of results; shared `nextResets`, `expiringSoon`. HANDOFF.md rewritten for the end of F8. #117 merged.
+- Tests: written first: `nextResets`, `expiringSoon`, `staminaProjection` by level, dashboard passes and results, E2E Home cards.
+- Scope/decisions: codes are not in Expiring soon (no record before F11). Production is behind main by Vercel's rate limit (#108 onward) until the next merge after the reset.
+- Next: F9, with its PR plan proposed first.
+
 ## 2026-10-10 · claude · stack/f8/12-reminders · #117
 - Done: reminder flags `whenStaminaFull` (one DM at the fill instant computed from the stored value) and `beforeEndgameReset` (last 24 h of an open mode with premium unclaimed); `ReminderLog.key` with a migration so same-instant reminders both send; switches on Activities and Endgame (turning one on where reminders are off enables only that one); shared `premiumCurrency`. #116 merged.
 - Tests: written first: `dueReminders` cases, scheduler integration (one DM per fill; Abyss and daily reset at the same instant), E2E switches.
