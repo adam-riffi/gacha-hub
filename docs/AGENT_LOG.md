@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/docs/05-screens · #190
+- Done: PROJECT-GUIDE §7 (screen map) and §8 (screen by screen) describe today's app: Home, Games, Tasks and reminders, the calendar, the game hub's tabs (Activities, Endgame, Pulls, Characters, gear, Planner, Profile), the character sheet, Settings, Admin and the bot. The retired Overview, Ownership and Equipment pages are gone from the chapter. Fifteen new screenshots at 1440×900 replace the seventeen from 2026-10-08. They were taken with every image from outside the app blocked, so the cards show placeholders and no game art is committed (ADR 0006).
+- Tests: docs only; every image the guide names exists.
+- Scope/decisions: two stale texts on Profile ("(F11)") are fixed in their own PR.
+- Next: Profile's stale texts, then the sheets' unverified values.
+
 ## 2026-10-10 · claude · stack/vercel/01-function-trace · #105
 - Done: #105 rebased onto `main` (its four code commits replayed; the old log and handoff commit dropped). The Vercel function ships only `api/`, `dist-server/` and `node_modules/`, not the whole repository. `uploads.ts` no longer gives the tracer a path to expand, and `excludeFiles` now leaves out `prisma/**`, any `.env*` and `.claude/**`: the config's `.env` lookup and the `prisma/` walk would otherwise pick up a local secrets file and old worktrees.
 - Tests: `serverless.trace.test.ts`, written first in #105, traces `api/index.mjs` with `@vercel/nft` as Vercel does. It failed on the rebased base with `.env` and a worktree's schema, and passes with the wider exclude. `npm run check` passes: 531 tests and 40 journeys.
@@ -285,9 +291,3 @@ Entry format:
 - Tests: written first: `auth/guards.integration.test.ts` (an admin upload by a non-admin writes no banner or audit row; nothing without a session), waiting a moment after the answer since the stray handler wrote just after it.
 - Scope/decisions: only the two guards answered from a hook; production gets the fix with the next deployment of `main`.
 - Next: Settings (A5) on `stack/f11/05-settings-data`.
-
-## 2026-10-10 · claude · stack/f11/04-history-link · #149
-- Done: shared `readHistoryLink` (only the authkey, its version and a plain region from a pasted link; the host is ignored), `gachaLogUrl` (the game's own official host: Genshin, Star Rail, ZZZ), `readGachaLogPage` (records in UTC from the server's offset; -101 expired, -100 invalid, -110 too frequent); server `fetchHistory` (each tracked banner type paged back to a stored record or an empty page, 300 ms apart, a cursor when 20 s run out) and `POST /api/instances/:id/pulls/history-link` (`{url, next?}`; failures become an `ImportRun` with the error); `importPulls` matches a record named but without an id (Genshin's log) by name, so its 50/50 is read.
-- Tests: written first: `historyLink.test.ts` (the link read whatever its host, the official URL, pages and errors, paging to a stored record, the cursor), `historyLink.integration.test.ts` (imported from the official host only, the 5★ named Mavuika featured, nothing keeps the key, expired recorded, no key, NTE refused).
-- Scope/decisions: Wuthering Waves' convene link is not in this PR (it posts to its own API); fixtures follow the documented shapes until a real response is recorded.
-- Next: Settings (A5) with the pull history import and export, then WuWa's convene link.
