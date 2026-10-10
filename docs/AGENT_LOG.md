@@ -14,6 +14,16 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/endfield/03-import · #179
+- Done: Endfield's pulls import from the Headhunting records link (ADR 0009). `fetchRecords` pages each tracked pool (Chartered, Arsenal, Basic headhunting) from `ef-webview.gryphline.com`. It stops at stored records or the last page, and hands back a cursor when its 20 s budget runs out. The history-link route reads Endfield links with `readRecordsLink` and takes the longer pool names in its cursor. Settings' Endfield card and pull-history row name the method, and the paste box shows the right placeholder per game.
+- Tests: written first:
+  - an integration test: official host only, paging, stopping at known records, expiry, no token stored;
+  - a cursor test for the time budget.
+
+  `npm run check` passes: 516 tests and 39 journeys.
+- Scope/decisions: the SKPORT account token is never asked for (ADR 0009).
+- Next: 6★ labels and Arsenal Tickets on Pulls.
+
 ## 2026-10-10 · claude · stack/endfield/02-records · #178
 - Done: Endfield's records reader in shared (ADR 0009):
   - `readRecordsLink` keeps `token`/`u8_token`, `server_id`/`server` and `lang`, whatever the host.
@@ -256,9 +266,3 @@ Entry format:
 - Tests: written first: `e2e/pulls.spec.ts` (two targets for Star Rail; switching to Average changes what the first needs). Checked at 1440 on the dev account.
 - Scope/decisions: targets are the running banners' featured units; "Add a target" waits for `WishlistItem` (the characters PR).
 - Next: Characters (G4) with `WishlistItem`, then the character sheet (G5), gear (G6), planner (G7), profile (G8).
-
-## 2026-10-10 · claude · stack/f10/12-pulls · #136
-- Done: Pulls rebuilt from its board (WIREFRAMES.md G3): Pulls available (per currency) and By the end of the version (the forecast, #135); each event banner with its status as a 50/50 (or 75/25) | Guaranteed switch that calibrates, the reason from the last 5★, the 5★ pity with soft pity marked, odds (next pull, next 10, by soft pity, featured by your pulls; estimates), the curve (pulled part shaded, you, soft and hard pity, where your pulls reach), the headline chance with average and worst case, and +1, +10, Log a 5★, Set pity, Undo; the other banners in short; History of every 5★ with its pity and result.
-- Tests: written first: `e2e/pulls.spec.ts` (rewritten for the new layout: available and forecast, status switch, pity, odds, curve, logging a 5★ that loses the 50/50, history, Home's pity line). The Featured box is found by its exact label, since the curve's name also says "featured". Checked at 1440 beside `g3-pulls.png`.
-- Scope/decisions: 4★ pity is not shown (4★ are not logged); the weapon path (Epitomized Path) is not modelled beyond 75/25 and its guarantee; history imports and UIGF export wait for F11; the savings planner is the next PR.
-- Next: `stack/f10/13-savings` (the planner beside History).
