@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f10/05-farm-today · #129
+- Done: `packages/shared/src/farm.ts` (`farmToday`: per farming goal, rotating materials open on the game day with their days, "talent books (Mon/Thu) for Venti", and one any-day line); `GET /api/farm-today`: per awake profile, its game weekday, those lines from Plan farming's goals and their material subtasks (stock as progress), and the weekly tasks left.
+- Tests: written first: `farm.test.ts` (open days, covered materials left out, weapon materials, Sunday), `farmToday.integration.test.ts` (talent books open today for a goal, Weekly Bosses left, sleeping profiles left out). The integration test first added a second Weekly Bosses on top of Genshin's default; corrected to use the default.
+- Scope/decisions: only Genshin's catalog has rotating materials; other games get the any-day line.
+- Next: `stack/f10/06-tasks` (A3 rebuilt).
+
 ## 2026-10-10 · claude · stack/f10/04-calendar · #128
 - Done: Banners and events rebuilt from its board (WIREFRAMES.md A4) in the dashboard kit: six weeks from this Monday paged by two, week columns and a today line; one block per game (version and source, banner phases, events with `+1 C`/`+1 R` tags, the version tick); layers (banners, events, versions on; endgame cycles and passes off); the Selected panel (art, end in your time and server time, stages, the reward picker with each option's step, Make goal, Remind 48 h before, the other rewards); Rewards that update your roster; Timeline or List. `TimelinePage` and its old styles removed.
 - Tests: written first: `calendar.spec.ts` (a reward's tag, the picker's step, Make goal setting the goal, the cycles layer, the list view); headings follow the board ("Banners and events"). Checked in the browser at 1440 and at 375 (the timeline scrolls inside its panel).
@@ -247,9 +253,3 @@ Entry format:
 - Tests: Documentation only.
 - Scope/decisions: Reference sheets for the other five games are F9 work, with a source link per value (ADR 0004).
 - Next: Georges decides ADRs 0004–0006; F8 starts in a build session.
-
-## 2026-10-09 · claude · stack/docs-v2/02-wireframes · #86
-- Done: `docs/WIREFRAMES.md` turns the 2026-10-09 wireframe canvas into a written spec: shell, Home, library, tasks, calendar, settings, and the game hub's eight tabs, plus the across-games reference.
-- Tests: Documentation only.
-- Scope/decisions: The canvas is private to Georges, so build sessions work from this file; it wins over the canvas where they differ. `docs/PROJECT-GUIDE.md` stays the reference for what is built.
-- Next: NTE notes and the handoff (#87).
