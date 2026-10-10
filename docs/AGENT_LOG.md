@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f10b/02-wishlist · #160
+- Done: the wishlist at work: the calendar's "Only what I wishlisted" (WIREFRAMES.md A4) keeps the banners featuring a wished unit and the events whose rewards name one; the savings planner (G3) adds each wishlisted 5★ not on a running banner after the running banners' featured ones, on the banner of its kind, and only a banner's first target starts from its pity and guarantee (later ones start fresh).
+- Tests: written first: a third calendar journey (a wished and an unwished banner; the toggle keeps only the wished one) and a second planner journey (Seele wishlisted shows as a Wishlist target). The first planner journey no longer counts exactly two targets, since journeys share the wishlist. Checked at 1440 on the dev account.
+- Scope/decisions: the roster rewards panel is not trimmed (the board trims the layers); 4★ stay out of the planner, which plans 5★.
+- Next: Used in and KPI targets on the sheet.
+
 ## 2026-10-10 · claude · stack/f10b/01-characters-views · #159
 - Done: Characters' other views (WIREFRAMES.md G4): Splash | Compact beside the counts (Compact is a table of each unit's dupes, build line, role KPIs, status, set and action) and Characters | Weapons in the filters (Weapons lists the catalog's weapons by type and rarity with who wields each and its dupes, an Owned box and Wishlist; character-only filters hide).
 - Tests: written first: a second journey in `e2e/characters.spec.ts` (Kafka's Compact row with E1 and Lv 80 and Build →; Patience Is All You Need held by Kafka · S2, wishlisted and owned in place); the accessibility sweep passes. Checked at 1440 on the dev account.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the Home journey checks a pity line under every pulls row; the pulls journey still finds Star Rail's guarantee.
 - Scope/decisions: Endfield gets its line with its pull rules in `stack/f9/01-odds`.
 - Next: F9 per the approved plan: odds, gear and KPIs and art, `game:new`, NTE, the ZZZ feed.
-
-## 2026-10-10 · claude · stack/f8/13-home-f8 · #118
-- Done: F8 on Home: reserves in the stamina table (full flagged), Endfield's Sanity by Authority Level (Home and the full reminder; `staminaCap`), the battle pass card (name, version, ends-in tag, level over its bar), Endgame · next resets and Expiring soon (72 h) under the heatmap; the dashboard carries passes and 120 days of results; shared `nextResets`, `expiringSoon`. HANDOFF.md rewritten for the end of F8. #117 merged.
-- Tests: written first: `nextResets`, `expiringSoon`, `staminaProjection` by level, dashboard passes and results, E2E Home cards.
-- Scope/decisions: codes are not in Expiring soon (no record before F11). Production is behind main by Vercel's rate limit (#108 onward) until the next merge after the reset.
-- Next: F9, with its PR plan proposed first.
