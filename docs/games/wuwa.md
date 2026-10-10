@@ -15,7 +15,7 @@
 | Premium income | Daily activity, 60 Astrite a day ~ | community figure, unverified |
 | Gear | Echoes, five slots: main stats by cost, 1-cost (HP%/ATK%/DEF%), 3-cost (HP%/ATK%/DEF%, Energy Regen, a DMG Bonus per attribute), 4-cost (HP%/ATK%/DEF%, Crit. Rate, Crit. DMG, Healing Bonus); Sonata sets of 2 and 5; level 25; a total cost of 12 ~ | [Echo Stats](https://wutheringwaves.fandom.com/wiki/Echo/Stats); cost cap: wireframe X1, unverified |
 | Dupes | A character copy raises Resonance Chain by one (to S6); a weapon copy raises Syntonize by one (to R5) ~ | [Resonance Chain](https://wutheringwaves.fandom.com/wiki/Resonance_Chain), [Weapon](https://wutheringwaves.fandom.com/wiki/Weapon) |
-| Art | | |
+| Art | Wuthery's copy of the game's UI textures, by file name: the 256 px head (icons), the character's pile art (splash), the 160 px weapon icon. Materials and Sonata sets keep the game's paths, so they show the placeholder | [Wuthery](https://files.wuthery.com/p/GameData/UIResources/Common/Image/) |
 | KPIs per role | Our choice for the Characters cards (WIREFRAMES.md G4), listed in the module's manifest | |
 | Pull history types | featured resonator 1, featured weapon 2, standard resonator 3 (`cardPoolType`); standard weapon (4), beginner (5–7) and journey convenes (8, 9, 12, 13) are not tracked | [wuwa-gacha-export](https://github.com/lyndon0na/wuwa-gacha-export) (`POOLS`) |
 | Account level | Union Level (UL); the abbreviation is the community's | [Union Level](https://wutheringwaves.fandom.com/wiki/Union_Level) |

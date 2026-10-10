@@ -21,13 +21,15 @@ type KV = { Key: number; Value: number };
 type RoleInfo = {
   Id: number; QualityId: number; RoleType: number; IsTrial: boolean; Name: string; NickName?: string;
   ElementId: number; WeaponType: number; MaxLevel?: number; BreachId: number; SkillTreeGroupId: number;
-  RoleHeadIcon?: string; Icon?: string;
+  RoleHeadIcon?: string; Icon?: string; RoleHeadIconLarge?: string; FormationRoleCard?: string;
 };
 type RoleBreach = { BreachGroupId: number; BreachLevel: number; MaxLevel: number; BreachConsume: KV[] | null };
 type SkillTreeNode = { Id: number; NodeGroup: number; NodeType: number; SkillId: number; Consume: KV[] | null; PropertyNodeTitle?: string };
 type Skill = { Id: number; SkillType: number; SkillName?: string; SkillLevelGroupId: number; MaxSkillLevel?: number };
 type SkillLevel = { SkillLevelGroupId: number; SkillId: number; Consume: KV[] | null };
-type WeaponConf = { ItemId: number; WeaponName: string; QualityId: number; WeaponType: number; BreachId: number; Icon?: string };
+type WeaponConf = { ItemId: number; WeaponName: string; QualityId: number; WeaponType: number; BreachId: number; Icon?: string; IconMiddle?: string };
+/** An Unreal texture path's file name ("/Game/…/T_X_UI.T_X_UI" → "T_X_UI"): the art key the manifest's sources take (ADR 0006). */
+const artKey = (path?: string) => path?.split("/").at(-1)?.split(".")[0] || undefined;
 type WeaponBreach = { BreachId: number; Level: number; LevelLimit: number; Consume: KV[] | null; GoldConsume: number };
 type PhantomFetter = { Id: number; Name: string; EffectDescription: string; EffectDescriptionParam: string[] | null; FetterIcon?: string };
 type ItemInfo = { Id: number; Name: string; QualityId: number; ItemType: number; MainTypeId: number; Icon?: string };
@@ -115,7 +117,8 @@ const characters: CatalogCharacter[] = playable.map((r) => {
     tag: ELEMENT[r.ElementId] ?? String(r.ElementId),
     weaponType: WEAPON[r.WeaponType] ?? String(r.WeaponType),
     maxLevel: ascension.at(-1)?.atLevel ?? r.MaxLevel ?? 90,
-    icon: r.RoleHeadIcon ?? r.Icon,
+    icon: artKey(r.RoleHeadIconLarge) ?? r.RoleHeadIcon ?? r.Icon,
+    splash: artKey(r.FormationRoleCard),
     ascension,
     talents: { keys, costs: costsByKey.skill ?? costsByKey.basic ?? [], costsByKey },
     extra: { nickname: text(r.NickName) || null, skillNames, forteNodes },
@@ -145,7 +148,7 @@ const weapons: CatalogWeapon[] = weaponConfs
       rarity: w.QualityId,
       type: WEAPON[w.WeaponType] ?? String(w.WeaponType),
       maxLevel: ascension.at(-1)?.atLevel ?? 90,
-      icon: w.Icon,
+      icon: artKey(w.IconMiddle) ?? w.Icon,
       ascension,
     };
   });

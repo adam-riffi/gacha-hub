@@ -30,6 +30,8 @@ export const catalogCharacterSchema = z.object({
   maxLevel: z.number().int().positive(),
   /** Icon filename or URL, as provided by the source (may be absent). */
   icon: z.string().optional(),
+  /** Splash art key, when the source names it apart from the icon (Wuthering Waves). */
+  splash: z.string().optional(),
   ascension: z.array(costStepSchema),
   talents: z.object({
     /** Talent keys in the game's build doc (e.g. normal/skill/burst). */
