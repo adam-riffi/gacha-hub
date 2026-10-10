@@ -138,6 +138,7 @@ export const hsr: GameDefinition = {
       material: "https://sr.yatta.moe/hsr/assets/UI/item/{key}.png",
     },
     accountLevel: { label: "TL", name: "Trailblaze Level" },
+    worldLevel: { label: "EQ", name: "Equilibrium Level", max: 6 },
     version: { name: "4.6", start: "2026-09-28", days: 42 },
   },
   defaultTasks: [

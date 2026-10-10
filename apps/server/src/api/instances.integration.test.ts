@@ -90,6 +90,16 @@ describe("auth + instances (routes)", () => {
     expect(cleared.json).toMatchObject({ uid: null, accountLevel: null });
   });
 
+  it("keeps the world level where the game has one, up to its highest", async () => {
+    const id = await installGame(c, "genshin");
+    expect((await c.req("PUT", `/api/instances/${id}`, { worldLevel: 8 })).json).toMatchObject({ worldLevel: 8 });
+    expect((await c.req("GET", `/api/instances/${id}`)).json).toMatchObject({ worldLevel: 8 });
+    expect((await c.req("PUT", `/api/instances/${id}`, { worldLevel: 10 })).status).toBe(400);
+    expect((await c.req("PUT", `/api/instances/${id}`, { worldLevel: null })).json).toMatchObject({ worldLevel: null });
+    const zzz = await installGame(c, "zzz");
+    expect((await c.req("PUT", `/api/instances/${zzz}`, { worldLevel: 3 })).status).toBe(400);
+  });
+
   it("uninstalls a game and its data", async () => {
     const id = await installGame(c, "genshin");
     const del = await c.req("DELETE", `/api/instances/${id}`);

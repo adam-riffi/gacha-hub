@@ -18,6 +18,7 @@ export const userExportSchema = z.object({
       sleeping: z.boolean(),
       uid: z.string().nullable(),
       accountLevel: z.number().nullable(),
+      worldLevel: z.number().nullable(),
       createdAt: isoDate,
       currencies: z.array(row),
       characters: z.array(row),

@@ -97,6 +97,7 @@ export function conformance(game: GameDefinition, sheet: string): string[] {
     m.income?.label,
     m.version.name,
     m.accountLevel.name,
+    m.worldLevel?.name,
     m.gear.name,
     m.dupes.character.label,
     m.dupes.weapon?.label,

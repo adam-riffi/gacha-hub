@@ -126,10 +126,14 @@ export async function registerGameRoutes(app: FastifyInstance) {
     async (req, reply) => {
       const gi = await loadInstance(req.user!.id, req.params.id);
       if (!gi) return reply.code(404).send({ error: "not_found" });
-      const { regionKey, sleeping, uid, accountLevel } = updateInstanceInput.parse(req.body);
+      const { regionKey, sleeping, uid, accountLevel, worldLevel } = updateInstanceInput.parse(req.body);
       const game = gameOrThrow(gi.gameKey);
       if (regionKey !== undefined && !game.regions.some((r) => r.key === regionKey)) {
         return reply.code(400).send({ error: "unknown_region" });
+      }
+      const world = game.manifest.worldLevel;
+      if (worldLevel != null && (!world || worldLevel > world.max)) {
+        return reply.code(400).send({ error: world ? "over_the_cap" : "no_world_level" });
       }
       const updated = await prisma.gameInstance.update({
         where: { id: gi.id },
@@ -138,6 +142,7 @@ export async function registerGameRoutes(app: FastifyInstance) {
           ...(sleeping !== undefined ? { sleeping } : {}),
           ...(uid !== undefined ? { uid } : {}),
           ...(accountLevel !== undefined ? { accountLevel } : {}),
+          ...(worldLevel !== undefined ? { worldLevel } : {}),
         },
       });
       return withGame(instanceDto.parse(updated));

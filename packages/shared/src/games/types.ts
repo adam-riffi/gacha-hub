@@ -94,6 +94,8 @@ export interface GameManifest {
   art: Partial<Record<ArtKind, string>>;
   /** What the game calls the account level, short and in full (AR, Adventure Rank). */
   accountLevel: { label: string; name: string };
+  /** What the game calls its world level, if it has one (WL, World Level), and its highest. */
+  worldLevel?: { label: string; name: string; max: number };
   /** The current version; `days` until the next one, estimated until announced. */
   version: { name: string; start: string; days: number };
 }

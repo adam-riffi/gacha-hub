@@ -55,6 +55,8 @@ export interface DueExtra {
   endgame?: { key: string; name: string; closes: Date; unclaimed: number; premium: string }[];
   /** The 30-day pass and when it ends. */
   monthlyPass?: { name: string; endsAt: Date };
+  /** The battle pass, its level this version and when the version ends. */
+  battlePass?: { name: string; endsAt: Date; level: number; maxLevel: number };
   /** Unclaimed event goals whose reminder is on (ADR 0008). */
   eventGoals?: { key: string; name: string; endsAt: Date }[];
 }
@@ -94,6 +96,13 @@ export function dueReminders(cfg: ReminderConfig, region: RegionReset, gameName:
     const left = pass.endsAt.getTime() - now.getTime();
     if (left > 0 && left <= 72 * 60 * 60_000) {
       due.push({ key: "pass:monthly", firedFor: pass.endsAt, headline: `🎫 **${gameName}** · ${pass.name} ends in ${fmtDuration(left)}` });
+    }
+  }
+  const bp = extra.battlePass;
+  if (cfg.beforeBattlePassEnds && bp && bp.level < bp.maxLevel) {
+    const left = bp.endsAt.getTime() - now.getTime();
+    if (left > 0 && left <= 48 * 60 * 60_000) {
+      due.push({ key: "pass:battle", firedFor: bp.endsAt, headline: `🎫 **${gameName}** · ${bp.name} ends in ${fmtDuration(left)} at level ${bp.level} / ${bp.maxLevel}` });
     }
   }
   for (const g of extra.eventGoals ?? []) {
