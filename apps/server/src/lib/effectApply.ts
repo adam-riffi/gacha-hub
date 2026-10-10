@@ -1,13 +1,13 @@
 import { LIMITS, getGame, pickEffects, readEffects, type BaseEffect, type GameDefinition } from "@gacha/shared";
 import { Prisma, type Task } from "../generated/prisma/client.js";
-import type { PrismaJson } from "../api/util.js";
+import { getCatalog, type PrismaJson } from "../api/util.js";
 
 /* Applying an event goal's effects (ADR 0008): once per user, event and
  * effect key, each through the feature it acts on, with what reverses it
  * stored beside it. Reversing takes back only what was added. */
 
 type Tx = Prisma.TransactionClient;
-type Undo = { created: string } | { characterId: string; path: string; delta: number } | { currency: string; delta: number } | { materialId: string; delta: number } | null;
+type Undo = { created?: string; build?: string } | { characterId: string; path: string; delta: number } | { currency: string; delta: number } | { materialId: string; delta: number } | null;
 type Doc = Record<string, unknown>;
 
 const getPath = (doc: unknown, path: string): unknown => path.split(".").reduce<unknown>((o, k) => (o as Doc | undefined)?.[k], doc);
@@ -47,7 +47,15 @@ async function applyOne(tx: Tx, game: GameDefinition, gameInstanceId: string, e:
       const holder = dupe.field.split(".").slice(0, -1).join(".");
       const builds = await tx.character.findMany({ where: { gameInstanceId, ...(e.unit === "character" ? { catalogId: e.catalogId } : {}) } });
       const build = builds.find((c) => e.unit === "character" || (getPath(c.doc, holder) as { catalogId?: string } | undefined)?.catalogId === e.catalogId);
-      if (!build) return grant(tx, gameInstanceId, e.unit, e.catalogId); // a first copy is the unit itself
+      if (!build && e.unit === "weapon") return grant(tx, gameInstanceId, e.unit, e.catalogId); // a first copy is the weapon itself
+      if (!build) {
+        // A character copy starts its build: the first copy is the character, each further one a step up.
+        const granted = await grant(tx, gameInstanceId, e.unit, e.catalogId);
+        const entry = (await getCatalog(game))?.index.characters.get(e.catalogId);
+        const doc = { ...(game.emptyDoc() as Doc), ...((entry && (game.seedDoc?.(entry) as Doc)) ?? {}) };
+        const data = { gameInstanceId, catalogId: e.catalogId, name: entry?.name ?? e.catalogId, docVersion: game.docVersion, doc: setPath(doc, dupe.field, Math.min(dupe.max, e.count - (granted ? 1 : 0))) as PrismaJson };
+        return { ...granted, build: (await tx.character.create({ data })).id };
+      }
       const before = Number(getPath(build.doc, dupe.field) ?? (e.unit === "weapon" ? 1 : 0));
       const after = Math.min(dupe.max, before + e.count);
       await tx.character.update({ where: { id: build.id }, data: { doc: setPath(build.doc as Doc, dupe.field, after) as PrismaJson } });
@@ -60,15 +68,17 @@ async function applyOne(tx: Tx, game: GameDefinition, gameInstanceId: string, e:
 
 async function reverseOne(tx: Tx, gameInstanceId: string, undo: Undo) {
   if (!undo) return;
-  if ("created" in undo) await tx.ownership.deleteMany({ where: { id: undo.created } });
-  else if ("characterId" in undo) {
+  if ("created" in undo || "build" in undo) {
+    if (undo.build) await tx.character.deleteMany({ where: { id: undo.build } });
+    if (undo.created) await tx.ownership.deleteMany({ where: { id: undo.created } });
+  } else if ("characterId" in undo) {
     const build = await tx.character.findUnique({ where: { id: undo.characterId } });
     if (build) await tx.character.update({ where: { id: build.id }, data: { doc: setPath(build.doc as Doc, undo.path, Math.max(0, Number(getPath(build.doc, undo.path) ?? 0) - undo.delta)) as PrismaJson } });
   } else if ("currency" in undo) {
     const where = { gameInstanceId_key: { gameInstanceId, key: undo.currency } };
     const row = await tx.currencyState.findUnique({ where });
     if (row) await tx.currencyState.update({ where, data: { value: Math.max(0, row.value - undo.delta) } });
-  } else {
+  } else if ("materialId" in undo) {
     const where = { gameInstanceId_materialId: { gameInstanceId, materialId: undo.materialId } };
     const row = await tx.materialStock.findUnique({ where });
     if (row) await tx.materialStock.update({ where, data: { qty: Math.max(0, row.qty - undo.delta) } });
