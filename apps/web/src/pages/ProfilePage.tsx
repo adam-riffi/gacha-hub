@@ -32,6 +32,9 @@ function useProfileSave(instanceId: string) {
  * syncs them); the passes with their expiry reminders; long-term progress
  * (with F11's sync); this game's reminders; export, sleep and remove.
  */
+/** The games a linked HoYoLAB account fills (ADR 0005). */
+const HOYOLAB_GAMES = ["genshin", "hsr", "zzz"];
+
 export function ProfilePage() {
   const { id } = useParams<{ id: string }>();
   const instance = useQuery({ queryKey: ["instance", id], queryFn: () => api.get<InstanceDetail>(`/api/instances/${id}`) });
@@ -49,9 +52,24 @@ export function ProfilePage() {
         <section className="card pf-progress" aria-label="Long-term progress">
           <div className="spread">
             <h3>Long-term progress</h3>
-            <span className="tag">Optional</span>
+            <span className="tag">{instance.data.progress?.length ? "From HoYoLAB" : "Optional"}</span>
           </div>
-          <p className="mu">Achievements, days active, chests, waypoints and exploration per region fill in from the game's own records once a linked account syncs them (F11). Nothing to type here.</p>
+          {instance.data.progress?.length ? (
+            <div className="pf-rows">
+              {instance.data.progress.map((s) => (
+                <div key={s.name}>
+                  <span className="kpi-label">{s.name}</span>
+                  <span className="mn">{s.value}</span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="mu">
+              {HOYOLAB_GAMES.includes(game.key)
+                ? "Link HoYoLAB in Settings and the record card's stats (days active, achievements…) fill in here. Nothing to type."
+                : "This game's account records cannot be read, so this stays empty. Nothing to type."}
+            </p>
+          )}
         </section>
         <GameReminders instance={instance.data} game={game} />
         <Wallet instance={instance.data} game={game} />
@@ -121,7 +139,7 @@ function Account({ instance, game }: Props) {
         {levelRow(level.name, "accountLevel", instance.accountLevel, 1, 100)}
         {world && levelRow(world.name, "worldLevel", instance.worldLevel, 0, world.max)}
       </div>
-      <p className="mu pf-note">Without a linked account (F11) these fields are typed in.</p>
+      <p className="mu pf-note">{HOYOLAB_GAMES.includes(game.key) ? "Typed in, or filled by a linked HoYoLAB account (Settings)." : "Typed in."}</p>
     </section>
   );
 }
