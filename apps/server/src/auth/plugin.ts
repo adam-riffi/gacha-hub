@@ -32,22 +32,18 @@ function clearSessionCookie(reply: FastifyReply) {
   reply.clearCookie(SESSION_COOKIE, { path: "/" });
 }
 
+// An async hook that answers must return the reply: otherwise, while the
+// async onSend hooks are still writing the answer, Fastify runs the route too.
+
 /** preHandler that 401s unauthenticated requests. */
 export async function requireUser(req: FastifyRequest, reply: FastifyReply) {
-  if (!req.user) {
-    reply.code(401).send({ error: "unauthorized" });
-  }
+  if (!req.user) return reply.code(401).send({ error: "unauthorized" });
 }
 
 /** preHandler that 403s non-admins (admins = ADMIN_DISCORD_IDS). */
 export async function requireAdmin(req: FastifyRequest, reply: FastifyReply) {
-  if (!req.user) {
-    reply.code(401).send({ error: "unauthorized" });
-    return;
-  }
-  if (!req.isAdmin) {
-    reply.code(403).send({ error: "forbidden" });
-  }
+  if (!req.user) return reply.code(401).send({ error: "unauthorized" });
+  if (!req.isAdmin) return reply.code(403).send({ error: "forbidden" });
 }
 
 export async function registerAuth(app: FastifyInstance) {
