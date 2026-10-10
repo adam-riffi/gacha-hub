@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f10/11-pull-forecast · #135
+- Done: manifests gain premium income (`income.daily`, `monthlyPass.daily`; the four passes give 90 a day, read on their wiki pages; the 60-a-day dailies are `~`, unverified); `packages/shared/src/forecast.ts`: `pullForecast` (each game day left in the version, the pass while it runs, in pulls) and `savingsPlan` (targets in order, each with its worst-case or average need, the chance with what is left and with the forecast). The conformance suite checks the income and that the sheet names it. Star Rail's pass now stacks to 180 (sourced).
+- Tests: written first: `forecast.test.ts` (the board's 26 days × 60 and 23 × 90 = 22 pulls; no pass; the planner's covered and short-by figures; average mode); the odds against a seeded 200,000-trial simulation, within 0.5 points in four cases (F10's acceptance line; `featuredWithin` passed them as it was).
+- Scope/decisions: Endfield and NTE have no sourced income yet, so they show no forecast; events, endgame and codes are not counted, as on the board.
+- Next: `stack/f10/12-pulls` (G3 rebuilt).
+
 ## 2026-10-10 · claude · stack/f10/10-library · #134
 - Done: Games rebuilt from its board (WIREFRAMES.md A2): one row per installed game in the strip's order, dragged (or moved with ↑ ↓) to reorder it; server, offset and version; capability cells Manifest (always), Catalog (character count, or why there is none) and Live data (the F11 route, dashed until it exists); today's dailies and the reset; Open hub and Sleep. Beside: the capabilities legend and Add a game. Old library styles removed.
 - Tests: written first: `e2e/library.spec.ts` (cells, today, moving the last game up swaps it in the strip, sleep and wake). Drag checked against the dev server with Playwright (and the order put back); checked at 1440 beside `a2-games-library.png`.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: `e2e/shell.spec.ts` (every rail link and its current state, Overview and a game on the strip, accent per scope, the scope following the rail, the Tasks page); the smoke journey's nav link updated.
 - Scope/decisions: Defaults from the V plan: Admin in the rail for admins; Settings and Admin open a game's hub; strip in install order; no drag-to-scroll yet (five games fit). Old rules now read `--accent` directly: an alias on `:root` hid the scope's colour.
 - Next: `stack/v/04-panels`.
-
-## 2026-10-09 · claude · stack/v/02-tokens-fonts · #94
-- Done: `apps/web/src/styles/tokens.css` with VISUAL-DESIGN.md §2 colours, the four OFL families self-hosted as Latin woff2 (152 KB, two preloaded), body type, the dotted-wave page pattern, the accent focus ring, paper selection and a reduced-motion rule; old variable names alias the tokens until the component PRs; game accents take the §3 values; Google Fonts removed, so the CSP keeps fonts and styles on `'self'`.
-- Tests: `e2e/visual.spec.ts` (fonts load from our own host only, body type, page colour, Overview accent); `accents.test.ts`; the CSP test now requires fonts and styles on `'self'`.
-- Scope/decisions: Fonts are copied from the Fontsource 5.3.0 packages (Google Fonts builds) with their OFL texts; not added as dependencies. Success and danger colours stay until `04-panels` reworks the components.
-- Next: `stack/v/03-shell`.
