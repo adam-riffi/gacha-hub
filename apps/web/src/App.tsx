@@ -13,7 +13,7 @@ import { GearSetsPage } from "./pages/GearSetsPage";
 import { MaterialsPage } from "./pages/MaterialsPage";
 import { PullsPage } from "./pages/PullsPage";
 import { CharacterPage } from "./pages/CharacterPage";
-import { TimelinePage } from "./pages/TimelinePage";
+import { CalendarPage } from "./pages/CalendarPage";
 import { AdminPage } from "./pages/AdminPage";
 import { SettingsPage } from "./pages/SettingsPage";
 import { TasksPage } from "./pages/TasksPage";
@@ -43,7 +43,7 @@ export function App() {
         <Route path="/games/:id/pulls" element={<PullsPage />} />
         <Route path="/characters/:id" element={<CharacterPage />} />
         <Route path="/tasks" element={<TasksPage />} />
-        <Route path="/timeline" element={<TimelinePage />} />
+        <Route path="/timeline" element={<CalendarPage />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />

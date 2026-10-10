@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f10/04-calendar · #128
+- Done: Banners and events rebuilt from its board (WIREFRAMES.md A4) in the dashboard kit: six weeks from this Monday paged by two, week columns and a today line; one block per game (version and source, banner phases, events with `+1 C`/`+1 R` tags, the version tick); layers (banners, events, versions on; endgame cycles and passes off); the Selected panel (art, end in your time and server time, stages, the reward picker with each option's step, Make goal, Remind 48 h before, the other rewards); Rewards that update your roster; Timeline or List. `TimelinePage` and its old styles removed.
+- Tests: written first: `calendar.spec.ts` (a reward's tag, the picker's step, Make goal setting the goal, the cycles layer, the list view); headings follow the board ("Banners and events"). Checked in the browser at 1440 and at 375 (the timeline scrolls inside its panel).
+- Scope/decisions: the version tick reads "update · <date>" (the next version's name is not known); "Only what I wishlisted" waits for `WishlistItem` (F10-07); art comes from the featured unit, else the game's placeholder tile until F12.
+- Next: `stack/f10/05-tasks` (A3 rebuilt, with event goals).
+
 ## 2026-10-10 · claude · stack/f10/03-rewards · #127
 - Done: `packages/shared/src/rewards.ts`: `rewardOptions` (one option per choice, each roster step in the game's letter, as applying would take it; other rewards as text) and `rosterTag` ("+1 C", "+1 R", the game's letter elsewhere). `GET /api/rewards`: open events on awake profiles whose rewards change the roster, with each option's step from the builds, the other rewards, stage count and the goal. An event goal with its reminder on (`notify`) DMs 48 h before the event ends, until claimed.
 - Tests: written first: `rewards.test.ts` (steps per choice, capped, not owned, owned without a build, no roster change, tags per game), `rewards.integration.test.ts` (listing, goal state, asleep games left out), `due.test.ts` and `reminders.integration.test.ts` (48 h window, off until the goal's reminder is on, sent once).
@@ -247,9 +253,3 @@ Entry format:
 - Tests: Documentation only.
 - Scope/decisions: The canvas is private to Georges, so build sessions work from this file; it wins over the canvas where they differ. `docs/PROJECT-GUIDE.md` stays the reference for what is built.
 - Next: NTE notes and the handoff (#87).
-
-## 2026-10-09 · claude · stack/docs-v2/01-design-adrs · #85
-- Done: DESIGN.md plans F8–F12 from the 2026-10-09 wireframes (cadences, endgame history, passes, stamina, pull odds, splash-art characters, event-reward goals, account linking, art store, NTE). ADRs 0004 (game manifest and pipeline), 0005 (account linking and imports) and 0006 (game art in R2), all Proposed.
-- Tests: Documentation only.
-- Scope/decisions: Georges decided on 2026-10-09 to bring stamina back, to fill data automatically where possible and to store the HoYoLAB tokens on the server, encrypted (ADR 0005). Mobile stays out beyond a one-column collapse. Stacked on #84.
-- Next: `docs/WIREFRAMES.md` (#86), NTE notes and the handoff (#87); then F8 in a build session.
