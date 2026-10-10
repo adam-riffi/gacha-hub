@@ -133,7 +133,7 @@ export const genshin: GameDefinition = {
     },
     kpis: { damage: ["Crit value", "CRIT Rate / CRIT DMG", "Energy Recharge"], support: ["Energy Recharge", "Elemental Mastery", "HP"], healer: ["Healing Bonus", "HP", "Energy Recharge"] },
     dupes: { character: { field: "constellation", label: "Constellation", max: L.maxConstellation }, weapon: { field: "weapon.refinement", label: "Refinement", max: L.maxRefinement } },
-    art: { character: "https://enka.network/ui/{key}.png", portrait: "https://enka.network/ui/{key}.png", weapon: "https://enka.network/ui/{key}.png", gear: "https://enka.network/ui/{key}.png", material: "https://enka.network/ui/{key}.png" },
+    art: { character: "https://enka.network/ui/{key}.png", portrait: "https://enka.network/ui/{key}.png", splash: "https://enka.network/ui/{key}.png", weapon: "https://enka.network/ui/{key}.png", gear: "https://enka.network/ui/{key}.png", material: "https://enka.network/ui/{key}.png" },
     accountLevel: { label: "AR", name: "Adventure Rank" },
     worldLevel: { label: "WL", name: "World Level", max: 9 },
     version: { name: "7.1", start: "2026-09-23", days: 42 },
