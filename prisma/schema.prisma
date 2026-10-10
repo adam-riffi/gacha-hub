@@ -223,6 +223,8 @@ model Character {
   role           String?
   /// What the last showcase sync wrote (ADR 0005): a field still equal to it is AUTO and the next sync refreshes it; one the user changed is kept.
   synced         Json?
+  /// The build's KPI targets ({ "Crit value": 200 }), set on the sheet (WIREFRAMES.md G5).
+  targets        Json?
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
 

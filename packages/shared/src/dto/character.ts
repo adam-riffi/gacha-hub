@@ -1,3 +1,4 @@
+import { LIMITS } from "../common.js";
 import { z } from "zod";
 import { buildStatusSchema } from "../common.js";
 import { catalogIdSchema, idSchema, isoDate, jsonValue } from "./common.js";
@@ -17,6 +18,7 @@ export const characterDto = z.object({
   docVersion: z.number().int(),
   buildStatus: buildStatusSchema,
   role: z.string().nullable(),
+  targets: z.record(z.string(), z.number()).nullable().default(null),
   createdAt: isoDate,
   updatedAt: isoDate,
 });
@@ -49,6 +51,12 @@ export const createCharacterInput = z.object({
   buildStatus: buildStatusSchema.optional(),
   /** One of the game's KPI roles (checked against the game on save). */
   role: z.string().max(40).nullable().optional(),
+  /** A target per numeric KPI (checked against the game's KPIs on save); null clears them. */
+  targets: z
+    .record(z.string().max(60), z.number().min(0).max(LIMITS.kpiTarget))
+    .refine((t) => Object.keys(t).length <= 12)
+    .nullable()
+    .optional(),
 });
 export type CreateCharacterInput = z.infer<typeof createCharacterInput>;
 

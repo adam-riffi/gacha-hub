@@ -13,6 +13,7 @@ import {
   type CatalogWeapon,
   type GameDefinition,
   type TaskOrigin,
+  type TeamDto,
 } from "@gacha/shared";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
@@ -86,6 +87,16 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
     },
     onError: () => toast("Save failed — check the values (limits apply)", "err"),
   });
+  // Targets save on their own, so a tile can be set without saving the whole sheet.
+  const setTarget = useMutation({
+    mutationFn: (targets: Record<string, number | undefined>) => {
+      const kept = Object.fromEntries(Object.entries(targets).filter((e): e is [string, number] => e[1] !== undefined));
+      return api.put(`/api/characters/${data.id}`, { targets: Object.keys(kept).length ? kept : null });
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["character", data.id] }),
+    onError: () => toast("Target not saved", "err"),
+  });
+  const teams = useQuery({ queryKey: ["teams", data.gameInstanceId], queryFn: () => api.get<TeamDto[]>(`/api/instances/${data.gameInstanceId}/teams`) });
   const del = useMutation({
     mutationFn: () => api.del(`/api/characters/${data.id}`),
     onSuccess: () => {
@@ -168,10 +179,7 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
 
           <section className="sh-kpis" aria-label="KPIs">
             {buildKpis(game, doc, state.role).map((k) => (
-              <div className="card sh-kpi" key={k.label}>
-                <span className="kpi-label">{k.label}</span>
-                <span className="kpi-value">{k.value}</span>
-              </div>
+              <KpiTile key={k.label} label={k.label} value={k.value} target={data.targets?.[k.label]} onTarget={(v) => setTarget.mutate({ ...(data.targets ?? {}), ...v })} />
             ))}
             <div className="card sh-kpi">
               <span className="kpi-label">Role</span>
@@ -290,6 +298,17 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
         </section>
       )}
 
+      <section className="card sh-used" aria-label="Used in">
+        <h3>Used in</h3>
+        {(teams.data ?? []).filter((t) => data.catalogId && t.members.includes(data.catalogId)).map((t) => (
+          <div className="sh-row" key={t.id}>
+            <span>{t.name}</span>
+            <span className="mu">{t.members.length} member{t.members.length === 1 ? "" : "s"}</span>
+          </div>
+        ))}
+        {!(teams.data ?? []).some((t) => data.catalogId && t.members.includes(data.catalogId)) && <p className="mu">No team uses {data.name} yet.</p>}
+      </section>
+
       {hasSheet(data.gameKey) && (
         <details className="card sh-more">
           <summary>More details: {game.name}&apos;s own sheet</summary>
@@ -305,5 +324,37 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
         </details>
       )}
     </>
+  );
+}
+
+/** A KPI tile with its target (WIREFRAMES.md G5): how far off, typed in place; pairs take no target. */
+function KpiTile({ label, value, target, onTarget }: { label: string; value: string; target?: number; onTarget: (t: Record<string, number | undefined>) => void }) {
+  const now = Number.parseFloat(value);
+  const numeric = !label.includes(" / ");
+  const gap = target !== undefined && Number.isFinite(now) ? target - now : null;
+  return (
+    <div className="card sh-kpi" role="group" aria-label={label}>
+      <span className="kpi-label">{label}</span>
+      <span className="kpi-value">{value}</span>
+      {numeric && (
+        <span className="sh-target">
+          <label className="mu">
+            target
+            <input
+              type="number"
+              min={0}
+              aria-label={`${label} target`}
+              key={target ?? ""}
+              defaultValue={target ?? ""}
+              onBlur={(e) => {
+                const v = e.target.value === "" ? undefined : Number(e.target.value);
+                if (v !== target) onTarget({ [label]: v });
+              }}
+            />
+          </label>
+          {gap !== null && <span className={`mn ${gap <= 0 ? "" : "mu"}`}>{gap <= 0 ? "✓ on target" : `${Math.round(gap * 10) / 10} short`}</span>}
+        </span>
+      )}
+    </div>
   );
 }
