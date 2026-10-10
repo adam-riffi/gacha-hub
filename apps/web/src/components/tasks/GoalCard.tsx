@@ -16,6 +16,15 @@ const Meter = ({ done, total }: { done: number; total: number }) => (
   </span>
 );
 
+type Range = { from: number; to: number };
+/** What Plan farming planned, from the goal's origin: "level 1→90, talents 1→9/9/9". */
+function planned(origin: unknown): string | null {
+  const goal = (origin as { goal?: { level?: Range; talents?: Record<string, Range> } } | null)?.goal;
+  if (!goal) return null;
+  const talents = Object.values(goal.talents ?? {});
+  return [goal.level && `level ${goal.level.from}→${goal.level.to}`, talents.length > 0 && `talents ${talents.map((r) => r.from).join("/")}→${talents.map((r) => r.to).join("/")}`].filter(Boolean).join(", ") || null;
+}
+
 /**
  * One goal on Tasks (WIREFRAMES.md A3): its game, where it came from, its
  * progress (materials, stages or a number), priority and notify; expanded,
@@ -42,8 +51,8 @@ export function GoalCard({ t, kids, gi, reward, weekday }: { t: TaskItem; kids: 
       : [t.progress, t.target ?? 0];
   const option = reward?.options[t.choice ?? 0];
   const effect = option?.changes.map((c) => `${c.name} ${stepText(c)}`).join(", ");
-  const source = t.eventId ? "event goal" : kids.length ? "from Plan farming" : items.length ? "checklist" : "manual task";
-  const sub = [short, source, reward && `ends ${ENDS.format(new Date(reward.endsAt))}`, !claimed && effect && `when done: ${effect}`].filter(Boolean).join(" · ");
+  const source = t.eventId ? "event goal" : kids.length || planned(t.origin) ? "from Plan farming" : items.length ? "checklist" : "manual task";
+  const sub = [short, source, planned(t.origin), reward && `ends ${ENDS.format(new Date(reward.endsAt))}`, !claimed && effect && `when done: ${effect}`].filter(Boolean).join(" · ");
 
   return (
     <article className={`tk-card ${open ? "is-open" : ""}`} aria-label={t.title}>
@@ -91,7 +100,21 @@ export function GoalCard({ t, kids, gi, reward, weekday }: { t: TaskItem; kids: 
               {it.label}
             </label>
           ))}
-          {!kids.length && !items.length && !t.eventId && (
+          {t.type === "checklist" && (
+            <form
+              className="tk-step tk-add"
+              onSubmit={(e) => {
+                e.preventDefault();
+                const input = e.currentTarget.elements.namedItem("step") as HTMLInputElement;
+                if (input.value.trim()) setItems.mutate([...items, { label: input.value.trim(), done: false }]);
+                input.value = "";
+              }}
+            >
+              <input name="step" aria-label="Add a step" placeholder="Add a step" maxLength={200} />
+              <button className="btn" type="submit">Add</button>
+            </form>
+          )}
+          {!kids.length && t.type === "goal" && !t.eventId && (
             <label className="tk-step tk-check">
               Progress
               <input type="number" min={0} key={t.progress} defaultValue={t.progress} onBlur={(e) => Number(e.target.value) !== t.progress && progress.mutate({ id: t.id, progress: Number(e.target.value) })} />
@@ -119,23 +142,46 @@ export function GoalCard({ t, kids, gi, reward, weekday }: { t: TaskItem; kids: 
   );
 }
 
-/** A farming goal's materials: have and need, a bar, TODAY where its domain is open on the game day. */
+const STEPS = ["Ascension and level", "Talents", "Weapon"] as const;
+const stepOf = (category = "") => (/talent|trace/i.test(category) ? "Talents" : /^weapon|light cone/i.test(category) ? "Weapon" : "Ascension and level");
+
+/**
+ * A farming goal's steps (ascension and level, talents, weapon), each with
+ * its materials done and a TODAY tag where its domain is open on the game
+ * day; under each, the materials with what you have and need.
+ */
 function MaterialSteps({ kids, gameKey, weekday, onProgress }: { kids: TaskItem[]; gameKey: string; weekday?: number; onProgress: (id: string, v: number) => void }) {
   const { index } = useCatalog(gameKey);
-  return kids.map((k) => {
-    const material = k.materialId ? index?.materials.get(k.materialId) : undefined;
-    const today = weekday !== undefined && Boolean(material?.availability?.length) && farmableToday(material!.availability, weekday);
+  const rows = kids.map((k) => ({ k, material: k.materialId ? index?.materials.get(k.materialId) : undefined }));
+  return STEPS.map((step) => {
+    const mine = rows.filter((r) => stepOf(r.material?.category) === step);
+    if (!mine.length) return null;
+    const done = mine.filter((r) => r.k.progress >= (r.k.target ?? 0)).length;
+    const today = weekday !== undefined && mine.some((r) => r.k.progress < (r.k.target ?? 0) && Boolean(r.material?.availability?.length) && farmableToday(r.material!.availability, weekday));
     return (
-      <div key={k.id} className="tk-step">
-        <span className="tk-step-name">
-          {k.title.replace(/^Farm /, "")}
-          {today && <b className="tk-today">Today</b>}
-        </span>
-        <input type="number" min={0} aria-label={`${k.title.replace(/^Farm /, "")} on hand`} key={k.progress} defaultValue={k.progress} onBlur={(e) => Number(e.target.value) !== k.progress && onProgress(k.id, Number(e.target.value))} />
-        <span className="mn">
-          {k.progress} / {k.target ?? 0}
-        </span>
-        <Meter done={k.progress} total={k.target ?? 0} />
+      <div key={step} className="tk-group">
+        <div className="tk-step">
+          <span className="tk-step-name">
+            {step}
+            {today && <b className="tk-today">Today</b>}
+          </span>
+          <span className="mn">
+            {done} / {mine.length}
+          </span>
+          <Meter done={done} total={mine.length} />
+        </div>
+        {mine.map(({ k }) => {
+          const name = k.title.replace(/^Farm /, "");
+          return (
+            <div key={k.id} className="tk-mat">
+              <span>{name}</span>
+              <input type="number" min={0} aria-label={`${name} on hand`} key={k.progress} defaultValue={k.progress} onBlur={(e) => Number(e.target.value) !== k.progress && onProgress(k.id, Number(e.target.value))} />
+              <span className="mn mu">
+                {k.progress} / {k.target ?? 0}
+              </span>
+            </div>
+          );
+        })}
       </div>
     );
   });

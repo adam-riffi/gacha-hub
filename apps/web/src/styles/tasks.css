@@ -24,5 +24,9 @@
 .tk-step input[type="number"] { width: 90px; }
 .tk-step-name { flex: 1; display: flex; align-items: center; gap: 10px; }
 .tk-check { cursor: pointer; }
+.tk-group + .tk-group { margin-top: 2px; }
+.tk-mat { display: grid; grid-template-columns: minmax(0, 1fr) 90px 110px; align-items: center; gap: 12px; padding: 3px 0 3px 18px; color: var(--text-muted); font-size: 13px; }
+.tk-mat input { min-height: 26px; padding: 2px 8px; font-size: 13px; }
+.tk-add input { flex: 1; }
 .tk-today { padding: 3px 6px; background: var(--paper); color: var(--on-paper); font: 500 11px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
 .tk-actions { display: flex; gap: 8px; padding-top: 10px; border-top: 1px solid var(--surface-3); }
