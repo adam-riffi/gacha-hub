@@ -8,6 +8,7 @@ import { InstancePage } from "./pages/InstancePage";
 import { ActivitiesPage } from "./pages/ActivitiesPage";
 import { EndgamePage } from "./pages/EndgamePage";
 import { OwnershipPage } from "./pages/OwnershipPage";
+import { CharactersPage } from "./pages/CharactersPage";
 import { EquipmentPage } from "./pages/EquipmentPage";
 import { GearSetsPage } from "./pages/GearSetsPage";
 import { MaterialsPage } from "./pages/MaterialsPage";
@@ -37,6 +38,7 @@ export function App() {
         <Route path="/games/:id/overview" element={<InstancePage />} />
         <Route path="/games/:id/endgame" element={<EndgamePage />} />
         <Route path="/games/:id/ownership" element={<OwnershipPage />} />
+        <Route path="/games/:id/characters" element={<CharactersPage />} />
         <Route path="/games/:id/equipment" element={<EquipmentPage />} />
         <Route path="/games/:id/gear" element={<GearSetsPage />} />
         <Route path="/games/:id/materials" element={<MaterialsPage />} />

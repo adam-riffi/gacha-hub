@@ -1,4 +1,5 @@
 import type { GameDefinition } from "./games/types.js";
+import { dupeLetter } from "./rewards.js";
 
 type Doc = Record<string, unknown>;
 type Piece = { setName?: string; substats?: { stat: string; value: number | string }[] };
@@ -59,4 +60,26 @@ export function gearSetLabel(game: GameDefinition, doc: Doc): string | null {
     .filter((s): s is { name: string; size: number } => s.size !== undefined)
     .sort((a, b) => b.size - a.size || a.name.localeCompare(b.name));
   return done.length ? done.map((s) => `${s.name} ${s.size}pc`).join(" + ") : null;
+}
+
+const getPath = (doc: unknown, path: string): unknown => path.split(".").reduce<unknown>((o, k) => (o as Doc | undefined)?.[k], doc);
+/** Where each game keeps its skill levels in the build document. */
+const SKILLS = ["talents", "traces", "skills"] as const;
+
+/** The card's name box (WIREFRAMES.md G4): "Lv 90 · talents 9/9/9 · R1", in the catalog's skill order and the game's words. */
+export function buildLine(game: GameDefinition, doc: Doc, skillKeys: readonly string[]): string {
+  const field = SKILLS.find((f) => doc[f] && typeof doc[f] === "object") ?? SKILLS.find((f) => f in (game.emptyDoc() as Doc)) ?? "talents";
+  const levels = (doc[field] ?? {}) as Record<string, unknown>;
+  const parts = [`Lv ${num(doc.level) ?? "—"}`];
+  if (skillKeys.length) parts.push(`${field} ${skillKeys.map((k) => num(levels[k]) ?? 1).join("/")}`);
+  const weapon = game.manifest.dupes.weapon;
+  const w = weapon && num(getPath(doc, weapon.field));
+  if (weapon && w !== null && w !== undefined) parts.push(`${dupeLetter(weapon.field)}${w}`);
+  return parts.join(" · ");
+}
+
+/** The character's dupes as the card's badge: "C2", "E0", "M6". */
+export function dupeBadge(game: GameDefinition, doc: Doc): string {
+  const d = game.manifest.dupes.character;
+  return `${dupeLetter(d.field)}${num(getPath(doc, d.field)) ?? 0}`;
 }
