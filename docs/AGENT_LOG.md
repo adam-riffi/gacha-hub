@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f10b/04-retire-overview · #162
+- Done: the old overview is gone, each of its parts in a new home: every currency in Profile's Wallet; Restore default tasks and Generate backlog in Profile's Game status; the per-game reminder options (lead time, check-in times, what a DM includes) under Game reminders as More reminder options (`components/ReminderControl.tsx`); builds by name (games without a catalog) on Characters; teams on Endgame (named, with labelled inputs); + Another build on the sheet. `/games/:id/overview` lands on Profile. `InstancePage`, `GameOverview`, `pullText` and the currency-row styles are removed.
+- Tests: written first: the NTE journey adds its build on Characters; smoke finds today's farming on the Planner; Profile edits the wallet, finds the tools and reminder options and lands an old overview link on Profile; Endgame makes a team and adds Kafka; the sheet makes another build. Checked at 1440 on the dev account.
+- Scope/decisions: the overview's "Happening now" and "Domains today" have their homes already (Activities, the calendar, the Planner's Farm today), so they are not carried over.
+- Next: weapon farming into Characters' Weapons view, then the Equipment tab can go.
+
 ## 2026-10-10 · claude · stack/f10b/03-sheet · #161
 - Done: the sheet's KPI targets and Used in (WIREFRAMES.md G5): `Character.targets` (migration `20261011080000_character_targets`), taken by `PUT /api/characters/:id` for the game's single-number KPIs only (`unknown_kpi` otherwise, pairs included; `LIMITS.kpiTarget`), null clearing them; each numeric tile has a target typed in place that saves on its own and says "N short" or "on target"; Used in lists the profile's teams with the character.
 - Tests: written first: `targets.integration.test.ts` (kept and cleared; unknown KPI, a pair and out-of-range refused), a second sheet journey (SPD 130 with target 134 shows 4 short and survives a reload; Used in shows the team); the accessibility sweep passes. Checked at 1440 on the dev account.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the conformance suite accepts a full gear block in each build schema, accepts each dupe field at its cap and refuses one past it, bounds KPIs, checks art URLs; the facts test pins each gear block's shape.
 - Scope/decisions: WuWa's main stats depend on echo cost, so its slots carry none and `WUWA_MAIN_STATS_BY_COST` holds them; Endfield gear has no main stat; Endfield weapon dupes are unsourced.
 - Next: `stack/f9/03-game-new`.
-
-## 2026-10-10 · claude · stack/f9/01-odds · #120
-- Done: banner rules gain base rate, soft-pity step, long-run featured odds, loss guarantee and spark; `packages/shared/src/odds.ts` (rate per pull, next-5★ distribution, expected pulls, featured within N pulls by table); sourced rates for every game in `docs/games` (community soft-pity curves marked ~); Endfield gets Chartered headhunting (no guarantee after a loss, 120 spark). #119 merged.
-- Tests: written first: `odds.test.ts` (Genshin's ramp; every banner's distribution sums to 1 from any pity; a seeded simulation within half a pull; Genshin's consolidated 1.6052% and 1.8779%; featured within N incl. Endfield's spark; no guarantee after a loss for Endfield). The pull-log test that used Endfield as "a game without rules" now checks its new banner.
-- Scope/decisions: 4★ rules and the Pulls screen's odds UI stay for F10.
-- Next: `stack/f9/02-gear-kpis-art`.

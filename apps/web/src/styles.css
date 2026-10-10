@@ -49,9 +49,6 @@ p { color: var(--muted); }
 .meter > span { display: block; height: 100%; background: var(--accent); }
 /* Numbers and names that carry the page use the display face. */
 .pull-total, .gs-crit-v, .gs-splash-name, .set-name, .stat-num { font-family: var(--font-display); }
-.currency-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--border); }
-.currency-row:last-child { border-bottom: none; }
-.currency-val { display: flex; align-items: center; gap: 8px; }
 .currency-val input { width: 84px; text-align: right; padding: 4px 8px; }
 
 /* ---- Center / states ---- */

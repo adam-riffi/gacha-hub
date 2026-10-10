@@ -6,6 +6,7 @@ import { api } from "../lib/api";
 import { formatRemaining } from "../lib/time";
 import type { InstanceDetail } from "../lib/types";
 import { GameTabs } from "../components/GameTabs";
+import { TeamsCard } from "../components/TeamsCard";
 import { EndgameHistory } from "../components/hub/EndgameHistory";
 import { useReminderFlag } from "../lib/reminder";
 
@@ -111,6 +112,7 @@ export function EndgamePage() {
           </div>
         </section>
       </div>
+      {game.loadCatalog && <TeamsCard instanceId={id!} gameKey={instance.gameKey} />}
     </>
   );
 }

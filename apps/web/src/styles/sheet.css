@@ -110,3 +110,7 @@
 .sh-target label { display: inline-flex; align-items: center; gap: 4px; margin: 0; letter-spacing: 0; text-transform: none; }
 .sh-target input { width: 72px; min-height: 24px; padding: 1px 6px; }
 .sh-used { margin-top: 24px; }
+.pf-more { margin-top: 12px; }
+.pf-more summary { cursor: pointer; color: var(--text-muted); }
+.pf-wallet .pf-rows .kpi-label { flex: 0 0 220px; }
+.eg-teams { margin-top: 24px; }

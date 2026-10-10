@@ -68,6 +68,7 @@ export function CharactersPage() {
   const [shown, setShown] = useState(PAGE);
   const [kind, setKind] = useState<"characters" | "weapons">("characters");
   const [view, setView] = useState<"splash" | "compact">("splash");
+  const [newName, setNewName] = useState("");
 
   const instance = useQuery({ queryKey: ["instance", id], queryFn: () => api.get<InstanceDetail>(`/api/instances/${id}`) });
   const builds = useQuery({ queryKey: ["characters", id], queryFn: () => api.get<CharacterDto[]>(`/api/instances/${id}/characters`) });
@@ -91,7 +92,7 @@ export function CharactersPage() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ["ownership", id] }),
   });
   const start = useMutation({
-    mutationFn: (catalogId: string) => api.post<{ id: string }>(`/api/instances/${id}/characters`, { catalogId }),
+    mutationFn: (v: string | { name: string }) => api.post<{ id: string }>(`/api/instances/${id}/characters`, typeof v === "string" ? { catalogId: v } : v),
     onSuccess: (r) => nav(`/characters/${r.id}`),
   });
 
@@ -259,6 +260,18 @@ export function CharactersPage() {
         <span className="badge">Building {count("building")}</span>
         <span className="badge">Unbuilt {count("none")}</span>
         {catalog && <span className="badge todo">Wishlist {cards.filter((c) => c.wished).length}</span>}
+        {!catalog && (
+          <form
+            className="row"
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (newName.trim()) start.mutate({ name: newName.trim() });
+            }}
+          >
+            <input aria-label="Character name" placeholder="Character name" value={newName} onChange={(e) => setNewName(e.target.value)} />
+            <button className="btn" type="submit" disabled={!newName.trim() || start.isPending}>+ Add</button>
+          </form>
+        )}
         <span className="ch-sp" />
         <Segmented label="View" options={[{ value: "splash", label: "Splash" }, { value: "compact", label: "Compact" }]} value={view} onChange={setView} />
         {unownedShown.length > 0 && (

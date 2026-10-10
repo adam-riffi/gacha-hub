@@ -96,6 +96,13 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
     onSuccess: () => qc.invalidateQueries({ queryKey: ["character", data.id] }),
     onError: () => toast("Target not saved", "err"),
   });
+  const another = useMutation({
+    mutationFn: () => api.post<{ id: string }>(`/api/instances/${data.gameInstanceId}/characters`, { catalogId: data.catalogId, name: `${data.name} (2)` }),
+    onSuccess: (r) => {
+      void qc.invalidateQueries({ queryKey: ["characters", data.gameInstanceId] });
+      nav(`/characters/${r.id}`);
+    },
+  });
   const teams = useQuery({ queryKey: ["teams", data.gameInstanceId], queryFn: () => api.get<TeamDto[]>(`/api/instances/${data.gameInstanceId}/teams`) });
   const del = useMutation({
     mutationFn: () => api.del(`/api/characters/${data.id}`),
@@ -163,7 +170,12 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
                   </select>
                 </label>
                 <button className="btn primary" onClick={() => save.mutate()} disabled={save.isPending}>Save</button>
-                <button className="btn" onClick={() => confirm("Delete this build?") && del.mutate()}>Delete build</button>
+                {data.catalogId && (
+                <button className="btn" disabled={another.isPending} onClick={() => another.mutate()}>
+                  + Another build
+                </button>
+              )}
+              <button className="btn" onClick={() => confirm("Delete this build?") && del.mutate()}>Delete build</button>
               </div>
             </div>
             <div className="sh-title">

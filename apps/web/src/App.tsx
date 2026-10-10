@@ -4,7 +4,6 @@ import { Layout } from "./components/Layout";
 import { LoginPage } from "./pages/LoginPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { LibraryPage } from "./pages/LibraryPage";
-import { InstancePage } from "./pages/InstancePage";
 import { ActivitiesPage } from "./pages/ActivitiesPage";
 import { EndgamePage } from "./pages/EndgamePage";
 import { OwnershipPage } from "./pages/OwnershipPage";
@@ -37,7 +36,7 @@ export function App() {
         <Route path="/" element={<DashboardPage />} />
         <Route path="/library" element={<LibraryPage />} />
         <Route path="/games/:id" element={<ActivitiesPage />} />
-        <Route path="/games/:id/overview" element={<InstancePage />} />
+        <Route path="/games/:id/overview" element={<Navigate to="../profile" relative="path" replace />} />
         <Route path="/games/:id/endgame" element={<EndgamePage />} />
         <Route path="/games/:id/ownership" element={<OwnershipPage />} />
         <Route path="/games/:id/characters" element={<CharactersPage />} />
