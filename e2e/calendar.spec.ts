@@ -96,3 +96,31 @@ test("Only what I wishlisted keeps the banners and events of the units you wish 
   await expect(timeline.getByRole("button", { name: /E2E wished warp/ })).toBeVisible();
   await expect(timeline.getByRole("button", { name: /E2E unwished warp/ })).toHaveCount(0);
 });
+
+test("Banners: a tick for every day and each bar's dates, a month view of what starts and ends each day, and a featured unit opens its page @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  const upload = await page.request.post("/api/admin/payload", {
+    data: { kind: "banners", gameKey: "hsr", items: [{ key: "e2e-month", name: "E2E month warp", kind: "character", startsAt: iso(1), endsAt: iso(3), featured: [{ catalogId: "1005", kind: "character" }] }] },
+  });
+  expect(upload.ok()).toBe(true);
+
+  // The timeline marks every day of its six weeks, and each bar says when it starts and ends (Georges, 2026-10-10).
+  await page.goto("/timeline?game=hsr");
+  const timeline = page.getByRole("region", { name: "Timeline" });
+  await expect(timeline.locator(".cal-day")).toHaveCount(42);
+  await expect(timeline.getByRole("button", { name: /E2E month warp/ })).toContainText("→");
+
+  // The month view lists what starts and what ends on each day.
+  await page.getByRole("group", { name: "View" }).getByRole("button", { name: "Month" }).click();
+  const month = page.getByRole("region", { name: "Month" });
+  await expect(month.getByRole("button", { name: "Starts: E2E month warp" })).toBeVisible();
+  await expect(month.getByRole("button", { name: "Ends: E2E month warp" })).toBeVisible();
+
+  // A banner's featured character opens its page: from the banners to the character in one click.
+  await month.getByRole("button", { name: "Starts: E2E month warp" }).click();
+  await page.getByRole("complementary", { name: "Selected" }).getByRole("link", { name: "Kafka" }).click();
+  await expect(page).toHaveURL(new RegExp(`/games/${id}/units/1005$`));
+});
