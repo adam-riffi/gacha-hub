@@ -18,6 +18,9 @@ test("a game's Activities tab: stamina, the daily, weekly and monthly lists, cyc
   const stamina = page.getByRole("region", { name: "Battery Charge" });
   await expect(stamina).toContainText("/ 240");
   await expect(stamina).toContainText(/backup battery charge/i);
+  const full = stamina.getByRole("checkbox", { name: "Remind me when full" });
+  await full.check();
+  await expect(full).toBeChecked();
 
   // The daily list: ticking an item counts it.
   const daily = page.getByRole("region", { name: "Daily" });

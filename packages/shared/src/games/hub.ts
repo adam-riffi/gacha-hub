@@ -11,6 +11,11 @@ export function hubResets(game: GameDefinition, region: GameRegion, now: Date) {
   };
 }
 
+/** The premium currency rewards are paid in: the one a pull costs more than one of (Primogems, Stellar Jade…). */
+export function premiumCurrency(game: GameDefinition): string {
+  return game.currencies.find((c) => (c.pullCost ?? 0) > 1)?.label ?? "Premium";
+}
+
 /** "UTC+1", "UTC−5", "UTC+5:45", "UTC". */
 export function utcLabel(offsetMinutes: number): string {
   if (offsetMinutes === 0) return "UTC";

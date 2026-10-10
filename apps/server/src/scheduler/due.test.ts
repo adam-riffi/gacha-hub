@@ -24,6 +24,31 @@ describe("dueReminders", () => {
     expect(dueReminders(c, EU, "Genshin", at("2026-10-04T20:30:00Z"))).toEqual([]); // >1h late
   });
 
+  it("fires once when stamina fills, keyed on the moment it does, only when asked", () => {
+    const fullAt = at("2026-10-04T10:00:00Z");
+    const extra = { stamina: { label: "Original Resin", fullAt } };
+    const c = cfg({ beforeReset: false, whenStaminaFull: true });
+    expect(dueReminders(c, EU, "Genshin", at("2026-10-04T09:50:00Z"), extra)).toEqual([]);
+    expect(dueReminders(c, EU, "Genshin", at("2026-10-04T10:05:00Z"), extra)).toEqual([
+      { key: "stamina", firedFor: fullAt, headline: expect.stringMatching(/Original Resin is full/) },
+    ]);
+    expect(dueReminders(cfg({ beforeReset: false }), EU, "Genshin", at("2026-10-04T10:05:00Z"), extra)).toEqual([]);
+  });
+
+  it("fires 24 h before an endgame reset with rewards left, keyed on the mode and the reset", () => {
+    const closes = at("2026-10-16T03:00:00Z"); // the same instant as that day's daily reset
+    const endgame = [
+      { key: "abyss", name: "Spiral Abyss", closes, unclaimed: 100, premium: "Primogems" },
+      { key: "theater", name: "Imaginarium Theater", closes, unclaimed: 0, premium: "Primogems" },
+    ];
+    const c = cfg({ beforeReset: false, beforeEndgameReset: true });
+    expect(dueReminders(c, EU, "Genshin", at("2026-10-15T02:00:00Z"), { endgame })).toEqual([]); // 25 h before
+    expect(dueReminders(c, EU, "Genshin", at("2026-10-15T04:00:00Z"), { endgame })).toEqual([
+      { key: "endgame:abyss", firedFor: closes, headline: expect.stringMatching(/Spiral Abyss ends in 23h 0m · 100 Primogems unclaimed/) },
+    ]);
+    expect(dueReminders(c, EU, "Genshin", at("2026-10-16T03:30:00Z"), { endgame })).toEqual([]); // after the reset
+  });
+
   it("falls back to UTC for an unknown timezone", () => {
     expect(latestLocalTime(at("2026-10-04T12:10:00Z"), "12:00", "Not/AZone").toISOString()).toBe(
       "2026-10-04T12:00:00.000Z",

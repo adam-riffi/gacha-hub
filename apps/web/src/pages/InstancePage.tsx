@@ -7,20 +7,11 @@ import { useToast } from "../lib/toast";
 import { useCatalog } from "../lib/catalog";
 import { pullText } from "../lib/format";
 import { GameTabs } from "../components/GameTabs";
+import { REMINDER_DEFAULTS } from "../lib/reminder";
 import { TeamsCard } from "../components/TeamsCard";
 import { GameOverview } from "../components/GameOverview";
 import type { InstanceDetail, ReminderRule } from "../lib/types";
 
-const REMINDER_DEFAULTS: ReminderConfig = {
-  enabled: true,
-  beforeReset: true,
-  leadMinutes: 60,
-  atTimes: [],
-  timezone: "UTC",
-  includeCurrencies: true,
-  includeDailies: true,
-  includeDomains: false,
-};
 // Custom times are in the browser's zone; it's re-sent on every save.
 const LOCAL_ZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
 

@@ -45,6 +45,10 @@ export const reminderConfigSchema = z.object({
   includeDailies: z.boolean().default(true),
   /** Add the rotating domains open today for the units you own. */
   includeDomains: z.boolean().default(false),
+  /** DM once when the game's stamina fills (WIREFRAMES.md G1). */
+  whenStaminaFull: z.boolean().default(false),
+  /** DM 24 h before an endgame mode resets with premium rewards left in it (G2). */
+  beforeEndgameReset: z.boolean().default(false),
 });
 export type ReminderConfig = z.infer<typeof reminderConfigSchema>;
 

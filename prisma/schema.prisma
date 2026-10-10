@@ -305,9 +305,11 @@ model ReminderLog {
   ruleId    String
   rule      ReminderRule @relation(fields: [ruleId], references: [id], onDelete: Cascade)
   firedFor  DateTime
+  /// What fired: "" for reset and check-in reminders, "stamina", "endgame:<mode>".
+  key       String       @default("")
   createdAt DateTime     @default(now())
 
-  @@unique([ruleId, firedFor])
+  @@unique([ruleId, firedFor, key])
   @@index([ruleId])
 }
 

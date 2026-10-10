@@ -23,13 +23,24 @@ const fmtDuration = (ms: number) => {
   return m >= 60 ? `${Math.floor(m / 60)}h ${m % 60}m` : `${m}m`;
 };
 
-/** A reminder that's due now: `firedFor` is its scheduled instant (the dedupe key in ReminderLog). */
+/**
+ * A reminder that's due now: `firedFor` is its scheduled instant and `key`
+ * what it is about; together they dedupe in ReminderLog (an endgame reset and
+ * a daily reset can fall on the same instant).
+ */
 export interface DueReminder {
+  key: string;
   firedFor: Date;
   headline: string;
 }
 
-export function dueReminders(cfg: ReminderConfig, region: RegionReset, gameName: string, now: Date): DueReminder[] {
+/** What a game's state adds: when its stamina fills, and its endgame modes' resets with what is unclaimed. */
+export interface DueExtra {
+  stamina?: { label: string; fullAt: Date | null };
+  endgame?: { key: string; name: string; closes: Date; unclaimed: number; premium: string }[];
+}
+
+export function dueReminders(cfg: ReminderConfig, region: RegionReset, gameName: string, now: Date, extra: DueExtra = {}): DueReminder[] {
   const due: DueReminder[] = [];
   const boundary = nextDailyReset(now, region);
   const untilReset = fmtDuration(boundary.getTime() - now.getTime());
@@ -37,13 +48,25 @@ export function dueReminders(cfg: ReminderConfig, region: RegionReset, gameName:
   if (cfg.beforeReset) {
     const fireAt = boundary.getTime() - cfg.leadMinutes * 60_000;
     if (now.getTime() >= fireAt) {
-      due.push({ firedFor: boundary, headline: `⏰ **${gameName}** resets in ${untilReset}` });
+      due.push({ key: "", firedFor: boundary, headline: `⏰ **${gameName}** resets in ${untilReset}` });
     }
   }
   for (const t of cfg.atTimes) {
     const at = latestLocalTime(now, t, cfg.timezone);
     if (now.getTime() - at.getTime() < AT_TIME_GRACE_MS) {
-      due.push({ firedFor: at, headline: `⏰ **${gameName}** · your ${t} check-in (reset in ${untilReset})` });
+      due.push({ key: "", firedFor: at, headline: `⏰ **${gameName}** · your ${t} check-in (reset in ${untilReset})` });
+    }
+  }
+  const full = extra.stamina?.fullAt;
+  if (cfg.whenStaminaFull && full && now.getTime() >= full.getTime()) {
+    due.push({ key: "stamina", firedFor: full, headline: `🔋 **${gameName}** · ${extra.stamina!.label} is full` });
+  }
+  if (cfg.beforeEndgameReset) {
+    for (const m of extra.endgame ?? []) {
+      const left = m.closes.getTime() - now.getTime();
+      if (m.unclaimed > 0 && left > 0 && left <= 24 * 60 * 60_000) {
+        due.push({ key: `endgame:${m.key}`, firedFor: m.closes, headline: `⏳ **${gameName}** · ${m.name} ends in ${fmtDuration(left)} · ${m.unclaimed} ${m.premium} unclaimed` });
+      }
     }
   }
   return due;

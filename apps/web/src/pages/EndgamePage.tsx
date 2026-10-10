@@ -1,12 +1,13 @@
 import { useState, type FormEvent } from "react";
 import { useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { endgameNow, gameDay, getGame, type CycleResultsDto, type GameDefinition, type GameRegion } from "@gacha/shared";
+import { endgameNow, gameDay, getGame, premiumCurrency, type CycleResultsDto, type GameDefinition, type GameRegion } from "@gacha/shared";
 import { api } from "../lib/api";
 import { formatRemaining } from "../lib/time";
 import type { InstanceDetail } from "../lib/types";
 import { GameTabs } from "../components/GameTabs";
 import { EndgameHistory } from "../components/hub/EndgameHistory";
+import { useReminderFlag } from "../lib/reminder";
 
 const NUM = new Intl.NumberFormat("en-GB");
 const DATE = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" });
@@ -22,8 +23,6 @@ function cadenceLabel(m: Mode) {
   return a.cadence === "monthly" ? `monthly · ${ordinal(a.day)}` : a.cadence === "version" ? "once per version" : a.cadence === "cycle" ? `every ${a.days} days` : a.cadence;
 }
 
-/** The premium currency rewards are paid in: the one a pull costs more than one of. */
-export const premiumOf = (game: GameDefinition) => game.currencies.find((c) => (c.pullCost ?? 0) > 1)?.label ?? "Premium";
 
 /**
  * A game's Endgame tab (WIREFRAMES.md G2): the premium claimed across the
@@ -35,6 +34,7 @@ export function EndgamePage() {
   const { id } = useParams<{ id: string }>();
   const { data: instance } = useQuery({ queryKey: ["instance", id], queryFn: () => api.get<InstanceDetail>(`/api/instances/${id}`) });
   const { data: cycles } = useQuery({ queryKey: ["cycles", id], queryFn: () => api.get<CycleResultsDto>(`/api/instances/${id}/cycles`) });
+  const remind = useReminderFlag(id!, "beforeEndgameReset");
   const game = instance && getGame(instance.gameKey);
   if (!instance || !game) return <div className="muted">Loading…</div>;
 
@@ -42,7 +42,7 @@ export function EndgamePage() {
   const now = new Date();
   const results = (cycles?.results ?? []).map((r) => ({ ...r, cycleStart: new Date(r.cycleStart) }));
   const eg = endgameNow(game, region, now, results);
-  const premium = premiumOf(game);
+  const premium = premiumCurrency(game);
 
   return (
     <>
@@ -70,6 +70,10 @@ export function EndgamePage() {
             </div>
             {eg.next && (
               <div className="eg-next">
+                <label className="act-remind">
+                  <input type="checkbox" key={String(remind.on)} defaultChecked={remind.on} disabled={remind.pending} onChange={(e) => remind.set(e.target.checked)} />
+                  Remind me 24 h before a reset with rewards left
+                </label>
                 <div className="kpi-label">Next reset</div>
                 <div className="eg-next-mode">
                   {eg.next.mode.name} · {WHEN.format(eg.next.closes)}
