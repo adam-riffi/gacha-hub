@@ -1,5 +1,6 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import type { FastifyInstance } from "fastify";
+import type { AdminStatsDto } from "@gacha/shared";
 import { installGame, login, makeApp, resetDb, type Client } from "../test/helpers.js";
 
 const AMBER = "10000021";
@@ -41,6 +42,20 @@ describe("admin uploads + banners/events (routes)", () => {
     // Unique IP per test so the admin write rate-limit bucket never carries over.
     c = await login(app, `10.0.0.${++ipCounter}`);
     await installGame(c, "genshin");
+  });
+
+  // Admin felt light (Georges, 2026-10-10): an overview of the whole app.
+  it("gives the overview: totals, each user with their games and builds, content per game, the latest imports", async () => {
+    const gid = await installGame(c, "genshin");
+    await c.req("POST", `/api/instances/${gid}/characters`, { catalogId: AMBER });
+    await c.req("POST", `/api/instances/${gid}/pulls`, { bannerKey: "character", count: 10 });
+    expect((await c.req("POST", "/api/admin/payload", banners())).status).toBe(200);
+    const r = await c.req<AdminStatsDto>("GET", "/api/admin/stats");
+    expect(r.status).toBe(200);
+    expect(r.json.totals).toMatchObject({ users: 1, profiles: 1, builds: 1, pulls: 10 });
+    expect(r.json.users).toEqual([expect.objectContaining({ games: 1, builds: 1, gameKeys: ["genshin"] })]);
+    expect(r.json.games.find((g) => g.gameKey === "genshin")).toMatchObject({ profiles: 1, feed: true, banners: { active: 1, upcoming: 1 } });
+    expect(r.json.games.find((g) => g.gameKey === "nte")).toMatchObject({ profiles: 0, feed: false });
   });
 
   it("guards admin routes and serves the JSON Schema", async () => {
