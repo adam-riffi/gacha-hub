@@ -6,6 +6,7 @@ import { api } from "../lib/api";
 import { formatRemaining } from "../lib/time";
 import type { InstanceDetail } from "../lib/types";
 import { GameTabs } from "../components/GameTabs";
+import { EndgameHistory } from "../components/hub/EndgameHistory";
 
 const NUM = new Intl.NumberFormat("en-GB");
 const DATE = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" });
@@ -27,8 +28,8 @@ export const premiumOf = (game: GameDefinition) => game.currencies.find((c) => (
 /**
  * A game's Endgame tab (WIREFRAMES.md G2): the premium claimed across the
  * open cycles and the next reset; a card per mode with its cycle window,
- * result, rewards and last six cycles, typed in place; the upcoming resets.
- * History per mode follows in the next PR.
+ * result, rewards and last six cycles, typed in place; each mode's history;
+ * the upcoming resets.
  */
 export function EndgamePage() {
   const { id } = useParams<{ id: string }>();
@@ -88,6 +89,8 @@ export function EndgamePage() {
           ))}
           {eg.modes.length === 0 && <p className="mu">No endgame mode on record for this game yet.</p>}
         </div>
+
+        <EndgameHistory instanceId={id!} game={game} region={region} now={now} results={results} premium={premium} />
 
         <section className="card eg-upcoming" aria-label="Upcoming resets">
           <h3>Upcoming resets</h3>

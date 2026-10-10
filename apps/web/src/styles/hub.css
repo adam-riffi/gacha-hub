@@ -99,6 +99,29 @@ label.act-row { margin: 0; cursor: pointer; color: var(--text); font: 400 15px/1
 .eg-last > span.on { background: var(--accent); }
 .eg-none { font-size: 14px; align-self: center; }
 .eg-upcoming .act-row .mn { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+.eg-history-head { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
+.eg-history-head h3 { margin-bottom: 0; }
+.eg-history-head .sp { flex: 1; }
+.eg-tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; margin: 8px 0 24px; }
+.eg-tile .kpi-value small { text-transform: none; }
+.eg-tile-note { margin-top: 6px; font-size: 13px; }
+.eg-chart { margin: 0 0 24px; }
+.eg-chart svg { display: block; width: 100%; height: auto; }
+.eg-line { fill: none; stroke: var(--accent); stroke-width: 3; stroke-linejoin: round; }
+.eg-full { fill: var(--accent); stroke: var(--accent); stroke-width: 2; }
+.eg-part { fill: var(--bg); stroke: var(--accent); stroke-width: 2; }
+.eg-ring { fill: none; stroke: var(--paper); stroke-width: 1.5; }
+.eg-axis { fill: var(--text-muted); font: 400 13px var(--font-mono); }
+.eg-legend { display: flex; gap: 24px; margin-top: 8px; font-size: 12px; }
+.eg-key { display: inline-block; width: 10px; height: 10px; margin-right: 6px; border: 2px solid var(--accent); border-radius: 50%; vertical-align: -1px; }
+.eg-key.full { background: var(--accent); }
+.eg-table { width: 100%; border-collapse: collapse; }
+.eg-table th { height: 28px; padding: 0 12px 0 0; border-bottom: 1px solid var(--hairline); text-align: left; color: var(--text-muted); font: 400 11px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
+.eg-table td { height: 34px; padding: 0 12px 0 0; border-bottom: 1px solid var(--surface-3); font: 400 15px/1.2 var(--font-body); }
+.eg-table .num { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.eg-table tr:hover td { background: var(--surface-2); }
+.eg-now { margin-left: 10px; font-size: 10px; }
+.eg-dot { display: inline-block; width: 8px; height: 8px; margin-right: 8px; border-radius: 50%; background: var(--accent); }
 .act-cycles .spread { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
 
 @media (max-width: 900px) {
