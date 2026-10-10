@@ -78,4 +78,9 @@ describe("pityState", () => {
     expect(pityState([{ count: 60, fiveStar: true, featured: false }], e).guaranteed).toBe(false);
     expect(pityState([{ count: 60, fiveStar: true, featured: false }], banner("character")).guaranteed).toBe(true);
   });
+
+  it("climbs Endfield's Chartered headhunting 5% a pull after pull 65, as its wiki states (5.8% on the 66th, 10.8% on the 67th)", () => {
+    const chartered = getGame("endfield")!.pullBanners!.find((b) => b.key === "character")!;
+    expect([rateAt(chartered, 65), rateAt(chartered, 66), rateAt(chartered, 67), rateAt(chartered, 80)]).toEqual([0.008, 0.058, 0.108, 1]);
+  });
 });

@@ -14,6 +14,24 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/docs/06-verified-values · #192
+- Done: every value marked `~` in `docs/games/*.md` (55) was checked against the game's wiki: the fandom wikis' API, `endfield.wiki.gg`, and NTE's wiki. 17 are confirmed and now cite their page:
+  - the daily premium income of Genshin, Star Rail, ZZZ and WuWa;
+  - Star Rail's monthly shop and 70 battle-pass levels;
+  - ZZZ's S-Rank rate;
+  - WuWa's echo cost cap;
+  - Endfield's Chartered curve and 120-pull spark;
+  - NTE's Limited Board rates and its 14-day Special Route.
+
+  Two are corrected:
+  - ZZZ's monthly shop is the **Signal Shop**, in the manifest too;
+  - Endfield's soft pity climbs **+5% a pull** after 65 (`softStep: 0.05`), as its wiki states.
+
+  The 38 left say what the wiki leaves out. HANDOFF.md is updated.
+- Tests: written first: the Activities journey names the Signal Shop; the odds test pins Endfield's 5.8% on the 66th pull and 10.8% on the 67th. The manifest-to-sheet test passes. `npm run check` passes: 532 tests and 40 journeys.
+- Scope/decisions: values no wiki states keep their `~` (community soft pity, unfinished versions' lengths, some rewards).
+- Next: nothing agent-side; re-check the `~` values each version.
+
 ## 2026-10-10 · claude · stack/profile/01-progress · #191
 - Done: Profile's "Long-term progress" (WIREFRAMES.md G8) shows the HoYoLAB record card's stats: days active, characters, achievements, endgame, as genshin.py's `RecordCardData` names them. `readRecordCards` returns each game's `stats`. Linking stores them on the profile, and Sync now (or the cron's 6-hourly chronicle pass) refreshes them. They live in the new column `GameInstance.progress` (migration `20261011100000_progress`) and come with the instance. Profile's texts no longer promise "(F11)". Games HoYoLAB doesn't cover say why the card stays empty.
 - Tests: written first: the reader's stats, and the link storing them on the profile. `npm run check` passes: 532 tests and 40 journeys.
@@ -285,9 +303,3 @@ Entry format:
 - Tests: written first: `e2e/settings.spec.ts` (read-only HoYoLAB, a UIGF file adds 10 Star Rail warps, export link, a link without its key, notifications, deletion refused for the wrong name); the accessibility sweep already visits `/settings`. Checked at 1440 beside `a5-settings.png`.
 - Scope/decisions: the board's "Daily check-in, automatic" and "Redeem new codes automatically" are left out: ADR 0005 makes linking read-only and asks for a new ADR first (question for Georges); one Export UIGF per game rather than one for all; the Discord bot note left the page.
 - Next: Wuthering Waves' convene link, then HoYoLAB notes.
-
-## 2026-10-10 · claude · stack/f11/05-settings-data · #151
-- Done: `GET /api/imports` (the user's latest 50 imports and syncs, newest first: profile, provider, kind, added, skipped, error) and `DELETE /api/me` (deletes the user and, by cascade, everything they own, once `confirm` matches their username; clears the session cookie), both for Settings (WIREFRAMES.md A5). `clearSessionCookie` is exported.
-- Tests: written first: `account.integration.test.ts` (imports newest first and nobody else's; a wrong confirm keeps the account; the right one removes the user, profiles and links and signs out; sign-in required).
-- Scope/decisions: deletion asks for the username typed back rather than a second click; no grace period (the export is one click away on the same card).
-- Next: the Settings screen on these routes.

@@ -1,6 +1,6 @@
 # Genshin Impact
 
-> Manifest sources (ADR 0004), checked 2026-10-10. `~` marks a value not yet verified against the wiki or an official notice; a field with no value has no source yet and stays out of the manifest. Dates are server-local. Refresh at each version: the version row, Stygian Onslaught's anchor, the battle pass level cap.
+> Manifest sources (ADR 0004), checked 2026-10-10. `~` marks a value not yet verified against the wiki or an official notice (each was checked against the game's wiki on 2026-10-10; those still marked are values it does not state); a field with no value has no source yet and stays out of the manifest. Dates are server-local. Refresh at each version: the version row, Stygian Onslaught's anchor, the battle pass level cap.
 
 | Field | Value | Source |
 | --- | --- | --- |
@@ -14,7 +14,7 @@
 | Endgame | Stygian Onslaught: one season per version, from the version's second Wednesday to the day before the next version (7.1: 30 Sep – 3 Nov 2026); 6 difficulties; 150 Primogems for each of the first three | [Stygian Onslaught](https://genshin-impact.fandom.com/wiki/Stygian_Onslaught) |
 | Battle pass | Gnostic Hymn, 50 levels, weekly cap 10,000 EXP from daily and weekly missions | [Battle Pass](https://genshin-impact.fandom.com/wiki/Battle_Pass) |
 | 30-day pass | Blessing of the Welkin Moon, 30 days, stacks to 180; 90 Primogems a day | [Blessing of the Welkin Moon](https://genshin-impact.fandom.com/wiki/Blessing_of_the_Welkin_Moon) |
-| Premium income | Daily Commissions, 60 Primogems a day ~ | community figure, unverified |
+| Premium income | Daily Commissions, 60 Primogems a day (four commissions at 10, and 20 for reporting back) | [Commission](https://genshin-impact.fandom.com/wiki/Commission) |
 | Gear | Artifacts: Flower (HP), Plume (ATK), Sands (HP%/ATK%/DEF%, Energy Recharge, Elemental Mastery), Goblet (HP%/ATK%/DEF%, Elemental Mastery, a DMG Bonus per element and Physical), Circlet (HP%/ATK%/DEF%, Elemental Mastery, CRIT Rate, CRIT DMG, Healing Bonus); sets of 2 and 4; level 20 | [Artifact/Distribution](https://genshin-impact.fandom.com/wiki/Artifact/Distribution) |
 | Dupes | A character copy raises Constellation by one (to C6); a weapon copy raises Refinement by one (to R5) | [Constellation](https://genshin-impact.fandom.com/wiki/Constellation), [Refinement Rank](https://genshin-impact.fandom.com/wiki/Refinement_Rank) |
 | Art | Enka's UI icons by catalog key (characters, portraits, weapons, artifacts, materials) | [Enka](https://enka.network) |

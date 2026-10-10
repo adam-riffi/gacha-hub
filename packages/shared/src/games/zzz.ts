@@ -96,7 +96,7 @@ export const zzz: GameDefinition = {
   // Sources per value: docs/games/zzz.md.
   manifest: {
     stamina: { currency: "battery", reserve: { currency: "backupBattery", regenPerHour: 60 / 18 } },
-    monthlyShops: [{ key: "signal", name: "Signal Store", day: 1 }],
+    monthlyShops: [{ key: "signal", name: "Signal Shop", day: 1 }],
     // Two 14-day cycles on alternate Fridays.
     endgame: [
       { key: "shiyu", name: "Shiyu Defense", anchor: { cadence: "cycle", start: "2026-10-02", days: 14 }, metric: { label: "S-rank frontiers", max: 5 }, maxPremium: 780 },
