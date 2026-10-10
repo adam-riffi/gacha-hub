@@ -81,6 +81,7 @@ export const zzz: GameDefinition = {
     { key: "character", label: "Exclusive channel", baseRate: 0.006, softPity: 74, hardPity: 90, featuredRate: 0.5, gachaTypes: ["2"] },
     { key: "weapon", label: "W-Engine channel", baseRate: 0.01, softPity: 64, hardPity: 80, featuredRate: 0.75, gachaTypes: ["3"] },
     { key: "standard", label: "Stable channel", baseRate: 0.006, softPity: 74, hardPity: 90, featuredRate: 1, gachaTypes: ["1"] },
+    { key: "bangboo", label: "Bangboo channel", baseRate: 0.01, hardPity: 80, featuredRate: 1, gachaTypes: ["5"], fund: "none" },
   ],
   name: "Zenless Zone Zero",
   shortName: "Zenless",

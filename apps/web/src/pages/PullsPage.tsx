@@ -83,6 +83,11 @@ export function PullsPage() {
     mutationFn: (entryId: string) => api.del(`/api/instances/${id}/pulls/${entryId}`),
     onSuccess: refresh,
   });
+  const hide = useMutation({
+    mutationFn: (hiddenBanners: string[]) => api.put(`/api/instances/${id}`, { hiddenBanners }),
+    onSuccess: () => Promise.all([qc.invalidateQueries({ queryKey: ["instance", id] }), qc.invalidateQueries({ queryKey: ["dashboard"] })]),
+    onError: () => toast("Couldn't save the hidden banners", "err"),
+  });
 
   const game = instance.data && getGame(instance.data.gameKey);
   if (instance.isError || log.isError) return <LoadError what="Pulls" retry={() => Promise.all([instance.refetch(), log.refetch()])} />;
@@ -113,14 +118,16 @@ export function PullsPage() {
   const live = (dash.data?.timeline.banners ?? []).filter(
     (b) => b.gameKey === game.key && b.status === "active",
   );
-  const event = log.data.banners.filter((b) => b.featuredRate < 1);
-  const rest = log.data.banners.filter((b) => b.featuredRate >= 1);
+  const hidden = instance.data.hiddenBanners ?? [];
+  const shown = log.data.banners.filter((b) => !hidden.includes(b.key));
+  const event = shown.filter((b) => b.featuredRate < 1);
+  const rest = shown.filter((b) => b.featuredRate >= 1);
   const card = (b: (typeof event)[number], compact: boolean) => (
     <BannerCard
       key={b.key}
       b={b}
       gameKey={game.key}
-      available={b.key === "standard" ? have.standard : b.key === "weapon" && weaponTickets ? have.weapon : have.limited}
+      available={b.fund === "none" ? 0 : b.fund === "standard" || b.key === "standard" ? have.standard : b.key === "weapon" && weaponTickets ? have.weapon : have.limited}
       live={live.find((l) => l.kind === b.key)}
       units={units}
       unitOf={unitOf}
@@ -128,6 +135,7 @@ export function PullsPage() {
       onAdd={(body) => add.mutate(body)}
       onCalibrate={(body) => calibrate.mutate(body)}
       onUndo={(entryId) => undo.mutate(entryId)}
+      onHide={() => hide.mutate([...hidden, b.key])}
     />
   );
   const drops = log.data.banners
@@ -136,7 +144,8 @@ export function PullsPage() {
   const contested = drops.filter((d) => d.banner.featuredRate < 1 && d.featured !== null);
   // The planner's targets: each event banner's featured 5★, character first, then the
   // wishlisted 5★ not already among them; all share the limited pulls.
-  const planned = event.filter((b) => !(weaponTickets && b.key === "weapon"));
+  // The other event banners (collaborations, Chronicled…) join only while one is running.
+  const planned = event.filter((b) => !(weaponTickets && b.key === "weapon") && (b.key === "character" || b.key === "weapon" || live.some((l) => l.kind === b.key)));
   const running = planned.map((b) => {
     const l = live.find((x) => x.kind === b.key);
     const feat = l?.featured.find((f) => (f.rarity ?? 0) >= 5);
@@ -242,6 +251,18 @@ export function PullsPage() {
       </div>
       <div className="pl-banners">{event.map((b) => card(b, false))}</div>
       {rest.length > 0 && <div className="pl-banners">{rest.map((b) => card(b, true))}</div>}
+      {hidden.length > 0 && (
+        <p className="mn mu pl-hidden">
+          Hidden:{" "}
+          {log.data.banners
+            .filter((b) => hidden.includes(b.key))
+            .map((b) => (
+              <button key={b.key} className="btn ghost" aria-label={`Show ${b.label}`} onClick={() => hide.mutate(hidden.filter((k) => k !== b.key))}>
+                {b.label} · show
+              </button>
+            ))}
+        </p>
+      )}
 
       <div className="pl-bottom">
         <SavingsPlanner targets={targets} forecast={forecast.pulls} star={star} />

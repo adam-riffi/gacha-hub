@@ -64,12 +64,12 @@ describe("history links (ADR 0005)", () => {
     const all = await fetchHistory(genshin, link, 1, new Set(), null, { fetchFn, pauseMs: 0, budgetMs: 10_000 });
     expect(all.records.map((r) => r.id)).toEqual(["105", "104", "103", "102"]);
     expect(all.next).toBeNull();
-    expect(asked).toEqual(["301:0", "301:104", "301:102", "302:0", "200:0"]);
+    expect(asked).toEqual(["301:0", "301:104", "301:102", "302:0", "500:0", "200:0", "100:0"]);
 
     asked.length = 0;
     const again = await fetchHistory(genshin, link, 1, new Set(["104"]), null, { fetchFn, pauseMs: 0, budgetMs: 10_000 });
     expect(again.records.map((r) => r.id)).toEqual(["105"]);
-    expect(asked).toEqual(["301:0", "302:0", "200:0"]);
+    expect(asked).toEqual(["301:0", "302:0", "500:0", "200:0", "100:0"]);
 
     const cut = await fetchHistory(genshin, link, 1, new Set(), null, { fetchFn, pauseMs: 0, budgetMs: 0 });
     expect(cut.records.map((r) => r.id)).toEqual(["105", "104"]);

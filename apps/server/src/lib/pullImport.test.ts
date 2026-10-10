@@ -7,8 +7,8 @@ const rec = (id: string, gachaType: string, time: string, rank = 3, itemId?: str
 
 describe("pullsFromRecords (ADR 0005)", () => {
   it("files each record under the banner whose pity its gacha type feeds, and skips the rest", () => {
-    const { pulls, skipped } = pullsFromRecords(genshin, [rec("1", "301", "2026-09-01T10:00:00Z"), rec("2", "400", "2026-09-01T10:01:00Z"), rec("3", "302", "2026-09-01T10:02:00Z"), rec("4", "200", "2026-09-01T10:03:00Z"), rec("5", "100", "2026-09-01T10:04:00Z")], []);
-    expect(pulls.map((p) => [p.recordId, p.bannerKey])).toEqual([["1", "character"], ["2", "character"], ["3", "weapon"], ["4", "standard"]]);
+    const { pulls, skipped } = pullsFromRecords(genshin, [rec("1", "301", "2026-09-01T10:00:00Z"), rec("2", "400", "2026-09-01T10:01:00Z"), rec("3", "302", "2026-09-01T10:02:00Z"), rec("4", "200", "2026-09-01T10:03:00Z"), rec("5", "100", "2026-09-01T10:04:00Z"), rec("6", "999", "2026-09-01T10:05:00Z")], []);
+    expect(pulls.map((p) => [p.recordId, p.bannerKey])).toEqual([["1", "character"], ["2", "character"], ["3", "weapon"], ["4", "standard"], ["5", "beginner"]]);
     expect(skipped).toBe(1);
   });
 

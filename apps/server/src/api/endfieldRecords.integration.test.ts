@@ -50,12 +50,14 @@ describe("importing Endfield's records link (ADR 0009)", () => {
     const r = await run({ url: link.replace("ef-webview.gryphline.com", "evil.example") });
     expect(r.json).toEqual({ added: 4, skipped: 0, next: null });
     expect(new Set(asked.map((u) => u.host))).toEqual(new Set(["ef-webview.gryphline.com"]));
-    // The Chartered pool paged on from its last record; Beginner and Joint are not asked.
+    // The Chartered pool paged on from its last record; every pool is asked, Joint and Beginner too.
     expect(asked.map((u) => u.searchParams.get("pool_type") ?? "weapon")).toEqual([
       "E_CharacterGachaPoolType_Special",
       "E_CharacterGachaPoolType_Special",
       "weapon",
+      "E_CharacterGachaPoolType_Joint",
       "E_CharacterGachaPoolType_Standard",
+      "E_CharacterGachaPoolType_Beginner",
     ]);
     expect(asked[1]!.searchParams.get("seq_id")).toBe("1288");
     const banners = (await c.req<PullLogDto>("GET", `/api/instances/${gid}/pulls`)).json.banners;

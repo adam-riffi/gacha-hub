@@ -99,6 +99,7 @@ Picture: [`g3-pulls.png`](design/wireframes/g3-pulls.png) · static page: [`g3-p
   - Headline chance with your pulls ("100% chance of Vodyanitsa with your 90 pulls · 48 on average · 68 at most").
   - Actions: +1, +10, Log a 5★, Set pity, Undo.
 - Compact rows for the other banners (Chronicled, Standard).
+- Every banner type the game has shows (beginner, collaboration, Bangboo…); each has a Hide button, and hidden ones wait in a "Hidden" line with a button to show each again. Home leaves hidden ones out of its pity line.
 - **Savings planner:** targets in order, each with its worst case and its chance now and with the forecast.
 - **History:** import (link, UIGF) and export; 5★ list with pity and the 50/50 result.
 

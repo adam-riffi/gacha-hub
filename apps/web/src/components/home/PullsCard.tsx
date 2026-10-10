@@ -55,7 +55,7 @@ export function PullsCard({ games, day = null }: { games: DashGame[]; day?: stri
               </div>
               {!day && pity.length > 0 && (
                 <Link to={`/games/${g.instanceId}/pulls`} className="pull-row-pity mn">
-                  {pity.map((p) => `${p.key.charAt(0).toUpperCase()}${p.key.slice(1)} ${p.pity}/${p.hardPity}${p.guaranteed ? " · guaranteed" : ""}`).join("  ·  ")}
+                  {pity.map((p) => `${p.key.charAt(0).toUpperCase()}${p.key.slice(1).replace("-", " ")} ${p.pity}/${p.hardPity}${p.guaranteed ? " · guaranteed" : ""}`).join("  ·  ")}
                 </Link>
               )}
             </div>

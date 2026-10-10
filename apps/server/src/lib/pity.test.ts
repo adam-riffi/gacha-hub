@@ -84,7 +84,22 @@ describe("game pull rules", () => {
         expect([0.25, 0.5, 0.75, 1]).toContain(b.featuredRate);
       }
     }
-    expect(gameList.find((g) => g.key === "genshin")?.pullBanners?.map((b) => b.key)).toEqual(["character", "weapon", "standard"]);
+    expect(gameList.find((g) => g.key === "genshin")?.pullBanners?.map((b) => b.key)).toEqual(["character", "weapon", "chronicled", "standard", "beginner"]);
+  });
+
+  it("has a banner for every banner type each game's history names, so imports keep them all", () => {
+    const types = (key: string) => getGame(key)!.pullBanners!.map((b) => `${b.key}:${(b.gachaTypes ?? []).join(",")}`);
+    expect(types("genshin")).toEqual(["character:301,400", "weapon:302", "chronicled:500", "standard:200", "beginner:100"]);
+    expect(types("hsr")).toEqual(["character:11", "weapon:12", "collab:21", "collab-weapon:22", "standard:1", "departure:2"]);
+    expect(types("zzz")).toEqual(["character:2", "weapon:3", "standard:1", "bangboo:5"]);
+    expect(types("wuwa")).toEqual(["character:1", "weapon:2", "standard:3", "standard-weapon:4", "novice:5", "beginner:6"]);
+    expect(types("endfield")).toEqual(["character:E_CharacterGachaPoolType_Special", "weapon:weapon", "joint:E_CharacterGachaPoolType_Joint", "standard:E_CharacterGachaPoolType_Standard", "beginner:E_CharacterGachaPoolType_Beginner"]);
+    // The pulls each spends: the standard banner's tickets, or a currency of its own the tracker does not count.
+    const fund = (game: string, key: string) => getGame(game)!.pullBanners!.find((b) => b.key === key)!.fund;
+    expect([fund("genshin", "beginner"), fund("hsr", "departure"), fund("wuwa", "novice"), fund("zzz", "bangboo")]).toEqual(["standard", "standard", "standard", "none"]);
+    // Endfield's Joint banners keep their own pity; Star Rail's Departure Warp is certain by 50.
+    expect(getGame("endfield")!.pullBanners!.find((b) => b.key === "joint")!.pityPerPool).toBe(true);
+    expect(getGame("hsr")!.pullBanners!.find((b) => b.key === "departure")!.hardPity).toBe(50);
   });
 
   it("counts only the newest banner's pulls where each banner keeps its own pity (Endfield's Arsenal)", () => {

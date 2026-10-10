@@ -127,7 +127,7 @@ export async function registerGameRoutes(app: FastifyInstance) {
     async (req, reply) => {
       const gi = await loadInstance(req.user!.id, req.params.id);
       if (!gi) return reply.code(404).send({ error: "not_found" });
-      const { regionKey, sleeping, uid, accountLevel, worldLevel, kpiTargets } = updateInstanceInput.parse(req.body);
+      const { regionKey, sleeping, uid, accountLevel, worldLevel, kpiTargets, hiddenBanners } = updateInstanceInput.parse(req.body);
       const game = gameOrThrow(gi.gameKey);
       if (regionKey !== undefined && !game.regions.some((r) => r.key === regionKey)) {
         return reply.code(400).send({ error: "unknown_region" });
@@ -138,6 +138,7 @@ export async function registerGameRoutes(app: FastifyInstance) {
       }
       const numeric = numericKpis(game);
       if (kpiTargets && Object.keys(kpiTargets).some((k) => !numeric.has(k))) return reply.code(400).send({ error: "unknown_kpi" });
+      if (hiddenBanners?.some((k) => !game.pullBanners?.some((b) => b.key === k))) return reply.code(400).send({ error: "unknown_banner" });
       const updated = await prisma.gameInstance.update({
         where: { id: gi.id },
         data: {
@@ -147,6 +148,7 @@ export async function registerGameRoutes(app: FastifyInstance) {
           ...(accountLevel !== undefined ? { accountLevel } : {}),
           ...(worldLevel !== undefined ? { worldLevel } : {}),
           ...(kpiTargets !== undefined ? { kpiTargets: kpiTargets === null ? Prisma.DbNull : (kpiTargets as PrismaJson) } : {}),
+          ...(hiddenBanners !== undefined ? { hiddenBanners: hiddenBanners === null ? Prisma.DbNull : [...new Set(hiddenBanners)] } : {}),
         },
       });
       return withGame(instanceDto.parse(updated));

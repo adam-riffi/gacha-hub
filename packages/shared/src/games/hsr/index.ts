@@ -93,7 +93,10 @@ export const hsr: GameDefinition = {
   pullBanners: [
     { key: "character", label: "Character event warp", baseRate: 0.006, softPity: 74, softStep: 0.06, hardPity: 90, featuredRate: 0.5, gachaTypes: ["11"] },
     { key: "weapon", label: "Light cone event warp", baseRate: 0.008, softPity: 66, hardPity: 80, featuredRate: 0.75, gachaTypes: ["12"] },
+    { key: "collab", label: "Collaboration character warp", baseRate: 0.006, softPity: 74, softStep: 0.06, hardPity: 90, featuredRate: 0.5, gachaTypes: ["21"] },
+    { key: "collab-weapon", label: "Collaboration light cone warp", baseRate: 0.008, softPity: 66, hardPity: 80, featuredRate: 0.75, gachaTypes: ["22"] },
     { key: "standard", label: "Stellar warp", baseRate: 0.006, softPity: 74, softStep: 0.06, hardPity: 90, featuredRate: 1, gachaTypes: ["1"] },
+    { key: "departure", label: "Departure warp", baseRate: 0.006, hardPity: 50, featuredRate: 1, gachaTypes: ["2"], fund: "standard" },
   ],
   name: "Honkai: Star Rail",
   shortName: "Star Rail",

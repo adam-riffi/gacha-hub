@@ -31,6 +31,7 @@ export function BannerCard(props: {
   onAdd: (body: AddBody) => void;
   onCalibrate: (body: CalibrateBody) => void;
   onUndo: (entryId: string) => void;
+  onHide: () => void;
 }) {
   const { b, live, available } = props;
   const [mode, setMode] = useState<"five" | "set" | null>(null);
@@ -52,6 +53,7 @@ export function BannerCard(props: {
       {b.recent[0] && (
         <button className="btn ghost" title="Delete the latest entry" onClick={() => props.onUndo(b.recent[0]!.id)}>Undo</button>
       )}
+      <button className="btn ghost" title="Hide this banner type from Pulls and Home" onClick={props.onHide}>Hide</button>
     </div>
   );
   const forms = (
