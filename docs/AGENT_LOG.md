@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f11/13-roster · #166
+- Done: the chronicle's roster (ADR 0005): shared `rosterRequest` (Genshin's `character/list`, a POST; Star Rail's `avatar/info`) and `readRoster` (level, the game's dupe field, the held weapon with its level and dupes, in the build's own fields); `syncRoster` on Sync now and every 6 hours owns each listed character and weapon in the catalog and fills an existing build's empty or synced fields (no build is created: the showcase does that); `Character.synced` now gathers every sync's writes (the roster's and Enka's), so neither forgets the other's fields; `hoyolabGet` can POST.
+- Tests: written first: `roster.test.ts` (requests, both games' readings, a refusal) and a sync journey (Amber and Kafka owned with their weapons; Kafka's typed level kept, eidolon and light cone filled with its name).
+- Scope/decisions: ZZZ has no catalog yet, so its roster is not read; talents wait for skill ids.
+- Next: Enka for Star Rail and ZZZ.
+
 ## 2026-10-10 · claude · stack/f11/12-chronicle · #165
 - Done: the battle chronicle (ADR 0005): shared `chronicleRequests` (each game's endgame records on their hosts: Genshin `spiralAbyss` and `role_combat`, Star Rail `challenge`, `challenge_story` and `challenge_boss`, ZZZ `hadal_info_v2` and `hadal_mem_detail_v2`) and `readChronicle` (stars and floor, the Theater's acts in the schedule running now, Shiyu's S ratings in its first layout, Deadly Assault's stars and score; null without a run); `syncLink` reads it on Sync now and the cron every 6 hours, writing each mode's current cycle as a synced result unless one was typed, capped at the mode's maximum, with an `ImportRun` of kind chronicle; a refusal there (not public) does not stop the link.
 - Tests: written first: `chronicle.test.ts` (requests per game and server, each mode's reading, no run, refusal) and a sync journey (Sync now writes Abyss, MoC and AS, keeps a typed Theater result; the cron reads again after 6 hours, not after 31 minutes). The first sync test now matches Sync now's answer and counts the notes run alone.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: `officialFeed.test.ts` (channel split, featured units per channel up to the `※` notes, periods in server time, store and untitled notices dropped). The saved live feed of 2026-10-10 parsed into its four Signal Searches and six events.
 - Scope/decisions: ZZZ has no catalog yet, so its banners carry no featured units until one exists; the Announcements tab (update notes, store, web events) is skipped as for HSR.
 - Next: F10, starting with ADR 0008 (events as data) and the PR plan.
-
-## 2026-10-10 · claude · stack/f9/04-nte · #123
-- Done: Neverness to Everness (`nte`), scaffolded with `game:new` and filled from the research notes: four servers at 05:00, Character Pixels, Limited Board (no 50/50, hard pity 90), Beyond the Rails every 14 days, Circle Bounty, Riftcrystal Mining Permit, Lost Exchange, Console cartridges, Awakening and Mixing, Hunter Level, version 1.4, a by-hand sheet; accent #1F9BFF. `docs/games/nte.md` cites official notices and marks the rest ~, with the research notes kept. README lists it. #122 merged.
-- Tests: written first: NTE's facts and accent; E2E `nte.spec.ts` adds it from the library and uses Activities, Endgame, Pulls, a build and Home by hand; the conformance suite covers it.
-- Scope/decisions: capability M only (ADR 0005). Beyond the Rails' anchor (30 Sep) is inferred from the version start (~).
-- Next: `stack/f9/05-zzz-feed`.
