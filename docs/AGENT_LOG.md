@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f10/17-gear · #141
+- Done: the gear tab rebuilt from its board (WIREFRAMES.md G6): a head bar with the views (Inventory, Sets, Farm targets for Genshin, which alone has the bag; Sets elsewhere) and Manual; the inventory (filters by set, slot, main stat and where it is; sort by crit value or level; N of M pieces; + Add piece) as cards with slot, CV, set and level, main stat, substats, Low CV on a finished weak piece, and who wears it (Unequip) or Equip on…, Edit, delete; Storage beside it (pieces in the bag and on builds) with a link to Farm targets.
+- Tests: written first: `e2e/gear.spec.ts` (inventory first, a piece added with its substats shows CV 42 and Unequipped, equipped on Amber, storage, the views); the accessibility sweep visits Farm targets. The substat boxes are found by their exact label. Checked at 1440 beside `g6-gear.png`.
+- Scope/decisions: the storage cap is not on record, so there is no 95% warning yet; the GOOD import waits for F11; Farm targets keeps its existing planner inside the new frame.
+- Next: Planner (G7), Profile (G8).
+
 ## 2026-10-10 · claude · stack/f10/16-sheet · #140
 - Done: the character sheet rebuilt from its board (WIREFRAMES.md G5), one layout for every game read from its manifest: the splash art (Change art) beside the identity (← Characters, build status, Save, Delete build; name with rarity, element, weapon type, dupe badge, level), KPI tiles for the role with a role picker, the Character card (level, ascension pips, dupes), the skills card in the game's word (now → the Plan farming target), the Weapon card (name from the catalog, level, dupes), combat stats; below, the gear block in the game's shape (set, main stat, level, four substats, crit value per piece, FARM on off-set pieces), Plan farming, and the game's own sheet under "More details". Hub tabs show above it.
 - Tests: written first: `sheet.test.ts` (skills and weapon fields per game, ascension pips, crit value per piece, off-set pieces), `e2e/character-sheet.spec.ts` (identity, KPIs, character, skills, weapon, the relic's CV, a level saved across a reload). The accessibility sweep caught an aria-label on the pips; they are an image now. Checked at 1440 beside `g5-character-sheet.png`.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: `e2e/home.spec.ts` (every design panel and none of the old ones; the Dailies card's split tiles, reset chip and labelled gauge; 10 limited warps from 1600 jade; the stamina row and its fill time); the banners, heatmap and axe journeys still pass.
 - Scope/decisions: VIEWING a pinned day and BACK TO TODAY wait for F8's record; Endgame and Expiring soon come with F8/F10; game art with F12. Milestone V's acceptance: Home matches the design at 1920×1204, a scope changes only the accent, axe clean, reduced motion stops transitions and rotation.
 - Next: Milestone D (Prisma 7), then F8.
-
-## 2026-10-09 · claude · stack/v/08-home-data · #100
-- Done: `/api/dashboard` gives each game `stamina` (its regenerating currency projected to now, from `lib/regen.ts`, which took over Genshin's resin projection), `pullLog` (batches of the last six weeks) and `recurring` (own dailies and weeklies against added tasks, matched by title like the restore route). Home's PULL HISTORY shows spent pulls per day or ISO week in the viewer's calendar.
-- Tests: `dashboard.integration.test.ts` (resin projection and time to full, a never-set HSR profile, the pull log in order, the recurring split before and after completions); Genshin's regen tests unchanged.
-- Scope/decisions: No schema change. GAINED waits for F8's daily record. Bucketing happens in the browser so the server stays zone-free.
-- Next: `stack/v/09-home`.

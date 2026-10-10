@@ -1,207 +1,170 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { GENSHIN_ARTIFACT_SLOTS, type CatalogGearSet, type CharacterDto, type GearPieceDto, type StatRow } from "@gacha/shared";
+import { GENSHIN_ARTIFACT_SLOTS, gearPieceCv, type CatalogGearSet, type CharacterDto, type GearPieceDto, type StatRow } from "@gacha/shared";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
 import { assetUrl, communityAssetUrl } from "../lib/assets";
 import { GameIcon } from "./GameIcon";
-import { Labeled, Num, Select, StatList } from "./inputs";
 import { MAIN_STATS, SUBSTATS } from "../games/genshin/Sheet";
 
 type Piece = { setName?: string; slot: string; level?: number; mainStat?: string; substats?: StatRow[] };
 type Row = { key: string; piece: Piece; bagId?: string; build?: { id: string; name: string } };
-type Draft = Required<Omit<Piece, "substats">> & { substats: StatRow[]; id?: string };
+type Draft = { id?: string; setName: string; slot: string; level: number; mainStat: string; substats: StatRow[] };
 
 const SLOTS = GENSHIN_ARTIFACT_SLOTS.map((s) => s.key);
-const SLOT_LABEL = Object.fromEntries(GENSHIN_ARTIFACT_SLOTS.map((s) => [s.key, s.label]));
-const sumStat = (rows: StatRow[] | undefined, stat: string) =>
-  (rows ?? []).filter((r) => r.stat === stat).reduce((n, r) => n + (Number(r.value) || 0), 0);
-/** Crit value: 2 × CRIT Rate + CRIT DMG — the usual quick quality score. */
-const critValue = (p: Piece) => 2 * sumStat(p.substats, "CRIT Rate") + sumStat(p.substats, "CRIT DMG");
+const SLOT_LABEL: Record<string, string> = Object.fromEntries(GENSHIN_ARTIFACT_SLOTS.map((s) => [s.key, s.label]));
 const NEW: Draft = { setName: "", slot: "flower", level: 20, mainStat: "HP", substats: [] };
+/** A finished piece (+16 or more) under this crit value is worth replacing. */
+const LOW_CV = 15;
+const fmt = (v: number) => (Number.isInteger(v) ? String(v) : v.toFixed(1));
 
-/** Every artifact you own — in the bag or on a build — with equip / unequip as a swap. */
-export function GearInventory({
-  instanceId,
-  gameKey,
-  sets,
-  builds,
-}: {
-  instanceId: string;
-  gameKey: string;
-  sets: CatalogGearSet[];
-  builds: CharacterDto[];
-}) {
+/**
+ * The gear inventory (WIREFRAMES.md G6): every piece, in the bag or on a
+ * build, filtered by set, slot, main stat and where it is, sorted by crit
+ * value; each card with its substats, LOW CV when finished and weak, and who
+ * wears it (Unequip) or Equip on…. Pieces are added and edited here.
+ */
+export function GearInventory({ instanceId, gameKey, sets, builds }: { instanceId: string; gameKey: string; sets: CatalogGearSet[]; builds: CharacterDto[] }) {
   const qc = useQueryClient();
   const toast = useToast();
   const [draft, setDraft] = useState<Draft | null>(null);
   const [setFilter, setSetFilter] = useState("");
   const [slotFilter, setSlotFilter] = useState("");
+  const [mainFilter, setMainFilter] = useState("");
   const [where, setWhere] = useState<"all" | "bag" | "equipped">("all");
+  const [sort, setSort] = useState<"cv" | "level">("cv");
 
-  const { data: bag } = useQuery({
-    queryKey: ["gear", instanceId],
-    queryFn: () => api.get<GearPieceDto[]>(`/api/instances/${instanceId}/gear`),
-  });
-  const refresh = () => {
-    qc.invalidateQueries({ queryKey: ["gear", instanceId] });
-    qc.invalidateQueries({ queryKey: ["builds", instanceId] });
-  };
-  const onError = () => toast("Couldn't save the artifact", "err");
-
+  const { data: bag } = useQuery({ queryKey: ["gear", instanceId], queryFn: () => api.get<GearPieceDto[]>(`/api/instances/${instanceId}/gear`) });
+  const refresh = () => Promise.all([["gear", instanceId], ["builds", instanceId], ["characters", instanceId]].map((queryKey) => qc.invalidateQueries({ queryKey })));
+  const onError = () => toast("Couldn't save the piece", "err");
   const save = useMutation({
-    mutationFn: ({ id, ...body }: Draft) =>
-      id ? api.put(`/api/gear/${id}`, body) : api.post(`/api/instances/${instanceId}/gear`, body),
+    mutationFn: ({ id, ...body }: Draft) => (id ? api.put(`/api/gear/${id}`, body) : api.post(`/api/instances/${instanceId}/gear`, body)),
     onSuccess: () => {
       setDraft(null);
-      refresh();
+      void refresh();
     },
     onError,
   });
   const remove = useMutation({ mutationFn: (id: string) => api.del(`/api/gear/${id}`), onSuccess: refresh, onError });
-  const equip = useMutation({
-    mutationFn: (v: { id: string; characterId: string }) => api.post(`/api/gear/${v.id}/equip`, { characterId: v.characterId }),
-    onSuccess: refresh,
-    onError,
-  });
-  const unequip = useMutation({
-    mutationFn: (v: { characterId: string; slot: string }) => api.post(`/api/characters/${v.characterId}/unequip`, { slot: v.slot }),
-    onSuccess: refresh,
-    onError,
-  });
+  const equip = useMutation({ mutationFn: (v: { id: string; characterId: string }) => api.post(`/api/gear/${v.id}/equip`, { characterId: v.characterId }), onSuccess: refresh, onError });
+  const unequip = useMutation({ mutationFn: (v: { characterId: string; slot: string }) => api.post(`/api/characters/${v.characterId}/unequip`, { slot: v.slot }), onSuccess: refresh, onError });
 
-  const pieceIcon = (setName?: string, slot?: string) => {
-    const icons = sets.find((s) => s.name === setName)?.extra?.pieceIcons as Record<string, string> | undefined;
-    return slot ? icons?.[slot] : undefined;
-  };
-
-  const rows: Row[] = [
+  const pieceIcon = (setName?: string, slot?: string) => (slot ? (sets.find((s) => s.name === setName)?.extra?.pieceIcons as Record<string, string> | undefined)?.[slot] : undefined);
+  const all: Row[] = [
     ...(bag ?? []).map((p): Row => ({ key: p.id, piece: p, bagId: p.id })),
     ...builds.flatMap((b) =>
-      Object.entries(((b.doc as { artifacts?: Record<string, Piece> }).artifacts ?? {}))
+      Object.entries((b.doc as { artifacts?: Record<string, Piece> }).artifacts ?? {})
         .filter(([, p]) => p && (p.setName || p.mainStat || p.substats?.length))
         .map(([slot, p]): Row => ({ key: `${b.id}:${slot}`, piece: { ...p, slot }, build: { id: b.id, name: b.name } })),
     ),
-  ]
-    .filter(
-      (r) =>
-        (!setFilter || r.piece.setName === setFilter) &&
-        (!slotFilter || r.piece.slot === slotFilter) &&
-        (where === "all" || (where === "bag") === Boolean(r.bagId)),
-    )
-    .sort((a, b) => critValue(b.piece) - critValue(a.piece));
-
-  const usedSets = [...new Set(rows.map((r) => r.piece.setName).filter(Boolean))] as string[];
+  ];
+  const rows = all
+    .filter((r) => (!setFilter || r.piece.setName === setFilter) && (!slotFilter || r.piece.slot === slotFilter) && (!mainFilter || r.piece.mainStat === mainFilter) && (where === "all" || (where === "bag") === Boolean(r.bagId)))
+    .sort((a, b) => (sort === "cv" ? gearPieceCv(b.piece) - gearPieceCv(a.piece) : (b.piece.level ?? 0) - (a.piece.level ?? 0)));
+  const used = (pick: (p: Piece) => string | undefined) => [...new Set(all.map((r) => pick(r.piece)).filter((v): v is string => Boolean(v)))].sort();
+  const subs = draft ? [...draft.substats, ...Array.from({ length: Math.max(0, 4 - draft.substats.length) }, () => ({ stat: "", value: "" as number | string }))] : [];
+  const setSub = (i: number, patch: Partial<StatRow>) => draft && setDraft({ ...draft, substats: subs.map((s, j) => (j === i ? { ...s, ...patch } : s)).filter((s) => s.stat || s.value !== "") });
 
   return (
-    <>
-      <div className="toolbar">
-        <select aria-label="Set" value={setFilter} onChange={(e) => setSetFilter(e.target.value)}>
-          <option value="">All sets</option>
-          {usedSets.sort().map((s) => <option key={s} value={s}>{s}</option>)}
-        </select>
-        <select aria-label="Slot" value={slotFilter} onChange={(e) => setSlotFilter(e.target.value)}>
-          <option value="">All slots</option>
-          {SLOTS.map((s) => <option key={s} value={s}>{SLOT_LABEL[s]}</option>)}
-        </select>
-        <select aria-label="Where" value={where} onChange={(e) => setWhere(e.target.value as typeof where)}>
-          <option value="all">Bag + equipped</option>
-          <option value="bag">In bag</option>
-          <option value="equipped">Equipped</option>
-        </select>
-        <span className="small muted">sorted by crit value</span>
-        <span style={{ flex: 1 }} />
-        <button className="btn sm primary" onClick={() => setDraft({ ...NEW })}>+ Add artifact</button>
+    <section className="card gr-inventory" aria-label="Inventory">
+      <div className="spread">
+        <h3>Inventory</h3>
+        <span className="row">
+          <span className="mn mu">{rows.length} of {all.length} pieces</span>
+          <button className="btn primary" onClick={() => setDraft({ ...NEW })}>+ Add piece</button>
+        </span>
+      </div>
+      <div className="gr-filters">
+        <label>Set<select value={setFilter} onChange={(e) => setSetFilter(e.target.value)}><option value="">Any</option>{used((p) => p.setName).map((s) => <option key={s}>{s}</option>)}</select></label>
+        <label>Slot<select value={slotFilter} onChange={(e) => setSlotFilter(e.target.value)}><option value="">Any</option>{SLOTS.map((s) => <option key={s} value={s}>{SLOT_LABEL[s]}</option>)}</select></label>
+        <label>Main stat<select value={mainFilter} onChange={(e) => setMainFilter(e.target.value)}><option value="">Any</option>{used((p) => p.mainStat).map((s) => <option key={s}>{s}</option>)}</select></label>
+        <label>Equipped<select value={where} onChange={(e) => setWhere(e.target.value as typeof where)}><option value="all">Any</option><option value="equipped">Equipped</option><option value="bag">In the bag</option></select></label>
+        <label>Sort<select value={sort} onChange={(e) => setSort(e.target.value as typeof sort)}><option value="cv">Crit value</option><option value="level">Level</option></select></label>
       </div>
 
       {draft && (
-        <div className="card" style={{ marginBottom: 16 }}>
-          <h3>{draft.id ? "Edit artifact" : "Add artifact"}</h3>
-          <div className="inv-form">
-            <Labeled label="Set">
-              <Select value={draft.setName} options={sets.map((s) => s.name)} onChange={(v) => setDraft({ ...draft, setName: v ?? "" })} />
-            </Labeled>
-            <Labeled label="Slot">
-              <select
-                aria-label="Slot"
-                value={draft.slot}
-                onChange={(e) => setDraft({ ...draft, slot: e.target.value, mainStat: MAIN_STATS[e.target.value]?.[0] ?? "" })}
-              >
-                {SLOTS.map((s) => <option key={s} value={s}>{SLOT_LABEL[s]}</option>)}
-              </select>
-            </Labeled>
-            <Labeled label="Main stat">
-              <Select value={draft.mainStat} options={MAIN_STATS[draft.slot] ?? []} onChange={(v) => setDraft({ ...draft, mainStat: v ?? "" })} />
-            </Labeled>
-            <Labeled label="Level">
-              <Num value={draft.level} min={0} max={20} onChange={(v) => setDraft({ ...draft, level: v ?? 0 })} />
-            </Labeled>
-          </div>
-          <Labeled label="Substats">
-            <StatList value={draft.substats} options={SUBSTATS} onChange={(rows) => setDraft({ ...draft, substats: rows.slice(0, 4) })} />
-          </Labeled>
-          <div className="row">
-            <button className="btn primary sm" disabled={save.isPending} onClick={() => save.mutate(draft)}>Save</button>
-            <button className="btn ghost sm" onClick={() => setDraft(null)}>Cancel</button>
-          </div>
-        </div>
+        <form
+          className="gr-form"
+          aria-label="Piece"
+          onSubmit={(e) => {
+            e.preventDefault();
+            save.mutate(draft);
+          }}
+        >
+          <label>Set<input list="gr-sets" value={draft.setName} onChange={(e) => setDraft({ ...draft, setName: e.target.value })} /></label>
+          <datalist id="gr-sets">{sets.map((s) => <option key={s.id} value={s.name} />)}</datalist>
+          <label>Slot<select value={draft.slot} onChange={(e) => setDraft({ ...draft, slot: e.target.value, mainStat: MAIN_STATS[e.target.value]?.[0] ?? "" })}>{SLOTS.map((s) => <option key={s} value={s}>{SLOT_LABEL[s]}</option>)}</select></label>
+          <label>Main stat<select value={draft.mainStat} onChange={(e) => setDraft({ ...draft, mainStat: e.target.value })}>{(MAIN_STATS[draft.slot] ?? []).map((m) => <option key={m}>{m}</option>)}</select></label>
+          <label>Level<input type="number" min={0} max={20} value={draft.level} onChange={(e) => setDraft({ ...draft, level: Number(e.target.value) })} /></label>
+          <datalist id="gr-subs">{SUBSTATS.map((s) => <option key={s} value={s} />)}</datalist>
+          {subs.slice(0, 4).map((s, i) => (
+            <span key={i} className="gr-sub">
+              <input aria-label={`Substat ${i + 1}`} list="gr-subs" placeholder={`Substat ${i + 1}`} value={s.stat} onChange={(e) => setSub(i, { stat: e.target.value })} />
+              <input aria-label={`Substat ${i + 1} value`} type="number" step="0.1" value={s.value} onChange={(e) => setSub(i, { value: e.target.value === "" ? "" : Number(e.target.value) })} />
+            </span>
+          ))}
+          <span className="row">
+            <button className="btn primary" type="submit" disabled={save.isPending}>Save</button>
+            <button className="btn ghost" type="button" onClick={() => setDraft(null)}>Cancel</button>
+          </span>
+        </form>
       )}
 
       {rows.length === 0 ? (
-        <div className="card empty">No artifacts yet — add the ones you own, or fill a build's artifact slots.</div>
+        <p className="mu">{all.length ? "No piece matches these filters." : "No pieces yet: add the ones you own, or fill a build's slots on its sheet."}</p>
       ) : (
-        <div className="inv-grid">
+        <div className="gr-grid">
           {rows.map(({ key, piece, bagId, build }) => {
+            const cv = gearPieceCv(piece);
             const icon = pieceIcon(piece.setName, piece.slot);
             return (
-              <div className="card inv-card" key={key}>
-                <div className="set-head">
-                  <GameIcon
-                    src={assetUrl(gameKey, "gear", icon)}
-                    fallback={communityAssetUrl(gameKey, "gear", icon)}
-                    alt={piece.setName || SLOT_LABEL[piece.slot] || piece.slot}
-                    className="set-icon"
-                  />
-                  <div style={{ minWidth: 0, flex: 1 }}>
-                    <div className="set-name inv-name">{piece.setName || "Unknown set"}</div>
-                    <div className="small muted">{SLOT_LABEL[piece.slot] ?? piece.slot} · <strong className="inv-main">{piece.mainStat || "—"}</strong></div>
+              <article className="gr-piece" key={key} aria-label={`${SLOT_LABEL[piece.slot] ?? piece.slot} · ${piece.setName || "unknown set"}`}>
+                <div className="spread">
+                  <span className="kpi-label">{SLOT_LABEL[piece.slot] ?? piece.slot}</span>
+                  <span className="mn">CV {fmt(cv)}</span>
+                </div>
+                <div className="gr-main">
+                  <GameIcon src={assetUrl(gameKey, "gear", icon)} fallback={communityAssetUrl(gameKey, "gear", icon)} alt={piece.setName || "piece"} className="gr-icon" />
+                  <div>
+                    <div className="mn mu">{piece.setName || "Unknown set"} · +{piece.level ?? 0}</div>
+                    <strong>{piece.mainStat || "—"}</strong>
                   </div>
-                  <span className="inv-level">+{piece.level ?? 0}</span>
                 </div>
-                <div className="inv-subs small">
+                <dl className="gr-subs">
                   {(piece.substats ?? []).map((s, i) => (
-                    <span key={i} className={/CRIT/.test(s.stat) ? "inv-crit" : ""}>{s.stat} {s.value}</span>
+                    <div key={i}>
+                      <dt>{s.stat}</dt>
+                      <dd className="mn">{s.value}</dd>
+                    </div>
                   ))}
-                </div>
-                <div className="spread small">
-                  <span className="muted">CV <strong className="inv-cv">{critValue(piece).toFixed(1)}</strong></span>
+                </dl>
+                <div className="gr-foot">
+                  {(piece.level ?? 0) >= 16 && cv < LOW_CV && <span className="badge">Low CV</span>}
                   {build ? (
-                    <span className="row" style={{ gap: 6 }}>
-                      <Link to={`/characters/${build.id}`}>on {build.name}</Link>
-                      <button className="btn ghost sm" onClick={() => unequip.mutate({ characterId: build.id, slot: piece.slot })}>Unequip</button>
-                    </span>
+                    <>
+                      <Link to={`/characters/${build.id}`}>{build.name}</Link>
+                      <span className="ch-sp" />
+                      <button className="btn" onClick={() => unequip.mutate({ characterId: build.id, slot: piece.slot })}>Unequip</button>
+                    </>
                   ) : (
-                    <span className="row" style={{ gap: 6 }}>
-                      <select
-                        aria-label="Equip on"
-                        value=""
-                        onChange={(e) => e.target.value && equip.mutate({ id: bagId!, characterId: e.target.value })}
-                        style={{ width: "auto", padding: "3px 6px" }}
-                      >
+                    <>
+                      <span className="mu">Unequipped</span>
+                      <span className="ch-sp" />
+                      <select aria-label="Equip on" value="" onChange={(e) => e.target.value && equip.mutate({ id: bagId!, characterId: e.target.value })}>
                         <option value="">Equip on…</option>
                         {builds.map((b) => <option key={b.id} value={b.id}>{b.name}</option>)}
                       </select>
-                      <button className="btn ghost sm" onClick={() => setDraft({ ...NEW, ...piece, id: bagId, substats: piece.substats ?? [] } as Draft)}>Edit</button>
-                      <button className="btn ghost sm" onClick={() => remove.mutate(bagId!)}>✕</button>
-                    </span>
+                      <button className="btn ghost" aria-label="Edit" onClick={() => setDraft({ ...NEW, ...piece, setName: piece.setName ?? "", mainStat: piece.mainStat ?? "", level: piece.level ?? 0, id: bagId, substats: piece.substats ?? [] })}>Edit</button>
+                      <button className="btn ghost" aria-label="Delete" onClick={() => remove.mutate(bagId!)}>✕</button>
+                    </>
                   )}
                 </div>
-              </div>
+              </article>
             );
           })}
         </div>
       )}
-    </>
+    </section>
   );
 }
