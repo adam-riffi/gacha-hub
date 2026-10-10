@@ -128,7 +128,7 @@ export function GearSetsPage() {
                   <div className="kpi-value">
                     {total} <small>{total === 1 ? "piece" : "pieces"}</small>
                   </div>
-                  <p className="mu gr-note">{bag?.length ?? 0} in the bag, {equipped} on builds. The game&apos;s cap is not on record yet, so no warning.</p>
+                  <p className="mu gr-note">{bag?.length ?? 0} in bag · {equipped} equipped</p>
                   <button className="btn" onClick={() => setView("plan")}>Farm targets →</button>
                 </>
               );

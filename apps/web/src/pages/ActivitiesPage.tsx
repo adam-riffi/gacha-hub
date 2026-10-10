@@ -106,7 +106,7 @@ function Stamina({ game, instance, projection }: { game: GameDefinition; instanc
       </div>
       <label className="act-remind">
         <input type="checkbox" key={String(remind.on)} defaultChecked={remind.on} disabled={remind.pending} onChange={(e) => remind.set(e.target.checked)} />
-        Remind me when full
+        Remind when full
       </label>
       <div className="act-stamina-body">
         <div className="kpi-value">

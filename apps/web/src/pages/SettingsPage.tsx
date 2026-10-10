@@ -89,7 +89,7 @@ function LinkedAccounts({ links, games }: { links: LinkedAccountDto[]; games: In
       <HoyolabCard link={hoyolab} />
       <article className="st-provider" aria-label="Enka showcase">
         <span className="row"><strong>Enka showcase</strong><span className="tag is-off">No login</span></span>
-        <p className="mu">Public builds by UID, from the characters in your in-game showcase. The UIDs are your profiles'. Fields you changed stay as you set them.</p>
+        <p className="mu">Builds from your showcase</p>
         <div className="st-uids">
           {hoyo.map((g) => (
             <span key={g.id}>
@@ -104,15 +104,15 @@ function LinkedAccounts({ links, games }: { links: LinkedAccountDto[]; games: In
       <div className="st-trio">
         <article className="st-provider" aria-label="Arknights: Endfield">
           <span className="row"><strong>Arknights: Endfield</strong><span className="tag is-off">Link only</span></span>
-          <p className="mu">Pull history comes from the Headhunting records link. The SKPORT account token is never asked for: it can act for your account (ADR 0009).</p>
+          <p className="mu">Records link</p>
         </article>
         <article className="st-provider" aria-label="Wuthering Waves">
           <span className="row"><strong>Wuthering Waves</strong><span className="tag is-off">Link only</span></span>
-          <p className="mu">No public account API. Pull history comes from the history link in the game log.</p>
+          <p className="mu">History link</p>
         </article>
         <article className="st-provider is-manual" aria-label="Neverness to Everness">
-          <span className="row"><strong>Neverness to Everness</strong><span className="tag is-off">Manual</span></span>
-          <p className="mu">Manual entry only: the game's terms forbid third-party tools.</p>
+          <span className="row"><strong>Neverness to Everness</strong><span className="tag is-off">No link</span></span>
+          <p className="mu">Typed by hand</p>
         </article>
       </div>
     </section>
@@ -194,7 +194,7 @@ function HoyolabCard({ link }: { link?: LinkedAccountDto }) {
         <span className="row"><strong>HoYoLAB</strong><span className={`tag ${link?.status === "ok" ? "" : "is-off"}`}>{link ? (link.status === "ok" ? "Connected" : "Needs attention") : "Not linked"}</span></span>
         {link && <span className="mn mu">{link.lastSyncAt ? `last sync ${TIME.format(new Date(link.lastSyncAt))}` : "not synced yet"} · every 30 min</span>}
       </div>
-      <p className="mu">Genshin Impact · Honkai: Star Rail · Zenless Zone Zero: stamina and its reserve, and the daily, read only. The cookie is stored encrypted on the server and never shown again; Gacha Hub never checks in or redeems codes.</p>
+      <p className="mu">Stamina and dailies · read-only</p>
       {link ? (
         <>
           {link.status !== "ok" && <p className="st-bad">HoYoLAB refused the last sync ({link.lastError?.replace(/_/g, " ")}): link again with fresh cookies.</p>}
@@ -426,7 +426,6 @@ function GamesSettings({ games }: { games: InstanceListItem[] }) {
           })}
         </tbody>
       </table>
-      <p className="mu small">An asleep game leaves Home and the reminders, and keeps its data.</p>
     </section>
   );
 }

@@ -51,8 +51,7 @@ export function GoalCard({ t, kids, gi, reward, weekday }: { t: TaskItem; kids: 
       : [t.progress, t.target ?? 0];
   const option = reward?.options[t.choice ?? 0];
   const effect = option?.changes.map((c) => `${c.name} ${stepText(c)}`).join(", ");
-  const source = t.eventId ? "event goal" : kids.length || planned(t.origin) ? "from Plan farming" : items.length ? "checklist" : "manual task";
-  const sub = [short, source, planned(t.origin), reward && `ends ${ENDS.format(new Date(reward.endsAt))}`, !claimed && effect && `when done: ${effect}`].filter(Boolean).join(" · ");
+  const sub = [short, planned(t.origin), reward && `ends ${ENDS.format(new Date(reward.endsAt))}`, !claimed && effect && `→ ${effect}`].filter(Boolean).join(" · ");
 
   return (
     <article className={`tk-card ${open ? "is-open" : ""}`} aria-label={t.title}>

@@ -114,7 +114,7 @@ export function UnitPage() {
                   <span className="badge">{b.buildStatus === "none" ? "Unbuilt" : b.buildStatus}</span>
                 </div>
               ))}
-              {mine.length === 0 && <p className="mu">{owned ? "Owned, no build yet: Start a build above." : "Not owned. Own it to start a build; plan its materials below meanwhile."}</p>}
+              {mine.length === 0 && <p className="mu">{owned ? "No build" : "Not owned"}</p>}
             </section>
             <section className="card" aria-label="Banners">
               <h3>Banners</h3>
@@ -126,8 +126,8 @@ export function UnitPage() {
                   {rules && b.status === "active" && !owned && <span className="mn">{Math.round(featuredWithin(rules, rules.state, available) * 100)}% with your {available} pulls</span>}
                 </div>
               ))}
-              {banners.length === 0 && <p className="mu">On no running or upcoming banner.</p>}
-              <Link to={`/games/${id}/pulls`}>Pulls →</Link> · <Link to="/timeline">Banners and events →</Link>
+              {banners.length === 0 && <p className="mu">None</p>}
+              <Link to={`/games/${id}/pulls`}>Pulls</Link> · <Link to="/timeline">Banners</Link>
             </section>
           </div>
 

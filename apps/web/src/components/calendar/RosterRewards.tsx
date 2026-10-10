@@ -33,7 +33,6 @@ export function RosterRewards({ rewards, onPick }: { rewards: RewardDto[]; onPic
           </div>
         );
       })}
-      <p className="cal-note mu">Character copies raise C, E, M or S by one; event weapons raise refinement.</p>
     </section>
   );
 }

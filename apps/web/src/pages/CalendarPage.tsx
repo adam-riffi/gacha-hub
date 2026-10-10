@@ -412,10 +412,7 @@ export function CalendarPage() {
                                 >
                                   {b.g.name}
                                 </Link>
-                                <span className="mn mu cal-src">
-                                  {/^\d/.test(b.versionName) ? `v${b.versionName}` : b.versionName}{" "}
-                                  · {b.source}
-                                </span>
+                                <span className="mn mu cal-src">{/^\d/.test(b.versionName) ? `v${b.versionName}` : b.versionName}</span>
                               </>
                             )}
                             {row.name && <span className="cal-lane-name">{row.name}</span>}
@@ -465,11 +462,6 @@ export function CalendarPage() {
                   ))}
                 </div>
               </div>
-              <p className="cal-foot mu">
-                Endgame cycles and battle passes are off by default; they live on each game&apos;s
-                Endgame and Activities tabs. <b className="cal-tag">+1 C</b> marks a reward that can
-                update your roster.
-              </p>
             </section>
           ) : view === "month" ? (
             <section className="card cal-month" aria-label="Month">
@@ -509,7 +501,7 @@ export function CalendarPage() {
                   );
                 })}
               </div>
-              <p className="cal-foot mu">▶ starts that day · ■ ends that day, at your time. The layers and the wishlist filter apply here too.</p>
+              <p className="cal-foot mu">▶ starts · ■ ends</p>
             </section>
           ) : (
             <section className="card cal-list" aria-label="List">

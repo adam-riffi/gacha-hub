@@ -135,7 +135,6 @@ export function EndgameHistory({
             <th className="num">{cap(mode.metric.label)}</th>
             <th>Detail</th>
             {mode.maxPremium !== undefined && <th className="num">{premium}</th>}
-            <th className="num">Source</th>
           </tr>
         </thead>
         <tbody>
@@ -155,9 +154,6 @@ export function EndgameHistory({
                   {r.premium === null ? "—" : NUM.format(r.premium)} / {NUM.format(mode.maxPremium)}
                 </td>
               )}
-              <td className="num">
-                <span className="tag">{r.source}</span>
-              </td>
             </tr>
           ))}
         </tbody>
@@ -229,7 +225,6 @@ function ResultsChart({ rows, max, label, premium, offer }: { rows: Rows; max?: 
         <span>
           <i className="eg-key" /> partial
         </span>
-        <span>Point at a cycle for its dates and rewards.</span>
       </figcaption>
     </figure>
   );

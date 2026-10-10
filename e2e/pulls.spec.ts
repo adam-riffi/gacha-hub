@@ -27,12 +27,12 @@ test("Pulls: what you have and what is coming, an event banner's status, pity an
   await expect(banner.getByTestId("pity")).toHaveText("10");
   await expect(curve.locator(".pl-line")).toHaveAttribute("d", shape!);
   await expect(curve).toHaveAttribute("aria-label", /you are at pity 10/);
-  await expect(banner.locator(".pl-legend")).toContainText("All your 30 pulls");
+  await expect(banner.locator(".pl-legend")).toContainText("30 pulls");
 
   // A top-up simulation: what buying more currency would give, on every banner.
   await page.getByLabel("Top-up amount").fill("1600");
   await expect(page.getByRole("region", { name: "Pulls available" })).toContainText("+10 pulls");
-  await expect(banner.locator(".pl-legend")).toContainText("With the top-up: 40 pulls");
+  await expect(banner.locator(".pl-legend")).toContainText("Top-up 40");
   await page.getByLabel("Top-up amount").fill("");
 
   // Standard banners get the full card too.
@@ -101,8 +101,8 @@ test("Pulls for Endfield: a 6★ is the top pull, and the Arsenal spends Arsenal
     const chartered = page.getByRole("region", { name: "Chartered headhunting" });
     await expect(chartered).toContainText("6★ pity");
     await expect(chartered.getByRole("button", { name: "Log a 6★" })).toBeVisible();
-    await expect(chartered).toContainText("Featured by your 10 pulls");
-    await expect(page.getByRole("region", { name: "Arsenal" })).toContainText("Featured by your 20 pulls");
+    await expect(chartered).toContainText("With 10");
+    await expect(page.getByRole("region", { name: "Arsenal" })).toContainText("With 20");
   } finally {
     await page.request.delete(`/api/instances/${id}`);
   }

@@ -10,7 +10,6 @@ export type Unit = { id: string; name: string; icon?: string; kind: "character" 
 export type AddBody = { bannerKey: string; count: number; fiveStarAt?: number; featured?: boolean; catalogId?: string };
 export type CalibrateBody = { bannerKey: string; pity: number; guaranteed: boolean };
 
-const DATE = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" });
 const ENDS = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
 const pct = (v: number) => `${v >= 0.995 && v < 1 ? ">99" : (v * 100).toFixed(v < 0.1 ? 1 : 0)}%`;
 const split = (rate: number) => `${Math.round(rate * 100)}/${100 - Math.round(rate * 100)}`;
@@ -76,13 +75,6 @@ export function BannerCard(props: {
     </span>
   );
 
-  const last = b.fiveStars[0];
-  const lastName = last && (props.unitOf(last.catalogId)?.name ?? `a ${star}`);
-  const reason = !last
-    ? `No ${star} logged on this banner yet.`
-    : last.featured === false
-      ? `You lost the ${split(b.featuredRate)} on ${DATE.format(new Date(last.at))} (${lastName}, pity ${last.pity}), so your next ${star} is the featured one.`
-      : `Your last ${star} was ${lastName} on ${DATE.format(new Date(last.at))} at pity ${last.pity}${hasFeatured && !s.guaranteed ? `: the next is a ${split(b.featuredRate)}` : ""}.`;
   const [worst] = savingsPlan([{ label: target, rules: b, state }], available, 0, "worst");
   const [average] = savingsPlan([{ label: target, rules: b, state }], available, 0, "average");
   const soft = b.softPity !== undefined && s.pity < b.softPity;
@@ -110,7 +102,7 @@ export function BannerCard(props: {
                 {` · ends ${ENDS.format(new Date(Math.min(...running.map((l) => Date.parse(l.endsAt)))))}`}
               </>
             ) : (
-              "no banner of this kind running"
+              "not running"
             )}
           </div>
         </div>
@@ -127,7 +119,6 @@ export function BannerCard(props: {
           />
         </div>
       )}
-      <p className="pl-reason">{reason}</p>
 
       <div className="pl-meter-row">
         <span className="kpi-label">{star} pity</span>
@@ -145,9 +136,9 @@ export function BannerCard(props: {
         <tbody>
           <tr><td>Next pull</td><td className="num">{pct(rateAt(b, s.pity + 1))}</td></tr>
           <tr><td>Next 10 pulls</td><td className="num">{pct(within(10))}</td></tr>
-          {soft && <tr><td>By soft pity (pity {b.softPity})</td><td className="num">{pct(within(b.softPity! - s.pity))}</td></tr>}
-          <tr><td>{hasFeatured ? "Featured" : `A ${star}`} by your {available} pulls</td><td className="num">{pct(featuredWithin(b, state, available))}</td></tr>
-          {extra > 0 && <tr><td>With the top-up ({available + extra} pulls)</td><td className="num">{pct(featuredWithin(b, state, available + extra))}</td></tr>}
+          {soft && <tr><td>By {b.softPity}</td><td className="num">{pct(within(b.softPity! - s.pity))}</td></tr>}
+          <tr><td>With {available}</td><td className="num">{pct(featuredWithin(b, state, available))}</td></tr>
+          {extra > 0 && <tr><td>Top-up {available + extra}</td><td className="num">{pct(featuredWithin(b, state, available + extra))}</td></tr>}
         </tbody>
       </table>
 
@@ -156,9 +147,9 @@ export function BannerCard(props: {
       <div className="pl-headline">
         <span className="kpi-value">{pct(worst!.chance)}</span>
         <span>
-          chance of {hasFeatured ? target : `a ${star}`} with your {available} pulls
-          {extra > 0 && <strong> · {pct(featuredWithin(b, state, available + extra))} with the top-up</strong>}
-          <span className="mn mu"> · {average!.needs} pulls on average · {Number.isFinite(worst!.needs) ? `${worst!.needs} at most` : "no cap"}</span>
+          with {available}
+          {extra > 0 && <strong> · {pct(featuredWithin(b, state, available + extra))} top-up</strong>}
+          <span className="mn mu"> · avg {average!.needs} · max {Number.isFinite(worst!.needs) ? worst!.needs : "—"}</span>
         </span>
       </div>
       {actions}

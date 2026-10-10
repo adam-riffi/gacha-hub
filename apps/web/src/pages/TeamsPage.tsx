@@ -71,7 +71,6 @@ export function TeamsPage() {
         }}
       >
         <h3>Teams</h3>
-        <span className="mu">parties of {size}, from the units you own first</span>
         <span className="ch-sp" />
         <input aria-label="New team name" placeholder="New team name" maxLength={80} value={name} onChange={(e) => setName(e.target.value)} />
         <button className="btn primary" type="submit" disabled={!name.trim() || create.isPending}>
