@@ -88,6 +88,11 @@
 /* Profile (WIREFRAMES.md G8) */
 .pf-page { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: start; }
 .pf-rows { margin: 8px 0 0; }
+.pf-goals { list-style: none; margin: 8px 0 0; padding: 0; }
+.pf-goals li { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 36px; border-top: 1px solid var(--surface-3); }
+.pf-goals label { margin: 0; font: inherit; letter-spacing: normal; text-transform: none; color: var(--text); }
+.pf-add { display: flex; gap: 8px; margin-top: 12px; }
+.pf-add input { flex: 1; }
 .pf-rows > div { display: flex; align-items: center; gap: 12px; min-height: 44px; border-top: 1px solid var(--surface-3); }
 .pf-rows .kpi-label { flex: 0 0 130px; }
 .pf-val { flex: 1; color: var(--text); }

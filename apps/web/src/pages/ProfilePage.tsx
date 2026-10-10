@@ -9,7 +9,7 @@ import { useReminderFlag, type ReminderFlag } from "../lib/reminder";
 import { GameTabs } from "../components/GameTabs";
 import { masked } from "../components/hub/HubHeader";
 import { ReminderControl } from "../components/ReminderControl";
-import type { InstanceDetail, ReminderRule } from "../lib/types";
+import type { InstanceDetail, ReminderRule, TaskItem } from "../lib/types";
 
 const DATE = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
 const TIME = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit" });
@@ -49,28 +49,7 @@ export function ProfilePage() {
       <div className="pf-page">
         <Account instance={instance.data} game={game} />
         <Passes instance={instance.data} game={game} />
-        <section className="card pf-progress" aria-label="Long-term progress">
-          <div className="spread">
-            <h3>Long-term progress</h3>
-            <span className="tag">{instance.data.progress?.length ? "From HoYoLAB" : "Optional"}</span>
-          </div>
-          {instance.data.progress?.length ? (
-            <div className="pf-rows">
-              {instance.data.progress.map((s) => (
-                <div key={s.name}>
-                  <span className="kpi-label">{s.name}</span>
-                  <span className="mn">{s.value}</span>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="mu">
-              {HOYOLAB_GAMES.includes(game.key)
-                ? "Link HoYoLAB in Settings and the record card's stats (days active, achievements…) fill in here. Nothing to type."
-                : "This game's account records cannot be read, so this stays empty. Nothing to type."}
-            </p>
-          )}
-        </section>
+        <LongTerm instance={instance.data} game={game} />
         <GameReminders instance={instance.data} game={game} />
         <Wallet instance={instance.data} game={game} />
         <Status instance={instance.data} game={game} />
@@ -350,6 +329,97 @@ function Wallet({ instance, game }: Props) {
           );
         })}
       </div>
+    </section>
+  );
+}
+
+/**
+ * Long-term progress (G8): the HoYoLAB record card's stats when linked, then
+ * this game's hand-typed goals, one kind for exploring, chests, events and the
+ * like (Georges, 2026-10-10), added and ticked here. They are the "gameplay"
+ * goals on Home and Tasks.
+ */
+function LongTerm({ instance, game }: Props) {
+  const qc = useQueryClient();
+  const toast = useToast();
+  const [title, setTitle] = useState("");
+  const tasks = useQuery({ queryKey: ["tasks"], queryFn: () => api.get<TaskItem[]>("/api/tasks") });
+  // Hand-typed: no plan, gear or event behind it, and not a plan's material step.
+  const goals = (tasks.data ?? []).filter(
+    (t) => t.scope === "game" && t.refId === instance.id && t.type === "goal" && !t.origin && !t.eventId && !t.parentId && !t.materialId && !t.backlog,
+  );
+  const refresh = () => qc.invalidateQueries({ queryKey: ["tasks"] });
+  const add = useMutation({
+    mutationFn: () => api.post("/api/tasks", { scope: "game", refId: instance.id, type: "goal", title: title.trim(), target: 1, progress: 0 }),
+    onSuccess: () => {
+      setTitle("");
+      void refresh();
+    },
+    onError: () => toast("Goal not added", "err"),
+  });
+  // A tick shows at once; the list refetches after.
+  const [ticked, setTicked] = useState<Record<string, boolean>>({});
+  const tick = useMutation({
+    mutationFn: (t: { id: string; progress: number }) => api.post(`/api/tasks/${t.id}/progress`, { progress: t.progress }),
+    onSettled: () => void refresh(),
+  });
+  const stats = instance.progress ?? [];
+  return (
+    <section className="card pf-progress" aria-label="Long-term progress">
+      <div className="spread">
+        <h3>Long-term progress</h3>
+        {stats.length > 0 && <span className="tag">From HoYoLAB</span>}
+      </div>
+      {stats.length > 0 && (
+        <div className="pf-rows">
+          {stats.map((s) => (
+            <div key={s.name}>
+              <span className="kpi-label">{s.name}</span>
+              <span className="mn">{s.value}</span>
+            </div>
+          ))}
+        </div>
+      )}
+      {goals.length > 0 ? (
+        <ul className="pf-goals">
+          {goals.map((t) => {
+            const target = t.target ?? 1;
+            return (
+              <li key={t.id}>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={ticked[t.id] ?? t.progress >= target}
+                    onChange={(e) => {
+                      setTicked({ ...ticked, [t.id]: e.target.checked });
+                      tick.mutate({ id: t.id, progress: e.target.checked ? target : 0 });
+                    }}
+                  />{" "}
+                  {t.title}
+                </label>
+                {target > 1 && <span className="mn mu">{t.progress} / {target}</span>}
+              </li>
+            );
+          })}
+        </ul>
+      ) : (
+        <p className="mu">
+          {stats.length || !HOYOLAB_GAMES.includes(game.key) ? "" : "Link HoYoLAB in Settings for the record card's stats. "}
+          Exploring, chests, events: add each as a goal.
+        </p>
+      )}
+      <form
+        className="pf-add"
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (title.trim()) add.mutate();
+        }}
+      >
+        <input aria-label="New long-term goal" placeholder="Finish exploring…" maxLength={200} value={title} onChange={(e) => setTitle(e.target.value)} />
+        <button className="btn" type="submit" disabled={!title.trim() || add.isPending}>
+          Add goal
+        </button>
+      </form>
     </section>
   );
 }
