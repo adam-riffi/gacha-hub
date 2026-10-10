@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { assetPath, communityArtUrl } from "@gacha/shared";
+import { artJobs, assetPath, catalogSchema, communityArtUrl, genshin, getGame, splashKey } from "@gacha/shared";
 
 describe("communityArtUrl", () => {
   it("serves Genshin icons from Enka under the catalog key", () => {
@@ -40,5 +40,32 @@ describe("assetPath", () => {
   it("does not request source-internal paths that no server hosts", () => {
     expect(assetPath("/assets", "wuwa", "character", "/Game/Aki/UI/UIResources/Common/Image/IconRoleHead80/T_IconRoleHead80_7_UI.T_IconRoleHead80_7_UI")).toBeNull();
     expect(assetPath("/assets", "wuwa", "character", undefined)).toBeNull();
+  });
+});
+
+describe("splash art (ADR 0006)", () => {
+  it("is its own kind: Genshin's gacha art by the character's key, Star Rail's large art", () => {
+    expect(splashKey("genshin", "UI_AvatarIcon_Ambor")).toBe("UI_Gacha_AvatarImg_Ambor");
+    expect(splashKey("hsr", "1005")).toBe("1005");
+    expect(communityArtUrl("genshin", "splash", splashKey("genshin", "UI_AvatarIcon_Ambor"))).toBe("https://enka.network/ui/UI_Gacha_AvatarImg_Ambor.png");
+    expect(communityArtUrl("hsr", "splash", "1005")).toBe("https://sr.yatta.moe/hsr/assets/UI/avatar/large/1005.png");
+  });
+});
+
+describe("artJobs (ADR 0006)", () => {
+  it("lists each catalog image a game's mirror fetches: its kind, source and path in our store, once each", async () => {
+    const jobs = artJobs(getGame("genshin")!, catalogSchema.parse(await genshin.loadCatalog!()));
+    const amber = (kind: string) => jobs.find((j) => j.kind === kind && j.key.endsWith("Ambor"));
+    expect(amber("character")).toEqual({ kind: "character", key: "UI_AvatarIcon_Ambor", source: "https://enka.network/ui/UI_AvatarIcon_Ambor.png", path: "genshin/character/UI_AvatarIcon_Ambor.webp" });
+    expect(amber("splash")).toEqual({ kind: "splash", key: "UI_Gacha_AvatarImg_Ambor", source: "https://enka.network/ui/UI_Gacha_AvatarImg_Ambor.png", path: "genshin/splash/UI_Gacha_AvatarImg_Ambor.webp" });
+    expect(jobs.some((j) => j.kind === "weapon" && j.key === "UI_EquipIcon_Bow_Crowfeather")).toBe(true);
+    // Every piece of a set, not only the set's icon.
+    expect(jobs.filter((j) => j.kind === "gear" && j.key.startsWith("UI_RelicIcon_15003_")).map((j) => j.key).sort()).toEqual(["UI_RelicIcon_15003_1", "UI_RelicIcon_15003_2", "UI_RelicIcon_15003_3", "UI_RelicIcon_15003_4", "UI_RelicIcon_15003_5"]);
+    expect(new Set(jobs.map((j) => j.path)).size).toBe(jobs.length);
+    expect(jobs.every((j) => j.source.startsWith("https://"))).toBe(true);
+  });
+
+  it("has nothing for a game without art sources", () => {
+    expect(artJobs(getGame("wuwa")!, { gameKey: "wuwa", source: "x", characters: [{ id: "1", key: "a", name: "A", rarity: 5, icon: "/Game/Aki/UI/x", talents: { keys: [], costs: [] }, ascension: [], maxLevel: 90 }] as never, weapons: [], gear: [], materials: [] })).toEqual([]);
   });
 });
