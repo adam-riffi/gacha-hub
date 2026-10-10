@@ -13,14 +13,14 @@ type DashGame = DashboardData["games"][number];
 
 /** Why a game has no catalog yet (ADR 0004: capabilities are derived; this only says why one is missing). */
 const NO_CATALOG: Record<string, string> = { zzz: "no cost data yet", nte: "no open dataset" };
-/** The live-data route each game will get in F11 (ADR 0005); none is live yet. */
-const LIVE_PLAN: Record<string, string> = {
-  genshin: "HoYoLAB · link",
-  hsr: "HoYoLAB · link",
-  zzz: "HoYoLAB · link",
-  wuwa: "history link only",
-  nte: "terms forbid tools",
-  endfield: "SKPORT token · pulls",
+/** Each game's live data since F11 (ADR 0005): what syncs, or why nothing does. Endfield's records link waits on ADR 0009. */
+const LIVE: Record<string, [live: boolean, what: string]> = {
+  genshin: [true, "HoYoLAB · history link · Enka"],
+  hsr: [true, "HoYoLAB · history link · Enka"],
+  zzz: [true, "HoYoLAB · history link"],
+  wuwa: [true, "convene link"],
+  nte: [false, "terms forbid tools"],
+  endfield: [false, "records link · ADR 0009"],
 };
 
 const offset = (minutes: number) => `UTC${minutes >= 0 ? "+" : "−"}${Math.abs(minutes / 60)}`;
@@ -100,7 +100,7 @@ export function LibraryPage() {
               <dt><span className="badge">Catalog</span></dt>
               <dd>Characters, weapons, gear and material costs from an open dataset. Adds ownership, build sheets and planning.</dd>
               <dt><span className="badge todo">Live data</span></dt>
-              <dd>Sync and imports. Items fill in and tick themselves (AUTO). Coming with F11.</dd>
+              <dd>Sync and imports: HoYoLAB, pull-history links, Enka showcases. Items fill in and tick themselves (AUTO); what you change by hand stays yours.</dd>
             </dl>
           </section>
           <section className="card" aria-label="Add a game">
@@ -143,6 +143,7 @@ function GameRow(props: {
   // The game's daily plus the daily tasks you added, as on Home.
   const done = g.recurring.daily.done + g.recurring.dailyTasks.done;
   const total = g.recurring.daily.total + g.recurring.dailyTasks.total;
+  const [live, liveWhat] = LIVE[g.gameKey] ?? [false, undefined];
   const today = total === 0 ? "No dailies" : `Dailies ${done}/${total}${done >= total ? " · done" : g.nextReset ? ` · reset ${formatRemaining(g.nextReset)}` : ""}`;
   return (
     <article
@@ -183,9 +184,9 @@ function GameRow(props: {
           <span className="kpi-label">Catalog</span>
           <span>{g.catalogCharacters === null ? `— ${NO_CATALOG[g.gameKey] ?? "no dataset yet"}` : `✓ ${g.catalogCharacters} characters`}</span>
         </div>
-        <div className="lib-cell is-gap" title="Live data arrives with F11">
+        <div className={`lib-cell ${live ? "" : "is-gap"}`}>
           <span className="kpi-label">Live data</span>
-          <span>— {LIVE_PLAN[g.gameKey] ?? "not planned"}</span>
+          <span>{live ? `✓ ${liveWhat}` : `— ${liveWhat ?? "not planned"}`}</span>
         </div>
       </div>
       <div className="lib-today">

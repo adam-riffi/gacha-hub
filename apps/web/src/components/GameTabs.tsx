@@ -12,6 +12,9 @@ const GEAR_LABEL: Record<string, string> = {
   wuwa: "Echoes",
 };
 
+/** Games whose catalog lists characters only (Endfield's public tables have no gear sets or costs): no Gear or Planner tab. */
+const CHARACTERS_ONLY = new Set(["endfield"]);
+
 /** The game hub's header and its tabs, on every screen of the hub. */
 export function GameTabs({
   instanceId,
@@ -30,7 +33,7 @@ export function GameTabs({
     // The board's order (WIREFRAMES.md Game hub): Pulls, then Characters (which replaces Ownership).
     ...(gameKey && getGame(gameKey)?.pullBanners?.length ? [{ key: "pulls" as const, label: "Pulls", to: `/games/${instanceId}/pulls` }] : []),
     { key: "characters", label: "Characters", to: `/games/${instanceId}/characters` },
-    ...(hasCatalog
+    ...(hasCatalog && !CHARACTERS_ONLY.has(gameKey ?? "")
       ? ([
           { key: "gear", label: (gameKey && GEAR_LABEL[gameKey]) || "Gear", to: `/games/${instanceId}/gear` },
           { key: "planner", label: "Planner", to: `/games/${instanceId}/planner` },

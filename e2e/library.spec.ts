@@ -15,6 +15,9 @@ test("Games library: capabilities, today, sleep, and moving a game in the strip 
   await expect(hsr).toContainText(/\d+ characters/);
   await expect(hsr).toContainText(/Dailies \d+\/\d+/);
   await expect(page.getByRole("article", { name: "Zenless Zone Zero" })).toContainText("no cost data yet");
+  // Live data as F11 shipped it (ADR 0005), no longer a plan.
+  await expect(hsr).toContainText("✓ HoYoLAB · history link · Enka");
+  await expect(page.getByRole("article", { name: "Zenless Zone Zero" })).toContainText("✓ HoYoLAB · history link");
 
   // Moving the last game up swaps it with the one before, in the strip too.
   const strip = page.getByRole("navigation", { name: "Scope" }).locator(".strip-games").getByRole("link");

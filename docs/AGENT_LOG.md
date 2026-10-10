@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/ui/02-real-capabilities · #175
+- Done: the hub and the Library show what each game really has. Endfield's hub drops the Gear and Planner tabs, since its catalog lists characters only (PROJECT-GUIDE §14.2 item 6). The Library's Live data cells show what F11 shipped (HoYoLAB, history links, Enka, WuWa's convene link) instead of plans, and its Capabilities card no longer says "Coming with F11".
+- Tests: written first: Endfield's tabs are Activities, Endgame, Pulls, Characters and Profile; Star Rail's and ZZZ's live-data cells. `npm run check` passes: 502 tests and 38 journeys.
+- Scope/decisions: `CHARACTERS_ONLY` in GameTabs names Endfield. Remove it when Endfield's catalog gets gear and costs.
+- Next: the docs refresh and the handoff.
+
 ## 2026-10-10 · claude · stack/ui/01-error-states · #174
 - Done: one shared error block, `LoadError`, with what failed and a Try again button. It replaces the eight inline copies (Calendar, character sheet, Characters, Library, Planner, Profile, Pulls, Tasks), with the same text. It is new on Home, Gear, Materials and Owned units: Home used to show "No games yet" when `/api/dashboard` failed, and the game pages stayed on "Loading…" forever. This was PROJECT-GUIDE §14.2 item 2.
 - Tests: written first: an E2E journey fails `/api/dashboard`, sees the error, unroutes and recovers with Try again. It then checks the error on the gear, materials and ownership pages. `npm run check` passes: 501 tests and 38 journeys.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: `instances.integration.test.ts` (order kept for the strip and the dashboard, a new game last, an incomplete order refused).
 - Scope/decisions: the order lives on the server, so it follows the user across devices.
 - Next: `stack/f10/10-library` (A2 rebuilt, with drag to reorder).
-
-## 2026-10-10 · claude · stack/f10/08-reminders-panel · #132
-- Done: Tasks' right column from A3. Reminders: each rule (1 h before reset, the 21:00 digest, stamina full, endgame reset with rewards left, 30-day pass ends, domains today) with the games it is on for (ALL, their names, OFF), toggled across the games in scope; quiet hours edited for all of them. Preview: the DM each game with reminders on would send now (`GET /api/reminders/preview`, the tick's own composition, `dmParts` shared with it), and Send a test DM (`POST /api/reminders/test`; says when the bot is not set up).
-- Tests: written first: `reminderPreview.integration.test.ts` (the preview text per game; the test DM refused without the bot, sent with it), `e2e/tasks.spec.ts` (a rule turned on shows ALL, the preview, quiet hours saved, the test DM's reason).
-- Scope/decisions: the preview shows each game's own DM, which is what the tick sends (the board drew one combined digest); "Banner ends in 24 h, wishlisted units only" waits for `WishlistItem`; game-specific rules (Parametric Transformer) and "New rule" are left out.
-- Next: Games library (A2), then Pulls (G3).
