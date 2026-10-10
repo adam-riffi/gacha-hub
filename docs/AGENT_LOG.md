@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f11/08-hoyolab-link · #154
+- Done: HoYoLAB linking (ADR 0005): shared `readRecordCards` (Genshin, Star Rail and ZZZ roles with their region; not logged in, not public, refused) and `hoyolabNotesUrl` (each game's notes host and server per region, from genshin.py); server `dsHeader` (time, six letters, salted MD5 with the overseas salt) and `hoyolabGet` (signed, read-only GET with the cookie); `POST /api/links/hoyolab` (`ltuid` and `ltoken` only, never `cookie_token_v2`; checked against the record cards, sealed for "userId:hoyolab", one account per user, the profiles it plays get their UID and level where none was typed; 503 `linking_off` without `LINK_SECRET_KEY`). PROJECT-GUIDE lists it and the account routes.
+- Tests: written first: `hoyolab.test.ts` (the DS header, cards read and errors named, notes URLs), `hoyolab.integration.test.ts` (the signed card request, nothing secret in the answer, the row sealed and opening to the cookie, the profile filled; a refused cookie keeps nothing; off without the key).
+- Scope/decisions: endpoints, salt and server names follow genshin.py's source; fixtures follow those shapes until a real response is recorded; notes sync is the next PR.
+- Next: real-time notes sync (Sync now and the cron, 30 min, a lock per account), then the HoYoLAB card in Settings.
+
 ## 2026-10-10 · claude · stack/f11/07-convene · #153
 - Done: Wuthering Waves' convene link (ADR 0005): shared `readConveneLink` (player, server, record and pool ids from after the #, the host ignored), `conveneRequest` (POST to `gmserver-api.aki-game2.net`, `.com` for CN), `readConvenePage` (oldest first, in UTC; each pull an id from its time, banner type and place in that second, since the game gives none); server `fetchConvene` (each tracked type once); the history-link route takes WuWa links (`no_convene_ids` without their ids); `pullBanners[].gachaTypes` for WuWa (1, 2, 3), sourced in its sheet; Settings offers Paste link for it.
 - Tests: written first: `convene.test.ts` (the link, the request, ids and order, errors, one request per type), `convene.integration.test.ts` (10 pulls from the game's host only, pity and the 5★ Jiyan, a re-import adds nothing, a link without ids refused).
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: `passView`, `passes.integration.test.ts`, the Activities journey's pass steps.
 - Scope/decisions: values typed before the current version or week read as 0 instead of carrying stale.
 - Next: `10-endgame` (CycleResult routes, the Endgame tab per G2, the 24 h reminder).
-
-## 2026-10-10 · claude · stack/f8/08-activities · #113
-- Done: the hub's Activities tab per G1, first and the landing (old overview last): stamina with meter, full-at and reserve; Daily, Weekly and Monthly cards with resets, ticking and adding (monthly picks a shop or monthly mode); cycles with reset or close chips; version end, battle pass on record, running events. Reserves became currencies (manifest points at the key). #112 merged.
-- Tests: written first: reserves as currencies in the conformance suite; E2E `activities.spec.ts`; the smoke journey opens Overview for the domains.
-- Scope/decisions: AUTO rows, per-item progress, world level, Fragile Resin and the Spend-it link are left out; pass level, results and remind-when-full come next.
-- Next: `09-passes` (PassState routes; battle pass level, weekly XP, levels a day; 30-day pass days left).
