@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f11/12-chronicle · #165
+- Done: the battle chronicle (ADR 0005): shared `chronicleRequests` (each game's endgame records on their hosts: Genshin `spiralAbyss` and `role_combat`, Star Rail `challenge`, `challenge_story` and `challenge_boss`, ZZZ `hadal_info_v2` and `hadal_mem_detail_v2`) and `readChronicle` (stars and floor, the Theater's acts in the schedule running now, Shiyu's S ratings in its first layout, Deadly Assault's stars and score; null without a run); `syncLink` reads it on Sync now and the cron every 6 hours, writing each mode's current cycle as a synced result unless one was typed, capped at the mode's maximum, with an `ImportRun` of kind chronicle; a refusal there (not public) does not stop the link.
+- Tests: written first: `chronicle.test.ts` (requests per game and server, each mode's reading, no run, refusal) and a sync journey (Sync now writes Abyss, MoC and AS, keeps a typed Theater result; the cron reads again after 6 hours, not after 31 minutes). The first sync test now matches Sync now's answer and counts the notes run alone.
+- Scope/decisions: endpoints and fields from genshin.py's source; Shiyu's newer layout and Stygian Onslaught are not read yet; premium earned is not derived from stars (it stays as typed).
+- Next: the roster from the chronicle (owned characters, level, dupes), then Enka for Star Rail and ZZZ.
+
 ## 2026-10-10 · claude · stack/f10b/05-retire-equipment · #163
 - Done: the Equipment tab is gone, its parts in the screens of the board: each weapon in Characters' Weapons view has Farm (levels, Preview of the materials, Farm creates the tasks; `components/characters/WeaponFarm.tsx`), and each set in the Gear tab's Sets view has Farm set (a goal of one step per piece). `EquipmentPage` is removed; `/games/:id/equipment` lands on Characters. The hub's tabs now match the board: Activities, Endgame, Pulls, Characters, the game's gear, Planner, Profile.
 - Tests: written first: the Weapons journey farms Patience Is All You Need (Preview shows the materials) and follows Equipment's old link to Characters; a Gear journey farms a Star Rail set from Sets and finds no Equipment tab; the accessibility sweep no longer visits Equipment. Checked at 1440 on the dev account.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: NTE's facts and accent; E2E `nte.spec.ts` adds it from the library and uses Activities, Endgame, Pulls, a build and Home by hand; the conformance suite covers it.
 - Scope/decisions: capability M only (ADR 0005). Beyond the Rails' anchor (30 Sep) is inferred from the version start (~).
 - Next: `stack/f9/05-zzz-feed`.
-
-## 2026-10-10 · claude · stack/f9/03-game-new · #122
-- Done: `conformance(game, sheet)` in `packages/shared/src/games/conformance.ts` (servers and cadences, stamina, shops, endgame, passes, version, gear and dupes against the build schema, KPIs, art, pull odds, names in the reference sheet); `npm run game:new -- <key> "<Name>"` (`scripts/game-new.mjs`) scaffolds a module whose placeholder manifest passes it, a reference sheet, a web sheet stub, and registers the game in both registries. AGENTS.md command row. #121 merged.
-- Tests: written first: `gameNew.test.ts` (files and registry edits; the scaffolded module, written where it would live, passes the suite; malformed keys refused) and the suite over every game plus a broken manifest's report. A real run (a throwaway "demo") typechecked, linted and passed all tests before removal; the facts tests now pin the games they name.
-- Scope/decisions: the scaffold registers the game at once (capability M) with placeholders marked TODO(source).
-- Next: `stack/f9/04-nte`.
