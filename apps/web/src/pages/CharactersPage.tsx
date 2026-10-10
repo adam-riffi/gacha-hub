@@ -241,6 +241,7 @@ export function CharactersPage() {
             <span className="badge todo">Wishlist {weaponRows.filter((r) => r.wished).length}</span>
           </div>
           <WeaponsTable
+            instanceId={id!}
             rows={weaponsShown.slice(0, shown * 2)}
             onOwn={(catalogId, isOwned) => ownWeapon.mutate({ catalogId, owned: isOwned })}
             onWish={(catalogId, wished) => wish.mutate({ catalogId, wished, kind: "weapon" })}

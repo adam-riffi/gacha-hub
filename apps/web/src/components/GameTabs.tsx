@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { getGame } from "@gacha/shared";
 import { HubHeader } from "./hub/HubHeader";
 
-type Screen = "activities" | "endgame" | "ownership" | "characters" | "equipment" | "gear" | "materials" | "planner" | "pulls" | "profile";
+type Screen = "activities" | "endgame" | "ownership" | "characters" | "gear" | "materials" | "planner" | "pulls" | "profile";
 
 /** What each game calls its gear sets. */
 const GEAR_LABEL: Record<string, string> = {
@@ -32,7 +32,6 @@ export function GameTabs({
     { key: "characters", label: "Characters", to: `/games/${instanceId}/characters` },
     ...(hasCatalog
       ? ([
-          { key: "equipment", label: "Equipment", to: `/games/${instanceId}/equipment` },
           { key: "gear", label: (gameKey && GEAR_LABEL[gameKey]) || "Gear", to: `/games/${instanceId}/gear` },
           { key: "planner", label: "Planner", to: `/games/${instanceId}/planner` },
         ] as { key: Screen; label: string; to: string }[])

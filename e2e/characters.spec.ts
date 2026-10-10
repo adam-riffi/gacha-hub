@@ -62,4 +62,14 @@ test("Characters: the Compact view as a table, and the Weapons view with holders
   await cone.getByRole("checkbox", { name: "Owned" }).check();
   await expect(cone.getByRole("checkbox", { name: "Owned" })).toBeChecked();
   await expect(page.getByText(/^\d+ \/ \d+ owned$/)).toBeVisible();
+
+  // Farming a weapon, which lived on the Equipment tab: pick the levels, preview the materials.
+  await cone.getByRole("button", { name: "Farm" }).click();
+  const farm = page.getByRole("region", { name: "Farm Patience Is All You Need" });
+  await farm.getByRole("button", { name: "Preview" }).click();
+  await expect(farm.getByRole("columnheader", { name: "Missing" })).toBeVisible();
+
+  // Equipment's old link lands on Characters.
+  await page.goto(`/games/${id}/equipment`);
+  await expect(page).toHaveURL(new RegExp(`/games/${id}/characters$`));
 });

@@ -40,3 +40,4 @@
 .ch-check { display: inline-flex; align-items: center; gap: 6px; margin: 0; color: var(--text); font: inherit; letter-spacing: 0; text-transform: none; cursor: pointer; }
 .ch-filters .seg { align-self: end; }
 .ch-tkpi { display: inline-block; margin-right: 14px; white-space: nowrap; }
+.ch-actions { justify-content: flex-end; gap: 6px; }

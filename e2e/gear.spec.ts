@@ -35,3 +35,14 @@ test("Gear: the inventory by crit value, adding a piece and equipping it, storag
     await page.request.delete(`/api/instances/${id}`);
   }
 });
+
+test("Gear: a set is farmed from the Sets view (it lived on the Equipment tab) @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  await page.goto(`/games/${id}/gear`);
+  await page.getByRole("button", { name: /^Farm set/ }).first().click();
+  await expect(page.getByText("Farming goal created")).toBeVisible();
+  await expect(page.getByRole("navigation", { name: "Game screens" }).getByRole("link", { name: "Equipment" })).toHaveCount(0);
+});
