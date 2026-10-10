@@ -80,8 +80,8 @@ test("Only what I wishlisted keeps the banners and events of the units you wish 
       kind: "banners",
       gameKey: "hsr",
       items: [
-        { key: "e2e-wished", name: "E2E wished warp", kind: "character", startsAt: iso(-1), endsAt: iso(10), featured: [{ catalogId: "1102", kind: "character", rateUp: true }] },
-        { key: "e2e-unwished", name: "E2E unwished warp", kind: "character", startsAt: iso(-2), endsAt: iso(9), featured: [{ catalogId: "1006", kind: "character", rateUp: true }] },
+        { key: "e2e-wished", name: "E2E wished warp", kind: "character", startsAt: iso(-1), endsAt: iso(12), featured: [{ catalogId: "1102", kind: "character", rateUp: true }] },
+        { key: "e2e-unwished", name: "E2E unwished warp", kind: "character", startsAt: iso(-2), endsAt: iso(11), featured: [{ catalogId: "1006", kind: "character", rateUp: true }] },
       ],
     },
   });
