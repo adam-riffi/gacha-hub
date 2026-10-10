@@ -63,3 +63,10 @@
 .ch-counts .chip { padding: 7px 11px; border: 1px solid var(--hairline); background: transparent; cursor: pointer; }
 .ch-counts .chip:hover { color: var(--text); border-color: var(--hairline-strong); }
 .ch-counts .chip[aria-pressed="true"] { background: var(--paper); border-color: var(--paper); color: var(--on-paper); }
+/* Several at once (Georges, 2026-10-10): a box on each card, and the bar of what to do with them. */
+.ch-pick { position: absolute; top: 44px; left: 10px; z-index: 2; width: 20px; height: 20px; min-height: 0; margin: 0; accent-color: var(--el); }
+.ch-bulk { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 10px 12px; margin-bottom: 12px; border: 1px solid var(--paper); background: var(--card); }
+.ch-bulk select { width: auto; }
+.ch-bulk-bar { position: sticky; bottom: 12px; z-index: 5; margin: 18px 0 0; box-shadow: 0 8px 28px rgba(0, 0, 0, 0.6); }
+.ch-table select { width: 120px; }
+.ch-counts .btn[aria-pressed="true"] { background: var(--paper); border-color: var(--paper); color: var(--on-paper); }

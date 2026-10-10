@@ -124,5 +124,5 @@ test("Characters: every build in one table, and several characters at once @smok
   await expect(selection).toContainText("2 selected");
   await selection.getByRole("button", { name: "Own", exact: true }).click();
   await expect(page.getByRole("article", { name: "Arlan" })).not.toContainText("Not owned");
-  await expect(page.getByRole("article", { name: "Herta" })).not.toContainText("Not owned");
+  await expect(page.getByRole("article", { name: "Herta", exact: true })).not.toContainText("Not owned");
 });
