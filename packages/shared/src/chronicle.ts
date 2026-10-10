@@ -16,6 +16,7 @@ const MODES: Record<string, { modeKey: string; path: string; query: (server: str
   genshin: [
     { modeKey: "abyss", path: "spiralAbyss", query: (server, uid) => ({ server, role_id: uid, schedule_type: "1" }) },
     { modeKey: "theater", path: "role_combat", query: (server, uid) => ({ server, role_id: uid, need_detail: "false" }) },
+    { modeKey: "stygian", path: "hard_challenge", query: (server, uid) => ({ server, role_id: uid, need_detail: "false" }) },
   ],
   hsr: [
     { modeKey: "moc", path: "challenge", query: (server, uid) => ({ server, role_id: uid, schedule_type: "1", need_all: "true" }) },
@@ -43,15 +44,22 @@ type Data = {
   has_data?: boolean;
   star_num?: number;
   total_score?: number;
-  data?: { has_data?: boolean; stat?: { max_round_id?: number }; schedule?: { start_time?: string | number; end_time?: string | number } }[];
+  data?: {
+    has_data?: boolean;
+    stat?: { max_round_id?: number };
+    schedule?: { start_time?: string | number; end_time?: string | number };
+    single?: { has_data?: boolean; best?: { difficulty?: number; second?: number } | null };
+  }[];
   hadal_info_v1?: { has_data?: boolean; rating_list?: { times: number; rating: string }[] };
 };
 
 /**
  * A mode's record as our cycle result: Spiral Abyss stars and floor, the
  * Theater's acts in the schedule running now, Star Rail's stars and stage,
- * Shiyu's S ratings (its first layout; the newer one is not read yet) and
- * Deadly Assault's stars and score. Null when the cycle has no run.
+ * Stygian Onslaught's best solo difficulty in the season running now,
+ * Shiyu's S ratings (its first layout: the newer one scores differently from
+ * the manifest's frontiers, so it is not read) and Deadly Assault's stars and
+ * score. Null when the cycle has no run.
  */
 export function readChronicle(modeKey: string, json: unknown, now: Date): { result: number; detail?: string } | { error: HoyolabError } | null {
   const error = hoyolabFailure(json);
@@ -64,6 +72,12 @@ export function readChronicle(modeKey: string, json: unknown, now: Date): { resu
       const at = now.getTime() / 1000;
       const run = (d.data ?? []).find((x) => x.has_data && Number(x.schedule?.start_time) <= at && at < Number(x.schedule?.end_time));
       return run?.stat?.max_round_id !== undefined ? { result: run.stat.max_round_id } : null;
+    }
+    case "stygian": {
+      const at = now.getTime() / 1000;
+      const run = (d.data ?? []).find((x) => Number(x.schedule?.start_time) <= at && at < Number(x.schedule?.end_time));
+      const best = run?.single?.has_data ? run.single.best : null;
+      return best?.difficulty ? { result: best.difficulty, detail: best.second !== undefined ? `${best.second} s` : undefined } : null;
     }
     case "moc":
     case "pf":
