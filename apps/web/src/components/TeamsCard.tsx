@@ -55,7 +55,7 @@ export function TeamsCard({ instanceId, gameKey }: { instanceId: string; gameKey
   const nameOf = (catalogId: string) => index?.characters.get(catalogId)?.name ?? catalogId;
 
   return (
-    <div className="card">
+    <section className="card eg-teams" aria-label="Teams">
       <div className="spread">
         <h3 style={{ margin: 0 }}>Teams</h3>
         <span className="small muted">party of {teamSize}</span>
@@ -86,6 +86,7 @@ export function TeamsCard({ instanceId, gameKey }: { instanceId: string; gameKey
                 ))}
                 {t.members.length < teamSize && available.length > 0 && (
                   <select
+                    aria-label={`Add a member to ${t.name}`}
                     value=""
                     onChange={(e) => e.target.value && update.mutate({ teamId: t.id, members: [...t.members, e.target.value] })}
                     style={{ width: "auto" }}
@@ -101,9 +102,9 @@ export function TeamsCard({ instanceId, gameKey }: { instanceId: string; gameKey
       </div>
 
       <div className="row" style={{ marginTop: 10 }}>
-        <input placeholder="New team name" value={name} onChange={(e) => setName(e.target.value)} style={{ flex: 1 }} />
+        <input aria-label="New team name" placeholder="New team name" value={name} onChange={(e) => setName(e.target.value)} style={{ flex: 1 }} />
         <button className="btn sm" disabled={!name || create.isPending} onClick={() => create.mutate()}>+ Team</button>
       </div>
-    </div>
+    </section>
   );
 }

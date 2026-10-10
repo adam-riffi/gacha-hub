@@ -7,6 +7,7 @@ import { useToast } from "../lib/toast";
 import { useReminderFlag, type ReminderFlag } from "../lib/reminder";
 import { GameTabs } from "../components/GameTabs";
 import { masked } from "../components/hub/HubHeader";
+import { ReminderControl } from "../components/ReminderControl";
 import type { InstanceDetail, ReminderRule } from "../lib/types";
 
 const DATE = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
@@ -59,6 +60,7 @@ export function ProfilePage() {
           <p className="mu">Achievements, days active, chests, waypoints and exploration per region fill in from the game's own records once a linked account syncs them (F11). Nothing to type here.</p>
         </section>
         <GameReminders instance={instance.data} game={game} />
+        <Wallet instance={instance.data} game={game} />
         <Status instance={instance.data} game={game} />
       </div>
     </>
@@ -248,6 +250,10 @@ function GameReminders({ instance, game }: Props) {
         {rows.map((r) => <ReminderRow key={r.flag} instanceId={instance.id} flag={r.flag} label={r.label} />)}
       </ul>
       <p className="mu pf-note">These switches are this game's own; Global rules on Tasks set them across games. Quiet hours still apply.</p>
+      <details className="pf-more">
+        <summary>More reminder options</summary>
+        <ReminderControl instanceId={instance.id} hasDomains={game.key === "genshin"} />
+      </details>
     </section>
   );
 }
@@ -264,6 +270,15 @@ function Status({ instance, game }: Props) {
       void qc.invalidateQueries();
       nav("/library");
     },
+  });
+  // The old overview's tools: recreate deleted default tasks; a hidden "to max" goal per owned, unbuilt character.
+  const tools = useMutation({
+    mutationFn: (path: "tasks/defaults" | "backlog/generate") => api.post<{ created: number }>(`/api/instances/${instance.id}/${path}`),
+    onSuccess: (r) => {
+      toast(`${r.created} task${r.created === 1 ? "" : "s"} created`);
+      return qc.invalidateQueries({ queryKey: ["tasks"] });
+    },
+    onError: () => toast("That did not work", "err"),
   });
   // This game's part of the account export: its profile, and the tasks on it or its builds.
   const exportJson = useMutation({
@@ -284,13 +299,45 @@ function Status({ instance, game }: Props) {
     <section className="card pf-status" aria-label="Game status">
       <h3>Game status</h3>
       <p className="mu">
-        Sleep hides the game from ALL and pauses its reminders; data stays. Remove deletes it from the library after a confirmation. Currencies and teams still live on the <Link to={`/games/${instance.id}/overview`}>old overview</Link>.
+        Sleep hides the game from ALL and pauses its reminders; data stays. Remove deletes it from the library after a confirmation.
       </p>
       <span className="row">
+        <button className="btn" disabled={tools.isPending} onClick={() => tools.mutate("tasks/defaults")}>Restore default tasks</button>
+        {game.loadCatalog && <button className="btn" disabled={tools.isPending} onClick={() => tools.mutate("backlog/generate")}>Generate backlog</button>}
         <button className="btn" disabled={exportJson.isPending} onClick={() => exportJson.mutate()}>Export JSON</button>
         <button className="btn" disabled={sleep.isPending} onClick={() => sleep.mutate({ sleeping: !instance.sleeping })}>{instance.sleeping ? "Wake this game" : "Sleep this game"}</button>
         <button className="btn danger" disabled={remove.isPending} onClick={() => confirm(`Remove ${game.name} and all its data?`) && remove.mutate()}>Remove…</button>
       </span>
+    </section>
+  );
+}
+
+/** Every currency of the game, typed in place (WIREFRAMES.md G8; it lived on the old overview). */
+function Wallet({ instance, game }: Props) {
+  const qc = useQueryClient();
+  const toast = useToast();
+  const save = useMutation({
+    mutationFn: (v: { key: string; value: number }) => api.put(`/api/instances/${instance.id}/currencies/${v.key}`, { value: v.value }),
+    onSuccess: () => Promise.all([["instance", instance.id], ["dashboard"]].map((queryKey) => qc.invalidateQueries({ queryKey }))),
+    onError: () => toast("Not saved: over the cap?", "err"),
+  });
+  return (
+    <section className="card pf-wallet" aria-label="Wallet">
+      <h3>Wallet</h3>
+      <div className="pf-rows">
+        {game.currencies.map((c) => {
+          const value = instance.currencies.find((x) => x.key === c.key)?.value ?? 0;
+          return (
+            <div key={c.key}>
+              <span className="kpi-label">{c.label}</span>
+              <span className="pf-val">
+                <input type="number" min={0} max={c.cap} aria-label={c.label} key={value} defaultValue={value} onBlur={(e) => Number(e.target.value) !== value && save.mutate({ key: c.key, value: Number(e.target.value) })} />
+                {c.cap ? <span className="mu"> / {c.cap}</span> : null}
+              </span>
+            </div>
+          );
+        })}
+      </div>
     </section>
   );
 }
