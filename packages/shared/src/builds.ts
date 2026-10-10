@@ -18,11 +18,15 @@ function gearPieces(game: GameDefinition, doc: Doc): Piece[] {
   return gear && typeof gear === "object" ? (Object.values(gear) as Piece[]).filter((p) => p && typeof p === "object") : [];
 }
 
-/** Crit value from the gear's substats: twice the crit rate plus the crit damage. */
+/** One gear piece's crit value: twice its crit rate substats plus its crit damage. */
+export function gearPieceCv(piece: Piece): number {
+  return (piece.substats ?? []).reduce((t, s) => t + (CRIT_RATE.test(s.stat) ? 2 * (num(s.value) ?? 0) : CRIT_DMG.test(s.stat) ? (num(s.value) ?? 0) : 0), 0);
+}
+
+/** Crit value from the gear's substats, or null when no piece has any. */
 function critValue(game: GameDefinition, doc: Doc): number | null {
-  const subs = gearPieces(game, doc).flatMap((p) => p.substats ?? []);
-  if (!subs.length) return null;
-  return subs.reduce((t, s) => t + (CRIT_RATE.test(s.stat) ? 2 * (num(s.value) ?? 0) : CRIT_DMG.test(s.stat) ? (num(s.value) ?? 0) : 0), 0);
+  const pieces = gearPieces(game, doc);
+  return pieces.some((p) => p.substats?.length) ? pieces.reduce((t, p) => t + gearPieceCv(p), 0) : null;
 }
 
 /**
@@ -66,9 +70,28 @@ const getPath = (doc: unknown, path: string): unknown => path.split(".").reduce<
 /** Where each game keeps its skill levels in the build document. */
 const SKILLS = ["talents", "traces", "skills"] as const;
 
+/** The build document field holding the skill levels: talents (Genshin), traces (Star Rail), skills (the rest). */
+export const skillsField = (game: GameDefinition) => SKILLS.find((f) => f in (game.emptyDoc() as Doc)) ?? "skills";
+
+/** The build document object holding the weapon (weapon, lightCone, wEngine, arc), or null where weapons have no dupes on record. */
+export const weaponHolder = (game: GameDefinition) => game.manifest.dupes.weapon?.field.split(".")[0] ?? null;
+
+/** Ascension phases below the level (20, 40, 50, 60, 70, 80), as the sheet's pips. */
+export const ascensionPips = (level: number) => [20, 40, 50, 60, 70, 80].filter((t) => level > t).length;
+
+/** The gear slots outside the set the rest complete: the pieces to farm (WIREFRAMES.md G5 "FARM"). */
+export function offSetSlots(game: GameDefinition, doc: Doc): string[] {
+  const gear = (doc[game.manifest.gear.field] ?? {}) as Record<string, Piece | undefined>;
+  const counts = new Map<string, number>();
+  for (const p of Object.values(gear)) if (p?.setName) counts.set(p.setName, (counts.get(p.setName) ?? 0) + 1);
+  const main = [...counts].sort((a, b) => b[1] - a[1])[0];
+  if (!main || main[1] < Math.max(...game.manifest.gear.sets)) return [];
+  return Object.entries(gear).filter(([, p]) => p?.setName && p.setName !== main[0]).map(([k]) => k);
+}
+
 /** The card's name box (WIREFRAMES.md G4): "Lv 90 · talents 9/9/9 · R1", in the catalog's skill order and the game's words. */
 export function buildLine(game: GameDefinition, doc: Doc, skillKeys: readonly string[]): string {
-  const field = SKILLS.find((f) => doc[f] && typeof doc[f] === "object") ?? SKILLS.find((f) => f in (game.emptyDoc() as Doc)) ?? "talents";
+  const field = SKILLS.find((f) => doc[f] && typeof doc[f] === "object") ?? skillsField(game);
   const levels = (doc[field] ?? {}) as Record<string, unknown>;
   const parts = [`Lv ${num(doc.level) ?? "—"}`];
   if (skillKeys.length) parts.push(`${field} ${skillKeys.map((k) => num(levels[k]) ?? 1).join("/")}`);
