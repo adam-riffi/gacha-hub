@@ -99,9 +99,9 @@ function LinkedAccounts({ links, games }: { links: LinkedAccountDto[]; games: In
         </div>
       </article>
       <div className="st-trio">
-        <article className="st-provider" aria-label="SKPORT">
-          <span className="row"><strong>SKPORT</strong><span className="tag is-off">Not linked</span></span>
-          <p className="mu">Arknights: Endfield pull history through your SKPORT session token, once its API is researched.</p>
+        <article className="st-provider" aria-label="Arknights: Endfield">
+          <span className="row"><strong>Arknights: Endfield</strong><span className="tag is-off">Link only</span></span>
+          <p className="mu">Pull history comes from the Headhunting records link. The SKPORT account token is never asked for: it can act for your account (ADR 0009).</p>
         </article>
         <article className="st-provider" aria-label="Wuthering Waves">
           <span className="row"><strong>Wuthering Waves</strong><span className="tag is-off">Link only</span></span>
@@ -267,7 +267,9 @@ function PullRow({ gi, last }: { gi: InstanceListItem; last?: ImportRunDto }) {
   const busy = viaLink.isPending || viaFile.isPending;
   const link = hasHistoryLink(gi.gameKey);
   const uigf = hasUigf(gi.gameKey);
-  const method = gi.gameKey === "wuwa" ? "History link from the game log (PC)" : link ? "History link (PC) or UIGF file" : gi.gameKey === "endfield" ? "SKPORT token, once researched" : "Log pulls by hand";
+  const method =
+    gi.gameKey === "wuwa" ? "History link from the game log (PC)" : gi.gameKey === "endfield" ? "Headhunting records link (PC)" : link ? "History link (PC) or UIGF file" : "Log pulls by hand";
+  const placeholder = gi.gameKey === "wuwa" ? "https://…record_id=…" : gi.gameKey === "endfield" ? "https://…token=…&server_id=…" : "https://…authkey=…";
 
   return (
     <>
@@ -294,7 +296,7 @@ function PullRow({ gi, last }: { gi: InstanceListItem; last?: ImportRunDto }) {
           <td colSpan={4}>
             {pasting && (
               <form className="st-paste" onSubmit={submit}>
-                <input name="url" required autoComplete="off" placeholder="https://…authkey=…" aria-label={`History link for ${gi.name}`} />
+                <input name="url" required autoComplete="off" placeholder={placeholder} aria-label={`History link for ${gi.name}`} />
                 <button className="btn primary" type="submit" disabled={busy}>Import</button>
                 <span className="mu">Used once on the server and never stored.</span>
               </form>

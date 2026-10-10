@@ -43,14 +43,20 @@ describe("importing Endfield's records link (ADR 0009)", () => {
     vi.unstubAllGlobals();
   });
 
-  const run = (body: object) => c.req<Record<string, unknown>>("POST", `/api/instances/${gid}/pulls/history-link`, body);
+  const run = (body: object) =>
+    c.req<Record<string, unknown>>("POST", `/api/instances/${gid}/pulls/history-link`, body);
 
   it("imports each tracked pool from the records API, and keeps neither the link nor its token", async () => {
     const r = await run({ url: link.replace("ef-webview.gryphline.com", "evil.example") });
     expect(r.json).toEqual({ added: 4, skipped: 0, next: null });
     expect(new Set(asked.map((u) => u.host))).toEqual(new Set(["ef-webview.gryphline.com"]));
     // The Chartered pool paged on from its last record; Beginner and Joint are not asked.
-    expect(asked.map((u) => u.searchParams.get("pool_type") ?? "weapon")).toEqual(["E_CharacterGachaPoolType_Special", "E_CharacterGachaPoolType_Special", "weapon", "E_CharacterGachaPoolType_Standard"]);
+    expect(asked.map((u) => u.searchParams.get("pool_type") ?? "weapon")).toEqual([
+      "E_CharacterGachaPoolType_Special",
+      "E_CharacterGachaPoolType_Special",
+      "weapon",
+      "E_CharacterGachaPoolType_Standard",
+    ]);
     expect(asked[1]!.searchParams.get("seq_id")).toBe("1288");
     const banners = (await c.req<PullLogDto>("GET", `/api/instances/${gid}/pulls`)).json.banners;
     const chartered = banners.find((b) => b.key === "character")!;
@@ -59,8 +65,12 @@ describe("importing Endfield's records link (ADR 0009)", () => {
     expect(chartered.fiveStars).toEqual([expect.objectContaining({ pity: 3 })]);
     expect(banners.find((b) => b.key === "weapon")!.fiveStars).toHaveLength(1);
     const runs = await prisma.importRun.findMany();
-    expect(runs).toEqual([expect.objectContaining({ provider: "history-link", kind: "pulls", added: 4 })]);
-    expect(JSON.stringify(runs) + JSON.stringify(await prisma.pullEntry.findMany())).not.toContain("SECRETRECORDSTOKEN");
+    expect(runs).toEqual([
+      expect.objectContaining({ provider: "history-link", kind: "pulls", added: 4 }),
+    ]);
+    expect(JSON.stringify(runs) + JSON.stringify(await prisma.pullEntry.findMany())).not.toContain(
+      "SECRETRECORDSTOKEN",
+    );
   });
 
   it("stops at records it already has: a second import adds nothing", async () => {
@@ -76,11 +86,15 @@ describe("importing Endfield's records link (ADR 0009)", () => {
     const r = await run({ url: link });
     expect(r.status).toBe(400);
     expect(r.json).toEqual({ error: "expired" });
-    expect(await prisma.importRun.findMany({ select: { provider: true, error: true } })).toEqual([{ provider: "history-link", error: "expired" }]);
+    expect(await prisma.importRun.findMany({ select: { provider: true, error: true } })).toEqual([
+      { provider: "history-link", error: "expired" },
+    ]);
   });
 
   it("refuses a link without a token or server", async () => {
-    expect((await run({ url: "https://ef-webview.gryphline.com/api/record/char?server_id=3" })).json).toEqual({ error: "no_records_token" });
+    expect(
+      (await run({ url: "https://ef-webview.gryphline.com/api/record/char?server_id=3" })).json,
+    ).toEqual({ error: "no_records_token" });
     expect(asked).toEqual([]);
   });
 });
