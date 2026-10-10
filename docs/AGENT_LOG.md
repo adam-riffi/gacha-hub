@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f10/15-characters · #139
+- Done: Characters rebuilt from its board (WIREFRAMES.md G4), a hub tab for every game in place of Ownership: filters (search, element, weapon, rarity, owned or wishlisted, build status, sort), counts (owned, perfect, good, building, unbuilt, wishlist), Own all shown; one splash card per unit (art with rarity, element and the dupe badge; the name box with level, skills and weapon dupes, `buildLine`; the role's three KPIs; status, set bonuses, Build → or Start a build); unowned units can be owned or wishlisted, and on a running banner show your chance with the pulls you have and Plan pulls →; a pending event goal shows "→ C4 · event"; 12 at a time, built characters first.
+- Tests: written first: `builds.test.ts` (`buildLine`, `dupeBadge`), `e2e/characters.spec.ts` (tab, counts, search, a card's dupes, level and KPIs, Build →, wishlist and own). The accessibility sweep now visits the tab. Checked at 1440 beside `g4-characters.png`.
+- Scope/decisions: the Weapons and Compact views are left for later (weapon ownership stays on Equipment); Ownership's route stays until G6/G7 take Equipment's place.
+- Next: the character sheet (G5).
+
 ## 2026-10-10 · claude · stack/f10/14-wishlist · #138
 - Done: `WishlistItem` (per profile, kind and catalog id, once each; migration `20261011020000_wishlist_role` with RLS) and `GET/PUT /api/instances/:id/wishlist`; `Character.role` (one of the game's KPI roles, refused otherwise); `packages/shared/src/builds.ts`: `buildKpis` (the role's three KPIs: crit value from the gear's substats, "A / B" pairs, stats with % where they are rates) and `gearSetLabel` ("Whimsy 4pc", "Gladiator 2pc + Whimsy 2pc"). DESIGN.md §8 lists both.
 - Tests: written first: `builds.test.ts` (KPIs per role, the first role by default, each game's stat names, set bonuses), `wishlist.integration.test.ts` (order and once each, unknown units refused, roles kept among the game's).
@@ -247,9 +253,3 @@ Entry format:
 - Tests: `series.test.ts` (thresholds, streaks with a property, segment geometry and clamping, line points with a property); `e2e/heatmap.spec.ts` (labelled map, only today recorded, tooltip on hover, keyboard pin and Escape, the readout).
 - Scope/decisions: Pinning shows the day's games; switching the dashboard to a past day waits for F8's record (VISUAL-DESIGN.md §13). DAYS ALL DONE counts recorded days. The map's focus ring shows for the keyboard only.
 - Next: `stack/v/08-home-data`.
-
-## 2026-10-09 · claude · stack/v/06-charts-core · #98
-- Done: `packages/shared/src/charts.ts` (arcs counter-clockwise from 12 o'clock, the ring of lit strips, polar points, closed paths, round axis maxima); `GraphPanel` with depth layers and the pointer tilt (off under reduced motion); `HeroGauge`, `SmallGauge`, `PercentBars`, `PeriodSwitch`; `styles/charts.css`. On Home the dailies gauge with the period switch, the goals gauge and the goal-type bars replace the KPI strip, computed from the dailies, goals and goal types Home already loads.
-- Tests: `charts.test.ts` (arc endpoints and flags, strips drawn and lit, the exponential rise, polar, paths, `niceMax` with a fast-check property); the E2E journeys and axe pass over the new panels, every chart labelled with its numbers.
-- Scope/decisions: No chart library (ADR 0007). Goal types: character and weapon plans by origin, checklists as gear, hand-typed goals as gameplay (V plan). Backlog and pull history come with `07-charts-more`.
-- Next: `stack/v/07-charts-more`.
