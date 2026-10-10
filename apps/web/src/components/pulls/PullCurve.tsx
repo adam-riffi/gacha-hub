@@ -12,8 +12,7 @@ const pct = (v: number) => `${v >= 0.995 && v < 1 ? ">99" : (v * 100).toFixed(v 
 /**
  * The 5★ odds by pity (WIREFRAMES.md G3), drawn whole and always the same:
  * the rate on each pull since your last 5★, flat, then climbing from soft pity
- * to certain at hard pity; where a lost 50/50 leads to a second run, that run
- * follows, shaded. Markers move along it: where you are, where all your pulls
+ * to certain at hard pity, and no further. Markers move along it: where you are, where all your pulls
  * take you, and where a simulated top-up would. The legend gives each one's
  * chance of the featured unit.
  */
@@ -55,12 +54,8 @@ export function PullCurve({
     lastX = x(m.at);
     return { ...m, row, cy: y(m.at >= end ? 1 : rate(m.at)) };
   });
-  // Each label sits in the flat, empty part beside its line: soft pity's before it, hard pity's after it (before it at the right edge).
-  const lines = [
-    ...(rules.softPity ? [{ at: rules.softPity, label: "soft pity", after: false }] : []),
-    { at: rules.hardPity, label: "", after: false },
-    ...(end > rules.hardPity ? [{ at: end, label: "", after: false, axis: rules.lossGuarantee === false ? "spark" : "featured" }] : []),
-  ];
+  // Soft pity's label sits in the flat, empty part before its line; hard pity is the axis's end.
+  const lines = [...(rules.softPity ? [{ at: rules.softPity, label: "soft pity" }] : []), { at: rules.hardPity, label: "" }];
 
   return (
     <figure className="pl-figure">
@@ -70,12 +65,6 @@ export function PullCurve({
         role="img"
         aria-label={`Curve: the ${star} rate on each pull and the chance of ${what}; you are at pity ${state.pity}; ${markers.slice(1).map((m) => m.text).join("; ") || "no pulls on hand"}`}
       >
-        {end > rules.hardPity && (
-          <g>
-            <rect x={x(rules.hardPity)} y={T} width={x(end) - x(rules.hardPity)} height={H - T - B} className="pl-run2" />
-            <text x={x(rules.hardPity) + 6} y={y(1) + 14}>{rules.lossGuarantee === false ? "the next run" : "if the 50/50 is lost"}</text>
-          </g>
-        )}
         {[0, 0.5, 1].map((v) => (
           <g key={v}>
             <line x1={L} x2={W - R} y1={y(v)} y2={y(v)} className="pl-grid" />
@@ -85,11 +74,8 @@ export function PullCurve({
         {lines.map((m) => (
           <g key={m.at}>
             <line x1={x(m.at)} x2={x(m.at)} y1={T} y2={H - B} className="pl-dash" />
-            <text x={x(m.at) + (m.after ? 4 : -4)} y={y(0.7)} textAnchor={m.after ? "start" : "end"}>{m.label}</text>
-            <text x={x(m.at)} y={H - B + 16} textAnchor={"axis" in m ? "end" : "middle"}>
-              {m.at}
-              {"axis" in m ? ` ${m.axis}` : ""}
-            </text>
+            <text x={x(m.at) - 4} y={y(0.7)} textAnchor="end">{m.label}</text>
+            <text x={x(m.at)} y={H - B + 16} textAnchor="middle">{m.at}</text>
           </g>
         ))}
         <text x={L} y={H - B + 16} textAnchor="middle">0</text>
