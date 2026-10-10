@@ -5,10 +5,12 @@ import {
   buildKpis,
   buildLine,
   dupeBadge,
+  dupeLetter,
   featuredWithin,
   gearSetLabel,
   getGame,
   pullsFor,
+  weaponHolder,
   type BuildStatus,
   type CatalogCharacter,
   type CharacterDto,
@@ -23,6 +25,8 @@ import { useCatalog } from "../lib/catalog";
 import { assetUrl, communityAssetUrl, splashKey } from "../lib/assets";
 import { GameTabs } from "../components/GameTabs";
 import { GameIcon } from "../components/GameIcon";
+import { Segmented } from "../components/ui";
+import { WeaponsTable, type WeaponRow } from "../components/characters/WeaponsTable";
 import type { InstanceDetail } from "../lib/types";
 
 const ENDS = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
@@ -47,7 +51,8 @@ type Card = {
  * card per unit: art with rarity, element and dupes; the name box with level,
  * skills and weapon dupes; three KPIs for the build's role; build status, set
  * and Build →. Unowned units can be owned or wishlisted; wishlisted ones on a
- * running banner show your chance with the pulls you have.
+ * running banner show your chance with the pulls you have. Compact shows
+ * the same as a table; Weapons lists the catalog's weapons and who holds them.
  */
 export function CharactersPage() {
   const { id } = useParams<{ id: string }>();
@@ -61,6 +66,8 @@ export function CharactersPage() {
   const [status, setStatus] = useState<"" | BuildStatus>("");
   const [sort, setSort] = useState<"status" | "name" | "rarity" | "level">("status");
   const [shown, setShown] = useState(PAGE);
+  const [kind, setKind] = useState<"characters" | "weapons">("characters");
+  const [view, setView] = useState<"splash" | "compact">("splash");
 
   const instance = useQuery({ queryKey: ["instance", id], queryFn: () => api.get<InstanceDetail>(`/api/instances/${id}`) });
   const builds = useQuery({ queryKey: ["characters", id], queryFn: () => api.get<CharacterDto[]>(`/api/instances/${id}/characters`) });
@@ -76,8 +83,12 @@ export function CharactersPage() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ["ownership", id] }),
   });
   const wish = useMutation({
-    mutationFn: (v: { catalogId: string; wished: boolean }) => api.put(`/api/instances/${id}/wishlist`, { kind: "character", ...v }),
+    mutationFn: (v: { catalogId: string; wished: boolean; kind?: "character" | "weapon" }) => api.put(`/api/instances/${id}/wishlist`, { kind: "character", ...v }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["wishlist", id] }),
+  });
+  const ownWeapon = useMutation({
+    mutationFn: (v: { catalogId: string; owned: boolean }) => api.put(`/api/instances/${id}/ownership`, { items: [{ kind: "weapon", ...v }] }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["ownership", id] }),
   });
   const start = useMutation({
     mutationFn: (catalogId: string) => api.post<{ id: string }>(`/api/instances/${id}/characters`, { catalogId }),
@@ -134,6 +145,31 @@ export function CharactersPage() {
   const options = (pick: (c: Card) => string | null) => [...new Set(cards.map(pick).filter((v): v is string => Boolean(v)))].sort();
   const unownedShown = filtered.slice(0, shown).filter((c) => !c.owned && c.entry).map((c) => c.id);
 
+  // The Weapons view: each catalog weapon, owned or wished, and the builds that wield it.
+  const weaponsOn = kind === "weapons" && Boolean(catalog);
+  const holder = weaponHolder(game);
+  const dupeField = game.manifest.dupes.weapon?.field;
+  const ownedWeapons = new Set((ownership.data ?? []).filter((o) => o.kind === "weapon").map((o) => o.catalogId));
+  const wishedWeapons = new Set((wishlist.data ?? []).filter((w) => w.kind === "weapon").map((w) => w.catalogId));
+  const weaponRows: WeaponRow[] = (catalog?.weapons ?? []).map((w) => ({
+    weapon: w,
+    owned: ownedWeapons.has(w.id),
+    wished: wishedWeapons.has(w.id),
+    holders: builds.data.flatMap((b) => {
+      const held = holder ? ((b.doc as Record<string, unknown>)[holder] as Record<string, unknown> | undefined) : undefined;
+      if (held?.catalogId !== w.id) return [];
+      const dupe = dupeField ? held[dupeField.split(".").at(-1)!] : undefined;
+      return [{ buildId: b.id, name: b.name, dupe: `${dupeLetter(dupeField ?? "")}${typeof dupe === "number" ? dupe : 1}` }];
+    }),
+  }));
+  const weaponsShown = weaponRows
+    .filter((r) => !q || r.weapon.name.toLowerCase().includes(q.toLowerCase()))
+    .filter((r) => !weapon || r.weapon.type === weapon)
+    .filter((r) => !rarity || String(r.weapon.rarity) === rarity)
+    .filter((r) => (owned === "owned" ? r.owned : owned === "unowned" ? !r.owned : owned === "wishlist" ? r.wished : true))
+    .sort((a, b) => b.holders.length - a.holders.length || Number(b.owned) - Number(a.owned) || b.weapon.rarity - a.weapon.rarity || a.weapon.name.localeCompare(b.weapon.name));
+  const weaponOptions = (pick: (w: NonNullable<typeof catalog>["weapons"][number]) => string | null | undefined) => [...new Set((catalog?.weapons ?? []).map(pick).filter((v): v is string => Boolean(v)))].sort();
+
   return (
     <>
       <div style={{ marginBottom: 14 }}>
@@ -146,9 +182,9 @@ export function CharactersPage() {
         </label>
         {catalog && (
           <>
-            <Select label="Element" value={element} onChange={setElement} options={options((c) => c.tag)} />
-            <Select label="Weapon" value={weapon} onChange={setWeapon} options={options((c) => c.weaponType)} />
-            <Select label="Rarity" value={rarity} onChange={setRarity} options={options((c) => (c.rarity ? String(c.rarity) : null))} />
+            {!weaponsOn && <Select label="Element" value={element} onChange={setElement} options={options((c) => c.tag)} />}
+            <Select label="Weapon" value={weapon} onChange={setWeapon} options={weaponsOn ? weaponOptions((w) => w.type) : options((c) => c.weaponType)} />
+            <Select label="Rarity" value={rarity} onChange={setRarity} options={weaponsOn ? weaponOptions((w) => String(w.rarity)) : options((c) => (c.rarity ? String(c.rarity) : null))} />
             <label>
               Owned
               <select value={owned} onChange={(e) => setOwned(e.target.value as typeof owned)}>
@@ -160,6 +196,8 @@ export function CharactersPage() {
             </label>
           </>
         )}
+        {!weaponsOn && (
+          <>
         <label>
           Build status
           <select value={status} onChange={(e) => setStatus(e.target.value as typeof status)}>
@@ -179,7 +217,40 @@ export function CharactersPage() {
             <option value="level">Level</option>
           </select>
         </label>
+          </>
+        )}
+        {catalog && (
+          <Segmented
+            label="Show"
+            options={[{ value: "characters", label: "Characters" }, { value: "weapons", label: "Weapons" }]}
+            value={kind}
+            onChange={(k) => {
+              setKind(k);
+              setWeapon("");
+              setRarity("");
+            }}
+          />
+        )}
       </section>
+
+      {weaponsOn ? (
+        <>
+          <div className="ch-counts">
+            <span className="badge done">{weaponRows.filter((r) => r.owned).length} / {weaponRows.length} owned</span>
+            <span className="badge todo">Wishlist {weaponRows.filter((r) => r.wished).length}</span>
+          </div>
+          <WeaponsTable
+            rows={weaponsShown.slice(0, shown * 2)}
+            onOwn={(catalogId, isOwned) => ownWeapon.mutate({ catalogId, owned: isOwned })}
+            onWish={(catalogId, wished) => wish.mutate({ catalogId, wished, kind: "weapon" })}
+          />
+          <div className="ch-more">
+            <span className="mu">{Math.min(shown * 2, weaponsShown.length)} of {weaponsShown.length} shown · held ones first</span>
+            {weaponsShown.length > shown * 2 && <button className="btn" onClick={() => setShown(shown + PAGE)}>Show more</button>}
+          </div>
+        </>
+      ) : (
+        <>
 
       <div className="ch-counts">
         <span className="badge done">{cards.filter((c) => c.owned).length} / {cards.length} owned</span>
@@ -189,6 +260,7 @@ export function CharactersPage() {
         <span className="badge">Unbuilt {count("none")}</span>
         {catalog && <span className="badge todo">Wishlist {cards.filter((c) => c.wished).length}</span>}
         <span className="ch-sp" />
+        <Segmented label="View" options={[{ value: "splash", label: "Splash" }, { value: "compact", label: "Compact" }]} value={view} onChange={setView} />
         {unownedShown.length > 0 && (
           <button className="btn" disabled={own.isPending} onClick={() => own.mutate(unownedShown)}>
             Own all shown
@@ -196,6 +268,33 @@ export function CharactersPage() {
         )}
       </div>
 
+      {view === "compact" ? (
+        <section className="card">
+          <table aria-label="Characters" className="ch-table">
+            <thead>
+              <tr><th>Character</th><th>Dupes</th><th>Build</th><th>KPIs</th><th>Status</th><th>Set</th><th className="num">Action</th></tr>
+            </thead>
+            <tbody>
+              {filtered.slice(0, shown * 2).map((c) => {
+                const doc = (c.build?.doc ?? {}) as Record<string, unknown>;
+                return (
+                  <tr key={c.id} className={c.owned ? "" : "is-unowned"}>
+                    <td><strong>{c.name}</strong> {c.rarity && <span className="badge">★{c.rarity}</span>} {c.tag && c.tag !== "None" && <span className="mu">{c.tag}</span>}</td>
+                    <td className="mn">{c.owned ? dupeBadge(game, doc) : "—"}</td>
+                    <td className="mn">{c.build ? buildLine(game, doc, c.entry?.talents.keys ?? []) : c.owned ? "no build yet" : "not owned"}</td>
+                    <td>{c.build ? buildKpis(game, doc, c.build.role).map((k) => <span key={k.label} className="ch-tkpi"><span className="kpi-label">{k.label}</span> <span className="mn">{k.value}</span></span>) : null}</td>
+                    <td>{c.build && <span className={`badge ${c.build.buildStatus === "perfect" ? "done" : ""}`}>{c.build.buildStatus === "none" ? "Unbuilt" : c.build.buildStatus}</span>}</td>
+                    <td className="mu">{c.build ? (gearSetLabel(game, doc) ?? "") : ""}</td>
+                    <td className="num">
+                      {c.build ? <Link to={`/characters/${c.build.id}`}>Build →</Link> : c.owned ? <button className="btn ghost" disabled={start.isPending} onClick={() => start.mutate(c.id)}>Start a build</button> : c.entry ? <button className="btn" onClick={() => own.mutate([c.id])}>Own</button> : null}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </section>
+      ) : (
       <div className="ch-grid">
         {filtered.slice(0, shown).map((c) => {
           const doc = (c.build?.doc ?? {}) as Record<string, unknown>;
@@ -263,16 +362,19 @@ export function CharactersPage() {
           );
         })}
       </div>
+      )}
       <div className="ch-more">
         <span className="mu">
-          {Math.min(shown, filtered.length)} of {filtered.length} shown · {sort === "status" ? "built characters first" : `by ${sort}`}
+          {Math.min(view === "compact" ? shown * 2 : shown, filtered.length)} of {filtered.length} shown · {sort === "status" ? "built characters first" : `by ${sort}`}
         </span>
-        {filtered.length > shown && (
+        {filtered.length > (view === "compact" ? shown * 2 : shown) && (
           <button className="btn" onClick={() => setShown(shown + PAGE)}>
-            Show {Math.min(PAGE, filtered.length - shown)} more
+            Show more
           </button>
         )}
       </div>
+        </>
+      )}
     </>
   );
 }

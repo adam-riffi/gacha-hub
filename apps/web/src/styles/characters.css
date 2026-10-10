@@ -32,3 +32,11 @@
 .ch-own { display: flex; gap: 8px; padding: 0 12px 12px; }
 .ch-own .btn[aria-pressed="true"] { background: var(--paper); border-color: var(--paper); color: var(--on-paper); }
 .ch-more { display: flex; align-items: center; justify-content: space-between; margin-top: 18px; font-size: 13px; }
+
+/* Compact and Weapons views (WIREFRAMES.md G4) */
+.ch-table { width: 100%; }
+.ch-table td { vertical-align: middle; }
+.ch-table tr.is-unowned td { opacity: 0.6; }
+.ch-check { display: inline-flex; align-items: center; gap: 6px; margin: 0; color: var(--text); font: inherit; letter-spacing: 0; text-transform: none; cursor: pointer; }
+.ch-filters .seg { align-self: end; }
+.ch-tkpi { display: inline-block; margin-right: 14px; white-space: nowrap; }
