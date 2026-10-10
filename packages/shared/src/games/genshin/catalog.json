@@ -357,7 +357,12 @@
       },
       "extra": {
         "region": "Inazuma",
-        "version": "2.0"
+        "version": "2.0",
+        "skillOrder": [
+          "10024",
+          "10018",
+          "10019"
+        ]
       }
     },
     {
@@ -717,7 +722,12 @@
         "region": "Mondstadt",
         "version": "1.0",
         "portraitUrl": "https://static.wikia.nocookie.net/gensin-impact/images/0/02/Character_Jean_Portrait.png",
-        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/0/0e/Character_Jean_Card.jpg"
+        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/0/0e/Character_Jean_Card.jpg",
+        "skillOrder": [
+          "10031",
+          "10033",
+          "10034"
+        ]
       }
     },
     {
@@ -870,7 +880,12 @@
         "region": "",
         "version": "1.0",
         "portraitUrl": "https://static.wikia.nocookie.net/gensin-impact/images/4/47/Character_Traveler_%28Male%29_Portrait.png",
-        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/1/1c/Traveler_Male_Card.jpg"
+        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/1/1c/Traveler_Male_Card.jpg",
+        "skillOrder": [
+          "100543",
+          "10067",
+          "10068"
+        ]
       }
     },
     {
@@ -1230,7 +1245,12 @@
         "region": "Mondstadt",
         "version": "1.0",
         "portraitUrl": "https://static.wikia.nocookie.net/gensin-impact/images/f/fa/Character_Lisa_Portrait.png",
-        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/d/dc/Character_Lisa_Card.jpg"
+        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/d/dc/Character_Lisa_Card.jpg",
+        "skillOrder": [
+          "10060",
+          "10061",
+          "10062"
+        ]
       }
     },
     {
@@ -1383,7 +1403,12 @@
         "region": "",
         "version": "1.0",
         "portraitUrl": "https://static.wikia.nocookie.net/gensin-impact/images/2/24/Character_Traveler_%28Female%29_Portrait.png",
-        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/c/c8/Traveler_Female_Card.jpg"
+        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/c/c8/Traveler_Female_Card.jpg",
+        "skillOrder": [
+          "100553",
+          "10067",
+          "10068"
+        ]
       }
     },
     {
@@ -1743,7 +1768,12 @@
         "region": "Mondstadt",
         "version": "1.0",
         "portraitUrl": "https://static.wikia.nocookie.net/gensin-impact/images/4/4a/Character_Barbara_Portrait.png",
-        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/9/93/Character_Barbara_Card.jpg"
+        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/9/93/Character_Barbara_Card.jpg",
+        "skillOrder": [
+          "10070",
+          "10071",
+          "10072"
+        ]
       }
     },
     {
@@ -2103,7 +2133,12 @@
         "region": "Mondstadt",
         "version": "1.0",
         "portraitUrl": "https://static.wikia.nocookie.net/gensin-impact/images/1/1c/Character_Kaeya_Portrait.png",
-        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/6/64/Character_Kaeya_Card.jpg"
+        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/6/64/Character_Kaeya_Card.jpg",
+        "skillOrder": [
+          "10073",
+          "10074",
+          "10075"
+        ]
       }
     },
     {
@@ -2463,7 +2498,12 @@
         "region": "Mondstadt",
         "version": "1.0",
         "portraitUrl": "https://static.wikia.nocookie.net/gensin-impact/images/b/bc/Character_Diluc_Portrait.png",
-        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/4/45/Character_Diluc_Card.jpg"
+        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/4/45/Character_Diluc_Card.jpg",
+        "skillOrder": [
+          "10160",
+          "10161",
+          "10165"
+        ]
       }
     },
     {
@@ -2823,7 +2863,12 @@
         "region": "Mondstadt",
         "version": "1.0",
         "portraitUrl": "https://static.wikia.nocookie.net/gensin-impact/images/1/1e/Character_Razor_Portrait.png",
-        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/6/68/Character_Razor_Card.jpg"
+        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/6/68/Character_Razor_Card.jpg",
+        "skillOrder": [
+          "10201",
+          "10202",
+          "10203"
+        ]
       }
     },
     {
@@ -3183,7 +3228,12 @@
         "region": "Mondstadt",
         "version": "1.0",
         "portraitUrl": "https://static.wikia.nocookie.net/gensin-impact/images/0/00/Character_Amber_Portrait.png",
-        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/2/26/Character_Amber_Card.jpg"
+        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/2/26/Character_Amber_Card.jpg",
+        "skillOrder": [
+          "10041",
+          "10032",
+          "10017"
+        ]
       }
     },
     {
@@ -3543,7 +3593,12 @@
         "region": "Mondstadt",
         "version": "1.0",
         "portraitUrl": "https://static.wikia.nocookie.net/gensin-impact/images/c/cf/Character_Venti_Portrait.png",
-        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/7/76/Character_Venti_Card.jpg"
+        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/7/76/Character_Venti_Card.jpg",
+        "skillOrder": [
+          "10221",
+          "10224",
+          "10225"
+        ]
       }
     },
     {
@@ -3903,7 +3958,12 @@
         "region": "Liyue",
         "version": "1.0",
         "portraitUrl": "https://static.wikia.nocookie.net/gensin-impact/images/2/22/Character_Xiangling_Portrait.png",
-        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/f/f1/Character_Xiangling_Card.jpg"
+        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/f/f1/Character_Xiangling_Card.jpg",
+        "skillOrder": [
+          "10231",
+          "10232",
+          "10235"
+        ]
       }
     },
     {
@@ -4263,7 +4323,12 @@
         "region": "Liyue",
         "version": "1.0",
         "portraitUrl": "https://static.wikia.nocookie.net/gensin-impact/images/7/74/Character_Beidou_Portrait.png",
-        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/8/84/Character_Beidou_Card.jpg"
+        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/8/84/Character_Beidou_Card.jpg",
+        "skillOrder": [
+          "10241",
+          "10242",
+          "10245"
+        ]
       }
     },
     {
@@ -4623,7 +4688,12 @@
         "region": "Liyue",
         "version": "1.0",
         "portraitUrl": "https://static.wikia.nocookie.net/gensin-impact/images/a/a9/Character_Xingqiu_Portrait.png",
-        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/c/c2/Character_Xingqiu_Card.jpg"
+        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/c/c2/Character_Xingqiu_Card.jpg",
+        "skillOrder": [
+          "10381",
+          "10382",
+          "10385"
+        ]
       }
     },
     {
@@ -4983,7 +5053,12 @@
         "region": "Liyue",
         "version": "1.3",
         "portraitUrl": "https://static.wikia.nocookie.net/gensin-impact/images/1/1e/Character_Xiao_Portrait.png",
-        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/8/88/Character_Xiao_Card.jpg"
+        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/8/88/Character_Xiao_Card.jpg",
+        "skillOrder": [
+          "10261",
+          "10262",
+          "10265"
+        ]
       }
     },
     {
@@ -5343,7 +5418,12 @@
         "region": "Liyue",
         "version": "1.0",
         "portraitUrl": "https://static.wikia.nocookie.net/gensin-impact/images/1/17/Character_Ningguang_Portrait.png",
-        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/3/3e/Character_Ningguang_Card.jpg/"
+        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/3/3e/Character_Ningguang_Card.jpg/",
+        "skillOrder": [
+          "10271",
+          "10272",
+          "10274"
+        ]
       }
     },
     {
@@ -5703,7 +5783,12 @@
         "region": "Mondstadt",
         "version": "1.0",
         "portraitUrl": "https://static.wikia.nocookie.net/gensin-impact/images/3/3f/Character_Klee_Portrait.png",
-        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/7/78/Character_Klee_Card.jpg"
+        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/7/78/Character_Klee_Card.jpg",
+        "skillOrder": [
+          "10291",
+          "10292",
+          "10295"
+        ]
       }
     },
     {
@@ -6063,7 +6148,12 @@
         "region": "Liyue",
         "version": "1.1",
         "portraitUrl": "https://static.wikia.nocookie.net/gensin-impact/images/7/7d/Character_Zhongli_Portrait.png",
-        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/7/79/Character_Zhongli_Card.png"
+        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/7/79/Character_Zhongli_Card.png",
+        "skillOrder": [
+          "10301",
+          "10302",
+          "10303"
+        ]
       }
     },
     {
@@ -6423,7 +6513,12 @@
         "region": "Mondstadt",
         "version": "1.0",
         "portraitUrl": "https://static.wikia.nocookie.net/gensin-impact/images/3/34/Character_Fischl_Portrait.png",
-        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/4/48/Character_Fischl_Card.jpg"
+        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/4/48/Character_Fischl_Card.jpg",
+        "skillOrder": [
+          "10311",
+          "10312",
+          "10313"
+        ]
       }
     },
     {
@@ -6783,7 +6878,12 @@
         "region": "Mondstadt",
         "version": "1.0",
         "portraitUrl": "https://static.wikia.nocookie.net/gensin-impact/images/7/73/Character_Bennett_Portrait.png",
-        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/7/7f/Character_Bennett_Card.jpg"
+        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/7/7f/Character_Bennett_Card.jpg",
+        "skillOrder": [
+          "10321",
+          "10322",
+          "10323"
+        ]
       }
     },
     {
@@ -7143,7 +7243,12 @@
         "region": "Snezhnaya",
         "version": "1.1",
         "portraitUrl": "https://static.wikia.nocookie.net/gensin-impact/images/3/3a/Character_Tartaglia_Portrait.png",
-        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/4/4c/Character_Tartaglia_Card.png"
+        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/4/4c/Character_Tartaglia_Card.png",
+        "skillOrder": [
+          "10331",
+          "10332",
+          "10333"
+        ]
       }
     },
     {
@@ -7503,7 +7608,12 @@
         "region": "Mondstadt",
         "version": "1.0",
         "portraitUrl": "https://static.wikia.nocookie.net/gensin-impact/images/a/a5/Character_Noelle_Portrait.png",
-        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/9/92/Character_Noelle_Card.jpg"
+        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/9/92/Character_Noelle_Card.jpg",
+        "skillOrder": [
+          "10341",
+          "10342",
+          "10343"
+        ]
       }
     },
     {
@@ -7863,7 +7973,12 @@
         "region": "Liyue",
         "version": "1.0",
         "portraitUrl": "https://static.wikia.nocookie.net/gensin-impact/images/2/2a/Character_Qiqi_Portrait.png",
-        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/b/b9/Character_Qiqi_Card.jpg"
+        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/b/b9/Character_Qiqi_Card.jpg",
+        "skillOrder": [
+          "10351",
+          "10352",
+          "10353"
+        ]
       }
     },
     {
@@ -8223,7 +8338,12 @@
         "region": "Liyue",
         "version": "1.0",
         "portraitUrl": "https://static.wikia.nocookie.net/gensin-impact/images/a/aa/Character_Chongyun_Portrait.png",
-        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/f/fa/Character_Chongyun_Card.jpg"
+        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/f/fa/Character_Chongyun_Card.jpg",
+        "skillOrder": [
+          "10401",
+          "10402",
+          "10403"
+        ]
       }
     },
     {
@@ -8583,7 +8703,12 @@
         "region": "Liyue",
         "version": "1.2",
         "portraitUrl": "https://static.wikia.nocookie.net/gensin-impact/images/a/a0/Character_Ganyu_Portrait.png",
-        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/8/8d/Character_Ganyu_Card.png"
+        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/8/8d/Character_Ganyu_Card.png",
+        "skillOrder": [
+          "10371",
+          "10372",
+          "10373"
+        ]
       }
     },
     {
@@ -8943,7 +9068,12 @@
         "region": "Mondstadt",
         "version": "1.2",
         "portraitUrl": "https://static.wikia.nocookie.net/gensin-impact/images/2/23/Character_Albedo_Portrait.png",
-        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/f/f8/Character_Albedo_Card.png"
+        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/f/f8/Character_Albedo_Card.png",
+        "skillOrder": [
+          "10386",
+          "10387",
+          "10388"
+        ]
       }
     },
     {
@@ -9303,7 +9433,12 @@
         "region": "Mondstadt",
         "version": "1.1",
         "portraitUrl": "https://static.wikia.nocookie.net/gensin-impact/images/c/ce/Character_Diona_Portrait.png",
-        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/0/08/Character_Diona_Card.png"
+        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/0/08/Character_Diona_Card.png",
+        "skillOrder": [
+          "10391",
+          "10392",
+          "10395"
+        ]
       }
     },
     {
@@ -9663,7 +9798,12 @@
         "region": "Mondstadt",
         "version": "1.0",
         "portraitUrl": "https://static.wikia.nocookie.net/gensin-impact/images/f/fe/Character_Mona_Portrait.png",
-        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/6/69/Character_Mona_Card.jpg"
+        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/6/69/Character_Mona_Card.jpg",
+        "skillOrder": [
+          "10411",
+          "10412",
+          "10415"
+        ]
       }
     },
     {
@@ -10023,7 +10163,12 @@
         "region": "Liyue",
         "version": "1.0",
         "portraitUrl": "https://static.wikia.nocookie.net/gensin-impact/images/8/81/Character_Keqing_Portrait.png",
-        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/f/f4/Character_Keqing_Card.jpg"
+        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/f/f4/Character_Keqing_Card.jpg",
+        "skillOrder": [
+          "10421",
+          "10422",
+          "10425"
+        ]
       }
     },
     {
@@ -10383,7 +10528,12 @@
         "region": "Mondstadt",
         "version": "1.0",
         "portraitUrl": "https://static.wikia.nocookie.net/gensin-impact/images/2/20/Character_Sucrose_Portrait.png",
-        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/2/22/Character_Sucrose_Card.jpg"
+        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/2/22/Character_Sucrose_Card.jpg",
+        "skillOrder": [
+          "10431",
+          "10432",
+          "10435"
+        ]
       }
     },
     {
@@ -10743,7 +10893,12 @@
         "region": "Liyue",
         "version": "1.1",
         "portraitUrl": "https://static.wikia.nocookie.net/gensin-impact/images/c/c8/Character_Xinyan_Portrait.png",
-        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/4/4c/Character_Xinyan_Card.jpeg"
+        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/4/4c/Character_Xinyan_Card.jpeg",
+        "skillOrder": [
+          "10441",
+          "10442",
+          "10443"
+        ]
       }
     },
     {
@@ -11101,7 +11256,12 @@
       },
       "extra": {
         "region": "Mondstadt",
-        "version": "1.4"
+        "version": "1.4",
+        "skillOrder": [
+          "10451",
+          "10452",
+          "10453"
+        ]
       }
     },
     {
@@ -11461,7 +11621,12 @@
         "region": "Liyue",
         "version": "1.3",
         "portraitUrl": "https://static.wikia.nocookie.net/gensin-impact/images/5/50/Character_Hu_Tao_Portrait.png",
-        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/2/22/Character_Hu_Tao_Card.jpg"
+        "cardUrl": "https://static.wikia.nocookie.net/gensin-impact/images/2/22/Character_Hu_Tao_Card.jpg",
+        "skillOrder": [
+          "10461",
+          "10462",
+          "10463"
+        ]
       }
     },
     {
@@ -11819,7 +11984,12 @@
       },
       "extra": {
         "region": "Inazuma",
-        "version": "1.6"
+        "version": "1.6",
+        "skillOrder": [
+          "10471",
+          "10472",
+          "10475"
+        ]
       }
     },
     {
@@ -12177,7 +12347,12 @@
       },
       "extra": {
         "region": "Liyue",
-        "version": "1.5"
+        "version": "1.5",
+        "skillOrder": [
+          "10481",
+          "10482",
+          "10485"
+        ]
       }
     },
     {
@@ -12535,7 +12710,12 @@
       },
       "extra": {
         "region": "Inazuma",
-        "version": "2.0"
+        "version": "2.0",
+        "skillOrder": [
+          "10491",
+          "10492",
+          "10495"
+        ]
       }
     },
     {
@@ -12893,7 +13073,12 @@
       },
       "extra": {
         "region": "Inazuma",
-        "version": "2.2"
+        "version": "2.2",
+        "skillOrder": [
+          "10501",
+          "10502",
+          "10505"
+        ]
       }
     },
     {
@@ -13251,7 +13436,12 @@
       },
       "extra": {
         "region": "Mondstadt",
-        "version": "1.5"
+        "version": "1.5",
+        "skillOrder": [
+          "10511",
+          "10512",
+          "10515"
+        ]
       }
     },
     {
@@ -13609,7 +13799,12 @@
       },
       "extra": {
         "region": "Inazuma",
-        "version": "2.1"
+        "version": "2.1",
+        "skillOrder": [
+          "10521",
+          "10522",
+          "10525"
+        ]
       }
     },
     {
@@ -13967,7 +14162,12 @@
       },
       "extra": {
         "region": "Inazuma",
-        "version": "2.0"
+        "version": "2.0",
+        "skillOrder": [
+          "10531",
+          "10532",
+          "10535"
+        ]
       }
     },
     {
@@ -14325,7 +14525,12 @@
       },
       "extra": {
         "region": "Inazuma",
-        "version": "2.1"
+        "version": "2.1",
+        "skillOrder": [
+          "10541",
+          "10542",
+          "10545"
+        ]
       }
     },
     {
@@ -14683,7 +14888,12 @@
       },
       "extra": {
         "region": "Inazuma",
-        "version": "2.3"
+        "version": "2.3",
+        "skillOrder": [
+          "10551",
+          "10552",
+          "10555"
+        ]
       }
     },
     {
@@ -15041,7 +15251,12 @@
       },
       "extra": {
         "region": "Inazuma",
-        "version": "2.1"
+        "version": "2.1",
+        "skillOrder": [
+          "10561",
+          "10562",
+          "10565"
+        ]
       }
     },
     {
@@ -15399,7 +15614,12 @@
       },
       "extra": {
         "region": "Inazuma",
-        "version": "2.3"
+        "version": "2.3",
+        "skillOrder": [
+          "10571",
+          "10572",
+          "10575"
+        ]
       }
     },
     {
@@ -15757,7 +15977,12 @@
       },
       "extra": {
         "region": "Inazuma",
-        "version": "2.5"
+        "version": "2.5",
+        "skillOrder": [
+          "10581",
+          "10582",
+          "10585"
+        ]
       }
     },
     {
@@ -16115,7 +16340,12 @@
       },
       "extra": {
         "region": "Inazuma",
-        "version": "2.8"
+        "version": "2.8",
+        "skillOrder": [
+          "10591",
+          "10592",
+          "10595"
+        ]
       }
     },
     {
@@ -16473,7 +16703,12 @@
       },
       "extra": {
         "region": "Liyue",
-        "version": "2.7"
+        "version": "2.7",
+        "skillOrder": [
+          "10606",
+          "10607",
+          "10610"
+        ]
       }
     },
     {
@@ -16831,7 +17066,12 @@
       },
       "extra": {
         "region": "Inazuma",
-        "version": "3.7"
+        "version": "3.7",
+        "skillOrder": [
+          "10611",
+          "10612",
+          "10615"
+        ]
       }
     },
     {
@@ -17189,7 +17429,12 @@
       },
       "extra": {
         "region": "",
-        "version": "2.1"
+        "version": "2.1",
+        "skillOrder": [
+          "10621",
+          "10622",
+          "10625"
+        ]
       }
     },
     {
@@ -17547,7 +17792,12 @@
       },
       "extra": {
         "region": "Liyue",
-        "version": "2.4"
+        "version": "2.4",
+        "skillOrder": [
+          "10631",
+          "10632",
+          "10635"
+        ]
       }
     },
     {
@@ -17905,7 +18155,12 @@
       },
       "extra": {
         "region": "Liyue",
-        "version": "2.4"
+        "version": "2.4",
+        "skillOrder": [
+          "10641",
+          "10642",
+          "10643"
+        ]
       }
     },
     {
@@ -18263,7 +18518,12 @@
       },
       "extra": {
         "region": "Inazuma",
-        "version": "2.7"
+        "version": "2.7",
+        "skillOrder": [
+          "10651",
+          "10652",
+          "10655"
+        ]
       }
     },
     {
@@ -18621,7 +18881,12 @@
       },
       "extra": {
         "region": "Inazuma",
-        "version": "2.6"
+        "version": "2.6",
+        "skillOrder": [
+          "10661",
+          "10662",
+          "10665"
+        ]
       }
     },
     {
@@ -18979,7 +19244,12 @@
       },
       "extra": {
         "region": "Sumeru",
-        "version": "3.0"
+        "version": "3.0",
+        "skillOrder": [
+          "10671",
+          "10672",
+          "10675"
+        ]
       }
     },
     {
@@ -19337,7 +19607,12 @@
       },
       "extra": {
         "region": "Sumeru",
-        "version": "3.0"
+        "version": "3.0",
+        "skillOrder": [
+          "10681",
+          "10682",
+          "10685"
+        ]
       }
     },
     {
@@ -19695,7 +19970,12 @@
       },
       "extra": {
         "region": "Sumeru",
-        "version": "3.0"
+        "version": "3.0",
+        "skillOrder": [
+          "10691",
+          "10692",
+          "10695"
+        ]
       }
     },
     {
@@ -20053,7 +20333,12 @@
       },
       "extra": {
         "region": "Sumeru",
-        "version": "3.1"
+        "version": "3.1",
+        "skillOrder": [
+          "10701",
+          "10702",
+          "10705"
+        ]
       }
     },
     {
@@ -20411,7 +20696,12 @@
       },
       "extra": {
         "region": "Sumeru",
-        "version": "3.1"
+        "version": "3.1",
+        "skillOrder": [
+          "10711",
+          "10712",
+          "10715"
+        ]
       }
     },
     {
@@ -20769,7 +21059,12 @@
       },
       "extra": {
         "region": "Sumeru",
-        "version": "3.1"
+        "version": "3.1",
+        "skillOrder": [
+          "10721",
+          "10722",
+          "10725"
+        ]
       }
     },
     {
@@ -21127,7 +21422,12 @@
       },
       "extra": {
         "region": "Sumeru",
-        "version": "3.2"
+        "version": "3.2",
+        "skillOrder": [
+          "10731",
+          "10732",
+          "10735"
+        ]
       }
     },
     {
@@ -21485,7 +21785,12 @@
       },
       "extra": {
         "region": "Sumeru",
-        "version": "3.2"
+        "version": "3.2",
+        "skillOrder": [
+          "10741",
+          "10742",
+          "10745"
+        ]
       }
     },
     {
@@ -21843,7 +22148,12 @@
       },
       "extra": {
         "region": "Sumeru",
-        "version": "3.3"
+        "version": "3.3",
+        "skillOrder": [
+          "10751",
+          "10752",
+          "10755"
+        ]
       }
     },
     {
@@ -22201,7 +22511,12 @@
       },
       "extra": {
         "region": "Sumeru",
-        "version": "3.3"
+        "version": "3.3",
+        "skillOrder": [
+          "10761",
+          "10762",
+          "10765"
+        ]
       }
     },
     {
@@ -22559,7 +22874,12 @@
       },
       "extra": {
         "region": "Liyue",
-        "version": "3.4"
+        "version": "3.4",
+        "skillOrder": [
+          "10771",
+          "10772",
+          "10775"
+        ]
       }
     },
     {
@@ -22917,7 +23237,12 @@
       },
       "extra": {
         "region": "Sumeru",
-        "version": "3.4"
+        "version": "3.4",
+        "skillOrder": [
+          "10781",
+          "10782",
+          "10785"
+        ]
       }
     },
     {
@@ -23275,7 +23600,12 @@
       },
       "extra": {
         "region": "Sumeru",
-        "version": "3.5"
+        "version": "3.5",
+        "skillOrder": [
+          "10791",
+          "10792",
+          "10795"
+        ]
       }
     },
     {
@@ -23633,7 +23963,12 @@
       },
       "extra": {
         "region": "Mondstadt",
-        "version": "3.5"
+        "version": "3.5",
+        "skillOrder": [
+          "10801",
+          "10802",
+          "10805"
+        ]
       }
     },
     {
@@ -23991,7 +24326,12 @@
       },
       "extra": {
         "region": "Sumeru",
-        "version": "3.6"
+        "version": "3.6",
+        "skillOrder": [
+          "10811",
+          "10812",
+          "10815"
+        ]
       }
     },
     {
@@ -24349,7 +24689,12 @@
       },
       "extra": {
         "region": "Liyue",
-        "version": "3.6"
+        "version": "3.6",
+        "skillOrder": [
+          "10821",
+          "10822",
+          "10825"
+        ]
       }
     },
     {
@@ -24707,7 +25052,12 @@
       },
       "extra": {
         "region": "Fontaine",
-        "version": "4.0"
+        "version": "4.0",
+        "skillOrder": [
+          "10831",
+          "10832",
+          "10835"
+        ]
       }
     },
     {
@@ -25065,7 +25415,12 @@
       },
       "extra": {
         "region": "Fontaine",
-        "version": "4.0"
+        "version": "4.0",
+        "skillOrder": [
+          "10841",
+          "10842",
+          "10845"
+        ]
       }
     },
     {
@@ -25423,7 +25778,12 @@
       },
       "extra": {
         "region": "Fontaine",
-        "version": "4.0"
+        "version": "4.0",
+        "skillOrder": [
+          "10851",
+          "10852",
+          "10855"
+        ]
       }
     },
     {
@@ -25781,7 +26141,12 @@
       },
       "extra": {
         "region": "Fontaine",
-        "version": "4.1"
+        "version": "4.1",
+        "skillOrder": [
+          "10861",
+          "10862",
+          "10865"
+        ]
       }
     },
     {
@@ -26139,7 +26504,12 @@
       },
       "extra": {
         "region": "Fontaine",
-        "version": "4.1"
+        "version": "4.1",
+        "skillOrder": [
+          "10871",
+          "10872",
+          "10875"
+        ]
       }
     },
     {
@@ -26497,7 +26867,12 @@
       },
       "extra": {
         "region": "Fontaine",
-        "version": "4.2"
+        "version": "4.2",
+        "skillOrder": [
+          "10881",
+          "10882",
+          "10885"
+        ]
       }
     },
     {
@@ -26855,7 +27230,12 @@
       },
       "extra": {
         "region": "Fontaine",
-        "version": "4.2"
+        "version": "4.2",
+        "skillOrder": [
+          "10891",
+          "10892",
+          "10895"
+        ]
       }
     },
     {
@@ -27213,7 +27593,12 @@
       },
       "extra": {
         "region": "Fontaine",
-        "version": "4.3"
+        "version": "4.3",
+        "skillOrder": [
+          "10901",
+          "10902",
+          "10905"
+        ]
       }
     },
     {
@@ -27571,7 +27956,12 @@
       },
       "extra": {
         "region": "Fontaine",
-        "version": "4.3"
+        "version": "4.3",
+        "skillOrder": [
+          "10911",
+          "10912",
+          "10915"
+        ]
       }
     },
     {
@@ -27929,7 +28319,12 @@
       },
       "extra": {
         "region": "Liyue",
-        "version": "4.4"
+        "version": "4.4",
+        "skillOrder": [
+          "10921",
+          "10922",
+          "10925"
+        ]
       }
     },
     {
@@ -28287,7 +28682,12 @@
       },
       "extra": {
         "region": "Liyue",
-        "version": "4.4"
+        "version": "4.4",
+        "skillOrder": [
+          "10931",
+          "10932",
+          "10935"
+        ]
       }
     },
     {
@@ -28645,7 +29045,12 @@
       },
       "extra": {
         "region": "Inazuma",
-        "version": "4.5"
+        "version": "4.5",
+        "skillOrder": [
+          "10941",
+          "10942",
+          "10945"
+        ]
       }
     },
     {
@@ -29003,7 +29408,12 @@
       },
       "extra": {
         "region": "Fontaine",
-        "version": "4.7"
+        "version": "4.7",
+        "skillOrder": [
+          "10951",
+          "10952",
+          "10955"
+        ]
       }
     },
     {
@@ -29361,7 +29771,12 @@
       },
       "extra": {
         "region": "Snezhnaya",
-        "version": "4.6"
+        "version": "4.6",
+        "skillOrder": [
+          "10961",
+          "10962",
+          "10965"
+        ]
       }
     },
     {
@@ -29719,7 +30134,12 @@
       },
       "extra": {
         "region": "Sumeru",
-        "version": "4.7"
+        "version": "4.7",
+        "skillOrder": [
+          "10971",
+          "10972",
+          "10975"
+        ]
       }
     },
     {
@@ -30077,7 +30497,12 @@
       },
       "extra": {
         "region": "Fontaine",
-        "version": "4.7"
+        "version": "4.7",
+        "skillOrder": [
+          "10981",
+          "10982",
+          "10985"
+        ]
       }
     },
     {
@@ -30435,7 +30860,12 @@
       },
       "extra": {
         "region": "Fontaine",
-        "version": "4.8"
+        "version": "4.8",
+        "skillOrder": [
+          "10991",
+          "10992",
+          "10995"
+        ]
       }
     },
     {
@@ -30793,7 +31223,12 @@
       },
       "extra": {
         "region": "Natlan",
-        "version": "5.0"
+        "version": "5.0",
+        "skillOrder": [
+          "11001",
+          "11002",
+          "11005"
+        ]
       }
     },
     {
@@ -31151,7 +31586,12 @@
       },
       "extra": {
         "region": "Natlan",
-        "version": "5.0"
+        "version": "5.0",
+        "skillOrder": [
+          "11011",
+          "11012",
+          "11015"
+        ]
       }
     },
     {
@@ -31509,7 +31949,12 @@
       },
       "extra": {
         "region": "Natlan",
-        "version": "5.0"
+        "version": "5.0",
+        "skillOrder": [
+          "30000",
+          "30002",
+          "30007"
+        ]
       }
     },
     {
@@ -31867,7 +32312,12 @@
       },
       "extra": {
         "region": "Natlan",
-        "version": "5.1"
+        "version": "5.1",
+        "skillOrder": [
+          "11031",
+          "11032",
+          "11035"
+        ]
       }
     },
     {
@@ -32225,7 +32675,12 @@
       },
       "extra": {
         "region": "Natlan",
-        "version": "5.2"
+        "version": "5.2",
+        "skillOrder": [
+          "11041",
+          "11042",
+          "11045"
+        ]
       }
     },
     {
@@ -32583,7 +33038,12 @@
       },
       "extra": {
         "region": "Natlan",
-        "version": "5.2"
+        "version": "5.2",
+        "skillOrder": [
+          "30501",
+          "30502",
+          "30505"
+        ]
       }
     },
     {
@@ -32941,7 +33401,12 @@
       },
       "extra": {
         "region": "Natlan",
-        "version": "5.3"
+        "version": "5.3",
+        "skillOrder": [
+          "11061",
+          "11062",
+          "11065"
+        ]
       }
     },
     {
@@ -33299,7 +33764,12 @@
       },
       "extra": {
         "region": "Natlan",
-        "version": "5.3"
+        "version": "5.3",
+        "skillOrder": [
+          "11071",
+          "11072",
+          "11075"
+        ]
       }
     },
     {
@@ -33657,7 +34127,12 @@
       },
       "extra": {
         "region": "Liyue",
-        "version": "5.3"
+        "version": "5.3",
+        "skillOrder": [
+          "11081",
+          "11082",
+          "11085"
+        ]
       }
     },
     {
@@ -34015,7 +34490,12 @@
       },
       "extra": {
         "region": "Inazuma",
-        "version": "5.4"
+        "version": "5.4",
+        "skillOrder": [
+          "11091",
+          "11092",
+          "11095"
+        ]
       }
     },
     {
@@ -34373,7 +34853,12 @@
       },
       "extra": {
         "region": "Natlan",
-        "version": "5.5"
+        "version": "5.5",
+        "skillOrder": [
+          "11101",
+          "11102",
+          "11105"
+        ]
       }
     },
     {
@@ -34731,7 +35216,12 @@
       },
       "extra": {
         "region": "Natlan",
-        "version": "5.5"
+        "version": "5.5",
+        "skillOrder": [
+          "11111",
+          "11112",
+          "11115"
+        ]
       }
     },
     {
@@ -35089,7 +35579,12 @@
       },
       "extra": {
         "region": "Fontaine",
-        "version": "5.6"
+        "version": "5.6",
+        "skillOrder": [
+          "11121",
+          "11122",
+          "11125"
+        ]
       }
     },
     {
@@ -35447,7 +35942,12 @@
       },
       "extra": {
         "region": "Natlan",
-        "version": "5.6"
+        "version": "5.6",
+        "skillOrder": [
+          "11131",
+          "11132",
+          "11135"
+        ]
       }
     },
     {
@@ -35804,7 +36304,12 @@
         ]
       },
       "extra": {
-        "version": "5.7"
+        "version": "5.7",
+        "skillOrder": [
+          "11141",
+          "11142",
+          "11145"
+        ]
       }
     },
     {
@@ -36162,7 +36667,12 @@
       },
       "extra": {
         "region": "Mondstadt",
-        "version": "5.7"
+        "version": "5.7",
+        "skillOrder": [
+          "11151",
+          "11152",
+          "11155"
+        ]
       }
     },
     {
@@ -36520,7 +37030,12 @@
       },
       "extra": {
         "region": "Nod-Krai",
-        "version": "5.8"
+        "version": "5.8",
+        "skillOrder": [
+          "11161",
+          "11162",
+          "11165"
+        ]
       }
     },
     {
@@ -36878,7 +37393,12 @@
       },
       "extra": {
         "region": "Nod-Krai",
-        "version": "6.0"
+        "version": "6.0",
+        "skillOrder": [
+          "11191",
+          "11192",
+          "11195"
+        ]
       }
     },
     {
@@ -37236,7 +37756,12 @@
       },
       "extra": {
         "region": "Nod-Krai",
-        "version": "6.0"
+        "version": "6.0",
+        "skillOrder": [
+          "11201",
+          "11202",
+          "11205"
+        ]
       }
     },
     {
@@ -37594,7 +38119,12 @@
       },
       "extra": {
         "region": "Nod-Krai",
-        "version": "6.0"
+        "version": "6.0",
+        "skillOrder": [
+          "11211",
+          "11212",
+          "11215"
+        ]
       }
     },
     {
@@ -37952,7 +38482,12 @@
       },
       "extra": {
         "region": "Nod-Krai",
-        "version": "6.1"
+        "version": "6.1",
+        "skillOrder": [
+          "11221",
+          "11222",
+          "11225"
+        ]
       }
     },
     {
@@ -38310,7 +38845,12 @@
       },
       "extra": {
         "region": "Mondstadt",
-        "version": "6.2"
+        "version": "6.2",
+        "skillOrder": [
+          "11231",
+          "11232",
+          "11235"
+        ]
       }
     },
     {
@@ -38668,7 +39208,12 @@
       },
       "extra": {
         "region": "Nod-Krai",
-        "version": "6.2"
+        "version": "6.2",
+        "skillOrder": [
+          "11241",
+          "11242",
+          "11245"
+        ]
       }
     },
     {

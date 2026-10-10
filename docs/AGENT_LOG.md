@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/enka/04-genshin-talents · #185
+- Done: Genshin talent levels from the Enka showcase. The Genshin catalog keeps each character's skill order (normal, skill, burst ids) from Enka's store (`extra.skillOrder`, cached as "genshin-enka"). `readEnkaGenshin` reads `skillLevelMap` by it into `talents`, at base levels without constellation bonuses. The sync passes the catalog's order.
+- Tests: written first: Amber's skill order in the catalog, and the showcase's talent levels. The fixture already had skill levels, which are now used. `npm run check` passes: 528 tests and 40 journeys.
+- Scope/decisions: the Traveler has one skill order per element, so it keeps manual talents.
+- Next: Stygian Onslaught in the chronicle; the KPI target template.
+
 ## 2026-10-10 · claude · stack/catalog/02-talent-names · #184
 - Done: talent names in the catalogs (`talents.info`), which the sheet shows instead of the keys:
   - Genshin from genshin-db's combat talents (Amber: Sharpshooter, Explosive Puppet, Fiery Rain);
@@ -280,9 +286,3 @@ Entry format:
 - Tests: written first: `instances.integration.test.ts` (kept, refused over 9, cleared, refused for ZZZ), `due.test.ts` (not before 48 h, the DM with the level, none once maxed or switched off). The conformance suite checks the sheet names the world level.
 - Scope/decisions: "rewards unclaimed" is read as short of the last level, the only pass state on record; ZZZ, Endfield and NTE have no world level on record.
 - Next: Profile (G8) on these.
-
-## 2026-10-10 · claude · stack/f10/18-planner · #142
-- Done: the Planner rebuilt from its board (WIREFRAMES.md G7), a hub tab in place of Materials: Goals (each farming goal with what it plans, its priority or backlog and a materials meter; New goal opens Characters); Materials for the picked goal or all goals summed (source, the days pips with today outlined, Have typed in place, Need, Missing, done ones last); Farm today in the game's weekday, one line per domain (Today, or its next open day), the any-day count and Open Tasks.
-- Tests: written first: `e2e/planner.spec.ts` (tab, a goal picked, a material's Have filled to its need shows ✓, All goals, Farm today); the accessibility sweep visits the tab. Checked at 1440 beside `g7-planner.png`.
-- Scope/decisions: the stamina estimate card is not built: drop rates per run are not on record. Materials keeps its route without a tab.
-- Next: Profile (G8).

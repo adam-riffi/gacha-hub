@@ -46,4 +46,9 @@ describe("genshin catalog", () => {
     // The Traveler's talents change with the element, so genshin-db names none under Aether or Lumine.
     expect(catalog.characters.filter((c) => c.talents.keys.length && !c.talents.info?.length).map((c) => c.name)).toEqual(["Aether", "Lumine"]);
   });
+
+  it("keeps each character's skill order (normal, skill, burst ids) from Enka's store, to read showcase talent levels", async () => {
+    const catalog = catalogSchema.parse(await genshin.loadCatalog!());
+    expect(catalog.characters.find((c) => c.name === "Amber")!.extra?.skillOrder).toEqual(["10041", "10032", "10017"]);
+  });
 });
