@@ -13,4 +13,6 @@
 | Battle pass | Pioneer Podcast, 70 levels; weekly cap: | [Pioneer Podcast](https://wutheringwaves.fandom.com/wiki/Pioneer_Podcast) |
 | 30-day pass | Lunite Subscription, 30 days, stacks to 180 | [Lunite Subscription](https://wutheringwaves.fandom.com/wiki/Lunite_Subscription) |
 | Account level | Union Level (UL); the abbreviation is the community's | [Union Level](https://wutheringwaves.fandom.com/wiki/Union_Level) |
+| Gacha | 5★ 0.8% a convene (1.8% average with the guarantee), hard pity 80; featured Resonator 50/50, a lost one guarantees the next; featured weapon 100% | [Featured Resonator Convene](https://wutheringwaves.fandom.com/wiki/Featured_Resonator_Convene), [Featured Weapon Convene](https://wutheringwaves.fandom.com/wiki/Featured_Weapon_Convene) |
+| Gacha · soft pity | From about pull 66, climbing to certainty at 80 ~ (Kuro publishes no curve; guides range from 50 to 75) | [HostedGG](https://hostedgg.com/wiki/wuwa/convene-pity-system) |
 | Version | 3.7 from 30 Sep 2026; 42 days ~ (3.6 ran 41) | [Version](https://wutheringwaves.fandom.com/wiki/Version) |

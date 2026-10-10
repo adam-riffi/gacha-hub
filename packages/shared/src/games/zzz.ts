@@ -62,9 +62,9 @@ export const zzz: GameDefinition = {
   teamSize: 3,
   // Pity rules (community-documented): hard pity, soft pity, featured-unit rate.
   pullBanners: [
-    { key: "character", label: "Exclusive channel", hardPity: 90, softPity: 74, featuredRate: 0.5 },
-    { key: "weapon", label: "W-Engine channel", hardPity: 80, softPity: 64, featuredRate: 0.75 },
-    { key: "standard", label: "Stable channel", hardPity: 90, softPity: 74, featuredRate: 1 },
+    { key: "character", label: "Exclusive channel", baseRate: 0.006, softPity: 74, hardPity: 90, featuredRate: 0.5 },
+    { key: "weapon", label: "W-Engine channel", baseRate: 0.01, softPity: 64, hardPity: 80, featuredRate: 0.75 },
+    { key: "standard", label: "Stable channel", baseRate: 0.006, softPity: 74, hardPity: 90, featuredRate: 1 },
   ],
   name: "Zenless Zone Zero",
   shortName: "Zenless",

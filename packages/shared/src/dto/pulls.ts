@@ -38,6 +38,11 @@ export const pullBannerLogDto = z.object({
   key: z.string(),
   label: z.string(),
   hardPity: z.number().int(),
+  baseRate: z.number(),
+  softStep: z.number().optional(),
+  featuredOdds: z.number().optional(),
+  lossGuarantee: z.boolean().optional(),
+  spark: z.number().int().optional(),
   softPity: z.number().int().optional(),
   featuredRate: z.number(),
   state: z.object({
