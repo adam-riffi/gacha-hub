@@ -87,11 +87,14 @@ describe("pull log (routes)", () => {
     ]);
   });
 
-  // Endfield was the game without pull rules until F9 gave it Chartered headhunting; every game has rules now.
-  it("gives Endfield its Chartered headhunting banner, with no guarantee after a loss and a 120-pull spark", async () => {
+  // Endfield's three pities (ADR 0009): Chartered headhunting (no guarantee after a loss, the featured operator at 120),
+  // the Arsenal (each weapon banner's 40, 25% featured, the featured weapon at 80) and Basic headhunting.
+  it("gives Endfield its Chartered headhunting, Arsenal and Basic headhunting banners", async () => {
     const endfield = await installGame(c, "endfield");
     expect((await c.req<PullLogDto>("GET", `/api/instances/${endfield}/pulls`)).json.banners).toEqual([
       expect.objectContaining({ key: "character", hardPity: 80, featuredRate: 0.5, lossGuarantee: false, spark: 120 }),
+      expect.objectContaining({ key: "weapon", hardPity: 40, featuredRate: 0.25, lossGuarantee: false, spark: 80 }),
+      expect.objectContaining({ key: "standard", hardPity: 80, featuredRate: 1 }),
     ]);
   });
 });
