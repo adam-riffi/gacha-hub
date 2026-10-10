@@ -43,7 +43,9 @@ export async function registerUploadRoutes(app: FastifyInstance) {
       return { url: blob.url };
     }
 
-    const dir = resolve(process.cwd(), config.uploadDir);
+    // resolve() already starts from the working directory. Spelling out
+    // process.cwd() makes Vercel's file trace ship the whole repository.
+    const dir = resolve(config.uploadDir);
     await mkdir(dir, { recursive: true });
     await writeFile(resolve(dir, name), buf);
     return { url: `/uploads/${name}` };
