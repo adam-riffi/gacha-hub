@@ -58,3 +58,57 @@ export function endgameNow(game: GameDefinition, region: ServerClock, now: Date,
     next: next ? { ...next, unclaimed: Math.max(0, (next.mode.maxPremium ?? 0) - next.premium) } : null,
   };
 }
+
+type Mode = GameDefinition["manifest"]["endgame"][number];
+export interface CycleRow extends CycleResultLike {
+  detail: string | null;
+  source: string;
+}
+
+/** A server-local date of an instant (YYYY-MM-DD). */
+const localDate = (t: Date, region: ServerClock) => new Date(t.getTime() + region.utcOffsetMinutes * 60_000).toISOString().slice(0, 10);
+
+/**
+ * One mode's history (WIREFRAMES.md G2): its cycles newest first, each with
+ * its end, whether it is the current one and a full clear; the best result
+ * and how often, the average of completed cycles, and the premium earned of
+ * what those cycles offered.
+ */
+export function cycleHistory(mode: Mode, region: ServerClock, now: Date, results: readonly CycleRow[]) {
+  const current = cadenceWindow(mode.anchor, region, now).start.getTime();
+  const rows = results
+    .filter((r) => r.modeKey === mode.key)
+    .sort((a, b) => b.cycleStart.getTime() - a.cycleStart.getTime())
+    .map((r) => ({
+      ...r,
+      end: cadenceWindow(mode.anchor, region, r.cycleStart).end,
+      current: r.cycleStart.getTime() === current,
+      full: mode.metric.max !== undefined && r.result === mode.metric.max,
+    }));
+  const scored = rows.filter((r) => r.result !== null);
+  const completed = scored.filter((r) => !r.current);
+  const best = scored.length ? Math.max(...scored.map((r) => r.result!)) : null;
+  const bests = scored.filter((r) => r.result === best);
+  return {
+    rows,
+    best,
+    bestTimes: bests.length,
+    bestLast: bests[0]?.cycleStart ?? null,
+    average: completed.length ? completed.reduce((s, r) => s + r.result!, 0) / completed.length : null,
+    completed: completed.length,
+    earned: rows.reduce((s, r) => s + (r.premium ?? 0), 0),
+    offered: (mode.maxPremium ?? 0) * rows.length,
+  };
+}
+
+/** The history as CSV: first and last server-local day of each cycle, its result, detail, premium and source. */
+export function cycleCsv(mode: Mode, region: ServerClock, rows: ReturnType<typeof cycleHistory>["rows"], premium: string): string {
+  const cell = (v: string | number | null) => {
+    const s = v === null ? "" : String(v);
+    return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+  };
+  const lines = rows.map((r) =>
+    [localDate(r.cycleStart, region), localDate(new Date(r.end.getTime() - 86_400_000), region), r.result, r.detail, r.premium, r.source].map(cell).join(","),
+  );
+  return [["first day", "last day", mode.metric.label, "detail", premium, "source"].map(cell).join(","), ...lines].join("\n");
+}
