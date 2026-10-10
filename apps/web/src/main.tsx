@@ -17,6 +17,7 @@ import "./styles/tasks.css";
 import "./styles/library.css";
 import "./styles/pulls.css";
 import "./styles/characters.css";
+import "./styles/sheet.css";
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: false, refetchOnWindowFocus: false } },
