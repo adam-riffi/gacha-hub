@@ -63,6 +63,8 @@ export const zzzDocSchema = z
         assist: z.number().min(1).max(12),
         special: z.number().min(1).max(12),
         chain: z.number().min(1).max(12),
+        /** The core skill: 1, then the enhancements A to F (2 to 7). */
+        core: z.number().min(1).max(7),
       })
       .partial(),
     stats: z.record(z.string(), z.union([z.number(), z.string()])),

@@ -85,7 +85,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -978,6 +979,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110501",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110501",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110001",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110501",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110001",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110501",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110001",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110501",
+                  "qty": 30
                 }
               ]
             }
@@ -1094,7 +1183,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -1987,6 +2077,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110502",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110502",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110001",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110502",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110001",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110502",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110001",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110502",
+                  "qty": 30
                 }
               ]
             }
@@ -2103,7 +2281,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -2996,6 +3175,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110501",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110501",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110001",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110501",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110001",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110501",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110001",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110501",
+                  "qty": 30
                 }
               ]
             }
@@ -3112,7 +3379,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -4005,6 +4273,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110505",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110505",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110003",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110505",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110003",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110505",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110003",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110505",
+                  "qty": 30
                 }
               ]
             }
@@ -4121,7 +4477,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -5014,6 +5371,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110512",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110512",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110007",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110512",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110007",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110512",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110007",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110512",
+                  "qty": 30
                 }
               ]
             }
@@ -5130,7 +5575,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -6023,6 +6469,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110502",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110502",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110003",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110502",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110003",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110502",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110003",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110502",
+                  "qty": 30
                 }
               ]
             }
@@ -6139,7 +6673,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -7032,6 +7567,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110507",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110507",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110004",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110507",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110004",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110507",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110004",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110507",
+                  "qty": 30
                 }
               ]
             }
@@ -7148,7 +7771,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -8041,6 +8665,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110503",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110503",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110001",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110503",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110001",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110503",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110001",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110503",
+                  "qty": 30
                 }
               ]
             }
@@ -8157,7 +8869,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -9050,6 +9763,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110508",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110508",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110005",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110508",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110005",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110508",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110005",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110508",
+                  "qty": 30
                 }
               ]
             }
@@ -9166,7 +9967,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -10059,6 +10861,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110504",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110504",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110002",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110504",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110002",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110504",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110002",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110504",
+                  "qty": 30
                 }
               ]
             }
@@ -10175,7 +11065,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -11068,6 +11959,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110505",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110505",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110002",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110505",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110002",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110505",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110002",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110505",
+                  "qty": 30
                 }
               ]
             }
@@ -11184,7 +12163,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -12077,6 +13057,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110504",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110504",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110002",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110504",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110002",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110504",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110002",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110504",
+                  "qty": 30
                 }
               ]
             }
@@ -12193,7 +13261,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -13086,6 +14155,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110501",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110501",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110003",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110501",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110003",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110501",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110003",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110501",
+                  "qty": 30
                 }
               ]
             }
@@ -13202,7 +14359,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -14095,6 +15253,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110503",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110503",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110003",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110503",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110003",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110503",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110003",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110503",
+                  "qty": 30
                 }
               ]
             }
@@ -14211,7 +15457,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -15104,6 +16351,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110504",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110504",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110001",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110504",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110001",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110504",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110001",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110504",
+                  "qty": 30
                 }
               ]
             }
@@ -15220,7 +16555,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -16113,6 +17449,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110502",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110502",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110004",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110502",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110004",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110502",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110004",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110502",
+                  "qty": 30
                 }
               ]
             }
@@ -16229,7 +17653,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -17122,6 +18547,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110507",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110507",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110004",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110507",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110004",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110507",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110004",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110507",
+                  "qty": 30
                 }
               ]
             }
@@ -17238,7 +18751,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -18131,6 +19645,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110505",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110505",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110002",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110505",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110002",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110505",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110002",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110505",
+                  "qty": 30
                 }
               ]
             }
@@ -18247,7 +19849,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -19140,6 +20743,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110501",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110501",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110001",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110501",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110001",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110501",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110001",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110501",
+                  "qty": 30
                 }
               ]
             }
@@ -19256,7 +20947,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -20149,6 +21841,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110508",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110508",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110005",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110508",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110005",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110508",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110005",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110508",
+                  "qty": 30
                 }
               ]
             }
@@ -20265,7 +22045,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -21158,6 +22939,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110505",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110505",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110003",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110505",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110003",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110505",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110003",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110505",
+                  "qty": 30
                 }
               ]
             }
@@ -21274,7 +23143,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -22167,6 +24037,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110505",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110505",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110002",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110505",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110002",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110505",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110002",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110505",
+                  "qty": 30
                 }
               ]
             }
@@ -22283,7 +24241,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -23176,6 +25135,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110503",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110503",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110002",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110503",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110002",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110503",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110002",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110503",
+                  "qty": 30
                 }
               ]
             }
@@ -23292,7 +25339,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -24185,6 +26233,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110503",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110503",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110002",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110503",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110002",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110503",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110002",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110503",
+                  "qty": 30
                 }
               ]
             }
@@ -24301,7 +26437,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -25194,6 +27331,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110506",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110506",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110001",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110506",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110001",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110506",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110001",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110506",
+                  "qty": 30
                 }
               ]
             }
@@ -25310,7 +27535,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -26203,6 +28429,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110506",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110506",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110002",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110506",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110002",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110506",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110002",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110506",
+                  "qty": 30
                 }
               ]
             }
@@ -26319,7 +28633,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -27212,6 +29527,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110502",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110502",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110003",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110502",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110003",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110502",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110003",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110502",
+                  "qty": 30
                 }
               ]
             }
@@ -27328,7 +29731,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -28221,6 +30625,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110501",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110501",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110003",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110501",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110003",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110501",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110003",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110501",
+                  "qty": 30
                 }
               ]
             }
@@ -28337,7 +30829,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -29230,6 +31723,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110510",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110510",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110004",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110510",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110004",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110510",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110004",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110510",
+                  "qty": 30
                 }
               ]
             }
@@ -29346,7 +31927,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -30239,6 +32821,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110508",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110508",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110003",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110508",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110003",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110508",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110003",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110508",
+                  "qty": 30
                 }
               ]
             }
@@ -30355,7 +33025,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -31248,6 +33919,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110504",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110504",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110004",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110504",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110004",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110504",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110004",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110504",
+                  "qty": 30
                 }
               ]
             }
@@ -31364,7 +34123,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -32257,6 +35017,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110508",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110508",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110005",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110508",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110005",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110508",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110005",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110508",
+                  "qty": 30
                 }
               ]
             }
@@ -32373,7 +35221,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -33266,6 +36115,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110513",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110513",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110008",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110513",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110008",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110513",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110008",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110513",
+                  "qty": 30
                 }
               ]
             }
@@ -33382,7 +36319,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -34275,6 +37213,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110507",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110507",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110004",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110507",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110004",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110507",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110004",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110507",
+                  "qty": 30
                 }
               ]
             }
@@ -34391,7 +37417,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -35284,6 +38311,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110509",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110509",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110001",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110509",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110001",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110509",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110001",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110509",
+                  "qty": 30
                 }
               ]
             }
@@ -35400,7 +38515,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -36293,6 +39409,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110510",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110510",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110006",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110510",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110006",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110510",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110006",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110510",
+                  "qty": 30
                 }
               ]
             }
@@ -36409,7 +39613,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -37302,6 +40507,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110509",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110509",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110002",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110509",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110002",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110509",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110002",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110509",
+                  "qty": 30
                 }
               ]
             }
@@ -37418,7 +40711,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -38311,6 +41605,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110510",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110510",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110006",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110510",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110006",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110510",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110006",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110510",
+                  "qty": 30
                 }
               ]
             }
@@ -38427,7 +41809,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -39320,6 +42703,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110511",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110511",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110005",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110511",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110005",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110511",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110005",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110511",
+                  "qty": 30
                 }
               ]
             }
@@ -39436,7 +42907,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -40329,6 +43801,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110511",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110511",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110005",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110511",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110005",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110511",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110005",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110511",
+                  "qty": 30
                 }
               ]
             }
@@ -40445,7 +44005,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -41338,6 +44899,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110510",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110510",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110006",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110510",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110006",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110510",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110006",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110510",
+                  "qty": 30
                 }
               ]
             }
@@ -41454,7 +45103,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -42347,6 +45997,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110513",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110513",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110008",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110513",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110008",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110513",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110008",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110513",
+                  "qty": 30
                 }
               ]
             }
@@ -42463,7 +46201,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -43356,6 +47095,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110512",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110512",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110007",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110512",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110007",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110512",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110007",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110512",
+                  "qty": 30
                 }
               ]
             }
@@ -43472,7 +47299,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -44365,6 +48193,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110512",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110512",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110007",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110512",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110007",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110512",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110007",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110512",
+                  "qty": 30
                 }
               ]
             }
@@ -44481,7 +48397,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -45374,6 +49291,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110509",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110509",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110006",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110509",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110006",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110509",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110006",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110509",
+                  "qty": 30
                 }
               ]
             }
@@ -45490,7 +49495,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -46383,6 +50389,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110510",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110510",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110007",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110510",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110007",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110510",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110007",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110510",
+                  "qty": 30
                 }
               ]
             }
@@ -46499,7 +50593,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -47392,6 +51487,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110507",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110507",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110006",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110507",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110006",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110507",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110006",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110507",
+                  "qty": 30
                 }
               ]
             }
@@ -47508,7 +51691,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -48401,6 +52585,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110514",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110514",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110008",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110514",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110008",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110514",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110008",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110514",
+                  "qty": 30
                 }
               ]
             }
@@ -48517,7 +52789,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -49410,6 +53683,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110506",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110506",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110008",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110506",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110008",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110506",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110008",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110506",
+                  "qty": 30
                 }
               ]
             }
@@ -49526,7 +53887,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -50419,6 +54781,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110513",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110513",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110009",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110513",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110009",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110513",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110009",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110513",
+                  "qty": 30
                 }
               ]
             }
@@ -50535,7 +54985,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -51428,6 +55879,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110514",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110514",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110006",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110514",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110006",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110514",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110006",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110514",
+                  "qty": 30
                 }
               ]
             }
@@ -51544,7 +56083,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -52437,6 +56977,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110514",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110514",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110008",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110514",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110008",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110514",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110008",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110514",
+                  "qty": 30
                 }
               ]
             }
@@ -52553,7 +57181,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -53446,6 +58075,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110511",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110511",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110009",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110511",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110009",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110511",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110009",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110511",
+                  "qty": 30
                 }
               ]
             }
@@ -53562,7 +58279,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -54455,6 +59173,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110515",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110515",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110010",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110515",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110010",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110515",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110010",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110515",
+                  "qty": 30
                 }
               ]
             }
@@ -54571,7 +59377,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -55464,6 +60271,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110515",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110515",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110010",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110515",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110010",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110515",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110010",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110515",
+                  "qty": 30
                 }
               ]
             }
@@ -55580,7 +60475,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -56473,6 +61369,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110515",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110515",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110010",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110515",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110010",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110515",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110010",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110515",
+                  "qty": 30
                 }
               ]
             }
@@ -56589,7 +61573,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -57482,6 +62467,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110515",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110515",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110010",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110515",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110010",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110515",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110010",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110515",
+                  "qty": 30
                 }
               ]
             }
@@ -57598,7 +62671,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -58491,6 +63565,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110512",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110512",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110007",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110512",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110007",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110512",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110007",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110512",
+                  "qty": 30
                 }
               ]
             }
@@ -58607,7 +63769,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -59500,6 +64663,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110516",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110516",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110011",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110516",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110011",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110516",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110011",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110516",
+                  "qty": 30
                 }
               ]
             }
@@ -59616,7 +64867,8 @@
           "dodge",
           "assist",
           "special",
-          "chain"
+          "chain",
+          "core"
         ],
         "costs": [
           {
@@ -60509,6 +65761,94 @@
                 {
                   "materialId": "100941",
                   "qty": 1
+                }
+              ]
+            }
+          ],
+          "core": [
+            {
+              "atLevel": 2,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 5000
+                }
+              ]
+            },
+            {
+              "atLevel": 3,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 12000
+                },
+                {
+                  "materialId": "110516",
+                  "qty": 2
+                }
+              ]
+            },
+            {
+              "atLevel": 4,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 28000
+                },
+                {
+                  "materialId": "110516",
+                  "qty": 4
+                }
+              ]
+            },
+            {
+              "atLevel": 5,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 60000
+                },
+                {
+                  "materialId": "110011",
+                  "qty": 2
+                },
+                {
+                  "materialId": "110516",
+                  "qty": 9
+                }
+              ]
+            },
+            {
+              "atLevel": 6,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 100000
+                },
+                {
+                  "materialId": "110011",
+                  "qty": 3
+                },
+                {
+                  "materialId": "110516",
+                  "qty": 15
+                }
+              ]
+            },
+            {
+              "atLevel": 7,
+              "materials": [
+                {
+                  "materialId": "10",
+                  "qty": 200000
+                },
+                {
+                  "materialId": "110011",
+                  "qty": 4
+                },
+                {
+                  "materialId": "110516",
+                  "qty": 30
                 }
               ]
             }
@@ -69399,6 +74739,303 @@
       "category": "Material",
       "rarity": 3,
       "icon": "WeaponRankArmorer03",
+      "extra": {
+        "class": 10
+      }
+    },
+    {
+      "id": "110001",
+      "key": "ferocious-grip",
+      "name": "Ferocious Grip",
+      "category": "Material",
+      "rarity": 4,
+      "icon": "ExBigBoss001",
+      "extra": {
+        "class": 10
+      }
+    },
+    {
+      "id": "110002",
+      "key": "living-drive",
+      "name": "Living Drive",
+      "category": "Material",
+      "rarity": 4,
+      "icon": "ExBigBoss002",
+      "extra": {
+        "class": 10
+      }
+    },
+    {
+      "id": "110003",
+      "key": "finale-dance-shoes",
+      "name": "Finale Dance Shoes",
+      "category": "Material",
+      "rarity": 4,
+      "icon": "ExBigBoss003",
+      "extra": {
+        "class": 10
+      }
+    },
+    {
+      "id": "110004",
+      "key": "scarlet-engine",
+      "name": "Scarlet Engine",
+      "category": "Material",
+      "rarity": 4,
+      "icon": "ExBigBoss004",
+      "extra": {
+        "class": 10
+      }
+    },
+    {
+      "id": "110005",
+      "key": "sycophants-refinement",
+      "name": "Sycophant's Refinement",
+      "category": "Material",
+      "rarity": 4,
+      "icon": "ExBigBoss005",
+      "extra": {
+        "class": 10
+      }
+    },
+    {
+      "id": "110006",
+      "key": "exuvia-of-refinement",
+      "name": "Exuvia of Refinement",
+      "category": "Material",
+      "rarity": 4,
+      "icon": "ExBigBoss006",
+      "extra": {
+        "class": 10
+      }
+    },
+    {
+      "id": "110007",
+      "key": "crimson-miasma-spike",
+      "name": "Crimson Miasma Spike",
+      "category": "Material",
+      "rarity": 4,
+      "icon": "ExBigBoss007",
+      "extra": {
+        "class": 10
+      }
+    },
+    {
+      "id": "110008",
+      "key": "clouded-crystalline-substance",
+      "name": "Clouded Crystalline Substance",
+      "category": "Material",
+      "rarity": 4,
+      "icon": "ExBigBoss008",
+      "extra": {
+        "class": 10
+      }
+    },
+    {
+      "id": "110009",
+      "key": "marrow-draining-thorn",
+      "name": "Marrow-Draining Thorn",
+      "category": "Material",
+      "rarity": 4,
+      "icon": "ExBigBoss009",
+      "extra": {
+        "class": 10
+      }
+    },
+    {
+      "id": "110010",
+      "key": "timeworn-husk",
+      "name": "Timeworn Husk",
+      "category": "Material",
+      "rarity": 4,
+      "icon": "ExBigBoss010",
+      "extra": {
+        "class": 10
+      }
+    },
+    {
+      "id": "110011",
+      "key": "counterfeit-nucleus",
+      "name": "Counterfeit Nucleus",
+      "category": "Material",
+      "rarity": 4,
+      "icon": "ExBigBoss011",
+      "extra": {
+        "class": 10
+      }
+    },
+    {
+      "id": "110501",
+      "key": "higher-dimensional-data-murderous-obituary",
+      "name": "Higher Dimensional Data: Murderous Obituary",
+      "category": "Material",
+      "rarity": 3,
+      "icon": "ExSmallBoss001",
+      "extra": {
+        "class": 10
+      }
+    },
+    {
+      "id": "110502",
+      "key": "higher-dimensional-data-crimson-awe",
+      "name": "Higher Dimensional Data: Crimson Awe",
+      "category": "Material",
+      "rarity": 3,
+      "icon": "ExSmallBoss002",
+      "extra": {
+        "class": 10
+      }
+    },
+    {
+      "id": "110503",
+      "key": "higher-dimensional-data-ethereal-pursuit",
+      "name": "Higher Dimensional Data: Ethereal Pursuit",
+      "category": "Material",
+      "rarity": 3,
+      "icon": "ExSmallBoss003",
+      "extra": {
+        "class": 10
+      }
+    },
+    {
+      "id": "110504",
+      "key": "higher-dimensional-data-steel-malice",
+      "name": "Higher Dimensional Data: Steel Malice",
+      "category": "Material",
+      "rarity": 3,
+      "icon": "ExSmallBoss004",
+      "extra": {
+        "class": 10
+      }
+    },
+    {
+      "id": "110505",
+      "key": "higher-dimensional-data-destructive-advance",
+      "name": "Higher Dimensional Data: Destructive Advance",
+      "category": "Material",
+      "rarity": 3,
+      "icon": "ExSmallBoss005",
+      "extra": {
+        "class": 10
+      }
+    },
+    {
+      "id": "110506",
+      "key": "higher-dimensional-data-falling-fist",
+      "name": "Higher Dimensional Data: Falling Fist",
+      "category": "Material",
+      "rarity": 3,
+      "icon": "ExSmallBoss006",
+      "extra": {
+        "class": 10
+      }
+    },
+    {
+      "id": "110507",
+      "key": "higher-dimensional-data-stealth-phantom",
+      "name": "Higher Dimensional Data: Stealth Phantom",
+      "category": "Material",
+      "rarity": 3,
+      "icon": "ExSmallBoss007",
+      "extra": {
+        "class": 10
+      }
+    },
+    {
+      "id": "110508",
+      "key": "higher-dimensional-data-thunderous-dragon",
+      "name": "Higher Dimensional Data: Thunderous Dragon",
+      "category": "Material",
+      "rarity": 3,
+      "icon": "ExSmallBoss008",
+      "extra": {
+        "class": 10
+      }
+    },
+    {
+      "id": "110509",
+      "key": "higher-dimensional-data-mortal-cleave",
+      "name": "Higher Dimensional Data: Mortal Cleave",
+      "category": "Material",
+      "rarity": 3,
+      "icon": "ExSmallBoss009",
+      "extra": {
+        "class": 10
+      }
+    },
+    {
+      "id": "110510",
+      "key": "higher-dimensional-data-miasmic-elytron",
+      "name": "Higher Dimensional Data: Miasmic Elytron",
+      "category": "Material",
+      "rarity": 3,
+      "icon": "ExSmallBoss010",
+      "extra": {
+        "class": 10
+      }
+    },
+    {
+      "id": "110511",
+      "key": "higher-dimensional-data-toxic-edge",
+      "name": "Higher Dimensional Data: Toxic Edge",
+      "category": "Material",
+      "rarity": 3,
+      "icon": "ExSmallBoss011",
+      "extra": {
+        "class": 10
+      }
+    },
+    {
+      "id": "110512",
+      "key": "higher-dimensional-data-corrupted-dreamsteel",
+      "name": "Higher Dimensional Data: Corrupted Dreamsteel",
+      "category": "Material",
+      "rarity": 3,
+      "icon": "ExSmallBoss012",
+      "extra": {
+        "class": 10
+      }
+    },
+    {
+      "id": "110513",
+      "key": "higher-dimensional-data-spiked-corruption-core",
+      "name": "Higher Dimensional Data: Spiked Corruption Core",
+      "category": "Material",
+      "rarity": 3,
+      "icon": "ExSmallBoss013",
+      "extra": {
+        "class": 10
+      }
+    },
+    {
+      "id": "110514",
+      "key": "higher-dimensional-data-bloodstained-miasma-feather",
+      "name": "Higher Dimensional Data: Bloodstained Miasma Feather",
+      "category": "Material",
+      "rarity": 3,
+      "icon": "ExSmallBoss014",
+      "extra": {
+        "class": 10
+      }
+    },
+    {
+      "id": "110515",
+      "key": "higher-dimensional-data-deep-erosion-circuit",
+      "name": "Higher Dimensional Data: Deep Erosion Circuit",
+      "category": "Material",
+      "rarity": 3,
+      "icon": "ExSmallBoss015",
+      "extra": {
+        "class": 10
+      }
+    },
+    {
+      "id": "110516",
+      "key": "higher-dimensional-data-imitation-core",
+      "name": "Higher Dimensional Data: Imitation Core",
+      "category": "Material",
+      "rarity": 3,
+      "icon": "ExSmallBoss016",
       "extra": {
         "class": 10
       }

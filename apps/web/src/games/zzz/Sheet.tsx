@@ -54,6 +54,8 @@ export function ZzzSheet({ doc, setDoc, name, portraitUrl, onName, onPortrait }:
             <Labeled label="Basic"><Num value={skills.basic} min={1} max={12} onChange={(v) => setSkill("basic", v)} /></Labeled>
             <Labeled label="Special"><Num value={skills.special} min={1} max={12} onChange={(v) => setSkill("special", v)} /></Labeled>
             <Labeled label="Chain"><Num value={skills.chain} min={1} max={12} onChange={(v) => setSkill("chain", v)} /></Labeled>
+            {/* The core skill: 1, then its enhancements A to F as 2 to 7. */}
+            <Labeled label="Core"><Num value={skills.core} min={1} max={7} onChange={(v) => setSkill("core", v)} /></Labeled>
           </div>
         </div>
 
