@@ -44,3 +44,27 @@ test("Tasks: farm today, goals with their steps, filtering, and an event goal cl
   await expect(farm).toBeVisible();
   await expect(event).toHaveCount(0);
 });
+
+test("Tasks: reminder rules across games, quiet hours, and the DM preview @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  await page.request.post("/api/instances", { data: { gameKey: "hsr" } });
+
+  await page.goto("/tasks?game=hsr");
+  const reminders = page.getByRole("complementary", { name: "Reminders" });
+  await reminders.getByRole("checkbox", { name: "Stamina full" }).check();
+  await expect(reminders.getByRole("listitem").filter({ hasText: "Stamina full" })).toContainText("ALL");
+
+  const preview = page.getByRole("region", { name: "Preview" });
+  await expect(preview).toContainText("Honkai: Star Rail resets in");
+
+  await reminders.getByRole("button", { name: "Edit quiet hours" }).click();
+  await reminders.getByLabel("Quiet from").fill("23:00");
+  await reminders.getByLabel("Quiet until").fill("07:00");
+  await reminders.getByRole("button", { name: "Save" }).click();
+  await expect(reminders).toContainText("23:00–07:00");
+
+  await preview.getByRole("button", { name: "Send a test DM" }).click();
+  await expect(preview).toContainText("Discord isn't set up");
+});
