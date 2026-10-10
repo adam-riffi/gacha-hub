@@ -90,6 +90,15 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
     onSuccess: () => qc.invalidateQueries({ queryKey: ["character", data.id] }),
     onError: () => toast("Target not saved", "err"),
   });
+  // This build's targets as the game's defaults, which builds without their own show.
+  const makeDefaults = useMutation({
+    mutationFn: () => api.put(`/api/instances/${data.gameInstanceId}`, { kpiTargets: data.targets }),
+    onSuccess: () => {
+      toast("Default targets saved");
+      void qc.invalidateQueries({ queryKey: ["character"] });
+    },
+    onError: () => toast("Defaults not saved", "err"),
+  });
   const another = useMutation({
     mutationFn: () => api.post<{ id: string }>(`/api/instances/${data.gameInstanceId}/characters`, { catalogId: data.catalogId, name: `${data.name} (2)` }),
     onSuccess: (r) => {
@@ -185,7 +194,7 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
 
           <section className="sh-kpis" aria-label="KPIs">
             {buildKpis(game, doc, state.role).map((k) => (
-              <KpiTile key={k.label} label={k.label} value={k.value} target={data.targets?.[k.label]} onTarget={(v) => setTarget.mutate({ ...(data.targets ?? {}), ...v })} />
+              <KpiTile key={k.label} label={k.label} value={k.value} target={data.targets?.[k.label]} fallback={data.defaultTargets?.[k.label]} onTarget={(v) => setTarget.mutate({ ...(data.targets ?? {}), ...v })} />
             ))}
             <div className="card sh-kpi">
               <span className="kpi-label">Role</span>
@@ -195,6 +204,11 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
                 ))}
               </select>
               <span className="mu sh-note">picks the KPIs</span>
+              {data.targets && Object.keys(data.targets).length > 0 && (
+                <button className="btn sm" disabled={makeDefaults.isPending} onClick={() => makeDefaults.mutate()}>
+                  Make these the game's defaults
+                </button>
+              )}
             </div>
           </section>
 
@@ -334,10 +348,12 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
 }
 
 /** A KPI tile with its target (WIREFRAMES.md G5): how far off, typed in place; pairs take no target. */
-function KpiTile({ label, value, target, onTarget }: { label: string; value: string; target?: number; onTarget: (t: Record<string, number | undefined>) => void }) {
+function KpiTile({ label, value, target, fallback, onTarget }: { label: string; value: string; target?: number; fallback?: number; onTarget: (t: Record<string, number | undefined>) => void }) {
   const now = Number.parseFloat(value);
   const numeric = !label.includes(" / ");
-  const gap = target !== undefined && Number.isFinite(now) ? target - now : null;
+  // The build's own target, else the game's default.
+  const shown = target ?? fallback;
+  const gap = shown !== undefined && Number.isFinite(now) ? shown - now : null;
   return (
     <div className="card sh-kpi" role="group" aria-label={label}>
       <span className="kpi-label">{label}</span>
@@ -345,13 +361,13 @@ function KpiTile({ label, value, target, onTarget }: { label: string; value: str
       {numeric && (
         <span className="sh-target">
           <label className="mu">
-            target
+            {target === undefined && fallback !== undefined ? "target (default)" : "target"}
             <input
               type="number"
               min={0}
               aria-label={`${label} target`}
-              key={target ?? ""}
-              defaultValue={target ?? ""}
+              key={shown ?? ""}
+              defaultValue={shown ?? ""}
               onBlur={(e) => {
                 const v = e.target.value === "" ? undefined : Number(e.target.value);
                 if (v !== target) onTarget({ [label]: v });
