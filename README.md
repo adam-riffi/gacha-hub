@@ -92,7 +92,7 @@ docs/                             DESIGN · VISUAL-DESIGN · WIREFRAMES · desig
 ## Limitations and next steps
 
 - Reminders need the owner's Discord bot token and cron secret in production.
-- Art comes from our R2 store once the owner sets it up (ADR 0006), else from Enka (Genshin), Yatta (HSR) and Wuthery (WuWa); ZZZ, Endfield and NTE show initials.
+- Art comes from our R2 store once the owner sets it up (ADR 0006), else from Enka (Genshin), Yatta (HSR), the Hakushin assets (ZZZ) and Wuthery (WuWa); Endfield and NTE show initials.
 - Account linking (HoYoLAB, Enka, pull-history links) needs the owner's `LINK_SECRET_KEY`; HoYoLAB stays read-only (ADR 0005).
 - No mobile layout (desktop only, by decision).
 - Next milestone: paging the calendar back through ended banners and events (docs/DESIGN.md §9).

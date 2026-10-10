@@ -443,9 +443,9 @@ So the host app stays generic over what all games share (profiles, currencies, r
 | Domains today, "domains open today" DM | yes | — | — | — | — | — |
 | Pull log (hard pity, featured rate) | 90 50% · 80 75% · 90 | 90 50% · 80 75% · 90 | 90 50% · 80 75% · 90 | 80 50% · 80 100% · 80 | 80 50% (featured at 120) · 40 25% (featured at 80) · 80 | 90 100% |
 | Pull history import | history link, UIGF | history link, UIGF | history link, UIGF | convene link | records link (ADR 0009) | — (by hand) |
-| Live account data | HoYoLAB notes, chronicle, roster; Enka builds | same | HoYoLAB notes, chronicle, roster | — | — (the account token can act for the account) | — |
+| Live account data | HoYoLAB notes, chronicle, roster; Enka builds and talents | HoYoLAB notes, chronicle, roster; Enka builds | HoYoLAB notes, chronicle, roster; Enka builds | — | — (the account token can act for the account) | — |
 | Official feed import | yes | yes (one banner per warp section) | yes (one banner per Signal Search) | — | — | — |
-| Art (behind our R2 store once set up) | Enka | Yatta | initials | Wuthery (characters, weapons) | initials | initials |
+| Art (behind our R2 store once set up) | Enka | Yatta | Hakushin assets | Wuthery (characters, weapons) | initials | initials |
 | Party size | 4 | 4 | 3 | 3 | 4 | 4 |
 | Regions | NA (UTC−5), EU (UTC+1), Asia (UTC+8); reset 04:00 | same | same | same | Americas/Europe (UTC−5), Asia (UTC+8); reset 04:00 | Asia, America, Europe, SEA; reset 05:00, week on Monday |
 | Default dailies | Daily Commissions; Weekly Bosses (weekly) | Daily Training; Assignments; Simulated Universe (weekly) | Daily Missions; Scratch Card | Daily Activity; Weekly Bosses (weekly) | Daily Tasks | Daily quests; Anomaly Pilgrimage (weekly) |
@@ -559,8 +559,8 @@ Every milestone in DESIGN.md §9 is built, V through F12. What is left waits on 
    F12's acceptance ("every game shows art from our store") is checked after this.
 5. **Clean production banners and events:** in Admin, delete the `sample-*` rows for each game. Then import the official feed, or wait for the hourly tick after step 1.
 6. **Branch ruleset on `main`:** require the checks `lint`, `typecheck`, `test`, `build` and `e2e`.
-7. **Decisions:** taken by the agent on 2026-10-10 at Georges's request. ADR 0009 is accepted; Enka's store data is used with credit in NOTICE and removed on request.
-8. **Real responses, with tokens removed,** to replace the fixtures: the HoYoLAB card, notes, chronicle and roster; a gacha log page; a WuWa convene answer; Enka showcases.
+7. **Decisions:** taken by the agent on 2026-10-10 at Georges's request: ADR 0009 accepted; Enka's store and the Hakushin data used with credit in NOTICE and removed on request; the items in §14.2 decided against, each with its reason. Overrule any of them by saying so.
+8. **Real responses, with tokens removed,** to replace the fixtures: the HoYoLAB card, notes, chronicle and roster; a gacha log page; a WuWa convene answer; Enka showcases (ZZZ's especially); an Endfield records page.
 9. **README:** record the demo GIF (DESIGN.md §15); set the repository description and topics.
 10. **Delete stale remote branches** of merged PRs. The agent's delete was blocked by its permission rules:
     - `stack/docs-v2/01-design-adrs` to `06-design-files`;
@@ -570,34 +570,36 @@ Every milestone in DESIGN.md §9 is built, V through F12. What is left waits on 
 
 ### 14.2 Agent work
 
-**Waiting on the owner or a data source**
+**Waiting on data**
 
-1. **Endfield pull history** (ADR 0009, accepted 2026-10-10): the reader follows the record shape open-source trackers parse; swap the fixtures for a real answer when one is recorded.
-2. **Endfield art:** its catalog has no icon keys, and no public asset host was found.
-3. **WuWa material and Sonata set art:** their textures sit in several folders, which one URL template per kind cannot reach.
-4. **Enka for ZZZ:** the catalog exists now (Hakushin data); reading showcases needs ZZZ's disc stat tables.
+1. **Real answers to replace the fixtures**, from Georges with the tokens removed (§14.1 step 8): Endfield's records (#179) and ZZZ's Enka showcase (#183) were built from the shape their documentation and open-source parsers give.
+2. **TypeScript 7** (ADR 0003): 7.0.2 is out, but typescript-eslint supports TypeScript below 6.1 (checked 2026-10-10).
 
-**Optional**
+**Decided against, with the reason (2026-10-10, at Georges's request to take every decision)**
 
-5. The chronicle's Shiyu Defense v2 and Stygian Onslaught.
-6. Genshin talent levels from Enka (needs skill ids in the catalog).
-7. A KPI target template shared across builds (targets are per build today).
-8. Endgame eligibility in the sheet's "Used in".
-9. Talent names in the catalogs (`talents.info`). The sheet already reads them and falls back to Normal, Skill and Burst.
-10. TypeScript 7, when typescript-eslint supports it (ADR 0003).
+- **Endfield art:** its wiki serves images by name, but it answered HTTP 429 after a short burst. It can neither serve as a hotlinked fallback nor feed the mirror reliably. No other host exists.
+- **WuWa material and Sonata set art:** no screen shows material icons (WIREFRAMES.md), and the Sonata "icons" are the same element icon for every set.
+- **Shiyu Defense's newer layout (v2) in the chronicle:** it rates floors 4 and 5 by score, unlike the manifest's "S-rank frontiers". Without a recorded answer, the mapping would be a guess. The first layout is read.
+- **Endgame eligibility in Used in:** no source publishes each cycle's rules in a structured form. Typing them in every cycle goes against the pipeline rule.
+- **The Genshin constellation reference card:** the redesigned sheet has no slot for it (WIREFRAMES.md).
 
-**Done since this list was written:**
-- accessibility (the axe journey, V);
-- error states on every page (#174);
-- the docs drift;
-- catalog-backed sheets for every game (F10's shared sheet: the weapon picker, the main stats per slot, the sets, WuWa's echo cost cap);
-- Endfield's empty tabs (#175);
-- WuWa art (#172);
+**Done since the list was first written:**
+- accessibility (V);
+- error states (#174);
+- the docs drift (#176);
+- catalog-backed sheets for every game (F10);
+- Endfield's tabs (#175);
+- art for WuWa (#172) and ZZZ (#182);
 - HSR trace markup (#173);
 - Prisma 7 (D);
-- the art mirror (F12).
-
-The Genshin reference card for constellation text was dropped by the redesign (WIREFRAMES.md, character sheet).
+- the art mirror (F12);
+- Endfield pull history (#177–#180);
+- a ZZZ catalog (#181);
+- Enka for ZZZ (#183);
+- talent names (#184);
+- Genshin talents from Enka (#185);
+- Stygian Onslaught (#186);
+- default KPI targets (#187).
 
 **Later (DESIGN.md §4):** public showcase pages, PWA, i18n through dataset text maps.
 
