@@ -2,10 +2,14 @@ import { describe, expect, it } from "vitest";
 import { catalogSchema, hsr, mergeSynced, readEnkaGenshin, readEnkaHsr, readEnkaZzz, zzz } from "@gacha/shared";
 import { hsrShowcase, showcase, zzzShowcase } from "../test/fixtures/enka.js";
 
-const lookups = { weaponName: (id: string) => ({ "15301": "Raven Bow" })[id], setName: (id: string) => ({ "15003": "Wanderer's Troupe" })[id] };
+const lookups = {
+  weaponName: (id: string) => ({ "15301": "Raven Bow" })[id],
+  setName: (id: string) => ({ "15003": "Wanderer's Troupe" })[id],
+  skillOrder: (id: string) => ({ "10000021": ["10041", "10032", "10017"] })[id],
+};
 
 describe("Enka showcase (ADR 0005)", () => {
-  it("reads each showcased character into our Genshin build shape", () => {
+  it("reads each showcased character into our Genshin build shape, talent levels by the catalog's skill order", () => {
     expect(readEnkaGenshin(showcase, lookups)).toEqual({
       worldLevel: 8,
       level: 58,
@@ -15,6 +19,7 @@ describe("Enka showcase (ADR 0005)", () => {
           doc: {
             level: 80,
             constellation: 2,
+            talents: { normal: 6, skill: 9, burst: 8 },
             weapon: { catalogId: "15301", name: "Raven Bow", level: 90, refinement: 5 },
             artifacts: { flower: { setName: "Wanderer's Troupe", mainStat: "HP", level: 20, substats: [{ stat: "CRIT Rate", value: 3.9 }, { stat: "CRIT DMG", value: 7.8 }] } },
             stats: { HP: 15000, ATK: 1800, DEF: 700, "CRIT Rate": 55, "CRIT DMG": 120, "Energy Recharge": 130, "Elemental Mastery": 100 },
