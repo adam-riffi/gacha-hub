@@ -22,7 +22,6 @@ Adopt the workflow now (test first, small stacked draft PRs, Conventional Commit
 | Functions in `cdg1` (§10) | `dub1` | Next to the database in eu-west-1. |
 | Mode B deploy for apps with migrations (§10) | Mode A (Git integration) with `prisma migrate deploy` inside `vercel-build` | Migrations still run before the new code serves traffic; switching needs Vercel tokens in GitHub. |
 | Playwright `@smoke` against deployed URLs (§9 `smoke.yml`) | Anonymous HTTP smoke (`scripts/smoke.mjs`) after each production deploy; Playwright only against a local build | Production has no test identity (Discord-only sign-in, dev login off). |
-| pr-meme caller workflow (§14) | Local pr-meme skill | `portfolio-infra` has not tagged `v1`. |
 | Dependabot groups every npm update (§9) | Groups minor and patch; ignores npm majors | A 27-update PR with seven majors (Prisma 7, React 19, …) failed CI and could not be reviewed; majors are upgraded one per PR. |
 
 ## Alternatives considered
@@ -33,5 +32,6 @@ Adopt the workflow now (test first, small stacked draft PRs, Conventional Commit
 ## Consequences
 
 - New code follows the standards wherever they do not conflict with this table.
-- Each row can be revisited by its own ADR; the pr-meme caller and the Node version are the first candidates.
+- Each row can be revisited by its own ADR; the Node version is the first candidate.
+- 2026-10-10: the pr-meme caller row is gone. #80 added `.github/workflows/pr-meme.yml` on `portfolio-infra@v1`.
 - Moving to the shared Supabase project would need a `gacha` schema and `gacha_app` role in `portfolio-infra/supabase/bootstrap.sql`, a data copy and new connection strings.
