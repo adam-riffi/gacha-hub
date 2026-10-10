@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { statRowSchema } from "../common.js";
 import type { GameDefinition } from "./types.js";
+import type { Catalog } from "../catalog/types.js";
 import { hoyoRegions } from "./regions.js";
 
 export const ZZZ_ATTRIBUTES = [
@@ -58,6 +59,8 @@ export const zzzDocSchema = z
     skills: z
       .object({
         basic: z.number().min(1).max(12),
+        dodge: z.number().min(1).max(12),
+        assist: z.number().min(1).max(12),
         special: z.number().min(1).max(12),
         chain: z.number().min(1).max(12),
       })
@@ -122,4 +125,5 @@ export const zzz: GameDefinition = {
   docSchema: zzzDocSchema,
   emptyDoc: (): ZzzDoc => ({ discs: {}, skills: {}, wEngine: {}, stats: {} }),
   docVersion: 1,
+  loadCatalog: async () => (await import("./zzz/catalog.js")).default as Catalog,
 };

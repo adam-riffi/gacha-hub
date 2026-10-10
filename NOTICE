@@ -25,8 +25,11 @@ Arknights: Endfield
   Content: © Hypergryph / Gryphline.
 
 Zenless Zone Zero
-  Deferred — no source with material costs is available under any license
-  (see scripts/catalog/zzz.ts).
+  Source:  the Hakushin data (https://static.nanoka.cc, the community database
+           behind hakush.in); its live version only, fetched at import time
+           and cached. It has no licence file; it is used, credited here, for
+           a non-commercial tool and removed on request (decided 2026-10-10).
+  Content: © HoYoverse / COGNOSPHERE.
 
 Artwork
   Genshin Impact art: Enka.Network (https://enka.network/ui/).

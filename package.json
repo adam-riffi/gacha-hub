@@ -33,6 +33,7 @@
     "catalog:genshin": "npm --prefix scripts/catalog run genshin",
     "catalog:hsr": "npm --prefix scripts/catalog run hsr",
     "catalog:wuwa": "npm --prefix scripts/catalog run wuwa",
+    "catalog:zzz": "npm --prefix scripts/catalog run zzz",
     "catalog:endfield": "npm --prefix scripts/catalog run endfield",
     "db:up": "docker compose up -d",
     "db:down": "docker compose down",

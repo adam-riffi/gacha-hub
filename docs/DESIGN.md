@@ -28,7 +28,7 @@ A whitelisted player signs in with Discord, adds Genshin and HSR, sets currencie
 ## 4. Scope
 
 **v1 (shipped)**
-- Games: Genshin, HSR, WuWa (catalog, builds, planner); Endfield (catalog for ownership only); ZZZ (currencies and dailies, no catalog); NTE (by hand only, ADR 0004).
+- Games: Genshin, HSR, WuWa, ZZZ (catalog, builds, planner); Endfield (catalog for ownership only); NTE (by hand only, ADR 0004).
 - Profiles per game with region-aware resets; currencies and pull counts; sleep a game.
 - Ownership roster; catalog-backed builds with bespoke per-game sheets; gear bag and set planner (Genshin artifacts).
 - Planning: material requirements, goal tasks with material subtasks, inventory as source of truth.
