@@ -3,6 +3,7 @@
 ## State
 - `main` at `64abc31`: fix(web): show what each game really has (#175). CI green.
 - Open PRs: #105 fix(vercel) function trace, a draft since 2026-10-09, untouched.
+- Production serves #174 (`3b5cad3`). Vercel's Hobby quota (100 deployments a day) ran out, so #175 and #176 deploy with the first merge or redeploy after it resets; then run the smoke check.
 - Every milestone in DESIGN.md §9 is built, V through F12. What remains waits on Georges or on a data source, or is optional: PROJECT-GUIDE §14 has the list.
 
 ## Done this session
