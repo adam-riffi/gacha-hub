@@ -1,18 +1,18 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import {
   PRIORITY_RANK,
   getGame,
   type FarmTodayDto,
   type RewardDto,
-  type TaskPriority,
 } from "@gacha/shared";
 import { LoadError } from "../components/LoadError";
 import { api } from "../lib/api";
 import type { InstanceListItem, TaskItem } from "../lib/types";
 import { GoalCard } from "../components/tasks/GoalCard";
 import { RemindersPanel } from "../components/tasks/RemindersPanel";
+import { GoalMaker } from "../components/tasks/GoalMaker";
 
 const WEEKDAY = ["", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
@@ -22,10 +22,12 @@ const WEEKDAY = ["", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Sa
  * by character, material or game, with the backlog on request.
  */
 export function TasksPage() {
-  const scope = useSearchParams()[0].get("game");
+  const [params] = useSearchParams();
+  const scope = params.get("game");
   const [filter, setFilter] = useState("");
   const [showBacklog, setShowBacklog] = useState(false);
-  const [creating, setCreating] = useState(false);
+  // Home's "+ New goal" opens the maker (?new=1).
+  const [creating, setCreating] = useState(params.has("new"));
   const instances = useQuery({
     queryKey: ["instances"],
     queryFn: () => api.get<InstanceListItem[]>("/api/instances"),
@@ -104,7 +106,7 @@ export function TasksPage() {
           </button>
         </div>
       </div>
-      {creating && <NewGoal games={games} onDone={() => setCreating(false)} />}
+      {creating && <GoalMaker games={games} onDone={() => setCreating(false)} />}
 
       <div className="tk-page">
         <div className="tk-main">
@@ -162,110 +164,5 @@ export function TasksPage() {
         <RemindersPanel games={games} />
       </div>
     </>
-  );
-}
-
-/** A goal of your own: a number to reach or a checklist, for one game. */
-function NewGoal({ games, onDone }: { games: InstanceListItem[]; onDone: () => void }) {
-  const qc = useQueryClient();
-  const [form, setForm] = useState({
-    title: "",
-    refId: games[0]?.id ?? "",
-    kind: "goal" as "goal" | "checklist",
-    target: 10,
-    priority: "normal" as TaskPriority,
-  });
-  const create = useMutation({
-    mutationFn: () =>
-      api.post("/api/tasks", {
-        scope: "game",
-        refId: form.refId,
-        type: form.kind,
-        title: form.title,
-        priority: form.priority,
-        ...(form.kind === "goal" ? { target: form.target, progress: 0 } : { items: [] }),
-      }),
-    onSuccess: () => {
-      void qc.invalidateQueries({ queryKey: ["tasks"] });
-      onDone();
-    },
-  });
-  return (
-    <form
-      className="card tk-new"
-      aria-label="New goal"
-      onSubmit={(e) => {
-        e.preventDefault();
-        create.mutate();
-      }}
-    >
-      <div className="tk-new-title">
-        <label htmlFor="tk-title">Title</label>
-        <input
-          id="tk-title"
-          value={form.title}
-          maxLength={200}
-          placeholder="Finish the story quests"
-          onChange={(e) => setForm({ ...form, title: e.target.value })}
-        />
-      </div>
-      <div>
-        <label htmlFor="tk-game">Game</label>
-        <select
-          id="tk-game"
-          value={form.refId}
-          onChange={(e) => setForm({ ...form, refId: e.target.value })}
-        >
-          {games.map((gi) => (
-            <option key={gi.id} value={gi.id}>
-              {gi.name}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div>
-        <label htmlFor="tk-kind">Kind</label>
-        <select
-          id="tk-kind"
-          value={form.kind}
-          onChange={(e) => setForm({ ...form, kind: e.target.value as "goal" | "checklist" })}
-        >
-          <option value="goal">A number to reach</option>
-          <option value="checklist">A checklist</option>
-        </select>
-      </div>
-      {form.kind === "goal" && (
-        <div>
-          <label htmlFor="tk-target">Target</label>
-          <input
-            id="tk-target"
-            type="number"
-            min={1}
-            max={1_000_000}
-            value={form.target}
-            onChange={(e) => setForm({ ...form, target: Number(e.target.value) })}
-          />
-        </div>
-      )}
-      <div>
-        <label htmlFor="tk-prio">Priority</label>
-        <select
-          id="tk-prio"
-          value={form.priority}
-          onChange={(e) => setForm({ ...form, priority: e.target.value as TaskPriority })}
-        >
-          <option value="high">high</option>
-          <option value="normal">normal</option>
-          <option value="low">low</option>
-        </select>
-      </div>
-      <button
-        className="btn primary"
-        type="submit"
-        disabled={!form.title || !form.refId || create.isPending}
-      >
-        Add goal
-      </button>
-    </form>
   );
 }

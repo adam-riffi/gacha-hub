@@ -30,8 +30,8 @@ export function WeaponFarm({ instanceId, weapon, onDone }: { instanceId: string;
       <div className="row" style={{ alignItems: "flex-end" }}>
         <div><label>From cap</label><select aria-label="From cap" value={from} onChange={(e) => setFrom(Number(e.target.value))}>{caps.map((c) => <option key={c} value={c}>{c}</option>)}</select></div>
         <div><label>To</label><select aria-label="To" value={to} onChange={(e) => setTo(Number(e.target.value))}>{caps.map((c) => <option key={c} value={c}>{c}</option>)}</select></div>
-        <button className="btn sm" disabled={to <= from || previewMut.isPending} onClick={() => previewMut.mutate()}>Preview</button>
-        <button className="btn sm primary" disabled={to <= from || generate.isPending} onClick={() => generate.mutate()}>Farm</button>
+        <button type="button" className="btn sm" disabled={to <= from || previewMut.isPending} onClick={() => previewMut.mutate()}>Preview</button>
+        <button type="button" className="btn sm primary" disabled={to <= from || generate.isPending} onClick={() => generate.mutate()}>Farm</button>
       </div>
       {preview && <div style={{ marginTop: 8 }}><PlanTable preview={preview} /></div>}
     </section>
