@@ -6,7 +6,7 @@ import { prisma } from "../lib/prisma.js";
 import { importPulls } from "../lib/pullImport.js";
 
 /** Ten character-event pulls on 2026-09-02, the 5★ (Mavuika, featured) at the 7th. */
-const TEN: PullRecord[] = Array.from({ length: 10 }, (_, i) => ({ id: String(1700000000000000100 + i), gachaType: "301", time: new Date("2026-09-02T10:00:00Z"), rank: i === 6 ? 5 : 3, itemId: i === 6 ? "10000106" : undefined }));
+const TEN: PullRecord[] = Array.from({ length: 10 }, (_, i) => ({ id: `17000000000000001${String(i).padStart(2, "0")}`, gachaType: "301", time: new Date("2026-09-02T10:00:00Z"), rank: i === 6 ? 5 : 3, itemId: i === 6 ? "10000106" : undefined }));
 
 describe("importing pull history (ADR 0005)", () => {
   let app: FastifyInstance;
