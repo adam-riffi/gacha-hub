@@ -73,6 +73,7 @@ describe("Endfield records links (ADR 0009)", () => {
         rank: 6,
         itemId: "chr_0016_laevat",
         name: "Laevatain",
+        pool: "special_1_0_1",
       },
       {
         id: "special-1289",
@@ -81,6 +82,7 @@ describe("Endfield records links (ADR 0009)", () => {
         rank: 4,
         itemId: "chr_0011_seraph",
         name: "Perlica",
+        pool: "special_1_0_1",
       },
       {
         id: "special-1288",
@@ -89,6 +91,7 @@ describe("Endfield records links (ADR 0009)", () => {
         rank: 5,
         itemId: "chr_0009_azrila",
         name: "Ardelia",
+        pool: "special_1_0_1",
       },
     ]);
     expect(
