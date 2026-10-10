@@ -43,6 +43,7 @@ describe("genshin catalog", () => {
     const catalog = catalogSchema.parse(await genshin.loadCatalog!());
     const amber = catalog.characters.find((c) => c.name === "Amber")!;
     expect(amber.talents.info?.map((i) => [i.key, i.name])).toEqual([["normal", "Sharpshooter"], ["skill", "Explosive Puppet"], ["burst", "Fiery Rain"]]);
-    expect(catalog.characters.filter((c) => c.talents.keys.length && !c.talents.info?.length).map((c) => c.name)).toEqual([]);
+    // The Traveler's talents change with the element, so genshin-db names none under Aether or Lumine.
+    expect(catalog.characters.filter((c) => c.talents.keys.length && !c.talents.info?.length).map((c) => c.name)).toEqual(["Aether", "Lumine"]);
   });
 });

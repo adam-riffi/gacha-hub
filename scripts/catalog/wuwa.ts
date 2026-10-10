@@ -120,7 +120,7 @@ const characters: CatalogCharacter[] = playable.map((r) => {
     icon: artKey(r.RoleHeadIconLarge) ?? r.RoleHeadIcon ?? r.Icon,
     splash: artKey(r.FormationRoleCard),
     ascension,
-    talents: { keys, costs: costsByKey.skill ?? costsByKey.basic ?? [], costsByKey },
+    talents: { keys, costs: costsByKey.skill ?? costsByKey.basic ?? [], costsByKey, info: keys.flatMap((key) => (skillNames[key] ? [{ key, name: skillNames[key] }] : [])) },
     extra: { nickname: text(r.NickName) || null, skillNames, forteNodes },
   };
 });

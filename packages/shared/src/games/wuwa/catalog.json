@@ -1167,7 +1167,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Frigid Light"
+          },
+          {
+            "key": "skill",
+            "name": "Eternal Frost"
+          },
+          {
+            "key": "forte",
+            "name": "Freezing Thorns"
+          },
+          {
+            "key": "liberation",
+            "name": "Glacial Gaze"
+          },
+          {
+            "key": "intro",
+            "name": "Clarity of Mind"
+          }
+        ]
       },
       "extra": {
         "nickname": "Snow Waltz",
@@ -2579,7 +2601,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Destined Promise"
+          },
+          {
+            "key": "skill",
+            "name": "Emergency Plan"
+          },
+          {
+            "key": "forte",
+            "name": "Overflowing Frost"
+          },
+          {
+            "key": "liberation",
+            "name": "Momentary Union"
+          },
+          {
+            "key": "intro",
+            "name": "Cycle of Life"
+          }
+        ]
       },
       "extra": {
         "nickname": "Healing You'tan",
@@ -3991,7 +4035,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Majestic Fists"
+          },
+          {
+            "key": "skill",
+            "name": "Ancient Arts"
+          },
+          {
+            "key": "forte",
+            "name": "Lion Awakens"
+          },
+          {
+            "key": "liberation",
+            "name": "Strive: Lion's Vigor"
+          },
+          {
+            "key": "intro",
+            "name": "Unification of Spirits"
+          }
+        ]
       },
       "extra": {
         "nickname": "White Tiger",
@@ -5403,7 +5469,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Dimming Brush"
+          },
+          {
+            "key": "skill",
+            "name": "Manifestation"
+          },
+          {
+            "key": "forte",
+            "name": "Radiant Ruin"
+          },
+          {
+            "key": "liberation",
+            "name": "Living Canvas"
+          },
+          {
+            "key": "intro",
+            "name": "Ink and Wash"
+          }
+        ]
       },
       "extra": {
         "nickname": "Zhezhi",
@@ -6815,7 +6903,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Frosty Punches"
+          },
+          {
+            "key": "skill",
+            "name": "Scroll Divination"
+          },
+          {
+            "key": "forte",
+            "name": "Scroll of Wonders"
+          },
+          {
+            "key": "liberation",
+            "name": "Fortune's Favor"
+          },
+          {
+            "key": "intro",
+            "name": "Poetic Essence"
+          }
+        ]
       },
       "extra": {
         "nickname": "Youhu",
@@ -8227,7 +8337,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Silent Execution"
+          },
+          {
+            "key": "skill",
+            "name": "Art of Violence"
+          },
+          {
+            "key": "forte",
+            "name": "Wintertime Aria"
+          },
+          {
+            "key": "liberation",
+            "name": "Era of New Wave"
+          },
+          {
+            "key": "intro",
+            "name": "Lethal Repertoire"
+          }
+        ]
       },
       "extra": {
         "nickname": "Carlotta",
@@ -9639,7 +9771,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "POW POW"
+          },
+          {
+            "key": "skill",
+            "name": "Whizzing Fight Spirit"
+          },
+          {
+            "key": "forte",
+            "name": "Grand Entrance"
+          },
+          {
+            "key": "liberation",
+            "name": "Blazing Flames"
+          },
+          {
+            "key": "intro",
+            "name": "Heroic Bullets"
+          }
+        ]
       },
       "extra": {
         "nickname": "Gallant Blaze",
@@ -11051,7 +11205,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Wooly Attack"
+          },
+          {
+            "key": "skill",
+            "name": "Flaming Woolies"
+          },
+          {
+            "key": "forte",
+            "name": "Woolies Helpers"
+          },
+          {
+            "key": "liberation",
+            "name": "Cosmos Rave"
+          },
+          {
+            "key": "intro",
+            "name": "Black & White Woolies"
+          }
+        ]
       },
       "extra": {
         "nickname": "Wooly-Counting Game",
@@ -12463,7 +12639,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Impromptu Show"
+          },
+          {
+            "key": "skill",
+            "name": "Passionate Variation"
+          },
+          {
+            "key": "forte",
+            "name": "Dissonance"
+          },
+          {
+            "key": "liberation",
+            "name": "Violent Finale"
+          },
+          {
+            "key": "intro",
+            "name": "Fury Fugue"
+          }
+        ]
       },
       "extra": {
         "nickname": "Dragon's Breath",
@@ -13875,7 +14073,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Blazing Enlightment"
+          },
+          {
+            "key": "skill",
+            "name": "Tripartite Flames"
+          },
+          {
+            "key": "forte",
+            "name": "Obedience of Rules"
+          },
+          {
+            "key": "liberation",
+            "name": "Radiance of Fealty"
+          },
+          {
+            "key": "intro",
+            "name": "Flaming Sacrifice"
+          }
+        ]
       },
       "extra": {
         "nickname": "An error occurred. Please contact our Customer Service for assistance.",
@@ -15287,7 +15507,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Captain's Rhapsody"
+          },
+          {
+            "key": "skill",
+            "name": "Anchors Aweigh!"
+          },
+          {
+            "key": "forte",
+            "name": "Applaud for Me!"
+          },
+          {
+            "key": "liberation",
+            "name": "To the Horizon"
+          },
+          {
+            "key": "intro",
+            "name": "Ocean Odyssey"
+          }
+        ]
       },
       "extra": {
         "nickname": "Brant",
@@ -16699,7 +16941,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Flaming Star"
+          },
+          {
+            "key": "skill",
+            "name": "Shewolf's Hunt"
+          },
+          {
+            "key": "forte",
+            "name": "Try Focusing, Eh?"
+          },
+          {
+            "key": "liberation",
+            "name": "Fire-Kissed Glory"
+          },
+          {
+            "key": "intro",
+            "name": "Ignis Lupa"
+          }
+        ]
       },
       "extra": {
         "nickname": "Lupa",
@@ -18111,7 +18375,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Slayer's Trigger"
+          },
+          {
+            "key": "skill",
+            "name": "Edge Transcended"
+          },
+          {
+            "key": "forte",
+            "name": "Hellflare Overload"
+          },
+          {
+            "key": "liberation",
+            "name": "Hellfire Absolution"
+          },
+          {
+            "key": "intro",
+            "name": "Beyond Threshold"
+          }
+        ]
       },
       "extra": {
         "nickname": "Galbrena",
@@ -19523,7 +19809,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Ground State Calibration"
+          },
+          {
+            "key": "skill",
+            "name": "Resolution"
+          },
+          {
+            "key": "forte",
+            "name": "Convergence"
+          },
+          {
+            "key": "liberation",
+            "name": "Critical Protocol"
+          },
+          {
+            "key": "intro",
+            "name": "Mass-Energy Equivalence"
+          }
+        ]
       },
       "extra": {
         "nickname": null,
@@ -20935,7 +21243,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Infinity Calibration"
+          },
+          {
+            "key": "skill",
+            "name": "Shared Voyage"
+          },
+          {
+            "key": "forte",
+            "name": "Overture of Departure"
+          },
+          {
+            "key": "liberation",
+            "name": "Towards the Daybreak"
+          },
+          {
+            "key": "intro",
+            "name": "To Sculpt the Silence"
+          }
+        ]
       },
       "extra": {
         "nickname": "Aemeath",
@@ -22347,7 +22677,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Gnawing Fangs"
+          },
+          {
+            "key": "skill",
+            "name": "Extermination Order"
+          },
+          {
+            "key": "forte",
+            "name": "Wanted Outlaw"
+          },
+          {
+            "key": "liberation",
+            "name": "Phantom Etching"
+          },
+          {
+            "key": "intro",
+            "name": "Hunting Mission"
+          }
+        ]
       },
       "extra": {
         "nickname": "Calcharo",
@@ -23759,7 +24111,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Zapstring's Dance"
+          },
+          {
+            "key": "skill",
+            "name": "Magnetic Roar"
+          },
+          {
+            "key": "forte",
+            "name": "Raging Storm"
+          },
+          {
+            "key": "liberation",
+            "name": "Thundering Wrath"
+          },
+          {
+            "key": "intro",
+            "name": "Chameleon Cipher"
+          }
+        ]
       },
       "extra": {
         "nickname": "Lightning of Execution",
@@ -25171,7 +25545,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Leihuangquan"
+          },
+          {
+            "key": "skill",
+            "name": "Leihuang Master"
+          },
+          {
+            "key": "forte",
+            "name": "Thunder Bombardment"
+          },
+          {
+            "key": "liberation",
+            "name": "Blazing Might"
+          },
+          {
+            "key": "intro",
+            "name": "Unassuming Blade"
+          }
+        ]
       },
       "extra": {
         "nickname": "Fist of Thunder",
@@ -26583,7 +26979,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Slash of Breaking Dawn"
+          },
+          {
+            "key": "skill",
+            "name": "Trailing Lights of Eons"
+          },
+          {
+            "key": "forte",
+            "name": "Loong's Halo"
+          },
+          {
+            "key": "liberation",
+            "name": "Purge of Light"
+          },
+          {
+            "key": "intro",
+            "name": "Luminal Synthesis"
+          }
+        ]
       },
       "extra": {
         "nickname": "Jinhsi's Title",
@@ -27995,7 +28413,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Probe"
+          },
+          {
+            "key": "skill",
+            "name": "Deduction"
+          },
+          {
+            "key": "forte",
+            "name": "Principle"
+          },
+          {
+            "key": "liberation",
+            "name": "Cogitation Model"
+          },
+          {
+            "key": "intro",
+            "name": "Forever Seeking"
+          }
+        ]
       },
       "extra": {
         "nickname": "Error detected. If you have any questions, please contact Customer Service.",
@@ -29407,7 +29847,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Hunter's Path"
+          },
+          {
+            "key": "skill",
+            "name": "Warrior's Blade"
+          },
+          {
+            "key": "forte",
+            "name": "Stride of Goldenflare"
+          },
+          {
+            "key": "liberation",
+            "name": "Sunward Conquest"
+          },
+          {
+            "key": "intro",
+            "name": "Call Me By the Sun"
+          }
+        ]
       },
       "extra": {
         "nickname": "Augusta",
@@ -30819,7 +31281,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Hexagram Calls, Lightning Falls"
+          },
+          {
+            "key": "skill",
+            "name": "In Shadow Thunder Stirs"
+          },
+          {
+            "key": "forte",
+            "name": "Summon and Smite"
+          },
+          {
+            "key": "liberation",
+            "name": "Flashing Thunder Spell"
+          },
+          {
+            "key": "intro",
+            "name": "Thunder Begets Life"
+          }
+        ]
       },
       "extra": {
         "nickname": "Buling",
@@ -32231,7 +32715,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Feather as Blade"
+          },
+          {
+            "key": "skill",
+            "name": "Zephyr Domain"
+          },
+          {
+            "key": "forte",
+            "name": "Cerulean Song"
+          },
+          {
+            "key": "liberation",
+            "name": "Wind Spirals"
+          },
+          {
+            "key": "intro",
+            "name": "Echoing Feathers"
+          }
+        ]
       },
       "extra": {
         "nickname": "Breath of Winds",
@@ -33643,7 +34149,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Half Truths"
+          },
+          {
+            "key": "skill",
+            "name": "Shift Trick"
+          },
+          {
+            "key": "forte",
+            "name": "Feint Shot"
+          },
+          {
+            "key": "liberation",
+            "name": "Flower in the Mist"
+          },
+          {
+            "key": "intro",
+            "name": "Misty Cover"
+          }
+        ]
       },
       "extra": {
         "nickname": "Mistcloak Strike",
@@ -35055,7 +35583,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Lone Lance"
+          },
+          {
+            "key": "skill",
+            "name": "Windqueller"
+          },
+          {
+            "key": "forte",
+            "name": "Tactical Strike"
+          },
+          {
+            "key": "liberation",
+            "name": "Emerald Storm - Prelude"
+          },
+          {
+            "key": "intro",
+            "name": "Qingloong at War"
+          }
+        ]
       },
       "extra": {
         "nickname": "Windborne Rider",
@@ -36467,7 +37017,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Fengyiquan"
+          },
+          {
+            "key": "skill",
+            "name": "Calming Air"
+          },
+          {
+            "key": "forte",
+            "name": "Essence of Tao"
+          },
+          {
+            "key": "liberation",
+            "name": "Purification Force Field"
+          },
+          {
+            "key": "intro",
+            "name": "Primordial Chi Spiral"
+          }
+        ]
       },
       "extra": {
         "nickname": "Jianxin's Nickname",
@@ -37879,7 +38451,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Wind Cutter"
+          },
+          {
+            "key": "skill",
+            "name": "Illusion Breaker"
+          },
+          {
+            "key": "forte",
+            "name": "Relentless Squall"
+          },
+          {
+            "key": "liberation",
+            "name": "Omega Storm"
+          },
+          {
+            "key": "intro",
+            "name": "Cycle of Wind"
+          }
+        ]
       },
       "extra": {
         "nickname": "Rover: Aero",
@@ -39291,7 +39885,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Quadruple Time Steps"
+          },
+          {
+            "key": "skill",
+            "name": "Harmonic Allegro"
+          },
+          {
+            "key": "forte",
+            "name": "Roaming with the Wind"
+          },
+          {
+            "key": "liberation",
+            "name": "Singer's Triple Cadenza"
+          },
+          {
+            "key": "intro",
+            "name": "Symphony of Wind and Verse"
+          }
+        ]
       },
       "extra": {
         "nickname": "Ciaccona",
@@ -40703,7 +41319,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Wind Cutter"
+          },
+          {
+            "key": "skill",
+            "name": "Illusion Breaker"
+          },
+          {
+            "key": "forte",
+            "name": "Relentless Squall"
+          },
+          {
+            "key": "liberation",
+            "name": "Omega Storm"
+          },
+          {
+            "key": "intro",
+            "name": "Cycle of Wind"
+          }
+        ]
       },
       "extra": {
         "nickname": "Rover: Aero",
@@ -42115,7 +42753,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Sword to Carve My Forms"
+          },
+          {
+            "key": "skill",
+            "name": "Sword to Bear Their Names"
+          },
+          {
+            "key": "forte",
+            "name": "Sword to Mark Tide's Trace"
+          },
+          {
+            "key": "liberation",
+            "name": "A Knight's Heartfelt Prayers"
+          },
+          {
+            "key": "intro",
+            "name": "Tempest"
+          }
+        ]
       },
       "extra": {
         "nickname": "Cartethyia",
@@ -43527,7 +44187,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Moon Steps"
+          },
+          {
+            "key": "skill",
+            "name": "Foresight Fugue"
+          },
+          {
+            "key": "forte",
+            "name": "Illuminated Manifestation"
+          },
+          {
+            "key": "liberation",
+            "name": "Beneath Lunar Tides"
+          },
+          {
+            "key": "intro",
+            "name": "Ebb and Flow"
+          }
+        ]
       },
       "extra": {
         "nickname": "Iuno",
@@ -44939,7 +45621,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Inkwash"
+          },
+          {
+            "key": "skill",
+            "name": "Through the Groves"
+          },
+          {
+            "key": "forte",
+            "name": "Attack the Must-Defend"
+          },
+          {
+            "key": "liberation",
+            "name": "Sundering Strike"
+          },
+          {
+            "key": "intro",
+            "name": "Verdant Edge"
+          }
+        ]
       },
       "extra": {
         "nickname": "Qiuyuan",
@@ -46351,7 +47055,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Vibration Manifestation"
+          },
+          {
+            "key": "skill",
+            "name": "Resonating Slashes"
+          },
+          {
+            "key": "forte",
+            "name": "Waveshock"
+          },
+          {
+            "key": "liberation",
+            "name": "Echoing Orchestra"
+          },
+          {
+            "key": "intro",
+            "name": "World in a Grain of Sand"
+          }
+        ]
       },
       "extra": {
         "nickname": "Vessel of Sounds",
@@ -47763,7 +48489,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Vibration Manifestation"
+          },
+          {
+            "key": "skill",
+            "name": "Resonating Slashes"
+          },
+          {
+            "key": "forte",
+            "name": "Waveshock"
+          },
+          {
+            "key": "liberation",
+            "name": "Echoing Orchestra"
+          },
+          {
+            "key": "intro",
+            "name": "World in a Grain of Sand"
+          }
+        ]
       },
       "extra": {
         "nickname": "Vessel of Sounds",
@@ -49175,7 +49923,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Cultivation"
+          },
+          {
+            "key": "skill",
+            "name": "Botany Experiment"
+          },
+          {
+            "key": "forte",
+            "name": "Verdant Growth"
+          },
+          {
+            "key": "liberation",
+            "name": "Arboreal Flourish"
+          },
+          {
+            "key": "intro",
+            "name": "Starflower Blooms"
+          }
+        ]
       },
       "extra": {
         "nickname": "Nature Calling",
@@ -50587,7 +51357,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Navigation Support"
+          },
+          {
+            "key": "skill",
+            "name": "Searchlight Service"
+          },
+          {
+            "key": "forte",
+            "name": "Special Delivery"
+          },
+          {
+            "key": "liberation",
+            "name": "Squeakie Express"
+          },
+          {
+            "key": "intro",
+            "name": "Signal Light"
+          }
+        ]
       },
       "extra": {
         "nickname": "Lumi",
@@ -51999,7 +52791,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Origin Calculus"
+          },
+          {
+            "key": "skill",
+            "name": "Chaos Theory"
+          },
+          {
+            "key": "forte",
+            "name": "Proof of Existence"
+          },
+          {
+            "key": "liberation",
+            "name": "End Loop"
+          },
+          {
+            "key": "intro",
+            "name": "Astral Chord"
+          }
+        ]
       },
       "extra": {
         "nickname": "Shorekeeper",
@@ -53411,7 +54225,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "O Come Divine Light"
+          },
+          {
+            "key": "skill",
+            "name": "To Where Light Shines"
+          },
+          {
+            "key": "forte",
+            "name": "Golden Grace"
+          },
+          {
+            "key": "liberation",
+            "name": "Dawn of Enlightenment"
+          },
+          {
+            "key": "intro",
+            "name": "Radiant Invocation"
+          }
+        ]
       },
       "extra": {
         "nickname": "Phoebe",
@@ -54823,7 +55659,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Routine Negotiation"
+          },
+          {
+            "key": "skill",
+            "name": "Restless Watch"
+          },
+          {
+            "key": "forte",
+            "name": "Immediate Execution"
+          },
+          {
+            "key": "liberation",
+            "name": "Between Dawn and Dusk"
+          },
+          {
+            "key": "intro",
+            "name": "There Will Be A Light"
+          }
+        ]
       },
       "extra": {
         "nickname": "Zani",
@@ -56235,7 +57093,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Reign of Silence"
+          },
+          {
+            "key": "skill",
+            "name": "Fractured Composition"
+          },
+          {
+            "key": "forte",
+            "name": "Reverberance - Return"
+          },
+          {
+            "key": "liberation",
+            "name": "Moment of Nihility"
+          },
+          {
+            "key": "intro",
+            "name": "Sight of Unraveling - Oblivion"
+          }
+        ]
       },
       "extra": {
         "nickname": "Chisa",
@@ -57647,7 +58527,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Chroma Drift"
+          },
+          {
+            "key": "skill",
+            "name": "Lynae-Style Palettes"
+          },
+          {
+            "key": "forte",
+            "name": "Time to Show Some Colors!"
+          },
+          {
+            "key": "liberation",
+            "name": "Prismatic Overblast"
+          },
+          {
+            "key": "intro",
+            "name": "Chromaticity Modeling"
+          }
+        ]
       },
       "extra": {
         "nickname": null,
@@ -59059,7 +59961,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Such is Light"
+          },
+          {
+            "key": "skill",
+            "name": "Reunion of All the Fallen"
+          },
+          {
+            "key": "forte",
+            "name": "Before Injection of Dawn"
+          },
+          {
+            "key": "liberation",
+            "name": "Rewritten in Winter's Margins"
+          },
+          {
+            "key": "intro",
+            "name": "Spark from the Frost"
+          }
+        ]
       },
       "extra": {
         "nickname": "Luuk Herssen",
@@ -60471,7 +61395,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Concealed Edge"
+          },
+          {
+            "key": "skill",
+            "name": "Fortified Defense"
+          },
+          {
+            "key": "forte",
+            "name": "Defense Formation"
+          },
+          {
+            "key": "liberation",
+            "name": "Unmovable"
+          },
+          {
+            "key": "intro",
+            "name": "Power Shift"
+          }
+        ]
       },
       "extra": {
         "nickname": "Power of Xuanwu",
@@ -61883,7 +62829,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Execution"
+          },
+          {
+            "key": "skill",
+            "name": "Crimson Fragment"
+          },
+          {
+            "key": "forte",
+            "name": "Vindication"
+          },
+          {
+            "key": "liberation",
+            "name": "Crimson Bloom"
+          },
+          {
+            "key": "intro",
+            "name": "Serene Vigil"
+          }
+        ]
       },
       "extra": {
         "nickname": "Scarlet Shade",
@@ -63295,7 +64263,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Burgeoning"
+          },
+          {
+            "key": "skill",
+            "name": "Valse of Bloom and Blight"
+          },
+          {
+            "key": "forte",
+            "name": "Everblooming"
+          },
+          {
+            "key": "liberation",
+            "name": "Fervor Efflorescent"
+          },
+          {
+            "key": "intro",
+            "name": "Vegetative Universe"
+          }
+        ]
       },
       "extra": {
         "nickname": "Camellya",
@@ -64707,7 +65697,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Tuneslayer"
+          },
+          {
+            "key": "skill",
+            "name": "Wingblade"
+          },
+          {
+            "key": "forte",
+            "name": "Instant of Annihilation"
+          },
+          {
+            "key": "liberation",
+            "name": "Deadening Abyss"
+          },
+          {
+            "key": "intro",
+            "name": "Umbra Eclipse"
+          }
+        ]
       },
       "extra": {
         "nickname": "Vessel of Sounds",
@@ -66119,7 +67131,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Tuneslayer"
+          },
+          {
+            "key": "skill",
+            "name": "Wingblade"
+          },
+          {
+            "key": "forte",
+            "name": "Instant of Annihilation"
+          },
+          {
+            "key": "liberation",
+            "name": "Deadening Abyss"
+          },
+          {
+            "key": "intro",
+            "name": "Umbra Eclipse"
+          }
+        ]
       },
       "extra": {
         "nickname": "Vessel of Sounds",
@@ -67531,7 +68565,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Pero, Easy"
+          },
+          {
+            "key": "skill",
+            "name": "Acrobatic Trick"
+          },
+          {
+            "key": "forte",
+            "name": "Pero, Help"
+          },
+          {
+            "key": "liberation",
+            "name": "Commedia Improvviso!"
+          },
+          {
+            "key": "intro",
+            "name": "A Prop Master Prepares"
+          }
+        ]
       },
       "extra": {
         "nickname": "Roccia",
@@ -68943,7 +69999,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Illusion Collapse"
+          },
+          {
+            "key": "skill",
+            "name": "Dance with Shadows"
+          },
+          {
+            "key": "forte",
+            "name": "Cruise"
+          },
+          {
+            "key": "liberation",
+            "name": "Beneath the Sea"
+          },
+          {
+            "key": "intro",
+            "name": "Between Illusion and Reality"
+          }
+        ]
       },
       "extra": {
         "nickname": "Cantarella",
@@ -70355,7 +71433,29 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Movement of Life and Death"
+          },
+          {
+            "key": "skill",
+            "name": "Whispers in a Fleeting Dream"
+          },
+          {
+            "key": "forte",
+            "name": "Suite of Quietus"
+          },
+          {
+            "key": "liberation",
+            "name": "Waltz of Forsaken Depths"
+          },
+          {
+            "key": "intro",
+            "name": "Rhapsody of a New World"
+          }
+        ]
       },
       "extra": {
         "nickname": "Phrolova",

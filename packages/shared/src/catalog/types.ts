@@ -41,7 +41,7 @@ export const catalogCharacterSchema = z.object({
     /** Per-talent tables when they differ (HSR: Basic ATK is cheaper). */
     costsByKey: z.record(z.string(), z.array(costStepSchema)).optional(),
     /** Human-readable talent info (name + what it does); filled by importers. */
-    info: z.array(z.object({ key: z.string().optional(), name: z.string().optional(), description: z.string() })).optional(),
+    info: z.array(z.object({ key: z.string().optional(), name: z.string().optional(), description: z.string().optional() })).optional(),
   }),
   /** Constellations / eidolons (dupes) — what each rank does; filled by importers. */
   constellations: z

@@ -339,6 +339,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Kamisato Art: Kabuki"
+          },
+          {
+            "key": "skill",
+            "name": "Kamisato Art: Hyouka"
+          },
+          {
+            "key": "burst",
+            "name": "Kamisato Art: Soumetsu"
+          }
         ]
       },
       "extra": {
@@ -683,6 +697,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Favonius Bladework"
+          },
+          {
+            "key": "skill",
+            "name": "Gale Blade"
+          },
+          {
+            "key": "burst",
+            "name": "Dandelion Breeze"
+          }
         ]
       },
       "extra": {
@@ -835,7 +863,8 @@
           "skill",
           "burst"
         ],
-        "costs": []
+        "costs": [],
+        "info": []
       },
       "extra": {
         "region": "",
@@ -1181,6 +1210,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Lightning Touch"
+          },
+          {
+            "key": "skill",
+            "name": "Violet Arc"
+          },
+          {
+            "key": "burst",
+            "name": "Lightning Rose"
+          }
         ]
       },
       "extra": {
@@ -1333,7 +1376,8 @@
           "skill",
           "burst"
         ],
-        "costs": []
+        "costs": [],
+        "info": []
       },
       "extra": {
         "region": "",
@@ -1678,6 +1722,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Whisper of Water"
+          },
+          {
+            "key": "skill",
+            "name": "Let the Show Begin♪"
+          },
+          {
+            "key": "burst",
+            "name": "Shining Miracle♪"
           }
         ]
       },
@@ -2025,6 +2083,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Ceremonial Bladework"
+          },
+          {
+            "key": "skill",
+            "name": "Frostgnaw"
+          },
+          {
+            "key": "burst",
+            "name": "Glacial Waltz"
+          }
         ]
       },
       "extra": {
@@ -2370,6 +2442,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Tempered Sword"
+          },
+          {
+            "key": "skill",
+            "name": "Searing Onslaught"
+          },
+          {
+            "key": "burst",
+            "name": "Dawn"
           }
         ]
       },
@@ -2717,6 +2803,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Steel Fang"
+          },
+          {
+            "key": "skill",
+            "name": "Claw and Thunder"
+          },
+          {
+            "key": "burst",
+            "name": "Lightning Fang"
+          }
         ]
       },
       "extra": {
@@ -3062,6 +3162,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Sharpshooter"
+          },
+          {
+            "key": "skill",
+            "name": "Explosive Puppet"
+          },
+          {
+            "key": "burst",
+            "name": "Fiery Rain"
           }
         ]
       },
@@ -3409,6 +3523,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Divine Marksmanship"
+          },
+          {
+            "key": "skill",
+            "name": "Skyward Sonnet"
+          },
+          {
+            "key": "burst",
+            "name": "Wind's Grand Ode"
+          }
         ]
       },
       "extra": {
@@ -3754,6 +3882,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Dough-Fu"
+          },
+          {
+            "key": "skill",
+            "name": "Guoba Attack"
+          },
+          {
+            "key": "burst",
+            "name": "Pyronado"
           }
         ]
       },
@@ -4101,6 +4243,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Oceanborne"
+          },
+          {
+            "key": "skill",
+            "name": "Tidecaller"
+          },
+          {
+            "key": "burst",
+            "name": "Stormbreaker"
+          }
         ]
       },
       "extra": {
@@ -4446,6 +4602,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Guhua Style"
+          },
+          {
+            "key": "skill",
+            "name": "Guhua Sword: Fatal Rainscreen"
+          },
+          {
+            "key": "burst",
+            "name": "Guhua Sword: Raincutter"
           }
         ]
       },
@@ -4793,6 +4963,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Whirlwind Thrust"
+          },
+          {
+            "key": "skill",
+            "name": "Lemniscatic Wind Cycling"
+          },
+          {
+            "key": "burst",
+            "name": "Bane of All Evil"
+          }
         ]
       },
       "extra": {
@@ -5138,6 +5322,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Sparkling Scatter"
+          },
+          {
+            "key": "skill",
+            "name": "Jade Screen"
+          },
+          {
+            "key": "burst",
+            "name": "Starshatter"
           }
         ]
       },
@@ -5485,6 +5683,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Kaboom!"
+          },
+          {
+            "key": "skill",
+            "name": "Jumpy Dumpty"
+          },
+          {
+            "key": "burst",
+            "name": "Sparks 'n' Splash"
+          }
         ]
       },
       "extra": {
@@ -5830,6 +6042,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Rain of Stone"
+          },
+          {
+            "key": "skill",
+            "name": "Dominus Lapidis"
+          },
+          {
+            "key": "burst",
+            "name": "Planet Befall"
           }
         ]
       },
@@ -6177,6 +6403,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Bolts of Downfall"
+          },
+          {
+            "key": "skill",
+            "name": "Nightrider"
+          },
+          {
+            "key": "burst",
+            "name": "Midnight Phantasmagoria"
+          }
         ]
       },
       "extra": {
@@ -6522,6 +6762,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Strike of Fortune"
+          },
+          {
+            "key": "skill",
+            "name": "Passion Overload"
+          },
+          {
+            "key": "burst",
+            "name": "Fantastic Voyage"
           }
         ]
       },
@@ -6869,6 +7123,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Cutting Torrent"
+          },
+          {
+            "key": "skill",
+            "name": "Foul Legacy: Raging Tide"
+          },
+          {
+            "key": "burst",
+            "name": "Havoc: Obliteration"
+          }
         ]
       },
       "extra": {
@@ -7214,6 +7482,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Favonius Bladework - Maid"
+          },
+          {
+            "key": "skill",
+            "name": "Breastplate"
+          },
+          {
+            "key": "burst",
+            "name": "Sweeping Time"
           }
         ]
       },
@@ -7561,6 +7843,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Ancient Sword Art"
+          },
+          {
+            "key": "skill",
+            "name": "Adeptus Art: Herald of Frost"
+          },
+          {
+            "key": "burst",
+            "name": "Adeptus Art: Preserver of Fortune"
+          }
         ]
       },
       "extra": {
@@ -7906,6 +8202,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Demonbane"
+          },
+          {
+            "key": "skill",
+            "name": "Spirit Blade: Chonghua's Layered Frost"
+          },
+          {
+            "key": "burst",
+            "name": "Spirit Blade: Cloud-Parting Star"
           }
         ]
       },
@@ -8253,6 +8563,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Liutian Archery"
+          },
+          {
+            "key": "skill",
+            "name": "Trail of the Qilin"
+          },
+          {
+            "key": "burst",
+            "name": "Celestial Shower"
+          }
         ]
       },
       "extra": {
@@ -8598,6 +8922,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Favonius Bladework - Weiss"
+          },
+          {
+            "key": "skill",
+            "name": "Abiogenesis: Solar Isotoma"
+          },
+          {
+            "key": "burst",
+            "name": "Rite of Progeniture: Tectonic Tide"
           }
         ]
       },
@@ -8945,6 +9283,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Kätzlein Style"
+          },
+          {
+            "key": "skill",
+            "name": "Icy Paws"
+          },
+          {
+            "key": "burst",
+            "name": "Signature Mix"
+          }
         ]
       },
       "extra": {
@@ -9290,6 +9642,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Ripple of Fate"
+          },
+          {
+            "key": "skill",
+            "name": "Mirror Reflection of Doom"
+          },
+          {
+            "key": "burst",
+            "name": "Stellaris Phantasm"
           }
         ]
       },
@@ -9637,6 +10003,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Yunlai Swordsmanship"
+          },
+          {
+            "key": "skill",
+            "name": "Stellar Restoration"
+          },
+          {
+            "key": "burst",
+            "name": "Starward Sword"
+          }
         ]
       },
       "extra": {
@@ -9982,6 +10362,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Wind Spirit Creation"
+          },
+          {
+            "key": "skill",
+            "name": "Astable Anemohypostasis Creation - 6308"
+          },
+          {
+            "key": "burst",
+            "name": "Forbidden Creation - Isomer 75 / Type II"
           }
         ]
       },
@@ -10329,6 +10723,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Dance on Fire"
+          },
+          {
+            "key": "skill",
+            "name": "Sweeping Fervor"
+          },
+          {
+            "key": "burst",
+            "name": "Riff Revolution"
+          }
         ]
       },
       "extra": {
@@ -10675,6 +11083,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Spear of the Church"
+          },
+          {
+            "key": "skill",
+            "name": "Ravaging Confession"
+          },
+          {
+            "key": "burst",
+            "name": "Rites of Termination"
+          }
         ]
       },
       "extra": {
@@ -11018,6 +11440,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Secret Spear of Wangsheng"
+          },
+          {
+            "key": "skill",
+            "name": "Guide to Afterlife"
+          },
+          {
+            "key": "burst",
+            "name": "Spirit Soother"
           }
         ]
       },
@@ -11365,6 +11801,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Garyuu Bladework"
+          },
+          {
+            "key": "skill",
+            "name": "Chihayaburu"
+          },
+          {
+            "key": "burst",
+            "name": "Kazuha Slash"
+          }
         ]
       },
       "extra": {
@@ -11708,6 +12158,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Seal of Approval"
+          },
+          {
+            "key": "skill",
+            "name": "Signed Edict"
+          },
+          {
+            "key": "burst",
+            "name": "Done Deal"
           }
         ]
       },
@@ -12053,6 +12517,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Firework Flare-Up"
+          },
+          {
+            "key": "skill",
+            "name": "Niwabi Fire-Dance"
+          },
+          {
+            "key": "burst",
+            "name": "Ryuukin Saxifrage"
+          }
         ]
       },
       "extra": {
@@ -12396,6 +12874,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Swiftshatter Spear"
+          },
+          {
+            "key": "skill",
+            "name": "Blazing Blessing"
+          },
+          {
+            "key": "burst",
+            "name": "Crimson Ooyoroi"
           }
         ]
       },
@@ -12741,6 +13233,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Favonius Bladework - Edel"
+          },
+          {
+            "key": "skill",
+            "name": "Icetide Vortex"
+          },
+          {
+            "key": "burst",
+            "name": "Glacial Illumination"
+          }
         ]
       },
       "extra": {
@@ -13084,6 +13590,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Origin"
+          },
+          {
+            "key": "skill",
+            "name": "Transcendence: Baleful Omen"
+          },
+          {
+            "key": "burst",
+            "name": "Secret Art: Musou Shinsetsu"
           }
         ]
       },
@@ -13429,6 +13949,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Shuumatsuban Ninja Blade"
+          },
+          {
+            "key": "skill",
+            "name": "Yoohoo Art: Fuuin Dash"
+          },
+          {
+            "key": "burst",
+            "name": "Yoohoo Art: Mujina Flurry"
+          }
         ]
       },
       "extra": {
@@ -13772,6 +14306,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "The Shape of Water"
+          },
+          {
+            "key": "skill",
+            "name": "Kurage's Oath"
+          },
+          {
+            "key": "burst",
+            "name": "Nereid's Ascension"
           }
         ]
       },
@@ -14117,6 +14665,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Ripping Fang Fletching"
+          },
+          {
+            "key": "skill",
+            "name": "Inuzaka All-Round Defense"
+          },
+          {
+            "key": "burst",
+            "name": "Juuga: Forward Unto Victory"
+          }
         ]
       },
       "extra": {
@@ -14460,6 +15022,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Tengu Bowmanship"
+          },
+          {
+            "key": "skill",
+            "name": "Tengu Stormcall"
+          },
+          {
+            "key": "burst",
+            "name": "Subjugation: Koukou Sendou"
           }
         ]
       },
@@ -14805,6 +15381,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Fight Club Legend"
+          },
+          {
+            "key": "skill",
+            "name": "Masatsu Zetsugi: Akaushi Burst!"
+          },
+          {
+            "key": "burst",
+            "name": "Royal Descent: Behold, Itto the Evil!"
+          }
         ]
       },
       "extra": {
@@ -15148,6 +15738,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Spiritfox Sin-Eater"
+          },
+          {
+            "key": "skill",
+            "name": "Yakan Evocation: Sesshou Sakura"
+          },
+          {
+            "key": "burst",
+            "name": "Great Secret Art: Tenko Kenshin"
           }
         ]
       },
@@ -15493,6 +16097,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Fudou Style Martial Arts"
+          },
+          {
+            "key": "skill",
+            "name": "Heartstopper Strike"
+          },
+          {
+            "key": "burst",
+            "name": "Windmuster Kick"
+          }
         ]
       },
       "extra": {
@@ -15836,6 +16454,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Stealthy Bowshot"
+          },
+          {
+            "key": "skill",
+            "name": "Lingering Lifeline"
+          },
+          {
+            "key": "burst",
+            "name": "Depth-Clarion Dice"
           }
         ]
       },
@@ -16181,6 +16813,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Boxcutter"
+          },
+          {
+            "key": "skill",
+            "name": "Meow-teor Kick"
+          },
+          {
+            "key": "burst",
+            "name": "Secret Art: Surprise Dispatch"
+          }
         ]
       },
       "extra": {
@@ -16524,6 +17170,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Rapid Fire"
+          },
+          {
+            "key": "skill",
+            "name": "Frozen Wilds"
+          },
+          {
+            "key": "burst",
+            "name": "Prophecies of Dawn"
           }
         ]
       },
@@ -16869,6 +17529,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Dawnstar Piercer"
+          },
+          {
+            "key": "skill",
+            "name": "Spring Spirit Summoning"
+          },
+          {
+            "key": "burst",
+            "name": "Divine Maiden's Deliverance"
+          }
         ]
       },
       "extra": {
@@ -17212,6 +17886,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Cloud-Grazing Strike"
+          },
+          {
+            "key": "skill",
+            "name": "Opening Flourish"
+          },
+          {
+            "key": "burst",
+            "name": "Cliffbreaker's Banner"
           }
         ]
       },
@@ -17557,6 +18245,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Shinobu's Shadowsword"
+          },
+          {
+            "key": "skill",
+            "name": "Sanctifying Ring"
+          },
+          {
+            "key": "burst",
+            "name": "Gyoei Narukami Kariyama Rite"
+          }
         ]
       },
       "extra": {
@@ -17900,6 +18602,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Kamisato Art: Marobashi"
+          },
+          {
+            "key": "skill",
+            "name": "Kamisato Art: Kyouka"
+          },
+          {
+            "key": "burst",
+            "name": "Kamisato Art: Suiyuu"
           }
         ]
       },
@@ -18245,6 +18961,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Supplicant's Bowmanship"
+          },
+          {
+            "key": "skill",
+            "name": "Floral Brush"
+          },
+          {
+            "key": "burst",
+            "name": "Trump-Card Kitty"
+          }
         ]
       },
       "extra": {
@@ -18588,6 +19318,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Marvelous Sword-Dance (Modified)"
+          },
+          {
+            "key": "skill",
+            "name": "Spirit-Warding Lamp: Troubleshooter Cannon"
+          },
+          {
+            "key": "burst",
+            "name": "Alcazarzaray's Exactitude"
           }
         ]
       },
@@ -18933,6 +19677,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Khanda Barrier-Buster"
+          },
+          {
+            "key": "skill",
+            "name": "Vijnana-Phala Mine"
+          },
+          {
+            "key": "burst",
+            "name": "Fashioner's Tanglevine Shaft"
+          }
         ]
       },
       "extra": {
@@ -19276,6 +20034,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Dance of Samser"
+          },
+          {
+            "key": "skill",
+            "name": "Dance of Haftkarsvar"
+          },
+          {
+            "key": "burst",
+            "name": "Dance of Abzendegi: Distant Dreams, Listening Spring"
           }
         ]
       },
@@ -19621,6 +20393,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Invoker's Spear"
+          },
+          {
+            "key": "skill",
+            "name": "Secret Rite: Chasmic Soulfarer"
+          },
+          {
+            "key": "burst",
+            "name": "Sacred Rite: Wolf's Swiftness"
+          }
         ]
       },
       "extra": {
@@ -19964,6 +20750,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Gleaming Spear - Guardian Stance"
+          },
+          {
+            "key": "skill",
+            "name": "Sacred Rite: Heron's Sanctum"
+          },
+          {
+            "key": "burst",
+            "name": "Sacred Rite: Wagtail's Tide"
           }
         ]
       },
@@ -20309,6 +21109,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Akara"
+          },
+          {
+            "key": "skill",
+            "name": "All Schemes to Know"
+          },
+          {
+            "key": "burst",
+            "name": "Illusory Heart"
+          }
         ]
       },
       "extra": {
@@ -20652,6 +21466,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Sword of the Radiant Path"
+          },
+          {
+            "key": "skill",
+            "name": "Nights of Formal Focus"
+          },
+          {
+            "key": "burst",
+            "name": "Dream of the Star-Stream Shaker"
           }
         ]
       },
@@ -20997,6 +21825,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Yuuban Meigen"
+          },
+          {
+            "key": "skill",
+            "name": "Hanega: Song of the Wind"
+          },
+          {
+            "key": "burst",
+            "name": "Kyougen: Five Ceremonial Plays"
+          }
         ]
       },
       "extra": {
@@ -21340,6 +22182,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Parthian Shot"
+          },
+          {
+            "key": "skill",
+            "name": "Wind Realm of Nasamjnin"
+          },
+          {
+            "key": "burst",
+            "name": "The Wind's Secret Ways"
           }
         ]
       },
@@ -21685,6 +22541,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Toss 'N' Turn Spear"
+          },
+          {
+            "key": "skill",
+            "name": "Raphanus Sky Cluster"
+          },
+          {
+            "key": "burst",
+            "name": "Moonjade Descent"
+          }
         ]
       },
       "extra": {
@@ -22028,6 +22898,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Abductive Reasoning"
+          },
+          {
+            "key": "skill",
+            "name": "Universality: An Elaboration on Form"
+          },
+          {
+            "key": "burst",
+            "name": "Particular Field: Fetters of Phenomena"
           }
         ]
       },
@@ -22373,6 +23257,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Sandstorm Assault"
+          },
+          {
+            "key": "skill",
+            "name": "Molten Inferno"
+          },
+          {
+            "key": "burst",
+            "name": "Leonine Bite"
+          }
         ]
       },
       "extra": {
@@ -22716,6 +23614,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Spear of Favonius - Arrow's Passage"
+          },
+          {
+            "key": "skill",
+            "name": "Starfrost Swirl"
+          },
+          {
+            "key": "burst",
+            "name": "Skyfeather Song"
           }
         ]
       },
@@ -23061,6 +23973,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Schematic Setup"
+          },
+          {
+            "key": "skill",
+            "name": "Artistic Ingenuity"
+          },
+          {
+            "key": "burst",
+            "name": "Painted Dome"
+          }
         ]
       },
       "extra": {
@@ -23404,6 +24330,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "The Classics of Acupuncture"
+          },
+          {
+            "key": "skill",
+            "name": "Universal Diagnosis"
+          },
+          {
+            "key": "burst",
+            "name": "Holistic Revivification"
           }
         ]
       },
@@ -23749,6 +24689,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Rapid Ritesword"
+          },
+          {
+            "key": "skill",
+            "name": "Enigmatic Feint"
+          },
+          {
+            "key": "burst",
+            "name": "Magic Trick: Astonishing Shift"
+          }
         ]
       },
       "extra": {
@@ -24092,6 +25046,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Card Force Translocation"
+          },
+          {
+            "key": "skill",
+            "name": "Bewildering Lights"
+          },
+          {
+            "key": "burst",
+            "name": "Wondrous Trick: Miracle Parade"
           }
         ]
       },
@@ -24437,6 +25405,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Flowing Eddies"
+          },
+          {
+            "key": "skill",
+            "name": "Pressurized Floe"
+          },
+          {
+            "key": "burst",
+            "name": "Shadowhunter's Ambush"
+          }
         ]
       },
       "extra": {
@@ -24780,6 +25762,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Forceful Fists of Frost"
+          },
+          {
+            "key": "skill",
+            "name": "Icefang Rush"
+          },
+          {
+            "key": "burst",
+            "name": "Darkgold Wolfbite"
           }
         ]
       },
@@ -25125,6 +26121,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "As Water Seeks Equilibrium"
+          },
+          {
+            "key": "skill",
+            "name": "O Tears, I Shall Repay"
+          },
+          {
+            "key": "burst",
+            "name": "O Tides, I Have Returned"
+          }
         ]
       },
       "extra": {
@@ -25468,6 +26478,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Cool-Color Capture"
+          },
+          {
+            "key": "skill",
+            "name": "Framing: Freezing Point Composition"
+          },
+          {
+            "key": "burst",
+            "name": "Still Photo: Comprehensive Confirmation"
           }
         ]
       },
@@ -25813,6 +26837,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Soloist's Solicitation"
+          },
+          {
+            "key": "skill",
+            "name": "Salon Solitaire"
+          },
+          {
+            "key": "burst",
+            "name": "Let the People Rejoice"
+          }
         ]
       },
       "extra": {
@@ -26156,6 +27194,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Line Bayonet Thrust EX"
+          },
+          {
+            "key": "skill",
+            "name": "Short-Range Rapid Interdiction Fire"
+          },
+          {
+            "key": "burst",
+            "name": "Ring of Bursting Grenades"
           }
         ]
       },
@@ -26501,6 +27553,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Blunt Refusal"
+          },
+          {
+            "key": "skill",
+            "name": "Ceremonial Crystalshot"
+          },
+          {
+            "key": "burst",
+            "name": "As the Sunlit Sky's Singing Salute"
+          }
         ]
       },
       "extra": {
@@ -26844,6 +27910,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Stellar Rend"
+          },
+          {
+            "key": "skill",
+            "name": "Bestial Ascent"
+          },
+          {
+            "key": "burst",
+            "name": "Suanni's Gilded Dance"
           }
         ]
       },
@@ -27189,6 +28269,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Word of Wind and Flower"
+          },
+          {
+            "key": "skill",
+            "name": "White Clouds at Dawn"
+          },
+          {
+            "key": "burst",
+            "name": "Stars Gather at Dusk"
+          }
         ]
       },
       "extra": {
@@ -27532,6 +28626,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Weaving Blade"
+          },
+          {
+            "key": "skill",
+            "name": "Fluttering Hasode"
+          },
+          {
+            "key": "burst",
+            "name": "Hiyoku: Twin Blades"
           }
         ]
       },
@@ -27877,6 +28985,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Targeted Treatment"
+          },
+          {
+            "key": "skill",
+            "name": "Rebound Hydrotherapy"
+          },
+          {
+            "key": "burst",
+            "name": "Super Saturated Syringing"
+          }
         ]
       },
       "extra": {
@@ -28220,6 +29342,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Invitation to a Beheading"
+          },
+          {
+            "key": "skill",
+            "name": "All Is Ash"
+          },
+          {
+            "key": "burst",
+            "name": "Balemoon Rising"
           }
         ]
       },
@@ -28565,6 +29701,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Royal Reed Archery"
+          },
+          {
+            "key": "skill",
+            "name": "Ancient Rite: The Thundering Sands"
+          },
+          {
+            "key": "burst",
+            "name": "Secret Rite: Twilight Shadowpiercer"
+          }
         ]
       },
       "extra": {
@@ -28908,6 +30058,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Oath of Hunting Shadows"
+          },
+          {
+            "key": "skill",
+            "name": "Hunter's Vigil"
+          },
+          {
+            "key": "burst",
+            "name": "Last Lightfall"
           }
         ]
       },
@@ -29253,6 +30417,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Shadow-Hunting Spear (Custom)"
+          },
+          {
+            "key": "skill",
+            "name": "Fragrance Extraction"
+          },
+          {
+            "key": "burst",
+            "name": "Aromatic Explication"
+          }
         ]
       },
       "extra": {
@@ -29596,6 +30774,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Cragbiter"
+          },
+          {
+            "key": "skill",
+            "name": "Go, Go Turbo Twirly!"
+          },
+          {
+            "key": "burst",
+            "name": "Time to Get Serious!"
           }
         ]
       },
@@ -29941,6 +31133,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Nightsun Style"
+          },
+          {
+            "key": "skill",
+            "name": "Canopy Hunter: Riding High"
+          },
+          {
+            "key": "burst",
+            "name": "Hail to the Almighty Dragonlord"
+          }
         ]
       },
       "extra": {
@@ -30284,6 +31490,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Cooling Treatment"
+          },
+          {
+            "key": "skill",
+            "name": "Surfshark Wavebreaker"
+          },
+          {
+            "key": "burst",
+            "name": "Boomsharka-laka"
           }
         ]
       },
@@ -30629,6 +31849,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Ehecatl's Roar"
+          },
+          {
+            "key": "skill",
+            "name": "Yohual's Scratch"
+          },
+          {
+            "key": "burst",
+            "name": "Ocelotlicue Point!"
+          }
         ]
       },
       "extra": {
@@ -30972,6 +32206,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Phantom Feather Flurry"
+          },
+          {
+            "key": "skill",
+            "name": "Spirit Reins, Shadow Hunt"
+          },
+          {
+            "key": "burst",
+            "name": "Soul Reaper's Fatal Round"
           }
         ]
       },
@@ -31317,6 +32565,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Spiritvessel Snapshot"
+          },
+          {
+            "key": "skill",
+            "name": "Night's Sling"
+          },
+          {
+            "key": "burst",
+            "name": "Dark Voices Echo"
+          }
         ]
       },
       "extra": {
@@ -31660,6 +32922,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Flames Weave Life"
+          },
+          {
+            "key": "skill",
+            "name": "The Named Moment"
+          },
+          {
+            "key": "burst",
+            "name": "Hour of Burning Skies"
           }
         ]
       },
@@ -32005,6 +33281,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Shadow-Stealing Spirit Vessel"
+          },
+          {
+            "key": "skill",
+            "name": "Dawnfrost Darkstar"
+          },
+          {
+            "key": "burst",
+            "name": "Edict of Entwined Splendor"
+          }
         ]
       },
       "extra": {
@@ -32348,6 +33638,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Black Pheasant Strides on Water"
+          },
+          {
+            "key": "skill",
+            "name": "Swallow-Wisp Pinion Dance"
+          },
+          {
+            "key": "burst",
+            "name": "Lustrous Moonrise"
           }
         ]
       },
@@ -32693,6 +33997,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Pure Heart, Pure Dreams"
+          },
+          {
+            "key": "skill",
+            "name": "Aisa Utamakura Pilgrimage"
+          },
+          {
+            "key": "burst",
+            "name": "Anraku Secret Spring Therapy"
+          }
         ]
       },
       "extra": {
@@ -33036,6 +34354,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Weighted Spike"
+          },
+          {
+            "key": "skill",
+            "name": "Thunderbolt Rush"
+          },
+          {
+            "key": "burst",
+            "name": "The Three Principles of Power"
           }
         ]
       },
@@ -33381,6 +34713,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "By the Horns"
+          },
+          {
+            "key": "skill",
+            "name": "Riding the Night-Rainbow"
+          },
+          {
+            "key": "burst",
+            "name": "Guardian Vent!"
+          }
         ]
       },
       "extra": {
@@ -33724,6 +35070,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Kitchen Skills"
+          },
+          {
+            "key": "skill",
+            "name": "Low-Temperature Cooking"
+          },
+          {
+            "key": "burst",
+            "name": "Scoring Cuts"
           }
         ]
       },
@@ -34069,6 +35429,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Rite of Dispelling Winds"
+          },
+          {
+            "key": "skill",
+            "name": "Airborne Disease Prevention"
+          },
+          {
+            "key": "burst",
+            "name": "Compound Sedation Field"
+          }
         ]
       },
       "extra": {
@@ -34413,6 +35787,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Havoc: Sunder"
+          },
+          {
+            "key": "skill",
+            "name": "Havoc: Warp"
+          },
+          {
+            "key": "burst",
+            "name": "Havoc: Ruin"
+          }
         ]
       },
       "extra": {
@@ -34755,6 +36143,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Favonius Bladework - Ritual"
+          },
+          {
+            "key": "skill",
+            "name": "Immersive Ordinance"
+          },
+          {
+            "key": "burst",
+            "name": "Radiant Psalter"
           }
         ]
       },
@@ -35100,6 +36502,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Cyclonic Duster"
+          },
+          {
+            "key": "skill",
+            "name": "Cleaning Mode: Carrier Frequency"
+          },
+          {
+            "key": "burst",
+            "name": "Supreme Instruction: Cyclonic Exterminator"
+          }
         ]
       },
       "extra": {
@@ -35443,6 +36859,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Peregrination of Linnunrata"
+          },
+          {
+            "key": "skill",
+            "name": "Runo: Dawnless Rest of Karsikko"
+          },
+          {
+            "key": "burst",
+            "name": "Runo: All Hearts Become the Beating Moon"
           }
         ]
       },
@@ -35788,6 +37218,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Pocztowy Demonspear"
+          },
+          {
+            "key": "skill",
+            "name": "Ancient Rite: Arcane Light"
+          },
+          {
+            "key": "burst",
+            "name": "Ancient Ritual: Cometh the Night"
+          }
         ]
       },
       "extra": {
@@ -36131,6 +37575,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Bish-Bash-Bosh Repair"
+          },
+          {
+            "key": "skill",
+            "name": "Musecatcher"
+          },
+          {
+            "key": "burst",
+            "name": "Precision Hydronic Cooler"
           }
         ]
       },
@@ -36476,6 +37934,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Striking Serpent"
+          },
+          {
+            "key": "skill",
+            "name": "Senet Strategy: Dance of a Thousand Nights"
+          },
+          {
+            "key": "burst",
+            "name": "Sacred Vow: True Eye's Phantasm"
+          }
         ]
       },
       "extra": {
@@ -36819,6 +38291,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Radiant Wingslash"
+          },
+          {
+            "key": "skill",
+            "name": "Binary Form: Convergence and Division"
+          },
+          {
+            "key": "burst",
+            "name": "Principle of Purity: As the Light Shifts"
           }
         ]
       },
@@ -37164,6 +38650,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Strike While the Arrow's Hot"
+          },
+          {
+            "key": "skill",
+            "name": "Savvy Strategy: Splitting the Spoils"
+          },
+          {
+            "key": "burst",
+            "name": "Hidden Aces: Seven Tools of the Hunter"
+          }
         ]
       },
       "extra": {
@@ -37507,6 +39007,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Moondew Cascade"
+          },
+          {
+            "key": "skill",
+            "name": "Eternal Tides"
+          },
+          {
+            "key": "burst",
+            "name": "Moonlit Melancholy"
           }
         ]
       },
@@ -37852,6 +39366,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Golden Blade's Petaled Touch"
+          },
+          {
+            "key": "skill",
+            "name": "Heaven and Earth Made Manifest"
+          },
+          {
+            "key": "burst",
+            "name": "Tri-Sphere Eminence"
+          }
         ]
       },
       "extra": {
@@ -38194,6 +39722,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Oathkeeper's Spear"
+          },
+          {
+            "key": "skill",
+            "name": "Dawnbearing Songbird"
+          },
+          {
+            "key": "burst",
+            "name": "Shadowless Reflection"
           }
         ]
       },
@@ -38539,6 +40081,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Favonius Bladework: Dancing Radiance"
+          },
+          {
+            "key": "skill",
+            "name": "Windbound Execution"
+          },
+          {
+            "key": "burst",
+            "name": "Northwind Avatar"
+          }
         ]
       },
       "extra": {
@@ -38882,6 +40438,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Spear of Favonius — Broken Oath"
+          },
+          {
+            "key": "skill",
+            "name": "Unforeseen Strike"
+          },
+          {
+            "key": "burst",
+            "name": "Manifest Judgment"
           }
         ]
       },
@@ -39227,6 +40797,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Capture Protocol"
+          },
+          {
+            "key": "skill",
+            "name": "Countermeasure: Lumi's Battle Cry!"
+          },
+          {
+            "key": "burst",
+            "name": "Memo: Survival Guide in Extreme Conditions"
+          }
         ]
       },
       "extra": {
@@ -39571,6 +41155,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Allegoria"
+          },
+          {
+            "key": "skill",
+            "name": "Revelation: Uncreated Light"
+          },
+          {
+            "key": "burst",
+            "name": "Revelation: Ladder of Divine Ascent"
+          }
         ]
       },
       "extra": {
@@ -39913,6 +41511,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Badaboom! Hexbuster Hammer"
+          },
+          {
+            "key": "skill",
+            "name": "Ring-A-Ding-Ding! Hexhunter Chime"
+          },
+          {
+            "key": "burst",
+            "name": "The Bell Tolls! The Hunt Is On!"
           }
         ]
       },
@@ -40258,6 +41870,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Formule Phenomenale: Self-Evident Proposition"
+          },
+          {
+            "key": "skill",
+            "name": "Formule Phenomenale: Differential Analysis"
+          },
+          {
+            "key": "burst",
+            "name": "Formule Phenomenale: Q.E.D."
+          }
         ]
       },
       "extra": {
@@ -40600,6 +42226,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Psyshkhwe Arietta"
+          },
+          {
+            "key": "skill",
+            "name": "Rechitativ: Sonorous Dawn"
+          },
+          {
+            "key": "burst",
+            "name": "Koda: Sink With Thee"
           }
         ]
       },
@@ -40944,6 +42584,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Vila Blade Dance"
+          },
+          {
+            "key": "skill",
+            "name": "The Art of Victory"
+          },
+          {
+            "key": "burst",
+            "name": "For the Tsaritsa!"
+          }
         ]
       },
       "extra": {
@@ -41287,6 +42941,20 @@
               }
             ]
           }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Skirmishing Spear"
+          },
+          {
+            "key": "skill",
+            "name": "Thunderbolt Strike"
+          },
+          {
+            "key": "burst",
+            "name": "Hunter's Advance"
+          }
         ]
       },
       "extra": {
@@ -41629,6 +43297,20 @@
                 "qty": 1
               }
             ]
+          }
+        ],
+        "info": [
+          {
+            "key": "normal",
+            "name": "Snow Swan Variation"
+          },
+          {
+            "key": "skill",
+            "name": "Adagio: Phantom Night Dancers"
+          },
+          {
+            "key": "burst",
+            "name": "Presto: Bluebird Finale"
           }
         ]
       },

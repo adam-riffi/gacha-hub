@@ -56,6 +56,10 @@ const all = (folder: string) =>
 const talentsByName = new Map<string, RawCosts>(
   all("talents").map((t) => [t.name as string, t.costs as RawCosts]),
 );
+// The three combat talents' names, which the sheet shows (Amber: Sharpshooter, Explosive Puppet, Fiery Rain).
+const talentNames = new Map<string, (string | undefined)[]>(
+  all("talents").map((t) => [t.name as string, [t.combat1?.name, t.combat2?.name, t.combat3?.name]]),
+);
 const characters: CatalogCharacter[] = all("characters")
   .filter((c) => {
     const ok =
@@ -77,7 +81,14 @@ const characters: CatalogCharacter[] = all("characters")
     maxLevel: ascension.at(-1)?.atLevel ?? 90,
     icon: c.images?.filename_icon ?? c.images?.icon,
     ascension,
-    talents: { keys: ["normal", "skill", "burst"], costs: steps(talentsByName.get(c.name), "lvl") },
+    talents: {
+      keys: ["normal", "skill", "burst"],
+      costs: steps(talentsByName.get(c.name), "lvl"),
+      info: ["normal", "skill", "burst"].flatMap((key, i) => {
+        const name = talentNames.get(c.name)?.[i];
+        return name ? [{ key, name }] : [];
+      }),
+    },
     extra: {
       region: c.region,
       version: c.version,
