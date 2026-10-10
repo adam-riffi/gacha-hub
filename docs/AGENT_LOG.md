@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/docs/04-handoff-final · #188
+- Done: HANDOFF.md rewritten. It covers the work after "take every decision" (#177–#187), each decision taken and its reason, and what waits on Georges's secrets. PROJECT-GUIDE §14.2 now lists what waits on data (real fixtures, TypeScript 7) and what was decided against, with reasons: Endfield art, WuWa material art, Shiyu v2, Used-in eligibility. The matrix's live-data and art rows and README's art line are updated.
+- Tests: docs only.
+- Scope/decisions: Georges can overrule any decision by saying so; §14.1 step 7 says where they are.
+- Next: Georges's secrets; real answers to replace the fixtures.
+
 ## 2026-10-10 · claude · stack/kpi/01-defaults · #187
 - Done: a game's default KPI targets. `GameInstance.kpiTargets` is a new nullable JSON column (migration `20261011090000_kpi_defaults`). It is set with `PUT /api/instances/:id`, checked against the game's numeric KPIs like a build's. The sheet's "Make these the game's defaults" saves the build's targets. A tile without its own target shows the default, marked "(default)", and a build's own targets win. `GET /api/characters/:id` carries `defaultTargets`; the export carries the column.
 - Tests: written first:
@@ -285,9 +291,3 @@ Entry format:
 - Tests: written first: `pullImport.test.ts` (types to banners and skipped ones, order, featured, lost and unknown), `pullImport.integration.test.ts` (pity and the 50/50 from imported records, the run recorded, re-imports skipped, manual entries replaced and later ones kept). The fixture's record ids are built as strings: past 2^53 they collided.
 - Scope/decisions: one row per pull, so re-imports deduplicate exactly; beginner, Chronicled, departure, collab and Bangboo pulls are skipped; nothing calls `importPulls` yet (UIGF in `f11/03`).
 - Next: `f11/03-uigf` (UIGF v4.2 import and export).
-
-## 2026-10-10 · claude · stack/f11/01-links · #146
-- Done: F11 starts (ADR 0005). `LinkedAccount` (provider, account id, sealed secret, key version, status, last sync and error) and `ImportRun` (provider, kind, added, skipped, error), migration `20261011040000_linked_accounts` with RLS; `lib/linkSecret.ts`: AES-256-GCM under `LINK_SECRET_KEY` with the row ("userId:provider") as additional data, "2:new,1:old" for rotation; `GET /api/links` (no secret) and `DELETE /api/links/:id`; `.env.example` documents the key.
-- Tests: written first: `linkSecret.test.ts` (round trip with a fresh IV, tampering and a moved secret refused, rotation, key length), `links.integration.test.ts` (listed without the secret, absent from the export, revoked, kept per user, sign-in required).
-- Scope/decisions: no way to create a link yet: each provider brings its own (HoYoLAB in `f11/06`); the export leaves links out entirely.
-- Next: `f11/02-pull-records` (source and record id on `PullEntry`, the import core).
