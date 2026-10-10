@@ -10,6 +10,7 @@ describe("the battle chronicle (ADR 0005)", () => {
     expect(chronicleRequests("genshin", "eu", "700000001")).toEqual([
       { modeKey: "abyss", url: "https://sg-public-api.hoyolab.com/event/game_record/genshin/api/spiralAbyss?server=os_euro&role_id=700000001&schedule_type=1" },
       { modeKey: "theater", url: "https://sg-public-api.hoyolab.com/event/game_record/genshin/api/role_combat?server=os_euro&role_id=700000001&need_detail=false" },
+      { modeKey: "stygian", url: "https://sg-public-api.hoyolab.com/event/game_record/genshin/api/hard_challenge?server=os_euro&role_id=700000001&need_detail=false" },
     ]);
     expect(chronicleRequests("hsr", "na", "600000001").map((r) => [r.modeKey, new URL(r.url).pathname.split("/").at(-1), new URL(r.url).searchParams.get("server")])).toEqual([
       ["moc", "challenge", "prod_official_usa"],
@@ -38,6 +39,15 @@ describe("the battle chronicle (ADR 0005)", () => {
     expect(readChronicle("pf", ok({ has_data: false, star_num: 0, max_floor: "" }), now)).toBeNull();
     expect(readChronicle("shiyu", ok({ hadal_ver: "v1", hadal_info_v1: { has_data: true, rating_list: [{ times: 4, rating: "S" }, { times: 1, rating: "A" }] } }), now)).toEqual({ result: 4 });
     expect(readChronicle("assault", ok({ has_data: true, total_star: 7, total_score: 52000 }), now)).toEqual({ result: 7, detail: "52000 points" });
+    // Stygian Onslaught (genshin.py's HardChallenge): the season running now, its best solo difficulty and time.
+    const stygian = ok({
+      data: [
+        { schedule: { is_valid: true, start_time: unix("2026-08-26T04:00:00Z"), end_time: unix("2026-09-29T04:00:00Z") }, single: { has_data: true, best: { difficulty: 4, second: 300 } } },
+        { schedule: { is_valid: true, start_time: unix("2026-09-30T04:00:00Z"), end_time: unix("2026-11-03T04:00:00Z") }, single: { has_data: true, best: { difficulty: 5, second: 212 } } },
+      ],
+    });
+    expect(readChronicle("stygian", stygian, now)).toEqual({ result: 5, detail: "212 s" });
+    expect(readChronicle("stygian", ok({ data: [{ schedule: { is_valid: true, start_time: unix("2026-09-30T04:00:00Z"), end_time: unix("2026-11-03T04:00:00Z") }, single: { has_data: false, best: null } }] }), now)).toBeNull();
   });
 
   it("names a refusal", () => {
