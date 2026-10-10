@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/profile/01-progress · #191
+- Done: Profile's "Long-term progress" (WIREFRAMES.md G8) shows the HoYoLAB record card's stats: days active, characters, achievements, endgame, as genshin.py's `RecordCardData` names them. `readRecordCards` returns each game's `stats`. Linking stores them on the profile, and Sync now (or the cron's 6-hourly chronicle pass) refreshes them. They live in the new column `GameInstance.progress` (migration `20261011100000_progress`) and come with the instance. Profile's texts no longer promise "(F11)". Games HoYoLAB doesn't cover say why the card stays empty.
+- Tests: written first: the reader's stats, and the link storing them on the profile. `npm run check` passes: 532 tests and 40 journeys.
+- Scope/decisions: chests, waypoints and exploration per region would need the chronicle's index endpoint; the card's stats are what HoYoLAB shows on the card. The export leaves the column out: it is synced, not entered.
+- Next: the sheets' unverified values.
+
 ## 2026-10-10 · claude · stack/docs/05-screens · #190
 - Done: PROJECT-GUIDE §7 (screen map) and §8 (screen by screen) describe today's app: Home, Games, Tasks and reminders, the calendar, the game hub's tabs (Activities, Endgame, Pulls, Characters, gear, Planner, Profile), the character sheet, Settings, Admin and the bot. The retired Overview, Ownership and Equipment pages are gone from the chapter. Fifteen new screenshots at 1440×900 replace the seventeen from 2026-10-08. They were taken with every image from outside the app blocked, so the cards show placeholders and no game art is committed (ADR 0006).
 - Tests: docs only; every image the guide names exists.
@@ -285,9 +291,3 @@ Entry format:
 - Tests: written first: `account.integration.test.ts` (imports newest first and nobody else's; a wrong confirm keeps the account; the right one removes the user, profiles and links and signs out; sign-in required).
 - Scope/decisions: deletion asks for the username typed back rather than a second click; no grace period (the export is one click away on the same card).
 - Next: the Settings screen on these routes.
-
-## 2026-10-10 · claude · stack/fix/01-auth-hooks · #150
-- Done: `requireUser` and `requireAdmin` return their 401 or 403. Without the return, Fastify ran the route anyway while the async onSend hooks were writing the answer: a signed-in user who is not an admin could post an admin payload, get a 403, and still have it written; signed-out requests reached handlers that then threw at `req.user!.id` (the "Promise errored, but reply.sent" log lines).
-- Tests: written first: `auth/guards.integration.test.ts` (an admin upload by a non-admin writes no banner or audit row; nothing without a session), waiting a moment after the answer since the stray handler wrote just after it.
-- Scope/decisions: only the two guards answered from a hook; production gets the fix with the next deployment of `main`.
-- Next: Settings (A5) on `stack/f11/05-settings-data`.
