@@ -40,6 +40,19 @@ describe("dashboard data for Home (routes)", () => {
     expect((await game(hsr)).stamina).toMatchObject({ key: "trailblazePower", value: 0, cap: 300, regenPerHour: 10, full: false });
   });
 
+  it("carries each game's passes and recent endgame results, and caps Sanity at the Authority Level", async () => {
+    const genshin = await installGame(c, "genshin");
+    await c.req("PUT", `/api/instances/${genshin}/passes/battle`, { level: 34, weeklyXp: 6000 });
+    await c.req("PUT", `/api/instances/${genshin}/cycles`, { modeKey: "abyss", day: "2026-10-09", result: 33, premium: 700 });
+    const g = await game(genshin);
+    expect(g.passes.battle).toMatchObject({ level: 34, weeklyXp: 6000 });
+    expect(g.cycles).toEqual([expect.objectContaining({ modeKey: "abyss", result: 33, premium: 700 })]);
+
+    const endfield = await installGame(c, "endfield");
+    await c.req("PUT", `/api/instances/${endfield}`, { accountLevel: 20 });
+    expect((await game(endfield)).stamina?.cap).toBe(220);
+  });
+
   it("returns the recent pull log, oldest first", async () => {
     const id = await installGame(c, "genshin");
     await c.req("POST", `/api/instances/${id}/pulls`, { bannerKey: "character", count: 10 });

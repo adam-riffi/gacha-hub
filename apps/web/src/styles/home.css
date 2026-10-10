@@ -23,6 +23,23 @@
 .carousel-hatch { position: absolute; inset: 0; background: repeating-linear-gradient(45deg, var(--surface-3) 0 2px, var(--surface-2) 2px 14px); }
 .pass-game { font-size: 26px; font-weight: 600; line-height: 1.1; letter-spacing: 0.04em; text-transform: uppercase; }
 
+/* Battle pass level: a dark box at the bottom right, Barlow over the segmented bar. */
+.pass-level { position: absolute; right: 16px; bottom: 28px; padding: 12px 16px 14px; background: #000; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 9px), calc(100% - 9px) 100%, 0 100%); }
+.pass-level-figure { display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px; }
+.pass-level-figure .mn { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); }
+.pass-level-figure .cd { font-size: 32px; font-weight: 600; line-height: 1; }
+.pass-level-figure .cd.mu { font-size: 18px; }
+
+/* Endgame · next resets and Expiring soon (WIREFRAMES.md A1): two list cards under the heatmap. */
+.home-lists { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 36px; }
+.home-list .rw { display: flex; align-items: center; gap: 12px; }
+.table-card.home-list .rw > span.home-list-game { flex: 0 0 104px; text-align: left; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+.table-card.home-list .rw > span.home-list-name { flex: 1; min-width: 0; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.home-list-what { font-size: 13px; white-space: nowrap; }
+@media (max-width: 900px) {
+  .home-lists { grid-template-columns: minmax(0, 1fr); }
+}
+
 /* Pulls and stamina: cards holding a table, rows edge to edge. */
 .table-card { display: flex; flex-direction: column; padding: 0; }
 .table-card .ph { padding: 0 16px; }

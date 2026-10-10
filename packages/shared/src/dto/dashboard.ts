@@ -2,6 +2,8 @@ import { z } from "zod";
 import { taskDto } from "./task.js";
 import { bannerDto } from "./banner.js";
 import { eventDto } from "./event.js";
+import { passesDto } from "../passes.js";
+import { cycleResultDto } from "../endgame.js";
 import { gameKeySchema, idSchema, isoDate, isoDateNullable } from "./common.js";
 
 export const dashboardCurrencyDto = z.object({
@@ -57,6 +59,10 @@ export const dashboardGameDto = z.object({
   stamina: regenProjectionDto.nullable(),
   /** Pull batches of the last six weeks, oldest first. */
   pullLog: z.array(z.object({ at: isoDate, count: z.number().int() })),
+  /** The battle pass and 30-day pass as typed (WIREFRAMES.md A1 battle pass, Expiring soon). */
+  passes: passesDto,
+  /** Endgame results of the last 120 days, newest first (Endgame · next resets). */
+  cycles: z.array(cycleResultDto),
   /** The server's current game day (YYYY-MM-DD), where today's live tallies belong. */
   gameDay: z.string().nullable(),
   /** Day records of the last 26 weeks, oldest first: the server's game day and its tallies. */

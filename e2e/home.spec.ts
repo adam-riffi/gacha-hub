@@ -10,7 +10,7 @@ test("Home is the dashboard: its panels, the dailies card per game, the pulls an
   await page.goto("/?game=hsr");
 
   // The design's panels (VISUAL-DESIGN.md §10), and nothing of the old Home.
-  for (const name of ["Goals", "Goal types", "Backlog", "Pull history", "Dailies & weeklies", "Battle pass", "Dailies, last 26 weeks", "Banners", "Pulls", "Stamina"]) {
+  for (const name of ["Goals", "Goal types", "Backlog", "Pull history", "Dailies & weeklies", "Battle pass", "Dailies, last 26 weeks", "Banners", "Pulls", "Stamina", "Endgame · next resets", "Expiring soon"]) {
     await expect(page.getByRole("heading", { name, exact: true })).toBeVisible();
   }
   for (const name of ["Today", "Coming up", "Wallet", "Tasks"]) {

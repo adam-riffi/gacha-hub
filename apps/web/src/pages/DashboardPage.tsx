@@ -11,6 +11,7 @@ import { DailiesCard } from "../components/home/DailiesCard";
 import { PassCard } from "../components/home/PassCard";
 import { PullsCard } from "../components/home/PullsCard";
 import { StaminaCard } from "../components/home/StaminaCard";
+import { EndgameNextCard, ExpiringSoonCard, homeGames } from "../components/home/HomeLists";
 import type { DashboardData, TaskItem } from "../lib/types";
 
 /**
@@ -76,6 +77,7 @@ function Dashboard({ view, tasks, pinned, setParams }: { view: DashboardData; ta
     });
   const roster = useMemo(() => homeRoster(view.games, view.timeline.banners), [view]);
   const counts = useMemo(() => roster.map((r) => r.banners.length), [roster]);
+  const hg = useMemo(() => homeGames(view.games, view.timeline.events), [view]);
   const c = useCarousel(counts);
   return (
     <div className="home">
@@ -86,6 +88,10 @@ function Dashboard({ view, tasks, pinned, setParams }: { view: DashboardData; ta
           <PassCard roster={roster} c={c} />
         </div>
         <HomeHeat games={view.games} today={today} pinned={day} onPin={onPin} />
+        <div className="home-lists">
+          <EndgameNextCard games={hg} />
+          <ExpiringSoonCard games={hg} />
+        </div>
       </div>
       <aside className="home-side">
         <BannersCarousel roster={roster} c={c} />

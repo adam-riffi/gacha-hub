@@ -26,10 +26,19 @@ interface CurrencyRow {
 }
 
 /** The game's regenerating currency (resin, trailblaze power…) projected to now; null for a game without one. */
-export function staminaProjection(game: GameDefinition, rows: readonly CurrencyRow[], now = new Date()): RegenProjectionDto | null {
-  const currency = game.currencies.find((c) => c.regenPerHour && c.cap);
-  if (!currency) return null;
+export function staminaProjection(game: GameDefinition, rows: readonly CurrencyRow[], now = new Date(), accountLevel?: number | null): RegenProjectionDto | null {
+  const currency = game.currencies.find((c) => c.key === game.manifest.stamina.currency);
+  if (!currency?.cap || !currency.regenPerHour) return null;
+  // A cap that grows with the account (Endfield's Sanity) follows the profile's level when it is known.
+  const cap = staminaCap(game, accountLevel);
   const row = rows.find((r) => r.key === currency.key);
-  const p = projectRegen(row?.value ?? 0, currency.cap!, currency.regenPerHour!, row?.updatedAt ?? now, now);
-  return { key: currency.key, label: currency.label, value: p.value, cap: currency.cap!, regenPerHour: currency.regenPerHour!, full: p.full, fullAt: p.fullAt };
+  const p = projectRegen(row?.value ?? 0, cap, currency.regenPerHour, row?.updatedAt ?? now, now);
+  return { key: currency.key, label: currency.label, value: p.value, cap, regenPerHour: currency.regenPerHour, full: p.full, fullAt: p.fullAt };
+}
+
+/** The stamina cap: by account level when the game raises it and the level is known, else the currency's. */
+export function staminaCap(game: GameDefinition, accountLevel?: number | null): number {
+  const { capAt, currency } = game.manifest.stamina;
+  const base = game.currencies.find((c) => c.key === currency)?.cap ?? 0;
+  return capAt && accountLevel ? capAt(accountLevel) : base;
 }

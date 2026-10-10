@@ -51,6 +51,12 @@ export async function registerDashboardRoutes(app: FastifyInstance) {
       orderBy: { day: "asc" },
       select: { gameInstanceId: true, day: true, dailiesDone: true, dailiesTotal: true, goalsOpen: true, pulls: true },
     });
+    // Passes and recent endgame results, for the pass card, Endgame · next resets and Expiring soon.
+    const passRows = await prisma.passState.findMany({ where: { gameInstanceId: { in: instances.map((g) => g.id) } } });
+    const cycleRows = await prisma.cycleResult.findMany({
+      where: { gameInstanceId: { in: instances.map((g) => g.id) }, cycleStart: { gte: new Date(now.getTime() - 120 * DAY) } },
+      orderBy: { cycleStart: "desc" },
+    });
     // Catalogs are cached per process after the first load.
     const catalogs = new Map(
       await Promise.all(
@@ -124,7 +130,18 @@ export async function registerDashboardRoutes(app: FastifyInstance) {
           const s = pityState(pullRows.filter((p) => p.gameInstanceId === gi.id && p.bannerKey === rules.key), rules);
           return { key: rules.key, label: rules.label, pity: s.pity, hardPity: rules.hardPity, guaranteed: s.guaranteed };
         }),
-        stamina: game ? staminaProjection(game, gi.currencies, now) : null,
+        stamina: game ? staminaProjection(game, gi.currencies, now, gi.accountLevel) : null,
+        passes: (() => {
+          const battle = passRows.find((p) => p.gameInstanceId === gi.id && p.kind === "battle");
+          const monthly = passRows.find((p) => p.gameInstanceId === gi.id && p.kind === "monthly");
+          return {
+            battle: battle ? { level: battle.level ?? 0, weeklyXp: battle.weeklyXp ?? 0, updatedAt: battle.updatedAt.toISOString() } : null,
+            monthly: monthly?.endsAt ? { endsAt: monthly.endsAt.toISOString() } : null,
+          };
+        })(),
+        cycles: cycleRows
+          .filter((r) => r.gameInstanceId === gi.id)
+          .map((r) => ({ modeKey: r.modeKey, cycleStart: r.cycleStart.toISOString(), result: r.result, detail: r.detail, premium: r.premium, source: r.source })),
         pullLog: pullRows
           .filter((p) => p.gameInstanceId === gi.id && p.createdAt.getTime() >= now.getTime() - 42 * DAY)
           .map((p) => ({ at: p.createdAt.toISOString(), count: p.count })),

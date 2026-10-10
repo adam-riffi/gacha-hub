@@ -15,6 +15,7 @@ import {
 import { prisma } from "../lib/prisma.js";
 import { isDoneThisCycle } from "../lib/resets.js";
 import { dueReminders, type DueExtra } from "./due.js";
+import { staminaCap } from "../lib/regen.js";
 import type { RegionReset } from "../lib/resets.js";
 import { getCatalog, regionForInstance } from "../api/util.js";
 import { sendDirectMessage } from "../discord/rest.js";
@@ -84,7 +85,7 @@ async function dueExtra(cfg: ReminderConfig, game: GameDefinition, instance: Gam
   const row = instance.currencies.find((c) => c.key === def?.key);
   if (cfg.whenStaminaFull && def?.cap && def.regenPerHour) {
     const from = row ?? { value: 0, updatedAt: instance.createdAt };
-    const hours = Math.max(0, def.cap - from.value) / def.regenPerHour;
+    const hours = Math.max(0, staminaCap(game, instance.accountLevel) - from.value) / def.regenPerHour;
     extra.stamina = { label: def.label, fullAt: new Date(from.updatedAt.getTime() + hours * 3_600_000) };
   }
   if (cfg.beforeEndgameReset && game.manifest.endgame.length) {
