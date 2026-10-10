@@ -22,4 +22,5 @@ export * from "./farm.js";
 export * from "./forecast.js";
 export * from "./pullImport.js";
 export * from "./uigf.js";
+export * from "./historyLink.js";
 export * from "./builds.js";

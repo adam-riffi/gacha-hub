@@ -1,12 +1,40 @@
 import type { FastifyInstance } from "fastify";
-import { hasUigf, parseUigf, toUigf, type UigfPull } from "@gacha/shared";
+import { z } from "zod";
+import { hasHistoryLink, hasUigf, parseUigf, readHistoryLink, toUigf, type UigfPull } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
 import { requireUser } from "../auth/plugin.js";
 import { importPulls } from "../lib/pullImport.js";
+import { fetchHistory } from "../lib/historyLink.js";
 import { gameOrThrow, loadInstance, regionForInstance } from "./util.js";
 
-/** Pull history in and out as UIGF v4.2 (ADR 0005), for Genshin, Star Rail and ZZZ. */
+const historyLinkInput = z.object({
+  url: z.string().max(8192),
+  next: z.object({ gachaType: z.string().max(8), endId: z.string().regex(/^\d{1,19}$/) }).nullable().optional(),
+});
+
+/** Pull history in and out (ADR 0005): UIGF v4.2 files and history links, for Genshin, Star Rail and ZZZ. */
 export async function registerUigfRoutes(app: FastifyInstance) {
+  // A history link is read here and forgotten: only its authkey is used, against the official host.
+  app.post<{ Params: { id: string } }>("/api/instances/:id/pulls/history-link", { preHandler: requireUser }, async (req, reply) => {
+    const gi = await loadInstance(req.user!.id, req.params.id);
+    if (!gi) return reply.code(404).send({ error: "not_found" });
+    const game = gameOrThrow(gi.gameKey);
+    if (!hasHistoryLink(game.key)) return reply.code(400).send({ error: "no_history_link" });
+    const { url, next } = historyLinkInput.parse(req.body);
+    const link = readHistoryLink(url);
+    if (!link) return reply.code(400).send({ error: "no_authkey" });
+    const seen = new Set(
+      (await prisma.pullEntry.findMany({ where: { gameInstanceId: gi.id, recordId: { not: null } }, select: { recordId: true } })).map((e) => e.recordId!),
+    );
+    const got = await fetchHistory(game, link, regionForInstance(game, gi).utcOffsetMinutes / 60, seen, next ?? null).catch(() => ({ records: [], next: null, error: "unreachable" as const }));
+    const counts = got.records.length || !got.error ? await importPulls(req.user!.id, gi, "history-link", got.records) : null;
+    if (got.error) {
+      await prisma.importRun.create({ data: { userId: req.user!.id, gameInstanceId: gi.id, provider: "history-link", kind: "pulls", error: got.error } });
+      return reply.code(400).send({ error: got.error });
+    }
+    return { ...counts!, next: got.next };
+  });
+
   // Under Vercel's 4.5 MB request cap: years of pulls fit in well under that.
   app.post<{ Params: { id: string }; Querystring: { uid?: string } }>(
     "/api/instances/:id/pulls/uigf",

@@ -9,6 +9,8 @@ export interface PullRecord {
   time: Date;
   rank: number;
   itemId?: string;
+  /** The item's name, when the history gives no id (Genshin's official log). */
+  name?: string;
 }
 
 /** A banner on record (the Banner table): when it ran and what it featured. */

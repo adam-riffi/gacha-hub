@@ -12,9 +12,12 @@ import { gameOrThrow, getCatalog } from "../api/util.js";
 export async function importPulls(userId: string, instance: GameInstance, provider: string, records: readonly PullRecord[]): Promise<{ added: number; skipped: number }> {
   const game = gameOrThrow(instance.gameKey);
   const banners = await prisma.banner.findMany({ where: { gameKey: game.key } });
+  const index = (await getCatalog(game))?.index;
+  // A record named but without an id (Genshin's official log) is matched by name, so its 50/50 can be read.
+  const byName = new Map(index ? [...index.characters.values(), ...index.weapons.values()].map((x) => [x.name.toLowerCase(), x.id]) : []);
   const { pulls, skipped } = pullsFromRecords(
     game,
-    records,
+    records.map((r) => (r.itemId || !r.name ? r : { ...r, itemId: byName.get(r.name.toLowerCase()) })),
     banners.map((b) => ({ kind: b.kind, startsAt: b.startsAt, endsAt: b.endsAt, featured: b.featured as BannerFeatured[] })),
   );
   const seen = new Set(
@@ -22,7 +25,6 @@ export async function importPulls(userId: string, instance: GameInstance, provid
   );
   // Skips ids already stored, and an id repeated within one file.
   const fresh = pulls.filter((p) => !seen.has(p.recordId) && Boolean(seen.add(p.recordId)));
-  const index = (await getCatalog(game))?.index;
   const known = (id: string | null) => (id && (!index || index.characters.has(id) || index.weapons.has(id)) ? id : null);
   const newest = new Map<string, Date>();
   for (const p of fresh) {
