@@ -147,4 +147,24 @@ describe("stamina and endgame reminders (scheduler)", () => {
     expect(sent).toHaveBeenCalledTimes(1);
     expect(sent.mock.calls[0]![1]).toMatch(/Rainbow's End ends in 39h \d+m · claim your reward/);
   });
+
+  it("DMs 3 days before the 30-day pass ends when asked", async () => {
+    await c.req("PUT", `/api/instances/${gid}/passes/monthly`, { daysLeft: 2 });
+    await c.req("PUT", `/api/instances/${gid}/reminder`, { ...only({ beforePassEnds: true }), beforeReset: false });
+    await runReminderTick(new Date(Date.now() + 60_000));
+    expect(sent).toHaveBeenCalledTimes(1);
+    expect(sent.mock.calls[0]![1]).toMatch(/Blessing of the Welkin Moon ends in/);
+  });
+
+  it("holds DMs during quiet hours and sends them once they end", async () => {
+    await c.req("PUT", `/api/instances/${gid}/currencies/resin`, { value: 200 });
+    const now = new Date();
+    const hhmm = (d: Date) => d.toISOString().slice(11, 16);
+    const quietHours = { from: hhmm(new Date(now.getTime() - 3_600_000)), to: hhmm(new Date(now.getTime() + 3_600_000)) };
+    await c.req("PUT", `/api/instances/${gid}/reminder`, { ...only({ whenStaminaFull: true }), beforeReset: false, timezone: "UTC", quietHours });
+    await runReminderTick(new Date(now.getTime() + 60_000));
+    expect(sent).not.toHaveBeenCalled();
+    await runReminderTick(new Date(now.getTime() + 2 * 3_600_000));
+    expect(sent).toHaveBeenCalledTimes(1);
+  });
 });

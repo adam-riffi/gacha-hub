@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { reminderConfigSchema } from "@gacha/shared";
-import { dueReminders, latestLocalTime } from "./due.js";
+import { dueReminders, inQuietHours, latestLocalTime } from "./due.js";
 
 // EU server: UTC+1, resets 04:00 local = 03:00Z.
 const EU = { utcOffsetMinutes: 60, dailyResetHour: 4, weeklyResetWeekday: 1 };
@@ -64,5 +64,32 @@ describe("dueReminders", () => {
     expect(latestLocalTime(at("2026-10-04T12:10:00Z"), "12:00", "Not/AZone").toISOString()).toBe(
       "2026-10-04T12:00:00.000Z",
     );
+  });
+  it("reminds 3 days before the 30-day pass ends, keyed on its end, only when asked", () => {
+    const ends = at("2026-10-20T03:00:00Z");
+    const extra = { monthlyPass: { name: "Blessing of the Welkin Moon", endsAt: ends } };
+    const on = cfg({ beforeReset: false, beforePassEnds: true });
+    expect(dueReminders(on, EU, "Genshin", at("2026-10-17T02:00:00Z"), extra)).toEqual([]);
+    expect(dueReminders(on, EU, "Genshin", at("2026-10-17T04:00:00Z"), extra)).toEqual([
+      { key: "pass:monthly", firedFor: ends, headline: "🎫 **Genshin** · Blessing of the Welkin Moon ends in 71h 0m" },
+    ]);
+    expect(dueReminders(cfg({ beforeReset: false }), EU, "Genshin", at("2026-10-17T04:00:00Z"), extra)).toEqual([]);
+    expect(dueReminders(on, EU, "Genshin", at("2026-10-20T03:00:00Z"), extra)).toEqual([]);
+  });
+});
+
+describe("inQuietHours", () => {
+  const q = (from: string, to: string) => ({ from, to });
+  it("holds inside a window, in the user's zone", () => {
+    expect(inQuietHours(at("2026-10-10T20:30:00Z"), q("22:00", "23:00"), "Europe/Paris")).toBe(true); // 22:30 in Paris (UTC+2 until 25 Oct)
+    expect(inQuietHours(at("2026-10-10T19:30:00Z"), q("22:00", "23:00"), "Europe/Paris")).toBe(false);
+  });
+  it("wraps past midnight", () => {
+    expect(inQuietHours(at("2026-10-10T23:30:00Z"), q("00:00", "08:00"), "UTC")).toBe(false);
+    expect(inQuietHours(at("2026-10-10T02:00:00Z"), q("23:00", "07:00"), "UTC")).toBe(true);
+    expect(inQuietHours(at("2026-10-10T07:00:00Z"), q("23:00", "07:00"), "UTC")).toBe(false);
+  });
+  it("is off without a window", () => {
+    expect(inQuietHours(at("2026-10-10T02:00:00Z"), null, "UTC")).toBe(false);
   });
 });
