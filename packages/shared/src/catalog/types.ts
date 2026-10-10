@@ -101,6 +101,18 @@ export const catalogSchema = z.object({
   weapons: z.array(catalogWeaponSchema),
   gear: z.array(catalogGearSetSchema),
   materials: z.array(catalogMaterialSchema),
+  /**
+   * Star Rail's relic stat tables, to read a showcase's relics (ADR 0005): each
+   * piece by game id (slot, set, main and substat groups), and each group's
+   * stats by affix id (main: value at +0 and per level; sub: per roll and per step).
+   */
+  relicStats: z
+    .object({
+      pieces: z.record(z.string(), z.object({ slot: z.string(), set: z.string(), main: z.string(), sub: z.string() })),
+      main: z.record(z.string(), z.record(z.string(), z.object({ stat: z.string(), base: z.number(), add: z.number() }))),
+      sub: z.record(z.string(), z.record(z.string(), z.object({ stat: z.string(), base: z.number(), step: z.number() }))),
+    })
+    .optional(),
 });
 export type Catalog = z.infer<typeof catalogSchema>;
 
