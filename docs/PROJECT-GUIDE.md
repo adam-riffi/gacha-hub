@@ -28,12 +28,12 @@
 
 ## 1. TL;DR
 
-- **What:** a tracker for people who play several gacha games at once (Genshin Impact, Honkai: Star Rail, Zenless Zone Zero, Wuthering Waves, Arknights: Endfield). It answers "what should I do in my games today?": pulls I can afford, dailies left before reset, which characters I own and how far their builds are, what to farm today, which banners and events are running. Discord sign-in and Discord DM reminders.
+- **What:** a tracker for people who play several gacha games at once (Genshin Impact, Honkai: Star Rail, Zenless Zone Zero, Wuthering Waves, Arknights: Endfield, Neverness to Everness). It answers "what should I do in my games today?": pulls I can afford, dailies left before reset, which characters I own and how far their builds are, what to farm today, which banners and events are running. Discord sign-in and Discord DM reminders.
 - **Who:** a handful of whitelisted friends plus a public demo. Code is public: `adam-riffi/gacha-hub`. Owner: Georges.
 - **Where:** live at https://gacha-hub-two.vercel.app (Vercel Hobby + Supabase Postgres eu-west-1 + GitHub Actions as the cron).
-- **State:** every milestone in `docs/DESIGN.md` §9 is merged (P, F1–F7, P2). Two draft PRs are open and green (#78 JS budget, #79 Prisma-7-ready scripts). CI, the production smoke check and the security headers are in place.
-- **What blocks "done":** reminders and the hourly official-feed import do not run in production because the `CRON_SECRET` secret is unset (GitHub skips the tick). Production banners and events are still sample rows. Both need the owner (§14.1).
-- **Next agent work:** finish accessibility (branch `stack/a11y/01-axe`), add error states to every page, then the polish list in §14.2.
+- **State:** every milestone in `docs/DESIGN.md` §9 is built, V through F12. CI, the production smoke check and the security headers are in place.
+- **What blocks "done":** secrets only the owner can set: `CRON_SECRET` (reminders, the feed import and the HoYoLAB sync), `LINK_SECRET_KEY` (linking), the R2 bucket (our art store) and the Discord bot (§14.1).
+- **Next agent work:** §14.2.
 
 ## 2. What it is: purpose, goals, scope
 
@@ -63,7 +63,7 @@ Every game is a bespoke module and sheet · Discord-only sign-in, admins listed 
 
 | Area | What ships |
 | --- | --- |
-| Games | Genshin, HSR, WuWa (catalog, builds, planner); Endfield (catalog for ownership only); ZZZ (currencies, dailies and pulls; no catalog) |
+| Games | Genshin, HSR, WuWa (catalog, builds, planner); Endfield (catalog for ownership only); ZZZ (currencies, dailies and pulls; no catalog); NTE (by hand only: its terms forbid third-party tools) |
 | Profiles | One per game, region-aware resets, currencies and pull counts, "put to sleep" |
 | Roster | Ownership grid; catalog-backed builds with a bespoke sheet per game; several named builds per character |
 | Gear | Genshin artifacts: set browser, inventory bag with equip/unequip, farming planner. Other games: set browser |
@@ -427,37 +427,39 @@ The games look alike from far away (a premium currency, a gacha, daily resets, c
 - **Builds have different shapes.** A Genshin character has 5 artifacts with fixed main-stat pools per slot and 3 talents; an HSR character has 6 relics split into cavern and planar sets plus traces; a WuWa character has echoes with a cost budget and sonata sets; Endfield attaches an essence to the weapon. One generic form would either lose these rules or turn into a form builder, which the owner ruled out.
 - **Planning data differs.** Genshin talent books and weapon materials drop on fixed weekdays, which is what "Domains today" and the "domains open today" DM are for; HSR and WuWa materials are farmable every day, so the same screen would be noise there.
 - **The gacha rules differ.** Hard pity is 90/80 in HoYoverse games but 80 for every WuWa banner; WuWa's weapon banner is always the featured weapon (100%), Genshin's and HSR's are 75%. The pull log's arithmetic is the same; its rules are per game.
-- **Data sources differ.** Each catalog comes from a different open dataset with its own quirks (genshin-db, Project Yatta, a WuWa dataset, an Endfield dump with int64 ids). ZZZ has no usable dataset with costs, so it has no catalog.
-- **Each game skins itself** (Genshin gold, HSR violet, ZZZ yellow, WuWa sky blue, Endfield teal) and uses its own vocabulary (wish, warp, signal, convene, headhunt; artifacts, relics, drive discs, echoes).
+- **Data sources differ.** Each catalog comes from a different open dataset with its own quirks (genshin-db, Project Yatta, a WuWa dataset, an Endfield dump with int64 ids). ZZZ has no usable dataset with costs, so it has no catalog. NTE's terms forbid third-party tools, so it is typed by hand.
+- **Each game skins itself** (Genshin gold, HSR violet, ZZZ green, WuWa sky blue, Endfield yellow, NTE blue) and uses its own vocabulary (wish, warp, signal, convene, headhunt, roll; artifacts, relics, drive discs, echoes, gear, console cartridges).
 
 So the host app stays generic over what all games share (profiles, currencies, resets, tasks, reminders, banners, pull log), and each game supplies a `GameDefinition` (`packages/shared/src/games/<key>`), a sheet (`apps/web/src/games/<key>/Sheet.tsx`) and optional server hooks (`apps/server/src/games/<key>.ts`).
 
 ### Feature matrix
 
-| | Genshin | HSR | ZZZ | WuWa | Endfield |
-| --- | --- | --- | --- | --- | --- |
-| Catalog (chars / weapons / sets / materials) | 122 / 255 / 63 / 536 (genshin-db) | 98 / 170 / 62 / 134 (Project Yatta) | none | 50 / 112 / 29 / 128 | 29 / 0 / 0 / 0 |
-| Ownership, Equipment, Materials tabs | yes | yes | no | yes | yes (Equipment, Gear and Materials are empty) |
-| Gear page | Artifacts: Sets, Inventory, Plan | Relics: Sets | — | Echoes: Sets | Gear: empty |
-| Character sheet | catalog-backed, art, constrained stats, farming target | plain form | free-text name, plain form | plain form | plain form |
-| Plan farming (levels, talents → tasks) | yes | yes | — | yes | no costs in the dataset |
-| Domains today, "domains open today" DM | yes | — | — | — | — |
-| Pull log (hard pity, featured rate) | 90 50% · 80 75% · 90 | 90 50% · 80 75% · 90 | 90 50% · 80 75% · 90 | 80 50% · 80 100% · 80 | — |
-| Official feed import | yes | yes (one banner per warp section) | yes (one banner per Signal Search; no catalog, so no featured units yet) | — | — |
-| Art | Enka | Yatta (ownership, calendar; not yet on the sheet) | initials | initials | initials |
-| Party size | 4 | 4 | 3 | 3 | 4 |
-| Regions | NA (UTC−5), EU (UTC+1), Asia (UTC+8); reset 04:00 | same | same | same | Global (UTC+0), reset 04:00 |
-| Default dailies | Daily Commissions; Weekly Bosses (weekly) | Daily Training; Assignments; Simulated Universe (weekly) | Daily Missions; Scratch Card | Daily Activity; Weekly Bosses (weekly) | Daily Tasks |
-| Currencies | Original Resin (200, 7.5/h), Primogems (160/wish), Intertwined Fate, Acquaint Fate (standard), Mora | Trailblaze Power (300, 10/h), Stellar Jade (160/warp), Special Pass, Star Rail Pass (standard), Credits | Battery Charge (240), Polychrome (160/signal), Encrypted Master Tape, Master Tape (standard), Denny | Waveplate (240), Astrite (160/convene), Radiant Tide, Lustrous Tide (standard), Shell Credits | Sanity (240), Oroberyl (500/headhunt) |
-| Server hooks | `/resin`, resin projection on Home | — | — | — | — |
+| | Genshin | HSR | ZZZ | WuWa | Endfield | NTE |
+| --- | --- | --- | --- | --- | --- | --- |
+| Catalog (chars / weapons / sets / materials) | 122 / 255 / 63 / 536 (genshin-db) | 98 / 170 / 62 / 134 (Project Yatta) | none: no dataset with costs | 50 / 112 / 29 / 128 (WutheringData) | 29 / 0 / 0 / 0 (EndFieldGameData) | none: typed by hand |
+| Hub tabs besides Activities, Endgame, Pulls, Characters, Profile | Artifacts, Planner | Relics, Planner | — | Echoes, Planner | — (characters only, #175) | — |
+| Character sheet | the shared sheet: catalog weapon picker, main stats per slot, sets, KPIs, splash art | same | same, names typed | same, with the echo cost cap | same, operator list | same, names typed; Console cartridges |
+| Plan farming (levels, talents → tasks) | yes | yes | — | yes | no costs in the dataset | — |
+| Domains today, "domains open today" DM | yes | — | — | — | — | — |
+| Pull log (hard pity, featured rate) | 90 50% · 80 75% · 90 | 90 50% · 80 75% · 90 | 90 50% · 80 75% · 90 | 80 50% · 80 100% · 80 | 80 50% (featured at 120) · 40 25% (featured at 80) · 80 | 90 100% |
+| Pull history import | history link, UIGF | history link, UIGF | history link, UIGF | convene link | records link (ADR 0009) | — (by hand) |
+| Live account data | HoYoLAB notes, chronicle, roster; Enka builds | same | HoYoLAB notes, chronicle, roster | — | — (the account token can act for the account) | — |
+| Official feed import | yes | yes (one banner per warp section) | yes (one banner per Signal Search) | — | — | — |
+| Art (behind our R2 store once set up) | Enka | Yatta | initials | Wuthery (characters, weapons) | initials | initials |
+| Party size | 4 | 4 | 3 | 3 | 4 | 4 |
+| Regions | NA (UTC−5), EU (UTC+1), Asia (UTC+8); reset 04:00 | same | same | same | Americas/Europe (UTC−5), Asia (UTC+8); reset 04:00 | Asia, America, Europe, SEA; reset 05:00, week on Monday |
+| Default dailies | Daily Commissions; Weekly Bosses (weekly) | Daily Training; Assignments; Simulated Universe (weekly) | Daily Missions; Scratch Card | Daily Activity; Weekly Bosses (weekly) | Daily Tasks | Daily quests; Anomaly Pilgrimage (weekly) |
+| Currencies | Original Resin (200, 7.5/h), Primogems (160/wish), Intertwined Fate, Acquaint Fate (standard), Mora | Trailblaze Power (300, 10/h), Stellar Jade (160/warp), Special Pass, Star Rail Pass (standard), Credits | Battery Charge (240), Polychrome (160/signal), Encrypted Master Tape, Master Tape (standard), Denny | Waveplate (240), Astrite (160/convene), Radiant Tide, Lustrous Tide (standard), Shell Credits | Sanity (360), Oroberyl (500/headhunt) | Character Pixels (240, 10/h), Annulith (160/roll), Solid Dice, Fabricated Dice (standard), Fons |
+| Server hooks | `/resin`, resin projection on Home | — | — | — | — | — |
 
 ### Per game, and why
 
 - **Genshin Impact** is the flagship and the reference implementation: the richest catalog, the only weekday-gated materials (hence Domains today and the domains DM), the only game with an artifact inventory and planner (artifact farming is the main long-term grind and the 5-slot main-stat rules are well defined), and official-feed import. New per-game work should copy its patterns.
-- **Honkai: Star Rail** shares HoYoverse's gacha rules and announcement API, so it got the pull log and the feed early. Its feed notices bundle several warps per notice, so the parser splits them into one banner per section with its own dates. The sheet is still a plain form; making it catalog-backed (light cone picker, relic main-stat pools, Yatta portraits) is the obvious next step.
-- **Zenless Zone Zero** has no open dataset with upgrade costs, so it is currencies, dailies, pulls and free-text builds only. Do not hand-type a catalog (locked decision); revisit when a dataset appears.
-- **Wuthering Waves** has a catalog with costs (so ownership, materials and planning work) and its own gacha rules (80 pity everywhere, 100% featured weapon). Echoes have a cost budget, which is why its sheet has Cost and Sonata fields.
-- **Arknights: Endfield** has a character list only (the dataset has no upgrade costs), so ownership works and planning does not. It has no pull rules yet, so no Pulls tab, and its Equipment, Gear and Materials tabs are empty (§15).
+- **Honkai: Star Rail** shares HoYoverse's gacha rules, announcement API, history link and HoYoLAB, so it gets the same imports and sync. Its feed notices bundle several warps per notice, so the parser splits them into one banner per section with its own dates. Its relic stat tables come from Enka's store so showcases can be read.
+- **Zenless Zone Zero** has no open dataset with upgrade costs, so it is currencies, dailies, pulls (with the history link) and HoYoLAB sync, with builds typed by hand. Do not hand-type a catalog (locked decision); revisit when a dataset appears.
+- **Wuthering Waves** has a catalog with costs (so ownership, materials and planning work) and its own gacha rules (80 pity everywhere, 100% featured weapon). Echoes have a cost budget, which is why its sheet has a cost cap. Its pulls import from the convene link, and its art comes from Wuthery's copy of the game's textures.
+- **Arknights: Endfield** has a character list only (the dataset has no upgrade costs), so ownership works and planning does not; its hub has no Gear or Planner tab. Its pulls import from the records link (ADR 0009). Its account data stays manual: only the SKPORT account token reaches it, and that token can act for the account.
+- **Neverness to Everness** (Perfect World) is tracked by hand only (capability M, ADR 0004): its terms forbid third-party tools, so there are no imports, no catalog and no art. The manifest still gives it everything shared: resets at 05:00 on four servers, currencies and stamina, the Limited Board's pity (90, no 50/50), Beyond the Rails, the battle pass and monthly pass, and the shared sheet with its Console cartridges.
 
 ## 10. Cross-cutting features
 
@@ -557,9 +559,7 @@ Every milestone in DESIGN.md §9 is built, V through F12. What is left waits on 
    F12's acceptance ("every game shows art from our store") is checked after this.
 5. **Clean production banners and events:** in Admin, delete the `sample-*` rows for each game. Then import the official feed, or wait for the hourly tick after step 1.
 6. **Branch ruleset on `main`:** require the checks `lint`, `typecheck`, `test`, `build` and `e2e`.
-7. **Decisions:**
-   - ADR 0009, Endfield pull history: accept it or not, and share one records answer with the tokens removed.
-   - Enka's store data, which feeds the Star Rail relic tables, has no licence file: accept it, or ask Enka.
+7. **Decisions:** taken by the agent on 2026-10-10 at Georges's request. ADR 0009 is accepted; Enka's store data is used with credit in NOTICE and removed on request.
 8. **Real responses, with tokens removed,** to replace the fixtures: the HoYoLAB card, notes, chronicle and roster; a gacha log page; a WuWa convene answer; Enka showcases.
 9. **README:** record the demo GIF (DESIGN.md §15); set the repository description and topics.
 10. **Delete stale remote branches** of merged PRs. The agent's delete was blocked by its permission rules:
@@ -572,7 +572,7 @@ Every milestone in DESIGN.md §9 is built, V through F12. What is left waits on 
 
 **Waiting on the owner or a data source**
 
-1. **Endfield pull history** (ADR 0009), once the ADR is accepted and a records answer is recorded.
+1. **Endfield pull history** (ADR 0009, accepted 2026-10-10): the reader follows the record shape open-source trackers parse; swap the fixtures for a real answer when one is recorded.
 2. **Endfield art:** its catalog has no icon keys, and no public asset host was found.
 3. **WuWa material and Sonata set art:** their textures sit in several folders, which one URL template per kind cannot reach.
 4. **A ZZZ catalog:** no source has material costs (`scripts/catalog/zzz.ts`). Enka for ZZZ needs it too.

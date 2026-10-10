@@ -92,8 +92,8 @@ docs/                             DESIGN · VISUAL-DESIGN · WIREFRAMES · desig
 ## Limitations and next steps
 
 - Reminders need the owner's Discord bot token and cron secret in production.
-- Art falls back to Enka (Genshin) and Yatta (HSR); WuWa, ZZZ, Endfield and NTE show initials.
-- No account import (HoYoLAB, Enka showcases): deferred until the owner decides.
+- Art comes from our R2 store once the owner sets it up (ADR 0006), else from Enka (Genshin), Yatta (HSR) and Wuthery (WuWa); ZZZ, Endfield and NTE show initials.
+- Account linking (HoYoLAB, Enka, pull-history links) needs the owner's `LINK_SECRET_KEY`; HoYoLAB stays read-only (ADR 0005).
 - No mobile layout; ZZZ has no catalog (no dataset with costs).
 - Next milestone: paging the calendar back through ended banners and events (docs/DESIGN.md §9).
 
