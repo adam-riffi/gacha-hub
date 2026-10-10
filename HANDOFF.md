@@ -1,44 +1,61 @@
 # Handoff — 2026-10-10 · claude
 
 ## State
-- `main` at `64abc31`: fix(web): show what each game really has (#175). CI green.
+- `main` at `059d542`: feat(kpi): a game's default KPI targets (#187). CI green.
 - Open PRs: #105 fix(vercel) function trace, a draft since 2026-10-09, untouched.
-- Production serves #174 (`3b5cad3`). Vercel's Hobby quota (100 deployments a day) ran out, so #175 and #176 deploy with the first merge or redeploy after it resets; then run the smoke check.
-- Every milestone in DESIGN.md §9 is built, V through F12. What remains waits on Georges or on a data source, or is optional: PROJECT-GUIDE §14 has the list.
+- Production serves an older `main` until Vercel's Hobby quota (100 deployments a day) resets. The first merge or redeploy after that deploys everything; then run the smoke check.
+- Every milestone in DESIGN.md §9 is built, V through F12. The agent work Georges asked for is done. What is left needs his secrets (below), or real answers to replace fixtures.
 
 ## Done this session
-- F11: #165 chronicle, #166 roster, #167 Star Rail relic tables, #168 Enka for Star Rail, #169 ADR 0009 (Proposed).
-- F12: #170 `splash` kind and `artJobs`, #171 R2 mirror and mirror-art workflow, #172 WuWa art from Wuthery.
-- PROJECT-GUIDE §14: #173 HSR trace markup, #174 shared error state, #175 Endfield tabs and Library live data, #176 docs drift and this refresh.
-- Earlier: F10 screens and follow-ups (#128–#163), F11 links and imports (#146–#157), the guard fix (#150).
+- F11 and F12: #165–#172 (chronicle, roster, Enka for Star Rail, ADR 0009, the art store, WuWa art).
+- Guide clean-up: #173–#176 (HSR markup, error states, Endfield tabs and Library, docs).
+- After "take every decision":
+  - #177, NTE in every game list, and the decisions;
+  - #178–#180, Endfield pulls from the records link, with 6★ labels and Arsenal Tickets;
+  - #181–#183, a ZZZ catalog from the Hakushin data, ZZZ art, Enka for ZZZ;
+  - #184, talent names;
+  - #185, Genshin talents from Enka;
+  - #186, Stygian Onslaught;
+  - #187, default KPI targets;
+  - #188, this handoff.
+
+## Decisions taken (2026-10-10, Georges: "take every decision")
+- **Accepted:** ADR 0009, from the record shape open-source trackers parse. Also Enka's store and the Hakushin data (static.nanoka.cc), used with credit in NOTICE and removed on request.
+- **Decided against,** each with its reason in PROJECT-GUIDE §14.2:
+  - Endfield art: the wiki answers HTTP 429;
+  - WuWa material and Sonata art: no screen uses it;
+  - Shiyu v2 in the chronicle: its metric doesn't match the manifest's;
+  - endgame eligibility in Used in: no structured source.
+- **Waiting:** TypeScript 7, until typescript-eslint supports it (it supports TypeScript below 6.1 today).
 
 ## Verified
-- `npm run check` before each PR and CI green on each: 502 tests and 39 E2E journeys on `main`, initial JavaScript 194.3 KB of 200 KB.
-- Mirror `--dry-run`: 1,455 Genshin and 660 Star Rail images plus WuWa's characters and weapons; `--out` wrote real WebP files.
-- Browser at 1440: WuWa splash cards, Home's error state, the Library, Endfield's tabs.
+- `npm run check` before each PR and CI green on each: 529 tests and 40 E2E journeys; initial JavaScript 194.9 KB of 200 KB.
+- Checked in the browser at 1440:
+  - ZZZ's 60 agents with art, and its Drive discs and Planner tabs;
+  - Endfield's Pulls with 6★ labels and Arsenal Tickets;
+  - Settings' records link and ZZZ's Enka sync;
+  - talent names;
+  - default targets.
 
 ## Next
-1. Once the bucket exists, check F12's acceptance: art loads from R2, and a missing file falls back to the placeholder.
-2. Endfield pull history: implement ADR 0009 once it is accepted and a records answer is recorded.
-3. Waiting on a data source: Endfield art, WuWa material and Sonata art, a ZZZ catalog (Enka for ZZZ needs it).
-4. Optional (PROJECT-GUIDE §14.2): Shiyu v2 and Stygian in the chronicle, Genshin talents from Enka, a KPI template, Used in eligibility, talent names.
+1. When Georges shares them: replace the made-up fixtures with real answers (an Endfield records page, a ZZZ showcase), then fix whatever differs.
+2. Once the bucket exists, check F12's acceptance: art loads from R2, and a missing file falls back to the placeholder.
+3. Each game version: refresh the catalogs (`npm run catalog:<game>`), then run mirror-art.
 
 ## Needs from Georges
-- **R2** (DEPLOY.md §7): the bucket and the four `R2_*` Actions secrets, then run mirror-art and set `VITE_ASSET_BASE`.
-- **`LINK_SECRET_KEY`** in Vercel. Linking answers "off" until it is set.
-- **ADR 0009:** accept it or not, plus one Endfield records answer with the tokens removed.
-- **Enka's store data** (Star Rail relic tables) has no licence file: accept it, or ask Enka.
-- **Real responses, with tokens removed,** to replace the fixtures (PROJECT-GUIDE §14.1 step 8).
-- **Delete twelve stale remote branches** of merged PRs (PROJECT-GUIDE §14.1 step 10). The agent's delete was blocked.
-- Still open: `CRON_SECRET`, `DISCORD_BOT_TOKEN` and the bot, the `main` ruleset, the `sample-*` banners, the README demo GIF.
+- **Secrets:**
+  - `LINK_SECRET_KEY`;
+  - the R2 bucket and its four `R2_*` Actions secrets, then mirror-art and `VITE_ASSET_BASE` (DEPLOY.md §7);
+  - `CRON_SECRET`;
+  - `DISCORD_BOT_TOKEN` and the bot.
+- **Real answers, with tokens removed,** to replace fixtures (PROJECT-GUIDE §14.1 step 8).
+- The `main` ruleset, the `sample-*` banners, the README demo GIF, and twelve stale remote branches (§14.1 step 10).
+- Overrule any decision above by saying so.
 
 ## Notes
-- HoYoLAB stays read-only: no check-in, no code redemption (ADR 0005). Desktop only.
-- Art is never committed. Enka, Yatta and Wuthery stay as fallbacks behind the bucket.
-- `CHARACTERS_ONLY` in `GameTabs` hides Endfield's Gear and Planner tabs. Remove it when its catalog gets gear and costs.
-- Never run tests or E2E while `npm run check` is running in the same working tree.
-- Async Fastify hooks that answer must `return reply` (#150).
-- E2E journeys share one database and the wishlist. Give new banners deadlines that don't reorder Home's carousel.
-- `docs/AGENT_LOG.md` keeps 40 entries, with older ones in `docs/agent-log/2026-10.md`. After a rebase conflict in the log, add the entry again on top.
-- Stop the dev server before `npm run check`. Owner files stay uncommitted (`gacha-wireframes/`, `index.html`, `pull-log-gacha-tracker.html*`, `design-canvas/`, `.claude/`).
-- In Git Bash, prefix `MSYS_NO_PATHCONV=1` when passing `/games/...` paths to node scripts.
+- HoYoLAB stays read-only; the SKPORT account token is never asked for (ADRs 0005, 0009). Desktop only.
+- Art is never committed. The community sources (Enka, Yatta, Wuthery, Hakushin) stay as fallbacks behind the bucket.
+- `topStar` and `topRarity` give a game's top rarity (Endfield 6★). `weaponOnly` currencies fund the weapon banner alone. `CHARACTERS_ONLY` in GameTabs names Endfield.
+- Never run tests or E2E while `npm run check` is running in the same working tree. Stop the dev server before `npm run check`; run `npm run db:sqlite` after a schema change.
+- `docs/AGENT_LOG.md` keeps 40 entries, the rest in `docs/agent-log/2026-10.md`.
+- Owner files stay uncommitted (`gacha-wireframes/`, `index.html`, `pull-log-gacha-tracker.html*`, `design-canvas/`, `.claude/`). In Git Bash, prefix `MSYS_NO_PATHCONV=1` for `/games/...` paths.
