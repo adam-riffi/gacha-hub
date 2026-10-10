@@ -8,6 +8,7 @@ const ACCENTS: Record<string, string> = {
   zzz: "#8CFF3A",
   wuwa: "#2EE6C8",
   endfield: "#FFE600",
+  nte: "#1F9BFF",
 };
 
 describe("game accents", () => {
