@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f10/02-event-goals · #126
+- Done: `POST /api/events/:id/goal` makes one goal per user and event (the picked option, the event's `goal.create` stages as its checklist), re-picks until claimed. Ticking an event goal (`POST /api/tasks/:id/complete`) applies its effects once in one transaction with an audit row (`apps/server/src/lib/effectApply.ts`); unticking reverses only what was added. A copy raises the build's dupe field (a weapon's on the build that wields it) up to the game's cap; a character copy with no build starts one (the first copy is the character, each further copy a step up); a weapon copy with no build wielding it grants the weapon if missing.
+- Tests: written first: `eventGoals.integration.test.ts` (pick required and kept, stages, wrong game, apply once and reverse, claimed pick locked, grant only what was missing, copy capped and partial reverse, a copy starting a build whether or not the character was owned).
+- Scope/decisions: the ADR's *starts* trigger (cron-made goals for everyone) and *ends* (closing unclaimed goals in the digest) wait until a screen needs them; goals are made from the calendar.
+- Next: `stack/f10/03-calendar` (A4 rebuilt, with Make goal).
+
 ## 2026-10-10 · claude · stack/f10/01-effects · #125
 - Done: ADR 0008 accepted (with the owner's blanket approval of 2026-10-10). `packages/shared/src/effects.ts`: typed effects (`unit.grant`, `unit.copy`, `currency.add`, `material.add`, `goal.create`, `note`, `choose`), read per game (unknown or unsupported kinds become notes), keyed by place for applying once. Migration `20261011000000_f10_effects`: `Event.effects`, `Task.eventId` and `choice`, `EffectApplication` (RLS on). Admin uploads store effects; events and exports return them.
 - Tests: written first: `effects.test.ts` (every kind kept, unknown and malformed kinds and unsupported currencies or weapon copies as notes, inside choices too, keys by place, choice required); `admin.integration.test.ts` (an upload keeps its effects and exports them).
@@ -247,9 +253,3 @@ Entry format:
 - Tests: Documentation only; claims checked against the code, `gh` and the latest cron and smoke runs.
 - Scope/decisions: No behavior change. DESIGN.md and ADR 0002 references to the old file now point at git history.
 - Next: owner sets `CRON_SECRET` (GitHub + Vercel) and the bot token; agent finishes `stack/a11y/01-axe`, then page error states.
-
-## 2026-10-07 · claude · docs/handoff-steps · pending
-- Done: AGENTS.md and the Copilot summary now start every session with `HANDOFF.md` (read it, check it against `main` and the open PRs) and end it by rewriting `HANDOFF.md`, matching ENGINEERING.md §5 from portfolio-infra.
-- Tests: Documentation only.
-- Scope/decisions: Requested by Georges for every repository; no `HANDOFF.md` exists here yet, so the next session that works here writes the first one.
-- Next: Unchanged project work; the next session ends by writing `HANDOFF.md`.

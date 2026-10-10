@@ -48,6 +48,9 @@ export const taskDto = z.object({
   backlog: z.boolean(),
   notify: z.boolean(),
   lastCompletedAt: isoDateNullable,
+  /** An event goal (ADR 0008): its event and the picked option. */
+  eventId: idSchema.nullable(),
+  choice: z.number().int().nullable(),
   /** Recurring tasks only. */
   doneThisCycle: z.boolean().optional(),
   nextReset: isoDate.optional(),
@@ -74,6 +77,12 @@ export const createTaskInput = z.object({
   notify: z.boolean().optional(),
 });
 export type CreateTaskInput = z.infer<typeof createTaskInput>;
+
+/** Make (or re-pick) the goal for an event's rewards on one profile. */
+export const eventGoalInput = z.object({
+  instanceId: idSchema,
+  choice: z.number().int().min(0).max(9).optional(),
+});
 
 export const updateTaskInput = createTaskInput
   .omit({ scope: true, refId: true, type: true })
