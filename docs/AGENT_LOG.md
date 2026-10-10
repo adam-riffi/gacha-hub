@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/ui/08-cleanup · #205
+- Done: the leftovers Georges named are gone: ten "Manual" tags (hub header, Activities, the sheet, Endgame, Gear, Profile) and the "By cadence" label. Synced data still says AUTO; Settings keeps NTE's "Manual" status, which explains why. Navigation: a Pulls banner card names every running banner of its kind (Genshin runs two character banners at once) and links each featured character to its page.
+- Tests: written first: a journey visits Activities, Endgame, Gear, Profile and a sheet and finds no Manual tag or By cadence; another opens Kafka's page from a running banner's card on Pulls. The hub header test now checks the tag is gone. `npm run check` passes: 559 tests and 45 journeys.
+- Scope/decisions: WIREFRAMES' convention changes: only synced data is labelled.
+- Next: Settings and Admin.
+
 ## 2026-10-11 · claude · stack/ui/07-timeline · #204
 - Done: the banners screen reads better (Georges: "I can't see when a banner ends and the other one begins; I should be able to better see days, or have a monthly view"). The timeline has a row with every day's number, weekends shaded and today marked, and a line per day across the tracks. Each bar shows its start and end dates, and leaves a gap before the next phase. A Month view (paged by month) lists, for each day, what starts (▶) and what ends (■, with the time), and keeps the layers and the wishlist filter. A selected banner's featured characters link to their unit pages (Georges: "getting from the banner screen to the character screen is tedious").
 - Tests: written first: the calendar journey counts 42 day ticks, checks a bar's dates, finds "Starts:" and "Ends:" entries in the month view, and opens Kafka's page from the selected banner. `npm run check` passes: 559 tests and 43 journeys.
@@ -297,9 +303,3 @@ Entry format:
 - Tests: written first: `catalog/hsr.test.ts` (piece 31011 is a set 101 head with main group 21 and sub group 2; the six slots; both tables' shapes; every piece's set is a catalog set).
 - Scope/decisions: StarRailRes has the same tables but is AGPL-3.0, outside the licences DESIGN.md allows; Enka's API-docs repository carries no licence file but publishes the store for its API's users (noted in the PR for Georges).
 - Next: Enka for Star Rail (read the showcase with these tables).
-
-## 2026-10-10 · claude · stack/f11/13-roster · #166
-- Done: the chronicle's roster (ADR 0005): shared `rosterRequest` (Genshin's `character/list`, a POST; Star Rail's `avatar/info`) and `readRoster` (level, the game's dupe field, the held weapon with its level and dupes, in the build's own fields); `syncRoster` on Sync now and every 6 hours owns each listed character and weapon in the catalog and fills an existing build's empty or synced fields (no build is created: the showcase does that); `Character.synced` now gathers every sync's writes (the roster's and Enka's), so neither forgets the other's fields; `hoyolabGet` can POST.
-- Tests: written first: `roster.test.ts` (requests, both games' readings, a refusal) and a sync journey (Amber and Kafka owned with their weapons; Kafka's typed level kept, eidolon and light cone filled with its name).
-- Scope/decisions: ZZZ has no catalog yet, so its roster is not read; talents wait for skill ids.
-- Next: Enka for Star Rail and ZZZ.
