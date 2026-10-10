@@ -29,7 +29,7 @@ flowchart LR
 - **Contracts:** inputs are validated and outputs parsed through the same zod DTOs in `packages/shared`, so the web types cannot drift from the API.
 - **Game day:** rotating domains flip at the region's daily reset, not at midnight (`packages/shared/src/domains.ts`); the game page and reminders list the domains open today for the units you own.
 - **Planning:** level and talent targets become material requirements and one farming goal per material; inventory is the source of truth for progress.
-- **Official feed:** Genshin wishes and HSR warps (one banner per warp section) import hourly with their featured units matched against the catalog (`apps/server/src/lib/officialFeed.ts`).
+- **Official feed:** Genshin wishes, HSR warps (one banner per warp section) and ZZZ Signal Searches (one banner per channel) import hourly with their featured units matched against the catalog (`apps/server/src/lib/officialFeed.ts`).
 - **Reminders:** idempotent per rule and reset boundary, so the cron may tick at any cadence.
 
 The full specification is [docs/DESIGN.md](docs/DESIGN.md).

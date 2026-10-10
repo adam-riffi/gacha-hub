@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { Catalog } from "@gacha/shared";
-import { parseFeed, parseHsrFeed, settle, type AnnList, type HsrAnnList } from "./officialFeed.js";
+import { parseFeed, parseHsrFeed, parseZzzFeed, settle, type AnnList, type HsrAnnList } from "./officialFeed.js";
 
 const catalog = {
   characters: [
@@ -176,5 +176,85 @@ describe("parseHsrFeed", () => {
       ["hoyo-101", "Love, Ghosts & Robots"],
       ["hoyo-102", "Astral Imagea Park"],
     ]);
+  });
+});
+
+// ---- ZZZ: one "Limited-Time Channels" notice holds every Signal Search, each with its own dates ----
+
+const zzzCatalog = {
+  characters: [
+    { id: "roxy", name: "Roxy", rarity: 5 },
+    { id: "promeia", name: "Promeia", rarity: 5 },
+    { id: "corin", name: "Corin", rarity: 4 },
+    { id: "billy", name: "Billy", rarity: 4 },
+  ],
+  weapons: [
+    { id: "casket", name: "Crimson Moon Casket", rarity: 5 },
+    { id: "housekeeper", name: "Housekeeper", rarity: 4 },
+  ],
+} as unknown as Catalog;
+
+const zzzList: HsrAnnList = {
+  timezone: 1,
+  list: [{ type_id: 3, list: [] }],
+  pic_list: [
+    {
+      type_list: [
+        {
+          list: [
+            hsrAnn(243, "V3.2 Limited-Time Channels (Phase II)"),
+            hsrAnn(245, '"Chronicles of the Hobbling Crow" Event Details'),
+            hsrAnn(246, "Version 3.2 New Stock in the Store"),
+            hsrAnn(247, ""),
+          ],
+        },
+      ],
+    },
+  ],
+};
+
+const period = (from: string, to: string) => `<td><p><strong>${from} (server time) </strong></p><p><strong>–</strong></p><p><strong> ${to} (server time)</strong></p></td>`;
+const channelNotice = [
+  '<p>The Agent and W-Engine Signal Search event period is as follows:<span> 2026/09/30 12:00 (server time) – 2026/10/20 14:59 (server time)</span>.</p>',
+  '<p><span>"Cindernight Respite" Signal Search Details</span></p>',
+  "<p>During the event, the limited S-Rank Agent <strong>Roxy (Wind - Stun)</strong> and default A-Rank Agents <strong>Corin (Physical - Attack)</strong> &amp; <strong>Billy (Physical - Attack)</strong> have significantly boosted reception rates!</p>",
+  `<table><tr>${period("2026/09/30 12:00", "2026/10/20 14:59")}<td>Roxy (Wind - Stun)</td></tr></table>`,
+  '<p><span>"Crimson Moon Casket" Signal Search Details</span></p>',
+  "<p>During the event, the limited S-Rank W-Engine <strong>Crimson Moon Casket (Stun)</strong> and default A-Rank W-Engines <strong>Housekeeper (Attack)</strong> have significantly boosted reception rates!</p>",
+  `<table><tr>${period("2026/09/30 12:00", "2026/10/20 14:59")}</tr></table>`,
+  '<p><span>"Cold Rain Wanes in the Night" Signal Search Details</span></p>',
+  "<p>During the event, the limited S-Rank Agent <strong>Promeia (Ice - Anomaly)</strong> and default A-Rank Agents <strong>Corin (Physical - Attack)</strong> have significantly boosted reception rates!</p>",
+  `<table><tr>${period("2026/10/08 12:00", "2026/10/20 14:59")}</tr></table>`,
+  '<p>※ "Cindernight Respite" and "Cold Rain Wanes in the Night" are Exclusive Channels; Billy and Roxy are named again here.</p>',
+  "<p>The Final Callback - Audition Stage Details: Proxies can try out Agents Roxy and Promeia.</p>",
+].join("");
+
+describe("parseZzzFeed", () => {
+  const { banners, events } = parseZzzFeed(zzzList, new Map([[243, channelNotice]]), zzzCatalog);
+  const byKey = new Map(banners.map((b) => [b.key, b]));
+
+  it("splits a Limited-Time Channels notice into one banner per Signal Search", () => {
+    expect(banners.map((b) => [b.key, b.name, b.kind])).toEqual([
+      ["hoyo-243-cindernight-respite", "Cindernight Respite", "character"],
+      ["hoyo-243-crimson-moon-casket", "Crimson Moon Casket", "weapon"],
+      ["hoyo-243-cold-rain-wanes-in-the-night", "Cold Rain Wanes in the Night", "character"],
+    ]);
+  });
+
+  it("features only the units named for that channel, S-Rank first", () => {
+    expect(byKey.get("hoyo-243-cindernight-respite")!.featured.map((f) => f.catalogId)).toEqual(["roxy", "corin", "billy"]);
+    expect(byKey.get("hoyo-243-crimson-moon-casket")!.featured.map((f) => f.catalogId)).toEqual(["casket", "housekeeper"]);
+    expect(byKey.get("hoyo-243-cold-rain-wanes-in-the-night")!.featured.map((f) => f.catalogId)).toEqual(["promeia", "corin"]);
+  });
+
+  it("gives each channel its own period, in server time", () => {
+    const roxy = byKey.get("hoyo-243-cindernight-respite")!;
+    expect(new Date(roxy.startsAt).toISOString()).toBe("2026-09-30T11:00:00.000Z");
+    expect(new Date(roxy.endsAt).toISOString()).toBe("2026-10-20T13:59:00.000Z");
+    expect(new Date(byKey.get("hoyo-243-cold-rain-wanes-in-the-night")!.startsAt).toISOString()).toBe("2026-10-08T11:00:00.000Z");
+  });
+
+  it("keeps events by their short name and drops the store and untitled notices", () => {
+    expect(events.map((e) => [e.key, e.name])).toEqual([["hoyo-245", "Chronicles of the Hobbling Crow"]]);
   });
 });
