@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f10b/01-characters-views · #159
+- Done: Characters' other views (WIREFRAMES.md G4): Splash | Compact beside the counts (Compact is a table of each unit's dupes, build line, role KPIs, status, set and action) and Characters | Weapons in the filters (Weapons lists the catalog's weapons by type and rarity with who wields each and its dupes, an Owned box and Wishlist; character-only filters hide).
+- Tests: written first: a second journey in `e2e/characters.spec.ts` (Kafka's Compact row with E1 and Lv 80 and Build →; Patience Is All You Need held by Kafka · S2, wishlisted and owned in place); the accessibility sweep passes. Checked at 1440 on the dev account.
+- Scope/decisions: the board pictures only the Splash view, so Compact and Weapons are built in the kit's table; weapon farming stays on Equipment until the overview's retirement PR.
+- Next: the wishlist on the calendar and as savings-planner targets.
+
 ## 2026-10-10 · claude · stack/f11/11-enka · #157
 - Done: Enka showcase builds for Genshin (ADR 0005): shared `readEnkaGenshin` (level, constellation, weapon with name, level and refinement, artifacts per slot with the set from the icon's set id, main stat, level and substats, final stats) and `mergeSynced` (a field still as the last sync wrote it, or empty, takes the new value; one the user changed stays); `Character.synced` (migration `20261011070000_character_synced`); server `syncEnka` (signed User-Agent, Enka's codes named, new builds created and owned, existing ones merged, an `ImportRun` of kind showcase) and `POST /api/instances/:id/enka` (6 a minute); Settings' Enka card has Sync builds for Genshin.
 - Tests: written first: `enka.test.ts` (the showcase read, closed showcase, the merge keeping a changed level), `enka.integration.test.ts` (Enka asked by UID with our User-Agent, Amber created with C2, Raven Bow R5 and a Wanderer's Troupe flower, owned, the run recorded; a later sync keeps the edited level and takes C3; 404, closed and no UID named). The fixture lives in `test/fixtures/enka.ts`.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: `nextResets`, `expiringSoon`, `staminaProjection` by level, dashboard passes and results, E2E Home cards.
 - Scope/decisions: codes are not in Expiring soon (no record before F11). Production is behind main by Vercel's rate limit (#108 onward) until the next merge after the reset.
 - Next: F9, with its PR plan proposed first.
-
-## 2026-10-10 · claude · stack/f8/12-reminders · #117
-- Done: reminder flags `whenStaminaFull` (one DM at the fill instant computed from the stored value) and `beforeEndgameReset` (last 24 h of an open mode with premium unclaimed); `ReminderLog.key` with a migration so same-instant reminders both send; switches on Activities and Endgame (turning one on where reminders are off enables only that one); shared `premiumCurrency`. #116 merged.
-- Tests: written first: `dueReminders` cases, scheduler integration (one DM per fill; Abyss and daily reset at the same instant), E2E switches.
-- Scope/decisions: DMs need `DISCORD_BOT_TOKEN` and `CRON_SECRET` in production; Endfield's full uses the level-60 cap until `13-home-f8`.
-- Next: `13-home-f8` (stamina reserve, battle pass card, Endgame · next resets, Expiring soon on Home).
