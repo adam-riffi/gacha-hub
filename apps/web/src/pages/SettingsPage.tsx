@@ -45,7 +45,7 @@ export function SettingsPage() {
   return (
     <div className="st-page">
       <h1>Settings</h1>
-      <nav className="st-nav" aria-label="Settings sections">
+      <nav className="st-nav" aria-label="On this page">
         <a href="#account">Account</a>
         <a href="#linked">Linked accounts</a>
         <a href="#pulls">Pull history</a>
@@ -241,7 +241,7 @@ function AccountData() {
       <h3>Account and data</h3>
       <div className="st-rows">
         <div><span className="st-k">Signed in with Discord</span><span className="mn">{me?.user?.username}</span></div>
-        <div><span className="st-k">Download my data</span><span><a className="btn" href="/api/export" download>JSON</a></span></div>
+        <div><span className="st-k">Download my data</span><span><a className="btn" href="/api/export" download aria-label="Download my data">JSON</a></span></div>
         <div>
           <span className="st-k">Delete my account and data</span>
           <span><button className="btn danger" aria-expanded={deleting} onClick={() => setDeleting(!deleting)}>Delete</button></span>

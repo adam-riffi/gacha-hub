@@ -44,7 +44,7 @@ test("Settings: linked accounts, pull history from a UIGF file and a link, notif
 
   // Account and data: deleting asks for the username typed back.
   const account = page.getByRole("region", { name: "Account and data" });
-  await expect(account.getByRole("link", { name: "JSON" })).toHaveAttribute("href", "/api/export");
+  await expect(account.getByRole("link", { name: "Download my data" })).toHaveAttribute("href", "/api/export");
   await account.getByRole("button", { name: "Delete", exact: true }).click();
   await account.getByRole("textbox").fill("not me");
   await account.getByRole("button", { name: "Delete for good" }).click();
