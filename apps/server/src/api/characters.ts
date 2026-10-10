@@ -108,6 +108,7 @@ export async function registerCharacterRoutes(app: FastifyInstance) {
       if (!character) return reply.code(404).send({ error: "not_found" });
       const game = gameOrThrow(character.gameInstance.gameKey);
       const body = updateCharacterInput.parse(req.body);
+      if (body.role && !game.manifest.kpis[body.role]) return reply.code(400).send({ error: "unknown_role" });
       if (body.catalogId !== undefined) {
         const cat = await getCatalog(game);
         if (cat && body.catalogId && !cat.index.characters.has(body.catalogId)) {
@@ -124,6 +125,7 @@ export async function registerCharacterRoutes(app: FastifyInstance) {
             ? { doc: validateDoc(game, body.doc) as PrismaJson, docVersion: game.docVersion }
             : {}),
           ...(body.buildStatus !== undefined ? { buildStatus: body.buildStatus } : {}),
+          ...(body.role !== undefined ? { role: body.role } : {}),
         },
       });
       return characterDto.parse(updated);
