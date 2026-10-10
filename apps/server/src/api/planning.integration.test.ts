@@ -153,8 +153,9 @@ describe("planning + materials (routes)", () => {
     expect(noGoal.json.requirements.length).toBe(0);
   });
 
+  // NTE is the game without a catalog since ZZZ got the Hakushin data.
   it("returns no_catalog for a game without one", async () => {
-    const zid = await installGame(c, "zzz");
+    const zid = await installGame(c, "nte");
     const r = await c.req<{ error: string }>("POST", `/api/instances/${zid}/plans/preview`, { kind: "character", catalogId: "x", level: { from: 20, to: 60 } });
     expect(r.status).toBe(404);
     expect(r.json.error).toBe("no_catalog");
