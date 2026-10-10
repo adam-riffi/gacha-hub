@@ -22,8 +22,6 @@ export type AssetKind = ArtKind;
 export const assetUrl = (gameKey: string, kind: AssetKind, key?: string | null): string | null => assetPath(BASE, gameKey, kind, key);
 
 /** The key of a unit's full art where the community CDN names it apart from its icon (Genshin gacha splashes). */
-export const splashKey = (gameKey: string, icon?: string | null): string | null | undefined =>
-  gameKey === "genshin" && icon?.startsWith("UI_AvatarIcon_") ? icon.replace("UI_AvatarIcon_", "UI_Gacha_AvatarImg_") : icon;
 
 /** Fallback when we host no copy (<GameIcon fallback>): Enka for Genshin, Yatta for HSR. */
-export { communityArtUrl as communityAssetUrl } from "@gacha/shared";
+export { communityArtUrl as communityAssetUrl, splashKey } from "@gacha/shared";

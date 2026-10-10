@@ -63,8 +63,8 @@ export function CalendarSelected({ item, reward, now, onClose }: { item: CalItem
       <div className="cal-art">
         {art ? (
           <GameIcon
-            src={assetUrl(item.gameKey, "portrait", splashKey(item.gameKey, art.icon))}
-            fallback={[communityAssetUrl(item.gameKey, "portrait", splashKey(item.gameKey, art.icon)), communityAssetUrl(item.gameKey, "character", art.icon)]}
+            src={assetUrl(item.gameKey, "splash", splashKey(item.gameKey, art.icon))}
+            fallback={[communityAssetUrl(item.gameKey, "splash", splashKey(item.gameKey, art.icon)), communityAssetUrl(item.gameKey, "character", art.icon)]}
             alt={art.name ?? art.catalogId}
           />
         ) : (

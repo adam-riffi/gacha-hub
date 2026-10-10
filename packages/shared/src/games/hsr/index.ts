@@ -133,6 +133,7 @@ export const hsr: GameDefinition = {
     art: {
       character: "https://sr.yatta.moe/hsr/assets/UI/avatar/medium/{key}.png",
       portrait: "https://sr.yatta.moe/hsr/assets/UI/avatar/large/{key}.png",
+      splash: "https://sr.yatta.moe/hsr/assets/UI/avatar/large/{key}.png",
       weapon: "https://sr.yatta.moe/hsr/assets/UI/equipment/medium/{key}.png",
       gear: "https://sr.yatta.moe/hsr/assets/UI/relic/{key}.png",
       material: "https://sr.yatta.moe/hsr/assets/UI/item/{key}.png",

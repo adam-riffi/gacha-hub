@@ -319,8 +319,8 @@ export function CharactersPage() {
             <article key={c.id} className={`ch-card ${c.owned ? "" : "is-unowned"}`} aria-label={c.name}>
               <div className="ch-art">
                 <GameIcon
-                  src={c.build?.portraitUrl ?? assetUrl(game.key, "portrait", art)}
-                  fallback={[communityAssetUrl(game.key, "portrait", art), communityAssetUrl(game.key, "character", c.icon)]}
+                  src={c.build?.portraitUrl ?? assetUrl(game.key, "splash", art)}
+                  fallback={[communityAssetUrl(game.key, "splash", art), communityAssetUrl(game.key, "character", c.icon)]}
                   alt={c.name}
                   label={c.name.slice(0, 2)}
                 />

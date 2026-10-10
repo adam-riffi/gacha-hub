@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f12/01-art-jobs · #170
+- Done: F12 starts (ADR 0006): the `splash` art kind (Genshin's gacha art and Star Rail's large art in their manifests), `splashKey` moved to shared, the screens that show splash art (Characters, the sheet, Home's banner carousel, the calendar) asking for it by that kind; shared `artJobs` lists every catalog image our store can hold (icons, large and splash art, weapons, every gear piece, materials) with its source and its path, once each, leaving out keys without a source and source-internal paths.
+- Tests: written first: `art.test.ts` (splash keys and sources for both games; Genshin's jobs include Amber's icon and splash, a weapon and all five pieces of a set, unique paths, https sources; nothing for a game without sources).
+- Scope/decisions: Wuthering Waves, ZZZ, Endfield and NTE name no art source yet, so their jobs are empty until their manifests do.
+- Next: the mirror script and its workflow (`scripts/assets`), the CSP for R2.
+
 ## 2026-10-10 · claude · stack/docs/04-adr-endfield · #169
 - Done: ADR 0009 (Proposed): Endfield's pull history from the game's records link (`ef-webview.gryphline.com`, its own expiring token, no signing), read once like a history link and never stored; the SKPORT account token, which can check in for the account, is never asked for; account data stays manual.
 - Tests: none (a decision record).
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: `calendar.spec.ts` (a reward's tag, the picker's step, Make goal setting the goal, the cycles layer, the list view); headings follow the board ("Banners and events"). Checked in the browser at 1440 and at 375 (the timeline scrolls inside its panel).
 - Scope/decisions: the version tick reads "update · <date>" (the next version's name is not known); "Only what I wishlisted" waits for `WishlistItem` (F10-07); art comes from the featured unit, else the game's placeholder tile until F12.
 - Next: `stack/f10/05-tasks` (A3 rebuilt, with event goals).
-
-## 2026-10-10 · claude · stack/f10/03-rewards · #127
-- Done: `packages/shared/src/rewards.ts`: `rewardOptions` (one option per choice, each roster step in the game's letter, as applying would take it; other rewards as text) and `rosterTag` ("+1 C", "+1 R", the game's letter elsewhere). `GET /api/rewards`: open events on awake profiles whose rewards change the roster, with each option's step from the builds, the other rewards, stage count and the goal. An event goal with its reminder on (`notify`) DMs 48 h before the event ends, until claimed.
-- Tests: written first: `rewards.test.ts` (steps per choice, capped, not owned, owned without a build, no roster change, tags per game), `rewards.integration.test.ts` (listing, goal state, asleep games left out), `due.test.ts` and `reminders.integration.test.ts` (48 h window, off until the goal's reminder is on, sent once).
-- Scope/decisions: the reminder rides the profile's existing reminder rule (no rule, no DM), like the endgame one.
-- Next: `stack/f10/04-calendar` (A4 rebuilt from its board).
