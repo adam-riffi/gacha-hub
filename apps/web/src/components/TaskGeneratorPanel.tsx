@@ -154,8 +154,8 @@ export function TaskGeneratorPanel({
             </div>
           );
         })}
-        <button className="btn" disabled={previewMut.isPending} onClick={() => previewMut.mutate()}>Preview</button>
-        <button className="btn primary" disabled={generate.isPending} onClick={() => generate.mutate()}>Generate tasks</button>
+        <button type="button" className="btn" disabled={previewMut.isPending} onClick={() => previewMut.mutate()}>Preview</button>
+        <button type="button" className="btn primary" disabled={generate.isPending} onClick={() => generate.mutate()}>Generate tasks</button>
       </div>
       {preview && <div style={{ marginTop: 12 }}><PlanTable preview={preview} /></div>}
     </div>

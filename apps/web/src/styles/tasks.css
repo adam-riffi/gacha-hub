@@ -42,3 +42,10 @@
 .tk-add input { flex: 1; }
 .tk-today { padding: 3px 6px; background: var(--paper); color: var(--on-paper); font: 500 11px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
 .tk-actions { display: flex; gap: 8px; padding-top: 10px; border-top: 1px solid var(--surface-3); }
+/* The goal maker (Georges, 2026-10-10): any kind of goal from one form. */
+.tk-new-kind { flex-basis: 100%; }
+.tk-new-items { flex: 2; min-width: 220px; }
+.tk-new-items textarea { width: 100%; }
+.tk-new-plan { flex-basis: 100%; }
+.ph-link { margin-left: auto; color: var(--text-muted); font: 400 12px var(--font-mono); letter-spacing: 0.06em; text-decoration: none; }
+.ph-link:hover { color: var(--accent); }

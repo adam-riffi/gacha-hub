@@ -74,6 +74,7 @@ test("Tasks: the goal maker makes anything: a gameplay goal with a count, a chec
   await page.getByRole("button", { name: "Continue as Dev User" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   await page.request.post("/api/instances", { data: { gameKey: "hsr" } });
+  await page.goto("/");
 
   // Home's Goals panel opens the maker (Georges, 2026-10-10: "I should be able to create anything from that screen").
   await page.getByRole("link", { name: "+ New goal" }).click();
@@ -103,6 +104,6 @@ test("Tasks: the goal maker makes anything: a gameplay goal with a count, a chec
   await page.getByRole("button", { name: "New goal" }).click();
   await maker.getByRole("button", { name: "Character build" }).click();
   await maker.getByLabel("Game").selectOption({ label: "Honkai: Star Rail" });
-  await maker.getByLabel("Character").selectOption({ label: "Kafka" });
+  await maker.getByLabel("Character").selectOption("1005");
   await expect(maker.getByRole("button", { name: "Generate tasks" })).toBeVisible();
 });

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { carryForward, dailyGains, dayOf } from "@gacha/shared";
 import type { DashboardData, TaskItem } from "../lib/types";
 import { GraphPanel } from "./charts/GraphPanel";
@@ -126,7 +127,7 @@ export function HomeTop({
       </GraphPanel>
       <div className="home-top-side">
         <div className="home-top-strip">
-          <GraphPanel title="Goals" style={{ width: 240, flex: "0 0 240px" }}>
+          <GraphPanel title="Goals" style={{ width: 240, flex: "0 0 240px" }} head={<Link to="/tasks?new=1" className="ph-link">+ New goal</Link>}>
             <SmallGauge done={goalsDone} total={goals.length} label="Overall goal completion" />
           </GraphPanel>
           <GraphPanel title="Goal types" style={{ flex: 1, minWidth: 0 }}>

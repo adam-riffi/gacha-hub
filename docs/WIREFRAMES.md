@@ -39,6 +39,7 @@ Picture: [`a3-tasks.png`](design/wireframes/a3-tasks.png) · static page: [`a3-t
 
 - **Farm today:** per game, for the current game day: talent books open today and for whom, weekly bosses left, any-day farms.
 - **Goals:** created by Plan farming, by an event reward on the calendar, or by hand. Each shows its game, source, progress (from material stock or event stages), priority and notify. An expanded goal lists its steps (ascension, talents, weapon) with a TODAY tag where farming is possible today.
+- **The goal maker** (New goal here, "+ New goal" on Home's Goals panel; Georges, 2026-10-10: "I should be able to create anything from that screen"): Gameplay (finish the story, do X quests or events: a title and how many times), Checklist (its items, one per line), Character build (pick the unit, then plan its levels and talents in place) or Weapon (pick it, then plan its levels).
 - **Event goals** show their effect ("when done: Lisa C3 → C4") and apply it when ticked.
 - **Reminders:** rules for all games or one game; quiet hours; the 21:00 digest; a preview of the exact DM before saving.
 
