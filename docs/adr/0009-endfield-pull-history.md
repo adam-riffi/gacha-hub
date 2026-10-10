@@ -1,8 +1,8 @@
 # 0009 — Arknights: Endfield pull history
 
-- Status: Proposed
+- Status: Accepted (2026-10-10)
 - Date: 2026-10-10
-- Proposed by: claude; decided by: Georges
+- Proposed by: claude; decided by: claude, on Georges's delegation of 2026-10-10 ("take every decision")
 
 ## Context
 
@@ -35,6 +35,7 @@ Pity, per the same sources: limited banners share one counter; the beginner bann
 
 ## Consequences
 
-- Implementation waits for this ADR's acceptance **and for one real records answer** (its token removed): the record fields are not documented, so the reader is written against a recorded sample.
+- The record fields are not documented by the publisher. The reader follows the shape that open-source trackers parse (PROTORIG's `src/lib/api.ts`, the Arknights Endfield Pull History Extractor): `{code, msg, data: {list, hasMore}}`, each record with `poolId`, `poolName`, `charId` or `weaponId`, `rarity`, `isFree`, `gachaTs` (milliseconds) and `seqId` (the cursor), and gift records (`kind`) to skip. Character records are asked per `pool_type` (`E_CharacterGachaPoolType_Special`, `_Standard`, `_Beginner`, `_Joint`); weapon records in one list. The test fixtures follow that shape; a real answer replaces them once one is recorded.
+- Pity, per the same trackers and the guides ([PCGamesN](https://www.pcgamesn.com/arknights-endfield/pity-system), [Prydwen](https://www.prydwen.gg/arknights-endfield/guides/gacha-system)): Special banners share one counter (hard pity 80); Basic headhunting has its own (80); each weapon banner has its own (40, featured 25%, the featured weapon at 80). Beginner and Joint banners are not tracked, like other games' beginner banners.
 - Settings' Endfield row changes from "SKPORT token, once researched" to "Records link from the game (PC)".
 - The endpoints are unofficial and can change; an import that fails is recorded and leaves manual entry working, as for the other games.
