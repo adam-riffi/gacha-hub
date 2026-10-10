@@ -1,10 +1,10 @@
-import { cadenceWindow, chronicleRequests, getGame, hoyolabNotesUrl, readChronicle, readNotes, type HoyolabError } from "@gacha/shared";
+import { cadenceWindow, chronicleRequests, getGame, hoyolabNotesUrl, mergeSynced, readChronicle, readNotes, readRoster, rosterRequest, type HoyolabError } from "@gacha/shared";
 import type { LinkedAccount } from "../generated/prisma/client.js";
 import { prisma } from "./prisma.js";
 import { linkKeys, openSecret } from "./linkSecret.js";
 import { hoyolabGet } from "./hoyolab.js";
 import { isDoneThisCycle } from "./resets.js";
-import { regionForInstance } from "../api/util.js";
+import { getCatalog, regionForInstance, validateDoc } from "../api/util.js";
 
 /** Notes at most this often per account (ADR 0005). */
 const EVERY_MS = 30 * 60_000;
@@ -17,7 +17,7 @@ const CHRONICLE_EVERY_MS = 6 * 3_600_000;
  * daily ticks the game's daily task. A refusal marks the link for attention,
  * and it is not tried again until linked anew.
  */
-export async function syncLink(link: LinkedAccount, now: Date, opts: { chronicle?: boolean } = {}): Promise<{ synced: string[]; chronicle?: number } | { error: HoyolabError }> {
+export async function syncLink(link: LinkedAccount, now: Date, opts: { chronicle?: boolean } = {}): Promise<{ synced: string[]; chronicle?: number; roster?: number } | { error: HoyolabError }> {
   const cookie = openSecret(link.secret!, link.keyVersion!, `${link.userId}:hoyolab`, linkKeys());
   const profiles = await prisma.gameInstance.findMany({ where: { userId: link.userId, gameKey: { in: ["genshin", "hsr", "zzz"] }, uid: { not: null } } });
   const synced: string[] = [];
@@ -46,7 +46,46 @@ export async function syncLink(link: LinkedAccount, now: Date, opts: { chronicle
   await prisma.linkedAccount.update({ where: { id: link.id }, data: error ? { status: "attention", lastError: error } : { lastSyncAt: now, lastError: null } });
   await prisma.importRun.create({ data: { userId: link.userId, provider: "hoyolab", kind: "notes", added: synced.length, error: error ?? null } });
   if (error) return { error };
-  return opts.chronicle ? { synced, chronicle: await syncChronicle(link.userId, cookie, profiles, now) } : { synced };
+  if (!opts.chronicle) return { synced };
+  return { synced, chronicle: await syncChronicle(link.userId, cookie, profiles, now), roster: await syncRoster(cookie, profiles) };
+}
+
+/**
+ * The chronicle's roster (ADR 0005): every listed character and the weapon it
+ * holds are owned, and an existing build takes the roster's level, dupes and
+ * weapon where its field is empty or still as the last sync wrote it; what
+ * the user typed stays. No build is created here: the showcase does that.
+ */
+async function syncRoster(cookie: string, profiles: { id: string; gameKey: string; regionKey: string; uid: string | null }[]): Promise<number> {
+  let read = 0;
+  for (const gi of profiles) {
+    const req = rosterRequest(gi.gameKey, gi.regionKey, gi.uid!);
+    const game = getGame(gi.gameKey)!;
+    const cat = await getCatalog(game);
+    if (!req || !cat) continue;
+    const { units } = readRoster(game, await hoyolabGet(req.url, cookie, undefined, req.body).catch(() => null));
+    const holder = game.manifest.dupes.weapon?.field.split(".")[0];
+    for (const u of units) {
+      if (!cat.index.characters.has(u.catalogId)) continue;
+      read += 1;
+      const own = (kind: string, catalogId: string) =>
+        prisma.ownership.upsert({ where: { gameInstanceId_kind_catalogId: { gameInstanceId: gi.id, kind, catalogId } }, create: { gameInstanceId: gi.id, kind, catalogId, qty: 1 }, update: {} });
+      await own("character", u.catalogId);
+      const weapon = u.weaponId ? cat.index.weapons.get(u.weaponId) : undefined;
+      if (weapon) await own("weapon", weapon.id);
+      if (weapon && holder) (u.doc[holder] as Record<string, unknown>).name = weapon.name;
+      const build = await prisma.character.findFirst({ where: { gameInstanceId: gi.id, catalogId: u.catalogId }, orderBy: { createdAt: "asc" } });
+      if (!build) continue;
+      const synced = build.synced as Record<string, unknown> | null;
+      try {
+        const doc = validateDoc(game, mergeSynced(build.doc as Record<string, unknown>, synced, u.doc));
+        await prisma.character.update({ where: { id: build.id }, data: { doc: doc as object, synced: mergeSynced(synced ?? {}, synced, u.doc) as object } });
+      } catch {
+        // ponytail: a roster value outside the sheet's limits leaves that build as it was.
+      }
+    }
+  }
+  return read;
 }
 
 /**
