@@ -71,9 +71,9 @@ export const wuwa: GameDefinition = {
   teamSize: 3,
   // Pity rules (community-documented): hard pity, soft pity, featured-unit rate.
   pullBanners: [
-    { key: "character", label: "Featured resonator convene", baseRate: 0.008, hardPity: 80, softPity: 66, featuredRate: 0.5 },
-    { key: "weapon", label: "Featured weapon convene", baseRate: 0.008, hardPity: 80, softPity: 66, featuredRate: 1 },
-    { key: "standard", label: "Standard convene", baseRate: 0.008, hardPity: 80, softPity: 66, featuredRate: 1 },
+    { key: "character", label: "Featured resonator convene", baseRate: 0.008, hardPity: 80, softPity: 66, featuredRate: 0.5, gachaTypes: ["1"] },
+    { key: "weapon", label: "Featured weapon convene", baseRate: 0.008, hardPity: 80, softPity: 66, featuredRate: 1, gachaTypes: ["2"] },
+    { key: "standard", label: "Standard convene", baseRate: 0.008, hardPity: 80, softPity: 66, featuredRate: 1, gachaTypes: ["3"] },
   ],
   name: "Wuthering Waves",
   shortName: "Wuthering",

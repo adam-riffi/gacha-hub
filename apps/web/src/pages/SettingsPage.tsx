@@ -14,6 +14,7 @@ const HOYO = ["genshin", "hsr", "zzz"];
 /** What an import error means, in the words the user can act on. */
 const IMPORT_ERROR: Record<string, string> = {
   no_authkey: "No authkey in this link: copy the whole link from the game's history page.",
+  no_convene_ids: "This is not a convene link: copy it from the game log, as it opens the convene history.",
   expired: "This link has expired: open the history in the game again and copy a fresh one.",
   invalid: "The game did not accept this link: copy it again from the history page.",
   too_frequent: "The game asked to slow down: try again in a minute.",
@@ -170,7 +171,7 @@ function PullRow({ gi, last }: { gi: InstanceListItem; last?: ImportRunDto }) {
   const busy = viaLink.isPending || viaFile.isPending;
   const link = hasHistoryLink(gi.gameKey);
   const uigf = hasUigf(gi.gameKey);
-  const method = link ? "History link (PC) or UIGF file" : gi.gameKey === "wuwa" ? "History link from the game log (PC), coming" : gi.gameKey === "endfield" ? "SKPORT token, once researched" : "Log pulls by hand";
+  const method = gi.gameKey === "wuwa" ? "History link from the game log (PC)" : link ? "History link (PC) or UIGF file" : gi.gameKey === "endfield" ? "SKPORT token, once researched" : "Log pulls by hand";
 
   return (
     <>

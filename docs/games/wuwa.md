@@ -17,6 +17,7 @@
 | Dupes | A character copy raises Resonance Chain by one (to S6); a weapon copy raises Syntonize by one (to R5) ~ | [Resonance Chain](https://wutheringwaves.fandom.com/wiki/Resonance_Chain), [Weapon](https://wutheringwaves.fandom.com/wiki/Weapon) |
 | Art | | |
 | KPIs per role | Our choice for the Characters cards (WIREFRAMES.md G4), listed in the module's manifest | |
+| Pull history types | featured resonator 1, featured weapon 2, standard resonator 3 (`cardPoolType`); standard weapon (4), beginner (5–7) and journey convenes (8, 9, 12, 13) are not tracked | [wuwa-gacha-export](https://github.com/lyndon0na/wuwa-gacha-export) (`POOLS`) |
 | Account level | Union Level (UL); the abbreviation is the community's | [Union Level](https://wutheringwaves.fandom.com/wiki/Union_Level) |
 | World level | SOL3 Phase, 1 to 8, a new phase every 10 Union Levels | [Union Level](https://wutheringwaves.fandom.com/wiki/Union_Level) |
 | Gacha | 5★ 0.8% a convene (1.8% average with the guarantee), hard pity 80; featured Resonator 50/50, a lost one guarantees the next; featured weapon 100% | [Featured Resonator Convene](https://wutheringwaves.fandom.com/wiki/Featured_Resonator_Convene), [Featured Weapon Convene](https://wutheringwaves.fandom.com/wiki/Featured_Weapon_Convene) |
