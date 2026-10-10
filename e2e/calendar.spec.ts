@@ -48,10 +48,10 @@ test("a reward event carries its roster tag; its pick and Make goal set the goal
   expect(upload.ok()).toBe(true);
 
   await page.goto("/timeline?game=hsr");
-  const bar = page.getByRole("button", { name: /E2E free 4-star/ });
+  const bar = page.getByRole("region", { name: "Timeline" }).getByRole("button", { name: /E2E free 4-star/ });
   await expect(bar).toContainText("+1 E");
   await bar.click();
-  const selected = page.getByRole("region", { name: "Selected" });
+  const selected = page.getByRole("complementary", { name: "Selected" });
   await expect(selected.getByRole("heading", { name: "E2E free 4-star" })).toBeVisible();
   await expect(selected.getByText("E2 → E3")).toBeVisible();
   await expect(selected.getByText(/Also in this event: 800 Stellar Jade/)).toBeVisible();
