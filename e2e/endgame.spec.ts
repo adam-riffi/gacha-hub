@@ -33,19 +33,3 @@ test("a game's Endgame tab: this cycle's rewards, a card per mode to type result
   await page.getByRole("navigation", { name: "Game screens" }).getByRole("link", { name: "Activities" }).click();
   await expect(page.getByRole("region", { name: "Cycles" })).toContainText("6 / 9");
 });
-
-test("Endgame holds the teams: a team made here lists its members @smoke", async ({ page }) => {
-  await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
-  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
-  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
-  await page.request.put(`/api/instances/${id}/ownership`, { data: { items: [{ kind: "character", catalogId: "1005", owned: true }] } });
-
-  await page.goto(`/games/${id}/endgame`);
-  const teams = page.getByRole("region", { name: "Teams" });
-  await teams.getByRole("textbox", { name: "New team name" }).fill("E2E DoT team");
-  await teams.getByRole("button", { name: "+ Team" }).click();
-  await expect(teams).toContainText("E2E DoT team");
-  await teams.getByRole("combobox", { name: "Add a member to E2E DoT team" }).selectOption({ label: "Kafka" });
-  await expect(teams).toContainText("Kafka");
-});

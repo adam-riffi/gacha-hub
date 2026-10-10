@@ -41,7 +41,7 @@ test("every screen has no serious accessibility violations @smoke", async ({ pag
       "/timeline",
       "/settings",
       "/admin",
-      ...["", "/ownership", "/characters", "/gear", "/materials", "/planner", "/pulls", "/profile"].map((tab) => `/games/${hsr.id}${tab}`),
+      ...["", "/ownership", "/characters", "/teams", "/units/1004", "/gear", "/materials", "/planner", "/pulls", "/profile"].map((tab) => `/games/${hsr.id}${tab}`),
       `/characters/${march.id}`,
     ];
     for (const path of pages) {
