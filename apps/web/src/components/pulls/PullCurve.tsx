@@ -1,66 +1,118 @@
-import { featuredWithin, type PullBannerRules } from "@gacha/shared";
+import { featuredWithin, rateAt, type PullBannerRules } from "@gacha/shared";
 
 const W = 560;
-const H = 180;
+const H = 190;
 const L = 36;
 const R = 12;
-const T = 22;
+const T = 30;
 const B = 26;
 
+const pct = (v: number) => `${v >= 0.995 && v < 1 ? ">99" : (v * 100).toFixed(v < 0.1 ? 1 : 0)}%`;
+
 /**
- * The chance of the featured 5★ by pity (WIREFRAMES.md G3): the part already
- * pulled shaded, your pity, soft and hard pity dashed, and where the pulls
- * you have reach. Past hard pity the curve runs to the guarantee after a loss.
+ * The 5★ odds by pity (WIREFRAMES.md G3), drawn whole and always the same:
+ * the rate on each pull since your last 5★, flat, then climbing from soft pity
+ * to certain at hard pity; where a lost 50/50 leads to a second run, that run
+ * follows, shaded. Markers move along it: where you are, where all your pulls
+ * take you, and where a simulated top-up would. The legend gives each one's
+ * chance of the featured unit.
  */
-export function PullCurve({ rules, state, available, star = "5★" }: { rules: PullBannerRules; state: { pity: number; guaranteed: boolean }; available: number; star?: string }) {
-  const sure = state.guaranteed || rules.featuredRate >= 1;
-  const end = sure ? rules.hardPity : rules.lossGuarantee === false ? (rules.spark ?? rules.hardPity * 2) : rules.hardPity * 2;
-  const x = (p: number) => L + (p / end) * (W - L - R);
+export function PullCurve({
+  rules,
+  state,
+  available,
+  extra = 0,
+  star = "5★",
+}: {
+  rules: PullBannerRules;
+  state: { pity: number; guaranteed: boolean };
+  available: number;
+  /** Pulls a simulated top-up adds. */
+  extra?: number;
+  star?: string;
+}) {
+  const hasFeatured = rules.featuredRate < 1;
+  // The second run shows whenever the banner has one, so the shape never depends on your guarantee.
+  const end = !hasFeatured ? rules.hardPity : rules.lossGuarantee === false ? (rules.spark ?? rules.hardPity * 2) : rules.hardPity * 2;
+  const x = (p: number) => L + (Math.min(p, end) / end) * (W - L - R);
   const y = (v: number) => T + (1 - v) * (H - T - B);
-  const steps = Array.from({ length: end - state.pity + 1 }, (_, k) => state.pity + k);
-  const path = steps.map((p, i) => `${i ? "L" : "M"}${x(p).toFixed(1)} ${y(featuredWithin(rules, state, p - state.pity)).toFixed(1)}`).join("");
-  const reach = Math.min(end, state.pity + available);
-  const atReach = featuredWithin(rules, state, reach - state.pity);
-  const pct = (v: number) => `${Math.round(v * 100)}%`;
-  const marks = [
-    // Soft pity is labelled inside the plot, the others above it, so close lines never share a row.
-    ...(rules.softPity && rules.softPity > state.pity ? [{ at: rules.softPity, label: "soft pity", inside: true }] : []),
-    { at: rules.hardPity, label: sure ? "hard pity" : `1st ${star} by`, inside: false },
-    ...(end > rules.hardPity ? [{ at: end, label: rules.lossGuarantee === false ? "spark" : "guarantee", inside: false }] : []),
+  // The rate on the pull after `p` pulls since the last 5★; past hard pity, the next run's.
+  const rate = (p: number) => rateAt(rules, (p % rules.hardPity) + 1);
+  const path = Array.from({ length: end + 1 }, (_, p) => `${p ? "L" : "M"}${x(p).toFixed(1)} ${y(p === end ? 1 : rate(p)).toFixed(1)}`).join("");
+  const chance = (pulls: number) => featuredWithin(rules, state, pulls);
+  const what = hasFeatured ? `the featured ${star}` : `a ${star}`;
+
+  const markers = [
+    { key: "you", at: state.pity, tag: "YOU", text: `You: pity ${state.pity}, next pull ${pct(rate(state.pity))}` },
+    ...(available > 0 ? [{ key: "all", at: state.pity + available, tag: "ALL", text: `All your ${available} pulls: ${pct(chance(available))} chance of ${what}` }] : []),
+    ...(extra > 0 ? [{ key: "top", at: state.pity + available + extra, tag: "TOP-UP", text: `With the top-up: ${available + extra} pulls, ${pct(chance(available + extra))}` }] : []),
   ];
+  // Each marker is a dot on the curve with its tag just above; a tag too close to the one before steps up a row.
+  let lastX = -Infinity;
+  let row = 0;
+  const placed = markers.map((m) => {
+    row = x(m.at) - lastX < 46 ? row + 1 : 0;
+    lastX = x(m.at);
+    return { ...m, row, cy: y(m.at >= end ? 1 : rate(m.at)) };
+  });
+  // Each label sits in the flat, empty part beside its line: soft pity's before it, hard pity's after it (before it at the right edge).
+  const lines = [
+    ...(rules.softPity ? [{ at: rules.softPity, label: "soft pity", after: false }] : []),
+    { at: rules.hardPity, label: `${star} certain`, after: end > rules.hardPity },
+    ...(end > rules.hardPity ? [{ at: end, label: "", after: false, axis: rules.lossGuarantee === false ? "spark" : "featured" }] : []),
+  ];
+
   return (
-    <svg className="pl-curve" viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`Curve: chance of the featured ${star} by pity, from your pity ${state.pity} to ${end}; ${pct(atReach)} by your ${available} pulls`}>
-      <rect x={L} y={T} width={x(state.pity) - L} height={H - T - B} className="pl-pulled" />
-      {[0, 0.5, 1].map((v) => (
-        <g key={v}>
-          <line x1={L} x2={W - R} y1={y(v)} y2={y(v)} className="pl-grid" />
-          <text x={L - 6} y={y(v) + 4} textAnchor="end">{pct(v)}</text>
-        </g>
-      ))}
-      {marks.map((m) => (
-        <g key={m.label}>
-          <line x1={x(m.at)} x2={x(m.at)} y1={T} y2={H - B} className="pl-dash" />
-          <text x={x(m.at) - (m.inside ? 4 : 0)} y={m.inside ? T + 12 : T - 8} textAnchor="end">{m.label}</text>
-          <text x={x(m.at)} y={H - B + 16} textAnchor="middle">{m.at}</text>
-        </g>
-      ))}
-      <path d={path} className="pl-line" />
-      <line x1={x(state.pity)} x2={x(state.pity)} y1={T} y2={H - B} className="pl-you" />
-      <text x={x(state.pity) + 4} y={T - 8} className="pl-you-label">YOU · {state.pity}</text>
-      {available > 0 && (
-        <g>
-          <circle cx={x(reach)} cy={y(atReach)} r={4} className="pl-reach" />
-          {/* Near the right edge the label sits in the plot's empty lower corner; elsewhere beside the point, under it near the top. */}
-          <text
-            x={x(reach) > W - 160 ? x(reach) - 8 : x(reach) + 8}
-            y={x(reach) > W - 160 ? H - B - 8 : atReach > 0.8 ? y(atReach) + 18 : y(atReach) - 8}
-            textAnchor={x(reach) > W - 160 ? "end" : "start"}
-          >
-            your {available} pulls · {pct(atReach)}
-          </text>
-        </g>
-      )}
-      <text x={L} y={H - B + 16} textAnchor="middle">0</text>
-    </svg>
+    <figure className="pl-figure">
+      <svg
+        className="pl-curve"
+        viewBox={`0 0 ${W} ${H}`}
+        role="img"
+        aria-label={`Curve: the ${star} rate on each pull and the chance of ${what}; you are at pity ${state.pity}; ${markers.slice(1).map((m) => m.text).join("; ") || "no pulls on hand"}`}
+      >
+        {end > rules.hardPity && (
+          <g>
+            <rect x={x(rules.hardPity)} y={T} width={x(end) - x(rules.hardPity)} height={H - T - B} className="pl-run2" />
+            <text x={x(rules.hardPity) + 6} y={y(1) + 14}>{rules.lossGuarantee === false ? "the next run" : "if the 50/50 is lost"}</text>
+          </g>
+        )}
+        {[0, 0.5, 1].map((v) => (
+          <g key={v}>
+            <line x1={L} x2={W - R} y1={y(v)} y2={y(v)} className="pl-grid" />
+            <text x={L - 6} y={y(v) + 4} textAnchor="end">{v * 100}%</text>
+          </g>
+        ))}
+        {lines.map((m) => (
+          <g key={m.at}>
+            <line x1={x(m.at)} x2={x(m.at)} y1={T} y2={H - B} className="pl-dash" />
+            <text x={x(m.at) + (m.after ? 4 : -4)} y={y(0.7)} textAnchor={m.after ? "start" : "end"}>{m.label}</text>
+            <text x={x(m.at)} y={H - B + 16} textAnchor={"axis" in m ? "end" : "middle"}>
+              {m.at}
+              {"axis" in m ? ` ${m.axis}` : ""}
+            </text>
+          </g>
+        ))}
+        <text x={L} y={H - B + 16} textAnchor="middle">0</text>
+        <path d={path} className="pl-line" />
+        {placed.map((m) => (
+          <g key={m.key} className={`pl-mark is-${m.key}`}>
+            <line x1={x(m.at)} x2={x(m.at)} y1={m.cy} y2={H - B} />
+            <circle cx={x(m.at)} cy={m.cy} r={4.5} />
+            <text x={x(m.at)} y={Math.max(T - 6, m.cy - 10) - m.row * 12} textAnchor="middle">
+              {m.tag}
+              {m.at > end ? " ›" : ""}
+            </text>
+          </g>
+        ))}
+      </svg>
+      <figcaption className="pl-legend mn">
+        {markers.map((m) => (
+          <span key={m.key} className={`is-${m.key}`}>
+            <i aria-hidden="true" />
+            {m.text}
+          </span>
+        ))}
+      </figcaption>
+    </figure>
   );
 }
