@@ -1,32 +1,35 @@
-# Handoff — 2026-10-10 · claude
+# Handoff — 2026-10-11 · claude
 
 ## State
-- `main` at #196: feat(zzz): the core skill, levelled 1 to 7. CI green.
-- Open PRs: this one (#197), every banner type with a Hide button.
-- Production serves #186 (deployed 18:52 UTC). Merges do not deploy (#189, `git.deploymentEnabled: false`): `main` goes to production only when Georges asks (`docs/DEPLOY.md`, Redeploys). After a deploy, run the smoke check. #197 adds a migration (`hiddenBanners`), so the next deploy runs it.
+- `main` at #205: fix(hub): drop the Manual tags and By cadence. CI green.
+- Open PRs: this one (#206), Settings' Games and Admin's overview; it merges on green CI.
+- Production serves #186 (deployed 2026-10-10 18:52 UTC). Merges do not deploy (#189): `main` goes live only when Georges asks (`docs/DEPLOY.md`, Redeploys), then run the smoke check. Since #186, `main` adds two migrations: `kpi_defaults` and `progress` (#187, #191), and `hidden_banners` (#197); the next deploy runs them.
 - Every milestone in DESIGN.md §9 is built, V through F12. What is left needs Georges's secrets or real data (below), or is in DESIGN.md §4 "Later".
 
 ## Done this session
-- F11 and F12: #165–#172. Guide clean-up: #173–#176.
-- After "take every decision": #177–#188 (NTE everywhere, Endfield records, the ZZZ catalog and Enka, talent names, Stygian Onslaught, default KPI targets).
-- After "go": #105 (function trace), #189 (deploys on command), #190 (guide screens), #191 (HoYoLAB record card), #192 (every `~` checked against the wikis).
-- After Georges's list of 2026-10-10:
-  - #193, DESIGN.md §4 "Later" spelled out, with the per-game overview he asked for (not built), and PROJECT-GUIDE §14.1 step 8, the data the agent needs;
-  - #194, long-term progress on Profile as hand-typed goals (chests, exploration, events), one kind;
-  - #195, Endfield's Arsenal pity per banner (each record keeps its pool);
-  - #196, ZZZ's core skill, 1 to 7;
-  - #197, every banner type each game has, with the pulls it spends, a Hide button, and a hidden line to show them again.
+- Earlier: F11 and F12 (#165–#172), the guide clean-up (#173–#176), "take every decision" (#177–#188), "go" (#105, #189–#192), and Georges's first list (#193–#197: the Later list, hand-typed long-term goals, Endfield's per-banner Arsenal pity, ZZZ's core skill, every banner type with a Hide button).
+- Georges's UI feedback of 2026-10-10, one PR per area:
+  - #198, the pull curve drawn whole, with markers moving along it (you, all your pulls, a top-up), a top-up simulation, a full card for every banner;
+  - #199, Home's pulls by type, a number and its icon each (limited, permanent, special); Forging Tide and Boopons tracked;
+  - #200, Characters: every card at once, tinted to its element with its weapon type, the counts as filters, the whole card opening the build or a new unit page; every screen but Home loads on first visit (initial JS 196.5 → 143.9 KB);
+  - #201, a Builds view and Select for several characters at once;
+  - #202, a Teams tab, and Used in adds to a team;
+  - #203, the goal maker: gameplay, checklist, character build or weapon, opened from Home;
+  - #204, the banner timeline: a tick per day and each bar's dates, a month view of what starts and ends each day, featured characters linking to their pages;
+  - #205, the clean-up: no more "Manual" tags or "By cadence";
+  - #206, Settings' Games section and Admin's overview (users, games and their content, latest imports, an audit filter).
 
-## Decisions taken (2026-10-10, Georges: "take every decision")
+## Decisions taken (2026-10-10 and 11; Georges: "take every decision")
 - Earlier ones stand (ADR 0009, Enka and Hakushin with credit; Endfield art, WuWa material art, Shiyu v2 and endgame eligibility decided against, reasons in PROJECT-GUIDE §14.2; TypeScript 7 waits for typescript-eslint).
-- Long-term progress is typed by hand, not synced: no game API gives chests or exploration for every game.
-- Every banner type shows by default, beginner ones too; hiding is per game profile and also leaves Home's pity line.
-- Endfield's Joint headhunting is taken to follow Chartered rules with per-banner pity, and Beginner headhunting a 6★ within 40, both `~` until a source states them. NTE's standard board has no source, so it has no banner yet.
-- ZZZ's core skill is a number from 1 to 7 (base, then A to F), like the other skill levels.
+- The pull curve plots the per-pull rate, so its shape never depends on your pity; cumulative chances sit in the legend, the odds and the headline.
+- Three pull types everywhere: limited, permanent, special (a banner's own tickets, `onlyFor`). The icons are glyphs, not game art.
+- Element colours are one palette across games, light enough for dark text.
+- Teams get a tab for every game with a catalog, Endfield included.
+- The month view lists what starts and ends each day, not every running bar.
 
 ## Verified
-- `npm run check` before each PR and CI green on each: 558 tests and 40 E2E journeys; initial JavaScript under 200 KB.
-- Checked in the browser at 1440: Profile's long-term goals; Ellen's sheet and planner with the core skill; Star Rail's Pulls with the collaboration warps and Departure warp hidden.
+- `npm run check` before each PR and CI green on each: 560 tests and 47 journeys; initial JavaScript 143.9 KB of 200 KB.
+- Checked in the browser at 1440 and attached to each PR: the curve with a top-up; Home's pulls; the tinted grid, a unit page, Builds and Select; Teams and Used in; the goal maker; the timeline's days and the month view; Settings' Games and Admin's overview.
 
 ## Next
 1. When Georges shares them: replace the fixtures built from documentation with real answers (PROJECT-GUIDE §14.1 step 8), then fix whatever differs.
@@ -37,15 +40,16 @@
 ## Needs from Georges
 - **Secrets:** `LINK_SECRET_KEY`; the R2 bucket and its four `R2_*` Actions secrets, then mirror-art and `VITE_ASSET_BASE` (DEPLOY.md §7); `CRON_SECRET`; `DISCORD_BOT_TOKEN` and the bot.
 - **Real data, with tokens removed** (PROJECT-GUIDE §14.1 step 8): an Endfield records page (char and weapon); a ZZZ UID; HoYoLAB answers (record card, notes, each chronicle mode, character list); one gacha log page; one WuWa convene answer; in-game details pages for the `~` values.
-- The `main` ruleset, the `sample-*` banners, the README demo GIF, and twelve stale remote branches (§14.1 step 10).
-- A deploy, when he wants #187 onward live.
+- The `main` ruleset, the `sample-*` banners, the README demo GIF, and the stale remote branches (§14.1 step 10).
+- A deploy, when he wants the feedback round live.
 - Overrule any decision above by saying so.
 
 ## Notes
 - HoYoLAB stays read-only; the SKPORT account token is never asked for (ADRs 0005, 0009). Desktop only.
 - Art is never committed. The community sources (Enka, Yatta, Wuthery, Hakushin) stay as fallbacks behind the bucket.
-- `topStar` and `topRarity` give a game's top rarity (Endfield 6★). `weaponOnly` currencies fund the weapon banner alone; a banner's `fund` says when it spends standard tickets or a currency the tracker does not count. `pityPerPool` banners count only the newest banner's pulls.
-- Importers ask each banner's first `gachaTypes` entry, so a new banner type is fetched with no importer change.
+- `topStar` and `topRarity` give a game's top rarity (Endfield 6★). A currency's `onlyFor` names the one banner it funds; a banner's `fund` says when it spends standard tickets or only its own. `pityPerPool` banners count only the newest banner's pulls.
+- Pages are lazy (`App.tsx`); add new screens the same way to keep the initial JavaScript small.
+- Character cards are opened by a link laid over the whole card (`.ch-open`); in tests, click the card, not an element under the link.
 - Never run tests or E2E while `npm run check` is running in the same working tree, and never switch branches under it. Stop the dev server before `npm run check`; run `npm run db:sqlite` after a schema change.
 - Many source files are not Prettier-formatted on `main`; edit them without running Prettier on the whole file, or the diff balloons.
 - `docs/AGENT_LOG.md` keeps 40 entries, the rest in `docs/agent-log/2026-10.md`.

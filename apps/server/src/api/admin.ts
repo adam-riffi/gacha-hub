@@ -3,6 +3,8 @@ import { Prisma } from "../generated/prisma/client.js";
 import { z } from "zod";
 import {
   adminAuditEntryDto,
+  adminStatsDto,
+  gameList,
   adminExportKindSchema,
   adminPayloadInput,
   adminPayloadResult,
@@ -54,6 +56,57 @@ export async function registerAdminRoutes(app: FastifyInstance) {
       return { kind, gameKey, items };
     },
   );
+
+  // The overview: totals, users with their games and builds, each game's content, the latest imports.
+  app.get("/api/admin/stats", { preHandler: requireAdmin }, async () => {
+    const now = new Date();
+    const [users, profiles, builds, pulls, goals, teams, links, banners, events, imports] = await Promise.all([
+      prisma.user.findMany({
+        orderBy: { createdAt: "asc" },
+        select: { username: true, createdAt: true, gameInstances: { select: { gameKey: true, _count: { select: { characters: true } } } } },
+      }),
+      prisma.gameInstance.groupBy({ by: ["gameKey"], _count: { _all: true } }),
+      prisma.character.count(),
+      prisma.pullEntry.aggregate({ _sum: { count: true } }),
+      prisma.task.count({ where: { parentId: null, type: { not: "recurring" } } }),
+      prisma.team.count(),
+      prisma.linkedAccount.count(),
+      prisma.banner.findMany({ where: { endsAt: { gt: now } }, select: { gameKey: true, startsAt: true } }),
+      prisma.event.findMany({ where: { endsAt: { gt: now } }, select: { gameKey: true, startsAt: true } }),
+      prisma.importRun.findMany({ orderBy: { createdAt: "desc" }, take: 10, include: { user: { select: { username: true } } } }),
+    ]);
+    const split = (rows: { gameKey: string; startsAt: Date }[], key: string) => {
+      const mine = rows.filter((r) => r.gameKey === key);
+      return { active: mine.filter((r) => r.startsAt <= now).length, upcoming: mine.filter((r) => r.startsAt > now).length };
+    };
+    return adminStatsDto.parse({
+      totals: {
+        users: users.length,
+        profiles: profiles.reduce((n, p) => n + p._count._all, 0),
+        builds,
+        pulls: pulls._sum.count ?? 0,
+        goals,
+        teams,
+        links,
+      },
+      users: users.map((u) => ({
+        username: u.username,
+        createdAt: u.createdAt,
+        games: u.gameInstances.length,
+        builds: u.gameInstances.reduce((n, gi) => n + gi._count.characters, 0),
+        gameKeys: u.gameInstances.map((gi) => gi.gameKey),
+      })),
+      games: gameList.map((g) => ({
+        gameKey: g.key,
+        name: g.name,
+        profiles: profiles.find((p) => p.gameKey === g.key)?._count._all ?? 0,
+        feed: FEED_GAMES.includes(g.key),
+        banners: split(banners, g.key),
+        events: split(events, g.key),
+      })),
+      imports: imports.map((r) => ({ ...r, username: r.user.username })),
+    });
+  });
 
   app.get<{ Querystring: { limit?: string } }>(
     "/api/admin/audit",

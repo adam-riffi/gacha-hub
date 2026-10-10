@@ -64,3 +64,20 @@ test("Settings: the HoYoLAB card links with two cookies, and says so while the s
   // The E2E server runs without LINK_SECRET_KEY, as production does until it is set.
   await expect(card.getByRole("status")).toHaveText("Linking is off until the server's key is set.");
 });
+
+test("Settings: the games you play, their server and whether they sleep, in one place @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  await page.request.put(`/api/instances/${id}`, { data: { regionKey: "eu", sleeping: false } });
+
+  await page.goto("/settings");
+  const games = page.getByRole("region", { name: "Games" });
+  await games.getByRole("combobox", { name: "Server for Honkai: Star Rail" }).selectOption("na");
+  await expect.poll(async () => ((await (await page.request.get(`/api/instances/${id}`)).json()) as { regionKey: string }).regionKey).toBe("na");
+  await games.getByRole("checkbox", { name: "Honkai: Star Rail awake" }).uncheck();
+  await expect.poll(async () => ((await (await page.request.get(`/api/instances/${id}`)).json()) as { sleeping: boolean }).sleeping).toBe(true);
+  await games.getByRole("checkbox", { name: "Honkai: Star Rail awake" }).check();
+  await page.request.put(`/api/instances/${id}`, { data: { regionKey: "eu" } });
+});

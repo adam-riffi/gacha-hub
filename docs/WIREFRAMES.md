@@ -60,9 +60,11 @@ Picture: [`a4-calendar.png`](design/wireframes/a4-calendar.png) · static page: 
 
 Picture: [`a5-settings.png`](design/wireframes/a5-settings.png) · static page: [`a5-settings.html`](design/wireframes/a5-settings.html)
 
+- **Games** (Georges, 2026-10-10: Settings felt light): each game you play with its server, awake or asleep, and its hidden banners; add or remove games in the library.
 - **Linked accounts** (ADR 0005): HoYoLAB (status, what syncs, last sync, revoke), Enka UIDs, SKPORT, WuWa (history link only), NTE (manual only, with the reason).
 - **Pull history** per game: import from a history link or a UIGF file; export UIGF.
 - **Notifications:** Discord DMs, quiet hours, digest. **Account and data:** export, delete.
+- **Admin** (admins only): an overview (users, game profiles, builds, pulls logged, goals, teams, linked accounts); each game with its profiles, running and upcoming banners and events, and Import feed where an official feed exists; the users with their games and builds; the latest imports; then the upload, the current items, and the audit log with a filter and Show more.
 
 ## Game hub
 

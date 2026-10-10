@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/ui/09-settings-admin · #206
+- Done: Settings and Admin had felt light to Georges. Settings gains Games: each game you play with its server, awake or asleep, and its hidden banners, with a link to the library. Admin opens on an overview: totals (users, game profiles, builds, pulls logged, goals, teams, linked accounts); each game with its profiles, running and upcoming banners and events, and Import feed where an official feed exists; the users with their games and builds; and the latest imports. The audit log gains a filter and Show more. New route: `GET /api/admin/stats` (admins only). HANDOFF.md is rewritten for the session.
+- Tests: written first: the admin route's totals, users, games and feeds; the Settings journey moves Star Rail to America and puts it to sleep through the Games table; the Admin journey reads the overview, finds Import feed on Genshin and Dev User in the users, and filters the audit log. `npm run check` passes: 560 tests and 47 journeys.
+- Scope/decisions: the overview reads existing tables; no schema change.
+- Next: Georges's secrets and real data; a deploy when he asks.
+
 ## 2026-10-11 · claude · stack/ui/08-cleanup · #205
 - Done: the leftovers Georges named are gone: ten "Manual" tags (hub header, Activities, the sheet, Endgame, Gear, Profile) and the "By cadence" label. Synced data still says AUTO; Settings keeps NTE's "Manual" status, which explains why. Navigation: a Pulls banner card names every running banner of its kind (Genshin runs two character banners at once) and links each featured character to its page.
 - Tests: written first: a journey visits Activities, Endgame, Gear, Profile and a sheet and finds no Manual tag or By cadence; another opens Kafka's page from a running banner's card on Pulls. The hub header test now checks the tag is gone. `npm run check` passes: 559 tests and 45 journeys.
@@ -297,9 +303,3 @@ Entry format:
 - Tests: written first: `enka.test.ts` (a +15 5★ head reads 705.6 HP and its substats 5.5 CRIT Rate, 5.2 CRIT DMG and 2.6 SPD; a +15 body reads CRIT DMG; an empty showcase is closed) and a sync journey (Kafka created from Enka's Star Rail URL with her relics). The Enka journeys now use an address each, since the route allows 6 calls a minute.
 - Scope/decisions: Enka's Star Rail showcase has no final stats, so stats stay as typed; traces wait for skill ids; ZZZ's showcase waits for a ZZZ catalog.
 - Next: SKPORT's ADR (Proposed), then F12.
-
-## 2026-10-10 · claude · stack/f11/14-hsr-relic-stats · #167
-- Done: `catalogSchema.relicStats` (optional): each relic piece by game id with its slot, set and main and substat groups, and each group's stats by affix id (main: value at +0 and per level; sub: per roll and per step); the Star Rail importer fetches them from Enka's store (`relics.json`, `honker_meta.json`, cached under `hsr-enka`) and the regenerated catalog only adds them (Yatta's data came from the cache unchanged); the Star Rail sheet cites the source.
-- Tests: written first: `catalog/hsr.test.ts` (piece 31011 is a set 101 head with main group 21 and sub group 2; the six slots; both tables' shapes; every piece's set is a catalog set).
-- Scope/decisions: StarRailRes has the same tables but is AGPL-3.0, outside the licences DESIGN.md allows; Enka's API-docs repository carries no licence file but publishes the store for its API's users (noted in the PR for Georges).
-- Next: Enka for Star Rail (read the showcase with these tables).
