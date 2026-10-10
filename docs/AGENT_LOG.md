@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/docs/04-adr-endfield · #169
+- Done: ADR 0009 (Proposed): Endfield's pull history from the game's records link (`ef-webview.gryphline.com`, its own expiring token, no signing), read once like a history link and never stored; the SKPORT account token, which can check in for the account, is never asked for; account data stays manual.
+- Tests: none (a decision record).
+- Scope/decisions: implementation waits for Georges's acceptance and one recorded records answer (the fields are undocumented).
+- Next: F12 (the art store's code).
+
 ## 2026-10-10 · claude · stack/f11/15-enka-hsr · #168
 - Done: Enka for Star Rail (ADR 0005): shared `enkaHsrUrl` and `readEnkaHsr` (level, eidolon, the light cone with name, level and superimposition, and each relic with its set, main stat at its level and substats summed from their rolls, computed from the catalog's relic tables, #167, with the game's stat names in the sheet's words); `syncEnka` takes Star Rail profiles under the same AUTO/MANUAL rule; Settings' Enka card offers Sync builds for Star Rail.
 - Tests: written first: `enka.test.ts` (a +15 5★ head reads 705.6 HP and its substats 5.5 CRIT Rate, 5.2 CRIT DMG and 2.6 SPD; a +15 body reads CRIT DMG; an empty showcase is closed) and a sync journey (Kafka created from Enka's Star Rail URL with her relics). The Enka journeys now use an address each, since the route allows 6 calls a minute.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: `rewards.test.ts` (steps per choice, capped, not owned, owned without a build, no roster change, tags per game), `rewards.integration.test.ts` (listing, goal state, asleep games left out), `due.test.ts` and `reminders.integration.test.ts` (48 h window, off until the goal's reminder is on, sent once).
 - Scope/decisions: the reminder rides the profile's existing reminder rule (no rule, no DM), like the endgame one.
 - Next: `stack/f10/04-calendar` (A4 rebuilt from its board).
-
-## 2026-10-10 · claude · stack/f10/02-event-goals · #126
-- Done: `POST /api/events/:id/goal` makes one goal per user and event (the picked option, the event's `goal.create` stages as its checklist), re-picks until claimed. Ticking an event goal (`POST /api/tasks/:id/complete`) applies its effects once in one transaction with an audit row (`apps/server/src/lib/effectApply.ts`); unticking reverses only what was added. A copy raises the build's dupe field (a weapon's on the build that wields it) up to the game's cap; a character copy with no build starts one (the first copy is the character, each further copy a step up); a weapon copy with no build wielding it grants the weapon if missing.
-- Tests: written first: `eventGoals.integration.test.ts` (pick required and kept, stages, wrong game, apply once and reverse, claimed pick locked, grant only what was missing, copy capped and partial reverse, a copy starting a build whether or not the character was owned).
-- Scope/decisions: the ADR's *starts* trigger (cron-made goals for everyone) and *ends* (closing unclaimed goals in the digest) wait until a screen needs them; goals are made from the calendar.
-- Next: `stack/f10/03-calendar` (A4 rebuilt, with Make goal).
