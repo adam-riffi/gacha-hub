@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f11/03-uigf · #148
+- Done: shared `parseUigf` (UIGF v4.x: the game's section, times from the account's timezone to UTC, `rank_type` required) and `toUigf` (v4.2, times at the profile server's offset, `uigf_gacha_type` for Genshin alone); `PullEntry.record` (gacha type, item, rank; migration `20261011060000_pull_record_json`) so imported pulls export again; `POST /api/instances/:id/pulls/uigf` (4 MB cap; the profile's UID or `?uid=` picks the account, a lone account fits a profile without one and sets its UID; another account's file is refused) and `GET` the same as an attachment. PROJECT-GUIDE's API map lists them and the link routes.
+- Tests: written first: `uigf.test.ts` (accounts and times, refusals, written back and read the same), `uigf.integration.test.ts` (import and its run, pick_uid, the UID choosing, uid_mismatch, no account for the game, export that re-imports with nothing new).
+- Scope/decisions: manual entries have no record ids, so the export carries imported pulls only; files over 4 MB (Vercel's request cap is 4.5 MB) are refused.
+- Next: `f11/04-history-link` (history links fetched once, never stored).
+
 ## 2026-10-10 · claude · stack/f11/02-pull-records · #147
 - Done: `PullEntry.source` (manual, or the import) and `recordId` (the game's record id, unique per profile; migration `20261011050000_pull_records`); `pullBanners[].gachaTypes` for Genshin, Star Rail and ZZZ (sourced to UIGF v4.2 in each sheet); shared `pullsFromRecords` (one entry per record under the banner its gacha type feeds, oldest first with a 10-pull kept in order a millisecond apart, a 5★ featured when a banner of its kind running then features it); server `importPulls` (skips ids already stored or repeated, replaces manual entries on a banner up to its newest imported pull, writes an `ImportRun`).
 - Tests: written first: `pullImport.test.ts` (types to banners and skipped ones, order, featured, lost and unknown), `pullImport.integration.test.ts` (pity and the 50/50 from imported records, the run recorded, re-imports skipped, manual entries replaced and later ones kept). The fixture's record ids are built as strings: past 2^53 they collided.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: `dayRecordFor` (game day at the reset hour, dailies only, open goals incl. farming goals, pulls) and `dayRecord.integration.test.ts` (write-through, rejected change writes nothing, 26-week window); the export fixture moved to a past day.
 - Scope/decisions: one hook instead of a call per route; ~10 queries per change for all of a user's profiles, fine for a few friends. The plan's `04-day-record` is split: this server PR, then the Home UI.
 - Next: `05-home-history`: heatmap from the records, streaks, open goals and pulls gained over time, pin a past day (VIEWING chip, BACK TO TODAY, DAY CLOSED), screenshot beside `dashboard.png`.
-
-## 2026-10-10 · claude · stack/f8/03-schema · #107
-- Done: recurring tasks on five cadences, a monthly or cycle task following a manifest shop or endgame mode by `anchorKey` (`taskAnchor` in the cadence core; tasks, `/dailies` and reminders use it); `GameInstance.uid` and `accountLevel` (limits in `LIMITS`); `CycleResult`, `PassState`, `DayRecord` (dailies done/total, open goals, pulls on hand) with RLS; all in the export. AGENTS.md migration command updated for Prisma 7 (`--from-schema`). #106 merged.
-- Tests: written first: `taskAnchor`, `tasks.integration.test.ts` (monthly, cycle, version windows), UID and level limits, the export; `migrations.test.ts` guards RLS on every created table (it caught the three new ones before the migration enabled it).
-- Scope/decisions: tasks name their manifest entry rather than store dates, so a manifest refresh moves them; a cycle task whose mode left the manifest follows the version. No routes for the new tables yet.
-- Next: `04-day-record` (write-through on every change, history on the dashboard), then the Home history UI (heatmap, open goals, pulls gained, pin a day).
