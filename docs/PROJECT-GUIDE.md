@@ -468,7 +468,7 @@ So the host app stays generic over what all games share (profiles, currencies, r
 - **Reminders.** Before-reset and at-time rules per game profile; idempotent per `(rule, firedFor)`; DM content options.
 - **Export.** `GET /api/export`, round-trips every user-owned table.
 - **Limits.** Every number has a hard limit (`LIMITS`), enforced by the zod DTOs.
-- **Art.** Our own copy first (`VITE_ASSET_BASE`, unused today), then the community fallback (`communityArtUrl` in `packages/shared/src/art.ts`: Enka for Genshin, Yatta for HSR), then initials. Source-internal paths (WuWa Unreal paths) are skipped instead of requested.
+- **Art.** Our own copy first (`VITE_ASSET_BASE`: the R2 bucket the `mirror-art` workflow fills, ADR 0006; unset until Georges creates it), then the community fallback (`communityArtUrl` in `packages/shared/src/art.ts`: Enka for Genshin, Yatta for HSR), then initials. Source-internal paths (WuWa Unreal paths) are skipped instead of requested.
 - **Security.** Discord-only auth, signed session cookie, admin routes rate-limited and audited, cron endpoint behind `CRON_SECRET`, CSP and hardening headers, RLS on every table.
 
 ## 11. API map

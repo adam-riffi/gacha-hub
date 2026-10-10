@@ -28,10 +28,18 @@ Zenless Zone Zero
   Deferred — no source with material costs is available under any license
   (see scripts/catalog/zzz.ts).
 
-Artwork fallbacks (hotlinked, not redistributed)
-  Genshin Impact icons: Enka.Network (https://enka.network/ui/).
-  Honkai: Star Rail icons: Project Yatta (https://sr.yatta.moe/hsr/assets/).
+Artwork
+  Genshin Impact art: Enka.Network (https://enka.network/ui/).
+  Honkai: Star Rail art: Project Yatta (https://sr.yatta.moe/hsr/assets/).
   Content: © HoYoverse / COGNOSPHERE.
+  The app hotlinks these sources, or reads a copy mirrored into our own
+  bucket (scripts/assets/mirror.ts, ADR 0006) for a non-commercial tool used
+  by a few friends; art is removed on request.
+
+Star Rail relic stat tables
+  Enka.Network's published store (https://github.com/EnkaNetwork/API-docs,
+  store/hsr), imported into the catalog to read showcases. Game data
+  © HoYoverse / COGNOSPHERE.
 
 Banners and events
   Imported from HoYoverse's public in-game announcement feed

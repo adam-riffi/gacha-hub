@@ -18,6 +18,8 @@ const CSP: Record<string, string[]> = {
     "https://sr.yatta.moe",
     "https://cdn.discordapp.com",
     "https://*.public.blob.vercel-storage.com",
+    // Our own copy of the game art, in a public R2 bucket (ADR 0006).
+    "https://*.r2.dev",
   ],
   "connect-src": ["'self'"],
   "object-src": ["'none'"],

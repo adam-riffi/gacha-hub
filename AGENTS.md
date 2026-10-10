@@ -34,6 +34,7 @@ Operating manual for coding agents in this repository. Codex and Copilot read th
 | Initial JavaScript budget (after a build) | `npm run budget` |
 | Scaffold a new game (ADR 0004: module with a placeholder manifest that passes the conformance suite, reference sheet, web sheet stub, registries) | `npm run game:new -- <key> "<Name>"` |
 | Regenerate a catalog (delete `scripts/catalog/.cache/<game>` first for fresh data) | `npm run catalog:install` then `npm run catalog:<game>` |
+| Mirror game art to the R2 bucket (ADR 0006; R2 variables in the environment, or `--dry-run`, or `--out DIR`) | `npm run assets:install` then `npm run assets:mirror -- --game <key>` |
 | New migration (offline) | `npx prisma migrate diff --from-schema <before> --to-schema prisma/schema.prisma --script` |
 | E2E smoke (Playwright; `npx playwright install chromium` once) | `npm run build -w @gacha/web && npm run e2e` |
 | Bundle harnesses (throwaway SQLite database) | `npm run harness` |
