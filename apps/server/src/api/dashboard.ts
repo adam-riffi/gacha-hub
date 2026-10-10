@@ -43,7 +43,7 @@ export async function registerDashboardRoutes(app: FastifyInstance) {
     const pullRows = await prisma.pullEntry.findMany({
       where: { gameInstanceId: { in: instances.map((g) => g.id) } },
       orderBy: [{ createdAt: "asc" }, { id: "asc" }],
-      select: { gameInstanceId: true, bannerKey: true, count: true, fiveStar: true, featured: true, createdAt: true },
+      select: { gameInstanceId: true, bannerKey: true, count: true, fiveStar: true, featured: true, record: true, createdAt: true },
     });
     // The last 26 weeks of day records (the Home heatmap, open goals, pulls gained).
     const dayRows = await prisma.dayRecord.findMany({

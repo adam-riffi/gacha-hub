@@ -25,6 +25,8 @@ export interface PullBannerRules {
   spark?: number;
   /** The game's own banner types whose pulls feed this pity, as its history names them (UIGF `gacha_type`). */
   gachaTypes?: readonly string[];
+  /** Each banner of this type keeps its own pity (Endfield's Arsenal): pity counts only the newest banner's pulls. */
+  pityPerPool?: boolean;
 }
 
 /**
@@ -35,6 +37,19 @@ export interface PullEntryLike {
   count: number;
   fiveStar: boolean;
   featured?: boolean | null;
+  /** The imported record, where its banner (`pool`) is kept. */
+  record?: unknown;
+}
+
+const poolOf = (e: PullEntryLike) => (e.record as { pool?: string } | null | undefined)?.pool;
+
+/** The entries since the newest banner began: imported ones name their banner; those logged by hand belong to the one they follow. */
+function sinceNewestPool(entries: readonly PullEntryLike[]): readonly PullEntryLike[] {
+  const newest = [...entries].reverse().map(poolOf).find(Boolean);
+  if (!newest) return entries;
+  let before = entries.length - 1;
+  while (before >= 0 && (poolOf(entries[before]!) === undefined || poolOf(entries[before]!) === newest)) before -= 1;
+  return entries.slice(before + 1);
 }
 
 export interface PityState {
@@ -48,7 +63,8 @@ export interface PityState {
 }
 
 /** Pity and guarantee from chronological entries; derived, never stored. */
-export function pityState(entries: readonly PullEntryLike[], rules: PullBannerRules): PityState {
+export function pityState(all: readonly PullEntryLike[], rules: PullBannerRules): PityState {
+  const entries = rules.pityPerPool ? sinceNewestPool(all) : all;
   let pity = 0;
   let guaranteed = false;
   let fiveStars = 0;

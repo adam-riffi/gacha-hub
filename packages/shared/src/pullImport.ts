@@ -11,6 +11,8 @@ export interface PullRecord {
   itemId?: string;
   /** The item's name, when the history gives no id (Genshin's official log). */
   name?: string;
+  /** The banner the pull was made on, where each banner keeps its own pity (Endfield's pools). */
+  pool?: string;
 }
 
 /** A banner on record (the Banner table): when it ran and what it featured. */
@@ -30,7 +32,7 @@ export interface ImportedPull {
   featured: boolean | null;
   catalogId: string | null;
   /** What it keeps to travel again as UIGF. */
-  record: { gachaType: string; itemId: string | null; rank: number };
+  record: { gachaType: string; itemId: string | null; rank: number; pool?: string };
 }
 
 /** Record ids are digit strings of varying length: compare them as numbers. */
@@ -62,7 +64,7 @@ export function pullsFromRecords(game: GameDefinition, records: readonly PullRec
       const running = windows.filter((w) => w.kind === banner.key && w.startsAt <= r.time && r.time < w.endsAt);
       if (running.length) featured = running.some((w) => w.featured.some((f) => f.catalogId === r.itemId));
     }
-    pulls.push({ recordId: r.id, bannerKey: banner.key, createdAt: new Date(r.time.getTime() + offset), fiveStar, featured, catalogId: r.itemId ?? null, record: { gachaType: r.gachaType, itemId: r.itemId ?? null, rank: r.rank } });
+    pulls.push({ recordId: r.id, bannerKey: banner.key, createdAt: new Date(r.time.getTime() + offset), fiveStar, featured, catalogId: r.itemId ?? null, record: { gachaType: r.gachaType, itemId: r.itemId ?? null, rank: r.rank, ...(r.pool ? { pool: r.pool } : {}) } });
   }
   return { pulls, skipped: records.length - pulls.length };
 }

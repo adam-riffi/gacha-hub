@@ -46,6 +46,7 @@ export function recordsUrl(link: RecordsLink, gachaType: string, seqId: string |
 
 type Rec = {
   kind?: string;
+  poolId?: string;
   charId?: string;
   weaponId?: string;
   charName?: string;
@@ -83,6 +84,7 @@ export function readRecordsPage(
       rank: r.rarity ?? 0,
       itemId: r.charId ?? r.weaponId,
       name: r.charName ?? r.weaponName,
+      ...(r.poolId ? { pool: r.poolId.slice(0, 64) } : {}),
     }));
   const last = list.at(-1)?.seqId;
   return { records, next: page.data.hasMore && last ? last : null };
