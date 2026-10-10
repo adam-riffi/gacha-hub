@@ -6,7 +6,7 @@ test("Characters: splash cards with their KPIs, counts, search, wishlist and own
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   // HSR, not Genshin: the smoke journey adds Genshin through the library.
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
-  const kafkaBuild = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1005", doc: { level: 80, eidolon: 1, stats: { "CRIT Rate": 60, "CRIT DMG": 150, SPD: 134 } } } })).json()) as { id: string };
+  const kafkaBuild = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1005", doc: { level: 80, eidolon: 1, lightCone: { catalogId: "23006", name: "Patience Is All You Need", level: 80, superimposition: 2 }, stats: { "CRIT Rate": 60, "CRIT DMG": 150, SPD: 134 } } } })).json()) as { id: string };
   // The card shows the default build: this one.
   await page.request.put(`/api/characters/${kafkaBuild.id}`, { data: { isDefault: true } });
   // Welt starts unowned and off the wishlist, whatever other journeys did.
@@ -29,6 +29,10 @@ test("Characters: splash cards with their KPIs, counts, search, wishlist and own
   await expect(page.getByRole("article")).toHaveCount(1);
   // The card shows the weapon type (Star Rail's path) and tints to the element.
   await expect(kafka).toContainText("Nihility");
+  // Its default build's weapon: icon, level and refinement.
+  const weapon = kafka.locator(".ch-weapon");
+  await expect(weapon.getByRole("img", { name: "Patience Is All You Need" })).toBeVisible();
+  await expect(weapon).toContainText("Lv 80 · S2");
   expect(await kafka.evaluate((e) => getComputedStyle(e).getPropertyValue("--el").trim())).not.toBe("");
   // The whole card opens the build.
   await kafka.click();
@@ -42,6 +46,16 @@ test("Characters: splash cards with their KPIs, counts, search, wishlist and own
   await expect(welt.getByRole("button", { name: "Wishlist" })).toHaveAttribute("aria-pressed", "true");
   await welt.getByRole("button", { name: "Own" }).click();
   await expect(welt).not.toContainText("Not owned");
+
+  // Element, weapon and rarity filter as chips (Georges, 2026-10-11: icons, not lists).
+  await page.getByRole("searchbox", { name: "Search" }).fill("");
+  const lightning = page.getByRole("group", { name: "Element" }).getByRole("button", { name: "Lightning" });
+  await lightning.click();
+  await expect(lightning).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByRole("article", { name: "Kafka" })).toBeVisible();
+  await expect(page.getByRole("article", { name: "Welt" })).toHaveCount(0);
+  await lightning.click();
+  await expect(page.getByRole("combobox", { name: "Element" })).toHaveCount(0);
 
   // The counts are filters: Wishlist shows only the wishlisted, pressed until clicked again.
   await page.getByRole("searchbox", { name: "Search" }).fill("");
@@ -120,7 +134,10 @@ test("Characters: every build in one table, and several characters at once @smok
   // Several characters at once: select two unowned ones and own both.
   await page.getByRole("group", { name: "Show" }).getByRole("button", { name: "Characters" }).click();
   await page.getByRole("button", { name: "Select", exact: true }).click();
-  await page.getByRole("checkbox", { name: "Select Arlan" }).check();
+  // A click anywhere on the card selects it; it no longer opens the character.
+  await page.getByRole("article", { name: "Arlan" }).click();
+  await expect(page.getByRole("checkbox", { name: "Select Arlan" })).toBeChecked();
+  await expect(page).toHaveURL(new RegExp(`/games/${id}/characters$`));
   await page.getByRole("checkbox", { name: "Select Herta" }).check();
   const selection = page.getByRole("region", { name: "Selection" });
   await expect(selection).toContainText("2 selected");
