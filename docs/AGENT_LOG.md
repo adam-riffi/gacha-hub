@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f10/14-wishlist · #138
+- Done: `WishlistItem` (per profile, kind and catalog id, once each; migration `20261011020000_wishlist_role` with RLS) and `GET/PUT /api/instances/:id/wishlist`; `Character.role` (one of the game's KPI roles, refused otherwise); `packages/shared/src/builds.ts`: `buildKpis` (the role's three KPIs: crit value from the gear's substats, "A / B" pairs, stats with % where they are rates) and `gearSetLabel` ("Whimsy 4pc", "Gladiator 2pc + Whimsy 2pc"). DESIGN.md §8 lists both.
+- Tests: written first: `builds.test.ts` (KPIs per role, the first role by default, each game's stat names, set bonuses), `wishlist.integration.test.ts` (order and once each, unknown units refused, roles kept among the game's).
+- Scope/decisions: a build's role defaults to the game's first (damage, attack); crit value counts the gear's substats only, as the community reads it.
+- Next: `stack/f10/15-characters` (G4 splash cards).
+
 ## 2026-10-10 · claude · stack/f10/13-savings · #137
 - Done: the savings planner beside History on Pulls (WIREFRAMES.md G3): each event banner's featured 5★ in order, sharing the limited pulls; per target what it needs (worst case or on average, a radio), Covered with its chance or short by N with the chance now and with the forecast (`savingsPlan`, #135).
 - Tests: written first: `e2e/pulls.spec.ts` (two targets for Star Rail; switching to Average changes what the first needs). Checked at 1440 on the dev account.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: `charts.test.ts` (arc endpoints and flags, strips drawn and lit, the exponential rise, polar, paths, `niceMax` with a fast-check property); the E2E journeys and axe pass over the new panels, every chart labelled with its numbers.
 - Scope/decisions: No chart library (ADR 0007). Goal types: character and weapon plans by origin, checklists as gear, hand-typed goals as gameplay (V plan). Backlog and pull history come with `07-charts-more`.
 - Next: `stack/v/07-charts-more`.
-
-## 2026-10-09 · claude · stack/v/05-carousel · #97
-- Done: `packages/shared/src/carousel.ts` (nearest deadline first; 6 s + 3 s per extra banner, split between a game's banners; stepping per banner or game, wrapping), `useCarousel` (one clock, held on hover and focus, off under reduced motion), `CarouselCard` (pips, chevrons, 4 px accent bar) and `BannersCarousel` on Home (one banner over its featured unit's art: Enka gacha splash, Yatta large portrait, hatching otherwise; ENDS IN as a dark or paper tag; Bodoni title band). `Countdown` gains a tag variant, `GameIcon` a list of fallbacks.
-- Tests: `carousel.test.ts` (timing, ordering, stepping, a fast-check lap property); `visual.spec.ts` (nearest deadline first as a paper tag, Next shows the later banner as a dark tag, hover and focus hold, reduced motion stops).
-- Scope/decisions: No carousel library (ADR 0007). The Dailies and Battle-pass cards join the same clock in `09-home`.
-- Next: `stack/v/06-charts-core`.
