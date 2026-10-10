@@ -35,5 +35,14 @@
 .pl-form select { width: auto; }
 .pl-compact-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 16px; margin-bottom: 10px; }
 .pl-compact-row .mn { font-size: 12px; }
-.pl-history { margin-top: 4px; }
+.pl-bottom { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; align-items: start; }
+.pl-modes { display: flex; gap: 14px; }
+.pl-modes label { display: inline-flex; align-items: center; gap: 6px; margin: 0; color: var(--text); text-transform: none; letter-spacing: 0; font: 400 13px var(--font-body); cursor: pointer; }
+.pl-modes input[type="radio"] { width: 14px; height: 14px; min-height: 0; margin: 0; accent-color: var(--accent); }
+.pl-target { display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; grid-template-areas: "n name needs" "n name chip" "n name fc"; column-gap: 12px; row-gap: 4px; align-items: center; padding: 12px 0; border-top: 1px solid var(--surface-3); }
+.pl-target > :nth-child(1) { grid-area: n; }
+.pl-target > :nth-child(2) { grid-area: name; }
+.pl-target > .pl-needs { grid-area: needs; justify-self: end; font-size: 13px; }
+.pl-target > .badge { grid-area: chip; justify-self: end; }
+.pl-target > :last-child:not(.badge):not(.pl-needs) { grid-area: fc; justify-self: end; font-size: 12px; }
 .pl-note { margin: 10px 0 0; font-size: 12px; }
