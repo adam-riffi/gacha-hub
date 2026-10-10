@@ -40,3 +40,6 @@ playwright-report/
 prisma/e2e.db*
 prisma/harness.db*
 apps/server/src/generated/
+
+# The scaffolder test writes a throwaway module here.
+packages/shared/src/games/__scaffold-test__/

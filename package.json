@@ -26,6 +26,7 @@
     "harness": "npm run build:server && node scripts/harness/run.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "game:new": "node scripts/game-new.mjs",
     "catalog:install": "npm --prefix scripts/catalog install",
     "catalog:genshin": "npm --prefix scripts/catalog run genshin",
     "catalog:hsr": "npm --prefix scripts/catalog run hsr",
