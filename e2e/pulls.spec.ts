@@ -25,7 +25,7 @@ test("Pulls: what you have and what is coming, an event banner's status, pity an
 
   await banner.getByRole("button", { name: "Log a 5★" }).click();
   await banner.getByLabel("5★ at pull").fill("7");
-  await banner.getByLabel("Featured").uncheck();
+  await banner.getByLabel("Featured", { exact: true }).uncheck();
   await banner.getByRole("button", { name: "Save 5★" }).click();
   await expect(banner.getByTestId("pity")).toHaveText("3");
   await expect(banner.getByRole("button", { name: "Guaranteed" })).toHaveAttribute("aria-pressed", "true");
