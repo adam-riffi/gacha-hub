@@ -25,7 +25,7 @@ test("Neverness to Everness works by hand on every screen @smoke", async ({ page
 
   // Pulls: the Limited Board's pity.
   await tabs.getByRole("link", { name: "Pulls" }).click();
-  const board = page.locator(".pull-banner", { hasText: "Limited Board" });
+  const board = page.getByRole("region", { name: /Limited Board/ });
   await board.getByRole("button", { name: "+10" }).click();
   await expect(board.getByTestId("pity")).toHaveText("10");
 
