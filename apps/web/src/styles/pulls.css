@@ -1,0 +1,39 @@
+/* Pulls (WIREFRAMES.md G3), in the dashboard's look (VISUAL-DESIGN.md). */
+.pl-top { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-bottom: 28px; }
+.pl-top .kpi-value { margin: 4px 0 10px; }
+.pl-label { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.pl-banners { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; align-items: start; margin-bottom: 24px; }
+.pl-banner-head { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.pl-banner-head h3 { margin-bottom: 10px; }
+.pl-banner-head .mn { font-size: 12px; }
+.pl-art { width: 52px; height: 52px; flex: none; }
+.pl-status { display: flex; align-items: center; gap: 14px; }
+.pl-reason { margin: 10px 0 14px; font-size: 14px; }
+.pl-meter-row { display: grid; grid-template-columns: 80px minmax(0, 1fr) auto; align-items: center; gap: 12px; margin-bottom: 12px; }
+.pl-meter { position: relative; height: 8px; background: var(--surface-3); }
+.pl-meter > span { display: block; height: 100%; background: var(--accent); }
+.pl-meter > i { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--text); }
+.pl-pity { font-size: 15px; }
+.pl-odds { margin-bottom: 10px; }
+.pl-curve { display: block; width: 100%; height: auto; margin: 6px 0 12px; overflow: visible; }
+.pl-curve text { fill: var(--text-muted); font: 400 10px var(--font-mono); }
+.pl-curve .pl-pulled { fill: var(--surface-2); }
+.pl-curve .pl-grid { stroke: var(--surface-3); }
+.pl-curve .pl-dash { stroke: var(--hairline-strong); stroke-dasharray: 3 3; }
+.pl-curve .pl-line { fill: none; stroke: var(--text); stroke-width: 2; }
+.pl-curve .pl-you { stroke: var(--accent); stroke-width: 2; }
+.pl-curve .pl-you-label { fill: var(--accent); }
+.pl-curve .pl-reach { fill: var(--bg); stroke: var(--text); stroke-width: 2; }
+.pl-headline { display: flex; align-items: baseline; gap: 12px; padding: 10px 14px; margin-bottom: 12px; background: var(--surface-2); font-size: 14px; }
+.pl-headline .kpi-value { font-size: 36px; }
+.pl-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.pl-actions .btn[aria-pressed="true"] { background: var(--paper); border-color: var(--paper); color: var(--on-paper); }
+.pl-form { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px; margin-top: 12px; padding: 12px; border: 1px solid var(--hairline); }
+.pl-form label { display: flex; flex-direction: column; gap: 4px; margin: 0; }
+.pl-form input[type="number"] { width: 90px; }
+.pl-form .pl-check { flex-direction: row; align-items: center; color: var(--text); }
+.pl-form select { width: auto; }
+.pl-compact-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 16px; margin-bottom: 10px; }
+.pl-compact-row .mn { font-size: 12px; }
+.pl-history { margin-top: 4px; }
+.pl-note { margin: 10px 0 0; font-size: 12px; }
