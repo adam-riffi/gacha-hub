@@ -95,3 +95,34 @@ test("Characters: the Weapons view with holders, owning and the wishlist @smoke"
   await page.goto(`/games/${id}/equipment`);
   await expect(page).toHaveURL(new RegExp(`/games/${id}/characters$`));
 });
+
+test("Characters: every build in one table, and several characters at once @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1009", doc: { level: 60 } } });
+  // Arlan and Herta start unowned, whatever other journeys did.
+  await page.request.put(`/api/instances/${id}/ownership`, { data: { items: ["1008", "1013"].map((catalogId) => ({ kind: "character", catalogId, owned: false })) } });
+  await page.goto(`/games/${id}/characters`);
+
+  // Builds: every build of the game in one table, its status changed in place (Georges, 2026-10-10: "where can I see my builds").
+  await page.getByRole("group", { name: "Show" }).getByRole("button", { name: "Builds" }).click();
+  const asta = page.getByRole("table", { name: "Builds" }).getByRole("row", { name: /Asta/ }).first();
+  await expect(asta.getByRole("link", { name: /Asta/ })).toBeVisible();
+  await asta.getByRole("combobox", { name: /status/ }).selectOption("good");
+  await expect
+    .poll(async () => ((await (await page.request.get(`/api/instances/${id}/characters`)).json()) as { catalogId: string; buildStatus: string }[]).some((b) => b.catalogId === "1009" && b.buildStatus === "good"))
+    .toBe(true);
+
+  // Several characters at once: select two unowned ones and own both.
+  await page.getByRole("group", { name: "Show" }).getByRole("button", { name: "Characters" }).click();
+  await page.getByRole("button", { name: "Select", exact: true }).click();
+  await page.getByRole("checkbox", { name: "Select Arlan" }).check();
+  await page.getByRole("checkbox", { name: "Select Herta" }).check();
+  const selection = page.getByRole("region", { name: "Selection" });
+  await expect(selection).toContainText("2 selected");
+  await selection.getByRole("button", { name: "Own", exact: true }).click();
+  await expect(page.getByRole("article", { name: "Arlan" })).not.toContainText("Not owned");
+  await expect(page.getByRole("article", { name: "Herta" })).not.toContainText("Not owned");
+});
