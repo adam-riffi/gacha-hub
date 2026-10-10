@@ -41,3 +41,37 @@ export function hoyolabFailure(json: unknown): HoyolabError | null {
   const page = (typeof json === "object" && json ? json : {}) as { retcode?: number; data?: unknown };
   return page.retcode === 0 && page.data ? null : failure(page.retcode);
 }
+
+type Notes = {
+  current_resin?: number;
+  finished_task_num?: number;
+  total_task_num?: number;
+  is_extra_task_reward_received?: boolean;
+  current_stamina?: number;
+  current_reserve_stamina?: number;
+  current_train_score?: number;
+  max_train_score?: number;
+  energy?: { progress?: { current?: number } };
+  vitality?: { current?: number; max?: number };
+};
+
+/**
+ * A role's real-time notes as our currencies and whether its daily is done:
+ * Genshin's commissions once their reward is taken, Star Rail's daily
+ * training, ZZZ's vitality (daily missions) full.
+ */
+export function readNotes(gameKey: string, json: unknown): { currencies: Record<string, number>; dailyDone: boolean } | { error: HoyolabError } {
+  const error = hoyolabFailure(json);
+  if (error) return { error };
+  const n = (json as { data: Notes }).data;
+  if (gameKey === "genshin") {
+    return { currencies: { resin: n.current_resin ?? 0 }, dailyDone: Boolean(n.total_task_num && n.finished_task_num === n.total_task_num && n.is_extra_task_reward_received) };
+  }
+  if (gameKey === "hsr") {
+    return {
+      currencies: { trailblazePower: n.current_stamina ?? 0, reservedTrailblazePower: n.current_reserve_stamina ?? 0 },
+      dailyDone: Boolean(n.max_train_score && (n.current_train_score ?? 0) >= n.max_train_score),
+    };
+  }
+  return { currencies: { battery: n.energy?.progress?.current ?? 0 }, dailyDone: Boolean(n.vitality?.max && (n.vitality.current ?? 0) >= n.vitality.max) };
+}

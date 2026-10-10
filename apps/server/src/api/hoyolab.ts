@@ -5,6 +5,7 @@ import { prisma } from "../lib/prisma.js";
 import { requireUser } from "../auth/plugin.js";
 import { linkKeys, sealSecret, type LinkKeys } from "../lib/linkSecret.js";
 import { hoyolabGet } from "../lib/hoyolab.js";
+import { syncLink } from "../lib/hoyolabSync.js";
 
 /** The two read cookies HoYoLAB needs (ADR 0005), never cookie_token_v2. */
 const linkInput = z.object({
@@ -46,5 +47,18 @@ export async function registerHoyolabRoutes(app: FastifyInstance) {
       });
     }
     return { link: linkedAccountDto.parse(link), games: cards.games };
+  });
+
+  // Sync now: the same read as the cron's, on demand.
+  app.post<{ Params: { id: string } }>("/api/links/:id/sync", { preHandler: requireUser }, async (req, reply) => {
+    const link = await prisma.linkedAccount.findFirst({ where: { id: req.params.id, userId: req.user!.id, provider: "hoyolab", secret: { not: null } } });
+    if (!link) return reply.code(404).send({ error: "not_found" });
+    try {
+      linkKeys();
+    } catch {
+      return reply.code(503).send({ error: "linking_off" });
+    }
+    const r = await syncLink(link, new Date());
+    return "error" in r ? reply.code(400).send({ error: r.error }) : r;
   });
 }

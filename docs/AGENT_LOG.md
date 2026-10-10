@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f11/09-hoyolab-notes · #155
+- Done: shared `readNotes` (Genshin's resin and commissions with their reward; Star Rail's power, reserve and daily training; ZZZ's battery and vitality) and `hoyolabFailure`; server `syncLink` (each linked profile with a UID: currencies upserted, the game's first daily ticked once per cycle, the link's last sync, an `ImportRun` of kind notes; a refusal sets `attention` and the error) and `syncDueLinks` (links idle 30 minutes, each claimed by an update before it is read, ten per tick; nothing without `LINK_SECRET_KEY`); `POST /api/links/:id/sync` (Sync now); the cron tick reports `links`.
+- Tests: written first: `hoyolabNotes.test.ts` (each game's notes and refusals), `hoyolabSync.integration.test.ts` (Sync now sets resin, power and reserve and ticks both dailies, records the run; a refusal marks attention and the cron skips it; the cron syncs once per 30 minutes; another user's link is 404).
+- Scope/decisions: the profile's region picks the server; expeditions, weekly bosses and realm currency are not mapped yet; re-linking clears `attention`.
+- Next: the HoYoLAB card in Settings (link form, Sync now, Revoke), then the battle chronicle and Enka.
+
 ## 2026-10-10 · claude · stack/f11/08-hoyolab-link · #154
 - Done: HoYoLAB linking (ADR 0005): shared `readRecordCards` (Genshin, Star Rail and ZZZ roles with their region; not logged in, not public, refused) and `hoyolabNotesUrl` (each game's notes host and server per region, from genshin.py); server `dsHeader` (time, six letters, salted MD5 with the overseas salt) and `hoyolabGet` (signed, read-only GET with the cookie); `POST /api/links/hoyolab` (`ltuid` and `ltoken` only, never `cookie_token_v2`; checked against the record cards, sealed for "userId:hoyolab", one account per user, the profiles it plays get their UID and level where none was typed; 503 `linking_off` without `LINK_SECRET_KEY`). PROJECT-GUIDE lists it and the account routes.
 - Tests: written first: `hoyolab.test.ts` (the DS header, cards read and errors named, notes URLs), `hoyolab.integration.test.ts` (the signed card request, nothing secret in the answer, the row sealed and opening to the cookie, the profile filled; a refused cookie keeps nothing; off without the key).
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: `endgameNow`, `cycles.integration.test.ts`, E2E `endgame.spec.ts`.
 - Scope/decisions: floors, teams, opening characters and boss times are not built (nothing records them yet).
 - Next: `11-endgame-history` (tiles, line chart, table, older cycles, CSV, typing past cycles).
-
-## 2026-10-10 · claude · stack/f8/09-passes · #114
-- Done: PassState routes (battle pass level and weekly XP within the manifest's caps; 30-day pass days left stored as an end at a daily reset, within its stacking limit); shared `passView` (level within the version, XP within the week, levels a day to finish, days left); Activities shows and updates both. #113 merged.
-- Tests: written first: `passView`, `passes.integration.test.ts`, the Activities journey's pass steps.
-- Scope/decisions: values typed before the current version or week read as 0 instead of carrying stale.
-- Next: `10-endgame` (CycleResult routes, the Endgame tab per G2, the 24 h reminder).
