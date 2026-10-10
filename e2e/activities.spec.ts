@@ -54,3 +54,19 @@ test("a game's Activities tab: stamina, the daily, weekly and monthly lists, cyc
   await monthly.getByRole("button", { name: "Save" }).click();
   await expect(monthly).toContainText("23 days left");
 });
+
+test("the hub carries no leftover labels: no Manual tags, no By cadence @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  const build = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1005" } })).json()) as { id: string };
+
+  // Georges, 2026-10-10: "useless artifacts left from your thinking, like those Manual cards or the By cadence".
+  for (const path of [`/games/${id}`, `/games/${id}/endgame`, `/games/${id}/gear`, `/games/${id}/profile`, `/characters/${build.id}`]) {
+    await page.goto(path);
+    await expect(page.getByRole("heading").first()).toBeVisible();
+    await expect(page.locator(".tag", { hasText: /^Manual$/ })).toHaveCount(0);
+    await expect(page.getByText("By cadence", { exact: true })).toHaveCount(0);
+  }
+});

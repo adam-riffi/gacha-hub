@@ -107,3 +107,19 @@ test("Pulls for Endfield: a 6★ is the top pull, and the Arsenal spends Arsenal
     await page.request.delete(`/api/instances/${id}`);
   }
 });
+
+test("Pulls: a running banner's featured character opens its page @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  const iso = (days: number) => new Date(Date.now() + days * 86_400_000).toISOString();
+  const upload = await page.request.post("/api/admin/payload", {
+    data: { kind: "banners", gameKey: "hsr", items: [{ key: "e2e-nav", name: "E2E nav warp", kind: "character", startsAt: iso(-1), endsAt: iso(20), featured: [{ catalogId: "1005", kind: "character" }] }] },
+  });
+  expect(upload.ok()).toBe(true);
+  await page.goto(`/games/${id}/pulls`);
+  await page.getByRole("region", { name: "Character event warp" }).getByRole("link", { name: "Kafka" }).click();
+  await expect(page).toHaveURL(new RegExp(`/games/${id}/units/1005$`));
+  await page.request.delete("/api/admin/banners/hsr/e2e-nav");
+});
