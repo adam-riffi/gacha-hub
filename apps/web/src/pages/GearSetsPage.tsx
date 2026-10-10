@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import type { CatalogGearSet, CharacterDto } from "@gacha/shared";
+import type { CatalogGearSet, CharacterDto, GearPieceDto } from "@gacha/shared";
 import { api } from "../lib/api";
 import { useCatalog } from "../lib/catalog";
 import { assetUrl, communityAssetUrl } from "../lib/assets";
@@ -32,7 +32,7 @@ export function GearSetsPage() {
   const [search, setSearch] = useState("");
   const [rarity, setRarity] = useState<number | null>(null);
   const [usedOnly, setUsedOnly] = useState(false);
-  const [view, setView] = useState<"sets" | "inventory" | "plan">("sets");
+  const [chosen, setView] = useState<"sets" | "inventory" | "plan" | null>(null);
 
   const { data: instance } = useQuery({
     queryKey: ["instance", id],
@@ -40,6 +40,10 @@ export function GearSetsPage() {
     enabled: Boolean(id),
   });
   const { catalog, isLoading } = useCatalog(instance?.gameKey);
+  // Genshin alone has the artifact bag (inventory and farm targets); it opens on the inventory (WIREFRAMES.md G6).
+  const hasBag = instance?.gameKey === "genshin";
+  const view = chosen ?? (hasBag ? "inventory" : "sets");
+  const { data: bag } = useQuery({ queryKey: ["gear", id], queryFn: () => api.get<GearPieceDto[]>(`/api/instances/${id}/gear`), enabled: hasBag });
   const { data: builds } = useQuery({
     queryKey: ["builds", id],
     queryFn: () => api.get<CharacterDto[]>(`/api/instances/${id}/characters`),
@@ -78,27 +82,45 @@ export function GearSetsPage() {
       <div style={{ marginBottom: 14 }}>
         <GameTabs instanceId={id!} active="gear" gameKey={instance.gameKey} />
       </div>
-      <div className="page-head">
-        <div className="row">
-          <span className="badge">{label}</span>
-          <span className="badge">{usedBy.size} used by your builds</span>
-        </div>
-        {instance.gameKey === "genshin" && (
+      <section className="card gr-head">
+        {hasBag && (
           <Segmented
             label="View"
             value={view}
             onChange={setView}
             options={[
-              { value: "sets", label: "Sets" },
               { value: "inventory", label: "Inventory" },
-              { value: "plan", label: "Plan" },
+              { value: "sets", label: "Sets" },
+              { value: "plan", label: "Farm targets" },
             ]}
           />
         )}
-      </div>
+        <span className="badge">{label}</span>
+        <span className="badge">{usedBy.size} used by your builds</span>
+        <span className="ch-sp" />
+        <span className="tag">Manual</span>
+      </section>
 
       {view === "inventory" ? (
-        <GearInventory instanceId={id!} gameKey={instance.gameKey} sets={sets} builds={builds ?? []} />
+        <div className="gr-page">
+          <GearInventory instanceId={id!} gameKey={instance.gameKey} sets={sets} builds={builds ?? []} />
+          <section className="card gr-storage" aria-label="Storage">
+            <h3>Storage</h3>
+            {(() => {
+              const equipped = (builds ?? []).reduce((n, b) => n + Object.values((b.doc as { artifacts?: Record<string, { setName?: string }> }).artifacts ?? {}).filter((p) => p?.setName).length, 0);
+              const total = (bag?.length ?? 0) + equipped;
+              return (
+                <>
+                  <div className="kpi-value">
+                    {total} <small>{total === 1 ? "piece" : "pieces"}</small>
+                  </div>
+                  <p className="mu gr-note">{bag?.length ?? 0} in the bag, {equipped} on builds. The game&apos;s cap is not on record yet, so no warning.</p>
+                  <button className="btn" onClick={() => setView("plan")}>Farm targets →</button>
+                </>
+              );
+            })()}
+          </section>
+        </div>
       ) : view === "plan" ? (
         <ArtifactPlanner instanceId={id!} gameKey={instance.gameKey} sets={sets} builds={builds ?? []} />
       ) : sets.length === 0 ? (
