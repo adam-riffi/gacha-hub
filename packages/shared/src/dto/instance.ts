@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { LIMITS } from "../common.js";
-import { gameKeySchema, idSchema, isoDate } from "./common.js";
+import { gameKeySchema, idSchema, isoDate, kpiTargetsInput } from "./common.js";
 
 /** A user's profile for one game (exactly one per user per game). */
 export const instanceDto = z.object({
@@ -12,6 +12,8 @@ export const instanceDto = z.object({
   uid: z.string().nullable(),
   accountLevel: z.number().int().nullable(),
   worldLevel: z.number().int().nullable(),
+  /** Default KPI targets for the game's builds without their own. */
+  kpiTargets: z.record(z.string(), z.number()).nullable().default(null),
   createdAt: isoDate,
 });
 export type InstanceDto = z.infer<typeof instanceDto>;
@@ -29,5 +31,7 @@ export const updateInstanceInput = z.object({
   accountLevel: z.number().int().min(1).max(LIMITS.accountLevel).nullable().optional(),
   /** Checked against the game's own highest (`manifest.worldLevel.max`) by the route. */
   worldLevel: z.number().int().min(0).max(LIMITS.worldLevel).nullable().optional(),
+  /** The game's default KPI targets; null clears them. */
+  kpiTargets: kpiTargetsInput.nullable().optional(),
 });
 export type UpdateInstanceInput = z.infer<typeof updateInstanceInput>;

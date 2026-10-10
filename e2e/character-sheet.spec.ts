@@ -52,9 +52,17 @@ test("Character sheet: KPI targets on the tiles, and the teams the character is 
 
   await expect(page.getByRole("region", { name: "Used in" })).toContainText("E2E Kafka DoT");
 
+  // This build's targets become the game's defaults, which a build without its own shows.
+  await page.getByRole("button", { name: "Make these the game's defaults" }).click();
+  await expect(page.getByText("Default targets saved")).toBeVisible();
+
   // A second build of the same character (named builds came from the old overview).
   await page.getByRole("button", { name: "+ Another build" }).click();
   await expect(page).not.toHaveURL(new RegExp(build.id));
   await expect(page).toHaveURL(/\/characters\//);
   await expect(page.getByRole("heading", { name: /Kafka/ })).toBeVisible();
+  const spd2 = page.getByRole("region", { name: "KPIs" }).getByRole("group", { name: "SPD" });
+  await expect(spd2.getByRole("spinbutton", { name: "SPD target" })).toHaveValue("134");
+  await expect(spd2).toContainText("default");
+  await page.request.put(`/api/instances/${id}`, { data: { kpiTargets: null } });
 });

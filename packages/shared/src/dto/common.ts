@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { LIMITS } from "../common.js";
 
 /* Shared building blocks for DTOs. Output DTOs accept what Prisma returns
  * (Date objects, nullable Json) and normalize to a clean JSON shape
@@ -26,3 +27,8 @@ export const slugSchema = z
 export const nonNeg = z.number().min(0);
 export const nonNegInt = z.number().int().min(0);
 export const jsonValue = z.unknown();
+
+/** A target per numeric KPI, for a build or as a game's defaults (checked against the game's KPIs on save). */
+export const kpiTargetsInput = z
+  .record(z.string().max(60), z.number().min(0).max(LIMITS.kpiTarget))
+  .refine((t) => Object.keys(t).length <= 12);

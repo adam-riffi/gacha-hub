@@ -5,7 +5,7 @@ import { characterDto, createCharacterInput, updateCharacterInput, type GameDefi
 import { prisma } from "../lib/prisma.js";
 import { migrateDoc } from "../lib/docMigrations.js";
 import { requireUser } from "../auth/plugin.js";
-import { gameOrThrow, getCatalog, loadCharacter, loadInstance, validateDoc, type PrismaJson } from "./util.js";
+import { gameOrThrow, getCatalog, loadCharacter, loadInstance, numericKpis, validateDoc, type PrismaJson } from "./util.js";
 
 /** Bring a stored document up to the game's current shape, persisting lazily. */
 async function upToDate(game: GameDefinition, character: Character): Promise<Character> {
@@ -97,7 +97,8 @@ export async function registerCharacterRoutes(app: FastifyInstance) {
       if (!character) return reply.code(404).send({ error: "not_found" });
       const game = gameOrThrow(character.gameInstance.gameKey);
       const fresh = await upToDate(game, character);
-      return { ...characterDto.parse(fresh), gameKey: game.key };
+      // The game's default targets come along, for the KPIs this build sets none for.
+      return { ...characterDto.parse(fresh), gameKey: game.key, defaultTargets: (character.gameInstance.kpiTargets as Record<string, number> | null) ?? null };
     },
   );
 
@@ -110,8 +111,7 @@ export async function registerCharacterRoutes(app: FastifyInstance) {
       const game = gameOrThrow(character.gameInstance.gameKey);
       const body = updateCharacterInput.parse(req.body);
       if (body.role && !game.manifest.kpis[body.role]) return reply.code(400).send({ error: "unknown_role" });
-      // Targets are for the game's single-number KPIs; a pair ("CRIT Rate / CRIT DMG") takes none.
-      const numeric = new Set(Object.values(game.manifest.kpis).flat().filter((l) => !l.includes(" / ")));
+      const numeric = numericKpis(game);
       if (body.targets && Object.keys(body.targets).some((k) => !numeric.has(k))) return reply.code(400).send({ error: "unknown_kpi" });
       if (body.catalogId !== undefined) {
         const cat = await getCatalog(game);

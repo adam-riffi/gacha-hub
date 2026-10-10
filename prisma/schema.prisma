@@ -63,6 +63,8 @@ model GameInstance {
   worldLevel   Int?
   /// Place in the user's top strip (the library's drag to reorder); new games go last.
   position     Int      @default(0)
+  /// The game's default KPI targets ({ "Crit value": 200 }), for builds without their own (WIREFRAMES.md G5).
+  kpiTargets   Json?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

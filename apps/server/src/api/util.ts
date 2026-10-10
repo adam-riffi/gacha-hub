@@ -58,3 +58,6 @@ export function loadCharacter(userId: string, id: string) {
 }
 
 export type PrismaJson = Prisma.InputJsonValue;
+
+/** The game's single-number KPIs, the ones a target can be set for ("CRIT Rate / CRIT DMG" takes none). */
+export const numericKpis = (game: GameDefinition) => new Set(Object.values(game.manifest.kpis).flat().filter((l) => !l.includes(" / ")));

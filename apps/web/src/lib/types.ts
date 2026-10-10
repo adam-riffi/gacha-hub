@@ -39,7 +39,7 @@ export type InstanceDetail = InstanceListItem & {
   characters: CharacterSummaryDto[];
 };
 
-export type CharacterDetail = CharacterDto & { gameKey: string };
+export type CharacterDetail = CharacterDto & { gameKey: string; defaultTargets?: Record<string, number> | null };
 
 export type TaskItem = TaskDto;
 export type DashboardData = DashboardDto;
