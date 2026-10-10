@@ -532,43 +532,72 @@ As of 2026-10-08, `main` at `36edfc0` (docs(agents): read and rewrite HANDOFF.md
 
 ## 14. To do
 
+Every milestone in DESIGN.md §9 is built, V through F12. What is left waits on the owner, on a data source, or is optional. `HANDOFF.md` holds the current state.
+
 ### 14.1 Needs the owner (an agent cannot do these)
 
-1. **Turn on the cron:** create one random secret and set it as `CRON_SECRET` in Vercel (Production) and as the GitHub Actions secret `CRON_SECRET` (`CRON_URL` is already set). Redeploy. The next tick then runs reminders and, hourly, the Genshin and HSR feed import.
-2. **Turn on DMs:** set `DISCORD_BOT_TOKEN` (and check `DISCORD_APP_ID`, `DISCORD_PUBLIC_KEY`) in Vercel; invite the bot to a server you share with the users (a bot can only DM people it shares a server with); register the slash commands (`npm run discord:register -w @gacha/server` with the bot variables set; `docs/DEPLOY.md` has the steps); set the Interactions Endpoint URL to `https://gacha-hub-two.vercel.app/api/discord/interactions`.
-3. **Clean production banners/events:** in Admin, delete the `sample-*` rows for each game, then **Import official feed** for Genshin, HSR and ZZZ (or wait for the hourly tick after step 1).
-4. **Merge the open chain in order**, #78 first (`HANDOFF.md` lists the PRs and the method).
-5. **Branch ruleset on `main`:** require the five checks `lint`, `typecheck`, `test`, `build`, `e2e`.
-6. **ADRs:** 0001–0007 accepted on 2026-10-09; 0008 (events as data) on 2026-10-10.
-7. **Account import:** approved on 2026-10-09 (ADR 0005).
-8. **README:** record the demo GIF (DESIGN.md §15); set the repository description and topics.
-9. **Verify after the cron is on:** a reminder DM arrives (DESIGN.md §15's last open item), and the calendar shows `hoyo-` rows in production.
+1. **Turn on the cron:**
+   1. Create one random secret.
+   2. Set it as `CRON_SECRET` in Vercel (Production) and as the GitHub Actions secret `CRON_SECRET`. `CRON_URL` is already set.
+   3. Redeploy.
 
-### 14.2 Agent work, in order
+   The next tick then runs reminders, the HoYoLAB sync and, hourly, the official feed import.
+2. **Turn on DMs** (`docs/DEPLOY.md` has the steps):
+   1. Set `DISCORD_BOT_TOKEN` in Vercel, and check `DISCORD_APP_ID` and `DISCORD_PUBLIC_KEY`.
+   2. Invite the bot to a server you share with the users. A bot can only DM people it shares a server with.
+   3. Register the slash commands: `npm run discord:register -w @gacha/server`, with the bot variables set.
+   4. Set the Interactions Endpoint URL to `https://gacha-hub-two.vercel.app/api/discord/interactions`.
+3. **Turn on linking:** set `LINK_SECRET_KEY` in Vercel (32 random bytes, base64). Until then, linking answers "off" (ADR 0005).
+4. **Turn on the art store** (`docs/DEPLOY.md` §7):
+   1. Create the R2 bucket with public `r2.dev` access, and an API token.
+   2. Add `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY` and `R2_BUCKET` as Actions secrets.
+   3. Run the **mirror-art** workflow.
+   4. Set `VITE_ASSET_BASE` in Vercel and redeploy.
 
-**P1: finish what DESIGN.md already requires**
+   F12's acceptance ("every game shows art from our store") is checked after this.
+5. **Clean production banners and events:** in Admin, delete the `sample-*` rows for each game. Then import the official feed, or wait for the hourly tick after step 1.
+6. **Branch ruleset on `main`:** require the checks `lint`, `typecheck`, `test`, `build` and `e2e`.
+7. **Decisions:**
+   - ADR 0009, Endfield pull history: accept it or not, and share one records answer with the tokens removed.
+   - Enka's store data, which feeds the Star Rail relic tables, has no licence file: accept it, or ask Enka.
+8. **Real responses, with tokens removed,** to replace the fixtures: the HoYoLAB card, notes, chronicle and roster; a gacha log page; a WuWa convene answer; Enka showcases.
+9. **README:** record the demo GIF (DESIGN.md §15); set the repository description and topics.
+10. **Delete stale remote branches** of merged PRs. The agent's delete was blocked by its permission rules:
+    - `stack/docs-v2/01-design-adrs` to `06-design-files`;
+    - `stack/docs/01-guide`, `stack/f11/15-enka-hsr` and `stack/fix/01-auth-hooks`;
+    - `stack/infra/01-pr-meme`, `stack/ops/03-prisma7-prep` and `stack/perf/01-budget`.
+11. **Verify after the cron is on:** a reminder DM arrives (DESIGN.md §15's last open item), and the calendar shows `hoyo-` rows in production.
 
-1. **Accessibility** (`stack/a11y/01-axe`): give accessible names to the remaining controls: `components/TaskGeneratorPanel.tsx` (inputs around lines 128, 134, 145, 151), `components/TaskBoard.tsx`, `components/TeamsCard.tsx`, `components/GearInventory.tsx` (selects around lines 126, 186), `pages/CharacterPage.tsx` (status select around line 108). Rebase on `main` once #78/#79 merge, make the axe journey pass, open the PR.
-2. **Error states on every page** (DESIGN.md §13: "every view has loading, empty and error states"): pages currently stay on "Loading…" forever when a request fails. Add one shared error block with a retry, test it with a failing route in an E2E journey.
-3. **Docs drift:** ADR 0001's pr-meme row is stale (#80 merged it); several AGENT_LOG entries still say "pending" instead of their PR numbers; DESIGN.md §15 checklist.
+### 14.2 Agent work
 
-**P2: per-game parity (most visible gaps)**
+**Waiting on the owner or a data source**
 
-4. **HSR sheet → catalog-backed** like Genshin's: light cone picker filtered by path, relic main-stat pools per slot, Yatta portrait on the sheet, traces with icons.
-5. **WuWa sheet → catalog-backed:** weapon picker, echo cost budget, sonata sets from the catalog.
-6. **Hide empty tabs** for Endfield (Equipment, Gear, Materials have no catalog data), and on the Games card.
-7. **Endfield pull rules** (`pullBanners`) once the rules are confirmed, so it gets a Pulls tab.
-8. **Art for WuWa, ZZZ and Endfield:** find a licensed source or mirror into Vercel Blob (`VITE_ASSET_BASE`); keep the CSP in step.
-9. **Catalog: strip markup in nested names** (HSR trace "`<unbreak>300</unbreak> Rogues`"); add a test in the importer.
-10. **Reference card:** import constellation and talent text into the Genshin catalog (the sheet already has the slot).
+1. **Endfield pull history** (ADR 0009), once the ADR is accepted and a records answer is recorded.
+2. **Endfield art:** its catalog has no icon keys, and no public asset host was found.
+3. **WuWa material and Sonata set art:** their textures sit in several folders, which one URL template per kind cannot reach.
+4. **A ZZZ catalog:** no source has material costs (`scripts/catalog/zzz.ts`). Enka for ZZZ needs it too.
 
-**P3: platform**
+**Optional**
 
-11. **Prisma 7** as its own milestone (ADR 0003): root `@prisma/client` 7 with driver adapters, `better-sqlite3` externalized in the bundle, a separate generate step.
-12. **TypeScript 7** when typescript-eslint supports it (ADR 0003).
-13. **Verify `trustProxy` / production detection on Vercel** (rate limiting and secure cookies depend on it); add a smoke check.
-14. **Mirror Enka/Yatta art** into our own store if either starts blocking hotlinks.
-15. **Delete stale remote branches** of merged PRs.
+5. The chronicle's Shiyu Defense v2 and Stygian Onslaught.
+6. Genshin talent levels from Enka (needs skill ids in the catalog).
+7. A KPI target template shared across builds (targets are per build today).
+8. Endgame eligibility in the sheet's "Used in".
+9. Talent names in the catalogs (`talents.info`). The sheet already reads them and falls back to Normal, Skill and Burst.
+10. TypeScript 7, when typescript-eslint supports it (ADR 0003).
+
+**Done since this list was written:**
+- accessibility (the axe journey, V);
+- error states on every page (#174);
+- the docs drift;
+- catalog-backed sheets for every game (F10's shared sheet: the weapon picker, the main stats per slot, the sets, WuWa's echo cost cap);
+- Endfield's empty tabs (#175);
+- WuWa art (#172);
+- HSR trace markup (#173);
+- Prisma 7 (D);
+- the art mirror (F12).
+
+The Genshin reference card for constellation text was dropped by the redesign (WIREFRAMES.md, character sheet).
 
 **Later (DESIGN.md §4):** public showcase pages, PWA, i18n through dataset text maps.
 
@@ -577,12 +606,9 @@ As of 2026-10-08, `main` at `36edfc0` (docs(agents): read and rewrite HANDOFF.md
 | Issue | Where | Fix |
 | --- | --- | --- |
 | Reminders and the feed import never run in production | GitHub secret `CRON_SECRET` empty | §14.1 step 1 |
-| Production calendar shows only sample banners | Prod data | §14.1 step 3 |
-| Pages hang on "Loading…" when a request fails | All pages | §14.2 item 2 |
-| Serious axe violations (unlabelled inputs and selects) | Character page, task generator, task board, teams, gear inventory | §14.2 item 1 |
-| HSR, WuWa, Endfield, ZZZ sheets are plain text forms | `apps/web/src/games/*/Sheet.tsx` | §14.2 items 4–5 |
-| HSR sheet shows "No image" though Yatta art exists | `games/hsr/Sheet.tsx` ignores the community fallback | §14.2 item 4 |
-| Endfield shows empty Equipment, Gear and Materials tabs | `GameTabs.tsx` only checks for a catalog | §14.2 item 6 |
+| Linking answers "off" in production | `LINK_SECRET_KEY` unset | §14.1 step 3 |
+| Art is hotlinked from community CDNs | `VITE_ASSET_BASE` unset | §14.1 step 4 |
+| Production calendar shows only sample banners | Prod data | §14.1 step 5 |
 | Rate limiter is in memory per serverless instance | `@fastify/rate-limit` | Best effort; accepted |
 | Feed times are inconsistent upstream | HoYoverse API | `settle()` handles it; admins can edit rows |
 | Old design docs predate DESIGN.md | `docs/DESIGN-BRIEF.md`, `docs/DESIGN-HANDOFF.md` | DESIGN.md and VISUAL-DESIGN.md win |
@@ -610,7 +636,7 @@ As of 2026-10-08, `main` at `36edfc0` (docs(agents): read and rewrite HANDOFF.md
 
 **Local and tooling**
 
-- `npm test` regenerates the Prisma client for SQLite; `npm run check` regenerates the Postgres client before the build, then E2E switches back. A running dev server on Windows locks the engine DLL: stop it first.
+- `npm test` regenerates the Prisma client for SQLite; `npm run check` regenerates the Postgres client before the build, then E2E switches back. Stop the dev server first: the generated client is provider-specific.
 - SQLite URLs must be absolute (Prisma's CLI and client resolve relative paths differently).
 - Fastify rejects an empty body sent with `content-type: application/json`.
 - `eslint-plugin-react-hooks` 7: no `setState` in effects (use keyed components), no components created during render.
