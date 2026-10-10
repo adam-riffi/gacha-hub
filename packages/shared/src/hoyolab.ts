@@ -1,0 +1,43 @@
+/** HoYoLAB's game ids for the games we track. */
+const GAME_IDS: Record<number, string> = { 2: "genshin", 6: "hsr", 8: "zzz" };
+
+/** Each game's server name per region (genshin.py's SERVER_TIMEZONES), and where its notes are. */
+const NOTES: Record<string, { url: string; servers: Record<string, string> }> = {
+  genshin: { url: "https://sg-public-api.hoyolab.com/event/game_record/genshin/api/dailyNote", servers: { na: "os_usa", eu: "os_euro", asia: "os_asia" } },
+  hsr: { url: "https://bbs-api-os.hoyolab.com/game_record/hkrpg/api/note", servers: { na: "prod_official_usa", eu: "prod_official_eur", asia: "prod_official_asia" } },
+  zzz: { url: "https://sg-act-public-api.hoyolab.com/event/game_record_zzz/api/zzz/note", servers: { na: "prod_gf_us", eu: "prod_gf_eu", asia: "prod_gf_jp" } },
+};
+
+/** Where HoYoLAB lists the games an account plays. */
+export const HOYOLAB_CARDS_URL = "https://bbs-api-os.hoyolab.com/game_record/card/wapi/getGameRecordCard";
+
+export type HoyolabError = "not_logged_in" | "not_public" | "refused";
+
+const failure = (retcode: unknown): HoyolabError => (retcode === -100 || retcode === 10001 ? "not_logged_in" : retcode === 10102 ? "not_public" : "refused");
+
+/** The account's roles in our games, from its record cards, with the region each one plays on. */
+export function readRecordCards(json: unknown): { games: { gameKey: string; uid: string; level: number; regionKey: string | null }[]; error?: HoyolabError } {
+  const page = (typeof json === "object" && json ? json : {}) as { retcode?: number; data?: { list?: { game_id: number; game_role_id: string; region: string; level: number }[] } | null };
+  if (page.retcode !== 0 || !Array.isArray(page.data?.list)) return { games: [], error: failure(page.retcode) };
+  return {
+    games: page.data!.list!.flatMap((c) => {
+      const gameKey = GAME_IDS[c.game_id];
+      if (!gameKey) return [];
+      const regionKey = Object.entries(NOTES[gameKey]!.servers).find(([, s]) => s === c.region)?.[0] ?? null;
+      return [{ gameKey, uid: String(c.game_role_id), level: c.level, regionKey }];
+    }),
+  };
+}
+
+/** A role's real-time notes; null for a game HoYoLAB does not cover. */
+export function hoyolabNotesUrl(gameKey: string, regionKey: string, uid: string): string | null {
+  const n = NOTES[gameKey];
+  const server = n?.servers[regionKey];
+  return n && server ? `${n.url}?${new URLSearchParams({ server, role_id: uid })}` : null;
+}
+
+/** A HoYoLAB answer that failed, named; null when it carries data. */
+export function hoyolabFailure(json: unknown): HoyolabError | null {
+  const page = (typeof json === "object" && json ? json : {}) as { retcode?: number; data?: unknown };
+  return page.retcode === 0 && page.data ? null : failure(page.retcode);
+}

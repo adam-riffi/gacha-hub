@@ -24,4 +24,5 @@ export * from "./pullImport.js";
 export * from "./uigf.js";
 export * from "./historyLink.js";
 export * from "./convene.js";
+export * from "./hoyolab.js";
 export * from "./builds.js";
