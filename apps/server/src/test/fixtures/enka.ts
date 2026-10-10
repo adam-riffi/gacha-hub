@@ -49,3 +49,52 @@ export const hsrShowcase = {
   },
   ttl: 60,
 };
+
+/**
+ * A ZZZ showcase in Enka's documented shape (docs/zzz/api.md): Ellen at 60,
+ * Mindscape 1, her W-Engine and two Hormone Punk discs. Made up from the
+ * documentation, not recorded.
+ */
+export const zzzShowcase = {
+  uid: "1300000001",
+  PlayerInfo: {
+    SocialDetail: { ProfileDetail: { Uid: 1300000001, Nickname: "Proxy", Level: 55 } },
+    ShowcaseDetail: {
+      AvatarList: [
+        {
+          Id: 1191,
+          Level: 60,
+          PromotionLevel: 6,
+          TalentLevel: 1,
+          Weapon: { Uid: 7, Id: 14119, Level: 60, BreakLevel: 5, UpgradeLevel: 1 },
+          SkillLevelList: [
+            { Index: 0, Level: 11 },
+            { Index: 1, Level: 12 },
+            { Index: 2, Level: 9 },
+            { Index: 3, Level: 12 },
+            { Index: 5, Level: 7 },
+            { Index: 6, Level: 8 },
+          ],
+          EquippedList: [
+            {
+              Slot: 1,
+              Equipment: {
+                Uid: 11,
+                Id: 31441,
+                Level: 15,
+                BreakLevel: 3,
+                MainStatList: [{ PropertyId: 11103, PropertyValue: 550, PropertyLevel: 1 }],
+                RandomPropertyList: [
+                  { PropertyId: 20103, PropertyValue: 240, PropertyLevel: 3 },
+                  { PropertyId: 21103, PropertyValue: 480, PropertyLevel: 2 },
+                  { PropertyId: 12103, PropertyValue: 19, PropertyLevel: 1 },
+                ],
+              },
+            },
+            { Slot: 4, Equipment: { Uid: 12, Id: 31444, Level: 15, BreakLevel: 0, MainStatList: [{ PropertyId: 20103, PropertyValue: 600, PropertyLevel: 1 }], RandomPropertyList: [] } },
+          ],
+        },
+      ],
+    },
+  },
+};

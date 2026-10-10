@@ -1,4 +1,4 @@
-import { enkaGenshinUrl, enkaHsrUrl, mergeSynced, readEnkaGenshin, readEnkaHsr } from "@gacha/shared";
+import { enkaGenshinUrl, enkaHsrUrl, enkaZzzUrl, mergeSynced, readEnkaGenshin, readEnkaHsr, readEnkaZzz } from "@gacha/shared";
 import type { GameInstance } from "../generated/prisma/client.js";
 import { prisma } from "./prisma.js";
 import { gameOrThrow, getCatalog, validateDoc } from "../api/util.js";
@@ -17,7 +17,7 @@ type Fetch = (
 ) => Promise<{ ok: boolean; status: number; json: () => Promise<unknown> }>;
 
 /**
- * Builds from the profile's public Enka showcase (ADR 0005), Genshin for now:
+ * Builds from the profile's public Enka showcase (ADR 0005), for Genshin, Star Rail and ZZZ:
  * a showcased character without a build gets one (and is owned); one with a
  * build gets the fields still as the last sync wrote them, and its empty
  * ones; what the user changed stays.
@@ -27,10 +27,11 @@ export async function syncEnka(
   userId: string,
   fetchFn: Fetch = fetch as unknown as Fetch,
 ): Promise<{ created: number; updated: number } | { error: EnkaError }> {
-  if (gi.gameKey !== "genshin" && gi.gameKey !== "hsr") return { error: "no_showcase" };
+  if (gi.gameKey !== "genshin" && gi.gameKey !== "hsr" && gi.gameKey !== "zzz") return { error: "no_showcase" };
   if (!gi.uid) return { error: "no_uid" };
   const game = gameOrThrow(gi.gameKey);
-  const res = await fetchFn((gi.gameKey === "hsr" ? enkaHsrUrl : enkaGenshinUrl)(gi.uid), {
+  const url = { genshin: enkaGenshinUrl, hsr: enkaHsrUrl, zzz: enkaZzzUrl }[gi.gameKey];
+  const res = await fetchFn(url(gi.uid), {
     headers: { "user-agent": "gacha-hub/1 (+https://gacha-hub-two.vercel.app)" },
   }).catch(() => null);
   const failed: EnkaError | null = !res
@@ -54,7 +55,9 @@ export async function syncEnka(
       ? cat.catalog.relicStats
         ? readEnkaHsr(json, { weaponName, setName, relicStats: cat.catalog.relicStats })
         : { error: "no_showcase" as const }
-      : readEnkaGenshin(json, { weaponName, setName });
+      : gi.gameKey === "zzz"
+        ? readEnkaZzz(json, { weaponName, setName })
+        : readEnkaGenshin(json, { weaponName, setName });
   if ("error" in read) {
     await prisma.importRun.create({
       data: {

@@ -1,5 +1,7 @@
 /** A Genshin showcase on Enka (https://github.com/EnkaNetwork/API-docs). */
 export const enkaGenshinUrl = (uid: string) => `https://enka.network/api/uid/${encodeURIComponent(uid)}/`;
+/** A ZZZ showcase on Enka. */
+export const enkaZzzUrl = (uid: string) => `https://enka.network/api/zzz/uid/${encodeURIComponent(uid)}`;
 /** A Star Rail showcase on Enka. */
 export const enkaHsrUrl = (uid: string) => `https://enka.network/api/hsr/uid/${encodeURIComponent(uid)}`;
 
@@ -193,4 +195,78 @@ export function readEnkaHsr(
     return { catalogId: String(a.avatarId), doc: JSON.parse(JSON.stringify(doc)) as Record<string, unknown> };
   });
   return { level: info?.level, worldLevel: info?.worldLevel, builds };
+}
+
+/** ZZZ's property ids (Enka's) in our sheet's words, and whether the game keeps them in hundredths of a percent. */
+const ZZZ_STAT: Record<number, [string, boolean]> = {
+  11102: ["HP%", true],
+  11103: ["HP", false],
+  12102: ["ATK%", true],
+  12103: ["ATK", false],
+  12202: ["Impact%", true],
+  13102: ["DEF%", true],
+  13103: ["DEF", false],
+  20103: ["CRIT Rate%", true],
+  21103: ["CRIT DMG%", true],
+  23103: ["PEN Ratio%", true],
+  23203: ["PEN", false],
+  30502: ["Energy Regen%", true],
+  31203: ["Anomaly Proficiency", false],
+  31402: ["Anomaly Mastery%", true],
+  31503: ["Attribute DMG Bonus%", true],
+  31603: ["Attribute DMG Bonus%", true],
+  31703: ["Attribute DMG Bonus%", true],
+  31803: ["Attribute DMG Bonus%", true],
+  31903: ["Attribute DMG Bonus%", true],
+};
+/** Enka's skill indexes; 5, the core skill, has no level to plan. */
+const ZZZ_SKILL: Record<number, string> = { 0: "basic", 1: "special", 2: "dodge", 3: "chain", 6: "assist" };
+
+type ZzzStat = { PropertyId: number; PropertyValue: number; PropertyLevel?: number };
+type ZzzAvatar = {
+  Id: number;
+  Level?: number;
+  TalentLevel?: number;
+  Weapon?: { Id: number; Level?: number; UpgradeLevel?: number } | null;
+  SkillLevelList?: { Index: number; Level: number }[] | Record<string, number>;
+  EquippedList?: { Slot: number; Equipment: { Id: number; Level?: number; MainStatList?: ZzzStat[]; RandomPropertyList?: ZzzStat[] } }[];
+};
+
+/**
+ * A ZZZ showcase as our builds (ADR 0005): level, Mindscape, the W-Engine and
+ * its phase, the five skills' base levels, and each Drive Disc. A disc's id
+ * is its set, rarity and slot (31441: set 31400, S, slot 1); a substat is its
+ * base value times its rolls.
+ */
+export function readEnkaZzz(
+  json: unknown,
+  lookups: { weaponName: (id: string) => string | undefined; setName: (setId: string) => string | undefined },
+): { level?: number; builds: { catalogId: string; doc: Record<string, unknown> }[] } | { error: "showcase_closed" } {
+  const info = ((typeof json === "object" && json ? json : {}) as { PlayerInfo?: { SocialDetail?: { ProfileDetail?: { Level?: number } }; ShowcaseDetail?: { AvatarList?: ZzzAvatar[] } } }).PlayerInfo;
+  const list = info?.ShowcaseDetail?.AvatarList ?? [];
+  if (!list.length) return { error: "showcase_closed" };
+  const builds = list.map((a) => {
+    const doc: Record<string, unknown> = { mindscape: a.TalentLevel ?? 0 };
+    if (a.Level) doc.level = a.Level;
+    if (a.Weapon) doc.wEngine = { name: lookups.weaponName(String(a.Weapon.Id)), level: a.Weapon.Level, phase: a.Weapon.UpgradeLevel };
+    const levels = Array.isArray(a.SkillLevelList) ? a.SkillLevelList : Object.entries(a.SkillLevelList ?? {}).map(([Index, Level]) => ({ Index: Number(Index), Level }));
+    const skills = Object.fromEntries(levels.flatMap((s) => (ZZZ_SKILL[s.Index] ? [[ZZZ_SKILL[s.Index]!, s.Level]] : [])));
+    if (Object.keys(skills).length) doc.skills = skills;
+    const discs: Record<string, unknown> = {};
+    for (const { Slot, Equipment: e } of a.EquippedList ?? []) {
+      const main = e.MainStatList?.[0];
+      discs[`slot${Slot}`] = {
+        setName: lookups.setName(String(Math.floor(e.Id / 100) * 100)),
+        mainStat: main ? ZZZ_STAT[main.PropertyId]?.[0] : undefined,
+        level: e.Level ?? 0,
+        substats: (e.RandomPropertyList ?? []).flatMap((s) => {
+          const stat = ZZZ_STAT[s.PropertyId];
+          return stat ? [{ stat: stat[0], value: round1((s.PropertyValue * (s.PropertyLevel ?? 1)) / (stat[1] ? 100 : 1)) }] : [];
+        }),
+      };
+    }
+    if (Object.keys(discs).length) doc.discs = discs;
+    return { catalogId: String(a.Id), doc: JSON.parse(JSON.stringify(doc)) as Record<string, unknown> };
+  });
+  return { level: info?.SocialDetail?.ProfileDetail?.Level, builds };
 }

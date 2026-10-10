@@ -2,7 +2,7 @@ import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } 
 import type { FastifyInstance } from "fastify";
 import { installGame, login, makeApp, resetDb, type Client } from "../test/helpers.js";
 import { prisma } from "../lib/prisma.js";
-import { hsrShowcase, showcase } from "../test/fixtures/enka.js";
+import { hsrShowcase, showcase, zzzShowcase } from "../test/fixtures/enka.js";
 
 let ip = 0;
 
@@ -78,5 +78,15 @@ describe("syncing builds from an Enka showcase (ADR 0005)", () => {
     expect(asked.at(-1)!.url).toBe("https://enka.network/api/hsr/uid/800000001");
     const kafka = await prisma.character.findFirstOrThrow({ where: { gameInstanceId: hsr, catalogId: "1005" } });
     expect(kafka.doc).toMatchObject({ eidolon: 1, lightCone: { superimposition: 2 }, relics: { head: { mainStat: "HP", substats: [{ stat: "CRIT Rate", value: 5.5 }, { stat: "CRIT DMG", value: 5.2 }, { stat: "SPD", value: 2.6 }] } } });
+  });
+
+  it("syncs a ZZZ showcase too, its discs and skills in the build doc", async () => {
+    const z = await installGame(c, "zzz");
+    await c.req("PUT", `/api/instances/${z}`, { uid: "1300000001" });
+    body = zzzShowcase;
+    expect((await c.req("POST", `/api/instances/${z}/enka`)).json).toEqual({ created: 1, updated: 0 });
+    expect(asked.at(-1)!.url).toBe("https://enka.network/api/zzz/uid/1300000001");
+    const ellen = await prisma.character.findFirstOrThrow({ where: { gameInstanceId: z, catalogId: "1191" } });
+    expect(ellen.doc).toMatchObject({ mindscape: 1, wEngine: { name: "Deep Sea Visitor", phase: 1 }, skills: { assist: 8 }, discs: { slot4: { mainStat: "CRIT Rate%" } } });
   });
 });
