@@ -1,19 +1,21 @@
 import type { FastifyInstance } from "fastify";
 import { z } from "zod";
-import { hasHistoryLink, hasUigf, parseUigf, readConveneLink, readHistoryLink, toUigf, type HistoryError, type UigfPull } from "@gacha/shared";
+import { hasHistoryLink, hasUigf, parseUigf, readConveneLink, readHistoryLink, readRecordsLink, toUigf, type HistoryError, type UigfPull } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
 import { requireUser } from "../auth/plugin.js";
 import { importPulls } from "../lib/pullImport.js";
 import { fetchHistory } from "../lib/historyLink.js";
 import { fetchConvene } from "../lib/convene.js";
+import { fetchRecords } from "../lib/endfieldRecords.js";
 import { gameOrThrow, loadInstance, regionForInstance } from "./util.js";
 
 const historyLinkInput = z.object({
   url: z.string().max(8192),
-  next: z.object({ gachaType: z.string().max(8), endId: z.string().regex(/^\d{1,19}$/) }).nullable().optional(),
+  // Endfield names its pools ("E_CharacterGachaPoolType_Special"); the others use numbers.
+  next: z.object({ gachaType: z.string().regex(/^[A-Za-z0-9_]{1,40}$/), endId: z.string().regex(/^\d{1,19}$/) }).nullable().optional(),
 });
 
-/** Pull history in and out (ADR 0005): UIGF v4.2 files and history links, for Genshin, Star Rail and ZZZ. */
+/** Pull history in and out (ADR 0005): UIGF v4.2 files for Genshin, Star Rail and ZZZ; history links for those, WuWa and Endfield (ADR 0009). */
 export async function registerUigfRoutes(app: FastifyInstance) {
   // A history link is read here and forgotten: only its authkey is used, against the official host.
   app.post<{ Params: { id: string } }>("/api/instances/:id/pulls/history-link", { preHandler: requireUser }, async (req, reply) => {
@@ -24,8 +26,15 @@ export async function registerUigfRoutes(app: FastifyInstance) {
     const { url, next } = historyLinkInput.parse(req.body);
     const timezone = regionForInstance(game, gi).utcOffsetMinutes / 60;
     const unreachable = () => ({ records: [], next: null, error: "unreachable" as HistoryError });
+    const stored = async () =>
+      new Set((await prisma.pullEntry.findMany({ where: { gameInstanceId: gi.id, recordId: { not: null } }, select: { recordId: true } })).map((e) => e.recordId!));
     let got: Awaited<ReturnType<typeof fetchHistory>>;
-    if (game.key === "wuwa") {
+    if (game.key === "endfield") {
+      // Endfield's records link (ADR 0009): its token and server only, against the records API's own host.
+      const records = readRecordsLink(url);
+      if (!records) return reply.code(400).send({ error: "no_records_token" });
+      got = await fetchRecords(game, records, await stored(), next ?? null).catch(unreachable);
+    } else if (game.key === "wuwa") {
       // Wuthering Waves' convene link: each banner's whole history in one answer, so no cursor.
       const convene = readConveneLink(url);
       if (!convene) return reply.code(400).send({ error: "no_convene_ids" });
@@ -33,10 +42,7 @@ export async function registerUigfRoutes(app: FastifyInstance) {
     } else {
       const link = readHistoryLink(url);
       if (!link) return reply.code(400).send({ error: "no_authkey" });
-      const seen = new Set(
-        (await prisma.pullEntry.findMany({ where: { gameInstanceId: gi.id, recordId: { not: null } }, select: { recordId: true } })).map((e) => e.recordId!),
-      );
-      got = await fetchHistory(game, link, timezone, seen, next ?? null).catch(unreachable);
+      got = await fetchHistory(game, link, timezone, await stored(), next ?? null).catch(unreachable);
     }
     const counts = got.records.length || !got.error ? await importPulls(req.user!.id, gi, "history-link", got.records) : null;
     if (got.error) {

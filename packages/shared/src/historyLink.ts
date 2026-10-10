@@ -16,7 +16,8 @@ const OFFICIAL: Record<string, { url: string; biz: string; typeParam: string }> 
 };
 
 /** Whether a game's history comes from a pasted link (Wuthering Waves' convene link included). */
-export const hasHistoryLink = (gameKey: string) => gameKey in OFFICIAL || gameKey === "wuwa";
+/** Games whose pull history comes from a pasted link: HoYoverse's history link, WuWa's convene link, Endfield's records link. */
+export const hasHistoryLink = (gameKey: string) => gameKey in OFFICIAL || gameKey === "wuwa" || gameKey === "endfield";
 
 /** Reads a pasted history link; null without an authkey. Only short, plain values are kept. */
 export function readHistoryLink(pasted: string): HistoryLink | null {
