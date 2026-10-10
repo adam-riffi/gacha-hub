@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f10/16-sheet · #140
+- Done: the character sheet rebuilt from its board (WIREFRAMES.md G5), one layout for every game read from its manifest: the splash art (Change art) beside the identity (← Characters, build status, Save, Delete build; name with rarity, element, weapon type, dupe badge, level), KPI tiles for the role with a role picker, the Character card (level, ascension pips, dupes), the skills card in the game's word (now → the Plan farming target), the Weapon card (name from the catalog, level, dupes), combat stats; below, the gear block in the game's shape (set, main stat, level, four substats, crit value per piece, FARM on off-set pieces), Plan farming, and the game's own sheet under "More details". Hub tabs show above it.
+- Tests: written first: `sheet.test.ts` (skills and weapon fields per game, ascension pips, crit value per piece, off-set pieces), `e2e/character-sheet.spec.ts` (identity, KPIs, character, skills, weapon, the relic's CV, a level saved across a reload). The accessibility sweep caught an aria-label on the pips; they are an image now. Checked at 1440 beside `g5-character-sheet.png`.
+- Scope/decisions: KPI targets from a build template and "Used in" (endgame teams) are left for later; the per-game sheets stay as "More details" until they shrink to what the generic sheet does not cover (Path, element).
+- Next: Gear (G6), Planner (G7), Profile (G8).
+
 ## 2026-10-10 · claude · stack/f10/15-characters · #139
 - Done: Characters rebuilt from its board (WIREFRAMES.md G4), a hub tab for every game in place of Ownership: filters (search, element, weapon, rarity, owned or wishlisted, build status, sort), counts (owned, perfect, good, building, unbuilt, wishlist), Own all shown; one splash card per unit (art with rarity, element and the dupe badge; the name box with level, skills and weapon dupes, `buildLine`; the role's three KPIs; status, set bonuses, Build → or Start a build); unowned units can be owned or wishlisted, and on a running banner show your chance with the pulls you have and Plan pulls →; a pending event goal shows "→ C4 · event"; 12 at a time, built characters first.
 - Tests: written first: `builds.test.ts` (`buildLine`, `dupeBadge`), `e2e/characters.spec.ts` (tab, counts, search, a card's dupes, level and KPIs, Build →, wishlist and own). The accessibility sweep now visits the tab. Checked at 1440 beside `g4-characters.png`.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: `dashboard.integration.test.ts` (resin projection and time to full, a never-set HSR profile, the pull log in order, the recurring split before and after completions); Genshin's regen tests unchanged.
 - Scope/decisions: No schema change. GAINED waits for F8's daily record. Bucketing happens in the browser so the server stays zone-free.
 - Next: `stack/v/09-home`.
-
-## 2026-10-09 · claude · stack/v/07-charts-more · #99
-- Done: `packages/shared/src/series.ts` (heat levels, streaks, slanted segments, line points); `LineChart`, `PairedBars`, `SegmentedBar` and `Heatmap` (tooltip, keyboard, pin, the day's games, the streak readout; never tilts). On Home the charts row sits under the goals (BACKLOG with today's point, PULL HISTORY empty until `08-home-data`) and DAILIES, LAST 26 WEEKS follows the banners with today filled in.
-- Tests: `series.test.ts` (thresholds, streaks with a property, segment geometry and clamping, line points with a property); `e2e/heatmap.spec.ts` (labelled map, only today recorded, tooltip on hover, keyboard pin and Escape, the readout).
-- Scope/decisions: Pinning shows the day's games; switching the dashboard to a past day waits for F8's record (VISUAL-DESIGN.md §13). DAYS ALL DONE counts recorded days. The map's focus ring shows for the keyboard only.
-- Next: `stack/v/08-home-data`.
