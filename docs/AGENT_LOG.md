@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f8/12-reminders · #117
+- Done: reminder flags `whenStaminaFull` (one DM at the fill instant computed from the stored value) and `beforeEndgameReset` (last 24 h of an open mode with premium unclaimed); `ReminderLog.key` with a migration so same-instant reminders both send; switches on Activities and Endgame (turning one on where reminders are off enables only that one); shared `premiumCurrency`. #116 merged.
+- Tests: written first: `dueReminders` cases, scheduler integration (one DM per fill; Abyss and daily reset at the same instant), E2E switches.
+- Scope/decisions: DMs need `DISCORD_BOT_TOKEN` and `CRON_SECRET` in production; Endfield's full uses the level-60 cap until `13-home-f8`.
+- Next: `13-home-f8` (stamina reserve, battle pass card, Endgame · next resets, Expiring soon on Home).
+
 ## 2026-10-10 · claude · stack/f8/11-endgame-history · #116
 - Done: the Endgame History per G2 (mode switch; best, average, earned and now tiles; result line with full clears filled and titles for dates and rewards; cycle table with NOW, older cycles on demand; typing past cycles; CSV export); shared `cycleHistory`, `cycleCsv`. #115 merged.
 - Tests: written first: `cycleHistory`, `cycleCsv`, E2E `endgame-history.spec.ts` (ZZZ, not Genshin: the smoke journey adds Genshin through the library).
