@@ -35,3 +35,19 @@ test("Pulls: what you have and what is coming, an event banner's status, pity an
   await page.goto("/");
   await expect(page.locator(".pull-row-pity", { hasText: "Character 3/90" })).toContainText("guaranteed");
 });
+
+test("Pulls: the savings planner plans each event banner's featured 5★ in order, worst case or on average @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+
+  await page.goto(`/games/${id}/pulls`);
+  const planner = page.getByRole("region", { name: "Savings planner" });
+  const rows = planner.locator(".pl-target");
+  await expect(rows).toHaveCount(2);
+  await expect(rows.first()).toContainText("needs ≤");
+  const worst = await rows.first().locator(".pl-needs").textContent();
+  await planner.getByRole("radio", { name: "Average" }).check();
+  await expect(rows.first().locator(".pl-needs")).not.toHaveText(worst!);
+});
