@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f10/07-reminder-rules · #131
+- Done: two reminder settings from A3: `quietHours` (no DM between two local times, wrapping past midnight; held DMs go out on the first tick after, since nothing is logged) and `beforePassEnds` (a DM 3 days before the 30-day pass ends, keyed on its end). `inQuietHours` in `scheduler/due.ts`.
+- Tests: written first: `due.test.ts` (the pass window and its switch; quiet hours in the user's zone, wrapping, off without a window), `reminders.integration.test.ts` (the pass DM; quiet hours hold, then send once).
+- Scope/decisions: settings stay per profile like the others; the Reminders panel (next PR) writes them across games.
+- Next: `stack/f10/08-reminders-panel` (A3's Reminders and Preview, Send a test DM).
+
 ## 2026-10-10 · claude · stack/f10/06-tasks · #130
 - Done: Tasks and reminders rebuilt from its board (WIREFRAMES.md A3), left column: header (filter by character, material or game; Show backlog; New goal), Farm today (per game, from `GET /api/farm-today`, with the game day), Goals (one card per goal: game, source, what Plan farming planned, event end and effect, progress, priority, Notify; expanded: plan steps grouped as Ascension and level, Talents and Weapon with TODAY and each material's stock, checklist and event stages, Claim or Unclaim for an event goal, Delete). Old `TaskBoard`, `TodayCard` and their styles removed.
 - Tests: written first: `e2e/tasks.spec.ts` (Farm today line, event goal effect, a stage ticked, Claim applying the reward, plan steps, filter). Checked in the browser at 1440 beside `a3-tasks.png`.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: Documentation only.
 - Scope/decisions: D is the plan ADR 0003 recommended; #79 is its first step. ADR 0008 lands with F10 and enters DESIGN.md §8 once accepted.
 - Next: the design references in the repository (#90).
-
-## 2026-10-09 · claude · stack/docs-v2/04-visual-design · #88
-- Done: `docs/VISUAL-DESIGN.md` writes Georges's 2026-10-08 dashboard design down as the app's visual system (tokens, type, panels, components, charts, motion, the Overview layout, an accent per game); ADR 0007; DESIGN.md §7 rewritten and milestone V added before F8; WIREFRAMES.md, AGENTS.md, README and the old design docs point to it. #78, #79 and #84 restacked onto `main` with #85–#87 as one chain.
-- Tests: Documentation only. Values come from the design file's stylesheet and script (tilt angles, rotation timing, urgency thresholds, heatmap levels).
-- Scope/decisions: What the design lacks is marked Proposed (primary button, form controls, segmented switches, rotation pause and tilt under reduced motion). HSR takes light pink `#FF8FD1` and the Overview stays magenta (Georges); open items get defaults in VISUAL-DESIGN.md §13. Proposed in ADR 0007.
-- Next: Georges merges the chain bottom-up and decides ADRs 0001–0007; the build session starts with milestone V.
