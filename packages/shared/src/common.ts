@@ -51,6 +51,8 @@ export const reminderConfigSchema = z.object({
   beforeEndgameReset: z.boolean().default(false),
   /** DM 3 days before the 30-day pass ends (A3). */
   beforePassEnds: z.boolean().default(false),
+  /** DM 48 h before the version ends while the battle pass is short of its last level (G8). */
+  beforeBattlePassEnds: z.boolean().default(false),
   /** No DM between these local times ("HH:MM" in `timezone`, may wrap past midnight); held ones go out after (A3). */
   quietHours: z
     .object({ from: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/), to: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/) })
@@ -68,6 +70,7 @@ export const LIMITS = {
   materialQty: 9_999_999,
   checklistItems: 100,
   accountLevel: 100,
+  worldLevel: 20,
   uidLength: 32,
 } as const;
 

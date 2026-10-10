@@ -113,6 +113,7 @@ export const wuwa: GameDefinition = {
     dupes: { character: { field: "sequence", label: "Resonance Chain", max: L.maxSequence }, weapon: { field: "weapon.syntonize", label: "Syntonize", max: L.maxSyntonize } },
     art: {},
     accountLevel: { label: "UL", name: "Union Level" },
+    worldLevel: { label: "SOL3", name: "SOL3 Phase", max: 8 },
     version: { name: "3.7", start: "2026-09-30", days: 42 },
   },
   defaultTasks: [

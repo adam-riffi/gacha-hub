@@ -7,6 +7,8 @@ import {
   type GameDefinition,
   type OpenDomain,
   endgameNow,
+  passView,
+  cadenceWindow,
   premiumCurrency,
   taskAnchor,
   type ReminderConfig,
@@ -99,6 +101,14 @@ async function dueExtra(cfg: ReminderConfig, game: GameDefinition, instance: Gam
   if (cfg.beforePassEnds && monthly) {
     const row = await prisma.passState.findUnique({ where: { gameInstanceId_kind: { gameInstanceId: instance.id, kind: "monthly" } } });
     if (row?.endsAt) extra.monthlyPass = { name: monthly.name, endsAt: row.endsAt };
+  }
+  const battle = game.manifest.battlePass;
+  if (cfg.beforeBattlePassEnds && battle?.maxLevel) {
+    const row = await prisma.passState.findUnique({ where: { gameInstanceId_kind: { gameInstanceId: instance.id, kind: "battle" } } });
+    const v = game.manifest.version;
+    const level = passView(game, region, now, row ? { level: row.level ?? 0, weeklyXp: 0, updatedAt: row.updatedAt } : null, null).level;
+    const endsAt = cadenceWindow({ cadence: "version", start: v.start, days: v.days }, region, now).end;
+    extra.battlePass = { name: battle.name, endsAt, level, maxLevel: battle.maxLevel };
   }
   const goals = await prisma.task.findMany({
     where: { userId: instance.userId, scope: "game", refId: instance.id, eventId: { not: null }, notify: true, lastCompletedAt: null },

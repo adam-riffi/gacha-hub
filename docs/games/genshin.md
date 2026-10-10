@@ -20,6 +20,7 @@
 | Art | Enka's UI icons by catalog key (characters, portraits, weapons, artifacts, materials) | [Enka](https://enka.network) |
 | KPIs per role | Our choice for the Characters cards (WIREFRAMES.md G4), listed in the module's manifest | |
 | Account level | Adventure Rank (AR); the abbreviation is the community's | [Adventure Rank](https://genshin-impact.fandom.com/wiki/Adventure_Rank) |
+| World level | World Level (WL), 0 to 9, raised with Adventure Rank | [Adventure Rank](https://genshin-impact.fandom.com/wiki/Adventure_Rank) |
 | Gacha · character | 5★ 0.6% a wish to 73, then +6 points a wish from 74, certain at 90; 1.6% consolidated. 50/50, a lost one guarantees the next; Capturing Radiance makes it 55% overall | [Wish](https://genshin-impact.fandom.com/wiki/Wish) |
 | Gacha · weapon | 5★ 0.7% to 62, then +7 points a wish from 63, certain by 77 (hard pity 80); 1.85% consolidated. 75/25 | [Wish](https://genshin-impact.fandom.com/wiki/Wish) |
 | Gacha · standard | 5★ as the character banner, no featured unit | [Wish](https://genshin-impact.fandom.com/wiki/Wish) |

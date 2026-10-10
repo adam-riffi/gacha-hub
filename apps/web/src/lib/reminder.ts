@@ -15,6 +15,7 @@ export const REMINDER_DEFAULTS: ReminderConfig = {
   whenStaminaFull: false,
   beforeEndgameReset: false,
   beforePassEnds: false,
+  beforeBattlePassEnds: false,
   quietHours: null,
 };
 
