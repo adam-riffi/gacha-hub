@@ -15,8 +15,8 @@ const OFFICIAL: Record<string, { url: string; biz: string; typeParam: string }> 
   zzz: { url: "https://public-operation-nap-sg.hoyoverse.com/common/gacha_record/api/getGachaLog", biz: "nap_global", typeParam: "real_gacha_type" },
 };
 
-/** Whether a game's history comes from a pasted link. */
-export const hasHistoryLink = (gameKey: string) => gameKey in OFFICIAL;
+/** Whether a game's history comes from a pasted link (Wuthering Waves' convene link included). */
+export const hasHistoryLink = (gameKey: string) => gameKey in OFFICIAL || gameKey === "wuwa";
 
 /** Reads a pasted history link; null without an authkey. Only short, plain values are kept. */
 export function readHistoryLink(pasted: string): HistoryLink | null {
@@ -41,7 +41,8 @@ export function gachaLogUrl(game: GameDefinition, link: HistoryLink, gachaType: 
   return `${o.url}?${q}`;
 }
 
-export type HistoryError = "expired" | "invalid" | "too_frequent" | "refused";
+/** What stopped an import: the official answers, or no answer at all. */
+export type HistoryError = "expired" | "invalid" | "too_frequent" | "refused" | "unreachable";
 
 type Page = { retcode?: number; data?: { list?: { id: string; gacha_type: string; item_id?: string; name?: string; rank_type: string; time: string }[] } | null };
 

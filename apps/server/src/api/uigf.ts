@@ -1,10 +1,11 @@
 import type { FastifyInstance } from "fastify";
 import { z } from "zod";
-import { hasHistoryLink, hasUigf, parseUigf, readHistoryLink, toUigf, type UigfPull } from "@gacha/shared";
+import { hasHistoryLink, hasUigf, parseUigf, readConveneLink, readHistoryLink, toUigf, type HistoryError, type UigfPull } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
 import { requireUser } from "../auth/plugin.js";
 import { importPulls } from "../lib/pullImport.js";
 import { fetchHistory } from "../lib/historyLink.js";
+import { fetchConvene } from "../lib/convene.js";
 import { gameOrThrow, loadInstance, regionForInstance } from "./util.js";
 
 const historyLinkInput = z.object({
@@ -21,12 +22,22 @@ export async function registerUigfRoutes(app: FastifyInstance) {
     const game = gameOrThrow(gi.gameKey);
     if (!hasHistoryLink(game.key)) return reply.code(400).send({ error: "no_history_link" });
     const { url, next } = historyLinkInput.parse(req.body);
-    const link = readHistoryLink(url);
-    if (!link) return reply.code(400).send({ error: "no_authkey" });
-    const seen = new Set(
-      (await prisma.pullEntry.findMany({ where: { gameInstanceId: gi.id, recordId: { not: null } }, select: { recordId: true } })).map((e) => e.recordId!),
-    );
-    const got = await fetchHistory(game, link, regionForInstance(game, gi).utcOffsetMinutes / 60, seen, next ?? null).catch(() => ({ records: [], next: null, error: "unreachable" as const }));
+    const timezone = regionForInstance(game, gi).utcOffsetMinutes / 60;
+    const unreachable = () => ({ records: [], next: null, error: "unreachable" as HistoryError });
+    let got: Awaited<ReturnType<typeof fetchHistory>>;
+    if (game.key === "wuwa") {
+      // Wuthering Waves' convene link: each banner's whole history in one answer, so no cursor.
+      const convene = readConveneLink(url);
+      if (!convene) return reply.code(400).send({ error: "no_convene_ids" });
+      got = await fetchConvene(game, convene, timezone).then((r) => ({ ...r, next: null }), unreachable);
+    } else {
+      const link = readHistoryLink(url);
+      if (!link) return reply.code(400).send({ error: "no_authkey" });
+      const seen = new Set(
+        (await prisma.pullEntry.findMany({ where: { gameInstanceId: gi.id, recordId: { not: null } }, select: { recordId: true } })).map((e) => e.recordId!),
+      );
+      got = await fetchHistory(game, link, timezone, seen, next ?? null).catch(unreachable);
+    }
     const counts = got.records.length || !got.error ? await importPulls(req.user!.id, gi, "history-link", got.records) : null;
     if (got.error) {
       await prisma.importRun.create({ data: { userId: req.user!.id, gameInstanceId: gi.id, provider: "history-link", kind: "pulls", error: got.error } });

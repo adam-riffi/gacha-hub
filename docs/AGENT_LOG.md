@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f11/07-convene · #153
+- Done: Wuthering Waves' convene link (ADR 0005): shared `readConveneLink` (player, server, record and pool ids from after the #, the host ignored), `conveneRequest` (POST to `gmserver-api.aki-game2.net`, `.com` for CN), `readConvenePage` (oldest first, in UTC; each pull an id from its time, banner type and place in that second, since the game gives none); server `fetchConvene` (each tracked type once); the history-link route takes WuWa links (`no_convene_ids` without their ids); `pullBanners[].gachaTypes` for WuWa (1, 2, 3), sourced in its sheet; Settings offers Paste link for it.
+- Tests: written first: `convene.test.ts` (the link, the request, ids and order, errors, one request per type), `convene.integration.test.ts` (10 pulls from the game's host only, pity and the 5★ Jiyan, a re-import adds nothing, a link without ids refused).
+- Scope/decisions: the API shape follows a community tool's source (wuwa-gacha-export), with no official documentation; a link works for minutes, so every non-zero code reads as expired; standard weapon, beginner and journey convenes are skipped.
+- Next: HoYoLAB notes (link, real-time notes on the cron tick).
+
 ## 2026-10-10 · claude · stack/f11/06-settings-screen · #152
 - Done: Settings rebuilt from its board (WIREFRAMES.md A5): a section nav; Linked accounts (HoYoLAB with what it would read, not linked yet; Enka by the profiles' UIDs; SKPORT, Wuthering Waves link only, NTE manual); Pull history (a row per game: its method, the last import or its error, Paste link with the multi-call loop, a UIGF file, Export UIGF, or the pull log for manual games); Notifications (DMs on or off, quiet hours, digest, time zone, Manage reminder rules); Account and data (Discord name, JSON, Delete with the username typed back, admin, sign out). `api.del` takes a body.
 - Tests: written first: `e2e/settings.spec.ts` (read-only HoYoLAB, a UIGF file adds 10 Star Rail warps, export link, a link without its key, notifications, deletion refused for the wrong name); the accessibility sweep already visits `/settings`. Checked at 1440 beside `a5-settings.png`.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: reserves as currencies in the conformance suite; E2E `activities.spec.ts`; the smoke journey opens Overview for the domains.
 - Scope/decisions: AUTO rows, per-item progress, world level, Fragile Resin and the Spend-it link are left out; pass level, results and remind-when-full come next.
 - Next: `09-passes` (PassState routes; battle pass level, weekly XP, levels a day; 30-day pass days left).
-
-## 2026-10-10 · claude · stack/f8/07-hub-header · #112
-- Done: the game hub's header and tabs on every hub screen (icon or accent tile, name, server and UTC offset, masked UID, account level named per game, MANUAL tag, Edit for server/UID/level; next daily and weekly resets and the version's end on the profile's server); `hubResets`, `utcLabel`, manifest `accountLevel` with sources. #111 merged.
-- Tests: written first: account levels in the conformance suite, `hubResets`, `utcLabel`, E2E `hub.spec.ts` (header, edit, tabs); whole E2E suite green.
-- Scope/decisions: the header is the page's h1 (screens drop theirs); the overview's region select moved into Edit; world level left out (no field). Rest of F8 split: activities, passes, endgame, remind-full, Home.
-- Next: `08-activities` (stamina with reserve, Daily/Weekly/Monthly columns, cycles, version) as the first tab.
