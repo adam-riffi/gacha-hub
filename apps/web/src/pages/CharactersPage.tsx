@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -27,11 +27,11 @@ import { assetUrl, communityAssetUrl, splashKey } from "../lib/assets";
 import { GameTabs } from "../components/GameTabs";
 import { GameIcon } from "../components/GameIcon";
 import { Segmented } from "../components/ui";
+import { elementColor } from "../lib/elements";
 import { WeaponsTable, type WeaponRow } from "../components/characters/WeaponsTable";
 import type { InstanceDetail } from "../lib/types";
 
 const ENDS = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
-const PAGE = 12;
 const STATUS_RANK: Record<BuildStatus, number> = { perfect: 0, good: 1, building: 2, none: 3 };
 
 type Card = {
@@ -49,12 +49,14 @@ type Card = {
 };
 
 /**
- * A game's Characters (WIREFRAMES.md G4): filters and counts, then one splash
- * card per unit: art with rarity, element and dupes; the name box with level,
- * skills and weapon dupes; three KPIs for the build's role; build status, set
- * and Build →. Unowned units can be owned or wishlisted; wishlisted ones on a
- * running banner show your chance with the pulls you have. Compact shows
- * the same as a table; Weapons lists the catalog's weapons and who holds them.
+ * A game's Characters (WIREFRAMES.md G4): filters, and counts that filter,
+ * then every unit at once as a splash card tinted to its element: art with
+ * rarity, element, weapon type and dupes; the name box with level, skills and
+ * weapon dupes; three KPIs for the build's role; build status and set. The
+ * whole card opens the build, or the unit's page when it has none. Unowned
+ * units can be owned or wishlisted; wishlisted ones on a running banner show
+ * your chance with the pulls you have. Weapons lists the catalog's weapons and
+ * who holds them.
  */
 export function CharactersPage() {
   const { id } = useParams<{ id: string }>();
@@ -67,9 +69,7 @@ export function CharactersPage() {
   const [owned, setOwned] = useState<"all" | "owned" | "unowned" | "wishlist">("all");
   const [status, setStatus] = useState<"" | BuildStatus>("");
   const [sort, setSort] = useState<"status" | "name" | "rarity" | "level">("status");
-  const [shown, setShown] = useState(PAGE);
   const [kind, setKind] = useState<"characters" | "weapons">("characters");
-  const [view, setView] = useState<"splash" | "compact">("splash");
   const [newName, setNewName] = useState("");
 
   const instance = useQuery({ queryKey: ["instance", id], queryFn: () => api.get<InstanceDetail>(`/api/instances/${id}`) });
@@ -139,7 +139,7 @@ export function CharactersPage() {
     );
   const count = (s: BuildStatus) => cards.filter((c) => c.owned && (c.build?.buildStatus ?? "none") === s).length;
   const options = (pick: (c: Card) => string | null) => [...new Set(cards.map(pick).filter((v): v is string => Boolean(v)))].sort();
-  const unownedShown = filtered.slice(0, shown).filter((c) => !c.owned && c.entry).map((c) => c.id);
+  const unownedShown = filtered.filter((c) => !c.owned && c.entry).map((c) => c.id);
 
   // The Weapons view: each catalog weapon, owned or wished, and the builds that wield it.
   const weaponsOn = kind === "weapons" && Boolean(catalog);
@@ -181,29 +181,10 @@ export function CharactersPage() {
             {!weaponsOn && <Select label="Element" value={element} onChange={setElement} options={options((c) => c.tag)} />}
             <Select label="Weapon" value={weapon} onChange={setWeapon} options={weaponsOn ? weaponOptions((w) => w.type) : options((c) => c.weaponType)} />
             <Select label="Rarity" value={rarity} onChange={setRarity} options={weaponsOn ? weaponOptions((w) => String(w.rarity)) : options((c) => (c.rarity ? String(c.rarity) : null))} />
-            <label>
-              Owned
-              <select value={owned} onChange={(e) => setOwned(e.target.value as typeof owned)}>
-                <option value="all">All</option>
-                <option value="owned">Owned</option>
-                <option value="unowned">Not owned</option>
-                <option value="wishlist">Wishlist</option>
-              </select>
-            </label>
           </>
         )}
         {!weaponsOn && (
           <>
-        <label>
-          Build status
-          <select value={status} onChange={(e) => setStatus(e.target.value as typeof status)}>
-            <option value="">Any</option>
-            <option value="perfect">Perfect</option>
-            <option value="good">Good</option>
-            <option value="building">Building</option>
-            <option value="none">Unbuilt</option>
-          </select>
-        </label>
         <label>
           Sort
           <select value={sort} onChange={(e) => setSort(e.target.value as typeof sort)}>
@@ -237,25 +218,33 @@ export function CharactersPage() {
           </div>
           <WeaponsTable
             instanceId={id!}
-            rows={weaponsShown.slice(0, shown * 2)}
+            rows={weaponsShown}
             onOwn={(catalogId, isOwned) => ownWeapon.mutate({ catalogId, owned: isOwned })}
             onWish={(catalogId, wished) => wish.mutate({ catalogId, wished, kind: "weapon" })}
           />
           <div className="ch-more">
-            <span className="mu">{Math.min(shown * 2, weaponsShown.length)} of {weaponsShown.length} shown · held ones first</span>
-            {weaponsShown.length > shown * 2 && <button className="btn" onClick={() => setShown(shown + PAGE)}>Show more</button>}
+            <span className="mu">{weaponsShown.length} shown · held ones first</span>
           </div>
         </>
       ) : (
         <>
 
-      <div className="ch-counts">
-        <span className="badge done">{cards.filter((c) => c.owned).length} / {cards.length} owned</span>
-        <span className="badge">Perfect {count("perfect")}</span>
-        <span className="badge">Good {count("good")}</span>
-        <span className="badge">Building {count("building")}</span>
-        <span className="badge">Unbuilt {count("none")}</span>
-        {catalog && <span className="badge todo">Wishlist {cards.filter((c) => c.wished).length}</span>}
+      <div className="ch-counts" role="group" aria-label="Filter by count">
+        {([
+          ["all", "All", cards.length],
+          ["owned", "Owned", cards.filter((c) => c.owned).length],
+          ...(catalog ? [["unowned", "Not owned", cards.filter((c) => !c.owned).length], ["wishlist", "Wishlist", cards.filter((c) => c.wished).length]] : []),
+        ] as [typeof owned, string, number][]).map(([v, label, n]) => (
+          <button key={v} className="chip" aria-pressed={owned === v} onClick={() => setOwned(owned === v ? "all" : v)}>
+            {label} {n}
+          </button>
+        ))}
+        <span className="ch-gap" />
+        {(["perfect", "good", "building", "none"] as const).map((v) => (
+          <button key={v} className="chip" aria-pressed={status === v} onClick={() => setStatus(status === v ? "" : v)}>
+            {v === "none" ? "Unbuilt" : v.charAt(0).toUpperCase() + v.slice(1)} {count(v)}
+          </button>
+        ))}
         {!catalog && (
           <form
             className="row"
@@ -269,7 +258,6 @@ export function CharactersPage() {
           </form>
         )}
         <span className="ch-sp" />
-        <Segmented label="View" options={[{ value: "splash", label: "Splash" }, { value: "compact", label: "Compact" }]} value={view} onChange={setView} />
         {unownedShown.length > 0 && (
           <button className="btn" disabled={own.isPending} onClick={() => own.mutate(unownedShown)}>
             Own all shown
@@ -277,41 +265,18 @@ export function CharactersPage() {
         )}
       </div>
 
-      {view === "compact" ? (
-        <section className="card">
-          <table aria-label="Characters" className="ch-table">
-            <thead>
-              <tr><th>Character</th><th>Dupes</th><th>Build</th><th>KPIs</th><th>Status</th><th>Set</th><th className="num">Action</th></tr>
-            </thead>
-            <tbody>
-              {filtered.slice(0, shown * 2).map((c) => {
-                const doc = (c.build?.doc ?? {}) as Record<string, unknown>;
-                return (
-                  <tr key={c.id} className={c.owned ? "" : "is-unowned"}>
-                    <td><strong>{c.name}</strong> {c.rarity && <span className="badge">★{c.rarity}</span>} {c.tag && c.tag !== "None" && <span className="mu">{c.tag}</span>}</td>
-                    <td className="mn">{c.owned ? dupeBadge(game, doc) : "—"}</td>
-                    <td className="mn">{c.build ? buildLine(game, doc, c.entry?.talents.keys ?? []) : c.owned ? "no build yet" : "not owned"}</td>
-                    <td>{c.build ? buildKpis(game, doc, c.build.role).map((k) => <span key={k.label} className="ch-tkpi"><span className="kpi-label">{k.label}</span> <span className="mn">{k.value}</span></span>) : null}</td>
-                    <td>{c.build && <span className={`badge ${c.build.buildStatus === "perfect" ? "done" : ""}`}>{c.build.buildStatus === "none" ? "Unbuilt" : c.build.buildStatus}</span>}</td>
-                    <td className="mu">{c.build ? (gearSetLabel(game, doc) ?? "") : ""}</td>
-                    <td className="num">
-                      {c.build ? <Link to={`/characters/${c.build.id}`}>Build →</Link> : c.owned ? <button className="btn ghost" disabled={start.isPending} onClick={() => start.mutate(c.id)}>Start a build</button> : c.entry ? <button className="btn" onClick={() => own.mutate([c.id])}>Own</button> : null}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </section>
-      ) : (
       <div className="ch-grid">
-        {filtered.slice(0, shown).map((c) => {
+        {filtered.map((c) => {
           const doc = (c.build?.doc ?? {}) as Record<string, unknown>;
           const onBanner = live.find((b) => b.featured.some((f) => f.catalogId === c.id));
           const step = eventStep(c.id);
           const art = splashKey(game.key, c.icon, c.splash);
+          const el = elementColor(c.tag);
+          // The whole card opens the build, or the unit's page when there is none.
+          const to = c.build ? `/characters/${c.build.id}` : c.entry ? `/games/${id}/units/${c.id}` : null;
           return (
-            <article key={c.id} className={`ch-card ${c.owned ? "" : "is-unowned"}`} aria-label={c.name}>
+            <article key={c.id} className={`ch-card ${c.owned ? "" : "is-unowned"}`} aria-label={c.name} style={el ? ({ "--el": el } as CSSProperties) : undefined}>
+              {to && <Link to={to} className="ch-open" aria-label={`Open ${c.name}`} />}
               <div className="ch-art">
                 <GameIcon
                   src={c.build?.portraitUrl ?? assetUrl(game.key, "splash", art)}
@@ -321,7 +286,8 @@ export function CharactersPage() {
                 />
                 <div className="ch-chips">
                   {c.rarity && <span className="badge">★{c.rarity}</span>}
-                  {c.tag && c.tag !== "None" && <span className="badge">{c.tag}</span>}
+                  {c.tag && c.tag !== "None" && <span className="badge ch-el">{c.tag}</span>}
+                  {c.weaponType && <span className="badge">{c.weaponType}</span>}
                 </div>
                 <span className={`ch-dupes ${c.owned ? "" : "is-off"}`}>{c.owned ? dupeBadge(game, doc) : "Not owned"}</span>
                 <div className="ch-namebox">
@@ -353,9 +319,7 @@ export function CharactersPage() {
                 {c.build && <span className="mu ch-set">{gearSetLabel(game, doc) ?? c.build.role ?? ""}</span>}
                 {step && <span className="badge todo">→ {step.letter}{step.to} · event</span>}
                 <span className="ch-sp" />
-                {c.build ? (
-                  <Link to={`/characters/${c.build.id}`}>Build →</Link>
-                ) : c.owned ? (
+                {c.build ? null : c.owned ? (
                   <button className="btn ghost" disabled={start.isPending} onClick={() => start.mutate(c.id)}>Start a build</button>
                 ) : onBanner ? (
                   <Link to={`/games/${id}/pulls`}>Plan pulls →</Link>
@@ -371,16 +335,10 @@ export function CharactersPage() {
           );
         })}
       </div>
-      )}
       <div className="ch-more">
         <span className="mu">
-          {Math.min(view === "compact" ? shown * 2 : shown, filtered.length)} of {filtered.length} shown · {sort === "status" ? "built characters first" : `by ${sort}`}
+          {filtered.length} shown · {sort === "status" ? "built characters first" : `by ${sort}`}
         </span>
-        {filtered.length > (view === "compact" ? shown * 2 : shown) && (
-          <button className="btn" onClick={() => setShown(shown + PAGE)}>
-            Show more
-          </button>
-        )}
       </div>
         </>
       )}

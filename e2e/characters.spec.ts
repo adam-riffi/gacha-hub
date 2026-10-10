@@ -29,7 +29,7 @@ test("Characters: splash cards with their KPIs, counts, search, wishlist and own
   await expect(kafka).toContainText("Nihility");
   expect(await kafka.evaluate((e) => getComputedStyle(e).getPropertyValue("--el").trim())).not.toBe("");
   // The whole card opens the build.
-  await kafka.locator(".ch-art").click();
+  await kafka.click();
   await expect(page).toHaveURL(/\/characters\/[a-z0-9]+$/);
   await page.goBack();
 
@@ -55,7 +55,7 @@ test("Characters: splash cards with their KPIs, counts, search, wishlist and own
   await page.request.put(`/api/instances/${id}/ownership`, { data: { items: [{ kind: "character", catalogId: "1004", owned: false }] } });
   await page.reload();
   await page.getByRole("searchbox", { name: "Search" }).fill("Welt");
-  await page.getByRole("article", { name: "Welt" }).locator(".ch-art").click();
+  await page.getByRole("article", { name: "Welt" }).click();
   await expect(page).toHaveURL(new RegExp(`/games/${id}/units/1004$`));
   await expect(page.getByRole("heading", { name: "Welt", level: 1 })).toBeVisible();
   await page.getByRole("button", { name: "Own" }).click();
