@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/docs/07-later · #193
+- Done: DESIGN.md §4 "Later" lists what it includes. It gains a per-game overview at Georges's request: each hub opens on its own dashboard, showing NTE's Fons and not Genshin's resin. Not built. Alongside: public showcase pages, PWA, i18n. PROJECT-GUIDE §14.1 step 8 says exactly which real data the agent needs and how to save it. §14 records the decision that long-term progress (chests, exploration, events) is hand-typed goals, not synced.
+- Tests: docs only.
+- Scope/decisions: the per-game overview is recorded, not designed; it needs a design pass per game before code.
+- Next: long-term goals on Profile, Endfield's per-banner weapon pity, ZZZ core skills, every banner with a hide button.
+
 ## 2026-10-10 · claude · stack/docs/06-verified-values · #192
 - Done: every value marked `~` in `docs/games/*.md` (55) was checked against the game's wiki: the fandom wikis' API, `endfield.wiki.gg`, and NTE's wiki. 17 are confirmed and now cite their page:
   - the daily premium income of Genshin, Star Rail, ZZZ and WuWa;
@@ -297,9 +303,3 @@ Entry format:
 - Tests: written first: `convene.test.ts` (the link, the request, ids and order, errors, one request per type), `convene.integration.test.ts` (10 pulls from the game's host only, pity and the 5★ Jiyan, a re-import adds nothing, a link without ids refused).
 - Scope/decisions: the API shape follows a community tool's source (wuwa-gacha-export), with no official documentation; a link works for minutes, so every non-zero code reads as expired; standard weapon, beginner and journey convenes are skipped.
 - Next: HoYoLAB notes (link, real-time notes on the cron tick).
-
-## 2026-10-10 · claude · stack/f11/06-settings-screen · #152
-- Done: Settings rebuilt from its board (WIREFRAMES.md A5): a section nav; Linked accounts (HoYoLAB with what it would read, not linked yet; Enka by the profiles' UIDs; SKPORT, Wuthering Waves link only, NTE manual); Pull history (a row per game: its method, the last import or its error, Paste link with the multi-call loop, a UIGF file, Export UIGF, or the pull log for manual games); Notifications (DMs on or off, quiet hours, digest, time zone, Manage reminder rules); Account and data (Discord name, JSON, Delete with the username typed back, admin, sign out). `api.del` takes a body.
-- Tests: written first: `e2e/settings.spec.ts` (read-only HoYoLAB, a UIGF file adds 10 Star Rail warps, export link, a link without its key, notifications, deletion refused for the wrong name); the accessibility sweep already visits `/settings`. Checked at 1440 beside `a5-settings.png`.
-- Scope/decisions: the board's "Daily check-in, automatic" and "Redeem new codes automatically" are left out: ADR 0005 makes linking read-only and asks for a new ADR first (question for Georges); one Export UIGF per game rather than one for all; the Discord bot note left the page.
-- Next: Wuthering Waves' convene link, then HoYoLAB notes.
