@@ -63,3 +63,22 @@
 .gr-foot select { width: auto; min-height: 26px; padding: 2px 6px; font-size: 12px; }
 .gr-foot a { color: var(--text); }
 .gr-note { font-size: 13px; }
+
+/* Planner (WIREFRAMES.md G7) */
+.pn-page { display: grid; grid-template-columns: 320px minmax(0, 1fr); gap: 24px; align-items: start; }
+.pn-goals { display: grid; gap: 10px; }
+.pn-goal { display: grid; gap: 6px; padding: 12px; text-align: left; cursor: pointer; background: var(--surface-2); border: 1px solid var(--edge); color: var(--text); font: inherit; }
+.pn-goal.is-on { border-color: var(--text); }
+.pn-goal .spread { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.pn-goal .mn { font-size: 12px; }
+.pn-bar { display: flex; align-items: center; gap: 8px; }
+.pn-bar .tk-meter { flex: 1; width: auto; }
+.pn-main { display: grid; gap: 24px; min-width: 0; }
+.pn-materials td input { width: 80px; min-height: 26px; padding: 2px 6px; text-align: right; }
+.pn-days { display: inline-flex; gap: 2px; }
+.pn-days > i { display: inline-grid; place-items: center; width: 16px; height: 16px; font: 400 9px/1 var(--font-mono); font-style: normal; color: var(--text-muted); border: 1px solid transparent; }
+.pn-days > i.on { background: var(--paper); color: var(--on-paper); }
+.pn-days > i.today { border-color: var(--accent); }
+.pn-line { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-top: 1px solid var(--surface-3); }
+.pn-line .mu { margin-left: auto; font-size: 13px; }
+.pn-today .btn { margin-top: 12px; }

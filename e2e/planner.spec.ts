@@ -17,7 +17,7 @@ test("Planner: goals, their materials with have, need and missing, all goals, fa
   await expect(materials).toContainText("Farm Kafka");
   const first = materials.getByRole("row").nth(1);
   const name = (await first.getByRole("cell").first().textContent())!.trim();
-  const need = Number(await first.getByTestId("need").textContent());
+  const need = Number((await first.getByTestId("need").textContent())!.replace(/\D/g, ""));
   await first.getByRole("spinbutton", { name: `${name} on hand` }).fill(String(need));
   await first.getByRole("spinbutton", { name: `${name} on hand` }).blur();
   await expect(materials.getByRole("row", { name: new RegExp(name) }).getByTestId("missing")).toHaveText("✓");
