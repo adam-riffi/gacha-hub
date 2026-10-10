@@ -1,0 +1,296 @@
+import { useState, type FormEvent } from "react";
+import { useNavigate, useParams, Link } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getGame, hubResets, passView, utcLabel, type GameDefinition, type PassesDto, type UserExport } from "@gacha/shared";
+import { api } from "../lib/api";
+import { useToast } from "../lib/toast";
+import { useReminderFlag, type ReminderFlag } from "../lib/reminder";
+import { GameTabs } from "../components/GameTabs";
+import { masked } from "../components/hub/HubHeader";
+import type { InstanceDetail, ReminderRule } from "../lib/types";
+
+const DATE = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
+const TIME = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit" });
+type Props = { instance: InstanceDetail; game: GameDefinition };
+
+/** Saves profile fields and refreshes what shows them (the hub header, the strip, Home). */
+function useProfileSave(instanceId: string) {
+  const qc = useQueryClient();
+  const toast = useToast();
+  return useMutation({
+    mutationFn: (body: object) => api.put(`/api/instances/${instanceId}`, body),
+    onSuccess: () => Promise.all([["instance", instanceId], ["instances"], ["dashboard"]].map((queryKey) => qc.invalidateQueries({ queryKey }))),
+    onError: () => toast("Not saved: check the value", "err"),
+  });
+}
+
+/**
+ * A game's Profile (WIREFRAMES.md G8): the account (server and its reset in
+ * your time, UID, account and world level, typed until a linked account
+ * syncs them); the passes with their expiry reminders; long-term progress
+ * (with F11's sync); this game's reminders; export, sleep and remove.
+ */
+export function ProfilePage() {
+  const { id } = useParams<{ id: string }>();
+  const instance = useQuery({ queryKey: ["instance", id], queryFn: () => api.get<InstanceDetail>(`/api/instances/${id}`) });
+  const game = instance.data && getGame(instance.data.gameKey);
+  if (instance.isError) {
+    return (
+      <div className="card" role="alert">
+        <p>The profile could not load.</p>
+        <button className="btn" onClick={() => void instance.refetch()}>Try again</button>
+      </div>
+    );
+  }
+  if (!instance.data || !game) return <div className="mu">Loading…</div>;
+  return (
+    <>
+      <div style={{ marginBottom: 14 }}>
+        <GameTabs instanceId={instance.data.id} active="profile" gameKey={game.key} hasCatalog={Boolean(game.loadCatalog)} />
+      </div>
+      <div className="pf-page">
+        <Account instance={instance.data} game={game} />
+        <Passes instance={instance.data} game={game} />
+        <section className="card pf-progress" aria-label="Long-term progress">
+          <div className="spread">
+            <h3>Long-term progress</h3>
+            <span className="tag">Optional</span>
+          </div>
+          <p className="mu">Achievements, days active, chests, waypoints and exploration per region fill in from the game's own records once a linked account syncs them (F11). Nothing to type here.</p>
+        </section>
+        <GameReminders instance={instance.data} game={game} />
+        <Status instance={instance.data} game={game} />
+      </div>
+    </>
+  );
+}
+
+function Account({ instance, game }: Props) {
+  const save = useProfileSave(instance.id);
+  const [show, setShow] = useState(false);
+  const region = game.regions.find((r) => r.key === instance.regionKey) ?? game.regions[0]!;
+  const reset = hubResets(game, region, new Date()).daily;
+  const level = game.manifest.accountLevel;
+  const world = game.manifest.worldLevel;
+  const num = (v: string) => (v.trim() === "" ? null : Number(v));
+  const levelRow = (name: string, field: "accountLevel" | "worldLevel", value: number | null, min: number, max: number) => (
+    <div>
+      <span className="kpi-label">{name}</span>
+      <span className="pf-val">
+        <input type="number" aria-label={name} min={min} max={max} key={value ?? ""} defaultValue={value ?? ""} onBlur={(e) => num(e.target.value) !== value && save.mutate({ [field]: num(e.target.value) })} />
+      </span>
+      <span className="tag">Manual</span>
+    </div>
+  );
+  return (
+    <section className="card pf-account" aria-label="Account">
+      <div className="spread">
+        <h3>Account</h3>
+        <span className="tag">Manual</span>
+      </div>
+      <div className="pf-rows">
+        <div>
+          <span className="kpi-label">Server</span>
+          <span className="pf-val">
+            {region.label} · {utcLabel(region.utcOffsetMinutes)} · resets {String(region.dailyResetHour).padStart(2, "0")}:00 server time ({TIME.format(reset)} for you)
+          </span>
+          {game.regions.length > 1 && (
+            <select aria-label="Server" value={region.key} onChange={(e) => save.mutate({ regionKey: e.target.value })}>
+              {game.regions.map((r) => (
+                <option key={r.key} value={r.key}>{r.label}</option>
+              ))}
+            </select>
+          )}
+        </div>
+        <div>
+          <span className="kpi-label">UID</span>
+          <span className="pf-val">
+            {instance.uid && !show ? (
+              <span className="mn">{masked(instance.uid)}</span>
+            ) : (
+              <input
+                aria-label="UID"
+                key={instance.uid ?? ""}
+                defaultValue={instance.uid ?? ""}
+                maxLength={32}
+                pattern="[A-Za-z0-9-]*"
+                autoComplete="off"
+                placeholder="Type your UID"
+                onBlur={(e) => (e.target.value.trim() || null) !== instance.uid && save.mutate({ uid: e.target.value.trim() || null })}
+              />
+            )}
+          </span>
+          {instance.uid && <button className="btn" onClick={() => setShow(!show)}>{show ? "Hide" : "Show"}</button>}
+        </div>
+        {levelRow(level.name, "accountLevel", instance.accountLevel, 1, 100)}
+        {world && levelRow(world.name, "worldLevel", instance.worldLevel, 0, world.max)}
+      </div>
+      <p className="mu pf-note">Without a linked account (F11) these fields are typed in.</p>
+    </section>
+  );
+}
+
+function Passes({ instance, game }: Props) {
+  const qc = useQueryClient();
+  const [editing, setEditing] = useState<"monthly" | "battle" | null>(null);
+  const { data } = useQuery({ queryKey: ["passes", instance.id], queryFn: () => api.get<PassesDto>(`/api/instances/${instance.id}/passes`) });
+  const remindMonthly = useReminderFlag(instance.id, "beforePassEnds");
+  const remindBattle = useReminderFlag(instance.id, "beforeBattlePassEnds");
+  const save = useMutation({
+    mutationFn: (v: { path: "monthly" | "battle"; body: object }) => api.put(`/api/instances/${instance.id}/passes/${v.path}`, v.body),
+    onSuccess: () => {
+      setEditing(null);
+      return Promise.all([["passes", instance.id], ["dashboard"]].map((queryKey) => qc.invalidateQueries({ queryKey })));
+    },
+  });
+  const monthly = game.manifest.monthlyPass;
+  const battle = game.manifest.battlePass;
+  const region = game.regions.find((r) => r.key === instance.regionKey) ?? game.regions[0]!;
+  const now = new Date();
+  const pv = passView(game, region, now, data?.battle ? { ...data.battle, updatedAt: new Date(data.battle.updatedAt) } : null, data?.monthly ? { endsAt: new Date(data.monthly.endsAt) } : null);
+  const submit = (path: "monthly" | "battle") => (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const v = Number(new FormData(e.currentTarget).get("v"));
+    save.mutate({ path, body: path === "monthly" ? { daysLeft: v } : { level: v, weeklyXp: pv.weeklyXp } });
+  };
+
+  const pass = (key: "monthly" | "battle", name: string, line: string, share: number, field: { label: string; value: number | null; max: number }, remind: { on: boolean; set: (v: boolean) => void; pending: boolean } | null, remindLabel: string) => (
+    <div className="pf-pass">
+      <div className="spread">
+        <strong>{name}</strong>
+        {editing === key ? (
+          <form className="pf-form" onSubmit={submit(key)}>
+            <label>
+              {field.label}
+              <input name="v" type="number" min={0} max={field.max} required defaultValue={field.value ?? ""} autoFocus />
+            </label>
+            <button className="btn primary" type="submit" disabled={save.isPending}>Save</button>
+            <button className="btn" type="button" onClick={() => setEditing(null)}>Cancel</button>
+          </form>
+        ) : (
+          <span className="row">
+            <span className="mn">{line}</span>
+            <button className="btn" aria-label={`Update ${name}`} onClick={() => setEditing(key)}>Update</button>
+          </span>
+        )}
+      </div>
+      <span className="pf-bar"><span style={{ width: `${Math.min(1, share) * 100}%` }} /></span>
+      {remind && (
+        <label className="pf-check">
+          <input type="checkbox" key={String(remind.on)} defaultChecked={remind.on} disabled={remind.pending} onChange={(e) => remind.set(e.target.checked)} />
+          {remindLabel}
+        </label>
+      )}
+    </div>
+  );
+
+  return (
+    <section className="card pf-passes" aria-label="Passes">
+      <div className="spread">
+        <h3>Passes</h3>
+        <span className="tag">Manual</span>
+      </div>
+      {!monthly && !battle && <p className="mu">No pass on record for this game.</p>}
+      {monthly &&
+        pass(
+          "monthly",
+          monthly.name,
+          pv.monthlyDaysLeft === null ? "not tracked" : `${pv.monthlyDaysLeft} days left · ends ${DATE.format(new Date(data!.monthly!.endsAt))}`,
+          (pv.monthlyDaysLeft ?? 0) / monthly.days,
+          { label: "Days left", value: pv.monthlyDaysLeft, max: monthly.maxDays ?? monthly.days },
+          remindMonthly,
+          "Remind me 3 days before it ends",
+        )}
+      {battle &&
+        pass(
+          "battle",
+          battle.name,
+          `Lv ${pv.level}${pv.maxLevel !== null ? ` / ${pv.maxLevel}` : ""} · ends ${DATE.format(hubResets(game, region, now).versionEnd)}`,
+          pv.maxLevel ? pv.level / pv.maxLevel : 0,
+          { label: "Level", value: pv.level, max: battle.maxLevel ?? 200 },
+          battle.maxLevel ? remindBattle : null,
+          "Remind me 48 h before the end if the pass is short of its last level",
+        )}
+      <p className="mu pf-note">The game does not expose pass days. Re-enter after each purchase; the count runs down by itself.</p>
+    </section>
+  );
+}
+
+function ReminderRow({ instanceId, flag, label }: { instanceId: string; flag: ReminderFlag; label: string }) {
+  const remind = useReminderFlag(instanceId, flag);
+  return (
+    <li className="tk-rule">
+      <label>
+        <input type="checkbox" key={String(remind.on)} defaultChecked={remind.on} disabled={remind.pending} onChange={(e) => remind.set(e.target.checked)} />
+        {label}
+      </label>
+    </li>
+  );
+}
+
+function GameReminders({ instance, game }: Props) {
+  const { data } = useQuery({ queryKey: ["reminder", instance.id], queryFn: () => api.get<ReminderRule | null>(`/api/instances/${instance.id}/reminder`) });
+  const stamina = game.currencies.find((c) => c.key === game.manifest.stamina.currency);
+  const lead = data?.config.leadMinutes ?? 60;
+  const rows: { flag: ReminderFlag; label: string }[] = [
+    ...(stamina?.cap && stamina.regenPerHour ? [{ flag: "whenStaminaFull" as const, label: `${stamina.label} full` }] : []),
+    { flag: "beforeReset", label: `Dailies left, ${lead % 60 ? `${lead} min` : `${lead / 60} h`} before reset` },
+    ...(game.manifest.endgame.some((m) => m.maxPremium !== undefined) ? [{ flag: "beforeEndgameReset" as const, label: "Endgame rewards unclaimed, 24 h before its reset" }] : []),
+    ...(game.key === "genshin" ? [{ flag: "includeDomains" as const, label: "Domains open today, in each DM" }] : []),
+  ];
+  return (
+    <section className="card pf-reminders" aria-label="Game reminders">
+      <div className="spread">
+        <h3>Game reminders</h3>
+        <Link to="/tasks">Global rules →</Link>
+      </div>
+      <ul className="tk-rules">
+        {rows.map((r) => <ReminderRow key={r.flag} instanceId={instance.id} flag={r.flag} label={r.label} />)}
+      </ul>
+      <p className="mu pf-note">These switches are this game's own; Global rules on Tasks set them across games. Quiet hours still apply.</p>
+    </section>
+  );
+}
+
+function Status({ instance, game }: Props) {
+  const qc = useQueryClient();
+  const nav = useNavigate();
+  const toast = useToast();
+  const sleep = useProfileSave(instance.id);
+  const remove = useMutation({
+    mutationFn: () => api.del(`/api/instances/${instance.id}`),
+    onSuccess: () => {
+      toast("Game removed");
+      void qc.invalidateQueries();
+      nav("/library");
+    },
+  });
+  // This game's part of the account export: its profile, and the tasks on it or its builds.
+  const exportJson = useMutation({
+    mutationFn: () => api.get<UserExport>("/api/export"),
+    onSuccess: (all) => {
+      const mine = all.games.filter((g) => g.id === instance.id);
+      const refs = new Set([instance.id, ...mine.flatMap((g) => g.characters.map((c) => c.id as string))]);
+      const blob = new Blob([JSON.stringify({ ...all, games: mine, tasks: all.tasks.filter((t) => refs.has(t.refId as string)) }, null, 2)], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `gacha-hub-${game.key}-${new Date().toISOString().slice(0, 10)}.json`;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    },
+    onError: () => toast("Export failed", "err"),
+  });
+  return (
+    <section className="card pf-status" aria-label="Game status">
+      <h3>Game status</h3>
+      <p className="mu">
+        Sleep hides the game from ALL and pauses its reminders; data stays. Remove deletes it from the library after a confirmation. Currencies and teams still live on the <Link to={`/games/${instance.id}/overview`}>old overview</Link>.
+      </p>
+      <span className="row">
+        <button className="btn" disabled={exportJson.isPending} onClick={() => exportJson.mutate()}>Export JSON</button>
+        <button className="btn" disabled={sleep.isPending} onClick={() => sleep.mutate({ sleeping: !instance.sleeping })}>{instance.sleeping ? "Wake this game" : "Sleep this game"}</button>
+        <button className="btn danger" disabled={remove.isPending} onClick={() => confirm(`Remove ${game.name} and all its data?`) && remove.mutate()}>Remove…</button>
+      </span>
+    </section>
+  );
+}

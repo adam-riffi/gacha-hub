@@ -29,8 +29,9 @@ test("Neverness to Everness works by hand on every screen @smoke", async ({ page
   await board.getByRole("button", { name: "+10" }).click();
   await expect(board.getByTestId("pity")).toHaveText("10");
 
-  // A build, by name (no catalog), opens its sheet.
-  await tabs.getByRole("link", { name: "Overview" }).click();
+  // A build, by name (no catalog), opens its sheet; the old overview is linked from Profile.
+  await tabs.getByRole("link", { name: "Profile" }).click();
+  await page.getByRole("link", { name: "old overview" }).click();
   await page.getByLabel("Character name").fill("Nanally");
   await page.getByRole("button", { name: "+ Add" }).click();
   await expect(page).toHaveURL(/\/characters\//);

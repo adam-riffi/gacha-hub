@@ -2,20 +2,21 @@ import { useState } from "react";
 import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getGame, type GameDefinition, type ReminderConfig, type ReminderPreviewDto } from "@gacha/shared";
 import { api } from "../../lib/api";
-import { REMINDER_DEFAULTS } from "../../lib/reminder";
+import { REMINDER_DEFAULTS, type ReminderFlag } from "../../lib/reminder";
 import type { InstanceListItem, ReminderRule } from "../../lib/types";
 
 const ZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
 const DIGEST = "21:00";
 
 type Row = { key: string; label: string; applies: (g: GameDefinition) => boolean; on: (c: ReminderConfig) => boolean; set: (c: ReminderConfig, v: boolean) => Partial<ReminderConfig> };
-const flag = (k: "beforeReset" | "whenStaminaFull" | "beforeEndgameReset" | "beforePassEnds" | "includeDomains"): Pick<Row, "on" | "set"> => ({ on: (c) => c[k], set: (_, v) => ({ [k]: v }) });
+const flag = (k: ReminderFlag): Pick<Row, "on" | "set"> => ({ on: (c) => c[k], set: (_, v) => ({ [k]: v }) });
 const ROWS: Row[] = [
   { key: "reset", label: "1 h before daily reset, with the dailies left", applies: () => true, ...flag("beforeReset"), set: (_, v) => ({ beforeReset: v, leadMinutes: 60 }) },
   { key: "digest", label: `Daily digest at ${DIGEST}`, applies: () => true, on: (c) => c.atTimes.length > 0, set: (c, v) => ({ atTimes: v ? (c.atTimes.length ? c.atTimes : [DIGEST]) : [] }) },
   { key: "stamina", label: "Stamina full", applies: (g) => g.currencies.some((c) => c.key === g.manifest.stamina.currency && c.cap && c.regenPerHour), ...flag("whenStaminaFull") },
   { key: "endgame", label: "24 h before an endgame reset with rewards unclaimed", applies: (g) => g.manifest.endgame.some((m) => m.maxPremium !== undefined), ...flag("beforeEndgameReset") },
   { key: "pass", label: "30-day pass ends in 3 days", applies: (g) => Boolean(g.manifest.monthlyPass), ...flag("beforePassEnds") },
+  { key: "battle", label: "48 h before the version ends, battle pass short", applies: (g) => Boolean(g.manifest.battlePass?.maxLevel), ...flag("beforeBattlePassEnds") },
   { key: "domains", label: "Domains open today, in each DM", applies: (g) => g.key === "genshin", ...flag("includeDomains") },
 ];
 
