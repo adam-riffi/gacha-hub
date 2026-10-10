@@ -92,7 +92,7 @@ const characters: CatalogCharacter[] = avatars
     }
     const keys = ["basic", "skill", "ultimate", "talent"].filter((k) => costsByKey[k]);
     const subTraces = Object.values(d.traces?.subSkills ?? {})
-      .map((n) => ({ id: String(n.id), name: n.name ?? null, costs: promoteSteps(n.promote) }))
+      .map((n) => ({ id: String(n.id), name: stripTags(n.name) || null, costs: promoteSteps(n.promote) }))
       .filter((n) => n.costs.length);
     const ascension = promotionSteps(d.upgrade, 80);
     return {
