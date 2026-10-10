@@ -94,9 +94,9 @@ describe("game pull rules", () => {
     expect(types("zzz")).toEqual(["character:2", "weapon:3", "standard:1", "bangboo:5"]);
     expect(types("wuwa")).toEqual(["character:1", "weapon:2", "standard:3", "standard-weapon:4", "novice:5", "beginner:6"]);
     expect(types("endfield")).toEqual(["character:E_CharacterGachaPoolType_Special", "weapon:weapon", "joint:E_CharacterGachaPoolType_Joint", "standard:E_CharacterGachaPoolType_Standard", "beginner:E_CharacterGachaPoolType_Beginner"]);
-    // The pulls each spends: the standard banner's tickets, or a currency of its own the tracker does not count.
+    // The pulls each spends: the standard banner's tickets, or only its own (Boopons, Arsenal Tickets).
     const fund = (game: string, key: string) => getGame(game)!.pullBanners!.find((b) => b.key === key)!.fund;
-    expect([fund("genshin", "beginner"), fund("hsr", "departure"), fund("wuwa", "novice"), fund("zzz", "bangboo")]).toEqual(["standard", "standard", "standard", "none"]);
+    expect([fund("genshin", "beginner"), fund("hsr", "departure"), fund("wuwa", "novice"), fund("zzz", "bangboo"), fund("endfield", "weapon")]).toEqual(["standard", "standard", "standard", "own", "own"]);
     // Endfield's Joint banners keep their own pity; Star Rail's Departure Warp is certain by 50.
     expect(getGame("endfield")!.pullBanners!.find((b) => b.key === "joint")!.pityPerPool).toBe(true);
     expect(getGame("hsr")!.pullBanners!.find((b) => b.key === "departure")!.hardPity).toBe(50);
