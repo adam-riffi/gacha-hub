@@ -52,7 +52,7 @@ test("every screen has no serious accessibility violations @smoke", async ({ pag
     const amber = await post<{ id: string }>(`/api/instances/${genshin.id}/characters`, { catalogId: "10000021" });
     await page.goto(`/characters/${amber.id}`);
     found.push(...(await violations(page, "genshin sheet")));
-    for (const view of ["Inventory", "Plan"]) {
+    for (const view of ["Inventory", "Farm targets"]) {
       await page.goto(`/games/${genshin.id}/gear`);
       await page.getByRole("button", { name: view, exact: true }).click();
       found.push(...(await violations(page, `genshin gear ${view}`)));
