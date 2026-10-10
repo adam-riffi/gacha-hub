@@ -127,4 +127,24 @@ describe("stamina and endgame reminders (scheduler)", () => {
     expect(texts.some((t) => /Spiral Abyss ends in 22h 0m · 100 Primogems unclaimed/.test(t))).toBe(true);
     expect(texts.some((t) => /resets in 22h 0m/.test(t))).toBe(true);
   });
+
+  it("DMs 48 h before an event goal's deadline once its reminder is on, and only once", async () => {
+    const ends = new Date(Date.now() + 40 * 3_600_000);
+    await c.req("POST", "/api/admin/payload", {
+      kind: "events",
+      gameKey: "genshin",
+      items: [{ key: "rw", name: "Rainbow's End", startsAt: new Date(Date.now() - 86_400_000).toISOString(), endsAt: ends.toISOString(), effects: [{ kind: "note", text: "A namecard" }] }],
+    });
+    const eventId = (await c.req<{ id: string; key: string }[]>("GET", "/api/games/genshin/events")).json.find((e) => e.key === "rw")!.id;
+    const goal = (await c.req<{ id: string }>("POST", `/api/events/${eventId}/goal`, { instanceId: gid })).json;
+    await c.req("PUT", `/api/instances/${gid}/reminder`, { ...only({}), beforeReset: false });
+    await runReminderTick(new Date(Date.now() + 60_000));
+    expect(sent).not.toHaveBeenCalled();
+
+    await c.req("PUT", `/api/tasks/${goal.id}`, { notify: true });
+    await runReminderTick(new Date(Date.now() + 120_000));
+    await runReminderTick(new Date(Date.now() + 180_000));
+    expect(sent).toHaveBeenCalledTimes(1);
+    expect(sent.mock.calls[0]![1]).toMatch(/Rainbow's End ends in 39h \d+m · claim your reward/);
+  });
 });

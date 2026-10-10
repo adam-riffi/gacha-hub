@@ -95,6 +95,14 @@ async function dueExtra(cfg: ReminderConfig, game: GameDefinition, instance: Gam
       .modes.filter((m) => m.open && m.mode.maxPremium !== undefined)
       .map((m) => ({ key: m.mode.key, name: m.mode.name, closes: m.closes, unclaimed: m.mode.maxPremium! - m.premium, premium }));
   }
+  const goals = await prisma.task.findMany({
+    where: { userId: instance.userId, scope: "game", refId: instance.id, eventId: { not: null }, notify: true, lastCompletedAt: null },
+    select: { eventId: true },
+  });
+  if (goals.length) {
+    const events = await prisma.event.findMany({ where: { id: { in: goals.map((g) => g.eventId!) } }, select: { id: true, name: true, endsAt: true } });
+    extra.eventGoals = events.map((e) => ({ key: e.id, name: e.name, endsAt: e.endsAt }));
+  }
   return extra;
 }
 

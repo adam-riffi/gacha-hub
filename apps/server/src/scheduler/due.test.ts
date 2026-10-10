@@ -8,6 +8,17 @@ const cfg = (c: object) => reminderConfigSchema.parse(c);
 const at = (iso: string) => new Date(iso);
 
 describe("dueReminders", () => {
+  it("reminds 48 h before an unclaimed event goal ends, keyed on the event", () => {
+    const ends = at("2026-10-20T15:00:00Z");
+    const extra = { eventGoals: [{ key: "e1", name: "Rainbow's End", endsAt: ends }] };
+    const c = cfg({ beforeReset: false });
+    expect(dueReminders(c, EU, "Genshin", at("2026-10-18T14:00:00Z"), extra)).toEqual([]);
+    expect(dueReminders(c, EU, "Genshin", at("2026-10-18T16:00:00Z"), extra)).toEqual([
+      { key: "event:e1", firedFor: ends, headline: "🎁 **Genshin** · Rainbow's End ends in 47h 0m · claim your reward" },
+    ]);
+    expect(dueReminders(c, EU, "Genshin", at("2026-10-20T15:00:00Z"), extra)).toEqual([]);
+  });
+
   it("fires before reset only inside the lead window, keyed on the reset instant", () => {
     const c = cfg({ leadMinutes: 60 });
     expect(dueReminders(c, EU, "Genshin", at("2026-10-04T01:30:00Z"))).toEqual([]);
