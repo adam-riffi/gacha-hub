@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/ui/01-error-states · #174
+- Done: one shared error block, `LoadError`, with what failed and a Try again button. It replaces the eight inline copies (Calendar, character sheet, Characters, Library, Planner, Profile, Pulls, Tasks), with the same text. It is new on Home, Gear, Materials and Owned units: Home used to show "No games yet" when `/api/dashboard` failed, and the game pages stayed on "Loading…" forever. This was PROJECT-GUIDE §14.2 item 2.
+- Tests: written first: an E2E journey fails `/api/dashboard`, sees the error, unroutes and recovers with Try again. It then checks the error on the gear, materials and ownership pages. `npm run check` passes: 501 tests and 38 journeys.
+- Scope/decisions: Admin keeps its own error text; its editor works without the data.
+- Next: Endfield's empty tabs and the Library's live-data cell.
+
 ## 2026-10-10 · claude · stack/catalog/01-hsr-markup · #173
 - Done: the Star Rail importer strips game markup from minor trace names too: `<unbreak>300</unbreak> Rogues` is now "300 Rogues". The catalog was regenerated from the cache; only that name changed. This was PROJECT-GUIDE §14.2 item 9.
 - Tests: written first: no name anywhere in the Star Rail catalog, nested ones included, holds markup. `npm run check` passes.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: `reminderPreview.integration.test.ts` (the preview text per game; the test DM refused without the bot, sent with it), `e2e/tasks.spec.ts` (a rule turned on shows ALL, the preview, quiet hours saved, the test DM's reason).
 - Scope/decisions: the preview shows each game's own DM, which is what the tick sends (the board drew one combined digest); "Banner ends in 24 h, wishlisted units only" waits for `WishlistItem`; game-specific rules (Parametric Transformer) and "New rule" are left out.
 - Next: Games library (A2), then Pulls (G3).
-
-## 2026-10-10 · claude · stack/f10/07-reminder-rules · #131
-- Done: two reminder settings from A3: `quietHours` (no DM between two local times, wrapping past midnight; held DMs go out on the first tick after, since nothing is logged) and `beforePassEnds` (a DM 3 days before the 30-day pass ends, keyed on its end). `inQuietHours` in `scheduler/due.ts`.
-- Tests: written first: `due.test.ts` (the pass window and its switch; quiet hours in the user's zone, wrapping, off without a window), `reminders.integration.test.ts` (the pass DM; quiet hours hold, then send once).
-- Scope/decisions: settings stay per profile like the others; the Reminders panel (next PR) writes them across games.
-- Next: `stack/f10/08-reminders-panel` (A3's Reminders and Preview, Send a test DM).
