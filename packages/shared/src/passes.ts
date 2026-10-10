@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { cadenceWindow } from "./cadence.js";
-import type { GameDefinition, GameRegion } from "./games/types.js";
+import { cadenceWindow, type ServerClock } from "./cadence.js";
+import type { GameDefinition } from "./games/types.js";
 
 const DAY = 86_400_000;
 
@@ -22,7 +22,7 @@ export const monthlyPassInput = z.object({ daysLeft: z.number().int().min(0).max
  */
 export function passView(
   game: GameDefinition,
-  region: GameRegion,
+  region: ServerClock,
   now: Date,
   battle: { level: number; weeklyXp: number; updatedAt: Date } | null,
   monthly: { endsAt: Date } | null,

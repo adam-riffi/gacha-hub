@@ -1,3 +1,4 @@
+import { getGame } from "@gacha/shared";
 import { formatRemaining } from "../../lib/time";
 import type { DashGame } from "../../lib/roster";
 
@@ -6,7 +7,7 @@ const DAY = 86_400_000;
 /** When a stamina fills: the clock time if today, the time left otherwise. */
 function fullLabel(fullAt: string, now = Date.now()): string {
   const t = Date.parse(fullAt);
-  return t - now < DAY ? new Date(t).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" }) : formatRemaining(fullAt, now);
+  return t - now < DAY ? new Date(t).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit", hourCycle: "h23" }) : formatRemaining(fullAt, now);
 }
 
 /** Stamina per game (VISUAL-DESIGN.md §10, WIREFRAMES.md A1): now over the cap, the reserve (F8), and when it fills. */
@@ -26,6 +27,8 @@ export function StaminaCard({ games }: { games: DashGame[] }) {
       <div className="lst">
         {rows.map((g) => {
           const s = g.stamina!;
+          // The reserve is a currency of its own (Condensed Resin, Reserved Trailblaze Power…); a full one is flagged.
+          const reserve = g.currencies.find((x) => x.key === getGame(g.gameKey)?.manifest.stamina.reserve?.currency);
           return (
             <div className="rw" key={g.instanceId}>
               <span>{g.name}</span>
@@ -33,7 +36,9 @@ export function StaminaCard({ games }: { games: DashGame[] }) {
                 {s.value}
                 <span className="mu"> / {s.cap}</span>
               </span>
-              <span className="mn mu col-70">—</span>
+              <span className="mn mu col-70">
+                {reserve ? reserve.cap !== null && reserve.value >= reserve.cap ? <span className="chip hot" title={`${reserve.label} full`}>{reserve.value}</span> : reserve.value : "—"}
+              </span>
               <span className="mn col-70 stamina-full">{s.full || !s.fullAt ? <span className="chip hot">full</span> : fullLabel(s.fullAt)}</span>
             </div>
           );
