@@ -35,7 +35,7 @@ export const api = {
   get: <T>(path: string) => request<T>("GET", path),
   post: <T>(path: string, body?: unknown) => request<T>("POST", path, body),
   put: <T>(path: string, body?: unknown) => request<T>("PUT", path, body),
-  del: <T>(path: string) => request<T>("DELETE", path),
+  del: <T>(path: string, body?: unknown) => request<T>("DELETE", path, body),
   async upload(file: File): Promise<{ url: string }> {
     const form = new FormData();
     form.append("file", file);

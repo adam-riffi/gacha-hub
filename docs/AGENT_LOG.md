@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f11/06-settings-screen · #152
+- Done: Settings rebuilt from its board (WIREFRAMES.md A5): a section nav; Linked accounts (HoYoLAB with what it would read, not linked yet; Enka by the profiles' UIDs; SKPORT, Wuthering Waves link only, NTE manual); Pull history (a row per game: its method, the last import or its error, Paste link with the multi-call loop, a UIGF file, Export UIGF, or the pull log for manual games); Notifications (DMs on or off, quiet hours, digest, time zone, Manage reminder rules); Account and data (Discord name, JSON, Delete with the username typed back, admin, sign out). `api.del` takes a body.
+- Tests: written first: `e2e/settings.spec.ts` (read-only HoYoLAB, a UIGF file adds 10 Star Rail warps, export link, a link without its key, notifications, deletion refused for the wrong name); the accessibility sweep already visits `/settings`. Checked at 1440 beside `a5-settings.png`.
+- Scope/decisions: the board's "Daily check-in, automatic" and "Redeem new codes automatically" are left out: ADR 0005 makes linking read-only and asks for a new ADR first (question for Georges); one Export UIGF per game rather than one for all; the Discord bot note left the page.
+- Next: Wuthering Waves' convene link, then HoYoLAB notes.
+
 ## 2026-10-10 · claude · stack/f11/05-settings-data · #151
 - Done: `GET /api/imports` (the user's latest 50 imports and syncs, newest first: profile, provider, kind, added, skipped, error) and `DELETE /api/me` (deletes the user and, by cascade, everything they own, once `confirm` matches their username; clears the session cookie), both for Settings (WIREFRAMES.md A5). `clearSessionCookie` is exported.
 - Tests: written first: `account.integration.test.ts` (imports newest first and nobody else's; a wrong confirm keeps the account; the right one removes the user, profiles and links and signs out; sign-in required).
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: account levels in the conformance suite, `hubResets`, `utcLabel`, E2E `hub.spec.ts` (header, edit, tabs); whole E2E suite green.
 - Scope/decisions: the header is the page's h1 (screens drop theirs); the overview's region select moved into Edit; world level left out (no field). Rest of F8 split: activities, passes, endgame, remind-full, Home.
 - Next: `08-activities` (stamina with reserve, Daily/Weekly/Monthly columns, cycles, version) as the first tab.
-
-## 2026-10-10 · claude · stack/f8/06-pin-day · #111
-- Done: pinning a past heatmap day moves Home to it, kept in the URL (`?day=`): VIEWING chip and BACK TO TODAY in the top bar, the day's dailies on the gauge, Backlog and Pull history ending on it (Backlog follows the period: 10 days or 8 weeks), DAY CLOSED and recorded dailies on the dailies card, the day's limited pulls. `dayOf` in shared. #109 merged.
-- Tests: written first: `dayOf` (recorded, unchanged, before any record) and E2E `pin-day.spec.ts`; the heatmap journey still pins today.
-- Scope/decisions: weeklies, goals gauge, permanent tickets, pity, banners, pass and stamina have no history, so they stay live (the design moves them with made-up data). Vercel's Hobby build rate limit refused production deploys of #108 and #109 today; production is at #107 until the next merge after the reset.
-- Next: merge #110 and #111; then `07-hub-activities` (hub header, Activities tab per G1).
