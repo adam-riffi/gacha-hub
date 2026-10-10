@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f10/20-profile · #144
+- Done: Profile rebuilt from its board (WIREFRAMES.md G8), the hub's last tab in place of Overview: Account (server with its reset in server time and yours, UID masked with Show, account and world level typed in place); Passes (30-day pass days left and battle pass level with their ends, bars, Update, and each reminder); Long-term progress, dashed and empty until F11 syncs it; Game reminders (this game's switches, Global rules →); Game status (Export JSON of this game, Sleep or Wake, Remove… after a confirmation, a link to the old overview). The hub header shows "AR 58 · WL 8"; Tasks' Reminders gain the battle pass row.
+- Tests: written first: `e2e/profile.spec.ts` (tab, the reset in server time, UID masked, levels in the header, days left and both pass reminders, stamina full, export file name, sleep, remove); smoke reaches the old overview from Profile; activities expects Profile last; the accessibility sweep visits it (caught a `<dl>` holding controls). Checked at 1440 beside `g8-profile.png`. Also fixed in the stack: the sheet journey's "Saved" toast is found by its exact text.
+- Scope/decisions: Long-term progress waits for F11 (the Battle Chronicle); the SYNCED badges are left out, as each game holds its own switches and the global rules set them across games; currencies and teams stay on the old overview until a screen takes them.
+- Next: F10's leftovers (Weapons and Compact views, wishlist filters and targets), then F11.
+
 ## 2026-10-10 · claude · stack/f10/19-profile-data · #143
 - Done: `GameInstance.worldLevel` (migration `20261011030000_world_level`) and the manifest's `worldLevel` (label, name, highest): Genshin's World Level (0 to 9), Star Rail's Equilibrium Level (0 to 6), Wuthering Waves' SOL3 Phase (1 to 8), each sourced in its sheet; `PUT /api/instances/:id` takes it, refused over the game's highest or where the game has none; the export carries it. Reminders gain `beforeBattlePassEnds`: a DM 48 h before the version ends while the battle pass is short of its last level.
 - Tests: written first: `instances.integration.test.ts` (kept, refused over 9, cleared, refused for ZZZ), `due.test.ts` (not before 48 h, the DM with the level, none once maxed or switched off). The conformance suite checks the sheet names the world level.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: `cadence.test.ts` (fast-check over offsets in 15-minute steps, reset hours and weekdays: windows contain now and start at the reset hour, chain end to start, match luxon for daily and weekly, monthly clamps to the month's last day, cycles repeat from their anchor also before it; identical results in four viewer time zones across 2026's clock changes; Genshin Europe's real windows).
 - Scope/decisions: Plain arithmetic instead of luxon so the browser shares it; luxon stays as the test oracle and for user time zones in reminders.
 - Next: `stack/f8/02-manifests`.
-
-## 2026-10-10 · claude · stack/d/02-postgres-check · #103
-- Done: CI job `test-postgres` (Postgres 16 service, `migrate deploy`, the server's route tests through the pg adapter via `TEST_DATABASE_URL`); `/api/health` (an anonymous read through the database, `no-store`, 503 when unreachable) added to the production smoke check; AGENTS.md's dev-server note reworded (the client is provider-specific; there is no engine DLL any more).
-- Tests: `health.integration.test.ts` first; Check all; the CI job itself is the Postgres verification.
-- Scope/decisions: The Supabase pooler is still unverified: Preview deployments have no `DATABASE_URL` (production-only variables), and branching Supabase costs money. Georges either adds Preview-scoped database variables or the first production deploy is the pooler test, guarded by the health smoke check.
-- Next: verify the Vercel build on a preview; then F8.
