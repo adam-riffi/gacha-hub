@@ -5,9 +5,9 @@ import type { DashGame } from "../../lib/roster";
 
 /**
  * Pulls you can do now (VISUAL-DESIGN.md §10): the limited total, limited and
- * permanent beside it, then a row per game sorted by total. Pity with
- * something to say stays under the game (DESIGN.md F5: pity next to pulls on
- * Home) until the Pulls card's design settles it.
+ * permanent beside it, then a row per game sorted by total. Under each game,
+ * its pity on every banner type (DESIGN.md F5; kept by Georges in #101), by
+ * the shared banner keys so every game reads the same.
  */
 export function PullsCard({ games, day = null }: { games: DashGame[]; day?: string | null }) {
   // A pinned past day: limited pulls on hand from its records; permanent tickets and pity have no history.
@@ -45,7 +45,7 @@ export function PullsCard({ games, day = null }: { games: DashGame[]; day?: stri
       </div>
       <div className="lst">
         {rows.map(({ g, limited: lim, standard }) => {
-          const pity = g.pity.filter((p) => p.pity > 0 || p.guaranteed);
+          const pity = g.pity;
           return (
             <div key={g.instanceId}>
               <div className="rw">
@@ -55,7 +55,7 @@ export function PullsCard({ games, day = null }: { games: DashGame[]; day?: stri
               </div>
               {!day && pity.length > 0 && (
                 <Link to={`/games/${g.instanceId}/pulls`} className="pull-row-pity mn">
-                  {pity.map((p) => `${p.label.split(" ")[0]} ${p.pity}/${p.hardPity}${p.guaranteed ? " · guaranteed" : ""}`).join("  ·  ")}
+                  {pity.map((p) => `${p.key.charAt(0).toUpperCase()}${p.key.slice(1)} ${p.pity}/${p.hardPity}${p.guaranteed ? " · guaranteed" : ""}`).join("  ·  ")}
                 </Link>
               )}
             </div>

@@ -49,7 +49,6 @@
   - delete the `sample-*` banners and import the feed.
 - **Decisions:**
   - ADR 0008 before F10.
-  - #101's pity question (the mono pity line under each game's PULLS row stays until then).
   - **Star Rail history:** its endgame modes changed cycle length in 4.5 and 4.6, so a past day typed into history is filed by today's rhythm. Recording past anchors per version would fix it. Is that worth it?
 - **Data to confirm,** marked `~` in `docs/games/*.md`:
   - Star Rail's endgame rewards and battle pass weekly cap;
@@ -57,6 +56,7 @@
   - the monthly shops of Star Rail, Zenless Zone Zero and Wuthering Waves.
 
 ## Notes
+- Georges kept the pity line under each game's PULLS row on Home (answering #101), for every game with pull rules, zeros included.
 - **Cadences:**
   - Every reset window comes from `packages/shared/src/cadence.ts`.
   - Manifest dates are server-local. Refresh them each version (version row, endgame anchors, pass level cap), per each game's sheet.

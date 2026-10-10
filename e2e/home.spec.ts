@@ -17,6 +17,13 @@ test("Home is the dashboard: its panels, the dailies card per game, the pulls an
     await expect(page.getByRole("heading", { name, exact: true })).toHaveCount(0);
   }
 
+  // Pulls: every game with pull rules has its pity line under its row, zeros included (Georges, #101).
+  const pullRows = page.locator(".pulls-card .lst > div");
+  await expect(pullRows.first()).toBeVisible();
+  for (const row of await pullRows.all()) {
+    await expect(row.locator(".pull-row-pity")).toHaveText(/^Character \d+\/\d+.*Weapon \d+\/\d+.*Standard \d+\/\d+/);
+  }
+
   // Dailies & weeklies: the game's own items (HSR seeds two dailies and one weekly) apart from the ones you add.
   const dailies = page.locator(".dailies-card");
   await expect(dailies).toContainText("Honkai: Star Rail");
