@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r3/02-builds · #208
+- Done: Georges: "I should first see my character with its default build, then switch between builds, maybe change the default one." A build gets `isDefault` (migration `20261012090000_default_build`); a unit's first build is its default, and `PUT /api/characters/:id { isDefault: true }` moves it. The sheet shows the unit's builds as tabs (★ on the default), + New build (named after the unit, never "(2)"), Make default, and an optional label. Characters' cards open and show the default build. Gone: the Role select, "Make these the game's defaults" and the "More details" second sheet.
+- Tests: written first: the route test makes Amber's first build the default and moves it to the second; the sheet journey adds a build, makes it the default and finds Characters opening it; the first sheet journey checks Role, the defaults button and More details are gone. The Characters journey makes its Kafka build the default, since cards now show the default. `npm run check` passes: 561 tests and 49 journeys.
+- Scope/decisions: old "Name (2) (2)" builds show as "Build N" with an empty label; their names stay in the database. The per-game sheets are no longer shown; deleting them (and their scaffold in `game:new`) is a follow-up. Default KPI targets stay in the API, without a button.
+- Next: the Characters page (in-game element colours, Select clicks, icon filters, the default build's weapon).
+
 ## 2026-10-11 · claude · stack/r3/01-copy · #207
 - Done: Georges: "every single text should add value to the data, not be a shareholder report." `docs/AUDIT-2026-10-11.md` lists every screen's noise, what is useless and what is lacking, each with the PR that handles it. This PR cuts the noise: report sentences (the 50/50 reason, "Simulate a top-up", "what buying more would give", "(standard)", the forecast's "not counted", Profile's and Settings' explanations, the calendar's foot notes and goal explanation, Admin's notes), source labels on your own records (Endgame's SOURCE column, "· admin/feed" on the calendar), and long labels (odds rows "By 74", "With 90", "Top-up 110"; the headline "with 90 · avg 48 · max 68"; reminders "Remind 3 days before"). The pull curve stops at hard pity: a lost 50/50 resets it.
 - Tests: written first: a copy journey visits thirteen screens and finds none of the audit's 27 sentences and no manual/admin/feed tag. Journeys that read the old labels now read the short ones. `npm run check` passes: 560 tests and 48 journeys.
@@ -297,9 +303,3 @@ Entry format:
 - Tests: written first: `art.test.ts` (splash keys and sources for both games; Genshin's jobs include Amber's icon and splash, a weapon and all five pieces of a set, unique paths, https sources; nothing for a game without sources).
 - Scope/decisions: Wuthering Waves, ZZZ, Endfield and NTE name no art source yet, so their jobs are empty until their manifests do.
 - Next: the mirror script and its workflow (`scripts/assets`), the CSP for R2.
-
-## 2026-10-10 · claude · stack/docs/04-adr-endfield · #169
-- Done: ADR 0009 (Proposed): Endfield's pull history from the game's records link (`ef-webview.gryphline.com`, its own expiring token, no signing), read once like a history link and never stored; the SKPORT account token, which can check in for the account, is never asked for; account data stays manual.
-- Tests: none (a decision record).
-- Scope/decisions: implementation waits for Georges's acceptance and one recorded records answer (the fields are undocumented).
-- Next: F12 (the art store's code).

@@ -4,7 +4,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   ascensionPips,
   buildKpis,
-  buildRole,
   dupeBadge,
   getGame,
   skillsField,
@@ -12,6 +11,7 @@ import {
   type BuildStatus,
   type CatalogWeapon,
   type GameDefinition,
+  type CharacterDto,
   type TaskOrigin,
   type TeamDto,
 } from "@gacha/shared";
@@ -20,7 +20,6 @@ import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
 import { useCatalog } from "../lib/catalog";
 import { assetUrl, communityAssetUrl, splashKey } from "../lib/assets";
-import { GameSheet, hasSheet } from "../render";
 import { GameTabs } from "../components/GameTabs";
 import { GameIcon } from "../components/GameIcon";
 import { GearBlock } from "../components/sheet/GearBlock";
@@ -53,11 +52,11 @@ function statNames(game: GameDefinition, doc: Doc) {
 }
 
 /**
- * The character sheet (WIREFRAMES.md G5): the splash art beside the identity
+ * The character sheet (WIREFRAMES.md G5): the unit's builds as tabs, its
+ * default first (Georges, 2026-10-11); the splash art beside the identity
  * (status, Save, Delete; name with rarity, element, weapon type, dupes and
- * level), the KPI tiles for the build's role, the Character, skills and
- * Weapon cards and the combat stats; below, the gear block in the game's
- * shape, plan farming, and the game's own sheet for what is left.
+ * level), the KPI tiles, the Character, skills and Weapon cards and the
+ * combat stats; below, the gear block in the game's shape and plan farming.
  */
 function CharacterEditor({ data }: { data: CharacterDetail }) {
   const nav = useNavigate();
@@ -90,21 +89,21 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
     onSuccess: () => qc.invalidateQueries({ queryKey: ["character", data.id] }),
     onError: () => toast("Target not saved", "err"),
   });
-  // This build's targets as the game's defaults, which builds without their own show.
-  const makeDefaults = useMutation({
-    mutationFn: () => api.put(`/api/instances/${data.gameInstanceId}`, { kpiTargets: data.targets }),
-    onSuccess: () => {
-      toast("Default targets saved");
-      void qc.invalidateQueries({ queryKey: ["character"] });
-    },
-    onError: () => toast("Defaults not saved", "err"),
-  });
-  const another = useMutation({
-    mutationFn: () => api.post<{ id: string }>(`/api/instances/${data.gameInstanceId}/characters`, { catalogId: data.catalogId, name: `${data.name} (2)` }),
+  // The unit's builds, oldest first; the default one is marked and opens first from Characters.
+  const all = useQuery({ queryKey: ["characters", data.gameInstanceId], queryFn: () => api.get<CharacterDto[]>(`/api/instances/${data.gameInstanceId}/characters`) });
+  const siblings = (all.data ?? []).filter((b) => data.catalogId && b.catalogId === data.catalogId).sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+  const defaultId = siblings.find((b) => b.isDefault)?.id ?? siblings[0]?.id;
+  const newBuild = useMutation({
+    mutationFn: () => api.post<{ id: string }>(`/api/instances/${data.gameInstanceId}/characters`, { catalogId: data.catalogId }),
     onSuccess: (r) => {
       void qc.invalidateQueries({ queryKey: ["characters", data.gameInstanceId] });
       nav(`/characters/${r.id}`);
     },
+  });
+  const makeDefault = useMutation({
+    mutationFn: () => api.put(`/api/characters/${data.id}`, { isDefault: true }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["characters", data.gameInstanceId] }),
+    onError: () => toast("Not saved", "err"),
   });
   const teams = useQuery({ queryKey: ["teams", data.gameInstanceId], queryFn: () => api.get<TeamDto[]>(`/api/instances/${data.gameInstanceId}/teams`) });
   const joinTeam = useMutation({
@@ -161,6 +160,27 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
       <div style={{ marginBottom: 14 }}>
         <GameTabs instanceId={data.gameInstanceId} active="characters" gameKey={game.key} hasCatalog={Boolean(game.loadCatalog)} />
       </div>
+      {data.catalogId && (
+        <div className="sh-builds">
+          <div className="sh-build-tabs" role="tablist" aria-label="Builds">
+            {siblings.map((b, i) => (
+              <Link key={b.id} role="tab" aria-selected={b.id === data.id} className="sh-build-tab" to={`/characters/${b.id}`}>
+                {b.name !== entry?.name && !/\(\d+\)/.test(b.name) ? b.name : `Build ${i + 1}`}
+                {b.id === defaultId ? " ★" : ""}
+              </Link>
+            ))}
+          </div>
+          <button className="btn sm" disabled={newBuild.isPending} onClick={() => newBuild.mutate()}>
+            + New build
+          </button>
+          {siblings.length > 1 && data.id !== defaultId && (
+            <button className="btn sm" disabled={makeDefault.isPending} onClick={() => makeDefault.mutate()}>
+              Make default
+            </button>
+          )}
+          <input className="sh-build-name" aria-label="Build name" placeholder="Label" maxLength={120} value={state.name === entry?.name || /\(\d+\)/.test(state.name) ? "" : state.name} onChange={(e) => setState((s) => ({ ...s, name: e.target.value || (entry?.name ?? s.name) }))} />
+        </div>
+      )}
       <div className="sh-top">
         <div className="sh-art">
           <GameIcon src={state.portraitUrl ?? assetUrl(game.key, "splash", art)} fallback={[communityAssetUrl(game.key, "splash", art), communityAssetUrl(game.key, "character", entry?.icon)]} alt={state.name} label={state.name.slice(0, 2)} />
@@ -183,16 +203,11 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
                   </select>
                 </label>
                 <button className="btn primary" onClick={() => save.mutate()} disabled={save.isPending}>Save</button>
-                {data.catalogId && (
-                <button className="btn" disabled={another.isPending} onClick={() => another.mutate()}>
-                  + Another build
-                </button>
-              )}
               <button className="btn" onClick={() => confirm("Delete this build?") && del.mutate()}>Delete build</button>
               </div>
             </div>
             <div className="sh-title">
-              <h1>{state.name}</h1>
+              <h1>{entry?.name ?? state.name}</h1>
               {entry && <span className="badge">★{entry.rarity}</span>}
               {entry?.tag && entry.tag !== "None" && <span className="badge">{entry.tag}</span>}
               {entry?.weaponType && <span className="badge">{entry.weaponType}</span>}
@@ -205,20 +220,6 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
             {buildKpis(game, doc, state.role).map((k) => (
               <KpiTile key={k.label} label={k.label} value={k.value} target={data.targets?.[k.label]} fallback={data.defaultTargets?.[k.label]} onTarget={(v) => setTarget.mutate({ ...(data.targets ?? {}), ...v })} />
             ))}
-            <div className="card sh-kpi">
-              <span className="kpi-label">Role</span>
-              <select aria-label="Role" value={buildRole(game, state.role)} onChange={(e) => setState((s) => ({ ...s, role: e.target.value }))}>
-                {Object.keys(game.manifest.kpis).map((r) => (
-                  <option key={r} value={r}>{r}</option>
-                ))}
-              </select>
-              <span className="mu sh-note">picks the KPIs</span>
-              {data.targets && Object.keys(data.targets).length > 0 && (
-                <button className="btn sm" disabled={makeDefaults.isPending} onClick={() => makeDefaults.mutate()}>
-                  Make these the game's defaults
-                </button>
-              )}
-            </div>
           </section>
 
           <div className="sh-cards">
@@ -367,20 +368,6 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
         </section>
       )}
 
-      {hasSheet(data.gameKey) && (
-        <details className="card sh-more">
-          <summary>More details: {game.name}&apos;s own sheet</summary>
-          <GameSheet
-            gameKey={data.gameKey}
-            doc={state.doc}
-            setDoc={(updater) => setDoc((d) => updater(d) as Doc)}
-            name={state.name}
-            portraitUrl={state.portraitUrl}
-            onName={(name) => setState((s) => ({ ...s, name }))}
-            onPortrait={(url) => setState((s) => ({ ...s, portraitUrl: url }))}
-          />
-        </details>
-      )}
     </>
   );
 }

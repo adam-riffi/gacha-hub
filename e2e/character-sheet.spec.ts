@@ -32,6 +32,39 @@ test("Character sheet: identity, KPIs, character, skills, weapon, stats and the 
   await expect(page.getByText("Saved", { exact: true })).toBeVisible();
   await page.reload();
   await expect(page.getByRole("region", { name: "Character" }).getByLabel("Level")).toHaveValue("80");
+
+  // No Role, no "game's defaults" button, no second sheet (Georges, 2026-10-11).
+  await expect(page.getByRole("combobox", { name: "Role" })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: /game's defaults/ })).toHaveCount(0);
+  await expect(page.getByText(/More details/)).toHaveCount(0);
+});
+
+test("Character sheet: a character opens on its default build; builds switch by tab, and another can become the default @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  // Herta's builds start from nothing, whatever other journeys did.
+  for (const b of ((await (await page.request.get(`/api/instances/${id}/characters`)).json()) as { id: string; catalogId: string }[]).filter((x) => x.catalogId === "1013")) {
+    await page.request.delete(`/api/characters/${b.id}`);
+  }
+  const first = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1013", doc: { level: 60 } } })).json()) as { id: string };
+
+  await page.goto(`/characters/${first.id}`);
+  const tabs = page.getByRole("tablist", { name: "Builds" });
+  await expect(tabs.getByRole("tab", { name: "Build 1 ★" })).toHaveAttribute("aria-selected", "true");
+  await page.getByRole("button", { name: "+ New build" }).click();
+  await expect(page).not.toHaveURL(new RegExp(first.id));
+  await expect(page.getByRole("heading", { name: "Herta", exact: true })).toBeVisible();
+  await expect(tabs.getByRole("tab", { name: "Build 2" })).toHaveAttribute("aria-selected", "true");
+  await page.getByRole("button", { name: "Make default" }).click();
+  await expect(tabs.getByRole("tab", { name: "Build 2 ★" })).toBeVisible();
+
+  // Characters opens the default build.
+  await page.goto(`/games/${id}/characters`);
+  await page.getByRole("searchbox", { name: "Search" }).fill("Herta");
+  await page.getByRole("article", { name: "Herta", exact: true }).click();
+  await expect(page.getByRole("tablist", { name: "Builds" }).getByRole("tab", { name: "Build 2 ★" })).toHaveAttribute("aria-selected", "true");
 });
 
 test("Character sheet: KPI targets on the tiles, and the teams the character is used in @smoke", async ({ page }) => {
@@ -51,18 +84,4 @@ test("Character sheet: KPI targets on the tiles, and the teams the character is 
   await expect(page.getByRole("region", { name: "KPIs" }).getByRole("group", { name: "SPD" }).getByRole("spinbutton", { name: "SPD target" })).toHaveValue("134");
 
   await expect(page.getByRole("region", { name: "Used in" })).toContainText("E2E Kafka DoT");
-
-  // This build's targets become the game's defaults, which a build without its own shows.
-  await page.getByRole("button", { name: "Make these the game's defaults" }).click();
-  await expect(page.getByText("Default targets saved")).toBeVisible();
-
-  // A second build of the same character (named builds came from the old overview).
-  await page.getByRole("button", { name: "+ Another build" }).click();
-  await expect(page).not.toHaveURL(new RegExp(build.id));
-  await expect(page).toHaveURL(/\/characters\//);
-  await expect(page.getByRole("heading", { name: /Kafka/ })).toBeVisible();
-  const spd2 = page.getByRole("region", { name: "KPIs" }).getByRole("group", { name: "SPD" });
-  await expect(spd2.getByRole("spinbutton", { name: "SPD target" })).toHaveValue("134");
-  await expect(spd2).toContainText("default");
-  await page.request.put(`/api/instances/${id}`, { data: { kpiTargets: null } });
 });
