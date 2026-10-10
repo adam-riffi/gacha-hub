@@ -14,7 +14,7 @@ import {
 } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
 import { isDoneThisCycle } from "../lib/resets.js";
-import { dueReminders, inQuietHours, type DueExtra } from "./due.js";
+import { dueReminders, inQuietHours, resetHeadline, type DueExtra } from "./due.js";
 import { staminaCap } from "../lib/regen.js";
 import type { RegionReset } from "../lib/resets.js";
 import { getCatalog, regionForInstance } from "../api/util.js";
@@ -111,6 +111,49 @@ async function dueExtra(cfg: ReminderConfig, game: GameDefinition, instance: Gam
   return extra;
 }
 
+/** What every DM for a game carries under its headline: currencies, dailies left, domains today, flagged tasks. */
+async function dmParts(cfg: ReminderConfig, userId: string, instance: GameInstance & { currencies: CurrencyState[] }, game: GameDefinition, now: Date): Promise<string[]> {
+  const parts: string[] = [];
+  if (cfg.includeCurrencies) {
+    const cur = fmtCurrencies(game, instance.currencies);
+    if (cur) parts.push(cur);
+  }
+  if (cfg.includeDailies) {
+    const left = await undoneDailies(userId, instance, game);
+    parts.push(left.length ? `Dailies left: ${left.join(", ")}` : "✅ dailies done");
+  }
+  if (cfg.includeDomains) {
+    const line = fmtDomains(await openDomains(instance, game, now));
+    if (line) parts.push(line);
+  }
+  // Tasks the user flagged with the notify toggle ride along in the DM.
+  const flagged = await prisma.task.findMany({
+    where: { userId, scope: "game", refId: instance.id, notify: true, backlog: false, parentId: null },
+    select: { title: true },
+  });
+  if (flagged.length) parts.push(`🔔 Flagged: ${flagged.map((t) => t.title).join(", ")}`.slice(0, 400));
+  return parts;
+}
+
+/** The DM each awake game with reminders on would send now: its reset line and what every DM carries (A3 preview). */
+export async function previewReminders(userId: string, now = new Date()) {
+  const rules = await prisma.reminderRule.findMany({
+    where: { userId, enabled: true, gameInstance: { is: { sleeping: false } } },
+    include: { gameInstance: { include: { currencies: true } } },
+    orderBy: { gameInstance: { createdAt: "asc" } },
+  });
+  const out = [];
+  for (const rule of rules) {
+    const instance = rule.gameInstance;
+    const game = instance && getGame(instance.gameKey);
+    const cfg = reminderConfigSchema.parse(rule.config ?? {});
+    if (!instance || !game || !cfg.enabled) continue;
+    const parts = await dmParts(cfg, userId, instance, game, now);
+    out.push({ gameKey: game.key, instanceId: instance.id, text: [resetHeadline(game.name, regionForInstance(game, instance), now), ...parts].join("\n") });
+  }
+  return out;
+}
+
 /**
  * Evaluate all enabled reminder rules; send + log any that are due. Safe to
  * call from a coarse external cron: the (rule, boundary) log makes it
@@ -147,29 +190,7 @@ export async function runReminderTick(now = new Date()): Promise<void> {
       }
       if (pending.length === 0) continue;
 
-      const parts: string[] = [];
-      if (cfg.includeCurrencies) {
-        const cur = fmtCurrencies(game, instance.currencies);
-        if (cur) parts.push(cur);
-      }
-      if (cfg.includeDailies) {
-        const left = await undoneDailies(rule.userId, instance, game);
-        parts.push(left.length ? `Dailies left: ${left.join(", ")}` : "✅ dailies done");
-      }
-
-      if (cfg.includeDomains) {
-        const line = fmtDomains(await openDomains(instance, game, now));
-        if (line) parts.push(line);
-      }
-
-      // Tasks the user flagged with the notify toggle ride along in the DM.
-      const flagged = await prisma.task.findMany({
-        where: { userId: rule.userId, scope: "game", refId: instance.id, notify: true, backlog: false, parentId: null },
-        select: { title: true },
-      });
-      if (flagged.length) {
-        parts.push(`🔔 Flagged: ${flagged.map((t) => t.title).join(", ")}`.slice(0, 400));
-      }
+      const parts = await dmParts(cfg, rule.userId, instance, game, now);
 
       // Usually one; if a late tick finds several due (e.g. a check-in right
       // before reset), each gets its own DM and log row.

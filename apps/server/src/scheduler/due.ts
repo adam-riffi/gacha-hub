@@ -23,6 +23,11 @@ const fmtDuration = (ms: number) => {
   return m >= 60 ? `${Math.floor(m / 60)}h ${m % 60}m` : `${m}m`;
 };
 
+/** The daily-reset DM's first line: "⏰ **Genshin Impact** resets in 5h 2m". */
+export function resetHeadline(gameName: string, region: RegionReset, now: Date): string {
+  return `⏰ **${gameName}** resets in ${fmtDuration(nextDailyReset(now, region).getTime() - now.getTime())}`;
+}
+
 /** Whether `now` falls in the quiet hours, read in `zone` (UTC if invalid); a window may wrap past midnight. */
 export function inQuietHours(now: Date, quiet: { from: string; to: string } | null, zone: string): boolean {
   if (!quiet || quiet.from === quiet.to) return false;
@@ -58,11 +63,12 @@ export function dueReminders(cfg: ReminderConfig, region: RegionReset, gameName:
   const due: DueReminder[] = [];
   const boundary = nextDailyReset(now, region);
   const untilReset = fmtDuration(boundary.getTime() - now.getTime());
+  const headline = resetHeadline(gameName, region, now);
 
   if (cfg.beforeReset) {
     const fireAt = boundary.getTime() - cfg.leadMinutes * 60_000;
     if (now.getTime() >= fireAt) {
-      due.push({ key: "", firedFor: boundary, headline: `⏰ **${gameName}** resets in ${untilReset}` });
+      due.push({ key: "", firedFor: boundary, headline });
     }
   }
   for (const t of cfg.atTimes) {

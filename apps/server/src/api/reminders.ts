@@ -1,5 +1,8 @@
 import type { FastifyInstance } from "fastify";
-import { reminderRuleDto, setReminderInput } from "@gacha/shared";
+import { reminderPreviewDto, reminderRuleDto, setReminderInput } from "@gacha/shared";
+import { hasDiscordBot } from "../config.js";
+import { sendDirectMessage } from "../discord/rest.js";
+import { previewReminders } from "../scheduler/reminders.js";
 import { prisma } from "../lib/prisma.js";
 import { requireUser } from "../auth/plugin.js";
 import { loadInstance, type PrismaJson } from "./util.js";
@@ -9,6 +12,17 @@ import { loadInstance, type PrismaJson } from "./util.js";
  * profile's daily reset with currencies + undone dailies.
  */
 export async function registerReminderRoutes(app: FastifyInstance) {
+  // The DM each awake game with reminders on would send now (WIREFRAMES.md A3).
+  app.get("/api/reminders/preview", { preHandler: requireUser }, async (req) => reminderPreviewDto.parse(await previewReminders(req.user!.id)));
+
+  // Send that preview to yourself, once the Discord bot is set up.
+  app.post("/api/reminders/test", { preHandler: requireUser }, async (req) => {
+    if (!hasDiscordBot()) return { sent: false, reason: "no_bot" };
+    const previews = await previewReminders(req.user!.id);
+    if (!previews.length) return { sent: false, reason: "no_rules" };
+    return { sent: await sendDirectMessage(req.user!.discordId, previews.map((p) => p.text).join("\n\n")) };
+  });
+
   app.get<{ Params: { id: string } }>(
     "/api/instances/:id/reminder",
     { preHandler: requireUser },
