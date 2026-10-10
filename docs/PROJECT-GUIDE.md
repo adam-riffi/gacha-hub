@@ -636,7 +636,16 @@ Every milestone in DESIGN.md §9 is built, V through F12. What is left waits on 
 5. **Clean production banners and events:** in Admin, delete the `sample-*` rows for each game. Then import the official feed, or wait for the hourly tick after step 1.
 6. **Branch ruleset on `main`:** require the checks `lint`, `typecheck`, `test`, `build` and `e2e`.
 7. **Decisions:** taken by the agent on 2026-10-10 at Georges's request: ADR 0009 accepted; Enka's store and the Hakushin data used with credit in NOTICE and removed on request; the items in §14.2 decided against, each with its reason. Overrule any of them by saying so.
-8. **Real responses, with tokens removed,** to replace the fixtures: the HoYoLAB card, notes, chronicle and roster; a gacha log page; a WuWa convene answer; Enka showcases (ZZZ's especially); an Endfield records page.
+8. **Real data, to replace what the agent built from documentation.** Save each answer as JSON from the browser's network tab, with tokens, cookies and account ids removed:
+   - **Endfield:** one page of `ef-webview.gryphline.com/api/record/char` and one of `/api/record/weapon`. The records import (#179) was built from open-source parsers.
+   - **ZZZ:** your UID. Enka showcases are public, so the agent fetches the real answer itself; the reader (#183) was built from Enka's documentation.
+   - **HoYoLAB,** for each of Genshin, Star Rail and ZZZ you play:
+     - the record card (`getGameRecordCard`);
+     - the real-time notes;
+     - each chronicle mode, especially ZZZ's `hadal_info_v2`, so Shiyu Defense's newer layout can be read;
+     - the character list.
+   - **History links:** one `getGachaLog` page for Genshin, Star Rail or ZZZ, and one WuWa convene answer (`gacha/record/query`).
+   - **In-game details pages,** for values no wiki states (`docs/games/*.md`, marked `~`): ZZZ's W-Engine rates, Endfield's Arsenal odds, Star Rail's and NTE's battle pass weekly caps, WuWa's Coral Shop reset.
 9. **README:** record the demo GIF (DESIGN.md §15); set the repository description and topics.
 10. **Delete stale remote branches** of merged PRs. The agent's delete was blocked by its permission rules:
     - `stack/docs-v2/01-design-adrs` to `06-design-files`;
@@ -677,7 +686,9 @@ Every milestone in DESIGN.md §9 is built, V through F12. What is left waits on 
 - Stygian Onslaught (#186);
 - default KPI targets (#187).
 
-**Later (DESIGN.md §4):** public showcase pages, PWA, i18n through dataset text maps.
+**Later (DESIGN.md §4):** a per-game overview that shows each game's own resources (NTE's Fons, not Genshin's resin), public showcase pages, PWA, and i18n through the datasets' text maps.
+
+**Long-term progress** (Georges, 2026-10-10): chests, waypoints, exploration and events are not synced. They are goals typed by hand, one type ("gameplay" on Home), listed and added on Profile.
 
 ## 15. Known issues
 

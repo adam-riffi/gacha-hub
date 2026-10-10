@@ -48,7 +48,10 @@ A whitelisted player signs in with Discord, adds Genshin and HSR, sets currencie
 - Account linking and imports (ADR 0005); game art in our own store (ADR 0006); a game manifest and a pipeline for new games, starting with Neverness to Everness (ADR 0004).
 
 **Later**
-- Public showcase pages; PWA; i18n through dataset text maps.
+- **A per-game overview** (Georges, 2026-10-10): each game hub opens on a dashboard of its own. It shows what that game needs and nothing else: NTE's page shows Fons, not Genshin's resin. Each game defines its overview's cards in its module, like its other features (ADR 0004).
+- **Public showcase pages:** a read-only page of a user's builds to share.
+- **PWA:** installable, with offline reading of the last data.
+- **i18n:** the interface and the catalogs in other languages, through the datasets' text maps.
 
 ## 5. Architecture
 
