@@ -13,6 +13,7 @@ import {
   type TaskCadence,
 } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
+import { settleEventGoal } from "../lib/effectApply.js";
 import { requireUser } from "../auth/plugin.js";
 import { DEFAULT_REGION, isDoneThisCycle, nextReset, type RegionReset } from "../lib/resets.js";
 import { loadCharacter, loadInstance, regionForInstance, type PrismaJson } from "./util.js";
@@ -193,9 +194,10 @@ export async function registerTaskRoutes(app: FastifyInstance) {
       const task = await ownedTask(req.user!.id, req.params.id);
       if (!task) return reply.code(404).send({ error: "not_found" });
       const { done } = completeTaskInput.parse(req.body ?? {});
-      await prisma.task.update({
-        where: { id: task.id },
-        data: { lastCompletedAt: done ? new Date() : null },
+      await prisma.$transaction(async (tx) => {
+        // An event goal applies its rewards when ticked and takes them back when unticked (ADR 0008).
+        if (task.eventId) await settleEventGoal(tx, req.user!.id, task, done);
+        await tx.task.update({ where: { id: task.id }, data: { lastCompletedAt: done ? new Date() : null } });
       });
       return { ok: true };
     },

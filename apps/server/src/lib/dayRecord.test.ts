@@ -18,6 +18,8 @@ const task = (t: Partial<TaskDto>): TaskDto => ({
   reminder: null,
   materialId: null,
   origin: null,
+  eventId: null,
+  choice: null,
   priority: "normal",
   parentId: null,
   backlog: false,
