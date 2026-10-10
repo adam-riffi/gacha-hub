@@ -31,6 +31,8 @@ model User {
   reminderRules ReminderRule[]
   auditLogs     AuditLog[]
   effects       EffectApplication[]
+  links         LinkedAccount[]
+  importRuns    ImportRun[]
 }
 
 /// Server-side session backing the signed cookie.
@@ -76,6 +78,7 @@ model GameInstance {
   passStates    PassState[]
   dayRecords    DayRecord[]
   wishlist      WishlistItem[]
+  importRuns    ImportRun[]
 
   @@unique([userId, gameKey])
   @@index([userId])
@@ -406,4 +409,47 @@ model WishlistItem {
   createdAt      DateTime     @default(now())
 
   @@unique([gameInstanceId, kind, catalogId])
+}
+
+/// A user's link to a game-account provider (ADR 0005): read-only, opt-in,
+/// revoked by deleting the row. The secret never leaves the server.
+model LinkedAccount {
+  id         String    @id @default(cuid())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  /// hoyolab, enka, skport…
+  provider   String
+  /// The account at the provider: the HoYoLAB account id, or a game UID.
+  accountId  String
+  /// AES-256-GCM "iv.tag.data" (lib/linkSecret.ts), sealed for "userId:provider"; null where nothing is secret.
+  secret     String?
+  keyVersion Int?
+  /// ok, or attention after a failed sync (no retries until linked again).
+  status     String    @default("ok")
+  lastSyncAt DateTime?
+  lastError  String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@unique([userId, provider, accountId])
+  @@index([userId])
+}
+
+/// One import or sync and what it did (ADR 0005); a failed one keeps its error.
+model ImportRun {
+  id             String        @id @default(cuid())
+  userId         String
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  gameInstanceId String?
+  gameInstance   GameInstance? @relation(fields: [gameInstanceId], references: [id], onDelete: Cascade)
+  /// uigf, history-link, hoyolab, enka…
+  provider       String
+  /// pulls, notes, chronicle, showcase
+  kind           String
+  added          Int           @default(0)
+  skipped        Int           @default(0)
+  error          String?
+  createdAt      DateTime      @default(now())
+
+  @@index([userId, createdAt])
 }

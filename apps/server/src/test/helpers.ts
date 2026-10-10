@@ -18,6 +18,8 @@ export async function makeApp(): Promise<FastifyInstance> {
 export async function resetDb() {
   await prisma.$transaction([
     prisma.auditLog.deleteMany(),
+    prisma.importRun.deleteMany(),
+    prisma.linkedAccount.deleteMany(),
     prisma.pullEntry.deleteMany(),
     prisma.cycleResult.deleteMany(),
     prisma.passState.deleteMany(),

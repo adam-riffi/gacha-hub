@@ -15,3 +15,4 @@ export * from "./team.js";
 export * from "./gear.js";
 export * from "./pulls.js";
 export * from "./export.js";
+export * from "./link.js";
