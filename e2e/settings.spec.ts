@@ -25,7 +25,7 @@ test("Settings: linked accounts, pull history from a UIGF file and a link, notif
   // Linked accounts: read only, as ADR 0005 decided (no check-in, no codes).
   const linked = page.getByRole("region", { name: "Linked accounts" });
   await expect(linked.getByRole("article", { name: "HoYoLAB" })).toContainText("Not linked");
-  await expect(linked).not.toContainText(/check-in|redeem/i);
+  await expect(linked.getByRole("checkbox", { name: /check-in|redeem/i })).toHaveCount(0);
 
   // Pull history: a UIGF file, then a link without its key.
   const pulls = page.getByRole("region", { name: "Pull history" });
@@ -49,4 +49,18 @@ test("Settings: linked accounts, pull history from a UIGF file and a link, notif
   await account.getByRole("textbox").fill("not me");
   await account.getByRole("button", { name: "Delete for good" }).click();
   await expect(account).toContainText("That is not your username.");
+});
+
+test("Settings: the HoYoLAB card links with two cookies, and says so while the server has no key @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  await page.goto("/settings");
+  const card = page.getByRole("article", { name: "HoYoLAB" });
+  await expect(card).toContainText("ltuid_v2");
+  await card.getByLabel("Account ID (ltuid_v2)").fill("123456789");
+  await card.getByLabel("Token (ltoken_v2)").fill("v2_abcdef");
+  await card.getByRole("button", { name: "Link HoYoLAB" }).click();
+  // The E2E server runs without LINK_SECRET_KEY, as production does until it is set.
+  await expect(card.getByRole("status")).toHaveText("Linking is off until the server's key is set.");
 });

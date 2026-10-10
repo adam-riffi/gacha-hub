@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f11/10-hoyolab-card · #156
+- Done: Settings' HoYoLAB card (ADR 0005): unlinked, a form for `ltuid_v2` and `ltoken_v2` (a password field) with where to find them; linked, Connected or Needs attention, the last sync and its 30-minute cadence, Sync now (the games synced, or what to fix) and Revoke and delete; relinking after a refusal; answers in words (linking off, not accepted, chronicle not public).
+- Tests: written first: a second journey in `e2e/settings.spec.ts` (the form links and says linking is off, as the E2E server has no key); the first journey now checks no check-in or redeem option is offered (the card states it does neither); the accessibility sweep passes.
+- Scope/decisions: E2E cannot reach HoYoLAB, so Sync now and Revoke are covered by the route tests (#154, #155).
+- Next: the battle chronicle (endgame and roster) and Enka showcase builds.
+
 ## 2026-10-10 · claude · stack/f11/09-hoyolab-notes · #155
 - Done: shared `readNotes` (Genshin's resin and commissions with their reward; Star Rail's power, reserve and daily training; ZZZ's battery and vitality) and `hoyolabFailure`; server `syncLink` (each linked profile with a UID: currencies upserted, the game's first daily ticked once per cycle, the link's last sync, an `ImportRun` of kind notes; a refusal sets `attention` and the error) and `syncDueLinks` (links idle 30 minutes, each claimed by an update before it is read, ten per tick; nothing without `LINK_SECRET_KEY`); `POST /api/links/:id/sync` (Sync now); the cron tick reports `links`.
 - Tests: written first: `hoyolabNotes.test.ts` (each game's notes and refusals), `hoyolabSync.integration.test.ts` (Sync now sets resin, power and reserve and ticks both dailies, records the run; a refusal marks attention and the cron skips it; the cron syncs once per 30 minutes; another user's link is 404).
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: `cycleHistory`, `cycleCsv`, E2E `endgame-history.spec.ts` (ZZZ, not Genshin: the smoke journey adds Genshin through the library).
 - Scope/decisions: past days are filed by the current cadence, wrong for HSR before 4.5 (cycle lengths changed); per-version anchors can fix it if wanted. No Last-N select (Show older covers it).
 - Next: `12-reminders` (24 h before a reset with rewards left; stamina full).
-
-## 2026-10-10 · claude · stack/f8/10-endgame · #115
-- Done: CycleResult routes (a server-local day picks the cycle; limits from the manifest; no future cycles); shared `endgameNow`, `dayInstant`; `gameDay` moved to the cadence core; the Endgame tab per G2 (this cycle claimed and next reset, a card per mode with window, result, rewards, last six cycles and Update, upcoming resets); Activities' cycles show results. #114 merged.
-- Tests: written first: `endgameNow`, `cycles.integration.test.ts`, E2E `endgame.spec.ts`.
-- Scope/decisions: floors, teams, opening characters and boss times are not built (nothing records them yet).
-- Next: `11-endgame-history` (tiles, line chart, table, older cycles, CSV, typing past cycles).
