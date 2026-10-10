@@ -8,6 +8,7 @@ import {
   type RewardDto,
   type TaskPriority,
 } from "@gacha/shared";
+import { LoadError } from "../components/LoadError";
 import { api } from "../lib/api";
 import type { InstanceListItem, TaskItem } from "../lib/types";
 import { GoalCard } from "../components/tasks/GoalCard";
@@ -39,19 +40,7 @@ export function TasksPage() {
     queryFn: () => api.get<RewardDto[]>("/api/rewards"),
   });
 
-  if (instances.isError || tasks.isError) {
-    return (
-      <div className="card" role="alert">
-        <p>Tasks could not load.</p>
-        <button
-          className="btn"
-          onClick={() => void Promise.all([instances.refetch(), tasks.refetch()])}
-        >
-          Try again
-        </button>
-      </div>
-    );
-  }
+  if (instances.isError || tasks.isError) return <LoadError what="Tasks" retry={() => Promise.all([instances.refetch(), tasks.refetch()])} />;
   if (!instances.data || !tasks.data) return <div className="mu">Loading…</div>;
 
   const games = instances.data.filter((gi) => !gi.sleeping && (!scope || gi.gameKey === scope));

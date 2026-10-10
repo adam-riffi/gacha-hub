@@ -20,6 +20,7 @@ import {
   type RewardDto,
   type WishlistItemDto,
 } from "@gacha/shared";
+import { LoadError } from "../components/LoadError";
 import { api } from "../lib/api";
 import { useCatalog } from "../lib/catalog";
 import { assetUrl, communityAssetUrl, splashKey } from "../lib/assets";
@@ -98,14 +99,7 @@ export function CharactersPage() {
   });
 
   const game = instance.data && getGame(instance.data.gameKey);
-  if (instance.isError || builds.isError) {
-    return (
-      <div className="card" role="alert">
-        <p>Characters could not load.</p>
-        <button className="btn" onClick={() => void Promise.all([instance.refetch(), builds.refetch()])}>Try again</button>
-      </div>
-    );
-  }
+  if (instance.isError || builds.isError) return <LoadError what="Characters" retry={() => Promise.all([instance.refetch(), builds.refetch()])} />;
   // A game with a catalog waits for it: without it the page would fall back to one card per build.
   if (!instance.data || !builds.data || !game || catalogLoading) return <div className="mu">Loading…</div>;
 

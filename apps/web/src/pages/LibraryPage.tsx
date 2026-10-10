@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getGame } from "@gacha/shared";
+import { LoadError } from "../components/LoadError";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
 import { formatRemaining } from "../lib/time";
@@ -51,14 +52,7 @@ export function LibraryPage() {
   const sleep = useMutation({ mutationFn: (v: { id: string; sleeping: boolean }) => api.put(`/api/instances/${v.id}`, { sleeping: v.sleeping }), onSuccess: refresh });
   const reorder = useMutation({ mutationFn: (ids: string[]) => api.put("/api/instances/order", { ids }), onSuccess: refresh, onError: () => toast("Couldn't reorder the games", "err") });
 
-  if (dash.isError || games.isError) {
-    return (
-      <div className="card" role="alert">
-        <p>The games could not load.</p>
-        <button className="btn" onClick={() => void Promise.all([dash.refetch(), games.refetch()])}>Try again</button>
-      </div>
-    );
-  }
+  if (dash.isError || games.isError) return <LoadError what="The games" retry={() => Promise.all([dash.refetch(), games.refetch()])} />;
   if (!dash.data || !games.data) return <div className="mu">Loading…</div>;
 
   const rows = dash.data.games;

@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { LoadError } from "../components/LoadError";
 import { useToast } from "../lib/toast";
 import type { CatalogGearSet, CharacterDto, GearPieceDto } from "@gacha/shared";
 import { api } from "../lib/api";
@@ -47,7 +48,7 @@ export function GearSetsPage() {
     onError: () => toast("Could not create the goal", "err"),
   });
 
-  const { data: instance } = useQuery({
+  const { data: instance, isError, refetch } = useQuery({
     queryKey: ["instance", id],
     queryFn: () => api.get<InstanceDetail>(`/api/instances/${id}`),
     enabled: Boolean(id),
@@ -74,6 +75,7 @@ export function GearSetsPage() {
     return m;
   }, [builds]);
 
+  if (isError) return <LoadError what="Gear" retry={refetch} />;
   if (!instance) return <div className="muted">Loading…</div>;
   if (isLoading) return <div className="muted">Loading catalog…</div>;
   const label = gearLabel(instance.gameKey);

@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { LoadError } from "../components/LoadError";
 import { api } from "../lib/api";
 import { useCarousel } from "../lib/carousel";
 import { homeRoster } from "../lib/roster";
@@ -23,7 +24,7 @@ import type { DashboardData, TaskItem } from "../lib/types";
 export function DashboardPage() {
   const [params, setParams] = useSearchParams();
   const game = params.get("game");
-  const { data, isLoading } = useQuery({ queryKey: ["dashboard"], queryFn: () => api.get<DashboardData>("/api/dashboard") });
+  const { data, isLoading, isError, refetch } = useQuery({ queryKey: ["dashboard"], queryFn: () => api.get<DashboardData>("/api/dashboard") });
   const { data: tasks } = useQuery({ queryKey: ["tasks"], queryFn: () => api.get<TaskItem[]>("/api/tasks") });
 
   // Sleeping games stay out of Home entirely (their banners and events too); a scope keeps one game.
@@ -40,6 +41,7 @@ export function DashboardPage() {
     };
   }, [data, game]);
 
+  if (isError) return <LoadError what="Home" retry={refetch} />;
   if (isLoading) return <div className="muted">Loading…</div>;
   if (!view || view.games.length === 0) {
     return (

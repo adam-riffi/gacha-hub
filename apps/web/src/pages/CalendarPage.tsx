@@ -12,6 +12,7 @@ import {
   type TimelineDto,
   type WishlistItemDto,
 } from "@gacha/shared";
+import { LoadError } from "../components/LoadError";
 import { api } from "../lib/api";
 import type { DashboardData } from "../lib/types";
 import { Segmented } from "../components/ui";
@@ -116,16 +117,7 @@ export function CalendarPage() {
     })),
   });
 
-  if (dash.isError || win.isError) {
-    return (
-      <div className="card" role="alert">
-        <p>The calendar could not load.</p>
-        <button className="btn" onClick={() => void Promise.all([dash.refetch(), win.refetch()])}>
-          Try again
-        </button>
-      </div>
-    );
-  }
+  if (dash.isError || win.isError) return <LoadError what="The calendar" retry={() => Promise.all([dash.refetch(), win.refetch()])} />;
   if (!dash.data || !win.data) return <div className="mu">Loading…</div>;
   if (dash.data.games.length === 0) {
     return (

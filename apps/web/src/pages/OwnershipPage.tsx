@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { CatalogCharacter, CatalogWeapon, OwnershipDto } from "@gacha/shared";
+import { LoadError } from "../components/LoadError";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
 import { useCatalog } from "../lib/catalog";
@@ -26,7 +27,7 @@ export function OwnershipPage() {
   const [tag, setTag] = useState<string | null>(null);
   const [ownState, setOwnState] = useState<"all" | "owned" | "unowned">("all");
 
-  const { data: instance } = useQuery({
+  const { data: instance, isError, refetch } = useQuery({
     queryKey: ["instance", id],
     queryFn: () => api.get<InstanceDetail>(`/api/instances/${id}`),
     enabled: Boolean(id),
@@ -90,6 +91,7 @@ export function OwnershipPage() {
       (ownState === "all" || (ownState === "owned") === ownedIds.has(e.id)),
   );
 
+  if (isError) return <LoadError what="Owned units" retry={refetch} />;
   if (!instance) return <div className="muted">Loading…</div>;
   if (catalogLoading) return <div className="muted">Loading catalog…</div>;
   if (!catalog) {
