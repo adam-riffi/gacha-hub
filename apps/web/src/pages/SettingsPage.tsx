@@ -86,10 +86,14 @@ function LinkedAccounts({ links, games }: { links: LinkedAccountDto[]; games: In
       <HoyolabCard link={hoyolab} />
       <article className="st-provider" aria-label="Enka showcase">
         <span className="row"><strong>Enka showcase</strong><span className="tag is-off">No login</span></span>
-        <p className="mu">Public builds by UID, for builds when HoYoLAB is not linked. The UIDs are your profiles'.</p>
+        <p className="mu">Public builds by UID, from the characters in your in-game showcase. The UIDs are your profiles'. Fields you changed stay as you set them.</p>
         <div className="st-uids">
           {hoyo.map((g) => (
-            <span key={g.id}><span className="kpi-label">{getGame(g.gameKey)?.shortName} UID</span><span className="mn">{g.uid ? masked(g.uid) : "not set"}</span></span>
+            <span key={g.id}>
+              <span className="kpi-label">{getGame(g.gameKey)?.shortName} UID</span>
+              <span className="mn">{g.uid ? masked(g.uid) : "not set"}</span>
+              {g.gameKey === "genshin" && g.uid && <EnkaSync instanceId={g.id} />}
+            </span>
           ))}
           {!hoyo.length && <span className="mu">No HoYoverse game added.</span>}
         </div>
@@ -118,6 +122,33 @@ const LINK_ERROR: Record<string, string> = {
   not_public: "Make your Battle Chronicle public on HoYoLAB, then try again.",
   refused: "HoYoLAB refused the request: try again later.",
 };
+const ENKA_ERROR: Record<string, string> = {
+  not_found: "Enka does not know this UID: check it on the game's Profile.",
+  showcase_closed: "The in-game showcase is empty or hidden: show your characters there first.",
+  too_frequent: "Enka asked to wait: try again in a minute.",
+  maintenance: "Enka is waiting on the game's update: try again later.",
+};
+
+/** Builds from the Genshin showcase, on demand (ADR 0005). */
+function EnkaSync({ instanceId }: { instanceId: string }) {
+  const qc = useQueryClient();
+  const [note, setNote] = useState<string | null>(null);
+  const sync = useMutation({
+    mutationFn: () => api.post<{ created: number; updated: number }>(`/api/instances/${instanceId}/enka`),
+    onSuccess: (r) => {
+      setNote(`${r.created} builds added, ${r.updated} refreshed.`);
+      return Promise.all([["characters", instanceId], ["imports"], ["ownership", instanceId]].map((queryKey) => qc.invalidateQueries({ queryKey })));
+    },
+    onError: (e) => setNote(ENKA_ERROR[(e instanceof ApiError ? (e.body as { error?: string }).error : "") ?? ""] ?? "Enka could not be reached."),
+  });
+  return (
+    <>
+      <button className="btn" disabled={sync.isPending} onClick={() => sync.mutate()}>Sync builds</button>
+      {note && <span role="status" className="mu">{note}</span>}
+    </>
+  );
+}
+
 const linkError = (e: unknown) => LINK_ERROR[(e instanceof ApiError ? (e.body as { error?: string }).error : "") ?? ""] ?? "Something went wrong.";
 const TIME = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
 

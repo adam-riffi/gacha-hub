@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f11/11-enka · #157
+- Done: Enka showcase builds for Genshin (ADR 0005): shared `readEnkaGenshin` (level, constellation, weapon with name, level and refinement, artifacts per slot with the set from the icon's set id, main stat, level and substats, final stats) and `mergeSynced` (a field still as the last sync wrote it, or empty, takes the new value; one the user changed stays); `Character.synced` (migration `20261011070000_character_synced`); server `syncEnka` (signed User-Agent, Enka's codes named, new builds created and owned, existing ones merged, an `ImportRun` of kind showcase) and `POST /api/instances/:id/enka` (6 a minute); Settings' Enka card has Sync builds for Genshin.
+- Tests: written first: `enka.test.ts` (the showcase read, closed showcase, the merge keeping a changed level), `enka.integration.test.ts` (Enka asked by UID with our User-Agent, Amber created with C2, Raven Bow R5 and a Wanderer's Troupe flower, owned, the run recorded; a later sync keeps the edited level and takes C3; 404, closed and no UID named). The fixture lives in `test/fixtures/enka.ts`.
+- Scope/decisions: talents wait for skill ids in the catalog; Star Rail and ZZZ showcases are next; Enka's docs disagree on a few names (`avatarID`, `propValue`), so both spellings are read.
+- Next: Star Rail and ZZZ showcases, the battle chronicle, then SKPORT research and F12.
+
 ## 2026-10-10 · claude · stack/f11/10-hoyolab-card · #156
 - Done: Settings' HoYoLAB card (ADR 0005): unlinked, a form for `ltuid_v2` and `ltoken_v2` (a password field) with where to find them; linked, Connected or Needs attention, the last sync and its 30-minute cadence, Sync now (the games synced, or what to fix) and Revoke and delete; relinking after a refusal; answers in words (linking off, not accepted, chronicle not public).
 - Tests: written first: a second journey in `e2e/settings.spec.ts` (the form links and says linking is off, as the E2E server has no key); the first journey now checks no check-in or redeem option is offered (the card states it does neither); the accessibility sweep passes.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: `dueReminders` cases, scheduler integration (one DM per fill; Abyss and daily reset at the same instant), E2E switches.
 - Scope/decisions: DMs need `DISCORD_BOT_TOKEN` and `CRON_SECRET` in production; Endfield's full uses the level-60 cap until `13-home-f8`.
 - Next: `13-home-f8` (stamina reserve, battle pass card, Endgame · next resets, Expiring soon on Home).
-
-## 2026-10-10 · claude · stack/f8/11-endgame-history · #116
-- Done: the Endgame History per G2 (mode switch; best, average, earned and now tiles; result line with full clears filled and titles for dates and rewards; cycle table with NOW, older cycles on demand; typing past cycles; CSV export); shared `cycleHistory`, `cycleCsv`. #115 merged.
-- Tests: written first: `cycleHistory`, `cycleCsv`, E2E `endgame-history.spec.ts` (ZZZ, not Genshin: the smoke journey adds Genshin through the library).
-- Scope/decisions: past days are filed by the current cadence, wrong for HSR before 4.5 (cycle lengths changed); per-version anchors can fix it if wanted. No Last-N select (Show older covers it).
-- Next: `12-reminders` (24 h before a reset with rewards left; stamina full).

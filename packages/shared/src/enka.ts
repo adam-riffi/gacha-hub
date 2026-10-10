@@ -1,0 +1,111 @@
+/** A Genshin showcase on Enka (https://github.com/EnkaNetwork/API-docs). */
+export const enkaGenshinUrl = (uid: string) => `https://enka.network/api/uid/${encodeURIComponent(uid)}/`;
+
+/** Enka's stat ids in our sheet's words. */
+const STAT: Record<string, string> = {
+  FIGHT_PROP_HP: "HP",
+  FIGHT_PROP_HP_PERCENT: "HP%",
+  FIGHT_PROP_ATTACK: "ATK",
+  FIGHT_PROP_ATTACK_PERCENT: "ATK%",
+  FIGHT_PROP_DEFENSE: "DEF",
+  FIGHT_PROP_DEFENSE_PERCENT: "DEF%",
+  FIGHT_PROP_CRITICAL: "CRIT Rate",
+  FIGHT_PROP_CRITICAL_HURT: "CRIT DMG",
+  FIGHT_PROP_CHARGE_EFFICIENCY: "Energy Recharge",
+  FIGHT_PROP_ELEMENT_MASTERY: "Elemental Mastery",
+  FIGHT_PROP_HEAL_ADD: "Healing Bonus",
+  FIGHT_PROP_PHYSICAL_ADD_HURT: "Physical DMG",
+  FIGHT_PROP_FIRE_ADD_HURT: "Pyro DMG",
+  FIGHT_PROP_ELEC_ADD_HURT: "Electro DMG",
+  FIGHT_PROP_WATER_ADD_HURT: "Hydro DMG",
+  FIGHT_PROP_WIND_ADD_HURT: "Anemo DMG",
+  FIGHT_PROP_ICE_ADD_HURT: "Cryo DMG",
+  FIGHT_PROP_ROCK_ADD_HURT: "Geo DMG",
+  FIGHT_PROP_GRASS_ADD_HURT: "Dendro DMG",
+};
+const SLOT: Record<string, string> = { EQUIP_BRACER: "flower", EQUIP_NECKLACE: "plume", EQUIP_SHOES: "sands", EQUIP_RING: "goblet", EQUIP_DRESS: "circlet" };
+/** The character's final stats (fightPropMap); rates come as fractions. */
+const FINAL: [string, string, number][] = [
+  ["2000", "HP", 1],
+  ["2001", "ATK", 1],
+  ["2002", "DEF", 1],
+  ["20", "CRIT Rate", 100],
+  ["22", "CRIT DMG", 100],
+  ["23", "Energy Recharge", 100],
+  ["28", "Elemental Mastery", 1],
+];
+const round1 = (v: number) => Math.round(v * 10) / 10;
+
+type Stat = { mainPropId?: string; appendPropId?: string; appendPropID?: string; statValue?: number; propValue?: number };
+type Equip = {
+  itemId: number;
+  weapon?: { level?: number; affixMap?: Record<string, number> };
+  reliquary?: { level?: number };
+  flat?: { itemType?: string; equipType?: string; icon?: string; reliquaryMainstat?: Stat; reliquarySubstats?: Stat[] };
+};
+type Avatar = { avatarId?: number; avatarID?: number; propMap?: Record<string, { val?: string }>; talentIdList?: number[]; fightPropMap?: Record<string, number>; equipList?: Equip[] };
+
+const statOf = (s: Stat | undefined) => {
+  const id = s?.mainPropId ?? s?.appendPropId ?? s?.appendPropID;
+  return id ? STAT[id] : undefined;
+};
+const valueOf = (s: Stat) => s.statValue ?? s.propValue ?? 0;
+
+/**
+ * A Genshin showcase as our builds (ADR 0005): level, constellation, weapon
+ * (name, level, refinement), artifacts per slot (set from the icon's set id,
+ * main stat, level, substats) and final stats. Talents are left out: the
+ * catalog does not yet say which skill id is which.
+ */
+export function readEnkaGenshin(
+  json: unknown,
+  lookups: { weaponName: (id: string) => string | undefined; setName: (setId: string) => string | undefined },
+): { level?: number; worldLevel?: number; builds: { catalogId: string; doc: Record<string, unknown> }[] } | { error: "showcase_closed" } {
+  const data = (typeof json === "object" && json ? json : {}) as { playerInfo?: { level?: number; worldLevel?: number }; avatarInfoList?: Avatar[] };
+  if (!Array.isArray(data.avatarInfoList) || !data.avatarInfoList.length) return { error: "showcase_closed" };
+  const builds = data.avatarInfoList.map((a) => {
+    const doc: Record<string, unknown> = {};
+    const level = Number(a.propMap?.["4001"]?.val);
+    if (level) doc.level = level;
+    doc.constellation = a.talentIdList?.length ?? 0;
+    const artifacts: Record<string, unknown> = {};
+    for (const e of a.equipList ?? []) {
+      if (e.weapon) {
+        const refinement = Object.values(e.weapon.affixMap ?? {})[0];
+        doc.weapon = { catalogId: String(e.itemId), name: lookups.weaponName(String(e.itemId)), level: e.weapon.level, refinement: (refinement ?? 0) + 1 };
+      } else if (e.flat?.equipType && SLOT[e.flat.equipType]) {
+        const setId = /UI_RelicIcon_(\d+)_/.exec(e.flat.icon ?? "")?.[1];
+        artifacts[SLOT[e.flat.equipType]!] = {
+          setName: setId ? lookups.setName(setId) : undefined,
+          mainStat: statOf(e.flat.reliquaryMainstat),
+          level: Math.max(0, (e.reliquary?.level ?? 1) - 1),
+          substats: (e.flat.reliquarySubstats ?? []).flatMap((s) => (statOf(s) ? [{ stat: statOf(s)!, value: round1(valueOf(s)) }] : [])),
+        };
+      }
+    }
+    if (Object.keys(artifacts).length) doc.artifacts = artifacts;
+    const fp = a.fightPropMap ?? {};
+    doc.stats = Object.fromEntries(FINAL.filter(([id]) => fp[id] !== undefined).map(([id, name, scale]) => [name, scale === 1 ? Math.round(fp[id]!) : round1(fp[id]! * scale)]));
+    return { catalogId: String(a.avatarId ?? a.avatarID), doc: JSON.parse(JSON.stringify(doc)) as Record<string, unknown> };
+  });
+  return { level: data.playerInfo?.level, worldLevel: data.playerInfo?.worldLevel, builds };
+}
+
+const plain = (v: unknown): v is Record<string, unknown> => typeof v === "object" && v !== null && !Array.isArray(v);
+const same = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b);
+
+/**
+ * A sync's values over a build (ADR 0005): a field still holding what the
+ * last sync wrote, or empty, takes the new value (AUTO); a field the user
+ * changed since is kept (MANUAL). Objects merge field by field.
+ */
+export function mergeSynced(current: Record<string, unknown>, synced: Record<string, unknown> | null, incoming: Record<string, unknown>): Record<string, unknown> {
+  const out: Record<string, unknown> = { ...current };
+  for (const [k, v] of Object.entries(incoming)) {
+    const now = current[k];
+    const before = synced?.[k];
+    if (plain(v) && plain(now)) out[k] = mergeSynced(now, plain(before) ? before : null, v);
+    else if (now === undefined || same(now, before)) out[k] = v;
+  }
+  return out;
+}
