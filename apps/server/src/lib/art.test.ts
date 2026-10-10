@@ -19,7 +19,7 @@ describe("communityArtUrl", () => {
   it("has nothing for missing keys, other kinds or games without a source", () => {
     expect(communityArtUrl("hsr", "character", undefined)).toBeNull();
     expect(communityArtUrl("hsr", "talent", "1503")).toBeNull();
-    expect(communityArtUrl("zzz", "character", "1191")).toBeNull();
+    expect(communityArtUrl("nte", "character", "1191")).toBeNull();
   });
 
   it("encodes keys so a catalog value cannot change the path", () => {
