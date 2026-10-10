@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/ui/05-teams · #202
+- Done: teams get a tab of their own, after Characters, for every game with a catalog (Georges: "no obvious way to make teams, look at teams, delete teams or manage teams"). Each team is a card: renamed in place, deleted with a confirmation, its members tinted to their element and opening their build or unit page, with their build status, a × to remove and "+ Add a member…" (owned units first). The sheet's Used in lists the character's teams with their other members, adds it to a team with room, makes a new team around it, and links to the tab. Endgame links there instead of holding the old card, which is deleted.
+- Tests: written first: the Teams journey creates, fills, renames and deletes a team from the tab, then adds Kafka to a team from her sheet; the accessibility scan covers Teams and a unit's page. The Endgame teams test moved there; Endfield's hub now lists Teams. `npm run check` passes: 559 tests, and the journeys after that one-line tab expectation.
+- Scope/decisions: no API change; the existing team routes do it all.
+- Next: the goal maker, the banner timeline, the clean-up, Settings and Admin.
+
 ## 2026-10-10 · claude · stack/ui/04-builds-bulk · #201
 - Done: Characters gains Builds, beside Characters and Weapons: every build of the game in one table (Georges: "where can I see my builds"). Each row has its status changed in place, role, KPIs, set and teams; select several to set their status or delete them. Select puts a box on each character card, and a bar owns them, marks them not owned, wishlists them or takes them off, or starts their builds (Georges: "manage multiple characters at once").
 - Tests: written first: the journey sets Asta's build to Good from the Builds table and checks it through the API, then selects Arlan and Herta and owns both. `npm run check` passes: 559 tests and 41 journeys.
@@ -297,9 +303,3 @@ Entry format:
 - Tests: written first: the Weapons journey farms Patience Is All You Need (Preview shows the materials) and follows Equipment's old link to Characters; a Gear journey farms a Star Rail set from Sets and finds no Equipment tab; the accessibility sweep no longer visits Equipment. Checked at 1440 on the dev account.
 - Scope/decisions: none beyond the move.
 - Next: F10 follow-ups are done; F11's Star Rail and ZZZ showcases and the battle chronicle remain, then F12.
-
-## 2026-10-10 · claude · stack/f10b/04-retire-overview · #162
-- Done: the old overview is gone, each of its parts in a new home: every currency in Profile's Wallet; Restore default tasks and Generate backlog in Profile's Game status; the per-game reminder options (lead time, check-in times, what a DM includes) under Game reminders as More reminder options (`components/ReminderControl.tsx`); builds by name (games without a catalog) on Characters; teams on Endgame (named, with labelled inputs); + Another build on the sheet. `/games/:id/overview` lands on Profile. `InstancePage`, `GameOverview`, `pullText` and the currency-row styles are removed.
-- Tests: written first: the NTE journey adds its build on Characters; smoke finds today's farming on the Planner; Profile edits the wallet, finds the tools and reminder options and lands an old overview link on Profile; Endgame makes a team and adds Kafka; the sheet makes another build. Checked at 1440 on the dev account.
-- Scope/decisions: the overview's "Happening now" and "Domains today" have their homes already (Activities, the calendar, the Planner's Farm today), so they are not carried over.
-- Next: weapon farming into Characters' Weapons view, then the Equipment tab can go.

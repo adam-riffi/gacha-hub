@@ -70,3 +70,18 @@
 .ch-bulk-bar { position: sticky; bottom: 12px; z-index: 5; margin: 18px 0 0; box-shadow: 0 8px 28px rgba(0, 0, 0, 0.6); }
 .ch-table select { width: 120px; }
 .ch-counts .btn[aria-pressed="true"] { background: var(--paper); border-color: var(--paper); color: var(--on-paper); }
+/* Teams (Georges, 2026-10-10): a tab of their own. */
+.tm-new { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.tm-new h3 { margin: 0; }
+.tm-new input { width: 260px; }
+.tm-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.tm-name { width: auto; flex: 1; margin-right: 12px; font: 600 18px var(--font-display); background: transparent; border-color: transparent; }
+.tm-name:hover, .tm-name:focus { border-color: var(--hairline-strong); }
+.tm-slots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+.tm-slot { --el: var(--paper); display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; grid-template-rows: auto auto; column-gap: 10px; align-items: center; padding: 8px; border: 1px solid var(--hairline); border-left: 3px solid var(--el); background: color-mix(in srgb, var(--el) 8%, var(--card)); }
+.tm-slot .gicon { grid-row: span 2; width: 44px; height: 44px; }
+.tm-slot a { color: var(--text); font-weight: 600; }
+.tm-slot .btn { grid-row: 1 / span 2; grid-column: 3; }
+.tm-add { align-self: center; }
+.sh-used-add { margin-top: 12px; gap: 10px; }
+.sh-used-add select { width: auto; }

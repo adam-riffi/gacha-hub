@@ -1,12 +1,11 @@
 import { useState, type FormEvent } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { endgameNow, gameDay, getGame, premiumCurrency, type CycleResultsDto, type GameDefinition, type GameRegion } from "@gacha/shared";
 import { api } from "../lib/api";
 import { formatRemaining } from "../lib/time";
 import type { InstanceDetail } from "../lib/types";
 import { GameTabs } from "../components/GameTabs";
-import { TeamsCard } from "../components/TeamsCard";
 import { EndgameHistory } from "../components/hub/EndgameHistory";
 import { useReminderFlag } from "../lib/reminder";
 
@@ -112,7 +111,14 @@ export function EndgamePage() {
           </div>
         </section>
       </div>
-      {game.loadCatalog && <TeamsCard instanceId={id!} gameKey={instance.gameKey} />}
+      {game.loadCatalog && (
+        <section className="card eg-teams" aria-label="Teams">
+          <div className="spread">
+            <h3>Teams</h3>
+            <Link to={`/games/${id}/teams`}>Manage teams →</Link>
+          </div>
+        </section>
+      )}
     </>
   );
 }

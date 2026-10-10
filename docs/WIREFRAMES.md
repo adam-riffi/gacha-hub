@@ -115,6 +115,14 @@ Picture: [`g4-characters.png`](design/wireframes/g4-characters.png) · static pa
 - Unowned wishlisted units show dimmed art and your chance with current pulls, linking to Pulls.
 - A pending event goal shows on the card (`→ C4 · EVENT`).
 
+### G4b · Teams
+
+Added after Georges's feedback of 2026-10-10 ("no obvious way to make teams, look at teams, delete teams or manage teams"). A tab of its own, after Characters, for games with a catalog.
+
+- **New team** by name at the top.
+- **A card per team:** its name, renamed in place; its members, each with its portrait, tinted to its element, opening its build or its unit page, with its build status and a × to remove it; "+ Add a member…" from the units you own first, up to the game's party size; Delete team.
+- The character sheet's **Used in** lists the teams with the character and their other members, adds it to a team with room, makes a new team around it, and links here; Endgame links here too.
+
 ### G5 · Character sheet
 
 Picture: [`g5-character-sheet.png`](design/wireframes/g5-character-sheet.png) · static page: [`g5-character-sheet.html`](design/wireframes/g5-character-sheet.html)
