@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/chronicle/01-stygian · #186
+- Done: Stygian Onslaught from HoYoLAB's chronicle (`hard_challenge`, genshin.py's HardChallenge). Its record is the best solo difficulty and time of the season running now, which fits the manifest's 1–6 metric. Shiyu Defense's newer layout (v2) stays unread: it scores floors 4 and 5 differently from the manifest's "S-rank frontiers", and without a recorded answer the mapping would be a guess.
+- Tests: written first: the request, and the current season's best difficulty. `npm run check` passes: 527 tests and 40 journeys.
+- Scope/decisions: endgame eligibility in Used in is left out. No source publishes each cycle's rules in a structured form, and typing them in by hand every cycle goes against the pipeline rule.
+- Next: shared KPI targets.
+
 ## 2026-10-10 · claude · stack/enka/04-genshin-talents · #185
 - Done: Genshin talent levels from the Enka showcase. The Genshin catalog keeps each character's skill order (normal, skill, burst ids) from Enka's store (`extra.skillOrder`, cached as "genshin-enka"). `readEnkaGenshin` reads `skillLevelMap` by it into `talents`, at base levels without constellation bonuses. The sync passes the catalog's order.
 - Tests: written first: Amber's skill order in the catalog, and the showcase's talent levels. The fixture already had skill levels, which are now used. `npm run check` passes: 528 tests and 40 journeys.
@@ -280,9 +286,3 @@ Entry format:
 - Tests: written first: `e2e/profile.spec.ts` (tab, the reset in server time, UID masked, levels in the header, days left and both pass reminders, stamina full, export file name, sleep, remove); smoke reaches the old overview from Profile; activities expects Profile last; the accessibility sweep visits it (caught a `<dl>` holding controls). Checked at 1440 beside `g8-profile.png`. Also fixed in the stack: the sheet journey's "Saved" toast is found by its exact text.
 - Scope/decisions: Long-term progress waits for F11 (the Battle Chronicle); the SYNCED badges are left out, as each game holds its own switches and the global rules set them across games; currencies and teams stay on the old overview until a screen takes them.
 - Next: F10's leftovers (Weapons and Compact views, wishlist filters and targets), then F11.
-
-## 2026-10-10 · claude · stack/f10/19-profile-data · #143
-- Done: `GameInstance.worldLevel` (migration `20261011030000_world_level`) and the manifest's `worldLevel` (label, name, highest): Genshin's World Level (0 to 9), Star Rail's Equilibrium Level (0 to 6), Wuthering Waves' SOL3 Phase (1 to 8), each sourced in its sheet; `PUT /api/instances/:id` takes it, refused over the game's highest or where the game has none; the export carries it. Reminders gain `beforeBattlePassEnds`: a DM 48 h before the version ends while the battle pass is short of its last level.
-- Tests: written first: `instances.integration.test.ts` (kept, refused over 9, cleared, refused for ZZZ), `due.test.ts` (not before 48 h, the DM with the level, none once maxed or switched off). The conformance suite checks the sheet names the world level.
-- Scope/decisions: "rewards unclaimed" is read as short of the last level, the only pass state on record; ZZZ, Endfield and NTE have no world level on record.
-- Next: Profile (G8) on these.
