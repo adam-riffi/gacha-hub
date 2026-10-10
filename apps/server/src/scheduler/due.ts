@@ -38,6 +38,8 @@ export interface DueReminder {
 export interface DueExtra {
   stamina?: { label: string; fullAt: Date | null };
   endgame?: { key: string; name: string; closes: Date; unclaimed: number; premium: string }[];
+  /** Unclaimed event goals whose reminder is on (ADR 0008). */
+  eventGoals?: { key: string; name: string; endsAt: Date }[];
 }
 
 export function dueReminders(cfg: ReminderConfig, region: RegionReset, gameName: string, now: Date, extra: DueExtra = {}): DueReminder[] {
@@ -67,6 +69,12 @@ export function dueReminders(cfg: ReminderConfig, region: RegionReset, gameName:
       if (m.unclaimed > 0 && left > 0 && left <= 24 * 60 * 60_000) {
         due.push({ key: `endgame:${m.key}`, firedFor: m.closes, headline: `⏳ **${gameName}** · ${m.name} ends in ${fmtDuration(left)} · ${m.unclaimed} ${m.premium} unclaimed` });
       }
+    }
+  }
+  for (const g of extra.eventGoals ?? []) {
+    const left = g.endsAt.getTime() - now.getTime();
+    if (left > 0 && left <= 48 * 60 * 60_000) {
+      due.push({ key: `event:${g.key}`, firedFor: g.endsAt, headline: `🎁 **${gameName}** · ${g.name} ends in ${fmtDuration(left)} · claim your reward` });
     }
   }
   return due;

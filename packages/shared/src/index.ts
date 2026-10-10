@@ -17,3 +17,4 @@ export * from "./passes.js";
 export * from "./endgame.js";
 export * from "./home.js";
 export * from "./effects.js";
+export * from "./rewards.js";

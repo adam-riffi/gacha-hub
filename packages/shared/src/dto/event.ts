@@ -39,3 +39,28 @@ export const eventDto = z.object({
   updatedAt: isoDate,
 });
 export type EventDto = z.infer<typeof eventDto>;
+
+/** One roster step a reward takes (`from` null: not owned yet). */
+export const rosterChangeDto = z.object({
+  unit: z.enum(["character", "weapon"]),
+  catalogId: z.string(),
+  name: z.string(),
+  letter: z.string(),
+  from: z.number().int().nullable(),
+  to: z.number().int(),
+});
+
+/** An open event whose rewards change the roster, for one profile (WIREFRAMES.md A4). */
+export const rewardDto = z.object({
+  eventId: idSchema,
+  gameKey: gameKeySchema,
+  instanceId: idSchema,
+  name: z.string(),
+  startsAt: isoDate,
+  endsAt: isoDate,
+  options: z.array(z.object({ label: z.string().nullable(), changes: z.array(rosterChangeDto), others: z.array(z.string()) })),
+  others: z.array(z.string()),
+  stages: z.number().int(),
+  goal: z.object({ id: idSchema, choice: z.number().int().nullable(), claimed: z.boolean(), done: z.number().int(), notify: z.boolean() }).nullable(),
+});
+export type RewardDto = z.infer<typeof rewardDto>;
