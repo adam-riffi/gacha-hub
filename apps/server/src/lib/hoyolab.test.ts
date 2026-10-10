@@ -22,6 +22,9 @@ describe("HoYoLAB (ADR 0005)", () => {
       { gameKey: "zzz", uid: "1500000001", level: 60, regionKey: "eu" },
     ] });
     expect(readRecordCards({ retcode: -100, message: "Please login", data: null })).toEqual({ games: [], error: "not_logged_in" });
+    // A card's stats (genshin.py's RecordCardData) are the profile's long-term progress.
+    const withStats = { retcode: 0, message: "OK", data: { list: [{ game_id: 2, game_role_id: "700000001", region: "os_euro", level: 58, data: [{ name: "Days Active", type: 1, value: "512" }, { name: "Achievements", type: 1, value: "870" }, { name: "", type: 1, value: "x" }] }] } };
+    expect(readRecordCards(withStats).games[0]!.stats).toEqual([{ name: "Days Active", value: "512" }, { name: "Achievements", value: "870" }]);
     expect(readRecordCards({ retcode: 10001, message: "Please login", data: null })).toEqual({ games: [], error: "not_logged_in" });
     expect(readRecordCards({ retcode: 10102, message: "Data is not public", data: null })).toEqual({ games: [], error: "not_public" });
     expect(readRecordCards("<html>")).toEqual({ games: [], error: "refused" });
