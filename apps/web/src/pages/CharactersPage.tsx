@@ -2,6 +2,7 @@ import { useState, type CSSProperties } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  elementColor,
   buildKpis,
   buildLine,
   dupeBadge,
@@ -27,7 +28,7 @@ import { assetUrl, communityAssetUrl, splashKey } from "../lib/assets";
 import { GameTabs } from "../components/GameTabs";
 import { GameIcon } from "../components/GameIcon";
 import { Segmented } from "../components/ui";
-import { elementColor } from "../lib/elements";
+
 import { WeaponsTable, type WeaponRow } from "../components/characters/WeaponsTable";
 import { BuildsTable } from "../components/characters/BuildsTable";
 import type { InstanceDetail } from "../lib/types";
@@ -170,6 +171,16 @@ export function CharactersPage() {
       return n;
     });
   const pickedCards = cards.filter((c) => picked.has(c.id));
+  // A build's weapon as the card shows it: the catalog's name and icon, level and refinement.
+  const heldOf = (b: CharacterDto | undefined) => {
+    const held = b && holder ? ((b.doc as Record<string, unknown>)[holder] as Record<string, unknown> | undefined) : undefined;
+    const w = held?.catalogId ? catalog?.weapons.find((x) => x.id === held.catalogId) : undefined;
+    if (!held || (!w && !held.name)) return null;
+    const dupe = dupeField ? held[dupeField.split(".").at(-1)!] : undefined;
+    const level = typeof held.level === "number" ? `Lv ${held.level}` : null;
+    const rank = `${dupeLetter(dupeField ?? "")}${typeof dupe === "number" ? dupe : 1}`;
+    return { name: w?.name ?? String(held.name), icon: w?.icon, line: [level, rank].filter(Boolean).join(" · ") };
+  };
   const holder = weaponHolder(game);
   const dupeField = game.manifest.dupes.weapon?.field;
   const ownedWeapons = new Set((ownership.data ?? []).filter((o) => o.kind === "weapon").map((o) => o.catalogId));
@@ -205,9 +216,9 @@ export function CharactersPage() {
         </label>
         {catalog && (
           <>
-            {!weaponsOn && <Select label="Element" value={element} onChange={setElement} options={options((c) => c.tag)} />}
-            <Select label="Weapon" value={weapon} onChange={setWeapon} options={weaponsOn ? weaponOptions((w) => w.type) : options((c) => c.weaponType)} />
-            <Select label="Rarity" value={rarity} onChange={setRarity} options={weaponsOn ? weaponOptions((w) => String(w.rarity)) : options((c) => (c.rarity ? String(c.rarity) : null))} />
+            {!weaponsOn && <Chips label="Element" value={element} onChange={setElement} options={options((c) => (c.tag === "None" ? null : c.tag))} color={(t) => elementColor(game.key, t)} />}
+            <Chips label="Weapon" value={weapon} onChange={setWeapon} options={weaponsOn ? weaponOptions((w) => w.type) : options((c) => c.weaponType)} />
+            <Chips label="Rarity" value={rarity} onChange={setRarity} options={(weaponsOn ? weaponOptions((w) => String(w.rarity)) : options((c) => (c.rarity ? String(c.rarity) : null))).reverse()} text={(r) => `★${r}`} />
           </>
         )}
         {!weaponsOn && (
@@ -312,14 +323,17 @@ export function CharactersPage() {
           const onBanner = live.find((b) => b.featured.some((f) => f.catalogId === c.id));
           const step = eventStep(c.id);
           const art = splashKey(game.key, c.icon, c.splash);
-          const el = elementColor(c.tag);
+          const el = elementColor(game.key, c.tag);
           // The whole card opens the build, or the unit's page when there is none.
           const to = c.build ? `/characters/${c.build.id}` : c.entry ? `/games/${id}/units/${c.id}` : null;
           return (
             <article key={c.id} className={`ch-card ${c.owned ? "" : "is-unowned"}`} aria-label={c.name} style={el ? ({ "--el": el } as CSSProperties) : undefined}>
-              {to && <Link to={to} className="ch-open" aria-label={`Open ${c.name}`} />}
-              {selecting && c.entry && (
-                <input type="checkbox" className="ch-pick" aria-label={`Select ${c.name}`} checked={picked.has(c.id)} onChange={() => togglePick(c.id)} />
+              {selecting && c.entry ? (
+                <label className="ch-open ch-picking">
+                  <input type="checkbox" className="ch-pick" aria-label={`Select ${c.name}`} checked={picked.has(c.id)} onChange={() => togglePick(c.id)} />
+                </label>
+              ) : (
+                to && <Link to={to} className="ch-open" aria-label={`Open ${c.name}`} />
               )}
               <div className="ch-art">
                 <GameIcon
@@ -359,6 +373,12 @@ export function CharactersPage() {
                 </div>
               ) : null}
               <div className="ch-foot">
+                {heldOf(c.build) && (
+                  <span className="ch-weapon" title={heldOf(c.build)!.name}>
+                    <GameIcon src={assetUrl(game.key, "weapon", heldOf(c.build)!.icon)} fallback={communityAssetUrl(game.key, "weapon", heldOf(c.build)!.icon)} alt={heldOf(c.build)!.name} label={heldOf(c.build)!.name.slice(0, 2)} />
+                    <span className="mn">{heldOf(c.build)!.line}</span>
+                  </span>
+                )}
                 {c.build && <span className={`badge ${c.build.buildStatus === "perfect" ? "done" : ""}`}>{c.build.buildStatus === "none" ? "Unbuilt" : c.build.buildStatus}</span>}
                 {c.build && <span className="mu ch-set">{gearSetLabel(game, doc) ?? c.build.role ?? ""}</span>}
                 {step && <span className="badge todo">→ {step.letter}{step.to} · event</span>}
@@ -405,16 +425,19 @@ export function CharactersPage() {
   );
 }
 
-function Select({ label, value, onChange, options }: { label: string; value: string; onChange: (v: string) => void; options: string[] }) {
+/** A filter as toggle chips: one pressed at a time, pressed again to clear; an element's chip carries its colour. */
+function Chips({ label, value, onChange, options, color, text = (o) => o }: { label: string; value: string; onChange: (v: string) => void; options: string[]; color?: (o: string) => string | null; text?: (o: string) => string }) {
   return (
-    <label>
-      {label}
-      <select value={value} onChange={(e) => onChange(e.target.value)}>
-        <option value="">Any</option>
+    <div className="ch-chipset" role="group" aria-label={label}>
+      <span className="kpi-label">{label}</span>
+      <div>
         {options.map((o) => (
-          <option key={o} value={o}>{o}</option>
+          <button key={o} type="button" className="ch-chip" aria-pressed={value === o} aria-label={o} title={o} onClick={() => onChange(value === o ? "" : o)} style={color?.(o) ? ({ "--el": color(o) } as CSSProperties) : undefined}>
+            {color && <i aria-hidden="true" />}
+            {text(o)}
+          </button>
         ))}
-      </select>
-    </label>
+      </div>
+    </div>
   );
 }

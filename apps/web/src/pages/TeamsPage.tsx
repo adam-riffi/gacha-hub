@@ -1,13 +1,13 @@
 import { useState, type CSSProperties } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getGame, type CharacterDto, type OwnershipDto, type TeamDto } from "@gacha/shared";
+import { elementColor, getGame, type CharacterDto, type OwnershipDto, type TeamDto } from "@gacha/shared";
 import { LoadError } from "../components/LoadError";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
 import { useCatalog } from "../lib/catalog";
 import { communityAssetUrl, assetUrl } from "../lib/assets";
-import { elementColor } from "../lib/elements";
+
 import { GameTabs } from "../components/GameTabs";
 import { GameIcon } from "../components/GameIcon";
 import type { InstanceDetail } from "../lib/types";
@@ -91,7 +91,7 @@ export function TeamsPage() {
               {t.members.map((m) => {
                 const unit = index?.characters.get(m);
                 const build = buildOf(m);
-                const el = elementColor(unit?.tag);
+                const el = elementColor(game.key, unit?.tag);
                 return (
                   <div key={m} className="tm-slot" style={el ? ({ "--el": el } as CSSProperties) : undefined}>
                     <GameIcon src={assetUrl(game.key, "character", unit?.icon)} fallback={communityAssetUrl(game.key, "character", unit?.icon)} alt={unit?.name ?? m} label={(unit?.name ?? m).slice(0, 2)} />

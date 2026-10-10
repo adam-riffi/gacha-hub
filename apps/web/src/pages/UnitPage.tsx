@@ -1,12 +1,12 @@
 import type { CSSProperties } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { featuredWithin, getGame, pullsFor, type CharacterDto, type DashboardDto, type OwnershipDto, type PullLogDto, type WishlistItemDto } from "@gacha/shared";
+import { elementColor, featuredWithin, getGame, pullsFor, type CharacterDto, type DashboardDto, type OwnershipDto, type PullLogDto, type WishlistItemDto } from "@gacha/shared";
 import { LoadError } from "../components/LoadError";
 import { api } from "../lib/api";
 import { useCatalog } from "../lib/catalog";
 import { assetUrl, communityAssetUrl, splashKey } from "../lib/assets";
-import { elementColor } from "../lib/elements";
+
 import { GameTabs } from "../components/GameTabs";
 import { GameIcon } from "../components/GameIcon";
 import { TaskGeneratorPanel } from "../components/TaskGeneratorPanel";
@@ -66,7 +66,7 @@ export function UnitPage() {
   const rules = pulls.data?.banners.find((b) => b.key === "character");
   const available = pullsFor(game.currencies.filter((c) => c.pullCost).map((c) => ({ ...c, value: instance.data.currencies.find((x) => x.key === c.key)?.value ?? 0 }))).limited;
   const art = splashKey(game.key, entry.icon, entry.splash);
-  const el = elementColor(entry.tag);
+  const el = elementColor(game.key, entry.tag);
   const dupe = game.manifest.dupes.character;
 
   return (
