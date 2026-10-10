@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/ops/04-manual-deploys · #189
+- Done: deploys only at Georges's command or a milestone. `vercel.json` sets `git.deploymentEnabled: false`, so no push or merge, on `main` or any branch, deploys. Before, only `stack/**`, `spike/**` and `dependabot/**` were off. DEPLOY.md (Redeploys) says how to deploy `main` when asked: the dashboard's Redeploy, or the agent through the Vercel connector. AGENTS.md and HANDOFF.md say it too.
+- Tests: written first: `deployConfig.test.ts` expects Git deployments off. `npm run check` passes: 530 tests and 40 journeys.
+- Scope/decisions: production stays on #186 until Georges asks.
+- Next: at his command, deploy `main` and run the smoke check.
+
 ## 2026-10-10 · claude · stack/docs/04-handoff-final · #188
 - Done: HANDOFF.md rewritten. It covers the work after "take every decision" (#177–#187), each decision taken and its reason, and what waits on Georges's secrets. PROJECT-GUIDE §14.2 now lists what waits on data (real fixtures, TypeScript 7) and what was decided against, with reasons: Endfield art, WuWa material art, Shiyu v2, Used-in eligibility. The matrix's live-data and art rows and README's art line are updated.
 - Tests: docs only.
@@ -285,9 +291,3 @@ Entry format:
 - Tests: written first: `uigf.test.ts` (accounts and times, refusals, written back and read the same), `uigf.integration.test.ts` (import and its run, pick_uid, the UID choosing, uid_mismatch, no account for the game, export that re-imports with nothing new).
 - Scope/decisions: manual entries have no record ids, so the export carries imported pulls only; files over 4 MB (Vercel's request cap is 4.5 MB) are refused.
 - Next: `f11/04-history-link` (history links fetched once, never stored).
-
-## 2026-10-10 · claude · stack/f11/02-pull-records · #147
-- Done: `PullEntry.source` (manual, or the import) and `recordId` (the game's record id, unique per profile; migration `20261011050000_pull_records`); `pullBanners[].gachaTypes` for Genshin, Star Rail and ZZZ (sourced to UIGF v4.2 in each sheet); shared `pullsFromRecords` (one entry per record under the banner its gacha type feeds, oldest first with a 10-pull kept in order a millisecond apart, a 5★ featured when a banner of its kind running then features it); server `importPulls` (skips ids already stored or repeated, replaces manual entries on a banner up to its newest imported pull, writes an `ImportRun`).
-- Tests: written first: `pullImport.test.ts` (types to banners and skipped ones, order, featured, lost and unknown), `pullImport.integration.test.ts` (pity and the 50/50 from imported records, the run recorded, re-imports skipped, manual entries replaced and later ones kept). The fixture's record ids are built as strings: past 2^53 they collided.
-- Scope/decisions: one row per pull, so re-imports deduplicate exactly; beginner, Chronicled, departure, collab and Bangboo pulls are skipped; nothing calls `importPulls` yet (UIGF in `f11/03`).
-- Next: `f11/03-uigf` (UIGF v4.2 import and export).
