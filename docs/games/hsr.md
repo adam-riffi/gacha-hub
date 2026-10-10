@@ -14,6 +14,10 @@
 | Endgame rewards | 800 Stellar Jade per cycle for each mode ~ | [Buffget, 2026](https://buffget.com/news/hsr-apocalyptic-shadow-guide-e1-vs-relic-farming-2026) for Apocalyptic Shadow; per-version estimates for the other two |
 | Battle pass | Nameless Honor, 70 levels ~, weekly cap 8,000 EXP ~ | [Icy Veins](https://www.icy-veins.com/honkai-star-rail/battle-pass); one guide for the weekly cap |
 | 30-day pass | Express Supply Pass, 30 days ~ | wireframe X1, unverified |
+| Gear | Relics: Head (HP), Hands (ATK), Body (HP%/ATK%/DEF%, Effect Hit Rate, Outgoing Healing Boost, CRIT Rate, CRIT DMG), Feet (HP%/ATK%/DEF%, SPD), Planar Sphere (HP%/ATK%/DEF%, a DMG Boost per type), Link Rope (HP%/ATK%/DEF%, Break Effect, Energy Regeneration Rate); relic sets of 2 and 4, planar sets of 2; level 15 | [Relic/Stats](https://honkai-star-rail.fandom.com/wiki/Relic/Stats) |
+| Dupes | A character copy raises Eidolon by one (to E6); a light cone copy raises Superimposition by one (to S5) | [Eidolon](https://honkai-star-rail.fandom.com/wiki/Eidolon), [Superimpose](https://honkai-star-rail.fandom.com/wiki/Superimpose) |
+| Art | Yatta's UI assets by id | [Yatta](https://sr.yatta.moe) |
+| KPIs per role | Our choice for the Characters cards (WIREFRAMES.md G4), listed in the module's manifest | |
 | Account level | Trailblaze Level (TL); the abbreviation is the community's | [Trailblaze Level](https://honkai-star-rail.fandom.com/wiki/Trailblaze_Level) |
 | Gacha · character | 5★ 0.6% a warp (1.6% consolidated), hard pity 90; 50/50, a lost one guarantees the next. Soft pity from 74, +6 points a warp ~ (the community model, as Genshin's) | [Warp](https://honkai-star-rail.fandom.com/wiki/Warp) |
 | Gacha · light cone | 5★ 0.8% (1.87% consolidated), hard pity 80; 75/25. Soft pity from 66 ~, climbing to certainty at 80 ~ | [Warp](https://honkai-star-rail.fandom.com/wiki/Warp) |

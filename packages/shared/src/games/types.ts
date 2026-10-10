@@ -3,6 +3,7 @@ import type { TaskCadence } from "../common.js";
 import type { Catalog, CatalogCharacter } from "../catalog/types.js";
 import type { PullBannerRules } from "../pity.js";
 import type { CadenceAnchor } from "../cadence.js";
+import type { ArtKind } from "../art.js";
 
 /**
  * Thin contract every hardcoded game module implements. The host app (auth,
@@ -72,6 +73,22 @@ export interface GameManifest {
   }[];
   battlePass?: { name: string; maxLevel?: number; weeklyXpCap?: number };
   monthlyPass?: { name: string; days: number; maxDays?: number };
+  /**
+   * The gear block (WIREFRAMES.md G5, G6): what the game calls it, the build
+   * document field holding it, each slot with its possible main stats (empty
+   * when the slot has no choice), the set-bonus piece counts, and a total cost
+   * cap where the game has one (Wuthering Waves' echoes).
+   */
+  gear: { name: string; field: string; slots: { key: string; label: string; mainStats: string[] }[]; sets: number[]; maxLevel: number; costCap?: number };
+  /** The KPIs shown per build role (G4, G5): our choice, up to three per role. */
+  kpis: Record<string, string[]>;
+  /**
+   * What an event reward copy does (ADR 0004): a character copy raises
+   * `character.field` by one, a weapon copy `weapon.field`, each up to `max`.
+   */
+  dupes: { character: { field: string; label: string; max: number }; weapon?: { field: string; label: string; max: number } };
+  /** Where each kind of catalog art comes from until our own store has it (ADR 0006): a URL with `{key}`. */
+  art: Partial<Record<ArtKind, string>>;
   /** What the game calls the account level, short and in full (AR, Adventure Rank). */
   accountLevel: { label: string; name: string };
   /** The current version; `days` until the next one, estimated until announced. */

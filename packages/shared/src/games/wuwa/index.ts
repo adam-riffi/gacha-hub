@@ -10,6 +10,13 @@ export { WUWA_LIMITS } from "./limits.js";
 export const WUWA_ELEMENTS = ["Glacio", "Fusion", "Electro", "Aero", "Spectro", "Havoc"] as const;
 export const WUWA_WEAPON_TYPES = ["Broadblade", "Sword", "Pistols", "Gauntlets", "Rectifier"] as const;
 
+/** Main stats an echo can roll by its cost (Echo Stats on the wiki). */
+export const WUWA_MAIN_STATS_BY_COST: Record<1 | 3 | 4, string[]> = {
+  1: ["HP%", "ATK%", "DEF%"],
+  3: ["HP%", "ATK%", "DEF%", "Energy Regen", ...["Glacio", "Fusion", "Electro", "Aero", "Spectro", "Havoc"].map((e) => `${e} DMG Bonus`)],
+  4: ["HP%", "ATK%", "DEF%", "Crit. Rate", "Crit. DMG", "Healing Bonus"],
+};
+
 /** Five echo slots; costs 4 / 3 / 1 are tracked per echo. */
 export const WUWA_ECHO_SLOTS = [1, 2, 3, 4, 5].map((n) => ({ key: `slot${n}`, label: `Echo ${n}` }));
 export const WUWA_ECHO_COSTS = [1, 3, 4] as const;
@@ -92,6 +99,18 @@ export const wuwa: GameDefinition = {
     ],
     battlePass: { name: "Pioneer Podcast", maxLevel: 70 },
     monthlyPass: { name: "Lunite Subscription", days: 30, maxDays: 180 },
+    // Slots are numbered; an echo's main stats depend on its cost (1, 3 or 4), listed here by cost.
+    gear: {
+      name: "Echoes",
+      field: "echoes",
+      slots: WUWA_ECHO_SLOTS.map((s) => ({ ...s, mainStats: [] })),
+      sets: [2, 5],
+      maxLevel: L.maxEchoLevel,
+      costCap: 12,
+    },
+    kpis: { damage: ["Crit value", "Crit. Rate / Crit. DMG", "Energy Regen"], support: ["Energy Regen", "ATK%", "Healing Bonus"], healer: ["Healing Bonus", "HP%", "Energy Regen"] },
+    dupes: { character: { field: "sequence", label: "Resonance Chain", max: L.maxSequence }, weapon: { field: "weapon.syntonize", label: "Syntonize", max: L.maxSyntonize } },
+    art: {},
     accountLevel: { label: "UL", name: "Union Level" },
     version: { name: "3.7", start: "2026-09-30", days: 42 },
   },

@@ -87,6 +87,17 @@ export const endfield: GameDefinition = {
     // Seasons of three weekly cycles; a season's first cycle opens with its phase, mid-day.
     endgame: [{ key: "echoes", name: "Echoes of War", anchor: { cadence: "cycle", start: "2026-10-01", days: 7 }, metric: { label: "stars", max: 9 } }],
     battlePass: { name: "Protocol Pass" },
+    // Armour, gloves and two kits; set effects need three pieces; no main stat to choose.
+    gear: {
+      name: "Gear",
+      field: "gear",
+      slots: ENDFIELD_GEAR_SLOTS.map((s) => ({ ...s, mainStats: [] })),
+      sets: [3],
+      maxLevel: L.maxGearLevel,
+    },
+    kpis: { damage: ["ATK", "Crit value", "Attribute"], support: ["Ultimate gain", "HP", "Attribute"], defense: ["HP", "DEF", "Attribute"] },
+    dupes: { character: { field: "potential", label: "Potential", max: L.maxPotential } },
+    art: {},
     accountLevel: { label: "AL", name: "Authority Level" },
     version: { name: "Dreamscape of Wind and Snow", start: "2026-09-02", days: 43 },
   },
