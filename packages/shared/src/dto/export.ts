@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { idSchema, isoDate } from "./common.js";
+import { idSchema, isoDate, jsonValue } from "./common.js";
 
 /** A stored row as-is, minus its owner foreign keys. */
 const row = z.record(z.string(), z.unknown());
@@ -19,6 +19,7 @@ export const userExportSchema = z.object({
       uid: z.string().nullable(),
       accountLevel: z.number().nullable(),
       worldLevel: z.number().nullable(),
+      kpiTargets: jsonValue.nullable().optional(),
       createdAt: isoDate,
       currencies: z.array(row),
       characters: z.array(row),
