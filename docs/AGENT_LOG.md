@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f10/19-profile-data · #143
+- Done: `GameInstance.worldLevel` (migration `20261011030000_world_level`) and the manifest's `worldLevel` (label, name, highest): Genshin's World Level (0 to 9), Star Rail's Equilibrium Level (0 to 6), Wuthering Waves' SOL3 Phase (1 to 8), each sourced in its sheet; `PUT /api/instances/:id` takes it, refused over the game's highest or where the game has none; the export carries it. Reminders gain `beforeBattlePassEnds`: a DM 48 h before the version ends while the battle pass is short of its last level.
+- Tests: written first: `instances.integration.test.ts` (kept, refused over 9, cleared, refused for ZZZ), `due.test.ts` (not before 48 h, the DM with the level, none once maxed or switched off). The conformance suite checks the sheet names the world level.
+- Scope/decisions: "rewards unclaimed" is read as short of the last level, the only pass state on record; ZZZ, Endfield and NTE have no world level on record.
+- Next: Profile (G8) on these.
+
 ## 2026-10-10 · claude · stack/f10/18-planner · #142
 - Done: the Planner rebuilt from its board (WIREFRAMES.md G7), a hub tab in place of Materials: Goals (each farming goal with what it plans, its priority or backlog and a materials meter; New goal opens Characters); Materials for the picked goal or all goals summed (source, the days pips with today outlined, Have typed in place, Need, Missing, done ones last); Farm today in the game's weekday, one line per domain (Today, or its next open day), the any-day count and Open Tasks.
 - Tests: written first: `e2e/planner.spec.ts` (tab, a goal picked, a material's Have filled to its need shows ✓, All goals, Farm today); the accessibility sweep visits the tab. Checked at 1440 beside `g7-planner.png`.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: `health.integration.test.ts` first; Check all; the CI job itself is the Postgres verification.
 - Scope/decisions: The Supabase pooler is still unverified: Preview deployments have no `DATABASE_URL` (production-only variables), and branching Supabase costs money. Georges either adds Preview-scoped database variables or the first production deploy is the pooler test, guarded by the health smoke check.
 - Next: verify the Vercel build on a preview; then F8.
-
-## 2026-10-10 · claude · stack/d/01-prisma7 · #102
-- Done: Prisma 7.10.0 with driver adapters (ADR 0003, ported from `spike/prisma7`): `prisma.config.ts` (URLs, and `.env` loaded there since Prisma 7 stopped reading it), the `prisma-client` generator into `apps/server/src/generated/prisma` (git- and lint-ignored), `lib/database.ts` choosing better-sqlite3 for `file:` URLs (relative to `prisma/`, as before) and pg otherwise, the thirteen imports moved, scripts generating after `db push` and running the CLI from the root, `db:sqlite` without `--accept-data-loss`, the bundle keeping adapters and the native driver external.
-- Tests: `database.test.ts` first; then the whole suite on the new data layer: 206 tests through the SQLite adapter, both harnesses on the 11.7 MB bundle, Check all.
-- Scope/decisions: `^7.10.0` pinned (npm's latest is an 8.0 rc). Postgres through the pooler, `migrate deploy` on Vercel and cold starts are PR 2 (ADR 0003 step 3); this PR must not reach production first.
-- Next: `stack/d/02-postgres-check`: route tests against a Postgres service in CI, a preview deployment through the pooler.
