@@ -1,5 +1,7 @@
 /** A Genshin showcase on Enka (https://github.com/EnkaNetwork/API-docs). */
 export const enkaGenshinUrl = (uid: string) => `https://enka.network/api/uid/${encodeURIComponent(uid)}/`;
+/** A Star Rail showcase on Enka. */
+export const enkaHsrUrl = (uid: string) => `https://enka.network/api/hsr/uid/${encodeURIComponent(uid)}`;
 
 /** Enka's stat ids in our sheet's words. */
 const STAT: Record<string, string> = {
@@ -108,4 +110,87 @@ export function mergeSynced(current: Record<string, unknown>, synced: Record<str
     else if (now === undefined || same(now, before)) out[k] = v;
   }
   return out;
+}
+
+/** Star Rail's stat names (Enka's, the game's) in our sheet's words, and whether they read as a percentage. */
+const HSR_STAT: Record<string, [string, boolean]> = {
+  HPDelta: ["HP", false],
+  AttackDelta: ["ATK", false],
+  DefenceDelta: ["DEF", false],
+  HPAddedRatio: ["HP%", true],
+  AttackAddedRatio: ["ATK%", true],
+  DefenceAddedRatio: ["DEF%", true],
+  SpeedDelta: ["SPD", false],
+  CriticalChanceBase: ["CRIT Rate", true],
+  CriticalDamageBase: ["CRIT DMG", true],
+  StatusProbabilityBase: ["Effect Hit Rate", true],
+  StatusResistanceBase: ["Effect RES", true],
+  BreakDamageAddedRatioBase: ["Break Effect", true],
+  HealRatioBase: ["Outgoing Healing Boost", true],
+  SPRatioBase: ["Energy Regeneration Rate", true],
+  PhysicalAddedRatio: ["Physical DMG Boost", true],
+  FireAddedRatio: ["Fire DMG Boost", true],
+  IceAddedRatio: ["Ice DMG Boost", true],
+  ThunderAddedRatio: ["Lightning DMG Boost", true],
+  WindAddedRatio: ["Wind DMG Boost", true],
+  QuantumAddedRatio: ["Quantum DMG Boost", true],
+  ImaginaryAddedRatio: ["Imaginary DMG Boost", true],
+};
+
+type RelicStats = {
+  pieces: Record<string, { slot: string; set: string; main: string; sub: string }>;
+  main: Record<string, Record<string, { stat: string; base: number; add: number }>>;
+  sub: Record<string, Record<string, { stat: string; base: number; step: number }>>;
+};
+type HsrAvatar = {
+  avatarId: number;
+  level?: number;
+  rank?: number;
+  equipment?: { tid: number; level?: number; rank?: number } | null;
+  relicList?: { tid: number; level?: number; mainAffixId: number; subAffixList?: { affixId: number; cnt?: number; step?: number }[] }[];
+};
+
+/**
+ * A Star Rail showcase as our builds (ADR 0005): level, eidolon, the light
+ * cone, and each relic with its set, main stat at its level and substats
+ * summed from their rolls, all from the catalog's relic tables (the game sends
+ * ids, not values). Fields the game leaves out are zero.
+ */
+export function readEnkaHsr(
+  json: unknown,
+  lookups: { weaponName: (id: string) => string | undefined; setName: (setId: string) => string | undefined; relicStats: RelicStats },
+): { level?: number; worldLevel?: number; builds: { catalogId: string; doc: Record<string, unknown> }[] } | { error: "showcase_closed" } {
+  const info = ((typeof json === "object" && json ? json : {}) as { detailInfo?: { level?: number; worldLevel?: number; avatarDetailList?: HsrAvatar[] } }).detailInfo;
+  const list = info?.avatarDetailList ?? [];
+  if (!list.length) return { error: "showcase_closed" };
+  const t = lookups.relicStats;
+  const value = (stat: string, raw: number) => (HSR_STAT[stat]?.[1] ? round1(raw * 100) : round1(raw));
+  const builds = list.map((a) => {
+    const doc: Record<string, unknown> = { eidolon: a.rank ?? 0 };
+    if (a.level) doc.level = a.level;
+    if (a.equipment) {
+      const id = String(a.equipment.tid);
+      doc.lightCone = { catalogId: id, name: lookups.weaponName(id), level: a.equipment.level, superimposition: a.equipment.rank ?? 1 };
+    }
+    const relics: Record<string, unknown> = {};
+    for (const r of a.relicList ?? []) {
+      const piece = t.pieces[String(r.tid)];
+      if (!piece) continue;
+      const level = r.level ?? 0;
+      const main = t.main[piece.main]?.[String(r.mainAffixId)];
+      relics[piece.slot] = {
+        setName: lookups.setName(piece.set),
+        mainStat: main ? HSR_STAT[main.stat]?.[0] : undefined,
+        level,
+        substats: (r.subAffixList ?? []).flatMap((s) => {
+          const sub = t.sub[piece.sub]?.[String(s.affixId)];
+          const name = sub && HSR_STAT[sub.stat]?.[0];
+          return sub && name ? [{ stat: name, value: value(sub.stat, sub.base * (s.cnt ?? 0) + sub.step * (s.step ?? 0)) }] : [];
+        }),
+      };
+    }
+    if (Object.keys(relics).length) doc.relics = relics;
+    return { catalogId: String(a.avatarId), doc: JSON.parse(JSON.stringify(doc)) as Record<string, unknown> };
+  });
+  return { level: info?.level, worldLevel: info?.worldLevel, builds };
 }

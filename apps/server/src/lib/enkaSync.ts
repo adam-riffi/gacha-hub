@@ -1,4 +1,4 @@
-import { enkaGenshinUrl, mergeSynced, readEnkaGenshin } from "@gacha/shared";
+import { enkaGenshinUrl, enkaHsrUrl, mergeSynced, readEnkaGenshin, readEnkaHsr } from "@gacha/shared";
 import type { GameInstance } from "../generated/prisma/client.js";
 import { prisma } from "./prisma.js";
 import { gameOrThrow, getCatalog, validateDoc } from "../api/util.js";
@@ -27,10 +27,10 @@ export async function syncEnka(
   userId: string,
   fetchFn: Fetch = fetch as unknown as Fetch,
 ): Promise<{ created: number; updated: number } | { error: EnkaError }> {
-  if (gi.gameKey !== "genshin") return { error: "no_showcase" };
+  if (gi.gameKey !== "genshin" && gi.gameKey !== "hsr") return { error: "no_showcase" };
   if (!gi.uid) return { error: "no_uid" };
   const game = gameOrThrow(gi.gameKey);
-  const res = await fetchFn(enkaGenshinUrl(gi.uid), {
+  const res = await fetchFn((gi.gameKey === "hsr" ? enkaHsrUrl : enkaGenshinUrl)(gi.uid), {
     headers: { "user-agent": "gacha-hub/1 (+https://gacha-hub-two.vercel.app)" },
   }).catch(() => null);
   const failed: EnkaError | null = !res
@@ -45,12 +45,16 @@ export async function syncEnka(
             ? null
             : "refused";
   const cat = (await getCatalog(game))!;
+  const weaponName = (id: string) => cat.index.weapons.get(id)?.name;
+  const setName = (id: string) => cat.catalog.gear.find((x) => x.id === id)?.name;
+  const json = failed ? null : await res!.json();
   const read = failed
     ? { error: failed }
-    : readEnkaGenshin(await res!.json(), {
-        weaponName: (id) => cat.index.weapons.get(id)?.name,
-        setName: (id) => cat.catalog.gear?.find((s) => s.id === id)?.name,
-      });
+    : gi.gameKey === "hsr"
+      ? cat.catalog.relicStats
+        ? readEnkaHsr(json, { weaponName, setName, relicStats: cat.catalog.relicStats })
+        : { error: "no_showcase" as const }
+      : readEnkaGenshin(json, { weaponName, setName });
   if ("error" in read) {
     await prisma.importRun.create({
       data: {
