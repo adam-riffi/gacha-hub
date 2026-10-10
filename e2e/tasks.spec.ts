@@ -68,3 +68,41 @@ test("Tasks: reminder rules across games, quiet hours, and the DM preview @smoke
   await preview.getByRole("button", { name: "Send a test DM" }).click();
   await expect(preview).toContainText("Discord isn't set up");
 });
+
+test("Tasks: the goal maker makes anything: a gameplay goal with a count, a checklist with its items, a character's build plan @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  await page.request.post("/api/instances", { data: { gameKey: "hsr" } });
+
+  // Home's Goals panel opens the maker (Georges, 2026-10-10: "I should be able to create anything from that screen").
+  await page.getByRole("link", { name: "+ New goal" }).click();
+  await expect(page).toHaveURL(/\/tasks\?new=1$/);
+  const maker = page.getByRole("form", { name: "New goal" });
+
+  // Gameplay: finish something, or do it a number of times.
+  await maker.getByRole("button", { name: "Gameplay" }).click();
+  await maker.getByLabel("Title").fill("E2E Do 20 Calyx runs");
+  await maker.getByLabel("Game").selectOption({ label: "Honkai: Star Rail" });
+  await maker.getByLabel("How many times").fill("20");
+  await maker.getByRole("button", { name: "Add goal" }).click();
+  await expect(page.getByRole("region", { name: "Goals" })).toContainText("E2E Do 20 Calyx runs");
+
+  // A checklist, its items typed one per line.
+  await page.getByRole("button", { name: "New goal" }).click();
+  await maker.getByRole("button", { name: "Checklist" }).click();
+  await maker.getByLabel("Title").fill("E2E Finish Penacony");
+  await maker.getByLabel("Game").selectOption({ label: "Honkai: Star Rail" });
+  await maker.getByLabel("Items, one per line").fill("Act 1\nAct 2");
+  await maker.getByRole("button", { name: "Add goal" }).click();
+  await expect
+    .poll(async () => ((await (await page.request.get("/api/tasks")).json()) as { title: string; items: { label: string }[] | null }[]).find((t) => t.title === "E2E Finish Penacony")?.items?.map((i) => i.label))
+    .toEqual(["Act 1", "Act 2"]);
+
+  // A character's build: pick the unit, then plan its levels and talents in place.
+  await page.getByRole("button", { name: "New goal" }).click();
+  await maker.getByRole("button", { name: "Character build" }).click();
+  await maker.getByLabel("Game").selectOption({ label: "Honkai: Star Rail" });
+  await maker.getByLabel("Character").selectOption({ label: "Kafka" });
+  await expect(maker.getByRole("button", { name: "Generate tasks" })).toBeVisible();
+});
