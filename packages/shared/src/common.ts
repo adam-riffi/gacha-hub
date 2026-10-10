@@ -49,6 +49,13 @@ export const reminderConfigSchema = z.object({
   whenStaminaFull: z.boolean().default(false),
   /** DM 24 h before an endgame mode resets with premium rewards left in it (G2). */
   beforeEndgameReset: z.boolean().default(false),
+  /** DM 3 days before the 30-day pass ends (A3). */
+  beforePassEnds: z.boolean().default(false),
+  /** No DM between these local times ("HH:MM" in `timezone`, may wrap past midnight); held ones go out after (A3). */
+  quietHours: z
+    .object({ from: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/), to: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/) })
+    .nullable()
+    .default(null),
 });
 export type ReminderConfig = z.infer<typeof reminderConfigSchema>;
 

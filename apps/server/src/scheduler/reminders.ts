@@ -14,7 +14,7 @@ import {
 } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
 import { isDoneThisCycle } from "../lib/resets.js";
-import { dueReminders, type DueExtra } from "./due.js";
+import { dueReminders, inQuietHours, type DueExtra } from "./due.js";
 import { staminaCap } from "../lib/regen.js";
 import type { RegionReset } from "../lib/resets.js";
 import { getCatalog, regionForInstance } from "../api/util.js";
@@ -95,6 +95,11 @@ async function dueExtra(cfg: ReminderConfig, game: GameDefinition, instance: Gam
       .modes.filter((m) => m.open && m.mode.maxPremium !== undefined)
       .map((m) => ({ key: m.mode.key, name: m.mode.name, closes: m.closes, unclaimed: m.mode.maxPremium! - m.premium, premium }));
   }
+  const monthly = game.manifest.monthlyPass;
+  if (cfg.beforePassEnds && monthly) {
+    const row = await prisma.passState.findUnique({ where: { gameInstanceId_kind: { gameInstanceId: instance.id, kind: "monthly" } } });
+    if (row?.endsAt) extra.monthlyPass = { name: monthly.name, endsAt: row.endsAt };
+  }
   const goals = await prisma.task.findMany({
     where: { userId: instance.userId, scope: "game", refId: instance.id, eventId: { not: null }, notify: true, lastCompletedAt: null },
     select: { eventId: true },
@@ -129,7 +134,8 @@ export async function runReminderTick(now = new Date()): Promise<void> {
       if (!game) continue;
 
       const cfg = reminderConfigSchema.parse(rule.config ?? {});
-      if (!cfg.enabled) continue;
+      // Quiet hours hold everything; the log is untouched, so it goes out on the first tick after.
+      if (!cfg.enabled || inQuietHours(now, cfg.quietHours, cfg.timezone)) continue;
 
       const region = regionForInstance(game, instance);
       const pending = [];
