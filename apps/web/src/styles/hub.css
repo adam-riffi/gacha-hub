@@ -63,6 +63,14 @@ label.act-row { margin: 0; cursor: pointer; color: var(--text); font: 400 15px/1
 .act-version-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; }
 .act-pass { margin: 10px 0 0; font: 600 24px/1.1 var(--font-display); letter-spacing: 0.04em; text-transform: uppercase; }
 .act-version .kpi-label { margin-bottom: 6px; }
+.act-pass-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.act-pass-head .tag { margin-left: 8px; font-size: 10px; }
+.act-pass-level { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 8px 0 10px; }
+.act-pass-level .mn { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+.act-xp { display: flex; align-items: center; justify-content: space-between; margin: 18px 0 8px; }
+.act-meter-thin { flex: none; height: 6px; }
+.act-pass-row { margin-top: 12px; border-top: 1px solid var(--hairline); border-bottom: 0; }
+.act-pass-row .mn { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
 
 @media (max-width: 900px) {
   .hub-head { flex-wrap: wrap; }

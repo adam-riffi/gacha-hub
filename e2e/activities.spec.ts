@@ -36,5 +36,18 @@ test("a game's Activities tab: stamina, the daily, weekly and monthly lists, cyc
   // Each endgame mode with its reset, and the version.
   const cycles = page.getByRole("region", { name: "Cycles" });
   for (const mode of ["Shiyu Defense", "Deadly Assault"]) await expect(cycles).toContainText(mode);
-  await expect(page.getByRole("region", { name: /Version 3\.2/ })).toContainText(/ends/i);
+  const version = page.getByRole("region", { name: /Version 3\.2/ });
+  await expect(version).toContainText(/ends/i);
+
+  // The battle pass and the 30-day pass, typed in place.
+  await version.getByRole("button", { name: "Update the battle pass" }).click();
+  await version.getByLabel("Level").fill("20");
+  await version.getByLabel("Weekly XP").fill("4000");
+  await version.getByRole("button", { name: "Save" }).click();
+  await expect(version).toContainText("20 / 50");
+  await expect(version).toContainText(/levels? a day/i);
+  await monthly.getByRole("button", { name: "Update Inter-Knot Membership" }).click();
+  await monthly.getByLabel("Days left").fill("23");
+  await monthly.getByRole("button", { name: "Save" }).click();
+  await expect(monthly).toContainText("23 days left");
 });
