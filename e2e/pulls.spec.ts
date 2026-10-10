@@ -45,9 +45,23 @@ test("Pulls: the savings planner plans each event banner's featured 5★ in orde
   await page.goto(`/games/${id}/pulls`);
   const planner = page.getByRole("region", { name: "Savings planner" });
   const rows = planner.locator(".pl-target");
-  await expect(rows).toHaveCount(2);
+  // The running banners come first; wishlisted units other journeys left may follow.
+  await expect(rows.nth(1)).toBeVisible();
   await expect(rows.first()).toContainText("needs ≤");
   const worst = await rows.first().locator(".pl-needs").textContent();
   await planner.getByRole("radio", { name: "Average" }).check();
   await expect(rows.first().locator(".pl-needs")).not.toHaveText(worst!);
+});
+
+test("Pulls: the savings planner adds your wishlisted 5★ after the running banners @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  await page.request.put(`/api/instances/${id}/wishlist`, { data: { kind: "character", catalogId: "1102", wished: true } });
+
+  await page.goto(`/games/${id}/pulls`);
+  const seele = page.getByRole("region", { name: "Savings planner" }).locator(".pl-target", { hasText: "Seele" });
+  await expect(seele).toContainText("Wishlist");
+  await expect(seele).toContainText("needs ≤");
 });
