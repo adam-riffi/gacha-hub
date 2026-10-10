@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   getGame,
+  topStar,
   pullForecast,
   pullsFor,
   type DashboardDto,
@@ -92,6 +93,10 @@ export function PullsPage() {
     .filter((c) => c.pullCost)
     .map((c) => ({ ...c, value: values.get(c.key) ?? 0 }));
   const have = pullsFor(pullCurrencies);
+  const star = topStar(game.key);
+  // Endfield's Arsenal spends its own tickets, so it is out of the limited pulls and the planner.
+  const weaponTickets = pullCurrencies.some((c) => c.weaponOnly);
+  const weaponLabel = log.data.banners.find((b) => b.key === "weapon")?.label ?? "weapon";
   const region = game.regions.find((r) => r.key === instance.data.regionKey) ?? game.regions[0]!;
   const passEnds = passes.data?.monthly ? new Date(passes.data.monthly.endsAt) : null;
   const forecast = pullForecast(game, region, new Date(), passEnds);
@@ -115,7 +120,7 @@ export function PullsPage() {
       key={b.key}
       b={b}
       gameKey={game.key}
-      available={b.key === "standard" ? have.standard : have.limited}
+      available={b.key === "standard" ? have.standard : b.key === "weapon" && weaponTickets ? have.weapon : have.limited}
       live={live.find((l) => l.kind === b.key)}
       units={units}
       unitOf={unitOf}
@@ -131,7 +136,8 @@ export function PullsPage() {
   const contested = drops.filter((d) => d.banner.featuredRate < 1 && d.featured !== null);
   // The planner's targets: each event banner's featured 5★, character first, then the
   // wishlisted 5★ not already among them; all share the limited pulls.
-  const running = event.map((b) => {
+  const planned = event.filter((b) => !(weaponTickets && b.key === "weapon"));
+  const running = planned.map((b) => {
     const l = live.find((x) => x.kind === b.key);
     const feat = l?.featured.find((f) => (f.rarity ?? 0) >= 5);
     return { b, l, feat };
@@ -139,7 +145,7 @@ export function PullsPage() {
   const runningIds = new Set(running.map((r) => r.feat?.catalogId));
   const wished = (wishlist.data ?? []).flatMap((w) => {
     const unit = w.kind === "character" ? catalog?.characters.find((c) => c.id === w.catalogId) : catalog?.weapons.find((x) => x.id === w.catalogId);
-    const b = event.find((x) => x.key === w.kind);
+    const b = planned.find((x) => x.key === w.kind);
     return unit && b && unit.rarity >= 5 && !runningIds.has(w.catalogId) ? [{ b, name: unit.name }] : [];
   });
   const firstOn = new Set<string>();
@@ -151,7 +157,7 @@ export function PullsPage() {
   };
   const targets: PlannerTarget[] = [
     ...running.map(({ b, l, feat }) => ({
-      label: feat?.name ?? `${b.label}: its featured 5★`,
+      label: feat?.name ?? `${b.label}: its featured ${star}`,
       sub: l?.name ?? b.label,
       endsAt: l?.endsAt,
       rules: b,
@@ -179,7 +185,7 @@ export function PullsPage() {
           </div>
           <div className="kpi-value">
             {have.limited}{" "}
-            <small>limited{have.standard ? ` · +${have.standard} standard` : ""}</small>
+            <small>limited{have.standard ? ` · +${have.standard} standard` : ""}{have.weapon ? ` · +${have.weapon} ${weaponLabel}` : ""}</small>
           </div>
           <table>
             <tbody>
@@ -238,12 +244,12 @@ export function PullsPage() {
       {rest.length > 0 && <div className="pl-banners">{rest.map((b) => card(b, true))}</div>}
 
       <div className="pl-bottom">
-        <SavingsPlanner targets={targets} forecast={forecast.pulls} />
+        <SavingsPlanner targets={targets} forecast={forecast.pulls} star={star} />
         <section className="card pl-history" aria-label="History">
           <h3>History</h3>
           {drops.length === 0 ? (
             <p className="mu">
-              No 5★ logged yet. Log one from a banner above; imports from the game come with F11.
+              No {star} logged yet. Log one from a banner above, or import your history in Settings.
             </p>
           ) : (
             <>
@@ -252,7 +258,7 @@ export function PullsPage() {
                   <tr>
                     <th>Date</th>
                     <th>Banner</th>
-                    <th>5★</th>
+                    <th>{star}</th>
                     <th className="num">Pity</th>
                     <th>Result</th>
                   </tr>
@@ -262,7 +268,7 @@ export function PullsPage() {
                     <tr key={d.id}>
                       <td className="mn">{DATE.format(new Date(d.at))}</td>
                       <td>{d.banner.label}</td>
-                      <td>{unitOf(d.catalogId)?.name ?? "5★"}</td>
+                      <td>{unitOf(d.catalogId)?.name ?? star}</td>
                       <td className="num">{d.pity}</td>
                       <td>
                         {d.banner.featuredRate >= 1 ? (
@@ -280,7 +286,7 @@ export function PullsPage() {
                 </tbody>
               </table>
               <p className="mn mu pl-note">
-                average 5★ pity {Math.round(drops.reduce((t, d) => t + d.pity, 0) / drops.length)}
+                average {star} pity {Math.round(drops.reduce((t, d) => t + d.pity, 0) / drops.length)}
                 {contested.length > 0 &&
                   ` · featured ${contested.filter((d) => d.featured).length} of ${contested.length}`}
               </p>

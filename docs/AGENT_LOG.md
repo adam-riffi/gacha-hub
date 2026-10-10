@@ -14,6 +14,15 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/endfield/04-labels · #180
+- Done:
+  - Pulls labels use each game's top rarity (`topStar`): Endfield says 6★ everywhere (cards, forms, curve, history, planner).
+  - `weaponOnly` currencies: Endfield's Arsenal Tickets (1,980 a 10-pull) fund the Arsenal alone. They are kept out of limited pulls on Pulls, on Home and in the planner. Pulls available shows "+N Arsenal".
+  - The History card no longer says imports "come with F11".
+- Tests: written first: `pullsFor` keeps weapon-only tickets apart; an E2E journey checks Endfield's 6★ labels and the Arsenal funded by tickets. `npm run check` passes: 517 tests and 40 journeys.
+- Scope/decisions: the Arsenal is left out of Endfield's savings planner, since its pulls come from their own tickets.
+- Next: WuWa material art, the ZZZ catalog (Hakushin data on static.nanoka.cc).
+
 ## 2026-10-10 · claude · stack/endfield/03-import · #179
 - Done: Endfield's pulls import from the Headhunting records link (ADR 0009). `fetchRecords` pages each tracked pool (Chartered, Arsenal, Basic headhunting) from `ef-webview.gryphline.com`. It stops at stored records or the last page, and hands back a cursor when its 20 s budget runs out. The history-link route reads Endfield links with `readRecordsLink` and takes the longer pool names in its cursor. Settings' Endfield card and pull-history row name the method, and the paste box shows the right placeholder per game.
 - Tests: written first:
@@ -260,9 +269,3 @@ Entry format:
 - Tests: written first: `builds.test.ts` (KPIs per role, the first role by default, each game's stat names, set bonuses), `wishlist.integration.test.ts` (order and once each, unknown units refused, roles kept among the game's).
 - Scope/decisions: a build's role defaults to the game's first (damage, attack); crit value counts the gear's substats only, as the community reads it.
 - Next: `stack/f10/15-characters` (G4 splash cards).
-
-## 2026-10-10 · claude · stack/f10/13-savings · #137
-- Done: the savings planner beside History on Pulls (WIREFRAMES.md G3): each event banner's featured 5★ in order, sharing the limited pulls; per target what it needs (worst case or on average, a radio), Covered with its chance or short by N with the chance now and with the forecast (`savingsPlan`, #135).
-- Tests: written first: `e2e/pulls.spec.ts` (two targets for Star Rail; switching to Average changes what the first needs). Checked at 1440 on the dev account.
-- Scope/decisions: targets are the running banners' featured units; "Add a target" waits for `WishlistItem` (the characters PR).
-- Next: Characters (G4) with `WishlistItem`, then the character sheet (G5), gear (G6), planner (G7), profile (G8).

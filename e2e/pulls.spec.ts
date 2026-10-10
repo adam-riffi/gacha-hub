@@ -65,3 +65,24 @@ test("Pulls: the savings planner adds your wishlisted 5★ after the running ban
   await expect(seele).toContainText("Wishlist");
   await expect(seele).toContainText("needs ≤");
 });
+
+test("Pulls for Endfield: a 6★ is the top pull, and the Arsenal spends Arsenal Tickets", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "endfield" } })).json()) as { id: string };
+  try {
+    // 5,000 Oroberyl is 10 headhunts; 3,960 Arsenal Tickets are two 10-pulls on the Arsenal only.
+    await page.request.put(`/api/instances/${id}/currencies/oroberyl`, { data: { value: 5000 } });
+    await page.request.put(`/api/instances/${id}/currencies/arsenal`, { data: { value: 3960 } });
+    await page.goto(`/games/${id}/pulls`);
+    await expect(page.getByRole("region", { name: "Pulls available" })).toContainText("10 limited · +20 Arsenal");
+    const chartered = page.getByRole("region", { name: "Chartered headhunting" });
+    await expect(chartered).toContainText("6★ pity");
+    await expect(chartered.getByRole("button", { name: "Log a 6★" })).toBeVisible();
+    await expect(chartered).toContainText("Featured by your 10 pulls");
+    await expect(page.getByRole("region", { name: "Arsenal" })).toContainText("Featured by your 20 pulls");
+  } finally {
+    await page.request.delete(`/api/instances/${id}`);
+  }
+});

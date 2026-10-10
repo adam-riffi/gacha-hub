@@ -17,6 +17,8 @@ export const dashboardCurrencyDto = z.object({
   pullLabel: z.string().nullable(),
   /** Standard-banner ticket: not counted toward limited pulls. */
   standardOnly: z.boolean(),
+  /** Weapon-banner ticket (Endfield's Arsenal Tickets): not counted toward limited pulls. */
+  weaponOnly: z.boolean().optional(),
 });
 
 /** A regenerating resource (Genshin resin, HSR trailblaze power…) projected to now. */

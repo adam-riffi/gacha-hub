@@ -18,6 +18,9 @@ export const games: Record<string, GameDefinition> = {
 
 export const gameList: GameDefinition[] = Object.values(games);
 
+/** The rarity a game's pity counts to, as a label: "5★", Endfield's "6★". */
+export const topStar = (gameKey?: string) => `${(gameKey && getGame(gameKey)?.topRarity) || 5}★`;
+
 export function getGame(key: string): GameDefinition | undefined {
   return games[key];
 }

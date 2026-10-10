@@ -85,6 +85,8 @@ export const endfield: GameDefinition = {
     // 1 every 7 min 12 s; the cap shown is Authority Level 60's.
     { key: "sanity", label: "Sanity", cap: 360, regenPerHour: 3600 / 432 },
     { key: "oroberyl", label: "Oroberyl", pullCost: 500, pullLabel: "headhunt" },
+    // Earned from headhunting; a 10-pull on the Arsenal costs 1,980.
+    { key: "arsenal", label: "Arsenal Tickets", pullCost: 198, pullLabel: "pull", weaponOnly: true },
   ],
   // Sources per value: docs/games/endfield.md.
   manifest: {
