@@ -7,6 +7,17 @@ export const ZZZ_ATTRIBUTES = [
   "Physical", "Fire", "Ice", "Electric", "Ether",
 ] as const;
 
+const ZZZ_PCT = ["HP%", "ATK%", "DEF%"];
+/** Main stats per disc slot, 1 to 6 (Drive Disc on the wiki). */
+const ZZZ_MAIN_STATS = [
+  ["HP"],
+  ["ATK"],
+  ["DEF"],
+  [...ZZZ_PCT, "CRIT Rate%", "CRIT DMG%", "Anomaly Proficiency"],
+  [...ZZZ_PCT, "PEN Ratio%", "Attribute DMG Bonus%"],
+  [...ZZZ_PCT, "Anomaly Mastery%", "Impact%", "Energy Regen%"],
+];
+
 /** Drive discs come in 6 numbered slots. */
 export const ZZZ_DISC_SLOTS = [1, 2, 3, 4, 5, 6].map((n) => ({
   key: `slot${n}`,
@@ -90,6 +101,16 @@ export const zzz: GameDefinition = {
     ],
     battlePass: { name: "New Eridu City Fund", maxLevel: 50 },
     monthlyPass: { name: "Inter-Knot Membership", days: 30 },
+    gear: {
+      name: "Drive Discs",
+      field: "discs",
+      slots: ZZZ_DISC_SLOTS.map((s, i) => ({ ...s, mainStats: ZZZ_MAIN_STATS[i]! })),
+      sets: [2, 4],
+      maxLevel: 15,
+    },
+    kpis: { attack: ["Crit value", "CRIT Rate / CRIT DMG", "PEN Ratio"], anomaly: ["Anomaly Proficiency", "Anomaly Mastery", "PEN Ratio"], stun: ["Impact", "Energy Regen", "Crit value"], support: ["Energy Regen", "ATK", "Anomaly Proficiency"] },
+    dupes: { character: { field: "mindscape", label: "Mindscape", max: 6 }, weapon: { field: "wEngine.phase", label: "Phase", max: 5 } },
+    art: {},
     accountLevel: { label: "IKL", name: "Inter-Knot Level" },
     version: { name: "3.2", start: "2026-09-09", days: 42 },
   },

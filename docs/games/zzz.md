@@ -12,6 +12,10 @@
 | Endgame | Deadly Assault: every 14 days on the other Fridays (25 Sep – 9 Oct 2026, then 9 – 23 Oct); 9 stars; 300 Polychrome | [Deadly Assault](https://zenless-zone-zero.fandom.com/wiki/Deadly_Assault), [history](https://zenless-zone-zero.fandom.com/wiki/Deadly_Assault/History) |
 | Battle pass | New Eridu City Fund, 50 levels; weekly cap: | [New Eridu City Fund](https://zenless-zone-zero.fandom.com/wiki/New_Eridu_City_Fund) |
 | 30-day pass | Inter-Knot Membership, 30 days | [Inter-Knot Membership](https://zenless-zone-zero.fandom.com/wiki/Inter-Knot_Membership) |
+| Gear | Drive Discs, six slots: 1 HP, 2 ATK, 3 DEF, 4 (HP%/ATK%/DEF%, CRIT Rate, CRIT DMG, Anomaly Proficiency), 5 (HP%/ATK%/DEF%, PEN Ratio, Attribute DMG Bonus), 6 (HP%/ATK%/DEF%, Anomaly Mastery, Impact, Energy Regen); sets of 2 and 4; level 15 | [Drive Disc](https://zenless-zone-zero.fandom.com/wiki/Drive_Disc) |
+| Dupes | A character copy raises Mindscape by one (to M6); a W-Engine copy raises Phase by one (to 5) | [Mindscape Cinema](https://zenless-zone-zero.fandom.com/wiki/Mindscape_Cinema), [W-Engine](https://zenless-zone-zero.fandom.com/wiki/W-Engine) |
+| Art | | |
+| KPIs per role | Our choice for the Characters cards (WIREFRAMES.md G4), listed in the module's manifest | |
 | Account level | Inter-Knot Level (IKL); the abbreviation is the community's | [Inter-Knot Level](https://zenless-zone-zero.fandom.com/wiki/Inter-Knot_Level) |
 | Gacha · Exclusive Channel | S-Rank hard pity 90; 50/50, a lost one guarantees the next | [Exclusive Channel](https://zenless-zone-zero.fandom.com/wiki/Exclusive_Channel) |
 | Gacha · W-Engine Channel | S-Rank hard pity 80; 75/25, a lost one guarantees the next | [W-Engine Channel](https://zenless-zone-zero.fandom.com/wiki/W-Engine_Channel) |

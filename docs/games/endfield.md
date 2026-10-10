@@ -12,6 +12,10 @@
 | Endgame | Echoes of War: seasons of three weekly cycles, each from 04:00 Thursday (Cycle of Illusion III: 8 – 15 Oct 2026); 9 stars a cycle; premium reward: | [Echoes of War](https://endfield.wiki.gg/wiki/Echoes_of_War), [Season of Illusion](https://endfield.wiki.gg/wiki/Season_of_Illusion) |
 | Battle pass | Protocol Pass; maximum level: ; weekly cap: | [Icy Veins](https://www.icy-veins.com/arknights-endfield/protocol-pass) |
 | 30-day pass | | |
+| Gear | Gear: four pieces (armour, gloves, two kits), set effects from three pieces of a set, no main stat to choose; level 20 in the build sheet | [Gear](https://endfield.wiki.gg/wiki/Gear) |
+| Dupes | A character copy raises Potential by one (to 6); weapon copies: | [Operator](https://endfield.wiki.gg/wiki/Operator) |
+| Art | | |
+| KPIs per role | Our choice for the Characters cards (WIREFRAMES.md G4), listed in the module's manifest | |
 | Account level | Authority Level (AL); the abbreviation is the community's | [Authority Level](https://endfield.wiki.gg/wiki/Authority_Level) |
 | Gacha · Chartered headhunting | 6★ 0.8% a pull ~, climbing after pull 65 ~, certain by 80 ~; 50/50 with no guarantee after a loss ~; the 120th pull on a banner gives its featured operator, once, not carried over ~; 500 Oroberyl a pull | [Game8: pity system](https://game8.co/games/Arknights-Endfield/archives/576231), [GameWith: rates](https://gamewith.net/akendfield/72373) |
 | Version | Dreamscape of Wind and Snow, 2 Sep – 14 Oct 2026 (43 days) | [Version](https://endfield.wiki.gg/wiki/Version) |

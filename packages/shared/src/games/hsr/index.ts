@@ -16,6 +16,17 @@ export const HSR_ELEMENTS = [
   "Physical", "Fire", "Ice", "Lightning", "Wind", "Quantum", "Imaginary",
 ] as const;
 
+const HSR_PCT = ["HP%", "ATK%", "DEF%"];
+/** Main stats each relic slot can roll (Relic/Stats on the wiki). */
+const HSR_MAIN_STATS: Record<(typeof HSR_RELIC_SLOTS)[number]["key"], string[]> = {
+  head: ["HP"],
+  hands: ["ATK"],
+  body: [...HSR_PCT, "Effect Hit Rate", "Outgoing Healing Boost", "CRIT Rate", "CRIT DMG"],
+  feet: [...HSR_PCT, "SPD"],
+  sphere: [...HSR_PCT, ...["Physical", "Fire", "Ice", "Wind", "Lightning", "Quantum", "Imaginary"].map((e) => `${e} DMG Boost`)],
+  rope: [...HSR_PCT, "Break Effect", "Energy Regeneration Rate"],
+};
+
 export const HSR_RELIC_SLOTS = [
   { key: "head", label: "Head" },
   { key: "hands", label: "Hands" },
@@ -109,6 +120,22 @@ export const hsr: GameDefinition = {
     ],
     battlePass: { name: "Nameless Honor", maxLevel: 70, weeklyXpCap: 8000 },
     monthlyPass: { name: "Express Supply Pass", days: 30 },
+    gear: {
+      name: "Relics",
+      field: "relics",
+      slots: HSR_RELIC_SLOTS.map((s) => ({ ...s, mainStats: HSR_MAIN_STATS[s.key] })),
+      sets: [2, 4],
+      maxLevel: L.maxRelicLevel,
+    },
+    kpis: { damage: ["Crit value", "CRIT Rate / CRIT DMG", "SPD"], support: ["SPD", "Energy Regeneration Rate", "Effect Hit Rate"], sustain: ["Outgoing Healing Boost", "HP", "SPD"] },
+    dupes: { character: { field: "eidolon", label: "Eidolon", max: L.maxEidolon }, weapon: { field: "lightCone.superimposition", label: "Superimposition", max: L.maxSuperimposition } },
+    art: {
+      character: "https://sr.yatta.moe/hsr/assets/UI/avatar/medium/{key}.png",
+      portrait: "https://sr.yatta.moe/hsr/assets/UI/avatar/large/{key}.png",
+      weapon: "https://sr.yatta.moe/hsr/assets/UI/equipment/medium/{key}.png",
+      gear: "https://sr.yatta.moe/hsr/assets/UI/relic/{key}.png",
+      material: "https://sr.yatta.moe/hsr/assets/UI/item/{key}.png",
+    },
     accountLevel: { label: "TL", name: "Trailblaze Level" },
     version: { name: "4.6", start: "2026-09-28", days: 42 },
   },

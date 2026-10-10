@@ -19,6 +19,16 @@ export const GENSHIN_ARTIFACT_SLOTS = [
   { key: "circlet", label: "Circlet of Logos" },
 ] as const;
 
+const PCT = ["HP%", "ATK%", "DEF%"];
+/** Main stats each artifact slot can roll (Artifact/Distribution on the wiki). */
+const GENSHIN_MAIN_STATS: Record<(typeof GENSHIN_ARTIFACT_SLOTS)[number]["key"], string[]> = {
+  flower: ["HP"],
+  plume: ["ATK"],
+  sands: [...PCT, "Energy Recharge%", "Elemental Mastery"],
+  goblet: [...PCT, "Elemental Mastery", ...["Pyro", "Electro", "Cryo", "Hydro", "Dendro", "Anemo", "Geo", "Physical"].map((e) => `${e} DMG Bonus%`)],
+  circlet: [...PCT, "Elemental Mastery", "CRIT Rate%", "CRIT DMG%", "Healing Bonus%"],
+};
+
 /** Talent keys — match the catalog's `talents.keys` order (combat1..3). */
 export const GENSHIN_TALENT_KEYS = ["normal", "skill", "burst"] as const;
 
@@ -113,6 +123,16 @@ export const genshin: GameDefinition = {
     ],
     battlePass: { name: "Gnostic Hymn", maxLevel: 50, weeklyXpCap: 10_000 },
     monthlyPass: { name: "Blessing of the Welkin Moon", days: 30, maxDays: 180 },
+    gear: {
+      name: "Artifacts",
+      field: "artifacts",
+      slots: GENSHIN_ARTIFACT_SLOTS.map((s) => ({ ...s, mainStats: GENSHIN_MAIN_STATS[s.key] })),
+      sets: [2, 4],
+      maxLevel: L.maxArtifactLevel,
+    },
+    kpis: { damage: ["Crit value", "CRIT Rate / CRIT DMG", "Energy Recharge"], support: ["Energy Recharge", "Elemental Mastery", "HP"], healer: ["Healing Bonus", "HP", "Energy Recharge"] },
+    dupes: { character: { field: "constellation", label: "Constellation", max: L.maxConstellation }, weapon: { field: "weapon.refinement", label: "Refinement", max: L.maxRefinement } },
+    art: { character: "https://enka.network/ui/{key}.png", portrait: "https://enka.network/ui/{key}.png", weapon: "https://enka.network/ui/{key}.png", gear: "https://enka.network/ui/{key}.png", material: "https://enka.network/ui/{key}.png" },
     accountLevel: { label: "AR", name: "Adventure Rank" },
     version: { name: "7.1", start: "2026-09-23", days: 42 },
   },
