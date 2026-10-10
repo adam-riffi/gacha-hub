@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f11/14-hsr-relic-stats · #167
+- Done: `catalogSchema.relicStats` (optional): each relic piece by game id with its slot, set and main and substat groups, and each group's stats by affix id (main: value at +0 and per level; sub: per roll and per step); the Star Rail importer fetches them from Enka's store (`relics.json`, `honker_meta.json`, cached under `hsr-enka`) and the regenerated catalog only adds them (Yatta's data came from the cache unchanged); the Star Rail sheet cites the source.
+- Tests: written first: `catalog/hsr.test.ts` (piece 31011 is a set 101 head with main group 21 and sub group 2; the six slots; both tables' shapes; every piece's set is a catalog set).
+- Scope/decisions: StarRailRes has the same tables but is AGPL-3.0, outside the licences DESIGN.md allows; Enka's API-docs repository carries no licence file but publishes the store for its API's users (noted in the PR for Georges).
+- Next: Enka for Star Rail (read the showcase with these tables).
+
 ## 2026-10-10 · claude · stack/f11/13-roster · #166
 - Done: the chronicle's roster (ADR 0005): shared `rosterRequest` (Genshin's `character/list`, a POST; Star Rail's `avatar/info`) and `readRoster` (level, the game's dupe field, the held weapon with its level and dupes, in the build's own fields); `syncRoster` on Sync now and every 6 hours owns each listed character and weapon in the catalog and fills an existing build's empty or synced fields (no build is created: the showcase does that); `Character.synced` now gathers every sync's writes (the roster's and Enka's), so neither forgets the other's fields; `hoyolabGet` can POST.
 - Tests: written first: `roster.test.ts` (requests, both games' readings, a refusal) and a sync journey (Amber and Kafka owned with their weapons; Kafka's typed level kept, eidolon and light cone filled with its name).
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: `effects.test.ts` (every kind kept, unknown and malformed kinds and unsupported currencies or weapon copies as notes, inside choices too, keys by place, choice required); `admin.integration.test.ts` (an upload keeps its effects and exports them).
 - Scope/decisions: which kinds a game supports is read from its manifest (its currencies, its dupe fields) instead of a new manifest list; amendment recorded in the ADR.
 - Next: `stack/f10/02-event-goals`: make a goal from an event, tick to apply its effects once, untick to reverse.
-
-## 2026-10-10 · claude · stack/f9/05-zzz-feed · #124
-- Done: Zenless Zone Zero's official feed (`sg-announcement-api.hoyoverse.com`, `nap_global`) imports hourly: its "Limited-Time Channels" notice splits into one banner per Signal Search (Exclusive Channel → character, W-Engine Channel → weapon) with its own period, the other newsletter notices become events. HSR and ZZZ share the `pic_list` walk. #123 merged; F9 is complete.
-- Tests: written first: `officialFeed.test.ts` (channel split, featured units per channel up to the `※` notes, periods in server time, store and untitled notices dropped). The saved live feed of 2026-10-10 parsed into its four Signal Searches and six events.
-- Scope/decisions: ZZZ has no catalog yet, so its banners carry no featured units until one exists; the Announcements tab (update notes, store, web events) is skipped as for HSR.
-- Next: F10, starting with ADR 0008 (events as data) and the PR plan.
