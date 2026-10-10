@@ -1,0 +1,33 @@
+/* Games (WIREFRAMES.md A2), in the dashboard's look (VISUAL-DESIGN.md). */
+.lib-head { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+.lib-head h1 { margin: 0; }
+.lib-hint { margin-left: auto; font-size: 12px; }
+.lib-page { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 24px; align-items: start; }
+.lib-list, .lib-side { display: grid; gap: 14px; min-width: 0; }
+.lib-row {
+  display: grid; grid-template-columns: 20px 48px minmax(120px, 1fr) auto minmax(100px, 160px); grid-template-rows: auto auto;
+  column-gap: 16px; row-gap: 12px; align-items: center; cursor: grab;
+}
+.lib-row.is-asleep { opacity: 0.55; }
+.lib-row.is-dragging { opacity: 0.4; }
+.lib-row.is-over { border-color: var(--accent); }
+.lib-grip { color: var(--text-muted); font-size: 18px; text-align: center; }
+.lib-icon { width: 48px; height: 48px; }
+.lib-name h2 { margin: 0 0 4px; font-size: 22px; }
+.lib-name .mn { font-size: 12px; }
+.lib-name .badge { margin-top: 6px; }
+.lib-cells { display: flex; gap: 8px; }
+.lib-cell { display: flex; flex-direction: column; gap: 6px; width: 128px; padding: 8px 10px; border: 1px solid var(--hairline); font-size: 14px; }
+.lib-cell.is-gap { border-style: dashed; color: var(--text-muted); }
+.lib-cell .kpi-label { font-size: 10px; }
+.lib-today { display: flex; flex-direction: column; gap: 6px; font-size: 14px; }
+.lib-today .kpi-label { font-size: 10px; }
+.lib-actions { grid-column: 3 / -1; display: flex; align-items: center; gap: 14px; }
+.lib-sleep { display: inline-flex; align-items: center; margin: 0; color: var(--text); cursor: pointer; }
+.lib-move { display: inline-flex; gap: 4px; margin-left: auto; }
+.lib-legend { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; margin: 0; }
+.lib-legend dt { margin: 0; }
+.lib-legend dd { margin: 0; font-size: 14px; }
+.lib-add { display: flex; flex-wrap: wrap; gap: 8px; }
+.lib-add .btn { border-left: 3px solid var(--c, var(--hairline)); }
+.lib-note { margin: 12px 0 0; font-size: 13px; }
