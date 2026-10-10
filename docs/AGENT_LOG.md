@@ -14,6 +14,17 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/catalog/02-talent-names · #184
+- Done: talent names in the catalogs (`talents.info`), which the sheet shows instead of the keys:
+  - Genshin from genshin-db's combat talents (Amber: Sharpshooter, Explosive Puppet, Fiery Rain);
+  - Star Rail from Yatta's main traces (Kafka: Midnight Tumult…);
+  - WuWa from the skill names its importer already read.
+
+  `info[].description` is optional now; names are what the sheet needs. A talent's controls stay on one line beside a long name.
+- Tests: written first: Amber's, Kafka's and Chixia's names. Every Genshin character has names but the Traveler, whose talents change with the element. `npm run check` passes: 525 tests and 40 journeys.
+- Scope/decisions: talent descriptions are left out to keep the catalogs small. ZZZ's skill kinds are already readable (basic, dodge…).
+- Next: Genshin talent levels from Enka.
+
 ## 2026-10-10 · claude · stack/zzz/03-enka · #183
 - Done: ZZZ builds from the Enka showcase (`enka.network/api/zzz/uid/…`). `readEnkaZzz` reads:
   - level and Mindscape;
@@ -275,9 +286,3 @@ Entry format:
 - Tests: written first: `e2e/planner.spec.ts` (tab, a goal picked, a material's Have filled to its need shows ✓, All goals, Farm today); the accessibility sweep visits the tab. Checked at 1440 beside `g7-planner.png`.
 - Scope/decisions: the stamina estimate card is not built: drop rates per run are not on record. Materials keeps its route without a tab.
 - Next: Profile (G8).
-
-## 2026-10-10 · claude · stack/f10/17-gear · #141
-- Done: the gear tab rebuilt from its board (WIREFRAMES.md G6): a head bar with the views (Inventory, Sets, Farm targets for Genshin, which alone has the bag; Sets elsewhere) and Manual; the inventory (filters by set, slot, main stat and where it is; sort by crit value or level; N of M pieces; + Add piece) as cards with slot, CV, set and level, main stat, substats, Low CV on a finished weak piece, and who wears it (Unequip) or Equip on…, Edit, delete; Storage beside it (pieces in the bag and on builds) with a link to Farm targets.
-- Tests: written first: `e2e/gear.spec.ts` (inventory first, a piece added with its substats shows CV 42 and Unequipped, equipped on Amber, storage, the views); the accessibility sweep visits Farm targets. The substat boxes are found by their exact label. Checked at 1440 beside `g6-gear.png`.
-- Scope/decisions: the storage cap is not on record, so there is no 95% warning yet; the GOOD import waits for F11; Farm targets keeps its existing planner inside the new frame.
-- Next: Planner (G7), Profile (G8).
