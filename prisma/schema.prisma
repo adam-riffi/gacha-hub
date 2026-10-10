@@ -96,8 +96,13 @@ model PullEntry {
   fiveStar       Boolean      @default(false)
   featured       Boolean?
   catalogId      String?
+  /// manual, or where an import came from (uigf, history-link…).
+  source         String       @default("manual")
+  /// The game's own record id for an imported pull; imports skip ids already here.
+  recordId       String?
   createdAt      DateTime     @default(now())
 
+  @@unique([gameInstanceId, recordId])
   @@index([gameInstanceId, bannerKey, createdAt])
 }
 

@@ -111,7 +111,7 @@ Prisma models: `User`, `Session`, `GameInstance` (one per user per game; region,
 
 Postgres on Supabase (own project `gacha-hub`, eu-west-1; ADR 0001). Migrations are committed SQL under `prisma/migrations`, generated offline with `prisma migrate diff` and applied by `prisma migrate deploy` during the Vercel build. Row-level security is enabled on every table with no policies; the server connects as the table owner, and the Data API exposes nothing. Local development and tests use SQLite (`schema.sqlite.prisma` generated from the Postgres schema).
 
-**Planned (F11–F12):** `PullEntry` gains `source` and the game's record id for deduplication. Every new table enables RLS in its migration. Exact columns are settled in each milestone's PRs.
+`PullEntry` (a run of pulls on one banner type, ADR 0002) carries its `source` (manual or the import) and, when imported, the game's record id, unique per profile, so re-imports skip what is there. **Planned (F12):** the art store's tables, if any. Every new table enables RLS in its migration. Exact columns are settled in each milestone's PRs.
 
 ## 9. Development plan
 

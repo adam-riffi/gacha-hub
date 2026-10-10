@@ -19,6 +19,7 @@
 | Dupes | A character copy raises Constellation by one (to C6); a weapon copy raises Refinement by one (to R5) | [Constellation](https://genshin-impact.fandom.com/wiki/Constellation), [Refinement Rank](https://genshin-impact.fandom.com/wiki/Refinement_Rank) |
 | Art | Enka's UI icons by catalog key (characters, portraits, weapons, artifacts, materials) | [Enka](https://enka.network) |
 | KPIs per role | Our choice for the Characters cards (WIREFRAMES.md G4), listed in the module's manifest | |
+| Pull history types | character 301 and 400, weapon 302, standard 200; beginner (100) and Chronicled (500) are not tracked | [UIGF v4.2](https://uigf.org/en/standards/uigf.html) |
 | Account level | Adventure Rank (AR); the abbreviation is the community's | [Adventure Rank](https://genshin-impact.fandom.com/wiki/Adventure_Rank) |
 | World level | World Level (WL), 0 to 9, raised with Adventure Rank | [Adventure Rank](https://genshin-impact.fandom.com/wiki/Adventure_Rank) |
 | Gacha · character | 5★ 0.6% a wish to 73, then +6 points a wish from 74, certain at 90; 1.6% consolidated. 50/50, a lost one guarantees the next; Capturing Radiance makes it 55% overall | [Wish](https://genshin-impact.fandom.com/wiki/Wish) |

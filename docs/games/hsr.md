@@ -19,6 +19,7 @@
 | Dupes | A character copy raises Eidolon by one (to E6); a light cone copy raises Superimposition by one (to S5) | [Eidolon](https://honkai-star-rail.fandom.com/wiki/Eidolon), [Superimpose](https://honkai-star-rail.fandom.com/wiki/Superimpose) |
 | Art | Yatta's UI assets by id | [Yatta](https://sr.yatta.moe) |
 | KPIs per role | Our choice for the Characters cards (WIREFRAMES.md G4), listed in the module's manifest | |
+| Pull history types | character 11, light cone 12, standard 1; departure (2) and the collab warps (21, 22) are not tracked | [UIGF v4.2](https://uigf.org/en/standards/uigf.html) |
 | Account level | Trailblaze Level (TL); the abbreviation is the community's | [Trailblaze Level](https://honkai-star-rail.fandom.com/wiki/Trailblaze_Level) |
 | World level | Equilibrium Level (EQ), 0 to 6, raised with Trailblaze Level; the abbreviation is the community's | [Equilibrium Level](https://honkai-star-rail.fandom.com/wiki/Equilibrium_Level) |
 | Gacha · character | 5★ 0.6% a warp (1.6% consolidated), hard pity 90; 50/50, a lost one guarantees the next. Soft pity from 74, +6 points a warp ~ (the community model, as Genshin's) | [Warp](https://honkai-star-rail.fandom.com/wiki/Warp) |

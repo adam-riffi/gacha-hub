@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f11/02-pull-records · #147
+- Done: `PullEntry.source` (manual, or the import) and `recordId` (the game's record id, unique per profile; migration `20261011050000_pull_records`); `pullBanners[].gachaTypes` for Genshin, Star Rail and ZZZ (sourced to UIGF v4.2 in each sheet); shared `pullsFromRecords` (one entry per record under the banner its gacha type feeds, oldest first with a 10-pull kept in order a millisecond apart, a 5★ featured when a banner of its kind running then features it); server `importPulls` (skips ids already stored or repeated, replaces manual entries on a banner up to its newest imported pull, writes an `ImportRun`).
+- Tests: written first: `pullImport.test.ts` (types to banners and skipped ones, order, featured, lost and unknown), `pullImport.integration.test.ts` (pity and the 50/50 from imported records, the run recorded, re-imports skipped, manual entries replaced and later ones kept). The fixture's record ids are built as strings: past 2^53 they collided.
+- Scope/decisions: one row per pull, so re-imports deduplicate exactly; beginner, Chronicled, departure, collab and Bangboo pulls are skipped; nothing calls `importPulls` yet (UIGF in `f11/03`).
+- Next: `f11/03-uigf` (UIGF v4.2 import and export).
+
 ## 2026-10-10 · claude · stack/f11/01-links · #146
 - Done: F11 starts (ADR 0005). `LinkedAccount` (provider, account id, sealed secret, key version, status, last sync and error) and `ImportRun` (provider, kind, added, skipped, error), migration `20261011040000_linked_accounts` with RLS; `lib/linkSecret.ts`: AES-256-GCM under `LINK_SECRET_KEY` with the row ("userId:provider") as additional data, "2:new,1:old" for rotation; `GET /api/links` (no secret) and `DELETE /api/links/:id`; `.env.example` documents the key.
 - Tests: written first: `linkSecret.test.ts` (round trip with a fresh IV, tampering and a moved secret refused, rotation, key length), `links.integration.test.ts` (listed without the secret, absent from the export, revoked, kept per user, sign-in required).
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: `taskAnchor`, `tasks.integration.test.ts` (monthly, cycle, version windows), UID and level limits, the export; `migrations.test.ts` guards RLS on every created table (it caught the three new ones before the migration enabled it).
 - Scope/decisions: tasks name their manifest entry rather than store dates, so a manifest refresh moves them; a cycle task whose mode left the manifest follows the version. No routes for the new tables yet.
 - Next: `04-day-record` (write-through on every change, history on the dashboard), then the Home history UI (heatmap, open goals, pulls gained, pin a day).
-
-## 2026-10-10 · claude · stack/f8/02-manifests · #106
-- Done: `GameDefinition.manifest` (ADR 0004): stamina with its reserve and cap by level, monthly shops, endgame modes on cadence anchors (open days, metric, premium on offer), battle pass, 30-day pass, current version; values for the five games with a source per value in `docs/games/<key>.md` (`~` unverified, empty unsourced). Endfield: Asia UTC+8 and Americas / Europe UTC−5 at 04:00, Sanity cap by Authority Level (125–360), 1 per 7 min 12 s. #104 merged.
-- Tests: `games/manifest.test.ts` first: a conformance suite over every game (regions, every cadence in every region by fast-check, stamina, bounds, names in the reference sheet) and the facts players saw on 10 Oct 2026 (each endgame window, Endfield servers, the Sanity table).
-- Scope/decisions: The currency stays the single source of stamina cap and regeneration; HSR's endgame cycles now differ in length (77, 35, 42 days), so anchors hold the current cycle and are refreshed each version; WuWa's endgame rows rely on guides (`~`). Stored Endfield `global` profiles resolve to the first region.
-- Next: `stack/f8/03-schema` (task cadences with a manifest anchor key, `uid` and `accountLevel`, `CycleResult`, `PassState`, `DayRecord`, RLS).
