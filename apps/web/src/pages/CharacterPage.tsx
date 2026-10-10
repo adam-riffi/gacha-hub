@@ -230,7 +230,7 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
               {skillKeys.map((k) => (
                 <div className="sh-row" key={k}>
                   <span>{skillName(k)}</span>
-                  <span>
+                  <span className="sh-ctl">
                     <input type="number" aria-label={`${k} now`} min={1} max={15} value={skillDoc[k] ?? 1} onChange={(e) => setDoc((d) => ({ ...d, [skills]: { ...((d[skills] ?? {}) as Doc), [k]: Number(e.target.value) } }))} />
                     <span className="mu"> → {targets[k]?.to ?? "—"}</span>
                   </span>

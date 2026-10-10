@@ -838,7 +838,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Frigid Cold Arrow"
+          },
+          {
+            "key": "skill",
+            "name": "The Power of Cuteness"
+          },
+          {
+            "key": "ultimate",
+            "name": "Glacial Cascade"
+          },
+          {
+            "key": "talent",
+            "name": "Girl Power"
+          }
+        ]
       },
       "extra": {
         "path": "Preservation",
@@ -1988,7 +2006,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Cloudlancer Art: North Wind"
+          },
+          {
+            "key": "skill",
+            "name": "Cloudlancer Art: Torrent"
+          },
+          {
+            "key": "ultimate",
+            "name": "Ethereal Dream"
+          },
+          {
+            "key": "talent",
+            "name": "Superiority of Reach"
+          }
+        ]
       },
       "extra": {
         "path": "The Hunt",
@@ -3154,7 +3190,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Sawblade Tuning"
+          },
+          {
+            "key": "skill",
+            "name": "Molten Detonation"
+          },
+          {
+            "key": "ultimate",
+            "name": "Heavenly Flare"
+          },
+          {
+            "key": "talent",
+            "name": "Victory Rush"
+          }
+        ]
       },
       "extra": {
         "path": "Erudition",
@@ -4320,7 +4374,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Gravity Suppression"
+          },
+          {
+            "key": "skill",
+            "name": "Edge of the Void"
+          },
+          {
+            "key": "ultimate",
+            "name": "Synthetic Black Hole"
+          },
+          {
+            "key": "talent",
+            "name": "Time Distortion"
+          }
+        ]
       },
       "extra": {
         "path": "Nihility",
@@ -5486,7 +5558,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Midnight Tumult"
+          },
+          {
+            "key": "skill",
+            "name": "Caressing Moonlight"
+          },
+          {
+            "key": "ultimate",
+            "name": "Twilight Trill"
+          },
+          {
+            "key": "talent",
+            "name": "Gentle but Cruel"
+          }
+        ]
       },
       "extra": {
         "path": "Nihility",
@@ -6652,7 +6742,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "System Warning"
+          },
+          {
+            "key": "skill",
+            "name": "Allow Changes?"
+          },
+          {
+            "key": "ultimate",
+            "name": "User Banned"
+          },
+          {
+            "key": "talent",
+            "name": "Awaiting System Response..."
+          }
+        ]
       },
       "extra": {
         "path": "Nihility",
@@ -7802,7 +7910,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Lightning Rush"
+          },
+          {
+            "key": "skill",
+            "name": "Shackle Breaker"
+          },
+          {
+            "key": "ultimate",
+            "name": "Frenzied Punishment"
+          },
+          {
+            "key": "talent",
+            "name": "Pain and Anger"
+          }
+        ]
       },
       "extra": {
         "path": "Destruction",
@@ -8952,7 +9078,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Spectrum Beam"
+          },
+          {
+            "key": "skill",
+            "name": "Meteor Storm"
+          },
+          {
+            "key": "ultimate",
+            "name": "Astral Blessing"
+          },
+          {
+            "key": "talent",
+            "name": "Astrometry"
+          }
+        ]
       },
       "extra": {
         "path": "Harmony",
@@ -10102,7 +10246,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "What Are You Looking At?"
+          },
+          {
+            "key": "skill",
+            "name": "One-Time Offer"
+          },
+          {
+            "key": "ultimate",
+            "name": "It's Magic, I Added Some Magic"
+          },
+          {
+            "key": "talent",
+            "name": "Fine, I'll Do It Myself"
+          }
+        ]
       },
       "extra": {
         "path": "Erudition",
@@ -11268,7 +11430,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Invisible Air: Barrier of the Wind King"
+          },
+          {
+            "key": "skill",
+            "name": "Strike Air: Hammer of the Wind King"
+          },
+          {
+            "key": "ultimate",
+            "name": "Excalibur"
+          },
+          {
+            "key": "talent",
+            "name": "Dragon Reactor Core"
+          }
+        ]
       },
       "extra": {
         "path": "Destruction",
@@ -12434,7 +12614,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Kanshou and Bakuya"
+          },
+          {
+            "key": "skill",
+            "name": "Caladbolg II: Fake Spiral Sword"
+          },
+          {
+            "key": "ultimate",
+            "name": "Unlimited Blade Works"
+          },
+          {
+            "key": "talent",
+            "name": "Mind's Eye (True)"
+          }
+        ]
       },
       "extra": {
         "path": "The Hunt",
@@ -13600,7 +13798,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Windrider Bullet"
+          },
+          {
+            "key": "skill",
+            "name": "Combat Redeployment"
+          },
+          {
+            "key": "ultimate",
+            "name": "The Belobog March"
+          },
+          {
+            "key": "talent",
+            "name": "Leading the Way"
+          }
+        ]
       },
       "extra": {
         "path": "Harmony",
@@ -14766,7 +14982,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Thwack"
+          },
+          {
+            "key": "skill",
+            "name": "Sheathed Blade"
+          },
+          {
+            "key": "ultimate",
+            "name": "Butterfly Flurry"
+          },
+          {
+            "key": "talent",
+            "name": "Resurgence"
+          }
+        ]
       },
       "extra": {
         "path": "The Hunt",
@@ -15916,7 +16150,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Roaring Thunderclap"
+          },
+          {
+            "key": "skill",
+            "name": "Lightning Flash"
+          },
+          {
+            "key": "ultimate",
+            "name": "Here Comes the Mechanical Fever"
+          },
+          {
+            "key": "talent",
+            "name": "Galvanic Chords"
+          }
+        ]
       },
       "extra": {
         "path": "Erudition",
@@ -17082,7 +17334,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Fist of Conviction"
+          },
+          {
+            "key": "skill",
+            "name": "Daunting Smite"
+          },
+          {
+            "key": "ultimate",
+            "name": "Enduring Bulwark"
+          },
+          {
+            "key": "talent",
+            "name": "Unyielding Will"
+          }
+        ]
       },
       "extra": {
         "path": "Preservation",
@@ -18232,7 +18502,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Behind the Kindness"
+          },
+          {
+            "key": "skill",
+            "name": "Love, Heal, and Choose"
+          },
+          {
+            "key": "ultimate",
+            "name": "Gift of Rebirth"
+          },
+          {
+            "key": "talent",
+            "name": "Innervation"
+          }
+        ]
       },
       "extra": {
         "path": "Abundance",
@@ -19382,7 +19670,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Frost Shot"
+          },
+          {
+            "key": "skill",
+            "name": "Frostbite"
+          },
+          {
+            "key": "ultimate",
+            "name": "Zone Suppression"
+          },
+          {
+            "key": "talent",
+            "name": "Data Collecting"
+          }
+        ]
       },
       "extra": {
         "path": "Nihility",
@@ -20548,7 +20854,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "I Want to Help"
+          },
+          {
+            "key": "skill",
+            "name": "Svarog Watches Over You"
+          },
+          {
+            "key": "ultimate",
+            "name": "Promise, Not Command"
+          },
+          {
+            "key": "talent",
+            "name": "Because We're Family"
+          }
+        ]
       },
       "extra": {
         "path": "Destruction",
@@ -21698,7 +22022,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Dazzling Blades"
+          },
+          {
+            "key": "skill",
+            "name": "Ricochet Love"
+          },
+          {
+            "key": "ultimate",
+            "name": "Surprise Present"
+          },
+          {
+            "key": "talent",
+            "name": "Windtorn Dagger"
+          }
+        ]
       },
       "extra": {
         "path": "Nihility",
@@ -22848,7 +23190,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Hehe! Don't Get Burned!"
+          },
+          {
+            "key": "skill",
+            "name": "Hey! Remember Hook?"
+          },
+          {
+            "key": "ultimate",
+            "name": "Boom! Here Comes the Fire!"
+          },
+          {
+            "key": "talent",
+            "name": "Ha! Oil to the Flames!"
+          }
+        ]
       },
       "extra": {
         "path": "Destruction",
@@ -23998,7 +24358,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Ice Crampon Technique"
+          },
+          {
+            "key": "skill",
+            "name": "Salted Camping Cans"
+          },
+          {
+            "key": "ultimate",
+            "name": "Snowfield First Aid"
+          },
+          {
+            "key": "talent",
+            "name": "Outdoor Survival Experience"
+          }
+        ]
       },
       "extra": {
         "path": "Abundance",
@@ -25148,7 +25526,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Direct Punch"
+          },
+          {
+            "key": "skill",
+            "name": "Lacerating Fist"
+          },
+          {
+            "key": "ultimate",
+            "name": "Coup de Grâce"
+          },
+          {
+            "key": "talent",
+            "name": "Flying Sparks"
+          }
+        ]
       },
       "extra": {
         "path": "Nihility",
@@ -26314,7 +26710,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Deficit..."
+          },
+          {
+            "key": "skill",
+            "name": "Difficulty Paying?"
+          },
+          {
+            "key": "ultimate",
+            "name": "Turn a Profit!"
+          },
+          {
+            "key": "talent",
+            "name": "Trotter Market!?"
+          }
+        ]
       },
       "extra": {
         "path": "The Hunt",
@@ -27464,7 +27878,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Flower Pick"
+          },
+          {
+            "key": "skill",
+            "name": "A Scoop of Moon"
+          },
+          {
+            "key": "ultimate",
+            "name": "A Quartet? Woo-hoo!"
+          },
+          {
+            "key": "talent",
+            "name": "Celestial Jade"
+          }
+        ]
       },
       "extra": {
         "path": "Erudition",
@@ -28614,7 +29046,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Dislodged"
+          },
+          {
+            "key": "skill",
+            "name": "Soothing Melody"
+          },
+          {
+            "key": "ultimate",
+            "name": "Amidst the Rejoicing Clouds"
+          },
+          {
+            "key": "talent",
+            "name": "Violet Sparknado"
+          }
+        ]
       },
       "extra": {
         "path": "Harmony",
@@ -29780,7 +30230,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Thorns of the Abyss"
+          },
+          {
+            "key": "skill",
+            "name": "Prayer of Abyss Flower"
+          },
+          {
+            "key": "ultimate",
+            "name": "Death Wish"
+          },
+          {
+            "key": "talent",
+            "name": "Cycle of Life"
+          }
+        ]
       },
       "extra": {
         "path": "Abundance",
@@ -30946,7 +31414,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Glistening Light"
+          },
+          {
+            "key": "skill",
+            "name": "Rifting Zenith"
+          },
+          {
+            "key": "ultimate",
+            "name": "Lightbringer"
+          },
+          {
+            "key": "talent",
+            "name": "Prana Extirpated"
+          }
+        ]
       },
       "extra": {
         "path": "Erudition",
@@ -32112,7 +32598,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Shard Sword"
+          },
+          {
+            "key": "skill",
+            "name": "Hellscape"
+          },
+          {
+            "key": "ultimate",
+            "name": "Death Sentence"
+          },
+          {
+            "key": "talent",
+            "name": "Shuhu's Gift"
+          }
+        ]
       },
       "extra": {
         "path": "Destruction",
@@ -33262,7 +33766,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Cloudfencer Art: Starshine"
+          },
+          {
+            "key": "skill",
+            "name": "Cloudfencer Art: Mountainfall"
+          },
+          {
+            "key": "ultimate",
+            "name": "Shape of Taixu: Dawn Herald"
+          },
+          {
+            "key": "talent",
+            "name": "Dancing Blade"
+          }
+        ]
       },
       "extra": {
         "path": "The Hunt",
@@ -34412,7 +34934,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Arrowslinger"
+          },
+          {
+            "key": "skill",
+            "name": "Emboldening Salvo"
+          },
+          {
+            "key": "ultimate",
+            "name": "Diving Kestrel"
+          },
+          {
+            "key": "talent",
+            "name": "Seven Layers, One Arrow"
+          }
+        ]
       },
       "extra": {
         "path": "Harmony",
@@ -35578,7 +36118,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Novaburst"
+          },
+          {
+            "key": "skill",
+            "name": "Known by Stars, Shown by Hearts"
+          },
+          {
+            "key": "ultimate",
+            "name": "Woes of Many Morphed to One"
+          },
+          {
+            "key": "talent",
+            "name": "Bleak Breeds Bliss"
+          }
+        ]
       },
       "extra": {
         "path": "Preservation",
@@ -36744,7 +37302,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Frost Thorn"
+          },
+          {
+            "key": "skill",
+            "name": "Darting Ironthorn"
+          },
+          {
+            "key": "ultimate",
+            "name": "Amidst the Raining Bliss"
+          },
+          {
+            "key": "talent",
+            "name": "One With the Sword"
+          }
+        ]
       },
       "extra": {
         "path": "The Hunt",
@@ -37894,7 +38470,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Standing Ovation"
+          },
+          {
+            "key": "skill",
+            "name": "Blazing Welcome"
+          },
+          {
+            "key": "ultimate",
+            "name": "Watch This Showstopper"
+          },
+          {
+            "key": "talent",
+            "name": "PatrAeon Benefits"
+          }
+        ]
       },
       "extra": {
         "path": "Nihility",
@@ -39060,7 +39654,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Diagnostic Kick"
+          },
+          {
+            "key": "skill",
+            "name": "Singing Among Clouds"
+          },
+          {
+            "key": "ultimate",
+            "name": "Felicitous Thunderleap"
+          },
+          {
+            "key": "talent",
+            "name": "Gourdful of Elixir"
+          }
+        ]
       },
       "extra": {
         "path": "Abundance",
@@ -40226,7 +40838,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Lucent Moonglow"
+          },
+          {
+            "key": "skill",
+            "name": "Transcendent Flash"
+          },
+          {
+            "key": "ultimate",
+            "name": "Florephemeral Dreamflux"
+          },
+          {
+            "key": "talent",
+            "name": "Crescent Transmigration"
+          }
+        ]
       },
       "extra": {
         "path": "Destruction",
@@ -41392,7 +42022,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Beneficent Lotus"
+          },
+          {
+            "key": "skill",
+            "name": "Dracore Libre"
+          },
+          {
+            "key": "ultimate",
+            "name": "Azure's Aqua Ablutes All"
+          },
+          {
+            "key": "talent",
+            "name": "Righteous Heart"
+          }
+        ]
       },
       "extra": {
         "path": "Destruction",
@@ -42542,7 +43190,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Mara-Sunder Awl"
+          },
+          {
+            "key": "skill",
+            "name": "Iniquity Obliteration"
+          },
+          {
+            "key": "ultimate",
+            "name": "Divine Castigation"
+          },
+          {
+            "key": "talent",
+            "name": "Karmic Perpetuation"
+          }
+        ]
       },
       "extra": {
         "path": "Destruction",
@@ -43692,7 +44358,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Oracle Brush"
+          },
+          {
+            "key": "skill",
+            "name": "Samsara, Locked"
+          },
+          {
+            "key": "ultimate",
+            "name": "Ten-Lords' Decree, All Shall Obey"
+          },
+          {
+            "key": "talent",
+            "name": "Sanction"
+          }
+        ]
       },
       "extra": {
         "path": "Harmony",
@@ -44858,7 +45542,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Banner: Stormcaller"
+          },
+          {
+            "key": "skill",
+            "name": "Talisman: Protection"
+          },
+          {
+            "key": "ultimate",
+            "name": "Tail: Spiritual Domination"
+          },
+          {
+            "key": "talent",
+            "name": "Possession: Ethereal Metaflow"
+          }
+        ]
       },
       "extra": {
         "path": "Abundance",
@@ -46024,7 +46726,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Heart Afire"
+          },
+          {
+            "key": "skill",
+            "name": "Scorch Onslaught"
+          },
+          {
+            "key": "ultimate",
+            "name": "Pyrograph Arcanum"
+          },
+          {
+            "key": "talent",
+            "name": "Quartet Finesse, Octave Finery"
+          }
+        ]
       },
       "extra": {
         "path": "Nihility",
@@ -47190,7 +47910,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Boltsunder"
+          },
+          {
+            "key": "skill",
+            "name": "Waraxe"
+          },
+          {
+            "key": "ultimate",
+            "name": "Terrasplit"
+          },
+          {
+            "key": "talent",
+            "name": "Thunderhunt"
+          }
+        ]
       },
       "extra": {
         "path": "The Hunt",
@@ -48356,7 +49094,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Galespin Summersault"
+          },
+          {
+            "key": "skill",
+            "name": "Bladeborne Quake"
+          },
+          {
+            "key": "ultimate",
+            "name": "Earthbind, Etherbreak"
+          },
+          {
+            "key": "talent",
+            "name": "Flashforge"
+          }
+        ]
       },
       "extra": {
         "path": "Destruction",
@@ -49522,7 +50278,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Votive Incense"
+          },
+          {
+            "key": "skill",
+            "name": "Smoke and Splendor"
+          },
+          {
+            "key": "ultimate",
+            "name": "Dripping Mistscape"
+          },
+          {
+            "key": "talent",
+            "name": "Mistdance Manifest"
+          }
+        ]
       },
       "extra": {
         "path": "Abundance",
@@ -50672,7 +51446,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Hurlthorn"
+          },
+          {
+            "key": "skill",
+            "name": "Fleetwinged Raid"
+          },
+          {
+            "key": "ultimate",
+            "name": "Dash In, Gash Out"
+          },
+          {
+            "key": "talent",
+            "name": "Cascading Featherblade"
+          }
+        ]
       },
       "extra": {
         "path": "The Hunt",
@@ -51822,7 +52614,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "My Sword Zaps Demons"
+          },
+          {
+            "key": "skill",
+            "name": "Master, It's Tea Time!"
+          },
+          {
+            "key": "ultimate",
+            "name": "March 7th, the Apex Heroine"
+          },
+          {
+            "key": "talent",
+            "name": "Master, I've Ascended!"
+          }
+        ]
       },
       "extra": {
         "path": "The Hunt",
@@ -52988,7 +53798,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Radiant Streak"
+          },
+          {
+            "key": "skill",
+            "name": "Virtue Beckons Bliss"
+          },
+          {
+            "key": "ultimate",
+            "name": "Solar Splendor Shines Upon All"
+          },
+          {
+            "key": "talent",
+            "name": "Fortune Follows Where Virtue Spreads"
+          }
+        ]
       },
       "extra": {
         "path": "Nihility",
@@ -54138,7 +54966,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Corkage Fee"
+          },
+          {
+            "key": "skill",
+            "name": "Special Brew"
+          },
+          {
+            "key": "ultimate",
+            "name": "Champagne Etiquette"
+          },
+          {
+            "key": "talent",
+            "name": "Tipsy Tussle"
+          }
+        ]
       },
       "extra": {
         "path": "Abundance",
@@ -55304,7 +56150,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Fleeting Fragrance"
+          },
+          {
+            "key": "skill",
+            "name": "Justice, Hereby Blooms"
+          },
+          {
+            "key": "ultimate",
+            "name": "For In This Garden, Supreme Beauty Bestows"
+          },
+          {
+            "key": "talent",
+            "name": "Sublime Object"
+          }
+        ]
       },
       "extra": {
         "path": "Erudition",
@@ -56470,7 +57334,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Threading Fragrance"
+          },
+          {
+            "key": "skill",
+            "name": "String Sings Slow Swirls"
+          },
+          {
+            "key": "ultimate",
+            "name": "Petals to Stream, Repose in Dream"
+          },
+          {
+            "key": "talent",
+            "name": "Somatotypical Helix"
+          }
+        ]
       },
       "extra": {
         "path": "Harmony",
@@ -57636,7 +58518,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Straight Bet"
+          },
+          {
+            "key": "skill",
+            "name": "Cornerstone Deluxe"
+          },
+          {
+            "key": "ultimate",
+            "name": "Roulette Shark"
+          },
+          {
+            "key": "talent",
+            "name": "Shot Loaded Right"
+          }
+        ]
       },
       "extra": {
         "path": "Preservation",
@@ -58802,7 +59702,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Mind is Might"
+          },
+          {
+            "key": "skill",
+            "name": "Intellectual Midwifery"
+          },
+          {
+            "key": "ultimate",
+            "name": "Syllogistic Paradox"
+          },
+          {
+            "key": "talent",
+            "name": "Cogito, Ergo Sum"
+          }
+        ]
       },
       "extra": {
         "path": "The Hunt",
@@ -59968,7 +60886,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Monodrama"
+          },
+          {
+            "key": "skill",
+            "name": "Dreamdiver"
+          },
+          {
+            "key": "ultimate",
+            "name": "The Hero with a Thousand Faces"
+          },
+          {
+            "key": "talent",
+            "name": "Red Herring"
+          }
+        ]
       },
       "extra": {
         "path": "Harmony",
@@ -61134,7 +62070,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Percipience, Silent Dawn"
+          },
+          {
+            "key": "skill",
+            "name": "Decadence, False Twilight"
+          },
+          {
+            "key": "ultimate",
+            "name": "Bliss of Otherworld's Embrace"
+          },
+          {
+            "key": "talent",
+            "name": "Loom of Fate's Caprice"
+          }
+        ]
       },
       "extra": {
         "path": "Nihility",
@@ -62300,7 +63254,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Trilateral Wiltcross"
+          },
+          {
+            "key": "skill",
+            "name": "Octobolt Flash"
+          },
+          {
+            "key": "ultimate",
+            "name": "Slashed Dream Cries in Red"
+          },
+          {
+            "key": "talent",
+            "name": "Atop Rainleaf Hangs Oneness"
+          }
+        ]
       },
       "extra": {
         "path": "Nihility",
@@ -63466,7 +64438,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Wingflip White Noise"
+          },
+          {
+            "key": "skill",
+            "name": "Pinion's Aria"
+          },
+          {
+            "key": "ultimate",
+            "name": "Vox Harmonique, Opus Cosmique"
+          },
+          {
+            "key": "talent",
+            "name": "Tonal Resonance"
+          }
+        ]
       },
       "extra": {
         "path": "Harmony",
@@ -64632,7 +65622,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Order: Flare Propulsion"
+          },
+          {
+            "key": "skill",
+            "name": "Order: Aerial Bombardment"
+          },
+          {
+            "key": "ultimate",
+            "name": "Fyrefly Type-IV: Complete Combustion"
+          },
+          {
+            "key": "talent",
+            "name": "Chrysalid Pyronexus"
+          }
+        ]
       },
       "extra": {
         "path": "Destruction",
@@ -65782,7 +66790,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "E—Excuse Me, Please!"
+          },
+          {
+            "key": "skill",
+            "name": "R—Room Service!"
+          },
+          {
+            "key": "ultimate",
+            "name": "G—Gonna Be Late!"
+          },
+          {
+            "key": "talent",
+            "name": "Horological Escapement"
+          }
+        ]
       },
       "extra": {
         "path": "Destruction",
@@ -66948,7 +67974,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Gleaming Admonition"
+          },
+          {
+            "key": "skill",
+            "name": "Benison of Paper and Rites"
+          },
+          {
+            "key": "ultimate",
+            "name": "Ode to Caress and Cicatrix"
+          },
+          {
+            "key": "talent",
+            "name": "The Sorrowing Body"
+          }
+        ]
       },
       "extra": {
         "path": "Harmony",
@@ -68114,7 +69158,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Lash of Riches"
+          },
+          {
+            "key": "skill",
+            "name": "Acquisition Surety"
+          },
+          {
+            "key": "ultimate",
+            "name": "Vow of the Deep"
+          },
+          {
+            "key": "talent",
+            "name": "Fang of Flare Flaying"
+          }
+        ]
       },
       "extra": {
         "path": "Erudition",
@@ -69280,7 +70342,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Skullcrush Spurs"
+          },
+          {
+            "key": "skill",
+            "name": "Sizzlin' Tango"
+          },
+          {
+            "key": "ultimate",
+            "name": "Dust Devil's Sunset Rodeo"
+          },
+          {
+            "key": "talent",
+            "name": "Five Peas in a Pod"
+          }
+        ]
       },
       "extra": {
         "path": "The Hunt",
@@ -70446,7 +71526,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Ninjutsu: Rise Above Tumbles"
+          },
+          {
+            "key": "skill",
+            "name": "Ninja Strike: Rooted Resolute"
+          },
+          {
+            "key": "ultimate",
+            "name": "Nindō Supreme: Aishiteru"
+          },
+          {
+            "key": "talent",
+            "name": "Ninja Tech: Endurance Gauge"
+          }
+        ]
       },
       "extra": {
         "path": "Erudition",
@@ -71612,7 +72710,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Fiddle... Fissured Memory"
+          },
+          {
+            "key": "skill",
+            "name": "Lick... Enkindled Betrayal"
+          },
+          {
+            "key": "ultimate",
+            "name": "Wallow... Entombed Ash"
+          },
+          {
+            "key": "talent",
+            "name": "Who's Afraid of Constance?"
+          }
+        ]
       },
       "extra": {
         "path": "Nihility",
@@ -72778,7 +73894,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Did You Get It"
+          },
+          {
+            "key": "skill",
+            "name": "Big Brain Energy"
+          },
+          {
+            "key": "ultimate",
+            "name": "Told Ya! Magic Happens"
+          },
+          {
+            "key": "talent",
+            "name": "Hand Them Over"
+          }
+        ]
       },
       "extra": {
         "path": "Erudition",
@@ -73944,7 +75078,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Thorned Nectar"
+          },
+          {
+            "key": "skill",
+            "name": "Rise, Exalted Renown"
+          },
+          {
+            "key": "ultimate",
+            "name": "Dance, Destined Weaveress"
+          },
+          {
+            "key": "talent",
+            "name": "Rosy-Fingered"
+          }
+        ]
       },
       "extra": {
         "path": "Remembrance",
@@ -75110,7 +76262,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Hundred Rockets"
+          },
+          {
+            "key": "skill",
+            "name": "Where'd the Gifts Go"
+          },
+          {
+            "key": "ultimate",
+            "name": "Guess Who Lives Here"
+          },
+          {
+            "key": "talent",
+            "name": "Busy as Tribbie"
+          }
+        ]
       },
       "extra": {
         "path": "Harmony",
@@ -76276,7 +77446,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Vow of Voyage"
+          },
+          {
+            "key": "skill",
+            "name": "Deaths are Legion, Regrets are None"
+          },
+          {
+            "key": "ultimate",
+            "name": "Throne of Bones"
+          },
+          {
+            "key": "talent",
+            "name": "Blood for Blood"
+          }
+        ]
       },
       "extra": {
         "path": "Destruction",
@@ -77442,7 +78630,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Pain, Brews Truth"
+          },
+          {
+            "key": "skill",
+            "name": "Fractal, Exiles Fallacy"
+          },
+          {
+            "key": "ultimate",
+            "name": "Sprouting Life Sculpts Earth"
+          },
+          {
+            "key": "talent",
+            "name": "Tetrad Wisdom Reigns Thrice"
+          }
+        ]
       },
       "extra": {
         "path": "Erudition",
@@ -78608,7 +79814,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Oops, a Missed Catch"
+          },
+          {
+            "key": "skill",
+            "name": "Hey, Jackpot for the Taking"
+          },
+          {
+            "key": "ultimate",
+            "name": "Yours Truly, Kitty Phantom Thief!"
+          },
+          {
+            "key": "talent",
+            "name": "The Hospitable Dolosian"
+          }
+        ]
       },
       "extra": {
         "path": "Nihility",
@@ -79774,7 +80998,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Lament, Nethersea's Ripple"
+          },
+          {
+            "key": "skill",
+            "name": "Silence, Wraithfly's Caress"
+          },
+          {
+            "key": "ultimate",
+            "name": "Doomshriek, Dawn's Chime"
+          },
+          {
+            "key": "talent",
+            "name": "Desolation Across Palms"
+          }
+        ]
       },
       "extra": {
         "path": "Remembrance",
@@ -80940,7 +82182,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Stride to Deliverance"
+          },
+          {
+            "key": "skill",
+            "name": "Let There Be Light"
+          },
+          {
+            "key": "ultimate",
+            "name": "He Who Bears the World Must Burn"
+          },
+          {
+            "key": "talent",
+            "name": "Pyric Corpus"
+          }
+        ]
       },
       "extra": {
         "path": "Destruction",
@@ -82106,7 +83366,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "When Breeze Kisses Cirrus"
+          },
+          {
+            "key": "skill",
+            "name": "Love Over the Rainbow"
+          },
+          {
+            "key": "ultimate",
+            "name": "We Who Fly Into Twilight"
+          },
+          {
+            "key": "talent",
+            "name": "First Light Heals the World"
+          }
+        ]
       },
       "extra": {
         "path": "Remembrance",
@@ -83272,7 +84550,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Aeolian Mode: Echoes in Still Waters"
+          },
+          {
+            "key": "skill",
+            "name": "Overtone Hum: Chorus After Dark Tides"
+          },
+          {
+            "key": "ultimate",
+            "name": "Maelstrom Rhapsody"
+          },
+          {
+            "key": "talent",
+            "name": "Sirenic Serenade"
+          }
+        ]
       },
       "extra": {
         "path": "Nihility",
@@ -84438,7 +85734,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "King's Castling"
+          },
+          {
+            "key": "skill",
+            "name": "Pawn's Promotion"
+          },
+          {
+            "key": "ultimate",
+            "name": "Scholar's Mate"
+          },
+          {
+            "key": "talent",
+            "name": "Ave Imperator"
+          }
+        ]
       },
       "extra": {
         "path": "Harmony",
@@ -85604,7 +86918,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Time Thence Blurs"
+          },
+          {
+            "key": "skill",
+            "name": "Day Gently Slips"
+          },
+          {
+            "key": "ultimate",
+            "name": "O Wakeful World, Goodnight"
+          },
+          {
+            "key": "talent",
+            "name": "With Me, This Night"
+          }
+        ]
       },
       "extra": {
         "path": "Remembrance",
@@ -86770,7 +88102,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Aegis Vitae"
+          },
+          {
+            "key": "skill",
+            "name": "Terra Omnibus"
+          },
+          {
+            "key": "ultimate",
+            "name": "A Dragon's Zenith Knows No Rue"
+          },
+          {
+            "key": "talent",
+            "name": "Of Virtue, Forms Unfold"
+          }
+        ]
       },
       "extra": {
         "path": "Preservation",
@@ -87936,7 +89286,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Lo, Hope Takes Flight!"
+          },
+          {
+            "key": "skill",
+            "name": "Bloom, Elysium of Beyond"
+          },
+          {
+            "key": "ultimate",
+            "name": "Verse ◦ Vow ∞"
+          },
+          {
+            "key": "talent",
+            "name": "Hearts Gather as One"
+          }
+        ]
       },
       "extra": {
         "path": "Remembrance",
@@ -89102,7 +90470,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Cat Got Your Flametongue?"
+          },
+          {
+            "key": "skill",
+            "name": "Boom! Sparxicle's Poppin'"
+          },
+          {
+            "key": "ultimate",
+            "name": "Party's Wildin' and Camera's Rollin'"
+          },
+          {
+            "key": "talent",
+            "name": "Sleight of Sparx Hand"
+          }
+        ]
       },
       "extra": {
         "path": "Elation",
@@ -90268,7 +91654,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Whistlebolt Sings Joy"
+          },
+          {
+            "key": "skill",
+            "name": "Decalight Unveils All"
+          },
+          {
+            "key": "ultimate",
+            "name": "Hexagram of Feathered Fortune"
+          },
+          {
+            "key": "talent",
+            "name": "Behold Wherever Light Unfolds"
+          }
+        ]
       },
       "extra": {
         "path": "Elation",
@@ -91434,7 +92838,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Brushstroke: Trace the Severed Stream"
+          },
+          {
+            "key": "skill",
+            "name": "Relume Life's Light"
+          },
+          {
+            "key": "ultimate",
+            "name": "Appraise Soul's Ground"
+          },
+          {
+            "key": "talent",
+            "name": "Grow Grace from Grit"
+          }
+        ]
       },
       "extra": {
         "path": "Elation",
@@ -92600,7 +94022,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Talons: Inculcate Decorum"
+          },
+          {
+            "key": "skill",
+            "name": "Flog: Smite Evil"
+          },
+          {
+            "key": "ultimate",
+            "name": "Banquet: Insatiable Appetite"
+          },
+          {
+            "key": "talent",
+            "name": "Rancor: Enmity Reprisal"
+          }
+        ]
       },
       "extra": {
         "path": "The Hunt",
@@ -93766,7 +95206,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Syllabus: Pop Quiz"
+          },
+          {
+            "key": "skill",
+            "name": "Discipline: Final Verdict"
+          },
+          {
+            "key": "ultimate",
+            "name": "Swordsong: Absolution Denied"
+          },
+          {
+            "key": "talent",
+            "name": "Youth: Halcyon Evermore"
+          }
+        ]
       },
       "extra": {
         "path": "Elation",
@@ -94932,7 +96390,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "One Punch!"
+          },
+          {
+            "key": "skill",
+            "name": "Trigger Happy"
+          },
+          {
+            "key": "ultimate",
+            "name": "God Mode: ON!"
+          },
+          {
+            "key": "talent",
+            "name": "I Carry, We Win"
+          }
+        ]
       },
       "extra": {
         "path": "Elation",
@@ -96098,7 +97574,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "A Broken Blade Still Slays"
+          },
+          {
+            "key": "skill",
+            "name": "A Rain of Blades Seals Fate"
+          },
+          {
+            "key": "ultimate",
+            "name": "Fornax Ex Corpore"
+          },
+          {
+            "key": "talent",
+            "name": "All Karma Comes Due"
+          }
+        ]
       },
       "extra": {
         "path": "Nihility",
@@ -97264,7 +98758,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Bajiquan"
+          },
+          {
+            "key": "skill",
+            "name": "Jeweled Sword Zelretch"
+          },
+          {
+            "key": "ultimate",
+            "name": "An Gal Ta Ki Gal Šè"
+          },
+          {
+            "key": "talent",
+            "name": "Gem Magecraft"
+          }
+        ]
       },
       "extra": {
         "path": "Erudition",
@@ -98430,7 +99942,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Halfhearted Blow"
+          },
+          {
+            "key": "skill",
+            "name": "Gate of Babylon"
+          },
+          {
+            "key": "ultimate",
+            "name": "Enuma Elish"
+          },
+          {
+            "key": "talent",
+            "name": "\"Amuse Me to the Fullest\""
+          }
+        ]
       },
       "extra": {
         "path": "Destruction",
@@ -99596,7 +101126,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Enkindle the First Lodestar"
+          },
+          {
+            "key": "skill",
+            "name": "Upraise the Vanward Cresset"
+          },
+          {
+            "key": "ultimate",
+            "name": "We, Too, Stride the Stars"
+          },
+          {
+            "key": "talent",
+            "name": "Of Fire and Far Faring"
+          }
+        ]
       },
       "extra": {
         "path": "Erudition",
@@ -100762,7 +102310,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "The Sea Sings in My Key"
+          },
+          {
+            "key": "skill",
+            "name": "Summer Strums the Soul"
+          },
+          {
+            "key": "ultimate",
+            "name": "Ascend That Rhapsody in Blue"
+          },
+          {
+            "key": "talent",
+            "name": "Wings Heed No Borders"
+          }
+        ]
       },
       "extra": {
         "path": "Remembrance",
@@ -101928,7 +103494,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Dead Center, the Torrent Hits"
+          },
+          {
+            "key": "skill",
+            "name": "Kill Shot, the Sands Boil"
+          },
+          {
+            "key": "ultimate",
+            "name": "Grand Slam, Crest That High Tide"
+          },
+          {
+            "key": "talent",
+            "name": "Ante Up, the Abyss Answers"
+          }
+        ]
       },
       "extra": {
         "path": "Elation",
@@ -103078,7 +104662,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Farewell Hit"
+          },
+          {
+            "key": "skill",
+            "name": "RIP Home Run"
+          },
+          {
+            "key": "ultimate",
+            "name": "Stardust Ace"
+          },
+          {
+            "key": "talent",
+            "name": "Perfect Pickoff"
+          }
+        ]
       },
       "extra": {
         "path": "Destruction",
@@ -104228,7 +105830,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Farewell Hit"
+          },
+          {
+            "key": "skill",
+            "name": "RIP Home Run"
+          },
+          {
+            "key": "ultimate",
+            "name": "Stardust Ace"
+          },
+          {
+            "key": "talent",
+            "name": "Perfect Pickoff"
+          }
+        ]
       },
       "extra": {
         "path": "Destruction",
@@ -105378,7 +106998,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Ice-Breaking Light"
+          },
+          {
+            "key": "skill",
+            "name": "Ever-Burning Amber"
+          },
+          {
+            "key": "ultimate",
+            "name": "War-Flaming Lance"
+          },
+          {
+            "key": "talent",
+            "name": "Treasure of the Architects"
+          }
+        ]
       },
       "extra": {
         "path": "Preservation",
@@ -106528,7 +108166,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Ice-Breaking Light"
+          },
+          {
+            "key": "skill",
+            "name": "Ever-Burning Amber"
+          },
+          {
+            "key": "ultimate",
+            "name": "War-Flaming Lance"
+          },
+          {
+            "key": "talent",
+            "name": "Treasure of the Architects"
+          }
+        ]
       },
       "extra": {
         "path": "Preservation",
@@ -107678,7 +109334,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Swing Dance Etiquette"
+          },
+          {
+            "key": "skill",
+            "name": "Halftime to Make It Rain"
+          },
+          {
+            "key": "ultimate",
+            "name": "All-Out Footlight Parade"
+          },
+          {
+            "key": "talent",
+            "name": "Full-on Aerial Dance"
+          }
+        ]
       },
       "extra": {
         "path": "Harmony",
@@ -108828,7 +110502,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Swing Dance Etiquette"
+          },
+          {
+            "key": "skill",
+            "name": "Halftime to Make It Rain"
+          },
+          {
+            "key": "ultimate",
+            "name": "All-Out Footlight Parade"
+          },
+          {
+            "key": "talent",
+            "name": "Full-on Aerial Dance"
+          }
+        ]
       },
       "extra": {
         "path": "Harmony",
@@ -109978,7 +111670,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Leave It to Me!"
+          },
+          {
+            "key": "skill",
+            "name": "I Choose You!"
+          },
+          {
+            "key": "ultimate",
+            "name": "Together, Mem!"
+          },
+          {
+            "key": "talent",
+            "name": "Almighty Companion"
+          }
+        ]
       },
       "extra": {
         "path": "Remembrance",
@@ -111128,7 +112838,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Leave It to Me!"
+          },
+          {
+            "key": "skill",
+            "name": "I Choose You!"
+          },
+          {
+            "key": "ultimate",
+            "name": "Together, Mem!"
+          },
+          {
+            "key": "talent",
+            "name": "Almighty Companion"
+          }
+        ]
       },
       "extra": {
         "path": "Remembrance",
@@ -112278,7 +114006,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Make Some Noise"
+          },
+          {
+            "key": "skill",
+            "name": "Let the Storm Rage On"
+          },
+          {
+            "key": "ultimate",
+            "name": "May the Trailblaze Fly You Starward"
+          },
+          {
+            "key": "talent",
+            "name": "That Smile Hits Different"
+          }
+        ]
       },
       "extra": {
         "path": "Elation",
@@ -113428,7 +115174,25 @@
               ]
             }
           ]
-        }
+        },
+        "info": [
+          {
+            "key": "basic",
+            "name": "Make Some Noise"
+          },
+          {
+            "key": "skill",
+            "name": "Let the Storm Rage On"
+          },
+          {
+            "key": "ultimate",
+            "name": "May the Trailblaze Fly You Starward"
+          },
+          {
+            "key": "talent",
+            "name": "That Smile Hits Different"
+          }
+        ]
       },
       "extra": {
         "path": "Elation",

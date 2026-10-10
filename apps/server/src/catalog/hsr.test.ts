@@ -75,4 +75,10 @@ describe("hsr catalog", () => {
     expect(names.length).toBeGreaterThan(100);
     expect(names.filter((n) => /<[^>]+>/.test(n))).toEqual([]);
   });
+
+  it("names each character's traces, which the sheet shows instead of Basic, Skill, Ultimate and Talent", async () => {
+    const catalog = catalogSchema.parse(await hsr.loadCatalog!());
+    const kafka = catalog.characters.find((c) => c.id === "1005")!;
+    expect(kafka.talents.info?.map((i) => [i.key, i.name])).toEqual([["basic", "Midnight Tumult"], ["skill", "Caressing Moonlight"], ["ultimate", "Twilight Trill"], ["talent", "Gentle but Cruel"]]);
+  });
 });
