@@ -104,3 +104,9 @@
 .pf-status { grid-column: 1 / -1; display: flex; align-items: center; gap: 24px; }
 .pf-status h3 { flex: none; margin: 0; }
 .pf-status p { flex: 1; margin: 0; }
+
+/* KPI targets and Used in (WIREFRAMES.md G5) */
+.sh-target { display: flex; align-items: center; gap: 8px; margin-top: 6px; font-size: 12px; }
+.sh-target label { display: inline-flex; align-items: center; gap: 4px; margin: 0; letter-spacing: 0; text-transform: none; }
+.sh-target input { width: 72px; min-height: 24px; padding: 1px 6px; }
+.sh-used { margin-top: 24px; }

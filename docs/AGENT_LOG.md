@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f10b/03-sheet · #161
+- Done: the sheet's KPI targets and Used in (WIREFRAMES.md G5): `Character.targets` (migration `20261011080000_character_targets`), taken by `PUT /api/characters/:id` for the game's single-number KPIs only (`unknown_kpi` otherwise, pairs included; `LIMITS.kpiTarget`), null clearing them; each numeric tile has a target typed in place that saves on its own and says "N short" or "on target"; Used in lists the profile's teams with the character.
+- Tests: written first: `targets.integration.test.ts` (kept and cleared; unknown KPI, a pair and out-of-range refused), a second sheet journey (SPD 130 with target 134 shows 4 short and survives a reload; Used in shows the team); the accessibility sweep passes. Checked at 1440 on the dev account.
+- Scope/decisions: targets are per build; the board's "editable build template" shared across builds can come later; endgame eligibility in Used in waits for cycle data.
+- Next: retiring the old overview (currencies, teams, builds by name and weapon farming to their screens).
+
 ## 2026-10-10 · claude · stack/f10b/02-wishlist · #160
 - Done: the wishlist at work: the calendar's "Only what I wishlisted" (WIREFRAMES.md A4) keeps the banners featuring a wished unit and the events whose rewards name one; the savings planner (G3) adds each wishlisted 5★ not on a running banner after the running banners' featured ones, on the banner of its kind, and only a banner's first target starts from its pity and guarantee (later ones start fresh).
 - Tests: written first: a third calendar journey (a wished and an unwished banner; the toggle keeps only the wished one) and a second planner journey (Seele wishlisted shows as a Wishlist target). The first planner journey no longer counts exactly two targets, since journeys share the wishlist. Checked at 1440 on the dev account.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: `odds.test.ts` (Genshin's ramp; every banner's distribution sums to 1 from any pity; a seeded simulation within half a pull; Genshin's consolidated 1.6052% and 1.8779%; featured within N incl. Endfield's spark; no guarantee after a loss for Endfield). The pull-log test that used Endfield as "a game without rules" now checks its new banner.
 - Scope/decisions: 4★ rules and the Pulls screen's odds UI stay for F10.
 - Next: `stack/f9/02-gear-kpis-art`.
-
-## 2026-10-10 · claude · stack/f9/00-pity-line · #119
-- Done: Home's Pulls card shows the pity line under every game with pull rules, zeros included, labelled by the shared banner keys (Character, Weapon, Standard) so every game reads the same. Georges answered #101: keep the line. #118 merged; F8 complete.
-- Tests: written first: the Home journey checks a pity line under every pulls row; the pulls journey still finds Star Rail's guarantee.
-- Scope/decisions: Endfield gets its line with its pull rules in `stack/f9/01-odds`.
-- Next: F9 per the approved plan: odds, gear and KPIs and art, `game:new`, NTE, the ZZZ feed.

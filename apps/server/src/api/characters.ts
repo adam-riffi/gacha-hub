@@ -1,4 +1,5 @@
 import type { FastifyInstance } from "fastify";
+import { Prisma } from "../generated/prisma/client.js";
 import type { Character } from "../generated/prisma/client.js";
 import { characterDto, createCharacterInput, updateCharacterInput, type GameDefinition } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
@@ -109,6 +110,9 @@ export async function registerCharacterRoutes(app: FastifyInstance) {
       const game = gameOrThrow(character.gameInstance.gameKey);
       const body = updateCharacterInput.parse(req.body);
       if (body.role && !game.manifest.kpis[body.role]) return reply.code(400).send({ error: "unknown_role" });
+      // Targets are for the game's single-number KPIs; a pair ("CRIT Rate / CRIT DMG") takes none.
+      const numeric = new Set(Object.values(game.manifest.kpis).flat().filter((l) => !l.includes(" / ")));
+      if (body.targets && Object.keys(body.targets).some((k) => !numeric.has(k))) return reply.code(400).send({ error: "unknown_kpi" });
       if (body.catalogId !== undefined) {
         const cat = await getCatalog(game);
         if (cat && body.catalogId && !cat.index.characters.has(body.catalogId)) {
@@ -126,6 +130,7 @@ export async function registerCharacterRoutes(app: FastifyInstance) {
             : {}),
           ...(body.buildStatus !== undefined ? { buildStatus: body.buildStatus } : {}),
           ...(body.role !== undefined ? { role: body.role } : {}),
+          ...(body.targets !== undefined ? { targets: body.targets === null ? Prisma.DbNull : (body.targets as PrismaJson) } : {}),
         },
       });
       return characterDto.parse(updated);

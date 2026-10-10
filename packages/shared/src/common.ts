@@ -71,6 +71,7 @@ export const LIMITS = {
   checklistItems: 100,
   accountLevel: 100,
   worldLevel: 20,
+  kpiTarget: 1_000_000,
   uidLength: 32,
 } as const;
 
