@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/profile/02-long-term-goals · #194
+- Done: Profile's Long-term progress holds the game's hand-typed goals, as Georges decided: exploring, chests, events, one kind ("gameplay" on Home and Tasks). Each goal is a checkbox that ticks at once, and an "Add goal" field creates one (target 1). Goals with a larger target show their count. The HoYoLAB stats stay above when linked. Plan, gear and event goals and their material steps stay out of the list.
+- Tests: written first: the Profile journey adds "Finish exploring Amphoreus" and ticks it. `npm run check` passes: 533 tests and 40 journeys.
+- Scope/decisions: no new goal kind or column; the card filters the existing hand-typed goals.
+- Next: Endfield's per-banner weapon pity, ZZZ core skills, every banner with a hide button.
+
 ## 2026-10-10 · claude · stack/docs/07-later · #193
 - Done: DESIGN.md §4 "Later" lists what it includes. It gains a per-game overview at Georges's request: each hub opens on its own dashboard, showing NTE's Fons and not Genshin's resin. Not built. Alongside: public showcase pages, PWA, i18n. PROJECT-GUIDE §14.1 step 8 says exactly which real data the agent needs and how to save it. §14 records the decision that long-term progress (chests, exploration, events) is hand-typed goals, not synced.
 - Tests: docs only.
@@ -297,9 +303,3 @@ Entry format:
 - Tests: written first: `hoyolab.test.ts` (the DS header, cards read and errors named, notes URLs), `hoyolab.integration.test.ts` (the signed card request, nothing secret in the answer, the row sealed and opening to the cookie, the profile filled; a refused cookie keeps nothing; off without the key).
 - Scope/decisions: endpoints, salt and server names follow genshin.py's source; fixtures follow those shapes until a real response is recorded; notes sync is the next PR.
 - Next: real-time notes sync (Sync now and the cron, 30 min, a lock per account), then the HoYoLAB card in Settings.
-
-## 2026-10-10 · claude · stack/f11/07-convene · #153
-- Done: Wuthering Waves' convene link (ADR 0005): shared `readConveneLink` (player, server, record and pool ids from after the #, the host ignored), `conveneRequest` (POST to `gmserver-api.aki-game2.net`, `.com` for CN), `readConvenePage` (oldest first, in UTC; each pull an id from its time, banner type and place in that second, since the game gives none); server `fetchConvene` (each tracked type once); the history-link route takes WuWa links (`no_convene_ids` without their ids); `pullBanners[].gachaTypes` for WuWa (1, 2, 3), sourced in its sheet; Settings offers Paste link for it.
-- Tests: written first: `convene.test.ts` (the link, the request, ids and order, errors, one request per type), `convene.integration.test.ts` (10 pulls from the game's host only, pity and the 5★ Jiyan, a re-import adds nothing, a link without ids refused).
-- Scope/decisions: the API shape follows a community tool's source (wuwa-gacha-export), with no official documentation; a link works for minutes, so every non-zero code reads as expired; standard weapon, beginner and journey convenes are skipped.
-- Next: HoYoLAB notes (link, real-time notes on the cron tick).
