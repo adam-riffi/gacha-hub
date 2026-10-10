@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f11/01-links · #146
+- Done: F11 starts (ADR 0005). `LinkedAccount` (provider, account id, sealed secret, key version, status, last sync and error) and `ImportRun` (provider, kind, added, skipped, error), migration `20261011040000_linked_accounts` with RLS; `lib/linkSecret.ts`: AES-256-GCM under `LINK_SECRET_KEY` with the row ("userId:provider") as additional data, "2:new,1:old" for rotation; `GET /api/links` (no secret) and `DELETE /api/links/:id`; `.env.example` documents the key.
+- Tests: written first: `linkSecret.test.ts` (round trip with a fresh IV, tampering and a moved secret refused, rotation, key length), `links.integration.test.ts` (listed without the secret, absent from the export, revoked, kept per user, sign-in required).
+- Scope/decisions: no way to create a link yet: each provider brings its own (HoYoLAB in `f11/06`); the export leaves links out entirely.
+- Next: `f11/02-pull-records` (source and record id on `PullEntry`, the import core).
+
 ## 2026-10-10 · claude · stack/f10/20-profile · #144
 - Done: Profile rebuilt from its board (WIREFRAMES.md G8), the hub's last tab in place of Overview: Account (server with its reset in server time and yours, UID masked with Show, account and world level typed in place); Passes (30-day pass days left and battle pass level with their ends, bars, Update, and each reminder); Long-term progress, dashed and empty until F11 syncs it; Game reminders (this game's switches, Global rules →); Game status (Export JSON of this game, Sleep or Wake, Remove… after a confirmation, a link to the old overview). The hub header shows "AR 58 · WL 8"; Tasks' Reminders gain the battle pass row.
 - Tests: written first: `e2e/profile.spec.ts` (tab, the reset in server time, UID masked, levels in the header, days left and both pass reminders, stamina full, export file name, sleep, remove); smoke reaches the old overview from Profile; activities expects Profile last; the accessibility sweep visits it (caught a `<dl>` holding controls). Checked at 1440 beside `g8-profile.png`. Also fixed in the stack: the sheet journey's "Saved" toast is found by its exact text.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: `games/manifest.test.ts` first: a conformance suite over every game (regions, every cadence in every region by fast-check, stamina, bounds, names in the reference sheet) and the facts players saw on 10 Oct 2026 (each endgame window, Endfield servers, the Sanity table).
 - Scope/decisions: The currency stays the single source of stamina cap and regeneration; HSR's endgame cycles now differ in length (77, 35, 42 days), so anchors hold the current cycle and are refreshed each version; WuWa's endgame rows rely on guides (`~`). Stored Endfield `global` profiles resolve to the first region.
 - Next: `stack/f8/03-schema` (task cadences with a manifest anchor key, `uid` and `accountLevel`, `CycleResult`, `PassState`, `DayRecord`, RLS).
-
-## 2026-10-10 · claude · stack/f8/01-cadence-core · #104
-- Done: `packages/shared/src/cadence.ts`, the current window of the daily, weekly, monthly, cycle and version cadences on a server's fixed-offset clock (ADR 0004); `lib/resets.ts` now delegates to it. Milestones V and D merged with Georges's approval; production on Prisma 7, smoke green through the pooler. HANDOFF.md rewritten.
-- Tests: `cadence.test.ts` (fast-check over offsets in 15-minute steps, reset hours and weekdays: windows contain now and start at the reset hour, chain end to start, match luxon for daily and weekly, monthly clamps to the month's last day, cycles repeat from their anchor also before it; identical results in four viewer time zones across 2026's clock changes; Genshin Europe's real windows).
-- Scope/decisions: Plain arithmetic instead of luxon so the browser shares it; luxon stays as the test oracle and for user time zones in reminders.
-- Next: `stack/f8/02-manifests`.
