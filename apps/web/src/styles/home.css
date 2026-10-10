@@ -65,3 +65,11 @@
 /* Pity under a game, kept from F5 until the Pulls card decision. */
 .pull-row-pity { display: block; padding: 0 26px 8px 16px; margin-top: -4px; font-size: 12px; letter-spacing: 0.04em; color: var(--text-muted); text-decoration: none; }
 .pull-row-pity:hover { color: var(--text); }
+/* Home's pulls by type (Georges, 2026-10-10): a number and its icon each. */
+.pull-counts { display: inline-flex; gap: 18px; }
+.pull-n { display: inline-flex; align-items: center; gap: 5px; min-width: 52px; justify-content: flex-end; }
+.pull-ico { width: 13px; height: 13px; flex: none; }
+.pull-ico.is-limited { fill: var(--accent); }
+.pull-ico.is-permanent { stroke: var(--text-muted); }
+.pull-ico.is-special { fill: var(--paper); }
+.pull-n.is-permanent, .pull-n.is-special { color: var(--text-muted); }

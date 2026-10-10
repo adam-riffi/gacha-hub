@@ -34,8 +34,8 @@ export interface GameCurrency {
   pullLabel?: string;
   /** Ticket only usable on the standard banner — excluded from limited pull counts. */
   standardOnly?: boolean;
-  /** Ticket only usable on the weapon banner (Endfield's Arsenal Tickets) — excluded from limited pull counts. */
-  weaponOnly?: boolean;
+  /** A ticket only one banner takes (its `pullBanners` key: Endfield's Arsenal Tickets, ZZZ's Boopons): special pulls, out of the limited count. */
+  onlyFor?: string;
 }
 
 export interface GameTaskSeed {

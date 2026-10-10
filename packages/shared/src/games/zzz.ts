@@ -81,7 +81,7 @@ export const zzz: GameDefinition = {
     { key: "character", label: "Exclusive channel", baseRate: 0.006, softPity: 74, hardPity: 90, featuredRate: 0.5, gachaTypes: ["2"] },
     { key: "weapon", label: "W-Engine channel", baseRate: 0.01, softPity: 64, hardPity: 80, featuredRate: 0.75, gachaTypes: ["3"] },
     { key: "standard", label: "Stable channel", baseRate: 0.006, softPity: 74, hardPity: 90, featuredRate: 1, gachaTypes: ["1"] },
-    { key: "bangboo", label: "Bangboo channel", baseRate: 0.01, hardPity: 80, featuredRate: 1, gachaTypes: ["5"], fund: "none" },
+    { key: "bangboo", label: "Bangboo channel", baseRate: 0.01, hardPity: 80, featuredRate: 1, gachaTypes: ["5"], fund: "own" },
   ],
   name: "Zenless Zone Zero",
   shortName: "Zenless",
@@ -94,6 +94,7 @@ export const zzz: GameDefinition = {
     { key: "polychrome", label: "Polychrome", pullCost: 160, pullLabel: "signal" },
     { key: "encryptedTape", label: "Encrypted Master Tape", pullCost: 1, pullLabel: "signal" },
     { key: "masterTape", label: "Master Tape", pullCost: 1, pullLabel: "signal", standardOnly: true },
+    { key: "boopon", label: "Boopon", pullCost: 1, pullLabel: "signal", onlyFor: "bangboo" },
     { key: "denny", label: "Denny" },
   ],
   // Sources per value: docs/games/zzz.md.
