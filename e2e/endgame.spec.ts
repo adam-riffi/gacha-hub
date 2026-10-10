@@ -20,7 +20,12 @@ test("a game's Endgame tab: this cycle's rewards, a card per mode to type result
   await expect(assault).toContainText("200 / 300");
 
   // This cycle adds up what the open cycles offer: 780 + 300.
-  await expect(page.getByRole("region", { name: "This cycle" })).toContainText("/ 1,080");
+  const thisCycle = page.getByRole("region", { name: "This cycle" });
+  await expect(thisCycle).toContainText("/ 1,080");
+  const remind = thisCycle.getByRole("checkbox", { name: "Remind me 24 h before a reset with rewards left" });
+  await remind.check();
+  await page.reload();
+  await expect(page.getByRole("region", { name: "This cycle" }).getByRole("checkbox", { name: /Remind me 24 h/ })).toBeChecked();
   const upcoming = page.getByRole("region", { name: "Upcoming resets" });
   for (const mode of ["Shiyu Defense", "Deadly Assault"]) await expect(upcoming).toContainText(mode);
 

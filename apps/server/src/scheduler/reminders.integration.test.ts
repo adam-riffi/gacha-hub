@@ -87,3 +87,44 @@ describe("fmtDomains", () => {
     expect(line).toBe("🗺️ Domains today: Frosted Altar (Amber, Klee, Diona +1), Cecilia Garden (Sword), A (X), B (Y) +1 more");
   });
 });
+
+describe("stamina and endgame reminders (scheduler)", () => {
+  let app: FastifyInstance;
+  let c: Client;
+  let gid: string;
+
+  beforeAll(async () => {
+    app = await makeApp();
+  });
+  afterAll(async () => {
+    await app.close();
+  });
+  beforeEach(async () => {
+    await resetDb();
+    sent.mockClear();
+    c = await login(app);
+    gid = await installGame(c, "genshin");
+  });
+
+  const only = (flags: object) => ({ ...config(false), atTimes: [], beforeReset: true, leadMinutes: 24 * 60, ...flags });
+
+  it("DMs once when stamina is full", async () => {
+    await c.req("PUT", `/api/instances/${gid}/currencies/resin`, { value: 200 });
+    await c.req("PUT", `/api/instances/${gid}/reminder`, { ...only({ whenStaminaFull: true }), beforeReset: false });
+    await runReminderTick(new Date(Date.now() + 60_000));
+    await runReminderTick(new Date(Date.now() + 120_000));
+    expect(sent).toHaveBeenCalledTimes(1);
+    expect(sent.mock.calls[0]![1]).toMatch(/Original Resin is full/);
+  });
+
+  it("DMs 24 h before an endgame reset with rewards left, alongside the daily reset reminder at the same instant", async () => {
+    // Spiral Abyss, 16 Sep – 16 Oct 2026: 700 of 800 Primogems claimed. It resets at 04:00 Europe time,
+    // which is also that day's daily reset.
+    await c.req("PUT", `/api/instances/${gid}/cycles`, { modeKey: "abyss", day: "2026-10-09", result: 33, premium: 700 });
+    await c.req("PUT", `/api/instances/${gid}/reminder`, only({ beforeEndgameReset: true }));
+    await runReminderTick(new Date("2026-10-15T05:00:00Z"));
+    const texts = sent.mock.calls.map((call) => call[1]);
+    expect(texts.some((t) => /Spiral Abyss ends in 22h 0m · 100 Primogems unclaimed/.test(t))).toBe(true);
+    expect(texts.some((t) => /resets in 22h 0m/.test(t))).toBe(true);
+  });
+});
