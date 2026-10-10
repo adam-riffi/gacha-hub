@@ -13,7 +13,10 @@ test("Characters: splash cards with their KPIs, counts, search, wishlist and own
 
   await page.goto(`/games/${id}/characters`);
   await expect(page.getByRole("navigation", { name: "Game screens" }).getByRole("link", { name: "Characters" })).toHaveAttribute("aria-current", "page");
-  await expect(page.getByText(/^\d+ \/ \d+ owned$/i)).toBeVisible();
+  // Every unit at once: no paging, no compact view.
+  await expect(page.getByRole("article").nth(12)).toBeVisible();
+  await expect(page.getByRole("button", { name: "Show more" })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Compact" })).toHaveCount(0);
 
   await page.getByRole("searchbox", { name: "Search" }).fill("Kafka");
   const kafka = page.getByRole("article", { name: "Kafka" });
@@ -21,8 +24,14 @@ test("Characters: splash cards with their KPIs, counts, search, wishlist and own
   await expect(kafka).toContainText("Lv 80");
   await expect(kafka).toContainText("Crit value");
   await expect(kafka).toContainText("60 / 150");
-  await expect(kafka.getByRole("link", { name: "Build →" })).toBeVisible();
   await expect(page.getByRole("article")).toHaveCount(1);
+  // The card shows the weapon type (Star Rail's path) and tints to the element.
+  await expect(kafka).toContainText("Nihility");
+  expect(await kafka.evaluate((e) => getComputedStyle(e).getPropertyValue("--el").trim())).not.toBe("");
+  // The whole card opens the build.
+  await kafka.locator(".ch-art").click();
+  await expect(page).toHaveURL(/\/characters\/[a-z0-9]+$/);
+  await page.goBack();
 
   await page.getByRole("searchbox", { name: "Search" }).fill("Welt");
   const welt = page.getByRole("article", { name: "Welt" });
@@ -31,9 +40,30 @@ test("Characters: splash cards with their KPIs, counts, search, wishlist and own
   await expect(welt.getByRole("button", { name: "Wishlist" })).toHaveAttribute("aria-pressed", "true");
   await welt.getByRole("button", { name: "Own" }).click();
   await expect(welt).not.toContainText("Not owned");
+
+  // The counts are filters: Wishlist shows only the wishlisted, pressed until clicked again.
+  await page.getByRole("searchbox", { name: "Search" }).fill("");
+  const wishlist = page.getByRole("button", { name: /^Wishlist \d+$/ });
+  await wishlist.click();
+  await expect(wishlist).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByRole("article", { name: "Welt" })).toBeVisible();
+  await expect(page.getByRole("article", { name: "Kafka" })).toHaveCount(0);
+  await wishlist.click();
+  await expect(page.getByRole("article", { name: "Kafka" })).toBeVisible();
+
+  // A unit with no build opens too: its page, to own, wishlist, plan or start a build.
+  await page.request.put(`/api/instances/${id}/ownership`, { data: { items: [{ kind: "character", catalogId: "1004", owned: false }] } });
+  await page.reload();
+  await page.getByRole("searchbox", { name: "Search" }).fill("Welt");
+  await page.getByRole("article", { name: "Welt" }).locator(".ch-art").click();
+  await expect(page).toHaveURL(new RegExp(`/games/${id}/units/1004$`));
+  await expect(page.getByRole("heading", { name: "Welt", level: 1 })).toBeVisible();
+  await page.getByRole("button", { name: "Own" }).click();
+  await page.getByRole("button", { name: "Start a build" }).click();
+  await expect(page).toHaveURL(/\/characters\/[a-z0-9]+$/);
 });
 
-test("Characters: the Compact view as a table, and the Weapons view with holders, owning and the wishlist @smoke", async ({ page }) => {
+test("Characters: the Weapons view with holders, owning and the wishlist @smoke", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue as Dev User" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
@@ -43,14 +73,6 @@ test("Characters: the Compact view as a table, and the Weapons view with holders
   await page.request.put(`/api/instances/${id}/ownership`, { data: { items: [{ kind: "weapon", catalogId: "23006", owned: false }] } });
   await page.request.put(`/api/instances/${id}/wishlist`, { data: { kind: "weapon", catalogId: "23006", wished: false } });
   await page.goto(`/games/${id}/characters`);
-
-  // Compact: one row per unit, with the card's facts.
-  await page.getByRole("searchbox", { name: "Search" }).fill("Kafka");
-  await page.getByRole("group", { name: "View" }).getByRole("button", { name: "Compact" }).click();
-  const row = page.getByRole("table", { name: "Characters" }).getByRole("row", { name: /Kafka/ }).first();
-  await expect(row).toContainText("E1");
-  await expect(row).toContainText("Lv 80");
-  await expect(row.getByRole("link", { name: "Build →" })).toBeVisible();
 
   // Weapons: the catalog's light cones, who holds them, owning and the wishlist.
   await page.getByRole("group", { name: "Show" }).getByRole("button", { name: "Weapons" }).click();
