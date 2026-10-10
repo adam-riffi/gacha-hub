@@ -38,4 +38,11 @@ describe("genshin catalog", () => {
     const books = catalog.materials.filter((m) => m.availability?.length);
     expect(books.length).toBeGreaterThan(0);
   });
+
+  it("names each character's talents, which the sheet shows instead of Normal, Skill and Burst", async () => {
+    const catalog = catalogSchema.parse(await genshin.loadCatalog!());
+    const amber = catalog.characters.find((c) => c.name === "Amber")!;
+    expect(amber.talents.info?.map((i) => [i.key, i.name])).toEqual([["normal", "Sharpshooter"], ["skill", "Explosive Puppet"], ["burst", "Fiery Rain"]]);
+    expect(catalog.characters.filter((c) => c.talents.keys.length && !c.talents.info?.length).map((c) => c.name)).toEqual([]);
+  });
 });

@@ -44,4 +44,10 @@ describe("wuwa catalog", () => {
       expect(new Set(list.map((x) => x.key)).size).toBe(list.length);
     }
   });
+
+  it("names each resonator's forte skills, which the sheet shows instead of the keys", async () => {
+    const catalog = catalogSchema.parse(await wuwa.loadCatalog!());
+    const chixia = catalog.characters.find((c) => c.id === "1202")!;
+    expect(chixia.talents.info?.map((i) => [i.key, i.name])).toEqual([["basic", "POW POW"], ["skill", "Whizzing Fight Spirit"], ["forte", "Grand Entrance"], ["liberation", "Blazing Flames"], ["intro", "Heroic Bullets"]]);
+  });
 });
