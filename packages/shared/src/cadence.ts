@@ -72,6 +72,12 @@ export function cadenceWindow(anchor: CadenceAnchor, clock: ServerClock, now: Da
   }
 }
 
+/** The server's game day (YYYY-MM-DD): the date its current daily window started on, in server time. */
+export function gameDay(clock: ServerClock, now: Date): string {
+  const start = cadenceWindow({ cadence: "daily" }, clock, now).start;
+  return new Date(start.getTime() + clock.utcOffsetMinutes * MIN).toISOString().slice(0, 10);
+}
+
 /**
  * The anchor a recurring task's window follows: daily and weekly on the
  * region's resets; monthly on its shop or monthly endgame mode, else the 1st;

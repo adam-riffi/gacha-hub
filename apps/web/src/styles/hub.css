@@ -17,7 +17,8 @@
 .hub-resets { display: flex; gap: 40px; margin: 0 0 0 auto; }
 .hub-resets dt { color: var(--text-muted); font: 400 12px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
 .hub-resets dd { margin: 10px 0 0; font: 600 24px/1 var(--font-display); letter-spacing: 0.04em; text-transform: uppercase; font-variant-numeric: tabular-nums; }
-.hub-resets dd .chip { font: inherit; letter-spacing: inherit; color: var(--text); }
+.hub-resets dd .chip { font: inherit; letter-spacing: inherit; }
+.hub-resets dd .chip:not(.hot) { color: var(--text); }
 .hub-resets dd .chip > i { display: none; }
 
 .hub-tabs { display: flex; gap: 32px; margin-bottom: 24px; border-bottom: 1px solid var(--hairline); overflow-x: auto; }
@@ -72,7 +73,36 @@ label.act-row { margin: 0; cursor: pointer; color: var(--text); font: 400 15px/1
 .act-pass-row { margin-top: 12px; border-top: 1px solid var(--hairline); border-bottom: 0; }
 .act-pass-row .mn { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
 
+/* ---- Endgame (G2): this cycle across the top, a card per mode, upcoming resets. ---- */
+.endgame { display: flex; flex-direction: column; gap: 24px; }
+.eg-this { padding-bottom: 16px; }
+.eg-this .ph { display: flex; align-items: center; gap: 12px; padding-top: 8px; }
+.eg-this .ph h3 { margin-bottom: 0; }
+.eg-this-body { display: flex; align-items: flex-end; gap: 48px; margin-top: 18px; }
+.eg-claimed { flex: 1; display: flex; flex-direction: column; gap: 12px; }
+.eg-claimed .act-meter { flex: none; }
+.eg-next { min-width: 320px; }
+.eg-next-mode { margin: 8px 0 4px; font: 600 24px/1.1 var(--font-display); letter-spacing: 0.04em; text-transform: uppercase; }
+.eg-next .mn { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+.eg-modes { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; align-items: start; }
+.eg-mode .spread { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+.eg-window-bar { position: relative; height: 6px; background: var(--surface-3); }
+.eg-window-bar > span { display: block; height: 100%; background: var(--hairline-strong); }
+.eg-window-bar > i { position: absolute; top: -4px; width: 2px; height: 14px; background: var(--accent); }
+.eg-window-dates { display: flex; justify-content: space-between; margin-top: 8px; font-size: 12px; }
+.eg-result { margin: 18px 0 6px; }
+.eg-result small { text-transform: none; }
+.eg-rewards .act-xp { margin-top: 8px; }
+.eg-last-label { margin: 18px 0 8px; }
+.eg-last { display: flex; align-items: flex-end; gap: 6px; height: 48px; }
+.eg-last > span:not(.eg-none) { flex: 1; background: var(--hairline-strong); }
+.eg-last > span.on { background: var(--accent); }
+.eg-none { font-size: 14px; align-self: center; }
+.eg-upcoming .act-row .mn { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+.act-cycles .spread { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+
 @media (max-width: 900px) {
+  .eg-this-body { flex-wrap: wrap; }
   .hub-head { flex-wrap: wrap; }
   .hub-resets { margin-left: 0; gap: 24px; }
   .act-cadences, .act-bottom, .act-version-body { grid-template-columns: minmax(0, 1fr); }

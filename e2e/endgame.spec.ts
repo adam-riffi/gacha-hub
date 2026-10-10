@@ -13,8 +13,8 @@ test("a game's Endgame tab: this cycle's rewards, a card per mode to type result
 
   const assault = page.getByRole("region", { name: "Deadly Assault" });
   await assault.getByRole("button", { name: "Update Deadly Assault" }).click();
-  await assault.getByLabel("Stars").fill("6");
-  await assault.getByLabel("Polychrome").fill("200");
+  await assault.getByLabel("Stars", { exact: true }).fill("6");
+  await assault.getByLabel("Polychrome", { exact: true }).fill("200");
   await assault.getByRole("button", { name: "Save" }).click();
   await expect(assault).toContainText("6 / 9");
   await expect(assault).toContainText("200 / 300");
