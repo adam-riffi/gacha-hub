@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f9/04-nte · #123
+- Done: Neverness to Everness (`nte`), scaffolded with `game:new` and filled from the research notes: four servers at 05:00, Character Pixels, Limited Board (no 50/50, hard pity 90), Beyond the Rails every 14 days, Circle Bounty, Riftcrystal Mining Permit, Lost Exchange, Console cartridges, Awakening and Mixing, Hunter Level, version 1.4, a by-hand sheet; accent #1F9BFF. `docs/games/nte.md` cites official notices and marks the rest ~, with the research notes kept. README lists it. #122 merged.
+- Tests: written first: NTE's facts and accent; E2E `nte.spec.ts` adds it from the library and uses Activities, Endgame, Pulls, a build and Home by hand; the conformance suite covers it.
+- Scope/decisions: capability M only (ADR 0005). Beyond the Rails' anchor (30 Sep) is inferred from the version start (~).
+- Next: `stack/f9/05-zzz-feed`.
+
 ## 2026-10-10 · claude · stack/f9/03-game-new · #122
 - Done: `conformance(game, sheet)` in `packages/shared/src/games/conformance.ts` (servers and cadences, stamina, shops, endgame, passes, version, gear and dupes against the build schema, KPIs, art, pull odds, names in the reference sheet); `npm run game:new -- <key> "<Name>"` (`scripts/game-new.mjs`) scaffolds a module whose placeholder manifest passes it, a reference sheet, a web sheet stub, and registers the game in both registries. AGENTS.md command row. #121 merged.
 - Tests: written first: `gameNew.test.ts` (files and registry edits; the scaffolded module, written where it would live, passes the suite; malformed keys refused) and the suite over every game plus a broken manifest's report. A real run (a throwaway "demo") typechecked, linted and passed all tests before removal; the facts tests now pin the games they name.

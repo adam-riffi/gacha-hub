@@ -209,6 +209,23 @@ describe("game facts", () => {
     expect(getGame("zzz")!.manifest.gear.slots.find((x) => x.key === "slot5")?.mainStats).toContain("PEN Ratio%");
   });
 
+  it("tracks Neverness to Everness by hand, with what its official notices and research give", () => {
+    const nte = getGame("nte")!;
+    expect(nte.regions.map((r) => [r.key, r.utcOffsetMinutes, r.dailyResetHour, r.weeklyResetWeekday])).toEqual([
+      ["asia", 480, 5, 1],
+      ["na", -300, 5, 1],
+      ["eu", 60, 5, 1],
+      ["sea", 480, 5, 1],
+    ]);
+    const pixels = nte.currencies.find((c) => c.key === nte.manifest.stamina.currency)!;
+    expect([pixels.label, pixels.cap, pixels.regenPerHour]).toEqual(["Character Pixels", 240, 10]);
+    expect(nte.pullBanners!.map((b) => [b.label, b.hardPity, b.featuredRate])).toEqual([["Limited Board", 90, 1]]);
+    expect(nte.manifest.battlePass).toMatchObject({ name: "Circle Bounty", maxLevel: 80, weeklyXpCap: 12_000 });
+    expect(nte.manifest.version).toEqual({ name: "1.4", start: "2026-09-30", days: 42 });
+    expect(nte.manifest.endgame.map((e) => [e.name, e.metric.max, e.maxPremium])).toEqual([["Beyond the Rails", 36, 800]]);
+    expect(nte.manifest.monthlyShops).toEqual([{ key: "lost", name: "Lost Exchange", day: 1 }]);
+  });
+
   it("closes Stygian Onslaught a week before the next version, as the wiki's season table shows", () => {
     const stygian = getGame("genshin")!.manifest.endgame.find((e) => e.key === "stygian")!;
     expect(stygian.openDays).toBe(35);
