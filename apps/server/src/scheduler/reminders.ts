@@ -1,4 +1,4 @@
-import type { GameInstance } from "../generated/prisma/client.js";
+import type { CurrencyState, GameInstance } from "../generated/prisma/client.js";
 import {
   domainsToday,
   gameWeekday,
@@ -6,12 +6,16 @@ import {
   reminderConfigSchema,
   type GameDefinition,
   type OpenDomain,
+  endgameNow,
+  premiumCurrency,
   taskAnchor,
+  type ReminderConfig,
   type TaskCadence,
 } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
 import { isDoneThisCycle } from "../lib/resets.js";
-import { dueReminders } from "./due.js";
+import { dueReminders, type DueExtra } from "./due.js";
+import type { RegionReset } from "../lib/resets.js";
 import { getCatalog, regionForInstance } from "../api/util.js";
 import { sendDirectMessage } from "../discord/rest.js";
 
@@ -70,6 +74,30 @@ async function undoneDailies(userId: string, instance: GameInstance, game: GameD
 }
 
 /**
+ * What the stamina and endgame reminders need: when the stamina fills, from
+ * its stored value (a fixed instant, so it dedupes), and each open endgame
+ * mode's reset with the premium still unclaimed.
+ */
+async function dueExtra(cfg: ReminderConfig, game: GameDefinition, instance: GameInstance & { currencies: CurrencyState[] }, region: RegionReset, now: Date): Promise<DueExtra> {
+  const extra: DueExtra = {};
+  const def = game.currencies.find((c) => c.key === game.manifest.stamina.currency);
+  const row = instance.currencies.find((c) => c.key === def?.key);
+  if (cfg.whenStaminaFull && def?.cap && def.regenPerHour) {
+    const from = row ?? { value: 0, updatedAt: instance.createdAt };
+    const hours = Math.max(0, def.cap - from.value) / def.regenPerHour;
+    extra.stamina = { label: def.label, fullAt: new Date(from.updatedAt.getTime() + hours * 3_600_000) };
+  }
+  if (cfg.beforeEndgameReset && game.manifest.endgame.length) {
+    const rows = await prisma.cycleResult.findMany({ where: { gameInstanceId: instance.id } });
+    const premium = premiumCurrency(game);
+    extra.endgame = endgameNow(game, region, now, rows)
+      .modes.filter((m) => m.open && m.mode.maxPremium !== undefined)
+      .map((m) => ({ key: m.mode.key, name: m.mode.name, closes: m.closes, unclaimed: m.mode.maxPremium! - m.premium, premium }));
+  }
+  return extra;
+}
+
+/**
  * Evaluate all enabled reminder rules; send + log any that are due. Safe to
  * call from a coarse external cron: the (rule, boundary) log makes it
  * idempotent.
@@ -96,9 +124,9 @@ export async function runReminderTick(now = new Date()): Promise<void> {
 
       const region = regionForInstance(game, instance);
       const pending = [];
-      for (const d of dueReminders(cfg, region, game.name, now)) {
+      for (const d of dueReminders(cfg, region, game.name, now, await dueExtra(cfg, game, instance, region, now))) {
         const already = await prisma.reminderLog.findUnique({
-          where: { ruleId_firedFor: { ruleId: rule.id, firedFor: d.firedFor } },
+          where: { ruleId_firedFor_key: { ruleId: rule.id, firedFor: d.firedFor, key: d.key } },
         });
         if (!already) pending.push(d);
       }
@@ -132,7 +160,7 @@ export async function runReminderTick(now = new Date()): Promise<void> {
       // before reset), each gets its own DM and log row.
       for (const d of pending) {
         await sendDirectMessage(rule.user.discordId, [d.headline, ...parts].join("\n"));
-        await prisma.reminderLog.create({ data: { ruleId: rule.id, firedFor: d.firedFor } });
+        await prisma.reminderLog.create({ data: { ruleId: rule.id, firedFor: d.firedFor, key: d.key } });
       }
     } catch (err) {
       console.error(`[scheduler] rule ${rule.id} failed:`, err);
