@@ -1,8 +1,8 @@
 # Handoff — 2026-10-10 · claude
 
 ## State
-- `main` at `059d542`: feat(kpi): a game's default KPI targets (#187). CI green.
-- Open PRs: #105 fix(vercel) function trace, a draft since 2026-10-09, untouched.
+- `main` at `e855f82`: feat(profile): long-term progress from the HoYoLAB record card (#191). CI green.
+- Open PRs: none besides this one (#192).
 - Production serves #186 (deployed 18:52 UTC). Merges no longer deploy (#189, `git.deploymentEnabled: false`): `main` goes to production only when Georges asks (`docs/DEPLOY.md`, Redeploys). After a deploy, run the smoke check.
 - Every milestone in DESIGN.md §9 is built, V through F12. The agent work Georges asked for is done. What is left needs his secrets (below), or real answers to replace fixtures.
 
@@ -17,7 +17,13 @@
   - #185, Genshin talents from Enka;
   - #186, Stygian Onslaught;
   - #187, default KPI targets;
-  - #188, this handoff.
+  - #188, the handoff.
+- After "go":
+  - #105, the function trace fix, rebased: the Vercel function no longer ships the repository or a local `.env`;
+  - #189, deploys only at Georges's command;
+  - #190, the guide's screen chapter, with art-free screenshots;
+  - #191, long-term progress from the HoYoLAB record card;
+  - #192, every `~` value checked against the wikis (17 confirmed, 2 corrected).
 
 ## Decisions taken (2026-10-10, Georges: "take every decision")
 - **Accepted:** ADR 0009, from the record shape open-source trackers parse. Also Enka's store and the Hakushin data (static.nanoka.cc), used with credit in NOTICE and removed on request.
@@ -29,18 +35,19 @@
 - **Waiting:** TypeScript 7, until typescript-eslint supports it (it supports TypeScript below 6.1 today).
 
 ## Verified
-- `npm run check` before each PR and CI green on each: 529 tests and 40 E2E journeys; initial JavaScript 194.9 KB of 200 KB.
+- `npm run check` before each PR and CI green on each: 532 tests and 40 E2E journeys; initial JavaScript 194.9 KB of 200 KB.
 - Checked in the browser at 1440:
   - ZZZ's 60 agents with art, and its Drive discs and Planner tabs;
   - Endfield's Pulls with 6★ labels and Arsenal Tickets;
   - Settings' records link and ZZZ's Enka sync;
   - talent names;
-  - default targets.
+  - default targets;
+  - Profile's long-term progress.
 
 ## Next
 1. When Georges shares them: replace the made-up fixtures with real answers (an Endfield records page, a ZZZ showcase), then fix whatever differs.
 2. Once the bucket exists, check F12's acceptance: art loads from R2, and a missing file falls back to the placeholder.
-3. Each game version: refresh the catalogs (`npm run catalog:<game>`), then run mirror-art.
+3. Each game version: refresh the catalogs (`npm run catalog:<game>`), then run mirror-art. Re-check the 38 values still marked `~` in `docs/games/*.md` (the wikis didn't state them on 2026-10-10).
 
 ## Needs from Georges
 - **Secrets:**
