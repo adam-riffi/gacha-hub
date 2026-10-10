@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { farmableToday, gameWeekday, getGame, type MaterialStockDto, type TaskOrigin } from "@gacha/shared";
+import { LoadError } from "../components/LoadError";
 import { api } from "../lib/api";
 import { useCatalog } from "../lib/catalog";
 import { useToast } from "../lib/toast";
@@ -45,14 +46,7 @@ export function PlannerPage() {
   });
 
   const game = instance.data && getGame(instance.data.gameKey);
-  if (instance.isError || tasks.isError) {
-    return (
-      <div className="card" role="alert">
-        <p>The planner could not load.</p>
-        <button className="btn" onClick={() => void Promise.all([instance.refetch(), tasks.refetch()])}>Try again</button>
-      </div>
-    );
-  }
+  if (instance.isError || tasks.isError) return <LoadError what="The planner" retry={() => Promise.all([instance.refetch(), tasks.refetch()])} />;
   if (!instance.data || !tasks.data || !game) return <div className="mu">Loading…</div>;
 
   const region = game.regions.find((r) => r.key === instance.data.regionKey) ?? game.regions[0]!;

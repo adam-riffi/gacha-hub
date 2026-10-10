@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getGame, hubResets, passView, utcLabel, type GameDefinition, type PassesDto, type UserExport } from "@gacha/shared";
+import { LoadError } from "../components/LoadError";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
 import { useReminderFlag, type ReminderFlag } from "../lib/reminder";
@@ -35,14 +36,7 @@ export function ProfilePage() {
   const { id } = useParams<{ id: string }>();
   const instance = useQuery({ queryKey: ["instance", id], queryFn: () => api.get<InstanceDetail>(`/api/instances/${id}`) });
   const game = instance.data && getGame(instance.data.gameKey);
-  if (instance.isError) {
-    return (
-      <div className="card" role="alert">
-        <p>The profile could not load.</p>
-        <button className="btn" onClick={() => void instance.refetch()}>Try again</button>
-      </div>
-    );
-  }
+  if (instance.isError) return <LoadError what="The profile" retry={() => instance.refetch()} />;
   if (!instance.data || !game) return <div className="mu">Loading…</div>;
   return (
     <>

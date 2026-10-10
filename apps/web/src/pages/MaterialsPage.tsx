@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { MaterialNeedDto, MaterialStockDto } from "@gacha/shared";
+import { LoadError } from "../components/LoadError";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
 import { useCatalog } from "../lib/catalog";
@@ -19,7 +20,7 @@ export function MaterialsPage() {
   const [neededOnly, setNeededOnly] = useState(false);
   const [category, setCategory] = useState("");
 
-  const { data: instance } = useQuery({
+  const { data: instance, isError, refetch } = useQuery({
     queryKey: ["instance", id],
     queryFn: () => api.get<InstanceDetail>(`/api/instances/${id}`),
     enabled: Boolean(id),
@@ -49,6 +50,7 @@ export function MaterialsPage() {
     onError: () => toast("Could not save stock", "err"),
   });
 
+  if (isError) return <LoadError what="Materials" retry={refetch} />;
   if (!instance) return <div className="muted">Loading…</div>;
   if (isLoading) return <div className="muted">Loading catalog…</div>;
   if (!catalog) return <div className="card empty">This game has no materials catalog.</div>;

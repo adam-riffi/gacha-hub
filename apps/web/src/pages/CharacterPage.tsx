@@ -15,6 +15,7 @@ import {
   type TaskOrigin,
   type TeamDto,
 } from "@gacha/shared";
+import { LoadError } from "../components/LoadError";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
 import { useCatalog } from "../lib/catalog";
@@ -39,14 +40,7 @@ const STATUSES: { value: BuildStatus; label: string }[] = [
 export function CharacterPage() {
   const { id } = useParams();
   const { data, isLoading, isError, refetch } = useQuery({ queryKey: ["character", id], queryFn: () => api.get<CharacterDetail>(`/api/characters/${id}`), enabled: Boolean(id) });
-  if (isError) {
-    return (
-      <div className="card" role="alert">
-        <p>This build could not load.</p>
-        <button className="btn" onClick={() => void refetch()}>Try again</button>
-      </div>
-    );
-  }
+  if (isError) return <LoadError what="This build" retry={() => refetch()} />;
   if (isLoading || !data) return <div className="mu">Loading…</div>;
   // Keyed by id so the editor re-initializes when navigating between characters.
   return <CharacterEditor key={data.id} data={data} />;

@@ -9,6 +9,7 @@ import {
   type PullLogDto,
   type WishlistItemDto,
 } from "@gacha/shared";
+import { LoadError } from "../components/LoadError";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
 import { useCatalog } from "../lib/catalog";
@@ -83,19 +84,7 @@ export function PullsPage() {
   });
 
   const game = instance.data && getGame(instance.data.gameKey);
-  if (instance.isError || log.isError) {
-    return (
-      <div className="card" role="alert">
-        <p>Pulls could not load.</p>
-        <button
-          className="btn"
-          onClick={() => void Promise.all([instance.refetch(), log.refetch()])}
-        >
-          Try again
-        </button>
-      </div>
-    );
-  }
+  if (instance.isError || log.isError) return <LoadError what="Pulls" retry={() => Promise.all([instance.refetch(), log.refetch()])} />;
   if (!instance.data || !log.data || !game) return <div className="mu">Loading…</div>;
 
   const values = new Map(instance.data.currencies.map((c) => [c.key, c.value]));
