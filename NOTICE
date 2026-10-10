@@ -37,6 +37,8 @@ Artwork
   Content: © HoYoverse / COGNOSPHERE.
   Wuthering Waves art: Wuthery (https://files.wuthery.com/p/GameData/).
   Content: © Kuro Games.
+  Zenless Zone Zero art: the Hakushin assets (https://static.nanoka.cc/assets/zzz/).
+  Content: © HoYoverse / COGNOSPHERE.
   The app hotlinks these sources, or reads a copy mirrored into our own
   bucket (scripts/assets/mirror.ts, ADR 0006) for a non-commercial tool used
   by a few friends; art is removed on request.

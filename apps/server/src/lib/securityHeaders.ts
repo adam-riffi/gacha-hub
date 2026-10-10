@@ -17,6 +17,7 @@ const CSP: Record<string, string[]> = {
     "https://enka.network",
     "https://sr.yatta.moe",
     "https://files.wuthery.com",
+    "https://static.nanoka.cc",
     "https://cdn.discordapp.com",
     "https://*.public.blob.vercel-storage.com",
     // Our own copy of the game art, in a public R2 bucket (ADR 0006).

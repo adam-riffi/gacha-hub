@@ -10,7 +10,8 @@
       "tag": "Electric",
       "weaponType": "Stun",
       "maxLevel": 60,
-      "icon": "IconRole01",
+      "icon": "IconRoleCrop01",
+      "splash": "IconRole01",
       "ascension": [
         {
           "atLevel": 20,
@@ -1018,7 +1019,8 @@
       "tag": "Physical",
       "weaponType": "Attack",
       "maxLevel": 60,
-      "icon": "IconRole11",
+      "icon": "IconRoleCrop11",
+      "splash": "IconRole11",
       "ascension": [
         {
           "atLevel": 20,
@@ -2026,7 +2028,8 @@
       "tag": "Ether",
       "weaponType": "Support",
       "maxLevel": 60,
-      "icon": "IconRole12",
+      "icon": "IconRoleCrop12",
+      "splash": "IconRole12",
       "ascension": [
         {
           "atLevel": 20,
@@ -3034,7 +3037,8 @@
       "tag": "Fire",
       "weaponType": "Attack",
       "maxLevel": 60,
-      "icon": "IconRole05",
+      "icon": "IconRoleCrop05",
+      "splash": "IconRole05",
       "ascension": [
         {
           "atLevel": 20,
@@ -4042,7 +4046,8 @@
       "tag": "Ice",
       "weaponType": "Rupture",
       "maxLevel": 60,
-      "icon": "IconRole52",
+      "icon": "IconRoleCrop52",
+      "splash": "IconRole52",
       "ascension": [
         {
           "atLevel": 20,
@@ -5050,7 +5055,8 @@
       "tag": "Physical",
       "weaponType": "Attack",
       "maxLevel": 60,
-      "icon": "IconRole09",
+      "icon": "IconRoleCrop09",
+      "splash": "IconRole09",
       "ascension": [
         {
           "atLevel": 20,
@@ -6058,7 +6064,8 @@
       "tag": "Physical",
       "weaponType": "Defense",
       "maxLevel": 60,
-      "icon": "IconRole25",
+      "icon": "IconRoleCrop25",
+      "splash": "IconRole25",
       "ascension": [
         {
           "atLevel": 20,
@@ -7066,7 +7073,8 @@
       "tag": "Physical",
       "weaponType": "Attack",
       "maxLevel": 60,
-      "icon": "IconRole10",
+      "icon": "IconRoleCrop10",
+      "splash": "IconRole10",
       "ascension": [
         {
           "atLevel": 20,
@@ -8074,7 +8082,8 @@
       "tag": "Ice",
       "weaponType": "Anomaly",
       "maxLevel": 60,
-      "icon": "IconRole13",
+      "icon": "IconRoleCrop13",
+      "splash": "IconRole13",
       "ascension": [
         {
           "atLevel": 20,
@@ -9082,7 +9091,8 @@
       "tag": "Fire",
       "weaponType": "Stun",
       "maxLevel": 60,
-      "icon": "IconRole14",
+      "icon": "IconRoleCrop14",
+      "splash": "IconRole14",
       "ascension": [
         {
           "atLevel": 20,
@@ -10090,7 +10100,8 @@
       "tag": "Electric",
       "weaponType": "Attack",
       "maxLevel": 60,
-      "icon": "IconRole15",
+      "icon": "IconRoleCrop15",
+      "splash": "IconRole15",
       "ascension": [
         {
           "atLevel": 20,
@@ -11098,7 +11109,8 @@
       "tag": "Fire",
       "weaponType": "Defense",
       "maxLevel": 60,
-      "icon": "IconRole16",
+      "icon": "IconRoleCrop16",
+      "splash": "IconRole16",
       "ascension": [
         {
           "atLevel": 20,
@@ -12106,7 +12118,8 @@
       "tag": "Ice",
       "weaponType": "Support",
       "maxLevel": 60,
-      "icon": "IconRole17",
+      "icon": "IconRoleCrop17",
+      "splash": "IconRole17",
       "ascension": [
         {
           "atLevel": 20,
@@ -13114,7 +13127,8 @@
       "tag": "Ice",
       "weaponType": "Stun",
       "maxLevel": 60,
-      "icon": "IconRole18",
+      "icon": "IconRoleCrop18",
+      "splash": "IconRole18",
       "ascension": [
         {
           "atLevel": 20,
@@ -14122,7 +14136,8 @@
       "tag": "Fire",
       "weaponType": "Support",
       "maxLevel": 60,
-      "icon": "IconRole27",
+      "icon": "IconRoleCrop27",
+      "splash": "IconRole27",
       "ascension": [
         {
           "atLevel": 20,
@@ -15130,7 +15145,8 @@
       "tag": "Fire",
       "weaponType": "Stun",
       "maxLevel": 60,
-      "icon": "IconRole26",
+      "icon": "IconRoleCrop26",
+      "splash": "IconRole26",
       "ascension": [
         {
           "atLevel": 20,
@@ -16138,7 +16154,8 @@
       "tag": "Fire",
       "weaponType": "Anomaly",
       "maxLevel": 60,
-      "icon": "IconRole32",
+      "icon": "IconRoleCrop32",
+      "splash": "IconRole32",
       "ascension": [
         {
           "atLevel": 20,
@@ -17146,7 +17163,8 @@
       "tag": "Electric",
       "weaponType": "Anomaly",
       "maxLevel": 60,
-      "icon": "IconRole20",
+      "icon": "IconRoleCrop20",
+      "splash": "IconRole20",
       "ascension": [
         {
           "atLevel": 20,
@@ -18154,7 +18172,8 @@
       "tag": "Ice",
       "weaponType": "Attack",
       "maxLevel": 60,
-      "icon": "IconRole21",
+      "icon": "IconRoleCrop21",
+      "splash": "IconRole21",
       "ascension": [
         {
           "atLevel": 20,
@@ -19162,7 +19181,8 @@
       "tag": "Electric",
       "weaponType": "Attack",
       "maxLevel": 60,
-      "icon": "IconRole35",
+      "icon": "IconRoleCrop35",
+      "splash": "IconRole35",
       "ascension": [
         {
           "atLevel": 20,
@@ -20170,7 +20190,8 @@
       "tag": "Electric",
       "weaponType": "Support",
       "maxLevel": 60,
-      "icon": "IconRole22",
+      "icon": "IconRoleCrop22",
+      "splash": "IconRole22",
       "ascension": [
         {
           "atLevel": 20,
@@ -21178,7 +21199,8 @@
       "tag": "Electric",
       "weaponType": "Anomaly",
       "maxLevel": 60,
-      "icon": "IconRole31",
+      "icon": "IconRoleCrop31",
+      "splash": "IconRole31",
       "ascension": [
         {
           "atLevel": 20,
@@ -22186,7 +22208,8 @@
       "tag": "Ether",
       "weaponType": "Attack",
       "maxLevel": 60,
-      "icon": "IconRole23",
+      "icon": "IconRoleCrop23",
+      "splash": "IconRole23",
       "ascension": [
         {
           "atLevel": 20,
@@ -23194,7 +23217,8 @@
       "tag": "Electric",
       "weaponType": "Stun",
       "maxLevel": 60,
-      "icon": "IconRole29",
+      "icon": "IconRoleCrop29",
+      "splash": "IconRole29",
       "ascension": [
         {
           "atLevel": 20,
@@ -24202,7 +24226,8 @@
       "tag": "Physical",
       "weaponType": "Anomaly",
       "maxLevel": 60,
-      "icon": "IconRole24",
+      "icon": "IconRoleCrop24",
+      "splash": "IconRole24",
       "ascension": [
         {
           "atLevel": 20,
@@ -25210,7 +25235,8 @@
       "tag": "Electric",
       "weaponType": "Defense",
       "maxLevel": 60,
-      "icon": "IconRole30",
+      "icon": "IconRoleCrop30",
+      "splash": "IconRole30",
       "ascension": [
         {
           "atLevel": 20,
@@ -26218,7 +26244,8 @@
       "tag": "Physical",
       "weaponType": "Anomaly",
       "maxLevel": 60,
-      "icon": "IconRole28",
+      "icon": "IconRoleCrop28",
+      "splash": "IconRole28",
       "ascension": [
         {
           "atLevel": 20,
@@ -27226,7 +27253,8 @@
       "tag": "Ice",
       "weaponType": "Attack",
       "maxLevel": 60,
-      "icon": "IconRole42",
+      "icon": "IconRoleCrop42",
+      "splash": "IconRole42",
       "ascension": [
         {
           "atLevel": 20,
@@ -28234,7 +28262,8 @@
       "tag": "Fire",
       "weaponType": "Attack",
       "maxLevel": 60,
-      "icon": "IconRole49",
+      "icon": "IconRoleCrop49",
+      "splash": "IconRole49",
       "ascension": [
         {
           "atLevel": 20,
@@ -29242,7 +29271,8 @@
       "tag": "Ether",
       "weaponType": "Support",
       "maxLevel": 60,
-      "icon": "IconRole36",
+      "icon": "IconRoleCrop36",
+      "splash": "IconRole36",
       "ascension": [
         {
           "atLevel": 20,
@@ -30250,7 +30280,8 @@
       "tag": "Fire",
       "weaponType": "Attack",
       "maxLevel": 60,
-      "icon": "IconRole37",
+      "icon": "IconRoleCrop37",
+      "splash": "IconRole37",
       "ascension": [
         {
           "atLevel": 20,
@@ -31258,7 +31289,8 @@
       "tag": "Ether",
       "weaponType": "Anomaly",
       "maxLevel": 60,
-      "icon": "IconRole41",
+      "icon": "IconRoleCrop41",
+      "splash": "IconRole41",
       "ascension": [
         {
           "atLevel": 20,
@@ -32266,7 +32298,8 @@
       "tag": "Ice",
       "weaponType": "Defense",
       "maxLevel": 60,
-      "icon": "IconRole56",
+      "icon": "IconRoleCrop56",
+      "splash": "IconRole56",
       "ascension": [
         {
           "atLevel": 20,
@@ -33274,7 +33307,8 @@
       "tag": "Physical",
       "weaponType": "Stun",
       "maxLevel": 60,
-      "icon": "IconRole38",
+      "icon": "IconRoleCrop38",
+      "splash": "IconRole38",
       "ascension": [
         {
           "atLevel": 20,
@@ -34282,7 +34316,8 @@
       "tag": "Electric",
       "weaponType": "Stun",
       "maxLevel": 60,
-      "icon": "IconRole39",
+      "icon": "IconRoleCrop39",
+      "splash": "IconRole39",
       "ascension": [
         {
           "atLevel": 20,
@@ -35290,7 +35325,8 @@
       "tag": "Ether",
       "weaponType": "Rupture",
       "maxLevel": 60,
-      "icon": "IconRole44",
+      "icon": "IconRoleCrop44",
+      "splash": "IconRole44",
       "ascension": [
         {
           "atLevel": 20,
@@ -36298,7 +36334,8 @@
       "tag": "Electric",
       "weaponType": "Attack",
       "maxLevel": 60,
-      "icon": "IconRole40",
+      "icon": "IconRoleCrop40",
+      "splash": "IconRole40",
       "ascension": [
         {
           "atLevel": 20,
@@ -37306,7 +37343,8 @@
       "tag": "Fire",
       "weaponType": "Stun",
       "maxLevel": 60,
-      "icon": "IconRole43",
+      "icon": "IconRoleCrop43",
+      "splash": "IconRole43",
       "ascension": [
         {
           "atLevel": 20,
@@ -38314,7 +38352,8 @@
       "tag": "Physical",
       "weaponType": "Anomaly",
       "maxLevel": 60,
-      "icon": "IconRole46",
+      "icon": "IconRoleCrop46",
+      "splash": "IconRole46",
       "ascension": [
         {
           "atLevel": 20,
@@ -39322,7 +39361,8 @@
       "tag": "Physical",
       "weaponType": "Support",
       "maxLevel": 60,
-      "icon": "IconRole47",
+      "icon": "IconRoleCrop47",
+      "splash": "IconRole47",
       "ascension": [
         {
           "atLevel": 20,
@@ -40330,7 +40370,8 @@
       "tag": "Physical",
       "weaponType": "Defense",
       "maxLevel": 60,
-      "icon": "IconRole45",
+      "icon": "IconRoleCrop45",
+      "splash": "IconRole45",
       "ascension": [
         {
           "atLevel": 20,
@@ -41338,7 +41379,8 @@
       "tag": "Physical",
       "weaponType": "Attack",
       "maxLevel": 60,
-      "icon": "IconRole55",
+      "icon": "IconRoleCrop55",
+      "splash": "IconRole55",
       "ascension": [
         {
           "atLevel": 20,
@@ -42346,7 +42388,8 @@
       "tag": "Fire",
       "weaponType": "Rupture",
       "maxLevel": 60,
-      "icon": "IconRole51",
+      "icon": "IconRoleCrop51",
+      "splash": "IconRole51",
       "ascension": [
         {
           "atLevel": 20,
@@ -43354,7 +43397,8 @@
       "tag": "Ether",
       "weaponType": "Support",
       "maxLevel": 60,
-      "icon": "IconRole50",
+      "icon": "IconRoleCrop50",
+      "splash": "IconRole50",
       "ascension": [
         {
           "atLevel": 20,
@@ -44362,7 +44406,8 @@
       "tag": "Electric",
       "weaponType": "Attack",
       "maxLevel": 60,
-      "icon": "IconRole48",
+      "icon": "IconRoleCrop48",
+      "splash": "IconRole48",
       "ascension": [
         {
           "atLevel": 20,
@@ -45370,7 +45415,8 @@
       "tag": "Fire",
       "weaponType": "Rupture",
       "maxLevel": 60,
-      "icon": "IconRole53",
+      "icon": "IconRoleCrop53",
+      "splash": "IconRole53",
       "ascension": [
         {
           "atLevel": 20,
@@ -46378,7 +46424,8 @@
       "tag": "Physical",
       "weaponType": "Stun",
       "maxLevel": 60,
-      "icon": "IconRole54",
+      "icon": "IconRoleCrop54",
+      "splash": "IconRole54",
       "ascension": [
         {
           "atLevel": 20,
@@ -47386,7 +47433,8 @@
       "tag": "Physical",
       "weaponType": "Support",
       "maxLevel": 60,
-      "icon": "IconRole58",
+      "icon": "IconRoleCrop58",
+      "splash": "IconRole58",
       "ascension": [
         {
           "atLevel": 20,
@@ -48394,7 +48442,8 @@
       "tag": "Ether",
       "weaponType": "Anomaly",
       "maxLevel": 60,
-      "icon": "IconRole57",
+      "icon": "IconRoleCrop57",
+      "splash": "IconRole57",
       "ascension": [
         {
           "atLevel": 20,
@@ -49402,7 +49451,8 @@
       "tag": "Ether",
       "weaponType": "Stun",
       "maxLevel": 60,
-      "icon": "IconRole59",
+      "icon": "IconRoleCrop59",
+      "splash": "IconRole59",
       "ascension": [
         {
           "atLevel": 20,
@@ -50410,7 +50460,8 @@
       "tag": "Electric",
       "weaponType": "Attack",
       "maxLevel": 60,
-      "icon": "IconRole60",
+      "icon": "IconRoleCrop60",
+      "splash": "IconRole60",
       "ascension": [
         {
           "atLevel": 20,
@@ -51418,7 +51469,8 @@
       "tag": "Physical",
       "weaponType": "Rupture",
       "maxLevel": 60,
-      "icon": "IconRole62",
+      "icon": "IconRoleCrop62",
+      "splash": "IconRole62",
       "ascension": [
         {
           "atLevel": 20,
@@ -52426,7 +52478,8 @@
       "tag": "Ice",
       "weaponType": "Anomaly",
       "maxLevel": 60,
-      "icon": "IconRole61",
+      "icon": "IconRoleCrop61",
+      "splash": "IconRole61",
       "ascension": [
         {
           "atLevel": 20,
@@ -53434,7 +53487,8 @@
       "tag": "Ether",
       "weaponType": "Attack",
       "maxLevel": 60,
-      "icon": "IconRole63",
+      "icon": "IconRoleCrop63",
+      "splash": "IconRole63",
       "ascension": [
         {
           "atLevel": 20,
@@ -54442,7 +54496,8 @@
       "tag": "Wind",
       "weaponType": "Anomaly",
       "maxLevel": 60,
-      "icon": "IconRole64",
+      "icon": "IconRoleCrop64",
+      "splash": "IconRole64",
       "ascension": [
         {
           "atLevel": 20,
@@ -55450,7 +55505,8 @@
       "tag": "Fire",
       "weaponType": "Stun",
       "maxLevel": 60,
-      "icon": "IconRole65",
+      "icon": "IconRoleCrop65",
+      "splash": "IconRole65",
       "ascension": [
         {
           "atLevel": 20,
@@ -56458,7 +56514,8 @@
       "tag": "Lumiflux",
       "weaponType": "Anomaly",
       "maxLevel": 60,
-      "icon": "IconRole67",
+      "icon": "IconRoleCrop67",
+      "splash": "IconRole67",
       "ascension": [
         {
           "atLevel": 20,
@@ -57466,7 +57523,8 @@
       "tag": "Ice",
       "weaponType": "Attack",
       "maxLevel": 60,
-      "icon": "IconRole66",
+      "icon": "IconRoleCrop66",
+      "splash": "IconRole66",
       "ascension": [
         {
           "atLevel": 20,
@@ -58474,7 +58532,8 @@
       "tag": "Electric",
       "weaponType": "Armorer",
       "maxLevel": 60,
-      "icon": "IconRole1611",
+      "icon": "IconRoleCrop1611",
+      "splash": "IconRole1611",
       "ascension": [
         {
           "atLevel": 20,
@@ -59482,7 +59541,8 @@
       "tag": "Wind",
       "weaponType": "Stun",
       "maxLevel": 60,
-      "icon": "IconRole68",
+      "icon": "IconRoleCrop68",
+      "splash": "IconRole68",
       "ascension": [
         {
           "atLevel": 20,
