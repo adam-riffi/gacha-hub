@@ -231,6 +231,8 @@ model Character {
   synced         Json?
   /// The build's KPI targets ({ "Crit value": 200 }), set on the sheet (WIREFRAMES.md G5).
   targets        Json?
+  /// The build a character opens on (Georges, 2026-10-11); a unit's first build is it until another is chosen.
+  isDefault      Boolean      @default(false)
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
 

@@ -53,7 +53,7 @@ test("Character sheet: a character opens on its default build; builds switch by 
   await page.goto(`/characters/${first.id}`);
   const tabs = page.getByRole("tablist", { name: "Builds" });
   await expect(tabs.getByRole("tab", { name: "Build 1 ★" })).toHaveAttribute("aria-selected", "true");
-  await tabs.getByRole("button", { name: "+ New build" }).click();
+  await page.getByRole("button", { name: "+ New build" }).click();
   await expect(page).not.toHaveURL(new RegExp(first.id));
   await expect(page.getByRole("heading", { name: "Herta", exact: true })).toBeVisible();
   await expect(tabs.getByRole("tab", { name: "Build 2" })).toHaveAttribute("aria-selected", "true");
@@ -84,9 +84,4 @@ test("Character sheet: KPI targets on the tiles, and the teams the character is 
   await expect(page.getByRole("region", { name: "KPIs" }).getByRole("group", { name: "SPD" }).getByRole("spinbutton", { name: "SPD target" })).toHaveValue("134");
 
   await expect(page.getByRole("region", { name: "Used in" })).toContainText("E2E Kafka DoT");
-
-});
-  await expect(spd2.getByRole("spinbutton", { name: "SPD target" })).toHaveValue("134");
-  await expect(spd2).toContainText("default");
-  await page.request.put(`/api/instances/${id}`, { data: { kpiTargets: null } });
 });

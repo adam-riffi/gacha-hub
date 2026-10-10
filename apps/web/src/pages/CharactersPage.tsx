@@ -120,7 +120,9 @@ export function CharactersPage() {
   // A game with a catalog waits for it: without it the page would fall back to one card per build.
   if (!instance.data || !builds.data || !game || catalogLoading) return <div className="mu">Loading…</div>;
 
-  const byCatalog = new Map(builds.data.filter((b) => b.catalogId).map((b) => [b.catalogId!, b]));
+  // Each unit's card shows its default build (the flagged one, else its first).
+  const byCatalog = new Map<string, CharacterDto>();
+  for (const b of builds.data) if (b.catalogId && (b.isDefault || !byCatalog.has(b.catalogId))) byCatalog.set(b.catalogId, b);
   const ownedIds = new Set((ownership.data ?? []).filter((o) => o.kind === "character").map((o) => o.catalogId));
   const wishedIds = new Set((wishlist.data ?? []).filter((w) => w.kind === "character").map((w) => w.catalogId));
   const cards: Card[] = catalog

@@ -132,6 +132,7 @@ Added after Georges's feedback of 2026-10-10 ("no obvious way to make teams, loo
 
 Picture: [`g5-character-sheet.png`](design/wireframes/g5-character-sheet.png) · static page: [`g5-character-sheet.html`](design/wireframes/g5-character-sheet.html)
 
+- **Builds as tabs** (Georges, 2026-10-11): a character opens on its default build (★); + New build, Make default, and an optional label (else "Build 2"). No Role select, no "game's defaults" button, and no second "More details" sheet.
 - **Top section:** splash art on the left (about a third of the width, the height of this section). Beside it: back link, build status, Save, Delete; the name with rarity, element, weapon type, constellation and level; sync status; KPI tiles (crit value with its target, crit rate / damage with the ratio, energy recharge with its target, the scaling stat); Character (level, ascension, constellation, friendship), Talents (now → target), Weapon (current, target, pulls short); Combat stats.
 - **Below, full width:** the gear block in the game's shape (5 artifacts, 4 relics + 2 planar ornaments, 6 drive discs, 5 echoes under COST 12, 4 gear + an essence, the Console grid), with crit value per piece and pieces to replace flagged FARM; Plan farming (materials have and need, stamina estimate, preview tasks, update goal); Used in (endgame teams, eligibility for this cycle).
 - KPI targets come from an editable build template.

@@ -74,10 +74,13 @@ export async function registerCharacterRoutes(app: FastifyInstance) {
         ...seed,
         ...((body.doc as object) ?? {}),
       });
+      // A unit's first build is its default.
+      const siblings = body.catalogId ? await prisma.character.count({ where: { gameInstanceId: gi.id, catalogId: body.catalogId } }) : 0;
       const created = await prisma.character.create({
         data: {
           gameInstanceId: gi.id,
           catalogId: body.catalogId ?? null,
+          isDefault: siblings === 0,
           name: name!,
           portraitUrl: body.portraitUrl ?? null,
           doc: doc as PrismaJson,
@@ -119,9 +122,13 @@ export async function registerCharacterRoutes(app: FastifyInstance) {
           return reply.code(404).send({ error: "unknown_catalog_id" });
         }
       }
+      if (body.isDefault) {
+        await prisma.character.updateMany({ where: { gameInstanceId: character.gameInstanceId, catalogId: character.catalogId, NOT: { id: character.id } }, data: { isDefault: false } });
+      }
       const updated = await prisma.character.update({
         where: { id: character.id },
         data: {
+          ...(body.isDefault ? { isDefault: true } : {}),
           ...(body.name !== undefined ? { name: body.name } : {}),
           ...(body.catalogId !== undefined ? { catalogId: body.catalogId } : {}),
           ...(body.portraitUrl !== undefined ? { portraitUrl: body.portraitUrl } : {}),

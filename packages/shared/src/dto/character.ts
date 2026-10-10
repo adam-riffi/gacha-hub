@@ -18,6 +18,8 @@ export const characterDto = z.object({
   buildStatus: buildStatusSchema,
   role: z.string().nullable(),
   targets: z.record(z.string(), z.number()).nullable().default(null),
+  /** The build the character opens on. */
+  isDefault: z.boolean().default(false),
   createdAt: isoDate,
   updatedAt: isoDate,
 });
@@ -55,5 +57,8 @@ export const createCharacterInput = z.object({
 });
 export type CreateCharacterInput = z.infer<typeof createCharacterInput>;
 
-export const updateCharacterInput = createCharacterInput.partial();
+export const updateCharacterInput = createCharacterInput.partial().extend({
+  /** Make this the build its character opens on; the others of that unit stop being it. */
+  isDefault: z.literal(true).optional(),
+});
 export type UpdateCharacterInput = z.infer<typeof updateCharacterInput>;

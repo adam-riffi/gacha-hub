@@ -6,7 +6,9 @@ test("Characters: splash cards with their KPIs, counts, search, wishlist and own
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   // HSR, not Genshin: the smoke journey adds Genshin through the library.
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
-  await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1005", doc: { level: 80, eidolon: 1, stats: { "CRIT Rate": 60, "CRIT DMG": 150, SPD: 134 } } } });
+  const kafkaBuild = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1005", doc: { level: 80, eidolon: 1, stats: { "CRIT Rate": 60, "CRIT DMG": 150, SPD: 134 } } } })).json()) as { id: string };
+  // The card shows the default build: this one.
+  await page.request.put(`/api/characters/${kafkaBuild.id}`, { data: { isDefault: true } });
   // Welt starts unowned and off the wishlist, whatever other journeys did.
   await page.request.put(`/api/instances/${id}/ownership`, { data: { items: [{ kind: "character", catalogId: "1004", owned: false }] } });
   await page.request.put(`/api/instances/${id}/wishlist`, { data: { kind: "character", catalogId: "1004", wished: false } });
