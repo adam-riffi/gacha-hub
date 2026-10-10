@@ -131,6 +131,21 @@ describe("auth + instances (routes)", () => {
     expect(primo.pullLabel).toBe("wish");
   });
 
+  it("keeps the order the user gives the games, for the strip and the dashboard, and refuses an incomplete order", async () => {
+    const gi = await installGame(c, "genshin");
+    const hsr = await installGame(c, "hsr");
+    const zzz = await installGame(c, "zzz");
+    expect((await c.req("PUT", "/api/instances/order", { ids: [zzz, gi, hsr] })).status).toBe(200);
+    expect((await c.req<{ id: string }[]>("GET", "/api/instances")).json.map((i) => i.id)).toEqual([zzz, gi, hsr]);
+    expect((await c.req<{ games: { instanceId: string }[] }>("GET", "/api/dashboard")).json.games.map((g) => g.instanceId)).toEqual([zzz, gi, hsr]);
+    // A newly added game goes last.
+    const wuwa = await installGame(c, "wuwa");
+    expect((await c.req<{ id: string }[]>("GET", "/api/instances")).json.map((i) => i.id)).toEqual([zzz, gi, hsr, wuwa]);
+    const partial = await c.req<{ error: string }>("PUT", "/api/instances/order", { ids: [zzz, gi] });
+    expect(partial.status).toBe(400);
+    expect(partial.json.error).toBe("order_mismatch");
+  });
+
   it("scopes instances to their owner", async () => {
     const id = await installGame(c, "genshin");
     // A second, separate session cannot be created for a different dev user
