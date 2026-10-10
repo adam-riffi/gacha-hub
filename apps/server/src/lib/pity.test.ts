@@ -80,7 +80,8 @@ describe("game pull rules", () => {
       for (const b of game.pullBanners ?? []) {
         expect(b.hardPity, `${game.key}/${b.key}`).toBeGreaterThan(0);
         expect(b.softPity ?? 0).toBeLessThan(b.hardPity);
-        expect([0.5, 0.75, 1]).toContain(b.featuredRate);
+        // Endfield's Arsenal: a quarter of its 6★ are the featured weapon (ADR 0009).
+        expect([0.25, 0.5, 0.75, 1]).toContain(b.featuredRate);
       }
     }
     expect(gameList.find((g) => g.key === "genshin")?.pullBanners?.map((b) => b.key)).toEqual(["character", "weapon", "standard"]);

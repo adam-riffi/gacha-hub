@@ -2,7 +2,7 @@ import type { GameDefinition } from "./games/types.js";
 
 /** One pull from a game's own history (a history link, a UIGF file), its time already in UTC. */
 export interface PullRecord {
-  /** The game's record id: digits, increasing with time. */
+  /** The game's record id, increasing with time within a banner type (digits, or Endfield's pool and sequence). */
   id: string;
   /** The game's banner type ("301", "11"…), mapped by `pullBanners[].gachaTypes`. */
   gachaType: string;
@@ -56,7 +56,7 @@ export function pullsFromRecords(game: GameDefinition, records: readonly PullRec
     // ponytail: a millisecond per pull within one second; a second holds at most a 10-pull.
     offset = r.time.getTime() === lastSecond ? offset + 1 : 0;
     lastSecond = r.time.getTime();
-    const fiveStar = r.rank >= 5;
+    const fiveStar = r.rank >= (game.topRarity ?? 5);
     let featured: boolean | null = null;
     if (fiveStar && banner.featuredRate < 1) {
       const running = windows.filter((w) => w.kind === banner.key && w.startsAt <= r.time && r.time < w.endsAt);

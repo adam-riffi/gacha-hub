@@ -119,6 +119,8 @@ export interface GameDefinition {
   regions: GameRegion[];
   /** Banner types with pity rules, for the pull log. Absent = no pull log. */
   pullBanners?: PullBannerRules[];
+  /** The rarity a banner's pity counts to (Endfield: 6★). Default 5. */
+  topRarity?: number;
   /** Party size for the team builder (Genshin/HSR 4, ZZZ/WuWa 3…). Default 4. */
   teamSize?: number;
   manifest: GameManifest;
