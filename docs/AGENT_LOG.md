@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f10/13-savings · #137
+- Done: the savings planner beside History on Pulls (WIREFRAMES.md G3): each event banner's featured 5★ in order, sharing the limited pulls; per target what it needs (worst case or on average, a radio), Covered with its chance or short by N with the chance now and with the forecast (`savingsPlan`, #135).
+- Tests: written first: `e2e/pulls.spec.ts` (two targets for Star Rail; switching to Average changes what the first needs). Checked at 1440 on the dev account.
+- Scope/decisions: targets are the running banners' featured units; "Add a target" waits for `WishlistItem` (the characters PR).
+- Next: Characters (G4) with `WishlistItem`, then the character sheet (G5), gear (G6), planner (G7), profile (G8).
+
 ## 2026-10-10 · claude · stack/f10/12-pulls · #136
 - Done: Pulls rebuilt from its board (WIREFRAMES.md G3): Pulls available (per currency) and By the end of the version (the forecast, #135); each event banner with its status as a 50/50 (or 75/25) | Guaranteed switch that calibrates, the reason from the last 5★, the 5★ pity with soft pity marked, odds (next pull, next 10, by soft pity, featured by your pulls; estimates), the curve (pulled part shaded, you, soft and hard pity, where your pulls reach), the headline chance with average and worst case, and +1, +10, Log a 5★, Set pity, Undo; the other banners in short; History of every 5★ with its pity and result.
 - Tests: written first: `e2e/pulls.spec.ts` (rewritten for the new layout: available and forecast, status switch, pity, odds, curve, logging a 5★ that loses the 50/50, history, Home's pity line). The Featured box is found by its exact label, since the curve's name also says "featured". Checked at 1440 beside `g3-pulls.png`.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: `carousel.test.ts` (timing, ordering, stepping, a fast-check lap property); `visual.spec.ts` (nearest deadline first as a paper tag, Next shows the later banner as a dark tag, hover and focus hold, reduced motion stops).
 - Scope/decisions: No carousel library (ADR 0007). The Dailies and Battle-pass cards join the same clock in `09-home`.
 - Next: `stack/v/06-charts-core`.
-
-## 2026-10-09 · claude · stack/v/04-panels · #96
-- Done: `styles/components.css`, the dashboard's parts for every page: braced cards with accent-underlined titles, graph panels with corner marks, mono buttons (paper primary), the two-state switch, square form controls, dark tags, paper chips, bands, tooltips, pips, KPI tiles, table rows and the ruled scrollbar. Green and red are gone. `isUrgent` (shared) and `Countdown` make near deadlines paper chips; `Segmented` replaces the view toggles.
-- Tests: `urgency.test.ts` (48 h and 3 h windows, past times); `e2e/visual.spec.ts` (a banner ending in 10 h is a paper chip, one ending in 9 days is not; the ownership switch reports its state); axe still clean.
-- Scope/decisions: Georges asked mid-PR why Home does not look like the dashboard yet: the layout comes with the Home PRs; every later screen follows its wireframe board in this kit, not today's layouts. Status colours map to accent (done, owned, in use), paper (high priority, errors) or dark tags (owned over art).
-- Next: `stack/v/05-carousel`.
