@@ -365,39 +365,6 @@ select.prio.build-none { color: var(--muted); }
 .badge.prio-high { background: var(--paper); color: var(--on-paper); border-color: var(--paper); }
 .badge.prio-low { color: var(--muted); }
 
-/* ---- Banners & events calendar ---- */
-.cal { border: 1px solid var(--border); background: var(--bg-elev); }
-.cal-row { display: grid; grid-template-columns: 260px 1fr; align-items: center; min-height: 30px; }
-.cal-row:not(.cal-head):hover { background: var(--surface); }
-.cal-label { display: flex; align-items: center; gap: 6px; min-width: 0; padding: 0 10px; }
-.cal-name { font-size: 0.84rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.cal-feat { width: 22px; height: 22px; flex-shrink: 0; background: linear-gradient(160deg, #b8782f, #6e4520); }
-.cal-feat.owned { outline: 2px solid var(--accent); outline-offset: -2px; }
-.cal-track {
-  position: relative; height: 30px;
-  background: repeating-linear-gradient(90deg, transparent 0 calc(100% / 42 - 1px), rgba(255, 255, 255, 0.04) calc(100% / 42 - 1px) calc(100% / 42));
-}
-.cal-head { position: sticky; top: 0; z-index: 2; background: var(--bg-elev); border-bottom: 1px solid var(--border); }
-.cal-head .cal-track { height: 40px; background: none; }
-.cal-month { position: absolute; top: 3px; padding-left: 3px; font-family: var(--font-display); font-size: 0.75rem; font-weight: 600; color: var(--text); }
-.cal-days { position: absolute; inset: auto 0 3px 0; display: grid; grid-template-columns: repeat(42, minmax(0, 1fr)); }
-.cal-days span { text-align: center; font-size: 0.68rem; color: var(--muted); }
-/* Weekends: a tint, not dimmer text (text must keep 4.5:1 contrast). */
-.cal-days .is-weekend { background: rgba(255, 255, 255, 0.06); }
-.cal-days .is-today { background: var(--paper); color: var(--on-paper); font-weight: 700; }
-.cal-game { border-top: 1px solid var(--border); padding-bottom: 4px; }
-.cal-game-name { font-family: var(--font-display); font-weight: 600; padding: 8px 10px 4px; border-left: 3px solid; }
-.cal-game-name a { color: var(--text); }
-.cal-bar {
-  position: absolute; top: 5px; bottom: 5px; min-width: 4px; overflow: hidden; white-space: nowrap;
-  padding: 0 6px; font-size: 0.7rem; line-height: 20px; color: var(--text);
-  background: color-mix(in srgb, var(--c) 22%, transparent); border-left: 2px solid var(--c);
-}
-.cal-bar.is-banner { background: color-mix(in srgb, var(--c) 55%, transparent); color: #fff; font-weight: 600; }
-.cal-bar.cut-l { border-left-style: dashed; }
-.cal-bar.cut-r { mask-image: linear-gradient(90deg, #000 85%, transparent); }
-.cal-now { position: absolute; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: var(--accent); pointer-events: none; }
-
 /* ---- Per-game overview ---- */
 .ov-grid { display: grid; grid-template-columns: 1.15fr 1fr 1fr; gap: 16px; margin-bottom: 18px; align-items: start; }
 @media (max-width: 1100px) { .ov-grid { grid-template-columns: 1fr 1fr; } }
@@ -429,10 +396,6 @@ select.prio.build-none { color: var(--muted); }
 .pull-drop-art { width: 28px; height: 28px; background: linear-gradient(160deg, #b8782f, #6e4520); }
 .pull-form label.row { flex-direction: row; align-items: center; color: var(--text); }
 .pull-row-pity { display: block; padding: 0 0 6px 18px; }
-.cal-bar.is-ended { opacity: 0.5; }
-.cal-days span { overflow: hidden; }
-/* Narrow windows: every other day number, so the row never forces a sideways scroll. */
-@media (max-width: 1200px) { .cal-days span:nth-child(even):not(.is-today) { color: transparent; } }
 
 /* Links inside running text are underlined, not told apart by colour alone. */
 p a { text-decoration: underline; text-underline-offset: 2px; }

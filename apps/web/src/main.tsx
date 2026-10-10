@@ -12,6 +12,7 @@ import "./styles/components.css";
 import "./styles/charts.css";
 import "./styles/home.css";
 import "./styles/hub.css";
+import "./styles/calendar.css";
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: false, refetchOnWindowFocus: false } },
