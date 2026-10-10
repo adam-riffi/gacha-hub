@@ -31,10 +31,10 @@ test("a game's Activities tab: stamina, the daily, weekly and monthly lists, cyc
   // A monthly item follows its shop's reset.
   const monthly = page.getByRole("region", { name: "Monthly" });
   await monthly.getByRole("button", { name: "Add a monthly" }).click();
-  await monthly.getByLabel("Title").fill("Signal Store tapes");
-  await monthly.getByLabel("Resets with").selectOption({ label: "Signal Store · 1st" });
+  await monthly.getByLabel("Title").fill("Signal Shop tapes");
+  await monthly.getByLabel("Resets with").selectOption({ label: "Signal Shop · 1st" });
   await monthly.getByRole("button", { name: "Add" }).click();
-  await expect(monthly.getByRole("checkbox", { name: "Signal Store tapes" })).toBeVisible();
+  await expect(monthly.getByRole("checkbox", { name: "Signal Shop tapes" })).toBeVisible();
 
   // Each endgame mode with its reset, and the version.
   const cycles = page.getByRole("region", { name: "Cycles" });
