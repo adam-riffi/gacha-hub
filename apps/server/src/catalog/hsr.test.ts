@@ -68,4 +68,11 @@ describe("hsr catalog", () => {
     const sets = new Set(cat.gear.map((g) => g.id));
     expect(Object.values(stats.pieces).every((p) => sets.has(p.set))).toBe(true);
   });
+
+  it("has no game markup left in any name, nested ones included (trace names like <unbreak>300</unbreak> Rogues)", async () => {
+    const names: string[] = [];
+    JSON.stringify(await hsr.loadCatalog!(), (k, v) => (k === "name" && typeof v === "string" && names.push(v), v));
+    expect(names.length).toBeGreaterThan(100);
+    expect(names.filter((n) => /<[^>]+>/.test(n))).toEqual([]);
+  });
 });
