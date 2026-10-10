@@ -84,6 +84,30 @@ describe.each(gameList.map((g) => [g.key, g] as const))("%s manifest", (key, g) 
     expect(version.days).toBeGreaterThan(0);
   });
 
+  it("describes its gear block in the shape its build document takes", () => {
+    const { gear } = g.manifest;
+    expect(gear.slots.length).toBeGreaterThan(0);
+    expect(new Set(gear.slots.map((x) => x.key)).size).toBe(gear.slots.length);
+    expect(gear.sets.every((n) => n > 1)).toBe(true);
+    const full = { [gear.field]: Object.fromEntries(gear.slots.map((x) => [x.key, { level: 0 }])) };
+    expect(g.docSchema.safeParse(full).success).toBe(true);
+  });
+
+  it("raises a copy's dupe field by one up to the cap its build document allows", () => {
+    const set = (path: string, v: number) => path.split(".").reduceRight<unknown>((inner, k) => ({ [k]: inner }), v) as object;
+    for (const d of [g.manifest.dupes.character, g.manifest.dupes.weapon]) {
+      if (!d) continue;
+      expect(g.docSchema.safeParse(set(d.field, d.max)).success).toBe(true);
+      expect(g.docSchema.safeParse(set(d.field, d.max + 1)).success).toBe(false);
+    }
+  });
+
+  it("names up to three KPIs per build role, and an art source per kind with the key in it", () => {
+    expect(Object.keys(g.manifest.kpis).length).toBeGreaterThan(0);
+    for (const list of Object.values(g.manifest.kpis)) expect(list.length >= 1 && list.length <= 3).toBe(true);
+    for (const url of Object.values(g.manifest.art)) expect(url).toMatch(/^https:\/\/.*\{key\}/);
+  });
+
   it("is documented in docs/games, by name", () => {
     const text = doc(key);
     const m = g.manifest;
@@ -96,6 +120,9 @@ describe.each(gameList.map((g) => [g.key, g] as const))("%s manifest", (key, g) 
       m.monthlyPass?.name,
       m.version.name,
       m.accountLevel.name,
+      m.gear.name,
+      m.dupes.character.label,
+      m.dupes.weapon?.label,
     ].filter((n): n is string => !!n);
     for (const n of names) expect(text, n).toContain(n);
   });
@@ -154,6 +181,20 @@ describe("game facts", () => {
     const r = hubResets(g, eu, new Date("2026-10-10T12:00:00Z"));
     expect([r.daily, r.weekly, r.versionEnd].map((d) => d.toISOString())).toEqual(["2026-10-11T03:00:00.000Z", "2026-10-12T03:00:00.000Z", "2026-11-04T03:00:00.000Z"]);
     expect([utcLabel(60), utcLabel(-300), utcLabel(480), utcLabel(345), utcLabel(0)]).toEqual(["UTC+1", "UTC−5", "UTC+8", "UTC+5:45", "UTC"]);
+  });
+
+  it("gives each game its gear block as the wikis describe it", () => {
+    const shape = Object.fromEntries(gameList.map((g) => [g.key, [g.manifest.gear.name, g.manifest.gear.slots.length, g.manifest.gear.sets.join("/"), g.manifest.gear.costCap ?? null]]));
+    expect(shape).toEqual({
+      genshin: ["Artifacts", 5, "2/4", null],
+      hsr: ["Relics", 6, "2/4", null],
+      zzz: ["Drive Discs", 6, "2/4", null],
+      wuwa: ["Echoes", 5, "2/5", 12],
+      endfield: ["Gear", 4, "3", null],
+    });
+    const genshin = getGame("genshin")!.manifest.gear.slots;
+    expect(genshin.find((x) => x.key === "circlet")?.mainStats).toContain("CRIT Rate%");
+    expect(getGame("zzz")!.manifest.gear.slots.find((x) => x.key === "slot5")?.mainStats).toContain("PEN Ratio%");
   });
 
   it("closes Stygian Onslaught a week before the next version, as the wiki's season table shows", () => {
