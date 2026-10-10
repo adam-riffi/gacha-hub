@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useToast } from "../lib/toast";
 import type { CatalogGearSet, CharacterDto, GearPieceDto } from "@gacha/shared";
 import { api } from "../lib/api";
 import { useCatalog } from "../lib/catalog";
@@ -33,6 +34,18 @@ export function GearSetsPage() {
   const [rarity, setRarity] = useState<number | null>(null);
   const [usedOnly, setUsedOnly] = useState(false);
   const [chosen, setView] = useState<"sets" | "inventory" | "plan" | null>(null);
+  const qc = useQueryClient();
+  const toast = useToast();
+  // A goal to farm a whole set, one step per piece (it lived on the Equipment tab).
+  const farmSet = useMutation({
+    mutationFn: (g: CatalogGearSet) =>
+      api.post("/api/tasks", { scope: "game", refId: id, type: "goal", title: `Farm ${g.name} (${g.slots.length} pieces)`, target: g.slots.length, progress: 0, origin: { kind: "gear", catalogId: g.id } }),
+    onSuccess: () => {
+      toast("Farming goal created");
+      return qc.invalidateQueries({ queryKey: ["tasks"] });
+    },
+    onError: () => toast("Could not create the goal", "err"),
+  });
 
   const { data: instance } = useQuery({
     queryKey: ["instance", id],
@@ -167,6 +180,9 @@ export function GearSetsPage() {
                       <span>{b}</span>
                     </div>
                   ))}
+                  <button className="btn" aria-label={`Farm set ${g.name}`} disabled={farmSet.isPending} onClick={() => farmSet.mutate(g)}>
+                    Farm set
+                  </button>
                   {users.length > 0 && (
                     <div className="chips">
                       {users.map((u) => (
