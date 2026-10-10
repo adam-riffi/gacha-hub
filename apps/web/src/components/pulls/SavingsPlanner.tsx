@@ -11,7 +11,7 @@ export type PlannerTarget = SavingsTarget & { sub: string; endsAt?: string; avai
  * needs (worst case or on average), whether the pulls left after the ones
  * before cover it, its chance now and with the forecast.
  */
-export function SavingsPlanner({ targets, forecast }: { targets: PlannerTarget[]; forecast: number }) {
+export function SavingsPlanner({ targets, forecast, star = "5★" }: { targets: PlannerTarget[]; forecast: number; star?: string }) {
   const [mode, setMode] = useState<"worst" | "average">("worst");
   // Limited targets share the limited pulls; each one draws from what the ones before left.
   const plan = savingsPlan(targets, targets[0]?.available ?? 0, forecast, mode);
@@ -24,7 +24,7 @@ export function SavingsPlanner({ targets, forecast }: { targets: PlannerTarget[]
           <label><input type="radio" name="plan-mode" checked={mode === "average"} onChange={() => setMode("average")} /> Average</label>
         </div>
       </div>
-      {targets.length === 0 && <p className="mu">No event banner with a featured 5★ is running.</p>}
+      {targets.length === 0 && <p className="mu">No event banner with a featured {star} is running.</p>}
       {plan.map((p, i) => {
         const t = targets[i]!;
         return (

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { featuredWithin, fiveStarDistribution, rateAt, savingsPlan, type BannerDto, type PullBannerLogDto } from "@gacha/shared";
+import { featuredWithin, fiveStarDistribution, rateAt, savingsPlan, topStar, type BannerDto, type PullBannerLogDto } from "@gacha/shared";
 import { assetUrl, communityAssetUrl } from "../../lib/assets";
 import { GameIcon } from "../GameIcon";
 import { Segmented } from "../ui";
@@ -40,13 +40,14 @@ export function BannerCard(props: {
   const within = (n: number) => dist.slice(0, n).reduce((t, p) => t + p, 0);
   const hasFeatured = b.featuredRate < 1;
   const feat = live?.featured.find((f) => (f.rarity ?? 0) >= 5);
-  const target = feat?.name ?? "the featured 5★";
+  const star = topStar(props.gameKey);
+  const target = feat?.name ?? `the featured ${star}`;
 
   const actions = (
     <div className="pl-actions">
       <button className="btn" onClick={() => props.onAdd({ bannerKey: b.key, count: 1 })}>+1</button>
       <button className="btn" onClick={() => props.onAdd({ bannerKey: b.key, count: 10 })}>+10</button>
-      <button className="btn" aria-pressed={mode === "five"} onClick={() => setMode(mode === "five" ? null : "five")}>Log a 5★</button>
+      <button className="btn" aria-pressed={mode === "five"} onClick={() => setMode(mode === "five" ? null : "five")}>Log a {star}</button>
       <button className="btn" aria-pressed={mode === "set"} onClick={() => setMode(mode === "set" ? null : "set")}>Set pity</button>
       {b.recent[0] && (
         <button className="btn ghost" title="Delete the latest entry" onClick={() => props.onUndo(b.recent[0]!.id)}>Undo</button>
@@ -55,7 +56,7 @@ export function BannerCard(props: {
   );
   const forms = (
     <>
-      {mode === "five" && <FiveStarForm b={b} units={props.units} onSave={(body) => { props.onAdd(body); setMode(null); }} />}
+      {mode === "five" && <FiveStarForm b={b} star={star} units={props.units} onSave={(body) => { props.onAdd(body); setMode(null); }} />}
       {mode === "set" && <SetPityForm b={b} onSave={(body) => { props.onCalibrate(body); setMode(null); }} />}
     </>
   );
@@ -71,9 +72,9 @@ export function BannerCard(props: {
         <div className="pl-compact-row">
           <div>
             <strong>{b.label}</strong>
-            <div className="mn mu">{hasFeatured ? `${split(b.featuredRate)}${s.guaranteed ? " · guaranteed" : ""}` : "no 50/50"} · {s.toHardPity} to a certain 5★</div>
+            <div className="mn mu">{hasFeatured ? `${split(b.featuredRate)}${s.guaranteed ? " · guaranteed" : ""}` : "no 50/50"} · {s.toHardPity} to a certain {star}</div>
           </div>
-          <span className="mn mu">next 5★ {pct(rateAt(b, s.pity + 1))} · 10 pulls {pct(within(10))}</span>
+          <span className="mn mu">next {star} {pct(rateAt(b, s.pity + 1))} · 10 pulls {pct(within(10))}</span>
           {pity}
         </div>
         {actions}
@@ -83,12 +84,12 @@ export function BannerCard(props: {
   }
 
   const last = b.fiveStars[0];
-  const lastName = last && (props.unitOf(last.catalogId)?.name ?? "a 5★");
+  const lastName = last && (props.unitOf(last.catalogId)?.name ?? `a ${star}`);
   const reason = !last
-    ? "No 5★ logged on this banner yet."
+    ? `No ${star} logged on this banner yet.`
     : last.featured === false
-      ? `You lost the ${split(b.featuredRate)} on ${DATE.format(new Date(last.at))} (${lastName}, pity ${last.pity}), so your next 5★ is the featured one.`
-      : `Your last 5★ was ${lastName} on ${DATE.format(new Date(last.at))} at pity ${last.pity}${hasFeatured && !s.guaranteed ? `: the next is a ${split(b.featuredRate)}` : ""}.`;
+      ? `You lost the ${split(b.featuredRate)} on ${DATE.format(new Date(last.at))} (${lastName}, pity ${last.pity}), so your next ${star} is the featured one.`
+      : `Your last ${star} was ${lastName} on ${DATE.format(new Date(last.at))} at pity ${last.pity}${hasFeatured && !s.guaranteed ? `: the next is a ${split(b.featuredRate)}` : ""}.`;
   const [worst] = savingsPlan([{ label: target, rules: b, state }], available, 0, "worst");
   const [average] = savingsPlan([{ label: target, rules: b, state }], available, 0, "average");
   const soft = b.softPity !== undefined && s.pity < b.softPity;
@@ -99,7 +100,7 @@ export function BannerCard(props: {
         {feat ? (
           <GameIcon src={assetUrl(props.gameKey, feat.kind, feat.icon)} fallback={communityAssetUrl(props.gameKey, feat.kind, feat.icon)} alt={feat.name ?? feat.catalogId} className="pl-art" />
         ) : (
-          <GameIcon src={null} alt={b.label} label="5★" className="pl-art" />
+          <GameIcon src={null} alt={b.label} label={star} className="pl-art" />
         )}
         <div>
           <h3>{b.label}</h3>
@@ -121,7 +122,7 @@ export function BannerCard(props: {
       <p className="pl-reason">{reason}</p>
 
       <div className="pl-meter-row">
-        <span className="kpi-label">5★ pity</span>
+        <span className="kpi-label">{star} pity</span>
         <span className="pl-meter" aria-hidden="true">
           <span style={{ width: `${Math.min(100, (s.pity / b.hardPity) * 100)}%` }} />
           {b.softPity !== undefined && <i style={{ left: `${(b.softPity / b.hardPity) * 100}%` }} />}
@@ -131,7 +132,7 @@ export function BannerCard(props: {
 
       <table className="pl-odds">
         <thead>
-          <tr><th>Odds · estimates</th><th className="num">5★</th></tr>
+          <tr><th>Odds · estimates</th><th className="num">{star}</th></tr>
         </thead>
         <tbody>
           <tr><td>Next pull</td><td className="num">{pct(rateAt(b, s.pity + 1))}</td></tr>
@@ -141,7 +142,7 @@ export function BannerCard(props: {
         </tbody>
       </table>
 
-      <PullCurve rules={b} state={state} available={available} />
+      <PullCurve rules={b} state={state} available={available} star={star} />
 
       <div className="pl-headline">
         <span className="kpi-value">{pct(worst!.chance)}</span>
@@ -156,7 +157,7 @@ export function BannerCard(props: {
   );
 }
 
-function FiveStarForm({ b, units, onSave }: { b: PullBannerLogDto; units: Unit[]; onSave: (body: AddBody) => void }) {
+function FiveStarForm({ b, star, units, onSave }: { b: PullBannerLogDto; star: string; units: Unit[]; onSave: (body: AddBody) => void }) {
   const [count, setCount] = useState(10);
   const [at, setAt] = useState(10);
   const [featured, setFeatured] = useState(true);
@@ -171,17 +172,17 @@ function FiveStarForm({ b, units, onSave }: { b: PullBannerLogDto; units: Unit[]
       }}
     >
       <label>Pulls in the batch <input type="number" min={1} max={200} value={count} onChange={(e) => setCount(Number(e.target.value))} /></label>
-      <label>5★ at pull <input type="number" min={1} max={count} value={at} onChange={(e) => setAt(Number(e.target.value))} /></label>
+      <label>{star} at pull <input type="number" min={1} max={count} value={at} onChange={(e) => setAt(Number(e.target.value))} /></label>
       {hasFeatured && (
         <label className="pl-check">
           <input type="checkbox" checked={featured} onChange={(e) => setFeatured(e.target.checked)} /> Featured
         </label>
       )}
-      <select value={unit} onChange={(e) => setUnit(e.target.value)} aria-label="Which 5★">
-        <option value="">Which 5★ (optional)</option>
+      <select value={unit} onChange={(e) => setUnit(e.target.value)} aria-label={`Which ${star}`}>
+        <option value="">Which {star} (optional)</option>
         {units.map((u) => <option key={u.id} value={u.id}>{u.name}</option>)}
       </select>
-      <button className="btn primary" type="submit">Save 5★</button>
+      <button className="btn primary" type="submit">Save {star}</button>
     </form>
   );
 }

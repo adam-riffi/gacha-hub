@@ -12,7 +12,7 @@ const B = 26;
  * pulled shaded, your pity, soft and hard pity dashed, and where the pulls
  * you have reach. Past hard pity the curve runs to the guarantee after a loss.
  */
-export function PullCurve({ rules, state, available }: { rules: PullBannerRules; state: { pity: number; guaranteed: boolean }; available: number }) {
+export function PullCurve({ rules, state, available, star = "5★" }: { rules: PullBannerRules; state: { pity: number; guaranteed: boolean }; available: number; star?: string }) {
   const sure = state.guaranteed || rules.featuredRate >= 1;
   const end = sure ? rules.hardPity : rules.lossGuarantee === false ? (rules.spark ?? rules.hardPity * 2) : rules.hardPity * 2;
   const x = (p: number) => L + (p / end) * (W - L - R);
@@ -25,11 +25,11 @@ export function PullCurve({ rules, state, available }: { rules: PullBannerRules;
   const marks = [
     // Soft pity is labelled inside the plot, the others above it, so close lines never share a row.
     ...(rules.softPity && rules.softPity > state.pity ? [{ at: rules.softPity, label: "soft pity", inside: true }] : []),
-    { at: rules.hardPity, label: sure ? "hard pity" : "1st 5★ by", inside: false },
+    { at: rules.hardPity, label: sure ? "hard pity" : `1st ${star} by`, inside: false },
     ...(end > rules.hardPity ? [{ at: end, label: rules.lossGuarantee === false ? "spark" : "guarantee", inside: false }] : []),
   ];
   return (
-    <svg className="pl-curve" viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`Curve: chance of the featured 5★ by pity, from your pity ${state.pity} to ${end}; ${pct(atReach)} by your ${available} pulls`}>
+    <svg className="pl-curve" viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`Curve: chance of the featured ${star} by pity, from your pity ${state.pity} to ${end}; ${pct(atReach)} by your ${available} pulls`}>
       <rect x={L} y={T} width={x(state.pity) - L} height={H - T - B} className="pl-pulled" />
       {[0, 0.5, 1].map((v) => (
         <g key={v}>
