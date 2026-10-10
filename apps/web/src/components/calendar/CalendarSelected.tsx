@@ -46,7 +46,7 @@ export function CalendarSelected({ item, reward, now, onClose }: { item: CalItem
   }
 
   const game = getGame(item.gameKey);
-  const featured = (item.banners ?? []).flatMap((b) => b.featured).filter((f) => (f.rarity ?? 0) >= 5);
+  const featured = (item.banners ?? []).flatMap((b) => b.featured).filter((f) => (f.rarity ?? 0) >= 5 || f.kind === "character");
   const art = featured[0];
   const option = pick === null ? undefined : reward?.options[pick];
   const others = reward ? [...reward.others, ...(option?.others ?? [])] : game && item.event ? rewardOptions(item.event.effects ?? [], game, EMPTY).others : [];
@@ -99,7 +99,15 @@ export function CalendarSelected({ item, reward, now, onClose }: { item: CalItem
           <>
             <dt>Featured</dt>
             <dd>
-              {featured.map((f) => `${f.name ?? f.catalogId}${f.owned ? " (owned)" : ""}`).join(", ")} · <Link to={`${hub}/pulls`}>Pulls</Link>
+              {/* Each featured character opens its page (Georges, 2026-10-10: from the banners to the character in one click). */}
+              {featured.map((f, i) => (
+                <span key={`${f.kind}:${f.catalogId}`}>
+                  {i > 0 && ", "}
+                  {f.kind === "character" ? <Link to={`${hub}/units/${f.catalogId}`}>{f.name ?? f.catalogId}</Link> : (f.name ?? f.catalogId)}
+                  {f.owned ? " (owned)" : ""}
+                </span>
+              ))}{" "}
+              · <Link to={`${hub}/pulls`}>Pulls</Link>
             </dd>
           </>
         )}

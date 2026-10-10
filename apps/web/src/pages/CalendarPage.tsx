@@ -20,6 +20,9 @@ import { CalendarSelected } from "../components/calendar/CalendarSelected";
 import { RosterRewards } from "../components/calendar/RosterRewards";
 
 const DAY = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" });
+const MONTH = new Intl.DateTimeFormat("en-GB", { month: "long", year: "numeric" });
+const TIME = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit" });
+const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const WHEN = new Intl.DateTimeFormat("en-GB", {
   weekday: "short",
   day: "numeric",
@@ -79,19 +82,24 @@ function lanes(items: CalItem[]): CalItem[][] {
 
 /**
  * Banners and events (WIREFRAMES.md A4): six weeks from this Monday, paged by
- * two weeks; one block per game with its banner and event rows, layers for
- * versions, endgame cycles and passes; the selected item with its reward
- * picker; the rewards that update your roster. Timeline or list.
+ * two weeks, a tick for every day and each bar's dates; one block per game
+ * with its banner and event rows, layers for versions, endgame cycles and
+ * passes; the selected item with its reward picker and links to its featured
+ * characters; the rewards that update your roster. Timeline, Month (what
+ * starts and ends each day; Georges, 2026-10-10) or List.
  */
 export function CalendarPage() {
   const scope = useSearchParams()[0].get("game");
   const [now] = useState(() => Date.now());
   const [offset, setOffset] = useState(0);
-  const [view, setView] = useState<"timeline" | "list">("timeline");
+  const [monthOffset, setMonthOffset] = useState(0);
+  const [view, setView] = useState<"timeline" | "month" | "list">("timeline");
   const [layers, setLayers] = useState(() => new Set(LAYERS.filter((l) => l.on).map((l) => l.key)));
   const [selected, setSelected] = useState<string | null>(null);
   const [onlyWished, setOnlyWished] = useState(false);
-  const start = addDays(mondayOf(now), offset);
+  // The month view shows six weeks from the Monday before the month's first day.
+  const monthFirst = new Date(new Date(now).getFullYear(), new Date(now).getMonth() + monthOffset, 1).getTime();
+  const start = view === "month" ? mondayOf(monthFirst) : addDays(mondayOf(now), offset);
   const end = addDays(start, WEEKS * 7);
 
   const dash = useQuery({
@@ -294,20 +302,37 @@ export function CalendarPage() {
             label="View"
             options={[
               { value: "timeline", label: "Timeline" },
+              { value: "month", label: "Month" },
               { value: "list", label: "List" },
             ]}
             value={view}
             onChange={setView}
           />
-          <button className="btn" onClick={() => setOffset(offset - 14)}>
-            ‹ 2 weeks
-          </button>
-          <button className="btn" disabled={offset === 0} onClick={() => setOffset(0)}>
-            Today
-          </button>
-          <button className="btn" onClick={() => setOffset(offset + 14)}>
-            2 weeks ›
-          </button>
+          {view === "month" ? (
+            <>
+              <button className="btn" onClick={() => setMonthOffset(monthOffset - 1)}>
+                ‹ Month
+              </button>
+              <button className="btn" disabled={monthOffset === 0} onClick={() => setMonthOffset(0)}>
+                This month
+              </button>
+              <button className="btn" onClick={() => setMonthOffset(monthOffset + 1)}>
+                Month ›
+              </button>
+            </>
+          ) : (
+            <>
+              <button className="btn" onClick={() => setOffset(offset - 14)}>
+                ‹ 2 weeks
+              </button>
+              <button className="btn" disabled={offset === 0} onClick={() => setOffset(0)}>
+                Today
+              </button>
+              <button className="btn" onClick={() => setOffset(offset + 14)}>
+                2 weeks ›
+              </button>
+            </>
+          )}
         </div>
       </div>
       <div className="cal-layers">
@@ -359,6 +384,20 @@ export function CalendarPage() {
                       )}
                     </div>
                   </div>
+                  {/* A tick for every day, weekends shaded, so a bar's first and last days read at a glance. */}
+                  <div className="cal-r cal-days">
+                    <div className="cal-label mn mu">Day</div>
+                    <div className="cal-track">
+                      {Array.from({ length: WEEKS * 7 }, (_, i) => {
+                        const d = new Date(addDays(start, i));
+                        return (
+                          <span key={i} className={`cal-day ${i % 7 >= 5 ? "is-weekend" : ""} ${addDays(now, 0) === d.getTime() ? "is-today" : ""}`} style={{ left: `${(i / (WEEKS * 7)) * 100}%`, width: `${100 / (WEEKS * 7)}%` }}>
+                            {d.getDate()}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  </div>
                   {blocks.map((b) => (
                     <div className="cal-block" key={b.g.gameKey}>
                       {(b.rows.length ? b.rows : [{ items: [] as CalItem[] }]).map((row, i) => (
@@ -389,7 +428,8 @@ export function CalendarPage() {
                                 className={`cal-bar is-${it.kind} ${it.end < now ? "is-ended" : ""}`}
                                 style={{
                                   left: `${pct(it.start)}%`,
-                                  width: `${pct(it.end) - pct(it.start)}%`,
+                                  // A gap before the next bar, so one phase's end and the next's start stay apart.
+                                  width: `calc(${pct(it.end) - pct(it.start)}% - 3px)`,
                                   ["--c" as string]: b.g.accent,
                                 }}
                                 aria-pressed={current?.id === it.id}
@@ -398,6 +438,9 @@ export function CalendarPage() {
                               >
                                 {it.tag && <b className="cal-tag">{it.tag}</b>}
                                 <span className="cal-name">{it.name}</span>
+                                <span className="cal-dates">
+                                  {DAY.format(it.start)} → {DAY.format(it.end)}
+                                </span>
                               </button>
                             ))}
                             {i === 0 && b.tick !== null && (
@@ -427,6 +470,46 @@ export function CalendarPage() {
                 Endgame and Activities tabs. <b className="cal-tag">+1 C</b> marks a reward that can
                 update your roster.
               </p>
+            </section>
+          ) : view === "month" ? (
+            <section className="card cal-month" aria-label="Month">
+              <h3>{MONTH.format(monthFirst)}</h3>
+              <div className="cal-mgrid">
+                {WEEKDAYS.map((w) => (
+                  <span key={w} className="cal-mhead mn mu">
+                    {w}
+                  </span>
+                ))}
+                {Array.from({ length: WEEKS * 7 }, (_, i) => {
+                  const from = addDays(start, i);
+                  const to = addDays(start, i + 1);
+                  const d = new Date(from);
+                  const starts = visible.filter((it) => it.start >= from && it.start < to);
+                  const ends = visible.filter((it) => it.end >= from && it.end < to);
+                  const accent = (it: CalItem) => blocks.find((x) => x.g.gameKey === it.gameKey)?.g.accent;
+                  return (
+                    <div key={i} className={`cal-mday ${d.getMonth() === new Date(monthFirst).getMonth() ? "" : "is-other"} ${addDays(now, 0) === from ? "is-today" : ""}`}>
+                      <span className="cal-mnum mn">{d.getDate()}</span>
+                      {[...starts.map((it) => ["Starts", it] as const), ...ends.map((it) => ["Ends", it] as const)].map(([what, it]) => (
+                        <button
+                          key={`${what}:${it.id}`}
+                          type="button"
+                          className={`cal-mitem is-${what.toLowerCase()} is-${it.kind}`}
+                          style={{ ["--c" as string]: accent(it) }}
+                          aria-label={`${what}: ${it.name}`}
+                          aria-pressed={current?.id === it.id}
+                          title={`${it.name}\n${WHEN.format(it.start)} → ${WHEN.format(it.end)}`}
+                          onClick={() => setSelected(it.id)}
+                        >
+                          <span aria-hidden="true">{what === "Starts" ? "▶" : "■"}</span> {it.name}
+                          {what === "Ends" && <span className="mu"> · {TIME.format(it.end)}</span>}
+                        </button>
+                      ))}
+                    </div>
+                  );
+                })}
+              </div>
+              <p className="cal-foot mu">▶ starts that day · ■ ends that day, at your time. The layers and the wishlist filter apply here too.</p>
             </section>
           ) : (
             <section className="card cal-list" aria-label="List">
