@@ -13,6 +13,7 @@ import { registerFarmTodayRoutes } from "./farmToday.js";
 import { registerWishlistRoutes } from "./wishlist.js";
 import { registerLinkRoutes } from "./links.js";
 import { registerUigfRoutes } from "./uigf.js";
+import { registerAccountRoutes } from "./account.js";
 import { registerTimelineRoutes } from "./timeline.js";
 import { registerAdminRoutes } from "./admin.js";
 import { registerDashboardRoutes } from "./dashboard.js";
@@ -41,6 +42,7 @@ export async function registerApi(app: FastifyInstance) {
   await registerWishlistRoutes(app);
   await registerLinkRoutes(app);
   await registerUigfRoutes(app);
+  await registerAccountRoutes(app);
   await registerTimelineRoutes(app);
   await registerAdminRoutes(app);
   await registerDashboardRoutes(app);

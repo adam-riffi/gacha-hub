@@ -28,7 +28,7 @@ function setSessionCookie(reply: FastifyReply, id: string, expiresAt: Date) {
   });
 }
 
-function clearSessionCookie(reply: FastifyReply) {
+export function clearSessionCookie(reply: FastifyReply) {
   reply.clearCookie(SESSION_COOKIE, { path: "/" });
 }
 
