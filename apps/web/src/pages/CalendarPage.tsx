@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQueries, useQuery } from "@tanstack/react-query";
 import {
   cadenceWindow,
   getGame,
@@ -10,6 +10,7 @@ import {
   type GameRegion,
   type RewardDto,
   type TimelineDto,
+  type WishlistItemDto,
 } from "@gacha/shared";
 import { api } from "../lib/api";
 import type { DashboardData } from "../lib/types";
@@ -88,6 +89,7 @@ export function CalendarPage() {
   const [view, setView] = useState<"timeline" | "list">("timeline");
   const [layers, setLayers] = useState(() => new Set(LAYERS.filter((l) => l.on).map((l) => l.key)));
   const [selected, setSelected] = useState<string | null>(null);
+  const [onlyWished, setOnlyWished] = useState(false);
   const start = addDays(mondayOf(now), offset);
   const end = addDays(start, WEEKS * 7);
 
@@ -106,6 +108,12 @@ export function CalendarPage() {
   const rewards = useQuery({
     queryKey: ["rewards"],
     queryFn: () => api.get<RewardDto[]>("/api/rewards"),
+  });
+  const wishlists = useQueries({
+    queries: (dash.data?.games ?? []).map((g) => ({
+      queryKey: ["wishlist", g.instanceId],
+      queryFn: () => api.get<WishlistItemDto[]>(`/api/instances/${g.instanceId}/wishlist`),
+    })),
   });
 
   if (dash.isError || win.isError) {
@@ -142,6 +150,16 @@ export function CalendarPage() {
       const region = game.regions.find((r) => r.key === g.regionKey) ?? game.regions[0]!;
       const base = { gameKey: g.gameKey, instanceId: g.instanceId, region };
       const m = game.manifest;
+      // "Only what I wishlisted": banners featuring a wished unit, events whose rewards name one.
+      const wished = new Set(
+        (wishlists[dash.data.games.indexOf(g)]?.data ?? []).map((w) => w.catalogId),
+      );
+      const keep = (i: CalItem) =>
+        !onlyWished ||
+        Boolean(i.banners?.some((b) => b.featured.some((f) => wished.has(f.catalogId)))) ||
+        [...JSON.stringify(i.event?.effects ?? []).matchAll(/"catalogId":"([^"]+)"/g)].some((x) =>
+          wished.has(x[1]!),
+        );
 
       // Banners sharing a period are one phase: "Vodyanitsa +2".
       const phases = new Map<string, BannerDto[]>();
@@ -232,9 +250,11 @@ export function CalendarPage() {
 
       const rows: { name?: string; items: CalItem[] }[] = [
         ...(layers.has("banners")
-          ? lanes(banners.filter(inWindow)).map((items) => ({ items }))
+          ? lanes(banners.filter(inWindow).filter(keep)).map((items) => ({ items }))
           : []),
-        ...(layers.has("events") ? lanes(events.filter(inWindow)).map((items) => ({ items })) : []),
+        ...(layers.has("events")
+          ? lanes(events.filter(inWindow).filter(keep)).map((items) => ({ items }))
+          : []),
         ...(layers.has("cycles")
           ? lanes(cycles.filter(inWindow)).map((items, i) => ({
               name: i === 0 ? "Endgame" : undefined,
@@ -317,6 +337,10 @@ export function CalendarPage() {
             {l.label}
           </label>
         ))}
+        <label>
+          <input type="checkbox" checked={onlyWished} onChange={(e) => setOnlyWished(e.target.checked)} />
+          Only what I wishlisted
+        </label>
         <span className="cal-range mn mu">
           {DAY.format(start)} · {DAY.format(addDays(end, -1))} · your time ({ZONE})
         </span>

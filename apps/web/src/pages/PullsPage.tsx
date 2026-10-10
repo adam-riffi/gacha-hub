@@ -7,6 +7,7 @@ import {
   type DashboardDto,
   type PassesDto,
   type PullLogDto,
+  type WishlistItemDto,
 } from "@gacha/shared";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
@@ -55,6 +56,10 @@ export function PullsPage() {
     queryFn: () => api.get<DashboardDto>("/api/dashboard"),
   });
   const { catalog } = useCatalog(instance.data?.gameKey);
+  const wishlist = useQuery({
+    queryKey: ["wishlist", id],
+    queryFn: () => api.get<WishlistItemDto[]>(`/api/instances/${id}/wishlist`),
+  });
   const refresh = () =>
     Promise.all(
       ["pulls", "dashboard"].map((k) =>
@@ -135,19 +140,37 @@ export function PullsPage() {
     .flatMap((b) => b.fiveStars.map((d) => ({ ...d, banner: b })))
     .sort((a, z) => z.at.localeCompare(a.at));
   const contested = drops.filter((d) => d.banner.featuredRate < 1 && d.featured !== null);
-  // The planner's targets: each event banner's featured 5★, character first, sharing the limited pulls.
-  const targets: PlannerTarget[] = event.map((b) => {
+  // The planner's targets: each event banner's featured 5★, character first, then the
+  // wishlisted 5★ not already among them; all share the limited pulls.
+  const running = event.map((b) => {
     const l = live.find((x) => x.kind === b.key);
     const feat = l?.featured.find((f) => (f.rarity ?? 0) >= 5);
-    return {
+    return { b, l, feat };
+  });
+  const runningIds = new Set(running.map((r) => r.feat?.catalogId));
+  const wished = (wishlist.data ?? []).flatMap((w) => {
+    const unit = w.kind === "character" ? catalog?.characters.find((c) => c.id === w.catalogId) : catalog?.weapons.find((x) => x.id === w.catalogId);
+    const b = event.find((x) => x.key === w.kind);
+    return unit && b && unit.rarity >= 5 && !runningIds.has(w.catalogId) ? [{ b, name: unit.name }] : [];
+  });
+  const firstOn = new Set<string>();
+  // Only a banner's first target starts from its pity and guarantee; the ones after start fresh.
+  const stateFor = (b: (typeof event)[number]) => {
+    const fresh = firstOn.has(b.key);
+    firstOn.add(b.key);
+    return fresh ? { pity: 0, guaranteed: false } : { pity: b.state.pity, guaranteed: b.state.guaranteed };
+  };
+  const targets: PlannerTarget[] = [
+    ...running.map(({ b, l, feat }) => ({
       label: feat?.name ?? `${b.label}: its featured 5★`,
       sub: l?.name ?? b.label,
       endsAt: l?.endsAt,
       rules: b,
-      state: { pity: b.state.pity, guaranteed: b.state.guaranteed },
+      state: stateFor(b),
       available: have.limited,
-    };
-  });
+    })),
+    ...wished.map(({ b, name }) => ({ label: name, sub: `Wishlist · ${b.label}`, rules: b, state: stateFor(b), available: have.limited })),
+  ];
 
   return (
     <>
