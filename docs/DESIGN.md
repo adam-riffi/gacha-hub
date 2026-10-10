@@ -107,7 +107,7 @@ An industrial HUD from Georges's 2026-10-08 dashboard design; the full system is
 
 ## 8. Data model and storage
 
-Prisma models: `User`, `Session`, `GameInstance` (one per user per game; region, sleeping, UID, account level), `CurrencyState`, `Character` (build document JSON + `docVersion`), `Ownership`, `GearPiece` (unequipped pieces only), `Team`, `MaterialStock`, `Task` (recurring on five cadences, goal, material subtasks; a monthly or cycle task follows a manifest entry by `anchorKey`), `CycleResult` (one row per endgame mode and cycle: result, detail, premium earned, teams, source), `PassState` (battle pass or 30-day pass: level, weekly XP, end date, source), `DayRecord` (a profile's game day: dailies done and total, open goals, pulls on hand), `ReminderRule`, `ReminderLog`, `Banner`, `Event`, `AuditLog`.
+Prisma models: `User`, `Session`, `GameInstance` (one per user per game; region, sleeping, UID, account level), `CurrencyState`, `Character` (build document JSON + `docVersion`), `Ownership`, `GearPiece` (unequipped pieces only), `Team`, `MaterialStock`, `Task` (recurring on five cadences, goal, material subtasks; a monthly or cycle task follows a manifest entry by `anchorKey`; an event goal names its event and the picked option, ADR 0008), `CycleResult` (one row per endgame mode and cycle: result, detail, premium earned, teams, source), `PassState` (battle pass or 30-day pass: level, weekly XP, end date, source), `DayRecord` (a profile's game day: dailies done and total, open goals, pulls on hand), `ReminderRule`, `ReminderLog`, `Banner`, `Event` (with typed `effects`, ADR 0008), `EffectApplication` (one row per user, event and applied effect, with what reverses it), `AuditLog`.
 
 Postgres on Supabase (own project `gacha-hub`, eu-west-1; ADR 0001). Migrations are committed SQL under `prisma/migrations`, generated offline with `prisma migrate diff` and applied by `prisma migrate deploy` during the Vercel build. Row-level security is enabled on every table with no policies; the server connects as the table owner, and the Data API exposes nothing. Local development and tests use SQLite (`schema.sqlite.prisma` generated from the Postgres schema).
 
@@ -176,7 +176,7 @@ Vercel project `gacha-hub` (framework preset "Other", functions in `dub1` next t
 - Art moves to our own store in F12 (ADR 0006); until then Enka (Genshin) and Yatta (HSR) are hotlinked.
 - The HoYoverse feed is undocumented and serves inconsistent times; imports fail soft and the admin can edit rows.
 - Account import (ADR 0005) relies on undocumented endpoints and on HoYoverse tolerating read-only tools; every import fails soft.
-- Events and rewards as data with typed effects (ADR 0008, Proposed): decide before F10.
+- Events and rewards are data with typed effects (ADR 0008, accepted 2026-10-10); a reward only announced in game text still needs an admin to enter it.
 - Pull odds follow the community model of soft pity; they are estimates and the UI says so.
 - Endfield's weekly, monthly, endgame and pass rules are still to research before its manifest is complete.
 - `docs/DESIGN-BRIEF.md` and `docs/DESIGN-HANDOFF.md` predate this file and `docs/VISUAL-DESIGN.md`; those two win where they differ. `docs/PROJECT-GUIDE.md` walks through the shipped screens and per-game features; this file wins on scope.

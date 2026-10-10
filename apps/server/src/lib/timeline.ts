@@ -5,6 +5,7 @@ import {
   eventDto,
   eventInput,
   getGame,
+  readEffects,
   timedStatus,
   type BannerDto,
   type BannerInput,
@@ -23,7 +24,13 @@ export function serializeBanner(row: Banner, now = new Date()): BannerDto {
 }
 
 export function serializeEvent(row: Event, now = new Date()): EventDto {
-  return eventDto.parse({ ...row, status: timedStatus(row.startsAt, row.endsAt, now) });
+  return eventDto.parse({ ...row, effects: storedEffects(row), status: timedStatus(row.startsAt, row.endsAt, now) });
+}
+
+/** An event's effects, read again for its game so a stored kind that no longer parses shows as a note. */
+function storedEffects(row: Event) {
+  const game = getGame(row.gameKey);
+  return game && Array.isArray(row.effects) ? readEffects(row.effects, game) : null;
 }
 
 /** Export shape == upload shape, so an exported payload re-uploads unchanged. */
@@ -48,6 +55,7 @@ export function exportEvent(row: Event): EventInput {
     endsAt: row.endsAt.toISOString(),
     ...(row.description ? { description: row.description } : {}),
     ...(Array.isArray(row.rewards) ? { rewards: row.rewards } : {}),
+    ...(storedEffects(row) ? { effects: storedEffects(row) } : {}),
     ...(row.url ? { url: row.url } : {}),
     ...(row.payload && typeof row.payload === "object" ? { payload: row.payload } : {}),
   });

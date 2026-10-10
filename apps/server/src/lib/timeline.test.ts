@@ -44,7 +44,7 @@ describe("timeline", () => {
 
     const event = exportEvent({
       id: "e1", gameKey: "genshin", key: "lantern-rite", name: "Lantern Rite",
-      startsAt: banner.startsAt, endsAt: banner.endsAt, description: null, rewards: [{ label: "Primogems", qty: 1600 }],
+      startsAt: banner.startsAt, endsAt: banner.endsAt, description: null, rewards: [{ label: "Primogems", qty: 1600 }], effects: null,
       url: null, payload: null, createdAt: now, updatedAt: now,
     });
     expect(event).toEqual({

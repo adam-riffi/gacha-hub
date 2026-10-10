@@ -8,13 +8,14 @@ import {
   adminPayloadResult,
   gameKeySchema,
   getGame,
+  readEffects,
   type BannerInput,
   type EventInput,
 } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
 import { requireAdmin } from "../auth/plugin.js";
 import { exportBanner, exportEvent } from "../lib/timeline.js";
-import { getCatalog, type PrismaJson } from "./util.js";
+import { gameOrThrow, getCatalog, type PrismaJson } from "./util.js";
 import { FEED_GAMES, importOfficialFeed } from "../lib/officialFeed.js";
 
 /* Admin uploads: JSON payloads (banners, events) validated by the shared
@@ -137,6 +138,7 @@ export async function registerAdminRoutes(app: FastifyInstance) {
               endsAt: new Date(item.endsAt),
               description: item.description ?? null,
               rewards: jsonOrNull(item.rewards),
+              effects: item.effects ? (readEffects(item.effects, gameOrThrow(gameKey)) as PrismaJson) : Prisma.JsonNull,
               url: item.url ?? null,
               payload: jsonOrNull(item.payload),
             };

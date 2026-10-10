@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { effectSchema } from "../effects.js";
 import { timedStatusSchema } from "./banner.js";
 import { gameKeySchema, idSchema, isoDate, jsonValue, slugSchema } from "./common.js";
 
@@ -11,6 +12,8 @@ export const eventInput = z
     endsAt: z.string().datetime({ offset: true }),
     description: z.string().max(4000).optional(),
     rewards: z.array(z.object({ label: z.string().min(1).max(120), qty: z.number().int().min(0).optional() })).max(50).optional(),
+    /** Effect[] (ADR 0008); read per game on upload, unknown kinds kept as notes. */
+    effects: z.array(z.unknown()).max(50).optional(),
     url: z.string().url().max(2048).optional(),
     payload: z.record(z.string(), jsonValue).optional(),
   })
@@ -29,6 +32,7 @@ export const eventDto = z.object({
   endsAt: isoDate,
   description: z.string().nullable(),
   rewards: jsonValue.nullable(),
+  effects: z.array(effectSchema).nullable(),
   url: z.string().nullable(),
   payload: jsonValue.nullable(),
   status: timedStatusSchema,

@@ -133,6 +133,25 @@ describe("admin uploads + banners/events (routes)", () => {
     expect(a.status).toBe("active");
   });
 
+  it("stores an event's effects, keeping unknown kinds as notes, and exports them", async () => {
+    const effects = [
+      { kind: "currency.add", currency: "primogems", amount: 420 },
+      { kind: "skin.grant", catalogId: "x" },
+      { kind: "choose", options: [{ label: "Amber", effects: [{ kind: "unit.copy", unit: "character", catalogId: AMBER, count: 1 }] }, { label: "Mora", effects: [{ kind: "currency.add", currency: "mora", amount: 1000 }] }] },
+    ];
+    const up = await c.req<{ created: number }>("POST", "/api/admin/payload", {
+      kind: "events",
+      gameKey: "genshin",
+      items: [{ key: "ev-fx", name: "Rainbow", startsAt: iso(-DAY), endsAt: iso(5 * DAY), effects }],
+    });
+    expect(up.status).toBe(200);
+    const ev = await c.req<{ key: string; effects: unknown[] | null }[]>("GET", "/api/games/genshin/events");
+    const stored = [effects[0], { kind: "note", text: "Unknown reward: skin.grant" }, effects[2]];
+    expect(ev.json.find((e) => e.key === "ev-fx")!.effects).toEqual(stored);
+    const exported = await c.req<{ items: { key: string; effects?: unknown[] }[] }>("GET", "/api/admin/export?kind=events&gameKey=genshin");
+    expect(exported.json.items.find((e) => e.key === "ev-fx")!.effects).toEqual(stored);
+  });
+
   it("writes an audit trail with before/after diffs", async () => {
     await c.req("POST", "/api/admin/payload", banners());
     await c.req("POST", "/api/admin/payload", {

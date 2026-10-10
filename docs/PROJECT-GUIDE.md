@@ -536,7 +536,7 @@ As of 2026-10-08, `main` at `36edfc0` (docs(agents): read and rewrite HANDOFF.md
 3. **Clean production banners/events:** in Admin, delete the `sample-*` rows for each game, then **Import official feed** for Genshin, HSR and ZZZ (or wait for the hourly tick after step 1).
 4. **Merge the open chain in order**, #78 first (`HANDOFF.md` lists the PRs and the method).
 5. **Branch ruleset on `main`:** require the five checks `lint`, `typecheck`, `test`, `build`, `e2e`.
-6. **ADRs:** 0001–0007 accepted on 2026-10-09; 0008 (events as data) waits for a decision.
+6. **ADRs:** 0001–0007 accepted on 2026-10-09; 0008 (events as data) on 2026-10-10.
 7. **Account import:** approved on 2026-10-09 (ADR 0005).
 8. **README:** record the demo GIF (DESIGN.md §15); set the repository description and topics.
 9. **Verify after the cron is on:** a reminder DM arrives (DESIGN.md §15's last open item), and the calendar shows `hoyo-` rows in production.
@@ -631,7 +631,7 @@ As of 2026-10-08, `main` at `36edfc0` (docs(agents): read and rewrite HANDOFF.md
 
 **Docs:** `HANDOFF.md` (current state, short) · `docs/DESIGN.md` (spec) · `docs/ENGINEERING.md` (workflow) · `AGENTS.md` (agent manual and commands) · `docs/AGENT_LOG.md` (history) · `docs/DEPLOY.md` (deploy runbook) · `docs/adr/` · `README.md`.
 
-**ADRs** (0001–0007 accepted on 2026-10-09; 0004–0008 are listed in `docs/adr/`): 0001 where this repository departs from the portfolio standard (npm workspaces, ESLint + Prettier, own Supabase project, `dub1`, deploy mode A, HTTP-only production smoke, Dependabot majors by hand, the pr-meme row now stale) · 0002 pull log entries and pity · 0003 remaining major upgrades and the Prisma 7 spike.
+**ADRs** (0001–0007 accepted on 2026-10-09, 0008 on 2026-10-10; 0004–0008 are listed in `docs/adr/`): 0001 where this repository departs from the portfolio standard (npm workspaces, ESLint + Prettier, own Supabase project, `dub1`, deploy mode A, HTTP-only production smoke, Dependabot majors by hand, the pr-meme row now stale) · 0002 pull log entries and pity · 0003 remaining major upgrades and the Prisma 7 spike.
 
 **Glossary**
 
