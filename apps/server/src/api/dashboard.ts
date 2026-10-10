@@ -1,5 +1,5 @@
 import type { FastifyInstance } from "fastify";
-import { BUILT_STATUSES, dashboardDto, getGame, pityState } from "@gacha/shared";
+import { BUILT_STATUSES, dashboardDto, gameDay, getGame, pityState } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
 import { requireUser } from "../auth/plugin.js";
 import { getGameServerModule } from "../games/index.js";
@@ -8,7 +8,6 @@ import { buildRegionContext, serializeTask } from "./tasks.js";
 import { allCurrencies } from "../lib/currencies.js";
 import { staminaProjection } from "../lib/regen.js";
 import { getCatalog, regionForInstance } from "./util.js";
-import { gameDay } from "../lib/dayRecord.js";
 
 const DAY = 86_400_000;
 

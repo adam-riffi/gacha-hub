@@ -13,3 +13,4 @@ export * from "./series.js";
 export * from "./cadence.js";
 export * from "./pulls.js";
 export * from "./passes.js";
+export * from "./endgame.js";

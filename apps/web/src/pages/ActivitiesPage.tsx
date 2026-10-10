@@ -1,7 +1,7 @@
 import { useState, type FormEvent, type ReactNode } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { cadenceWindow, getGame, hubResets, isUrgent, passView, type GameDefinition, type GameRegion, type PassesDto, type TaskDto } from "@gacha/shared";
+import { cadenceWindow, endgameNow, getGame, hubResets, isUrgent, passView, type CycleResultsDto, type GameDefinition, type PassesDto, type TaskDto } from "@gacha/shared";
 import { api } from "../lib/api";
 import { formatRemaining } from "../lib/time";
 import type { DashboardData, InstanceDetail } from "../lib/types";
@@ -36,6 +36,7 @@ export function ActivitiesPage() {
   const { data: dash } = useQuery({ queryKey: ["dashboard"], queryFn: () => api.get<DashboardData>("/api/dashboard") });
   const { data: tasks = [] } = useQuery({ queryKey: ["tasks", "game", id], queryFn: () => api.get<TaskDto[]>(`/api/tasks?scope=game&refId=${id}`) });
   const { data: passes } = useQuery({ queryKey: ["passes", id], queryFn: () => api.get<PassesDto>(`/api/instances/${id}/passes`) });
+  const { data: cycles } = useQuery({ queryKey: ["cycles", id], queryFn: () => api.get<CycleResultsDto>(`/api/instances/${id}/cycles`) });
   const game = instance && getGame(instance.gameKey);
   if (!instance || !game) return <div className="muted">Loading…</div>;
 
@@ -69,7 +70,7 @@ export function ActivitiesPage() {
           </CadenceList>
         </div>
         <div className="act-bottom">
-          <Cycles game={game} region={region} now={now} />
+          <Cycles game={game} modes={endgameNow(game, region, now, (cycles?.results ?? []).map((r) => ({ ...r, cycleStart: new Date(r.cycleStart) }))).modes} instanceId={id!} />
           <Version instanceId={id!} game={game} pv={pv} endsAt={resets.versionEnd} events={(dash?.timeline.events ?? []).filter((e) => e.gameKey === game.key && Date.parse(e.startsAt) <= now.getTime())} />
         </div>
       </div>
@@ -222,26 +223,26 @@ function CadenceList({
   );
 }
 
-function Cycles({ game, region, now }: { game: GameDefinition; region: GameRegion; now: Date }) {
+function Cycles({ game, modes, instanceId }: { game: GameDefinition; modes: ReturnType<typeof endgameNow>["modes"]; instanceId: string }) {
   return (
     <section className="card act-cycles" aria-label="Cycles">
-      <h3>Cycles · Endgame</h3>
+      <div className="spread">
+        <h3>Cycles · Endgame</h3>
+        <Link className="btn" to={`/games/${instanceId}/endgame`}>
+          Open endgame
+        </Link>
+      </div>
       <div className="act-rows">
-        {game.manifest.endgame.map((e) => {
-          const w = cadenceWindow(e.anchor, region, now);
+        {modes.map(({ mode: e, result, closes, open, end }) => (
           // A mode that closes before its next cycle (Stygian Onslaught) counts down to its close.
-          const closes = e.openDays ? new Date(w.start.getTime() + e.openDays * 86_400_000) : w.end;
-          const open = closes > now;
-          return (
-            <div key={e.key} className="act-row">
-              <span className="act-title">{e.name}</span>
-              <span className="mn mu">
-                — / {e.metric.max ?? "—"} {e.metric.label}
-              </span>
-              {open ? <DateChip at={closes} prefix={e.openDays ? "closes " : "resets "} /> : <DateChip at={w.end} prefix="opens " />}
-            </div>
-          );
-        })}
+          <div key={e.key} className="act-row">
+            <span className="act-title">{e.name}</span>
+            <span className="mn mu">
+              {result ?? "—"} / {e.metric.max ?? "—"} {e.metric.label}
+            </span>
+            {open ? <DateChip at={closes} prefix={e.openDays ? "closes " : "resets "} /> : <DateChip at={end} prefix="opens " />}
+          </div>
+        ))}
         {game.manifest.endgame.length === 0 && <p className="mu act-empty">No endgame mode on record yet.</p>}
       </div>
     </section>

@@ -1,14 +1,8 @@
-import { cadenceWindow, getGame, pullsFor, type TaskDto } from "@gacha/shared";
+import { gameDay, getGame, pullsFor, type TaskDto } from "@gacha/shared";
 import { prisma } from "./prisma.js";
 import type { RegionReset } from "./resets.js";
 import { buildRegionContext, serializeTask } from "../api/tasks.js";
 import { regionForInstance } from "../api/util.js";
-
-/** The server's game day (YYYY-MM-DD): the date its daily window started on, in server time. */
-export function gameDay(region: RegionReset, now: Date): string {
-  const start = cadenceWindow({ cadence: "daily" }, region, now).start;
-  return new Date(start.getTime() + region.utcOffsetMinutes * 60_000).toISOString().slice(0, 10);
-}
 
 export interface DayValues {
   day: string;
