@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f10/10-library · #134
+- Done: Games rebuilt from its board (WIREFRAMES.md A2): one row per installed game in the strip's order, dragged (or moved with ↑ ↓) to reorder it; server, offset and version; capability cells Manifest (always), Catalog (character count, or why there is none) and Live data (the F11 route, dashed until it exists); today's dailies and the reset; Open hub and Sleep. Beside: the capabilities legend and Add a game. Old library styles removed.
+- Tests: written first: `e2e/library.spec.ts` (cells, today, moving the last game up swaps it in the strip, sleep and wake). Drag checked against the dev server with Playwright (and the order put back); checked at 1440 beside `a2-games-library.png`.
+- Scope/decisions: "Request a game" is left out (nothing receives the request); catalog-gap reasons and the planned live routes are a small map in the page, as capabilities themselves stay derived (ADR 0004).
+- Next: Pulls (G3): odds, curve, guarantee, savings planner.
+
 ## 2026-10-10 · claude · stack/f10/09-game-order · #133
 - Done: `GameInstance.position` (migration `20261011010000_game_position`, a column on an existing table); `PUT /api/instances/order` takes every profile of the user in the new order; a new game goes last; the instances list, the dashboard, farm today and the reminder preview follow it.
 - Tests: written first: `instances.integration.test.ts` (order kept for the strip and the dashboard, a new game last, an incomplete order refused).
@@ -247,9 +253,3 @@ Entry format:
 - Tests: `e2e/visual.spec.ts` (fonts load from our own host only, body type, page colour, Overview accent); `accents.test.ts`; the CSP test now requires fonts and styles on `'self'`.
 - Scope/decisions: Fonts are copied from the Fontsource 5.3.0 packages (Google Fonts builds) with their OFL texts; not added as dependencies. Success and danger colours stay until `04-panels` reworks the components.
 - Next: `stack/v/03-shell`.
-
-## 2026-10-09 · claude · stack/v/01-a11y · #93
-- Done: First PR of milestone V. Every control has an accessible name (`Labeled` names its inputs through `aria-labelledby`; standalone inputs and selects got labels); weekend days use a tint, text links are underlined, placeholder initials keep 4.5:1. Re-applies the two commits of the old `stack/a11y/01-axe` branch, which conflicted with `main`.
-- Tests: The axe journey (`e2e/a11y.spec.ts`) now covers Home, library, calendar, settings, Admin, every HSR game tab, an HSR and a Genshin character sheet and the Genshin gear views; no serious or critical WCAG 2 A/AA violations. It scans after hover and finite transitions settle.
-- Scope/decisions: `@axe-core/playwright` is development tooling. The test installs Genshin and removes it again, since the smoke journey adds Genshin through the library.
-- Next: `stack/v/02-tokens-fonts`.
