@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/ui/07-timeline · #204
+- Done: the banners screen reads better (Georges: "I can't see when a banner ends and the other one begins; I should be able to better see days, or have a monthly view"). The timeline has a row with every day's number, weekends shaded and today marked, and a line per day across the tracks. Each bar shows its start and end dates, and leaves a gap before the next phase. A Month view (paged by month) lists, for each day, what starts (▶) and what ends (■, with the time), and keeps the layers and the wishlist filter. A selected banner's featured characters link to their unit pages (Georges: "getting from the banner screen to the character screen is tedious").
+- Tests: written first: the calendar journey counts 42 day ticks, checks a bar's dates, finds "Starts:" and "Ends:" entries in the month view, and opens Kafka's page from the selected banner. `npm run check` passes: 559 tests and 43 journeys.
+- Scope/decisions: the month view shows starts and ends, not every running bar, so a day stays readable with six games.
+- Next: the clean-up, Settings and Admin.
+
 ## 2026-10-11 · claude · stack/ui/06-goal-maker · #203
 - Done: the goal maker makes anything (Georges: "I can't create gameplay goals yet like finish the story or do X quests; I should be able to create anything from that screen including character build goals"). New goal on Tasks, and "+ New goal" on Home's Goals panel, open one form with four kinds: Gameplay (a title and how many times), Checklist (its items, one per line), Character build (pick the unit, owned first, then plan its levels and talents in place) and Weapon (pick it, then plan its levels). The old two-kind form is gone. The plan panels' buttons are `type="button"` now, as they sit inside the form.
 - Tests: written first: the Tasks journey opens the maker from Home, adds "Do 20 Calyx runs", a checklist whose two items the API returns, and picks Kafka to see Generate tasks. `npm run check` passes: 559 tests and 42 journeys.
@@ -297,9 +303,3 @@ Entry format:
 - Tests: written first: `roster.test.ts` (requests, both games' readings, a refusal) and a sync journey (Amber and Kafka owned with their weapons; Kafka's typed level kept, eidolon and light cone filled with its name).
 - Scope/decisions: ZZZ has no catalog yet, so its roster is not read; talents wait for skill ids.
 - Next: Enka for Star Rail and ZZZ.
-
-## 2026-10-10 · claude · stack/f11/12-chronicle · #165
-- Done: the battle chronicle (ADR 0005): shared `chronicleRequests` (each game's endgame records on their hosts: Genshin `spiralAbyss` and `role_combat`, Star Rail `challenge`, `challenge_story` and `challenge_boss`, ZZZ `hadal_info_v2` and `hadal_mem_detail_v2`) and `readChronicle` (stars and floor, the Theater's acts in the schedule running now, Shiyu's S ratings in its first layout, Deadly Assault's stars and score; null without a run); `syncLink` reads it on Sync now and the cron every 6 hours, writing each mode's current cycle as a synced result unless one was typed, capped at the mode's maximum, with an `ImportRun` of kind chronicle; a refusal there (not public) does not stop the link.
-- Tests: written first: `chronicle.test.ts` (requests per game and server, each mode's reading, no run, refusal) and a sync journey (Sync now writes Abyss, MoC and AS, keeps a typed Theater result; the cron reads again after 6 hours, not after 31 minutes). The first sync test now matches Sync now's answer and counts the notes run alone.
-- Scope/decisions: endpoints and fields from genshin.py's source; Shiyu's newer layout and Stygian Onslaught are not read yet; premium earned is not derived from stars (it stays as typed).
-- Next: the roster from the chronicle (owned characters, level, dupes), then Enka for Star Rail and ZZZ.
