@@ -1,71 +1,24 @@
 # Handoff — 2026-10-10 · claude
 
 ## State
-- `main`: milestones V, D and F8 merged through #117. The open PR is F8's last, `stack/f8/13-home-f8`, which carries this file.
-- **Production is behind main.** Vercel's Hobby build rate limit refused the deployments of #108 onward on 2026-10-10 ("Deployment rate limited — retry in 24 hours"). Production runs #107. The first merge to `main` after the limit resets deploys everything; then check the smoke run. Keep branches under `stack/**` (no preview builds) to spend fewer deployments.
-- ADRs 0001–0007 accepted; ADR 0008 (events as data) still Proposed, needed before F10.
-
-## Done this session (F8, #104–#118)
-- **Cadence core** (`packages/shared/src/cadence.ts`): daily, weekly, monthly, cycle and version windows on a server's fixed-offset clock; `taskAnchor`, `gameDay`.
-- **Manifests** (`GameDefinition.manifest`, ADR 0004), with a source per value in `docs/games/<key>.md` (`~` unverified, empty unsourced). They cover:
-  - stamina with its reserve (each reserve is a currency) and cap by level;
-  - monthly shops and endgame modes;
-  - battle pass, 30-day pass, account level and version.
-  - Endfield has its two servers and its Sanity cap by Authority Level.
-- **Schema:**
-  - tasks on five cadences (`anchorKey`);
-  - `GameInstance.uid` and `accountLevel`;
-  - `CycleResult`, `PassState` and `DayRecord`, all with RLS;
-  - `ReminderLog.key`.
-  - `migrations.test.ts` guards RLS on every table.
-- **Day record:** written by an `onSend` hook on every change. It drives the heatmap, streaks, the open-goals line and pulls gained, and a pinned past day (`?day=`) moves Home to it.
-- **Game hub:**
-  - the header: server and offset, UID, account level, resets, Edit;
-  - tabs: Activities first, Endgame, the catalog screens, Pulls, and the old Overview last;
-  - **Activities (G1):** stamina and reserve, Daily/Weekly/Monthly, cycles, version, both passes;
-  - **Endgame (G2):** this cycle, mode cards, history with chart, table and CSV, upcoming resets.
-- **Reminders:** stamina full; 24 h before an endgame reset with rewards left.
-- **Home (A1):** reserves, the battle pass card, Endgame · next resets, Expiring soon.
-- **Fix:** `npm run db:sqlite` updates `prisma/dev.db` again (#110).
-
-## Verified
-- `npm run check` green on `stack/f8/13-home-f8`: 292 tests, 18 E2E journeys, 168.6 KB initial JS.
-- CI green on every merged PR, including `test-postgres` (the F8 migrations apply on Postgres 16).
+- `main`: F9 complete (#120–#124); F10 #125–#127 merged (effects core with ADR 0008 accepted, event goals, roster rewards and the 48 h reminder).
+- Open, stacked: #128 calendar (A4, base `main`, CI green) → #129 farm today (base #128) → `stack/f10/06-tasks` (pushed, **no PR yet**).
+- `stack/f10/06-tasks`: the A3 Tasks screen (Farm today, goal cards with steps, event goals claimed from their card, filter, backlog, New goal). Typecheck, lint and `e2e/tasks.spec.ts` pass; **`npm run check` not run yet**, no AGENT_LOG entry, no screenshot. Old `TaskBoard`/`TodayCard` and their styles removed.
+- Production is behind `main` (Vercel rate limit, 2026-10-10).
 
 ## Next
-1. F9 (DESIGN.md §9):
-   - the scaffold, `npm run game:new`;
-   - the manifest's remaining fields (odds, gear block, KPIs, event effects, art kinds);
-   - NTE at capability M;
-   - the ZZZ official feed.
-   - Propose its PR stack first.
-2. Then F10 (needs ADR 0008), F11, F12.
+1. On `stack/f10/06-tasks`: run Check all, add the AGENT_LOG entry, screenshot `/tasks` beside `docs/design/wireframes/a3-tasks.png` (helpers in the scratchpad: `page-shot.mjs`, `compare.mjs`), open the PR on #129.
+2. Merge #128 then #129 when green (retarget the next PR to `main` before deleting a merged branch; restack with `git rebase --onto`).
+3. `f10/07-reminders`: A3's Reminders panel (rules across games, quiet hours, digest, 30-day pass ends) and Preview (the exact DM, Send a test DM).
+4. Then `f10/08-library` (A2), `f10/09-pulls` (G3, odds vs a seeded simulation), `f10/10-characters` (`WishlistItem`, G4; calendar's "Only what I wishlisted"), G5 sheet, G6 gear, G7 planner, G8 profile. Then F11, F12.
 
 ## Needs from Georges
-- **Credentials and setup, still open:**
-  - `CRON_SECRET` in Vercel and GitHub;
-  - `DISCORD_BOT_TOKEN`, the bot invite, slash commands and the interactions URL. Without them no reminder DM goes out, the two new ones included;
-  - a `main` ruleset with `lint`, `typecheck`, `test`, `test-postgres`, `build` and `e2e`;
-  - delete the `sample-*` banners and import the feed.
-- **Decisions:**
-  - ADR 0008 before F10.
-  - **Star Rail history:** its endgame modes changed cycle length in 4.5 and 4.6, so a past day typed into history is filed by today's rhythm. Recording past anchors per version would fix it. Is that worth it?
-- **Data to confirm,** marked `~` in `docs/games/*.md`:
-  - Star Rail's endgame rewards and battle pass weekly cap;
-  - Wuthering Waves' endgame cycles;
-  - the monthly shops of Star Rail, Zenless Zone Zero and Wuthering Waves.
+- Credentials still open: `CRON_SECRET`, `DISCORD_BOT_TOKEN` and the bot setup, the `main` ruleset; delete the `sample-*` banners and import the feed.
+- Star Rail history filed by the current cadence (see #116): worth recording past anchors?
+- Data marked `~` in `docs/games/*.md`.
 
 ## Notes
-- Georges kept the pity line under each game's PULLS row on Home (answering #101), for every game with pull rules, zeros included.
-- **Cadences:**
-  - Every reset window comes from `packages/shared/src/cadence.ts`.
-  - Manifest dates are server-local. Refresh them each version (version row, endgame anchors, pass level cap), per each game's sheet.
-- **Merging and checks:**
-  - Stop the dev server before `npm run check`: the generated client is provider-specific.
-  - E2E journeys share one database. Smoke adds Genshin through the library, so other journeys use HSR, ZZZ or WuWa.
-  - Checkboxes that save to the server are uncontrolled and re-keyed on the server's state. Playwright's `check()` needs the state to change at once.
-- **Screenshots:**
-  - The helpers live in the scratchpad, not the repo. In Git Bash, set `MSYS_NO_PATHCONV=1` for `/path` arguments.
-  - The dev account carries sample day records, cycles and passes, added through the API for screenshots.
-- **Never** alias `--accent` from a `:root` variable.
-- **Owner files stay uncommitted:** `gacha-wireframes/`, `index.html`, `pull-log-gacha-tracker.html*`, `design-canvas/`, `.claude/`.
+- The shell is wider than a phone on every page (top strip); flagged as a separate task.
+- ZZZ's feed host is `sg-announcement-api.hoyoverse.com`; ZZZ has no catalog, so its banners carry no featured units.
+- `docs/AGENT_LOG.md` is kept at 40 entries; older ones go to `docs/agent-log/2026-10.md`.
+- Stop the dev server before `npm run check`. Owner files stay uncommitted (`gacha-wireframes/`, `index.html`, `pull-log-gacha-tracker.html*`, `design-canvas/`, `.claude/`).

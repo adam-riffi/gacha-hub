@@ -1,0 +1,32 @@
+/* Tasks and reminders (WIREFRAMES.md A3), in the dashboard's look (VISUAL-DESIGN.md). */
+.tk-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+.tk-head h1 { margin: 0; }
+.tk-filter { width: 240px; }
+.tk-backlog { display: inline-flex; align-items: center; margin: 0; color: var(--text); cursor: pointer; }
+.tk-page { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; }
+.tk-new { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; margin-bottom: 24px; }
+.tk-new-title { flex: 2; min-width: 200px; }
+.tk-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.tk-chip { padding: 5px 10px; border: 1px solid var(--hairline); color: var(--text); font: 400 12px/1.2 var(--font-mono); }
+.tk-chip.is-weekly { color: var(--text-muted); }
+.tk-card { margin-top: 10px; padding: 12px 14px; border: 1px solid var(--edge); background: var(--surface-2); }
+.tk-card.is-open { border-color: var(--hairline-strong); }
+.tk-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.tk-thumb { width: 40px; height: 40px; flex: none; }
+.tk-title { flex: 1; min-width: 200px; }
+.tk-title .mn { font-size: 12px; }
+.tk-prog { display: flex; align-items: center; gap: 8px; }
+.tk-meter { display: inline-block; width: 120px; height: 6px; background: var(--surface-3); }
+.tk-meter > span { display: block; height: 100%; background: var(--accent); }
+.tk-notify { display: inline-flex; align-items: center; margin: 0; color: var(--text); cursor: pointer; }
+.tk-steps { margin-top: 10px; }
+.tk-step { display: flex; align-items: center; gap: 12px; min-height: 40px; margin: 0; border-top: 1px solid var(--surface-3); color: var(--text); font: 400 15px/1.3 var(--font-body); letter-spacing: 0; text-transform: none; }
+.tk-step input[type="number"] { width: 90px; }
+.tk-step-name { flex: 1; display: flex; align-items: center; gap: 10px; }
+.tk-check { cursor: pointer; }
+.tk-group + .tk-group { margin-top: 2px; }
+.tk-mat { display: grid; grid-template-columns: minmax(0, 1fr) 90px 110px; align-items: center; gap: 12px; padding: 3px 0 3px 18px; color: var(--text-muted); font-size: 13px; }
+.tk-mat input { min-height: 26px; padding: 2px 8px; font-size: 13px; }
+.tk-add input { flex: 1; }
+.tk-today { padding: 3px 6px; background: var(--paper); color: var(--on-paper); font: 500 11px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
+.tk-actions { display: flex; gap: 8px; padding-top: 10px; border-top: 1px solid var(--surface-3); }

@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f10/06-tasks · #130
+- Done: Tasks and reminders rebuilt from its board (WIREFRAMES.md A3), left column: header (filter by character, material or game; Show backlog; New goal), Farm today (per game, from `GET /api/farm-today`, with the game day), Goals (one card per goal: game, source, what Plan farming planned, event end and effect, progress, priority, Notify; expanded: plan steps grouped as Ascension and level, Talents and Weapon with TODAY and each material's stock, checklist and event stages, Claim or Unclaim for an event goal, Delete). Old `TaskBoard`, `TodayCard` and their styles removed.
+- Tests: written first: `e2e/tasks.spec.ts` (Farm today line, event goal effect, a stage ticked, Claim applying the reward, plan steps, filter). Checked in the browser at 1440 beside `a3-tasks.png`.
+- Scope/decisions: the Reminders and Preview column is the next PR; recurring dailies stay on Activities and Home (the board has none here); the owner asked on 2026-10-10 for desktop only, so no phone checks.
+- Next: `stack/f10/07-reminders` (A3's Reminders and Preview).
+
 ## 2026-10-10 · claude · stack/f10/05-farm-today · #129
 - Done: `packages/shared/src/farm.ts` (`farmToday`: per farming goal, rotating materials open on the game day with their days, "talent books (Mon/Thu) for Venti", and one any-day line); `GET /api/farm-today`: per awake profile, its game weekday, those lines from Plan farming's goals and their material subtasks (stock as progress), and the weekly tasks left.
 - Tests: written first: `farm.test.ts` (open days, covered materials left out, weapon materials, Sunday), `farmToday.integration.test.ts` (talent books open today for a goal, Weekly Bosses left, sleeping profiles left out). The integration test first added a second Weekly Bosses on top of Genshin's default; corrected to use the default.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: Documentation only. Values come from the design file's stylesheet and script (tilt angles, rotation timing, urgency thresholds, heatmap levels).
 - Scope/decisions: What the design lacks is marked Proposed (primary button, form controls, segmented switches, rotation pause and tilt under reduced motion). HSR takes light pink `#FF8FD1` and the Overview stays magenta (Georges); open items get defaults in VISUAL-DESIGN.md §13. Proposed in ADR 0007.
 - Next: Georges merges the chain bottom-up and decides ADRs 0001–0007; the build session starts with milestone V.
-
-## 2026-10-09 · claude · stack/docs-v2/03-nte-handoff · #87
-- Done: `docs/games/nte.md`, NTE research notes with a confidence mark per line, as the start of its manifest; `HANDOFF.md` rewritten for 2026-10-09.
-- Tests: Documentation only.
-- Scope/decisions: Reference sheets for the other five games are F9 work, with a source link per value (ADR 0004).
-- Next: Georges decides ADRs 0004–0006; F8 starts in a build session.
