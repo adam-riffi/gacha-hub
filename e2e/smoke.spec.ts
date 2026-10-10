@@ -29,7 +29,7 @@ test.describe.serial("smoke @smoke", () => {
   test("the calendar shows a block per game", async ({ page }) => {
     await signIn(page);
     await page.goto("/timeline");
-    await expect(page.getByRole("heading", { name: "Banners & events" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Banners and events" })).toBeVisible();
     await expect(page.locator(".cal-game-name", { hasText: "Genshin Impact" })).toBeVisible();
   });
 });
