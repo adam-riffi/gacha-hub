@@ -15,6 +15,9 @@ const NOTES: Record<string, object> = {
   challenge: { has_data: true, star_num: 30, max_floor: "Memory of Chaos Stage 12" },
   challenge_story: { has_data: false, star_num: 0, max_floor: "" },
   challenge_boss: { has_data: true, star_num: 9, max_floor: "Apocalyptic Shadow Difficulty 4" },
+  // The roster: Genshin's character/list and Star Rail's avatar/info.
+  list: { list: [{ id: 10000021, level: 80, actived_constellation_num: 2, weapon: { id: 15301, level: 90, affix_level: 5 } }] },
+  info: { avatar_list: [{ id: 1005, level: 80, rank: 1, equip: { id: 23006, level: 80, rank: 2 } }] },
   dailyNote: { current_resin: 120, max_resin: 200, finished_task_num: 4, total_task_num: 4, is_extra_task_reward_received: true },
   note: { current_stamina: 180, max_stamina: 300, current_reserve_stamina: 1000, current_train_score: 500, max_train_score: 500 },
 };
@@ -121,5 +124,20 @@ describe("syncing HoYoLAB's real-time notes (ADR 0005)", () => {
     expect(await chronicleRuns()).toBe(1);
     await syncDueLinks(new Date(Date.now() + 7 * 3_600_000));
     expect(await chronicleRuns()).toBe(2);
+  });
+
+  it("on Sync now, owns the roster's characters and weapons and fills their builds' empty fields, keeping what was typed", async () => {
+    const kafka = (await c.req<{ id: string }>("POST", `/api/instances/${hsr}/characters`, { catalogId: "1005", doc: { level: 70 } })).json.id;
+    const row = await link();
+    expect((await c.req<{ roster?: number }>("POST", `/api/links/${row.id}/sync`)).json.roster).toBe(2);
+    const owned = await prisma.ownership.findMany({ select: { kind: true, catalogId: true }, orderBy: { catalogId: "asc" } });
+    expect(owned).toEqual(expect.arrayContaining([
+      { kind: "character", catalogId: "10000021" },
+      { kind: "weapon", catalogId: "15301" },
+      { kind: "character", catalogId: "1005" },
+      { kind: "weapon", catalogId: "23006" },
+    ]));
+    const doc = (await prisma.character.findUniqueOrThrow({ where: { id: kafka } })).doc as Record<string, unknown>;
+    expect(doc).toMatchObject({ level: 70, eidolon: 1, lightCone: { catalogId: "23006", name: "Patience Is All You Need", level: 80, superimposition: 2 } });
   });
 });
