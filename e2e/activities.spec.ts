@@ -7,12 +7,12 @@ test("a game's Activities tab: stamina, the daily, weekly and monthly lists, cyc
   const created = await page.request.post("/api/instances", { data: { gameKey: "zzz" } });
   const { id } = (await created.json()) as { id: string };
 
-  // Activities is the hub's first tab and its landing screen; the old overview is last.
+  // Activities is the hub's first tab and its landing screen; Profile is last.
   await page.goto(`/games/${id}`);
   const tabs = page.getByRole("navigation", { name: "Game screens" }).getByRole("link");
   await expect(tabs.first()).toHaveText(/activities/i);
   await expect(tabs.first()).toHaveAttribute("aria-current", "page");
-  await expect(tabs.last()).toHaveText(/overview/i);
+  await expect(tabs.last()).toHaveText(/profile/i);
 
   // Stamina with its reserve.
   const stamina = page.getByRole("region", { name: "Battery Charge" });
