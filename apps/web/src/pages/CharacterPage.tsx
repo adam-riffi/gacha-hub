@@ -107,6 +107,16 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
     },
   });
   const teams = useQuery({ queryKey: ["teams", data.gameInstanceId], queryFn: () => api.get<TeamDto[]>(`/api/instances/${data.gameInstanceId}/teams`) });
+  const joinTeam = useMutation({
+    mutationFn: (t: TeamDto) => api.put(`/api/instances/${data.gameInstanceId}/teams/${t.id}`, { members: [...t.members, data.catalogId!] }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["teams", data.gameInstanceId] }),
+    onError: () => toast("Could not add to the team", "err"),
+  });
+  const newTeam = useMutation({
+    mutationFn: () => api.post(`/api/instances/${data.gameInstanceId}/teams`, { name: `${data.name}'s team`, members: [data.catalogId!] }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["teams", data.gameInstanceId] }),
+    onError: () => toast("Could not make the team", "err"),
+  });
   const del = useMutation({
     mutationFn: () => api.del(`/api/characters/${data.id}`),
     onSuccess: () => {
@@ -318,16 +328,45 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
         </section>
       )}
 
-      <section className="card sh-used" aria-label="Used in">
-        <h3>Used in</h3>
-        {(teams.data ?? []).filter((t) => data.catalogId && t.members.includes(data.catalogId)).map((t) => (
-          <div className="sh-row" key={t.id}>
-            <span>{t.name}</span>
-            <span className="mu">{t.members.length} member{t.members.length === 1 ? "" : "s"}</span>
+      {data.catalogId && (
+        <section className="card sh-used" aria-label="Used in">
+          <div className="spread">
+            <h3>Used in</h3>
+            <Link to={`/games/${data.gameInstanceId}/teams`}>Manage teams →</Link>
           </div>
-        ))}
-        {!(teams.data ?? []).some((t) => data.catalogId && t.members.includes(data.catalogId)) && <p className="mu">No team uses {data.name} yet.</p>}
-      </section>
+          {/* The teams with this character, their other members named; add it to one with room, or make one around it. */}
+          {(teams.data ?? [])
+            .filter((t) => t.members.includes(data.catalogId!))
+            .map((t) => (
+              <div className="sh-row" key={t.id}>
+                <Link to={`/games/${data.gameInstanceId}/teams`}>{t.name}</Link>
+                <span className="mu">
+                  {t.members
+                    .filter((m) => m !== data.catalogId)
+                    .map((m) => index?.characters.get(m)?.name ?? m)
+                    .join(" · ") || "no one else yet"}
+                </span>
+              </div>
+            ))}
+          {!(teams.data ?? []).some((t) => t.members.includes(data.catalogId!)) && <p className="mu">No team uses {data.name} yet.</p>}
+          <div className="row sh-used-add">
+            <select aria-label="Add to a team" value="" onChange={(e) => {
+              const t = (teams.data ?? []).find((x) => x.id === e.target.value);
+              if (t) joinTeam.mutate(t);
+            }}>
+              <option value="">Add to a team…</option>
+              {(teams.data ?? [])
+                .filter((t) => !t.members.includes(data.catalogId!) && t.members.length < (game.teamSize ?? 4))
+                .map((t) => (
+                  <option key={t.id} value={t.id}>{t.name}</option>
+                ))}
+            </select>
+            <button className="btn" disabled={newTeam.isPending} onClick={() => newTeam.mutate()}>
+              New team with {data.name}
+            </button>
+          </div>
+        </section>
+      )}
 
       {hasSheet(data.gameKey) && (
         <details className="card sh-more">

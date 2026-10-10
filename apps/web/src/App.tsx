@@ -22,6 +22,7 @@ const AdminPage = page(() => import("./pages/AdminPage"), "AdminPage");
 const SettingsPage = page(() => import("./pages/SettingsPage"), "SettingsPage");
 const TasksPage = page(() => import("./pages/TasksPage"), "TasksPage");
 const UnitPage = page(() => import("./pages/UnitPage"), "UnitPage");
+const TeamsPage = page(() => import("./pages/TeamsPage"), "TeamsPage");
 
 export function App() {
   const { me, loading } = useAuth();
@@ -45,6 +46,7 @@ export function App() {
         <Route path="/games/:id/ownership" element={<OwnershipPage />} />
         <Route path="/games/:id/characters" element={<CharactersPage />} />
         <Route path="/games/:id/units/:catalogId" element={<UnitPage />} />
+        <Route path="/games/:id/teams" element={<TeamsPage />} />
         <Route path="/games/:id/planner" element={<PlannerPage />} />
         <Route path="/games/:id/profile" element={<ProfilePage />} />
         <Route path="/games/:id/equipment" element={<Navigate to="../characters" relative="path" replace />} />
