@@ -489,6 +489,7 @@ All under `/api`, JSON, session cookie. Inputs and outputs are zod DTOs from `pa
 | Pulls | `GET/POST /instances/:id/pulls`, `DELETE /instances/:id/pulls/:entryId`, `POST /instances/:id/pulls/calibrate`, `POST/GET /instances/:id/pulls/uigf` (UIGF v4.2 import, `?uid=` to pick an account; export), `POST /instances/:id/pulls/history-link` (`{url, next?}`: pages the official log, returns `next` to call again with) |
 | Linked accounts | `GET /links` (never the secret), `DELETE /links/:id` (revoke), `POST /links/hoyolab` (`{ltuid, ltoken}`: checked with HoYoLAB, sealed, fills the profiles it plays; 503 without `LINK_SECRET_KEY`), `POST /links/:id/sync` (real-time notes now; the cron does it every 30 minutes) |
 | Account | `GET /imports` (latest imports and syncs), `DELETE /me` (`{confirm: username}`) |
+| Showcase | `POST /instances/:id/enka` (Genshin builds from the Enka showcase by the profile's UID) |
 | Home, calendar, export | `GET /dashboard`, `GET /timeline?from&to`, `GET /export` |
 | Admin | `POST /admin/payload`, `GET /admin/payload/schema`, `GET /admin/export`, `DELETE /admin/:kind/:gameKey/:key`, `POST /admin/feed/:gameKey`, `GET /admin/audit` |
 | Platform | `POST /cron/tick` (x-cron-secret), `POST /discord/interactions` (signed), `POST /uploads` (Blob) |
