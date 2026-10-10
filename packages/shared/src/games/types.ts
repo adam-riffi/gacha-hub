@@ -72,7 +72,10 @@ export interface GameManifest {
     maxPremium?: number;
   }[];
   battlePass?: { name: string; maxLevel?: number; weeklyXpCap?: number };
-  monthlyPass?: { name: string; days: number; maxDays?: number };
+  /** `daily`: premium currency the pass gives each day (the Pulls forecast). */
+  monthlyPass?: { name: string; days: number; maxDays?: number; daily?: number };
+  /** Premium currency the daily activity gives each day (the Pulls forecast, WIREFRAMES.md G3). */
+  income?: { label: string; daily: number };
   /**
    * The gear block (WIREFRAMES.md G5, G6): what the game calls it, the build
    * document field holding it, each slot with its possible main stats (empty

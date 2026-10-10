@@ -11,7 +11,8 @@
 | Endgame | Shiyu Defense (Critical Node): every 14 days on Friday (2 – 16 Oct 2026); five frontiers; 780 Polychrome with S on all | [Critical Node](https://zenless-zone-zero.fandom.com/wiki/Shiyu_Defense/Critical_Node), [history](https://zenless-zone-zero.fandom.com/wiki/Shiyu_Defense/Critical_Node/History) |
 | Endgame | Deadly Assault: every 14 days on the other Fridays (25 Sep – 9 Oct 2026, then 9 – 23 Oct); 9 stars; 300 Polychrome | [Deadly Assault](https://zenless-zone-zero.fandom.com/wiki/Deadly_Assault), [history](https://zenless-zone-zero.fandom.com/wiki/Deadly_Assault/History) |
 | Battle pass | New Eridu City Fund, 50 levels; weekly cap: | [New Eridu City Fund](https://zenless-zone-zero.fandom.com/wiki/New_Eridu_City_Fund) |
-| 30-day pass | Inter-Knot Membership, 30 days | [Inter-Knot Membership](https://zenless-zone-zero.fandom.com/wiki/Inter-Knot_Membership) |
+| 30-day pass | Inter-Knot Membership, 30 days; 90 Polychrome a day | [Inter-Knot Membership](https://zenless-zone-zero.fandom.com/wiki/Inter-Knot_Membership) |
+| Premium income | Daily engagement, 60 Polychrome a day ~ | community figure, unverified |
 | Gear | Drive Discs, six slots: 1 HP, 2 ATK, 3 DEF, 4 (HP%/ATK%/DEF%, CRIT Rate, CRIT DMG, Anomaly Proficiency), 5 (HP%/ATK%/DEF%, PEN Ratio, Attribute DMG Bonus), 6 (HP%/ATK%/DEF%, Anomaly Mastery, Impact, Energy Regen); sets of 2 and 4; level 15 | [Drive Disc](https://zenless-zone-zero.fandom.com/wiki/Drive_Disc) |
 | Dupes | A character copy raises Mindscape by one (to M6); a W-Engine copy raises Phase by one (to 5) | [Mindscape Cinema](https://zenless-zone-zero.fandom.com/wiki/Mindscape_Cinema), [W-Engine](https://zenless-zone-zero.fandom.com/wiki/W-Engine) |
 | Art | | |

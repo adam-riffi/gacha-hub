@@ -98,7 +98,8 @@ export const wuwa: GameDefinition = {
       { key: "wastes", name: "Whimpering Wastes", anchor: { cadence: "cycle", start: "2026-09-28", days: 28 }, metric: { label: "points" }, maxPremium: 800 },
     ],
     battlePass: { name: "Pioneer Podcast", maxLevel: 70 },
-    monthlyPass: { name: "Lunite Subscription", days: 30, maxDays: 180 },
+    monthlyPass: { name: "Lunite Subscription", days: 30, maxDays: 180, daily: 90 },
+    income: { label: "Daily activity", daily: 60 },
     // Slots are numbered; an echo's main stats depend on its cost (1, 3 or 4), listed here by cost.
     gear: {
       name: "Echoes",

@@ -67,6 +67,7 @@ export function conformance(game: GameDefinition, sheet: string): string[] {
     fail((e.metric.max ?? 1) > 0 && (e.maxPremium ?? 1) > 0, `${e.name}: a positive best result and premium offer`);
   }
   fail((m.battlePass?.maxLevel ?? 1) > 0 && (m.monthlyPass?.days ?? 1) > 0, "passes need positive levels and days");
+  fail((m.monthlyPass?.daily ?? 1) > 0 && (m.income?.daily ?? 1) > 0, "premium income per day must be positive");
   fail(!Number.isNaN(Date.parse(m.version.start)) && m.version.days > 0, "the version needs a start date and a length");
 
   const slots = m.gear.slots;
@@ -93,6 +94,7 @@ export function conformance(game: GameDefinition, sheet: string): string[] {
     ...m.endgame.map((e) => e.name),
     m.battlePass?.name,
     m.monthlyPass?.name,
+    m.income?.label,
     m.version.name,
     m.accountLevel.name,
     m.gear.name,

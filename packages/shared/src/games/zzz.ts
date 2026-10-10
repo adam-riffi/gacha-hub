@@ -100,7 +100,8 @@ export const zzz: GameDefinition = {
       { key: "assault", name: "Deadly Assault", anchor: { cadence: "cycle", start: "2026-10-09", days: 14 }, metric: { label: "stars", max: 9 }, maxPremium: 300 },
     ],
     battlePass: { name: "New Eridu City Fund", maxLevel: 50 },
-    monthlyPass: { name: "Inter-Knot Membership", days: 30 },
+    monthlyPass: { name: "Inter-Knot Membership", days: 30, daily: 90 },
+    income: { label: "Daily engagement", daily: 60 },
     gear: {
       name: "Drive Discs",
       field: "discs",

@@ -13,7 +13,8 @@
 | Endgame | Apocalyptic Shadow: 5 Oct – 16 Nov 2026; 12 stars | [Apocalyptic Shadow/Stages](https://honkai-star-rail.fandom.com/wiki/Apocalyptic_Shadow/Stages), [Apocalyptic Shadow](https://honkai-star-rail.fandom.com/wiki/Apocalyptic_Shadow) |
 | Endgame rewards | 800 Stellar Jade per cycle for each mode ~ | [Buffget, 2026](https://buffget.com/news/hsr-apocalyptic-shadow-guide-e1-vs-relic-farming-2026) for Apocalyptic Shadow; per-version estimates for the other two |
 | Battle pass | Nameless Honor, 70 levels ~, weekly cap 8,000 EXP ~ | [Icy Veins](https://www.icy-veins.com/honkai-star-rail/battle-pass); one guide for the weekly cap |
-| 30-day pass | Express Supply Pass, 30 days ~ | wireframe X1, unverified |
+| 30-day pass | Express Supply Pass, 30 days, stacks to 180; 90 Stellar Jade a day | [Express Supply Pass](https://honkai-star-rail.fandom.com/wiki/Express_Supply_Pass) |
+| Premium income | Daily Training, 60 Stellar Jade a day ~ | community figure, unverified |
 | Gear | Relics: Head (HP), Hands (ATK), Body (HP%/ATK%/DEF%, Effect Hit Rate, Outgoing Healing Boost, CRIT Rate, CRIT DMG), Feet (HP%/ATK%/DEF%, SPD), Planar Sphere (HP%/ATK%/DEF%, a DMG Boost per type), Link Rope (HP%/ATK%/DEF%, Break Effect, Energy Regeneration Rate); relic sets of 2 and 4, planar sets of 2; level 15 | [Relic/Stats](https://honkai-star-rail.fandom.com/wiki/Relic/Stats) |
 | Dupes | A character copy raises Eidolon by one (to E6); a light cone copy raises Superimposition by one (to S5) | [Eidolon](https://honkai-star-rail.fandom.com/wiki/Eidolon), [Superimpose](https://honkai-star-rail.fandom.com/wiki/Superimpose) |
 | Art | Yatta's UI assets by id | [Yatta](https://sr.yatta.moe) |
