@@ -4,7 +4,8 @@ import { getCatalog, type PrismaJson } from "../api/util.js";
 
 /* Banners and events from HoYoverse's public announcement feed — the JSON the
  * game client's notice board reads. Genshin lists one notice per wish; HSR
- * packs several warps, each with its own dates, into one "Event Warp" notice. */
+ * packs several warps, each with its own dates, into one "Event Warp" notice;
+ * ZZZ packs its Signal Searches into one "Limited-Time Channels" notice. */
 
 type Parsed = { banners: BannerInput[]; events: EventInput[] };
 type Feed = { url: string; parse: (data: unknown, contents: Map<number, string>, catalog: Catalog | null) => Parsed };
@@ -17,6 +18,10 @@ const FEEDS: Record<string, Feed> = {
   hsr: {
     url: "https://sg-hkrpg-api.hoyoverse.com/common/hkrpg_global/announcement/api/{fn}?game=hkrpg&game_biz=hkrpg_global&lang=en&bundle_id=hkrpg_global&platform=pc&region=prod_official_eur&level=70&uid=100000000",
     parse: (data, contents, catalog) => parseHsrFeed(data as HsrAnnList, contents, catalog),
+  },
+  zzz: {
+    url: "https://sg-announcement-api.hoyoverse.com/common/nap_global/announcement/api/{fn}?game=nap&game_biz=nap_global&lang=en&bundle_id=nap_global&platform=pc&region=prod_gf_eu&level=60&uid=100000000",
+    parse: (data, contents, catalog) => parseZzzFeed(data as HsrAnnList, contents, catalog),
   },
 };
 export const FEED_GAMES = Object.keys(FEEDS);
@@ -86,10 +91,25 @@ export type HsrAnnList = { timezone: number; list: unknown[]; pic_list: { type_l
 
 const WARP = /During (?:the )?"([^"]+)" (Character|Light Cone) Event Warp/g;
 const WARP_DATE = /(\d{4})\/(\d{2})\/(\d{2}) (\d{2}:\d{2}:\d{2})/g;
-const HSR_NOISE = /Warp|Store Update|Update Details|Top-Up/i;
+const PIC_NOISE = /Warp|Store Update|in the Store|Update Details|Top-Up/i;
 const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40);
 /** Short event name: the quoted part of the title, else what precedes ": ". */
 const shortName = (title: string) => /^"([^"]+)"/.exec(title)?.[1] ?? title.split(": ")[0] ?? title;
+
+/** One banner of a multi-banner notice: its own period when the section states one, else the notice's. */
+function sectionBanner(a: HsrAnn, name: string, kind: "character" | "weapon", dates: string[], text: string, tz: number, catalog: Catalog | null) {
+  const pool: { id: string; name: string; rarity: number }[] = (kind === "weapon" ? catalog?.weapons : catalog?.characters) ?? [];
+  const parsed = bannerInput.safeParse({
+    key: `hoyo-${a.ann_id}-${slug(name)}`,
+    name,
+    kind,
+    startsAt: dates.length >= 2 ? dates[0] : iso(a.start_time, tz),
+    endsAt: dates.at(-1) ?? iso(a.end_time, tz),
+    featured: named(pool, text).map((u) => ({ catalogId: u.id, kind })),
+    payload: { source: "hoyoverse", annId: a.ann_id },
+  });
+  return parsed.success ? [parsed.data] : [];
+}
 
 /** HSR: one banner per `During "<name>" Character|Light Cone Event Warp` section of a notice. */
 function warps(a: HsrAnn, text: string, tz: number, catalog: Catalog | null): BannerInput[] {
@@ -103,43 +123,50 @@ function warps(a: HsrAnn, text: string, tz: number, catalog: Catalog | null): Ba
     const sentence = text.slice(from, sentenceEnd);
     const next = Math.min(sections[i + 1]?.index ?? text.length, details > sentenceEnd ? details : text.length);
     const dates = [...text.slice(sentenceEnd, next).matchAll(WARP_DATE)].map((d) => iso(`${d[1]}-${d[2]}-${d[3]} ${d[4]}`, tz));
-    const kind = m[2] === "Light Cone" ? ("weapon" as const) : ("character" as const);
-    const pool: { id: string; name: string; rarity: number }[] = (kind === "weapon" ? catalog?.weapons : catalog?.characters) ?? [];
-    const units = named(pool, sentence);
-    const parsed = bannerInput.safeParse({
-      key: `hoyo-${a.ann_id}-${slug(m[1] ?? "")}`,
-      name: m[1],
-      kind,
-      startsAt: dates.length >= 2 ? dates[0] : iso(a.start_time, tz),
-      endsAt: dates.at(-1) ?? iso(a.end_time, tz),
-      featured: units.map((u) => ({ catalogId: u.id, kind })),
-      payload: { source: "hoyoverse", annId: a.ann_id },
-    });
-    return parsed.success ? [parsed.data] : [];
+    return sectionBanner(a, m[1] ?? "", m[2] === "Light Cone" ? "weapon" : "character", dates, sentence, tz, catalog);
   });
 }
 
-/** Pure mapping from the HSR feed (its "pic_list" tabs) to banners/events. */
-export function parseHsrFeed(data: HsrAnnList, contents: Map<number, string>, catalog: Catalog | null): Parsed {
-  const banners: BannerInput[] = [];
-  const events: EventInput[] = [];
-  for (const a of data.pic_list.flatMap((g) => g.type_list).flatMap((t) => t.list)) {
-    const title = strip(a.title);
-    if (/Event Warp/.test(title)) {
-      banners.push(...warps(a, strip(contents.get(a.ann_id) ?? ""), data.timezone, catalog));
-    } else if (title && !HSR_NOISE.test(title)) {
-      const parsed = eventInput.safeParse({
-        key: `hoyo-${a.ann_id}`,
-        name: shortName(title),
-        startsAt: iso(a.start_time, data.timezone),
-        endsAt: iso(a.end_time, data.timezone),
-        payload: { source: "hoyoverse", annId: a.ann_id },
-      });
-      if (parsed.success) events.push(parsed.data);
-    }
-  }
-  return { banners, events };
+const CHANNEL = /"([^"]+)" Signal Search Details/g;
+const CHANNEL_DATE = /(\d{4})\/(\d{2})\/(\d{2}) (\d{2}:\d{2})/g;
+
+/** ZZZ: one banner per `"<name>" Signal Search Details` section, which runs to the next one or to the "※" notes. */
+function channels(a: HsrAnn, text: string, tz: number, catalog: Catalog | null): BannerInput[] {
+  const sections = [...text.matchAll(CHANNEL)];
+  return sections.flatMap((m, i) => {
+    const from = (m.index ?? 0) + m[0].length;
+    const notes = text.indexOf("※", from);
+    const section = text.slice(from, Math.min(sections[i + 1]?.index ?? text.length, notes < 0 ? text.length : notes));
+    const dates = [...section.matchAll(CHANNEL_DATE)].map((d) => iso(`${d[1]}-${d[2]}-${d[3]} ${d[4]}:00`, tz));
+    return sectionBanner(a, m[1] ?? "", /limited S-Rank W-Engine/.test(section) ? "weapon" : "character", dates, section, tz, catalog);
+  });
 }
+
+/** The "pic_list" feeds (HSR, ZZZ): notices whose title matches `banner` split into banners; the rest are events. */
+function picFeed(banner: RegExp, split: typeof warps) {
+  return (data: HsrAnnList, contents: Map<number, string>, catalog: Catalog | null): Parsed => {
+    const banners: BannerInput[] = [];
+    const events: EventInput[] = [];
+    for (const a of data.pic_list.flatMap((g) => g.type_list).flatMap((t) => t.list)) {
+      const title = strip(a.title);
+      if (banner.test(title)) {
+        banners.push(...split(a, strip(contents.get(a.ann_id) ?? ""), data.timezone, catalog));
+      } else if (title && !PIC_NOISE.test(title)) {
+        const parsed = eventInput.safeParse({
+          key: `hoyo-${a.ann_id}`,
+          name: shortName(title),
+          startsAt: iso(a.start_time, data.timezone),
+          endsAt: iso(a.end_time, data.timezone),
+          payload: { source: "hoyoverse", annId: a.ann_id },
+        });
+        if (parsed.success) events.push(parsed.data);
+      }
+    }
+    return { banners, events };
+  };
+}
+export const parseHsrFeed = picFeed(/Event Warp/, warps);
+export const parseZzzFeed = picFeed(/Limited-Time Channels/, channels);
 
 async function getJson<T>(url: string): Promise<T> {
   const res = await fetch(url, { signal: AbortSignal.timeout(10_000) });

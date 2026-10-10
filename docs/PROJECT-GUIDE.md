@@ -408,7 +408,7 @@ Account (username, Discord id, sign out); **Your data → Download my data** (on
 
 **For:** keeping banners and events correct, for admins only (`ADMIN_DISCORD_IDS`).
 
-- **Import official feed** for the selected game (Genshin, HSR; also runs hourly from the cron).
+- **Import official feed** for the selected game (Genshin, HSR, ZZZ; also runs hourly from the cron).
 - **Seed sample data** (two sample banners and events, to preview the UI; delete them in production once the feed runs).
 - **Upload payload:** paste JSON (kind banners or events, a game, items), **Example** fills a template, **Load current** loads what is live for editing, **Schema** shows the JSON schema, **Validate & apply** upserts by key with precise errors (unknown catalog ids, duplicate keys, field issues).
 - **Current banners/events** with Delete; feed rows have `hoyo-…` keys.
@@ -443,7 +443,7 @@ So the host app stays generic over what all games share (profiles, currencies, r
 | Plan farming (levels, talents → tasks) | yes | yes | — | yes | no costs in the dataset |
 | Domains today, "domains open today" DM | yes | — | — | — | — |
 | Pull log (hard pity, featured rate) | 90 50% · 80 75% · 90 | 90 50% · 80 75% · 90 | 90 50% · 80 75% · 90 | 80 50% · 80 100% · 80 | — |
-| Official feed import | yes | yes (one banner per warp section) | — | — | — |
+| Official feed import | yes | yes (one banner per warp section) | yes (one banner per Signal Search; no catalog, so no featured units yet) | — | — |
 | Art | Enka | Yatta (ownership, calendar; not yet on the sheet) | initials | initials | initials |
 | Party size | 4 | 4 | 3 | 3 | 4 |
 | Regions | NA (UTC−5), EU (UTC+1), Asia (UTC+8); reset 04:00 | same | same | same | Global (UTC+0), reset 04:00 |
@@ -533,7 +533,7 @@ As of 2026-10-08, `main` at `36edfc0` (docs(agents): read and rewrite HANDOFF.md
 
 1. **Turn on the cron:** create one random secret and set it as `CRON_SECRET` in Vercel (Production) and as the GitHub Actions secret `CRON_SECRET` (`CRON_URL` is already set). Redeploy. The next tick then runs reminders and, hourly, the Genshin and HSR feed import.
 2. **Turn on DMs:** set `DISCORD_BOT_TOKEN` (and check `DISCORD_APP_ID`, `DISCORD_PUBLIC_KEY`) in Vercel; invite the bot to a server you share with the users (a bot can only DM people it shares a server with); register the slash commands (`npm run discord:register -w @gacha/server` with the bot variables set; `docs/DEPLOY.md` has the steps); set the Interactions Endpoint URL to `https://gacha-hub-two.vercel.app/api/discord/interactions`.
-3. **Clean production banners/events:** in Admin, delete the `sample-*` rows for each game, then **Import official feed** for Genshin and HSR (or wait for the hourly tick after step 1).
+3. **Clean production banners/events:** in Admin, delete the `sample-*` rows for each game, then **Import official feed** for Genshin, HSR and ZZZ (or wait for the hourly tick after step 1).
 4. **Merge the open chain in order**, #78 first (`HANDOFF.md` lists the PRs and the method).
 5. **Branch ruleset on `main`:** require the five checks `lint`, `typecheck`, `test`, `build`, `e2e`.
 6. **ADRs:** 0001–0007 accepted on 2026-10-09; 0008 (events as data) waits for a decision.
@@ -624,7 +624,7 @@ As of 2026-10-08, `main` at `36edfc0` (docs(agents): read and rewrite HANDOFF.md
 
 **Official feed**
 
-- Genshin uses `getAnnList` type 1 notices; HSR splits `pic_list` sections titled `During "<warp>" Character|Light Cone Event Warp`.
+- Genshin uses `getAnnList` type 1 notices; HSR splits `pic_list` sections titled `During "<warp>" Character|Light Cone Event Warp`; ZZZ (host `sg-announcement-api.hoyoverse.com`) splits its `pic_list` "Limited-Time Channels" notice at each `"<channel>" Signal Search Details`, up to the `※` notes.
 - The API answers in Asia, Europe or America clock time, all labelled UTC+1; `settle()` recovers Europe from two observations 6, 7 or 13 hours apart.
 
 ## 17. Reference: docs, ADRs, glossary
