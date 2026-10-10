@@ -16,7 +16,10 @@ describe("zzz catalog", () => {
     const catalog = catalogSchema.parse(await zzz.loadCatalog!());
     const ids = new Set(catalog.materials.map((m) => m.id));
     const steps = [
-      ...catalog.characters.flatMap((c) => [...c.ascension, ...Object.values(c.talents.costsByKey ?? {}).flat()]),
+      ...catalog.characters.flatMap((c) => [
+        ...c.ascension,
+        ...Object.values(c.talents.costsByKey ?? {}).flat(),
+      ]),
       ...catalog.weapons.flatMap((w) => w.ascension),
     ];
     expect(steps.length).toBeGreaterThan(0);
@@ -26,10 +29,17 @@ describe("zzz catalog", () => {
   it("maps Ellen: an S-rank Ice Attack agent, promotions to 60, five skills to 12, and her Mindscapes", async () => {
     const catalog = catalogSchema.parse(await zzz.loadCatalog!());
     const ellen = catalog.characters.find((c) => c.id === "1191")!;
-    expect(ellen).toMatchObject({ name: "Ellen", rarity: 5, tag: "Ice", weaponType: "Attack", maxLevel: 60 });
+    expect(ellen).toMatchObject({
+      name: "Ellen",
+      rarity: 5,
+      tag: "Ice",
+      weaponType: "Attack",
+      maxLevel: 60,
+    });
     expect(ellen.ascension.map((s) => s.atLevel)).toEqual([20, 30, 40, 50, 60]);
     expect(ellen.talents.keys).toEqual(["basic", "dodge", "assist", "special", "chain"]);
-    for (const k of ellen.talents.keys) expect(ellen.talents.costsByKey![k]!.at(-1)!.atLevel).toBe(12);
+    for (const k of ellen.talents.keys)
+      expect(ellen.talents.costsByKey![k]!.at(-1)!.atLevel).toBe(12);
     expect(ellen.constellations).toHaveLength(6);
     // A W-Engine's five promotions open the caps 20 to 60; disc sets have six slots and two bonuses.
     expect(catalog.weapons.every((w) => w.ascension.at(-1)?.atLevel === 60)).toBe(true);
@@ -40,6 +50,9 @@ describe("zzz catalog", () => {
   });
 
   it("keeps every skill the catalog levels in the build doc", () => {
-    expect(zzzDocSchema.parse({ skills: { basic: 3, dodge: 4, assist: 5, special: 6, chain: 7 } }).skills).toEqual({ basic: 3, dodge: 4, assist: 5, special: 6, chain: 7 });
+    expect(
+      zzzDocSchema.parse({ skills: { basic: 3, dodge: 4, assist: 5, special: 6, chain: 7 } })
+        .skills,
+    ).toEqual({ basic: 3, dodge: 4, assist: 5, special: 6, chain: 7 });
   });
 });

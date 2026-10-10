@@ -12,7 +12,7 @@ import type { DashboardData, GameCatalogItem } from "../lib/types";
 type DashGame = DashboardData["games"][number];
 
 /** Why a game has no catalog yet (ADR 0004: capabilities are derived; this only says why one is missing). */
-const NO_CATALOG: Record<string, string> = { zzz: "no cost data yet", nte: "no open dataset" };
+const NO_CATALOG: Record<string, string> = { nte: "no open dataset" };
 /** Each game's live data since F11 (ADR 0005): what syncs, or why nothing does. Endfield's records link waits on ADR 0009. */
 const LIVE: Record<string, [live: boolean, what: string]> = {
   genshin: [true, "HoYoLAB · history link · Enka"],

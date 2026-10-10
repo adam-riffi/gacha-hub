@@ -4,6 +4,7 @@
 
 | Field | Value | Source |
 | --- | --- | --- |
+| Catalog | Agents (promotions to 60, five skill tables to 12, Mindscapes), W-Engines (promotions to 60), Drive Disc sets, materials; the live version only (`npm run catalog:zzz`) | [Hakushin data](https://static.nanoka.cc/manifest.json) |
 | Servers | America UTC−5, Europe UTC+1, Asia UTC+8; 04:00 server time, weekly on Monday | [Critical Node](https://zenless-zone-zero.fandom.com/wiki/Shiyu_Defense/Critical_Node) (cycles turn at 04:00) |
 | Stamina | Battery Charge, cap 240, 1 every 6 minutes | [Battery Charge](https://zenless-zone-zero.fandom.com/wiki/Battery_Charge) |
 | Reserve | Backup Battery Charge, cap 2,400, 1 every 18 minutes while Battery Charge is full | [Backup Battery Charge](https://zenless-zone-zero.fandom.com/wiki/Backup_Battery_Charge) |
