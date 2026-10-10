@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f11/05-settings-data · #151
+- Done: `GET /api/imports` (the user's latest 50 imports and syncs, newest first: profile, provider, kind, added, skipped, error) and `DELETE /api/me` (deletes the user and, by cascade, everything they own, once `confirm` matches their username; clears the session cookie), both for Settings (WIREFRAMES.md A5). `clearSessionCookie` is exported.
+- Tests: written first: `account.integration.test.ts` (imports newest first and nobody else's; a wrong confirm keeps the account; the right one removes the user, profiles and links and signs out; sign-in required).
+- Scope/decisions: deletion asks for the username typed back rather than a second click; no grace period (the export is one click away on the same card).
+- Next: the Settings screen on these routes.
+
 ## 2026-10-10 · claude · stack/fix/01-auth-hooks · #150
 - Done: `requireUser` and `requireAdmin` return their 401 or 403. Without the return, Fastify ran the route anyway while the async onSend hooks were writing the answer: a signed-in user who is not an admin could post an admin payload, get a 403, and still have it written; signed-out requests reached handlers that then threw at `req.user!.id` (the "Promise errored, but reply.sent" log lines).
 - Tests: written first: `auth/guards.integration.test.ts` (an admin upload by a non-admin writes no banner or audit row; nothing without a session), waiting a moment after the answer since the stray handler wrote just after it.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: `dayOf` (recorded, unchanged, before any record) and E2E `pin-day.spec.ts`; the heatmap journey still pins today.
 - Scope/decisions: weeklies, goals gauge, permanent tickets, pity, banners, pass and stamina have no history, so they stay live (the design moves them with made-up data). Vercel's Hobby build rate limit refused production deploys of #108 and #109 today; production is at #107 until the next merge after the reset.
 - Next: merge #110 and #111; then `07-hub-activities` (hub header, Activities tab per G1).
-
-## 2026-10-10 · claude · fix/db-sqlite-path · #110
-- Done: `prisma.config.ts` resolves a relative SQLite URL against `prisma/`, as the app does; `npm run db:sqlite` updates `prisma/dev.db` again instead of creating `dev.db` at the root (a #102 regression under Prisma 7).
-- Tests: written first in `database.test.ts`: the CLI and the app open the same file for `file:./dev.db`; absolute paths pass through.
-- Scope/decisions: none.
-- Next: back to F8 (`06-pin-day`).
