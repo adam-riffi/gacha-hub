@@ -1,6 +1,6 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import type { FastifyInstance } from "fastify";
-import type { PullLogDto } from "@gacha/shared";
+import type { DashboardDto, PullLogDto } from "@gacha/shared";
 import { installGame, login, makeApp, resetDb, type Client } from "../test/helpers.js";
 
 const AMBER = "10000021";
@@ -30,8 +30,21 @@ describe("pull log (routes)", () => {
     expect(r.json.banners.map((b) => [b.key, b.state.pity, b.state.toHardPity])).toEqual([
       ["character", 0, 90],
       ["weapon", 0, 80],
+      ["chronicled", 0, 90],
       ["standard", 0, 90],
+      ["beginner", 0, 90],
     ]);
+  });
+
+  it("hides a banner type from Home and shows it again; only the game's own banner types", async () => {
+    const hide = (hiddenBanners: unknown) => c.req<{ hiddenBanners?: string[] | null }>("PUT", `/api/instances/${gid}`, { hiddenBanners });
+    const homePity = async () => (await c.req<DashboardDto>("GET", "/api/dashboard")).json.games.find((g) => g.instanceId === gid)!.pity.map((p) => p.key);
+
+    expect((await hide(["beginner"])).json.hiddenBanners).toEqual(["beginner"]);
+    expect(await homePity()).toEqual(["character", "weapon", "chronicled", "standard"]);
+    expect((await hide(["departure"])).status).toBe(400);
+    expect((await hide(null)).json.hiddenBanners).toBeNull();
+    expect(await homePity()).toContain("beginner");
   });
 
   it("adds pity per batch and restarts it after a 5★, tracking the guarantee", async () => {

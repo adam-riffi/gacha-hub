@@ -31,6 +31,12 @@ test("Pulls: what you have and what is coming, an event banner's status, pity an
   await expect(banner.getByRole("button", { name: "Guaranteed" })).toHaveAttribute("aria-pressed", "true");
   await expect(page.getByRole("region", { name: "History" })).toContainText("17");
 
+  // Every banner type shows; one you do not use hides, and comes back from the hidden strip.
+  await page.getByRole("region", { name: "Departure warp" }).getByRole("button", { name: "Hide" }).click();
+  await expect(page.getByRole("region", { name: "Departure warp" })).toHaveCount(0);
+  await page.getByRole("button", { name: "Show Departure warp" }).click();
+  await expect(page.getByRole("region", { name: "Departure warp" })).toBeVisible();
+
   // Home shows the pity next to the game's pulls.
   await page.goto("/");
   await expect(page.locator(".pull-row-pity", { hasText: "Character 3/90" })).toContainText("guaranteed");
