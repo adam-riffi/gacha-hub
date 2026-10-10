@@ -15,9 +15,9 @@ test("Gear: the inventory by crit value, adding a piece and equipping it, storag
     await inventory.getByRole("button", { name: "+ Add piece" }).click();
     const form = page.getByRole("form", { name: "Piece" });
     await form.getByLabel("Set").fill("Gladiator's Finale");
-    await form.getByLabel("Substat 1").fill("CRIT Rate");
+    await form.getByLabel("Substat 1", { exact: true }).fill("CRIT Rate");
     await form.getByLabel("Substat 1 value").fill("10.5");
-    await form.getByLabel("Substat 2").fill("CRIT DMG");
+    await form.getByLabel("Substat 2", { exact: true }).fill("CRIT DMG");
     await form.getByLabel("Substat 2 value").fill("21");
     await form.getByRole("button", { name: "Save" }).click();
 
