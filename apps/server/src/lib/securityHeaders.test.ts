@@ -27,7 +27,7 @@ describe("security headers", () => {
 
   it("allow the image hosts the app really uses", () => {
     // R2's public bucket hosts serve our own copy of the game art (ADR 0006).
-    for (const host of ["https://enka.network", "https://sr.yatta.moe", "https://files.wuthery.com", "https://cdn.discordapp.com", "https://*.public.blob.vercel-storage.com", "https://*.r2.dev"]) {
+    for (const host of ["https://enka.network", "https://sr.yatta.moe", "https://files.wuthery.com", "https://static.nanoka.cc", "https://cdn.discordapp.com", "https://*.public.blob.vercel-storage.com", "https://*.r2.dev"]) {
       expect(directive("img-src")).toContain(host);
     }
   });
