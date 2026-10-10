@@ -69,7 +69,7 @@ export function CharactersPage() {
   const pulls = useQuery({ queryKey: ["pulls", id], queryFn: () => api.get<PullLogDto>(`/api/instances/${id}/pulls`) });
   const dash = useQuery({ queryKey: ["dashboard"], queryFn: () => api.get<DashboardDto>("/api/dashboard") });
   const rewards = useQuery({ queryKey: ["rewards"], queryFn: () => api.get<RewardDto[]>("/api/rewards") });
-  const { catalog } = useCatalog(instance.data?.gameKey);
+  const { catalog, isLoading: catalogLoading } = useCatalog(instance.data?.gameKey);
 
   const own = useMutation({
     mutationFn: (ids: string[]) => api.put(`/api/instances/${id}/ownership`, { items: ids.map((catalogId) => ({ kind: "character", catalogId, owned: true })) }),
@@ -93,7 +93,8 @@ export function CharactersPage() {
       </div>
     );
   }
-  if (!instance.data || !builds.data || !game) return <div className="mu">Loading…</div>;
+  // A game with a catalog waits for it: without it the page would fall back to one card per build.
+  if (!instance.data || !builds.data || !game || catalogLoading) return <div className="mu">Loading…</div>;
 
   const byCatalog = new Map(builds.data.filter((b) => b.catalogId).map((b) => [b.catalogId!, b]));
   const ownedIds = new Set((ownership.data ?? []).filter((o) => o.kind === "character").map((o) => o.catalogId));
