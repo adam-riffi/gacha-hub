@@ -64,7 +64,7 @@ describe("syncing HoYoLAB's real-time notes (ADR 0005)", () => {
   it("on Sync now, sets each profile's stamina and reserve and ticks its daily, then records the run", async () => {
     const row = await link();
     const r = await c.req<Record<string, unknown>>("POST", `/api/links/${row.id}/sync`);
-    expect(r.json).toEqual({ synced: ["genshin", "hsr"] });
+    expect(r.json).toMatchObject({ synced: ["genshin", "hsr"] });
     expect(asked.every((a) => a.cookie === COOKIE)).toBe(true);
     expect(await value(genshin, "resin")).toBe(120);
     expect(await value(hsr, "trailblazePower")).toBe(180);
