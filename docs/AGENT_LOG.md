@@ -253,9 +253,3 @@ Entry format:
 - Tests: written first: account levels in the conformance suite, `hubResets`, `utcLabel`, E2E `hub.spec.ts` (header, edit, tabs); whole E2E suite green.
 - Scope/decisions: the header is the page's h1 (screens drop theirs); the overview's region select moved into Edit; world level left out (no field). Rest of F8 split: activities, passes, endgame, remind-full, Home.
 - Next: `08-activities` (stamina with reserve, Daily/Weekly/Monthly columns, cycles, version) as the first tab.
-
-## 2026-10-10 · claude · stack/f8/06-pin-day · #111
-- Done: pinning a past heatmap day moves Home to it, kept in the URL (`?day=`): VIEWING chip and BACK TO TODAY in the top bar, the day's dailies on the gauge, Backlog and Pull history ending on it (Backlog follows the period: 10 days or 8 weeks), DAY CLOSED and recorded dailies on the dailies card, the day's limited pulls. `dayOf` in shared. #109 merged.
-- Tests: written first: `dayOf` (recorded, unchanged, before any record) and E2E `pin-day.spec.ts`; the heatmap journey still pins today.
-- Scope/decisions: weeklies, goals gauge, permanent tickets, pity, banners, pass and stamina have no history, so they stay live (the design moves them with made-up data). Vercel's Hobby build rate limit refused production deploys of #108 and #109 today; production is at #107 until the next merge after the reset.
-- Next: merge #110 and #111; then `07-hub-activities` (hub header, Activities tab per G1).
