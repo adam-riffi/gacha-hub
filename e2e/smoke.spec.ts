@@ -13,18 +13,16 @@ test.describe.serial("smoke @smoke", () => {
     await expect(page.getByRole("navigation", { name: "Sections" }).getByRole("link", { name: "Banners and events" })).toBeVisible();
   });
 
-  test("adding Genshin opens its hub, whose overview has today's domains", async ({ page }) => {
+  test("adding Genshin opens its hub, whose planner says what to farm today", async ({ page }) => {
     await signIn(page);
     await page.goto("/library");
     await page.getByRole("button", { name: "+ Genshin Impact" }).click();
     await expect(page).toHaveURL(/\/games\/[^/]+$/);
     await expect(page.getByRole("heading", { name: "Genshin Impact" })).toBeVisible();
-    // The hub opens on Activities (WIREFRAMES.md G1); the old overview is a link on Profile, the last tab.
+    // The hub opens on Activities (WIREFRAMES.md G1); the day's domains are the Planner's Farm today.
     await expect(page.getByRole("region", { name: "Daily" })).toBeVisible();
-    await page.getByRole("navigation", { name: "Game screens" }).getByRole("link", { name: "Profile" }).click();
-    await page.getByRole("link", { name: "old overview" }).click();
-    await expect(page.getByRole("heading", { name: "Happening now" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: /Domains today/ })).toBeVisible();
+    await page.getByRole("navigation", { name: "Game screens" }).getByRole("link", { name: "Planner" }).click();
+    await expect(page.getByRole("region", { name: /^Farm today/ })).toBeVisible();
   });
 
   test("the calendar shows a block per game", async ({ page }) => {

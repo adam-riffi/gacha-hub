@@ -12,6 +12,9 @@ test("Profile: account, passes with their reminders, game reminders, status @smo
   const tabs = page.getByRole("navigation", { name: "Game screens" });
   await expect(tabs.getByRole("link", { name: "Profile" })).toHaveAttribute("aria-current", "page");
   await expect(tabs.getByRole("link", { name: "Overview" })).toHaveCount(0);
+  // An old link to the overview lands here.
+  await page.goto(`/games/${id}/overview`);
+  await expect(page).toHaveURL(new RegExp(`/games/${id}/profile$`));
 
   // Account: the server's reset in server time, the UID masked once typed, the levels typed in place.
   const account = page.getByRole("region", { name: "Account" });
@@ -42,9 +45,23 @@ test("Profile: account, passes with their reminders, game reminders, status @smo
   await reminders.getByRole("checkbox", { name: "Trailblaze Power full" }).check();
   await expect.poll(async () => (await reminder())?.whenStaminaFull).toBe(true);
   await expect(reminders.getByRole("link", { name: /Global rules/ })).toHaveAttribute("href", "/tasks");
+  // The per-game reminder options, here since the old overview went.
+  await reminders.getByText("More reminder options").click();
+  await expect(reminders.getByLabel("Reminder time")).toBeVisible();
+
+  // Wallet: every currency, typed in place.
+  const wallet = page.getByRole("region", { name: "Wallet" });
+  await wallet.getByRole("spinbutton", { name: "Stellar Jade" }).fill("1600");
+  await wallet.getByRole("spinbutton", { name: "Stellar Jade" }).blur();
+  await expect
+    .poll(async () => ((await (await page.request.get(`/api/instances/${id}`)).json()) as { currencies: { key: string; value: number }[] }).currencies.find((x) => x.key === "stellarJade")?.value)
+    .toBe(1600);
 
   // Status: export this game, sleep it, remove it.
   const status = page.getByRole("region", { name: "Game status" });
+  await expect(status.getByRole("button", { name: "Restore default tasks" })).toBeVisible();
+  await expect(status.getByRole("button", { name: "Generate backlog" })).toBeVisible();
+  await expect(status.getByRole("link", { name: "old overview" })).toHaveCount(0);
   const download = page.waitForEvent("download");
   await status.getByRole("button", { name: "Export JSON" }).click();
   expect((await download).suggestedFilename()).toMatch(/^gacha-hub-hsr-\d{4}-\d{2}-\d{2}\.json$/);

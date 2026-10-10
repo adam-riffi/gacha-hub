@@ -51,4 +51,10 @@ test("Character sheet: KPI targets on the tiles, and the teams the character is 
   await expect(page.getByRole("region", { name: "KPIs" }).getByRole("group", { name: "SPD" }).getByRole("spinbutton", { name: "SPD target" })).toHaveValue("134");
 
   await expect(page.getByRole("region", { name: "Used in" })).toContainText("E2E Kafka DoT");
+
+  // A second build of the same character (named builds came from the old overview).
+  await page.getByRole("button", { name: "+ Another build" }).click();
+  await expect(page).not.toHaveURL(new RegExp(build.id));
+  await expect(page).toHaveURL(/\/characters\//);
+  await expect(page.getByRole("heading", { name: /Kafka/ })).toBeVisible();
 });
