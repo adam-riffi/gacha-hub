@@ -49,6 +49,15 @@ test("Profile: account, passes with their reminders, game reminders, status @smo
   await reminders.getByText("More reminder options").click();
   await expect(reminders.getByLabel("Reminder time")).toBeVisible();
 
+  // Long-term progress: hand-typed goals of one type (exploring, events), added and ticked here (Georges, 2026-10-10).
+  const progress = page.getByRole("region", { name: "Long-term progress" });
+  await progress.getByRole("textbox", { name: "New long-term goal" }).fill("Finish exploring Amphoreus");
+  await progress.getByRole("button", { name: "Add goal" }).click();
+  const goal = progress.getByRole("checkbox", { name: "Finish exploring Amphoreus" });
+  await expect(goal).not.toBeChecked();
+  await goal.check();
+  await expect(goal).toBeChecked();
+
   // Wallet: every currency, typed in place.
   const wallet = page.getByRole("region", { name: "Wallet" });
   await wallet.getByRole("spinbutton", { name: "Stellar Jade" }).fill("1600");
