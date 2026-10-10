@@ -57,7 +57,7 @@ export async function syncEnka(
         : { error: "no_showcase" as const }
       : gi.gameKey === "zzz"
         ? readEnkaZzz(json, { weaponName, setName })
-        : readEnkaGenshin(json, { weaponName, setName });
+        : readEnkaGenshin(json, { weaponName, setName, skillOrder: (id) => cat.index.characters.get(id)?.extra?.skillOrder as string[] | undefined });
   if ("error" in read) {
     await prisma.importRun.create({
       data: {

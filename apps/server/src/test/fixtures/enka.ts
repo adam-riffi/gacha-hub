@@ -6,8 +6,6 @@ export const showcase = {
       avatarId: 10000021,
       propMap: { "4001": { type: 4001, ival: "80", val: "80" } },
       talentIdList: [2101, 2102],
-      // Base levels by skill id: Amber's normal attack 10041, skill 10032, burst 10017.
-      skillLevelMap: { "10017": 8, "10032": 9, "10041": 6 },
       skillLevelMap: { "10041": 6, "10032": 8, "10017": 9 },
       fightPropMap: { "2000": 15000.4, "2001": 1800.2, "2002": 700, "20": 0.55, "22": 1.2, "23": 1.3, "28": 100 },
       equipList: [

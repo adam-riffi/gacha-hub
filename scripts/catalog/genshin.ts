@@ -12,7 +12,7 @@ import type {
   CatalogWeapon,
   CostStep,
 } from "../../packages/shared/src/catalog/types.js";
-import { byId, slugify, uniqueKeys, weekdays, writeCatalog } from "./common.js";
+import { byId, fetchJson, slugify, uniqueKeys, weekdays, writeCatalog } from "./common.js";
 
 const require = createRequire(import.meta.url);
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -60,6 +60,12 @@ const talentsByName = new Map<string, RawCosts>(
 const talentNames = new Map<string, (string | undefined)[]>(
   all("talents").map((t) => [t.name as string, [t.combat1?.name, t.combat2?.name, t.combat3?.name]]),
 );
+// Each character's normal attack, skill and burst ids, from Enka's store: a showcase keys talent levels by them (ADR 0005).
+const enkaCharacters = await fetchJson<Record<string, { SkillOrder?: number[] }>>(
+  "https://raw.githubusercontent.com/EnkaNetwork/API-docs/master/store/characters.json",
+  { cacheKey: "genshin-enka" },
+);
+
 const characters: CatalogCharacter[] = all("characters")
   .filter((c) => {
     const ok =
@@ -94,6 +100,7 @@ const characters: CatalogCharacter[] = all("characters")
       version: c.version,
       portraitUrl: c.images?.portrait,
       cardUrl: c.images?.card,
+      skillOrder: enkaCharacters[String(c.id)]?.SkillOrder?.map(String),
     },
   };
 });

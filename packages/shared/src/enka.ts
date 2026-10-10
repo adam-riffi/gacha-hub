@@ -47,7 +47,7 @@ type Equip = {
   reliquary?: { level?: number };
   flat?: { itemType?: string; equipType?: string; icon?: string; reliquaryMainstat?: Stat; reliquarySubstats?: Stat[] };
 };
-type Avatar = { avatarId?: number; avatarID?: number; propMap?: Record<string, { val?: string }>; talentIdList?: number[]; fightPropMap?: Record<string, number>; equipList?: Equip[] };
+type Avatar = { avatarId?: number; avatarID?: number; propMap?: Record<string, { val?: string }>; talentIdList?: number[]; skillLevelMap?: Record<string, number>; fightPropMap?: Record<string, number>; equipList?: Equip[] };
 
 const statOf = (s: Stat | undefined) => {
   const id = s?.mainPropId ?? s?.appendPropId ?? s?.appendPropID;
@@ -63,7 +63,7 @@ const valueOf = (s: Stat) => s.statValue ?? s.propValue ?? 0;
  */
 export function readEnkaGenshin(
   json: unknown,
-  lookups: { weaponName: (id: string) => string | undefined; setName: (setId: string) => string | undefined },
+  lookups: { weaponName: (id: string) => string | undefined; setName: (setId: string) => string | undefined; skillOrder?: (catalogId: string) => readonly string[] | undefined },
 ): { level?: number; worldLevel?: number; builds: { catalogId: string; doc: Record<string, unknown> }[] } | { error: "showcase_closed" } {
   const data = (typeof json === "object" && json ? json : {}) as { playerInfo?: { level?: number; worldLevel?: number }; avatarInfoList?: Avatar[] };
   if (!Array.isArray(data.avatarInfoList) || !data.avatarInfoList.length) return { error: "showcase_closed" };
@@ -72,6 +72,15 @@ export function readEnkaGenshin(
     const level = Number(a.propMap?.["4001"]?.val);
     if (level) doc.level = level;
     doc.constellation = a.talentIdList?.length ?? 0;
+    // Base talent levels, by the character's normal, skill and burst ids (constellation bonuses not included).
+    const order = lookups.skillOrder?.(String(a.avatarId ?? a.avatarID));
+    const talents = Object.fromEntries(
+      (["normal", "skill", "burst"] as const).flatMap((k, i) => {
+        const level = order?.[i] ? a.skillLevelMap?.[order[i]!] : undefined;
+        return level ? [[k, level]] : [];
+      }),
+    );
+    if (Object.keys(talents).length) doc.talents = talents;
     const artifacts: Record<string, unknown> = {};
     for (const e of a.equipList ?? []) {
       if (e.weapon) {

@@ -19,7 +19,7 @@ describe("Enka showcase (ADR 0005)", () => {
           doc: {
             level: 80,
             constellation: 2,
-            talents: { normal: 6, skill: 9, burst: 8 },
+            talents: { normal: 6, skill: 8, burst: 9 },
             weapon: { catalogId: "15301", name: "Raven Bow", level: 90, refinement: 5 },
             artifacts: { flower: { setName: "Wanderer's Troupe", mainStat: "HP", level: 20, substats: [{ stat: "CRIT Rate", value: 3.9 }, { stat: "CRIT DMG", value: 7.8 }] } },
             stats: { HP: 15000, ATK: 1800, DEF: 700, "CRIT Rate": 55, "CRIT DMG": 120, "Energy Recharge": 130, "Elemental Mastery": 100 },
