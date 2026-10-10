@@ -4,6 +4,8 @@ import { installGame, login, makeApp, resetDb, type Client } from "../test/helpe
 import { prisma } from "../lib/prisma.js";
 import { hsrShowcase, showcase } from "../test/fixtures/enka.js";
 
+let ip = 0;
+
 describe("syncing builds from an Enka showcase (ADR 0005)", () => {
   let app: FastifyInstance;
   let c: Client;
@@ -20,7 +22,8 @@ describe("syncing builds from an Enka showcase (ADR 0005)", () => {
   });
   beforeEach(async () => {
     await resetDb();
-    c = await login(app);
+    // An address per test, so the route's rate limit (6 a minute) never carries over.
+    c = await login(app, `10.0.2.${++ip}`);
     gid = await installGame(c, "genshin");
     await c.req("PUT", `/api/instances/${gid}`, { uid: "700000001" });
     status = 200;
