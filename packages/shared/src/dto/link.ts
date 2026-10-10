@@ -12,3 +12,15 @@ export const linkedAccountDto = z.object({
   createdAt: isoDate,
 });
 export type LinkedAccountDto = z.infer<typeof linkedAccountDto>;
+
+/** One import or sync as Settings lists it (ADR 0005). */
+export const importRunDto = z.object({
+  gameInstanceId: idSchema.nullable(),
+  provider: z.string(),
+  kind: z.string(),
+  added: z.number().int(),
+  skipped: z.number().int(),
+  error: z.string().nullable(),
+  createdAt: isoDate,
+});
+export type ImportRunDto = z.infer<typeof importRunDto>;
