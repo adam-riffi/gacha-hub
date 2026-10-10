@@ -33,3 +33,22 @@ test("Character sheet: identity, KPIs, character, skills, weapon, stats and the 
   await page.reload();
   await expect(page.getByRole("region", { name: "Character" }).getByLabel("Level")).toHaveValue("80");
 });
+
+test("Character sheet: KPI targets on the tiles, and the teams the character is used in @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  const build = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1005", doc: { level: 80, stats: { SPD: 130 } } } })).json()) as { id: string };
+  await page.request.post(`/api/instances/${id}/teams`, { data: { name: "E2E Kafka DoT", members: ["1005", "1006"] } });
+
+  await page.goto(`/characters/${build.id}`);
+  const spd = page.getByRole("region", { name: "KPIs" }).getByRole("group", { name: "SPD" });
+  await spd.getByRole("spinbutton", { name: "SPD target" }).fill("134");
+  await spd.getByRole("spinbutton", { name: "SPD target" }).blur();
+  await expect(spd).toContainText("4 short");
+  await page.reload();
+  await expect(page.getByRole("region", { name: "KPIs" }).getByRole("group", { name: "SPD" }).getByRole("spinbutton", { name: "SPD target" })).toHaveValue("134");
+
+  await expect(page.getByRole("region", { name: "Used in" })).toContainText("E2E Kafka DoT");
+});
