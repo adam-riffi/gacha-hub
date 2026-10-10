@@ -178,13 +178,9 @@ describe("game facts", () => {
   });
 
   it("names each game's account level, as the hub header shows it", () => {
-    expect(Object.fromEntries(gameList.map((g) => [g.key, `${g.manifest.accountLevel.label} ${g.manifest.accountLevel.name}`]))).toEqual({
-      genshin: "AR Adventure Rank",
-      hsr: "TL Trailblaze Level",
-      zzz: "IKL Inter-Knot Level",
-      wuwa: "UL Union Level",
-      endfield: "AL Authority Level",
-    });
+    const expected = { genshin: "AR Adventure Rank", hsr: "TL Trailblaze Level", zzz: "IKL Inter-Knot Level", wuwa: "UL Union Level", endfield: "AL Authority Level" };
+    // The games named here; a scaffolded game adds its own facts.
+    expect(Object.fromEntries(Object.keys(expected).map((k) => [k, `${getGame(k)!.manifest.accountLevel.label} ${getGame(k)!.manifest.accountLevel.name}`]))).toEqual(expected);
   });
 
   it("gives the hub header its next daily and weekly resets and the version's end, on the profile's server", () => {
@@ -196,14 +192,18 @@ describe("game facts", () => {
   });
 
   it("gives each game its gear block as the wikis describe it", () => {
-    const shape = Object.fromEntries(gameList.map((g) => [g.key, [g.manifest.gear.name, g.manifest.gear.slots.length, g.manifest.gear.sets.join("/"), g.manifest.gear.costCap ?? null]]));
-    expect(shape).toEqual({
+    const expected = {
       genshin: ["Artifacts", 5, "2/4", null],
       hsr: ["Relics", 6, "2/4", null],
       zzz: ["Drive Discs", 6, "2/4", null],
       wuwa: ["Echoes", 5, "2/5", 12],
       endfield: ["Gear", 4, "3", null],
-    });
+    };
+    const shape = (k: string) => {
+      const gear = getGame(k)!.manifest.gear;
+      return [gear.name, gear.slots.length, gear.sets.join("/"), gear.costCap ?? null];
+    };
+    expect(Object.fromEntries(Object.keys(expected).map((k) => [k, shape(k)]))).toEqual(expected);
     const genshin = getGame("genshin")!.manifest.gear.slots;
     expect(genshin.find((x) => x.key === "circlet")?.mainStats).toContain("CRIT Rate%");
     expect(getGame("zzz")!.manifest.gear.slots.find((x) => x.key === "slot5")?.mainStats).toContain("PEN Ratio%");
