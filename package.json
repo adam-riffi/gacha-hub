@@ -28,6 +28,8 @@
     "format:check": "prettier --check .",
     "game:new": "node scripts/game-new.mjs",
     "catalog:install": "npm --prefix scripts/catalog install",
+    "assets:install": "npm --prefix scripts/assets ci",
+    "assets:mirror": "npm --prefix scripts/assets run mirror --",
     "catalog:genshin": "npm --prefix scripts/catalog run genshin",
     "catalog:hsr": "npm --prefix scripts/catalog run hsr",
     "catalog:wuwa": "npm --prefix scripts/catalog run wuwa",

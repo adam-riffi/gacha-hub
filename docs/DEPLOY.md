@@ -124,6 +124,22 @@ it returns 200.
 
 ---
 
+## 7. Game art store (Cloudflare R2, ADR 0006)
+
+Optional: without it the app hotlinks Enka and Yatta, then shows placeholders.
+
+1. Create a Cloudflare account and an **R2 bucket** (free tier: 10 GB, free egress).
+2. In the bucket's settings, allow **public access** through its `r2.dev` URL (or a custom domain).
+   **→ save the public URL as `VITE_ASSET_BASE`** (no trailing slash).
+3. Create an **R2 API token** with read and write on that bucket.
+   **→ save** the account id, the access key id and the secret access key.
+4. In GitHub → Settings → Secrets → Actions, add `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`,
+   `R2_SECRET_ACCESS_KEY` and `R2_BUCKET` (the bucket's name).
+5. Run the **mirror-art** workflow (Actions → mirror-art → Run workflow, game `all`).
+   Each later run uploads only what changed; run it after each catalog refresh.
+6. In Vercel, set `VITE_ASSET_BASE` to the public URL and redeploy.
+   A custom domain also needs adding to the CSP's `img-src` (`apps/server/src/lib/securityHeaders.ts` and `vercel.json`); `*.r2.dev` is already allowed.
+
 ## Redeploys and migrations
 
 - Pushing to the default branch triggers a Vercel production deploy that reruns
