@@ -18,10 +18,25 @@ test("Pulls: what you have and what is coming, an event banner's status, pity an
   await expect(banner.getByTestId("pity")).toHaveText("0");
   await expect(banner.getByRole("button", { name: "50/50" })).toHaveAttribute("aria-pressed", "true");
   await expect(banner).toContainText("Next pull");
-  await expect(banner.getByRole("img", { name: /chance of the featured 5★/ })).toBeVisible();
+  const curve = banner.getByRole("img", { name: /chance of the featured 5★/ });
+  await expect(curve).toBeVisible();
+  const shape = await curve.locator(".pl-line").getAttribute("d");
 
+  // The curve keeps its whole shape as pity grows; the markers move along it.
   await banner.getByRole("button", { name: "+10" }).click();
   await expect(banner.getByTestId("pity")).toHaveText("10");
+  await expect(curve.locator(".pl-line")).toHaveAttribute("d", shape!);
+  await expect(curve).toHaveAttribute("aria-label", /you are at pity 10/);
+  await expect(banner.locator(".pl-legend")).toContainText("All your 30 pulls");
+
+  // A top-up simulation: what buying more currency would give, on every banner.
+  await page.getByLabel("Top-up amount").fill("1600");
+  await expect(page.getByRole("region", { name: "Pulls available" })).toContainText("+10 pulls");
+  await expect(banner.locator(".pl-legend")).toContainText("With the top-up: 40 pulls");
+  await page.getByLabel("Top-up amount").fill("");
+
+  // Standard banners get the full card too.
+  await expect(page.getByRole("region", { name: "Stellar warp" }).getByRole("img", { name: /chance of a 5★/ })).toBeVisible();
 
   await banner.getByRole("button", { name: "Log a 5★" }).click();
   await banner.getByLabel("5★ at pull").fill("7");
