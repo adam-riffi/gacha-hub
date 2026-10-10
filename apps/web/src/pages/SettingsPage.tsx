@@ -83,13 +83,7 @@ function LinkedAccounts({ links, games }: { links: LinkedAccountDto[]; games: In
   return (
     <section className="card st-linked" id="linked" aria-label="Linked accounts">
       <h3>Linked accounts</h3>
-      <article className="st-provider is-main" aria-label="HoYoLAB">
-        <div className="spread">
-          <span className="row"><strong>HoYoLAB</strong><span className={`tag ${hoyolab ? "" : "is-off"}`}>{hoyolab ? (hoyolab.status === "ok" ? "Connected" : "Needs attention") : "Not linked"}</span></span>
-          {hoyolab?.lastSyncAt && <span className="mn mu">last sync {DAY.format(new Date(hoyolab.lastSyncAt))}</span>}
-        </div>
-        <p className="mu">Genshin Impact · Honkai: Star Rail · Zenless Zone Zero: stamina, dailies and weekly bosses, endgame results, roster and builds, read only. The login token is stored encrypted on the server and never shown again. Linking arrives with real-time notes.</p>
-      </article>
+      <HoyolabCard link={hoyolab} />
       <article className="st-provider" aria-label="Enka showcase">
         <span className="row"><strong>Enka showcase</strong><span className="tag is-off">No login</span></span>
         <p className="mu">Public builds by UID, for builds when HoYoLAB is not linked. The UIDs are your profiles'.</p>
@@ -115,6 +109,77 @@ function LinkedAccounts({ links, games }: { links: LinkedAccountDto[]; games: In
         </article>
       </div>
     </section>
+  );
+}
+
+const LINK_ERROR: Record<string, string> = {
+  linking_off: "Linking is off until the server's key is set.",
+  not_logged_in: "HoYoLAB did not accept these cookies: copy them again from hoyolab.com while signed in.",
+  not_public: "Make your Battle Chronicle public on HoYoLAB, then try again.",
+  refused: "HoYoLAB refused the request: try again later.",
+};
+const linkError = (e: unknown) => LINK_ERROR[(e instanceof ApiError ? (e.body as { error?: string }).error : "") ?? ""] ?? "Something went wrong.";
+const TIME = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+
+/**
+ * HoYoLAB (ADR 0005): link with the two read cookies, then Sync now and
+ * Revoke. Gacha Hub only reads: no check-in, no code redemption.
+ */
+function HoyolabCard({ link }: { link?: LinkedAccountDto }) {
+  const qc = useQueryClient();
+  const [note, setNote] = useState<string | null>(null);
+  const refresh = () => Promise.all([["links"], ["imports"], ["instances"], ["dashboard"]].map((queryKey) => qc.invalidateQueries({ queryKey })));
+  const connect = useMutation({
+    mutationFn: (v: { ltuid: string; ltoken: string }) => api.post<{ games: { gameKey: string }[] }>("/api/links/hoyolab", v),
+    onSuccess: (r) => {
+      setNote(`Linked: ${r.games.map((g) => getGame(g.gameKey)?.shortName ?? g.gameKey).join(", ") || "no game of ours on this account"}.`);
+      return refresh();
+    },
+    onError: (e) => setNote(linkError(e)),
+  });
+  const sync = useMutation({
+    mutationFn: () => api.post<{ synced: string[] }>(`/api/links/${link!.id}/sync`),
+    onSuccess: (r) => {
+      setNote(`Synced ${r.synced.map((k) => getGame(k)?.shortName ?? k).join(", ") || "nothing: set your UIDs on each game's Profile"}.`);
+      return refresh();
+    },
+    onError: (e) => {
+      setNote(linkError(e));
+      void refresh();
+    },
+  });
+  const revoke = useMutation({ mutationFn: () => api.del(`/api/links/${link!.id}`), onSuccess: () => { setNote("Revoked: the cookie is deleted."); return refresh(); } });
+  const submit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const f = new FormData(e.currentTarget);
+    connect.mutate({ ltuid: String(f.get("ltuid") ?? "").trim(), ltoken: String(f.get("ltoken") ?? "").trim() });
+  };
+  return (
+    <article className="st-provider is-main" aria-label="HoYoLAB">
+      <div className="spread">
+        <span className="row"><strong>HoYoLAB</strong><span className={`tag ${link?.status === "ok" ? "" : "is-off"}`}>{link ? (link.status === "ok" ? "Connected" : "Needs attention") : "Not linked"}</span></span>
+        {link && <span className="mn mu">{link.lastSyncAt ? `last sync ${TIME.format(new Date(link.lastSyncAt))}` : "not synced yet"} · every 30 min</span>}
+      </div>
+      <p className="mu">Genshin Impact · Honkai: Star Rail · Zenless Zone Zero: stamina and its reserve, and the daily, read only. The cookie is stored encrypted on the server and never shown again; Gacha Hub never checks in or redeems codes.</p>
+      {link ? (
+        <>
+          {link.status !== "ok" && <p className="st-bad">HoYoLAB refused the last sync ({link.lastError?.replace(/_/g, " ")}): link again with fresh cookies.</p>}
+          <span className="row st-buttons">
+            <button className="btn" disabled={sync.isPending || link.status !== "ok"} onClick={() => sync.mutate()}>Sync now</button>
+            <button className="btn danger" disabled={revoke.isPending} onClick={() => confirm("Revoke HoYoLAB and delete its cookie?") && revoke.mutate()}>Revoke and delete</button>
+          </span>
+        </>
+      ) : null}
+      {(!link || link.status !== "ok") && (
+        <form className="st-link" onSubmit={submit}>
+          <p className="mu">On hoyolab.com, signed in, open the browser's developer tools → Application → Cookies, and copy <code>ltuid_v2</code> and <code>ltoken_v2</code>. Only these two are kept.</p>
+          <label>Account ID (ltuid_v2)<input name="ltuid" required inputMode="numeric" pattern="\d{1,20}" autoComplete="off" /></label>
+          <label>Token (ltoken_v2)<input name="ltoken" type="password" required autoComplete="off" /></label>
+          <button className="btn primary" type="submit" disabled={connect.isPending}>Link HoYoLAB</button>
+        </form>
+      )}
+      {note && <p role="status" className="mu">{note}</p>}
+    </article>
   );
 }
 

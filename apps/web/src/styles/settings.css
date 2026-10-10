@@ -29,3 +29,7 @@
 .st-confirm { display: grid; gap: 8px; padding: 12px 0; border-top: 1px solid var(--surface-3); }
 .st-confirm label { display: grid; gap: 6px; margin: 0; }
 .st-wide { display: flex; align-items: center; justify-content: center; margin-top: 12px; }
+.st-link { display: grid; grid-template-columns: 1fr 1fr auto; gap: 8px 12px; align-items: end; margin-top: 12px; }
+.st-link p { grid-column: 1 / -1; margin: 0; }
+.st-link label { display: grid; gap: 4px; margin: 0; }
+.st-buttons { margin-top: 12px; gap: 8px; }

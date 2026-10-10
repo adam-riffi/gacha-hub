@@ -25,7 +25,7 @@ test("Settings: linked accounts, pull history from a UIGF file and a link, notif
   // Linked accounts: read only, as ADR 0005 decided (no check-in, no codes).
   const linked = page.getByRole("region", { name: "Linked accounts" });
   await expect(linked.getByRole("article", { name: "HoYoLAB" })).toContainText("Not linked");
-  await expect(linked).not.toContainText(/check-in|redeem/i);
+  await expect(linked.getByRole("checkbox", { name: /check-in|redeem/i })).toHaveCount(0);
 
   // Pull history: a UIGF file, then a link without its key.
   const pulls = page.getByRole("region", { name: "Pull history" });
