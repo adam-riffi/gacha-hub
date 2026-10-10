@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/fix/01-auth-hooks · #150
+- Done: `requireUser` and `requireAdmin` return their 401 or 403. Without the return, Fastify ran the route anyway while the async onSend hooks were writing the answer: a signed-in user who is not an admin could post an admin payload, get a 403, and still have it written; signed-out requests reached handlers that then threw at `req.user!.id` (the "Promise errored, but reply.sent" log lines).
+- Tests: written first: `auth/guards.integration.test.ts` (an admin upload by a non-admin writes no banner or audit row; nothing without a session), waiting a moment after the answer since the stray handler wrote just after it.
+- Scope/decisions: only the two guards answered from a hook; production gets the fix with the next deployment of `main`.
+- Next: Settings (A5) on `stack/f11/05-settings-data`.
+
 ## 2026-10-10 · claude · stack/f11/04-history-link · #149
 - Done: shared `readHistoryLink` (only the authkey, its version and a plain region from a pasted link; the host is ignored), `gachaLogUrl` (the game's own official host: Genshin, Star Rail, ZZZ), `readGachaLogPage` (records in UTC from the server's offset; -101 expired, -100 invalid, -110 too frequent); server `fetchHistory` (each tracked banner type paged back to a stored record or an empty page, 300 ms apart, a cursor when 20 s run out) and `POST /api/instances/:id/pulls/history-link` (`{url, next?}`; failures become an `ImportRun` with the error); `importPulls` matches a record named but without an id (Genshin's log) by name, so its 50/50 is read.
 - Tests: written first: `historyLink.test.ts` (the link read whatever its host, the official URL, pages and errors, paging to a stored record, the cursor), `historyLink.integration.test.ts` (imported from the official host only, the 5★ named Mavuika featured, nothing keeps the key, expired recorded, no key, NTE refused).
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first in `database.test.ts`: the CLI and the app open the same file for `file:./dev.db`; absolute paths pass through.
 - Scope/decisions: none.
 - Next: back to F8 (`06-pin-day`).
-
-## 2026-10-10 · claude · stack/f8/05-home-history · #109
-- Done: Home's heatmap from the day records (current game day live; the map's today is the latest game day), streaks over 26 weeks, the Backlog line (open goals carried forward, 10 days, last point live), GAINED in Pull history (day-over-day increases of pulls on hand; weekly buckets now end today). Dashboard returns each game's `gameDay`. #108 merged.
-- Tests: written first: `carryForward`, `dailyGains`, `gameDay` on the dashboard; heatmap E2E unchanged and green.
-- Scope/decisions: records drawn on the viewer's calendar (servers can differ by a day); screenshot uses 26 weeks of seeded sample records on the dev account. Found: `npm run db:sqlite` writes `./dev.db` at the root under Prisma 7 (config-relative URL); fix PR next.
-- Next: fix `db:sqlite`; then `06-pin-day` (pinning a past day switches the dashboard: VIEWING chip, BACK TO TODAY, DAY CLOSED).
