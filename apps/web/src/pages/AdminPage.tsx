@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { gameList, type AdminAuditEntryDto, type AdminExportKind, type AdminPayloadResult } from "@gacha/shared";
+import { gameList, type AdminAuditEntryDto,
+  type AdminStatsDto, type AdminExportKind, type AdminPayloadResult } from "@gacha/shared";
 import { ApiError, api } from "../lib/api";
 import { useAuth } from "../lib/auth";
 import { useToast } from "../lib/toast";
@@ -63,9 +64,21 @@ export function AdminPage() {
     queryFn: () => api.get<ExportPayload>(`/api/admin/export?kind=${kind}&gameKey=${gameKey}`),
     enabled: Boolean(me?.isAdmin),
   });
+  const [auditLimit, setAuditLimit] = useState(30);
+  const [auditFilter, setAuditFilter] = useState("");
+  const { data: stats } = useQuery({ queryKey: ["admin-stats"], queryFn: () => api.get<AdminStatsDto>("/api/admin/stats"), enabled: Boolean(me?.isAdmin) });
+  const feedFor = useMutation({
+    mutationFn: (key: string) => api.post<{ banners: number; events: number; created: number }>(`/api/admin/feed/${key}`, {}),
+    onSuccess: (r) => {
+      toast(`Official feed: ${r.banners} banners, ${r.events} events (${r.created} new)`);
+      invalidate();
+      void qc.invalidateQueries({ queryKey: ["admin-stats"] });
+    },
+    onError: () => toast("The feed import failed", "err"),
+  });
   const { data: audit } = useQuery({
-    queryKey: ["admin-audit"],
-    queryFn: () => api.get<AdminAuditEntryDto[]>("/api/admin/audit?limit=30"),
+    queryKey: ["admin-audit", auditLimit],
+    queryFn: () => api.get<AdminAuditEntryDto[]>(`/api/admin/audit?limit=${auditLimit}`),
     enabled: Boolean(me?.isAdmin),
   });
 
@@ -145,6 +158,9 @@ export function AdminPage() {
 
   if (!me?.isAdmin) return <div className="card empty">Admins only. Add your Discord id to ADMIN_DISCORD_IDS.</div>;
 
+  const q = auditFilter.trim().toLowerCase();
+  const shownAudit = (audit ?? []).filter((a) => !q || `${a.actorName} ${a.action} ${a.targetKind} ${a.targetKey}`.toLowerCase().includes(q));
+
   const submit = () => {
     let parsed: unknown;
     try {
@@ -176,6 +192,83 @@ export function AdminPage() {
             {gameList.map((g) => <option key={g.key} value={g.key}>{g.name}</option>)}
           </select>
         </div>
+      {stats && (
+        <section className="ad-overview" aria-label="Overview">
+          <div className="ad-tiles">
+            {(
+              [
+                ["Users", stats.totals.users],
+                ["Game profiles", stats.totals.profiles],
+                ["Builds", stats.totals.builds],
+                ["Pulls logged", stats.totals.pulls],
+                ["Goals", stats.totals.goals],
+                ["Teams", stats.totals.teams],
+                ["Linked accounts", stats.totals.links],
+              ] as const
+            ).map(([label, n]) => (
+              <div key={label} className="card ad-tile">
+                <span className="kpi-label">{label}</span>
+                <span className="kpi-value">{n}</span>
+              </div>
+            ))}
+          </div>
+          <div className="ad-tables">
+            <div className="card">
+              <h3>Games</h3>
+              <table aria-label="Games and their content">
+                <thead>
+                  <tr><th>Game</th><th className="num">Profiles</th><th className="num">Banners now · next</th><th className="num">Events now · next</th><th>Source</th></tr>
+                </thead>
+                <tbody>
+                  {stats.games.map((g) => (
+                    <tr key={g.gameKey}>
+                      <td>{g.name}</td>
+                      <td className="num">{g.profiles}</td>
+                      <td className="num">{g.banners.active} · {g.banners.upcoming}</td>
+                      <td className="num">{g.events.active} · {g.events.upcoming}</td>
+                      <td>
+                        {g.feed ? (
+                          <button className="btn sm" disabled={feedFor.isPending} onClick={() => feedFor.mutate(g.gameKey)}>
+                            Import feed
+                          </button>
+                        ) : (
+                          <span className="small muted">typed in here</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="card">
+              <h3>Users</h3>
+              <table aria-label="Users">
+                <thead>
+                  <tr><th>User</th><th>Since</th><th className="num">Games</th><th className="num">Builds</th></tr>
+                </thead>
+                <tbody>
+                  {stats.users.map((u) => (
+                    <tr key={u.username + u.createdAt}>
+                      <td>{u.username}</td>
+                      <td className="small muted">{formatDate(u.createdAt)}</td>
+                      <td className="num" title={u.gameKeys.join(", ")}>{u.games}</td>
+                      <td className="num">{u.builds}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <h3 style={{ marginTop: 16 }}>Latest imports</h3>
+              {stats.imports.length === 0 && <p className="small muted">No import yet.</p>}
+              {stats.imports.map((r, i) => (
+                <div key={i} className="small" style={{ padding: "3px 0" }}>
+                  <span className="muted">{formatDate(r.createdAt)}</span> · <strong>{r.username}</strong> {r.provider} {r.kind}:{" "}
+                  {r.error ? <span className="badge todo">{r.error}</span> : `${r.added} added, ${r.skipped} skipped`}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
       </div>
 
       <div className="grid cols-2" style={{ alignItems: "start" }}>
@@ -236,15 +329,24 @@ export function AdminPage() {
               </div>
             ))}
           </div>
-          <div className="card">
-            <h3>Audit log</h3>
+          <section className="card" aria-label="Audit log">
+            <div className="spread">
+              <h3>Audit log</h3>
+              <input type="search" aria-label="Filter the audit log" placeholder="who, what, game/key" value={auditFilter} onChange={(e) => setAuditFilter(e.target.value)} style={{ width: 200 }} />
+            </div>
             {(audit ?? []).length === 0 && <p className="small">No admin actions yet.</p>}
-            {(audit ?? []).map((a) => (
+            {(audit ?? []).length > 0 && shownAudit.length === 0 && <p className="small">No entry matches the filter.</p>}
+            {shownAudit.map((a) => (
               <div className="small" key={a.id} style={{ padding: "4px 0", borderBottom: "1px solid var(--border)" }}>
                 <span className="muted">{formatDate(a.createdAt)}</span> · <strong>{a.actorName}</strong> {a.action} {a.targetKind} <code>{a.targetKey}</code>
               </div>
             ))}
-          </div>
+            {(audit ?? []).length >= auditLimit && auditLimit < 200 && (
+              <button className="btn sm" onClick={() => setAuditLimit(200)}>
+                Show more
+              </button>
+            )}
+          </section>
         </div>
       </div>
     </>

@@ -159,3 +159,10 @@ tbody tr:hover { background: var(--surface-2); }
 .cvl { fill: none; stroke: var(--text); stroke-width: 2.5; stroke-linecap: square; stroke-linejoin: miter; transition: stroke 0.2s; }
 .cv:hover .cvl, .cv:focus-visible .cvl { stroke: var(--accent); }
 .carousel.banner-card { height: 330px; }
+
+/* Admin's overview (Georges, 2026-10-10). */
+.ad-overview { display: grid; gap: 16px; margin-bottom: 24px; }
+.ad-tiles { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 12px; }
+.ad-tile { display: flex; flex-direction: column; gap: 6px; }
+.ad-tiles .kpi-value { font-size: 28px; }
+.ad-tables { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 16px; align-items: start; }

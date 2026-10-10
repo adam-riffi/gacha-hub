@@ -4,6 +4,7 @@ import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/rea
 import { getGame, hasHistoryLink, hasUigf, type ImportRunDto, type LinkedAccountDto } from "@gacha/shared";
 import { api, ApiError } from "../lib/api";
 import { useAuth } from "../lib/auth";
+import { useToast } from "../lib/toast";
 import { masked } from "../components/hub/HubHeader";
 import type { InstanceListItem, ReminderRule } from "../lib/types";
 
@@ -48,6 +49,7 @@ export function SettingsPage() {
       <h1>Settings</h1>
       <nav className="st-nav" aria-label="On this page">
         <a href="#account">Account</a>
+        <a href="#games">Games</a>
         <a href="#linked">Linked accounts</a>
         <a href="#pulls">Pull history</a>
         <a href="#notifications">Notifications</a>
@@ -56,6 +58,7 @@ export function SettingsPage() {
       </nav>
       <div className="st-main">
         <LinkedAccounts links={links.data ?? []} games={mine} />
+        <GamesSettings games={mine} />
         <section className="card" id="pulls" aria-label="Pull history">
           <h3>Pull history</h3>
           <table>
@@ -364,6 +367,66 @@ function AccountData() {
         {me?.isAdmin && <div><span className="st-k">Admin: feeds, uploads, audit</span><span><Link className="btn" to="/admin">Open admin</Link></span></div>}
         <div><span className="st-k">Sign out</span><span><button className="btn" onClick={() => void logout()}>Sign out</button></span></div>
       </div>
+    </section>
+  );
+}
+
+/**
+ * The games you play (Georges, 2026-10-10: Settings felt light): each with its
+ * server, awake or asleep, and links to its hub and its hidden banners; add or
+ * remove games in the library.
+ */
+function GamesSettings({ games }: { games: InstanceListItem[] }) {
+  const qc = useQueryClient();
+  // Awake changes at once; the server catches up.
+  const [awake, setAwake] = useState<Record<string, boolean>>({});
+  const toast = useToast();
+  const save = useMutation({
+    mutationFn: (v: { id: string; regionKey?: string; sleeping?: boolean }) => api.put(`/api/instances/${v.id}`, { ...(v.regionKey ? { regionKey: v.regionKey } : {}), ...(v.sleeping !== undefined ? { sleeping: v.sleeping } : {}) }),
+    onSuccess: () => Promise.all(["instances", "instance", "dashboard"].map((k) => qc.invalidateQueries({ queryKey: [k] }))),
+    onError: () => toast("Could not save the game", "err"),
+  });
+  return (
+    <section className="card" id="games" aria-label="Games">
+      <div className="spread">
+        <h3>Games</h3>
+        <Link to="/library">Add or remove games →</Link>
+      </div>
+      <table>
+        <thead>
+          <tr><th>Game</th><th>Server</th><th>Awake</th><th>Hidden banners</th></tr>
+        </thead>
+        <tbody>
+          {games.map((gi) => {
+            const game = getGame(gi.gameKey);
+            return (
+              <tr key={gi.id}>
+                <td><Link to={`/games/${gi.id}`}>{gi.name}</Link></td>
+                <td>
+                  <select aria-label={`Server for ${gi.name}`} value={gi.regionKey} onChange={(e) => save.mutate({ id: gi.id, regionKey: e.target.value })} style={{ width: "auto" }}>
+                    {(game?.regions ?? []).map((r) => (
+                      <option key={r.key} value={r.key}>{r.label}</option>
+                    ))}
+                  </select>
+                </td>
+                <td>
+                  <input
+                    type="checkbox"
+                    aria-label={`${gi.name} awake`}
+                    checked={awake[gi.id] ?? !gi.sleeping}
+                    onChange={(e) => {
+                      setAwake((a) => ({ ...a, [gi.id]: e.target.checked }));
+                      save.mutate({ id: gi.id, sleeping: !e.target.checked });
+                    }}
+                  />
+                </td>
+                <td>{gi.hiddenBanners?.length ? <Link to={`/games/${gi.id}/pulls`}>{gi.hiddenBanners.length} hidden</Link> : <span className="mu">none</span>}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+      <p className="mu small">An asleep game leaves Home and the reminders, and keeps its data.</p>
     </section>
   );
 }
