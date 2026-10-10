@@ -5,6 +5,7 @@ import { zzz } from "./zzz.js";
 import { endfield } from "./endfield/index.js";
 import { wuwa } from "./wuwa/index.js";
 
+import { nte } from "./nte/index.js";
 /** The registry of hardcoded games. Add a game by writing its module + sheet. */
 export const games: Record<string, GameDefinition> = {
   [genshin.key]: genshin,
@@ -12,6 +13,7 @@ export const games: Record<string, GameDefinition> = {
   [zzz.key]: zzz,
   [wuwa.key]: wuwa,
   [endfield.key]: endfield,
+  [nte.key]: nte,
 };
 
 export const gameList: GameDefinition[] = Object.values(games);
@@ -33,3 +35,4 @@ export * from "./hsr/index.js";
 export * from "./zzz.js";
 export * from "./endfield/index.js";
 export * from "./wuwa/index.js";
+export * from "./nte/index.js";

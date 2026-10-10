@@ -4,9 +4,10 @@ import { HsrSheet } from "../games/hsr/Sheet";
 import { ZzzSheet } from "../games/zzz/Sheet";
 import { EndfieldSheet } from "../games/endfield/Sheet";
 import { WuwaSheet } from "../games/wuwa/Sheet";
+import { NteSheet } from "../games/nte/Sheet";
 
 /** Game keys that have a hardcoded, bespoke character sheet. */
-const SHEET_KEYS = new Set(["genshin", "hsr", "zzz", "endfield", "wuwa"]);
+const SHEET_KEYS = new Set(["genshin", "hsr", "zzz", "endfield", "wuwa", "nte"]);
 
 export function hasSheet(gameKey: string): boolean {
   return SHEET_KEYS.has(gameKey);
@@ -33,6 +34,8 @@ export function GameSheet({ gameKey, ...props }: HostProps) {
       return <EndfieldSheet {...props} />;
     case "wuwa":
       return <WuwaSheet {...props} />;
+    case "nte":
+      return <NteSheet {...props} />;
     default:
       return null;
   }
