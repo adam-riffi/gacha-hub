@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/catalog/01-hsr-markup · #173
+- Done: the Star Rail importer strips game markup from minor trace names too: `<unbreak>300</unbreak> Rogues` is now "300 Rogues". The catalog was regenerated from the cache; only that name changed. This was PROJECT-GUIDE §14.2 item 9.
+- Tests: written first: no name anywhere in the Star Rail catalog, nested ones included, holds markup. `npm run check` passes.
+- Scope/decisions: none.
+- Next: error states on the pages that still lack them (§14.2 item 2).
+
 ## 2026-10-10 · claude · stack/f12/03-wuwa-art · #172
 - Done: Wuthering Waves art (ADR 0006). The WuWa importer keeps the game's texture file names as art keys: the 256 px head as `icon`, the pile art as the new optional `splash`, and the 160 px weapon icon. Wuthery's copy of the UI textures is the source for each kind (manifest `art`). `splashKey` takes a character's own splash key first, and banners' featured units carry it. `https://files.wuthery.com` is in the CSP (server and Vercel). The catalog was regenerated from the same pinned commit; only icons changed.
 - Tests: written first: Wuthery URLs per kind, the own splash key, artJobs covering every WuWa character and weapon, and the CSP host. The "no art sources" artJobs test now uses Endfield. `npm run check` passes. On the dev account, all 12 WuWa cards load their splash art.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: `due.test.ts` (the pass window and its switch; quiet hours in the user's zone, wrapping, off without a window), `reminders.integration.test.ts` (the pass DM; quiet hours hold, then send once).
 - Scope/decisions: settings stay per profile like the others; the Reminders panel (next PR) writes them across games.
 - Next: `stack/f10/08-reminders-panel` (A3's Reminders and Preview, Send a test DM).
-
-## 2026-10-10 · claude · stack/f10/06-tasks · #130
-- Done: Tasks and reminders rebuilt from its board (WIREFRAMES.md A3), left column: header (filter by character, material or game; Show backlog; New goal), Farm today (per game, from `GET /api/farm-today`, with the game day), Goals (one card per goal: game, source, what Plan farming planned, event end and effect, progress, priority, Notify; expanded: plan steps grouped as Ascension and level, Talents and Weapon with TODAY and each material's stock, checklist and event stages, Claim or Unclaim for an event goal, Delete). Old `TaskBoard`, `TodayCard` and their styles removed.
-- Tests: written first: `e2e/tasks.spec.ts` (Farm today line, event goal effect, a stage ticked, Claim applying the reward, plan steps, filter). Checked in the browser at 1440 beside `a3-tasks.png`.
-- Scope/decisions: the Reminders and Preview column is the next PR; recurring dailies stay on Activities and Home (the board has none here); the owner asked on 2026-10-10 for desktop only, so no phone checks.
-- Next: `stack/f10/07-reminders` (A3's Reminders and Preview).
