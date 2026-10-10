@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/banners/01-every-banner · #197
+- Done: every banner type each game's history names gets a banner: Genshin's Chronicled and Beginners' wishes, Star Rail's two collaboration warps and Departure warp, ZZZ's Bangboo channel, WuWa's standard weapon, Novice and Beginner's Choice convenes, Endfield's Joint and Beginner headhunting. A banner's `fund` says which pulls it spends (standard tickets, or a currency the tracker does not count). Each banner has a Hide button on Pulls; hidden ones wait in a "Hidden" line with a Show button each, and Home leaves them out of its pity line (`GameInstance.hiddenBanners`, migration `20261011110000_hidden_banners`). The other event banners join the savings planner only while one is running.
+- Tests: written first: each game's banner types with their history types and funds; hiding and showing through `PUT /api/instances/:id` (an unknown key is refused) and Home's pity; the Pulls journey hides and shows Departure warp. Eight older tests expected three banner types per game (the importers now ask the new types too) and were updated. `npm run check` passes: 558 tests and 40 journeys.
+- Scope/decisions: shown by default, beginner banners too, as Georges asked. Endfield's Joint (Chartered rules, per-banner pity) and Beginner (a 6★ within 40) are `~`. NTE's standard board has no source, so no banner yet.
+- Next: the owner's secrets and real data; the per-game overview when Georges asks.
+
 ## 2026-10-10 · claude · stack/zzz-core/01-core-skill · #196
 - Done: ZZZ agents get their core skill as a sixth skill, levelled 1 to 7 (the base, then A to F). The importer reads its costs from Hakushin's `passive.materials`, so the planner and the character page offer it; the build doc and the sheet take it to 7; Enka's showcase reads index 5 as the core skill.
 - Tests: written first: Ellen's core costs open levels 2 to 7, the doc keeps `core`, and the Enka showcase gives `core: 7`. `npm run check` passes: 534 tests and 40 journeys.
@@ -297,9 +303,3 @@ Entry format:
 - Tests: written first: `enka.test.ts` (the showcase read, closed showcase, the merge keeping a changed level), `enka.integration.test.ts` (Enka asked by UID with our User-Agent, Amber created with C2, Raven Bow R5 and a Wanderer's Troupe flower, owned, the run recorded; a later sync keeps the edited level and takes C3; 404, closed and no UID named). The fixture lives in `test/fixtures/enka.ts`.
 - Scope/decisions: talents wait for skill ids in the catalog; Star Rail and ZZZ showcases are next; Enka's docs disagree on a few names (`avatarID`, `propValue`), so both spellings are read.
 - Next: Star Rail and ZZZ showcases, the battle chronicle, then SKPORT research and F12.
-
-## 2026-10-10 · claude · stack/f11/10-hoyolab-card · #156
-- Done: Settings' HoYoLAB card (ADR 0005): unlinked, a form for `ltuid_v2` and `ltoken_v2` (a password field) with where to find them; linked, Connected or Needs attention, the last sync and its 30-minute cadence, Sync now (the games synced, or what to fix) and Revoke and delete; relinking after a refusal; answers in words (linking off, not accepted, chronicle not public).
-- Tests: written first: a second journey in `e2e/settings.spec.ts` (the form links and says linking is off, as the E2E server has no key); the first journey now checks no check-in or redeem option is offered (the card states it does neither); the accessibility sweep passes.
-- Scope/decisions: E2E cannot reach HoYoLAB, so Sync now and Revoke are covered by the route tests (#154, #155).
-- Next: the battle chronicle (endgame and roster) and Enka showcase builds.
