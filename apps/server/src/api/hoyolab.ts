@@ -58,7 +58,7 @@ export async function registerHoyolabRoutes(app: FastifyInstance) {
     } catch {
       return reply.code(503).send({ error: "linking_off" });
     }
-    const r = await syncLink(link, new Date());
+    const r = await syncLink(link, new Date(), { chronicle: true });
     return "error" in r ? reply.code(400).send({ error: r.error }) : r;
   });
 }
