@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import fc from "fast-check";
-import { cadenceWindow, gameList, getGame, hubResets, utcLabel, type CadenceAnchor, type GameDefinition, type GameRegion } from "@gacha/shared";
+import { cadenceWindow, conformance, gameList, getGame, hubResets, utcLabel, type CadenceAnchor, type GameDefinition, type GameRegion } from "@gacha/shared";
 
 // Conformance suite (ADR 0004): every registered game's manifest, checked the same way.
 const RUNS = { seed: 20261010, numRuns: 200 };
@@ -125,6 +125,18 @@ describe.each(gameList.map((g) => [g.key, g] as const))("%s manifest", (key, g) 
       m.dupes.weapon?.label,
     ].filter((n): n is string => !!n);
     for (const n of names) expect(text, n).toContain(n);
+  });
+});
+
+describe("the conformance suite", () => {
+  it.each(gameList.map((g) => [g.key, g] as const))("%s passes it", (key, g) => {
+    expect(conformance(g, doc(key))).toEqual([]);
+  });
+
+  it("reports what a broken manifest gets wrong", () => {
+    const g = getGame("genshin")!;
+    const broken = { ...g, regions: [{ ...g.regions[0]!, dailyResetHour: 24 }], manifest: { ...g.manifest, kpis: { damage: [] } } };
+    expect(conformance(broken, doc("genshin"))).toEqual(expect.arrayContaining([expect.stringMatching(/reset hour/), expect.stringMatching(/KPIs/)]));
   });
 });
 
