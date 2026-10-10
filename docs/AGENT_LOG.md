@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f10b/05-retire-equipment · #163
+- Done: the Equipment tab is gone, its parts in the screens of the board: each weapon in Characters' Weapons view has Farm (levels, Preview of the materials, Farm creates the tasks; `components/characters/WeaponFarm.tsx`), and each set in the Gear tab's Sets view has Farm set (a goal of one step per piece). `EquipmentPage` is removed; `/games/:id/equipment` lands on Characters. The hub's tabs now match the board: Activities, Endgame, Pulls, Characters, the game's gear, Planner, Profile.
+- Tests: written first: the Weapons journey farms Patience Is All You Need (Preview shows the materials) and follows Equipment's old link to Characters; a Gear journey farms a Star Rail set from Sets and finds no Equipment tab; the accessibility sweep no longer visits Equipment. Checked at 1440 on the dev account.
+- Scope/decisions: none beyond the move.
+- Next: F10 follow-ups are done; F11's Star Rail and ZZZ showcases and the battle chronicle remain, then F12.
+
 ## 2026-10-10 · claude · stack/f10b/04-retire-overview · #162
 - Done: the old overview is gone, each of its parts in a new home: every currency in Profile's Wallet; Restore default tasks and Generate backlog in Profile's Game status; the per-game reminder options (lead time, check-in times, what a DM includes) under Game reminders as More reminder options (`components/ReminderControl.tsx`); builds by name (games without a catalog) on Characters; teams on Endgame (named, with labelled inputs); + Another build on the sheet. `/games/:id/overview` lands on Profile. `InstancePage`, `GameOverview`, `pullText` and the currency-row styles are removed.
 - Tests: written first: the NTE journey adds its build on Characters; smoke finds today's farming on the Planner; Profile edits the wallet, finds the tools and reminder options and lands an old overview link on Profile; Endgame makes a team and adds Kafka; the sheet makes another build. Checked at 1440 on the dev account.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: `gameNew.test.ts` (files and registry edits; the scaffolded module, written where it would live, passes the suite; malformed keys refused) and the suite over every game plus a broken manifest's report. A real run (a throwaway "demo") typechecked, linted and passed all tests before removal; the facts tests now pin the games they name.
 - Scope/decisions: the scaffold registers the game at once (capability M) with placeholders marked TODO(source).
 - Next: `stack/f9/04-nte`.
-
-## 2026-10-10 · claude · stack/f9/02-gear-kpis-art · #121
-- Done: every manifest names its gear block (build-document field, slots with wiki main stats, set sizes, level cap, WuWa's cost cap 12 ~), up to three KPIs per build role (our choice), dupe effects (character and weapon copy fields and caps), and art sources per kind; `communityArtUrl` reads them from the manifest. Sources in `docs/games`. #120 merged.
-- Tests: written first: the conformance suite accepts a full gear block in each build schema, accepts each dupe field at its cap and refuses one past it, bounds KPIs, checks art URLs; the facts test pins each gear block's shape.
-- Scope/decisions: WuWa's main stats depend on echo cost, so its slots carry none and `WUWA_MAIN_STATS_BY_COST` holds them; Endfield gear has no main stat; Endfield weapon dupes are unsourced.
-- Next: `stack/f9/03-game-new`.
