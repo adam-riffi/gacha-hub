@@ -14,6 +14,8 @@ export const REMINDER_DEFAULTS: ReminderConfig = {
   includeDomains: false,
   whenStaminaFull: false,
   beforeEndgameReset: false,
+  beforePassEnds: false,
+  quietHours: null,
 };
 
 /**
