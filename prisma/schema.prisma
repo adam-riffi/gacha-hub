@@ -67,6 +67,8 @@ model GameInstance {
   kpiTargets   Json?
   /// Long-term progress from a linked account's record card ([{ name, value }]: days active, achievements…), synced (G8).
   progress     Json?
+  /// Pull banner types hidden from Pulls and Home (["beginner"]), `pullBanners` keys.
+  hiddenBanners Json?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

@@ -120,7 +120,7 @@ describe("Endfield records links (ADR 0009)", () => {
     });
   });
 
-  it("feeds Endfield's three pities: Chartered, Arsenal and Basic headhunting; a 6★ is the top pull, a 5★ is not", () => {
+  it("feeds Endfield's pities: Chartered, Arsenal, Joint, Basic and Beginner headhunting; a 6★ is the top pull, a 5★ is not", () => {
     expect(endfield.topRarity).toBe(6);
     const records = [
       ...readRecordsPage(charPage, "E_CharacterGachaPoolType_Special").records,
@@ -139,9 +139,10 @@ describe("Endfield records links (ADR 0009)", () => {
       },
     ];
     const { pulls, skipped } = pullsFromRecords(endfield, records, []);
-    expect(skipped).toBe(1);
+    expect(skipped).toBe(0);
     expect(pulls.find((p) => p.recordId === "weapon-77")!.record).toMatchObject({ pool: "weponbox_1_0_1" });
     expect(pulls.map((p) => [p.recordId, p.bannerKey, p.fiveStar])).toEqual([
+      ["beginner-1", "beginner", true],
       ["standard-5", "standard", false],
       ["special-1288", "character", false],
       ["weapon-77", "weapon", true],
@@ -165,6 +166,6 @@ describe("Endfield records links (ADR 0009)", () => {
     asked.length = 0;
     const rest = await fetchRecords(endfield, link, new Set(), first.next, { fetchFn, pauseMs: 0 });
     expect(rest).toEqual({ records: [], next: null });
-    expect(asked.map((u) => u.searchParams.get("seq_id") ?? u.searchParams.get("pool_type") ?? "weapon")).toEqual(["1288", "weapon", "E_CharacterGachaPoolType_Standard"]);
+    expect(asked.map((u) => u.searchParams.get("seq_id") ?? u.searchParams.get("pool_type") ?? "weapon")).toEqual(["1288", "weapon", "E_CharacterGachaPoolType_Joint", "E_CharacterGachaPoolType_Standard", "E_CharacterGachaPoolType_Beginner"]);
   });
 });

@@ -96,18 +96,23 @@ describe("pull log (routes)", () => {
     expect(dash.json.games.find((g) => g.gameKey === "genshin")?.pity).toEqual([
       { key: "character", label: "Character event wish", pity: 40, hardPity: 90, guaranteed: true },
       { key: "weapon", label: "Weapon event wish", pity: 10, hardPity: 80, guaranteed: false },
+      { key: "chronicled", label: "Chronicled wish", pity: 0, hardPity: 90, guaranteed: false },
       { key: "standard", label: "Standard wish", pity: 0, hardPity: 90, guaranteed: false },
+      { key: "beginner", label: "Beginners' wish", pity: 0, hardPity: 90, guaranteed: false },
     ]);
   });
 
-  // Endfield's three pities (ADR 0009): Chartered headhunting (no guarantee after a loss, the featured operator at 120),
-  // the Arsenal (each weapon banner's 40, 25% featured, the featured weapon at 80) and Basic headhunting.
-  it("gives Endfield its Chartered headhunting, Arsenal and Basic headhunting banners", async () => {
+  // Endfield's pities (ADR 0009): Chartered headhunting (no guarantee after a loss, the featured operator at 120),
+  // the Arsenal (each weapon banner's 40, 25% featured, the featured weapon at 80), Joint (each banner its own),
+  // Basic headhunting, and Beginner headhunting (a 6★ within 40).
+  it("gives Endfield its Chartered, Arsenal, Joint, Basic and Beginner headhunting banners", async () => {
     const endfield = await installGame(c, "endfield");
     expect((await c.req<PullLogDto>("GET", `/api/instances/${endfield}/pulls`)).json.banners).toEqual([
       expect.objectContaining({ key: "character", hardPity: 80, featuredRate: 0.5, lossGuarantee: false, spark: 120 }),
       expect.objectContaining({ key: "weapon", hardPity: 40, featuredRate: 0.25, lossGuarantee: false, spark: 80 }),
+      expect.objectContaining({ key: "joint", hardPity: 80, featuredRate: 0.5, lossGuarantee: false, spark: 120 }),
       expect.objectContaining({ key: "standard", hardPity: 80, featuredRate: 1 }),
+      expect.objectContaining({ key: "beginner", hardPity: 40, featuredRate: 1, fund: "standard" }),
     ]);
   });
 });

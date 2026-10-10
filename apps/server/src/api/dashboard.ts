@@ -127,7 +127,7 @@ export async function registerDashboardRoutes(app: FastifyInstance) {
         dailies,
         nextReset: soonest ?? null,
         extras: extras[i],
-        pity: (game?.pullBanners ?? []).map((rules) => {
+        pity: (game?.pullBanners ?? []).filter((b) => !((gi.hiddenBanners as string[] | null) ?? []).includes(b.key)).map((rules) => {
           const s = pityState(pullRows.filter((p) => p.gameInstanceId === gi.id && p.bannerKey === rules.key), rules);
           return { key: rules.key, label: rules.label, pity: s.pity, hardPity: rules.hardPity, guaranteed: s.guaranteed };
         }),

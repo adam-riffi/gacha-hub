@@ -45,7 +45,7 @@ describe("Wuthering Waves convene links (ADR 0005)", () => {
       return { json: async () => ({ code: 0, message: "success", data: type === 1 ? [rec("Jiyan", 5, "2026-09-02 18:00:00", 1404)] : [] }) };
     };
     const got = await fetchConvene(wuwa, readConveneLink(pasted)!, 8, { fetchFn, pauseMs: 0 });
-    expect(asked).toEqual([1, 2, 3]);
+    expect(asked).toEqual([1, 2, 3, 4, 5, 6]);
     expect(got.records.map((r) => r.id)).toEqual(["20260902180000010"]);
     const failing = async () => ({ json: async () => ({ code: -1, message: "error", data: null }) });
     expect(await fetchConvene(wuwa, readConveneLink(pasted)!, 8, { fetchFn: failing, pauseMs: 0 })).toEqual({ records: [], error: "expired" });

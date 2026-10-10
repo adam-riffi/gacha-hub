@@ -25,4 +25,5 @@
 | Gacha · character | 5★ 0.6% a wish to 73, then +6 points a wish from 74, certain at 90; 1.6% consolidated. 50/50, a lost one guarantees the next; Capturing Radiance makes it 55% overall | [Wish](https://genshin-impact.fandom.com/wiki/Wish) |
 | Gacha · weapon | 5★ 0.7% to 62, then +7 points a wish from 63, certain by 77 (hard pity 80); 1.85% consolidated. 75/25 | [Wish](https://genshin-impact.fandom.com/wiki/Wish) |
 | Gacha · standard | 5★ as the character banner, no featured unit | [Wish](https://genshin-impact.fandom.com/wiki/Wish) |
+| Gacha · Chronicled and Beginners' wishes | Chronicled: a 5★ certain by 90, its own pity; a 5★ that is not your Designated Item gives a Fate Point, and one point guarantees it (modelled as a 50/50; rates as the character banner ~). Beginners': 20 wishes in all, for Acquaint Fate (8 a 10-wish); rates as the standard banner ~ | [Chronicled Wish](https://genshin-impact.fandom.com/wiki/Chronicled_Wish), [Beginners' Wish](https://genshin-impact.fandom.com/wiki/Beginners%27_Wish) |
 | Version | 7.1 from 23 Sep 2026; 42 days (7.0 started 12 Aug 2026) | [Version](https://genshin-impact.fandom.com/wiki/Version) |
