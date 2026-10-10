@@ -19,3 +19,4 @@ export * from "./home.js";
 export * from "./effects.js";
 export * from "./rewards.js";
 export * from "./farm.js";
+export * from "./forecast.js";

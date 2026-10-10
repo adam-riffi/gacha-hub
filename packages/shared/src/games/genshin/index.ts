@@ -122,7 +122,8 @@ export const genshin: GameDefinition = {
       },
     ],
     battlePass: { name: "Gnostic Hymn", maxLevel: 50, weeklyXpCap: 10_000 },
-    monthlyPass: { name: "Blessing of the Welkin Moon", days: 30, maxDays: 180 },
+    monthlyPass: { name: "Blessing of the Welkin Moon", days: 30, maxDays: 180, daily: 90 },
+    income: { label: "Daily Commissions", daily: 60 },
     gear: {
       name: "Artifacts",
       field: "artifacts",

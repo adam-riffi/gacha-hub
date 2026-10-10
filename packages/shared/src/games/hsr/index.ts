@@ -119,7 +119,8 @@ export const hsr: GameDefinition = {
       { key: "as", name: "Apocalyptic Shadow", anchor: { cadence: "cycle", start: "2026-10-05", days: 42 }, metric: { label: "stars", max: 12 }, maxPremium: 800 },
     ],
     battlePass: { name: "Nameless Honor", maxLevel: 70, weeklyXpCap: 8000 },
-    monthlyPass: { name: "Express Supply Pass", days: 30 },
+    monthlyPass: { name: "Express Supply Pass", days: 30, maxDays: 180, daily: 90 },
+    income: { label: "Daily Training", daily: 60 },
     gear: {
       name: "Relics",
       field: "relics",
