@@ -59,6 +59,8 @@ Keep this table accurate: when you add or change a script, update the table in t
 
 **Locked product decisions** (DESIGN.md §6; do not relitigate): every game is hardcoded (no generic game builder); Discord-only sign-in; one profile per user per game; free hosting only; catalog data comes from the importer pipeline, never typed by hand; hard limits on every number (`LIMITS`).
 
+**Deploys only at Georges's command or a milestone:** `vercel.json` turns Git deployments off (`git.deploymentEnabled: false`), so merging deploys nothing; deploy `main` when he asks (`docs/DEPLOY.md`, Redeploys).
+
 **Production gotchas:** never set `NODE_ENV` on Vercel (the build drops dev dependencies); every new table needs `ENABLE ROW LEVEL SECURITY` in its migration; the Vercel framework preset must stay "Other".
 
 ## Definition of done for a pull request

@@ -3,7 +3,7 @@
 ## State
 - `main` at `059d542`: feat(kpi): a game's default KPI targets (#187). CI green.
 - Open PRs: #105 fix(vercel) function trace, a draft since 2026-10-09, untouched.
-- Production serves an older `main` until Vercel's Hobby quota (100 deployments a day) resets. The first merge or redeploy after that deploys everything; then run the smoke check.
+- Production serves #186 (deployed 18:52 UTC). Merges no longer deploy (#189, `git.deploymentEnabled: false`): `main` goes to production only when Georges asks (`docs/DEPLOY.md`, Redeploys). After a deploy, run the smoke check.
 - Every milestone in DESIGN.md §9 is built, V through F12. The agent work Georges asked for is done. What is left needs his secrets (below), or real answers to replace fixtures.
 
 ## Done this session

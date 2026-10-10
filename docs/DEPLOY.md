@@ -142,8 +142,17 @@ Optional: without it the app hotlinks Enka and Yatta, then shows placeholders.
 
 ## Redeploys and migrations
 
-- Pushing to the default branch triggers a Vercel production deploy that reruns
-  the full build (including `prisma migrate deploy`).
+- **Deploys are manual** (Georges, 2026-10-10: only at his command or a
+  milestone). `vercel.json` sets `git.deploymentEnabled: false`, so no push or
+  merge, on `main` or any branch, starts a deployment. To deploy `main` to
+  production, either:
+  - Vercel → the project → **Deployments** → the latest production deployment →
+    **Redeploy** (or **Create Deployment** with the `main` branch); or
+  - ask the agent: it starts one through the Vercel connector (a Git deployment
+    of `main`, target production).
+
+  Each deploy reruns the full build (including `prisma migrate deploy`), and the
+  smoke workflow runs after it.
 - New migrations: create them locally against a dev Postgres
   (`npm run prisma:migrate`), commit `prisma/migrations/`, and the next deploy
   applies them.
