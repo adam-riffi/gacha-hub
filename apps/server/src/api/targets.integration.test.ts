@@ -6,6 +6,7 @@ describe("KPI targets on a build (WIREFRAMES.md G5)", () => {
   let app: FastifyInstance;
   let c: Client;
   let buildId: string;
+  let gid: string;
 
   beforeAll(async () => {
     app = await makeApp();
@@ -16,7 +17,7 @@ describe("KPI targets on a build (WIREFRAMES.md G5)", () => {
   beforeEach(async () => {
     await resetDb();
     c = await login(app);
-    const gid = await installGame(c, "hsr");
+    gid = await installGame(c, "hsr");
     buildId = (await c.req<{ id: string }>("POST", `/api/instances/${gid}/characters`, { catalogId: "1005" })).json.id;
   });
 
@@ -33,5 +34,14 @@ describe("KPI targets on a build (WIREFRAMES.md G5)", () => {
     expect((await put({ "CRIT Rate / CRIT DMG": 70 })).json).toEqual({ error: "unknown_kpi" });
     expect((await put({ SPD: -1 })).status).toBe(400);
     expect((await put({ SPD: 1e9 })).status).toBe(400);
+  });
+
+  it("keeps the game's default targets, which every build of it reads beside its own", async () => {
+    const defaults = (kpiTargets: unknown) => c.req<{ kpiTargets?: unknown; error?: string }>("PUT", `/api/instances/${gid}`, { kpiTargets });
+    expect((await defaults({ SPD: 134 })).json.kpiTargets).toEqual({ SPD: 134 });
+    const other = (await c.req<{ id: string }>("POST", `/api/instances/${gid}/characters`, { catalogId: "1006" })).json.id;
+    expect((await c.req<{ targets: unknown; defaultTargets: unknown }>("GET", `/api/characters/${other}`)).json).toMatchObject({ targets: null, defaultTargets: { SPD: 134 } });
+    expect((await defaults({ Charisma: 3 })).json).toEqual({ error: "unknown_kpi" });
+    expect((await defaults(null)).json.kpiTargets).toBeNull();
   });
 });
