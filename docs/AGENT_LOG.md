@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f11/04-history-link · #149
+- Done: shared `readHistoryLink` (only the authkey, its version and a plain region from a pasted link; the host is ignored), `gachaLogUrl` (the game's own official host: Genshin, Star Rail, ZZZ), `readGachaLogPage` (records in UTC from the server's offset; -101 expired, -100 invalid, -110 too frequent); server `fetchHistory` (each tracked banner type paged back to a stored record or an empty page, 300 ms apart, a cursor when 20 s run out) and `POST /api/instances/:id/pulls/history-link` (`{url, next?}`; failures become an `ImportRun` with the error); `importPulls` matches a record named but without an id (Genshin's log) by name, so its 50/50 is read.
+- Tests: written first: `historyLink.test.ts` (the link read whatever its host, the official URL, pages and errors, paging to a stored record, the cursor), `historyLink.integration.test.ts` (imported from the official host only, the 5★ named Mavuika featured, nothing keeps the key, expired recorded, no key, NTE refused).
+- Scope/decisions: Wuthering Waves' convene link is not in this PR (it posts to its own API); fixtures follow the documented shapes until a real response is recorded.
+- Next: Settings (A5) with the pull history import and export, then WuWa's convene link.
+
 ## 2026-10-10 · claude · stack/f11/03-uigf · #148
 - Done: shared `parseUigf` (UIGF v4.x: the game's section, times from the account's timezone to UTC, `rank_type` required) and `toUigf` (v4.2, times at the profile server's offset, `uigf_gacha_type` for Genshin alone); `PullEntry.record` (gacha type, item, rank; migration `20261011060000_pull_record_json`) so imported pulls export again; `POST /api/instances/:id/pulls/uigf` (4 MB cap; the profile's UID or `?uid=` picks the account, a lone account fits a profile without one and sets its UID; another account's file is refused) and `GET` the same as an attachment. PROJECT-GUIDE's API map lists them and the link routes.
 - Tests: written first: `uigf.test.ts` (accounts and times, refusals, written back and read the same), `uigf.integration.test.ts` (import and its run, pick_uid, the UID choosing, uid_mismatch, no account for the game, export that re-imports with nothing new).
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: `carryForward`, `dailyGains`, `gameDay` on the dashboard; heatmap E2E unchanged and green.
 - Scope/decisions: records drawn on the viewer's calendar (servers can differ by a day); screenshot uses 26 weeks of seeded sample records on the dev account. Found: `npm run db:sqlite` writes `./dev.db` at the root under Prisma 7 (config-relative URL); fix PR next.
 - Next: fix `db:sqlite`; then `06-pin-day` (pinning a past day switches the dashboard: VIEWING chip, BACK TO TODAY, DAY CLOSED).
-
-## 2026-10-10 · claude · stack/f8/04-day-record · #108
-- Done: `lib/dayRecord.ts`; an `onSend` hook rewrites today's `DayRecord` per profile after any successful change by a signed-in user (Discord `/update`, `/done`, `/goal` too): daily items done/total, open goals as Home counts them, limited pulls on hand, under the server's game day. `/api/dashboard` returns 26 weeks per game. `pullsFor` moved to shared. #107 merged.
-- Tests: written first: `dayRecordFor` (game day at the reset hour, dailies only, open goals incl. farming goals, pulls) and `dayRecord.integration.test.ts` (write-through, rejected change writes nothing, 26-week window); the export fixture moved to a past day.
-- Scope/decisions: one hook instead of a call per route; ~10 queries per change for all of a user's profiles, fine for a few friends. The plan's `04-day-record` is split: this server PR, then the Home UI.
-- Next: `05-home-history`: heatmap from the records, streaks, open goals and pulls gained over time, pin a past day (VIEWING chip, BACK TO TODAY, DAY CLOSED), screenshot beside `dashboard.png`.
