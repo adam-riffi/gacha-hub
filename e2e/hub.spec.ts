@@ -11,7 +11,7 @@ test("a game hub's header shows the server, UID, account level and next resets, 
   const head = page.getByRole("region", { name: "Wuthering Waves" });
   await expect(head.getByRole("heading", { level: 1, name: "Wuthering Waves" })).toBeVisible();
   await expect(head).toContainText(/Europe · UTC\+1/i);
-  await expect(head).toContainText(/manual/i);
+  await expect(head).not.toContainText(/manual/i); // the leftover tag is gone (Georges, 2026-10-10)
   for (const label of [/daily reset/i, /weekly reset/i, /version 3\.7/i]) await expect(head).toContainText(label);
 
   await head.getByRole("button", { name: "Edit profile" }).click();

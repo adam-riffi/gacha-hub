@@ -113,7 +113,6 @@ export function GearSetsPage() {
         <span className="badge">{label}</span>
         <span className="badge">{usedBy.size} used by your builds</span>
         <span className="ch-sp" />
-        <span className="tag">Manual</span>
       </section>
 
       {view === "inventory" ? (

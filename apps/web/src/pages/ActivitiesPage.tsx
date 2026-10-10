@@ -62,7 +62,6 @@ export function ActivitiesPage() {
       </div>
       <div className="activities">
         <Stamina game={game} instance={instance} projection={dg?.stamina ?? null} />
-        <div className="act-label mn mu">By cadence</div>
         <div className="act-cadences">
           <CadenceList instanceId={id!} game={game} cadence="daily" title="Daily" items={recurring.filter((t) => (t.cadence ?? "daily") === "daily")} resetsAt={resets.daily} />
           <CadenceList instanceId={id!} game={game} cadence="weekly" title="Weekly" items={recurring.filter((t) => t.cadence === "weekly")} resetsAt={resets.weekly} />
@@ -91,7 +90,6 @@ function Stamina({ game, instance, projection }: { game: GameDefinition; instanc
     <section className="graph act-stamina" aria-label={def.label}>
       <div className="ph">
         <h3>{def.label}</h3>
-        <span className="tag">Manual</span>
         <span className="sp" />
         {projection?.full ? (
           <span className="chip hot">
@@ -188,7 +186,6 @@ function CadenceList({
             <input type="checkbox" aria-label={t.title} defaultChecked={Boolean(t.doneThisCycle)} onChange={(e) => tick.mutate({ task: t, done: e.target.checked })} />
             <span className="act-title">{t.title}</span>
             {cadence === "monthly" && t.anchorKey && <span className="mn mu">{anchors.find((a) => a.key === t.anchorKey)?.name}</span>}
-            <span className="tag">Manual</span>
           </label>
         ))}
         {items.length === 0 && <p className="mu act-empty">Nothing {title.toLowerCase()} yet.</p>}
@@ -325,7 +322,7 @@ function Version({ instanceId, game, pv, endsAt, events }: { instanceId: string;
             <div className="kpi-label">Battle pass</div>
             {pass && (
               <span className="mn mu">
-                {pass.name} <span className="tag">Manual</span>
+                {pass.name}
               </span>
             )}
           </div>

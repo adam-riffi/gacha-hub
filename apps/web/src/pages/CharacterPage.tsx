@@ -198,7 +198,6 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
               {entry?.weaponType && <span className="badge">{entry.weaponType}</span>}
               <span className="badge">{dupeBadge(game, doc)}</span>
               <span className="badge">Lv {level ?? "—"} / {maxLevel}</span>
-              <span className="tag">Manual</span>
             </div>
           </section>
 

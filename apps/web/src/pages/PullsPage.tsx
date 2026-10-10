@@ -133,6 +133,8 @@ export function PullsPage() {
       key={b.key}
       b={b}
       gameKey={game.key}
+      instanceId={instance.data.id}
+      running={live.filter((l) => l.kind === b.key)}
       available={pullsOn(have, b)}
       extra={pullsOn(topped, b) - pullsOn(have, b)}
       live={live.find((l) => l.kind === b.key)}

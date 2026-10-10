@@ -53,7 +53,6 @@ export function EndgamePage() {
         <section className="graph eg-this" aria-label="This cycle">
           <div className="ph">
             <h3>This cycle</h3>
-            <span className="tag">Manual</span>
           </div>
           <div className="eg-this-body">
             <div className="eg-claimed">
