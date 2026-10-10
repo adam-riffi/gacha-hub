@@ -30,6 +30,7 @@ model User {
   tasks         Task[]
   reminderRules ReminderRule[]
   auditLogs     AuditLog[]
+  effects       EffectApplication[]
 }
 
 /// Server-side session backing the signed cookie.
@@ -262,6 +263,9 @@ model Task {
   notify          Boolean   @default(false) // include in the Discord digest
   lastCompletedAt DateTime?
   reminder        Json? // ReminderConfig
+  /// An event goal (ADR 0008): ticking it applies the event's effects, with `choice` picking an option.
+  eventId         String?
+  choice          Int?
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 
@@ -342,13 +346,32 @@ model Event {
   endsAt      DateTime
   description String?
   rewards     Json?
+  /// Effect[] (packages/shared/src/effects.ts, ADR 0008).
+  effects     Json?
   url         String?
   payload     Json?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
+  applications EffectApplication[]
+
   @@unique([gameKey, key])
   @@index([gameKey, endsAt])
+}
+
+/// One applied event effect (ADR 0008): applied once per user, event and effect key; `undo` reverses it.
+model EffectApplication {
+  id             String   @id @default(cuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  eventId        String
+  event          Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  key            String
+  gameInstanceId String
+  undo           Json?
+  createdAt      DateTime @default(now())
+
+  @@unique([userId, eventId, key])
 }
 
 /// Who changed what via admin uploads.

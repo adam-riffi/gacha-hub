@@ -1,6 +1,6 @@
 # 0008 — Events and rewards as data
 
-- Status: Proposed
+- Status: Accepted (2026-10-10)
 - Date: 2026-10-09
 - Proposed by: claude; decided by: Georges
 
@@ -26,7 +26,8 @@ Games keep adding events, rewards and one-off rules: a free 4★ of your choice,
 - **Applied once.** Applying an effect writes one `EffectApplication` row keyed by user, event and effect, in the same transaction as the change and its audit entry. Ticking twice or syncing again never applies twice; unticking reverses the application.
 - **New things degrade, never break.** A kind the app does not know, or that the game's manifest does not list, is stored and shown as a note; uploads and imports still succeed. A genuinely new kind is one change to `effects.ts` and the manifests that support it, with its tests.
 - **Sources.** Admin uploads write effects. The official feed keeps writing plain events; reward text in announcements is not parsed. A game module may ship templates for recurring events, such as a version's free 4★ pick.
-- Lands with F10 (Tasks with event goals, Calendar reward goals). `Event.effects` and `EffectApplication` join DESIGN.md §8 once this ADR is accepted.
+- Lands with F10 (Tasks with event goals, Calendar reward goals). `Event.effects` and `EffectApplication` join DESIGN.md §8.
+- **Amendment on acceptance:** which kinds a game supports is read from its manifest rather than listed in it: a currency must be one of the game's currencies, and a copy needs the game's dupe field for that unit (`readEffects` in `packages/shared/src/effects.ts`). A choice holds plain effects, not further choices.
 
 ## Alternatives considered
 
