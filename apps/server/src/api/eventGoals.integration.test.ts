@@ -113,11 +113,25 @@ describe("event goals (ADR 0008)", () => {
     expect(await constellation(lisa)).toBe(5);
   });
 
-  it("a first copy of a unit with no build yet grants it", async () => {
+  const lisaBuilds = async () => (await c.req<{ id: string; catalogId: string | null; doc: { constellation?: number } }[]>("GET", `/api/instances/${gid}/characters`)).json.filter((b) => b.catalogId === LISA);
+
+  it("a first copy of a character grants it with a build at its base, and unticking takes both back", async () => {
     const goal = (await makeGoal(0)).json;
     await tick(goal.id, true);
     expect(await owns(LISA)).toBe(true);
+    expect((await lisaBuilds()).map((b) => b.doc.constellation ?? 0)).toEqual([0]);
     await tick(goal.id, false);
     expect(await owns(LISA)).toBe(false);
+    expect(await lisaBuilds()).toEqual([]);
+  });
+
+  it("a copy of a character owned without a build starts its build one step up", async () => {
+    await c.req("PUT", `/api/instances/${gid}/ownership`, { items: [{ kind: "character", catalogId: LISA, owned: true }] });
+    const goal = (await makeGoal(0)).json;
+    await tick(goal.id, true);
+    expect((await lisaBuilds()).map((b) => b.doc.constellation)).toEqual([1]);
+    await tick(goal.id, false);
+    expect(await owns(LISA)).toBe(true);
+    expect(await lisaBuilds()).toEqual([]);
   });
 });
