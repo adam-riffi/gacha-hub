@@ -1,6 +1,6 @@
 # Arknights: Endfield
 
-> Manifest sources (ADR 0004), checked 2026-10-10. `~` marks a value not yet verified against the wiki or an official notice; a field with no value has no source yet and stays out of the manifest. Dates are server-local. Refresh at each version: the version row, the Echoes of War anchor.
+> Manifest sources (ADR 0004), checked 2026-10-10. `~` marks a value not yet verified against the wiki or an official notice (each was checked against the game's wiki on 2026-10-10; those still marked are values it does not state); a field with no value has no source yet and stays out of the manifest. Dates are server-local. Refresh at each version: the version row, the Echoes of War anchor.
 
 | Field | Value | Source |
 | --- | --- | --- |
@@ -17,8 +17,8 @@
 | Art | | |
 | KPIs per role | Our choice for the Characters cards (WIREFRAMES.md G4), listed in the module's manifest | |
 | Account level | Authority Level (AL); the abbreviation is the community's | [Authority Level](https://endfield.wiki.gg/wiki/Authority_Level) |
-| Gacha · Chartered headhunting | 6★ 0.8% a pull ~, climbing after pull 65 ~, certain by 80 ~; 50/50 with no guarantee after a loss ~; the 120th pull on a banner gives its featured operator, once, not carried over ~; 500 Oroberyl a pull; pity shared by every Chartered banner | [Game8: pity system](https://game8.co/games/Arknights-Endfield/archives/576231), [GameWith: rates](https://gamewith.net/akendfield/72373) |
-| Gacha · Basic headhunting | 6★ 0.8% a pull ~, climbing after pull 65 ~, certain by 80 ~; every 6★ is from the standard pool; its own pity ~ | [PCGamesN: pity](https://www.pcgamesn.com/arknights-endfield/pity-system), [Prydwen: gacha](https://www.prydwen.gg/arknights-endfield/guides/gacha-system) |
-| Gacha · Arsenal (weapons) | 6★ 4% a pull ~, certain by 40 ~; 25% that it is the featured weapon ~; the featured weapon at 80, once a banner ~; pity does not carry over between banners ~; 10-pulls of Arsenal Tickets only | [PCGamesN: pity](https://www.pcgamesn.com/arknights-endfield/pity-system), [Prydwen: gacha](https://www.prydwen.gg/arknights-endfield/guides/gacha-system) |
+| Gacha · Chartered headhunting | 6★ 0.8% a pull, +5% a pull after pull 65 (5.8% on the 66th), certain by 80; 50/50 with no guarantee after a loss ~; the 120th pull on a banner gives its featured operator, once, not carried over; 500 Oroberyl a pull; pity shared by every Chartered banner | [Game8: pity system](https://game8.co/games/Arknights-Endfield/archives/576231), [GameWith: rates](https://gamewith.net/akendfield/72373); [Headhunting](https://endfield.wiki.gg/wiki/Headhunting) |
+| Gacha · Basic headhunting | 6★ 0.8% a pull ~, climbing after pull 65 ~, certain by 80 ~; every 6★ is from the standard pool; its own pity ~ | [PCGamesN: pity](https://www.pcgamesn.com/arknights-endfield/pity-system), [Prydwen: gacha](https://www.prydwen.gg/arknights-endfield/guides/gacha-system); the wiki's pity rules are written for Chartered headhunting |
+| Gacha · Arsenal (weapons) | 6★ 4% a pull ~, certain by 40 ~; 25% that it is the featured weapon ~; the featured weapon at 80, once a banner ~; pity does not carry over between banners ~; 10-pulls of Arsenal Tickets only | [PCGamesN: pity](https://www.pcgamesn.com/arknights-endfield/pity-system), [Prydwen: gacha](https://www.prydwen.gg/arknights-endfield/guides/gacha-system); the wiki gives the Arsenal Tickets per pull (2,000, 200 and 20 for a 6★, 5★ and 4★ operator), not the weapon odds |
 | Pull history | The records link the game opens for Headhunting records (`ef-webview.gryphline.com`, `token`, `server_id`); its record shape as open-source trackers parse it (ADR 0009) | [PROTORIG](https://github.com/Renari/PROTORIG.app) |
 | Version | Dreamscape of Wind and Snow, 2 Sep – 14 Oct 2026 (43 days) | [Version](https://endfield.wiki.gg/wiki/Version) |

@@ -1,6 +1,6 @@
 # Neverness to Everness (NTE)
 
-> Manifest sources (ADR 0004), checked 2026-10-10. `~` marks a value not yet verified against an official notice (the research notes below give each one's confidence); a field with no value has no source and stays out of the manifest. Dates are server-local. Refresh at each version: the version row, Beyond the Rails' anchor, the Circle Bounty level cap. Capability M only: the terms forbid third-party tools (ADR 0005).
+> Manifest sources (ADR 0004), checked 2026-10-10. `~` marks a value not yet verified against an official notice (the research notes below give each one's confidence) (each was checked against the game's wiki on 2026-10-10; those still marked are values it does not state); a field with no value has no source and stays out of the manifest. Dates are server-local. Refresh at each version: the version row, Beyond the Rails' anchor, the Circle Bounty level cap. Capability M only: the terms forbid third-party tools (ADR 0005).
 
 | Field | Value | Source |
 | --- | --- | --- |
@@ -8,11 +8,11 @@
 | Daily and weekly reset | 05:00 server time; weekly on Monday | [official news](https://nte.perfectworld.com/en/article/news/) |
 | Stamina | Character Pixels, cap 240, 1 every 6 minutes, no reserve | [official news](https://nte.perfectworld.com/en/article/news/) |
 | Monthly shop | Lost Exchange, on the 1st ~ | research notes |
-| Endgame | Beyond the Rails: the Special Route resets every 14 days ~ (anchored on 30 Sep 2026 ~), 36 seals, 800 Annulith a cycle ~ | research notes |
+| Endgame | Beyond the Rails: the Special Route resets every 14 days (anchored on 30 Sep 2026 ~), 36 seals, 800 Annulith a cycle ~ | research notes; [Beyond the Rails](https://neverness-to-everness.fandom.com/wiki/Beyond_the_Rails) |
 | Battle pass | Circle Bounty, 80 levels (since 1.4); weekly cap 12,000 EXP ~ | [official news](https://nte.perfectworld.com/en/article/news/); the cap: research notes |
 | 30-day pass | Riftcrystal Mining Permit, 30 days, stacks to 180 ~ | research notes |
-| Gacha | Limited Board: no 50/50 (every S is featured), hard pity 90, pity carried over; 160 Annulith a roll. Rates rise from roll 70 ~; base S rate 0.99% ~ (sources say 0.99% or 1.87%) | [official news](https://nte.perfectworld.com/en/article/news/); the rates: research notes |
-| Gear | Console: Cartridges in sets of 2 and 4, one main and four sub stats, +20 ~ | research notes |
+| Gacha | Limited Board: no 50/50 (every S is featured), hard pity 90, pity carried over; 160 Annulith a roll. Board Modification raises the rate from roll 70; base S rate 0.99%, 1.87% overall with pity | [official news](https://nte.perfectworld.com/en/article/news/); the rates: research notes; [Limited Board](https://neverness-to-everness.fandom.com/wiki/Limited_Board) |
+| Gear | Console: Cartridges in sets of 2 and 4, one main and four sub stats, +20 ~ | research notes; the wiki: modules always have ATK and HP as main attributes, and four sub attributes; sets and the level not stated |
 | Dupes | A character copy raises Awakening by one (A1–A6) ~; an Arc copy raises Mixing by one (M1–M5) ~ | research notes |
 | KPIs per role | Our choice for the Characters cards (WIREFRAMES.md G4), listed in the module's manifest | |
 | Art | | |
