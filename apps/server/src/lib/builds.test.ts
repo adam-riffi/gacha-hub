@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildKpis, gearSetLabel, getGame } from "@gacha/shared";
+import { buildKpis, buildLine, dupeBadge, gearSetLabel, getGame } from "@gacha/shared";
 
 const genshin = getGame("genshin")!;
 const wuwa = getGame("wuwa")!;
@@ -41,5 +41,18 @@ describe("gearSetLabel", () => {
     const twoTwo = { artifacts: { a: piece("Whimsy", []), b: piece("Whimsy", []), c: piece("Gladiator", []), d: piece("Gladiator", []) } };
     expect(gearSetLabel(genshin, twoTwo)).toBe("Gladiator 2pc + Whimsy 2pc");
     expect(gearSetLabel(genshin, { artifacts: {} })).toBeNull();
+  });
+});
+
+describe("buildLine and dupeBadge (the card's name box and badge)", () => {
+  const hsr = getGame("hsr")!;
+  it("reads the level, the skill levels in the catalog's order, and the weapon's dupes, in each game's words", () => {
+    expect(buildLine(genshin, { level: 90, talents: { normal: 9, skill: 9, burst: 10 }, weapon: { refinement: 1 } }, ["normal", "skill", "burst"])).toBe("Lv 90 · talents 9/9/10 · R1");
+    expect(buildLine(hsr, { level: 80, traces: { basic: 6, skill: 8 }, lightCone: { superimposition: 3 } }, ["basic", "skill"])).toBe("Lv 80 · traces 6/8 · S3");
+    expect(buildLine(genshin, {}, ["normal", "skill", "burst"])).toBe("Lv — · talents 1/1/1");
+  });
+  it("shows the character's dupes as its badge", () => {
+    expect(dupeBadge(genshin, { constellation: 2 })).toBe("C2");
+    expect(dupeBadge(hsr, {})).toBe("E0");
   });
 });
