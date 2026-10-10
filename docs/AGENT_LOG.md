@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f10/08-reminders-panel · #132
+- Done: Tasks' right column from A3. Reminders: each rule (1 h before reset, the 21:00 digest, stamina full, endgame reset with rewards left, 30-day pass ends, domains today) with the games it is on for (ALL, their names, OFF), toggled across the games in scope; quiet hours edited for all of them. Preview: the DM each game with reminders on would send now (`GET /api/reminders/preview`, the tick's own composition, `dmParts` shared with it), and Send a test DM (`POST /api/reminders/test`; says when the bot is not set up).
+- Tests: written first: `reminderPreview.integration.test.ts` (the preview text per game; the test DM refused without the bot, sent with it), `e2e/tasks.spec.ts` (a rule turned on shows ALL, the preview, quiet hours saved, the test DM's reason).
+- Scope/decisions: the preview shows each game's own DM, which is what the tick sends (the board drew one combined digest); "Banner ends in 24 h, wishlisted units only" waits for `WishlistItem`; game-specific rules (Parametric Transformer) and "New rule" are left out.
+- Next: Games library (A2), then Pulls (G3).
+
 ## 2026-10-10 · claude · stack/f10/07-reminder-rules · #131
 - Done: two reminder settings from A3: `quietHours` (no DM between two local times, wrapping past midnight; held DMs go out on the first tick after, since nothing is logged) and `beforePassEnds` (a DM 3 days before the 30-day pass ends, keyed on its end). `inQuietHours` in `scheduler/due.ts`.
 - Tests: written first: `due.test.ts` (the pass window and its switch; quiet hours in the user's zone, wrapping, off without a window), `reminders.integration.test.ts` (the pass DM; quiet hours hold, then send once).
@@ -247,9 +253,3 @@ Entry format:
 - Tests: Rendered with the canvas runtime and the real fonts; the static pages open without scripts and match the renders.
 - Scope/decisions: The canvas runtime is not committed (not ours to publish), so the sources are for reading; the static pages replace the dashboard's placeholder art with hatching, while the PNG keeps it.
 - Next: Georges merges #78 to #90; the build starts with milestone V.
-
-## 2026-10-09 · claude · stack/docs-v2/05-adrs · #89
-- Done: ADRs 0001–0007 accepted by Georges; ADR 0008 (events and rewards as data: typed effects acting through existing features, applied once, unknown kinds shown as notes) written as Proposed. DESIGN.md gains milestone D (Prisma 7, from ADR 0003) and the adapters in §6; the guide's owner to-dos are updated.
-- Tests: Documentation only.
-- Scope/decisions: D is the plan ADR 0003 recommended; #79 is its first step. ADR 0008 lands with F10 and enters DESIGN.md §8 once accepted.
-- Next: the design references in the repository (#90).
