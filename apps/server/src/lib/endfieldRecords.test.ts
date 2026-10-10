@@ -7,6 +7,7 @@ import {
   recordsUrl,
 } from "@gacha/shared";
 import { charPage, weaponPage } from "../test/fixtures/endfield.js";
+import { fetchRecords } from "./endfieldRecords.js";
 
 const endfield = getGame("endfield")!;
 // The canonical form trackers rebuild from the game's webview cache (ADR 0009).
@@ -141,5 +142,23 @@ describe("Endfield records links (ADR 0009)", () => {
       ["special-1289", "character", false],
       ["special-1290", "character", true],
     ]);
+  });
+
+  it("hands back where to pick up when its time runs out, and picks up there", async () => {
+    const asked: URL[] = [];
+    const fetchFn = async (url: string) => {
+      const u = new URL(url);
+      asked.push(u);
+      const empty = { code: 0, data: { list: [], hasMore: false } };
+      return { json: async () => (u.pathname.endsWith("/char") && u.searchParams.get("pool_type") === "E_CharacterGachaPoolType_Special" && !u.searchParams.get("seq_id") ? charPage : empty) };
+    };
+    const link = readRecordsLink(pasted)!;
+    const first = await fetchRecords(endfield, link, new Set(), null, { fetchFn, pauseMs: 0, budgetMs: 0 });
+    expect(first.records).toHaveLength(3);
+    expect(first.next).toEqual({ gachaType: "E_CharacterGachaPoolType_Special", endId: "1288" });
+    asked.length = 0;
+    const rest = await fetchRecords(endfield, link, new Set(), first.next, { fetchFn, pauseMs: 0 });
+    expect(rest).toEqual({ records: [], next: null });
+    expect(asked.map((u) => u.searchParams.get("seq_id") ?? u.searchParams.get("pool_type") ?? "weapon")).toEqual(["1288", "weapon", "E_CharacterGachaPoolType_Standard"]);
   });
 });
