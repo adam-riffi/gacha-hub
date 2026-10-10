@@ -112,7 +112,14 @@ export async function syncEnka(
         );
         await prisma.character.update({
           where: { id: build.id },
-          data: { doc: doc as object, synced: b.doc as object },
+          data: {
+            doc: doc as object,
+            synced: mergeSynced(
+              (build.synced as Record<string, unknown> | null) ?? {},
+              build.synced as Record<string, unknown> | null,
+              b.doc,
+            ) as object,
+          },
         });
         updated += 1;
       }

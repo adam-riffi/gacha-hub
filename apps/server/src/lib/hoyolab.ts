@@ -9,12 +9,14 @@ export function dsHeader(t = Math.floor(Date.now() / 1000), r = Array.from({ len
   return `${t},${r},${createHash("md5").update(`salt=${SALT}&t=${t}&r=${r}`).digest("hex")}`;
 }
 
-type Fetch = (url: string, init?: { headers: Record<string, string> }) => Promise<{ json: () => Promise<unknown> }>;
+type Fetch = (url: string, init?: { method?: string; headers: Record<string, string>; body?: string }) => Promise<{ json: () => Promise<unknown> }>;
 
-/** A signed, read-only GET to HoYoLAB with the user's cookie (ADR 0005); the cookie is never logged. */
-export async function hoyolabGet(url: string, cookie: string, fetchFn: Fetch = fetch as Fetch): Promise<unknown> {
-  const res = await fetchFn(url, {
-    headers: { cookie, ds: dsHeader(), "x-rpc-app_version": "1.5.0", "x-rpc-client_type": "5", "x-rpc-language": "en-us", "x-rpc-lang": "en-us" },
-  });
+/**
+ * A signed read from HoYoLAB with the user's cookie (ADR 0005); the cookie is
+ * never logged. Some reads are POSTs (Genshin's character list).
+ */
+export async function hoyolabGet(url: string, cookie: string, fetchFn: Fetch = fetch as Fetch, post?: Record<string, string>): Promise<unknown> {
+  const headers = { cookie, ds: dsHeader(), "x-rpc-app_version": "1.5.0", "x-rpc-client_type": "5", "x-rpc-language": "en-us", "x-rpc-lang": "en-us" };
+  const res = await fetchFn(url, post ? { method: "POST", headers: { ...headers, "content-type": "application/json" }, body: JSON.stringify(post) } : { headers });
   return res.json();
 }
