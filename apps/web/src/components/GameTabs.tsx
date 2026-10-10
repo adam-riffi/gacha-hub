@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { getGame } from "@gacha/shared";
 import { HubHeader } from "./hub/HubHeader";
 
-type Screen = "activities" | "endgame" | "overview" | "ownership" | "characters" | "equipment" | "gear" | "materials" | "pulls";
+type Screen = "activities" | "endgame" | "overview" | "ownership" | "characters" | "equipment" | "gear" | "materials" | "planner" | "pulls";
 
 /** What each game calls its gear sets. */
 const GEAR_LABEL: Record<string, string> = {
@@ -34,7 +34,7 @@ export function GameTabs({
       ? ([
           { key: "equipment", label: "Equipment", to: `/games/${instanceId}/equipment` },
           { key: "gear", label: (gameKey && GEAR_LABEL[gameKey]) || "Gear", to: `/games/${instanceId}/gear` },
-          { key: "materials", label: "Materials", to: `/games/${instanceId}/materials` },
+          { key: "planner", label: "Planner", to: `/games/${instanceId}/planner` },
         ] as { key: Screen; label: string; to: string }[])
       : []),
     // The old overview stays last until F10 rebuilds its parts as their own screens.

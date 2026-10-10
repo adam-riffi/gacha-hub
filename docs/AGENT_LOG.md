@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f10/18-planner · #142
+- Done: the Planner rebuilt from its board (WIREFRAMES.md G7), a hub tab in place of Materials: Goals (each farming goal with what it plans, its priority or backlog and a materials meter; New goal opens Characters); Materials for the picked goal or all goals summed (source, the days pips with today outlined, Have typed in place, Need, Missing, done ones last); Farm today in the game's weekday, one line per domain (Today, or its next open day), the any-day count and Open Tasks.
+- Tests: written first: `e2e/planner.spec.ts` (tab, a goal picked, a material's Have filled to its need shows ✓, All goals, Farm today); the accessibility sweep visits the tab. Checked at 1440 beside `g7-planner.png`.
+- Scope/decisions: the stamina estimate card is not built: drop rates per run are not on record. Materials keeps its route without a tab.
+- Next: Profile (G8).
+
 ## 2026-10-10 · claude · stack/f10/17-gear · #141
 - Done: the gear tab rebuilt from its board (WIREFRAMES.md G6): a head bar with the views (Inventory, Sets, Farm targets for Genshin, which alone has the bag; Sets elsewhere) and Manual; the inventory (filters by set, slot, main stat and where it is; sort by crit value or level; N of M pieces; + Add piece) as cards with slot, CV, set and level, main stat, substats, Low CV on a finished weak piece, and who wears it (Unequip) or Equip on…, Edit, delete; Storage beside it (pieces in the bag and on builds) with a link to Farm targets.
 - Tests: written first: `e2e/gear.spec.ts` (inventory first, a piece added with its substats shows CV 42 and Unequipped, equipped on Amber, storage, the views); the accessibility sweep visits Farm targets. The substat boxes are found by their exact label. Checked at 1440 beside `g6-gear.png`.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: `database.test.ts` first; then the whole suite on the new data layer: 206 tests through the SQLite adapter, both harnesses on the 11.7 MB bundle, Check all.
 - Scope/decisions: `^7.10.0` pinned (npm's latest is an 8.0 rc). Postgres through the pooler, `migrate deploy` on Vercel and cold starts are PR 2 (ADR 0003 step 3); this PR must not reach production first.
 - Next: `stack/d/02-postgres-check`: route tests against a Postgres service in CI, a preview deployment through the pooler.
-
-## 2026-10-09 · claude · stack/v/09-home · #101
-- Done: Home is the dashboard: the 1232 + 528 layout, DAILIES & WEEKLIES (name, reset chip, gauge, four KPI tiles) beside BATTLE PASS (empty until F8), the heatmap below; BANNERS, PULLS (limited total, limited and permanent, a row per game) and STAMINA (current over cap, reserve, full) in the side column. The three carousels share one clock and one roster (`lib/roster.ts`, `useCarousel` with a game tick). The KPI strip, Today, Coming up, Wallet and the board left Home; a hidden "Home" heading stays.
-- Tests: `e2e/home.spec.ts` (every design panel and none of the old ones; the Dailies card's split tiles, reset chip and labelled gauge; 10 limited warps from 1600 jade; the stamina row and its fill time); the banners, heatmap and axe journeys still pass.
-- Scope/decisions: VIEWING a pinned day and BACK TO TODAY wait for F8's record; Endgame and Expiring soon come with F8/F10; game art with F12. Milestone V's acceptance: Home matches the design at 1920×1204, a scope changes only the accent, axe clean, reduced motion stops transitions and rotation.
-- Next: Milestone D (Prisma 7), then F8.

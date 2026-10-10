@@ -29,7 +29,7 @@ test("Character sheet: identity, KPIs, character, skills, weapon, stats and the 
 
   await character.getByLabel("Level").fill("80");
   await page.getByRole("button", { name: "Save" }).click();
-  await expect(page.getByText("Saved")).toBeVisible();
+  await expect(page.getByText("Saved", { exact: true })).toBeVisible();
   await page.reload();
   await expect(page.getByRole("region", { name: "Character" }).getByLabel("Level")).toHaveValue("80");
 });
