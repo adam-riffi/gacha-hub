@@ -72,11 +72,6 @@ p { color: var(--muted); }
   background: var(--bg-elev);
 }
 .task-row + .task-row { margin-top: 8px; }
-.checkbtn {
-  width: 22px; height: 22px; border-radius: 6px; border: 1px solid var(--border);
-  background: var(--surface-2); cursor: pointer; display: grid; place-items: center; color: transparent;
-}
-.checkbtn.on { background: var(--accent); border-color: var(--accent); color: var(--on-paper); }
 
 /* ---- Character sheet ---- */
 .sheet { display: grid; gap: 16px; grid-template-columns: 300px 1fr; align-items: start; }
@@ -212,22 +207,8 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 .table td { padding: 7px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
 .table tr:last-child td { border-bottom: none; }
 
-/* ---- Kanban board (Tasks) ---- */
-/* Columns share the width and wrap — no horizontal scroll on wide screens. */
-.board { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; align-items: start; }
-.board-col { min-width: 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; }
-.board-group { margin-top: 10px; }
-.board-group-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 6px; }
-.subrow { display: flex; align-items: center; gap: 8px; padding: 5px 0; border-top: 1px solid var(--border); font-size: 0.86rem; }
-.checkbtn.sm { width: 20px; height: 20px; border-radius: 5px; font-size: 0.7rem; }
+/* ---- Goal cards (Teams) ---- */
 .goal-card { background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px; margin-bottom: 8px; }
-.goal-toggle { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; padding: 0; background: none; border: none; color: var(--text); cursor: pointer; text-align: left; font: inherit; }
-.goal-toggle strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.goal-toggle:hover .gc-caret { color: var(--text); }
-.gc-caret { color: var(--muted); font-size: 0.8rem; width: 0.9em; flex-shrink: 0; }
-.goal-kids { margin-top: 6px; }
-.subtask { display: flex; align-items: center; gap: 8px; padding: 4px 0; border-top: 1px solid var(--border); font-size: 0.82rem; }
-.subtask:first-of-type { border-top: none; }
 select.prio { width: auto; padding: 2px 6px; font-size: 0.72rem; border-radius: 0; text-transform: capitalize; }
 select.prio-high { background: var(--paper); color: var(--on-paper); border-color: var(--paper); }
 select.prio-low { color: var(--muted); }
@@ -248,12 +229,6 @@ select.prio.build-none { color: var(--muted); }
 /* ---- Dashboard: main column + right rail ---- */
 @media (max-width: 1100px) { .dash { grid-template-columns: 1fr; } }
 .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-.today-game { display: grid; grid-template-columns: 4px minmax(0, 1fr); gap: 12px; padding: 12px 0; border-top: 1px solid var(--border); }
-.today-game:first-of-type { border-top: none; padding-top: 4px; }
-.today-game.settled { opacity: 0.55; }
-.today-stripe { border-radius: 2px; }
-.today-regen { display: grid; grid-template-columns: auto minmax(80px, 1fr) auto auto; gap: 10px; align-items: center; margin-top: 8px; }
-.today-regen .meter { margin-top: 0; }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
 .chip-toggle { padding: 4px 10px; border-radius: 0; border: 1px solid var(--border); background: var(--surface-2); color: var(--text); font-size: 0.8rem; cursor: pointer; }
 .chip-toggle:hover { border-color: var(--hairline); }
@@ -289,21 +264,8 @@ select.prio.build-none { color: var(--muted); }
 
 /* ---- Home: banners now ---- */
 
-/* ---- Task board: quiet rows, actions on hover ---- */
-.new-task { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; padding: 12px; margin-bottom: 12px; background: var(--bg-elev); border: 1px solid var(--border); }
-.board-game { font-family: var(--font-display); font-weight: 600; color: var(--text); }
-.goal-title { flex: 1; min-width: 0; }
+/* ---- Goal card meter (Teams) ---- */
 .goal-card .meter { margin-top: 6px; }
-.row-actions { display: inline-flex; align-items: center; gap: 2px; flex-shrink: 0; }
-.row-actions > * { opacity: 0; transition: opacity 0.1s; }
-.goal-card:hover .row-actions > *, .subrow:hover .row-actions > *, .row-actions .icon-btn.on, .row-actions .prio-high { opacity: 1; }
-.icon-btn { background: none; border: none; color: var(--muted); cursor: pointer; padding: 3px 5px; font-size: 0.8rem; line-height: 1; }
-.icon-btn:hover, .icon-btn.on { color: var(--accent); }
-.prio-tag { background: none; border: 1px solid var(--border); color: var(--muted); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.04em; padding: 1px 5px; cursor: pointer; }
-.prio-tag.prio-high { background: var(--paper); color: var(--on-paper); border-color: var(--paper); }
-.check-item { display: flex; align-items: center; gap: 8px; font-size: 0.84rem; color: var(--text); padding: 3px 0; margin: 0; cursor: pointer; }
-.check-item input { width: auto; }
-.check-done { color: var(--muted); text-decoration: line-through; }
 
 /* ---- Gear sets (artifacts / relics…) ---- */
 .set-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 14px; align-items: start; }
