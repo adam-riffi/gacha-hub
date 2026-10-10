@@ -25,5 +25,6 @@ export * from "./uigf.js";
 export * from "./historyLink.js";
 export * from "./convene.js";
 export * from "./hoyolab.js";
+export * from "./chronicle.js";
 export * from "./enka.js";
 export * from "./builds.js";
