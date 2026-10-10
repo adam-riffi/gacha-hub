@@ -34,7 +34,7 @@ export async function importPulls(userId: string, instance: GameInstance, provid
   await prisma.$transaction([
     ...[...newest].map(([bannerKey, upTo]) => prisma.pullEntry.deleteMany({ where: { gameInstanceId: instance.id, bannerKey, source: "manual", createdAt: { lte: upTo } } })),
     prisma.pullEntry.createMany({
-      data: fresh.map((p) => ({ gameInstanceId: instance.id, bannerKey: p.bannerKey, count: 1, fiveStar: p.fiveStar, featured: p.featured, catalogId: known(p.catalogId), source: provider, recordId: p.recordId, createdAt: p.createdAt })),
+      data: fresh.map((p) => ({ gameInstanceId: instance.id, bannerKey: p.bannerKey, count: 1, fiveStar: p.fiveStar, featured: p.featured, catalogId: known(p.catalogId), source: provider, recordId: p.recordId, record: p.record, createdAt: p.createdAt })),
     }),
     prisma.importRun.create({ data: { userId, gameInstanceId: instance.id, provider, kind: "pulls", ...counts } }),
   ]);

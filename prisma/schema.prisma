@@ -100,6 +100,8 @@ model PullEntry {
   source         String       @default("manual")
   /// The game's own record id for an imported pull; imports skip ids already here.
   recordId       String?
+  /// An imported pull's gacha type, item and rank, so it can be exported as UIGF again.
+  record         Json?
   createdAt      DateTime     @default(now())
 
   @@unique([gameInstanceId, recordId])
