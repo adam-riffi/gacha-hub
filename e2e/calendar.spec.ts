@@ -69,3 +69,30 @@ test("a reward event carries its roster tag; its pick and Make goal set the goal
   await page.getByRole("group", { name: "View" }).getByRole("button", { name: "List" }).click();
   await expect(page.getByRole("cell", { name: "E2E free 4-star" })).toBeVisible();
 });
+
+test("Only what I wishlisted keeps the banners and events of the units you wish for @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  const upload = await page.request.post("/api/admin/payload", {
+    data: {
+      kind: "banners",
+      gameKey: "hsr",
+      items: [
+        { key: "e2e-wished", name: "E2E wished warp", kind: "character", startsAt: iso(-1), endsAt: iso(12), featured: [{ catalogId: "1102", kind: "character", rateUp: true }] },
+        { key: "e2e-unwished", name: "E2E unwished warp", kind: "character", startsAt: iso(-2), endsAt: iso(11), featured: [{ catalogId: "1006", kind: "character", rateUp: true }] },
+      ],
+    },
+  });
+  expect(upload.ok()).toBe(true);
+  await page.request.put(`/api/instances/${id}/wishlist`, { data: { kind: "character", catalogId: "1102", wished: true } });
+  await page.request.put(`/api/instances/${id}/wishlist`, { data: { kind: "character", catalogId: "1006", wished: false } });
+
+  await page.goto("/timeline?game=hsr");
+  const timeline = page.getByRole("region", { name: "Timeline" });
+  await expect(timeline.getByRole("button", { name: /E2E unwished warp/ })).toBeVisible();
+  await page.getByRole("checkbox", { name: "Only what I wishlisted" }).check();
+  await expect(timeline.getByRole("button", { name: /E2E wished warp/ })).toBeVisible();
+  await expect(timeline.getByRole("button", { name: /E2E unwished warp/ })).toHaveCount(0);
+});
