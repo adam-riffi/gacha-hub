@@ -14,7 +14,8 @@ test("Games library: capabilities, today, sleep, and moving a game in the strip 
   await expect(hsr).toContainText("manual tracking");
   await expect(hsr).toContainText(/\d+ characters/);
   await expect(hsr).toContainText(/Dailies \d+\/\d+/);
-  await expect(page.getByRole("article", { name: "Zenless Zone Zero" })).toContainText("no cost data yet");
+  // ZZZ has a catalog since the Hakushin data (its costs) was found again.
+  await expect(page.getByRole("article", { name: "Zenless Zone Zero" })).toContainText(/✓ \d+ characters/);
   // Live data as F11 shipped it (ADR 0005), no longer a plan.
   await expect(hsr).toContainText("✓ HoYoLAB · history link · Enka");
   await expect(page.getByRole("article", { name: "Zenless Zone Zero" })).toContainText("✓ HoYoLAB · history link");
