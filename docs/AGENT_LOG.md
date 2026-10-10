@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · docs/handoff-f12 · #176
+- Done: HANDOFF.md rewritten: every milestone, V through F12, is built, and what is left waits on Georges or a data source. PROJECT-GUIDE §14 lists what is left now (owner steps for linking, R2, ADR 0009, the Enka licence, fixtures and stale branches; agent work that waits on data, and optional work) and what was done since the list was written. §15 drops the fixed issues, and the stale engine-DLL gotcha is gone. The 30 archived log entries marked "pending" now carry their PR numbers. ADR 0001's pr-meme row is resolved (#80).
+- Tests: docs only.
+- Scope/decisions: the Genshin constellation reference card was dropped by the redesign, so §14.2 no longer lists it.
+- Next: Georges's steps in HANDOFF.md.
+
 ## 2026-10-10 · claude · stack/ui/02-real-capabilities · #175
 - Done: the hub and the Library show what each game really has. Endfield's hub drops the Gear and Planner tabs, since its catalog lists characters only (PROJECT-GUIDE §14.2 item 6). The Library's Live data cells show what F11 shipped (HoYoLAB, history links, Enka, WuWa's convene link) instead of plans, and its Capabilities card no longer says "Coming with F11".
 - Tests: written first: Endfield's tabs are Activities, Endgame, Pulls, Characters and Profile; Star Rail's and ZZZ's live-data cells. `npm run check` passes: 502 tests and 38 journeys.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: `e2e/library.spec.ts` (cells, today, moving the last game up swaps it in the strip, sleep and wake). Drag checked against the dev server with Playwright (and the order put back); checked at 1440 beside `a2-games-library.png`.
 - Scope/decisions: "Request a game" is left out (nothing receives the request); catalog-gap reasons and the planned live routes are a small map in the page, as capabilities themselves stay derived (ADR 0004).
 - Next: Pulls (G3): odds, curve, guarantee, savings planner.
-
-## 2026-10-10 · claude · stack/f10/09-game-order · #133
-- Done: `GameInstance.position` (migration `20261011010000_game_position`, a column on an existing table); `PUT /api/instances/order` takes every profile of the user in the new order; a new game goes last; the instances list, the dashboard, farm today and the reminder preview follow it.
-- Tests: written first: `instances.integration.test.ts` (order kept for the strip and the dashboard, a new game last, an incomplete order refused).
-- Scope/decisions: the order lives on the server, so it follows the user across devices.
-- Next: `stack/f10/10-library` (A2 rebuilt, with drag to reorder).
