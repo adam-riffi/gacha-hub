@@ -27,6 +27,8 @@ export interface ImportedPull {
   fiveStar: boolean;
   featured: boolean | null;
   catalogId: string | null;
+  /** What it keeps to travel again as UIGF. */
+  record: { gachaType: string; itemId: string | null; rank: number };
 }
 
 /** Record ids are digit strings of varying length: compare them as numbers. */
@@ -58,7 +60,7 @@ export function pullsFromRecords(game: GameDefinition, records: readonly PullRec
       const running = windows.filter((w) => w.kind === banner.key && w.startsAt <= r.time && r.time < w.endsAt);
       if (running.length) featured = running.some((w) => w.featured.some((f) => f.catalogId === r.itemId));
     }
-    pulls.push({ recordId: r.id, bannerKey: banner.key, createdAt: new Date(r.time.getTime() + offset), fiveStar, featured, catalogId: r.itemId ?? null });
+    pulls.push({ recordId: r.id, bannerKey: banner.key, createdAt: new Date(r.time.getTime() + offset), fiveStar, featured, catalogId: r.itemId ?? null, record: { gachaType: r.gachaType, itemId: r.itemId ?? null, rank: r.rank } });
   }
   return { pulls, skipped: records.length - pulls.length };
 }
