@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f10/01-effects · #125
+- Done: ADR 0008 accepted (with the owner's blanket approval of 2026-10-10). `packages/shared/src/effects.ts`: typed effects (`unit.grant`, `unit.copy`, `currency.add`, `material.add`, `goal.create`, `note`, `choose`), read per game (unknown or unsupported kinds become notes), keyed by place for applying once. Migration `20261011000000_f10_effects`: `Event.effects`, `Task.eventId` and `choice`, `EffectApplication` (RLS on). Admin uploads store effects; events and exports return them.
+- Tests: written first: `effects.test.ts` (every kind kept, unknown and malformed kinds and unsupported currencies or weapon copies as notes, inside choices too, keys by place, choice required); `admin.integration.test.ts` (an upload keeps its effects and exports them).
+- Scope/decisions: which kinds a game supports is read from its manifest (its currencies, its dupe fields) instead of a new manifest list; amendment recorded in the ADR.
+- Next: `stack/f10/02-event-goals`: make a goal from an event, tick to apply its effects once, untick to reverse.
+
 ## 2026-10-10 · claude · stack/f9/05-zzz-feed · #124
 - Done: Zenless Zone Zero's official feed (`sg-announcement-api.hoyoverse.com`, `nap_global`) imports hourly: its "Limited-Time Channels" notice splits into one banner per Signal Search (Exclusive Channel → character, W-Engine Channel → weapon) with its own period, the other newsletter notices become events. HSR and ZZZ share the `pic_list` walk. #123 merged; F9 is complete.
 - Tests: written first: `officialFeed.test.ts` (channel split, featured units per channel up to the `※` notes, periods in server time, store and untitled notices dropped). The saved live feed of 2026-10-10 parsed into its four Signal Searches and six events.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: Documentation only.
 - Scope/decisions: Requested by Georges for every repository; no `HANDOFF.md` exists here yet, so the next session that works here writes the first one.
 - Next: Unchanged project work; the next session ends by writing `HANDOFF.md`.
-
-## 2026-10-06 · codex · stack/infra/01-pr-meme · pending
-- Done: Installed the canonical portfolio-infra v1 PR meme caller, with same-repository and owner guards and no per-repository secrets.
-- Tests: Configuration exception to test-first; actionlint checks the exact template, followed by the repository check and CI.
-- Scope/decisions: ENGINEERING §14 and portfolio-infra M4 rollout; application behavior and commands are unchanged.
-- Next: Keep draft until portfolio-infra v1 is published and independent review/CI pass; verify the action on this PR afterwards.
