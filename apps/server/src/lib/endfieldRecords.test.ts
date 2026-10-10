@@ -100,6 +100,8 @@ describe("Endfield records links (ADR 0009)", () => {
     expect(
       readRecordsPage(weaponPage, "weapon").records.map((r) => [r.id, r.itemId, r.rank]),
     ).toEqual([["weapon-77", "wpn_sword_0006", 6]]);
+    // Each record keeps its banner, so a banner whose pity is its own can count its pulls alone.
+    expect(readRecordsPage(weaponPage, "weapon").records[0]!.pool).toBe("weponbox_1_0_1");
   });
 
   it("calls an answer with an error code expired, and anything else refused", () => {
@@ -135,6 +137,7 @@ describe("Endfield records links (ADR 0009)", () => {
     ];
     const { pulls, skipped } = pullsFromRecords(endfield, records, []);
     expect(skipped).toBe(1);
+    expect(pulls.find((p) => p.recordId === "weapon-77")!.record).toMatchObject({ pool: "weponbox_1_0_1" });
     expect(pulls.map((p) => [p.recordId, p.bannerKey, p.fiveStar])).toEqual([
       ["standard-5", "standard", false],
       ["special-1288", "character", false],

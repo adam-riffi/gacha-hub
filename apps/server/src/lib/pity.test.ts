@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import fc from "fast-check";
-import { calibration, gameList, pityState, splitPulls, type PullBannerRules, type PullEntryLike } from "@gacha/shared";
+import { calibration, gameList, getGame, pityState, splitPulls, type PullBannerRules, type PullEntryLike } from "@gacha/shared";
 
 const RUNS = { seed: 20261006, numRuns: 500 };
 const character: PullBannerRules = { key: "character", label: "Character", baseRate: 0.006, hardPity: 90, softPity: 74, featuredRate: 0.5 };
@@ -85,5 +85,16 @@ describe("game pull rules", () => {
       }
     }
     expect(gameList.find((g) => g.key === "genshin")?.pullBanners?.map((b) => b.key)).toEqual(["character", "weapon", "standard"]);
+  });
+
+  it("counts only the newest banner's pulls where each banner keeps its own pity (Endfield's Arsenal)", () => {
+    const arsenal = getGame("endfield")!.pullBanners!.find((b) => b.key === "weapon")!;
+    expect(arsenal.pityPerPool).toBe(true);
+    const pulls = (n: number, pool?: string) => Array.from({ length: n }, () => ({ count: 1, fiveStar: false, ...(pool ? { record: { pool } } : {}) }));
+    // 30 pulls on one weapon banner, 5 on the next, then 10 logged by hand: the next banner's pity is 15.
+    expect(pityState([...pulls(30, "weponbox_1"), ...pulls(5, "weponbox_2"), { count: 10, fiveStar: false }], arsenal).pity).toBe(15);
+    // A banner whose pity carries over counts them all.
+    const chartered = getGame("endfield")!.pullBanners!.find((b) => b.key === "character")!;
+    expect(pityState([...pulls(30, "special_1"), ...pulls(5, "special_2")], chartered).pity).toBe(35);
   });
 });
