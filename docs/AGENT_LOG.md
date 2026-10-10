@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/f10/12-pulls · #136
+- Done: Pulls rebuilt from its board (WIREFRAMES.md G3): Pulls available (per currency) and By the end of the version (the forecast, #135); each event banner with its status as a 50/50 (or 75/25) | Guaranteed switch that calibrates, the reason from the last 5★, the 5★ pity with soft pity marked, odds (next pull, next 10, by soft pity, featured by your pulls; estimates), the curve (pulled part shaded, you, soft and hard pity, where your pulls reach), the headline chance with average and worst case, and +1, +10, Log a 5★, Set pity, Undo; the other banners in short; History of every 5★ with its pity and result.
+- Tests: written first: `e2e/pulls.spec.ts` (rewritten for the new layout: available and forecast, status switch, pity, odds, curve, logging a 5★ that loses the 50/50, history, Home's pity line). The Featured box is found by its exact label, since the curve's name also says "featured". Checked at 1440 beside `g3-pulls.png`.
+- Scope/decisions: 4★ pity is not shown (4★ are not logged); the weapon path (Epitomized Path) is not modelled beyond 75/25 and its guarantee; history imports and UIGF export wait for F11; the savings planner is the next PR.
+- Next: `stack/f10/13-savings` (the planner beside History).
+
 ## 2026-10-10 · claude · stack/f10/11-pull-forecast · #135
 - Done: manifests gain premium income (`income.daily`, `monthlyPass.daily`; the four passes give 90 a day, read on their wiki pages; the 60-a-day dailies are `~`, unverified); `packages/shared/src/forecast.ts`: `pullForecast` (each game day left in the version, the pass while it runs, in pulls) and `savingsPlan` (targets in order, each with its worst-case or average need, the chance with what is left and with the forecast). The conformance suite checks the income and that the sheet names it. Star Rail's pass now stacks to 180 (sourced).
 - Tests: written first: `forecast.test.ts` (the board's 26 days × 60 and 23 × 90 = 22 pulls; no pass; the planner's covered and short-by figures; average mode); the odds against a seeded 200,000-trial simulation, within 0.5 points in four cases (F10's acceptance line; `featuredWithin` passed them as it was).
@@ -247,9 +253,3 @@ Entry format:
 - Tests: `urgency.test.ts` (48 h and 3 h windows, past times); `e2e/visual.spec.ts` (a banner ending in 10 h is a paper chip, one ending in 9 days is not; the ownership switch reports its state); axe still clean.
 - Scope/decisions: Georges asked mid-PR why Home does not look like the dashboard yet: the layout comes with the Home PRs; every later screen follows its wireframe board in this kit, not today's layouts. Status colours map to accent (done, owned, in use), paper (high priority, errors) or dark tags (owned over art).
 - Next: `stack/v/05-carousel`.
-
-## 2026-10-09 · claude · stack/v/03-shell · #95
-- Done: The sidebar becomes the 72 px rail (ALL, GAMES, TASKS, BANNERS, ADMIN for admins, SETTINGS) and a top bar with the scope strip and the date. Home, Tasks and the calendar take `?game=`; Games opens the hub; the scope's game sets `--accent` on the shell. `/tasks` shows today's dailies (`TodayCard`, now a component) above the board; the calendar's game chips gave way to the strip. Game cards show `shortName` until art arrives (F12).
-- Tests: `e2e/shell.spec.ts` (every rail link and its current state, Overview and a game on the strip, accent per scope, the scope following the rail, the Tasks page); the smoke journey's nav link updated.
-- Scope/decisions: Defaults from the V plan: Admin in the rail for admins; Settings and Admin open a game's hub; strip in install order; no drag-to-scroll yet (five games fit). Old rules now read `--accent` directly: an alias on `:root` hid the scope's colour.
-- Next: `stack/v/04-panels`.

@@ -15,6 +15,7 @@ import "./styles/hub.css";
 import "./styles/calendar.css";
 import "./styles/tasks.css";
 import "./styles/library.css";
+import "./styles/pulls.css";
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: false, refetchOnWindowFocus: false } },

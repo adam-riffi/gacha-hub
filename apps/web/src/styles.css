@@ -338,16 +338,6 @@ select.prio.build-none { color: var(--muted); }
 .ov-users { display: flex; flex-wrap: wrap; gap: 3px; align-items: center; margin-top: 5px; }
 
 /* ---- Pull log ---- */
-.pull-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: start; }
-@media (max-width: 1100px) { .pull-grid { grid-template-columns: 1fr 1fr; } }
-.pull-pity { font-family: var(--font-display); font-size: 2.6rem; font-weight: 600; line-height: 1; margin: 14px 0 8px; }
-.pull-pity .muted { font-size: 1.1rem; font-weight: 400; }
-.pull-form { display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-end; margin-top: 10px; padding: 10px; background: var(--bg-elev); border: 1px solid var(--border); }
-.pull-form label { display: flex; flex-direction: column; gap: 4px; font-size: 0.78rem; color: var(--muted); }
-.pull-form input[type="number"] { width: 90px; }
-.pull-drop { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto auto; gap: 8px; align-items: center; font-size: 0.85rem; }
-.pull-drop-art { width: 28px; height: 28px; background: linear-gradient(160deg, #b8782f, #6e4520); }
-.pull-form label.row { flex-direction: row; align-items: center; color: var(--text); }
 .pull-row-pity { display: block; padding: 0 0 6px 18px; }
 
 /* Links inside running text are underlined, not told apart by colour alone. */

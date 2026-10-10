@@ -1,205 +1,170 @@
-import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import type { PullBannerLogDto, PullLogDto } from "@gacha/shared";
+import { getGame, pullForecast, pullsFor, type DashboardDto, type PassesDto, type PullLogDto } from "@gacha/shared";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
 import { useCatalog } from "../lib/catalog";
-import { assetUrl, communityAssetUrl } from "../lib/assets";
-import { GameIcon } from "../components/GameIcon";
 import { GameTabs } from "../components/GameTabs";
+import { BannerCard, type AddBody, type CalibrateBody, type Unit } from "../components/pulls/BannerCard";
 import type { InstanceDetail } from "../lib/types";
 
-type Unit = { id: string; name: string; icon?: string; kind: "character" | "weapon" };
-type AddBody = { bannerKey: string; count: number; fiveStarAt?: number; featured?: boolean; catalogId?: string };
-type CalibrateBody = { bannerKey: string; pity: number; guaranteed: boolean };
+const NUM = new Intl.NumberFormat("en-GB");
+const DAY = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" });
+const DATE = new Intl.DateTimeFormat("en-CA", { year: "numeric", month: "2-digit", day: "2-digit" });
 
-function PullBanner({
-  b,
-  gameKey,
-  units,
-  unitOf,
-  onAdd,
-  onCalibrate,
-  onUndo,
-}: {
-  b: PullBannerLogDto;
-  gameKey: string;
-  units: Unit[];
-  unitOf: (id: string | null) => Unit | undefined;
-  onAdd: (body: AddBody) => void;
-  onCalibrate: (body: CalibrateBody) => void;
-  onUndo: (entryId: string) => void;
-}) {
-  const [mode, setMode] = useState<"five" | "set" | null>(null);
-  const [count, setCount] = useState(10);
-  const [at, setAt] = useState(10);
-  const [featured, setFeatured] = useState(true);
-  const [unit, setUnit] = useState("");
-  const [pity, setPity] = useState(0);
-  const [guaranteed, setGuaranteed] = useState(false);
-  const hasFeatured = b.featuredRate < 1;
-  const s = b.state;
-
-  return (
-    <div className="card pull-banner">
-      <div className="spread">
-        <h3 style={{ margin: 0 }}>{b.label}</h3>
-        <span className="row" style={{ gap: 4 }}>
-          {s.inSoftPity && <span className="badge todo">Soft pity</span>}
-          {s.guaranteed && <span className="badge done">Guaranteed</span>}
-        </span>
-      </div>
-      <div className="pull-pity">
-        <span data-testid="pity">{s.pity}</span>
-        <span className="muted"> / {b.hardPity}</span>
-      </div>
-      <div className="meter">
-        <span style={{ width: `${Math.min(100, (s.pity / b.hardPity) * 100)}%` }} />
-      </div>
-      <p className="small muted" style={{ margin: "6px 0 10px" }}>
-        {s.toHardPity} to a certain 5★
-        {hasFeatured && (s.guaranteed ? ", and it will be the featured one" : ` · ${Math.round(b.featuredRate * 100)}% it is the featured one`)}
-      </p>
-
-      <div className="row" style={{ gap: 6 }}>
-        <button className="btn sm" onClick={() => onAdd({ bannerKey: b.key, count: 1 })}>+1</button>
-        <button className="btn sm" onClick={() => onAdd({ bannerKey: b.key, count: 10 })}>+10</button>
-        <button className={`btn sm ${mode === "five" ? "primary" : ""}`} onClick={() => setMode(mode === "five" ? null : "five")}>Log a 5★</button>
-        <button className={`btn sm ghost ${mode === "set" ? "primary" : ""}`} onClick={() => { setPity(s.pity); setGuaranteed(s.guaranteed); setMode(mode === "set" ? null : "set"); }}>Set pity</button>
-        {b.recent[0] && (
-          <button className="btn sm ghost" title="Delete the latest entry" onClick={() => onUndo(b.recent[0]!.id)}>Undo</button>
-        )}
-      </div>
-
-      {mode === "five" && (
-        <form
-          className="pull-form"
-          onSubmit={(e) => {
-            e.preventDefault();
-            onAdd({ bannerKey: b.key, count, fiveStarAt: Math.min(at, count), ...(hasFeatured ? { featured } : {}), ...(unit ? { catalogId: unit } : {}) });
-            setMode(null);
-          }}
-        >
-          <label>Pulls in the batch <input type="number" min={1} max={200} value={count} onChange={(e) => setCount(Number(e.target.value))} /></label>
-          <label>5★ at pull <input type="number" min={1} max={count} value={at} onChange={(e) => setAt(Number(e.target.value))} /></label>
-          {hasFeatured && (
-            <label className="row" style={{ gap: 6 }}>
-              <input type="checkbox" style={{ width: "auto" }} checked={featured} onChange={(e) => setFeatured(e.target.checked)} /> Featured
-            </label>
-          )}
-          <select value={unit} onChange={(e) => setUnit(e.target.value)} aria-label="Which 5★">
-            <option value="">Which 5★ (optional)</option>
-            {units.map((u) => <option key={u.id} value={u.id}>{u.name}</option>)}
-          </select>
-          <button className="btn sm primary" type="submit">Save 5★</button>
-        </form>
-      )}
-
-      {mode === "set" && (
-        <form
-          className="pull-form"
-          onSubmit={(e) => {
-            e.preventDefault();
-            onCalibrate({ bannerKey: b.key, pity, guaranteed: hasFeatured && guaranteed });
-            setMode(null);
-          }}
-        >
-          <label>Current pity <input type="number" min={0} max={b.hardPity - 1} value={pity} onChange={(e) => setPity(Number(e.target.value))} /></label>
-          {hasFeatured && (
-            <label className="row" style={{ gap: 6 }}>
-              <input type="checkbox" style={{ width: "auto" }} checked={guaranteed} onChange={(e) => setGuaranteed(e.target.checked)} /> Guaranteed
-            </label>
-          )}
-          <button className="btn sm primary" type="submit">Save pity</button>
-        </form>
-      )}
-
-      {b.fiveStars.length > 0 && (
-        <div className="stack" style={{ gap: 6, marginTop: 12 }}>
-          {b.fiveStars.slice(0, 8).map((d) => {
-            const u = unitOf(d.catalogId);
-            return (
-              <div className="pull-drop" key={d.id}>
-                <GameIcon src={assetUrl(gameKey, u?.kind ?? "character", u?.icon)} fallback={communityAssetUrl(gameKey, u?.kind ?? "character", u?.icon)} alt={u?.name ?? "5★"} className="pull-drop-art" />
-                <span className="ov-ellipsis">{u?.name ?? "5★"}</span>
-                <span className="small muted">at pity {d.pity}</span>
-                {d.featured === false && <span className="badge">lost {Math.round(b.featuredRate * 100)}/{100 - Math.round(b.featuredRate * 100)}</span>}
-              </div>
-            );
-          })}
-        </div>
-      )}
-    </div>
-  );
-}
-
-/** Pull log per banner type: pity, guarantee and every 5★ (ADR 0002). */
+/**
+ * A game's Pulls tab (WIREFRAMES.md G3): the pulls you have and the ones
+ * coming by the end of the version; each event banner with its status, pity,
+ * odds and curve; the other banners in short; every 5★ you logged.
+ */
 export function PullsPage() {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const qc = useQueryClient();
   const toast = useToast();
-  const { data: instance } = useQuery({
-    queryKey: ["instance", id],
-    queryFn: () => api.get<InstanceDetail>(`/api/instances/${id}`),
-    enabled: Boolean(id),
-  });
-  const { data: log } = useQuery({
-    queryKey: ["pulls", id],
-    queryFn: () => api.get<PullLogDto>(`/api/instances/${id}/pulls`),
-    enabled: Boolean(id),
-  });
-  const { catalog, index } = useCatalog(instance?.gameKey);
-
-  const refresh = () => {
-    qc.invalidateQueries({ queryKey: ["pulls", id] });
-    qc.invalidateQueries({ queryKey: ["dashboard"] });
-  };
-  const failed = () => toast("That would pass hard pity, or the entry is invalid", "err");
+  const instance = useQuery({ queryKey: ["instance", id], queryFn: () => api.get<InstanceDetail>(`/api/instances/${id}`) });
+  const log = useQuery({ queryKey: ["pulls", id], queryFn: () => api.get<PullLogDto>(`/api/instances/${id}/pulls`) });
+  const passes = useQuery({ queryKey: ["passes", id], queryFn: () => api.get<PassesDto>(`/api/instances/${id}/passes`) });
+  const dash = useQuery({ queryKey: ["dashboard"], queryFn: () => api.get<DashboardDto>("/api/dashboard") });
+  const { catalog } = useCatalog(instance.data?.gameKey);
+  const refresh = () => Promise.all(["pulls", "dashboard"].map((k) => qc.invalidateQueries({ queryKey: k === "pulls" ? ["pulls", id] : [k] })));
+  const failed = () => toast("Couldn't save the pulls", "err");
   const add = useMutation({ mutationFn: (body: AddBody) => api.post(`/api/instances/${id}/pulls`, body), onSuccess: refresh, onError: failed });
   const calibrate = useMutation({ mutationFn: (body: CalibrateBody) => api.post(`/api/instances/${id}/pulls/calibrate`, body), onSuccess: refresh, onError: failed });
   const undo = useMutation({ mutationFn: (entryId: string) => api.del(`/api/instances/${id}/pulls/${entryId}`), onSuccess: refresh });
 
-  if (!instance || !log) return <div className="muted">Loading…</div>;
+  const game = instance.data && getGame(instance.data.gameKey);
+  if (instance.isError || log.isError) {
+    return (
+      <div className="card" role="alert">
+        <p>Pulls could not load.</p>
+        <button className="btn" onClick={() => void Promise.all([instance.refetch(), log.refetch()])}>Try again</button>
+      </div>
+    );
+  }
+  if (!instance.data || !log.data || !game) return <div className="mu">Loading…</div>;
 
-  const fiveStar = (kind: "character" | "weapon"): Unit[] =>
-    (kind === "character" ? catalog?.characters : catalog?.weapons)?.filter((u) => u.rarity === 5).map((u) => ({ id: u.id, name: u.name, icon: u.icon, kind })) ?? [];
-  const unitsFor = (key: string) =>
-    [...(key !== "weapon" ? fiveStar("character") : []), ...(key !== "character" ? fiveStar("weapon") : [])].sort((a, b) => a.name.localeCompare(b.name));
-  const unitOf = (catalogId: string | null): Unit | undefined => {
-    if (!catalogId || !index) return undefined;
-    const c = index.characters.get(catalogId);
-    if (c) return { id: c.id, name: c.name, icon: c.icon, kind: "character" };
-    const w = index.weapons.get(catalogId);
-    return w ? { id: w.id, name: w.name, icon: w.icon, kind: "weapon" } : undefined;
-  };
+  const values = new Map(instance.data.currencies.map((c) => [c.key, c.value]));
+  const pullCurrencies = game.currencies.filter((c) => c.pullCost).map((c) => ({ ...c, value: values.get(c.key) ?? 0 }));
+  const have = pullsFor(pullCurrencies);
+  const region = game.regions.find((r) => r.key === instance.data.regionKey) ?? game.regions[0]!;
+  const passEnds = passes.data?.monthly ? new Date(passes.data.monthly.endsAt) : null;
+  const forecast = pullForecast(game, region, new Date(), passEnds);
+  const units: Unit[] = [
+    ...(catalog?.characters ?? []).filter((c) => c.rarity >= 5).map((c) => ({ id: c.id, name: c.name, icon: c.icon, kind: "character" as const })),
+    ...(catalog?.weapons ?? []).filter((w) => w.rarity >= 5).map((w) => ({ id: w.id, name: w.name, icon: w.icon, kind: "weapon" as const })),
+  ];
+  const byId = new Map(units.map((u) => [u.id, u]));
+  const unitOf = (cid: string | null) => (cid ? byId.get(cid) : undefined);
+  const live = (dash.data?.timeline.banners ?? []).filter((b) => b.gameKey === game.key && b.status === "active");
+  const event = log.data.banners.filter((b) => b.featuredRate < 1);
+  const rest = log.data.banners.filter((b) => b.featuredRate >= 1);
+  const card = (b: (typeof event)[number], compact: boolean) => (
+    <BannerCard
+      key={b.key}
+      b={b}
+      gameKey={game.key}
+      available={b.key === "standard" ? have.standard : have.limited}
+      live={live.find((l) => l.kind === b.key)}
+      units={units}
+      unitOf={unitOf}
+      compact={compact}
+      onAdd={(body) => add.mutate(body)}
+      onCalibrate={(body) => calibrate.mutate(body)}
+      onUndo={(entryId) => undo.mutate(entryId)}
+    />
+  );
+  const drops = log.data.banners
+    .flatMap((b) => b.fiveStars.map((d) => ({ ...d, banner: b })))
+    .sort((a, z) => z.at.localeCompare(a.at));
+  const contested = drops.filter((d) => d.banner.featuredRate < 1 && d.featured !== null);
 
   return (
     <>
       <div style={{ marginBottom: 14 }}>
-        <GameTabs instanceId={instance.id} active="pulls" gameKey={instance.gameKey} hasCatalog={Boolean(catalog)} />
+        <GameTabs instanceId={instance.data.id} active="pulls" gameKey={game.key} hasCatalog={Boolean(game.loadCatalog)} />
       </div>
-      {log.banners.length === 0 ? (
-        <div className="card empty">This game has no pity rules yet.</div>
-      ) : (
-        <div className="pull-grid">
-          {log.banners.map((b) => (
-            <PullBanner
-              key={b.key}
-              b={b}
-              gameKey={instance.gameKey}
-              units={unitsFor(b.key)}
-              unitOf={unitOf}
-              onAdd={(body) => add.mutate(body)}
-              onCalibrate={(body) => calibrate.mutate(body)}
-              onUndo={(entryId) => undo.mutate(entryId)}
-            />
-          ))}
-        </div>
-      )}
-      <p className="small muted" style={{ marginTop: 10 }}>
-        Log pulls as you do them: +10 for a ten-pull without a 5★, "Log a 5★" when one drops. Starting mid-pity? Use "Set pity" once.
-      </p>
+      <div className="pl-top">
+        <section className="card" aria-label="Pulls available">
+          <div className="spread">
+            <h3>Pulls available</h3>
+            <span className="tag">Manual</span>
+          </div>
+          <div className="kpi-value">
+            {have.limited} <small>limited{have.standard ? ` · +${have.standard} standard` : ""}</small>
+          </div>
+          <table>
+            <tbody>
+              {pullCurrencies.map((c) => (
+                <tr key={c.key}>
+                  <td>{c.label}{c.standardOnly ? " (standard)" : ""}</td>
+                  <td className="num">{NUM.format(c.value)}</td>
+                  <td className="num mu">= {Math.floor(c.value / c.pullCost!)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+        <section className="card" aria-label={`By the end of ${game.manifest.version.name}`}>
+          <div className="spread">
+            <h3>By the end of {game.manifest.version.name}</h3>
+            <span className="badge">forecast · {DAY.format(forecast.until)}</span>
+          </div>
+          <div className="kpi-value">
+            +{forecast.pulls} <small>pulls → {have.limited + forecast.pulls} limited</small>
+          </div>
+          <table>
+            <tbody>
+              {forecast.lines.map((l) => (
+                <tr key={l.key}>
+                  <td>{l.label} · {l.days} days × {l.perDay}</td>
+                  <td className="num">{NUM.format(l.total)}</td>
+                </tr>
+              ))}
+              {forecast.lines.length === 0 && (
+                <tr><td colSpan={2} className="mu">No daily income on record for this game yet.</td></tr>
+              )}
+              <tr><td className="mu">Events, endgame, codes</td><td className="num mu">not counted</td></tr>
+            </tbody>
+          </table>
+        </section>
+      </div>
+
+      <div className="pl-label">
+        <span className="kpi-label">Event banners</span>
+        <span className="mn mu">Manual · pity and status from your log</span>
+      </div>
+      <div className="pl-banners">{event.map((b) => card(b, false))}</div>
+      {rest.length > 0 && <div className="pl-banners">{rest.map((b) => card(b, true))}</div>}
+
+      <section className="card pl-history" aria-label="History">
+        <h3>History</h3>
+        {drops.length === 0 ? (
+          <p className="mu">No 5★ logged yet. Log one from a banner above; imports from the game come with F11.</p>
+        ) : (
+          <>
+            <table>
+              <thead>
+                <tr><th>Date</th><th>Banner</th><th>5★</th><th className="num">Pity</th><th>Result</th></tr>
+              </thead>
+              <tbody>
+                {drops.slice(0, 20).map((d) => (
+                  <tr key={d.id}>
+                    <td className="mn">{DATE.format(new Date(d.at))}</td>
+                    <td>{d.banner.label}</td>
+                    <td>{unitOf(d.catalogId)?.name ?? "5★"}</td>
+                    <td className="num">{d.pity}</td>
+                    <td>{d.banner.featuredRate >= 1 ? <span className="badge">—</span> : d.featured === false ? <span className="badge todo">Lost</span> : d.featured ? <span className="badge done">Featured</span> : <span className="badge">—</span>}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p className="mn mu pl-note">
+              average 5★ pity {Math.round(drops.reduce((t, d) => t + d.pity, 0) / drops.length)}
+              {contested.length > 0 && ` · featured ${contested.filter((d) => d.featured).length} of ${contested.length}`}
+            </p>
+          </>
+        )}
+      </section>
     </>
   );
 }
