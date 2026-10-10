@@ -15,8 +15,8 @@ Entry format:
 ---
 
 ## 2026-10-10 · claude · stack/f10/02-event-goals · #126
-- Done: `POST /api/events/:id/goal` makes one goal per user and event (the picked option, the event's `goal.create` stages as its checklist), re-picks until claimed. Ticking an event goal (`POST /api/tasks/:id/complete`) applies its effects once in one transaction with an audit row (`apps/server/src/lib/effectApply.ts`); unticking reverses only what was added. A copy raises the build's dupe field (a weapon's on the build that wields it) up to the game's cap; with no build, a first copy grants the unit.
-- Tests: written first: `eventGoals.integration.test.ts` (pick required and kept, stages, wrong game, apply once and reverse, claimed pick locked, grant only what was missing, copy capped and partial reverse, first copy grants).
+- Done: `POST /api/events/:id/goal` makes one goal per user and event (the picked option, the event's `goal.create` stages as its checklist), re-picks until claimed. Ticking an event goal (`POST /api/tasks/:id/complete`) applies its effects once in one transaction with an audit row (`apps/server/src/lib/effectApply.ts`); unticking reverses only what was added. A copy raises the build's dupe field (a weapon's on the build that wields it) up to the game's cap; a character copy with no build starts one (the first copy is the character, each further copy a step up); a weapon copy with no build wielding it grants the weapon if missing.
+- Tests: written first: `eventGoals.integration.test.ts` (pick required and kept, stages, wrong game, apply once and reverse, claimed pick locked, grant only what was missing, copy capped and partial reverse, a copy starting a build whether or not the character was owned).
 - Scope/decisions: the ADR's *starts* trigger (cron-made goals for everyone) and *ends* (closing unclaimed goals in the digest) wait until a screen needs them; goals are made from the calendar.
 - Next: `stack/f10/03-calendar` (A4 rebuilt, with Make goal).
 
