@@ -194,6 +194,21 @@ const materials: CatalogMaterial[] = itemDetails.map((d) => {
 const missing = [...referenced].filter((id) => !materials.some((m) => m.id === id));
 if (missing.length) console.warn(`[catalog:hsr] ${missing.length} referenced ids not in item index: ${missing.slice(0, 10).join(", ")}`);
 
+// Relic stat tables for reading showcases, from Enka's store (the data Enka publishes for its API's users).
+const ENKA = "https://raw.githubusercontent.com/EnkaNetwork/API-docs/master/store/hsr";
+const relicIndex = await fetchJson<{ Items: Record<string, { Type: string; SetID: number; MainAffixGroup: number; SubAffixGroup: number }> }>(`${ENKA}/relics.json`, { cacheKey: "hsr-enka" });
+type Affix = { Property: string; BaseValue: number; LevelAdd?: number; StepValue?: number };
+const meta = await fetchJson<{ relic: { mainAffix: Record<string, Record<string, Affix>>; subAffix: Record<string, Record<string, Affix>> } }>(`${ENKA}/honker_meta.json`, { cacheKey: "hsr-enka" });
+const relicStats = {
+  pieces: Object.fromEntries(
+    Object.entries(relicIndex.Items)
+      .filter(([, r]) => SLOT[r.Type])
+      .map(([id, r]) => [id, { slot: SLOT[r.Type]!, set: String(r.SetID), main: String(r.MainAffixGroup), sub: String(r.SubAffixGroup) }]),
+  ),
+  main: Object.fromEntries(Object.entries(meta.relic.mainAffix).map(([g, as]) => [g, Object.fromEntries(Object.entries(as).map(([id, a]) => [id, { stat: a.Property, base: a.BaseValue, add: a.LevelAdd ?? 0 }]))])),
+  sub: Object.fromEntries(Object.entries(meta.relic.subAffix).map(([g, as]) => [g, Object.fromEntries(Object.entries(as).map(([id, a]) => [id, { stat: a.Property, base: a.BaseValue, step: a.StepValue ?? 0 }]))])),
+};
+
 const catalog: Catalog = {
   gameKey: "hsr",
   source: "yatta@sr.yatta.moe/api/v2",
@@ -201,6 +216,7 @@ const catalog: Catalog = {
   weapons: uniqueKeys(weapons.sort(byId)),
   gear: uniqueKeys(gear.sort(byId)),
   materials: uniqueKeys(materials.sort(byId)),
+  relicStats,
 };
 
 writeCatalog(catalog, "hsr");

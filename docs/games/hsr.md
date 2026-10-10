@@ -18,6 +18,7 @@
 | Gear | Relics: Head (HP), Hands (ATK), Body (HP%/ATK%/DEF%, Effect Hit Rate, Outgoing Healing Boost, CRIT Rate, CRIT DMG), Feet (HP%/ATK%/DEF%, SPD), Planar Sphere (HP%/ATK%/DEF%, a DMG Boost per type), Link Rope (HP%/ATK%/DEF%, Break Effect, Energy Regeneration Rate); relic sets of 2 and 4, planar sets of 2; level 15 | [Relic/Stats](https://honkai-star-rail.fandom.com/wiki/Relic/Stats) |
 | Dupes | A character copy raises Eidolon by one (to E6); a light cone copy raises Superimposition by one (to S5) | [Eidolon](https://honkai-star-rail.fandom.com/wiki/Eidolon), [Superimpose](https://honkai-star-rail.fandom.com/wiki/Superimpose) |
 | Art | Yatta's UI assets by id | [Yatta](https://sr.yatta.moe) |
+| Relic stat tables (for showcases) | each relic piece's slot, set and stat groups, and each group's main and substat values, imported into the catalog's `relicStats` | [Enka's store](https://github.com/EnkaNetwork/API-docs/tree/master/store/hsr) (`relics.json`, `honker_meta.json`) |
 | KPIs per role | Our choice for the Characters cards (WIREFRAMES.md G4), listed in the module's manifest | |
 | Pull history types | character 11, light cone 12, standard 1; departure (2) and the collab warps (21, 22) are not tracked | [UIGF v4.2](https://uigf.org/en/standards/uigf.html) |
 | Account level | Trailblaze Level (TL); the abbreviation is the community's | [Trailblaze Level](https://honkai-star-rail.fandom.com/wiki/Trailblaze_Level) |
