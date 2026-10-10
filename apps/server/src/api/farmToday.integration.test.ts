@@ -30,7 +30,7 @@ describe("farm today (WIREFRAMES.md A3)", () => {
 
     const parent = (await c.req<{ id: string }>("POST", "/api/tasks", { scope: "game", refId: gid, type: "goal", title: "Farm Amber" })).json;
     await c.req("POST", "/api/tasks", { scope: "game", refId: gid, type: "goal", title: `Farm ${book.name}`, target: 9, materialId: book.id, parentId: parent.id });
-    await c.req("POST", "/api/tasks", { scope: "game", refId: gid, type: "recurring", title: "Weekly Bosses", cadence: "weekly", regionAware: true });
+    // Installing Genshin adds its default weekly task, Weekly Bosses.
 
     const r = await c.req<FarmTodayDto>("GET", "/api/farm-today");
     expect(r.status).toBe(200);
