@@ -106,8 +106,9 @@ Picture: [`g3-pulls.png`](design/wireframes/g3-pulls.png) · static page: [`g3-p
 
 Picture: [`g4-characters.png`](design/wireframes/g4-characters.png) · static page: [`g4-characters.html`](design/wireframes/g4-characters.html)
 
-- Filters: search, element, weapon, rarity, owned, build status, sort; Characters | Weapons; counts (owned, perfect, good, building, unbuilt, wishlist); Splash | Compact view.
-- **Splash card** (four per row at 1440 px): portrait crop of the splash art with rarity and element chips, a constellation badge and a name box (level, talents, refinement); a strip of three KPIs chosen by the build's role (ADR 0004); build status, set, "Build →".
+- Filters: search, element, weapon, rarity, sort; Characters | Weapons. The counts are filter buttons (Georges, 2026-10-10): All, Owned, Not owned, Wishlist; Perfect, Good, Building, Unbuilt. Every unit shows at once; there is no compact view and no Show more.
+- **Splash card** (four per row at 1440 px): portrait crop of the splash art with rarity, element and weapon-type chips, a constellation badge and a name box (level, talents, refinement); a strip of three KPIs chosen by the build's role (ADR 0004); build status and set. The card tints to its element (Georges, 2026-10-10; the design canvas): the name box in the element's colour, the art fading in from it, the border lighting up on hover. **The whole card opens** the build, or the unit's page when it has none.
+- **Unit page** (`/games/:id/units/:catalogId`; Georges, 2026-10-10: every character opens, owned or not): the art and facts tinted to the element; Own, Wishlist, Start a build; its builds; the banners that feature it with your chance; what each dupe does; plan farming before you own it.
 - KPI examples: crit value, crit rate / crit damage and energy recharge for damage dealers; elemental mastery and energy recharge for supports; healing bonus for healers; the scaling stat where it differs (Chiori's DEF).
 - Unowned wishlisted units show dimmed art and your chance with current pulls, linking to Pulls.
 - A pending event goal shows on the card (`→ C4 · EVENT`).

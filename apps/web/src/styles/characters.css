@@ -6,17 +6,26 @@
 .ch-sp { flex: 1; }
 .ch-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
 @media (max-width: 1280px) { .ch-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-.ch-card { display: flex; flex-direction: column; background: var(--card); border: 1px solid var(--edge); }
+.ch-card { --el: var(--paper); position: relative; display: flex; flex-direction: column; background: var(--card); border: 1px solid var(--edge); transition: border-color 0.15s, box-shadow 0.15s; }
+/* The card tints to its element (Georges, 2026-10-10; the design canvas): the art fades in from it, and hovering lights the border. */
+.ch-card:hover, .ch-card:focus-within { border-color: var(--el); box-shadow: 0 0 0 1px var(--el), 0 12px 32px -14px color-mix(in srgb, var(--el) 70%, transparent); }
+.ch-card:hover .ch-art .gicon { transform: scale(1.03); }
+/* A link over the whole card opens it; the card's buttons sit above it. */
+.ch-open { position: absolute; inset: 0; z-index: 1; }
+.ch-open:focus-visible { outline: 2px solid var(--el); outline-offset: 2px; }
+.ch-card .btn, .ch-card .ch-foot a { position: relative; z-index: 2; }
+.ch-el { border-color: var(--el); color: var(--el); }
+.ch-gap { width: 14px; }
 .ch-card.is-unowned { border-style: dashed; }
 .ch-card.is-unowned .ch-art .gicon { opacity: 0.35; filter: grayscale(0.6); }
-.ch-art { position: relative; height: 300px; overflow: hidden; background: var(--surface-2); }
-.ch-art .gicon { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.ch-art { position: relative; height: 300px; overflow: hidden; background: linear-gradient(180deg, color-mix(in srgb, var(--el) 26%, var(--surface-2)), var(--surface-2) 75%); }
+.ch-art .gicon { width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform 0.2s; }
 .ch-art .gicon-ph { display: grid; place-items: center; border: 0; background: transparent; color: var(--hairline-strong); font: 600 44px/1 var(--font-display); }
 .ch-chips { position: absolute; top: 10px; left: 10px; display: flex; gap: 6px; }
 .ch-chips .badge { background: var(--bg); }
 .ch-dupes { position: absolute; top: 10px; right: 10px; padding: 4px 8px; background: #000; color: var(--text); font: 500 12px/1 var(--font-mono); }
 .ch-dupes.is-off { background: var(--bg); border: 1px solid var(--hairline); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
-.ch-namebox { position: absolute; left: 10px; right: 10px; bottom: 10px; padding: 10px 12px; background: var(--paper); color: var(--on-paper); clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%); }
+.ch-namebox { position: absolute; left: 10px; right: 10px; bottom: 10px; padding: 10px 12px; background: var(--el); color: var(--on-paper); clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%); }
 .ch-namebox h3 { margin: 0 0 4px; font-size: 22px; letter-spacing: 0.02em; text-transform: none; }
 .ch-namebox .mn { font-size: 12px; }
 .ch-kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-bottom: 1px solid var(--surface-3); }
@@ -41,3 +50,16 @@
 .ch-filters .seg { align-self: end; }
 .ch-tkpi { display: inline-block; margin-right: 14px; white-space: nowrap; }
 .ch-actions { justify-content: flex-end; gap: 6px; }
+
+/* A unit's page (Georges, 2026-10-10): every character opens, owned or not. */
+.un-page { --el: var(--paper); }
+.un-art { border-color: var(--el); background: linear-gradient(180deg, color-mix(in srgb, var(--el) 26%, var(--surface-2)), var(--surface-2) 70%); }
+.un-title h1 { box-shadow: inset 0 -4px 0 var(--el); }
+.un-el { border-color: var(--el); color: var(--el); }
+.sh-cards.un-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.un-dupes { margin: 0; padding-left: 20px; display: grid; gap: 8px; font-size: 13px; }
+.un-page .btn[aria-pressed="true"] { background: var(--paper); border-color: var(--paper); color: var(--on-paper); }
+/* The counts are filters (Georges, 2026-10-10): pressed shows only those. */
+.ch-counts .chip { padding: 7px 11px; border: 1px solid var(--hairline); background: transparent; cursor: pointer; }
+.ch-counts .chip:hover { color: var(--text); border-color: var(--hairline-strong); }
+.ch-counts .chip[aria-pressed="true"] { background: var(--paper); border-color: var(--paper); color: var(--on-paper); }
