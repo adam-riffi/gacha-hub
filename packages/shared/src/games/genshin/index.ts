@@ -88,9 +88,9 @@ export const genshin: GameDefinition = {
   teamSize: 4,
   // Pity rules (community-documented): hard pity, soft pity, featured-unit rate.
   pullBanners: [
-    { key: "character", label: "Character event wish", baseRate: 0.006, softPity: 74, softStep: 0.06, hardPity: 90, featuredRate: 0.5, featuredOdds: 0.55 },
-    { key: "weapon", label: "Weapon event wish", baseRate: 0.007, softPity: 63, softStep: 0.07, hardPity: 80, featuredRate: 0.75 },
-    { key: "standard", label: "Standard wish", baseRate: 0.006, softPity: 74, softStep: 0.06, hardPity: 90, featuredRate: 1 },
+    { key: "character", label: "Character event wish", baseRate: 0.006, softPity: 74, softStep: 0.06, hardPity: 90, featuredRate: 0.5, featuredOdds: 0.55, gachaTypes: ["301", "400"] },
+    { key: "weapon", label: "Weapon event wish", baseRate: 0.007, softPity: 63, softStep: 0.07, hardPity: 80, featuredRate: 0.75, gachaTypes: ["302"] },
+    { key: "standard", label: "Standard wish", baseRate: 0.006, softPity: 74, softStep: 0.06, hardPity: 90, featuredRate: 1, gachaTypes: ["200"] },
   ],
   name: "Genshin Impact",
   shortName: "Genshin",

@@ -17,6 +17,7 @@
 | Dupes | A character copy raises Mindscape by one (to M6); a W-Engine copy raises Phase by one (to 5) | [Mindscape Cinema](https://zenless-zone-zero.fandom.com/wiki/Mindscape_Cinema), [W-Engine](https://zenless-zone-zero.fandom.com/wiki/W-Engine) |
 | Art | | |
 | KPIs per role | Our choice for the Characters cards (WIREFRAMES.md G4), listed in the module's manifest | |
+| Pull history types | character (exclusive) 2, W-Engine 3, standard 1; Bangboo (5) is not tracked | [UIGF v4.2](https://uigf.org/en/standards/uigf.html) |
 | Account level | Inter-Knot Level (IKL); the abbreviation is the community's | [Inter-Knot Level](https://zenless-zone-zero.fandom.com/wiki/Inter-Knot_Level) |
 | Gacha · Exclusive Channel | S-Rank hard pity 90; 50/50, a lost one guarantees the next | [Exclusive Channel](https://zenless-zone-zero.fandom.com/wiki/Exclusive_Channel) |
 | Gacha · W-Engine Channel | S-Rank hard pity 80; 75/25, a lost one guarantees the next | [W-Engine Channel](https://zenless-zone-zero.fandom.com/wiki/W-Engine_Channel) |

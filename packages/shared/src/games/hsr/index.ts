@@ -91,9 +91,9 @@ export const hsr: GameDefinition = {
   teamSize: 4,
   // Pity rules (community-documented): hard pity, soft pity, featured-unit rate.
   pullBanners: [
-    { key: "character", label: "Character event warp", baseRate: 0.006, softPity: 74, softStep: 0.06, hardPity: 90, featuredRate: 0.5 },
-    { key: "weapon", label: "Light cone event warp", baseRate: 0.008, softPity: 66, hardPity: 80, featuredRate: 0.75 },
-    { key: "standard", label: "Stellar warp", baseRate: 0.006, softPity: 74, softStep: 0.06, hardPity: 90, featuredRate: 1 },
+    { key: "character", label: "Character event warp", baseRate: 0.006, softPity: 74, softStep: 0.06, hardPity: 90, featuredRate: 0.5, gachaTypes: ["11"] },
+    { key: "weapon", label: "Light cone event warp", baseRate: 0.008, softPity: 66, hardPity: 80, featuredRate: 0.75, gachaTypes: ["12"] },
+    { key: "standard", label: "Stellar warp", baseRate: 0.006, softPity: 74, softStep: 0.06, hardPity: 90, featuredRate: 1, gachaTypes: ["1"] },
   ],
   name: "Honkai: Star Rail",
   shortName: "Star Rail",

@@ -23,6 +23,8 @@ export interface PullBannerRules {
   lossGuarantee?: boolean;
   /** Pulls on one banner that give its featured unit outright (Endfield: 120). */
   spark?: number;
+  /** The game's own banner types whose pulls feed this pity, as its history names them (UIGF `gacha_type`). */
+  gachaTypes?: readonly string[];
 }
 
 /**
