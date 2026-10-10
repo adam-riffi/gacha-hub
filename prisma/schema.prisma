@@ -73,6 +73,7 @@ model GameInstance {
   cycleResults  CycleResult[]
   passStates    PassState[]
   dayRecords    DayRecord[]
+  wishlist      WishlistItem[]
 
   @@unique([userId, gameKey])
   @@index([userId])
@@ -206,6 +207,8 @@ model Character {
   doc            Json
   docVersion     Int          @default(1)
   buildStatus    String       @default("none") // none | building | good | perfect
+  /// The build's role, one of the game's KPI roles (WIREFRAMES.md G4); null reads as the game's first.
+  role           String?
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
 
@@ -389,4 +392,16 @@ model AuditLog {
 
   @@index([actorUserId])
   @@index([createdAt])
+}
+
+/// A unit the user wants (WIREFRAMES.md G4): shown on Characters, in the savings planner and the calendar.
+model WishlistItem {
+  id             String       @id @default(cuid())
+  gameInstanceId String
+  gameInstance   GameInstance @relation(fields: [gameInstanceId], references: [id], onDelete: Cascade)
+  kind           String // character | weapon
+  catalogId      String
+  createdAt      DateTime     @default(now())
+
+  @@unique([gameInstanceId, kind, catalogId])
 }

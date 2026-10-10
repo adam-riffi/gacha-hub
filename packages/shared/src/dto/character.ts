@@ -16,10 +16,16 @@ export const characterDto = z.object({
   doc: jsonValue,
   docVersion: z.number().int(),
   buildStatus: buildStatusSchema,
+  role: z.string().nullable(),
   createdAt: isoDate,
   updatedAt: isoDate,
 });
 export type CharacterDto = z.infer<typeof characterDto>;
+
+/** A unit on the profile's wishlist (WIREFRAMES.md G4). */
+export const wishlistItemDto = z.object({ kind: z.enum(["character", "weapon"]), catalogId: z.string(), createdAt: isoDate });
+export type WishlistItemDto = z.infer<typeof wishlistItemDto>;
+export const setWishlistInput = z.object({ kind: z.enum(["character", "weapon"]), catalogId: catalogIdSchema, wished: z.boolean() });
 
 /** Lightweight listing shape. */
 export const characterSummaryDto = characterDto.pick({
@@ -41,6 +47,8 @@ export const createCharacterInput = z.object({
   portraitUrl: z.string().max(2048).nullable().optional(),
   doc: jsonValue.optional(),
   buildStatus: buildStatusSchema.optional(),
+  /** One of the game's KPI roles (checked against the game on save). */
+  role: z.string().max(40).nullable().optional(),
 });
 export type CreateCharacterInput = z.infer<typeof createCharacterInput>;
 

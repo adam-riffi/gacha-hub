@@ -10,6 +10,7 @@ import { registerTaskRoutes } from "./tasks.js";
 import { registerEventGoalRoutes } from "./eventGoals.js";
 import { registerRewardRoutes } from "./rewards.js";
 import { registerFarmTodayRoutes } from "./farmToday.js";
+import { registerWishlistRoutes } from "./wishlist.js";
 import { registerTimelineRoutes } from "./timeline.js";
 import { registerAdminRoutes } from "./admin.js";
 import { registerDashboardRoutes } from "./dashboard.js";
@@ -35,6 +36,7 @@ export async function registerApi(app: FastifyInstance) {
   await registerEventGoalRoutes(app);
   await registerRewardRoutes(app);
   await registerFarmTodayRoutes(app);
+  await registerWishlistRoutes(app);
   await registerTimelineRoutes(app);
   await registerAdminRoutes(app);
   await registerDashboardRoutes(app);
