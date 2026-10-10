@@ -24,6 +24,7 @@ export * from "./pullImport.js";
 export * from "./uigf.js";
 export * from "./historyLink.js";
 export * from "./convene.js";
+export * from "./endfieldRecords.js";
 export * from "./hoyolab.js";
 export * from "./chronicle.js";
 export * from "./roster.js";

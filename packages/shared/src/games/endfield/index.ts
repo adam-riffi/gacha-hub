@@ -67,9 +67,15 @@ export const endfield: GameDefinition = {
   key: "endfield",
   teamSize: 4,
   // Chartered headhunting: no guarantee after a lost 50/50, but the 120th pull on a banner gives its featured operator.
+  // The Arsenal: 6★ certain by 40, a quarter of them featured, the featured weapon at 80. The record types are the
+  // records API's pools (ADR 0009); Beginner and Joint banners are not tracked.
+  // ponytail: one Arsenal pity for every weapon banner, though each banner keeps its own; per-banner pity if it matters.
   pullBanners: [
-    { key: "character", label: "Chartered headhunting", baseRate: 0.008, softPity: 66, hardPity: 80, featuredRate: 0.5, lossGuarantee: false, spark: 120 },
+    { key: "character", label: "Chartered headhunting", baseRate: 0.008, softPity: 66, hardPity: 80, featuredRate: 0.5, lossGuarantee: false, spark: 120, gachaTypes: ["E_CharacterGachaPoolType_Special"] },
+    { key: "weapon", label: "Arsenal", baseRate: 0.04, hardPity: 40, featuredRate: 0.25, lossGuarantee: false, spark: 80, gachaTypes: ["weapon"] },
+    { key: "standard", label: "Basic headhunting", baseRate: 0.008, softPity: 66, hardPity: 80, featuredRate: 1, gachaTypes: ["E_CharacterGachaPoolType_Standard"] },
   ],
+  topRarity: 6,
   name: "Arknights: Endfield",
   shortName: "Endfield",
   accent: "#FFE600",
