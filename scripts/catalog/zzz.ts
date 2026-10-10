@@ -41,6 +41,8 @@ type CharDetail = {
   level: Record<string, { level_max: number; materials: Costs }>;
   skill: Record<string, { material?: Record<string, Costs> }>;
   talent?: Record<string, { name?: string; desc?: string }>;
+  /** The core skill's enhancements: materials["n"] takes it from level n to n + 1 (base, then A to F). */
+  passive?: { materials?: Record<string, Costs> | null };
 };
 type WeaponIndex = Record<string, { icon: string; rank: number; type: number; en: string }>;
 type WeaponDetail = { materials?: string; weapon_type?: Record<string, string> };
@@ -76,15 +78,15 @@ const characters: CatalogCharacter[] = await mapLimit(Object.keys(charIndex), 4,
     return materials.length && next ? [{ atLevel: next.level_max, materials }] : [];
   });
   // A skill's material["n"] takes it from level n to n + 1.
-  const costsByKey = Object.fromEntries(
-    SKILLS.filter((k) => d.skill[k]?.material).map((k) => [
-      k,
-      Object.entries(d.skill[k]!.material!)
-        .map(([lvl, cost]) => ({ atLevel: Number(lvl) + 1, materials: toMaterials(cost) }))
-        .filter((s) => s.materials.length)
-        .sort((a, b) => a.atLevel - b.atLevel),
-    ]),
+  const steps = (table: Record<string, Costs>) =>
+    Object.entries(table)
+      .map(([lvl, cost]) => ({ atLevel: Number(lvl) + 1, materials: toMaterials(cost) }))
+      .filter((s) => s.materials.length)
+      .sort((a, b) => a.atLevel - b.atLevel);
+  const costsByKey: Record<string, CostStep[]> = Object.fromEntries(
+    SKILLS.filter((k) => d.skill[k]?.material).map((k) => [k, steps(d.skill[k]!.material!)]),
   );
+  if (d.passive?.materials) costsByKey.core = steps(d.passive.materials);
   const name = stripTags(d.name);
   return {
     id: String(d.id),

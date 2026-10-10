@@ -228,8 +228,8 @@ const ZZZ_STAT: Record<number, [string, boolean]> = {
   31803: ["Attribute DMG Bonus%", true],
   31903: ["Attribute DMG Bonus%", true],
 };
-/** Enka's skill indexes; 5, the core skill, has no level to plan. */
-const ZZZ_SKILL: Record<number, string> = { 0: "basic", 1: "special", 2: "dodge", 3: "chain", 6: "assist" };
+/** Enka's skill indexes; 5 is the core skill. */
+const ZZZ_SKILL: Record<number, string> = { 0: "basic", 1: "special", 2: "dodge", 3: "chain", 5: "core", 6: "assist" };
 
 type ZzzStat = { PropertyId: number; PropertyValue: number; PropertyLevel?: number };
 type ZzzAvatar = {
