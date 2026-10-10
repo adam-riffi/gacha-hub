@@ -14,6 +14,17 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/kpi/01-defaults · #187
+- Done: a game's default KPI targets. `GameInstance.kpiTargets` is a new nullable JSON column (migration `20261011090000_kpi_defaults`). It is set with `PUT /api/instances/:id`, checked against the game's numeric KPIs like a build's. The sheet's "Make these the game's defaults" saves the build's targets. A tile without its own target shows the default, marked "(default)", and a build's own targets win. `GET /api/characters/:id` carries `defaultTargets`; the export carries the column.
+- Tests: written first:
+  - the route (set, read on another build, unknown KPI refused, clear);
+  - the export;
+  - an E2E step: defaults from one build shown on the next.
+
+  `npm run check` passes: 529 tests and 40 journeys.
+- Scope/decisions: one set of defaults per game, by KPI label, not per role; labels shared by roles share a target.
+- Next: the final docs and handoff.
+
 ## 2026-10-10 · claude · stack/chronicle/01-stygian · #186
 - Done: Stygian Onslaught from HoYoLAB's chronicle (`hard_challenge`, genshin.py's HardChallenge). Its record is the best solo difficulty and time of the season running now, which fits the manifest's 1–6 metric. Shiyu Defense's newer layout (v2) stays unread: it scores floors 4 and 5 differently from the manifest's "S-rank frontiers", and without a recorded answer the mapping would be a guess.
 - Tests: written first: the request, and the current season's best difficulty. `npm run check` passes: 527 tests and 40 journeys.
@@ -280,9 +291,3 @@ Entry format:
 - Tests: written first: `linkSecret.test.ts` (round trip with a fresh IV, tampering and a moved secret refused, rotation, key length), `links.integration.test.ts` (listed without the secret, absent from the export, revoked, kept per user, sign-in required).
 - Scope/decisions: no way to create a link yet: each provider brings its own (HoYoLAB in `f11/06`); the export leaves links out entirely.
 - Next: `f11/02-pull-records` (source and record id on `PullEntry`, the import core).
-
-## 2026-10-10 · claude · stack/f10/20-profile · #144
-- Done: Profile rebuilt from its board (WIREFRAMES.md G8), the hub's last tab in place of Overview: Account (server with its reset in server time and yours, UID masked with Show, account and world level typed in place); Passes (30-day pass days left and battle pass level with their ends, bars, Update, and each reminder); Long-term progress, dashed and empty until F11 syncs it; Game reminders (this game's switches, Global rules →); Game status (Export JSON of this game, Sleep or Wake, Remove… after a confirmation, a link to the old overview). The hub header shows "AR 58 · WL 8"; Tasks' Reminders gain the battle pass row.
-- Tests: written first: `e2e/profile.spec.ts` (tab, the reset in server time, UID masked, levels in the header, days left and both pass reminders, stamina full, export file name, sleep, remove); smoke reaches the old overview from Profile; activities expects Profile last; the accessibility sweep visits it (caught a `<dl>` holding controls). Checked at 1440 beside `g8-profile.png`. Also fixed in the stack: the sheet journey's "Saved" toast is found by its exact text.
-- Scope/decisions: Long-term progress waits for F11 (the Battle Chronicle); the SYNCED badges are left out, as each game holds its own switches and the global rules set them across games; currencies and teams stay on the old overview until a screen takes them.
-- Next: F10's leftovers (Weapons and Compact views, wishlist filters and targets), then F11.
