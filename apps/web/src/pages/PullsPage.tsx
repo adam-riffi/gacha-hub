@@ -101,13 +101,10 @@ export function PullsPage() {
     .filter((c) => c.pullCost)
     .map((c) => ({ ...c, value: values.get(c.key) ?? 0 }));
   const have = pullsFor(pullCurrencies);
-  const sim = pullCurrencies.find((c) => c.key === topUp.key) ?? pullCurrencies.find((c) => !c.standardOnly && !c.weaponOnly);
+  const sim = pullCurrencies.find((c) => c.key === topUp.key) ?? pullCurrencies.find((c) => !c.standardOnly && !c.onlyFor);
   const topped = pullsFor(pullCurrencies.map((c) => (c === sim ? { ...c, value: c.value + topUp.amount } : c)));
-  const extra = { limited: topped.limited - have.limited, standard: topped.standard - have.standard, weapon: topped.weapon - have.weapon };
   const star = topStar(game.key);
-  // Endfield's Arsenal spends its own tickets, so it is out of the limited pulls and the planner.
-  const weaponTickets = pullCurrencies.some((c) => c.weaponOnly);
-  const weaponLabel = log.data.banners.find((b) => b.key === "weapon")?.label ?? "weapon";
+
   const region = game.regions.find((r) => r.key === instance.data.regionKey) ?? game.regions[0]!;
   const passEnds = passes.data?.monthly ? new Date(passes.data.monthly.endsAt) : null;
   const forecast = pullForecast(game, region, new Date(), passEnds);
@@ -128,14 +125,16 @@ export function PullsPage() {
   const shown = log.data.banners.filter((b) => !hidden.includes(b.key));
   const event = shown.filter((b) => b.featuredRate < 1);
   const rest = shown.filter((b) => b.featuredRate >= 1);
-  const fund = (b: (typeof event)[number]) => (b.fund === "none" ? null : b.fund === "standard" || b.key === "standard" ? "standard" : b.key === "weapon" && weaponTickets ? "weapon" : "limited");
+  // A banner's pulls: the standard tickets, only its own tickets (Endfield's Arsenal, the Bangboo channel), or the limited ones plus any of its own.
+  const pullsOn = (p: typeof have, b: (typeof event)[number]) =>
+    b.fund === "standard" || b.key === "standard" ? p.standard : (b.fund === "own" ? 0 : p.limited) + (p.only[b.key] ?? 0);
   const card = (b: (typeof event)[number]) => (
     <BannerCard
       key={b.key}
       b={b}
       gameKey={game.key}
-      available={fund(b) ? have[fund(b)!] : 0}
-      extra={fund(b) ? extra[fund(b)!] : 0}
+      available={pullsOn(have, b)}
+      extra={pullsOn(topped, b) - pullsOn(have, b)}
       live={live.find((l) => l.kind === b.key)}
       units={units}
       unitOf={unitOf}
@@ -152,7 +151,7 @@ export function PullsPage() {
   // The planner's targets: each event banner's featured 5★, character first, then the
   // wishlisted 5★ not already among them; all share the limited pulls.
   // The other event banners (collaborations, Chronicled…) join only while one is running.
-  const planned = event.filter((b) => !(weaponTickets && b.key === "weapon") && (b.key === "character" || b.key === "weapon" || live.some((l) => l.kind === b.key)));
+  const planned = event.filter((b) => b.fund !== "own" && (b.key === "character" || b.key === "weapon" || live.some((l) => l.kind === b.key)));
   const running = planned.map((b) => {
     const l = live.find((x) => x.kind === b.key);
     const feat = l?.featured.find((f) => (f.rarity ?? 0) >= 5);
@@ -178,9 +177,9 @@ export function PullsPage() {
       endsAt: l?.endsAt,
       rules: b,
       state: stateFor(b),
-      available: have.limited + extra.limited,
+      available: topped.limited,
     })),
-    ...wished.map(({ b, name }) => ({ label: name, sub: `Wishlist · ${b.label}`, rules: b, state: stateFor(b), available: have.limited + extra.limited })),
+    ...wished.map(({ b, name }) => ({ label: name, sub: `Wishlist · ${b.label}`, rules: b, state: stateFor(b), available: topped.limited })),
   ];
 
   return (
@@ -198,7 +197,10 @@ export function PullsPage() {
           <h3>Pulls available</h3>
           <div className="kpi-value">
             {have.limited}{" "}
-            <small>limited{have.standard ? ` · +${have.standard} standard` : ""}{have.weapon ? ` · +${have.weapon} ${weaponLabel}` : ""}</small>
+            <small>
+              limited{have.standard ? ` · +${have.standard} standard` : ""}
+              {Object.entries(have.only).map(([k, n]) => (n ? ` · +${n} ${log.data.banners.find((b) => b.key === k)?.label ?? k}` : ""))}
+            </small>
           </div>
           <table>
             <tbody>
@@ -206,7 +208,7 @@ export function PullsPage() {
                 <tr key={c.key}>
                   <td>
                     {c.label}
-                    {c.standardOnly ? " (standard)" : ""}
+                    {c.standardOnly ? " (standard)" : c.onlyFor ? ` (${log.data.banners.find((b) => b.key === c.onlyFor)?.label ?? c.onlyFor})` : ""}
                   </td>
                   <td className="num">{NUM.format(c.value)}</td>
                   <td className="num mu">= {Math.floor(c.value / c.pullCost!)}</td>
@@ -231,7 +233,7 @@ export function PullsPage() {
                   <option key={c.key} value={c.key}>{c.label}</option>
                 ))}
               </select>
-              <span className="mn">{topUp.amount > 0 ? `+${topped.limited + topped.standard + topped.weapon - have.limited - have.standard - have.weapon} pulls` : "what buying more would give"}</span>
+              <span className="mn">{topUp.amount > 0 ? `+${topped.limited + topped.standard + topped.special - have.limited - have.standard - have.special} pulls` : "what buying more would give"}</span>
             </div>
           )}
         </section>

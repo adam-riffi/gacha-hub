@@ -45,7 +45,7 @@ export const pullBannerLogDto = z.object({
   spark: z.number().int().optional(),
   softPity: z.number().int().optional(),
   featuredRate: z.number(),
-  fund: z.enum(["standard", "none"]).optional(),
+  fund: z.enum(["standard", "own"]).optional(),
   state: z.object({
     pity: z.number().int(),
     guaranteed: z.boolean(),

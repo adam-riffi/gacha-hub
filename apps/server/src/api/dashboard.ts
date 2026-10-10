@@ -121,7 +121,7 @@ export async function registerDashboardRoutes(app: FastifyInstance) {
             pullCost: d?.pullCost ?? null,
             pullLabel: d?.pullLabel ?? null,
             standardOnly: d?.standardOnly ?? false,
-            weaponOnly: d?.weaponOnly ?? false,
+            onlyFor: d?.onlyFor ?? null,
           };
         }),
         dailies,

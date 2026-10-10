@@ -90,6 +90,7 @@ export const wuwa: GameDefinition = {
     { key: "astrite", label: "Astrite", pullCost: 160, pullLabel: "convene" },
     { key: "radiantTide", label: "Radiant Tide", pullCost: 1, pullLabel: "convene" },
     { key: "lustrousTide", label: "Lustrous Tide", pullCost: 1, pullLabel: "convene", standardOnly: true },
+    { key: "forgingTide", label: "Forging Tide", pullCost: 1, pullLabel: "convene", onlyFor: "weapon" },
     { key: "shellCredits", label: "Shell Credits" },
   ],
   // Sources per value: docs/games/wuwa.md.

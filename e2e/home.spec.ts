@@ -39,6 +39,15 @@ test("Home is the dashboard: its panels, the dailies card per game, the pulls an
   await expect(pulls.locator(".pulls-total")).toHaveText("10");
   await expect(pulls.locator(".rw").first()).toContainText("Honkai: Star Rail");
   await expect(pulls.locator(".rw").first()).toContainText("10");
+  // Each game's pulls by type as a number and its icon: limited first, then permanent and special (a banner's own tickets), which stay out of the total.
+  await expect(pulls.locator(".rw").first().getByRole("img", { name: "limited pulls" })).toBeVisible();
+  const zzz = (await (await page.request.post("/api/instances", { data: { gameKey: "zzz" } })).json()) as { id: string };
+  expect((await page.request.put(`/api/instances/${zzz.id}/currencies/boopon`, { data: { value: 5 } })).ok()).toBe(true);
+  await page.goto("/?game=zzz");
+  const special = pulls.locator(".rw").first().locator(".pull-n.is-special");
+  await expect(special).toHaveText("5");
+  await expect(special.getByRole("img", { name: "special pulls" })).toBeVisible();
+  await page.goto("/?game=hsr");
 
   // Stamina: current over cap, and when it fills.
   const stamina = page.locator(".stamina-card");

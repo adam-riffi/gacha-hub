@@ -27,8 +27,8 @@ export interface PullBannerRules {
   gachaTypes?: readonly string[];
   /** Each banner of this type keeps its own pity (Endfield's Arsenal): pity counts only the newest banner's pulls. */
   pityPerPool?: boolean;
-  /** The pulls it spends when not the limited ones: the standard banner's tickets, or a currency of its own the tracker does not count (ZZZ's Boopons). */
-  fund?: "standard" | "none";
+  /** The pulls it spends when not the limited ones: the standard banner's tickets, or only its own (`onlyFor` currencies: Arsenal Tickets, Boopons). */
+  fund?: "standard" | "own";
 }
 
 /**

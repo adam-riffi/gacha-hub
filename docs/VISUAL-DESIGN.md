@@ -150,7 +150,7 @@ The reference screen; its content follows WIREFRAMES.md A1.
   - Graphs, 476 px tall: the dailies gauge with the period switch (496 px wide); beside it the goals gauge (240×192) and goal-type bars, above backlog (line) and pull history (bars, gained against spent), each 260 px tall.
   - Carousels, 352 px: dailies and weeklies per game (name, reset chip, gauge, four KPI tiles); battle pass per game (art, "ends in" tag, level tag with the segmented bar).
   - Heatmap, 232 px: dailies over the last 26 weeks, with days all done, current streak and best streak beside it. A pinned day shows its date, the games done and a checklist of games.
-- **Side column, 528 px, all cards:** banners carousel (330 px); pulls (400 px: the total, limited and permanent, then a table per game); stamina (330 px: now / cap and reserve per game).
+- **Side column, 528 px, all cards:** banners carousel (330 px); pulls (400 px: the limited total, then a row per game with each pull type as a number and its icon: limited, permanent, and special, a banner's own tickets such as weapon tickets or Boopons, which stay out of the total; Georges, 2026-10-10); stamina (330 px: now / cap and reserve per game).
 - A game scope shows the same dashboard for that game in its accent.
 - Pinning a heatmap day switches the whole dashboard to that day: a "VIEWING · date" paper chip and BACK TO TODAY appear in the top bar, and reset chips read DAY CLOSED.
 - WIREFRAMES.md A1 adds "Endgame · next resets" and "Expiring soon"; both are cards in the list style.

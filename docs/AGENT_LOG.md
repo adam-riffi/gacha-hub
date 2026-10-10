@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-10 · claude · stack/ui/02-home-pulls · #199
+- Done: Home's Pulls card shows each game's pulls as a number and its icon, as Georges asked: limited (the total counts only these), permanent (standard tickets), and special, a banner's own tickets, where the game has them. A currency's `onlyFor` names the banner it alone funds; it replaces `weaponOnly`. WuWa's Forging Tide (weapon) and ZZZ's Boopons (Bangboo) are tracked. Endfield's Arsenal and the Bangboo channel spend only their own tickets (`fund: "own"`); WuWa's weapon banner adds Forging Tide to the limited pulls.
+- Tests: written first: `pullsFor` keeps special tickets apart by banner; the games declare Forging Tide and Boopons; the Home journey checks the limited icon and five Boopons as ZZZ's special pulls. `npm run check` passes: 559 tests and 40 journeys.
+- Scope/decisions: three pull types for every game, as Georges suggested; the icons are glyphs (sparkle, ring, diamond), not game art.
+- Next: the Characters page.
+
 ## 2026-10-10 · claude · stack/ui/01-pull-curve · #198
 - Done: Georges's feedback on the pull graph. The curve is now drawn whole and never changes shape: the 5★ rate on each pull since the last 5★, with the lost-50/50 run after it, shaded. Markers move along it: you, all your pulls, and a top-up. A legend gives each one's chance of the featured unit. "Simulate a top-up" on Pulls available adds an amount of one pull currency to every banner, its curve and the savings planner. Standard banners get the full card; the compact rows and Pulls' "Manual" tags are gone.
 - Tests: written first: the Pulls journey checks that the curve's path is the same after +10 while the label moves to pity 10, that a 1600-jade top-up gives +10 pulls and "With the top-up: 40 pulls", and that Stellar warp has a full card. `npm run check` passes: 558 tests and 40 journeys; initial JavaScript 196.3 KB.
@@ -297,9 +303,3 @@ Entry format:
 - Tests: written first: a third calendar journey (a wished and an unwished banner; the toggle keeps only the wished one) and a second planner journey (Seele wishlisted shows as a Wishlist target). The first planner journey no longer counts exactly two targets, since journeys share the wishlist. Checked at 1440 on the dev account.
 - Scope/decisions: the roster rewards panel is not trimmed (the board trims the layers); 4★ stay out of the planner, which plans 5★.
 - Next: Used in and KPI targets on the sheet.
-
-## 2026-10-10 · claude · stack/f10b/01-characters-views · #159
-- Done: Characters' other views (WIREFRAMES.md G4): Splash | Compact beside the counts (Compact is a table of each unit's dupes, build line, role KPIs, status, set and action) and Characters | Weapons in the filters (Weapons lists the catalog's weapons by type and rarity with who wields each and its dupes, an Owned box and Wishlist; character-only filters hide).
-- Tests: written first: a second journey in `e2e/characters.spec.ts` (Kafka's Compact row with E1 and Lv 80 and Build →; Patience Is All You Need held by Kafka · S2, wishlisted and owned in place); the accessibility sweep passes. Checked at 1440 on the dev account.
-- Scope/decisions: the board pictures only the Splash view, so Compact and Weapons are built in the kit's table; weapon farming stays on Equipment until the overview's retirement PR.
-- Next: the wishlist on the calendar and as savings-planner targets.
