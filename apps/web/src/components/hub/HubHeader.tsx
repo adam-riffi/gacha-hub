@@ -95,7 +95,6 @@ export function HubHeader({ instanceId }: { instanceId: string }) {
                 {world && data.worldLevel !== null && ` · ${world.label} ${data.worldLevel}`}
               </span>
             )}
-            <span className="tag">Manual</span>
             <button type="button" className="btn" aria-label="Edit profile" onClick={() => setEditing(true)}>
               Edit
             </button>

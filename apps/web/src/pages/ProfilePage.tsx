@@ -72,14 +72,12 @@ function Account({ instance, game }: Props) {
       <span className="pf-val">
         <input type="number" aria-label={name} min={min} max={max} key={value ?? ""} defaultValue={value ?? ""} onBlur={(e) => num(e.target.value) !== value && save.mutate({ [field]: num(e.target.value) })} />
       </span>
-      <span className="tag">Manual</span>
     </div>
   );
   return (
     <section className="card pf-account" aria-label="Account">
       <div className="spread">
         <h3>Account</h3>
-        <span className="tag">Manual</span>
       </div>
       <div className="pf-rows">
         <div>
@@ -181,7 +179,6 @@ function Passes({ instance, game }: Props) {
     <section className="card pf-passes" aria-label="Passes">
       <div className="spread">
         <h3>Passes</h3>
-        <span className="tag">Manual</span>
       </div>
       {!monthly && !battle && <p className="mu">No pass on record for this game.</p>}
       {monthly &&

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { featuredWithin, fiveStarDistribution, rateAt, savingsPlan, topStar, type BannerDto, type PullBannerLogDto } from "@gacha/shared";
 import { assetUrl, communityAssetUrl } from "../../lib/assets";
 import { GameIcon } from "../GameIcon";
@@ -23,6 +24,10 @@ const split = (rate: number) => `${Math.round(rate * 100)}/${100 - Math.round(ra
 export function BannerCard(props: {
   b: PullBannerLogDto;
   gameKey: string;
+  /** The game profile, so a featured character links to its page. */
+  instanceId?: string;
+  /** Every running banner of this kind (Genshin often runs two character banners); `live` is the first. */
+  running?: BannerDto[];
   available: number;
   /** Pulls a simulated top-up adds to this banner's. */
   extra?: number;
@@ -42,6 +47,8 @@ export function BannerCard(props: {
   const within = (n: number) => dist.slice(0, n).reduce((t, p) => t + p, 0);
   const hasFeatured = b.featuredRate < 1;
   const feat = live?.featured.find((f) => (f.rarity ?? 0) >= 5);
+  const running = props.running ?? (live ? [live] : []);
+  const stars = running.flatMap((l) => l.featured.filter((f) => (f.rarity ?? 0) >= 5));
   const star = topStar(props.gameKey);
   const target = feat?.name ?? `the featured ${star}`;
 
@@ -90,7 +97,22 @@ export function BannerCard(props: {
         )}
         <div>
           <h3>{b.label}</h3>
-          <div className="mn mu">{live ? `${live.name}${feat?.name ? ` · ${feat.name}` : ""} · ends ${ENDS.format(new Date(live.endsAt))}` : "no banner of this kind running"}</div>
+          <div className="mn mu">
+            {running.length ? (
+              <>
+                {running.map((l) => l.name).join(" · ")}
+                {stars.map((f) => (
+                  <span key={f.catalogId}>
+                    {" · "}
+                    {f.kind === "character" && props.instanceId ? <Link to={`/games/${props.instanceId}/units/${f.catalogId}`}>{f.name ?? f.catalogId}</Link> : (f.name ?? f.catalogId)}
+                  </span>
+                ))}
+                {` · ends ${ENDS.format(new Date(Math.min(...running.map((l) => Date.parse(l.endsAt)))))}`}
+              </>
+            ) : (
+              "no banner of this kind running"
+            )}
+          </div>
         </div>
       </div>
 

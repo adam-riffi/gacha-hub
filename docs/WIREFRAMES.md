@@ -4,7 +4,7 @@
 
 ## Conventions
 
-- Every panel that holds account data says where it comes from: **AUTO** (synced or imported) or **MANUAL** (typed by the user). Editing an AUTO field makes it MANUAL until the next sync.
+- Data synced or imported says so (**AUTO**, the sync's time); what the user types carries no label (Georges, 2026-10-10: the "Manual" tags were noise). Editing an AUTO field makes it the user's until the next sync.
 - Words follow each game: Artifacts, Relics, Drive Discs, Echoes, Gear, Console; Resin, Trailblaze Power, Battery Charge, Waveplates, Character Pixels, Sanity.
 - Times show in the viewer's zone, with server time where it matters (resets, banner ends). Daylight saving applies to the viewer, never to the servers.
 - Every view has loading, empty and error states (DESIGN.md §13). At narrow widths, columns stack; tables and charts scroll sideways inside their panel.
