@@ -51,7 +51,6 @@ export function CalendarSelected({ item, reward, now, onClose }: { item: CalItem
   const option = pick === null ? undefined : reward?.options[pick];
   const others = reward ? [...reward.others, ...(option?.others ?? [])] : game && item.event ? rewardOptions(item.event.effects ?? [], game, EMPTY).others : [];
   const goal = reward?.goal;
-  const unit = option?.changes[0];
   const hub = `/games/${item.instanceId}`;
 
   return (
@@ -73,7 +72,7 @@ export function CalendarSelected({ item, reward, now, onClose }: { item: CalItem
       </div>
       <h2 className={item.kind === "banner" ? "sf" : undefined}>{item.name}</h2>
       <div className="cal-meta">
-        {game?.name ?? item.gameKey} · {KIND[item.kind]} · {item.source}
+        {game?.name ?? item.gameKey} · {KIND[item.kind]}
       </div>
       <dl className="cal-dl">
         {item.start > now && (
@@ -135,12 +134,6 @@ export function CalendarSelected({ item, reward, now, onClose }: { item: CalItem
               <span className="mn">{o.changes.map(stepText).join(" · ")}</span>
             </label>
           ))}
-          {unit && (
-            <p className="cal-note mu">
-              The goal &ldquo;{reward.name}&rdquo; goes to Tasks with the event&apos;s deadline. Ticking it sets {unit.name} to {unit.letter}
-              {unit.to}.
-            </p>
-          )}
           <div className="cal-actions">
             <button className="btn primary" disabled={pick === null || goal?.claimed || (goal && goal.choice === pick) || makeGoal.isPending} onClick={() => makeGoal.mutate()}>
               {goal ? "Update goal" : "Make goal"}

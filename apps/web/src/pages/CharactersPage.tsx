@@ -250,7 +250,7 @@ export function CharactersPage() {
             onWish={(catalogId, wished) => wish.mutate({ catalogId, wished, kind: "weapon" })}
           />
           <div className="ch-more">
-            <span className="mu">{weaponsShown.length} shown · held ones first</span>
+            <span className="mu">{weaponsShown.length}</span>
           </div>
         </>
       ) : (
@@ -394,7 +394,7 @@ export function CharactersPage() {
       )}
       <div className="ch-more">
         <span className="mu">
-          {filtered.length} shown · {sort === "status" ? "built characters first" : `by ${sort}`}
+          {filtered.length}
         </span>
       </div>
         </>

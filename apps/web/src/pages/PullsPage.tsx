@@ -174,7 +174,7 @@ export function PullsPage() {
   };
   const targets: PlannerTarget[] = [
     ...running.map(({ b, l, feat }) => ({
-      label: feat?.name ?? `${b.label}: its featured ${star}`,
+      label: feat?.name ?? b.label,
       sub: l?.name ?? b.label,
       endsAt: l?.endsAt,
       rules: b,
@@ -208,10 +208,7 @@ export function PullsPage() {
             <tbody>
               {pullCurrencies.map((c) => (
                 <tr key={c.key}>
-                  <td>
-                    {c.label}
-                    {c.standardOnly ? " (standard)" : c.onlyFor ? ` (${log.data.banners.find((b) => b.key === c.onlyFor)?.label ?? c.onlyFor})` : ""}
-                  </td>
+                  <td>{c.label}</td>
                   <td className="num">{NUM.format(c.value)}</td>
                   <td className="num mu">= {Math.floor(c.value / c.pullCost!)}</td>
                 </tr>
@@ -220,7 +217,7 @@ export function PullsPage() {
           </table>
           {sim && (
             <div className="pl-sim">
-              <span className="kpi-label">Simulate a top-up</span>
+              <span className="kpi-label">Top-up</span>
               <input
                 type="number"
                 min={0}
@@ -235,7 +232,7 @@ export function PullsPage() {
                   <option key={c.key} value={c.key}>{c.label}</option>
                 ))}
               </select>
-              <span className="mn">{topUp.amount > 0 ? `+${topped.limited + topped.standard + topped.special - have.limited - have.standard - have.special} pulls` : "what buying more would give"}</span>
+              <span className="mn">{topUp.amount > 0 ? `+${topped.limited + topped.standard + topped.special - have.limited - have.standard - have.special} pulls` : ""}</span>
             </div>
           )}
         </section>
@@ -264,10 +261,6 @@ export function PullsPage() {
                   </td>
                 </tr>
               )}
-              <tr>
-                <td className="mu">Events, endgame, codes</td>
-                <td className="num mu">not counted</td>
-              </tr>
             </tbody>
           </table>
         </section>
@@ -275,7 +268,6 @@ export function PullsPage() {
 
       <div className="pl-label">
         <span className="kpi-label">Event banners</span>
-        <span className="mn mu">pity and status from your log</span>
       </div>
       <div className="pl-banners">{event.map(card)}</div>
       {rest.length > 0 && <div className="pl-banners">{rest.map(card)}</div>}

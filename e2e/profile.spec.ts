@@ -34,10 +34,10 @@ test("Profile: account, passes with their reminders, game reminders, status @smo
   await passes.getByRole("spinbutton", { name: "Days left" }).fill("23");
   await passes.getByRole("button", { name: "Save" }).click();
   await expect(passes).toContainText("23 days left");
-  await passes.getByRole("checkbox", { name: "Remind me 3 days before it ends" }).check();
+  await passes.getByRole("checkbox", { name: "Remind 3 days before" }).check();
   await expect.poll(async () => (await reminder())?.beforePassEnds).toBe(true);
   await expect(passes).toContainText("Lv 0 / 70");
-  await passes.getByRole("checkbox", { name: /48 h before the end/ }).check();
+  await passes.getByRole("checkbox", { name: /48 h before end/ }).check();
   await expect.poll(async () => (await reminder())?.beforeBattlePassEnds).toBe(true);
 
   // Game reminders: this game's own switches.

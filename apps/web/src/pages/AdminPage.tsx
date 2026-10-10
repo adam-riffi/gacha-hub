@@ -232,7 +232,7 @@ export function AdminPage() {
                             Import feed
                           </button>
                         ) : (
-                          <span className="small muted">typed in here</span>
+                          <span className="small muted">—</span>
                         )}
                       </td>
                     </tr>
@@ -295,7 +295,6 @@ export function AdminPage() {
           />
           <div className="row" style={{ marginTop: 10 }}>
             <button className="btn primary" disabled={!text.trim() || apply.isPending} onClick={submit}>Validate &amp; apply</button>
-            <span className="small muted">Items are upserted by key within the game. Everything is audited.</span>
           </div>
           {errorText && (
             <div className="card" style={{ marginTop: 10 }}>

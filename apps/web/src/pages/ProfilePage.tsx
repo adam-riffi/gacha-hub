@@ -32,8 +32,6 @@ function useProfileSave(instanceId: string) {
  * syncs them); the passes with their expiry reminders; long-term progress
  * (with F11's sync); this game's reminders; export, sleep and remove.
  */
-/** The games a linked HoYoLAB account fills (ADR 0005). */
-const HOYOLAB_GAMES = ["genshin", "hsr", "zzz"];
 
 export function ProfilePage() {
   const { id } = useParams<{ id: string }>();
@@ -116,7 +114,6 @@ function Account({ instance, game }: Props) {
         {levelRow(level.name, "accountLevel", instance.accountLevel, 1, 100)}
         {world && levelRow(world.name, "worldLevel", instance.worldLevel, 0, world.max)}
       </div>
-      <p className="mu pf-note">{HOYOLAB_GAMES.includes(game.key) ? "Typed in, or filled by a linked HoYoLAB account (Settings)." : "Typed in."}</p>
     </section>
   );
 }
@@ -189,7 +186,7 @@ function Passes({ instance, game }: Props) {
           (pv.monthlyDaysLeft ?? 0) / monthly.days,
           { label: "Days left", value: pv.monthlyDaysLeft, max: monthly.maxDays ?? monthly.days },
           remindMonthly,
-          "Remind me 3 days before it ends",
+          "Remind 3 days before",
         )}
       {battle &&
         pass(
@@ -199,9 +196,8 @@ function Passes({ instance, game }: Props) {
           pv.maxLevel ? pv.level / pv.maxLevel : 0,
           { label: "Level", value: pv.level, max: battle.maxLevel ?? 200 },
           battle.maxLevel ? remindBattle : null,
-          "Remind me 48 h before the end if the pass is short of its last level",
+          "Remind 48 h before end",
         )}
-      <p className="mu pf-note">The game does not expose pass days. Re-enter after each purchase; the count runs down by itself.</p>
     </section>
   );
 }
@@ -237,7 +233,6 @@ function GameReminders({ instance, game }: Props) {
       <ul className="tk-rules">
         {rows.map((r) => <ReminderRow key={r.flag} instanceId={instance.id} flag={r.flag} label={r.label} />)}
       </ul>
-      <p className="mu pf-note">These switches are this game's own; Global rules on Tasks set them across games. Quiet hours still apply.</p>
       <details className="pf-more">
         <summary>More reminder options</summary>
         <ReminderControl instanceId={instance.id} hasDomains={game.key === "genshin"} />
@@ -286,9 +281,6 @@ function Status({ instance, game }: Props) {
   return (
     <section className="card pf-status" aria-label="Game status">
       <h3>Game status</h3>
-      <p className="mu">
-        Sleep hides the game from ALL and pauses its reminders; data stays. Remove deletes it from the library after a confirmation.
-      </p>
       <span className="row">
         <button className="btn" disabled={tools.isPending} onClick={() => tools.mutate("tasks/defaults")}>Restore default tasks</button>
         {game.loadCatalog && <button className="btn" disabled={tools.isPending} onClick={() => tools.mutate("backlog/generate")}>Generate backlog</button>}
@@ -336,7 +328,7 @@ function Wallet({ instance, game }: Props) {
  * like (Georges, 2026-10-10), added and ticked here. They are the "gameplay"
  * goals on Home and Tasks.
  */
-function LongTerm({ instance, game }: Props) {
+function LongTerm({ instance }: Props) {
   const qc = useQueryClient();
   const toast = useToast();
   const [title, setTitle] = useState("");
@@ -400,10 +392,7 @@ function LongTerm({ instance, game }: Props) {
           })}
         </ul>
       ) : (
-        <p className="mu">
-          {stats.length || !HOYOLAB_GAMES.includes(game.key) ? "" : "Link HoYoLAB in Settings for the record card's stats. "}
-          Exploring, chests, events: add each as a goal.
-        </p>
+        <p className="mu">No goals</p>
       )}
       <form
         className="pf-add"

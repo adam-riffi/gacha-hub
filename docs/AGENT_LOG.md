@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r3/01-copy · #207
+- Done: Georges: "every single text should add value to the data, not be a shareholder report." `docs/AUDIT-2026-10-11.md` lists every screen's noise, what is useless and what is lacking, each with the PR that handles it. This PR cuts the noise: report sentences (the 50/50 reason, "Simulate a top-up", "what buying more would give", "(standard)", the forecast's "not counted", Profile's and Settings' explanations, the calendar's foot notes and goal explanation, Admin's notes), source labels on your own records (Endgame's SOURCE column, "· admin/feed" on the calendar), and long labels (odds rows "By 74", "With 90", "Top-up 110"; the headline "with 90 · avg 48 · max 68"; reminders "Remind 3 days before"). The pull curve stops at hard pity: a lost 50/50 resets it.
+- Tests: written first: a copy journey visits thirteen screens and finds none of the audit's 27 sentences and no manual/admin/feed tag. Journeys that read the old labels now read the short ones. `npm run check` passes: 560 tests and 48 journeys.
+- Scope/decisions: the audit is the plan for the next PRs (builds, characters, weapons, the picker, pulls, goals, wishlist, endgame, the games overview).
+- Next: default builds and the build switcher.
+
 ## 2026-10-11 · claude · stack/ui/09-settings-admin · #206
 - Done: Settings and Admin had felt light to Georges. Settings gains Games: each game you play with its server, awake or asleep, and its hidden banners, with a link to the library. Admin opens on an overview: totals (users, game profiles, builds, pulls logged, goals, teams, linked accounts); each game with its profiles, running and upcoming banners and events, and Import feed where an official feed exists; the users with their games and builds; and the latest imports. The audit log gains a filter and Show more. New route: `GET /api/admin/stats` (admins only). HANDOFF.md is rewritten for the session.
 - Tests: written first: the admin route's totals, users, games and feeds; the Settings journey moves Star Rail to America and puts it to sleep through the Games table; the Admin journey reads the overview, finds Import feed on Genshin and Dev User in the users, and filters the audit log. `npm run check` passes: 560 tests and 47 journeys.
@@ -297,9 +303,3 @@ Entry format:
 - Tests: none (a decision record).
 - Scope/decisions: implementation waits for Georges's acceptance and one recorded records answer (the fields are undocumented).
 - Next: F12 (the art store's code).
-
-## 2026-10-10 · claude · stack/f11/15-enka-hsr · #168
-- Done: Enka for Star Rail (ADR 0005): shared `enkaHsrUrl` and `readEnkaHsr` (level, eidolon, the light cone with name, level and superimposition, and each relic with its set, main stat at its level and substats summed from their rolls, computed from the catalog's relic tables, #167, with the game's stat names in the sheet's words); `syncEnka` takes Star Rail profiles under the same AUTO/MANUAL rule; Settings' Enka card offers Sync builds for Star Rail.
-- Tests: written first: `enka.test.ts` (a +15 5★ head reads 705.6 HP and its substats 5.5 CRIT Rate, 5.2 CRIT DMG and 2.6 SPD; a +15 body reads CRIT DMG; an empty showcase is closed) and a sync journey (Kafka created from Enka's Star Rail URL with her relics). The Enka journeys now use an address each, since the route allows 6 calls a minute.
-- Scope/decisions: Enka's Star Rail showcase has no final stats, so stats stay as typed; traces wait for skill ids; ZZZ's showcase waits for a ZZZ catalog.
-- Next: SKPORT's ADR (Proposed), then F12.

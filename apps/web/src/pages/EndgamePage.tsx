@@ -71,7 +71,7 @@ export function EndgamePage() {
               <div className="eg-next">
                 <label className="act-remind">
                   <input type="checkbox" key={String(remind.on)} defaultChecked={remind.on} disabled={remind.pending} onChange={(e) => remind.set(e.target.checked)} />
-                  Remind me 24 h before a reset with rewards left
+                  Remind 24 h before reset
                 </label>
                 <div className="kpi-label">Next reset</div>
                 <div className="eg-next-mode">

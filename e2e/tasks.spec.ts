@@ -26,7 +26,7 @@ test("Tasks: farm today, goals with their steps, filtering, and an event goal cl
 
   const goals = page.getByRole("region", { name: "Goals" });
   const event = goals.getByRole("article", { name: "E2E tasks reward" });
-  await expect(event).toContainText("when done: Herta new → E0");
+  await expect(event).toContainText("→ Herta new → E0");
   await event.getByRole("button", { name: "Expand" }).click();
   await event.getByRole("checkbox", { name: "Stage 1" }).check();
   await expect(event).toContainText("1 / 2");

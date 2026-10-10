@@ -97,10 +97,10 @@ Picture: [`g3-pulls.png`](design/wireframes/g3-pulls.png) · static page: [`g3-p
 
 - **Pulls available:** premium currency ÷ pull cost plus tickets; standard tickets apart. **Simulate a top-up** (Georges, 2026-10-10): an amount of one pull currency, added on every banner card, its curve and the savings planner. **Forecast** to the end of the version (dailies, 30-day pass); events and codes are not counted.
 - **Banner cards,** one for every banner type, the standard ones too (Georges, 2026-10-10):
-  - **Status** as a two-state switch: `50/50 | GUARANTEED`, or for weapons `75/25 · PATH 0/1 | PATH 1/1 · GUARANTEED`, with the reason ("you lost the 50/50 on 2 Sep, Diluc at pity 76").
+  - **Status** as a two-state switch: `50/50 | GUARANTEED`, or for weapons `75/25 · PATH 0/1 | PATH 1/1 · GUARANTEED`; no sentence beside it (Georges, 2026-10-11: the switch says it).
   - 5★ pity bar with the soft-pity tick; 4★ pity bar.
   - **Odds** for 5★ and 4★: next pull, next 10 pulls, and either "by soft pity" or "target by your pulls". Labelled as estimates.
-  - **Curve** on the pity axis, drawn whole and always the same (Georges, 2026-10-10): the 5★ rate on each pull since the last 5★, flat, then climbing from soft pity to certain at hard pity; where a lost 50/50 leads to a second run, that run follows, shaded. Markers move along it: you, all your pulls, and the top-up; the legend gives each one's chance of the featured unit.
+  - **Curve** on the pity axis, drawn whole and always the same (Georges, 2026-10-10): the 5★ rate on each pull since the last 5★, flat, then climbing from soft pity to certain at hard pity, and no further (a lost 50/50 resets it). Markers move along it: you, all your pulls, and the top-up; the legend gives each one's chance of the featured unit.
   - Headline chance with your pulls ("100% chance of Vodyanitsa with your 90 pulls · 48 on average · 68 at most").
   - Actions: +1, +10, Log a 5★, Set pity, Undo.
 - Every banner type the game has shows (beginner, collaboration, Bangboo…); each has a Hide button, and hidden ones wait in a "Hidden" line with a button to show each again. Home leaves hidden ones out of its pity line.
