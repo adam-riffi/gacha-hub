@@ -37,13 +37,17 @@ export async function registerHoyolabRoutes(app: FastifyInstance) {
       create: { userId, provider: "hoyolab", accountId: ltuid, ...data },
       update: data,
     });
-    // Profiles it plays get their UID and level where none was typed.
+    // Profiles it plays get their UID and level where none was typed, and the card's stats as long-term progress.
     for (const g of cards.games) {
       const gi = await prisma.gameInstance.findUnique({ where: { userId_gameKey: { userId, gameKey: g.gameKey } } });
       if (!gi) continue;
       await prisma.gameInstance.update({
         where: { id: gi.id },
-        data: { ...(gi.uid ? {} : { uid: g.uid }), ...(gi.accountLevel ? {} : { accountLevel: Math.min(g.level, LIMITS.accountLevel) }) },
+        data: {
+          ...(gi.uid ? {} : { uid: g.uid }),
+          ...(gi.accountLevel ? {} : { accountLevel: Math.min(g.level, LIMITS.accountLevel) }),
+          ...(g.stats ? { progress: g.stats } : {}),
+        },
       });
     }
     return { link: linkedAccountDto.parse(link), games: cards.games };

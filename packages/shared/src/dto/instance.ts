@@ -14,6 +14,8 @@ export const instanceDto = z.object({
   worldLevel: z.number().int().nullable(),
   /** Default KPI targets for the game's builds without their own. */
   kpiTargets: z.record(z.string(), z.number()).nullable().default(null),
+  /** Long-term progress from a linked account's record card, synced. */
+  progress: z.array(z.object({ name: z.string(), value: z.string() })).nullable().default(null),
   createdAt: isoDate,
 });
 export type InstanceDto = z.infer<typeof instanceDto>;

@@ -16,15 +16,25 @@ export type HoyolabError = "not_logged_in" | "not_public" | "refused";
 const failure = (retcode: unknown): HoyolabError => (retcode === -100 || retcode === 10001 ? "not_logged_in" : retcode === 10102 ? "not_public" : "refused");
 
 /** The account's roles in our games, from its record cards, with the region each one plays on. */
-export function readRecordCards(json: unknown): { games: { gameKey: string; uid: string; level: number; regionKey: string | null }[]; error?: HoyolabError } {
-  const page = (typeof json === "object" && json ? json : {}) as { retcode?: number; data?: { list?: { game_id: number; game_role_id: string; region: string; level: number }[] } | null };
+/** A record card's stat (days active, achievements…): a profile's long-term progress. */
+export type CardStat = { name: string; value: string };
+
+export function readRecordCards(json: unknown): { games: { gameKey: string; uid: string; level: number; regionKey: string | null; stats?: CardStat[] }[]; error?: HoyolabError } {
+  const page = (typeof json === "object" && json ? json : {}) as {
+    retcode?: number;
+    data?: { list?: { game_id: number; game_role_id: string; region: string; level: number; data?: { name?: unknown; value?: unknown }[] }[] } | null;
+  };
   if (page.retcode !== 0 || !Array.isArray(page.data?.list)) return { games: [], error: failure(page.retcode) };
   return {
     games: page.data!.list!.flatMap((c) => {
       const gameKey = GAME_IDS[c.game_id];
       if (!gameKey) return [];
       const regionKey = Object.entries(NOTES[gameKey]!.servers).find(([, s]) => s === c.region)?.[0] ?? null;
-      return [{ gameKey, uid: String(c.game_role_id), level: c.level, regionKey }];
+      const stats = (c.data ?? [])
+        .filter((s) => typeof s.name === "string" && s.name.trim() && (typeof s.value === "string" || typeof s.value === "number"))
+        .slice(0, 12)
+        .map((s) => ({ name: String(s.name).trim().slice(0, 40), value: String(s.value).trim().slice(0, 40) }));
+      return [{ gameKey, uid: String(c.game_role_id), level: c.level, regionKey, ...(stats.length ? { stats } : {}) }];
     }),
   };
 }

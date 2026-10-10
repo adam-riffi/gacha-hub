@@ -56,6 +56,12 @@ describe("linking HoYoLAB (ADR 0005)", () => {
     expect(await prisma.gameInstance.findUniqueOrThrow({ where: { id: gid } })).toMatchObject({ uid: "700000001", accountLevel: 58 });
   });
 
+  it("keeps the record card's stats as the profile's long-term progress", async () => {
+    answer = { ...cards, data: { list: [{ ...cards.data.list[0]!, data: [{ name: "Days Active", type: 1, value: "512" }, { name: "Achievements", type: 1, value: "870" }] }] } };
+    await link();
+    expect((await c.req<{ progress: unknown }>("GET", `/api/instances/${gid}`)).json.progress).toEqual([{ name: "Days Active", value: "512" }, { name: "Achievements", value: "870" }]);
+  });
+
   it("refuses a cookie HoYoLAB does not accept, and keeps nothing", async () => {
     answer = { retcode: -100, message: "Please login", data: null };
     expect((await link()).json).toEqual({ error: "not_logged_in" });

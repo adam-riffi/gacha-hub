@@ -1,4 +1,4 @@
-import { cadenceWindow, chronicleRequests, getGame, hoyolabNotesUrl, mergeSynced, readChronicle, readNotes, readRoster, rosterRequest, type HoyolabError } from "@gacha/shared";
+import { HOYOLAB_CARDS_URL, cadenceWindow, chronicleRequests, getGame, hoyolabNotesUrl, mergeSynced, readChronicle, readNotes, readRecordCards, readRoster, rosterRequest, type HoyolabError } from "@gacha/shared";
 import type { LinkedAccount } from "../generated/prisma/client.js";
 import { prisma } from "./prisma.js";
 import { linkKeys, openSecret } from "./linkSecret.js";
@@ -47,7 +47,17 @@ export async function syncLink(link: LinkedAccount, now: Date, opts: { chronicle
   await prisma.importRun.create({ data: { userId: link.userId, provider: "hoyolab", kind: "notes", added: synced.length, error: error ?? null } });
   if (error) return { error };
   if (!opts.chronicle) return { synced };
+  await syncProgress(link, cookie, profiles);
   return { synced, chronicle: await syncChronicle(link.userId, cookie, profiles, now), roster: await syncRoster(cookie, profiles) };
+}
+
+/** The record card's stats again, as each profile's long-term progress (G8); a card that fails changes nothing. */
+async function syncProgress(link: LinkedAccount, cookie: string, profiles: { id: string; gameKey: string }[]): Promise<void> {
+  const cards = readRecordCards(await hoyolabGet(`${HOYOLAB_CARDS_URL}?uid=${link.accountId}`, cookie).catch(() => null));
+  for (const g of cards.games) {
+    const gi = profiles.find((p) => p.gameKey === g.gameKey);
+    if (gi && g.stats) await prisma.gameInstance.update({ where: { id: gi.id }, data: { progress: g.stats } });
+  }
 }
 
 /**

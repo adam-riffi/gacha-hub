@@ -65,6 +65,8 @@ model GameInstance {
   position     Int      @default(0)
   /// The game's default KPI targets ({ "Crit value": 200 }), for builds without their own (WIREFRAMES.md G5).
   kpiTargets   Json?
+  /// Long-term progress from a linked account's record card ([{ name, value }]: days active, achievements…), synced (G8).
+  progress     Json?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
