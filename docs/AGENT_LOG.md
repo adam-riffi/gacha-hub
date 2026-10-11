@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-12 · claude · stack/r8/02-endgame-cycles · #257
+- Done: every endgame cycle opens (Georges, round 5: "click on something and get the data from that version on endgame or have the opportunity to open a small version history"): a bar of a mode card's last cycles, a point of the history chart or a row of its table opens that cycle in a dialog (native `<dialog>`): its dates and version, result, rewards, detail, teams and the enemies of that cycle, typed in place; the older and newer cycles a step away; every cycle of the mode listed with its result as a bar. A card's History opens its current cycle. `modeCycles` lists a mode's cycles with the current one even before it is typed; `versionAt` names the version an instant falls in. Enemies moved with the dialog (`CycleDialog.tsx`).
+- Tests: written first: `modeCycles` adds the current cycle, empty, and leaves typed histories as they are; `versionAt` counts back and forth by the version's length and gives none before the major's first. A journey opens Shiyu Defense's cycle of 18 Sept from its bar (version, rewards, detail, clear time), steps to the older one, finds it marked in the list, edits its detail in place, closes with Escape, opens the current cycle from History and another from the table.
+- Scope/decisions: the version is left out before the major version's first (the last minor of the one before is not known).
+- Next: the Pulls tab's By the end of the version, filled with each target's chances.
+
 ## 2026-10-12 · claude · stack/r8/01-settings-tabs · #256
 - Done: Settings as tabs (Georges, round 5: Data sources opened "a whole new window" with no way back; "it's ok to have multiple tabs instead of one big one"): Games (the default), Linked accounts, Pull history, Notifications, Account and data, and Data sources for the owner, each at `/settings/<tab>`, the tabs on the left of every one. Notifications also holds the reminder rules and their preview (Tasks' panel). Data sources' payload and current items sit side by side in the narrower column. Round 5's list is in `docs/AUDIT-2026-10-12-round5.md`.
 - Tests: written first: the Settings journey walks the tabs (each its address and `aria-current`; Pull history absent from Games); Data sources is a tab with Settings' heading over it, and Games is one click back; export and HoYoLAB open their tabs; the a11y sweep covers the new tabs.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: docs only. `npm run check` passes: 570 tests and 53 journeys.
 - Scope/decisions: none new; the round's decisions are listed in HANDOFF.md.
 - Next: Georges's secrets and real data, a deploy when he asks.
-
-## 2026-10-11 · claude · stack/r3/11-sheets · #217
-- Done: the audit's last clean-up. The six per-game sheets (`apps/web/src/games/*/Sheet.tsx`), their dispatcher (`apps/web/src/render/`), `GearPieceCard` and `inputs` were unused since builds became tabs on the shared character page (#208): gone, with their CSS (the Genshin sheet's `gs-*` rules, slot cards, stat rows, `.sheet`, `.portrait`, `.field-inline`). The gear inventory keeps Genshin's stat lists itself. `npm run game:new` writes the module and its reference sheet only; AGENTS.md, README, PROJECT-GUIDE and the public games README say so.
-- Tests: written first: the scaffolder test expects no web sheet and only the shared registry edit. `npm run check` passes: 570 tests and 53 journeys; initial JavaScript 145.3 KB of 200 KB.
-- Scope/decisions: about 1,250 lines removed, none added beyond the moved stat lists.
-- Next: the handoff.
