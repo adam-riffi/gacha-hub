@@ -143,8 +143,8 @@ export const genshin: GameDefinition = {
     version: { name: "7.1", start: "2026-09-23", days: 42 },
   },
   defaultTasks: [
-    { key: "commissions", title: "Daily Commissions", cadence: "daily" },
-    { key: "weeklyBosses", title: "Weekly Bosses", cadence: "weekly" },
+    { key: "commissions", title: "Daily Commissions", cadence: "daily", target: 4 },
+    { key: "weeklyBosses", title: "Weekly Bosses", cadence: "weekly", target: 3 },
   ],
   docSchema: genshinDocSchema,
   emptyDoc: (): GenshinDoc => ({ artifacts: {}, talents: {}, weapon: {}, stats: {} }),

@@ -125,7 +125,7 @@ export const zzz: GameDefinition = {
     version: { name: "3.2", start: "2026-09-09", days: 42 },
   },
   defaultTasks: [
-    { key: "dailies", title: "Daily Missions", cadence: "daily" },
+    { key: "dailies", title: "Daily Missions", cadence: "daily", target: 4 },
     { key: "scratch", title: "Scratch Card", cadence: "daily" },
   ],
   docSchema: zzzDocSchema,

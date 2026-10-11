@@ -301,6 +301,8 @@ model Task {
   regionAware     Boolean   @default(false)
   target          Float?
   progress        Float     @default(0)
+  /// When a counted recurring task's progress was last set: it counts only within that cycle.
+  progressAt      DateTime?
   items           Json? // ChecklistItem[]
   materialId      String?
   origin          Json? // TaskOrigin

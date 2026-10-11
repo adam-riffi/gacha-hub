@@ -90,6 +90,7 @@ export async function registerGameRoutes(app: FastifyInstance) {
           type: "recurring",
           title: t.title,
           cadence: t.cadence,
+          target: t.target ?? null,
           regionAware: true,
         })),
       });
@@ -228,6 +229,7 @@ export async function registerGameRoutes(app: FastifyInstance) {
             type: "recurring",
             title: t.title,
             cadence: t.cadence,
+            target: t.target ?? null,
             regionAware: true,
           })),
         });

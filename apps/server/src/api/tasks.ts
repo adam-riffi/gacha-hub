@@ -93,13 +93,17 @@ export function serializeTask(task: Task, ctx: RegionCtx, now: Date) {
           return {
             doneThisCycle: isDoneThisCycle(task.lastCompletedAt, now, region, anchor),
             nextReset: nextReset(now, region, anchor),
+            // A counted daily or weekly counts only within its cycle.
+            ...(task.target ? { progress: isDoneThisCycle(task.progressAt, now, region, anchor) ? task.progress : 0 } : {}),
           };
         })()
       : {};
   const progress =
     task.materialId && task.scope === "game"
       ? Math.min(task.target ?? Infinity, ctx.stock.get(stockKey(task.refId, task.materialId)) ?? 0)
-      : task.progress;
+      : "progress" in extra
+        ? extra.progress
+        : task.progress;
   return taskDto.parse({ ...task, ...extra, progress });
 }
 
@@ -205,7 +209,9 @@ export async function registerTaskRoutes(app: FastifyInstance) {
       await prisma.$transaction(async (tx) => {
         // An event goal applies its rewards when ticked and takes them back when unticked (ADR 0008).
         if (task.eventId) await settleEventGoal(tx, req.user!.id, task, done);
-        await tx.task.update({ where: { id: task.id }, data: { lastCompletedAt: done ? new Date() : null } });
+        // A counted daily ticked done is at its target; unticked, at none.
+        const counted = task.type === "recurring" && task.target ? { progress: done ? task.target : 0, progressAt: new Date() } : {};
+        await tx.task.update({ where: { id: task.id }, data: { lastCompletedAt: done ? new Date() : null, ...counted } });
       });
       return { ok: true };
     },
@@ -226,6 +232,9 @@ export async function registerTaskRoutes(app: FastifyInstance) {
           create: { gameInstanceId: task.refId, materialId: task.materialId, qty: progress },
           update: { qty: progress },
         });
+      } else if (task.type === "recurring" && task.target) {
+        // A counted daily or weekly: this cycle's steps, done at its target.
+        await prisma.task.update({ where: { id: task.id }, data: { progress, progressAt: new Date(), lastCompletedAt: progress >= task.target ? new Date() : null } });
       } else {
         await prisma.task.update({ where: { id: task.id }, data: { progress } });
       }

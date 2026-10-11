@@ -165,13 +165,34 @@ function BannersCard({ banners, game }: { banners: BannerDto[]; game: GameDefini
   );
 }
 
-/** A recurring task's box, ticked in place. */
+/**
+ * A recurring task's box, ticked in place; a counted one (four commissions,
+ * three weekly bosses) has a box per step, and a click ticks up to that one
+ * (or back, on the last ticked). Over eight steps it is a number to type.
+ */
 function TickBox({ instanceId, task }: { instanceId: string; task: TaskDto }) {
   const qc = useQueryClient();
-  const tick = useMutation({
-    mutationFn: (done: boolean) => api.post(`/api/tasks/${task.id}/complete`, { done }),
-    onSuccess: () => Promise.all([["tasks", "game", instanceId], ["tasks"], ["dashboard"]].map((queryKey) => qc.invalidateQueries({ queryKey }))),
-  });
+  const refresh = () => Promise.all([["tasks", "game", instanceId], ["tasks"], ["dashboard"]].map((queryKey) => qc.invalidateQueries({ queryKey })));
+  const tick = useMutation({ mutationFn: (done: boolean) => api.post(`/api/tasks/${task.id}/complete`, { done }), onSuccess: refresh });
+  const step = useMutation({ mutationFn: (progress: number) => api.post(`/api/tasks/${task.id}/progress`, { progress }), onSuccess: refresh });
+  const n = task.target ?? 1;
+  if (n > 8) {
+    return (
+      <span className="ov-count">
+        <input type="number" min={0} max={n} aria-label={task.title} key={task.progress} defaultValue={task.progress} onBlur={(e) => Number(e.target.value) !== task.progress && step.mutate(Math.min(n, Math.max(0, Number(e.target.value))))} />
+        <span className="mu"> / {n}</span>
+      </span>
+    );
+  }
+  if (n > 1) {
+    return (
+      <span className="ov-steps" role="group" aria-label={task.title}>
+        {Array.from({ length: n }, (_, i) => (
+          <button key={i} type="button" className="ov-step" aria-label={`${i + 1} of ${n}`} aria-pressed={i < task.progress} onClick={() => step.mutate(task.progress === i + 1 ? i : i + 1)} />
+        ))}
+      </span>
+    );
+  }
   return <input type="checkbox" className="ov-tick" aria-label={task.title} key={String(task.doneThisCycle)} defaultChecked={Boolean(task.doneThisCycle)} onChange={(e) => tick.mutate(e.target.checked)} />;
 }
 

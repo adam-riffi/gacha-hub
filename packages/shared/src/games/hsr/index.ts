@@ -146,7 +146,7 @@ export const hsr: GameDefinition = {
     version: { name: "4.6", start: "2026-09-28", days: 42 },
   },
   defaultTasks: [
-    { key: "dailyTraining", title: "Daily Training", cadence: "daily" },
+    { key: "dailyTraining", title: "Daily Training", cadence: "daily", target: 5 },
     { key: "assignments", title: "Assignments", cadence: "daily" },
     { key: "su", title: "Simulated Universe", cadence: "weekly" },
   ],

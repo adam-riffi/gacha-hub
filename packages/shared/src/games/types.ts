@@ -43,6 +43,8 @@ export interface GameTaskSeed {
   key: string;
   title: string;
   cadence: TaskCadence;
+  /** Its steps per cycle, as boxes (four commissions, three weekly bosses); one when absent. */
+  target?: number;
 }
 
 /**
