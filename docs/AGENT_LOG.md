@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r7/01-dashboard-home · #244
+- Done: Georges's round 4 begins (plan: `docs/AUDIT-2026-10-11-round4.md`). A picked game's dashboard (his six designs) is now Home with that game picked in the strip, not a hub tab: the Overview's cards moved to `components/home/GameDashboard.tsx`, its banners are Home's carousel for that game, and it loads only when a game is picked. The hub opens on Activities again; `/games/:id/overview` and `/activities` land there.
+- Tests: written first: the dashboard specs open `/?game=<key>`; the hub's tabs start with Activities; the all-games Home specs (panels, heatmap, pinned day) run on Home itself, each game found by its own row. A follow-up test commit: the carousel rotates through every Star Rail banner other journeys made, so the dashboard test checks the game, not one banner. `npm run check` passes: 592 tests and 69 journeys; initial JavaScript 146.5 KB.
+- Scope/decisions: the design's "next phase" line gives way to Home's carousel for now; the next PR draws the cards in Home's style. Bundled with Home, the dashboard added 6.6 KB to the initial JavaScript, so it loads on demand.
+- Next: the dashboard in Home's style, then the rest of round 4.
+
 ## 2026-10-11 · claude · stack/r6/06-guide · #243
 - Done: the project guide caught up with round 3. §8.6 now covers the Overview (G0) with a screenshot, §8.9 the Weapons cards (G4c) with another, §8.10 the skill descriptions; §7's screen map opens a game on its Overview and lists Activities, Teams and Weapons; §13 leaves the current state to HANDOFF.md and keeps the history through #242; §14.2 moves the per-game Overview, the enemies and the descriptions to "Done". HANDOFF.md says `main` is at #241.
 - Tests: docs only. `npm run check` passes: 592 tests and 69 journeys.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: a journey visits Activities, Endgame, Gear, Profile and a sheet and finds no Manual tag or By cadence; another opens Kafka's page from a running banner's card on Pulls. The hub header test now checks the tag is gone. `npm run check` passes: 559 tests and 45 journeys.
 - Scope/decisions: WIREFRAMES' convention changes: only synced data is labelled.
 - Next: Settings and Admin.
-
-## 2026-10-11 · claude · stack/ui/07-timeline · #204
-- Done: the banners screen reads better (Georges: "I can't see when a banner ends and the other one begins; I should be able to better see days, or have a monthly view"). The timeline has a row with every day's number, weekends shaded and today marked, and a line per day across the tracks. Each bar shows its start and end dates, and leaves a gap before the next phase. A Month view (paged by month) lists, for each day, what starts (▶) and what ends (■, with the time), and keeps the layers and the wishlist filter. A selected banner's featured characters link to their unit pages (Georges: "getting from the banner screen to the character screen is tedious").
-- Tests: written first: the calendar journey counts 42 day ticks, checks a bar's dates, finds "Starts:" and "Ends:" entries in the month view, and opens Kafka's page from the selected banner. `npm run check` passes: 559 tests and 43 journeys.
-- Scope/decisions: the month view shows starts and ends, not every running bar, so a day stays readable with six games.
-- Next: the clean-up, Settings and Admin.

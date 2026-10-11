@@ -5,7 +5,7 @@ test("Neverness to Everness works by hand on every screen @smoke", async ({ page
   await page.getByRole("button", { name: "Continue as Dev User" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
 
-  // Added from the library, like any game; it lands on its Overview, Activities next.
+  // Added from the library, like any game; it lands on Activities.
   await page.goto("/library");
   await page.getByRole("button", { name: "+ Neverness to Everness" }).click();
   await expect(page).toHaveURL(/\/games\/[^/]+$/);
@@ -37,7 +37,7 @@ test("Neverness to Everness works by hand on every screen @smoke", async ({ page
   await expect(page).toHaveURL(/\/characters\//);
   await expect(page.getByText("Level").first()).toBeVisible();
 
-  // Home in NTE's scope.
+  // Home with NTE picked: its dashboard.
   await page.goto("/?game=nte");
-  await expect(page.locator(".pulls-card")).toContainText("Neverness to Everness");
+  await expect(page.getByRole("region", { name: "Pulls" })).toBeVisible();
 });

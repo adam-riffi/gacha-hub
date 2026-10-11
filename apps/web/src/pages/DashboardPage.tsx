@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { lazy, useMemo } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { LoadError } from "../components/LoadError";
@@ -13,19 +13,25 @@ import { PassCard } from "../components/home/PassCard";
 import { PullsCard } from "../components/home/PullsCard";
 import { StaminaCard } from "../components/home/StaminaCard";
 import { EndgameNextCard, ExpiringSoonCard, homeGames } from "../components/home/HomeLists";
-import type { DashboardData, TaskItem } from "../lib/types";
+import type { DashboardData, InstanceListItem, TaskItem } from "../lib/types";
+
+// A game's dashboard loads when a game is picked: Home's first paint stays as light as it was.
+const GameDashboard = lazy(() => import("../components/home/GameDashboard").then((m) => ({ default: m.GameDashboard })));
 
 /**
  * Home is the dashboard (VISUAL-DESIGN.md §10): the gauges and charts, the
  * dailies and battle-pass carousels and the heatmap in the main column; the
- * banners carousel, pulls and stamina in the side column. A game in scope
- * shows the same page for that game only, in its accent.
+ * banners carousel, pulls and stamina in the side column. A game picked in
+ * the strip shows that game's own dashboard instead (Georges's designs,
+ * WIREFRAMES.md G0), in its accent.
  */
 export function DashboardPage() {
   const [params, setParams] = useSearchParams();
   const game = params.get("game");
   const { data, isLoading, isError, refetch } = useQuery({ queryKey: ["dashboard"], queryFn: () => api.get<DashboardData>("/api/dashboard") });
   const { data: tasks } = useQuery({ queryKey: ["tasks"], queryFn: () => api.get<TaskItem[]>("/api/tasks") });
+  const { data: instances } = useQuery({ queryKey: ["instances"], queryFn: () => api.get<InstanceListItem[]>("/api/instances") });
+  const picked = game ? instances?.find((i) => i.gameKey === game) : undefined;
 
   // Sleeping games stay out of Home entirely (their banners and events too); a scope keeps one game.
   const view = useMemo(() => {
@@ -43,6 +49,14 @@ export function DashboardPage() {
 
   if (isError) return <LoadError what="Home" retry={refetch} />;
   if (isLoading) return <div className="muted">Loading…</div>;
+  if (picked) {
+    return (
+      <>
+        <h1 className="sr-only">Home</h1>
+        <GameDashboard instanceId={picked.id} />
+      </>
+    );
+  }
   if (!view || view.games.length === 0) {
     return (
       <>

@@ -34,7 +34,7 @@ test("Endfield's hub has no Gear or Planner tab: its catalog lists characters on
   try {
     await page.goto(`/games/${id}`);
     const tabs = page.getByRole("navigation", { name: "Game screens" }).getByRole("link");
-    await expect(tabs).toHaveText(["Overview", "Activities", "Endgame", "Pulls", "Characters", "Teams", "Weapons", "Profile"]);
+    await expect(tabs).toHaveText(["Activities", "Endgame", "Pulls", "Characters", "Teams", "Weapons", "Profile"]);
   } finally {
     await page.request.delete(`/api/instances/${id}`);
   }
