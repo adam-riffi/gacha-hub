@@ -323,28 +323,40 @@ function Enemies({ game, modeKey, today }: { game: GameDefinition; modeKey: stri
         )}
       </div>
       <ul aria-label="Enemies">
-        {cycle.stages.map((s) => (
-          <li key={s.name}>
-            <span className="mn mu eg-stage">
-              {s.name}
-              {s.level && ` · Lv ${s.level}`}
-            </span>
-            <span className="eg-groups">
-              {s.groups.map((g, i) => (
-                <span key={i} className="eg-group">
-                  {g.map((e) => (
-                    <GameIcon key={e.name} src={e.image ?? null} alt={e.name} />
-                  ))}
-                </span>
-              ))}
-            </span>
-            <span className="eg-weak">
-              {s.weak.map((w) => (
-                <i key={w} role="img" aria-label={`Weak to ${w}`} title={`Weak to ${w}`} style={{ background: elementColor(game.key, w) ?? "var(--text-muted)" }} />
-              ))}
-            </span>
-          </li>
-        ))}
+        {cycle.stages.map((s) => {
+          // A boss stage (Deadly Assault, Stygian Onslaught) is named by its boss: its icon says it, the label keeps the level.
+          const all = s.groups.flat();
+          const boss = all.length === 1 && all[0]!.name === s.name;
+          return (
+            <li key={s.name}>
+              <span className="mn mu eg-stage">{boss ? s.level && `Lv ${s.level}` : `${s.name}${s.level ? ` · Lv ${s.level}` : ""}`}</span>
+              <span className="eg-groups">
+                {s.groups.map((g, i) => (
+                  <span key={i} className="eg-group">
+                    {g.map((e) => (
+                      <span key={e.name} className="eg-enemy" title={e.name}>
+                        <GameIcon src={e.image ?? null} alt={e.name} />
+                      </span>
+                    ))}
+                  </span>
+                ))}
+              </span>
+              <span className="eg-weak">
+                {s.weak.map((w) => {
+                  // The element's icon where the game has a source for it, else its colour.
+                  const icon = communityAssetUrl(game.key, "element", w);
+                  return icon ? (
+                    <span key={w} title={`Weak to ${w}`}>
+                      <GameIcon src={icon} alt={`Weak to ${w}`} tint={elementColor(game.key, w) ?? undefined} />
+                    </span>
+                  ) : (
+                    <i key={w} role="img" aria-label={`Weak to ${w}`} title={`Weak to ${w}`} style={{ background: elementColor(game.key, w) ?? "var(--text-muted)" }} />
+                  );
+                })}
+              </span>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

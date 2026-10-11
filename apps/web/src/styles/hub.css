@@ -157,5 +157,8 @@ label.act-row { margin: 0; cursor: pointer; color: var(--text); font: 400 15px/1
 .eg-group + .eg-group { padding-left: 10px; border-left: 1px solid var(--surface-3); }
 .eg-group .gicon { width: 30px; height: 30px; font-size: 9px; }
 .eg-weak { display: inline-flex; gap: 4px; }
+.eg-weak { align-items: center; }
 .eg-weak > i { width: 10px; height: 10px; border-radius: 50%; }
+.eg-weak .gicon { width: 20px; height: 20px; font-size: 7px; }
+.eg-enemy { display: inline-flex; }
 /* A counted daily's steps (the designs' squares): ticked up to the one clicked. */
