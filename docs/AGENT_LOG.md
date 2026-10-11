@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r7/03-strip-tab · #246
+- Done: in a game's hub, the strip switches game at the same tab (Georges, round 4: "if I am on the pulls screen of Genshin and I go to HSR I wanna end up on the HSR pull screen"): Pulls stays Pulls, a character's sheet or unit page leads to Characters, and a tab the other game lacks to its Activities. The tabs each game has come from one place, `lib/hubScreens.ts`, so `GameTabs` no longer takes a catalog flag from each page.
+- Tests: written first: Star Rail's Pulls → ZZZ's Pulls, ZZZ's Planner → Endfield's Activities (it has no Planner), a Star Rail sheet → ZZZ's Characters. `npm run check` passes: 592 tests and 70 journeys; initial JavaScript 146.9 KB.
+- Scope/decisions: the tab list sits in `lib`, not in `GameTabs`: importing it from there pulled the hub header into Home's first load (+2.6 KB).
+- Next: one user, self-hosted: no Dev User, no Admin section.
+
 ## 2026-10-11 · claude · stack/r7/02-dashboard-style · #245
 - Done: a game's dashboard drawn with Home's own pieces (Georges, round 4: "in the style of the current dashboard"). Each design card in Home's chrome: the pulls figure and rows; pity as rows with a bar toward hard pity and Home's chips ("guaranteed", the spark's count); Home's ring over today's dailies beside their boxes and the reset countdown; the pass as KPI tiles (its level over the segmented bar, this week's EXP); stamina's figure, its bar and Home's "full" chip; Home's tables for builds and the endgame cycle (resets as chips); the goals' average on the ring, each goal with its bar; Home's backlog chart for this game. The ring moved out of the Dailies card into `charts/Ring.tsx`; the Overview's `.ov-*` styles gave way to `.gd-*` ones. The guide shows the dashboard (`docs/screens/02-home-game.jpg`).
 - Tests: written first: the dashboard shows the ring over today's dailies, the pass's segmented bar and the backlog chart. `npm run check` passes: 592 tests and 69 journeys.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: a copy journey visits thirteen screens and finds none of the audit's 27 sentences and no manual/admin/feed tag. Journeys that read the old labels now read the short ones. `npm run check` passes: 560 tests and 48 journeys.
 - Scope/decisions: the audit is the plan for the next PRs (builds, characters, weapons, the picker, pulls, goals, wishlist, endgame, the games overview).
 - Next: default builds and the build switcher.
-
-## 2026-10-11 · claude · stack/ui/09-settings-admin · #206
-- Done: Settings and Admin had felt light to Georges. Settings gains Games: each game you play with its server, awake or asleep, and its hidden banners, with a link to the library. Admin opens on an overview: totals (users, game profiles, builds, pulls logged, goals, teams, linked accounts); each game with its profiles, running and upcoming banners and events, and Import feed where an official feed exists; the users with their games and builds; and the latest imports. The audit log gains a filter and Show more. New route: `GET /api/admin/stats` (admins only). HANDOFF.md is rewritten for the session.
-- Tests: written first: the admin route's totals, users, games and feeds; the Settings journey moves Star Rail to America and puts it to sleep through the Games table; the Admin journey reads the overview, finds Import feed on Genshin and Dev User in the users, and filters the audit log. `npm run check` passes: 560 tests and 47 journeys.
-- Scope/decisions: the overview reads existing tables; no schema change.
-- Next: Georges's secrets and real data; a deploy when he asks.

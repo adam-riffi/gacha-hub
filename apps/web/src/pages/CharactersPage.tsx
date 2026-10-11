@@ -180,7 +180,7 @@ export function CharactersPage() {
   return (
     <>
       <div style={{ marginBottom: 14 }}>
-        <GameTabs instanceId={instance.data.id} active="characters" gameKey={game.key} hasCatalog={Boolean(game.loadCatalog)} />
+        <GameTabs instanceId={instance.data.id} active="characters" gameKey={game.key} />
       </div>
       <section className="card ch-filters" aria-label="Filters">
         <label>

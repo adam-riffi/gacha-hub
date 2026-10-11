@@ -15,7 +15,7 @@
 Picture: [`00-screen-map.png`](design/wireframes/00-screen-map.png) · static page: [`00-screen-map.html`](design/wireframes/00-screen-map.html)
 
 - **Left rail (sections):** ALL (Home), GAMES (library and game hubs), TASKS, BANNERS (calendar), SETTINGS.
-- **Top strip (scope):** Overview or one game, in the user's order. Picking a game on ALL shows that game's dashboard (G0); on GAMES it opens the game hub.
+- **Top strip (scope):** Overview or one game, in the user's order. Picking a game on ALL shows that game's dashboard (G0); on GAMES it opens that game's hub at the same tab (Pulls stays Pulls; a character's sheet leads to Characters), or at Activities where it has no such tab.
 
 ## A1 · Home (ALL)
 

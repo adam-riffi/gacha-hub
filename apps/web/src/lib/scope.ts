@@ -19,6 +19,17 @@ export interface ScopeGame {
   instanceId: string;
 }
 
+/**
+ * Another game's hub at the tab open now (Georges, round 4): Genshin's Pulls
+ * leads to Star Rail's Pulls; a character's sheet or a unit page to its
+ * Characters; a tab the other game lacks to its first, Activities.
+ */
+export function hubPathFor(pathname: string, game: ScopeGame, screens: string[]): string {
+  const seg = pathname.startsWith("/characters/") ? "characters" : pathname.split("/")[3];
+  const tab = seg === "units" ? "characters" : seg;
+  return tab && screens.includes(tab) ? `/games/${game.instanceId}/${tab}` : `/games/${game.instanceId}`;
+}
+
 /** Where a section opens for a scope (null is the Overview). Settings and Admin have no scope. */
 export function sectionHref(section: Section, game: ScopeGame | null): string {
   const q = game ? `?game=${game.key}` : "";

@@ -267,7 +267,7 @@ flowchart TB
   CH --> SH["Character sheet<br/>/characters/:id"]
 ```
 
-The rail on the left is on every signed-in page: All (Home), Games, Tasks, Banners, then Admin (admins only) and Settings. The strip across the top scopes Home to one game or all of them, in the order set on the Games page.
+The rail on the left is on every signed-in page: All (Home), Games, Tasks, Banners, then Admin (admins only) and Settings. The strip across the top scopes Home to one game or all of them, in the order set on the Games page; in a game's hub it switches game at the same tab (Activities where the other game lacks it).
 
 The game hub's tabs depend on the game (§9):
 - Pulls needs pull rules.

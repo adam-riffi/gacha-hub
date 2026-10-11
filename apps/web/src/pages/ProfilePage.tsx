@@ -42,7 +42,7 @@ export function ProfilePage() {
   return (
     <>
       <div style={{ marginBottom: 14 }}>
-        <GameTabs instanceId={instance.data.id} active="profile" gameKey={game.key} hasCatalog={Boolean(game.loadCatalog)} />
+        <GameTabs instanceId={instance.data.id} active="profile" gameKey={game.key} />
       </div>
       <div className="pf-page">
         <Account instance={instance.data} game={game} />

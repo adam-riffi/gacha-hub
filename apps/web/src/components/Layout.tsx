@@ -4,7 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import { getGame } from "@gacha/shared";
 import { useAuth } from "../lib/auth";
 import { api } from "../lib/api";
-import { sectionHref, sectionOf, type ScopeGame, type Section } from "../lib/scope";
+import { hubPathFor, sectionHref, sectionOf, type ScopeGame, type Section } from "../lib/scope";
+import { hubScreens } from "../lib/hubScreens";
 import type { CharacterDetail, InstanceListItem } from "../lib/types";
 
 /** 18 px line icons, 1.5 px stroke (VISUAL-DESIGN.md §7). */
@@ -84,7 +85,11 @@ export function Layout({ children }: { children: ReactNode }) {
                 return (
                   <Link
                     key={gi.id}
-                    to={sectionHref(stripSection, { key: gi.gameKey, instanceId: gi.id })}
+                    to={
+                      section === "games" && pathname !== "/library"
+                        ? hubPathFor(pathname, { key: gi.gameKey, instanceId: gi.id }, hubScreens(gi.gameKey, gi.id).map((t) => t.key))
+                        : sectionHref(stripSection, { key: gi.gameKey, instanceId: gi.id })
+                    }
                     className={`strip-game ${on ? "on" : ""} ${gi.sleeping ? "asleep" : ""}`}
                     aria-label={gi.name}
                     aria-current={on ? "page" : undefined}

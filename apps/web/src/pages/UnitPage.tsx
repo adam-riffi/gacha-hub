@@ -72,7 +72,7 @@ export function UnitPage() {
   return (
     <div className="un-page" style={el ? ({ "--el": el } as CSSProperties) : undefined}>
       <div style={{ marginBottom: 14 }}>
-        <GameTabs instanceId={id!} active="characters" gameKey={game.key} hasCatalog />
+        <GameTabs instanceId={id!} active="characters" gameKey={game.key} />
       </div>
       <div className="sh-top">
         <div className="sh-art un-art">

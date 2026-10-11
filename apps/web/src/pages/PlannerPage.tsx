@@ -83,7 +83,7 @@ export function PlannerPage() {
   return (
     <>
       <div style={{ marginBottom: 14 }}>
-        <GameTabs instanceId={instance.data.id} active="planner" gameKey={game.key} hasCatalog={Boolean(game.loadCatalog)} />
+        <GameTabs instanceId={instance.data.id} active="planner" gameKey={game.key} />
       </div>
       <div className="pn-page">
         <section className="card pn-goals" aria-label="Goals">

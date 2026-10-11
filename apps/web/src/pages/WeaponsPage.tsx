@@ -101,7 +101,7 @@ export function WeaponsPage() {
   return (
     <>
       <div style={{ marginBottom: 14 }}>
-        <GameTabs instanceId={id!} active="weapons" gameKey={game.key} hasCatalog={Boolean(game.loadCatalog)} />
+        <GameTabs instanceId={id!} active="weapons" gameKey={game.key} />
       </div>
       {fromCatalog ? (
         <>
