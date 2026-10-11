@@ -135,6 +135,7 @@
 .wp-body strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .wp-body .mn { font-size: 12px; }
 .wp-holder { width: 32px; height: 32px; font-size: 10px; border-color: var(--el); }
+.wp-holders { display: inline-flex; flex-direction: column; gap: 4px; }
 .wp-wish { position: absolute; top: 6px; right: 6px; }
 .wp-panel { position: sticky; top: 16px; display: grid; gap: 12px; }
 .wp-panel-title { display: flex; align-items: center; gap: 12px; }
@@ -146,6 +147,13 @@
 .wp-copy input { width: 72px; margin-top: 4px; }
 .wp-held .gicon { width: 32px; height: 32px; font-size: 10px; }
 .wp-actions { flex-wrap: wrap; gap: 8px; }
+/* A weapon whose copies are all held, asked on the sheet (round 5). */
+.sh-ask { display: grid; gap: 8px; margin-top: 12px; padding: 12px; border: 1px solid var(--accent); background: var(--surface-2); }
+.sh-ask p { margin: 0; }
+.sh-ask-row { display: grid; grid-template-columns: 32px minmax(0, 1fr); align-items: center; gap: 6px 10px; padding-top: 8px; border-top: 1px solid var(--surface-3); }
+.sh-ask-row .gicon { width: 32px; height: 32px; font-size: 10px; }
+.sh-ask-btns { grid-column: 1 / -1; flex-wrap: wrap; gap: 6px; }
+.sh-ask .row { gap: 8px; }
 .wp-add { display: flex; align-items: flex-end; gap: 14px; margin-bottom: 16px; }
 .wp-add label { margin: 0; }
 .wp-add input { margin-top: 6px; }

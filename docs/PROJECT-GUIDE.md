@@ -410,7 +410,7 @@ Imports come from Settings.
 
 ![Weapons](screens/09-weapons.jpg)
 
-**Weapons** (G4c), on every game: a card per copy, so two copies of a weapon are two cards, each with its level, refinement and holder; catalog weapons not owned are dimmed. A card opens its panel: each copy's level and refinement, Add a copy, Wishlist and Farm. Games without a weapon catalog add weapons by name.
+**Weapons** (G4c), on every game: a card per copy, so two copies of a weapon are two cards, each with its level, refinement and holder; catalog weapons not owned are dimmed. A card opens its panel: each copy's level and refinement, Add a copy, Wishlist and Farm. Games without a weapon catalog add weapons by name. A build holds a copy (round 5): picking a weapon on the sheet takes a free copy, or asks whether to take it from a character, share it, or add a copy; the copy's level and refinement stay the same on Weapons and every sheet holding it.
 
 ### 8.10 Character sheet
 

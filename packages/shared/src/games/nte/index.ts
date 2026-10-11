@@ -31,7 +31,7 @@ export const nteDocSchema = z
     /** Awakenings A1–A6, unlocked by copies. */
     awakening: z.number().int().min(0).max(6),
     /** The Arc (weapon) and its Mixing M1–M5. */
-    arc: z.object({ catalogId: z.string().max(120), name: z.string(), level: z.number().int().min(1).max(80), mixing: z.number().int().min(1).max(5) }).partial(),
+    arc: z.object({ catalogId: z.string().max(120), copyId: z.string().max(40), name: z.string(), level: z.number().int().min(1).max(80), mixing: z.number().int().min(1).max(5) }).partial(),
     console: z.object({ cartridge1: cartridgeSchema, cartridge2: cartridgeSchema, cartridge3: cartridgeSchema, cartridge4: cartridgeSchema }).partial(),
     skills: z.object({ basic: z.number().int().min(1).max(10), skill: z.number().int().min(1).max(10), ultimate: z.number().int().min(1).max(10), support: z.number().int().min(1).max(10) }).partial(),
     stats: z.record(z.string(), z.number()),

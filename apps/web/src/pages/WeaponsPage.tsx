@@ -69,18 +69,30 @@ export function WeaponsPage() {
       ? { key: w.id, catalogId: w.id, name: w.name, icon: w.icon, rarity: w.rarity, type: w.type, maxLevel: w.maxLevel, entry: w }
       : { key: `name:${c.name}`, catalogId: null, name: c.name, maxLevel: 100 };
   };
-  // Who wields each weapon, from the builds' sheets: the first holder on the first copy, and so on.
-  const holders = new Map<string, Holder[]>();
+  // Who wields each copy, from the builds' sheets (round 5): the builds naming the copy, several where it is shared;
+  // a sheet from before names only the weapon, and takes the first copy no sheet names, and so on.
+  const byCopy = new Map<string, Holder[]>();
+  const loose = new Map<string, Holder[]>();
   for (const b of builds.data ?? []) {
-    const held = holder ? ((b.doc as Record<string, unknown>)[holder] as { catalogId?: string; name?: string } | undefined) : undefined;
-    const key = held?.catalogId ?? (held?.name ? `name:${held.name}` : null);
+    const held = holder ? ((b.doc as Record<string, unknown>)[holder] as { catalogId?: string; name?: string; copyId?: string } | undefined) : undefined;
+    const key = held?.copyId ?? held?.catalogId ?? (held?.name ? `name:${held.name}` : null);
     if (!key) continue;
     const unit = b.catalogId ? index?.characters.get(b.catalogId) : undefined;
-    holders.set(key, [...(holders.get(key) ?? []), { buildId: b.id, catalogId: b.catalogId, name: unit?.name ?? b.name, icon: unit?.icon, tag: unit?.tag }]);
+    const h = { buildId: b.id, catalogId: b.catalogId, name: unit?.name ?? b.name, icon: unit?.icon, tag: unit?.tag };
+    const into = held?.copyId && copies.data.some((c) => c.id === held.copyId) ? byCopy : loose;
+    into.set(key, [...(into.get(key) ?? []), h]);
   }
   const matches = (w: Weapon) =>
     (!q || w.name.toLowerCase().includes(q.toLowerCase())) && (!type || w.type === type) && (!rarity || String(w.rarity) === rarity) && (shown !== "wishlist" || (w.catalogId !== null && wished.has(w.catalogId)));
   const mine = copies.data.map((c, i) => ({ copy: c, weapon: weaponOf(c), nth: copies.data.slice(0, i).filter((x) => weaponOf(x).key === weaponOf(c).key).length }));
+  const holdersOf = (c: WeaponCopyDto): Holder[] => {
+    const named = byCopy.get(c.id);
+    if (named) return named;
+    const key = weaponOf(c).key;
+    const free = mine.filter((m) => m.weapon.key === key && !byCopy.has(m.copy.id));
+    const h = loose.get(key)?.[free.findIndex((m) => m.copy.id === c.id)];
+    return h ? [h] : [];
+  };
   const ownedKeys = new Set(mine.map((m) => m.weapon.key));
   const cards = mine
     .filter((m) => matches(m.weapon))
@@ -151,8 +163,9 @@ export function WeaponsPage() {
 
       <div className={`wp-page ${selected ? "has-panel" : ""}`}>
         <section className="wp-grid" aria-label="Weapons">
-          {cards.map(({ copy, weapon, nth }) => {
-            const h = holders.get(weapon.key)?.[nth];
+          {cards.map(({ copy, weapon }) => {
+            const hs = holdersOf(copy);
+            const h = hs[0];
             return (
               <article key={copy.id} className={`wp-card ${open === weapon.key ? "is-on" : ""}`} aria-label={weapon.name} style={tint(h) ? ({ "--el": tint(h) } as CSSProperties) : undefined}>
                 <button type="button" className="wp-open" aria-label={`Open ${weapon.name}`} onClick={() => setOpen(weapon.key)} />
@@ -165,7 +178,13 @@ export function WeaponsPage() {
                   </span>
                   <span className="mn mu">{[weapon.rarity && `★${weapon.rarity}`, weapon.type].filter(Boolean).join(" · ")}</span>
                 </div>
-                {h && <CatalogIcon gameKey={game.key} kind="character" icon={h.icon} name={h.name} tag={h.tag} className="wp-holder" />}
+                {hs.length > 0 && (
+                  <span className="wp-holders">
+                    {hs.map((x) => (
+                      <CatalogIcon key={x.buildId} gameKey={game.key} kind="character" icon={x.icon} name={x.name} tag={x.tag} className="wp-holder" />
+                    ))}
+                  </span>
+                )}
               </article>
             );
           })}
@@ -189,7 +208,7 @@ export function WeaponsPage() {
             gameKey={game.key}
             weapon={selected}
             copies={mine.filter((m) => m.weapon.key === selected.key).map((m) => m.copy)}
-            holders={holders.get(selected.key) ?? []}
+            holders={mine.filter((m) => m.weapon.key === selected.key).map((m) => holdersOf(m.copy))}
             dupe={dupe}
             wished={selected.catalogId !== null && wished.has(selected.catalogId)}
             onAdd={() => add.mutate(selected.catalogId ? { catalogId: selected.catalogId } : { name: selected.name })}
@@ -222,7 +241,7 @@ function WeaponPanel({
   gameKey: string;
   weapon: Weapon;
   copies: WeaponCopyDto[];
-  holders: Holder[];
+  holders: Holder[][];
   dupe?: { field: string; label: string; max: number };
   wished: boolean;
   onAdd: () => void;
@@ -260,11 +279,11 @@ function WeaponPanel({
               <input type="number" aria-label={dupe.label} min={1} max={dupe.max} key={`r${c.refinement}`} defaultValue={c.refinement} onBlur={(e) => num(e.target.value) !== undefined && num(e.target.value) !== c.refinement && onUpdate(c.id, { refinement: num(e.target.value) })} />
             </label>
           )}
-          {holders[i] && (
-            <Link to={`/characters/${holders[i]!.buildId}`} className="wp-held">
-              <CatalogIcon gameKey={gameKey} kind="character" icon={holders[i]!.icon} name={holders[i]!.name} tag={holders[i]!.tag} />
+          {(holders[i] ?? []).map((h) => (
+            <Link key={h.buildId} to={`/characters/${h.buildId}`} className="wp-held">
+              <CatalogIcon gameKey={gameKey} kind="character" icon={h.icon} name={h.name} tag={h.tag} />
             </Link>
-          )}
+          ))}
           <button className="btn ghost sm" onClick={() => onRemove(c.id)}>
             Remove
           </button>

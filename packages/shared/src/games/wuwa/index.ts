@@ -43,6 +43,8 @@ export const wuwaDocSchema = z
     weapon: z
       .object({
         catalogId: z.string(),
+        /** The copy on Weapons this build holds (round 5). */
+        copyId: z.string().max(40),
         name: z.string(),
         level: z.number().int().min(1).max(L.maxWeaponLevel),
         syntonize: z.number().int().min(1).max(L.maxSyntonize),

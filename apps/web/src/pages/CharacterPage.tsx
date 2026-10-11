@@ -14,6 +14,7 @@ import {
   type CharacterDto,
   type TaskOrigin,
   type TeamDto,
+  type WeaponCopyDto,
 } from "@gacha/shared";
 import { LoadError } from "../components/LoadError";
 import { api } from "../lib/api";
@@ -22,6 +23,7 @@ import { useCatalog } from "../lib/catalog";
 import { assetUrl, communityAssetUrl, splashKey } from "../lib/assets";
 import { GameTabs } from "../components/GameTabs";
 import { GameIcon } from "../components/GameIcon";
+import { CatalogIcon } from "../components/CatalogIcon";
 import { GearBlock } from "../components/sheet/GearBlock";
 import { Picker } from "../components/Picker";
 import { TaskGeneratorPanel } from "../components/TaskGeneratorPanel";
@@ -143,6 +145,37 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
   const weaponDupe = game.manifest.dupes.weapon;
   const weaponDupeKey = weaponDupe?.field.split(".").at(-1);
   const weapons: CatalogWeapon[] = (catalog?.weapons ?? []).filter((w) => !entry?.weaponType || !w.type || w.type === entry.weaponType);
+  // The weapons and the characters synced (Georges, round 5): a pick takes a free copy, or asks which.
+  const copies = useQuery({ queryKey: ["weapons", data.gameInstanceId], queryFn: () => api.get<WeaponCopyDto[]>(`/api/instances/${data.gameInstanceId}/weapons`), enabled: Boolean(holder) });
+  const [asking, setAsking] = useState<CatalogWeapon | null>(null);
+  const heldBy = (copyId: string) => (all.data ?? []).filter((b) => b.id !== data.id && ((b.doc as Doc)[holder ?? ""] as Doc | undefined)?.copyId === copyId);
+  const equip = (c: WeaponCopyDto) => {
+    setAsking(null);
+    setDoc((d) => ({ ...d, [holder!]: { ...((d[holder!] ?? {}) as Doc), name: c.name, catalogId: c.catalogId ?? undefined, copyId: c.id, level: c.level, ...(weaponDupeKey ? { [weaponDupeKey]: c.refinement } : {}) } }));
+  };
+  const pickWeapon = (w: CatalogWeapon | null, text: string) => {
+    if (!w) return setDoc((d) => ({ ...d, [holder!]: { ...((d[holder!] ?? {}) as Doc), name: text || undefined, catalogId: undefined, copyId: undefined } }));
+    const free = (copies.data ?? []).find((c) => c.catalogId === w.id && heldBy(c.id).length === 0);
+    if (free) equip(free);
+    else setAsking(w);
+  };
+  const addCopy = useMutation({
+    mutationFn: (catalogId: string) => api.post<WeaponCopyDto>(`/api/instances/${data.gameInstanceId}/weapons`, { catalogId }),
+    onSuccess: (c) => {
+      equip(c);
+      return Promise.all([["weapons", data.gameInstanceId], ["ownership", data.gameInstanceId]].map((queryKey) => qc.invalidateQueries({ queryKey })));
+    },
+    onError: () => toast("Not added", "err"),
+  });
+  const takeFrom = useMutation({
+    mutationFn: (v: { from: CharacterDto; copy: WeaponCopyDto }) => api.put(`/api/characters/${v.from.id}`, { doc: { ...(v.from.doc as Doc), [holder!]: {} } }),
+    onSuccess: (_r, v) => {
+      equip(v.copy);
+      toast(`Taken from ${index?.characters.get(v.from.catalogId ?? "")?.name ?? v.from.name}`);
+      return qc.invalidateQueries({ queryKey: ["characters", data.gameInstanceId] });
+    },
+    onError: () => toast("Not taken", "err"),
+  });
   const art = splashKey(game.key, entry?.icon, entry?.splash);
 
   async function upload(file: File | undefined) {
@@ -274,8 +307,41 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
                     value={weapon?.name ?? ""}
                     free
                     options={weapons.map((w) => ({ id: w.id, name: w.name, src: assetUrl(game.key, "weapon", w.icon), fallback: communityAssetUrl(game.key, "weapon", w.icon), sub: `★${w.rarity}` }))}
-                    onPick={(w, text) => setDoc((d) => ({ ...d, [holder]: { ...((d[holder] ?? {}) as Doc), name: text || undefined, catalogId: w?.id } }))}
+                    onPick={(o, text) => pickWeapon(weapons.find((w) => w.id === o?.id) ?? null, text)}
                   />
+                  {asking && (
+                    <div className="sh-ask" role="group" aria-label={`Which ${asking.name}`}>
+                      <p className="mu">{(copies.data ?? []).some((c) => c.catalogId === asking.id) ? `Every ${asking.name} you have is held:` : `You have no ${asking.name} yet.`}</p>
+                      {(copies.data ?? [])
+                        .filter((c) => c.catalogId === asking.id)
+                        .flatMap((c) => heldBy(c.id).map((b) => ({ c, b, unit: index?.characters.get(b.catalogId ?? "") })))
+                        .map(({ c, b, unit }) => (
+                          <div key={c.id + b.id} className="sh-ask-row">
+                            <CatalogIcon gameKey={game.key} kind="character" icon={unit?.icon} name={unit?.name ?? b.name} tag={unit?.tag} />
+                            <span className="mn">
+                              {unit?.name ?? b.name} · Lv {c.level}
+                              {weaponDupe && ` · ${weaponDupe.field.split(".").at(-1)!.charAt(0).toUpperCase()}${c.refinement}`}
+                            </span>
+                            <span className="row sh-ask-btns">
+                              <button type="button" className="btn sm" disabled={takeFrom.isPending} onClick={() => takeFrom.mutate({ from: b, copy: c })}>
+                                Take it from {unit?.name ?? b.name}
+                              </button>
+                              <button type="button" className="btn sm" onClick={() => equip(c)}>
+                                Share {unit?.name ?? b.name}'s
+                              </button>
+                            </span>
+                          </div>
+                        ))}
+                      <span className="row">
+                        <button type="button" className="btn sm primary" disabled={addCopy.isPending} onClick={() => addCopy.mutate(asking.id)}>
+                          Add a copy
+                        </button>
+                        <button type="button" className="btn sm ghost" onClick={() => setAsking(null)}>
+                          Cancel
+                        </button>
+                      </span>
+                    </div>
+                  )}
                   <div className="sh-row">
                     <label htmlFor="sh-wlevel">Level</label>
                     <input id="sh-wlevel" type="number" min={1} max={90} value={weapon?.level ?? ""} onChange={(e) => setDoc((d) => ({ ...d, [holder]: { ...((d[holder] ?? {}) as Doc), level: e.target.value === "" ? undefined : Number(e.target.value) } }))} />
