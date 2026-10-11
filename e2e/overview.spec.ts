@@ -27,3 +27,26 @@ test("a game's hub opens on its Overview: pulls, pity and banners at a glance, e
   await pulls.getByRole("link", { name: "Pulls" }).click();
   await expect(page).toHaveURL(new RegExp(`/games/${id}/pulls$`));
 });
+
+test("the Overview's second row: today's dailies ticked in place, the pass and the weeklies, stamina with its reserve @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "zzz" } })).json()) as { id: string };
+  await page.request.put(`/api/instances/${id}/currencies/battery`, { data: { value: 120 } });
+
+  await page.goto(`/games/${id}`);
+  // A daily ticked on the card stays ticked; another journey may have ticked it, so this one flips it and back.
+  const scratch = page.getByRole("region", { name: "Today" }).getByRole("checkbox", { name: "Scratch Card" });
+  const was = await scratch.isChecked();
+  await scratch.click();
+  await expect(scratch).toBeChecked({ checked: !was });
+  await page.reload();
+  await expect(page.getByRole("region", { name: "Today" }).getByRole("checkbox", { name: "Scratch Card" })).toBeChecked({ checked: !was });
+  await page.getByRole("region", { name: "Today" }).getByRole("checkbox", { name: "Scratch Card" }).click();
+
+  await expect(page.getByRole("region", { name: /New Eridu City Fund and weekly/ })).toContainText("Level");
+  const stamina = page.getByRole("region", { name: "Battery Charge" });
+  await expect(stamina.getByTestId("stamina")).toHaveText("120 / 240");
+  await expect(stamina).toContainText("Backup Battery Charge");
+});
