@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { Fragment, useState, type ReactNode } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { endgameNow, getGame, passView, pullsFor, skillsField, weaponHolder, type BannerDto, type CharacterDto, type CycleResultsDto, type GameDefinition, type PassesDto, type TaskDto } from "@gacha/shared";
@@ -104,13 +104,24 @@ function PityCard({ g, game, instanceId }: { g: DashGame; game: GameDefinition; 
           const featured = rate < 1;
           const split = `${Math.round(rate * 100)}/${100 - Math.round(rate * 100)}`;
           return (
-            <div key={p.key}>
-              <dt>{p.label}</dt>
-              <dd>
-                {p.pity}/{p.hardPity}
-                {featured && <span className={p.guaranteed ? "ov-hot" : "mu"}> · {p.guaranteed ? "guaranteed" : split}</span>}
-              </dd>
-            </div>
+            <Fragment key={p.key}>
+              <div>
+                <dt>{p.label}</dt>
+                <dd>
+                  {p.pity}/{p.hardPity}
+                  {featured && <span className={p.guaranteed ? "ov-hot" : "mu"}> · {p.guaranteed ? "guaranteed" : split}</span>}
+                </dd>
+              </div>
+              {p.spark && (
+                // The spark: this banner's pulls toward its featured unit outright (Endfield: 120).
+                <div>
+                  <dt>Featured guarantee</dt>
+                  <dd className={p.spark.at >= p.spark.of ? "ov-hot" : ""}>
+                    {p.spark.at}/{p.spark.of}
+                  </dd>
+                </div>
+              )}
+            </Fragment>
           );
         })}
       </dl>
