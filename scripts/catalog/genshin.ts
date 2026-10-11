@@ -60,6 +60,10 @@ const talentsByName = new Map<string, RawCosts>(
 const talentNames = new Map<string, (string | undefined)[]>(
   all("talents").map((t) => [t.name as string, [t.combat1?.name, t.combat2?.name, t.combat3?.name]]),
 );
+// What each does, opened on the sheet (Georges, 2026-10-11: "talent / skill descriptions"): genshin-db's plain text.
+const talentTexts = new Map<string, (string | undefined)[]>(
+  all("talents").map((t) => [t.name as string, [t.combat1?.description, t.combat2?.description, t.combat3?.description]]),
+);
 // Each character's normal attack, skill and burst ids, from Enka's store: a showcase keys talent levels by them (ADR 0005).
 const enkaCharacters = await fetchJson<Record<string, { SkillOrder?: number[] }>>(
   "https://raw.githubusercontent.com/EnkaNetwork/API-docs/master/store/characters.json",
@@ -92,7 +96,8 @@ const characters: CatalogCharacter[] = all("characters")
       costs: steps(talentsByName.get(c.name), "lvl"),
       info: ["normal", "skill", "burst"].flatMap((key, i) => {
         const name = talentNames.get(c.name)?.[i];
-        return name ? [{ key, name }] : [];
+        const description = talentTexts.get(c.name)?.[i]?.trim();
+        return name ? [{ key, name, ...(description ? { description } : {}) }] : [];
       }),
     },
     extra: {

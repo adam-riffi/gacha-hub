@@ -48,7 +48,7 @@ A whitelisted player signs in with Discord, adds Genshin and HSR, sets currencie
 - Account linking and imports (ADR 0005); game art in our own store (ADR 0006); a game manifest and a pipeline for new games, starting with Neverness to Everness (ADR 0004).
 
 **Later**
-- **Talent and skill descriptions** (Georges, 2026-10-11): each talent's and skill's text on the character page and the unit page, from the catalogs' datasets.
+- **Talent and skill descriptions** (Georges, 2026-10-11): each talent's and skill's text on the character page and the unit page, from the catalogs' datasets. Genshin's are in (#238, opened from a skill's name on the sheet); Star Rail's, WuWa's and ZZZ's need their importers to fill a level's numbers into the text.
 - **Real element, weapon-type and currency icons**, once the art bucket is live (ADR 0006); glyphs and colour chips until then.
 - **Public showcase pages:** a read-only page of a user's builds to share.
 - **PWA:** installable, with offline reading of the last data.

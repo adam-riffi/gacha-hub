@@ -127,3 +127,7 @@
 .sh-build-tab[aria-selected="true"] { background: var(--paper); border-color: var(--paper); color: var(--on-paper); }
 .sh-build-name { width: 180px; margin-left: auto; }
 .sh-build-tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+/* A skill's description, opened from its name across the card (Georges, 2026-10-11). */
+.sh-skill { padding: 0; background: none; border: 0; color: var(--text); font: inherit; text-align: left; cursor: pointer; }
+.sh-skill:hover { color: var(--accent); }
+.sh-skill-text { margin: 0 0 10px; font-size: 13px; line-height: 1.5; white-space: pre-line; }
