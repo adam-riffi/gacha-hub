@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r3/05-picker · #211
+- Done: Georges: dropdowns "way too offset", and "I'd rather have a mix between a list and a clickable list with the icons, where I can scroll and click or type the name". A `Picker` (a combobox with a listbox right under its field: icons, typing filters, arrows and Enter pick, Escape or a click away closes, `free` keeps typed text) replaces the native datalists on the sheet (weapon, each piece's set and substats), Teams' "+ Add a member" and the goal maker's unit. The datalists were what opened off their fields.
+- Tests: written first: the sheet journey types "Patience", finds the option with its icon in a list within 12 px under the field, picks it, and picks a relic set; Teams and the goal maker pick by typing and clicking. The Tasks journey now resets Herta first (other journeys own her), and the default-build journey uses Pela, whom no other journey touches. `npm run check` passes: 564 tests and 49 journeys.
+- Scope/decisions: main stats stay a short native select (a handful of values, no icons).
+- Next: pulls (correcting a logged 5★, banner history).
+
 ## 2026-10-11 · claude · stack/r3/04-weapons · #210
 - Done: Georges: "I need a weapons screen to add all of my weapons, with their level, refinement…". A Weapons tab (after Teams, for games whose catalog lists weapons; not Endfield) lists every weapon, owned first: icon, rarity and type; Owned; level, refinement (the game's word: Superimposition, Phase, Syntonize…) and copies typed in place; who wields it; Farm and Wishlist. Level and refinement live on the ownership row's `meta`, checked by `weaponMetaSchema` (level 1–100, refinement 1–10, nothing else). Characters keeps Characters | Builds; the filter chips moved to the shared UI module.
 - Tests: written first: the route keeps Amos' Bow at level 80, refinement 3 and two copies, and refuses level 999, refinement 0 and unknown keys; the Weapons journey owns a light cone, sets its level and superimposition (checked through the API and after a reload), sees Kafka · S2, wishlists and opens Farm. The old Characters Weapons test moved here. `npm run check` passes: 564 tests and 49 journeys.
@@ -297,9 +303,3 @@ Entry format:
 - Tests: written first: no name anywhere in the Star Rail catalog, nested ones included, holds markup. `npm run check` passes.
 - Scope/decisions: none.
 - Next: error states on the pages that still lack them (§14.2 item 2).
-
-## 2026-10-10 · claude · stack/f12/03-wuwa-art · #172
-- Done: Wuthering Waves art (ADR 0006). The WuWa importer keeps the game's texture file names as art keys: the 256 px head as `icon`, the pile art as the new optional `splash`, and the 160 px weapon icon. Wuthery's copy of the UI textures is the source for each kind (manifest `art`). `splashKey` takes a character's own splash key first, and banners' featured units carry it. `https://files.wuthery.com` is in the CSP (server and Vercel). The catalog was regenerated from the same pinned commit; only icons changed.
-- Tests: written first: Wuthery URLs per kind, the own splash key, artJobs covering every WuWa character and weapon, and the CSP host. The "no art sources" artJobs test now uses Endfield. `npm run check` passes. On the dev account, all 12 WuWa cards load their splash art.
-- Scope/decisions: materials and Sonata sets keep the game's paths (their textures sit in several folders), so they show the placeholder. Endfield has no icon keys and no public asset host was found; ZZZ and NTE have no catalog.
-- Next: the handoff; Endfield art once a source exists.
