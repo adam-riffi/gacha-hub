@@ -13,7 +13,7 @@ Georges's sixth round, after #256–#262. The rules of the earlier rounds stand:
 | Icons | squares with letters where a banner or target has no art | **icons** (a banner's kind as a glyph) | #263 |
 | Pulls · top-up | none | the **chance by the banner's end** with what comes until then, and the **cheapest top-ups** (the game's packs) that make it certain | |
 | Endgame | a past cycle opens a dialog | a past cycle **becomes the card's cycle** (the card shows it); every dialog closes on a click outside; teams, times and difficulty shown where the mode has them | #264 |
-| Characters · owned | a character with a build cannot be marked not owned; the selection's buttons seem to do nothing | ownership **apart from builds**; the selection owns, un-owns, wishlists and **makes goals** (quick build goals) | |
+| Characters · owned | a character with a build cannot be marked not owned; the selection's buttons seem to do nothing | ownership **apart from builds**; the selection owns, un-owns, wishlists, sets build status (#265) and **makes goals** (quick build goals) | #265 |
 | Characters · art | WuWa's portraits sit low, heads under the chips or the name | **each game's art framed** on its face | |
 | Characters · set | the set's name in words | the **set's icon** with its count | |
 | Characters · card stats | picked per game | **picked per character**, the game's classic stats by default | |
@@ -29,4 +29,5 @@ Georges's sixth round, after #256–#262. The rules of the earlier rounds stand:
 ## Decisions (Georges: "take every decision")
 
 - **Endgame:** the dialog of round 5 is gone: its cycle navigation lives on each card. Side panels (a weapon's, a gear set's) close on a press outside or on Escape (`useDismiss`).
+- **Ownership** is the owned list alone; a build no longer makes its character owned on Characters, and stays when its character is marked not owned (planning before pulling).
 - **Beginner banners** stay in each game's module (imports of their history still map), flagged `beginner`, and no screen shows them.

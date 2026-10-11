@@ -108,6 +108,11 @@ export function CharactersPage() {
     mutationFn: (v: { ids: string[]; wished: boolean }) => Promise.all(v.ids.map((catalogId) => api.put(`/api/instances/${id}/wishlist`, { kind: "character", catalogId, wished: v.wished }))),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["wishlist", id] }),
   });
+  // Ownership is the owned list alone: a build stays when its character is marked not owned (Georges, round 6).
+  const setBuildStatus = useMutation({
+    mutationFn: (v: { ids: string[]; buildStatus: BuildStatus }) => Promise.all(v.ids.map((b) => api.put(`/api/characters/${b}`, { buildStatus: v.buildStatus }))),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["characters", id] }),
+  });
   const startMany = useMutation({
     mutationFn: (ids: string[]) => Promise.all(ids.map((catalogId) => api.post(`/api/instances/${id}/characters`, { catalogId }))),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["characters", id] }),
@@ -146,7 +151,7 @@ export function CharactersPage() {
   const ownedIds = new Set((ownership.data ?? []).filter((o) => o.kind === "character").map((o) => o.catalogId));
   const wishedIds = new Set((wishlist.data ?? []).filter((w) => w.kind === "character").map((w) => w.catalogId));
   const cards: Card[] = catalog
-    ? catalog.characters.map((c) => ({ id: c.id, name: c.name, rarity: c.rarity, tag: c.tag ?? null, weaponType: c.weaponType ?? null, icon: c.icon, splash: c.splash, entry: c, build: byCatalog.get(c.id), owned: ownedIds.has(c.id) || byCatalog.has(c.id), wished: wishedIds.has(c.id) }))
+    ? catalog.characters.map((c) => ({ id: c.id, name: c.name, rarity: c.rarity, tag: c.tag ?? null, weaponType: c.weaponType ?? null, icon: c.icon, splash: c.splash, entry: c, build: byCatalog.get(c.id), owned: ownedIds.has(c.id), wished: wishedIds.has(c.id) }))
     : builds.data.map((b) => ({ id: b.id, name: b.name, rarity: null, tag: null, weaponType: null, icon: undefined, entry: undefined, build: b, owned: true, wished: false }));
 
   const live = (dash.data?.timeline.banners ?? []).filter((b) => b.gameKey === game.key && b.status === "active" && b.kind === "character");
@@ -403,12 +408,24 @@ export function CharactersPage() {
         <div className="ch-bulk ch-bulk-bar" role="region" aria-label="Selection">
           <span className="mn">{picked.size} selected</span>
           <button className="btn" onClick={() => own.mutate([...picked])}>Own</button>
-          <button className="btn" onClick={() => unown.mutate(pickedCards.filter((c) => !c.build).map((c) => c.id))}>Not owned</button>
+          <button className="btn" onClick={() => unown.mutate([...picked])}>Not owned</button>
           <button className="btn" onClick={() => wishMany.mutate({ ids: [...picked], wished: true })}>Wishlist</button>
           <button className="btn" onClick={() => wishMany.mutate({ ids: [...picked], wished: false })}>Off the wishlist</button>
           <button className="btn" disabled={startMany.isPending} onClick={() => startMany.mutate(pickedCards.filter((c) => c.owned && !c.build).map((c) => c.id))}>
             Start builds
           </button>
+          <select
+            aria-label="Build status"
+            value=""
+            disabled={setBuildStatus.isPending || !pickedCards.some((c) => c.build)}
+            onChange={(e) => e.target.value && setBuildStatus.mutate({ ids: pickedCards.flatMap((c) => (c.build ? [c.build.id] : [])), buildStatus: e.target.value as BuildStatus })}
+          >
+            <option value="">Build status…</option>
+            <option value="none">Unbuilt</option>
+            <option value="building">Building</option>
+            <option value="good">Good</option>
+            <option value="perfect">Perfect</option>
+          </select>
           <span className="ch-sp" />
           <button className="btn ghost" onClick={() => setPicked(new Set(filtered.filter((c) => c.entry).map((c) => c.id)))}>All shown</button>
           <button className="btn ghost" onClick={() => setPicked(new Set())}>Clear</button>
