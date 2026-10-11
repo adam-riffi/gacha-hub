@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { getGame } from "@gacha/shared";
 import { HubHeader } from "./hub/HubHeader";
 
-type Screen = "activities" | "endgame" | "ownership" | "characters" | "teams" | "gear" | "materials" | "planner" | "pulls" | "profile";
+type Screen = "activities" | "endgame" | "ownership" | "characters" | "teams" | "weapons" | "gear" | "materials" | "planner" | "pulls" | "profile";
 
 /** What each game calls its gear sets. */
 const GEAR_LABEL: Record<string, string> = {
@@ -35,6 +35,8 @@ export function GameTabs({
     { key: "characters", label: "Characters", to: `/games/${instanceId}/characters` },
     // Teams have a tab of their own (Georges, 2026-10-10); their members come from the catalog.
     ...(hasCatalog ? [{ key: "teams" as const, label: "Teams", to: `/games/${instanceId}/teams` }] : []),
+    // Weapons have a tab of their own (Georges, 2026-10-11), where the catalog lists them.
+    ...(hasCatalog && !CHARACTERS_ONLY.has(gameKey ?? "") ? [{ key: "weapons" as const, label: "Weapons", to: `/games/${instanceId}/weapons` }] : []),
     ...(hasCatalog && !CHARACTERS_ONLY.has(gameKey ?? "")
       ? ([
           { key: "gear", label: (gameKey && GEAR_LABEL[gameKey]) || "Gear", to: `/games/${instanceId}/gear` },

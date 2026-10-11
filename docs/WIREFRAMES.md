@@ -128,6 +128,13 @@ Added after Georges's feedback of 2026-10-10 ("no obvious way to make teams, loo
 - **A card per team:** its name, renamed in place; its members, each with its portrait, tinted to its element, opening its build or its unit page, with its build status and a × to remove it; "+ Add a member…" from the units you own first, up to the game's party size; Delete team.
 - The character sheet's **Used in** lists the teams with the character and their other members, adds it to a team with room, makes a new team around it, and links here; Endgame links here too.
 
+### G4c · Weapons
+
+Added after Georges's feedback of 2026-10-11 ("a weapons screen to add all of my weapons, with their level, refinement"). A tab of its own, after Teams, for games whose catalog lists weapons; Characters keeps Characters | Builds.
+
+- Search; type and rarity as chips; All, Owned, Wishlist as count buttons.
+- **A row per weapon,** owned first: icon, name, rarity and type; Owned; then level, refinement (the game's word) and copies typed in place, kept on its ownership (`meta`, within limits); who wields it; Farm and Wishlist.
+
 ### G5 · Character sheet
 
 Picture: [`g5-character-sheet.png`](design/wireframes/g5-character-sheet.png) · static page: [`g5-character-sheet.html`](design/wireframes/g5-character-sheet.html)
