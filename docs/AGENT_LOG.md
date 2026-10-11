@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-12 · claude · stack/r8/05-card-stats · #260
+- Done: the stats the character cards show, picked per game (Georges, round 5: "if I wanna see my HP, EM and DEF I should be able to"): Card stats chips under the filters (crit value, HP, ATK, DEF, the game's KPI stats and any typed), up to six in the order picked, Role going back; saved on the profile (`cardStats`, migration `card_stats`). A completed set's bonus to a shown stat ("include set bonuses like crit or ATK bonus … in another colour … the original amount + the set bonus"): `statKpis` reads the set's top-tier text and adds it in the element's colour where both are percentages or both flat, else sets it beside the stat ("+6%" of a flat SPD); the stat and the bonus on hover, written out on a click. Star Rail's relic set texts carry their numbers again (they read "#1[i]%"; the importer fills them from the params).
+- Tests: written first: `statKpis` shows picked stats; adds Blizzard Strayer's 4-piece CRIT Rate (50% → 70%, the stat and bonus apart); leaves out a 2-piece bonus, an unfinished set and a bonus to one kind of attack (Charged Attack CRIT Rate); sets Musketeer's +6% SPD and Woodpecker's +9% ATK beside flat stats; reads WuWa's 5-piece Glacio DMG onto its DMG Bonus. The HSR catalog's Musketeer and Hunter texts have their numbers and no "#" is left. The route keeps up to six stats, refuses seven, empty and doubles, and clears with null. A journey picks HP, CRIT DMG and SPD for Qingque in four Hunter relics: CRIT DMG reads 125% with "100% + 25% · Hunter of Glacial Forest 4pc" on hover and written out on a click, kept after a reload, Role clearing it.
+- Scope/decisions: only the top tier counts (every game's character screen shows the 2-piece's static bonus already); a stat named as such only.
+- Next: weapons and characters synced (a build holds a copy).
+
 ## 2026-10-12 · claude · stack/r8/04-character-cards · #259
 - Done: Characters' cards (Georges, round 5): in Select, a picked card lights up whole in its element's colour (border, glow, tint over the art), the checkbox unseen but still focusable (the card outlines on keyboard focus); the default build's weapon sits on the right of the name card, its level top-left and refinement bottom-right on the icon.
 - Tests: written first: Kafka's weapon icon is right of her name, the level badge at its top-left corner and the refinement at its bottom-right; a picked card has `is-picked` and its box has no opacity.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: a Daily Commissions deleted and made again (so it comes after Weekly Bosses) still reads first in the preview. `npm run check` passes: 571 tests and 55 journeys.
 - Scope/decisions: the order is by cadence name ("daily" < "monthly" < "weekly"), then creation, then title.
 - Next: the planner's days.
-
-## 2026-10-11 · claude · stack/r4/00-gicon · #220
-- Done: a regression from #217. The icon tile's base rules (`.gicon`, `img.gicon`, `.gicon-ph`: a block with its initials centred, a border and a background) sat inside the old Genshin sheet's CSS block that #217 removed, so every icon without its image lost its tile and showed bare initials in the corner. They are back, in `styles.css` where they were.
-- Tests: written first: the visual journey checks that a game's placeholder on the Games page is a centred grid with a border. `npm run check` passes: 570 tests and 54 journeys.
-- Scope/decisions: #217's check found classes used only by the deleted files; this rule's class is used everywhere, so the block should have been split. Lesson kept in HANDOFF notes: when deleting a CSS section, check each rule, not only the section's name.
-- Next: the reminder's order and the planner's days.
