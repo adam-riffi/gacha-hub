@@ -55,6 +55,8 @@ export function Segmented<T extends string>({
 
 export /** A filter as toggle chips: one pressed at a time, pressed again to clear; an element's chip carries its colour. */
 function Chips({ label, value, onChange, options, color, text = (o) => o }: { label: string; value: string; onChange: (v: string) => void; options: string[]; color?: (o: string) => string | null; text?: (o: string) => string }) {
+  // A filter with nothing to pick (NTE's characters have no weapon type) shows nothing.
+  if (options.length === 0) return null;
   return (
     <div className="ch-chipset" role="group" aria-label={label}>
       <span className="kpi-label">{label}</span>

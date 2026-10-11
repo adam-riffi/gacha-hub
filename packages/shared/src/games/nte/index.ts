@@ -1,12 +1,14 @@
 import { z } from "zod";
 import { statRowSchema } from "../../common.js";
 import type { GameDefinition, GameRegion } from "../types.js";
+import type { Catalog } from "../../catalog/types.js";
 
 /**
  * Neverness to Everness (Perfect World), the sixth game, scaffolded by
  * `npm run game:new` and filled from docs/games/nte.md (values marked ~ there
- * are unverified). Capability M only: its terms forbid third-party tools, so
- * everything is typed by hand (ADR 0005).
+ * are unverified). Its catalog (characters, Arcs, their costs) comes from
+ * Hakushin's public dataset (Georges, round 4; ADR 0005 amended); progress is
+ * still typed by hand: no account link, no game client touched.
  */
 export const NTE_CARTRIDGE_SLOTS = [1, 2, 3, 4].map((n) => ({ key: `cartridge${n}`, label: `Cartridge ${n}` }));
 export const NTE_SKILLS = ["basic", "skill", "ultimate", "support"] as const;
@@ -29,7 +31,7 @@ export const nteDocSchema = z
     /** Awakenings A1–A6, unlocked by copies. */
     awakening: z.number().int().min(0).max(6),
     /** The Arc (weapon) and its Mixing M1–M5. */
-    arc: z.object({ name: z.string(), level: z.number().int().min(1).max(80), mixing: z.number().int().min(1).max(5) }).partial(),
+    arc: z.object({ catalogId: z.string().max(120), name: z.string(), level: z.number().int().min(1).max(80), mixing: z.number().int().min(1).max(5) }).partial(),
     console: z.object({ cartridge1: cartridgeSchema, cartridge2: cartridgeSchema, cartridge3: cartridgeSchema, cartridge4: cartridgeSchema }).partial(),
     skills: z.object({ basic: z.number().int().min(1).max(10), skill: z.number().int().min(1).max(10), ultimate: z.number().int().min(1).max(10), support: z.number().int().min(1).max(10) }).partial(),
     stats: z.record(z.string(), z.number()),
@@ -65,7 +67,14 @@ export const nte: GameDefinition = {
     gear: { name: "Console", field: "console", slots: NTE_CARTRIDGE_SLOTS.map((s) => ({ ...s, mainStats: [] })), sets: [2, 4], maxLevel: 20 },
     kpis: { damage: ["Crit value", "CRIT Rate / CRIT DMG", "ATK"], support: ["ATK", "HP", "Crit value"] },
     dupes: { character: { field: "awakening", label: "Awakening", max: 6 }, weapon: { field: "arc.mixing", label: "Mixing", max: 5 } },
-    art: {},
+    // Hakushin's assets by the game's own paths (Game/UI/…), as the catalog keeps them.
+    art: {
+      character: "https://static.nanoka.cc/assets/nte/{key}.webp",
+      portrait: "https://static.nanoka.cc/assets/nte/{key}.webp",
+      splash: "https://static.nanoka.cc/assets/nte/{key}.webp",
+      weapon: "https://static.nanoka.cc/assets/nte/{key}.webp",
+      material: "https://static.nanoka.cc/assets/nte/{key}.webp",
+    },
     accountLevel: { label: "HL", name: "Hunter Level" },
     // The city (Georges's design, 2026-10-11): City Stamina refills each Monday, its cap set by the Tycoon Level.
     ownCard: {
@@ -93,4 +102,5 @@ export const nte: GameDefinition = {
   docSchema: nteDocSchema,
   emptyDoc: (): NteDoc => ({ arc: {}, console: {}, skills: {}, stats: {} }),
   docVersion: 1,
+  loadCatalog: async () => (await import("./catalog.js")).default as Catalog,
 };

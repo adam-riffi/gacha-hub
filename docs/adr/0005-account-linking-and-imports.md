@@ -37,3 +37,4 @@ DESIGN.md §2 deferred account sync, and the 2026-09 handoff listed HoYoLAB and 
 - ENGINEERING.md §12 keeps secrets in GitHub and Vercel only. This ADR records the exception for tokens that users provide: they live in the database, encrypted.
 - The endpoints are undocumented and can change. Every import fails soft, records an `ImportRun` and leaves manual entry working.
 - HoYoverse's terms on third-party tools are a risk Georges accepts for read-only use. NTE stays manual because its terms are explicit.
+- **Amended 2026-10-11 (round 4):** Georges asked to populate NTE. Its catalog (characters, Arcs, their costs, art) now comes from Hakushin's public dataset, read at build time like the other games' datasets: no account, no game client and no in-game data are touched. Progress stays typed by hand.

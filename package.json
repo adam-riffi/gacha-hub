@@ -33,6 +33,7 @@
     "catalog:genshin": "npm --prefix scripts/catalog run genshin",
     "catalog:hsr": "npm --prefix scripts/catalog run hsr",
     "catalog:wuwa": "npm --prefix scripts/catalog run wuwa",
+    "catalog:nte": "npm --prefix scripts/catalog run nte",
     "catalog:zzz": "npm --prefix scripts/catalog run zzz",
     "catalog:endfield": "npm --prefix scripts/catalog run endfield",
     "catalog:endgame": "npm --prefix scripts/catalog run endgame",
