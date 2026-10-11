@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r4/08-overview · #227
+- Done: the per-game overview Georges designed (six pictures, now in `docs/design/overview/`), first half. The hub opens on an **Overview** tab, Activities second (`/games/:id/activities`; the old `/overview` link lands on the Overview). First row: Pulls (limited on hand, then each ticket and "From" the premium currency), Pity (each banner type over its hard pity, "guaranteed" or the game's split, 50/50 or 75/25), Banners (the current phase's featured units with "ends in", the next with "starts in", ◀ ▶ through the phases). Second row: Today (the game's dailies, boxes ticked in place), the pass and weekly (level, weekly EXP, the weeklies as boxes), stamina (projected, Full in or Full · now, its reserve). Each card opens its screen.
+- Tests: written first: the Overview journeys check the landing tab, 13 pulls from 1,600 Stellar Jade and 3 passes, pity and a running banner, a ZZZ daily ticked and kept after a reload, the City Fund card and 120 / 240 Battery Charge with its backup; the Activities, hub, smoke, NTE and Profile journeys follow the new landing tab. `npm run check` passes: 574 tests and 62 journeys.
+- Scope/decisions: DESIGN.md §9 gains F13 (the per-game overview) and §4's Later loses it; WIREFRAMES.md gains G0. The cards read the dashboard, tasks and passes the hub already loads.
+- Next: the Overview's last rows.
+
 ## 2026-10-11 · claude · stack/r4/07-weapon-cards · #226
 - Done: Georges's "make them cards, not a list, like the characters", and Weapons on every game. Every copy you hold is a card ("Lv 80 · S3", rarity and type, the character wielding it); the catalog's other weapons follow, dimmed. A click opens the weapon's panel: each copy's level and refinement typed in place, Remove, Add a copy, Wishlist, Farm. Endfield and NTE get the tab, adding weapons by name (and refinement where the game has it). The old table is gone.
 - Tests: written first: the Weapons journey adds two copies of a light cone from its panel, sets the first to Lv 80 · S3, finds Kafka's icon on it, wishlists and farms it, removes the second; NTE adds a weapon by name; Endfield shows the tab (and its hub's tab list says so). `npm run check` passes: 574 tests and 58 journeys.
@@ -259,9 +265,3 @@ Entry format:
 - Tests: written first: `deployConfig.test.ts` expects Git deployments off. `npm run check` passes: 530 tests and 40 journeys.
 - Scope/decisions: production stays on #186 until Georges asks.
 - Next: at his command, deploy `main` and run the smoke check.
-
-## 2026-10-10 · claude · stack/docs/04-handoff-final · #188
-- Done: HANDOFF.md rewritten. It covers the work after "take every decision" (#177–#187), each decision taken and its reason, and what waits on Georges's secrets. PROJECT-GUIDE §14.2 now lists what waits on data (real fixtures, TypeScript 7) and what was decided against, with reasons: Endfield art, WuWa material art, Shiyu v2, Used-in eligibility. The matrix's live-data and art rows and README's art line are updated.
-- Tests: docs only.
-- Scope/decisions: Georges can overrule any decision by saying so; §14.1 step 7 says where they are.
-- Next: Georges's secrets; real answers to replace the fixtures.
