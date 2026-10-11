@@ -306,12 +306,13 @@ The screenshots come from the local dev build (dev user, SQLite) on 2026-10-10, 
 
 ![Home with a game picked](screens/02-home-game.jpg)
 
-**A game picked in the top strip** shows that game's dashboard instead (G0, from Georges's six designs), drawn with Home's own pieces (its ring, tiles, chips, the backlog chart and the banner carousel), each card linking to its tab:
+**A game picked in the top strip** shows that game's dashboard instead (G0): since round 5 a hybrid of the Overview and Georges's six designs, in the Overview's language, each card linking to its tab:
+- **The Overview's top row, for this game:** the dailies and weeklies gauge, goals and goal types, the backlog line and the pulls gained against spent.
+- **Dailies & weeklies** beside **the game's banners** (where the Overview has the battle pass): each default task ticked in place, a box per step for counted ones (four commissions, three weekly bosses) and a number past eight (36 Nightmare Nests); + adds a default the profile lacks.
 - **Pulls:** what the currencies and tickets make, then the pity of each banner (50/50 or guaranteed; Endfield's featured guarantee toward its 120-pull spark).
-- **Banners:** Home's carousel, for this game.
-- **Today and the weekly card:** each default task ticked in place, a box per step for counted ones (four commissions, three weekly bosses) and a number past eight (36 Nightmare Nests); + adds a default the profile lacks.
-- **Stamina:** now / cap, when full, and its reserve.
-- **Builds in progress, endgame (progress and next reset), goals (a ring) and the backlog** (open tasks over ten days).
+- **Stamina beside the battle pass,** then the endgame cycle (progress and next reset).
+- **The dailies' heatmap,** a day pinning the gauges and charts as on the Overview.
+- **Builds in progress and goal progress,** left out when empty.
 - **The game's own card,** declared in its manifest: NTE's City, Endfield's AIC and outposts.
 
 Data: `GET /api/dashboard` and `GET /api/tasks`.

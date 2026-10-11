@@ -19,7 +19,7 @@ export function HomeHeat({ games, today, pinned, onPin }: { games: DashGame[]; t
     if (g.gameDay && live.length) add(g.gameDay, { name: g.name, done: live.every((t) => t.doneThisCycle) });
   }
   return (
-    <section className="graph home-heat">
+    <section className="graph home-heat" aria-label="Dailies, last 26 weeks">
       <div className="ph">
         <h3>Dailies, last 26 weeks</h3>
       </div>

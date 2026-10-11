@@ -75,6 +75,13 @@
 .pull-n.is-permanent, .pull-n.is-special { color: var(--text-muted); }
 
 /* A game's dashboard (WIREFRAMES.md G0): the designs' grid, Home's pieces. */
+/* A game's dashboard (round 5): the Overview's rows, then the game's cards three to a row. */
+.gd-home { display: flex; flex-direction: column; gap: 24px; padding-top: 8px; }
+.gd-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 36px; height: 352px; }
+.gd-row > * { min-width: 0; height: 100%; }
+.gd-ticks-card { overflow: hidden; }
+.gd-ticks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 24px; min-height: 0; overflow: auto; }
+.gd-sub { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 16px 8px; }
 .gd-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: stretch; }
 .gd-grid > .carousel { min-height: 300px; }
 .gd-card { display: flex; flex-direction: column; min-width: 0; padding-bottom: 12px; }
@@ -94,7 +101,7 @@
 .gd-bar .gd-meter { width: 100%; }
 .gd-ticked { display: flex; align-items: center; gap: 16px; padding-left: 16px; min-height: 0; }
 .gd-ticked .lst { flex: 1; }
-.gd-kpis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 24px; padding: 4px 16px 16px; }
+.gd-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 18px 24px; padding: 4px 16px 16px; }
 .gd-kpis .kpi-value { font-size: 36px; }
 .gd-kpis .kpi svg { margin-top: 8px; }
 .gd-own { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }

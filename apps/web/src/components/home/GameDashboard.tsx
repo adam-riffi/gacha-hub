@@ -1,7 +1,7 @@
 import { Fragment, useState, type ReactNode } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { endgameNow, getGame, passView, pullsFor, skillsField, weaponHolder, type CharacterDto, type CycleResultsDto, type GameDefinition, type PassesDto, type TaskDto } from "@gacha/shared";
+import { endgameNow, getGame, hubResets, passView, pullsFor, skillsField, weaponHolder, type CharacterDto, type CycleResultsDto, type GameDefinition, type PassesDto, type TaskDto } from "@gacha/shared";
 import { LoadError } from "../LoadError";
 import { api } from "../../lib/api";
 import { formatRemaining } from "../../lib/time";
@@ -11,22 +11,25 @@ import { useCatalog } from "../../lib/catalog";
 import { BannersCarousel } from "../BannersCarousel";
 import { CatalogIcon } from "../CatalogIcon";
 import { Countdown } from "../ui";
-import { backlogSeries } from "../HomeTop";
-import { GraphPanel } from "../charts/GraphPanel";
-import { LineChart } from "../charts/LineChart";
-import { Ring } from "../charts/Ring";
+import { HomeTop } from "../HomeTop";
+import { HomeHeat } from "../HomeHeat";
 import { SegmentedBar } from "../charts/SegmentedBar";
 import type { DashboardData, InstanceDetail } from "../../lib/types";
 
 type DashGame = DashboardData["games"][number];
 
 /**
- * A game's dashboard (Georges's designs of 2026-10-11, WIREFRAMES.md G0):
- * Home with that game picked, drawn with Home's own pieces (round 4): its
- * cards, rows and chips, the ring gauge, KPI tiles, the backlog chart and
- * the banner carousel. Each card's title opens its screen.
+ * A game's dashboard (WIREFRAMES.md G0): Home with that game picked, a hybrid
+ * of the all-games Overview and Georges's designs, in the Overview's language
+ * (round 5): the Overview's gauges and charts on top, for this game; its
+ * dailies and weeklies ticked in place beside its banners (where the Overview
+ * has the battle pass); pulls and pity; stamina beside the battle pass and
+ * the endgame cycle; the dailies' heatmap; builds, goals, the game's own
+ * card. Each card's title opens its screen; a heatmap day pins as on the
+ * Overview (`?day=`).
  */
 export function GameDashboard({ instanceId: id }: { instanceId: string }) {
+  const [params, setParams] = useSearchParams();
   const instance = useQuery({ queryKey: ["instance", id], queryFn: () => api.get<InstanceDetail>(`/api/instances/${id}`) });
   const dash = useQuery({ queryKey: ["dashboard"], queryFn: () => api.get<DashboardData>("/api/dashboard") });
   const tasks = useQuery({ queryKey: ["tasks", "game", id], queryFn: () => api.get<TaskDto[]>(`/api/tasks?scope=game&refId=${id}`) });
@@ -42,32 +45,51 @@ export function GameDashboard({ instanceId: id }: { instanceId: string }) {
   const region = game.regions.find((r) => r.key === instance.data.regionKey) ?? game.regions[0]!;
   const battle = passes.data?.battle;
   const pv = passView(game, region, new Date(), battle ? { ...battle, updatedAt: new Date(battle.updatedAt) } : null, null);
+  // Cards with nothing to show stay out (round 5: no card of empty space).
+  const inProgress = (builds.data ?? []).filter((b) => b.buildStatus === "building" || b.buildStatus === "good");
+  // A past heatmap day pins the gauges and charts to it, as on the Overview.
+  const today = g.gameDay ?? new Date().toISOString().slice(0, 10);
+  const pinned = params.get("day");
+  const day = pinned && pinned < today ? pinned : null;
+  const onPin = (date: string | null) =>
+    setParams((p) => {
+      if (date && date < today) p.set("day", date);
+      else p.delete("day");
+      return p;
+    });
 
   return (
-    <div className="gd-grid">
-      {game.pullBanners?.length ? (
-        <>
-          <PullsCard g={g} instanceId={id} />
-          <PityCard g={g} game={game} instanceId={id} />
-        </>
-      ) : null}
-      <GameBanners g={g} banners={banners} />
-      <TodayCard g={g} instanceId={id} game={game} items={recurring.filter((t) => t.cadence === "daily")} />
-      <WeeklyCard instanceId={id} game={game} pv={pv} items={recurring.filter((t) => t.cadence === "weekly")} />
-      <StaminaCard g={g} game={game} instance={instance.data} />
-      <BuildsCard instanceId={id} game={game} builds={(builds.data ?? []).filter((b) => b.buildStatus === "building" || b.buildStatus === "good")} />
-      <EndgameCard instanceId={id} game={game} region={region} cycles={cycles.data} />
-      <GoalsCard gameKey={game.key} tasks={tasks.data ?? []} />
-      <BacklogCard g={g} tasks={tasks.data ?? []} />
-      <OwnCard game={game} instance={instance.data} tasks={tasks.data ?? []} />
+    <div className="gd-home">
+      <HomeTop games={[g]} tasks={tasks.data ?? []} goalMaterials={dash.data.goalMaterials} day={day} />
+      <div className="gd-row">
+        <TicksCard g={g} instanceId={id} game={game} region={region} recurring={recurring} />
+        <GameBanners g={g} banners={banners} />
+      </div>
+      <div className="gd-grid">
+        {game.pullBanners?.length ? (
+          <>
+            <PullsCard g={g} instanceId={id} />
+            <PityCard g={g} game={game} instanceId={id} />
+          </>
+        ) : null}
+        <StaminaCard g={g} game={game} instance={instance.data} />
+        <PassCard instanceId={id} game={game} pv={pv} />
+        <EndgameCard instanceId={id} game={game} region={region} cycles={cycles.data} />
+      </div>
+      <HomeHeat games={[g]} today={today} pinned={day} onPin={onPin} />
+      <div className="gd-grid">
+        {inProgress.length > 0 && <BuildsCard instanceId={id} game={game} builds={inProgress} />}
+        <GoalsCard gameKey={game.key} tasks={tasks.data ?? []} span={inProgress.length ? undefined : "full"} />
+        <OwnCard game={game} instance={instance.data} tasks={tasks.data ?? []} />
+      </div>
     </div>
   );
 }
 
 /** A card in Home's chrome: its title (opening its screen), what sits beside it, then its content. */
-function Card({ title, to, label = title, span, head, children }: { title: string; to?: string; label?: string; span?: "wide" | "full"; head?: ReactNode; children: ReactNode }) {
+function Card({ title, to, label = title, span, head, className = "", children }: { title: string; to?: string; label?: string; span?: "wide" | "full"; head?: ReactNode; className?: string; children: ReactNode }) {
   return (
-    <section className={`card table-card gd-card ${span ? `is-${span}` : ""}`} aria-label={label}>
+    <section className={`card table-card gd-card ${span ? `is-${span}` : ""} ${className}`} aria-label={label}>
       <div className="ph">
         <h3>{to ? <Link to={to}>{title}</Link> : title}</h3>
         {head && <span className="gd-head">{head}</span>}
@@ -112,7 +134,7 @@ function PullsCard({ g, instanceId }: { g: DashGame; instanceId: string }) {
 /** Each banner type's pity toward its hard pity, and whether the next top pull is the featured one; a spark's count under its banner. */
 function PityCard({ g, game, instanceId }: { g: DashGame; game: GameDefinition; instanceId: string }) {
   return (
-    <Card title="Pity" to={`/games/${instanceId}/pulls`}>
+    <Card title="Pity" to={`/games/${instanceId}/pulls`} span="wide">
       <div className="lst">
         {g.pity.map((p) => {
           // The featured unit's share, as the game says it: 50/50, 75/25.
@@ -220,26 +242,41 @@ function Ticks({ instanceId, items, game, cadence }: { instanceId: string; items
   );
 }
 
-/** Today's dailies: Home's ring over how many are done, each ticked in place, and when the day resets. */
-function TodayCard({ g, instanceId, game, items }: { g: DashGame; instanceId: string; game: GameDefinition; items: TaskDto[] }) {
-  const done = items.filter((t) => t.doneThisCycle).length;
+/**
+ * The dailies and weeklies, ticked in place, each column with its reset: the
+ * Overview's Dailies & weeklies for this game, the gauge being on top.
+ */
+function TicksCard({ g, instanceId, game, region, recurring }: { g: DashGame; instanceId: string; game: GameDefinition; region: GameDefinition["regions"][number]; recurring: TaskDto[] }) {
+  const [weekly] = useState(() => hubResets(game, region, new Date()).weekly.toISOString());
   return (
-    <Card title="Today" to={`/games/${instanceId}`} head={g.nextReset && <Countdown at={g.nextReset} kind="reset" prefix="resets in" />}>
-      <div className="gd-ticked">
-        <Ring done={done} total={items.length} label={`${done} of ${items.length} dailies done`} size={104} />
-        <Ticks instanceId={instanceId} items={items} game={game} cadence="daily" />
+    <Card title="Dailies & weeklies" to={`/games/${instanceId}`} className="gd-ticks-card">
+      <div className="gd-ticks">
+        <div>
+          <div className="gd-sub">
+            <span className="kpi-label">Daily</span>
+            {g.nextReset && <Countdown at={g.nextReset} kind="reset" prefix="resets in" />}
+          </div>
+          <Ticks instanceId={instanceId} items={recurring.filter((t) => t.cadence === "daily")} game={game} cadence="daily" />
+        </div>
+        <div>
+          <div className="gd-sub">
+            <span className="kpi-label">Weekly</span>
+            <Countdown at={weekly} kind="reset" prefix="resets in" />
+          </div>
+          <Ticks instanceId={instanceId} items={recurring.filter((t) => t.cadence === "weekly")} game={game} cadence="weekly" />
+        </div>
       </div>
     </Card>
   );
 }
 
-/** The battle pass as Home's tiles (its level over the segmented bar, this week's EXP), then the weeklies. */
-function WeeklyCard({ instanceId, game, pv, items }: { instanceId: string; game: GameDefinition; pv: ReturnType<typeof passView>; items: TaskDto[] }) {
+/** The battle pass as Home's tiles: its level over the segmented bar, this week's EXP; beside the stamina (round 5). */
+function PassCard({ instanceId, game, pv }: { instanceId: string; game: GameDefinition; pv: ReturnType<typeof passView> }) {
   const pass = game.manifest.battlePass;
-  const name = pass ? `${pass.name} and weekly` : "Weekly";
   const k = (n: number) => (n >= 1000 ? `${(n / 1000).toFixed(n % 1000 ? 1 : 0)}k` : String(n));
+  if (!pass && pv.weeklyXpCap === null) return null;
   return (
-    <Card title={name} to={`/games/${instanceId}`}>
+    <Card title={pass?.name ?? "Weekly EXP"} to={`/games/${instanceId}`}>
       {(pass || pv.weeklyXpCap !== null) && (
         <div className="gd-kpis">
           {pass && (
@@ -263,7 +300,6 @@ function WeeklyCard({ instanceId, game, pv, items }: { instanceId: string; game:
           )}
         </div>
       )}
-      <Ticks instanceId={instanceId} items={items} game={game} cadence="weekly" />
     </Card>
   );
 }
@@ -421,17 +457,16 @@ function progressOf(t: TaskDto, all: TaskDto[]) {
 }
 const topGoals = (tasks: TaskDto[]) => tasks.filter((t) => !t.parentId && t.type !== "recurring");
 
-/** The game's active goals: their average on Home's ring, each with its bar. */
-function GoalsCard({ gameKey, tasks }: { gameKey: string; tasks: TaskDto[] }) {
+/** The game's active goals, each with its bar (the Overview's goals gauge sits on top). */
+function GoalsCard({ gameKey, tasks, span }: { gameKey: string; tasks: TaskDto[]; span?: "full" }) {
   const goals = topGoals(tasks)
     .filter((t) => !t.backlog)
     .map((t) => ({ t, p: progressOf(t, tasks) }))
     .sort((a, b) => b.p - a.p);
-  const avg = Math.round((goals.length ? goals.reduce((s, g) => s + g.p, 0) / goals.length : 0) * 100);
+  if (goals.length === 0) return null;
   return (
-    <Card title="Goals" to={`/tasks?game=${gameKey}`} span="wide">
+    <Card title="Goal progress" to={`/tasks?game=${gameKey}`} span={span}>
       <div className="gd-goals">
-        <Ring done={avg} total={100} label={`${avg}% done on average`} size={136} />
         <div className="lst gd-scroll">
           <table className="gd-table">
             <tbody>
@@ -448,21 +483,9 @@ function GoalsCard({ gameKey, tasks }: { gameKey: string; tasks: TaskDto[] }) {
               ))}
             </tbody>
           </table>
-          {goals.length === 0 && <p className="table-empty">None</p>}
         </div>
       </div>
     </Card>
-  );
-}
-
-/** The goals still open (the backlog included) over the last ten days: Home's backlog chart, for this game. */
-function BacklogCard({ g, tasks }: { g: DashGame; tasks: TaskDto[] }) {
-  const open = topGoals(tasks).filter((t) => progressOf(t, tasks) < 1).length;
-  const series = backlogSeries([g], "daily", open, new Date());
-  return (
-    <GraphPanel title="Backlog" label="Backlog" className="gd-graph">
-      <LineChart values={series.values} labels={series.labels} label="Open goals over time" />
-    </GraphPanel>
   );
 }
 

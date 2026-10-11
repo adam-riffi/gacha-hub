@@ -15,7 +15,7 @@ export function GraphPanel({
   children,
 }: {
   title?: string;
-  /** Names the panel as a region, for screen readers. */
+  /** Names the panel as a region, for screen readers (its title when left out). */
   label?: string;
   /** What sits in the header instead of, or beside, the title (a period switch, a legend). */
   head?: ReactNode;
@@ -35,7 +35,7 @@ export function GraphPanel({
     e.currentTarget.style.setProperty("--rx", "0deg");
   };
   return (
-    <section className={`graph ${className}`} style={style} aria-label={label}>
+    <section className={`graph ${className}`} style={style} aria-label={label ?? title}>
       <div className="ph">
         {title && <h3>{title}</h3>}
         {head}
