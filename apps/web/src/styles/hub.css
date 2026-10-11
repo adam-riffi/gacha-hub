@@ -165,3 +165,5 @@ label.act-row { margin: 0; cursor: pointer; color: var(--text); font: 400 15px/1
 .ov-phase { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 .ov-units { display: inline-flex; align-items: center; gap: 4px; min-width: 0; }
 .ov-units .gicon { width: 36px; height: 36px; font-size: 10px; }
+/* A recurring task's box, ticked in place (the designs' squares). */
+.ov-tick { width: 16px; height: 16px; margin: 0; accent-color: var(--paper); cursor: pointer; }

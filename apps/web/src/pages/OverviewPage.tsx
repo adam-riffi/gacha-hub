@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { getGame, pullsFor, type BannerDto, type GameDefinition } from "@gacha/shared";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getGame, passView, pullsFor, type BannerDto, type GameDefinition, type PassesDto, type TaskDto } from "@gacha/shared";
 import { LoadError } from "../components/LoadError";
 import { api } from "../lib/api";
 import { formatRemaining } from "../lib/time";
@@ -20,11 +20,17 @@ export function OverviewPage() {
   const { id } = useParams<{ id: string }>();
   const instance = useQuery({ queryKey: ["instance", id], queryFn: () => api.get<InstanceDetail>(`/api/instances/${id}`) });
   const dash = useQuery({ queryKey: ["dashboard"], queryFn: () => api.get<DashboardData>("/api/dashboard") });
+  const tasks = useQuery({ queryKey: ["tasks", "game", id], queryFn: () => api.get<TaskDto[]>(`/api/tasks?scope=game&refId=${id}`) });
+  const passes = useQuery({ queryKey: ["passes", id], queryFn: () => api.get<PassesDto>(`/api/instances/${id}/passes`) });
   const game = instance.data && getGame(instance.data.gameKey);
   if (instance.isError || dash.isError) return <LoadError what="The overview" retry={() => Promise.all([instance.refetch(), dash.refetch()])} />;
   const g = dash.data?.games.find((x) => x.instanceId === id);
   if (!instance.data || !game || !dash.data || !g) return <div className="mu">Loading…</div>;
   const banners = dash.data.timeline.banners.filter((b) => b.gameKey === game.key);
+  const recurring = (tasks.data ?? []).filter((t) => t.type === "recurring");
+  const region = game.regions.find((r) => r.key === instance.data.regionKey) ?? game.regions[0]!;
+  const battle = passes.data?.battle;
+  const pv = passView(game, region, new Date(), battle ? { ...battle, updatedAt: new Date(battle.updatedAt) } : null, null);
 
   return (
     <>
@@ -39,6 +45,9 @@ export function OverviewPage() {
           </>
         ) : null}
         <BannersCard banners={banners} game={game} />
+        <TodayCard instanceId={id!} items={recurring.filter((t) => t.cadence === "daily")} />
+        <WeeklyCard instanceId={id!} game={game} pv={pv} items={recurring.filter((t) => t.cadence === "weekly")} />
+        <StaminaCard g={g} game={game} instance={instance.data} />
       </div>
     </>
   );
@@ -144,6 +153,110 @@ function BannersCard({ banners, game }: { banners: BannerDto[]; game: GameDefini
           </div>
         );
       })}
+    </section>
+  );
+}
+
+/** A row of boxes, one per recurring task, ticked in place. */
+function Ticks({ instanceId, items }: { instanceId: string; items: TaskDto[] }) {
+  const qc = useQueryClient();
+  const tick = useMutation({
+    mutationFn: (v: { id: string; done: boolean }) => api.post(`/api/tasks/${v.id}/complete`, { done: v.done }),
+    onSuccess: () => Promise.all([["tasks", "game", instanceId], ["tasks"], ["dashboard"]].map((queryKey) => qc.invalidateQueries({ queryKey }))),
+  });
+  return (
+    <>
+      {items.map((t) => (
+        <div key={t.id}>
+          <dt>{t.title}</dt>
+          <dd>
+            <input type="checkbox" className="ov-tick" aria-label={t.title} key={String(t.doneThisCycle)} defaultChecked={Boolean(t.doneThisCycle)} onChange={(e) => tick.mutate({ id: t.id, done: e.target.checked })} />
+          </dd>
+        </div>
+      ))}
+    </>
+  );
+}
+
+/** Today's dailies, each a box ticked in place. */
+function TodayCard({ instanceId, items }: { instanceId: string; items: TaskDto[] }) {
+  return (
+    <section className="card ov-card" aria-label="Today">
+      <Head title="Today" to={`/games/${instanceId}/activities`} />
+      <dl className="ov-rows">
+        <Ticks instanceId={instanceId} items={items} />
+      </dl>
+      {items.length === 0 && <p className="mu">None</p>}
+    </section>
+  );
+}
+
+/** The battle pass (its level, this week's XP) and the weeklies. */
+function WeeklyCard({ instanceId, game, pv, items }: { instanceId: string; game: GameDefinition; pv: ReturnType<typeof passView>; items: TaskDto[] }) {
+  const name = game.manifest.battlePass ? `${game.manifest.battlePass.name} and weekly` : "Weekly";
+  const k = (n: number) => (n >= 1000 ? `${(n / 1000).toFixed(n % 1000 ? 1 : 0)}k` : String(n));
+  return (
+    <section className="card ov-card" aria-label={name}>
+      <Head title={name} to={`/games/${instanceId}/activities`} />
+      <dl className="ov-rows">
+        {game.manifest.battlePass && (
+          <div>
+            <dt>Level</dt>
+            <dd>
+              {pv.level}
+              {pv.maxLevel !== null && `/${pv.maxLevel}`}
+            </dd>
+          </div>
+        )}
+        {pv.weeklyXpCap !== null && (
+          <div>
+            <dt>Weekly EXP</dt>
+            <dd>
+              {k(pv.weeklyXp)} / {k(pv.weeklyXpCap)}
+            </dd>
+          </div>
+        )}
+        <Ticks instanceId={instanceId} items={items} />
+      </dl>
+    </section>
+  );
+}
+
+/** The game's stamina projected to now, when it is full, and its reserve. */
+function StaminaCard({ g, game, instance }: { g: DashGame; game: GameDefinition; instance: InstanceDetail }) {
+  const def = game.currencies.find((c) => c.key === game.manifest.stamina.currency);
+  const reserveDef = game.currencies.find((c) => c.key === game.manifest.stamina.reserve?.currency);
+  if (!def || !g.stamina) return null;
+  const reserve = reserveDef ? (instance.currencies.find((c) => c.key === reserveDef.key)?.value ?? 0) : null;
+  return (
+    <section className="card ov-card" aria-label={def.label}>
+      <Head title={def.label} to={`/games/${instance.id}/activities`} />
+      <div className="ov-big" data-testid="stamina">
+        {Math.floor(g.stamina.value)}
+        <small> / {g.stamina.cap}</small>
+      </div>
+      <dl className="ov-rows">
+        {g.stamina.full || !g.stamina.fullAt ? (
+          <div>
+            <dt>Full</dt>
+            <dd className="ov-hot">now</dd>
+          </div>
+        ) : (
+          <div>
+            <dt>Full in</dt>
+            <dd>{formatRemaining(g.stamina.fullAt)}</dd>
+          </div>
+        )}
+        {reserveDef && (
+          <div>
+            <dt>{reserveDef.label}</dt>
+            <dd>
+              {reserve}
+              {reserveDef.cap && ` / ${reserveDef.cap}`}
+            </dd>
+          </div>
+        )}
+      </dl>
     </section>
   );
 }
