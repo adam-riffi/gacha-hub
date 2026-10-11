@@ -164,15 +164,15 @@ export function CharactersPage() {
       return n;
     });
   const pickedCards = cards.filter((c) => picked.has(c.id));
-  // A build's weapon as the card shows it: the catalog's name and icon, level and refinement.
+  // A build's weapon as the card shows it: the catalog's name and icon, its level and refinement.
   const heldOf = (b: CharacterDto | undefined) => {
     const held = b && holder ? ((b.doc as Record<string, unknown>)[holder] as Record<string, unknown> | undefined) : undefined;
     const w = held?.catalogId ? catalog?.weapons.find((x) => x.id === held.catalogId) : undefined;
     if (!held || (!w && !held.name)) return null;
     const dupe = dupeField ? held[dupeField.split(".").at(-1)!] : undefined;
-    const level = typeof held.level === "number" ? `Lv ${held.level}` : null;
+    const level = typeof held.level === "number" ? held.level : null;
     const rank = `${dupeLetter(dupeField ?? "")}${typeof dupe === "number" ? dupe : 1}`;
-    return { name: w?.name ?? String(held.name), icon: w?.icon, line: [level, rank].filter(Boolean).join(" · ") };
+    return { name: w?.name ?? String(held.name), icon: w?.icon, level, rank };
   };
   const holder = weaponHolder(game);
   const dupeField = game.manifest.dupes.weapon?.field;
@@ -273,6 +273,7 @@ export function CharactersPage() {
           const step = eventStep(c.id);
           const art = splashKey(game.key, c.icon, c.splash);
           const el = elementColor(game.key, c.tag);
+          const held = heldOf(c.build);
           // The whole card opens the build, or the unit's page when there is none.
           const to = c.build ? `/characters/${c.build.id}` : c.entry ? `/games/${id}/units/${c.id}` : null;
           return (
@@ -298,9 +299,19 @@ export function CharactersPage() {
                 </div>
                 <span className={`ch-dupes ${c.owned ? "" : "is-off"}`}>{c.owned ? dupeBadge(game, doc) : "Not owned"}</span>
                 <div className="ch-namebox">
-                  <h3>{c.name}</h3>
-                  <div className="mn">
-                    {c.build ? buildLine(game, doc, c.entry?.talents.keys ?? []) : onBanner ? `on the banner until ${ENDS.format(new Date(onBanner.endsAt))}` : c.owned ? "no build yet" : "not owned"}
+                  {/* Its weapon on the left of the name card, level and refinement on the icon (Georges, round 4). */}
+                  {held && (
+                    <span className="ch-weapon" title={[held.name, held.level !== null && `Lv ${held.level}`, held.rank].filter(Boolean).join(" · ")}>
+                      <GameIcon src={assetUrl(game.key, "weapon", held.icon)} fallback={communityAssetUrl(game.key, "weapon", held.icon)} alt={held.name} label={held.name.slice(0, 2)} />
+                      {held.level !== null && <span className="mn ch-weapon-lv">{held.level}</span>}
+                      <span className="mn ch-weapon-r">{held.rank}</span>
+                    </span>
+                  )}
+                  <div className="ch-namebox-text">
+                    <h3>{c.name}</h3>
+                    <div className="mn ch-namebox-line">
+                      {c.build ? buildLine(game, doc, c.entry?.talents.keys ?? [], !held) : onBanner ? `on the banner until ${ENDS.format(new Date(onBanner.endsAt))}` : c.owned ? "no build yet" : "not owned"}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -322,12 +333,6 @@ export function CharactersPage() {
                 </div>
               ) : null}
               <div className="ch-foot">
-                {heldOf(c.build) && (
-                  <span className="ch-weapon" title={heldOf(c.build)!.name}>
-                    <GameIcon src={assetUrl(game.key, "weapon", heldOf(c.build)!.icon)} fallback={communityAssetUrl(game.key, "weapon", heldOf(c.build)!.icon)} alt={heldOf(c.build)!.name} label={heldOf(c.build)!.name.slice(0, 2)} />
-                    <span className="mn">{heldOf(c.build)!.line}</span>
-                  </span>
-                )}
                 {c.build && <span className={`badge ${c.build.buildStatus === "perfect" ? "done" : ""}`}>{c.build.buildStatus === "none" ? "Unbuilt" : c.build.buildStatus}</span>}
                 {c.build && <span className="mu ch-set">{gearSetLabel(game, doc) ?? c.build.role ?? ""}</span>}
                 {step && <span className="badge todo">→ {step.letter}{step.to} · event</span>}

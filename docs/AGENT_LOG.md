@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r7/05-card-weapon · #248
+- Done: on the Characters cards, the default build's weapon sits on the left of the coloured name card, its level and refinement on its icon (Georges, round 4: "add the weapons on the name card not under it"); the footer no longer holds it, and the name card's line leaves the refinement to the icon (`buildLine` takes `withWeapon`). WIREFRAMES.md G4 follows.
+- Tests: written first: Kafka's card shows her light cone's icon in the name card with 80 and S2 on it, none in the footer, and no S2 in the line. `npm run check` passes: 592 tests and 70 journeys.
+- Scope/decisions: the level bottom-left and the refinement top-right of the 48 px icon, on dark tags, so they read over any art.
+- Next: icons where materials showed initials (Genshin's newest, WuWa's).
+
 ## 2026-10-11 · claude · stack/r7/04-one-user · #247
 - Done: one user, self-hosted (Georges, round 4: "a one user project that people can host themselves, so you can remove dev user admin mentions"). The local sign-in reads "Continue" and names its account Player; Settings says "Signed in as". The rail has no Admin: its tools (the official feed, sample data, uploads, current banners and events, the log) are Settings' **Data sources** at `/settings/data`, for the owner; `/admin` leads there. With one user, the Users tile and table and the log's actor go. README, DESIGN.md, AGENTS.md, CLAUDE.md and the guide say one user, self-hosted.
 - Tests: written first: every journey signs in with "Continue"; Data sources is reached from Settings, without Users, and `/admin` lands there; the rail has no Admin; the audit's actor is Player. `npm run check` passes: 592 tests and 70 journeys; initial JavaScript 146.8 KB.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: every catalog element has a colour dark text reads on (4.5:1), and the hues match the games; the Characters journey filters by the Lightning chip, finds Kafka's light cone "Lv 80 · S2" on her card, and selects Arlan by clicking his card. `npm run check` passes: 563 tests and 49 journeys.
 - Scope/decisions: chips carry names and colour dots; real element and weapon icons wait for the art bucket (audit, Later).
 - Next: a Weapons screen.
-
-## 2026-10-11 · claude · stack/r3/02-builds · #208
-- Done: Georges: "I should first see my character with its default build, then switch between builds, maybe change the default one." A build gets `isDefault` (migration `20261012090000_default_build`); a unit's first build is its default, and `PUT /api/characters/:id { isDefault: true }` moves it. The sheet shows the unit's builds as tabs (★ on the default), + New build (named after the unit, never "(2)"), Make default, and an optional label. Characters' cards open and show the default build. Gone: the Role select, "Make these the game's defaults" and the "More details" second sheet.
-- Tests: written first: the route test makes Amber's first build the default and moves it to the second; the sheet journey adds a build, makes it the default and finds Characters opening it; the first sheet journey checks Role, the defaults button and More details are gone. The Characters journey makes its Kafka build the default, since cards now show the default. `npm run check` passes: 561 tests and 49 journeys.
-- Scope/decisions: old "Name (2) (2)" builds show as "Build N" with an empty label; their names stay in the database. The per-game sheets are no longer shown; deleting them (and their scaffold in `game:new`) is a follow-up. Default KPI targets stay in the API, without a button.
-- Next: the Characters page (in-game element colours, Select clicks, icon filters, the default build's weapon).
