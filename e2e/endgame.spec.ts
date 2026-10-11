@@ -94,6 +94,11 @@ test("Stygian Onslaught shows its three bosses; Spiral Abyss and Imaginarium The
   try {
     await page.goto(`/games/${id}/endgame`);
     await expect(page.getByRole("region", { name: "Stygian Onslaught" }).getByRole("list", { name: "Enemies" }).getByRole("listitem")).toHaveCount(3);
+    // Each boss's team and time, shown before anything is typed (Georges, round 6: "for Stygian I wanna see my teams, time and difficulty").
+    const clears = page.getByRole("region", { name: "Stygian Onslaught" }).getByRole("list", { name: "Clears" });
+    await expect(clears.getByRole("listitem")).toHaveCount(3);
+    await expect(clears).toContainText("Boss 1");
+    await expect(page.getByRole("region", { name: "Stygian Onslaught" })).toContainText("difficulty");
     await expect(page.getByRole("list", { name: "Enemies" })).toHaveCount(1);
   } finally {
     await page.request.delete(`/api/instances/${id}`);
