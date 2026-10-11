@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r7/09-enemy-icons · #252
+- Done: endgame enemies as icons (Georges, round 4: "use icons when possible, that goes for enemies too"). What a stage's enemies are weak to shows as element icons where the game has a source (ZZZ's, from Hakushin, through a new art kind, `element`), the coloured dots elsewhere. A stage that is one boss of the same name (Deadly Assault, Stygian Onslaught) shows only its level beside the boss's icon, named on hover. WIREFRAMES.md G2 follows. Also a fix the check surfaced: owning or un-owning characters on the Characters cards now updates the cache from what was saved, as the journey that owns two selected characters failed twice in four full runs with both the save and the refetch answering right.
+- Tests: written first: Shiyu's list shows "Weak to …" element icons; Deadly Assault's first stage reads "Lv N" and its enemy names itself on hover; ZZZ's element URL is Hakushin's. `npm run check` passes: 597 tests and 70 journeys.
+- Scope/decisions: Genshin's Stygian bosses have no weaknesses in the data; Star Rail's Apocalyptic Shadow still has no dated source.
+- Next: the Planner's goals with the Tasks features.
+
 ## 2026-10-11 · claude · stack/r7/08-gear-screen · #251
 - Done: one gear screen for every game (Georges, round 4: "each set of gear shown, I can click on them to see what piece I have currently, or click on farming to generate a task and choose what pieces I need"). Each set is a card with how many of its slots you hold; a click opens it beside the cards: its pieces by slot, on whom (Unequip) or in the bag (Equip on a build), and Add a piece; Farm ticks the pieces you need (the empty slots first) and makes a checklist goal, a step per piece, with the set as its origin. Bonus labels come from each bonus's own "2pc:" prefix (WuWa showed "2-pc 2pc:"), one-piece sets say 1pc. Genshin's inventory and farm-targets views, and their components, go: the set panel does their work the same way everywhere. WIREFRAMES.md G6, the guide and its screenshot follow.
 - Tests: written first: Star Rail's Musketeer set opens with an empty Head, a piece added to the bag shows there, equipped on Seele it shows her and the card counts 1 / 4; WuWa's and ZZZ's first sets farm two picked pieces into a checklist goal. The a11y walk opens a Genshin set and its Farm picker. A follow-up test commit: the set journey checks its own piece, as other journeys' builds may wear the set. `npm run check` passes: 596 tests and 70 journeys.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the route links, refuses a loop and a self-link, and unlinks; the Tasks journeys open goals by clicking them, check Clara's plan steps after generating from her sheet without a Preview button, and link a light cone's goal under hers. `npm run check` passes: 567 tests and 51 journeys.
 - Scope/decisions: linking reuses `parentId`, so a linked goal leaves the top list and rides with its parent, one level deep.
 - Next: wishlisting events and banners.
-
-## 2026-10-11 · claude · stack/r3/06-pulls · #212
-- Done: Georges: "if I do a ten-pull, get a 5★ and log it as the tenth, but it was the seventh, I should be able to correct it", and "keep a history of banners and my pulls on them; on each banner I should be able to click on the character". `PATCH /api/instances/:id/pulls/:entryId` corrects a logged 5★: the pull it came at keeps its batch's size (earlier: the rest follow it; later: the pulls after it shrink), won or lost, which unit; a pity before its run is refused. History rows edit in place (pity, result, unit by picker; Delete). `GET /api/instances/:id/pulls/history` lists the game's banners that began, newest first, with this profile's pulls in each window and the 5★ got; Pulls shows it as Banner history, featured characters linking to their pages.
-- Tests: written first: the route moves Amber from pull 10 to 7 (pity then 3, guaranteed after the loss), marks it won without a unit, moves it to 9 (pity 1) and refuses 0; the history lists the running and the ended banner with 10 and 0 pulls and leaves out the upcoming one. The Pulls journey corrects Kafka to 7 and opens her page from Banner history. `npm run check` passes: 566 tests and 50 journeys.
-- Scope/decisions: a banner's pulls are those logged or imported inside its dates for its kind; banners sharing dates share them.
-- Next: goals.
