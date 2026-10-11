@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-12 · claude · stack/r8/01-settings-tabs · #256
+- Done: Settings as tabs (Georges, round 5: Data sources opened "a whole new window" with no way back; "it's ok to have multiple tabs instead of one big one"): Games (the default), Linked accounts, Pull history, Notifications, Account and data, and Data sources for the owner, each at `/settings/<tab>`, the tabs on the left of every one. Notifications also holds the reminder rules and their preview (Tasks' panel). Data sources' payload and current items sit side by side in the narrower column. Round 5's list is in `docs/AUDIT-2026-10-12-round5.md`.
+- Tests: written first: the Settings journey walks the tabs (each its address and `aria-current`; Pull history absent from Games); Data sources is a tab with Settings' heading over it, and Games is one click back; export and HoYoLAB open their tabs; the a11y sweep covers the new tabs.
+- Scope/decisions: a tab's queries load with it (links, imports).
+- Next: the Endgame's cycles, each one opening.
+
 ## 2026-10-11 · claude · stack/r7/12-endfield-data · #255
 - Done: Endfield's weapons and gear sets (Georges, round 4: "try to populate Endfield and NTE for data on them"), from the same EndFieldGameData tables: 71 weapons with their kinds (Sword, Greatsword, Polearm, Handcannon, Arts Unit, the game's own words) and 22 gear sets in four slots (body, hands, two kits), each named from its body piece as the suits have no names ("Roving MSGR"). A character's `weaponType` is now its weapon kind, so the sheet's weapon picker filters by it; its profession (in `extra`) seeds the build's class. Endfield gets its Gear tab; still no Planner (no costs published). Round 4's audit is marked done and HANDOFF.md rewritten for it.
 - Tests: written first: the catalog has 60+ weapons across the five kinds and 15+ uniquely named four-slot sets, Roving MSGR among them; the Endministrator's kind is Sword, its profession Guard, which seeds the class; Endfield's hub tabs include Gear; the weapons journey finds Exemplar in Endfield's catalog. `npm run check` passes: 603 tests and 71 journeys.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the scaffolder test expects no web sheet and only the shared registry edit. `npm run check` passes: 570 tests and 53 journeys; initial JavaScript 145.3 KB of 200 KB.
 - Scope/decisions: about 1,250 lines removed, none added beyond the moved stat lists.
 - Next: the handoff.
-
-## 2026-10-11 · claude · stack/r3/10-library · #216
-- Done: Georges's games overview notes ("what even is manifest? remove that live data as well"). Each game's row shows what it holds, each cell opening its screen: Owned (characters owned / in the catalog), Pulls (limited, with the Home glyph), the game's energy (current / cap), Goals and Backlog (counted as Tasks counts them). The manifest, catalog and live-data cells, the capabilities legend and the pipeline note are gone; the hint says "Drag to reorder". Cells line up across rows.
-- Tests: written first: the library journey finds each cell with its number and link, and none of the pipeline words. `npm run check` passes: 570 tests and 53 journeys.
-- Scope/decisions: goals and backlog come from `/api/tasks` (the Tasks page's own query), so the dashboard DTO is unchanged.
-- Next: remove the unused per-game sheets.
