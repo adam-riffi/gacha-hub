@@ -15,6 +15,7 @@ export * from "./cadence.js";
 export * from "./pulls.js";
 export * from "./passes.js";
 export * from "./endgame.js";
+export * from "./enemies.js";
 export * from "./home.js";
 export * from "./effects.js";
 export * from "./rewards.js";

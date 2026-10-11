@@ -1,7 +1,8 @@
 import { useState, type FormEvent } from "react";
 import { useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { endgameNow, gameDay, getGame, premiumCurrency, type Clear, type CycleResultsDto, type GameDefinition, type GameRegion, type TeamDto } from "@gacha/shared";
+import { elementColor, endgameNow, enemiesFor, gameDay, getGame, premiumCurrency, type Clear, type CycleResultsDto, type GameDefinition, type GameRegion, type TeamDto } from "@gacha/shared";
+import { GameIcon } from "../components/GameIcon";
 import { api } from "../lib/api";
 import { assetUrl, communityAssetUrl } from "../lib/assets";
 import { useCatalog } from "../lib/catalog";
@@ -110,7 +111,7 @@ export function EndgamePage() {
 
         <div className="eg-modes">
           {eg.modes.map((m) => (
-            <ModeCard key={m.mode.key} instanceId={id!} m={m} region={region} now={now} premium={premium} roster={roster} history={results.filter((r) => r.modeKey === m.mode.key)} />
+            <ModeCard key={m.mode.key} instanceId={id!} game={game} m={m} region={region} now={now} premium={premium} roster={roster} history={results.filter((r) => r.modeKey === m.mode.key)} />
           ))}
           {eg.modes.length === 0 && <p className="mu">No endgame mode on record for this game yet.</p>}
         </div>
@@ -138,6 +139,7 @@ export function EndgamePage() {
 
 function ModeCard({
   instanceId,
+  game,
   m,
   region,
   now,
@@ -146,6 +148,7 @@ function ModeCard({
   history,
 }: {
   instanceId: string;
+  game: GameDefinition;
   m: Now;
   region: GameRegion;
   now: Date;
@@ -229,6 +232,7 @@ function ModeCard({
         {last.length === 0 && <span className="mu eg-none">No cycle recorded yet.</span>}
       </div>
       {!editing && <ClearList gameKey={roster.gameKey} teams={current?.teams ?? []} unitOf={roster.unitOf} />}
+      <Enemies game={game} modeKey={mode.key} today={gameDay(region, now)} />
       {editing ? (
         <form className="act-add" onSubmit={submit}>
           <label>
@@ -295,5 +299,53 @@ function ModeCard({
         </button>
       )}
     </section>
+  );
+}
+
+/**
+ * Who this cycle sends at you, where the mode rotates it (Georges, 2026-10-11:
+ * "what enemies are on what level … like Stygian or Shiyu Defense"): each
+ * stage with its level, each half's enemies, what they are weak to. A cycle
+ * the data has not reached yet shows the last one, with its dates.
+ */
+function Enemies({ game, modeKey, today }: { game: GameDefinition; modeKey: string; today: string }) {
+  const { data } = useQuery({ queryKey: ["endgame-enemies", game.key], queryFn: () => game.loadEndgame!(), enabled: Boolean(game.loadEndgame), staleTime: Infinity });
+  const cycle = data && enemiesFor(data, modeKey, today);
+  if (!cycle) return null;
+  return (
+    <div className="eg-enemies">
+      <div className="spread">
+        <span className="kpi-label">Enemies</span>
+        {!cycle.current && (
+          <span className="mn mu">
+            {cycle.begin} → {cycle.end}
+          </span>
+        )}
+      </div>
+      <ul aria-label="Enemies">
+        {cycle.stages.map((s) => (
+          <li key={s.name}>
+            <span className="mn mu eg-stage">
+              {s.name}
+              {s.level && ` · Lv ${s.level}`}
+            </span>
+            <span className="eg-groups">
+              {s.groups.map((g, i) => (
+                <span key={i} className="eg-group">
+                  {g.map((e) => (
+                    <GameIcon key={e.name} src={e.image ?? null} alt={e.name} />
+                  ))}
+                </span>
+              ))}
+            </span>
+            <span className="eg-weak">
+              {s.weak.map((w) => (
+                <i key={w} role="img" aria-label={`Weak to ${w}`} title={`Weak to ${w}`} style={{ background: elementColor(game.key, w) ?? "var(--text-muted)" }} />
+              ))}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }

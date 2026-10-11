@@ -8,7 +8,8 @@
     "hsr": "tsx hsr.ts",
     "wuwa": "tsx wuwa.ts",
     "endfield": "tsx endfield.ts",
-    "zzz": "tsx zzz.ts"
+    "zzz": "tsx zzz.ts",
+    "endgame": "tsx endgame.ts"
   },
   "dependencies": {
     "adm-zip": "^0.5.16",

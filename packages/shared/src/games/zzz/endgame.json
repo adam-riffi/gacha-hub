@@ -1,0 +1,3324 @@
+{
+  "source": "hakushin@static.nanoka.cc/zzz/3.2",
+  "cycles": [
+    {
+      "modeKey": "assault",
+      "begin": "2026-06-19",
+      "end": "2026-07-03",
+      "stages": [
+        {
+          "name": "Girtablullu",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Girtablullu",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Girtablu.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Wind"
+          ]
+        },
+        {
+          "name": "Notorious - Marionette",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Notorious - Marionette",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_NotoriousMarionette.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Ice",
+            "Ether"
+          ]
+        },
+        {
+          "name": "Ye Shiyuan the Thrall",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Ye Shiyuan the Thrall",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Awakener.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Physical",
+            "Ice",
+            "Wind"
+          ]
+        }
+      ]
+    },
+    {
+      "modeKey": "assault",
+      "begin": "2026-07-03",
+      "end": "2026-07-17",
+      "stages": [
+        {
+          "name": "Girtablullu",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Girtablullu",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Girtablu.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Wind"
+          ]
+        },
+        {
+          "name": "Primordial Nightmare - \"The Creator\"",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Primordial Nightmare - \"The Creator\"",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Vessel.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Physical"
+          ]
+        },
+        {
+          "name": "Ye Shiyuan the Thrall",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Ye Shiyuan the Thrall",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Awakener.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Physical",
+            "Ice",
+            "Wind"
+          ]
+        }
+      ]
+    },
+    {
+      "modeKey": "assault",
+      "begin": "2026-07-17",
+      "end": "2026-07-29",
+      "stages": [
+        {
+          "name": "Phaethon of the Scorched Horizon",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Phaethon of the Scorched Horizon",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Mutant.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Ice",
+            "Wind"
+          ]
+        },
+        {
+          "name": "Notorious - Pompey",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Notorious - Pompey",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_NotoriousPompey.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Fire"
+          ]
+        },
+        {
+          "name": "Miasmic Fiend - Unfathomable",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Miasmic Fiend - Unfathomable",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_NamelessOne.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Physical",
+            "Ether"
+          ]
+        }
+      ]
+    },
+    {
+      "modeKey": "assault",
+      "begin": "2026-07-29",
+      "end": "2026-08-14",
+      "stages": [
+        {
+          "name": "Girtablullu - Stagnant Aberrant",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Girtablullu - Stagnant Aberrant",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_GirReborn.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": []
+        },
+        {
+          "name": "Notorious - Dead End Butcher",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Notorious - Dead End Butcher",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_NotoriousDeadEndButcher.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Ice",
+            "Ether"
+          ]
+        },
+        {
+          "name": "Unknown Corruption Complex",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Unknown Corruption Complex",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ComplexCorrupted.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Electric",
+            "Ether"
+          ]
+        }
+      ]
+    },
+    {
+      "modeKey": "assault",
+      "begin": "2026-08-14",
+      "end": "2026-08-28",
+      "stages": [
+        {
+          "name": "Girtablullu - Stagnant Aberrant",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Girtablullu - Stagnant Aberrant",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_GirReborn.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": []
+        },
+        {
+          "name": "Ye Shiyuan the Thrall",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Ye Shiyuan the Thrall",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Awakener.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Physical",
+            "Ice",
+            "Wind"
+          ]
+        },
+        {
+          "name": "Miasma Priest",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Miasma Priest",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MentorMevorakh.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Ether"
+          ]
+        }
+      ]
+    },
+    {
+      "modeKey": "assault",
+      "begin": "2026-08-28",
+      "end": "2026-09-11",
+      "stages": [
+        {
+          "name": "Newborn Dead End Butcher",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Dead End Butcher",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_CottusGrey.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Ice",
+            "Ether"
+          ]
+        },
+        {
+          "name": "Girtablullu",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Girtablullu",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Girtablu.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Wind"
+          ]
+        },
+        {
+          "name": "Primordial Nightmare - \"The Creator\"",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Primordial Nightmare - \"The Creator\"",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Vessel.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Physical"
+          ]
+        }
+      ]
+    },
+    {
+      "modeKey": "assault",
+      "begin": "2026-09-11",
+      "end": "2026-09-25",
+      "stages": [
+        {
+          "name": "Kusarikku",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Kusarikku",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Larval.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Fire",
+            "Electric"
+          ]
+        },
+        {
+          "name": "Girtablullu - Stagnant Aberrant",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Girtablullu - Stagnant Aberrant",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_GirReborn.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": []
+        },
+        {
+          "name": "Ye Shiyuan the Thrall",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Ye Shiyuan the Thrall",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Awakener.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Physical",
+            "Ice",
+            "Wind"
+          ]
+        }
+      ]
+    },
+    {
+      "modeKey": "assault",
+      "begin": "2026-09-25",
+      "end": "2026-10-09",
+      "stages": [
+        {
+          "name": "Kusarikku",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Kusarikku",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Larval.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Fire",
+            "Electric"
+          ]
+        },
+        {
+          "name": "Miasmic Fiend - Unfathomable",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Miasmic Fiend - Unfathomable",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_NamelessOne.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Physical",
+            "Ether"
+          ]
+        },
+        {
+          "name": "Ye Shiyuan the Thrall",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Ye Shiyuan the Thrall",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Awakener.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Physical",
+            "Ice",
+            "Wind"
+          ]
+        }
+      ]
+    },
+    {
+      "modeKey": "assault",
+      "begin": "2026-10-09",
+      "end": "2026-10-23",
+      "stages": [
+        {
+          "name": "Phaethon of the Scorched Horizon",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Phaethon of the Scorched Horizon",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Mutant.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Ice",
+            "Wind"
+          ]
+        },
+        {
+          "name": "Infernal Revenant",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Infernal Revenant",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_SymbioticEtherealSinner.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Ice",
+            "Wind"
+          ]
+        },
+        {
+          "name": "Kusarikku",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Kusarikku",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Larval.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Fire",
+            "Electric"
+          ]
+        }
+      ]
+    },
+    {
+      "modeKey": "shiyu",
+      "begin": "2026-06-26",
+      "end": "2026-07-10",
+      "stages": [
+        {
+          "name": "First Frontier",
+          "level": 50,
+          "groups": [
+            [
+              {
+                "name": "Farbauti",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_GiantGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Armored Hati",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HatiArmoredGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Fossor",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Fossor.webp",
+                "weak": []
+              },
+              {
+                "name": "Sordidus",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Sordidus.webp",
+                "weak": []
+              }
+            ],
+            [
+              {
+                "name": "Poacher",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugPoacher.webp",
+                "weak": []
+              },
+              {
+                "name": "Raider",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugRaider.webp",
+                "weak": []
+              },
+              {
+                "name": "Bulky Enforcer",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugBulkyEnforcer.webp",
+                "weak": []
+              },
+              {
+                "name": "Bulky Intimidator",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugBulkyAbuser.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Ice",
+            "Ether",
+            "Physical"
+          ]
+        },
+        {
+          "name": "Second Frontier",
+          "level": 55,
+          "groups": [
+            [
+              {
+                "name": "Tyrfing",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ClaymoreGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Alpeca",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_CyclopsGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Hati",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HatiGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Hoplitai",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Golemgrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Metro Goblin",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_GoblinMetro.webp",
+                "weak": []
+              },
+              {
+                "name": "Mandrake",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Mandrake.webp",
+                "weak": []
+              }
+            ],
+            [
+              {
+                "name": "Guardian",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Guardian.webp",
+                "weak": []
+              },
+              {
+                "name": "Strike Jaeger",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_StrikeJaeger.webp",
+                "weak": []
+              },
+              {
+                "name": "Light Jaeger",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_LightJaeger.webp",
+                "weak": []
+              },
+              {
+                "name": "Heavy Striker",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HeavyStriker.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Ice",
+            "Ether",
+            "Physical",
+            "Fire"
+          ]
+        },
+        {
+          "name": "Third Frontier",
+          "level": 60,
+          "groups": [
+            [
+              {
+                "name": "Thanatos",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_DeathXIIIGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Armored Hati",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HatiArmoredGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Goblin",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_GoblinGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Fossor",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Fossor.webp",
+                "weak": []
+              },
+              {
+                "name": "Sordidus",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Sordidus.webp",
+                "weak": []
+              }
+            ],
+            [
+              {
+                "name": "Ambusher",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugAssaulterPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Rustler",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugPoacherPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Doppelganger - Mors",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Doppelganger_Mors.webp",
+                "weak": []
+              },
+              {
+                "name": "Doppelganger - Bellum",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Doppelganger_Bellum.webp",
+                "weak": []
+              },
+              {
+                "name": "Doppelganger - Pulchra",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Doppelganger_Pulchra.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Ice",
+            "Ether",
+            "Physical",
+            "Fire"
+          ]
+        },
+        {
+          "name": "Fourth Frontier",
+          "level": 65,
+          "groups": [
+            [
+              {
+                "name": "City Guardboo",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_BangbooBattleMecha.webp",
+                "weak": []
+              },
+              {
+                "name": "Metamorphosed - Scorpse",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_WingedChelonethid.webp",
+                "weak": []
+              }
+            ],
+            [
+              {
+                "name": "Wanted Enforcer",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugBulkyEnforcerPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Wanted Intimidator",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugBulkyAbuserPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Sacrifice - Heretic Jester",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HereticHunter.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Electric",
+            "Wind",
+            "Physical"
+          ]
+        },
+        {
+          "name": "Room 1",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Miasmic - Abyssal Enforcer",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaHugoSlime.webp",
+                "weak": []
+              },
+              {
+                "name": "City Guardboo",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_BangbooBattleMecha.webp",
+                "weak": []
+              },
+              {
+                "name": "Special Anti-Riotboo",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Sapper.webp",
+                "weak": []
+              },
+              {
+                "name": "Airspace Patrolboo",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_BangbooPatrolMecha.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Physical",
+            "Wind"
+          ]
+        },
+        {
+          "name": "Room 2",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Guardian MK II",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_GuardianPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Private Jaeger",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MeleeJaegerPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Demolition Jaeger",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_GrenadierJaegerPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Mirage Archer Unit",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ObsoleteAndroid.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Physical",
+            "Ether"
+          ]
+        },
+        {
+          "name": "Room 3",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Miasmic Komano Manato",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaNoranoSlime.webp",
+                "weak": []
+              },
+              {
+                "name": "Lahmu",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Arbiter.webp",
+                "weak": []
+              },
+              {
+                "name": "Mushussu",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Predator.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Ice"
+          ]
+        }
+      ]
+    },
+    {
+      "modeKey": "shiyu",
+      "begin": "2026-07-10",
+      "end": "2026-07-24",
+      "stages": [
+        {
+          "name": "First Frontier",
+          "level": 50,
+          "groups": [
+            [
+              {
+                "name": "Tarasque Mixer",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_TarasqueMixer.webp",
+                "weak": []
+              },
+              {
+                "name": "Miasmic Trooper - Shieldguard",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaWalkerGuardJaeger.webp",
+                "weak": []
+              },
+              {
+                "name": "Miasmic Trooper - Cannoneer",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaWalkerGrenadierJaeger.webp",
+                "weak": []
+              }
+            ],
+            [
+              {
+                "name": "Light Jaeger",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_LightJaeger.webp",
+                "weak": []
+              },
+              {
+                "name": "Rookie Jaeger",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster-MeleeJaeger.webp",
+                "weak": []
+              },
+              {
+                "name": "Lightfoot Rover",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_LightfootRover.webp",
+                "weak": []
+              },
+              {
+                "name": "Heavy Striker",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HeavyStriker.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Electric",
+            "Physical",
+            "Fire"
+          ]
+        },
+        {
+          "name": "Second Frontier",
+          "level": 55,
+          "groups": [
+            [
+              {
+                "name": "Enraged Sweeper",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_RagingGuy.webp",
+                "weak": []
+              },
+              {
+                "name": "Guardian MK II",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_GuardianPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Harrier Jaeger",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_StrikeJaegerPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Scout Jaeger",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_LightJaegerPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Patrol Jaeger",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HeavyJaeger_Pro.webp",
+                "weak": []
+              }
+            ],
+            [
+              {
+                "name": "Guardian",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Guardian.webp",
+                "weak": []
+              },
+              {
+                "name": "Strike Jaeger",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_StrikeJaeger.webp",
+                "weak": []
+              },
+              {
+                "name": "Light Jaeger",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_LightJaeger.webp",
+                "weak": []
+              },
+              {
+                "name": "Heavy Striker",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HeavyStriker.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Electric",
+            "Physical",
+            "Fire"
+          ]
+        },
+        {
+          "name": "Third Frontier",
+          "level": 60,
+          "groups": [
+            [
+              {
+                "name": "Assault Gunner",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HeavyFirepowerPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Lightfoot Rover MK II",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_LightfootRoverPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Heavy Striker MK II",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HeavyStrikerPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Miasmic Trooper - Shieldguard",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaWalkerGuardJaeger.webp",
+                "weak": []
+              },
+              {
+                "name": "Miasmic Trooper - Cannoneer",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaWalkerGrenadierJaeger.webp",
+                "weak": []
+              }
+            ],
+            [
+              {
+                "name": "Ambusher",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugAssaulterPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Rustler",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugPoacherPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Doppelganger - Mors",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Doppelganger_Mors.webp",
+                "weak": []
+              },
+              {
+                "name": "Doppelganger - Bellum",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Doppelganger_Bellum.webp",
+                "weak": []
+              },
+              {
+                "name": "Doppelganger - Pulchra",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Doppelganger_Pulchra.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Electric",
+            "Physical",
+            "Fire"
+          ]
+        },
+        {
+          "name": "Fourth Frontier",
+          "level": 65,
+          "groups": [
+            [
+              {
+                "name": "Metamorphosed - Avarus",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_WingedAvarus.webp",
+                "weak": []
+              },
+              {
+                "name": "Mushussu",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Predator.webp",
+                "weak": []
+              }
+            ],
+            [
+              {
+                "name": "Ambusher",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugAssaulterPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Rustler",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugPoacherPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Troublemaker - Wanted Enforcer",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugBulkyEnforcerBoss.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Physical",
+            "Wind",
+            "Fire"
+          ]
+        },
+        {
+          "name": "Room 1",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Miasmic - Wicked Wraith",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaWickedWraith.webp",
+                "weak": []
+              },
+              {
+                "name": "Miasmic - Huskron",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Gloomaron.webp",
+                "weak": []
+              },
+              {
+                "name": "Miasmic - Rampant Brute",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaDubiousHero.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Wind",
+            "Ether"
+          ]
+        },
+        {
+          "name": "Room 2",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Doppelganger - Pulchra",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Doppelganger_Pulchra.webp",
+                "weak": []
+              },
+              {
+                "name": "Miasmic Trooper - Shieldguard",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaWalkerGuardJaeger.webp",
+                "weak": []
+              },
+              {
+                "name": "Miasmic Trooper - Cannoneer",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaWalkerGrenadierJaeger.webp",
+                "weak": []
+              },
+              {
+                "name": "Doppelganger - Starlight - Billy",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_InnerKnightSlime.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Fire",
+            "Electric"
+          ]
+        },
+        {
+          "name": "Room 3",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Miasmic - Lightfoot Rover",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaLightfootRover.webp",
+                "weak": []
+              },
+              {
+                "name": "Miasmic - Heavy Striker",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaHeavyStriker.webp",
+                "weak": []
+              },
+              {
+                "name": "Lockspring",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_BlackMazingerGoldenBomb.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Physical",
+            "Electric"
+          ]
+        }
+      ]
+    },
+    {
+      "modeKey": "shiyu",
+      "begin": "2026-07-24",
+      "end": "2026-08-07",
+      "stages": [
+        {
+          "name": "First Frontier",
+          "level": 50,
+          "groups": [
+            [
+              {
+                "name": "Farbauti",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_GiantGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Fossor",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Fossor.webp",
+                "weak": []
+              },
+              {
+                "name": "Sordidus",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Sordidus.webp",
+                "weak": []
+              },
+              {
+                "name": "Banyrek",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Banyrek.webp",
+                "weak": []
+              }
+            ],
+            [
+              {
+                "name": "Beholder Engine",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_BeholderEngine.webp",
+                "weak": []
+              },
+              {
+                "name": "Tarasque Mixer",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_TarasqueMixer.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Ice",
+            "Ether",
+            "Electric"
+          ]
+        },
+        {
+          "name": "Second Frontier",
+          "level": 55,
+          "groups": [
+            [
+              {
+                "name": "Dullahan",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_DurahanGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Ionized - Cyrtoidea",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Cyrtoidea.webp",
+                "weak": []
+              },
+              {
+                "name": "Ionized - Nassellaria",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Nassellaria.webp",
+                "weak": []
+              },
+              {
+                "name": "Miasmic - Frenzied Maniac",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaFrenziedManiac.webp",
+                "weak": []
+              }
+            ],
+            [
+              {
+                "name": "Alpeca",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_CyclopsGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Hati",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HatiGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Armored Hati",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HatiArmoredGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Hoplitai",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Golemgrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Mandrake",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Mandrake.webp",
+                "weak": []
+              },
+              {
+                "name": "Banyrek",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Banyrek.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Ether",
+            "Ice"
+          ]
+        },
+        {
+          "name": "Third Frontier",
+          "level": 60,
+          "groups": [
+            [
+              {
+                "name": "Fossor",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Fossor.webp",
+                "weak": []
+              },
+              {
+                "name": "Sordidus",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Sordidus.webp",
+                "weak": []
+              },
+              {
+                "name": "Miasmic - Trinox",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaTrinox.webp",
+                "weak": []
+              }
+            ],
+            [
+              {
+                "name": "Ambusher",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugAssaulterPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Rustler",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugPoacherPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Doppelganger - Mors",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Doppelganger_Mors.webp",
+                "weak": []
+              },
+              {
+                "name": "Doppelganger - Bellum",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Doppelganger_Bellum.webp",
+                "weak": []
+              },
+              {
+                "name": "Doppelganger - Pulchra",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Doppelganger_Pulchra.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Ether",
+            "Physical",
+            "Fire"
+          ]
+        },
+        {
+          "name": "Fourth Frontier",
+          "level": 65,
+          "groups": [
+            [
+              {
+                "name": "Hati",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HatiGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Notorious - Armored Hati",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HatiArmoredBoss.webp",
+                "weak": []
+              }
+            ],
+            [
+              {
+                "name": "Airspace Sentinel",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Sentinel.webp",
+                "weak": []
+              },
+              {
+                "name": "Metamorphosed - City Guardboo",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_CorruptedBattleMecha.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Ice",
+            "Ether",
+            "Wind"
+          ]
+        },
+        {
+          "name": "Room 1",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Miasmic - Doppelganger - The Defector",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaIsoldeSlime.webp",
+                "weak": []
+              },
+              {
+                "name": "Mushussu",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Predator.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Physical",
+            "Fire"
+          ]
+        },
+        {
+          "name": "Room 2",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Miasmic - Frenzied Maniac",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaFrenziedManiac.webp",
+                "weak": []
+              },
+              {
+                "name": "Miasmic - Trinox",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaTrinox.webp",
+                "weak": []
+              },
+              {
+                "name": "Miasmic - Rampant Brute",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaDubiousHero.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Wind",
+            "Ether"
+          ]
+        },
+        {
+          "name": "Room 3",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Huskron",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Huskron.webp",
+                "weak": []
+              },
+              {
+                "name": "Miasma Spawn",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaSpawn.webp",
+                "weak": []
+              },
+              {
+                "name": "Miasmic Komano Manato",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaNoranoSlime.webp",
+                "weak": []
+              },
+              {
+                "name": "Miasmic - Huskron",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Gloomaron.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Ice"
+          ]
+        }
+      ]
+    },
+    {
+      "modeKey": "shiyu",
+      "begin": "2026-08-07",
+      "end": "2026-08-21",
+      "stages": [
+        {
+          "name": "First Frontier",
+          "level": 50,
+          "groups": [
+            [
+              {
+                "name": "Farbauti",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_GiantGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Armored Hati",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HatiArmoredGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Fossor",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Fossor.webp",
+                "weak": []
+              },
+              {
+                "name": "Sordidus",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Sordidus.webp",
+                "weak": []
+              }
+            ],
+            [
+              {
+                "name": "Ionized - Farbauti",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_GiantEnergy.webp",
+                "weak": []
+              },
+              {
+                "name": "Ionized - Dullahan",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_DurahanEnergy.webp",
+                "weak": []
+              },
+              {
+                "name": "Ionized - Cyrtoidea",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Cyrtoidea.webp",
+                "weak": []
+              },
+              {
+                "name": "Ionized - Nassellaria",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Nassellaria.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Ice",
+            "Ether"
+          ]
+        },
+        {
+          "name": "Second Frontier",
+          "level": 55,
+          "groups": [
+            [
+              {
+                "name": "Tyrfing",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ClaymoreGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Alpeca",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_CyclopsGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Hati",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HatiGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Hoplitai",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Golemgrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Metro Goblin",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_GoblinMetro.webp",
+                "weak": []
+              },
+              {
+                "name": "Mandrake",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Mandrake.webp",
+                "weak": []
+              }
+            ],
+            [
+              {
+                "name": "City Guardboo",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_BangbooBattleMecha.webp",
+                "weak": []
+              },
+              {
+                "name": "Metamorphosed - City Guardboo",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_CorruptedBattleMecha.webp",
+                "weak": []
+              },
+              {
+                "name": "Metamorphosed - Special Anti-Riotboo",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_CorruptedSapper.webp",
+                "weak": []
+              },
+              {
+                "name": "Airspace Patrolboo",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_BangbooPatrolMecha.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Ice",
+            "Ether",
+            "Wind"
+          ]
+        },
+        {
+          "name": "Third Frontier",
+          "level": 60,
+          "groups": [
+            [
+              {
+                "name": "Thanatos",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_DeathXIIIGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Armored Hati",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HatiArmoredGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Goblin",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_GoblinGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Fossor",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Fossor.webp",
+                "weak": []
+              },
+              {
+                "name": "Sordidus",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Sordidus.webp",
+                "weak": []
+              }
+            ],
+            [
+              {
+                "name": "Ionized - Thanatos",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_DeathXIIIEnergy.webp",
+                "weak": []
+              },
+              {
+                "name": "Ionized - Dullahan",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_DurahanEnergy.webp",
+                "weak": []
+              },
+              {
+                "name": "Ionized - Cyrtoidea",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Cyrtoidea.webp",
+                "weak": []
+              },
+              {
+                "name": "Ionized - Nassellaria",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Nassellaria.webp",
+                "weak": []
+              },
+              {
+                "name": "Miasmic - Frenzied Maniac",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaFrenziedManiac.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Ice",
+            "Ether"
+          ]
+        },
+        {
+          "name": "Fourth Frontier",
+          "level": 65,
+          "groups": [
+            [
+              {
+                "name": "Hati",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HatiGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Notorious - Armored Hati",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HatiArmoredBoss.webp",
+                "weak": []
+              }
+            ],
+            [
+              {
+                "name": "City Guardboo",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_BangbooBattleMecha.webp",
+                "weak": []
+              },
+              {
+                "name": "Metamorphosed - Scorpse",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_WingedChelonethid.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Ice",
+            "Ether",
+            "Electric",
+            "Wind"
+          ]
+        },
+        {
+          "name": "Room 1",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Metamorphosed - Avarus",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_WingedAvarus.webp",
+                "weak": []
+              },
+              {
+                "name": "City Guardboo",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_BangbooBattleMecha.webp",
+                "weak": []
+              },
+              {
+                "name": "Special Anti-Riotboo",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Sapper.webp",
+                "weak": []
+              },
+              {
+                "name": "Airspace Patrolboo",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_BangbooPatrolMecha.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Physical",
+            "Wind"
+          ]
+        },
+        {
+          "name": "Room 2",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Doppelganger - Pulchra",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Doppelganger_Pulchra.webp",
+                "weak": []
+              },
+              {
+                "name": "Miasmic Trooper - Shieldguard",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaWalkerGuardJaeger.webp",
+                "weak": []
+              },
+              {
+                "name": "Miasmic Trooper - Cannoneer",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaWalkerGrenadierJaeger.webp",
+                "weak": []
+              },
+              {
+                "name": "Doppelganger - Starlight - Billy",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_InnerKnightSlime.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Fire",
+            "Electric"
+          ]
+        },
+        {
+          "name": "Room 3",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Lightfoot Rover MK II",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_LightfootRoverPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Sacrifice - Heretic Jester",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HereticHunter.webp",
+                "weak": []
+              },
+              {
+                "name": "Miasmic Trooper - Shieldguard",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaWalkerGuardJaeger.webp",
+                "weak": []
+              },
+              {
+                "name": "Miasmic Trooper - Cannoneer",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaWalkerGrenadierJaeger.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Physical",
+            "Electric"
+          ]
+        }
+      ]
+    },
+    {
+      "modeKey": "shiyu",
+      "begin": "2026-08-21",
+      "end": "2026-09-04",
+      "stages": [
+        {
+          "name": "First Frontier",
+          "level": 50,
+          "groups": [
+            [
+              {
+                "name": "Farbauti",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_GiantGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Armored Hati",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HatiArmoredGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Fossor",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Fossor.webp",
+                "weak": []
+              },
+              {
+                "name": "Sordidus",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Sordidus.webp",
+                "weak": []
+              }
+            ],
+            [
+              {
+                "name": "Beholder Engine",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_BeholderEngine.webp",
+                "weak": []
+              },
+              {
+                "name": "Tarasque Mixer",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_TarasqueMixer.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Ice",
+            "Ether",
+            "Electric"
+          ]
+        },
+        {
+          "name": "Second Frontier",
+          "level": 55,
+          "groups": [
+            [
+              {
+                "name": "Poacher",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugPoacher.webp",
+                "weak": []
+              },
+              {
+                "name": "Raider",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugRaider.webp",
+                "weak": []
+              },
+              {
+                "name": "Bulky Enforcer",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugBulkyEnforcer.webp",
+                "weak": []
+              },
+              {
+                "name": "Bulky Intimidator",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugBulkyAbuser.webp",
+                "weak": []
+              }
+            ],
+            [
+              {
+                "name": "Alpeca",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_CyclopsGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Hati",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HatiGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Armored Hati",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HatiArmoredGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Hoplitai",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Golemgrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Mandrake",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Mandrake.webp",
+                "weak": []
+              },
+              {
+                "name": "Banyrek",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Banyrek.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Physical",
+            "Ice",
+            "Ether"
+          ]
+        },
+        {
+          "name": "Third Frontier",
+          "level": 60,
+          "groups": [
+            [
+              {
+                "name": "Poacher",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugPoacher.webp",
+                "weak": []
+              },
+              {
+                "name": "Raider",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugRaider.webp",
+                "weak": []
+              },
+              {
+                "name": "Bulky Enforcer",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugBulkyEnforcer.webp",
+                "weak": []
+              },
+              {
+                "name": "Bulky Intimidator",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugBulkyAbuser.webp",
+                "weak": []
+              }
+            ],
+            [
+              {
+                "name": "Hati",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HatiGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Dullahan",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_DurahanGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Fossor",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Fossor.webp",
+                "weak": []
+              },
+              {
+                "name": "Sordidus",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Sordidus.webp",
+                "weak": []
+              },
+              {
+                "name": "Banyrek",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Banyrek.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Physical",
+            "Ice",
+            "Ether"
+          ]
+        },
+        {
+          "name": "Fourth Frontier",
+          "level": 65,
+          "groups": [
+            [
+              {
+                "name": "Haytor",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Hayyot.webp",
+                "weak": []
+              }
+            ],
+            [
+              {
+                "name": "Hati",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HatiGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Notorious - Armored Hati",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HatiArmoredBoss.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Fire",
+            "Ice",
+            "Ether"
+          ]
+        },
+        {
+          "name": "Room 1",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Metamorphosed - Avarus",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_WingedAvarus.webp",
+                "weak": []
+              },
+              {
+                "name": "City Guardboo",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_BangbooBattleMecha.webp",
+                "weak": []
+              },
+              {
+                "name": "Special Anti-Riotboo",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Sapper.webp",
+                "weak": []
+              },
+              {
+                "name": "Airspace Patrolboo",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_BangbooPatrolMecha.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Physical",
+            "Wind"
+          ]
+        },
+        {
+          "name": "Room 2",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Guardian MK II",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_GuardianPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Private Jaeger",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MeleeJaegerPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Demolition Jaeger",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_GrenadierJaegerPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Mirage Archer Unit",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ObsoleteAndroid.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Physical",
+            "Ether"
+          ]
+        },
+        {
+          "name": "Room 3",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Bulky Enforcer",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugBulkyEnforcer.webp",
+                "weak": []
+              },
+              {
+                "name": "Bulky Intimidator",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugBulkyAbuser.webp",
+                "weak": []
+              },
+              {
+                "name": "Thracian",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Thracian.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Ice",
+            "Ether"
+          ]
+        }
+      ]
+    },
+    {
+      "modeKey": "shiyu",
+      "begin": "2026-09-04",
+      "end": "2026-09-18",
+      "stages": [
+        {
+          "name": "First Frontier",
+          "level": 50,
+          "groups": [
+            [
+              {
+                "name": "Light Jaeger",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_LightJaeger.webp",
+                "weak": []
+              },
+              {
+                "name": "Rookie Jaeger",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster-MeleeJaeger.webp",
+                "weak": []
+              },
+              {
+                "name": "Lightfoot Rover",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_LightfootRover.webp",
+                "weak": []
+              },
+              {
+                "name": "Heavy Striker",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HeavyStriker.webp",
+                "weak": []
+              }
+            ],
+            [
+              {
+                "name": "Tyrfing",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ClaymoreGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Alpeca",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_CyclopsGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Hati",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HatiGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Arlaune",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ArlauneGrey.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Physical",
+            "Fire",
+            "Ice",
+            "Ether"
+          ]
+        },
+        {
+          "name": "Second Frontier",
+          "level": 55,
+          "groups": [
+            [
+              {
+                "name": "Guardian",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Guardian.webp",
+                "weak": []
+              },
+              {
+                "name": "Strike Jaeger",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_StrikeJaeger.webp",
+                "weak": []
+              },
+              {
+                "name": "Light Jaeger",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_LightJaeger.webp",
+                "weak": []
+              },
+              {
+                "name": "Heavy Striker",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HeavyStriker.webp",
+                "weak": []
+              }
+            ],
+            [
+              {
+                "name": "Poacher",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugPoacher.webp",
+                "weak": []
+              },
+              {
+                "name": "Raider",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugRaider.webp",
+                "weak": []
+              },
+              {
+                "name": "Bulky Enforcer",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugBulkyEnforcer.webp",
+                "weak": []
+              },
+              {
+                "name": "Bulky Intimidator",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugBulkyAbuser.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Physical",
+            "Fire",
+            "Ice"
+          ]
+        },
+        {
+          "name": "Third Frontier",
+          "level": 60,
+          "groups": [
+            [
+              {
+                "name": "Ambusher",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugAssaulterPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Rustler",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugPoacherPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Doppelganger - Mors",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Doppelganger_Mors.webp",
+                "weak": []
+              },
+              {
+                "name": "Doppelganger - Bellum",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Doppelganger_Bellum.webp",
+                "weak": []
+              },
+              {
+                "name": "Doppelganger - Pulchra",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Doppelganger_Pulchra.webp",
+                "weak": []
+              }
+            ],
+            [
+              {
+                "name": "Thanatos",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_DeathXIIIGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Armored Hati",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HatiArmoredGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Goblin",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_GoblinGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Fossor",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Fossor.webp",
+                "weak": []
+              },
+              {
+                "name": "Sordidus",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Sordidus.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Physical",
+            "Fire",
+            "Ice",
+            "Ether"
+          ]
+        },
+        {
+          "name": "Fourth Frontier",
+          "level": 65,
+          "groups": [
+            [
+              {
+                "name": "Wanted Enforcer",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugBulkyEnforcerPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Troublemaker - Wanted Enforcer",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugBulkyEnforcerBoss.webp",
+                "weak": []
+              },
+              {
+                "name": "Wanted Intimidator",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugBulkyAbuserPro.webp",
+                "weak": []
+              }
+            ],
+            [
+              {
+                "name": "Haytor",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Hayyot.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Physical",
+            "Fire",
+            "Ice"
+          ]
+        },
+        {
+          "name": "Room 1",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Vicious Striker",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ViciousStrikerPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Greedy Ranger",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_GreedyRangerPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Tepes",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Tepes.webp",
+                "weak": []
+              },
+              {
+                "name": "Ionized - Pugnus",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_IonizedPugnus.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Ice",
+            "Ether"
+          ]
+        },
+        {
+          "name": "Room 2",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Miasmic - Frenzied Maniac",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaFrenziedManiac.webp",
+                "weak": []
+              },
+              {
+                "name": "Miasmic - Trinox",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaTrinox.webp",
+                "weak": []
+              },
+              {
+                "name": "Airspace Sentinel",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Sentinel.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Ice",
+            "Wind"
+          ]
+        },
+        {
+          "name": "Room 3",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Lightfoot Rover MK II",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_LightfootRoverPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Miasmic Trooper - Shieldguard",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaWalkerGuardJaeger.webp",
+                "weak": []
+              },
+              {
+                "name": "Miasmic Trooper - Cannoneer",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaWalkerGrenadierJaeger.webp",
+                "weak": []
+              },
+              {
+                "name": "Lockspring",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_BlackMazingerGoldenBomb.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Physical",
+            "Electric"
+          ]
+        }
+      ]
+    },
+    {
+      "modeKey": "shiyu",
+      "begin": "2026-09-18",
+      "end": "2026-10-02",
+      "stages": [
+        {
+          "name": "First Frontier",
+          "level": 50,
+          "groups": [
+            [
+              {
+                "name": "Farbauti",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_GiantGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Armored Hati",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HatiArmoredGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Fossor",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Fossor.webp",
+                "weak": []
+              },
+              {
+                "name": "Sordidus",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Sordidus.webp",
+                "weak": []
+              }
+            ],
+            [
+              {
+                "name": "Tarasque Mixer",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_TarasqueMixer.webp",
+                "weak": []
+              },
+              {
+                "name": "Miasmic Trooper - Shieldguard",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaWalkerGuardJaeger.webp",
+                "weak": []
+              },
+              {
+                "name": "Miasmic Trooper - Cannoneer",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaWalkerGrenadierJaeger.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Ice",
+            "Ether",
+            "Electric"
+          ]
+        },
+        {
+          "name": "Second Frontier",
+          "level": 55,
+          "groups": [
+            [
+              {
+                "name": "Tyrfing",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ClaymoreGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Alpeca",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_CyclopsGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Hati",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HatiGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Hoplitai",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Golemgrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Metro Goblin",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_GoblinMetro.webp",
+                "weak": []
+              },
+              {
+                "name": "Mandrake",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Mandrake.webp",
+                "weak": []
+              }
+            ],
+            [
+              {
+                "name": "Enraged Sweeper",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_RagingGuy.webp",
+                "weak": []
+              },
+              {
+                "name": "Guardian MK II",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_GuardianPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Harrier Jaeger",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_StrikeJaegerPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Scout Jaeger",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_LightJaegerPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Patrol Jaeger",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HeavyJaeger_Pro.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Ice",
+            "Ether",
+            "Electric"
+          ]
+        },
+        {
+          "name": "Third Frontier",
+          "level": 60,
+          "groups": [
+            [
+              {
+                "name": "Thanatos",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_DeathXIIIGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Armored Hati",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HatiArmoredGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Goblin",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_GoblinGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Fossor",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Fossor.webp",
+                "weak": []
+              },
+              {
+                "name": "Sordidus",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Sordidus.webp",
+                "weak": []
+              }
+            ],
+            [
+              {
+                "name": "Assault Gunner",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HeavyFirepowerPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Lightfoot Rover MK II",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_LightfootRoverPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Heavy Striker MK II",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HeavyStrikerPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Miasmic Trooper - Shieldguard",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaWalkerGuardJaeger.webp",
+                "weak": []
+              },
+              {
+                "name": "Miasmic Trooper - Cannoneer",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaWalkerGrenadierJaeger.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Ice",
+            "Ether",
+            "Electric"
+          ]
+        },
+        {
+          "name": "Fourth Frontier",
+          "level": 65,
+          "groups": [
+            [
+              {
+                "name": "Hati",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HatiGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Notorious - Armored Hati",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HatiArmoredBoss.webp",
+                "weak": []
+              }
+            ],
+            [
+              {
+                "name": "Lumberjack",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Harvester.webp",
+                "weak": []
+              },
+              {
+                "name": "Miasmic Trooper - Shieldguard",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaWalkerGuardJaeger.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Ice",
+            "Ether",
+            "Electric"
+          ]
+        },
+        {
+          "name": "Room 1",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Guardian MK II",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_GuardianPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Assault Gunner",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HeavyFirepowerPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Lockspring",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_BlackMazingerGoldenBomb.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Physical",
+            "Electric"
+          ]
+        },
+        {
+          "name": "Room 2",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Vicious Striker",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ViciousStrikerPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Greedy Ranger",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_GreedyRangerPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Ionized - Pugnus",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_IonizedPugnus.webp",
+                "weak": []
+              },
+              {
+                "name": "The Decider - Terror Raptor",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_PorcelumeTerrorBird.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Physical",
+            "Ice"
+          ]
+        },
+        {
+          "name": "Room 3",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Arlaune",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ArlauneGrey.webp",
+                "weak": []
+              },
+              {
+                "name": "Ionized - Pugnus",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_IonizedPugnus.webp",
+                "weak": []
+              },
+              {
+                "name": "Mirage Archer Unit",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ObsoleteAndroid.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Physical",
+            "Ether"
+          ]
+        }
+      ]
+    },
+    {
+      "modeKey": "shiyu",
+      "begin": "2026-10-02",
+      "end": "2026-10-16",
+      "stages": [
+        {
+          "name": "First Frontier",
+          "level": 50,
+          "groups": [
+            [
+              {
+                "name": "Tarasque Mixer",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_TarasqueMixer.webp",
+                "weak": []
+              },
+              {
+                "name": "Miasmic Trooper - Shieldguard",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaWalkerGuardJaeger.webp",
+                "weak": []
+              },
+              {
+                "name": "Miasmic Trooper - Cannoneer",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaWalkerGrenadierJaeger.webp",
+                "weak": []
+              }
+            ],
+            [
+              {
+                "name": "Metamorphosed - City Guardboo",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_CorruptedBattleMecha.webp",
+                "weak": []
+              },
+              {
+                "name": "Kulullu",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Minion.webp",
+                "weak": []
+              },
+              {
+                "name": "Metamorphosed - Tarasque Mixer",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MoltTarasqueMixer.webp",
+                "weak": []
+              },
+              {
+                "name": "Airspace Patrol Spearguard",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Halberdier.webp",
+                "weak": []
+              },
+              {
+                "name": "Airspace Patrol Shieldguard",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_RoscaSolider.webp",
+                "weak": []
+              },
+              {
+                "name": "Airspace Patrol Vanguard",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Greatsworder.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Electric",
+            "Wind",
+            "Ether"
+          ]
+        },
+        {
+          "name": "Second Frontier",
+          "level": 55,
+          "groups": [
+            [
+              {
+                "name": "Enraged Sweeper",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_RagingGuy.webp",
+                "weak": []
+              },
+              {
+                "name": "Guardian MK II",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_GuardianPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Harrier Jaeger",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_StrikeJaegerPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Scout Jaeger",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_LightJaegerPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Patrol Jaeger",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HeavyJaeger_Pro.webp",
+                "weak": []
+              }
+            ],
+            [
+              {
+                "name": "Mushussu",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Predator.webp",
+                "weak": []
+              },
+              {
+                "name": "City Guardboo",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_BangbooBattleMecha.webp",
+                "weak": []
+              },
+              {
+                "name": "Metamorphosed - Beholder Engine",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_EyeEngine.webp",
+                "weak": []
+              },
+              {
+                "name": "Airspace Patrol Shieldguard",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_RoscaSolider.webp",
+                "weak": []
+              },
+              {
+                "name": "Airspace Patrol Vanguard",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Greatsworder.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Electric",
+            "Fire",
+            "Wind"
+          ]
+        },
+        {
+          "name": "Third Frontier",
+          "level": 60,
+          "groups": [
+            [
+              {
+                "name": "Assault Gunner",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HeavyFirepowerPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Lightfoot Rover MK II",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_LightfootRoverPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Heavy Striker MK II",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HeavyStrikerPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Miasmic Trooper - Shieldguard",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaWalkerGuardJaeger.webp",
+                "weak": []
+              },
+              {
+                "name": "Miasmic Trooper - Cannoneer",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaWalkerGrenadierJaeger.webp",
+                "weak": []
+              }
+            ],
+            [
+              {
+                "name": "Lahmu",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Arbiter.webp",
+                "weak": []
+              },
+              {
+                "name": "City Guardboo",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_BangbooBattleMecha.webp",
+                "weak": []
+              },
+              {
+                "name": "Metamorphosed - City Guardboo",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_CorruptedBattleMecha.webp",
+                "weak": []
+              },
+              {
+                "name": "Airspace Patrol Spearguard",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Halberdier.webp",
+                "weak": []
+              },
+              {
+                "name": "Airspace Patrol Shieldguard",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_RoscaSolider.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Electric",
+            "Wind"
+          ]
+        },
+        {
+          "name": "Fourth Frontier",
+          "level": 65,
+          "groups": [
+            [
+              {
+                "name": "City Guardboo",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_BangbooBattleMecha.webp",
+                "weak": []
+              },
+              {
+                "name": "Metamorphosed - Scorpse",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_WingedChelonethid.webp",
+                "weak": []
+              }
+            ],
+            [
+              {
+                "name": "Metamorphosed - Avarus",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_WingedAvarus.webp",
+                "weak": []
+              },
+              {
+                "name": "Mushussu",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Predator.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Electric",
+            "Wind",
+            "Physical"
+          ]
+        },
+        {
+          "name": "Room 1",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "City Guardboo",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_BangbooBattleMecha.webp",
+                "weak": []
+              },
+              {
+                "name": "Special Anti-Riotboo",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Sapper.webp",
+                "weak": []
+              },
+              {
+                "name": "Airspace Patrolboo",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_BangbooPatrolMecha.webp",
+                "weak": []
+              },
+              {
+                "name": "Conqueror",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HACMecha.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Electric",
+            "Wind"
+          ]
+        },
+        {
+          "name": "Room 2",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Miasmic Komano Manato",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaNoranoSlime.webp",
+                "weak": []
+              },
+              {
+                "name": "Lahmu",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Arbiter.webp",
+                "weak": []
+              },
+              {
+                "name": "Mushussu",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Predator.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Ice"
+          ]
+        },
+        {
+          "name": "Room 3",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Doppelganger - Pulchra",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Doppelganger_Pulchra.webp",
+                "weak": []
+              },
+              {
+                "name": "Miasmic Trooper - Shieldguard",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaWalkerGuardJaeger.webp",
+                "weak": []
+              },
+              {
+                "name": "Miasmic Trooper - Cannoneer",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaWalkerGrenadierJaeger.webp",
+                "weak": []
+              },
+              {
+                "name": "Doppelganger - Starlight - Billy",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_InnerKnightSlime.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Fire",
+            "Electric"
+          ]
+        }
+      ]
+    },
+    {
+      "modeKey": "shiyu",
+      "begin": "2026-10-16",
+      "end": "2026-10-30",
+      "stages": [
+        {
+          "name": "First Frontier",
+          "level": 50,
+          "groups": [
+            [
+              {
+                "name": "Lahmu",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Arbiter.webp",
+                "weak": []
+              },
+              {
+                "name": "Mushussu",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Predator.webp",
+                "weak": []
+              },
+              {
+                "name": "Kulullu",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Minion.webp",
+                "weak": []
+              },
+              {
+                "name": "Airspace Patrol Spearguard",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Halberdier.webp",
+                "weak": []
+              },
+              {
+                "name": "Airspace Patrol Shieldguard",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_RoscaSolider.webp",
+                "weak": []
+              },
+              {
+                "name": "Airspace Patrol Vanguard",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Greatsworder.webp",
+                "weak": []
+              }
+            ],
+            [
+              {
+                "name": "Light Jaeger",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_LightJaeger.webp",
+                "weak": []
+              },
+              {
+                "name": "Rookie Jaeger",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster-MeleeJaeger.webp",
+                "weak": []
+              },
+              {
+                "name": "Lightfoot Rover",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_LightfootRover.webp",
+                "weak": []
+              },
+              {
+                "name": "Heavy Striker",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HeavyStriker.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Fire",
+            "Wind",
+            "Physical"
+          ]
+        },
+        {
+          "name": "Second Frontier",
+          "level": 55,
+          "groups": [
+            [
+              {
+                "name": "City Guardboo",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_BangbooBattleMecha.webp",
+                "weak": []
+              },
+              {
+                "name": "Metamorphosed - City Guardboo",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_CorruptedBattleMecha.webp",
+                "weak": []
+              },
+              {
+                "name": "Airspace Patrolboo",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_BangbooPatrolMecha.webp",
+                "weak": []
+              },
+              {
+                "name": "Metamorphosed - Airspace Patrolboo",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_CorruptedPatrolMecha.webp",
+                "weak": []
+              },
+              {
+                "name": "Metamorphosed - Beholder Engine",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_EyeEngine.webp",
+                "weak": []
+              }
+            ],
+            [
+              {
+                "name": "Guardian",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Guardian.webp",
+                "weak": []
+              },
+              {
+                "name": "Strike Jaeger",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_StrikeJaeger.webp",
+                "weak": []
+              },
+              {
+                "name": "Light Jaeger",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_LightJaeger.webp",
+                "weak": []
+              },
+              {
+                "name": "Heavy Striker",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_HeavyStriker.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Wind",
+            "Ether",
+            "Physical",
+            "Fire"
+          ]
+        },
+        {
+          "name": "Third Frontier",
+          "level": 60,
+          "groups": [
+            [
+              {
+                "name": "Lahmu",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Arbiter.webp",
+                "weak": []
+              },
+              {
+                "name": "City Guardboo",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_BangbooBattleMecha.webp",
+                "weak": []
+              },
+              {
+                "name": "Metamorphosed - Tarasque Mixer",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MoltTarasqueMixer.webp",
+                "weak": []
+              },
+              {
+                "name": "Airspace Patrol Spearguard",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Halberdier.webp",
+                "weak": []
+              },
+              {
+                "name": "Airspace Patrol Shieldguard",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_RoscaSolider.webp",
+                "weak": []
+              }
+            ],
+            [
+              {
+                "name": "Ambusher",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugAssaulterPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Rustler",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugPoacherPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Doppelganger - Mors",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Doppelganger_Mors.webp",
+                "weak": []
+              },
+              {
+                "name": "Doppelganger - Bellum",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Doppelganger_Bellum.webp",
+                "weak": []
+              },
+              {
+                "name": "Doppelganger - Pulchra",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Doppelganger_Pulchra.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Electric",
+            "Wind",
+            "Physical",
+            "Fire"
+          ]
+        },
+        {
+          "name": "Fourth Frontier",
+          "level": 65,
+          "groups": [
+            [
+              {
+                "name": "Airspace Sentinel",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Sentinel.webp",
+                "weak": []
+              },
+              {
+                "name": "Metamorphosed - City Guardboo",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_CorruptedBattleMecha.webp",
+                "weak": []
+              }
+            ],
+            [
+              {
+                "name": "Ambusher",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugAssaulterPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Rustler",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugPoacherPro.webp",
+                "weak": []
+              },
+              {
+                "name": "Troublemaker - Wanted Enforcer",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugBulkyEnforcerBoss.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Ice",
+            "Wind",
+            "Physical",
+            "Fire"
+          ]
+        },
+        {
+          "name": "Room 1",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "City Guardboo",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_BangbooBattleMecha.webp",
+                "weak": []
+              },
+              {
+                "name": "Metamorphosed - Scorpse",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_WingedChelonethid.webp",
+                "weak": []
+              },
+              {
+                "name": "Special Anti-Riotboo",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_Sapper.webp",
+                "weak": []
+              },
+              {
+                "name": "Airspace Patrolboo",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_BangbooPatrolMecha.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Electric",
+            "Wind"
+          ]
+        },
+        {
+          "name": "Room 2",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Ionized - Farbauti",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_GiantEnergy.webp",
+                "weak": []
+              },
+              {
+                "name": "Ionized - Dullahan",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_DurahanEnergy.webp",
+                "weak": []
+              },
+              {
+                "name": "Miasmic - Thracian",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_MiasmaThracian.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Wind",
+            "Ether"
+          ]
+        },
+        {
+          "name": "Room 3",
+          "level": 70,
+          "groups": [
+            [
+              {
+                "name": "Bulky Enforcer",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugBulkyEnforcer.webp",
+                "weak": []
+              },
+              {
+                "name": "Bulky Intimidator",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_ThugBulkyAbuser.webp",
+                "weak": []
+              },
+              {
+                "name": "Sacrifice - Covenant Guardian",
+                "image": "https://static.nanoka.cc/assets/zzz/Monster_CovenantGuardian.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": [
+            "Physical",
+            "Fire"
+          ]
+        }
+      ]
+    }
+  ]
+}
