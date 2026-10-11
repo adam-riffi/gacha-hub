@@ -255,10 +255,13 @@ flowchart TB
   H --- C["Banners and events<br/>/timeline"]
   H --- S["Settings<br/>/settings"]
   H --- AD["Admin<br/>/admin (admins only)"]
-  G --> A["Game hub · Activities<br/>/games/:id"]
+  G --> A["Game hub · Overview<br/>/games/:id"]
+  A --- AC["Activities<br/>/games/:id/activities"]
   A --- EG["Endgame<br/>/games/:id/endgame"]
   A --- PU["Pulls<br/>/games/:id/pulls"]
   A --- CH["Characters<br/>/games/:id/characters"]
+  A --- TE["Teams<br/>/games/:id/teams"]
+  A --- WE["Weapons<br/>/games/:id/weapons"]
   A --- GR["Artifacts / Relics / Drive discs / Echoes<br/>/games/:id/gear"]
   A --- PL["Planner<br/>/games/:id/planner"]
   A --- PR["Profile<br/>/games/:id/profile"]
@@ -271,7 +274,7 @@ The game hub's tabs depend on the game (§9):
 - Pulls needs pull rules.
 - Gear and Planner need a catalog with gear and costs, so Endfield and NTE have neither.
 
-The old routes `/games/:id/overview` and `/games/:id/equipment` redirect to Profile and Characters. `/games/:id/ownership` and `/games/:id/materials` still answer but are no longer tabs.
+The old routes `/games/:id/overview` and `/games/:id/equipment` redirect to the Overview and Characters. `/games/:id/ownership` and `/games/:id/materials` still answer but are no longer tabs.
 
 ## 8. Screen by screen
 
