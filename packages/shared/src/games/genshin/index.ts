@@ -1,3 +1,4 @@
+import { endgameEnemiesSchema } from "../../enemies.js";
 import { z } from "zod";
 import { statRowSchema } from "../../common.js";
 import type { Catalog } from "../../catalog/types.js";
@@ -154,4 +155,6 @@ export const genshin: GameDefinition = {
   // Lazy: the catalog is a separate chunk, loaded only when a screen needs it.
   loadCatalog: async () =>
     (await import("./catalog.js")).default as Catalog,
+  // Stygian Onslaught's bosses per cycle (`npm run catalog:endgame`).
+  loadEndgame: async () => endgameEnemiesSchema.parse((await import("./endgame.js")).default),
 };

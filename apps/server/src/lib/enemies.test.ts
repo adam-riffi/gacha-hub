@@ -28,4 +28,11 @@ describe("enemiesFor", () => {
     expect(endgameEnemiesSchema.parse(zzz).cycles.map((c) => c.modeKey)).toEqual(expect.arrayContaining(["shiyu", "assault"]));
     expect(zzz.cycles.every((c) => c.stages.length > 0 && c.stages.every((s) => s.groups.flat().length > 0))).toBe(true);
   });
+
+  it("ships Genshin's Stygian Onslaught cycles: three bosses at the top difficulty's level", async () => {
+    const genshin = await getGame("genshin")!.loadEndgame!();
+    const stygian = genshin.cycles.filter((c) => c.modeKey === "stygian");
+    expect(stygian.length).toBeGreaterThan(0);
+    expect(stygian.every((c) => c.stages.length === 3 && c.stages.every((s) => (s.level ?? 0) > 0 && s.groups.flat().length === 1))).toBe(true);
+  });
 });

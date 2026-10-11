@@ -2,10 +2,11 @@
  * Endgame enemies importer: each cycle's stages and enemies from the Hakushin
  * dataset (static.nanoka.cc; data © HoYoverse), for the modes that rotate
  * them: Zenless Zone Zero's Shiyu Defense (the Critical Node's frontiers, two
- * halves each) and Deadly Assault (three bosses). Run from scripts/catalog:
- * `npm run endgame`. Output: packages/shared/src/games/zzz/endgame.json.
- * Genshin's Stygian Onslaught and Star Rail's Apocalyptic Shadow have no dated
- * schedule there, so they are left out until a source has one.
+ * halves each) and Deadly Assault (three bosses), and Genshin's Stygian
+ * Onslaught (three bosses; Hakushin files it as "leyline"). Run from
+ * scripts/catalog: `npm run endgame`. Output: packages/shared/src/games/
+ * {zzz,genshin}/endgame.json. Star Rail's Apocalyptic Shadow has no dates
+ * there, so it is left out until a source has them.
  */
 import { writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -14,8 +15,9 @@ import { fetchJson } from "./common.js";
 
 const BASE = "https://static.nanoka.cc";
 const get = <T>(path: string) => fetchJson<T>(`${BASE}${path}`, { cacheKey: "zzz-endgame" });
-const version = (await get<{ zzz: { live: string } }>("/manifest.json")).zzz.live;
-console.log(`[catalog:endgame] Hakushin data, ZZZ live version ${version}`);
+const live = await get<{ zzz: { live: string }; gi: { live: string } }>("/manifest.json");
+const version = live.zzz.live;
+console.log(`[catalog:endgame] Hakushin data, ZZZ live version ${version}, Genshin ${live.gi.live}`);
 
 type Monster = { name: string; image?: string };
 type Room = { monster_list?: Record<string, Monster>; monster_weakness?: Record<string, string> };
@@ -67,7 +69,31 @@ for (const [id, b] of Object.entries(boss)) {
   cycles.push({ modeKey: "assault", begin: dayOf(b.begin), end: dayOf(b.end), stages: Object.values(bosses).map((z) => stageOf(z)).filter((st) => st.groups.flat().length > 0) });
 }
 
-const out = endgameEnemiesSchema.parse({ source: `hakushin@static.nanoka.cc/zzz/${version}`, cycles: cycles.sort((a, b) => a.modeKey.localeCompare(b.modeKey) || a.begin.localeCompare(b.begin)) });
-const file = fileURLToPath(new URL("../../packages/shared/src/games/zzz/endgame.json", import.meta.url));
-writeFileSync(file, JSON.stringify(out, null, 2) + "\n");
-console.log(`[catalog:endgame] wrote ${file}: ${out.cycles.length} cycles`);
+/** Validate and write a game's endgame enemies. */
+function write(gameKey: string, source: string, list: EndgameEnemies["cycles"]) {
+  const out = endgameEnemiesSchema.parse({ source, cycles: list.sort((a, b) => a.modeKey.localeCompare(b.modeKey) || a.begin.localeCompare(b.begin)) });
+  const file = fileURLToPath(new URL(`../../packages/shared/src/games/${gameKey}/endgame.json`, import.meta.url));
+  writeFileSync(file, JSON.stringify(out, null, 2) + "\n");
+  console.log(`[catalog:endgame] wrote ${file}: ${out.cycles.length} cycles`);
+}
+write("zzz", `hakushin@static.nanoka.cc/zzz/${version}`, cycles);
+
+// Stygian Onslaught: three bosses a cycle, at six difficulties; the card shows them at the top one (its name and monster level).
+type Boss = { name: string; icon?: string };
+type Difficulty = { monster_level: number; difficulty_config: { level: number }; level_config: Record<string, Boss> };
+const gi = live.gi.live;
+const stygian: EndgameEnemies["cycles"] = [];
+for (const [id, c] of Object.entries(await get<Index>(`/gi/${gi}/leyline.json`))) {
+  if (!c.begin || !c.end || !recent(c.begin)) continue;
+  const detail = await get<{ level: Record<string, Difficulty> }>(`/gi/${gi}/en/leyline/${id}.json`);
+  const top = Object.values(detail.level).sort((a, b) => b.difficulty_config.level - a.difficulty_config.level)[0];
+  if (!top) continue;
+  const stages = Object.values(top.level_config).map((b) => ({
+    name: b.name,
+    level: top.monster_level,
+    groups: [[{ name: b.name, image: b.icon ? `${BASE}/assets/gi/${b.icon}.webp` : undefined, weak: [] }]],
+    weak: [],
+  }));
+  stygian.push({ modeKey: "stygian", begin: dayOf(c.begin), end: dayOf(c.end), stages });
+}
+write("genshin", `hakushin@static.nanoka.cc/gi/${gi}`, stygian);

@@ -2,7 +2,7 @@
 
 Georges's third round, after #207–#218: "Do another audit and check for things that aren't very explicit in their description." The rule from round 2 stands (every text adds to the data); this round adds its twin: **a thing the app can show, it shows as its icon.** A character, weapon, gear set, material or game named in a sentence becomes its icon, with the name as the icon's label (hover and screen readers).
 
-**Status:** done in #219–#230 (plus #220, a fix for #217's CSS, and #221, the reminder order behind #218's flaky check). Gap: Genshin's Stygian Onslaught and Star Rail's Apocalyptic Shadow enemies wait for a dated source (Hakushin has neither schedule).
+**Status:** done in #219–#232 (plus #220, a fix for #217's CSS, and #221, the reminder order behind #218's flaky check). Gap: Star Rail's Apocalyptic Shadow enemies wait for a dated source (Hakushin's files have no dates); Stygian Onslaught came in #232 (Hakushin files it as "leyline").
 
 ## Georges's list
 
