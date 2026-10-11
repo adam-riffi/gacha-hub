@@ -1,8 +1,8 @@
 # Handoff — 2026-10-11 · claude
 
 ## State
-- `main` at #239: feat(catalog): Star Rail's skill descriptions. CI green.
-- Open PRs: #240 (WuWa's skill descriptions, with its Forte Circuit and Intro Skill unswapped) and this one (#241, ZZZ's); they merge in that order on green CI.
+- `main` at #240: feat(catalog): WuWa's skill descriptions, Forte and Intro unswapped. CI green.
+- Open PRs: #241 (ZZZ's skill descriptions) and this one (#242, WuWa's Nightmare Nests); they merge in that order on green CI.
 - Production serves #186 (deployed 2026-10-10 18:52 UTC). Merges do not deploy (#189): `main` goes live only when Georges asks (`docs/DEPLOY.md`, Redeploys), then run the smoke check. Since #186, `main` adds six migrations, and the next deploy runs them: `kpi_defaults`, `progress`, `hidden_banners`, `default_build`, `weapon_copies` and `recurring_counts` (which also gives existing profiles' counted dailies their targets).
 - Every milestone in DESIGN.md §9 is built, V through F13, and three feedback rounds (2026-10-10 and twice on 2026-10-11) are done. What is left needs Georges's secrets, real data or a decision (below), a source for a few of the designs' details (Next), or is in DESIGN.md §4 "Later".
 
@@ -26,6 +26,7 @@
   - #235, Star Rail's Anomaly Arbitration and ZZZ's Lost Void;
   - #236, Endfield's featured guarantee (the running banner's pulls toward its 120-pull spark) on the Overview's pity.
 - And the round-2 "for later" item, talent and skill descriptions: #238 (Genshin, from genshin-db), #239 (Star Rail, Yatta's short text), #240 (WuWa, the game's short text; it also fixes the importer's swapped Forte Circuit and Intro Skill) and #241 (ZZZ, its level-scaled numbers as their level 1–12 range), opened from a skill's name on the sheet.
+- #242, WuWa's Nightmare Nests: a daily counted to 36 Tacet Discords, from the design's Today card.
 
 ## Decisions taken (2026-10-11; Georges: "take every decision")
 - Earlier ones stand, except one: the Weapons tab is now on every game (Georges asked), by name where the catalog has no weapons.
@@ -35,18 +36,19 @@
 - The Overview reads the data the hub already loads; a game's own card is declared in its manifest (`ownCard`), each item a currency or a default task, named in its reference sheet (the conformance suite checks). Endfield's AIC items carry no caps: none is sourced.
 - A counted daily's progress belongs to its cycle by `Task.progressAt`; ticking it done sets its target. A game's defaults are seeded a millisecond apart, so lists keep the game's own order.
 - Item names follow the designs; counts and endgame metrics only where a source gives them, marked `~` when unverified.
+- Searched for the designs' remaining details (2026-10-11) and left them out, each for a reason: WuWa's Doubled Pawns Matrix is now the Endstate Matrix (3.2), whose cycles span versions with no published phase dates; Endfield's Umbral Monument is permanent with mostly one-time rewards, so it has no cycle to track; Etchspace Salvage is permanent, and no source gives a reset for its Operation Metrics; Contingency Contract's daily reset comes only from a top-up seller's guide; NTE's Pink Paws Heist now shares its 1,000,000-Fons cap with Beach Volleyball and the auction (the Tycoon Encouragement Fund), and guides disagree on whether it resets weekly or every two weeks.
 - NTE gets no catalog without Georges's say: Hakushin now publishes NTE characters and Arcs, but ADR 0005 keeps NTE manual because its terms forbid third-party tools.
 - Enemies come from Hakushin: ZZZ's Shiyu Defense and Deadly Assault, Genshin's Stygian Onslaught (filed there as "leyline"; shown at its top difficulty, Dire). Star Rail's Apocalyptic Shadow has no dates there. A cycle the data has not reached shows the last one with its dates.
 
 ## Verified
-- `npm run check` before each PR and CI green on each: 591 tests and 69 journeys; initial JavaScript 146.4 KB of 200 KB.
+- `npm run check` before each PR and CI green on each: 592 tests and 69 journeys; initial JavaScript 146.4 KB of 200 KB.
 - Checked in the browser at 1440 with game art blocked, and attached to each PR: the plus sign, the Planner, Farm today, goal icons, Weapons cards and panel, each game's Overview, the ZZZ enemies.
 
 ## Next
 1. When Georges shares them: replace the fixtures built from documentation with real answers (PROJECT-GUIDE §14.1 step 8), then fix whatever differs.
 2. Once the bucket exists, check F12's acceptance, then swap the glyphs for real element, weapon-type and currency icons (DESIGN.md §4 "Later").
 3. Each game version: refresh the catalogs (`npm run catalog:<game>`) and the endgame enemies (`npm run catalog:endgame`), then run mirror-art. Re-check the values still marked `~` in `docs/games/*.md`.
-4. Sources for the designs' details still missing: WuWa's Nightmare Nests, echo bosses and Gateways; the endgame modes WuWa's Doubled Pawns, NTE's Realm of Greed and Pink Paws Heist, Endfield's Umbral Monument, Etchspace Salvage and Contingency Contract; NTE's De-noise Solutions and Endfield's Emergency boosters; Genshin's Epitomized Path. A dated source for Apocalyptic Shadow enemies; Hakushin also has NTE characters and weapons now (static.nanoka.cc), a possible NTE catalog.
+4. Sources for the designs' details still missing (see the decision above for what the search found): WuWa's echo bosses and Gateways; the endgame modes WuWa's Endstate Matrix (ex Doubled Pawns), NTE's Realm of Greed and Pink Paws Heist, Endfield's Etchspace Salvage and Contingency Contract; NTE's De-noise Solutions and Endfield's Emergency boosters; Genshin's Epitomized Path. A dated source for Apocalyptic Shadow enemies; Hakushin also has NTE characters and weapons now (static.nanoka.cc), a possible NTE catalog.
 5. If Georges wants them: ZZZ's Core Skill texts (one per core level), and ZZZ's level-scaled numbers at the sheet's own skill level instead of their 1–12 range.
 
 ## Needs from Georges

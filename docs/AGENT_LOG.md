@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r6/05-wuwa-nests · #242
+- Done: WuWa's Nightmare Nests, from the design's Today card ("24/36"): a daily counted to 36 Tacet Discords (Prydwen's game modes guide), entered as a number on the Overview. Profiles made before it add it with + there. HANDOFF.md records what a search for the designs' other details found, and why each stays out.
+- Tests: written first: a new WuWa profile seeds Nightmare Nests, daily, target 36. `npm run check` passes: 592 tests and 69 journeys.
+- Scope/decisions: the 36 is marked `~` in `docs/games/wuwa.md` (one source). Left out after searching: the Endstate Matrix (ex Doubled Pawns; its cycles span versions, no phase dates published), Umbral Monument (permanent, mostly one-time rewards), Etchspace Salvage (permanent, no reset found), Contingency Contract (one weak source), Pink Paws Heist (its cap now shared, its cadence disputed).
+- Next: Georges's secrets, data and the NTE decision.
+
 ## 2026-10-11 · claude · stack/r6/04-zzz-talents · #241
 - Done: ZZZ's skill names and descriptions. Each of an agent's five skills gets its name (Basic Attack, Dodge, Assist, Special Attack, Chain Attack, where the sheet showed the bare keys) and its texts, not its multiplier tables, each under its own name: buttons in words, the PC wording, tags dropped, and the few `{CAL:…}` numbers that scale with the skill's level shown as their level 1–12 range (Zhao's charge: 13–24% of Max HP). The sheet opens them as for the other games. HANDOFF.md lists #239–#241 and what is left of that item.
 - Tests: written first: every agent's five skills are named and described with no tag or token left; Sunna's Basic Attack reads "Press Basic Attack to activate"; Zhao's shows 13–24%. `npm run check` passes: 591 tests and 69 journeys.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the Tasks journey opens the maker from Home, adds "Do 20 Calyx runs", a checklist whose two items the API returns, and picks Kafka to see Generate tasks. `npm run check` passes: 559 tests and 42 journeys.
 - Scope/decisions: no API change; gameplay goals are plain goals with a target, so Home counts them as "gameplay" and Profile lists them.
 - Next: the banner timeline, the clean-up, Settings and Admin.
-
-## 2026-10-10 · claude · stack/ui/05-teams · #202
-- Done: teams get a tab of their own, after Characters, for every game with a catalog (Georges: "no obvious way to make teams, look at teams, delete teams or manage teams"). Each team is a card: renamed in place, deleted with a confirmation, its members tinted to their element and opening their build or unit page, with their build status, a × to remove and "+ Add a member…" (owned units first). The sheet's Used in lists the character's teams with their other members, adds it to a team with room, makes a new team around it, and links to the tab. Endgame links there instead of holding the old card, which is deleted.
-- Tests: written first: the Teams journey creates, fills, renames and deletes a team from the tab, then adds Kafka to a team from her sheet; the accessibility scan covers Teams and a unit's page. The Endgame teams test moved there; Endfield's hub now lists Teams. `npm run check` passes: 559 tests, and the journeys after that one-line tab expectation.
-- Scope/decisions: no API change; the existing team routes do it all.
-- Next: the goal maker, the banner timeline, the clean-up, Settings and Admin.
