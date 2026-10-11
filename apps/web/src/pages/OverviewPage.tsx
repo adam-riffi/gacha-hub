@@ -55,6 +55,7 @@ export function OverviewPage() {
         <EndgameCard instanceId={id!} game={game} region={region} cycles={cycles.data} />
         <GoalsCard gameKey={game.key} tasks={tasks.data ?? []} />
         <BacklogCard g={g} tasks={tasks.data ?? []} />
+        <OwnCard game={game} instance={instance.data} tasks={tasks.data ?? []} />
       </div>
     </>
   );
@@ -164,20 +165,25 @@ function BannersCard({ banners, game }: { banners: BannerDto[]; game: GameDefini
   );
 }
 
-/** A row of boxes, one per recurring task, ticked in place. */
-function Ticks({ instanceId, items }: { instanceId: string; items: TaskDto[] }) {
+/** A recurring task's box, ticked in place. */
+function TickBox({ instanceId, task }: { instanceId: string; task: TaskDto }) {
   const qc = useQueryClient();
   const tick = useMutation({
-    mutationFn: (v: { id: string; done: boolean }) => api.post(`/api/tasks/${v.id}/complete`, { done: v.done }),
+    mutationFn: (done: boolean) => api.post(`/api/tasks/${task.id}/complete`, { done }),
     onSuccess: () => Promise.all([["tasks", "game", instanceId], ["tasks"], ["dashboard"]].map((queryKey) => qc.invalidateQueries({ queryKey }))),
   });
+  return <input type="checkbox" className="ov-tick" aria-label={task.title} key={String(task.doneThisCycle)} defaultChecked={Boolean(task.doneThisCycle)} onChange={(e) => tick.mutate(e.target.checked)} />;
+}
+
+/** A row per recurring task, its box ticked in place. */
+function Ticks({ instanceId, items }: { instanceId: string; items: TaskDto[] }) {
   return (
     <>
       {items.map((t) => (
         <div key={t.id}>
           <dt>{t.title}</dt>
           <dd>
-            <input type="checkbox" className="ov-tick" aria-label={t.title} key={String(t.doneThisCycle)} defaultChecked={Boolean(t.doneThisCycle)} onChange={(e) => tick.mutate({ id: t.id, done: e.target.checked })} />
+            <TickBox instanceId={instanceId} task={t} />
           </dd>
         </div>
       ))}
@@ -435,6 +441,77 @@ function BacklogCard({ g, tasks }: { g: DashGame; tasks: TaskDto[] }) {
         )}
       </div>
       <span className="mn mu">open, last 10 days</span>
+    </section>
+  );
+}
+
+type OwnCardItem = NonNullable<GameDefinition["manifest"]["ownCard"]>["items"][number];
+/** A cap that follows another value by steps: the last step reached. */
+const capBy = (by: Extract<OwnCardItem, { currency: string }>["capBy"], v: number) => by?.steps.reduce((cap, [at, c]) => (v >= at ? c : cap), by.steps[0]![1]);
+
+/**
+ * The game's own card (its manifest's `ownCard`; Georges's designs: NTE's
+ * city, Endfield's AIC and outposts): its currencies typed in place, its
+ * dailies as boxes; a daily the profile lacks is added from here.
+ */
+function OwnCard({ game, instance, tasks }: { game: GameDefinition; instance: InstanceDetail; tasks: TaskDto[] }) {
+  const qc = useQueryClient();
+  const refresh = (keys: unknown[][]) => Promise.all(keys.map((queryKey) => qc.invalidateQueries({ queryKey })));
+  const set = useMutation({
+    mutationFn: (v: { key: string; value: number }) => api.put(`/api/instances/${instance.id}/currencies/${v.key}`, { value: v.value }),
+    onSuccess: () => refresh([["instance", instance.id], ["dashboard"]]),
+  });
+  const restore = useMutation({ mutationFn: () => api.post(`/api/instances/${instance.id}/tasks/defaults`, {}), onSuccess: () => refresh([["tasks", "game", instance.id], ["tasks"]]) });
+  const card = game.manifest.ownCard;
+  if (!card) return null;
+  const value = (key: string) => instance.currencies.find((c) => c.key === key)?.value ?? 0;
+  return (
+    <section className="card ov-card is-full" aria-label={card.title}>
+      <Head title={card.title} />
+      <div className="ov-own">
+        {card.items.map((item) => {
+          if ("currency" in item) {
+            const def = game.currencies.find((c) => c.key === item.currency);
+            if (!def) return null;
+            const cap = item.capBy ? capBy(item.capBy, value(item.capBy.currency)) : def.cap;
+            return (
+              <label key={item.currency} className="ov-own-cell">
+                <span className="kpi-label">{def.label}</span>
+                <span className="ov-own-value">
+                  <input
+                    type="number"
+                    min={0}
+                    aria-label={def.label}
+                    key={value(item.currency)}
+                    defaultValue={value(item.currency)}
+                    onBlur={(e) => e.target.value !== "" && Number(e.target.value) !== value(item.currency) && set.mutate({ key: item.currency, value: Number(e.target.value) })}
+                  />
+                  {cap !== undefined && (
+                    <span className="mu" data-testid={`${item.currency}-cap`}>
+                      / {cap}
+                    </span>
+                  )}
+                </span>
+              </label>
+            );
+          }
+          const seed = game.defaultTasks.find((t) => t.key === item.task);
+          if (!seed) return null;
+          const task = tasks.find((t) => t.type === "recurring" && t.title.toLowerCase() === seed.title.toLowerCase());
+          return (
+            <div key={item.task} className="ov-own-cell">
+              <span className="kpi-label">{seed.title}</span>
+              {task ? (
+                <TickBox instanceId={instance.id} task={task} />
+              ) : (
+                <button className="btn ghost sm" aria-label={`Add ${seed.title}`} disabled={restore.isPending} onClick={() => restore.mutate()}>
+                  +
+                </button>
+              )}
+            </div>
+          );
+        })}
+      </div>
     </section>
   );
 }

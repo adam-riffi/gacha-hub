@@ -50,6 +50,8 @@ export const nte: GameDefinition = {
     { key: "solidDice", label: "Solid Dice", pullCost: 1, pullLabel: "roll" },
     { key: "fabricatedDice", label: "Fabricated Dice", pullCost: 1, pullLabel: "roll", standardOnly: true },
     { key: "fons", label: "Fons" },
+    { key: "tycoonLevel", label: "Tycoon Level" },
+    { key: "cityStamina", label: "City Stamina" },
   ],
   // The Limited Board has no 50/50: every S-rank is the featured one; pity carries over.
   pullBanners: [{ key: "character", label: "Limited Board", baseRate: 0.0099, softPity: 70, hardPity: 90, featuredRate: 1 }],
@@ -65,10 +67,21 @@ export const nte: GameDefinition = {
     dupes: { character: { field: "awakening", label: "Awakening", max: 6 }, weapon: { field: "arc.mixing", label: "Mixing", max: 5 } },
     art: {},
     accountLevel: { label: "HL", name: "Hunter Level" },
+    // The city (Georges's design, 2026-10-11): City Stamina refills each Monday, its cap set by the Tycoon Level.
+    ownCard: {
+      title: "City",
+      items: [
+        { currency: "tycoonLevel" },
+        { task: "cafe" },
+        { currency: "fons" },
+        { currency: "cityStamina", capBy: { currency: "tycoonLevel", steps: [[1, 100], [5, 200], [10, 350], [16, 500], [23, 700]] } },
+      ],
+    },
     version: { name: "1.4", start: "2026-09-30", days: 42 },
   },
   defaultTasks: [
     { key: "dailies", title: "Daily quests", cadence: "daily" },
+    { key: "cafe", title: "Café income", cadence: "daily" },
     { key: "pilgrimage", title: "Anomaly Pilgrimage", cadence: "weekly" },
   ],
   docSchema: nteDocSchema,

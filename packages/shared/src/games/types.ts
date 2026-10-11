@@ -75,6 +75,13 @@ export interface GameManifest {
     /** The stages a cycle is cleared in, a team each, and whether the clear time counts (Georges, 2026-10-11). */
     clears?: { stages: string[]; timed?: boolean };
   }[];
+  /**
+   * The game's own card on its Overview (Georges's designs, 2026-10-11): what
+   * it tracks beyond the shared cards, each item a currency (typed in place;
+   * its cap may follow another currency's value, by the table's steps) or a
+   * default daily or weekly task (a box).
+   */
+  ownCard?: { title: string; items: ({ currency: string; capBy?: { currency: string; steps: [number, number][] } } | { task: string })[] };
   battlePass?: { name: string; maxLevel?: number; weeklyXpCap?: number };
   /** `daily`: premium currency the pass gives each day (the Pulls forecast). */
   monthlyPass?: { name: string; days: number; maxDays?: number; daily?: number };

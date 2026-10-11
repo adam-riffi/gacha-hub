@@ -92,7 +92,7 @@ Designs: [`docs/design/overview/`](design/overview/) (Georges, 2026-10-11: one p
 - **Today:** the game's dailies, each a box ticked in place. **The pass and weekly** (its name, "Gnostic Hymn and weekly"): its level over its cap, this week's EXP over its cap, the weeklies as boxes. **Stamina:** projected to now over its cap, "Full in" (or "Full · now"), its reserve (Condensed Resin, Reserved Trailblaze Power…).
 - **Builds in progress** (status Building or Good): the character's icon and name, level, skill levels ("9·9·6"), weapon level, a square per gear slot filled. **Endgame · cycle:** each mode's result over its best ("36/36★") and the days until it resets.
 - **Goals:** the game's active goals with their progress, sorted, and their average as a ring. **Backlog:** the goals still open (the backlog included) and a line of how many were open each of the last ten days.
-- Next (F13): each game's own card (NTE's city, Endfield's AIC and outposts).
+- **The game's own card** (its manifest's `ownCard`, full width): NTE's **City** (Tycoon Level; Café income; Fons; City Stamina over its cap, which follows the Tycoon Level) and Endfield's **AIC and outposts** (AIC output collected; AIC lines running; Depot delivery; Outpost trades; Stock Bills). Currencies are typed in place, dailies are boxes; a daily the profile lacks is added with +. Every item is a currency or a default task of the game, named in its reference sheet (the conformance suite checks).
 
 ### G2 · Endgame
 
