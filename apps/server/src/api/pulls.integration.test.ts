@@ -139,11 +139,11 @@ describe("pull log (routes)", () => {
     await c.req("POST", `/api/instances/${gid}/pulls`, { bannerKey: "weapon", count: 10 });
     const dash = await c.req<{ games: { gameKey: string; pity: { key: string; pity: number; hardPity: number; guaranteed: boolean }[] }[] }>("GET", "/api/dashboard");
     expect(dash.json.games.find((g) => g.gameKey === "genshin")?.pity).toEqual([
-      { key: "character", label: "Character event wish", pity: 40, hardPity: 90, guaranteed: true },
-      { key: "weapon", label: "Weapon event wish", pity: 10, hardPity: 80, guaranteed: false },
-      { key: "chronicled", label: "Chronicled wish", pity: 0, hardPity: 90, guaranteed: false },
-      { key: "standard", label: "Standard wish", pity: 0, hardPity: 90, guaranteed: false },
-      { key: "beginner", label: "Beginners' wish", pity: 0, hardPity: 90, guaranteed: false },
+      { key: "character", label: "Character event wish", pity: 40, hardPity: 90, guaranteed: true, spark: null },
+      { key: "weapon", label: "Weapon event wish", pity: 10, hardPity: 80, guaranteed: false, spark: null },
+      { key: "chronicled", label: "Chronicled wish", pity: 0, hardPity: 90, guaranteed: false, spark: null },
+      { key: "standard", label: "Standard wish", pity: 0, hardPity: 90, guaranteed: false, spark: null },
+      { key: "beginner", label: "Beginners' wish", pity: 0, hardPity: 90, guaranteed: false, spark: null },
     ]);
   });
 
