@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r7/04-one-user · #247
+- Done: one user, self-hosted (Georges, round 4: "a one user project that people can host themselves, so you can remove dev user admin mentions"). The local sign-in reads "Continue" and names its account Player; Settings says "Signed in as". The rail has no Admin: its tools (the official feed, sample data, uploads, current banners and events, the log) are Settings' **Data sources** at `/settings/data`, for the owner; `/admin` leads there. With one user, the Users tile and table and the log's actor go. README, DESIGN.md, AGENTS.md, CLAUDE.md and the guide say one user, self-hosted.
+- Tests: written first: every journey signs in with "Continue"; Data sources is reached from Settings, without Users, and `/admin` lands there; the rail has no Admin; the audit's actor is Player. `npm run check` passes: 592 tests and 70 journeys; initial JavaScript 146.8 KB.
+- Scope/decisions: the server keeps its owner check (`ADMIN_DISCORD_IDS`), which a deployment on the internet still needs; only the words go. Sign-in still accepts any Discord account: limiting it to the owner is Georges's call.
+- Next: the weapon on the character cards' name card.
+
 ## 2026-10-11 · claude · stack/r7/03-strip-tab · #246
 - Done: in a game's hub, the strip switches game at the same tab (Georges, round 4: "if I am on the pulls screen of Genshin and I go to HSR I wanna end up on the HSR pull screen"): Pulls stays Pulls, a character's sheet or unit page leads to Characters, and a tab the other game lacks to its Activities. The tabs each game has come from one place, `lib/hubScreens.ts`, so `GameTabs` no longer takes a catalog flag from each page.
 - Tests: written first: Star Rail's Pulls → ZZZ's Pulls, ZZZ's Planner → Endfield's Activities (it has no Planner), a Star Rail sheet → ZZZ's Characters. `npm run check` passes: 592 tests and 70 journeys; initial JavaScript 146.9 KB.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the route test makes Amber's first build the default and moves it to the second; the sheet journey adds a build, makes it the default and finds Characters opening it; the first sheet journey checks Role, the defaults button and More details are gone. The Characters journey makes its Kafka build the default, since cards now show the default. `npm run check` passes: 561 tests and 49 journeys.
 - Scope/decisions: old "Name (2) (2)" builds show as "Build N" with an empty label; their names stay in the database. The per-game sheets are no longer shown; deleting them (and their scaffold in `game:new`) is a follow-up. Default KPI targets stay in the API, without a button.
 - Next: the Characters page (in-game element colours, Select clicks, icon filters, the default build's weapon).
-
-## 2026-10-11 · claude · stack/r3/01-copy · #207
-- Done: Georges: "every single text should add value to the data, not be a shareholder report." `docs/AUDIT-2026-10-11.md` lists every screen's noise, what is useless and what is lacking, each with the PR that handles it. This PR cuts the noise: report sentences (the 50/50 reason, "Simulate a top-up", "what buying more would give", "(standard)", the forecast's "not counted", Profile's and Settings' explanations, the calendar's foot notes and goal explanation, Admin's notes), source labels on your own records (Endgame's SOURCE column, "· admin/feed" on the calendar), and long labels (odds rows "By 74", "With 90", "Top-up 110"; the headline "with 90 · avg 48 · max 68"; reminders "Remind 3 days before"). The pull curve stops at hard pity: a lost 50/50 resets it.
-- Tests: written first: a copy journey visits thirteen screens and finds none of the audit's 27 sentences and no manual/admin/feed tag. Journeys that read the old labels now read the short ones. `npm run check` passes: 560 tests and 48 journeys.
-- Scope/decisions: the audit is the plan for the next PRs (builds, characters, weapons, the picker, pulls, goals, wishlist, endgame, the games overview).
-- Next: default builds and the build switcher.
