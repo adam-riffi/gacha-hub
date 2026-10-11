@@ -39,7 +39,7 @@ type CharDetail = {
   weapon_type: Record<string, string>;
   element_type: Record<string, string>;
   level: Record<string, { level_max: number; materials: Costs }>;
-  skill: Record<string, { material?: Record<string, Costs> }>;
+  skill: Record<string, { material?: Record<string, Costs>; description?: { name: string; desc?: string; param?: unknown }[] }>;
   talent?: Record<string, { name?: string; desc?: string }>;
   /** The core skill's enhancements: materials["n"] takes it from level n to n + 1 (base, then A to F). */
   passive?: { materials?: Record<string, Costs> | null };
@@ -63,6 +63,45 @@ const rarity = (rank: number) => Math.min(5, Math.max(1, rank + 1));
 
 // The skills a ZZZ agent levels, as the doc names them; each has its own cost table.
 const SKILLS = ["basic", "dodge", "assist", "special", "chain"] as const;
+const SKILL_NAME: Record<(typeof SKILLS)[number], string> = { basic: "Basic Attack", dodge: "Dodge", assist: "Assist", special: "Special Attack", chain: "Chain Attack" };
+/** The buttons the texts show as icons, in words. */
+const BUTTON: Record<string, string> = {
+  Icon_Normal: "Basic Attack",
+  Icon_Special: "Special Attack",
+  Icon_SpecialReady: "EX Special Attack",
+  Icon_SpecialReady_Rp: "EX Special Attack",
+  Icon_SpecialReady_Ep: "EX Special Attack",
+  Icon_Evade: "Dodge",
+  Icon_Switch: "Switch",
+  Icon_UltimateReady: "Ultimate",
+};
+/**
+ * A {CAL:expr,scale,decimals} number: a sum of products, AvatarSkillLevel(n) being the skill's level,
+ * shown as its range over levels 1–12.
+ * ponytail: 12 is the level without Mindscapes; the sheet's own level would need the text per level.
+ */
+function cal(expr: string, scale: number, decimals: number): string {
+  const at = (level: number) =>
+    Number(
+      (expr.replace(/AvatarSkillLevel\(\d+\)/g, String(level)).split("+").reduce((sum, term) => sum + term.split("*").reduce((p, f) => p * Number(f), 1), 0) * scale).toFixed(decimals),
+    );
+  return expr.includes("AvatarSkillLevel") ? `${at(1)}–${at(12)}` : String(at(1));
+}
+/** A skill's texts (not its multiplier tables), each under its name: buttons in words, the PC wording, tags dropped. */
+const skillText = (entries: { name: string; desc?: string; param?: unknown }[]) =>
+  entries
+    .filter((e) => e.desc && !e.param)
+    .map((e) => `${e.name}\n${e.desc}`)
+    .join("\n")
+    .replace(/<IconMap:([^>]+)>/g, (_m, k: string) => BUTTON[k] ?? k.replace(/^Icon_/, ""))
+    .replace(/\{LAYOUT_FALLBACK#([^}]*)\}/g, "$1")
+    .replace(/\{LAYOUT_[^}]*\}/g, "")
+    .replace(/\{CAL:([^,}]+),([\d.]+),(\d+)\}/g, (_m, expr: string, scale: string, decimals: string) => cal(expr, Number(scale), Number(decimals)))
+    .replace(/<[^>]+>/g, "")
+    .split("\n")
+    .map((l) => l.trim())
+    .filter(Boolean)
+    .join("\n");
 
 // ---- Agents ----
 const charIndex = await get<CharIndex>(`/zzz/${version}/character.json`);
@@ -100,7 +139,15 @@ const characters: CatalogCharacter[] = await mapLimit(Object.keys(charIndex), 4,
     icon: charIndex[id]!.icon.replace(/^IconRole/, "IconRoleCrop"),
     splash: charIndex[id]!.icon,
     ascension,
-    talents: { keys: Object.keys(costsByKey), costs: costsByKey.basic ?? [], costsByKey },
+    talents: {
+      keys: Object.keys(costsByKey),
+      costs: costsByKey.basic ?? [],
+      costsByKey,
+      info: SKILLS.filter((k) => costsByKey[k]).map((k) => {
+        const description = skillText(d.skill[k]?.description ?? []);
+        return { key: k, name: SKILL_NAME[k], ...(description ? { description } : {}) };
+      }),
+    },
     constellations: Object.values(d.talent ?? {}).map((t) => ({
       name: stripTags(t.name),
       description: stripTags(t.desc),
