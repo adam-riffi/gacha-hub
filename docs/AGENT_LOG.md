@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r6/01-talents · #238
+- Done: Georges's "for later, add game data such as talent / skill descriptions", for Genshin first. The importer now fills each combat talent's description from genshin-db (`talents.info[].description`, already in the catalog schema); the regenerated catalog changes only those. On the sheet, a talent's name opens what it does, across the card under its row; a talent without a text (the Traveler's, which change with the element) keeps its plain name.
+- Tests: written first: every Genshin character with three combat talents has their descriptions (Barbara's skill names its Melody Loop); the sheet journey opens Barbara's skill and finds it. `npm run check` passes: 588 tests and 69 journeys.
+- Scope/decisions: the text sits under the row, not beside the level, so it reads at the card's width. DESIGN.md §4's Later item now says Genshin's are in; Star Rail's, WuWa's and ZZZ's come next.
+- Next: Star Rail's descriptions (Yatta's short text, no numbers to fill).
+
 ## 2026-10-11 · claude · stack/r5/05-handoff · #237
 - Done: the handoff after the designs' details (#233–#236): HANDOFF.md says `main` is at #236, lists six migrations for the next deploy (with `recurring_counts`), the decisions taken (counted progress per cycle, defaults in the game's order, names from the designs and counts only when sourced), the details still without a source, and one decision for Georges: an NTE catalog from Hakushin, or NTE stays manual (ADR 0005). The round's audit points to #233–#236.
 - Tests: docs only. `npm run check` on the tree below (#236): 587 tests and 68 journeys.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: `pullsFor` keeps special tickets apart by banner; the games declare Forging Tide and Boopons; the Home journey checks the limited icon and five Boopons as ZZZ's special pulls. `npm run check` passes: 559 tests and 40 journeys.
 - Scope/decisions: three pull types for every game, as Georges suggested; the icons are glyphs (sparkle, ring, diamond), not game art.
 - Next: the Characters page.
-
-## 2026-10-10 · claude · stack/ui/01-pull-curve · #198
-- Done: Georges's feedback on the pull graph. The curve is now drawn whole and never changes shape: the 5★ rate on each pull since the last 5★, with the lost-50/50 run after it, shaded. Markers move along it: you, all your pulls, and a top-up. A legend gives each one's chance of the featured unit. "Simulate a top-up" on Pulls available adds an amount of one pull currency to every banner, its curve and the savings planner. Standard banners get the full card; the compact rows and Pulls' "Manual" tags are gone.
-- Tests: written first: the Pulls journey checks that the curve's path is the same after +10 while the label moves to pity 10, that a 1600-jade top-up gives +10 pulls and "With the top-up: 40 pulls", and that Stellar warp has a full card. `npm run check` passes: 558 tests and 40 journeys; initial JavaScript 196.3 KB.
-- Scope/decisions: the curve plots the per-pull rate, not the cumulative chance, so its shape never depends on your pity; the cumulative chances sit in the legend, the odds table and the headline.
-- Next: Home's pulls by type, the Characters page, teams, the goal maker, the banner timeline, the clean-up, Settings and Admin.

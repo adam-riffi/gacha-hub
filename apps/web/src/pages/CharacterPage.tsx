@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -134,6 +134,8 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
   const skillDoc = (doc[skills] ?? {}) as Record<string, number>;
   const skillKeys = entry?.talents.keys ?? Object.keys(skillDoc);
   const skillName = (k: string) => entry?.talents.info?.find((i) => i.key === k)?.name ?? cap(k);
+  // What each skill does, from the catalog, opened from its name (Georges, 2026-10-11).
+  const skillText = (k: string) => entry?.talents.info?.find((i) => i.key === k)?.description;
   const plan = (tasks.data ?? []).find((t) => !t.parentId && (t.origin as TaskOrigin | null)?.catalogId === data.catalogId && (t.origin as TaskOrigin | null)?.kind === "character");
   const targets = ((plan?.origin as { goal?: { talents?: Record<string, { to: number }> } } | null)?.goal?.talents ?? {}) as Record<string, { to: number }>;
   const holder = weaponHolder(game);
@@ -253,13 +255,12 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
               </div>
               {skillKeys.length === 0 && <p className="mu">No skills on record for this unit.</p>}
               {skillKeys.map((k) => (
-                <div className="sh-row" key={k}>
-                  <span>{skillName(k)}</span>
+                <SkillRow key={k} name={skillName(k)} text={skillText(k)}>
                   <span className="sh-ctl">
                     <input type="number" aria-label={`${k} now`} min={1} max={15} value={skillDoc[k] ?? 1} onChange={(e) => setDoc((d) => ({ ...d, [skills]: { ...((d[skills] ?? {}) as Doc), [k]: Number(e.target.value) } }))} />
                     <span className="mu"> → {targets[k]?.to ?? "—"}</span>
                   </span>
-                </div>
+                </SkillRow>
               ))}
             </section>
 
@@ -397,5 +398,25 @@ function KpiTile({ label, value, target, fallback, onTarget }: { label: string; 
         </span>
       )}
     </div>
+  );
+}
+
+/** A skill's row: its name opens what it does, across the card under the row (Georges, 2026-10-11). */
+function SkillRow({ name, text, children }: { name: string; text?: string; children: ReactNode }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <div className="sh-row">
+        {text ? (
+          <button type="button" className="sh-skill" aria-expanded={open} onClick={() => setOpen(!open)}>
+            {open ? "▾" : "▸"} {name}
+          </button>
+        ) : (
+          <span>{name}</span>
+        )}
+        {children}
+      </div>
+      {open && text && <p className="mu sh-skill-text">{text}</p>}
+    </>
   );
 }
