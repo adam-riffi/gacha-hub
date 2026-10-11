@@ -2,9 +2,23 @@ import { describe, expect, it } from "vitest";
 import { artJobs, assetPath, catalogSchema, communityArtUrl, genshin, getGame, splashKey, wuwa, zzz } from "@gacha/shared";
 
 describe("communityArtUrl", () => {
-  it("serves Genshin icons from Enka under the catalog key", () => {
+  it("serves Genshin icons from Enka under the catalog key, and its materials from Yatta, which has the newest", () => {
     expect(communityArtUrl("genshin", "character", "UI_AvatarIcon_Arlecchino")).toBe("https://enka.network/ui/UI_AvatarIcon_Arlecchino.png");
-    expect(communityArtUrl("genshin", "material", "UI_ItemIcon_104303")).toBe("https://enka.network/ui/UI_ItemIcon_104303.png");
+    // Georges, round 4: "SG UD OO AR" were the Far-North Scions' materials, which Enka lacks.
+    expect(communityArtUrl("genshin", "material", "UI_ItemIcon_114081")).toBe("https://gi.yatta.moe/assets/UI/UI_ItemIcon_114081.png");
+  });
+
+  it("serves WuWa's materials and Sonata sets from its game files, folder and all", () => {
+    const files = "https://files.wuthery.com/p/GameData/UIResources/Common/Image";
+    expect(communityArtUrl("wuwa", "material", "IconMout/T_IconMout_L_014_UI")).toBe(`${files}/IconMout%2FT_IconMout_L_014_UI.png`);
+    expect(communityArtUrl("wuwa", "gear", "IconElementAttri/T_IconElementAttriIce")).toBe(`${files}/IconElementAttri%2FT_IconElementAttriIce.png`);
+  });
+
+  it("gives every WuWa material and Sonata set an icon key, each set its own", async () => {
+    const cat = catalogSchema.parse(await wuwa.loadCatalog!());
+    expect(cat.materials.every((m) => m.icon && /^[\w-]+\/[\w-]+$/.test(m.icon))).toBe(true);
+    expect(cat.gear.every((g) => g.icon && /^IconElementAttri\/[\w-]+$/.test(g.icon))).toBe(true);
+    expect(new Set(cat.gear.map((g) => g.icon)).size).toBe(cat.gear.length);
   });
 
   it("serves HSR icons from Yatta by id, per kind", () => {
