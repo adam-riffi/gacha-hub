@@ -11,6 +11,7 @@
 | Monthly shop | Signal Shop, monthly | [Signal Shop](https://zenless-zone-zero.fandom.com/wiki/Signal_Shop) (stock refreshes monthly) |
 | Endgame | Shiyu Defense (Critical Node): every 14 days on Friday (2 – 16 Oct 2026); five frontiers; 780 Polychrome with S on all | [Critical Node](https://zenless-zone-zero.fandom.com/wiki/Shiyu_Defense/Critical_Node), [history](https://zenless-zone-zero.fandom.com/wiki/Shiyu_Defense/Critical_Node/History) |
 | Endgame | Deadly Assault: every 14 days on the other Fridays (25 Sep – 9 Oct 2026, then 9 – 23 Oct); 9 stars; 300 Polychrome | [Deadly Assault](https://zenless-zone-zero.fandom.com/wiki/Deadly_Assault), [history](https://zenless-zone-zero.fandom.com/wiki/Deadly_Assault/History) |
+| Endgame | Lost Void (Hollow Zero): Investigation Points each week from Monday's reset; the weekly cap is not sourced ~ | [Lost Void guide](https://icy-veins.com/zenless-zone-zero/hollow-zero-lost-void); Georges's design (2026-10-11) |
 | Battle pass | New Eridu City Fund, 50 levels; weekly cap: | [New Eridu City Fund](https://zenless-zone-zero.fandom.com/wiki/New_Eridu_City_Fund) |
 | 30-day pass | Inter-Knot Membership, 30 days; 90 Polychrome a day | [Inter-Knot Membership](https://zenless-zone-zero.fandom.com/wiki/Inter-Knot_Membership) |
 | Premium income | Daily engagement, 60 Polychrome a day (10 + 10 + 20 + 20 at 100–400 engagement) | [Errands](https://zenless-zone-zero.fandom.com/wiki/Errands) |

@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r5/03-modes · #235
+- Done: two of the endgame modes Georges's designs list that the manifests lacked. Star Rail's **Anomaly Arbitration**: a phase each version (28 Sep – 9 Nov 2026), three Knight stages then the King, 9 stars; its clears take a team per stage. ZZZ's **Lost Void** (Hollow Zero): Investigation Points each week from Monday's reset, no cap (none is sourced). Both show on the Endgame tab, its history and the Overview's endgame card.
+- Tests: written first: the manifest test pins each mode's cycle on 10 October 2026 (Anomaly Arbitration 28 Sep – 9 Nov, Lost Void 5 – 12 Oct). `npm run check` passes: 587 tests and 68 journeys.
+- Scope/decisions: the 9 stars and the weekly cadence are marked `~` in `docs/games/*.md`; no rewards (`maxPremium`) since none is sourced. Still missing from the designs, for want of a source: WuWa's Doubled Pawns, NTE's Realm of Greed and Pink Paws Heist, Endfield's Umbral Monument, Etchspace Salvage and Contingency Contract.
+- Next: the featured guarantee.
+
 ## 2026-10-11 · claude · stack/r5/02-items · #234
 - Done: each game's dailies and weeklies from Georges's designs, as default tasks: Genshin's Commission reward, Spend Resin, Check-in and Parametric Transformer; Star Rail's Check-in and Echo of War (3 a week); ZZZ's Coffee, Video store and Notorious Hunt (3 a week); NTE's Nakupenda Pool, Fortune reading, Gifts, Auction House and Old Mailbox commission; Endfield's Spend Sanity, Credit store, Weekly missions and Severe Energy Alluvium. A profile made before them shows each on the Overview's Today or weekly card with +, which adds the game's missing defaults.
 - Tests: written first: a new profile of each game seeds its design's tasks with their cadence and count; the Overview journey deletes ZZZ's Coffee and adds it back with +; the Activities journey counts ZZZ's four dailies, and the day record, Farm today, the dashboard, the reminder and Home count the new ones (Genshin, HSR)'s new ones. `npm run check` passes: 586 tests and 67 journeys.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: Ellen's core costs open levels 2 to 7, the doc keeps `core`, and the Enka showcase gives `core: 7`. `npm run check` passes: 534 tests and 40 journeys.
 - Scope/decisions: the core skill is a number from 1 to 7, not the in-game letters, like every other skill level.
 - Next: every banner type, with a hide button on Pulls.
-
-## 2026-10-10 · claude · stack/endfield/05-pool-pity · #195
-- Done: Endfield's Arsenal pity no longer runs across banners. Imported records keep their banner (`pool`, from the records API's `poolId`), and a banner type marked `pityPerPool` counts only the newest banner's pulls on Pulls and Home. Pulls typed by hand count toward the newest banner.
-- Tests: written first: 30 pulls on one Arsenal banner, 5 on the next, then 10 by hand give pity 15, while Chartered over the same pulls gives 35; the records import keeps each record's pool. `npm run check` passes: 534 tests and 40 journeys.
-- Scope/decisions: no column; the pool rides in the pull's stored record. Pulls imported before this change have no pool and count as before.
-- Next: ZZZ core skills, every banner with a hide button.

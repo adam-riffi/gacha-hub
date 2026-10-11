@@ -168,8 +168,9 @@ describe("game facts", () => {
     const now = new Date("2026-10-10T12:00:00Z");
     const seen: Record<string, Record<string, [string, string]>> = {
       genshin: { abyss: ["2026-09-16", "2026-10-16"], theater: ["2026-10-01", "2026-11-01"], stygian: ["2026-09-30", "2026-11-11"] },
-      hsr: { moc: ["2026-09-28", "2026-12-14"], pf: ["2026-09-14", "2026-10-19"], as: ["2026-10-05", "2026-11-16"] },
-      zzz: { shiyu: ["2026-10-02", "2026-10-16"], assault: ["2026-10-09", "2026-10-23"] },
+      // Anomaly Arbitration and Lost Void from Georges's designs (2026-10-11): a phase each version, a week of points.
+      hsr: { moc: ["2026-09-28", "2026-12-14"], pf: ["2026-09-14", "2026-10-19"], as: ["2026-10-05", "2026-11-16"], arbitration: ["2026-09-28", "2026-11-09"] },
+      zzz: { shiyu: ["2026-10-02", "2026-10-16"], assault: ["2026-10-09", "2026-10-23"], lostVoid: ["2026-10-05", "2026-10-12"] },
       wuwa: { tower: ["2026-09-14", "2026-10-12"], wastes: ["2026-09-28", "2026-10-26"] },
       endfield: { echoes: ["2026-10-08", "2026-10-15"] },
     };
