@@ -99,7 +99,8 @@
 .cal-day { position: absolute; top: 0; height: 100%; display: grid; place-items: center; color: var(--text-muted); font: 400 10px/1 var(--font-mono); }
 .cal-day.is-weekend { color: var(--hairline-strong); }
 .cal-day.is-today { color: var(--accent); font-weight: 600; }
-.cal-dates { margin-left: auto; padding-left: 8px; opacity: 0.75; font-size: 10px; }
+/* In a short bar the dates give way before the name. */
+.cal-dates { min-width: 0; overflow: hidden; flex-shrink: 1000; margin-left: auto; padding-left: 8px; opacity: 0.75; font-size: 10px; }
 .cal-month h3 { margin-bottom: 12px; }
 .cal-mgrid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 1px; background: var(--surface-3); border: 1px solid var(--surface-3); }
 .cal-mhead { padding: 6px 8px; background: var(--card); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; }
