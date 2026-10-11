@@ -1,12 +1,34 @@
 import type { FastifyInstance } from "fastify";
-import { createWeaponCopyInput, updateWeaponCopyInput, weaponCopyDto, weaponMetaSchema, type GameDefinition } from "@gacha/shared";
+import { createWeaponCopyInput, updateWeaponCopyInput, weaponCopyDto, weaponHolder, weaponMetaSchema, type GameDefinition } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
 import { requireUser } from "../auth/plugin.js";
-import { gameOrThrow, getCatalog, loadInstance } from "./util.js";
+import { gameOrThrow, getCatalog, loadInstance, type PrismaJson } from "./util.js";
 
 /** A copy's caps: the weapon's top level (100 without a catalog), the game's refinement (1 where it has none). */
 function overCap(game: GameDefinition, maxLevel: number | undefined, v: { level?: number; refinement?: number }) {
   return (v.level ?? 1) > (maxLevel ?? 100) || (v.refinement ?? 1) > (game.manifest.dupes.weapon?.max ?? 1);
+}
+
+type Doc = Record<string, unknown>;
+
+/**
+ * Every build of a profile holding a copy (Georges, round 5: the weapons and
+ * the characters synced) takes the copy's level and refinement, or lets go of
+ * the copy when it is gone (`null`); `except` is the build that just saved.
+ */
+export async function syncHolders(game: GameDefinition, gameInstanceId: string, copyId: string, copy: { level: number; refinement: number } | null, except?: string) {
+  const holder = weaponHolder(game);
+  const dupe = game.manifest.dupes.weapon?.field.split(".")[1];
+  if (!holder || !dupe) return;
+  const builds = await prisma.character.findMany({ where: { gameInstanceId, ...(except ? { NOT: { id: except } } : {}) } });
+  for (const b of builds) {
+    const doc = (b.doc ?? {}) as Doc;
+    const w = doc[holder] as Doc | undefined;
+    if (w?.copyId !== copyId) continue;
+    const { copyId: _gone, ...kept } = w;
+    const next = copy ? { ...w, level: copy.level, [dupe]: copy.refinement } : kept;
+    await prisma.character.update({ where: { id: b.id }, data: { doc: { ...doc, [holder]: next } as PrismaJson } });
+  }
 }
 
 /** The ownership row counts a catalog weapon's copies: kept in step as copies come and go. */
@@ -77,6 +99,7 @@ export async function registerWeaponRoutes(app: FastifyInstance) {
     if (overCap(game, entry?.maxLevel, { level: body.level ?? copy.level, refinement: body.refinement ?? copy.refinement })) return reply.code(400).send({ error: "over_the_cap" });
     // A catalog weapon keeps its catalog name.
     const updated = await prisma.weaponCopy.update({ where: { id: copy.id }, data: { ...body, ...(copy.catalogId ? { name: copy.name } : {}) } });
+    await syncHolders(game, gi.id, copy.id, updated);
     return weaponCopyDto.parse(updated);
   });
 
@@ -86,6 +109,7 @@ export async function registerWeaponRoutes(app: FastifyInstance) {
     const copy = await prisma.weaponCopy.findFirst({ where: { id: req.params.copyId, gameInstanceId: gi.id } });
     if (!copy) return reply.code(404).send({ error: "not_found" });
     await prisma.weaponCopy.delete({ where: { id: copy.id } });
+    await syncHolders(gameOrThrow(gi.gameKey), gi.id, copy.id, null);
     if (copy.catalogId) await recount(gi.id, copy.catalogId);
     return { ok: true };
   });

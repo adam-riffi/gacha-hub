@@ -42,6 +42,9 @@ export const zzzDocSchema = z
     mindscape: z.number().min(0).max(6),
     wEngine: z
       .object({
+        catalogId: z.string(),
+        /** The copy on Weapons this build holds (round 5). */
+        copyId: z.string().max(40),
         name: z.string(),
         level: z.number().min(1).max(60),
         phase: z.number().min(1).max(5),

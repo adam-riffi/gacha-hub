@@ -1,11 +1,12 @@
 import type { FastifyInstance } from "fastify";
 import { Prisma } from "../generated/prisma/client.js";
 import type { Character } from "../generated/prisma/client.js";
-import { characterDto, createCharacterInput, updateCharacterInput, type GameDefinition } from "@gacha/shared";
+import { characterDto, createCharacterInput, updateCharacterInput, weaponHolder, type GameDefinition } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
 import { migrateDoc } from "../lib/docMigrations.js";
 import { requireUser } from "../auth/plugin.js";
 import { gameOrThrow, getCatalog, loadCharacter, loadInstance, numericKpis, validateDoc, type PrismaJson } from "./util.js";
+import { syncHolders } from "./weapons.js";
 
 /** Bring a stored document up to the game's current shape, persisting lazily. */
 async function upToDate(game: GameDefinition, character: Character): Promise<Character> {
@@ -122,6 +123,17 @@ export async function registerCharacterRoutes(app: FastifyInstance) {
           return reply.code(404).send({ error: "unknown_catalog_id" });
         }
       }
+      // A build holding a copy (round 5): the copy is this profile's and the same weapon, and takes the sheet's level and refinement.
+      const doc = body.doc !== undefined ? (validateDoc(game, body.doc) as Record<string, unknown>) : undefined;
+      const holder = weaponHolder(game);
+      const held = doc && holder ? (doc[holder] as { copyId?: string; catalogId?: string; level?: number } & Record<string, unknown>) : undefined;
+      let copy: { id: string; level: number; refinement: number } | null = null;
+      if (held?.copyId) {
+        const found = await prisma.weaponCopy.findFirst({ where: { id: held.copyId, gameInstanceId: character.gameInstanceId } });
+        if (!found || found.catalogId !== (held.catalogId ?? null)) return reply.code(400).send({ error: "copy_mismatch" });
+        const dupe = game.manifest.dupes.weapon!.field.split(".")[1]!;
+        copy = await prisma.weaponCopy.update({ where: { id: found.id }, data: { level: held.level ?? found.level, refinement: typeof held[dupe] === "number" ? (held[dupe] as number) : found.refinement } });
+      }
       if (body.isDefault) {
         await prisma.character.updateMany({ where: { gameInstanceId: character.gameInstanceId, catalogId: character.catalogId, NOT: { id: character.id } }, data: { isDefault: false } });
       }
@@ -132,14 +144,13 @@ export async function registerCharacterRoutes(app: FastifyInstance) {
           ...(body.name !== undefined ? { name: body.name } : {}),
           ...(body.catalogId !== undefined ? { catalogId: body.catalogId } : {}),
           ...(body.portraitUrl !== undefined ? { portraitUrl: body.portraitUrl } : {}),
-          ...(body.doc !== undefined
-            ? { doc: validateDoc(game, body.doc) as PrismaJson, docVersion: game.docVersion }
-            : {}),
+          ...(doc !== undefined ? { doc: doc as PrismaJson, docVersion: game.docVersion } : {}),
           ...(body.buildStatus !== undefined ? { buildStatus: body.buildStatus } : {}),
           ...(body.role !== undefined ? { role: body.role } : {}),
           ...(body.targets !== undefined ? { targets: body.targets === null ? Prisma.DbNull : (body.targets as PrismaJson) } : {}),
         },
       });
+      if (copy) await syncHolders(game, character.gameInstanceId, copy.id, copy, character.id);
       return characterDto.parse(updated);
     },
   );

@@ -70,3 +70,67 @@ test("Weapons on every game: NTE's Arcs and Endfield's weapons from their catalo
   await page.goto(`/games/${nte.id}/weapons`);
   await expect(page.getByRole("region", { name: "Weapons" }).getByRole("article", { name: "Eternal Waltz" })).toBeVisible();
 });
+
+// The weapons and the characters synced (Georges, round 5: "check if I have the extra weapon copy and ask me if I either want to
+// take it from a character or create a separate instance of the weapon shared between different builds or add a copy").
+test("Weapons and characters synced: a build holds a copy; a held one is taken, shared or added @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  await clearCopies(page, id);
+  // Three The Hunt characters no other journey builds, and one Arrows at Lv 50, S2.
+  const build = async (catalogId: string) => ((await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId } })).json()) as { id: string }).id;
+  const [sushang, yanqing, danHeng] = [await build("1206"), await build("1209"), await build("1002")];
+  await page.request.post(`/api/instances/${id}/weapons`, { data: { catalogId: "20000", level: 50, refinement: 2 } });
+  const cone = async (b: string) => ((await (await page.request.get(`/api/characters/${b}`)).json()) as { doc: { lightCone?: { copyId?: string; level?: number; superimposition?: number } } }).doc.lightCone ?? {};
+  const pickArrows = async () => {
+    const card = page.getByRole("region", { name: "Weapon" });
+    await card.getByRole("combobox", { name: "Weapon name" }).fill("Arrows");
+    await page.getByRole("option", { name: /^Arrows/ }).click();
+    return card;
+  };
+
+  // A free copy is taken as it is: its level and superimposition come with it.
+  await page.goto(`/characters/${sushang}`);
+  let card = await pickArrows();
+  await expect(card.getByLabel("Level")).toHaveValue("50");
+  await page.getByRole("button", { name: "Save" }).click();
+  await expect.poll(async () => (await cone(sushang)).copyId).toBeTruthy();
+
+  // The only copy is held: asked, and shared.
+  await page.goto(`/characters/${yanqing}`);
+  card = await pickArrows();
+  const ask = card.getByRole("group", { name: "Which Arrows" });
+  await expect(ask).toContainText("Sushang");
+  await ask.getByRole("button", { name: "Share Sushang's" }).click();
+  await page.getByRole("button", { name: "Save" }).click();
+  await expect.poll(async () => (await cone(yanqing)).copyId).toBe((await cone(sushang)).copyId);
+
+  // A level typed on Weapons reaches every build holding the copy.
+  await page.goto(`/games/${id}/weapons`);
+  await page.getByRole("article", { name: "Arrows" }).first().click();
+  const panel = page.getByRole("complementary", { name: "Arrows" });
+  await panel.getByRole("spinbutton", { name: "Level" }).fill("60");
+  await panel.getByRole("spinbutton", { name: "Level" }).blur();
+  await expect.poll(async () => [(await cone(sushang)).level, (await cone(yanqing)).level]).toEqual([60, 60]);
+  await expect(page.getByRole("article", { name: "Arrows" }).first().getByRole("img", { name: "Yanqing" })).toBeVisible();
+
+  // A copy added for a third, then one taken from a character.
+  await page.goto(`/characters/${danHeng}`);
+  card = await pickArrows();
+  await card.getByRole("group", { name: "Which Arrows" }).getByRole("button", { name: "Add a copy" }).click();
+  // The prompt closes once the new copy is on the sheet.
+  await expect(card.getByRole("group", { name: "Which Arrows" })).toHaveCount(0);
+  await page.getByRole("button", { name: "Save" }).click();
+  await expect.poll(async () => (await cone(danHeng)).copyId).toBeTruthy();
+  await expect.poll(async () => ((await (await page.request.get(`/api/instances/${id}/weapons`)).json()) as { catalogId: string }[]).filter((w) => w.catalogId === "20000").length).toBe(2);
+  await page.goto(`/characters/${yanqing}`);
+  await expect(page.getByRole("region", { name: "Weapon" }).getByLabel("Level")).toHaveValue("60");
+  card = await pickArrows();
+  await card.getByRole("group", { name: "Which Arrows" }).getByRole("button", { name: "Take it from Dan Heng" }).click();
+  await expect(card.getByRole("group", { name: "Which Arrows" })).toHaveCount(0);
+  await page.getByRole("button", { name: "Save" }).click();
+  await expect.poll(async () => (await cone(danHeng)).copyId).toBeUndefined();
+  await clearCopies(page, id);
+});
