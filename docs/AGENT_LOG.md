@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r7/10-planner-tasks · #253
+- Done: the Planner's goals are the Tasks goal card (Georges, round 4: "the tasks features like linking should also be available on the game planner screen"): priority, notify, the plan's steps and Link to another goal, as on Tasks; a click still picks the goal whose materials show. In the Planner's column the card's title takes the full width, progress, priority and notify under it. WIREFRAMES.md G7 follows.
+- Tests: written first: a Star Rail goal on the Planner shows Notify and its priority, opens on a click to its plan (and picks its materials), and links under another goal, leaving the list. `npm run check` passes: 597 tests and 71 journeys.
+- Scope/decisions: the card is the same component as on Tasks, wrapped so a click anywhere also picks it; the Planner keeps listing the plans (goals with a unit), any of the game's goals can be linked.
+- Next: NTE's catalog.
+
 ## 2026-10-11 · claude · stack/r7/09-enemy-icons · #252
 - Done: endgame enemies as icons (Georges, round 4: "use icons when possible, that goes for enemies too"). What a stage's enemies are weak to shows as element icons where the game has a source (ZZZ's, from Hakushin, through a new art kind, `element`), the coloured dots elsewhere. A stage that is one boss of the same name (Deadly Assault, Stygian Onslaught) shows only its level beside the boss's icon, named on hover. WIREFRAMES.md G2 follows. Also a fix the check surfaced: owning or un-owning characters on the Characters cards now updates the cache from what was saved, as the journey that owns two selected characters failed twice in four full runs with both the save and the refetch answering right.
 - Tests: written first: Shiyu's list shows "Weak to …" element icons; Deadly Assault's first stage reads "Lv N" and its enemy names itself on hover; ZZZ's element URL is Hakushin's. `npm run check` passes: 597 tests and 70 journeys.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the route keeps an event and a banner on the wishlist and refuses an unknown key; the calendar journey wishes an event and filters to it. `npm run check` passes: 568 tests and 52 journeys.
 - Scope/decisions: events and banners reuse the wishlist table (kind + key), so no migration.
 - Next: endgame clear times and teams per stage.
-
-## 2026-10-11 · claude · stack/r3/07-goals · #213
-- Done: Georges's goal notes. A click on a goal opens it (the title area is the button; the Expand button is gone). A plan goal shows its depth: its level range with each ascension it crosses, and each talent's range by name. Goals link: "Link to" puts a goal under another of the same profile (a weapon's farm under its character's), which lists it with its progress and Unlink; `PUT /api/tasks/:id { parentId }` refuses a goal under itself, under a goal that is itself linked (no loops), or across profiles. Plan farming lists the materials as the levels change (no Preview step), and its level defaults now follow the catalog once it loads (a quick Generate used to drop the level range).
-- Tests: written first: the route links, refuses a loop and a self-link, and unlinks; the Tasks journeys open goals by clicking them, check Clara's plan steps after generating from her sheet without a Preview button, and link a light cone's goal under hers. `npm run check` passes: 567 tests and 51 journeys.
-- Scope/decisions: linking reuses `parentId`, so a linked goal leaves the top list and rides with its parent, one level deep.
-- Next: wishlisting events and banners.
