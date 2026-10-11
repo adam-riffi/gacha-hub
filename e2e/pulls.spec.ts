@@ -29,11 +29,12 @@ test("Pulls: what you have and what is coming, an event banner's status, pity an
   await expect(curve).toHaveAttribute("aria-label", /you are at pity 10/);
   await expect(banner.locator(".pl-legend")).toContainText("30 pulls");
 
-  // A top-up simulation: what buying more currency would give, on every banner.
-  await page.getByLabel("Top-up amount").fill("1600");
+  // A top-up simulation, shown as a plus sign (Georges, 2026-10-11: "remove top-up and change it to a plus sign").
+  await page.getByLabel("Amount to add").fill("1600");
   await expect(page.getByRole("region", { name: "Pulls available" })).toContainText("+10 pulls");
-  await expect(banner.locator(".pl-legend")).toContainText("Top-up 40");
-  await page.getByLabel("Top-up amount").fill("");
+  await expect(banner.locator(".pl-legend")).toContainText("+10 ·");
+  await expect(page.locator("main")).not.toContainText(/top-up/i);
+  await page.getByLabel("Amount to add").fill("");
 
   // Standard banners get the full card too.
   await expect(page.getByRole("region", { name: "Stellar warp" }).getByRole("img", { name: /chance of a 5★/ })).toBeVisible();
