@@ -6,7 +6,7 @@ test("the app uses its self-hosted type and the dark tokens @smoke", async ({ pa
     if (r.resourceType() === "font" || /fonts\.(googleapis|gstatic)\.com/.test(r.url())) fontHosts.push(new URL(r.url()).host);
   });
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   await page.evaluate(() => document.fonts.ready);
 
@@ -30,7 +30,7 @@ test("the app uses its self-hosted type and the dark tokens @smoke", async ({ pa
 
 test("deadlines within 48 hours are paper chips; view switches expose their state @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   // HSR, not Genshin: the smoke journey adds Genshin through the library.
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
@@ -76,7 +76,7 @@ test("deadlines within 48 hours are paper chips; view switches expose their stat
 // A missing image falls back to a tile with initials (GameIcon); #217 dropped its base rule with the old sheets' CSS.
 test("an icon without its image is a tile with its initials, centred @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   await page.request.post("/api/instances", { data: { gameKey: "hsr" } });
   await page.goto("/library");

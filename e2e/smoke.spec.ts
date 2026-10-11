@@ -3,7 +3,7 @@ import { expect, test, type Page } from "@playwright/test";
 /** The local dev login stands in for Discord sign-in (off in production). */
 async function signIn(page: Page) {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
 }
 

@@ -5,7 +5,7 @@ const iso = (days: number) => new Date(Date.now() + days * 86_400_000).toISOStri
 // Home with a game picked is that game's dashboard (Georges's designs, 2026-10-11; on Home since round 4).
 test("Home with a game picked shows its dashboard: pulls, pity and banners at a glance, each opening its screen @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
   await page.request.put(`/api/instances/${id}/currencies/stellarJade`, { data: { value: 1600 } });
@@ -29,7 +29,7 @@ test("Home with a game picked shows its dashboard: pulls, pity and banners at a 
 
 test("the Overview's second row: today's dailies ticked in place, the pass and the weeklies, stamina with its reserve @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "zzz" } })).json()) as { id: string };
   await page.request.put(`/api/instances/${id}/currencies/battery`, { data: { value: 120 } });
@@ -55,7 +55,7 @@ test("the Overview's second row: today's dailies ticked in place, the pass and t
 
 test("the Overview's third row: builds in progress with level, skills, weapon and gear, and the endgame cycle @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
   const build = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1102", doc: { level: 70, lightCone: { level: 60 } } } })).json()) as { id: string };
@@ -79,7 +79,7 @@ test("the Overview's third row: builds in progress with level, skills, weapon an
 
 test("the Overview's last row: each goal's progress and their average, and the open goals over ten days @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "wuwa" } })).json()) as { id: string };
   const goal = (await (await page.request.post("/api/tasks", { data: { scope: "game", refId: id, type: "goal", title: "E2E overview goal", target: 10 } })).json()) as { id: string };
@@ -97,7 +97,7 @@ test("the Overview's last row: each goal's progress and their average, and the o
 // Each game's own card (Georges's designs, 2026-10-11): NTE's city, Endfield's AIC and outposts.
 test("the Overview's own card: NTE's city, its City Stamina capped by the Tycoon Level; Endfield's AIC and outposts @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const nte = (await (await page.request.post("/api/instances", { data: { gameKey: "nte" } })).json()) as { id: string };
 
@@ -120,7 +120,7 @@ test("the Overview's own card: NTE's city, its City Stamina capped by the Tycoon
 // Counted dailies (Georges's designs: "Engagement ▮▮▮▯"): a box per step, ticked up to the one clicked.
 test("the Overview counts a daily's steps in boxes, kept after a reload @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "zzz" } })).json()) as { id: string };
   const tasks = (await (await page.request.get(`/api/tasks?scope=game&refId=${id}`)).json()) as { id: string; title: string }[];
@@ -141,7 +141,7 @@ test("the Overview counts a daily's steps in boxes, kept after a reload @smoke",
 // A profile made before an item joined the game's defaults adds it from the card.
 test("the Overview adds a game's daily the profile lacks with + @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "zzz" } })).json()) as { id: string };
   const tasks = (await (await page.request.get(`/api/tasks?scope=game&refId=${id}`)).json()) as { id: string; title: string }[];
@@ -156,7 +156,7 @@ test("the Overview adds a game's daily the profile lacks with + @smoke", async (
 
 test("the Overview's pity shows Endfield's featured guarantee toward its spark @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "endfield" } })).json()) as { id: string };
   await page.request.post("/api/admin/payload", { data: { kind: "banners", gameKey: "endfield", items: [{ key: "e2e-spark", name: "E2E spark headhunting", kind: "character", startsAt: iso(-1), endsAt: iso(20) }] } });

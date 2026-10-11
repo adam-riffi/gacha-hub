@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test("Planner: goals, their materials with have, need and missing, all goals, farm today @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   // HSR, not Genshin: the smoke journey adds Genshin through the library.
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
@@ -30,7 +30,7 @@ test("Planner: goals, their materials with have, need and missing, all goals, fa
 
 test("Planner: a material's farm days written out (Wed Sat), each goal and material with its icon @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "genshin" } })).json()) as { id: string };
   // The smoke journey adds Genshin through the Games page, so this one removes its profile.

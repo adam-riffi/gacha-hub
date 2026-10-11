@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test("Teams: a tab of its own to make, fill, rename and delete teams; the sheet's Used in adds to one @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
   await page.request.put(`/api/instances/${id}/ownership`, { data: { items: [{ kind: "character", catalogId: "1005", owned: true }] } });

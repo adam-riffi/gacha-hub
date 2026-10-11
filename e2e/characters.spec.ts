@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test("Characters: splash cards with their KPIs, counts, search, wishlist and owning @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   // HSR, not Genshin: the smoke journey adds Genshin through the library.
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
@@ -81,7 +81,7 @@ test("Characters: splash cards with their KPIs, counts, search, wishlist and own
 
 test("Characters: every build in one table, and several characters at once @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
   await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1009", doc: { level: 60 } } });

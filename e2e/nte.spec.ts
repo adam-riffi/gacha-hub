@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test("Neverness to Everness works by hand on every screen @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
 
   // Added from the library, like any game; it lands on Activities.

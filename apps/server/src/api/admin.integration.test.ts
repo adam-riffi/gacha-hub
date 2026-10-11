@@ -179,7 +179,7 @@ describe("admin uploads + banners/events (routes)", () => {
       "/api/admin/audit?limit=50",
     );
     const update = audit.json.find((a) => a.action === "update" && a.targetKey === "genshin/it-active")!;
-    expect(update.actorName).toBe("Dev User");
+    expect(update.actorName).toBe("Player");
     expect(update.diff.before?.name).toBe("Active Banner");
     expect(update.diff.after?.name).toBe("Renamed");
     expect(audit.json.some((a) => a.action === "create")).toBe(true);

@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test("Games library: owned characters, pulls, energy, goals and backlog per game, each opening its screen; today, sleep, and moving a game in the strip @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   // HSR and ZZZ, not Genshin: the smoke journey adds Genshin through the library.
   const { id: hsrId } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };

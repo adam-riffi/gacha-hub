@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test("the dailies heatmap shows today, answers the pointer and the keyboard, and pins a day @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   // HSR, not Genshin: the smoke journey adds Genshin through the library.
   await page.request.post("/api/instances", { data: { gameKey: "hsr" } });

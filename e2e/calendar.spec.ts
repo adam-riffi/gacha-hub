@@ -4,7 +4,7 @@ const iso = (days: number) => new Date(Date.now() + days * 86_400_000).toISOStri
 
 test("paging the calendar back shows what already ended @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   // HSR, not Genshin: the smoke journey adds Genshin through the library.
   await page.request.post("/api/instances", { data: { gameKey: "hsr" } });
@@ -23,7 +23,7 @@ test("paging the calendar back shows what already ended @smoke", async ({ page }
 
 test("a reward event carries its roster tag; its pick and Make goal set the goal; layers add rows @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
   await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1009", doc: { eidolon: 2 } } });
@@ -72,7 +72,7 @@ test("a reward event carries its roster tag; its pick and Make goal set the goal
 
 test("Only what I wishlisted keeps the banners and events of the units you wish for @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
   const upload = await page.request.post("/api/admin/payload", {
@@ -99,7 +99,7 @@ test("Only what I wishlisted keeps the banners and events of the units you wish 
 
 test("Banners: a tick for every day and each bar's dates, a month view of what starts and ends each day, and a featured unit opens its page @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
   const upload = await page.request.post("/api/admin/payload", {
@@ -127,7 +127,7 @@ test("Banners: a tick for every day and each bar's dates, a month view of what s
 
 test("an event is wishlisted from its Selected panel, and Only what I wishlisted keeps it @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
   await page.request.post("/api/admin/payload", {
