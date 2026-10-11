@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r6/04-zzz-talents · #241
+- Done: ZZZ's skill names and descriptions. Each of an agent's five skills gets its name (Basic Attack, Dodge, Assist, Special Attack, Chain Attack, where the sheet showed the bare keys) and its texts, not its multiplier tables, each under its own name: buttons in words, the PC wording, tags dropped, and the few `{CAL:…}` numbers that scale with the skill's level shown as their level 1–12 range (Zhao's charge: 13–24% of Max HP). The sheet opens them as for the other games. HANDOFF.md lists #239–#241 and what is left of that item.
+- Tests: written first: every agent's five skills are named and described with no tag or token left; Sunna's Basic Attack reads "Press Basic Attack to activate"; Zhao's shows 13–24%. `npm run check` passes: 591 tests and 69 journeys.
+- Scope/decisions: a range rather than one level's number, so the text stays the catalog's and needs no level from the sheet; 12 is the level without Mindscapes. The Core Skill's text is left out: Hakushin gives one per core level.
+- Next: Georges's secrets, data and the NTE decision.
+
 ## 2026-10-11 · claude · stack/r6/03-wuwa-talents · #240
 - Done: WuWa's skill descriptions. The importer gives each levelable skill the game's short text (`SkillResume`): its counts filled in from `SkillResumeNum` (fixed numbers, not level ones), input tokens in their PC wording, plurals by the number before them, tags dropped, a line per section. It also unswaps the Forte Circuit and Intro Skill: `SkillType` 5 is the Intro Skill and 6 the Forte Circuit (Chixia's Heroic Bullets hold her Thermobaric Bullets; Zani's "intro" text began "Forte Gauge"). The sheet opens them as Genshin's and Star Rail's.
 - Tests: written first: every resonator's skills have a short description with no tag or token left (Yangyang's Forte Circuit says she holds up to 3 Melodies). The test that pinned the swap now expects Chixia's Forte Circuit to be Heroic Bullets. `npm run check` passes.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the Teams journey creates, fills, renames and deletes a team from the tab, then adds Kafka to a team from her sheet; the accessibility scan covers Teams and a unit's page. The Endgame teams test moved there; Endfield's hub now lists Teams. `npm run check` passes: 559 tests, and the journeys after that one-line tab expectation.
 - Scope/decisions: no API change; the existing team routes do it all.
 - Next: the goal maker, the banner timeline, the clean-up, Settings and Admin.
-
-## 2026-10-10 · claude · stack/ui/04-builds-bulk · #201
-- Done: Characters gains Builds, beside Characters and Weapons: every build of the game in one table (Georges: "where can I see my builds"). Each row has its status changed in place, role, KPIs, set and teams; select several to set their status or delete them. Select puts a box on each character card, and a bar owns them, marks them not owned, wishlists them or takes them off, or starts their builds (Georges: "manage multiple characters at once").
-- Tests: written first: the journey sets Asta's build to Good from the Builds table and checks it through the API, then selects Arlan and Herta and owns both. `npm run check` passes: 559 tests and 41 journeys.
-- Scope/decisions: bulk actions call the existing routes once per unit; no new endpoint.
-- Next: Teams.
