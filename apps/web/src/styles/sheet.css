@@ -120,7 +120,6 @@
 .pf-more { margin-top: 12px; }
 .pf-more summary { cursor: pointer; color: var(--text-muted); }
 .pf-wallet .pf-rows .kpi-label { flex: 0 0 220px; }
-.eg-teams { margin-top: 24px; }
 /* Builds as tabs, the default starred (Georges, 2026-10-11). */
 .sh-builds { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 16px; }
 .sh-build-tab { padding: 7px 12px; border: 1px solid var(--hairline); color: var(--text-muted); font: 400 12px/1 var(--font-mono); letter-spacing: 0.06em; text-decoration: none; text-transform: uppercase; }

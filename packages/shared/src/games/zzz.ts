@@ -103,8 +103,8 @@ export const zzz: GameDefinition = {
     monthlyShops: [{ key: "signal", name: "Signal Shop", day: 1 }],
     // Two 14-day cycles on alternate Fridays.
     endgame: [
-      { key: "shiyu", name: "Shiyu Defense", anchor: { cadence: "cycle", start: "2026-10-02", days: 14 }, metric: { label: "S-rank frontiers", max: 5 }, maxPremium: 780 },
-      { key: "assault", name: "Deadly Assault", anchor: { cadence: "cycle", start: "2026-10-09", days: 14 }, metric: { label: "stars", max: 9 }, maxPremium: 300 },
+      { key: "shiyu", name: "Shiyu Defense", anchor: { cadence: "cycle", start: "2026-10-02", days: 14 }, metric: { label: "S-rank frontiers", max: 5 }, maxPremium: 780, clears: { stages: ["First half", "Second half"], timed: true } },
+      { key: "assault", name: "Deadly Assault", anchor: { cadence: "cycle", start: "2026-10-09", days: 14 }, metric: { label: "stars", max: 9 }, maxPremium: 300, clears: { stages: ["Boss 1", "Boss 2", "Boss 3"] } },
     ],
     battlePass: { name: "New Eridu City Fund", maxLevel: 50 },
     monthlyPass: { name: "Inter-Knot Membership", days: 30, daily: 90 },

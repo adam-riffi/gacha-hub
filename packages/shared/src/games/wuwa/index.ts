@@ -98,7 +98,7 @@ export const wuwa: GameDefinition = {
     stamina: { currency: "waveplate", reserve: { currency: "waveplateCrystals", regenPerHour: 5 } },
     monthlyShops: [{ key: "coral", name: "Coral Shop", day: 1 }],
     endgame: [
-      { key: "tower", name: "Tower of Adversity", anchor: { cadence: "cycle", start: "2026-09-14", days: 28 }, metric: { label: "crests" }, maxPremium: 800 },
+      { key: "tower", name: "Tower of Adversity", anchor: { cadence: "cycle", start: "2026-09-14", days: 28 }, metric: { label: "crests" }, maxPremium: 800, clears: { stages: ["Left tower", "Right tower"] } },
       { key: "wastes", name: "Whimpering Wastes", anchor: { cadence: "cycle", start: "2026-09-28", days: 28 }, metric: { label: "points" }, maxPremium: 800 },
     ],
     battlePass: { name: "Pioneer Podcast", maxLevel: 70 },

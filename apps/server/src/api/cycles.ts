@@ -2,12 +2,12 @@ import type { FastifyInstance } from "fastify";
 import { cadenceWindow, cycleResultInput, cycleResultsDto, dayInstant } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
 import { requireUser } from "../auth/plugin.js";
-import { gameOrThrow, loadInstance, regionForInstance } from "./util.js";
+import { gameOrThrow, getCatalog, loadInstance, regionForInstance } from "./util.js";
 
 async function results(gameInstanceId: string) {
   const rows = await prisma.cycleResult.findMany({ where: { gameInstanceId }, orderBy: [{ cycleStart: "desc" }, { modeKey: "asc" }] });
   return cycleResultsDto.parse({
-    results: rows.map((r) => ({ modeKey: r.modeKey, cycleStart: r.cycleStart.toISOString(), result: r.result, detail: r.detail, premium: r.premium, source: r.source })),
+    results: rows.map((r) => ({ modeKey: r.modeKey, cycleStart: r.cycleStart.toISOString(), result: r.result, detail: r.detail, premium: r.premium, source: r.source, teams: r.teams ?? [] })),
   });
 }
 
@@ -30,11 +30,23 @@ export async function registerCycleRoutes(app: FastifyInstance) {
     if ((mode.metric.max !== undefined && (body.result ?? 0) > mode.metric.max) || (mode.maxPremium !== undefined && (body.premium ?? 0) > mode.maxPremium)) {
       return reply.code(400).send({ error: "over_the_cap" });
     }
+    // Each team clears a stage the mode has, within the party size, with units of the catalog.
+    if (body.teams) {
+      const cat = await getCatalog(game);
+      const bad = body.teams.some((t) => !mode.clears?.stages.includes(t.stage) || t.members.length > (game.teamSize ?? 4) || (cat && t.members.some((m) => !cat.index.characters.has(m))));
+      if (bad) return reply.code(400).send({ error: "bad_clear" });
+    }
     const region = regionForInstance(game, gi);
     const at = dayInstant(body.day, region);
     if (at.getTime() > Date.now()) return reply.code(400).send({ error: "future_cycle" });
     const cycleStart = cadenceWindow(mode.anchor, region, at).start;
-    const data = { result: body.result, premium: body.premium ?? null, detail: body.detail ?? null, source: "manual" };
+    const data = {
+      result: body.result,
+      premium: body.premium ?? null,
+      detail: body.detail ?? null,
+      source: "manual",
+      ...(body.teams ? { teams: body.teams.map((t) => ({ ...t, time: mode.clears?.timed ? t.time : null })) } : {}),
+    };
     await prisma.cycleResult.upsert({
       where: { gameInstanceId_modeKey_cycleStart: { gameInstanceId: gi.id, modeKey: mode.key, cycleStart } },
       create: { gameInstanceId: gi.id, modeKey: mode.key, cycleStart, ...data },

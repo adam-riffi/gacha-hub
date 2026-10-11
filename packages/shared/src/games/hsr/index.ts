@@ -117,9 +117,9 @@ export const hsr: GameDefinition = {
     monthlyShops: [{ key: "embers", name: "Embers Exchange", day: 1 }],
     // Since 4.5 the three modes run cycles of different lengths; refresh the anchors each version.
     endgame: [
-      { key: "moc", name: "Memory of Chaos", anchor: { cadence: "cycle", start: "2026-09-28", days: 77 }, metric: { label: "stars", max: 36 }, maxPremium: 800 },
-      { key: "pf", name: "Pure Fiction", anchor: { cadence: "cycle", start: "2026-09-14", days: 35 }, metric: { label: "stars", max: 12 }, maxPremium: 800 },
-      { key: "as", name: "Apocalyptic Shadow", anchor: { cadence: "cycle", start: "2026-10-05", days: 42 }, metric: { label: "stars", max: 12 }, maxPremium: 800 },
+      { key: "moc", name: "Memory of Chaos", anchor: { cadence: "cycle", start: "2026-09-28", days: 77 }, metric: { label: "stars", max: 36 }, maxPremium: 800, clears: { stages: ["First half", "Second half"] } },
+      { key: "pf", name: "Pure Fiction", anchor: { cadence: "cycle", start: "2026-09-14", days: 35 }, metric: { label: "stars", max: 12 }, maxPremium: 800, clears: { stages: ["First half", "Second half"] } },
+      { key: "as", name: "Apocalyptic Shadow", anchor: { cadence: "cycle", start: "2026-10-05", days: 42 }, metric: { label: "stars", max: 12 }, maxPremium: 800, clears: { stages: ["First half", "Second half"] } },
     ],
     battlePass: { name: "Nameless Honor", maxLevel: 70, weeklyXpCap: 8000 },
     monthlyPass: { name: "Express Supply Pass", days: 30, maxDays: 180, daily: 90 },
