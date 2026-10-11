@@ -77,3 +77,18 @@ test("a rotating endgame mode shows its enemies per stage, with what they are we
   // Modes that do not rotate enemies show none.
   await expect(page.getByRole("list", { name: "Enemies" })).toHaveCount(2);
 });
+
+test("Stygian Onslaught shows its three bosses; Spiral Abyss and Imaginarium Theater show no enemies @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "genshin" } })).json()) as { id: string };
+  // The smoke journey adds Genshin through the Games page, so this one removes its profile.
+  try {
+    await page.goto(`/games/${id}/endgame`);
+    await expect(page.getByRole("region", { name: "Stygian Onslaught" }).getByRole("list", { name: "Enemies" }).getByRole("listitem")).toHaveCount(3);
+    await expect(page.getByRole("list", { name: "Enemies" })).toHaveCount(1);
+  } finally {
+    await page.request.delete(`/api/instances/${id}`);
+  }
+});
