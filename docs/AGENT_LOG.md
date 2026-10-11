@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r5/04-spark · #236
+- Done: the Endfield design's "Featured guarantee 68/120". A banner type with a spark (Endfield's 120 pulls on one banner give its featured unit) reports, on the dashboard's pity, the pulls logged on that type since the banner of its kind running now began, up to the spark; none without a running banner. The Overview's Pity card shows it as a row under that banner type.
+- Tests: written first: pulls before the banner began do not count, pulls since do, the count stops at 120, and no running banner gives none; the Overview journey finds "Featured guarantee …/120" on Endfield. `npm run check` passes: 587 tests and 68 journeys.
+- Scope/decisions: the dashboard fetches the banners before building each game's row (the spark needs the running one). Genshin's Epitomized Path (fate points) is not tracked: the log does not record which weapon was charted.
+- Next: the handoff.
+
 ## 2026-10-11 · claude · stack/r5/03-modes · #235
 - Done: two of the endgame modes Georges's designs list that the manifests lacked. Star Rail's **Anomaly Arbitration**: a phase each version (28 Sep – 9 Nov 2026), three Knight stages then the King, 9 stars; its clears take a team per stage. ZZZ's **Lost Void** (Hollow Zero): Investigation Points each week from Monday's reset, no cap (none is sourced). Both show on the Endgame tab, its history and the Overview's endgame card.
 - Tests: written first: the manifest test pins each mode's cycle on 10 October 2026 (Anomaly Arbitration 28 Sep – 9 Nov, Lost Void 5 – 12 Oct). `npm run check` passes: 587 tests and 68 journeys.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: each game's banner types with their history types and funds; hiding and showing through `PUT /api/instances/:id` (an unknown key is refused) and Home's pity; the Pulls journey hides and shows Departure warp. Eight older tests expected three banner types per game (the importers now ask the new types too) and were updated. `npm run check` passes: 558 tests and 40 journeys.
 - Scope/decisions: shown by default, beginner banners too, as Georges asked. Endfield's Joint (Chartered rules, per-banner pity) and Beginner (a 6★ within 40) are `~`. NTE's standard board has no source, so no banner yet.
 - Next: the owner's secrets and real data; the per-game overview when Georges asks.
-
-## 2026-10-10 · claude · stack/zzz-core/01-core-skill · #196
-- Done: ZZZ agents get their core skill as a sixth skill, levelled 1 to 7 (the base, then A to F). The importer reads its costs from Hakushin's `passive.materials`, so the planner and the character page offer it; the build doc and the sheet take it to 7; Enka's showcase reads index 5 as the core skill.
-- Tests: written first: Ellen's core costs open levels 2 to 7, the doc keeps `core`, and the Enka showcase gives `core: 7`. `npm run check` passes: 534 tests and 40 journeys.
-- Scope/decisions: the core skill is a number from 1 to 7, not the in-game letters, like every other skill level.
-- Next: every banner type, with a hide button on Pulls.
