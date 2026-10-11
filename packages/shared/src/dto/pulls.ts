@@ -62,3 +62,28 @@ export type PullBannerLogDto = z.infer<typeof pullBannerLogDto>;
 
 export const pullLogDto = z.object({ banners: z.array(pullBannerLogDto) });
 export type PullLogDto = z.infer<typeof pullLogDto>;
+
+/** Correct a logged 5★ (Georges, 2026-10-11): the pull it came at, won or lost, which unit. */
+export const correctPullInput = z
+  .object({
+    pity: z.number().int().min(1).max(PULLS_MAX).optional(),
+    featured: z.boolean().nullable().optional(),
+    catalogId: catalogIdSchema.nullable().optional(),
+  })
+  .refine((v) => v.pity !== undefined || v.featured !== undefined || v.catalogId !== undefined, { message: "nothing to change" });
+export type CorrectPullInput = z.infer<typeof correctPullInput>;
+
+/** The game's banners, newest first, with your pulls on each and the 5★ you got there. */
+export const bannerHistoryDto = z.array(
+  z.object({
+    key: z.string(),
+    name: z.string(),
+    kind: z.string(),
+    startsAt: isoDate,
+    endsAt: isoDate,
+    featured: z.array(z.object({ catalogId: z.string(), kind: z.string() })),
+    pulls: z.number().int(),
+    fiveStars: z.array(z.object({ catalogId: z.string().nullable(), featured: z.boolean().nullable() })),
+  }),
+);
+export type BannerHistoryDto = z.infer<typeof bannerHistoryDto>;

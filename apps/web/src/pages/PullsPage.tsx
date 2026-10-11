@@ -23,15 +23,11 @@ import {
   type Unit,
 } from "../components/pulls/BannerCard";
 import { SavingsPlanner, type PlannerTarget } from "../components/pulls/SavingsPlanner";
+import { BannerHistory, PullHistory } from "../components/pulls/PullHistory";
 import type { InstanceDetail } from "../lib/types";
 
 const NUM = new Intl.NumberFormat("en-GB");
 const DAY = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" });
-const DATE = new Intl.DateTimeFormat("en-CA", {
-  year: "numeric",
-  month: "2-digit",
-  day: "2-digit",
-});
 
 /**
  * A game's Pulls tab (WIREFRAMES.md G3): the pulls you have and the ones
@@ -118,6 +114,13 @@ export function PullsPage() {
   ];
   const byId = new Map(units.map((u) => [u.id, u]));
   const unitOf = (cid: string | null) => (cid ? byId.get(cid) : undefined);
+  // Any unit of the catalog by id, for history rows and featured lists (4★ included).
+  const nameOf = (cid: string | null): Unit | undefined => {
+    if (!cid) return undefined;
+    const c = catalog?.characters.find((x) => x.id === cid);
+    const w = c ? undefined : catalog?.weapons.find((x) => x.id === cid);
+    return byId.get(cid) ?? (c ? { id: c.id, name: c.name, icon: c.icon, kind: "character" } : w ? { id: w.id, name: w.name, icon: w.icon, kind: "weapon" } : undefined);
+  };
   const live = (dash.data?.timeline.banners ?? []).filter(
     (b) => b.gameKey === game.key && b.status === "active",
   );
@@ -149,7 +152,6 @@ export function PullsPage() {
   const drops = log.data.banners
     .flatMap((b) => b.fiveStars.map((d) => ({ ...d, banner: b })))
     .sort((a, z) => z.at.localeCompare(a.at));
-  const contested = drops.filter((d) => d.banner.featuredRate < 1 && d.featured !== null);
   // The planner's targets: each event banner's featured 5★, character first, then the
   // wishlisted 5★ not already among them; all share the limited pulls.
   // The other event banners (collaborations, Chronicled…) join only while one is running.
@@ -284,56 +286,10 @@ export function PullsPage() {
         </p>
       )}
 
+      <BannerHistory instanceId={instance.data.id} unitOf={nameOf} />
       <div className="pl-bottom">
         <SavingsPlanner targets={targets} forecast={forecast.pulls} star={star} />
-        <section className="card pl-history" aria-label="History">
-          <h3>History</h3>
-          {drops.length === 0 ? (
-            <p className="mu">
-              No {star} logged yet. Log one from a banner above, or import your history in Settings.
-            </p>
-          ) : (
-            <>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Date</th>
-                    <th>Banner</th>
-                    <th>{star}</th>
-                    <th className="num">Pity</th>
-                    <th>Result</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {drops.slice(0, 20).map((d) => (
-                    <tr key={d.id}>
-                      <td className="mn">{DATE.format(new Date(d.at))}</td>
-                      <td>{d.banner.label}</td>
-                      <td>{unitOf(d.catalogId)?.name ?? star}</td>
-                      <td className="num">{d.pity}</td>
-                      <td>
-                        {d.banner.featuredRate >= 1 ? (
-                          <span className="badge">—</span>
-                        ) : d.featured === false ? (
-                          <span className="badge todo">Lost</span>
-                        ) : d.featured ? (
-                          <span className="badge done">Featured</span>
-                        ) : (
-                          <span className="badge">—</span>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              <p className="mn mu pl-note">
-                average {star} pity {Math.round(drops.reduce((t, d) => t + d.pity, 0) / drops.length)}
-                {contested.length > 0 &&
-                  ` · featured ${contested.filter((d) => d.featured).length} of ${contested.length}`}
-              </p>
-            </>
-          )}
-        </section>
+        <PullHistory instanceId={instance.data.id} drops={drops} star={star} unitOf={nameOf} units={units} />
       </div>
     </>
   );
