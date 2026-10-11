@@ -50,3 +50,27 @@ test("the Overview's second row: today's dailies ticked in place, the pass and t
   await expect(stamina.getByTestId("stamina")).toHaveText("120 / 240");
   await expect(stamina).toContainText("Backup Battery Charge");
 });
+
+test("the Overview's third row: builds in progress with level, skills, weapon and gear, and the endgame cycle @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  const build = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1102", doc: { level: 70, lightCone: { level: 60 } } } })).json()) as { id: string };
+  await page.request.put(`/api/characters/${build.id}`, { data: { buildStatus: "building" } });
+
+  // This cycle's Memory of Chaos, typed on the Endgame tab.
+  await page.goto(`/games/${id}/endgame`);
+  const moc = page.getByRole("region", { name: "Memory of Chaos" });
+  await moc.getByRole("button", { name: "Update Memory of Chaos" }).click();
+  await moc.getByLabel("Stars", { exact: true }).fill("30");
+  await moc.getByRole("button", { name: "Save" }).click();
+  await expect(moc).toContainText("30 / 36");
+
+  await page.getByRole("navigation", { name: "Game screens" }).getByRole("link", { name: "Overview" }).click();
+  const seele = page.getByRole("region", { name: "Builds in progress" }).getByRole("row", { name: /Seele/ });
+  await expect(seele.getByRole("cell").nth(1)).toHaveText("70");
+  await expect(seele.getByRole("cell").nth(3)).toHaveText("60");
+  await expect(page.getByRole("region", { name: "Endgame · cycle" }).getByRole("row", { name: /Memory of Chaos/ })).toContainText("30/36");
+  await page.request.delete(`/api/characters/${build.id}`);
+});
