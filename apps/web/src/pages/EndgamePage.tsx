@@ -14,6 +14,7 @@ import { useReminderFlag } from "../lib/reminder";
 
 const NUM = new Intl.NumberFormat("en-GB");
 const DATE = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" });
+const AT = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
 const WHEN = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
 const ordinal = (n: number) => `${n}${n % 10 === 1 && n !== 11 ? "st" : n % 10 === 2 && n !== 12 ? "nd" : n % 10 === 3 && n !== 13 ? "rd" : "th"}`;
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
@@ -196,8 +197,8 @@ function ModeCard({
           <i style={{ left: `${at * 100}%` }} />
         </div>
         <div className="eg-window-dates mn mu">
-          <span>{DATE.format(m.start)}</span>
-          <span>{DATE.format(m.closes)}</span>
+          <span>{AT.format(m.start)}</span>
+          <span>{AT.format(m.closes)}</span>
         </div>
       </div>
       <div className="kpi-value eg-result">
