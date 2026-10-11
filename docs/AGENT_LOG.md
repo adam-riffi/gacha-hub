@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r3/10-library · #216
+- Done: Georges's games overview notes ("what even is manifest? remove that live data as well"). Each game's row shows what it holds, each cell opening its screen: Owned (characters owned / in the catalog), Pulls (limited, with the Home glyph), the game's energy (current / cap), Goals and Backlog (counted as Tasks counts them). The manifest, catalog and live-data cells, the capabilities legend and the pipeline note are gone; the hint says "Drag to reorder". Cells line up across rows.
+- Tests: written first: the library journey finds each cell with its number and link, and none of the pipeline words. `npm run check` passes: 570 tests and 53 journeys.
+- Scope/decisions: goals and backlog come from `/api/tasks` (the Tasks page's own query), so the dashboard DTO is unchanged.
+- Next: remove the unused per-game sheets.
+
 ## 2026-10-11 · claude · stack/r3/09-clears · #215
 - Done: Georges's "when relevant I need to see clear times as well as teams for levels/bosses". Each endgame mode lists its stages in the manifest (`clears`: halves, towers or bosses) and whether the clear time counts. Update on a mode's card takes each stage's team (units, or a saved team in one pick) and, for timed modes, its clear time as m:ss. The card shows the current cycle's teams as icons with their times, and History adds a Teams column. Each card's cycle window gives its exact reset times (the audit's "exact reset times"), not only the days. The empty Teams card under Endgame (a link the Teams tab already gives) is gone.
 - Tests: written first: the route keeps each stage's team and time, keeps them when a result is typed without them, and refuses an unknown stage, a unit outside the catalog, a team over the party size, and stages on a mode without any; the Endgame journeys find both reset times on a card and type two Spiral Abyss halves and finds them on the card and in History. `npm run check` passes: 570 tests and 53 journeys.
@@ -293,13 +299,3 @@ Entry format:
 - Tests: written first: link, request, page and the three pities. The Endfield banners integration test now expects three banners. The pull-rules sanity check allows a 25% featured rate. `npm run check` passes: 511 tests and 39 journeys.
 - Scope/decisions: one Arsenal pity for every weapon banner, though each keeps its own (a ponytail note says so). Beginner and Joint are not tracked.
 - Next: the server import and Settings (#179); 6★ labels and Arsenal Tickets.
-
-## 2026-10-10 · claude · stack/endfield/01-decisions · #177
-- Done:
-  - NTE is in every game list: the guide's TL;DR, shipped scope and per-game section; DESIGN.md §4; README.
-  - The guide's feature matrix gains an NTE column and is brought up to date (shared sheet, imports, live data, art, Endfield's banners).
-  - Georges delegated the open decisions on 2026-10-10. ADR 0009 is accepted, with the record shape that open-source trackers parse and Endfield's banner rules from the guides. Enka's store data is kept with credit in NOTICE and removed on request.
-  - Endfield's sheet gains Basic headhunting, Arsenal and the records link.
-- Tests: docs only.
-- Scope/decisions: the reader is written against the trackers' shape instead of a recorded sample. A real answer replaces the fixtures when one exists.
-- Next: Endfield's records reader and its three banners (#178).
