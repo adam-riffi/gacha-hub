@@ -97,8 +97,13 @@
 .ch-picking { cursor: pointer; }
 .ch-picking .ch-pick { position: absolute; top: 44px; left: 10px; }
 /* The default build's weapon on the card. */
-.ch-weapon { display: inline-flex; align-items: center; gap: 6px; }
-.ch-weapon .gicon { width: 28px; height: 28px; font-size: 10px; }
+.ch-namebox { display: flex; align-items: center; gap: 10px; }
+.ch-namebox-text { min-width: 0; }
+.ch-weapon { position: relative; flex: none; width: 48px; height: 48px; }
+.ch-weapon .gicon { width: 48px; height: 48px; font-size: 12px; background: rgba(0, 0, 0, 0.35); }
+.ch-weapon-lv, .ch-weapon-r { position: absolute; padding: 1px 3px; background: rgba(0, 0, 0, 0.78); color: #fff; font-size: 10px; line-height: 1.2; }
+.ch-weapon-lv { left: 0; bottom: 0; }
+.ch-weapon-r { right: 0; top: 0; }
 /* Weapons (Georges, 2026-10-11). */
 .wp-name { display: inline-flex; align-items: center; gap: 10px; }
 .wp-name .gicon { width: 36px; height: 36px; font-size: 11px; flex: none; }

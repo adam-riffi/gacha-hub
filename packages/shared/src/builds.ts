@@ -90,14 +90,14 @@ export function offSetSlots(game: GameDefinition, doc: Doc): string[] {
 }
 
 /** The card's name box (WIREFRAMES.md G4): "Lv 90 · talents 9/9/9 · R1", in the catalog's skill order and the game's words. */
-export function buildLine(game: GameDefinition, doc: Doc, skillKeys: readonly string[]): string {
+export function buildLine(game: GameDefinition, doc: Doc, skillKeys: readonly string[], withWeapon = true): string {
   const field = SKILLS.find((f) => doc[f] && typeof doc[f] === "object") ?? skillsField(game);
   const levels = (doc[field] ?? {}) as Record<string, unknown>;
   const parts = [`Lv ${num(doc.level) ?? "—"}`];
   if (skillKeys.length) parts.push(`${field} ${skillKeys.map((k) => num(levels[k]) ?? 1).join("/")}`);
   const weapon = game.manifest.dupes.weapon;
   const w = weapon && num(getPath(doc, weapon.field));
-  if (weapon && w !== null && w !== undefined) parts.push(`${dupeLetter(weapon.field)}${w}`);
+  if (withWeapon && weapon && w !== null && w !== undefined) parts.push(`${dupeLetter(weapon.field)}${w}`);
   return parts.join(" · ");
 }
 
