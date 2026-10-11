@@ -19,4 +19,13 @@ describe("talent descriptions in the catalogs", () => {
     const wolf = cat.characters.find((c) => c.name === "Silver Wolf")!;
     expect(wolf.talents.info!.find((t) => t.key === "skill")!.description).toContain("apply additional Weakness");
   });
+
+  it("gives WuWa's resonators their skills' short descriptions, numbers filled in and without tags", async () => {
+    const cat = await getGame("wuwa")!.loadCatalog!();
+    const withInfo = cat.characters.filter((c) => (c.talents.info?.length ?? 0) > 0);
+    expect(withInfo.length).toBeGreaterThan(30);
+    expect(withInfo.every((c) => c.talents.info!.every((t) => (t.description ?? "").length > 10 && !/[<{]/.test(t.description!)))).toBe(true);
+    const yangyang = cat.characters.find((c) => c.name === "Yangyang")!;
+    expect(yangyang.talents.info!.find((t) => t.key === "forte")!.description).toContain("Yangyang can hold up to 3 Melodies.");
+  });
 });
