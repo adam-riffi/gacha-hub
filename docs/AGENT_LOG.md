@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r4/13-stygian · #232
+- Done: Genshin's Stygian Onslaught enemies, the gap #230 left. Hakushin files the mode as "leyline" (dated cycles, six difficulties, three bosses each); the endgame importer now writes `packages/shared/src/games/genshin/endgame.json` with each cycle's three bosses at the top difficulty (their names there and its monster level, 109), loaded lazily like ZZZ's. The enemy rows give the stage's name the free width, so long boss names read in two lines.
+- Tests: written first: the shipped data has Stygian cycles of three bosses with a level; the Genshin Endgame journey finds three on Stygian Onslaught and no enemies list on Spiral Abyss or Imaginarium Theater. `npm run check` passes: 579 tests and 65 journeys.
+- Scope/decisions: the top difficulty only (the bosses are the same at each; their names and level change). HANDOFF.md, WIREFRAMES G2, AGENTS.md and the round's audit now name only Star Rail's Apocalyptic Shadow as waiting for a dated source.
+- Next: the designs' remaining details (counted boxes, each game's items, the missing endgame modes).
+
 ## 2026-10-11 · claude · stack/r4/12-handoff · #231
 - Done: the end of Georges's third round. HANDOFF.md rewritten (`main` at #230, #219–#230, this round's decisions, the five migrations the next deploy runs, the endgame-enemies gap, new notes on tests and rebases).
 - Tests: docs only. `npm run check` on the tree below (#230): 578 tests and 64 journeys.
@@ -247,21 +253,3 @@ Entry format:
 - Tests: docs only.
 - Scope/decisions: the per-game overview is recorded, not designed; it needs a design pass per game before code.
 - Next: long-term goals on Profile, Endfield's per-banner weapon pity, ZZZ core skills, every banner with a hide button.
-
-## 2026-10-10 · claude · stack/docs/06-verified-values · #192
-- Done: every value marked `~` in `docs/games/*.md` (55) was checked against the game's wiki: the fandom wikis' API, `endfield.wiki.gg`, and NTE's wiki. 17 are confirmed and now cite their page:
-  - the daily premium income of Genshin, Star Rail, ZZZ and WuWa;
-  - Star Rail's monthly shop and 70 battle-pass levels;
-  - ZZZ's S-Rank rate;
-  - WuWa's echo cost cap;
-  - Endfield's Chartered curve and 120-pull spark;
-  - NTE's Limited Board rates and its 14-day Special Route.
-
-  Two are corrected:
-  - ZZZ's monthly shop is the **Signal Shop**, in the manifest too;
-  - Endfield's soft pity climbs **+5% a pull** after 65 (`softStep: 0.05`), as its wiki states.
-
-  The 38 left say what the wiki leaves out. HANDOFF.md is updated.
-- Tests: written first: the Activities journey names the Signal Shop; the odds test pins Endfield's 5.8% on the 66th pull and 10.8% on the 67th. The manifest-to-sheet test passes. `npm run check` passes: 532 tests and 40 journeys.
-- Scope/decisions: values no wiki states keep their `~` (community soft pity, unfinished versions' lengths, some rewards).
-- Next: nothing agent-side; re-check the `~` values each version.
