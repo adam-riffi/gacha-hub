@@ -44,10 +44,16 @@
 .gr-head { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 18px; }
 
 /* Planner (WIREFRAMES.md G7) */
-.pn-page { display: grid; grid-template-columns: 320px minmax(0, 1fr); gap: 24px; align-items: start; }
+.pn-page { display: grid; grid-template-columns: 380px minmax(0, 1fr); gap: 24px; align-items: start; }
 .pn-goals { display: grid; gap: 10px; }
-.pn-goal { display: grid; gap: 6px; padding: 12px; text-align: left; cursor: pointer; background: var(--surface-2); border: 1px solid var(--edge); color: var(--text); font: inherit; }
+.pn-goal { display: grid; border: 1px solid transparent; }
 .pn-goal.is-on { border-color: var(--text); }
+.pn-goal .tk-card { margin: 0; }
+/* The Tasks goal card in the Planner's column: the title on its own line, progress, priority and notify under it. */
+.pn-goal .tk-open { flex: 1 1 100%; }
+.pn-goal .tk-title { min-width: 0; }
+.pn-goal .tk-prog { flex: 1; }
+.pn-goal .tk-prog .tk-meter { flex: 1; width: auto; }
 .pn-goal .spread { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .pn-goal .mn { font-size: 12px; }
 .pn-bar { display: flex; align-items: center; gap: 8px; }

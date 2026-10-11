@@ -51,3 +51,34 @@ test("Planner: a material's farm days written out (Wed Sat), each goal and mater
     await page.request.delete(`/api/instances/${id}`);
   }
 });
+
+// Georges, round 4: "the tasks features like linking should also be available on the game planner screen".
+test("Planner: each goal is the Tasks goal card: priority, notify, its plan, Link to another goal @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  for (const catalogId of ["1005", "1102"]) {
+    expect((await page.request.post(`/api/instances/${id}/plans/generate`, { data: { kind: "character", catalogId, level: { from: 1, to: 20 } } })).ok()).toBe(true);
+  }
+  await page.goto(`/games/${id}/planner`);
+  const goals = page.getByRole("region", { name: "Goals" });
+  const seele = goals.getByRole("article", { name: /Farm Seele/ }).first();
+  await expect(seele.getByRole("checkbox", { name: "Notify" })).toBeVisible();
+  await expect(seele.getByRole("button", { name: /^(high|normal|low)$/ })).toBeVisible();
+  // A click opens the goal and picks it for the materials.
+  await seele.getByRole("button", { name: /Farm Seele/ }).click();
+  await expect(page.getByRole("region", { name: /^Materials/ })).toContainText("Farm Seele");
+  await expect(seele.getByRole("list", { name: "Plan" })).toContainText("Lv");
+
+  // Link Seele's goal under Kafka's: it leaves the list and shows inside hers.
+  const kafka = goals.getByRole("article", { name: /Farm Kafka/ }).first();
+  await kafka.getByRole("button", { name: /Farm Kafka/ }).click();
+  await seele.getByRole("combobox", { name: "Link to" }).fill("Kafka");
+  await seele.getByRole("option", { name: /Kafka/ }).first().click();
+  await expect(goals.getByRole("article", { name: /Farm Seele/ })).toHaveCount(0);
+  await expect(kafka.getByRole("list", { name: "Linked goals" })).toContainText("Farm Seele");
+
+  const tasks = (await (await page.request.get(`/api/tasks?scope=game&refId=${id}`)).json()) as { id: string; title: string }[];
+  for (const t of tasks.filter((x) => x.title === "Farm Seele")) await page.request.delete(`/api/tasks/${t.id}`);
+});
