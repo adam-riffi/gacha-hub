@@ -44,7 +44,7 @@ test("Pulls: what you have and what is coming, an event banner's status, pity an
   await banner.getByRole("button", { name: "Save 5★" }).click();
   await expect(banner.getByTestId("pity")).toHaveText("3");
   await expect(banner.getByRole("button", { name: "Guaranteed" })).toHaveAttribute("aria-pressed", "true");
-  await expect(page.getByRole("region", { name: "History" })).toContainText("17");
+  await expect(page.getByRole("region", { name: "History", exact: true })).toContainText("17");
 
   // Every banner type shows; one you do not use hides, and comes back from the hidden strip.
   await page.getByRole("region", { name: "Departure warp" }).getByRole("button", { name: "Hide" }).click();
@@ -138,11 +138,12 @@ test("Pulls: a logged 5★ is corrected from History, and Banner history shows y
 
   await page.goto(`/games/${id}/pulls`);
   // Logged at the tenth pull, it was the seventh: corrected in place.
-  const history = page.getByRole("region", { name: "History" });
+  const history = page.getByRole("region", { name: "History", exact: true });
   const row = history.getByRole("row").filter({ hasText: "Kafka" }).first();
   await row.getByRole("button", { name: "Edit" }).click();
-  await row.getByRole("spinbutton", { name: "Pity" }).fill("7");
-  await row.getByRole("button", { name: "Save" }).click();
+  const editing = history.locator("tr.pl-edit");
+  await editing.getByRole("spinbutton", { name: "Pity" }).fill("7");
+  await editing.getByRole("button", { name: "Save" }).click();
   await expect(history.getByRole("row").filter({ hasText: "Kafka" }).first()).toContainText("7");
   await expect(page.getByRole("region", { name: "Character event warp" }).getByTestId("pity")).toHaveText("3");
 

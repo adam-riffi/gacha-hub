@@ -8,7 +8,7 @@ test("Endgame history per mode: tiles, chart, table, typing a past cycle and exp
   const { id } = (await created.json()) as { id: string };
   await page.goto(`/games/${id}/endgame`);
 
-  const history = page.getByRole("region", { name: "History" });
+  const history = page.getByRole("region", { name: "History", exact: true });
   await history.getByRole("group", { name: "Mode" }).getByRole("button", { name: "Deadly Assault" }).click();
   await history.getByRole("button", { name: "Add a past cycle" }).click();
   await history.getByLabel("A day in the cycle").fill("2026-09-27");

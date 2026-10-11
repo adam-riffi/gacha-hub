@@ -106,7 +106,8 @@ Picture: [`g3-pulls.png`](design/wireframes/g3-pulls.png) · static page: [`g3-p
   - Actions: +1, +10, Log a 5★, Set pity, Undo.
 - Every banner type the game has shows (beginner, collaboration, Bangboo…); each has a Hide button, and hidden ones wait in a "Hidden" line with a button to show each again. Home leaves hidden ones out of its pity line.
 - **Savings planner:** targets in order, each with its worst case and its chance now and with the forecast.
-- **History:** import (link, UIGF) and export; 5★ list with pity and the 50/50 result.
+- **History:** every 5★ with its pity and won or lost, each corrected in place (Georges, 2026-10-11: the pull it came at, the result, the unit; or deleted).
+- **Banner history:** the game's banners that began, newest first, with their dates, featured units (characters open their pages), your pulls on each and the 5★ you got.
 
 ### G4 · Characters
 
