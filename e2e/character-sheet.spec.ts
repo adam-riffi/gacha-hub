@@ -27,6 +27,21 @@ test("Character sheet: identity, KPIs, character, skills, weapon, stats and the 
   await expect(page.getByRole("region", { name: "Weapon" })).toContainText("S1");
   await expect(page.getByRole("region", { name: "Relics" })).toContainText("CV 26");
 
+  // Pickers (Georges, 2026-10-11): type or scroll, each option with its icon, the list right under its field.
+  const weaponPicker = page.getByRole("region", { name: "Weapon" }).getByRole("combobox", { name: "Weapon name" });
+  await weaponPicker.fill("Patience");
+  const option = page.getByRole("listbox", { name: "Weapon name" }).getByRole("option", { name: "Patience Is All You Need" });
+  await expect(option.getByRole("img")).toHaveCount(1);
+  const field = await weaponPicker.boundingBox();
+  const list = await page.getByRole("listbox", { name: "Weapon name" }).boundingBox();
+  expect(Math.abs(list!.y - (field!.y + field!.height))).toBeLessThan(12);
+  await option.click();
+  await expect(weaponPicker).toHaveValue("Patience Is All You Need");
+  const setPicker = page.getByRole("region", { name: "Relics" }).getByRole("combobox", { name: "Head set" });
+  await setPicker.fill("Musketeer");
+  await page.getByRole("listbox", { name: "Head set" }).getByRole("option", { name: /Musketeer/ }).click();
+  await expect(setPicker).toHaveValue(/Musketeer/);
+
   await character.getByLabel("Level").fill("80");
   await page.getByRole("button", { name: "Save" }).click();
   await expect(page.getByText("Saved", { exact: true })).toBeVisible();

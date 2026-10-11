@@ -104,6 +104,7 @@ test("Tasks: the goal maker makes anything: a gameplay goal with a count, a chec
   await page.getByRole("button", { name: "New goal" }).click();
   await maker.getByRole("button", { name: "Character build" }).click();
   await maker.getByLabel("Game").selectOption({ label: "Honkai: Star Rail" });
-  await maker.getByLabel("Character").selectOption("1005");
+  await maker.getByRole("combobox", { name: "Character" }).fill("Kafka");
+  await maker.getByRole("option", { name: /^Kafka/ }).click();
   await expect(maker.getByRole("button", { name: "Generate tasks" })).toBeVisible();
 });
