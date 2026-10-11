@@ -27,7 +27,11 @@ test("Tasks: farm today, goals with their steps, filtering, and an event goal cl
 
   await page.goto("/tasks?game=hsr");
   await expect(page.getByRole("heading", { name: "Tasks and reminders" })).toBeVisible();
-  await expect(page.getByRole("region", { name: "Farm today" }).getByText("Star Rail · materials for Asta (any day)")).toBeVisible();
+  // Farm today as icons: the material Asta needs, any day; no game name on a game's own page.
+  const farmToday = page.getByRole("region", { name: "Farm today" });
+  await expect(farmToday.getByRole("img", { name: "Lifeless Blade" }).first()).toBeVisible();
+  await expect(farmToday).toContainText("any day");
+  await expect(farmToday).not.toContainText("Star Rail");
 
   const goals = page.getByRole("region", { name: "Goals" });
   const event = goals.getByRole("article", { name: "E2E tasks reward" });
