@@ -150,3 +150,13 @@ test("the Overview adds a game's daily the profile lacks with + @smoke", async (
   await today.getByRole("button", { name: "Add Coffee" }).click();
   await expect(today.getByRole("checkbox", { name: "Coffee" })).toBeVisible();
 });
+
+test("the Overview's pity shows Endfield's featured guarantee toward its spark @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "endfield" } })).json()) as { id: string };
+  await page.request.post("/api/admin/payload", { data: { kind: "banners", gameKey: "endfield", items: [{ key: "e2e-spark", name: "E2E spark headhunting", kind: "character", startsAt: iso(-1), endsAt: iso(20) }] } });
+  await page.goto(`/games/${id}`);
+  await expect(page.getByRole("region", { name: "Pity" })).toContainText(/Featured guarantee\s*\d+\/120/);
+});

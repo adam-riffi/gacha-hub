@@ -39,6 +39,12 @@ export async function registerDashboardRoutes(app: FastifyInstance) {
       _count: true,
     });
     const gearByInstance = new Map(gearRows.map((r) => [r.gameInstanceId, r._count]));
+    // Countdowns: active + upcoming banners/events across the installed games.
+    const gameKeys = [...new Set(instances.map((gi) => gi.gameKey))];
+    const [rawBanners, events] = await Promise.all([
+      listBanners(gameKeys, "current", now, 100),
+      listEvents(gameKeys, "current", now, 100),
+    ]);
     // Pull entries in order, for pity per banner (derived, ADR 0002).
     const pullRows = await prisma.pullEntry.findMany({
       where: { gameInstanceId: { in: instances.map((g) => g.id) } },
@@ -129,7 +135,11 @@ export async function registerDashboardRoutes(app: FastifyInstance) {
         extras: extras[i],
         pity: (game?.pullBanners ?? []).filter((b) => !((gi.hiddenBanners as string[] | null) ?? []).includes(b.key)).map((rules) => {
           const s = pityState(pullRows.filter((p) => p.gameInstanceId === gi.id && p.bannerKey === rules.key), rules);
-          return { key: rules.key, label: rules.label, pity: s.pity, hardPity: rules.hardPity, guaranteed: s.guaranteed };
+          // The spark counts the pulls on the banner running now since it began.
+          const running = rules.spark ? rawBanners.find((b) => b.gameKey === gi.gameKey && b.kind === rules.key && new Date(b.startsAt) <= now && new Date(b.endsAt) > now) : undefined;
+          const sinceStart = running ? pullRows.filter((p) => p.gameInstanceId === gi.id && p.bannerKey === rules.key && p.createdAt >= new Date(running.startsAt)).reduce((n, p) => n + p.count, 0) : 0;
+          const spark = rules.spark && running ? { at: Math.min(rules.spark, sinceStart), of: rules.spark } : null;
+          return { key: rules.key, label: rules.label, pity: s.pity, hardPity: rules.hardPity, guaranteed: s.guaranteed, spark };
         }),
         stamina: game ? staminaProjection(game, gi.currencies, now, gi.accountLevel) : null,
         passes: (() => {
@@ -152,12 +162,6 @@ export async function registerDashboardRoutes(app: FastifyInstance) {
       };
     });
 
-    // Countdowns: active + upcoming banners/events across the installed games.
-    const gameKeys = [...new Set(instances.map((gi) => gi.gameKey))];
-    const [rawBanners, events] = await Promise.all([
-      listBanners(gameKeys, "current", now, 100),
-      listEvents(gameKeys, "current", now, 100),
-    ]);
 
     const banners = await withFeaturedDetails(rawBanners, instances);
 

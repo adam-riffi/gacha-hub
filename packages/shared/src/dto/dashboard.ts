@@ -56,7 +56,17 @@ export const dashboardGameDto = z.object({
   /** Per-game extras from the game's server module (bespoke widgets). */
   extras: z.unknown().optional(),
   /** Pity per banner type (empty for games without pull rules). */
-  pity: z.array(z.object({ key: z.string(), label: z.string(), pity: z.number().int(), hardPity: z.number().int(), guaranteed: z.boolean() })),
+  pity: z.array(
+    z.object({
+      key: z.string(),
+      label: z.string(),
+      pity: z.number().int(),
+      hardPity: z.number().int(),
+      guaranteed: z.boolean(),
+      /** Pulls on the running banner toward its spark (Endfield: 120 give the featured unit); null without a spark or a running banner. */
+      spark: z.object({ at: z.number().int(), of: z.number().int() }).nullable().default(null),
+    }),
+  ),
   /** The game's regenerating currency projected to now; null for a game without one. */
   stamina: regenProjectionDto.nullable(),
   /** Pull batches of the last six weeks, oldest first. */
