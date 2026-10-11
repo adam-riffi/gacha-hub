@@ -93,17 +93,21 @@
 .ch-chip i { width: 10px; height: 10px; border-radius: 50%; background: var(--el); }
 .ch-chip:hover { color: var(--text); border-color: var(--hairline-strong); }
 .ch-chip[aria-pressed="true"] { border-color: var(--el); color: var(--text); background: color-mix(in srgb, var(--el) 18%, transparent); }
-/* Select mode: the card is the checkbox's label. */
+/* Select mode: the card is the checkbox's label; a picked card lights up whole (round 5), the box itself unseen. */
 .ch-picking { cursor: pointer; }
-.ch-picking .ch-pick { position: absolute; top: 44px; left: 10px; }
+.ch-picking .ch-pick { position: absolute; top: 44px; left: 10px; opacity: 0; }
+.ch-card:has(.ch-pick:focus-visible) { outline: 2px solid var(--el); outline-offset: 2px; }
+.ch-card.is-picked { border-color: var(--el); box-shadow: 0 0 0 2px var(--el), 0 12px 32px -14px color-mix(in srgb, var(--el) 70%, transparent); background: color-mix(in srgb, var(--el) 14%, var(--card)); }
+.ch-card.is-picked .ch-art::after { content: ""; position: absolute; inset: 0; background: color-mix(in srgb, var(--el) 22%, transparent); pointer-events: none; }
+.ch-card.is-picked .ch-dupes { background: var(--el); color: var(--on-paper); }
 /* The default build's weapon on the card. */
 .ch-namebox { display: flex; align-items: center; gap: 10px; }
-.ch-namebox-text { min-width: 0; }
+.ch-namebox-text { flex: 1; min-width: 0; }
 .ch-weapon { position: relative; flex: none; width: 48px; height: 48px; }
 .ch-weapon .gicon { width: 48px; height: 48px; font-size: 12px; background: rgba(0, 0, 0, 0.35); }
 .ch-weapon-lv, .ch-weapon-r { position: absolute; padding: 1px 3px; background: rgba(0, 0, 0, 0.78); color: #fff; font-size: 10px; line-height: 1.2; }
-.ch-weapon-lv { left: 0; bottom: 0; }
-.ch-weapon-r { right: 0; top: 0; }
+.ch-weapon-lv { left: 0; top: 0; }
+.ch-weapon-r { right: 0; bottom: 0; }
 /* Weapons (Georges, 2026-10-11). */
 .wp-name { display: inline-flex; align-items: center; gap: 10px; }
 .wp-name .gicon { width: 36px; height: 36px; font-size: 11px; flex: none; }

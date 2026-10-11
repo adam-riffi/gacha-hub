@@ -72,7 +72,7 @@ export function CharactersPage() {
   const [status, setStatus] = useState<"" | BuildStatus>("");
   const [sort, setSort] = useState<"status" | "name" | "rarity" | "level">("status");
   const [kind, setKind] = useState<"characters" | "builds">("characters");
-  // Several units at once (Georges, 2026-10-10): Select shows a box on each card.
+  // Several units at once (Georges, 2026-10-10): in Select, a click picks the card, and the whole card lights up (round 5).
   const [selecting, setSelecting] = useState(false);
   const [picked, setPicked] = useState<Set<string>>(new Set());
   const [newName, setNewName] = useState("");
@@ -285,7 +285,7 @@ export function CharactersPage() {
           // The whole card opens the build, or the unit's page when there is none.
           const to = c.build ? `/characters/${c.build.id}` : c.entry ? `/games/${id}/units/${c.id}` : null;
           return (
-            <article key={c.id} className={`ch-card ${c.owned ? "" : "is-unowned"}`} aria-label={c.name} style={el ? ({ "--el": el } as CSSProperties) : undefined}>
+            <article key={c.id} className={`ch-card ${c.owned ? "" : "is-unowned"} ${selecting && picked.has(c.id) ? "is-picked" : ""}`} aria-label={c.name} style={el ? ({ "--el": el } as CSSProperties) : undefined}>
               {selecting && c.entry ? (
                 <label className="ch-open ch-picking">
                   <input type="checkbox" className="ch-pick" aria-label={`Select ${c.name}`} checked={picked.has(c.id)} onChange={() => togglePick(c.id)} />
@@ -307,7 +307,13 @@ export function CharactersPage() {
                 </div>
                 <span className={`ch-dupes ${c.owned ? "" : "is-off"}`}>{c.owned ? dupeBadge(game, doc) : "Not owned"}</span>
                 <div className="ch-namebox">
-                  {/* Its weapon on the left of the name card, level and refinement on the icon (Georges, round 4). */}
+                  <div className="ch-namebox-text">
+                    <h3>{c.name}</h3>
+                    <div className="mn ch-namebox-line">
+                      {c.build ? buildLine(game, doc, c.entry?.talents.keys ?? [], !held) : onBanner ? `on the banner until ${ENDS.format(new Date(onBanner.endsAt))}` : c.owned ? "no build yet" : "not owned"}
+                    </div>
+                  </div>
+                  {/* Its weapon on the name card (Georges, round 4), on the right, its level top-left and refinement bottom-right (round 5). */}
                   {held && (
                     <span className="ch-weapon" title={[held.name, held.level !== null && `Lv ${held.level}`, held.rank].filter(Boolean).join(" · ")}>
                       <GameIcon src={assetUrl(game.key, "weapon", held.icon)} fallback={communityAssetUrl(game.key, "weapon", held.icon)} alt={held.name} label={held.name.slice(0, 2)} />
@@ -315,12 +321,6 @@ export function CharactersPage() {
                       <span className="mn ch-weapon-r">{held.rank}</span>
                     </span>
                   )}
-                  <div className="ch-namebox-text">
-                    <h3>{c.name}</h3>
-                    <div className="mn ch-namebox-line">
-                      {c.build ? buildLine(game, doc, c.entry?.talents.keys ?? [], !held) : onBanner ? `on the banner until ${ENDS.format(new Date(onBanner.endsAt))}` : c.owned ? "no build yet" : "not owned"}
-                    </div>
-                  </div>
                 </div>
               </div>
               {c.build ? (
