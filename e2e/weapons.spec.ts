@@ -120,12 +120,16 @@ test("Weapons and characters synced: a build holds a copy; a held one is taken, 
   await page.goto(`/characters/${danHeng}`);
   card = await pickArrows();
   await card.getByRole("group", { name: "Which Arrows" }).getByRole("button", { name: "Add a copy" }).click();
+  // The prompt closes once the new copy is on the sheet.
+  await expect(card.getByRole("group", { name: "Which Arrows" })).toHaveCount(0);
   await page.getByRole("button", { name: "Save" }).click();
+  await expect.poll(async () => (await cone(danHeng)).copyId).toBeTruthy();
   await expect.poll(async () => ((await (await page.request.get(`/api/instances/${id}/weapons`)).json()) as { catalogId: string }[]).filter((w) => w.catalogId === "20000").length).toBe(2);
   await page.goto(`/characters/${yanqing}`);
   await expect(page.getByRole("region", { name: "Weapon" }).getByLabel("Level")).toHaveValue("60");
   card = await pickArrows();
   await card.getByRole("group", { name: "Which Arrows" }).getByRole("button", { name: "Take it from Dan Heng" }).click();
+  await expect(card.getByRole("group", { name: "Which Arrows" })).toHaveCount(0);
   await page.getByRole("button", { name: "Save" }).click();
   await expect.poll(async () => (await cone(danHeng)).copyId).toBeUndefined();
   await clearCopies(page, id);
