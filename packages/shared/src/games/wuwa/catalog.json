@@ -825,7 +825,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -996,7 +996,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -1171,23 +1171,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Frigid Light"
+            "name": "Frigid Light",
+            "description": "Basic Attack\nDeal Glacio DMG.\nHeavy Attack\nConsume STA to deal Glacio DMG.\nMid-air Attack\nConsume STA to deal Glacio DMG.\nDodge Counter\nDeal Glacio DMG."
           },
           {
             "key": "skill",
-            "name": "Eternal Frost"
+            "name": "Eternal Frost",
+            "description": "Deal Glacio DMG and create 1 Ice Prism."
           },
           {
             "key": "forte",
-            "name": "Freezing Thorns"
+            "name": "Clarity of Mind",
+            "description": "Heavy Attack: Detonate\nWhen holding Basic Attack, a cursor moves back and forth on the Forte Gauge. Release Basic Attack when the cursor is in the Frostbite area to perform Heavy Attack Detonate, dealing Glacio DMG.\nIce Burst\nSanhua's Heavy Attack Detonate detonates all Ice Thorns, Ice Prisms, and Glaciers within her attack range, dealing Glacio DMG.\nFrostbite Area\nThe Frostbite area expands with every 1 stack of Clarity, up to 2 stacks.\nSanhua gains Clarity through Basic Attack 5, Intro Skill, Resonance Skill, and Resonance Liberation.\nAll Clarity is removed upon casting Heavy Attack: Detonate."
           },
           {
             "key": "liberation",
-            "name": "Glacial Gaze"
+            "name": "Glacial Gaze",
+            "description": "Deal Glacio DMG and create 1 Glacier."
           },
           {
             "key": "intro",
-            "name": "Clarity of Mind"
+            "name": "Freezing Thorns",
+            "description": "Deal Glacio DMG and create 1 Ice Thorn."
           }
         ]
       },
@@ -1197,8 +1202,8 @@
           "basic": "Frigid Light",
           "skill": "Eternal Frost",
           "liberation": "Glacial Gaze",
-          "forte": "Freezing Thorns",
-          "intro": "Clarity of Mind"
+          "intro": "Freezing Thorns",
+          "forte": "Clarity of Mind"
         },
         "forteNodes": [
           {
@@ -1746,7 +1751,7 @@
           }
         ],
         "costsByKey": {
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -1917,7 +1922,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -2605,31 +2610,36 @@
         "info": [
           {
             "key": "basic",
-            "name": "Destined Promise"
+            "name": "Destined Promise",
+            "description": "Basic Attack\nDeal Glacio DMG.\nHeavy Attack\nContinuously consume STA to deal Glacio DMG.\nMid-air Attack\nConsume STA to deal Glacio DMG.\nDodge Counter\nDeal Glacio DMG."
           },
           {
             "key": "skill",
-            "name": "Emergency Plan"
+            "name": "Emergency Plan",
+            "description": "Deal Glacio DMG and heal all nearby party members."
           },
           {
             "key": "forte",
-            "name": "Overflowing Frost"
+            "name": "Cycle of Life",
+            "description": "You'tan\nYou'tan shares all of Baizhi's stats. You'tan goes back to Baizhi when Baizhi dodges.\nConcentration\nWhen casting Heavy Attack or Resonance Skill Emergency Plan, Baizhi consumes all Concentration and continuously heals nearby party members based on the number of Concentration consumed.\nWhen Baizhi consumes Concentration to cast Heavy Attack, she also regenerates Concerto Energy and Resonance Energy.\nWhen Baizhi consumes Concentration to cast Resonance Skill Emergency Plan, she also regenerates Concerto Energy.\nForte Gauge: Concentration\nBaizhi can hold up to 4 Concentration.\nBaizhi gains Concentration through Basic Attack."
           },
           {
             "key": "liberation",
-            "name": "Momentary Union"
+            "name": "Momentary Union",
+            "description": "Heal all nearby party members, generating 4 stacks of Remnant Entities.\nRemnant Entities\nRemnant Entities follow the active team members. Remnant Entities are automatically consumed to attack targets, dealing Glacio DMG on hit while healing all nearby party members."
           },
           {
             "key": "intro",
-            "name": "Cycle of Life"
+            "name": "Overflowing Frost",
+            "description": "Deal Glacio DMG and heal all nearby party members."
           }
         ]
       },
       "extra": {
         "nickname": "Healing You'tan",
         "skillNames": {
-          "forte": "Overflowing Frost",
-          "intro": "Cycle of Life",
+          "intro": "Overflowing Frost",
+          "forte": "Cycle of Life",
           "basic": "Destined Promise",
           "skill": "Emergency Plan",
           "liberation": "Momentary Union"
@@ -3693,7 +3703,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -3864,7 +3874,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -4039,23 +4049,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Majestic Fists"
+            "name": "Majestic Fists",
+            "description": "Basic Attack\nDeal Glacio DMG.\nBasic Attack: Feral Roars\nAfter Resonance Skill Furious Punches is cast, Basic Attack 5 becomes Feral Roars, dealing Glacio DMG.\nHeavy Attack\nConsume STA to deal Glacio DMG.\nMid-air Attack\nConsume STA to deal Glacio DMG.\nDodge Counter\nDeal Glacio DMG."
           },
           {
             "key": "skill",
-            "name": "Ancient Arts"
+            "name": "Ancient Arts",
+            "description": "Deal Glacio DMG.\nFurious Punches\nWhen Basic Attacks 3, 4, or 5 or Basic Attack Feral Roars hits the target, Resonance Skill is replaced with Furious Punches.\nUse Basic Attack to cast Basic Attack 3 shortly after casting Resonance Skill Furious Punches following Basic Attack Feral Roars.\nLingyang's Resonance Skill does not reset his Basic Attack cycle."
           },
           {
             "key": "forte",
-            "name": "Lion Awakens"
+            "name": "Unification of Spirits",
+            "description": "Heavy Attack: Glorious Plunge\nWhen Lion's Spirit is full, use Heavy Attack to perform Glorious Plunge, dealing Glacio DMG.\nMid-air Attack: Tail Strike\nWhen Lion's Spirit is not full, use Basic Attack shortly after Heavy Attack to perform Tail Strike, dealing Glacio DMG.\nStriding Lion\nAfter casting Heavy Attack Glorious Plunge, enter the Striding Lion state.\nAfter casting Intro Skill Lion Awakens or Resonance Liberation Strive: Lion's Vigor, if Lion's Spirit is full, use Basic Attack to enter the Striding Lion state.\nIn the Striding Lion state:\n- Attacks can be performed in mid-air. If Lingyang is on the ground, use Heavy Attack Glorious Plunge to get back in the air.\n- Lion's Spirit is continuously consumed, and when it runs out, the Striding Lion state ends.\n- The consumption rate of Lion's Spirit in the Lion's Vigor state is reduced.\n- Lingyang's Basic Attack is replaced with Basic Attack Feral Gyrate, dealing Glacio DMG.\n- Lingyang's Resonance Skill is replaced with Mountain Roamer, dealing Glacio DMG.\n- When Lion's Spirit is less than 10, use Basic Attack to perform Basic Attack Stormy Kicks, dealing Glacio DMG. After performing Basic Attack Stormy Kicks, the Mid-air Attack Tail Strike becomes available.\n- Consuming Lion's Spirit restores Concerto Energy.\nLion's Spirit\nLingyang can hold up to 100 Lion's Spirit.\nLingyang gains Lion's Spirit through Resonance Skill, Intro Skill, and Resonance Liberation."
           },
           {
             "key": "liberation",
-            "name": "Strive: Lion's Vigor"
+            "name": "Strive: Lion's Vigor",
+            "description": "Deal Glacio DMG and gain Lion's Vigor.\nLion's Vigor\nLingyang gains 50% Glacio DMG Bonus."
           },
           {
             "key": "intro",
-            "name": "Unification of Spirits"
+            "name": "Lion Awakens",
+            "description": "Deal Glacio DMG."
           }
         ]
       },
@@ -4065,8 +4080,8 @@
           "basic": "Majestic Fists",
           "skill": "Ancient Arts",
           "liberation": "Strive: Lion's Vigor",
-          "forte": "Lion Awakens",
-          "intro": "Unification of Spirits"
+          "intro": "Lion Awakens",
+          "forte": "Unification of Spirits"
         },
         "forteNodes": [
           {
@@ -5127,7 +5142,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -5298,7 +5313,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -5473,23 +5488,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Dimming Brush"
+            "name": "Dimming Brush",
+            "description": "Basic Attack\nDeal Glacio DMG.\nHeavy Attack\nConsume STA to deal Glacio DMG.\nMid-air Attack\nConsume STA to deal Glacio DMG.\nDodge Counter\nDeal Glacio DMG."
           },
           {
             "key": "skill",
-            "name": "Manifestation"
+            "name": "Manifestation",
+            "description": "Deal Glacio DMG. If Zhezhi has at least 60 Afflatus, consume 60 Afflatus to summon 2 Phantasmic Imprints."
           },
           {
             "key": "forte",
-            "name": "Radiant Ruin"
+            "name": "Ink and Wash",
+            "description": "Phantasmic Imprint\nZhezhi consumes Afflatus to summon Phantasmic Imprints when casting Resonance Skill Manifestation or Heavy Attack Conjuration.\nHeavy Attack - Conjuration\nThe 5 moves below consume STA to perform Conjuration, dealing Glacio DMG.\n- Holding Basic Attack after Basic Attack 3.\n- Using Basic Attack after casting Resonance Skill Manifestation.\n- Holding Basic Attack after casting Resonance Skill Stroke of Genius or Resonance Skill Creation's Zenith.\n- Holding Basic Attack while in mid-air.\n- Holding Basic Attack after a successful Dodge.\nIf Zhezhi has at least 30 Afflatus when performing any of these, 30 Afflatus is consumed to summon a Phantasmic Imprint - Middle.\nResonance Skill - Stroke of Genius\nWhen any Phantasmic Imprint is on the field, Zhezhi's Resonance Skill becomes Stroke of Genius. When it is cast, Zhezhi deals Glacio DMG and gains 1 stack of Painter's Delight.\nResonance Skill - Creation's Zenith\nWhen any Phantasmic Imprint is on the field and there are 2 stacks of Painter's Delight, Stroke of Genius becomes Creation's Zenith. When cast, Zhezhi deals greater Glacio DMG, and her Basic Attack DMG Bonus is increased.\nAfflatus\nZhezhi can hold up to 90 Afflatus.\nZhezhi gains Afflatus through Normal Attack and Intro Skill."
           },
           {
             "key": "liberation",
-            "name": "Living Canvas"
+            "name": "Living Canvas",
+            "description": "Summon Inklit Spirits for assistance.\nInklit Spirit\nWhen the Resonator on the field deals damage, an Inklit Spirit is summoned to perform a Coordinated Attack, dealing Glacio DMG."
           },
           {
             "key": "intro",
-            "name": "Ink and Wash"
+            "name": "Radiant Ruin",
+            "description": "Deal Glacio DMG."
           }
         ]
       },
@@ -5499,8 +5519,8 @@
           "basic": "Dimming Brush",
           "skill": "Manifestation",
           "liberation": "Living Canvas",
-          "forte": "Radiant Ruin",
-          "intro": "Ink and Wash"
+          "intro": "Radiant Ruin",
+          "forte": "Ink and Wash"
         },
         "forteNodes": [
           {
@@ -6561,7 +6581,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -6732,7 +6752,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -6907,23 +6927,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Frosty Punches"
+            "name": "Frosty Punches",
+            "description": "Basic Attack\nDeal Glacio DMG.\nHeavy Attack\n- When Frost is full, hold Basic Attack to cast Frostfall.\nYouhu gains Frost in the following ways:\n- When Frost is not full, hold Basic Attack to enter the Fortune Rolling state and restore Frost over time.\n- When Basic Attacks hit a target.\nHeavy Attack: Frostfall\nDeal Glacio DMG and perform Lucky Draw once.\nMid-air Attack\nConsume STA to deal Glacio DMG.\nDodge Counter\nDeal Glacio DMG and perform Lucky Draw once."
           },
           {
             "key": "skill",
-            "name": "Scroll Divination"
+            "name": "Scroll Divination",
+            "description": "Deal Glacio DMG, healing all party members nearby, and perform Lucky Draw once.\nLucky Draw\nYouhu obtains a random Antique after the Lucky Draw. With an Antique, her next Basic Attack will activate the corresponding Antique Appraisal.\nAntique Appraisal\n- Chime: Deal Glacio DMG. Chime greatly reduces the enemy's Vibration Strength.\n- Ruyi: Deal Glacio DMG. Ruyi has a higher DMG Multiplier.\n- Ding: Deal Glacio DMG Ding effectively breaks the enemy's stance.\n- Mask: Deal Glacio DMG. Mask pulls enemies along its path."
           },
           {
             "key": "forte",
-            "name": "Scroll of Wonders"
+            "name": "Poetic Essence",
+            "description": "At four Auspices, hold Basic Attack to cast Poetic Essence, dealing Glacio DMG while healing all nearby party members.\nYouhu can hold up to 4 Auspices.\nPoetic Essence\nDeal Glacio DMG and also gain one of the following effects based on Auspice combinations:\n- Free Verse: 4 unique Auspices additionally reduce the Vibration Strength of enemies.\n- Antithesis: 1 pair of Auspices increase DMG by 70%.\n- Double Pun: 2 pairs of Auspices additionally heal all nearby party members.\n- Triplet: 3 identical Auspices increase DMG by 175%.\n- Perfect Rhyme: 4 identical Auspices activate the effects of Free Verse, Double Pun, and Triplet all at once.\nCasting Poetic Essence removes all Auspices.\nAuspice\nYouhu gains Auspice through Antique Appraisal."
           },
           {
             "key": "liberation",
-            "name": "Fortune's Favor"
+            "name": "Fortune's Favor",
+            "description": "Deal Glacio DMG.\nDuring the blast, buttons will appear. Choose a button within the specified time to obtain the corresponding Antique."
           },
           {
             "key": "intro",
-            "name": "Poetic Essence"
+            "name": "Scroll of Wonders",
+            "description": "Perform Lucky Draw once."
           }
         ]
       },
@@ -6933,8 +6958,8 @@
           "basic": "Frosty Punches",
           "skill": "Scroll Divination",
           "liberation": "Fortune's Favor",
-          "forte": "Scroll of Wonders",
-          "intro": "Poetic Essence"
+          "intro": "Scroll of Wonders",
+          "forte": "Poetic Essence"
         },
         "forteNodes": [
           {
@@ -7995,7 +8020,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -8166,7 +8191,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -8341,23 +8366,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Silent Execution"
+            "name": "Silent Execution",
+            "description": "Basic Attack\nDeal Glacio DMG.\nBasic Attack - Necessary Measures\nWith Moldable Crystals, Carlotta's Basic Attack is replaced with Necessary Measures, dealing Glacio DMG.\nEach strike of Necessary Measures consumes 1 Moldable Crystal.\nHeavy Attack\nPerform a charged attack that deals Glacio DMG.\nHeavy Attack - Containment Tactics\nWhen Carlotta's Substance is full, her Heavy Attack will be replaced with Containment Tactics: consume all Substance to deal Glacio DMG and reduce the cooldown of Resonance Skill.\nMid-air Attack\nPerform a Plunging Attack that deals Glacio DMG. Using Basic Attack shortly after the landing will cast Customary Greetings.\nMid-air Attack - Customary Greetings\nDeal Glacio DMG.\nDodge Counter\nDeal Glacio DMG. This consumes 1 Moldable Crystal."
           },
           {
             "key": "skill",
-            "name": "Art of Violence"
+            "name": "Art of Violence",
+            "description": "Deal Glacio DMG and inflict Dispersion on the target. Press Resonance Skill again shortly after to cast Chromatic Splendor.\nDispersion\nTargets with Dispersion are immobilized.\nChromatic Splendor\nConsume all Moldable Crystals and deal Glacio DMG.\nThe Resonance Skill enters cooldown after a while if Chromatic Splendor is not cast or Carlotta is switched off the field."
           },
           {
             "key": "forte",
-            "name": "Wintertime Aria"
+            "name": "Lethal Repertoire",
+            "description": "Heavy Attack - Imminent Oblivion\nCarlotta activates Tinted Crystal every 22s.\nWhen Substance is full and Tinted Crystal is activated, hold Normal Attack to consume all Substance and cast Heavy Attack Imminent Oblivion, after which Tinted Crystal enters cooldown.\nDeal Glacio DMG and reduce the cooldown of Resonance Skill Art of Violence by 6s.\nFinal Bow\nWhen Substance is full, enter the Final Bow state.\nIncrease the DMG Multiplier of Resonance Liberation Era of New Wave , Resonance Liberation Death Knell, and Resonance Liberation Fatal Finale by 80%. This effect ends when Carlotta is switched off the field during Twilight Tango or when Twilight Tango ends.\nSubstance\nCarlotta can hold up to 120 points of Substance.\nCannot obtain Substance when in Twilight Tango.\nSubstance can be obtained in the following ways: Intro Skill Wintertime Aria, consuming Moldable Crystals via Resonance Skill Chromatic Splendor, Basic Attack Necessary Measures, and Dodge Counter.\nMoldable Crystal\nCarlotta can hold up to 6 Crystals.\nCannot gain Moldable Crystals while in Twilight Tango.\nMoldable Crystal can be obtained in the following ways: Intro Skill, Basic Attack Stage 2, Heavy Attack, Mid-air Attack Customary Greetings, Resonance Skill Art of Violence, and a successful Dodge."
           },
           {
             "key": "liberation",
-            "name": "Era of New Wave"
+            "name": "Era of New Wave",
+            "description": "Deal Glacio DMG and inflict Deconstruction, then activate Twilight Tango.\nCan be cast in mid-air.\nDeconstruction\nDealing DMG to targets inflicted with Deconstruction ignores 18% of their DEF.\nTwilight Tango\nWhile in Twilight Tango, press Normal Attack or Resonance Liberation to cast Death Knell.\nEach Death Knell grants 1 Meta Vector.\nWith 4 Meta Vectors, press Normal Attack or Resonance Liberation to cast Fatal Finale.\n- All Substance is removed when activating and ending Twilight Tango. Cannot cast Basic Attack Necessary Measures, Heavy Attack Containment Tactics, and Heavy Attack Imminent Oblivion while in Twilight Tango.\nDeath Knell\nDeal Glacio DMG.\n- Carlotta moves in the direction of the movement input with each shot of Death Knell.\nFatal Finale\nDeal Glacio DMG to an area, considered Resonance Skill DMG.\n- Twilight Tango ends after casting Fatal Finale."
           },
           {
             "key": "intro",
-            "name": "Lethal Repertoire"
+            "name": "Wintertime Aria",
+            "description": "Attack the target, dealing Glacio DMG."
           }
         ]
       },
@@ -8367,8 +8397,8 @@
           "basic": "Silent Execution",
           "skill": "Art of Violence",
           "liberation": "Era of New Wave",
-          "forte": "Wintertime Aria",
-          "intro": "Lethal Repertoire"
+          "intro": "Wintertime Aria",
+          "forte": "Lethal Repertoire"
         },
         "forteNodes": [
           {
@@ -9429,7 +9459,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -9600,7 +9630,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -9775,23 +9805,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "POW POW"
+            "name": "POW POW",
+            "description": "Basic Attack\nDeal Fusion DMG.\nHeavy Attack\nEnter the aiming state to deal Fusion DMG.\nMid-air Attack\nConsume STA to deal Fusion DMG.\nDodge Counter\nDeal Fusion DMG."
           },
           {
             "key": "skill",
-            "name": "Whizzing Fight Spirit"
+            "name": "Whizzing Fight Spirit",
+            "description": "Unleash a flurry of shots, dealing Fusion DMG.\nWhizzing Fight Spirit has 2 initial charges."
           },
           {
             "key": "forte",
-            "name": "Grand Entrance"
+            "name": "Heroic Bullets",
+            "description": "Resonance Skill: DAKA DAKA!\nHold Resonance Skill Whizzing Fight Spirit to enter DAKA DAKA!. In this state:\n-Chixia continuously fires Thermobaric Bullets to attack the target, dealing Fusion DMG.\n-Use Basic Attack to cast Basic Attack 4, dealing Fusion DMG and exiting the DAKA DAKA! state.\n-If 30 Thermobaric Bullets have been fired when Basic Attack is used, Chixia will cast Resonance Skill Boom Boom and exit the DAKA DAKA! state.\n-Chixia exits the DAKA DAKA! state when all Thermobaric Bullets are fired.\nResonance Skill: Boom Boom\nDeal Fusion DMG.\nThermobaric Bullets\nChixia can hold up to 60 Thermobaric Bullets.\nInherent Skill Scorching Magazine increases Max Thermobaric Bullets by 10.\nChixia gains Thermobaric Bullets through Normal Attack, Intro Skill, and Resonance Skill."
           },
           {
             "key": "liberation",
-            "name": "Blazing Flames"
+            "name": "Blazing Flames",
+            "description": "Deal Fusion DMG."
           },
           {
             "key": "intro",
-            "name": "Heroic Bullets"
+            "name": "Grand Entrance",
+            "description": "Deal Fusion DMG."
           }
         ]
       },
@@ -9801,8 +9836,8 @@
           "basic": "POW POW",
           "skill": "Whizzing Fight Spirit",
           "liberation": "Blazing Flames",
-          "forte": "Grand Entrance",
-          "intro": "Heroic Bullets"
+          "intro": "Grand Entrance",
+          "forte": "Heroic Bullets"
         },
         "forteNodes": [
           {
@@ -10521,7 +10556,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -10692,7 +10727,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -11209,23 +11244,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Wooly Attack"
+            "name": "Wooly Attack",
+            "description": "Basic Attack\nDeal Fusion DMG.\nBasic Attack: Wooly Strike\nAfter Basic Attack 4, use Basic Attack to deal Fusion DMG.\nHeavy Attack\nConsume STA to deal Fusion DMG.\nMid-air Attack\nConsume STA to deal Fusion DMG.\nDodge Counter\nDeal Fusion DMG."
           },
           {
             "key": "skill",
-            "name": "Flaming Woolies"
+            "name": "Flaming Woolies",
+            "description": "Flaming Woolies\nDeal Fusion DMG.\nEnergetic Welcome\nAfter casting Flaming Woolies, use Resonance Skill to perform Energetic Welcome, dealing Fusion DMG."
           },
           {
             "key": "forte",
-            "name": "Woolies Helpers"
+            "name": "Black & White Woolies",
+            "description": "Heavy Attack: Cloudy Frenzy\nWhen Encore's Mayhem is full, after casting a Heavy Attack, Encore will consume all Mayhem to enter the Mayhem state.\nAfter the Mayhem state ends, Encore will cast Cloudy Frenzy, dealing Fusion DMG.\nHeavy Attack: Cosmos Rupture\nDuring Cosmos Rave, when casting Heavy Attack, if Mayhem is full, Encore will consume all Mayhem to enter the Cosmos' Mayhem state.\nAfter the Cosmos' Mayhem state ends, Encore will cast Cosmos Rupture, dealing Fusion DMG.\nMayhem\nEncore can hold up to 100 Mayhem.\nEncore gains Mayhem through Normal Attack, Resonance Skill, Intro Skill, and Resonance Liberation."
           },
           {
             "key": "liberation",
-            "name": "Cosmos Rave"
+            "name": "Cosmos Rave",
+            "description": "Enter the Cosmos Rave state. In this state:\n- Basic Attack becomes Cosmos: Frolicking, dealing Fusion DMG.\n- Heavy Attack becomes Cosmos: Heavy Attack, consuming STA to deal Fusion DMG.\n- Flaming Woolies becomes Cosmos: Rampage, dealing Fusion DMG.\n- Dodge Counter becomes Cosmos: Dodge Counter, dealing Fusion DMG."
           },
           {
             "key": "intro",
-            "name": "Black & White Woolies"
+            "name": "Woolies Helpers",
+            "description": "Deal Fusion DMG."
           }
         ]
       },
@@ -11233,8 +11273,8 @@
         "nickname": "Wooly-Counting Game",
         "skillNames": {
           "liberation": "Cosmos Rave",
-          "forte": "Woolies Helpers",
-          "intro": "Black & White Woolies",
+          "intro": "Woolies Helpers",
+          "forte": "Black & White Woolies",
           "basic": "Wooly Attack",
           "skill": "Flaming Woolies"
         },
@@ -12297,7 +12337,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -12468,7 +12508,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -12643,23 +12683,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Impromptu Show"
+            "name": "Impromptu Show",
+            "description": "Basic Attack\nDeal Fusion DMG.\nHeavy Attack\nDeal Fusion DMG.\nMid-air Attack\nConsume STA to deal Fusion DMG.\nDodge Counter\nDeal Fusion DMG."
           },
           {
             "key": "skill",
-            "name": "Passionate Variation"
+            "name": "Passionate Variation",
+            "description": "Deal Fusion DMG."
           },
           {
             "key": "forte",
-            "name": "Dissonance"
+            "name": "Fury Fugue",
+            "description": "Resonance Skill: Fury Fugue\nWhen Mortefi's Annoyance reaches 100, his Resonance Skill becomes Fury Fugue.\nCasting Fury Fugue consumes all Annoyance to deal Fusion DMG.\nAnnoyance\nMortefi can hold up to 100 Annoyance.\nMortefi gains Annoyance through Normal Attack, Intro Skill, and Resonance Skill."
           },
           {
             "key": "liberation",
-            "name": "Violent Finale"
+            "name": "Violent Finale",
+            "description": "Deal Fusion DMG, and apply Burning Rhapsody to all Resonators on the team.\nBurning Rhapsody\nWhen the active Resonator's Basic Attack or Heavy Attack hits the target, Mortefi launches Marcato as the Coordinated Attack.\nMarcato\nDeal Fusion DMG."
           },
           {
             "key": "intro",
-            "name": "Fury Fugue"
+            "name": "Dissonance",
+            "description": "Deal Fusion DMG."
           }
         ]
       },
@@ -12669,8 +12714,8 @@
           "basic": "Impromptu Show",
           "liberation": "Violent Finale",
           "skill": "Passionate Variation",
-          "forte": "Dissonance",
-          "intro": "Fury Fugue"
+          "intro": "Dissonance",
+          "forte": "Fury Fugue"
         },
         "forteNodes": [
           {
@@ -13731,7 +13776,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -13902,7 +13947,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -14077,23 +14122,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Blazing Enlightment"
+            "name": "Blazing Enlightment",
+            "description": "Basic Attack\nDeal Fusion DMG.\nAfter Ground Basic Attack 4, enter True Sight.\nMid-air Attack\nConsume STA to deal Fusion DMG.\nAfter Mid-air Attack 4, enter True Sight.\nHeavy Attack\nConsume STA to perform an upward strike, dealing Fusion DMG. Use Basic Attack within a certain time to perform Mid-Air Attack 3.\nMid-air Heavy Attack\nConsume STA to perform a Plunging Attack, dealing Fusion DMG. Use Basic Attack within a certain time to cast Basic Attack 3.\nDodge Counter\nDeal Fusion DMG."
           },
           {
             "key": "skill",
-            "name": "Tripartite Flames"
+            "name": "Tripartite Flames",
+            "description": "True Sight: Capture\nAfter using her Resonance Skill to attack an enemy, Changli enters True Sight, dealing Fusion DMG.\nTrue Sight: Capture has 2 initial charges. Changli can hold up to 2 charges. 1 charge is replenished every 12s. It can be cast in mid-air.\nBasic Attack: True Sight - Conquest\nWhen in True Sight, if Changli uses Ground Basic Attack, she dashes towards the enemy, dealing Fusion DMG (considered Resonance Skill DMG), after which True Sight ends.\nBasic Attack: True Sight - Charge\nWhen in True Sight, if Changli jumps or uses Basic Attack in mid-air, she dashes towards the enemy, dealing Fusion DMG (considered Resonance Skill DMG), after which True Sight ends."
           },
           {
             "key": "forte",
-            "name": "Obedience of Rules"
+            "name": "Flaming Sacrifice",
+            "description": "Heavy Attack: Flaming Sacrifice\nWhen casting Heavy Attack, if Changli has 4 stacks of Enflamement, she consumes them all to attack the target, dealing Fusion DMG. This damage is considered Resonance Skill DMG.\nWhile casting Flaming Sacrifice, Changli takes 40% less DMG.\nEnflamement\nChangli can hold up to 4 stacks of Enflamement.\nChangli gains Enflamement through Basic Attack: True Sight - Conquest, Basic Attack: True Sight - Charge, and Resonance Liberation Radiance of Fealty."
           },
           {
             "key": "liberation",
-            "name": "Radiance of Fealty"
+            "name": "Radiance of Fealty",
+            "description": "Deal Fusion DMG, gain 4 stacks of Enflamement, and enter Fiery Feather.\nCan be cast in mid-air.\nFiery Feather\nWhen Changli uses Heavy Attack Flaming Sacrifice within 10s, her ATK is increased by 25%, after which Fiery Feather ends."
           },
           {
             "key": "intro",
-            "name": "Flaming Sacrifice"
+            "name": "Obedience of Rules",
+            "description": "Attack the target and enter True Sight."
           }
         ]
       },
@@ -14103,8 +14153,8 @@
           "basic": "Blazing Enlightment",
           "skill": "Tripartite Flames",
           "liberation": "Radiance of Fealty",
-          "forte": "Obedience of Rules",
-          "intro": "Flaming Sacrifice"
+          "intro": "Obedience of Rules",
+          "forte": "Flaming Sacrifice"
         },
         "forteNodes": [
           {
@@ -15165,7 +15215,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -15336,7 +15386,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -15511,23 +15561,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Captain's Rhapsody"
+            "name": "Captain's Rhapsody",
+            "description": "Basic Attack\nDeal Fusion DMG.\nHeavy Attack\nConsume STA to attack, dealing Fusion DMG.\nHeavy Attack - Rhapsodic Riff\nConsume STA to attack the target, dealing Fusion DMG.\n- Hold Normal Attack following Basic Attack Stage 2 or Stage 4 or press Normal Attack after Mid-air Attack Stage 4 to cast.\nMid-air Attack\nDeal Fusion DMG. Press Normal Attack during Mid-air Attack Stage 1 or Stage 2 to attack the target or hold the button to attack continuously. Flip backward automatically after each of the first three Mid-air Attack Stages. Press Normal Attack after each flip to perform the next stage of Mid-air Attack.\nIf Mid-air Attack Stage 1 misses, lunge forward instead, dealing Fusion DMG.\nDodge Counter\nDeal Fusion DMG."
           },
           {
             "key": "skill",
-            "name": "Anchors Aweigh!"
+            "name": "Anchors Aweigh!",
+            "description": "Deal Fusion DMG. While in mid-air, if Bravo is not full, Resonance Skill Anchors Aweigh! is replaced with Plunging Attack.\nPlunging Attack\nPlunge at the target at the cost of STA, dealing Fusion DMG."
           },
           {
             "key": "forte",
-            "name": "Applaud for Me!"
+            "name": "Ocean Odyssey",
+            "description": "Theatrical Moment\nBrant gains additional ATK based on his Energy Regen: For every 1% of his Energy Regen over 150%, Brant gains additional 12 points of ATK, up to 1560.\nWaves of Acclaims\nHeal all nearby Resonators in the team when Bravo reaches 25, 50, 75, and 100.\nReturned from Ashes\nWhen Bravo is fully restored, replace Resonance Skill Anchor Aweigh! with Returned from Ashes.\nConsume all Bravo to perform Returned from Ashes, dealing Fusion DMG and generating a shield for all nearby Resonators in the team.\nBravo\nBrant can hold up to 100 Bravo.\n- Obtained by: Normal Attacks, Intro Skill, and Resonance Skill."
           },
           {
             "key": "liberation",
-            "name": "To the Horizon"
+            "name": "To the Horizon",
+            "description": "Deal Fusion DMG to targets within the range and heal all nearby Resonators in the team before entering the Aflame state.\nCan be performed in mid-air.\nAflame\nThe efficiency of gaining Bravo is increased when Normal Attack or Resonance Skill Anchors Aweigh! hits the target. Forte Circuit Theatrical Moment is replaced by \"My\" Moment.\n\"My\" Moment\nBrant gains additional ATK based on his Energy Regen: For every 1% of his Energy Regen over 150%, Brant gains additional 20 points of ATK, up to 2600."
           },
           {
             "key": "intro",
-            "name": "Ocean Odyssey"
+            "name": "Applaud for Me!",
+            "description": "Deal Fusion DMG and gain Interlude Applause effect.\nInterlude Applause\nThe next Mid-air Attack begins at Stage 2. This effect ends when Brant lands early or is switched out."
           }
         ]
       },
@@ -15537,8 +15592,8 @@
           "basic": "Captain's Rhapsody",
           "skill": "Anchors Aweigh!",
           "liberation": "To the Horizon",
-          "forte": "Applaud for Me!",
-          "intro": "Ocean Odyssey"
+          "intro": "Applaud for Me!",
+          "forte": "Ocean Odyssey"
         },
         "forteNodes": [
           {
@@ -16599,7 +16654,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -16770,7 +16825,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -16945,23 +17000,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Flaming Star"
+            "name": "Flaming Star",
+            "description": "Basic Attack\nDeal Fusion DMG.\nHeavy Attack\nDeal Fusion DMG.\nEnhanced Heavy Attack\nWhen Wolflame reaches certain points, perform Enhanced Heavy Attack, dealing Fusion DMG.\nMid-air Attack\nDeal Fusion DMG.\nEnhanced Mid-air Attack\nWhen Wolflame reaches certain points, perform Enhanced Mid-air Attack, dealing Fusion DMG (considered Heavy Attack DMG).\nChain Basic Attack\nDeal Fusion DMG.\nDodge Counter\nDeal Fusion DMG."
           },
           {
             "key": "skill",
-            "name": "Shewolf's Hunt"
+            "name": "Shewolf's Hunt",
+            "description": "Resonance Skill\nDeal Fusion DMG and mark the target.\nAfter performing Resonance Skill, Lupa can perform Chain Resonance Skill within a certain period of time.\nChain Resonance Skill\nDeal Fusion DMG. The marked target takes additional DMG."
           },
           {
             "key": "forte",
-            "name": "Try Focusing, Eh?"
+            "name": "Ignis Lupa",
+            "description": "ATK is increased when casting Enhanced Heavy Attacks, Enhanced Mid-air Attack, Resonance Liberation, Chain Resonance Skill, Enhanced Resonance Skill, and Resonance Skill Finisher.\nForte Gauge: Wolflame and Wolfaith\nNormal Attacks, Resonance Skill, Chain Resonance Skill, and Resonance Liberation grant Wolflame.\nWhen Wolflame reaches certain points, Enhanced Heavy Attacks and Enhanced Mid-air Attack become available, granting Wolfaith.\nWhen Wolfaith is full, Enhanced Resonance Skill becomes available, which deals Fusion DMG, considered Resonance Liberation DMG.\nWhen Wolfaith is full and Enhanced State is active, Resonance Skill Finisher becomes available, which deals Fusion DMG, considered Resonance Liberation DMG, and ends Enhanced State.\nAssisted Attack\nWithin a certain period after Lupa performs Enhanced Resonance Skill or Resonance Skill Finisher, Lupa will assist the active Resonator in their assault when they perform Resonance Liberation, dealing Fusion DMG, considered Resonance Skill DMG."
           },
           {
             "key": "liberation",
-            "name": "Fire-Kissed Glory"
+            "name": "Fire-Kissed Glory",
+            "description": "Resonance Liberation\nAll Resonators in the team gain Pack Hunt. Consume all Wolfaith to deal Fusion DMG.\nPress Normal Attack or Resonance Skill in time to perform Foebreaker.\nAfter casting Resonance Liberation, all Resonators in the team gain Pack Hunt and additional ATK Bonus. If the active Resonator is hit or launched into the air, they immediately recover. When the active Resonator performs Intro Skill, Pack Hunt is enhanced, providing further ATK Bonus, up to 2 times. When Resonators with Pack Hunt attack Overlord Class or Calamity Class targets, they gain extra Fusion DMG Bonus.\nFoebreaker\nConsume all Woflame to deal Fusion DMG and enter Enhanced State.\nEnhanced State\nNormal Attacks restore more Wolflame on hit. Cannot perform Resonance Skill and Chain Resonance Skill in this state."
           },
           {
             "key": "intro",
-            "name": "Ignis Lupa"
+            "name": "Try Focusing, Eh?",
+            "description": "Intro Skill\nDeal Fusion DMG.\nEnhanced Intro Skill\nWhen Pack Hunt reaches its cap, Lupa can perform Enhanced Intro Skill.\nCasting this skill removes Pack Hunt and Glory on all Resonators in the team, dealing a large amount of Fusion DMG, which is considered Resonance Liberation DMG."
           }
         ]
       },
@@ -16971,8 +17031,8 @@
           "basic": "Flaming Star",
           "skill": "Shewolf's Hunt",
           "liberation": "Fire-Kissed Glory",
-          "forte": "Try Focusing, Eh?",
-          "intro": "Ignis Lupa"
+          "intro": "Try Focusing, Eh?",
+          "forte": "Ignis Lupa"
         },
         "forteNodes": [
           {
@@ -18033,7 +18093,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -18204,7 +18264,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -18379,23 +18439,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Slayer's Trigger"
+            "name": "Slayer's Trigger",
+            "description": "Basic Attack\nDeal Fusion DMG.\nHeavy Attack\nConsume STA to deal Fusion DMG.\nMid-air Attack\nPress Normal Attack to consume STA to perform a Plunging Attack when in mid-air, dealing Fusion DMG.\nHold Normal Attack to continuously consume STA to launch a barrage of shots at targets below, dealing Fusion DMG.\nDodge Counter\nPress Normal Attack right after a successful Dodge to attack the target, dealing Fusion DMG."
           },
           {
             "key": "skill",
-            "name": "Edge Transcended"
+            "name": "Edge Transcended",
+            "description": "Resonance Skill\nCharge forward, dealing Fusion DMG.\nResonance Skill - Ascent of Malice\nAt full Sinflame, Resonance Skill is replaced with Resonance Skill - Ascent of Malice.\nSlash at enemies with her wings, dealing Fusion DMG. Upon casting this skill:\n- Galbrena enters Demon Hypostasis.\n- Sinflame is converted into an equivalent amount of Purging Flame."
           },
           {
             "key": "forte",
-            "name": "Hellflare Overload"
+            "name": "Beyond Threshold",
+            "description": "Threshold State\nBy default, Galbrena is in Threshold State, and in this state, she accumulates Afterflame and Sinflame.\nDemon Hypostasis\nWhile in Demon Hypostasis, Basic Attack, Heavy Attack, Mid-air Attack, Dodge Counter, and Resonance Skill are enhanced, which consume Purging Flame on hit.\nWhile in Demon Hypostasis, the more Afterflame Galbrena has, the more DMG enemies take from various enhanced moves.\nWhen Purging Flame depletes, Galbrena exits Demon Hypostasis automatically.\nEnhanced Basic Attack\nDeal Fusion DMG.\nEnhanced Heavy Attack\nConsume STA to deal Fusion DMG.\nEnhanced Mid-air Attack\nPress Normal Attack to consume STA to enhance Mid-air Attack, dealing Fusion DMG.\nHold Normal Attack to continuously consume STA to launch a barrage of shots at targets, dealing Fusion DMG. Release Normal Attack to cast enhanced Plunging Attack.\nEnhanced Dodge Counter\nPress Normal Attack right after a successful Dodge to attack the target, dealing Fusion DMG.\nEnhanced Resonance Skill\nCharge forward, dealing Fusion DMG.\nHellstride\nPress Dodge while in combat action to deal Fusion DMG.\nThis skill does not interrupt the hit counter of Basic and Heavy Attack Stages.\nBurning Drive\nCasting Intro Skill, Hellstride, enhanced Basic Attack Stage 4, and all Resonance Skills increases Galbrena's ATK and resistance to interruptions within a certain period of time.\nForte Gauge - Afterflame and Sinflame\nWhile in Threshold State, Galbrena recovers Afterflame when nearby Resonators in the team cast Echo Skill. Echoes with the same name can only trigger this effect once. This effect resets when Galbrena exits Demon Hypostasis.\nAll Sinflame is removed upon exiting Demon Hypostasis.\nWhile in Threshold State, hitting an enemy with various types of skills recovers Sinflame."
           },
           {
             "key": "liberation",
-            "name": "Hellfire Absolution"
+            "name": "Hellfire Absolution",
+            "description": "Attack the target and deal Fusion DMG. Gain DMG Multiplier increase for various enhanced moves during Demon Hypostasis."
           },
           {
             "key": "intro",
-            "name": "Beyond Threshold"
+            "name": "Hellflare Overload",
+            "description": "Attack the target and deal Fusion DMG."
           }
         ]
       },
@@ -18405,8 +18470,8 @@
           "basic": "Slayer's Trigger",
           "skill": "Edge Transcended",
           "liberation": "Hellfire Absolution",
-          "forte": "Hellflare Overload",
-          "intro": "Beyond Threshold"
+          "intro": "Hellflare Overload",
+          "forte": "Beyond Threshold"
         },
         "forteNodes": [
           {
@@ -19467,7 +19532,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -19638,7 +19703,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -19813,23 +19878,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Ground State Calibration"
+            "name": "Ground State Calibration",
+            "description": "Basic Attack\nDeal Fusion DMG.\nHeavy Attack\nConsume STA to deal Fusion DMG.\nMid-air Attack\nConsume STA to perform Mid-air Plunging Attack, dealing Fusion DMG.\nDodge Counter\nPress Normal Attack right after a successful Dodge to attack the target, dealing Fusion DMG."
           },
           {
             "key": "skill",
-            "name": "Resolution"
+            "name": "Resolution",
+            "description": "Ground Resonance Skill\nHeal all nearby Resonators and enter a parry state for a period of time. Upon a successful parry, perform a counterattack on the target and reduce the cooldown of Resonance Skill – Expectation Error.\nMid-air Resonance Skill\nWhile in Hovering Mode, Resonance Skill is replaced with Mid-air Resonance Skill.\nHeal all nearby Resonators in the team and deal Fusion DMG."
           },
           {
             "key": "forte",
-            "name": "Convergence"
+            "name": "Mass-Energy Equivalence",
+            "description": "Forte Gauge\nMornye gains Ground Mode Energy while on the ground, and Hovering Mode Energy while in the air.\nEnhanced Ground Heavy Attack\nWith full Ground Mode Energy, Enhanced Ground Heavy Attack becomes available.\nConsume all Ground Mode Energy to cast Enhanced Ground Heavy Attack, dealing Fusion DMG. Afterward, enter Hovering Mode.\nHovering Mode\nHovering Mode lasts for 30s.\n- Upon entering this mode, generate a Field, dealing Fusion DMG.\nField\n- Field lasts for 25s.\n- Continuously restores HP for nearby active Resonators in the team.\n- Increases the Off-Tune Buildup Rate of all nearby Resonators in the team. Increases resistance to interruption of the nearby active Resonators in the team.\nEnhanced Mid-air Heavy Attack\nWith full Hovering Mode Energy, Enhanced Mid-air Heavy Attack becomes available.\nConsume all Hovering Mode Energy to cast Enhanced Mid-air Heavy Attack, dealing Fusion DMG and Marking the target for 30s.\nMarker\nUpon dealing Tune Break DMG to a Marked target, inflict an Enhanced Marker on the target for 8s.\nEnhanced Marker\nAll nearby Resonators in the team deal more DMG to targets affected by Tune Rupture - Interfered or Tune Strain - Interfered.\nVisual Field\nWhen a target with Marker or Enhanced Marker is defeated, within a certain period of time, whenever a Resonator in the team deals damage, Mornye Marks the targets hit.\nTune Rupture Response - Particle Jet\nMornye deals Fusion DMG, considered Tune Rupture DMG."
           },
           {
             "key": "liberation",
-            "name": "Critical Protocol"
+            "name": "Critical Protocol",
+            "description": "Deal Fusion DMG.\nMornye's excessive Energy Regen increases this skill's Crit. Rate and Crit. DMG.\nCasting this skill destroys the existing Field and generates a Enhanced Field.\nEnhanced Field\n- Lasts for 25s.\n- Continuously restores HP for the active Resonator.\n- All nearby Resonators in the team gain DEF and Off-Tune Buildup Rate increase. Additionally, the nearby active Resonators in the team gain higher resistance to interruption."
           },
           {
             "key": "intro",
-            "name": "Mass-Energy Equivalence"
+            "name": "Convergence",
+            "description": "Deal Fusion DMG and enter Hovering Mode."
           }
         ]
       },
@@ -19839,8 +19909,8 @@
           "basic": "Ground State Calibration",
           "skill": "Resolution",
           "liberation": "Critical Protocol",
-          "forte": "Convergence",
-          "intro": "Mass-Energy Equivalence"
+          "intro": "Convergence",
+          "forte": "Mass-Energy Equivalence"
         },
         "forteNodes": [
           {
@@ -20901,7 +20971,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -21072,7 +21142,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -21247,23 +21317,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Infinity Calibration"
+            "name": "Infinity Calibration",
+            "description": "Basic Attack\nDeal Fusion DMG.\nHeavy Attack\nDeal Fusion DMG. Hold Normal Attack to charge the attack, dealing increased Fusion DMG.\nThis Skill DMG is considered Resonance Liberation DMG."
           },
           {
             "key": "skill",
-            "name": "Shared Voyage"
+            "name": "Shared Voyage",
+            "description": "Form Switch\nAemeath can switch forms between herself and her Mech. The Mech inherits Aemeath's Stats and unlocks new moves.\nSync Strike\nPress Resonance Skill shortly after casting Basic Attack - Stage 2, 3 & 4 to cast Sync Strike, dealing Fusion DMG and switching to the other form."
           },
           {
             "key": "forte",
-            "name": "Overture of Departure"
+            "name": "To Sculpt the Silence",
+            "description": "Synchronization Rate\n- Recover Synchronization Rate when specific skills deal damage or Aemeath casts Intro Skill or Resonance Liberation.\nIf Synchronization Rate is no less than 100 points, Enhanced Sync Attack is available within a short duration after casting Basic Attack Stage 4.\nResonance Mode\n- In Resonance Mode - Tune Rupture, when Resonators in the team respond to Tune Rupture - Interfered, inflict Rupturous Trail.\n- In Resonance Mode - Fusion Burst, when Resonators in the team inflict Fusion Burst, inflict Fusion Trail.\nEnhanced Sync Attack\nDeal Fusion DMG. This DMG is considered Resonance Liberation DMG.\n- When in Resonance Mode - Tune Rupture, deal more instances of Tune Rupture DMG, each time to a random target within range. The DMG increases with the number of the stacks of Rupturous Trail on the target.\n- When in Resonance Mode - Fusion Burst, trigger Fusion Burst based on the max stack limit of Fusion Burst without removing its stacks. The DMG Multiplier against the main target is increased based on the stacks of Fusion Trail on the target.\nResonance Rate\nEnhanced Sync Attack and Resonance Liberation recover Resonance Rate."
           },
           {
             "key": "liberation",
-            "name": "Towards the Daybreak"
+            "name": "Towards the Daybreak",
+            "description": "Resonance Liberation\nDeal Fusion DMG. Switch into the Mech form after casting this skill and unlock the Resonance Liberation Finisher.\nCasting this skill sends Aemeath into the Enhanced Sync Attack Boost state.\nWhen Resonance Liberation Finisher is unlocked and Resonance Rate reaches the limit, enter the Heavy Attack Boost state. In this state, Heavy Attack charges faster and recovers Synchronization Rate to the max.\nEnhanced Sync Attack Boost\nThe next 2 Enhanced Sync Attacks grant the following effects:\n- When in Resonance Mode - Tune Rupture, Enhanced Sync Attack increases the additional instances of Tune Rupture DMG dealt.\n- When in Resonance Mode - Fusion Burst, the DMG Multiplier of Fusion Burst triggered by Enhanced Sync Attack is additionally increased against the main target.\nResonance Liberation Finisher\nWhen both Synchronization Rate and Resonance Rate reach the limit, Resonance Liberation Finisher becomes available, dealing massive Fusion DMG and switching back to Aemeath form."
           },
           {
             "key": "intro",
-            "name": "To Sculpt the Silence"
+            "name": "Overture of Departure",
+            "description": "Deal Fusion DMG.\nAfter casting this skill, the next Resonance Liberation additionallty recovers Resonance Rate."
           }
         ]
       },
@@ -21273,8 +21348,8 @@
           "basic": "Infinity Calibration",
           "skill": "Shared Voyage",
           "liberation": "Towards the Daybreak",
-          "forte": "Overture of Departure",
-          "intro": "To Sculpt the Silence"
+          "intro": "Overture of Departure",
+          "forte": "To Sculpt the Silence"
         },
         "forteNodes": [
           {
@@ -22335,7 +22410,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -22506,7 +22581,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -22681,23 +22756,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Gnawing Fangs"
+            "name": "Gnawing Fangs",
+            "description": "Basic Attack\nDeal Electro DMG.\nHeavy Attack\nConsume STA to deal Electro DMG.\nMid-air Attack\nConsume STA to deal Electro DMG.\nDodge Counter\nDeal Electro DMG."
           },
           {
             "key": "skill",
-            "name": "Extermination Order"
+            "name": "Extermination Order",
+            "description": "Calcharo performs up to 3 consecutive attacks, dealing Electro DMG.\nThis skill will enter Cooldown if Calcharo is switched off the field, or if Resonance Skill Extermination Order is not activated for a while.\nResonance Skill Extermination Order does not interrupt Calcharo's Basic Attack cycle."
           },
           {
             "key": "forte",
-            "name": "Wanted Outlaw"
+            "name": "Hunting Mission",
+            "description": "Heavy Attack: Mercy\nWhen Calcharo has 3 Cruelty, his Heavy Attack becomes Heavy Attack Mercy.\nWhen casting Heavy Attack Mercy, Calcharo consumes 3 Cruelty to deal Electro DMG and recovers Resonance Energy and Concerto Energy.\nCruelty\nCalcharo can hold up to 3 Cruelty.\nCalcharo gains Cruelty through Resonance Skill.\nCruelty cannot be gained in the Resonance Liberation Deathblade Gear state.\nHeavy Attack: Death Messenger\nWhen Calcharo has 5 Killing Intent, his Basic Attack becomes Heavy Attack Death Messenger.\nWhen casting Heavy Attack Death Messenger, Calcharo consumes 5 Killing Intent to deal Electro DMG and recovers Resonance Energy and Concerto Energy.\nKilling Intent\nIn the Resonance Liberation Deathblade Gear state, Calcharo's Forte Gauge becomes Killing Intent, stacking up to 5.\nCalcharo gains Killing Intent through Basic Attack Hounds Roar."
           },
           {
             "key": "liberation",
-            "name": "Phantom Etching"
+            "name": "Phantom Etching",
+            "description": "Calcharo attacks the target, dealing Electro DMG and enters the Deathblade Gear state. After Deathblade Gear ends, Calcharo's next Intro Skill becomes Intro Skill Necessary Means, which deals Electro DMG.\nDeathblade Gear\n-Basic Attack becomes Basic Attack Hounds Roar.\n-Heavy Attack and Dodge Counter deal increased DMG.\nBasic Attack: Hounds Roar\nDeal Electro DMG."
           },
           {
             "key": "intro",
-            "name": "Hunting Mission"
+            "name": "Wanted Outlaw",
+            "description": "Deal Electro DMG."
           }
         ]
       },
@@ -22707,8 +22787,8 @@
           "basic": "Gnawing Fangs",
           "skill": "Extermination Order",
           "liberation": "Phantom Etching",
-          "forte": "Wanted Outlaw",
-          "intro": "Hunting Mission"
+          "intro": "Wanted Outlaw",
+          "forte": "Hunting Mission"
         },
         "forteNodes": [
           {
@@ -23769,7 +23849,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -23940,7 +24020,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -24115,23 +24195,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Zapstring's Dance"
+            "name": "Zapstring's Dance",
+            "description": "Basic Attack\nDeal Electro DMG.\nHeavy Attack\nConsume STA to deal Electro DMG.\nMid-air Attack\nConsume STA to deal Electro DMG.\nDodge Counter\nDeal Electro DMG."
           },
           {
             "key": "skill",
-            "name": "Magnetic Roar"
+            "name": "Magnetic Roar",
+            "description": "Magnetic Roar\nDeal Electro DMG to the target, and put Yinlin in Execution Mode.\nExecution Mode\nBasic Attack and Dodge Counter will trigger Electromagnetic Blast when hitting a target.\nElectromagnetic Blast can be triggered up to 4 times.\nElectromagnetic Blast\nDeal Electro DMG to all targets marked with Sinner's Mark.\nLightning Execution\nUse Resonance Skill after casting Resonance Skill Magnetic Roar to cast Lightning Execution, dealing Electro DMG."
           },
           {
             "key": "forte",
-            "name": "Raging Storm"
+            "name": "Chameleon Cipher",
+            "description": "Chameleon Cipher\nWhen Yinlin's Judgment Points are full, her Heavy Attack becomes Chameleon Cipher, which consumes all Judgment Points to attack the targets, dealing Electro DMG. It replaces the Sinner's Mark on the targets with Punishment Mark.\nSinner's Mark\nNormal Attack Zapstring's Dance, Resonance Liberation Thundering Wrath, and Intro Skill Raging Storm will apply Sinner's Mark on hit.\nSinner's Mark is removed when Yinlin leaves the field.\nPunishment Mark\nTargets marked with Punishment Mark will take additional Electro DMG when hit.\nJudgment Points\nYinlin can hold up to 100 Judgement Points.\nYinlin gains Judgement Point through Intro Skill, Normal Attack, and Resonance Skill."
           },
           {
             "key": "liberation",
-            "name": "Thundering Wrath"
+            "name": "Thundering Wrath",
+            "description": "Deal Electro DMG."
           },
           {
             "key": "intro",
-            "name": "Chameleon Cipher"
+            "name": "Raging Storm",
+            "description": "Deal Electro DMG."
           }
         ]
       },
@@ -24141,8 +24226,8 @@
           "basic": "Zapstring's Dance",
           "skill": "Magnetic Roar",
           "liberation": "Thundering Wrath",
-          "forte": "Raging Storm",
-          "intro": "Chameleon Cipher"
+          "intro": "Raging Storm",
+          "forte": "Chameleon Cipher"
         },
         "forteNodes": [
           {
@@ -24690,7 +24775,7 @@
           }
         ],
         "costsByKey": {
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -24861,7 +24946,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -25549,31 +25634,36 @@
         "info": [
           {
             "key": "basic",
-            "name": "Leihuangquan"
+            "name": "Leihuangquan",
+            "description": "Basic Attack\nDeal Electro DMG.\nHeavy Attack\nConsume STA to deal Electro DMG.\nMid-air Attack\nConsume STA to deal Electro DMG.\nDodge Counter\nDeal Electro DMG."
           },
           {
             "key": "skill",
-            "name": "Leihuang Master"
+            "name": "Leihuang Master",
+            "description": "Thunder Wedge\nYuanwu summons Thunder Wedge, dealing Electro DMG, and forms a Thunder Field.\nForte Circuit Rumbling Spark and Resonance Liberation Blazing Might will immediately detonate Thunder Wedge on the field, dealing Electro DMG.\nThunder Field\nWhen a Resonator is in the Thunder Field and hits the target, Thunder Wedge will perform a Coordinated Attack, dealing Electro DMG."
           },
           {
             "key": "forte",
-            "name": "Thunder Bombardment"
+            "name": "Unassuming Blade",
+            "description": "Rumbling Spark\nWhen Readiness is full, hold Resonance Skill to consume all Readiness, dealing Electro DMG, and enter the Lightning Infused state.\nThunder Uprising\nWhen Readiness is full, Resonance Skill Thunder Wedge will be replaced with Thunder Uprising, dealing Electro DMG.\nLightning Infused\nThe Resonator in the Lightning Infused state has an increased resistance to interruption.\nWhen Yuanwu is in this state:\n- Basic Attacks: Hit targets in a larger range and reduce enemy Vibration Strength more efficiently.\n- Heavy Attacks: Reduce enemy Vibration Strength more efficiently.\n- Dodge Counters: Reduce enemy Vibration Strength more efficiently.\n- Use Basic Attack within 3s of a Heavy Attack or a Counterattack to cast Thunderweaver, dealing Electro DMG.\n-Readiness does not regenerate.\nReadiness\nYuanwu can hold up to 100 Readiness.\nYuanwu gains Readiness when:\nThunder Wedge is on the field.\nThunder Wedge triggers a Coordinated Attack."
           },
           {
             "key": "liberation",
-            "name": "Blazing Might"
+            "name": "Blazing Might",
+            "description": "Provide Lightning Infused status to all nearby party members, and deal Electro DMG to the target."
           },
           {
             "key": "intro",
-            "name": "Unassuming Blade"
+            "name": "Thunder Bombardment",
+            "description": "Deal Electro DMG."
           }
         ]
       },
       "extra": {
         "nickname": "Fist of Thunder",
         "skillNames": {
-          "forte": "Thunder Bombardment",
-          "intro": "Unassuming Blade",
+          "intro": "Thunder Bombardment",
+          "forte": "Unassuming Blade",
           "basic": "Leihuangquan",
           "skill": "Leihuang Master",
           "liberation": "Blazing Might"
@@ -26637,7 +26727,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -26808,7 +26898,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -26983,23 +27073,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Slash of Breaking Dawn"
+            "name": "Slash of Breaking Dawn",
+            "description": "Basic Attack\nDeal Spectro DMG.\nHeavy Attack\nConsume STA to deal Spectro DMG.\nMid-air Attack\nConsume STA to deal Spectro DMG.\nDodge Counter\nDeal Spectro DMG."
           },
           {
             "key": "skill",
-            "name": "Trailing Lights of Eons"
+            "name": "Trailing Lights of Eons",
+            "description": "Deal Spectro DMG.\nOverflowing Radiance\nAfter using Basic Attack 4 or Intro Skill Loong's Halo, Resonance Skill becomes Overflowing Radiance.\nResonance Skill Overflowing Radiance deals Spectro DMG and sends Jinhsi into Incarnation."
           },
           {
             "key": "forte",
-            "name": "Loong's Halo"
+            "name": "Luminal Synthesis",
+            "description": "Incarnation\nWhile in the Incarnation state:\n- Basic Attack becomes Incarnation - Basic Attack, dealing Spectro DMG.\n- Resonance Skill becomes Crescent Divinity, dealing Spectro DMG.\n- While in mid-air, Heavy Attack becomes Incarnation - Heavy Attack, consuming STA to deal Spectro DMG.\n- While in mid-air, Dodge becomes Incarnation - Dodge.\n- Dodge Counter becomes Incarnation - Dodge Counter, dealing Spectro DMG.\nResonance Skill - Illuminous Epiphany\nAfter Incarnation - Basic Attack 4, Incarnation ends and Jinhsi gains Ordination Glow.\nWhile Ordination Glow lasts:\n- In mid-air, Basic Attack becomes Incarnation - Heavy Attack, consuming STA to deal Spectro DMG.\n- Resonance Skill becomes Illuminous Epiphany, dealing Spectro DMG. Consume Incandescence to increase the DMG Multiplier of this skill.\n- Casting Illuminous Epiphany grants Unison.\nUnison\nWhile Jinhsi has Unison, switching to other Resonators will remove Jinhsi's Unison to trigger her Outro Skill and the incoming Resonator's Intro Skill.\nIncandescence\nJinhsi can hold up to 50 Incandescence.\nJinhsi gains Incandescence when she or other Resonators on the team deal Attribute DMG or Coordinated Attack DMG."
           },
           {
             "key": "liberation",
-            "name": "Purge of Light"
+            "name": "Purge of Light",
+            "description": "Deal Spectro DMG."
           },
           {
             "key": "intro",
-            "name": "Luminal Synthesis"
+            "name": "Loong's Halo",
+            "description": "Deal Spectro DMG."
           }
         ]
       },
@@ -27009,8 +27104,8 @@
           "basic": "Slash of Breaking Dawn",
           "skill": "Trailing Lights of Eons",
           "liberation": "Purge of Light",
-          "forte": "Loong's Halo",
-          "intro": "Luminal Synthesis"
+          "intro": "Loong's Halo",
+          "forte": "Luminal Synthesis"
         },
         "forteNodes": [
           {
@@ -28071,7 +28166,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -28242,7 +28337,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -28417,23 +28512,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Probe"
+            "name": "Probe",
+            "description": "Basic Attack\nDeal Electro DMG.\nHeavy Attack\nConsume STA to deal Electro DMG.\nMid-air Attack\nConsume STA to deal Electro DMG.\nDodge Counter\nDeal Electro DMG."
           },
           {
             "key": "skill",
-            "name": "Deduction"
+            "name": "Deduction",
+            "description": "Deal Electro DMG."
           },
           {
             "key": "forte",
-            "name": "Principle"
+            "name": "Forever Seeking",
+            "description": "Resonance Skill - Decipher\nWhen Capacity reaches 100, Resonance Skill Deduction becomes Resonance Skill Decipher.\nConsume 100 Capacity to cast Resonance Skill Decipher, dealing Electro DMG.\nResonance Skill - Law of Reigns\nIn the Intuition state, when Performance Capacity reaches 5 , Resonance Skill Divergence becomes Resonance Skill Law of Reigns.\nConsume 5 Performance Capacity to cast Resonance Skill Law of Reigns, dealing Electro DMG.\nMid-air Attack - Revamp\nShortly after casting Resonance Skill Decipher or Resonance Skill Divergence, use Basic Attack to perform Mid-air Attack Revamp, consuming STA to deal Electro DMG.\nCapacity\nXiangli Yao can hold up to 100 Capacity.\nXiangli Yao gains Capacity through Normal Attack and Resonance Skill.\nPerformance Capacity\nXiangli Yao can hold up to 5 Performance Capacity.\nXiangli Yao gains Performance Capacity in the Intuition state through Basic Attack, Mid-air Attack Revamp, Resonance Skill Divergence, and Dodge Counter Unfathomed."
           },
           {
             "key": "liberation",
-            "name": "Cogitation Model"
+            "name": "Cogitation Model",
+            "description": "Deal Electro DMG and enter Intuition.\nWhen in the Intuition state:\n- Gain 3 Hypercube(s). Each time Resonance Skill Law of Reigns is cast, 1 Hypercube(s) is consumed. Intuition ends once all Hypercubes are consumed.\n- Basic Attack and Heavy Attack are replaced with Basic Attack Pivot - Impale, dealing Electro DMG.\n- Resonance Skill Deduction becomes Resonance Skill Divergence, dealing Electro DMG.\n- Dodge Counter becomes Dodge Counter Unfathomed."
           },
           {
             "key": "intro",
-            "name": "Forever Seeking"
+            "name": "Principle",
+            "description": "Deal Electro DMG."
           }
         ]
       },
@@ -28443,8 +28543,8 @@
           "basic": "Probe",
           "skill": "Deduction",
           "liberation": "Cogitation Model",
-          "forte": "Principle",
-          "intro": "Forever Seeking"
+          "intro": "Principle",
+          "forte": "Forever Seeking"
         },
         "forteNodes": [
           {
@@ -29505,7 +29605,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -29676,7 +29776,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -29851,23 +29951,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Hunter's Path"
+            "name": "Hunter's Path",
+            "description": "Heavy Attack - Thunderoar: Backstep\nWhen Prowess is full, hold Normal Attack to cast this skill, then release Normal Attack to cast Heavy Attack - Thunderoar: Spinslash.\nHeavy Attack - Thunderoar: Uppercut\nWhen Prowess is full,  Jump to cast this skill.\nProwess\nAugusta obtains Prowess when performing Basic Attack, Heavy Attack - Steelclash, Mid-air Attack, Mid-air Dodge Counter, Resonance Skill - Warrior's Blade, Dodge Counter, Dodge Counter - Heavy Attack, or Intro Skill - Stride of Goldenflare."
           },
           {
             "key": "skill",
-            "name": "Warrior's Blade"
+            "name": "Warrior's Blade",
+            "description": "Deal Electro DMG."
           },
           {
             "key": "forte",
-            "name": "Stride of Goldenflare"
+            "name": "Call Me By the Sun",
+            "description": "Resonance Skill - Undying Sunlight: Strike\nWhen Ascendancy is full, Resonance Skill is replaced with Resonance Skill - Undying Sunlight: Strike, which can be chained with Resonance Skill - Undying Sunlight: Leap and Resonance Skill - Undying Sunlight: Plunge.\nAscendancy\nObtain Ascendancy through Normal Attacks, Resonance Skill - Warrior's Blade,  Intro Skill - Stride of Goldenflare and Resonance Liberation - Sword of Eternal Oath."
           },
           {
             "key": "liberation",
-            "name": "Sunward Conquest"
+            "name": "Sunward Conquest",
+            "description": "Resonance Liberation - Sword of Eternal Oath\nPress and release Resonance Liberation to cast this skill.\nResonance Liberation - Sublime is the Sun\nWhen Majesty is full, hold Resonance Liberation to cast this skill and enter Sworn Allegiance for 7s.\n- During the Sworn Allegiance state, press or hold Normal Attack to perform up to 9 strikes, which unlocks a powerful finisher move. While in Sworn Allegiance, hold Resonance Liberation to cast the finisher early.\nMajesty\n- Augusta obtains 1 stack of Majesty when casting Resonance Skill - Undying Sunlight: Plunge.\n- When other Resonators in the team cast Outro Skill under the effect of Augusta's Outro Skill, Augusta obtains 1 stack of Majesty."
           },
           {
             "key": "intro",
-            "name": "Call Me By the Sun"
+            "name": "Stride of Goldenflare",
+            "description": "Deal Electro DMG."
           }
         ]
       },
@@ -29877,8 +29982,8 @@
           "basic": "Hunter's Path",
           "skill": "Warrior's Blade",
           "liberation": "Sunward Conquest",
-          "forte": "Stride of Goldenflare",
-          "intro": "Call Me By the Sun"
+          "intro": "Stride of Goldenflare",
+          "forte": "Call Me By the Sun"
         },
         "forteNodes": [
           {
@@ -30939,7 +31044,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -31110,7 +31215,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -31285,23 +31390,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Hexagram Calls, Lightning Falls"
+            "name": "Hexagram Calls, Lightning Falls",
+            "description": "Basic Attack\nDeal Electro DMG.\nHeavy Attack - Mountain Over Thunder\nHold Normal Attack to consume Trigram - Mountain and Trigram - Thunder in sequence and cast Heavy Attack - Mountain Over Thunder, dealing Electro DMG.\nHeavy Attack - Thunder Over Mountain\nHold Normal Attack to consume Trigram - Thunder and Trigram - Mountain in sequence and cast Heavy Attack - Thunder Over Mountain, dealing a small amount of Electro DMG and additionally reducing the target's Vibration Strength.\nHeavy Attack - Twin Mountains\nHold Normal Attack to consume 2 Trigrams - Mountain and cast Heavy Attack - Twin Mountains, healing all nearby Resonators in the team.\nHeavy Attack - Twin Thunders\nHold Normal Attack to consume 2 Trigrams - Thunder and cast Heavy Attack - Twin Thunders, continuously healing all nearby Resonators in the team.\nHeavy Attack - Ghost Gate Omen\nWhen holding Normal Attack with fewer than 2 Trigrams, Buling fails the divination, becoming temporarily immobilized and losing some of her current HP.\nMid-air Attack\nDeal Electro DMG.\nDodge Counter\nDeal Electro DMG.\nTrigram\n- Trigram - Mountain is obtained when Basic Attack Stage 2 deals damage.\n- Trigram - Thunder is obtained when Basic Attack Stage 4 or Mid-air Attack deals damage.\n- Trigram - Thunder is obtained when casting Resonance Skill - In Shadow Thunder Stirs."
           },
           {
             "key": "skill",
-            "name": "In Shadow Thunder Stirs"
+            "name": "In Shadow Thunder Stirs",
+            "description": "Attack the target, dealing Electro DMG and continuously pulling in nearby targets."
           },
           {
             "key": "forte",
-            "name": "Summon and Smite"
+            "name": "Thunder Begets Life",
+            "description": "Yin-Yang Balance\nWhen Buling obtains Minor Yin and Minor Yang, she enters the Yin-Yang Balance state, replacing her Resonance Liberation - Flashing Thunder Spell with Resonance Liberation - Flashing Thunder Spell: Harmony.\nFlashing Thunder Spell - Harmony\nAttack the target, dealing Electro DMG and generating a Five Thunders Spell Array at the target area. The array continuously deals Electro DMG and inflicts Electro Flare on all targets within it. When the array is active, all Resonators in the team enter the Thunder Spell - Primordial Qi state.\n- While in Thunder Spell - Primordial Qi, when any Resonator in the team casts Intro Skill, Thunder Spell - Primordial Qi becomes Thunder Spell - Yin and Yang.\n- Thunder Spell - Yin and Yang grants Resonance Skill DMG Bonus to the active Resonator in the team. When any Resonator in the team casts Intro Skill during this state, Thunder Spell - Yin and Yang becomes Thunder Spell - Heaven, Earth, Mind.\n- Thunder Spell - Heaven, Earth, Mind grants additional Resonance Skill DMG Bonus to the active Resonator in the team.\nMinor Yang and Minor Yin\n- Minor Yang is obtained after casting Heavy Attack - Mountain Over Thunder or Heavy Attack - Thunder Over Mountain.\n- Minor Yin is obtained after casting Heavy Attack - Twin Mountains or Heavy Attack - Twin Thunders."
           },
           {
             "key": "liberation",
-            "name": "Flashing Thunder Spell"
+            "name": "Flashing Thunder Spell",
+            "description": "Attack the target, dealing Electro DMG."
           },
           {
             "key": "intro",
-            "name": "Thunder Begets Life"
+            "name": "Summon and Smite",
+            "description": "Attack the target, dealing Electro DMG and healing all nearby Resonators in the team."
           }
         ]
       },
@@ -31311,8 +31421,8 @@
           "basic": "Hexagram Calls, Lightning Falls",
           "skill": "In Shadow Thunder Stirs",
           "liberation": "Flashing Thunder Spell",
-          "forte": "Summon and Smite",
-          "intro": "Thunder Begets Life"
+          "intro": "Summon and Smite",
+          "forte": "Thunder Begets Life"
         },
         "forteNodes": [
           {
@@ -32373,7 +32483,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -32544,7 +32654,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -32719,23 +32829,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Feather as Blade"
+            "name": "Feather as Blade",
+            "description": "Basic Attack\nDeal Aero DMG.\nHeavy Attack\nConsume STA to deal Aero DMG.\nHeavy Attack: Zephyr Song\nUse Basic Attack right after Heavy Attack or Dodge Counter to perform Heavy Attack Zephyr Song, dealing Aero DMG.\nMid-air Attack\nConsume STA to deal Aero DMG.\nDodge Counter\nDeal Aero DMG."
           },
           {
             "key": "skill",
-            "name": "Zephyr Domain"
+            "name": "Zephyr Domain",
+            "description": "Pull enemies together, dealing Aero DMG."
           },
           {
             "key": "forte",
-            "name": "Cerulean Song"
+            "name": "Echoing Feathers",
+            "description": "Heavy Attack: Stormy Strike\nWhen Yangyang has 3 Melodies, she can cast Stormy Strike after Heavy Attack or Dodge Counter, dealing Aero DMG.\nMid-air Attack: Feather Release\nWhen Yangyang has 3 Melodies, she can cast Basic Attack in mid-air to consume all Melodies and deal Aero DMG.\nMelody\nYangyang can hold up to 3 Melodies.\nYangyang gains Melody through Basic Attack, Heavy Attack: Zephyr Song, Resonance Skill, and Intro Skill."
           },
           {
             "key": "liberation",
-            "name": "Wind Spirals"
+            "name": "Wind Spirals",
+            "description": "Pull enemies together, dealing Aero DMG."
           },
           {
             "key": "intro",
-            "name": "Echoing Feathers"
+            "name": "Cerulean Song",
+            "description": "Deal Aero DMG."
           }
         ]
       },
@@ -32745,8 +32860,8 @@
           "basic": "Feather as Blade",
           "skill": "Zephyr Domain",
           "liberation": "Wind Spirals",
-          "forte": "Cerulean Song",
-          "intro": "Echoing Feathers"
+          "intro": "Cerulean Song",
+          "forte": "Echoing Feathers"
         },
         "forteNodes": [
           {
@@ -33807,7 +33922,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -33978,7 +34093,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -34153,23 +34268,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Half Truths"
+            "name": "Half Truths",
+            "description": "Basic Attack\nDeal Aero DMG. Basic Attack 4 will release a Mist that spreads forward.\nHeavy Attack\nDeal Aero DMG.\nMid-air Attack\nConsume STA to deal Aero DMG.\nDodge Counter\nDeal Aero DMG."
           },
           {
             "key": "skill",
-            "name": "Shift Trick"
+            "name": "Shift Trick",
+            "description": "Mist Avatar\nCast \"Mist\" and 1 \"Mist Avatar(s)\" to taunt the surrounding targets. The avatars inherit a portion of Aalto's HP and generate 6 Mist Bullets around them, dealing Aero DMG."
           },
           {
             "key": "forte",
-            "name": "Feint Shot"
+            "name": "Misty Cover",
+            "description": "When Aalto passes through Mist or Gate of Quandary, he enters the Mistcloak Dash state.\nMistcloak Dash\n- Movement speed is increased.\n- During this period, Mist Drops are continuously consumed to generate Mist Bullets.\nMist Drops\nAalto can hold up to 6 Mist Drops.\nAalto gains Mist Drop when Basic Attack or Mid-air Attack passes through Mist and hits the target."
           },
           {
             "key": "liberation",
-            "name": "Flower in the Mist"
+            "name": "Flower in the Mist",
+            "description": "Generate a Gate of Quandary ahead, dealing Aero DMG. When bullets pass through the Gate of Quandary, they deal increased DMG."
           },
           {
             "key": "intro",
-            "name": "Misty Cover"
+            "name": "Feint Shot",
+            "description": "Deal Aero DMG."
           }
         ]
       },
@@ -34179,8 +34299,8 @@
           "basic": "Half Truths",
           "skill": "Shift Trick",
           "liberation": "Flower in the Mist",
-          "forte": "Feint Shot",
-          "intro": "Misty Cover"
+          "intro": "Feint Shot",
+          "forte": "Misty Cover"
         },
         "forteNodes": [
           {
@@ -35241,7 +35361,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -35412,7 +35532,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -35587,23 +35707,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Lone Lance"
+            "name": "Lone Lance",
+            "description": "Basic Attack\nDeal Aero DMG.\nHeavy Attack\nConsume STA to deal Aero DMG.\nHeavy Attack: Windborne Strike\nHold Basic Attack during Heavy Attack to cast Windborne Strike, dealing Aero DMG after the Heavy Attack ends.\nHeavy Attack: Abyssal Slash\nRelease Basic Attack during Heavy Attack to cast Abyssal Slash, dealing Aero DMG after the Heavy Attack ends.\nMid-air Attack\nConsume STA to deal Aero DMG.\nUse Basic Attack after Plunging Attack to deal Aero DMG.\nMid-air Attack: Banner of Triumph\nAfter casting Heavy Attack Windborne Strike or Resonance Skill Windqueller in mid-air, use Basic Attack to deal Aero DMG.\nDodge Counter\nDeal Aero DMG."
           },
           {
             "key": "skill",
-            "name": "Windqueller"
+            "name": "Windqueller",
+            "description": "Deal Aero DMG."
           },
           {
             "key": "forte",
-            "name": "Tactical Strike"
+            "name": "Qingloong at War",
+            "description": "When casting Resonance Skill Windqueller, if Jiyan has 30 or more Resolve, he consumes 30 Resolve to increase the damage of this Resonance Skill Windqueller by 20%.\nWhen Jiyan is in Qingloong Mode, damage from Resonance Skill Windqueller is increased by 20% and no longer consumes Resolve.\nResonance Liberation: Emerald Storm - Finale\nWhen casting Resonance Liberation Emerald Storm - Prelude, if Jiyan has 30 Resolve or more, he consumes 30 Resolve to cast Emerald Storm - Finale, dealing Aero DMG.\nResolve\nJiyan can hold up to 60 Resolve.\nJiyan gains Resolve through Normal Attack and Intro Skill.\nResolve will gradually decrease if Jiyan does not hit a target within 15s."
           },
           {
             "key": "liberation",
-            "name": "Emerald Storm - Prelude"
+            "name": "Emerald Storm - Prelude",
+            "description": "After Emerald Storm - Prelude, Jiyan enters Qingloong Mode.\nQingloong Mode\n- Jiyan's resistance to interruption increases.\n- Basic Attack, Heavy Attack, and Dodge Counter are replaced with Heavy Attack Lance of Qingloong.\nHeavy Attack: Lance of Qingloong\nDeal Aero DMG."
           },
           {
             "key": "intro",
-            "name": "Qingloong at War"
+            "name": "Tactical Strike",
+            "description": "Deal Aero DMG."
           }
         ]
       },
@@ -35613,8 +35738,8 @@
           "basic": "Lone Lance",
           "skill": "Windqueller",
           "liberation": "Emerald Storm - Prelude",
-          "forte": "Tactical Strike",
-          "intro": "Qingloong at War"
+          "intro": "Tactical Strike",
+          "forte": "Qingloong at War"
         },
         "forteNodes": [
           {
@@ -36675,7 +36800,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -36846,7 +36971,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -37021,23 +37146,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Fengyiquan"
+            "name": "Fengyiquan",
+            "description": "Basic Attack\nDeal Aero DMG.\nHeavy Attack\nConsume STA to deal Aero DMG.\nMid-air Attack\nConsume STA to deal Aero DMG.\nDodge Counter\nDeal Aero DMG."
           },
           {
             "key": "skill",
-            "name": "Calming Air"
+            "name": "Calming Air",
+            "description": "Hold Resonance Skill to enter Parry Stance.\nChi Counter\nWhen Jianxin is attacked in the Parry Stance, she does not take damage and immediately performs Chi Counter, dealing Aero DMG.\nChi Parry\nRelease Resonance Skill during Parry Stance to interrupt Parry Stance and perform Chi Parry, dealing Aero DMG."
           },
           {
             "key": "forte",
-            "name": "Essence of Tao"
+            "name": "Primordial Chi Spiral",
+            "description": "Heavy Attack: Primordial Chi Spiral\nWhen Chi is full, hold Basic Attack to start Zhoutian Progress.\nZhoutian Progress\nContinuously consume Chi to attack nearby targets, dealing Aero DMG.\nAs Zhoutian Progress continues, Jianxin deals more damage and her shield toughens.\nWhen Zhoutian Progress ends, Jianxin gains one last shield based on the Zhoutian Progress reached.\nAs the shield from Heavy Attack: Primordial Chi Spiral persists, the on-field Resonator is healed once every 6s.\nChi\nJianxin can hold up to 120 Chi.\nJianxin gains Chi through Normal Attack, Resonance Skill, and Intro Skill."
           },
           {
             "key": "liberation",
-            "name": "Purification Force Field"
+            "name": "Purification Force Field",
+            "description": "Create a strong wind field, pulling in targets to the center and dealing Aero DMG."
           },
           {
             "key": "intro",
-            "name": "Primordial Chi Spiral"
+            "name": "Essence of Tao",
+            "description": "Pull targets together, dealing Aero DMG."
           }
         ]
       },
@@ -37047,8 +37177,8 @@
           "basic": "Fengyiquan",
           "skill": "Calming Air",
           "liberation": "Purification Force Field",
-          "forte": "Essence of Tao",
-          "intro": "Primordial Chi Spiral"
+          "intro": "Essence of Tao",
+          "forte": "Primordial Chi Spiral"
         },
         "forteNodes": [
           {
@@ -38109,7 +38239,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -38280,7 +38410,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -38455,23 +38585,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Wind Cutter"
+            "name": "Wind Cutter",
+            "description": "Basic Attack\nDeal Aero DMG.\nHeavy Attack\nConsume STA to deal Aero DMG.\nHeavy Attack - Razor Wind\nHold Normal Attack after casting Basic Attack Stage 3, Dodge Counter, or Heavy Attack to deal Aero DMG at the cost of STA.\nMid-air Attack\nConsume STA to deal Aero DMG.\nDodge Counter\nDeal Aero DMG."
           },
           {
             "key": "skill",
-            "name": "Illusion Breaker"
+            "name": "Illusion Breaker",
+            "description": "Awakening Gale\nDeal Aero DMG.\nSkyfall Severance\nWhile in mid-air, press Resonance Skill to deal Aero DMG, which removes all stacks of Spectro Frazzle, Havoc Bane, Fusion Burst, Glacio Chafe, and Electro Flare from the target hit and inflicts 1 stack of Aero Erosion for each stack removed."
           },
           {
             "key": "forte",
-            "name": "Relentless Squall"
+            "name": "Cycle of Wind",
+            "description": "Mid-air Attack - Cloudburst Dance\nAfter casting Resonance Skill Awakening Gale, Intro Skill, or Heavy Attack Razor Wind, Rover can cast Mid-air Attack Cloudburst Dance, dealing Aero DMG and healing all nearby Resonators in the team.\nResonance Skill - Unbound Flow\nMid-air Attack Cloudburst Dance, Intro Skill, Normal Attack, and Dodge Counter restore Windstrings.\nAt max Windstrings, Rover can cast Resonance Skill Unbound Flow to deal Aero DMG."
           },
           {
             "key": "liberation",
-            "name": "Omega Storm"
+            "name": "Omega Storm",
+            "description": "Deal Aero DMG and heal all nearby Resonators in the team.\nCan be cast in mid-air close to the ground."
           },
           {
             "key": "intro",
-            "name": "Cycle of Wind"
+            "name": "Relentless Squall",
+            "description": "Deal Aero DMG."
           }
         ]
       },
@@ -38481,8 +38616,8 @@
           "basic": "Wind Cutter",
           "skill": "Illusion Breaker",
           "liberation": "Omega Storm",
-          "forte": "Relentless Squall",
-          "intro": "Cycle of Wind"
+          "intro": "Relentless Squall",
+          "forte": "Cycle of Wind"
         },
         "forteNodes": [
           {
@@ -39543,7 +39678,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -39714,7 +39849,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -39889,23 +40024,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Quadruple Time Steps"
+            "name": "Quadruple Time Steps",
+            "description": "Basic Attack\nDeal Aero DMG. Basic Attack 4 inflicts Aero Erosion on the target.\nInterruptions to Basic Attack 4 generate Ensemble Sylph.\nEnsemble Sylph\nFinishes Ciaccona's interrupted attack after being generated.\nAll nearby Resonators in the team gain Aero DMG bonus when a green light circle appears beneath Ciaccona or Ensemble Sylph.\nHeavy Attack\nDeal Aero DMG.\nAimed Attack\nDeal Aero DMG, considered Heavy Attack DMG.\nMid-air Attack\nDeal Aero DMG.\nDodge Counter\nDeal Aero DMG."
           },
           {
             "key": "skill",
-            "name": "Harmonic Allegro"
+            "name": "Harmonic Allegro",
+            "description": "Deal Aero DMG and inflict Aero Erosion on the target.\nInterruptions to some of the Normal Attacks generate Ensemble Sylph."
           },
           {
             "key": "forte",
-            "name": "Roaming with the Wind"
+            "name": "Symphony of Wind and Verse",
+            "description": "Forte Gauge\nBasic Attacks and Intro Skill restore Forte Gauge.\nWhen Forte Gauge is full, Enhanced Heavy Attack is enabled.\nEnhanced Heavy Attack\nDeal Aero DMG and inflict Aero Erosion on the target, continuously pulling in nearby targets."
           },
           {
             "key": "liberation",
-            "name": "Singer's Triple Cadenza"
+            "name": "Singer's Triple Cadenza",
+            "description": "Resonance Liberation\nDeal Aero DMG and enter an Enhanced State.\nEnhanced State\nPress the interactive button at the right time to deal Aero DMG and trigger different effects based on the color of the button hit:\n- Green: Inflict Aero Erosion.\n- Yellow: Inflict Spectro Frazzle.\nCiaccona will stay in the Enhanced State after switching to other Resonators, and will trigger the effect of the last hit button again before the switch.\nEnsemble Sylphs' Aero DMG Bonus effect can be triggered in the Enhanced State."
           },
           {
             "key": "intro",
-            "name": "Symphony of Wind and Verse"
+            "name": "Roaming with the Wind",
+            "description": "Deal Aero DMG and inflict Aero Erosion on the target."
           }
         ]
       },
@@ -39915,8 +40055,8 @@
           "basic": "Quadruple Time Steps",
           "skill": "Harmonic Allegro",
           "liberation": "Singer's Triple Cadenza",
-          "forte": "Roaming with the Wind",
-          "intro": "Symphony of Wind and Verse"
+          "intro": "Roaming with the Wind",
+          "forte": "Symphony of Wind and Verse"
         },
         "forteNodes": [
           {
@@ -40977,7 +41117,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -41148,7 +41288,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -41323,23 +41463,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Wind Cutter"
+            "name": "Wind Cutter",
+            "description": "Basic Attack\nDeal Aero DMG.\nHeavy Attack\nConsume STA to deal Aero DMG.\nHeavy Attack - Razor Wind\nHold Normal Attack after casting Basic Attack Stage 3, Dodge Counter, or Heavy Attack to deal Aero DMG at the cost of STA.\nMid-air Attack\nConsume STA to deal Aero DMG.\nDodge Counter\nDeal Aero DMG."
           },
           {
             "key": "skill",
-            "name": "Illusion Breaker"
+            "name": "Illusion Breaker",
+            "description": "Awakening Gale\nDeal Aero DMG.\nSkyfall Severance\nWhile in mid-air, press Resonance Skill to deal Aero DMG, which removes all stacks of Spectro Frazzle, Havoc Bane, Fusion Burst, Glacio Chafe, and Electro Flare from the target hit and inflicts 1 stack of Aero Erosion for each stack removed."
           },
           {
             "key": "forte",
-            "name": "Relentless Squall"
+            "name": "Cycle of Wind",
+            "description": "Mid-air Attack - Cloudburst Dance\nAfter casting Resonance Skill Awakening Gale, Intro Skill, or Heavy Attack Razor Wind, Rover can cast Mid-air Attack Cloudburst Dance, dealing Aero DMG and healing all nearby Resonators in the team.\nResonance Skill - Unbound Flow\nMid-air Attack Cloudburst Dance, Intro Skill, Normal Attack, and Dodge Counter restore Windstrings.\nAt max Windstrings, Rover can cast Resonance Skill Unbound Flow to deal Aero DMG."
           },
           {
             "key": "liberation",
-            "name": "Omega Storm"
+            "name": "Omega Storm",
+            "description": "Deal Aero DMG and heal all nearby Resonators in the team.\nCan be cast in mid-air close to the ground."
           },
           {
             "key": "intro",
-            "name": "Cycle of Wind"
+            "name": "Relentless Squall",
+            "description": "Deal Aero DMG."
           }
         ]
       },
@@ -41349,8 +41494,8 @@
           "basic": "Wind Cutter",
           "skill": "Illusion Breaker",
           "liberation": "Omega Storm",
-          "forte": "Relentless Squall",
-          "intro": "Cycle of Wind"
+          "intro": "Relentless Squall",
+          "forte": "Cycle of Wind"
         },
         "forteNodes": [
           {
@@ -42411,7 +42556,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -42582,7 +42727,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -42757,23 +42902,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Sword to Carve My Forms"
+            "name": "Sword to Carve My Forms",
+            "description": "Basic Attack - Cartethyia\nDeal Aero DMG and inflict Aero Erosion on the target. Summon Sword Shadow II.\nHeavy Attack - Cartethyia\nDeal Aero DMG and summon Sword Shadow I.\nThis instance of DMG is considered Basic Attack DMG.\nMid-air Attack - Cartethyia\nDeal Aero DMG and recall all Sword Shadows.\nThis instance of DMG is also considered Aero Erosion DMG.\nDodge Counter - Cartethyia\nDeal Aero DMG."
           },
           {
             "key": "skill",
-            "name": "Sword to Bear Their Names"
+            "name": "Sword to Bear Their Names",
+            "description": "Resonance Skill - Cartethyia\nDeal Aero DMG and inflict Aero Erosion on the target. Summon Sword Shadow III.\nThis instance of DMG is considered Basic Attack DMG."
           },
           {
             "key": "forte",
-            "name": "Sword to Mark Tide's Trace"
+            "name": "Tempest",
+            "description": "Fleurdelys\nTransform into Fleurdelys and unlock new moves.\nWhen in Manifest, Cartethyia is able to freely transform between herself and Fleurdelys.\nForte Gauge\nAs Fleurdelys, attacks restore Forte Gauge.\nWhen Forte Gauge is full, Resonance Liberation Finisher is available."
           },
           {
             "key": "liberation",
-            "name": "A Knight's Heartfelt Prayers"
+            "name": "A Knight's Heartfelt Prayers",
+            "description": "Resonance Liberation - Cartethyia\nAt the cost of HP, transform into Fleurdelys and enter Manifest, during which certain attacks immediately trigger Aero Erosion DMG.\nManifest\nWhen in Manifest, Fleurdelys gains the following effects corresponding to the different types of Sword Shadow recalled.\n- Sword Shadow I: Certain attacks propagate the highest stacks of Aero Erosion on targets hit to all nearby targets.\n- Sword Shadow II: The damage interval of Aero Erosion DMG is reduced and the Aero Erosion DMG taken by the target is Amplified.\n- Sword Shadow III: Certain attacks Stagnate the enemy. Gain increased resistance to interruption.\nResonance Liberation Finisher\nRestore HP and deal a massive amount of Aero DMG."
           },
           {
             "key": "intro",
-            "name": "Tempest"
+            "name": "Sword to Mark Tide's Trace",
+            "description": "Intro Skill - Cartethyia\nDeal Aero DMG and inflict Aero Erosion on the target. Summon Sword Shadow I.\nIntro Skill - Fleurdelys\nDeal Aero DMG."
           }
         ]
       },
@@ -42783,8 +42933,8 @@
           "basic": "Sword to Carve My Forms",
           "skill": "Sword to Bear Their Names",
           "liberation": "A Knight's Heartfelt Prayers",
-          "forte": "Sword to Mark Tide's Trace",
-          "intro": "Tempest"
+          "intro": "Sword to Mark Tide's Trace",
+          "forte": "Tempest"
         },
         "forteNodes": [
           {
@@ -43845,7 +43995,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -44016,7 +44166,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -44191,23 +44341,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Moon Steps"
+            "name": "Moon Steps",
+            "description": "Basic Attack\nAttack with the Moonring, dealing Aero DMG.\nMid-air Attack\nDeal Aero DMG.\nDodge Counter\nAttack with the Moonring, dealing Aero DMG.\nMoonbow - Basic Attack\nIuno will enter Lunar Cycle - New Moon by casting Heavy Attack - Flux: Moonring. When in this state, Iuno will attack with Moonbow.\nAttack with the Moonbow, dealing Aero DMG.\nMoonbow - Dodge Counter\nAttack with the Moonbow, dealing Aero DMG."
           },
           {
             "key": "skill",
-            "name": "Foresight Fugue"
+            "name": "Foresight Fugue",
+            "description": "Pulse of Origins\nDeal Aero DMG.\nClosing Refrain\nAfter casting Basic Attack Stage 3, Intro Skill, or Pulse of Origins, Iuno's Resonance Skill is replaced with Closing Refrain.\nCasting Closing Refrain deals Aero DMG and activates Lunar Cycle.\nUnfinished Refrain\nWhen in Lunar Cycle - Half Moon, Iuno's Resonance Skill is replaced with Unfinished Refrain.\nCasting Unfinished Refrain deals Aero DMG.\nArc Beyond the Edge\nWhen in Lunar Phase - New Moon, Iuno's Resonance Skill is replaced with Arc Beyond the Edge.\nCasting Arc Beyond the Edge deals Aero DMG."
           },
           {
             "key": "forte",
-            "name": "Illuminated Manifestation"
+            "name": "Ebb and Flow",
+            "description": "Lunar Cycle\nIuno can activate Lunar Cycle by casting Resonance Skill - Closing Refrain or Resonance Liberation.\nLunar Cycle has two states: Half Moon and New Moon. Iuno switches states when she Jumps.\nHalf Moon: Attack with Moonring, restoring Sentience on hit.\nNew Moon: Attack with Moonbow, consuming Sentience to increase DMG, restore additional Concerto Energy, and heal nearby Resonators in the team.\nHeavy Attack - Absolute Fullness\nWhen Iuno's Concerto Energy is full, her Heavy Attack is replaced with Absolute Fullness.\nCasting Absolute Fullness heals nearby Resonators, deals Aero DMG to targets nearby and conjures a Full Moon Domain at her location.\nResonators inside the Full Moon Domain periodically restore HP and STA. Gaining a Shield inside the domain grants 1 stack of Blessing of the Wan Light, which grants 4% all DMG Amplification for the receiving Resonator, stacking up to 10 times.\nSentience\nIuno restores Sentience upon casting Intro Skill, Resonance Liberation Closing Refrain or Unfinished Refrain.\nWhen Iuno hits a target in Half Moon, she restores Sentience."
           },
           {
             "key": "liberation",
-            "name": "Beneath Lunar Tides"
+            "name": "Beneath Lunar Tides",
+            "description": "Deal Aero DMG and activate the Lunar Cycle state."
           },
           {
             "key": "intro",
-            "name": "Ebb and Flow"
+            "name": "Illuminated Manifestation",
+            "description": "Deal Aero DMG."
           }
         ]
       },
@@ -44217,8 +44372,8 @@
           "basic": "Moon Steps",
           "skill": "Foresight Fugue",
           "liberation": "Beneath Lunar Tides",
-          "forte": "Illuminated Manifestation",
-          "intro": "Ebb and Flow"
+          "intro": "Illuminated Manifestation",
+          "forte": "Ebb and Flow"
         },
         "forteNodes": [
           {
@@ -45279,7 +45434,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -45450,7 +45605,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -45625,23 +45780,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Inkwash"
+            "name": "Inkwash",
+            "description": "Basic Attack\nDeal Aero DMG.\nHeavy Attack\nDeal Aero DMG.\nMid-air Attack\nDeal Aero DMG.\nDodge Counter\nDeal Aero DMG."
           },
           {
             "key": "skill",
-            "name": "Through the Groves"
+            "name": "Through the Groves",
+            "description": "Deal Aero DMG.\nUndaunted Wayfarer\nHold Resonance Skill to dash forward for a distance, dealing Aero DMG to the target.\nIf there are no targets nearby, Qiuyuan will leap up and dash through the air for a distance by continuously consuming STA until it runs out. Release Resonance Skill to immediately end the dash and land.  If there are targets nearby when Qiuyuan lands, deal Aero DMG to nearby targets."
           },
           {
             "key": "forte",
-            "name": "Attack the Must-Defend"
+            "name": "Verdant Edge",
+            "description": "Basic Attack - Thus Spoke the Blade: Inkwash\nWhen Qiuyuan reaches 200 points of Swordster's Soliloquy, his Basic Attack is replaced with Basic Attack Thus Spoke the Blade: Inkwash, dealing Aero DMG.\nBamboo's Shade\nWhen Qiuyuan reaches 400 points of Swordster's Soliloquy, he gains the Bamboo's Shade effect, granting nearby active Resonators in the team 30% Echo Skill DMG Bonus for 30s.\nInksplash of Mind\nWhen Swordster's Soliloquy is full, Qiuyuan enters the Inksplash of Mind state for 8s, during which his Heavy Attack is replaced by Heavy Attack Thus Spoke the Blade: To Save.\nIn this state, hold Normal Attack to consume Swordster's Soliloquy to perform Heavy Attack Thus Spoke the Blade: To Teach, Thus Spoke the Blade: To Save, and Thus Spoke the Blade: To Sacrifice, dealing Aero DMG, considered as Heavy Attack DMG.\nSwordster's Soliloquy\nQiuyuan can hold up to 600 points of Swordster's Soliloquy.\n- Swordster's Soliloquy is obtained when performing Basic Attack Stage 3, Basic Attack Thus Spoke the Blade: Inkwash, Dodge Counter, and Intro Skill.\n- Swordster's Soliloquy cannot be obtained in the Inksplash of Mind state.\n- Swordster's Soliloquy is cleared when the Inksplash of Mind state ends."
           },
           {
             "key": "liberation",
-            "name": "Sundering Strike"
+            "name": "Sundering Strike",
+            "description": "Deal Aero DMG.\nFor every 1% of Qiuyuan's Crit. Rate over 50%, this skill increases the Crit. DMG of all nearby active Resonators in the team by 2% for 30s, maxed at 30%."
           },
           {
             "key": "intro",
-            "name": "Verdant Edge"
+            "name": "Attack the Must-Defend",
+            "description": "Deal Aero DMG.\nWithin a certain period of time after casting this skill, press Normal Attack to perform Basic Attack Thus Spoke the Blade: Inkwash Stage 3."
           }
         ]
       },
@@ -45651,8 +45811,8 @@
           "basic": "Inkwash",
           "skill": "Through the Groves",
           "liberation": "Sundering Strike",
-          "forte": "Attack the Must-Defend",
-          "intro": "Verdant Edge"
+          "intro": "Attack the Must-Defend",
+          "forte": "Verdant Edge"
         },
         "forteNodes": [
           {
@@ -46200,7 +46360,7 @@
           }
         ],
         "costsByKey": {
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -46884,7 +47044,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -47059,34 +47219,39 @@
         "info": [
           {
             "key": "basic",
-            "name": "Vibration Manifestation"
+            "name": "Vibration Manifestation",
+            "description": "Basic Attack\nDeal Spectro DMG.\nHeavy Attack\nConsume STA to deal Spectro DMG.\nHeavy Attack: Resonance\nAfter Basic Attack 3 or Heavy Attack, use Basic Attack at the right time to perform Heavy Attack Resonance, dealing Spectro DMG.\nHeavy Attack: Aftertune\nAfter Heavy Attack Resonance or Dodge Counter hits a target, use Basic Attack to perform Heavy Attack Aftertune, dealing Spectro DMG.\nMid-air Attack\nConsume STA to deal Spectro DMG.\nDodge Counter\nDeal Spectro DMG."
           },
           {
             "key": "skill",
-            "name": "Resonating Slashes"
+            "name": "Resonating Slashes",
+            "description": "Launch an attack forward, dealing Spectro DMG."
           },
           {
             "key": "forte",
-            "name": "Waveshock"
+            "name": "World in a Grain of Sand",
+            "description": "Resonance Skill: Resonating Spin\nIf Diminutive Sound exceeds 50 when Resonance Skill is cast, Rover consumes 50 Diminutive Sound to cast Resonating Spin, dealing Spectro DMG.\nBasic Attack: Resonating Echoes\nRight after Resonance Skill Resonating Spin ends, using Basic Attack casts Resonating Echoes that launches attacks forward, dealing Spectro DMG.\nDiminutive Sound\nRover can hold up to 100 Diminutive Sound.\nRover gains Diminutive Sound through Normal Attack and Intro Skill."
           },
           {
             "key": "liberation",
-            "name": "Echoing Orchestra"
+            "name": "Echoing Orchestra",
+            "description": "Deal Spectro DMG."
           },
           {
             "key": "intro",
-            "name": "World in a Grain of Sand"
+            "name": "Waveshock",
+            "description": "Deal Spectro DMG."
           }
         ]
       },
       "extra": {
         "nickname": "Vessel of Sounds",
         "skillNames": {
-          "intro": "World in a Grain of Sand",
+          "forte": "World in a Grain of Sand",
           "basic": "Vibration Manifestation",
           "skill": "Resonating Slashes",
           "liberation": "Echoing Orchestra",
-          "forte": "Waveshock"
+          "intro": "Waveshock"
         },
         "forteNodes": [
           {
@@ -47634,7 +47799,7 @@
           }
         ],
         "costsByKey": {
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -48318,7 +48483,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -48493,34 +48658,39 @@
         "info": [
           {
             "key": "basic",
-            "name": "Vibration Manifestation"
+            "name": "Vibration Manifestation",
+            "description": "Basic Attack\nDeal Spectro DMG.\nHeavy Attack\nConsume STA to deal Spectro DMG.\nHeavy Attack: Resonance\nAfter Basic Attack 3 or Heavy Attack, use Basic Attack at the right time to perform Heavy Attack Resonance, dealing Spectro DMG.\nHeavy Attack: Aftertune\nAfter Heavy Attack Resonance or Dodge Counter hits a target, use Basic Attack to perform Heavy Attack Aftertune, dealing Spectro DMG.\nMid-air Attack\nConsume STA to deal Spectro DMG.\nDodge Counter\nDeal Spectro DMG."
           },
           {
             "key": "skill",
-            "name": "Resonating Slashes"
+            "name": "Resonating Slashes",
+            "description": "Launch an attack forward, dealing Spectro DMG."
           },
           {
             "key": "forte",
-            "name": "Waveshock"
+            "name": "World in a Grain of Sand",
+            "description": "Resonance Skill: Resonating Spin\nIf Diminutive Sound exceeds 50 when Resonance Skill is cast, Rover consumes 50 Diminutive Sound to cast Resonating Spin, dealing Spectro DMG.\nBasic Attack: Resonating Echoes\nRight after Resonance Skill Resonating Spin ends, using Basic Attack casts Resonating Echoes that launches attacks forward, dealing Spectro DMG.\nDiminutive Sound\nRover can hold up to 100 Diminutive Sound.\nRover gains Diminutive Sound through Normal Attack and Intro Skill."
           },
           {
             "key": "liberation",
-            "name": "Echoing Orchestra"
+            "name": "Echoing Orchestra",
+            "description": "Deal Spectro DMG."
           },
           {
             "key": "intro",
-            "name": "World in a Grain of Sand"
+            "name": "Waveshock",
+            "description": "Deal Spectro DMG."
           }
         ]
       },
       "extra": {
         "nickname": "Vessel of Sounds",
         "skillNames": {
-          "intro": "World in a Grain of Sand",
+          "forte": "World in a Grain of Sand",
           "basic": "Vibration Manifestation",
           "skill": "Resonating Slashes",
           "liberation": "Echoing Orchestra",
-          "forte": "Waveshock"
+          "intro": "Waveshock"
         },
         "forteNodes": [
           {
@@ -49581,7 +49751,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -49752,7 +49922,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -49927,23 +50097,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Cultivation"
+            "name": "Cultivation",
+            "description": "Basic Attack\nDeal Spectro DMG.\nHeavy Attack\nConsume STA to deal Spectro DMG.\nMid-air Attack\nConsume STA to deal Spectro DMG.\nMid-air Heavy Attack\nHold Basic Attack to consume STA to deal Spectro DMG.\nDodge Counter\nDeal Spectro DMG."
           },
           {
             "key": "skill",
-            "name": "Botany Experiment"
+            "name": "Botany Experiment",
+            "description": "Deal Spectro DMG."
           },
           {
             "key": "forte",
-            "name": "Verdant Growth"
+            "name": "Starflower Blooms",
+            "description": "Heavy Attack: Starflower Blooms\nWhen casting Heavy Attack, if Verina has Photosynthesis Energy, she consumes 1 stack of it to recover Concerto Energy and heal all nearby party members.\nHeavy Attack: Starflower Blooms deals Spectro DMG on hit.\nMid-air Attack: Starflower Blooms\nWhen casting Mid-air Attack, if Verina has Photosynthesis Energy, she consumes 1 stack of it to recover Concerto Energy and heal all nearby party members.\nMid-air Attack: Starflower Blooms deals Spectro DMG on hit.\nVerina can cast Mid-air Attack: Starflower Blooms by using Basic Attack shortly after casting Heavy Attack: Starflower Blooms.\nPhotosynthesis Energy\nVerina can hold up to 4 Photosynthesis Energy.\nVerina gains Photosynthesis Energy through Basic Attack, Resonance Skill, and Intro Skill."
           },
           {
             "key": "liberation",
-            "name": "Arboreal Flourish"
+            "name": "Arboreal Flourish",
+            "description": "Deal Spectro DMG and heal nearby party members. A  Photosynthesis Mark is applied to the target on hit.\nPhotosynthesis Mark\nWhen her own team members attack targets with a Photosynthesis Mark, Verina performs a Coordinated Attack, dealing Spectro DMG, and heals party members who are dealing damage nearby."
           },
           {
             "key": "intro",
-            "name": "Starflower Blooms"
+            "name": "Verdant Growth",
+            "description": "Deal Spectro DMG."
           }
         ]
       },
@@ -49953,8 +50128,8 @@
           "basic": "Cultivation",
           "skill": "Botany Experiment",
           "liberation": "Arboreal Flourish",
-          "forte": "Verdant Growth",
-          "intro": "Starflower Blooms"
+          "intro": "Verdant Growth",
+          "forte": "Starflower Blooms"
         },
         "forteNodes": [
           {
@@ -51015,7 +51190,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -51186,7 +51361,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -51361,23 +51536,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Navigation Support"
+            "name": "Navigation Support",
+            "description": "Yellow Light: Basic Attack\nDeal Electro DMG.\nYellow Light: Sprint\nUse Dodge to perform Sprint and enter Zoom Mode. Lumi is unable to Dodge when performing Sprint.\nYellow Light: Zoom\nWhen in this state, automatically shoot Glitters on a locked-on target and deal Electro DMG.\nYellow Light: Plunging Attack\nConsume STA to deal Electro DMG.\nRed Light: Basic Attack\nDeal Electro DMG.\nRed Light: Heavy Attack\nConsume STA to deal Electro DMG.\nRed Light: Plunging Attack\nConsume STA to deal Electro DMG.\nRed Light: Dodge Counter\nDeal Electro DMG."
           },
           {
             "key": "skill",
-            "name": "Searchlight Service"
+            "name": "Searchlight Service",
+            "description": "Pounce\nWhen in Yellow Light Mode, use Resonance Skill to perform Pounce, which consumes STA to pounce on the target before switching to Red Light Mode.\nLumi will Pounce without STA cost when she is switched onto the field.\nRebound\nWhen in Red Light Mode, use Resonance Skill to perform Rebound, which consumes STA to backflip and attack the target before switching to Yellow Light Mode.\nYellow Light Mode\nPerform ranged attacks when in Yellow Light Mode.\nRed Light Mode\nPerform melee attacks when in Red Light Mode."
           },
           {
             "key": "forte",
-            "name": "Special Delivery"
+            "name": "Signal Light",
+            "description": "Energized Pounce\nWhen Yellow Light Spark is full, Resonance Skill becomes Energized Pounce which deals Electro DMG, and Lumi enters Red Spotlight Mode (the evolved version of Red Light Mode).\nEnergized Rebound\nWhen Red Light Spark is full, Resonance Skill becomes Energized Rebound which deals Electro DMG, and Lumi enters Yellow Spotlight Mode (the evolved version of Yellow Light Mode).\nLaser\nCasting Outro Skill consumes all Sparks gained in the current mode.\nLaser can be cast when the amount of Sparks consumed is greater than or equal to 25, dealing Electro DMG. Consuming more Sparks generates more Laser beams.\nYellow Light Spark\nLumi can hold up to 100 Sparks.\nLumi gains Yellow Light Spark when Yellow Light: Basic Attack, Glitter, Glare, or Energized Rebound hits the target.\nLumi gains Yellow Light Spark when casting Intro Skill.\nRed Light Spark\nLumi can hold up to 100 Sparks.\nLumi gains Red Light Spark when Normal Attack hits the target in Red Light Mode or Red Spotlight Mode."
           },
           {
             "key": "liberation",
-            "name": "Squeakie Express"
+            "name": "Squeakie Express",
+            "description": "Deal Electro DMG."
           },
           {
             "key": "intro",
-            "name": "Signal Light"
+            "name": "Special Delivery",
+            "description": "Enter Yellow Light Mode and deal Electro DMG."
           }
         ]
       },
@@ -51387,8 +51567,8 @@
           "basic": "Navigation Support",
           "skill": "Searchlight Service",
           "liberation": "Squeakie Express",
-          "forte": "Special Delivery",
-          "intro": "Signal Light"
+          "intro": "Special Delivery",
+          "forte": "Signal Light"
         },
         "forteNodes": [
           {
@@ -52449,7 +52629,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -52620,7 +52800,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -52795,23 +52975,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Origin Calculus"
+            "name": "Origin Calculus",
+            "description": "Basic Attack\nDeal Spectro DMG. Each hit generates 1 Collapsed Core.\nHeavy Attack\nContinuously consume STA to enter Unbound Form. In this form, Shorekeeper will:\n- Generate a segment of Deductive Data every second;\n- Automatically collect nearby plant collectibles.\n- Using up all STA or actions such as casting Basic Attack will end Unbound Form and deal Spectro DMG to the target. Each accumulated segment of Deductive Data will convert into a segment of Empirical Data and generate a Collapsed Core.\nMid-air Attack\nConsume STA to attack the target, generating 1 Collapsed Core on hit. Quickly follow up with Basic Attack to perform Basic Attack 2.\nDodge Counter\nDeal Spectro DMG."
           },
           {
             "key": "skill",
-            "name": "Chaos Theory"
+            "name": "Chaos Theory",
+            "description": "Heal all nearby party members and summon 5 Dim Star Butterflies, which automatically track and attack a target, dealing Spectro DMG. Follow up with Basic Attack to perform Basic Attack 2.\nCan be cast in mid-air."
           },
           {
             "key": "forte",
-            "name": "Proof of Existence"
+            "name": "Astral Chord",
+            "description": "Flare Star Butterfly\nHitting a target with a Normal Attack generates a Collapsed Core, which transforms into a Flare Star Butterfly after 6s. Flare Star Butterflies automatically track and attack a target, dealing Spectro DMG. If there are 5 on-field Collapsed Cores, Shorekeeper's next Basic Attack will instantly convert a Collapsed Core into a Flare Star Butterfly.\nIllation\nWhen Shorekeeper has 5 segments of Empirical Data, casting Heavy Attack will consume all segments to pull in nearby targets, dealing Spectro DMG. Meanwhile, all generated Collapsed Cores will instantly transform into Flare Star Butterflies.\nTransmutation\nWhen Shorekeeper has 5 segments of Empirical Data, casting Mid-air Attack will consume all segments to deal Spectro DMG. Meanwhile, all generated Collapsed Cores will instantly transform into Flare Star Butterflies. Quickly follow up with Basic Attack to perform Basic Attack 2.\nEmpirical Data\nShorekeeper can hold up to 5 segments of Empirical Data.\nShorekeeper gains Empirical Data through Normal Attack."
           },
           {
             "key": "liberation",
-            "name": "End Loop"
+            "name": "End Loop",
+            "description": "Outer Stellarealm\nGenerate the Outer Stellarealm to continuously heal all party members within its effective range.\nInner Stellarealm\nWhen a party member uses Intro Skill within the Outer Stellarealm, it evolves into the Inner Stellarealm. Crit. Rate is increased for all party members within range of the Inner Stellarealm.\nInner Stellarealm has all the effects of the Outer Stellarealm.\nSupernal Stellarealm\nWhen a party member uses Intro Skill within the Inner Stellarealm, it evolves into the Supernal Stellarealm. Crit. DMG is increased for all party members within range of the Supernal Stellarealm.\nSupernal Stellarealm has all the effects of the Outer Stellarealm and Inner Stellarealm."
           },
           {
             "key": "intro",
-            "name": "Astral Chord"
+            "name": "Proof of Existence",
+            "description": "Enlightenment\nHeal all nearby party members and summon 5 Dim Star Butterflies, which automatically track and attack a target, dealing Spectro DMG. This damage is considered Resonance Skill DMG.\nDiscernment\nWhile Supernal Stellarealm is active, Shorekeeper's Intro Skill Enlightenment becomes Intro Skill Discernment. Casting Discernment ends the existing Stellarealm, restores HP for all nearby party members, and deals Spectro DMG. This attack is guaranteed to be Critical, dealing Resonance Liberation DMG. Intro Skill Discernment can only be triggered once each time a Supernal Stellarealm is generated."
           }
         ]
       },
@@ -52821,8 +53006,8 @@
           "basic": "Origin Calculus",
           "skill": "Chaos Theory",
           "liberation": "End Loop",
-          "forte": "Proof of Existence",
-          "intro": "Astral Chord"
+          "intro": "Proof of Existence",
+          "forte": "Astral Chord"
         },
         "forteNodes": [
           {
@@ -53883,7 +54068,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -54054,7 +54239,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -54229,23 +54414,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "O Come Divine Light"
+            "name": "O Come Divine Light",
+            "description": "Basic Attack\nDeal Spectro DMG.\nHeavy Attack\nDeal Spectro DMG.\nMid-air Attack\nConsume STA to deal Spectro DMG.\nMid-air Heavy Attack\nConsume STA to ride on the staff for a distance.\nDodge Counter\nDeal Spectro DMG."
           },
           {
             "key": "skill",
-            "name": "To Where Light Shines"
+            "name": "To Where Light Shines",
+            "description": "Summon a Ring of Mirrors at the target location, making the target hit stagnate and dealing Spectro DMG. Using Resonance Skill again shortly after the summoning teleports Phoebe to the Ring of Mirrors' location, dealing Spectro DMG.\nRing of Mirrors\n- Ring of Mirrors lasts for 30s. When Phoebe summons a new Ring of Mirrors, the existing Ring of Mirrors disappears.\n- When Phoebe is outside of the Ring of Mirrors, a Basic Attack or Dodge Counter that hits the Ring of Mirrors will deal extra DMG and pull the targets hit to the center of the Ring of Mirrors.\n- When Phoebe is inside the Ring of Mirrors, Basic Attack becomes Basic Attack Chamuel's Star, dealing Spectro DMG."
           },
           {
             "key": "forte",
-            "name": "Golden Grace"
+            "name": "Radiant Invocation",
+            "description": "When Phoebe's Prayer is full, consume all Prayer to cast one of the following skills:\n- Hold Basic Attack to cast Heavy Attack Absolution Litany, dealing Spectro DMG and applying Spectro Frazzle to the targets hit. Phoebe enters Absolution that focuses more on dealing direct DMG.\n- Hold Resonance Skill to cast Resonance Skill Utter Confession, dealing Spectro DMG and applying 1 stack of Spectro Frazzle to the targets hit. Phoebe enters Confession that focuses more on Spectro Frazzle.\nHeavy Attack: Starflash\nWhen Phoebe has Divine Voice, casting Basic Attack 3 or Dodge Counter replaces the next Heavy Attack with Heavy Attack: Starflash, which deals Spectro DMG at the cost of 30 Divine Voice.\n- Absolution Enhancement: Reduce the cost of Divine Voice by 15. When the targets hit have Spectro Frazzle, the skill deals more DMG.\n- Confession Enhancement: Apply Spectro Frazzle to the targets hit.\nPrayer\nPhoebe can hold up to 120 Prayer.\nPhoebe automatically gains 5 Prayer every second.\nDivine Voice\nPhoebe can hold up to 60 Divine Voice.\nHeavy Attack Absolution Litany or Resonance Skill Utter Confession restores Divine Voice."
           },
           {
             "key": "liberation",
-            "name": "Dawn of Enlightenment"
+            "name": "Dawn of Enlightenment",
+            "description": "Deal Spectro DMG.\n- Absolution Enhancement: Increase DMG Multiplier.\n- Confession Enhancement: Apply Spectro Frazzle to targets hit."
           },
           {
             "key": "intro",
-            "name": "Radiant Invocation"
+            "name": "Golden Grace",
+            "description": "Deal Spectro DMG."
           }
         ]
       },
@@ -54255,8 +54445,8 @@
           "basic": "O Come Divine Light",
           "skill": "To Where Light Shines",
           "liberation": "Dawn of Enlightenment",
-          "forte": "Golden Grace",
-          "intro": "Radiant Invocation"
+          "intro": "Golden Grace",
+          "forte": "Radiant Invocation"
         },
         "forteNodes": [
           {
@@ -55317,7 +55507,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -55488,7 +55678,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -55663,23 +55853,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Routine Negotiation"
+            "name": "Routine Negotiation",
+            "description": "Basic Attack\nDeal Spectro DMG.\nChain Basic Attack\nAfter Basic Attack Stage 3, press Normal Attack at the right time to perform Chain Basic Attack, dealing Spectro DMG.\nHeavy Attack\nDeal Spectro DMG.\nMid-air Attack\nDeal Spectro DMG.\nDodge Counter\nDeal Spectro DMG."
           },
           {
             "key": "skill",
-            "name": "Restless Watch"
+            "name": "Restless Watch",
+            "description": "Resonance Skill\nDeal Spectro DMG. Zani can block attacks within a certain time after casting Resonance Skill. A successful block reduces DMG taken and triggers a counterattack.\nForte Gauge - Redundant Energy\n- Perform Basic Attack, Resonance Skill, or Intro Skill to obtain Redundant Energy.\n- When Redundant Energy is full, Enhanced Resonance Skill becomes available.\nEnhanced Resonance Skill\n- Hold Resonance Skill to charge up the attack, during which Zani is immune to interruption and blocks attacks. A successful block reduces DMG taken and triggers a counterattack. Release the button in advance or fully charge up to attack the target.\n- Deal Spectro DMG (also considered Spectro Frazzle DMG), inflict Heliacal Ember upon the target, and Amplify the Spectro Frazzle DMG dealt by herself."
           },
           {
             "key": "forte",
-            "name": "Immediate Execution"
+            "name": "There Will Be A Light",
+            "description": "Forte Gauge - Blaze\n- When a nearby Resonator in the team inflicts Spectro Frazzle upon a target, trigger the damage effect immediately and inflict Heliacal Ember upon the target. Meanwhile, Zani restores Blaze.\n- Casting Resonance Liberation  or Enhanced Resonance Skill grants Blazes.\n- When in the Enhanced State and Blaze is higher than the tick mark, Heavy Slashes become available.\nHeliacal Ember\nIncreases Outro Skill DMG. Its stacks count towards the Eternal Radiance Sonata Effect.\nHeavy Slash\n- Press  Normal Attack or hold Resonance Skill to cast.\n- Hold Resonance Skill to charge up, during which Zani is immune to interruptions and blocks attacks. A successful block reduces DMG taken and triggers a counterattack. Release the button in advance or fully charge up to attack the target directly.\n- Deal Spectro DMG, considered both Heavy Attak DMG and Spectro Frazzle DMG."
           },
           {
             "key": "liberation",
-            "name": "Between Dawn and Dusk"
+            "name": "Between Dawn and Dusk",
+            "description": "Resonance Liberation\nDeal Spectro DMG and enter an Enhanced State, where the DMG Multiplier of Basic Attack is increased and Heavy Slashes and Finisher Resonance Liberation are unlocked.\nFinisher Resonance Liberation\nAvailable when Forte Gauge Blaze is lower than the tick mark or after a certain time in the Enhanced State. Deal high Spectro DMG and end the Enhanced State."
           },
           {
             "key": "intro",
-            "name": "There Will Be A Light"
+            "name": "Immediate Execution",
+            "description": "Deal Spectro DMG."
           }
         ]
       },
@@ -55689,8 +55884,8 @@
           "basic": "Routine Negotiation",
           "skill": "Restless Watch",
           "liberation": "Between Dawn and Dusk",
-          "forte": "Immediate Execution",
-          "intro": "There Will Be A Light"
+          "intro": "Immediate Execution",
+          "forte": "There Will Be A Light"
         },
         "forteNodes": [
           {
@@ -56751,7 +56946,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -56922,7 +57117,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -57097,23 +57292,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Reign of Silence"
+            "name": "Reign of Silence",
+            "description": "Rending Lunge\nPress Normal Attack shortly after casting Basic Attack Stage 2 to cast Rending Lunge, dealing Havoc DMG.\nPress Normal Attack shortly after casting this skill on the ground to cast Death Snip.\nDeath Snip\nDeal Havoc DMG and recover HP for all nearby Resonators in the team.\nPress or hold Normal Attack during this skill to deal additional Havoc DMG."
           },
           {
             "key": "skill",
-            "name": "Fractured Composition"
+            "name": "Fractured Composition",
+            "description": "Resonance Skill\nDeal Havoc DMG and mark the targets.\nEnhanced Resonance Skill\nWhen Forte Gauge is full, Enhanced Resonance Skill becomes available.\nDeal Havoc DMG and mark the targets.\nCasting this skill sends Chisa into Chainsaw Mode.\nMark\nWhen marked targets take damage, Chisa inflicts Havoc Bane on them."
           },
           {
             "key": "forte",
-            "name": "Reverberance - Return"
+            "name": "Sight of Unraveling - Oblivion",
+            "description": "Forte Gauge\nChisa obtains Forte Gauge when not in Chainsaw Mode.\nChisa consumes Forte Gauge to cast Chainsaw Mode Basic Attack. The more Forte Gauge consumed, the higher DMG the next Chainsaw Mode Finisher Attack deals.\nThread of Bane\nIgnore some of the marked targets' DEF when dealing damage.\nChainsaw Mode\nWhile in Chainsaw Mode, Chainsaw Mode Basic Attack and Chainsaw Mode Finisher Attack become available.\nChainsaw Mode Basic Attack\nDeal Havoc DMG, considered Resonance Liberation DMG.\nChainsaw Mode Finisher Attack\nDeal a massive amount of Havoc DMG (considered Resonance Liberation DMG) and grant Shields to all nearby Resonators in the team.\nCasting this skill ends Chainsaw Mode."
           },
           {
             "key": "liberation",
-            "name": "Moment of Nihility"
+            "name": "Moment of Nihility",
+            "description": "Resonance Liberation\nDeal Havoc DMG and recover HP for all nearby Resonators in the team.\nCasting this skill sends Chisa into Enhanced Chainsaw Mode.\nEnhanced Chainsaw Mode\nThe DMG Multipliers of Chainsaw Mode Basic Attack and Chainsaw Mode Finisher Attack are significantly increased."
           },
           {
             "key": "intro",
-            "name": "Sight of Unraveling - Oblivion"
+            "name": "Reverberance - Return",
+            "description": "Deal Havoc DMG."
           }
         ]
       },
@@ -57123,8 +57323,8 @@
           "basic": "Reign of Silence",
           "skill": "Fractured Composition",
           "liberation": "Moment of Nihility",
-          "forte": "Reverberance - Return",
-          "intro": "Sight of Unraveling - Oblivion"
+          "intro": "Reverberance - Return",
+          "forte": "Sight of Unraveling - Oblivion"
         },
         "forteNodes": [
           {
@@ -58185,7 +58385,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -58356,7 +58556,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -58531,23 +58731,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Chroma Drift"
+            "name": "Chroma Drift",
+            "description": "Charging State\nWhile in Default State with full Overflow, hold Normal Attack to enter a charging state and then release to dash toward the target.\nRoller Skate Heavy Attack\nWhile in Roller Skating Mode, hold Normal Attack on the ground to continuously cast Ground Heavy Attack and deliver a finisher blow upon release. Hold Normal Attack in mid-air to cast Mid-air Heavy Attack."
           },
           {
             "key": "skill",
-            "name": "Lynae-Style Palettes"
+            "name": "Lynae-Style Palettes",
+            "description": "Resonance Skill\nDeal Spectro DMG.\nRoller Skate Resonance Skill\nDeal Spectro DMG."
           },
           {
             "key": "forte",
-            "name": "Time to Show Some Colors!"
+            "name": "Chromaticity Modeling",
+            "description": "Roller Skating Mode\nAfter the Charging State, Lynae enters Roller Skating Mode and unlocks new moves.\nBasic Attack - Polychrome Leap\nDuring Roller Skating Mode, press Jump and consume 1/3 of the max Lumiflow to perform a leap attack, dealing Spectro DMG. Inflict Photochromic Flux on targets hit. Can be cast up to 3 consecutive times.\nRoller Skate Plunge Chain Attack\nDuring Roller Skating Mode, while in mid-air with max True Color, if Enhanced Roller Skate Plunge Attack is not on cooldown, cast Enhanced Roller Skate Plunge Attack, otherwise cast Roller Skate Plunge Attack instead. Inflict Photochromic Flux on targets hit.\nCasting Enhanced Roller Skate Plunge Attack increases the Tune Break Boost for all nearby Resonators in the team.\nResonance Mode\nPhotochromic Flux inflicts Tune Rupture - Shifting or Tune Strain - Shifting on targets based on the current Resonance Mode.\nOverflow\nWhile in Default State, attacks recover Overflow.\nLumiflow\nWhile in Roller Skating Mode, moving or attacking continuously restores Lumiflow.\nTrue Color\nWhile in combat, each Basic Attack - Polychrome Leap grants 1 point of True Color."
           },
           {
             "key": "liberation",
-            "name": "Prismatic Overblast"
+            "name": "Prismatic Overblast",
+            "description": "Casting this skill increases the DMG dealt by all nearby Resonators in the team.\nMotorbike Chain Attack\nPress Normal Attack within a certain time after casting Resonance Liberation to cast a chain attack using the motorbike."
           },
           {
             "key": "intro",
-            "name": "Chromaticity Modeling"
+            "name": "Time to Show Some Colors!",
+            "description": "Recover Overflow and inflict Photochromic Flux on targets."
           }
         ]
       },
@@ -58557,8 +58762,8 @@
           "basic": "Chroma Drift",
           "skill": "Lynae-Style Palettes",
           "liberation": "Prismatic Overblast",
-          "forte": "Time to Show Some Colors!",
-          "intro": "Chromaticity Modeling"
+          "intro": "Time to Show Some Colors!",
+          "forte": "Chromaticity Modeling"
         },
         "forteNodes": [
           {
@@ -59619,7 +59824,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -59790,7 +59995,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -59965,23 +60170,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Such is Light"
+            "name": "Such is Light",
+            "description": "Basic Attack\nDeal Spectro DMG.\nHeavy Attack\nConsume STA to deal Spectro DMG.\nMid-air Attack\nDeal Spectro DMG.\nHold Normal Attack to perform a Plunging Attack, dealing Spectro DMG.\nDodge Counter\nPress Normal Attack right after a successful Dodge to deal Spectro DMG."
           },
           {
             "key": "skill",
-            "name": "Reunion of All the Fallen"
+            "name": "Reunion of All the Fallen",
+            "description": "Resonance Skill\nDeal Spectro DMG and inflict Tune Strain - Shifting. The skill has 2 charges.\nEnhanced Resonance Skill\nEnhanced Resonance Skill becomes available right after casting Basic Attack Stage 4 or Mid-air Attack Stage 3, which deals Spectro DMG that's considered Basic Attack DMG, inflicts Tune Strain - Shifting, and increases Luuk Herssen's Resonance Liberation DMG, stacking up to 3 times.\nEnhanced Resonance Skill has 3 forms, which rotate in sequence each time Enhanced Resonance Skill is cast."
           },
           {
             "key": "forte",
-            "name": "Before Injection of Dawn"
+            "name": "Spark from the Frost",
+            "description": "Mid-air Attack - Gavel of Earthshaker\nAfter casting Enhanced Resonance Skill - Form III, press Normal Attack in mid-air to slam down, dealing Spectro DMG (considered Basic Attack DMG).\nAureate Judge\nCertain skills restore Forte Gauge. When Forte Gauge is full, the DMG Multipliers increase for all Enhanced Resonance Skills.\nGolden Rule\nWhen other Resonators in the team cast Outro Skill and Luuk Herssen is the incoming Resonator, he additionally restores Forte Gauge and Concerto Energy. This effect has a cooldown of 24s.\nDawnlit Keep\nLuuk Herssen gains 1 stack of Dawnlit Keep when he stays out of combat for over 4s or casts Intro Skill, which reduces DMG taken and grants immunity to interruptions for a time.\nRadiant Reave\nHurl out a whirling blade to attack when Dodging in mid-air, dealing fixed Spectro DMG."
           },
           {
             "key": "liberation",
-            "name": "Rewritten in Winter's Margins"
+            "name": "Rewritten in Winter's Margins",
+            "description": "Deal Spectro DMG, considered Basic Attack DMG."
           },
           {
             "key": "intro",
-            "name": "Spark from the Frost"
+            "name": "Before Injection of Dawn",
+            "description": "Deal Spectro DMG and inflict Tune Strain - Shifting.\nPress Normal Attack or Jump after casting this skill to cast Mid-air Attack Stage 2."
           }
         ]
       },
@@ -59991,8 +60201,8 @@
           "basic": "Such is Light",
           "skill": "Reunion of All the Fallen",
           "liberation": "Rewritten in Winter's Margins",
-          "forte": "Before Injection of Dawn",
-          "intro": "Spark from the Frost"
+          "intro": "Before Injection of Dawn",
+          "forte": "Spark from the Frost"
         },
         "forteNodes": [
           {
@@ -61053,7 +61263,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -61224,7 +61434,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -61399,23 +61609,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Concealed Edge"
+            "name": "Concealed Edge",
+            "description": "Basic Attack\nDeal Havoc DMG.\nHeavy Attack\nConsume STA to deal Havoc DMG.\nHold Basic Attack to enter the Rocksteady Defense state.\nRocksteady Defense\n- DMG taken is reduced by 35%.\n- When Taoqi is attacked during Rocksteady Defense, she will cast Strategic Parry.\n- Strategic Parry is automatically cast after 3s of Rocksteady Defense.\nStrategic Parry\nDeal Havoc DMG.\nMid-air Attack\nConsume STA to deal Havoc DMG.\nDodge Counter\nDeal Havoc DMG."
           },
           {
             "key": "skill",
-            "name": "Fortified Defense"
+            "name": "Fortified Defense",
+            "description": "Taoqi deals Havoc DMG, heals herself, and generates 3 Rocksteady Shield(s).\nIf attacked when casting Fortified Defense, Taoqi will automatically cast Strategic Parry.\nRocksteady Shield\nWhen the incoming Resonator in your team is attacked, 1 Rocksteady Shield is consumed to reduce the damage taken."
           },
           {
             "key": "forte",
-            "name": "Defense Formation"
+            "name": "Power Shift",
+            "description": "Timed Counters\nUse Basic Attack shortly after Heavy Attack Strategic Parry or Intro Skill Defense Formation to cast Timed Counters, performing up to 3 consecutive attacks, dealing Havoc DMG.\nUpon hitting a target, Timed Counters grants a shield at the cost of 1 Resolving Caliber.\nAfter casting Intro Skill Defense Formation, use Basic Attack to directly cast Timed Counters.\nResolving Caliber\nTaoqi can store up to 3 Resolving Caliber.\nTaoqi gains Resolving Caliber whenever Rocksteady Shield is consumed or ends.\nBasic Attack 4 will consume all of Taoqi's Rocksteady Shields."
           },
           {
             "key": "liberation",
-            "name": "Unmovable"
+            "name": "Unmovable",
+            "description": "Attack the target, dealing Havoc DMG based on Taoqi's DEF."
           },
           {
             "key": "intro",
-            "name": "Power Shift"
+            "name": "Defense Formation",
+            "description": "Deal Havoc DMG."
           }
         ]
       },
@@ -61425,8 +61640,8 @@
           "basic": "Concealed Edge",
           "skill": "Fortified Defense",
           "liberation": "Unmovable",
-          "forte": "Defense Formation",
-          "intro": "Power Shift"
+          "intro": "Defense Formation",
+          "forte": "Power Shift"
         },
         "forteNodes": [
           {
@@ -62145,7 +62360,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -62316,7 +62531,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -62833,23 +63048,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Execution"
+            "name": "Execution",
+            "description": "Basic Attack\nDeal Havoc DMG.\nHeavy Attack\nConsume STA to deal Havoc DMG.\nMid-air Attack\nConsume STA to deal Havoc DMG.\nDodge Counter\nDeal Havoc DMG.\nDodge Counter: Ruby Shades\nAfter a successful Dodge Counter, Danjin can use Resonance Skill\nCrimson Fragment to cast Resonance Skill Crimson Erosion."
           },
           {
             "key": "skill",
-            "name": "Crimson Fragment"
+            "name": "Crimson Fragment",
+            "description": "When Danjin casts Crimson Fragment, each attack consumes 3% of her max HP. When her HP is less than 1%, casting this skill no longer consumes HP.\nCarmine Gleam\nAttack the target, dealing Havoc DMG.\nCrimson Erosion\nAfter Basic Attack 2, Dodge Counter or Intro Skill, use Resonance Skill multiple times to perform consecutive strikes, dealing Havoc DMG.\nWhen Crimson Erosion 2 hits a target, apply Incinerating Will to it.\nIncinerating Will\nDamage dealt to targets marked with Incinerating Will is increased by 20%.\nSanguine Pulse\nUse Resonance Skill multiple times after Basic Attack 3 to perform consecutive attacks, dealing Havoc DMG."
           },
           {
             "key": "forte",
-            "name": "Vindication"
+            "name": "Serene Vigil",
+            "description": "Heavy Attack: Chaoscleave\nAfter accumulating 60 Ruby Blossoms, hold Basic Attack to consume all Ruby Blossoms to cast Chaoscleave, dealing Havoc DMG and healing Danjin.\nIf there are more than 120 Ruby Blossoms, 120 Ruby Blossoms are consumed to increase the DMG Multiplier of Chaoscleave and Scatterbloom.\nHeavy Attack: Scatterbloom\nUse Basic Attack after Heavy Attack Chaoscleave to cast Scatterbloom, dealing Havoc DMG.\nRuby Blossom\nDanjin can hold up to 120 Ruby Blossoms.\nDanjin gains Ruby Blossoms through Resonance Skill Crimson Fragment."
           },
           {
             "key": "liberation",
-            "name": "Crimson Bloom"
+            "name": "Crimson Bloom",
+            "description": "Perform rapid consecutive attacks, and 1 Scarlet Burst attack(s), dealing Havoc DMG."
           },
           {
             "key": "intro",
-            "name": "Serene Vigil"
+            "name": "Vindication",
+            "description": "Deal Havoc DMG."
           }
         ]
       },
@@ -62857,8 +63077,8 @@
         "nickname": "Scarlet Shade",
         "skillNames": {
           "liberation": "Crimson Bloom",
-          "forte": "Vindication",
-          "intro": "Serene Vigil",
+          "intro": "Vindication",
+          "forte": "Serene Vigil",
           "basic": "Execution",
           "skill": "Crimson Fragment"
         },
@@ -63921,7 +64141,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -64092,7 +64312,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -64267,23 +64487,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Burgeoning"
+            "name": "Burgeoning",
+            "description": "Basic Attack\nDeal Havoc DMG.\nAfter performing Basic Attack 3 or Heavy Attack Pruning, hold Basic Attack to continuously strike the target, dealing Havoc DMG.\nHeavy Attack - Pruning\nConsume STA to deal Havoc DMG.\nMid-air Attack\nConsume STA to deal Havoc DMG.\nDodge Counter\nDeal Havoc DMG."
           },
           {
             "key": "skill",
-            "name": "Valse of Bloom and Blight"
+            "name": "Valse of Bloom and Blight",
+            "description": "Crimson Blossom\nDeal Havoc DMG and enter Blossom Mode.\nBlossom Mode\n- Unable to move while suspended on vines.\n- Basic Attack and Heavy Attack Pruning are replaced with Basic Attack Vining Waltz, dealing Havoc DMG.\n- When performing Vining Waltz 3, hold Basic Attack to perform Blazing Waltz, dealing Havoc DMG.\n- Dodge Counter becomes Dodge Counter Atonement, dealing Havoc DMG.\n- Resonance Skill becomes Resonance Skill Floral Ravage, dealing Havoc DMG.\n- Blossom Mode ends after casting Floral Ravage.\n- Blossom Mode ends after using the Levitator.\n- Jump is replaced with Basic Attack Vining Ronde. Use Jump to attack the target at the cost of STA, dealing Havoc DMG. This ends the Blossom Mode.\n- Using Basic Attack Vining Waltz and Basic Attack Blazing Waltz in mid-air consumes STA.\n- Casting Resonance Skill Floral Ravage doesn't restore STA.\n- Consume STA continuously to stay suspended on the vines."
           },
           {
             "key": "forte",
-            "name": "Everblooming"
+            "name": "Vegetative Universe",
+            "description": "Normal Attacks and Resonance Skill consume Crimson Pistils to gain additional Concerto Energy and Crimson Buds.\nConsume Concerto Energy when Concerto Energy is full to activate Forte Circuit's Ephemeral, recovering Crimson Pistils while boosting Camellya's attacks.\nForte Circuit: Ephemeral\nWhen Concerto Energy is full, Resonance Skill becomes Ephemeral as long as Ephemeral is not on cooldown.\nConsume Concerto Energy to deal Havoc DMG and enter Budding Mode.\nBudding Mode\n- Sweet Dream: increase the DMG Multiplier of Normal Attacks and Resonance Skills, while reducing the Energy Regen Multiplier.\n- Casting Ephemeral consumes all Crimson Buds. Each Bud additionally increases the DMG Multiplier from Sweet Dream by 5%, up to 50%.\n- While in Budding Mode, Camellya cannot gain Crimson Buds.\n- Budding Mode ends when Camellya is switched off the field.\n- Budding Mode ends when all Crimson Pistils are consumed.\nCrimson Pistil\nCamellya can hold up to 100 Crimson Pistils.\nCamellya gains Crimson Pistil through Intro Skill and Forte Circuit's Ephemeral."
           },
           {
             "key": "liberation",
-            "name": "Fervor Efflorescent"
+            "name": "Fervor Efflorescent",
+            "description": "Deal Havoc DMG."
           },
           {
             "key": "intro",
-            "name": "Vegetative Universe"
+            "name": "Everblooming",
+            "description": "Deal Havoc DMG."
           }
         ]
       },
@@ -64293,8 +64518,8 @@
           "basic": "Burgeoning",
           "skill": "Valse of Bloom and Blight",
           "liberation": "Fervor Efflorescent",
-          "forte": "Everblooming",
-          "intro": "Vegetative Universe"
+          "intro": "Everblooming",
+          "forte": "Vegetative Universe"
         },
         "forteNodes": [
           {
@@ -65355,7 +65580,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -65526,7 +65751,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -65701,23 +65926,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Tuneslayer"
+            "name": "Tuneslayer",
+            "description": "Basic Attack\nDeal Havoc DMG.\nHeavy Attack\nConsume STA to deal Havoc DMG.\nUse Basic Attack after casting a Heavy Attack to cast Basic Attack 4.\nMid-air Attack\nConsume STA to deal Havoc DMG.\nDodge Counter\nDeal Havoc DMG."
           },
           {
             "key": "skill",
-            "name": "Wingblade"
+            "name": "Wingblade",
+            "description": "Transform sound into feathers, dealing Havoc DMG."
           },
           {
             "key": "forte",
-            "name": "Instant of Annihilation"
+            "name": "Umbra Eclipse",
+            "description": "Devastation\nWhen Umbra is full, hold Basic Attack to cast Devastation, dealing Havoc DMG.\nDark Surge\nAfter casting Devastation, Rover enters the Dark Surge state. In this state:\n- Basic Attack becomes Enhanced Basic Attack.\n- Heavy Attack becomes Enhanced Heavy Attack.\n- Use Basic Attack after Enhanced Heavy Attack to perform Heavy Attack Thwackblade, dealing Havoc DMG.\n- Use Basic Attack after Heavy Attack Thwackblade to perform Enhanced Basic Attack 3, dealing Havoc DMG.\n- Resonance Skill Wingblade becomes Resonance Skill Lifetaker, dealing Havoc DMG.\nUmbra\nRover can hold up to 100 points of Umbra.\nRover gains Umbra through Normal Attack, Resonance Skill, and Intro Skill."
           },
           {
             "key": "liberation",
-            "name": "Deadening Abyss"
+            "name": "Deadening Abyss",
+            "description": "Gather resonating sounds to attack targets ahead, dealing Havoc DMG."
           },
           {
             "key": "intro",
-            "name": "Umbra Eclipse"
+            "name": "Instant of Annihilation",
+            "description": "Deal Havoc DMG."
           }
         ]
       },
@@ -65727,8 +65957,8 @@
           "basic": "Tuneslayer",
           "skill": "Wingblade",
           "liberation": "Deadening Abyss",
-          "forte": "Instant of Annihilation",
-          "intro": "Umbra Eclipse"
+          "intro": "Instant of Annihilation",
+          "forte": "Umbra Eclipse"
         },
         "forteNodes": [
           {
@@ -66789,7 +67019,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -66960,7 +67190,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -67135,23 +67365,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Tuneslayer"
+            "name": "Tuneslayer",
+            "description": "Basic Attack\nDeal Havoc DMG.\nHeavy Attack\nConsume STA to deal Havoc DMG.\nUse Basic Attack after casting a Heavy Attack to cast Basic Attack 4.\nMid-air Attack\nConsume STA to deal Havoc DMG.\nDodge Counter\nDeal Havoc DMG."
           },
           {
             "key": "skill",
-            "name": "Wingblade"
+            "name": "Wingblade",
+            "description": "Transform sound into feathers, dealing Havoc DMG."
           },
           {
             "key": "forte",
-            "name": "Instant of Annihilation"
+            "name": "Umbra Eclipse",
+            "description": "Devastation\nWhen Umbra is full, hold Basic Attack to cast Devastation, dealing Havoc DMG.\nDark Surge\nAfter casting Devastation, Rover enters the Dark Surge state. In this state:\n- Basic Attack becomes Enhanced Basic Attack.\n- Heavy Attack becomes Enhanced Heavy Attack.\n- Use Basic Attack after Enhanced Heavy Attack to perform Heavy Attack Thwackblade, dealing Havoc DMG.\n- Use Basic Attack after Heavy Attack Thwackblade to perform Enhanced Basic Attack 3, dealing Havoc DMG.\n- Resonance Skill Wingblade becomes Resonance Skill Lifetaker, dealing Havoc DMG.\nUmbra\nRover can hold up to 100 points of Umbra.\nRover gains Umbra through Normal Attack, Resonance Skill, and Intro Skill."
           },
           {
             "key": "liberation",
-            "name": "Deadening Abyss"
+            "name": "Deadening Abyss",
+            "description": "Gather resonating sounds to attack targets ahead, dealing Havoc DMG."
           },
           {
             "key": "intro",
-            "name": "Umbra Eclipse"
+            "name": "Instant of Annihilation",
+            "description": "Deal Havoc DMG."
           }
         ]
       },
@@ -67161,8 +67396,8 @@
           "basic": "Tuneslayer",
           "skill": "Wingblade",
           "liberation": "Deadening Abyss",
-          "forte": "Instant of Annihilation",
-          "intro": "Umbra Eclipse"
+          "intro": "Instant of Annihilation",
+          "forte": "Umbra Eclipse"
         },
         "forteNodes": [
           {
@@ -68223,7 +68458,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -68394,7 +68629,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -68569,23 +68804,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Pero, Easy"
+            "name": "Pero, Easy",
+            "description": "Basic Attack\nDeal Havoc DMG.\nHeavy Attack\nConsume STA to deal Havoc DMG. Hitting a target with at least 100 Imagination sends Roccia into mid-air and activates Beyond Imagination. The longer you hold Basic Attack, the more Imagination Roccia gains. Heavy Attack will be automatically cast when you release the Basic Attack button while charging or when Imagination reaches the max limit.\nMid-air Attack\nConsume STA to deal Havoc DMG.\nDodge Counter\nDeal Havoc DMG."
           },
           {
             "key": "skill",
-            "name": "Acrobatic Trick"
+            "name": "Acrobatic Trick",
+            "description": "Pull in nearby targets, dealing Havoc DMG, and send Roccia into mid-air, activating Beyond Imagination."
           },
           {
             "key": "forte",
-            "name": "Pero, Help"
+            "name": "A Prop Master Prepares",
+            "description": "Beyond Imagination\n- When Roccia is in Beyond Imagination with at least 100 Imagination, press the Basic Attack button to consume 100 Imagination to cast Basic Attack Real Fantasy.\n- Roccia exits this state when she is not airborne or when switched off the field.\nBasic Attack - Real Fantasy\n- Perform up to 3 consecutive attacks, dealing Havoc DMG. When Roccia lands after Stage 1 and Stage 2 attacks, she will launch into mid-air and activate Beyond Imagination.\nImagination\nRoccia can hold up to 300 Imagination.\n- Obtain Imagination through Normal Attacks, Resonance Skill Acrobatic Trick, and Intro Skill Pero, Help."
           },
           {
             "key": "liberation",
-            "name": "Commedia Improvviso!"
+            "name": "Commedia Improvviso!",
+            "description": "Deal Havoc DMG. For every 0.1% of Roccia's Crit. Rate over 50%, this skill increases ATK of all Resonators in the team by 1 point for 30s, up to 200 points."
           },
           {
             "key": "intro",
-            "name": "A Prop Master Prepares"
+            "name": "Pero, Help",
+            "description": "Attack the target, dealing Havoc DMG. Use Basic Attack right after casting this skill to cast Basic Attack Stage 4."
           }
         ]
       },
@@ -68595,8 +68835,8 @@
           "basic": "Pero, Easy",
           "skill": "Acrobatic Trick",
           "liberation": "Commedia Improvviso!",
-          "forte": "Pero, Help",
-          "intro": "A Prop Master Prepares"
+          "intro": "Pero, Help",
+          "forte": "A Prop Master Prepares"
         },
         "forteNodes": [
           {
@@ -69657,7 +69897,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -69828,7 +70068,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -70003,23 +70243,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Illusion Collapse"
+            "name": "Illusion Collapse",
+            "description": "Basic Attack\nDeal Havoc DMG.\nHeavy Attack\nConsume STA to deal Havoc DMG.\nHeavy Attack - Delusive Dive\nWith Trance, Heavy Attack becomes Delusive Dive. Deal Havoc DMG and enter Mirage.\nMid-air Attack\nConsume STA to deal Havoc DMG.\nDodge Counter\nDeal Havoc DMG."
           },
           {
             "key": "skill",
-            "name": "Dance with Shadows"
+            "name": "Dance with Shadows",
+            "description": "Graceful Step\nDeal Havoc DMG.\nFlickering Reverie\nWhen in Mirage, Resonance Skill becomes Flickering Reverie. Casting this skill is also considered as casting Echo Skill.\nDeal Havoc DMG and send the target into Hazy Dream.\nHazy Dream\nReduce the target's movement speed. When the target takes damage, Jolt is triggered once, dealing Havoc DMG."
           },
           {
             "key": "forte",
-            "name": "Cruise"
+            "name": "Between Illusion and Reality",
+            "description": "Mirage\n- Basic Attack becomes Basic Attack Phantom Sting. Perform up to 3 consecutive attacks, dealing Havoc DMG.\n- Hitting the target with Basic Attack Phantom Sting consumes 1 point of Trance to obtain 1 point of Shiver and heal all nearby Resonators in the team.\n- Mid-air Attack becomes Abysmal Vortex. Press Jump to deal Havoc DMG at the cost of STA.\n- Dodge Counter becomes Dodge Counter Shadowy Sweep, dealing Havoc DMG.\n- When Mid-air Attack Abysmal Vortex or Dodge Counter Shadowy Sweep hits a target, consume 1 point of Trance to obtain 1 point of Shiver and heal all nearby Resonators in the team.\n- Mirage ends when Trance is depleted.\nForte Circuit - Perception Drain\nHaving 3 points of Shiver when in Mirage replaces Resonance Skill with Perception Drain.\nDeal Havoc DMG, considered Basic Attack DMG. Send the target into Hazy Dream and heal all Resonators in the team.\nCasting this skill is also considered as casting Echo Skill.\nAbyssal Rebirth\nAfter casting Intro Skill, Cantarella recovers 6 points of Concerto Energy every time Resonators in the team cast Echo Skill, up to 6 times. Echoes with the same name can only trigger this effect once.\nTrance\nCantarella can hold up to 5 points of Trance.\nCasting Intro Skill recovers 1 point of Trance.\nHitting the target with Basic Attack Stage 3 recovers 1 point of Trance.\nCasting Resonance Skill Graceful Step recovers 1 point of Trance.\nCasting Resonance Liberation Flowing Suffocation recovers 3 points of Trance.\nWhen in the water, recover 1 point of Trance every 5s.\nShiver\n- Cantarella can hold up to 3 points of Shiver.\n- Hitting the target with Basic Attack Phantom Sting recovers 1 point of Shiver.\n- When Mid-air Attack Abysmal Vortex or Dodge Counter Shadowy Sweep hits a target, restore 1 point of Shiver."
           },
           {
             "key": "liberation",
-            "name": "Beneath the Sea"
+            "name": "Beneath the Sea",
+            "description": "Flowing Suffocation\nDeal Havoc DMG and grant Diffusion to all Resonators in the team.\nCasting this skill is also considered as casting Echo Skill.\nDiffusion\nWhen the active Resonator deals damage, summon Dreamweavers to perform Coordinated Attack, dealing Havoc DMG, considered Basic Attack DMG.\n- Each time dealing damage summons 3 Dreamweavers, up to 21 Dreamweavers in total. Dreamweavers can appear up to once per second."
           },
           {
             "key": "intro",
-            "name": "Between Illusion and Reality"
+            "name": "Cruise",
+            "description": "Ripple\nDeal Havoc DMG.\nTidal Surge\nWhen in Mirage, Intro Skill becomes Tidal Surge, dealing Havoc DMG."
           }
         ]
       },
@@ -70029,8 +70274,8 @@
           "basic": "Illusion Collapse",
           "skill": "Dance with Shadows",
           "liberation": "Beneath the Sea",
-          "forte": "Cruise",
-          "intro": "Between Illusion and Reality"
+          "intro": "Cruise",
+          "forte": "Between Illusion and Reality"
         },
         "forteNodes": [
           {
@@ -71091,7 +71336,7 @@
               ]
             }
           ],
-          "forte": [
+          "intro": [
             {
               "atLevel": 2,
               "materials": [
@@ -71262,7 +71507,7 @@
               ]
             }
           ],
-          "intro": [
+          "forte": [
             {
               "atLevel": 2,
               "materials": [
@@ -71437,23 +71682,28 @@
         "info": [
           {
             "key": "basic",
-            "name": "Movement of Life and Death"
+            "name": "Movement of Life and Death",
+            "description": "Basic Attack\nDeal Havoc DMG.\nHeavy Attack\nDeal Havoc DMG.\nEnhanced Heavy Attack\nWhen Forte Gauge is full, Enhanced Heavy Attack becomes available, dealing massive Havoc DMG (considered Resonance Skill DMG).\nAftersound increases the DMG Multiplier of this instance of damage.\nCasting this skill is considered as casting Echo Skill.\nThis skill cannot be cast repeatedly within an interval.\nMid-air Attack\nDeal Havoc DMG.\nDodge Counter\nDeal Havoc DMG."
           },
           {
             "key": "skill",
-            "name": "Whispers in a Fleeting Dream"
+            "name": "Whispers in a Fleeting Dream",
+            "description": "Deal Havoc DMG."
           },
           {
             "key": "forte",
-            "name": "Suite of Quietus"
+            "name": "Rhapsody of a New World",
+            "description": "Forte Gauge\nBasic Attack Stage 3 and Resonance Skill can be chained into Enhanced Basic Attack or Enhanced Resonance Skill, dealing Havoc DMG, considered Resonance Skill DMG.\nCasting Basic Attack Stage 3 or Enhanced Basic Attack grants Forte Gauge - Red.\nCasting Resonance Skill and Enhanced Resonance Skill grants Forte Gauge - Purple.\nIn Enhanced State, Enhanced Attack - Hecate gains different buffs based on the color of the current Forte Gauge.\n- Forte Gauge - Red: Enhanced Attack - Hecate Stagnates the targets.\n- Forte Gauge - Purple: Enhanced Attack - Hecate pulls the targets in.\n- Forte Gauge - Combined: Enhanced Attack - Hecate Stagnates and pulls the targets in."
           },
           {
             "key": "liberation",
-            "name": "Waltz of Forsaken Depths"
+            "name": "Waltz of Forsaken Depths",
+            "description": "Resonance Liberation\nCasting Enhanced Heavy Attack unlocks Resonance Liberation.\nCasting Resonance Liberation enters Enhanced State.\nEnhanced State\n- When Phrolova is the active Resonator, she can command Hecate to cast Basic Attack - Hecate. Every 2 times Hecate casts Basic Attack - Hecate, the next Basic Attack - Hecate is replaced with Enhanced Attack - Hecate.\n- When Phrolova is not the active Resonator, Hecate automatically casts Basic Attack - Hecate. When Resonators in the team cast Echo Skills, Hecate casts Enhanced Attack - Hecate.\n- Switching back to Phrolova ends the Enhanced State.\nHecate\n- Basic Attack - Hecate: Deal Havoc DMG (considered Echo Skill DMG).\n- Enhanced Attack - Hecate: Deal Havoc DMG (considered Echo Skill DMG). When Prolova is not the active Resonator, casting this skill grants Aftersound."
           },
           {
             "key": "intro",
-            "name": "Rhapsody of a New World"
+            "name": "Suite of Quietus",
+            "description": "Intro Skill\nDeal Havoc DMG. Can be followed by Basic Attack Stage 3.\nEnhanced Intro Skill\nIn the Enhanced State, the next Intro Skill is replaced with Enhanced Intro Skill, deailng Havoc DMG (considered Resonance Skill DMG).\nEnhanced Intro Skill can be followed by Basic Attack Stage 3."
           }
         ]
       },
@@ -71463,8 +71713,8 @@
           "basic": "Movement of Life and Death",
           "skill": "Whispers in a Fleeting Dream",
           "liberation": "Waltz of Forsaken Depths",
-          "forte": "Suite of Quietus",
-          "intro": "Rhapsody of a New World"
+          "intro": "Suite of Quietus",
+          "forte": "Rhapsody of a New World"
         },
         "forteNodes": [
           {
