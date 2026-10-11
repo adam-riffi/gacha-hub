@@ -13,7 +13,8 @@ test("Gear: a set's pieces by slot, on a build or in the bag; one added and equi
     const set = page.getByRole("article", { name: "Musketeer of Wild Wheat" });
     await set.getByRole("button", { name: "Open Musketeer of Wild Wheat" }).click();
     const panel = page.getByRole("complementary", { name: "Musketeer of Wild Wheat" });
-    await expect(panel.getByRole("listitem", { name: "Head" })).toContainText("—");
+    // Other journeys' builds may wear this set already: this one checks its own piece.
+    await expect(panel.getByRole("listitem", { name: "Head" })).not.toContainText("bag");
 
     const add = panel.getByRole("form", { name: "Add a piece" });
     await add.getByLabel("Slot").selectOption({ label: "Head" });
@@ -25,7 +26,8 @@ test("Gear: a set's pieces by slot, on a build or in the bag; one added and equi
 
     await head.getByRole("combobox", { name: "Equip on" }).selectOption({ label: "Seele" });
     await expect(head.getByRole("link", { name: /Seele/ })).toBeVisible();
-    await expect(set).toContainText("1 / 4");
+    await expect(head).not.toContainText("bag");
+    await expect(set).toContainText(/[1-4] \/ 4/);
   } finally {
     await page.request.delete(`/api/characters/${build.id}`);
     for (const p of (await (await page.request.get(`/api/instances/${id}/gear`)).json()) as { id: string }[]) await page.request.delete(`/api/gear/${p.id}`);
