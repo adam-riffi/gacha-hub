@@ -30,10 +30,14 @@ type SkillLevel = { SkillLevelGroupId: number; SkillId: number; Consume: KV[] | 
 type WeaponConf = { ItemId: number; WeaponName: string; QualityId: number; WeaponType: number; BreachId: number; Icon?: string; IconMiddle?: string };
 /** An Unreal texture path's file name ("/Game/…/T_X_UI.T_X_UI" → "T_X_UI"): the art key the manifest's sources take (ADR 0006). */
 const artKey = (path?: string) => path?.split("/").at(-1)?.split(".")[0] || undefined;
+/** An image under Common/Image as "Folder/File" ("/Game/…/Common/Image/IconMout/T_X.T_X" → "IconMout/T_X"): materials and Sonata sets span folders. */
+const imageKey = (path?: string) => path?.match(/\/Common\/Image\/([\w-]+\/[\w-]+)\./)?.[1];
 type WeaponBreach = { BreachId: number; Level: number; LevelLimit: number; Consume: KV[] | null; GoldConsume: number };
 type PhantomFetter = { Id: number; Name: string; EffectDescription: string; EffectDescriptionParam: string[] | null; FetterIcon?: string };
 type ItemInfo = { Id: number; Name: string; QualityId: number; ItemType: number; MainTypeId: number; Icon?: string };
 type ItemMainType = { Id: number; Name?: string; TypeName?: string };
+/** A Sonata set's own icon (its PhantomFetter rows all carry the same placeholder). */
+type FetterGroup = { Id: number; FetterGroupName: string; FetterElementPath?: string };
 
 console.log("[catalog:wuwa] downloading tables (cached after first run)…");
 const mt = await fetchJson<Record<string, string>>(`${BASE}/TextMap/en/MultiText.json`, { cacheKey: "wuwa" });
@@ -68,6 +72,7 @@ const [roles, breaches, tree, skills, skillLevels, weaponConfs, weaponBreaches, 
     table<ItemInfo>("ItemInfo"),
     table<ItemMainType>("ItemMainType").catch(() => [] as ItemMainType[]),
   ]);
+const groupIcon = new Map((await table<FetterGroup>("PhantomFetterGroup")).map((g) => [g.FetterGroupName, imageKey(g.FetterElementPath)]));
 
 const ELEMENT: Record<number, string> = { 0: "Physical", 1: "Glacio", 2: "Fusion", 3: "Electro", 4: "Aero", 5: "Spectro", 6: "Havoc" };
 const WEAPON: Record<number, string> = { 1: "Broadblade", 2: "Sword", 3: "Pistols", 4: "Gauntlets", 5: "Rectifier" };
@@ -189,7 +194,7 @@ const gear: CatalogGearSet[] = [...groupBy(fetters, (f) => f.Name).entries()]
       name: text(nameKey),
       slots: ["slot1", "slot2", "slot3", "slot4", "slot5"],
       bonuses,
-      icon: rows[0]!.FetterIcon,
+      icon: groupIcon.get(nameKey) ?? imageKey(rows[0]!.FetterIcon),
       extra: { fetterIds: rows.map((r) => r.Id) },
     };
   });
@@ -211,7 +216,7 @@ const materials: CatalogMaterial[] = items
     name: text(i.Name),
     category: mainTypeName.get(i.MainTypeId) || "Material",
     rarity: i.QualityId >= 1 && i.QualityId <= 6 ? i.QualityId : undefined,
-    icon: i.Icon,
+    icon: imageKey(i.Icon) ?? i.Icon,
     extra: { itemType: i.ItemType, mainTypeId: i.MainTypeId },
   }));
 

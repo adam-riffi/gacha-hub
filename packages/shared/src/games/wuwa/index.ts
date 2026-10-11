@@ -120,6 +120,9 @@ export const wuwa: GameDefinition = {
       portrait: "https://files.wuthery.com/p/GameData/UIResources/Common/Image/IconRoleHead256/{key}.png",
       splash: "https://files.wuthery.com/p/GameData/UIResources/Common/Image/IconRolePile/{key}.png",
       weapon: "https://files.wuthery.com/p/GameData/UIResources/Common/Image/IconWeapon160/{key}.png",
+      // Materials and Sonata sets live in several folders: their keys carry it ("IconMout/T_IconMout_L_014_UI").
+      material: "https://files.wuthery.com/p/GameData/UIResources/Common/Image/{key}.png",
+      gear: "https://files.wuthery.com/p/GameData/UIResources/Common/Image/{key}.png",
     },
     accountLevel: { label: "UL", name: "Union Level" },
     worldLevel: { label: "SOL3", name: "SOL3 Phase", max: 8 },
