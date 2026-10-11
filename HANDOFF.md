@@ -1,8 +1,8 @@
 # Handoff — 2026-10-11 · claude
 
 ## State
-- `main` at #236: feat(pulls): the featured guarantee. CI green.
-- Open PRs: this one (#237), the handoff; it merges on green CI.
+- `main` at #238: feat(sheet): talent descriptions, Genshin first. CI green.
+- Open PRs: this one (#239), Star Rail's skill descriptions; it merges on green CI.
 - Production serves #186 (deployed 2026-10-10 18:52 UTC). Merges do not deploy (#189): `main` goes live only when Georges asks (`docs/DEPLOY.md`, Redeploys), then run the smoke check. Since #186, `main` adds six migrations, and the next deploy runs them: `kpi_defaults`, `progress`, `hidden_banners`, `default_build`, `weapon_copies` and `recurring_counts` (which also gives existing profiles' counted dailies their targets).
 - Every milestone in DESIGN.md §9 is built, V through F13, and three feedback rounds (2026-10-10 and twice on 2026-10-11) are done. What is left needs Georges's secrets, real data or a decision (below), a source for a few of the designs' details (Next), or is in DESIGN.md §4 "Later".
 
@@ -25,6 +25,7 @@
   - #234, each game's dailies and weeklies from its design (Coffee, Video store, Check-in, Nakupenda Pool…), added with + on profiles made before them;
   - #235, Star Rail's Anomaly Arbitration and ZZZ's Lost Void;
   - #236, Endfield's featured guarantee (the running banner's pulls toward its 120-pull spark) on the Overview's pity.
+- And the round-2 "for later" item, talent and skill descriptions: #238 (Genshin, from genshin-db) and #239 (Star Rail, Yatta's short text), opened from a skill's name on the sheet.
 
 ## Decisions taken (2026-10-11; Georges: "take every decision")
 - Earlier ones stand, except one: the Weapons tab is now on every game (Georges asked), by name where the catalog has no weapons.
@@ -38,7 +39,7 @@
 - Enemies come from Hakushin: ZZZ's Shiyu Defense and Deadly Assault, Genshin's Stygian Onslaught (filed there as "leyline"; shown at its top difficulty, Dire). Star Rail's Apocalyptic Shadow has no dates there. A cycle the data has not reached shows the last one with its dates.
 
 ## Verified
-- `npm run check` before each PR and CI green on each: 587 tests and 68 journeys; initial JavaScript 146.3 KB of 200 KB.
+- `npm run check` before each PR and CI green on each: 589 tests and 69 journeys; initial JavaScript 146.4 KB of 200 KB.
 - Checked in the browser at 1440 with game art blocked, and attached to each PR: the plus sign, the Planner, Farm today, goal icons, Weapons cards and panel, each game's Overview, the ZZZ enemies.
 
 ## Next
@@ -46,7 +47,7 @@
 2. Once the bucket exists, check F12's acceptance, then swap the glyphs for real element, weapon-type and currency icons (DESIGN.md §4 "Later").
 3. Each game version: refresh the catalogs (`npm run catalog:<game>`) and the endgame enemies (`npm run catalog:endgame`), then run mirror-art. Re-check the values still marked `~` in `docs/games/*.md`.
 4. Sources for the designs' details still missing: WuWa's Nightmare Nests, echo bosses and Gateways; the endgame modes WuWa's Doubled Pawns, NTE's Realm of Greed and Pink Paws Heist, Endfield's Umbral Monument, Etchspace Salvage and Contingency Contract; NTE's De-noise Solutions and Endfield's Emergency boosters; Genshin's Epitomized Path. A dated source for Apocalyptic Shadow enemies; Hakushin also has NTE characters and weapons now (static.nanoka.cc), a possible NTE catalog.
-5. When Georges asks: talent and skill descriptions (DESIGN.md §4 "Later").
+5. WuWa's and ZZZ's skill descriptions: their datasets' texts carry level numbers to fill in (DESIGN.md §4 "Later").
 
 ## Needs from Georges
 - **Secrets:** `LINK_SECRET_KEY`; the R2 bucket and its four `R2_*` Actions secrets, then mirror-art and `VITE_ASSET_BASE` (DEPLOY.md §7); `CRON_SECRET`; `DISCORD_BOT_TOKEN` and the bot.
