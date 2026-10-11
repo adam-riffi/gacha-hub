@@ -9,19 +9,18 @@ const load = async (): Promise<{ scaffold: (key: string, name: string, today: st
 const root = new URL("../../../../", import.meta.url);
 
 describe("npm run game:new", () => {
-  it("scaffolds a module, a reference sheet and a web sheet, and registers the game in both registries", async () => {
+  // Every game shares the character page since the builds rework (2026-10-11): no web sheet to scaffold.
+  it("scaffolds a module and a reference sheet, and registers the game", async () => {
     const { scaffold } = await load();
     const out = scaffold("testgame", "Test Game", "2026-10-10");
     expect(Object.keys(out.files).sort()).toEqual([
-      "apps/web/src/games/testgame/Sheet.tsx",
       "docs/games/testgame.md",
       "packages/shared/src/games/testgame/index.ts",
     ]);
     const registry = out.edits["packages/shared/src/games/index.ts"]!(readFileSync(new URL("packages/shared/src/games/index.ts", root), "utf8"));
     expect(registry).toContain('import { testgame } from "./testgame/index.js";');
     expect(registry).toContain("[testgame.key]: testgame,");
-    const sheets = out.edits["apps/web/src/render/index.tsx"]!(readFileSync(new URL("apps/web/src/render/index.tsx", root), "utf8"));
-    expect(sheets).toContain('case "testgame":');
+    expect(Object.keys(out.edits)).toEqual(["packages/shared/src/games/index.ts"]);
   });
 
   it("scaffolds a game that passes the conformance suite as it stands", async () => {

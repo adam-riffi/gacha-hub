@@ -1,12 +1,26 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { GENSHIN_ARTIFACT_SLOTS, gearPieceCv, type CatalogGearSet, type CharacterDto, type GearPieceDto, type StatRow } from "@gacha/shared";
+import { GENSHIN_ARTIFACT_SLOTS, GENSHIN_ELEMENTS, gearPieceCv, type CatalogGearSet, type CharacterDto, type GearPieceDto, type StatRow } from "@gacha/shared";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
 import { assetUrl, communityAssetUrl } from "../lib/assets";
 import { GameIcon } from "./GameIcon";
-import { MAIN_STATS, SUBSTATS } from "../games/genshin/Sheet";
+
+const SUBSTATS = [
+  "HP", "HP%", "ATK", "ATK%", "DEF", "DEF%",
+  "Elemental Mastery", "Energy Recharge", "CRIT Rate", "CRIT DMG",
+];
+
+// Valid main stats per artifact slot (flower/plume are fixed).
+const ELEMENTAL_DMG = GENSHIN_ELEMENTS.map((e) => `${e} DMG`);
+const MAIN_STATS: Record<string, string[]> = {
+  flower: ["HP"],
+  plume: ["ATK"],
+  sands: ["HP%", "ATK%", "DEF%", "Elemental Mastery", "Energy Recharge"],
+  goblet: ["HP%", "ATK%", "DEF%", "Elemental Mastery", "Physical DMG", ...ELEMENTAL_DMG],
+  circlet: ["HP%", "ATK%", "DEF%", "Elemental Mastery", "CRIT Rate", "CRIT DMG", "Healing Bonus"],
+};
 
 type Piece = { setName?: string; slot: string; level?: number; mainStat?: string; substats?: StatRow[] };
 type Row = { key: string; piece: Piece; bagId?: string; build?: { id: string; name: string } };

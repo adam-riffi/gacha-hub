@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r3/11-sheets · #217
+- Done: the audit's last clean-up. The six per-game sheets (`apps/web/src/games/*/Sheet.tsx`), their dispatcher (`apps/web/src/render/`), `GearPieceCard` and `inputs` were unused since builds became tabs on the shared character page (#208): gone, with their CSS (the Genshin sheet's `gs-*` rules, slot cards, stat rows, `.sheet`, `.portrait`, `.field-inline`). The gear inventory keeps Genshin's stat lists itself. `npm run game:new` writes the module and its reference sheet only; AGENTS.md, README, PROJECT-GUIDE and the public games README say so.
+- Tests: written first: the scaffolder test expects no web sheet and only the shared registry edit. `npm run check` passes: 570 tests and 53 journeys; initial JavaScript 145.3 KB of 200 KB.
+- Scope/decisions: about 1,250 lines removed, none added beyond the moved stat lists.
+- Next: the handoff.
+
 ## 2026-10-11 · claude · stack/r3/10-library · #216
 - Done: Georges's games overview notes ("what even is manifest? remove that live data as well"). Each game's row shows what it holds, each cell opening its screen: Owned (characters owned / in the catalog), Pulls (limited, with the Home glyph), the game's energy (current / cap), Goals and Backlog (counted as Tasks counts them). The manifest, catalog and live-data cells, the capabilities legend and the pipeline note are gone; the hint says "Drag to reorder". Cells line up across rows.
 - Tests: written first: the library journey finds each cell with its number and link, and none of the pipeline words. `npm run check` passes: 570 tests and 53 journeys.
@@ -288,14 +294,3 @@ Entry format:
   `npm run check` passes: 516 tests and 39 journeys.
 - Scope/decisions: the SKPORT account token is never asked for (ADR 0009).
 - Next: 6★ labels and Arsenal Tickets on Pulls.
-
-## 2026-10-10 · claude · stack/endfield/02-records · #178
-- Done: Endfield's records reader in shared (ADR 0009):
-  - `readRecordsLink` keeps `token`/`u8_token`, `server_id`/`server` and `lang`, whatever the host.
-  - `recordsUrl` asks `ef-webview.gryphline.com` only: character pools by `pool_type`, weapons in one list, paged by `seq_id`.
-  - `readRecordsPage` maps records to pull records: the id is the pool and sequence; gift records are skipped; the next cursor is returned.
-  - Endfield gets three pities: Chartered (80, 50/50, featured at 120), Arsenal (40, 25%, featured at 80) and Basic headhunting (80).
-  - `topRarity` makes the import count 6★ as Endfield's top pull.
-- Tests: written first: link, request, page and the three pities. The Endfield banners integration test now expects three banners. The pull-rules sanity check allows a 25% featured rate. `npm run check` passes: 511 tests and 39 journeys.
-- Scope/decisions: one Arsenal pity for every weapon banner, though each keeps its own (a ponytail note says so). Beginner and Joint are not tracked.
-- Next: the server import and Settings (#179); 6★ labels and Arsenal Tickets.

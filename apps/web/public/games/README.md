@@ -9,9 +9,7 @@ Expected files per game (optional — the UI falls back gracefully if missing):
 - `icon.png` — square icon/logo
 - `background.jpg` — wide background used behind the game's screens
 
-Current game keys: `genshin`, `hsr`, `zzz`, `endfield`.
+Current game keys: `genshin`, `hsr`, `zzz`, `wuwa`, `endfield`, `nte`.
 
-To add a brand-new game: create `packages/shared/src/games/<key>.ts`, register it
-in `packages/shared/src/games/index.ts`, add a bespoke sheet at
-`apps/web/src/games/<key>/Sheet.tsx` (register it in
-`apps/web/src/render/index.tsx`), then drop assets in `public/games/<key>/`.
+To add a brand-new game: `npm run game:new -- <key> "<Name>"` (AGENTS.md), then
+drop assets in `public/games/<key>/`.
