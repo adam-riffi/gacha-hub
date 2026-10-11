@@ -27,7 +27,8 @@ test("a game's Activities tab: stamina, the daily, weekly and monthly lists, cyc
   const daily = page.getByRole("region", { name: "Daily" });
   await expect(daily).toContainText(/resets in/i);
   await daily.getByRole("checkbox", { name: "Daily Missions" }).check();
-  await expect(daily.getByRole("heading")).toContainText("1 / 2");
+  // ZZZ's four dailies: Daily Missions, Scratch Card, and the design's Coffee and Video store.
+  await expect(daily.getByRole("heading")).toContainText("1 / 4");
 
   // A monthly item follows its shop's reset.
   const monthly = page.getByRole("region", { name: "Monthly" });
