@@ -60,3 +60,38 @@ describe("gear bag ↔ build swap (routes)", () => {
     expect((await c.req<{ error: string }>("POST", `/api/characters/${build.id}/unequip`, { slot: "flower" })).json.error).toBe("empty_slot");
   });
 });
+
+// Georges, round 4: one gear screen for every game, a set's pieces on builds or in the bag.
+describe("a gear bag for every game (routes)", () => {
+  let app: FastifyInstance;
+  let c: Client;
+
+  beforeAll(async () => {
+    app = await makeApp();
+  });
+  afterAll(async () => {
+    await app.close();
+  });
+  beforeEach(async () => {
+    await resetDb();
+    c = await login(app);
+  });
+
+  it("keeps Star Rail's relics by its own slots, and equips them on a build", async () => {
+    const gid = await installGame(c, "hsr");
+    expect((await c.req<{ error: string }>("POST", `/api/instances/${gid}/gear`, { slot: "flower" })).json.error).toBe("unknown_slot");
+    const piece = await c.req<GearPieceDto>("POST", `/api/instances/${gid}/gear`, { setName: "Musketeer of Wild Wheat", slot: "head", level: 15, mainStat: "HP" });
+    expect(piece.status).toBe(201);
+    const build = (await c.req<{ id: string }>("POST", `/api/instances/${gid}/characters`, { catalogId: "1102" })).json;
+    expect((await c.req("POST", `/api/gear/${piece.json.id}/equip`, { characterId: build.id })).status).toBe(200);
+    const doc = (await c.req<CharacterDto>("GET", `/api/characters/${build.id}`)).json.doc as { relics?: Record<string, { setName?: string }> };
+    expect(doc.relics?.head?.setName).toBe("Musketeer of Wild Wheat");
+  });
+
+  it("keeps WuWa's echoes and ZZZ's discs too", async () => {
+    for (const [game, slot] of [["wuwa", "slot1"], ["zzz", "slot1"]] as const) {
+      const gid = await installGame(c, game);
+      expect((await c.req("POST", `/api/instances/${gid}/gear`, { setName: "Any", slot })).status).toBe(201);
+    }
+  });
+});
