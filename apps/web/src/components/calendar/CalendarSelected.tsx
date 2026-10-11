@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { getGame, rewardOptions, type RewardDto, type RosterChange } from "@gacha/shared";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getGame, rewardOptions, type RewardDto, type RosterChange, type WishlistItemDto } from "@gacha/shared";
 import { api } from "../../lib/api";
 import { assetUrl, communityAssetUrl, splashKey } from "../../lib/assets";
 import { GameIcon } from "../GameIcon";
@@ -35,12 +35,21 @@ export function CalendarSelected({ item, reward, now, onClose }: { item: CalItem
     onSuccess: refresh,
   });
   const remind = useMutation({ mutationFn: (notify: boolean) => api.put(`/api/tasks/${reward!.goal!.id}`, { notify }), onSuccess: refresh });
+  // An event or a banner goes on the wishlist by its key (Georges, 2026-10-11).
+  const wishKind = item?.kind === "event" ? "event" : "banner";
+  const wishKey = item?.kind === "event" ? item.event?.key : item?.kind === "banner" ? item.banners?.[0]?.key : undefined;
+  const wishlist = useQuery({ queryKey: ["wishlist", item?.instanceId], queryFn: () => api.get<WishlistItemDto[]>(`/api/instances/${item!.instanceId}/wishlist`), enabled: Boolean(wishKey) });
+  const wished = (wishlist.data ?? []).some((w) => w.kind === wishKind && w.catalogId === wishKey);
+  const wish = useMutation({
+    mutationFn: (on: boolean) => api.put(`/api/instances/${item!.instanceId}/wishlist`, { kind: wishKind, catalogId: wishKey, wished: on }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["wishlist", item!.instanceId] }),
+  });
 
   if (!item) {
     return (
       <aside className="card cal-sel" aria-label="Selected">
         <h3>Selected</h3>
-        <p className="mu">Pick a bar to see its dates, progress and rewards.</p>
+        <p className="mu">Pick a bar</p>
       </aside>
     );
   }
@@ -71,6 +80,11 @@ export function CalendarSelected({ item, reward, now, onClose }: { item: CalItem
         )}
       </div>
       <h2 className={item.kind === "banner" ? "sf" : undefined}>{item.name}</h2>
+      {wishKey && (
+        <button className="btn sm cal-wish" aria-pressed={wished} disabled={wish.isPending} onClick={() => wish.mutate(!wished)}>
+          Wishlist
+        </button>
+      )}
       <div className="cal-meta">
         {game?.name ?? item.gameKey} · {KIND[item.kind]}
       </div>

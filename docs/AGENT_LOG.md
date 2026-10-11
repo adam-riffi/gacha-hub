@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r3/08-wishlist · #214
+- Done: Georges's "how do I even wishlist an event?". A selected event or banner on the timeline has a Wishlist toggle in its Selected panel, and "Only what I wishlisted" keeps the wished events and banners as well as the banners of wished units. The wishlist takes `event` and `banner` kinds by their key; the server checks the key exists for the profile's game.
+- Tests: written first: the route keeps an event and a banner on the wishlist and refuses an unknown key; the calendar journey wishes an event and filters to it. `npm run check` passes: 568 tests and 52 journeys.
+- Scope/decisions: events and banners reuse the wishlist table (kind + key), so no migration.
+- Next: endgame clear times and teams per stage.
+
 ## 2026-10-11 · claude · stack/r3/07-goals · #213
 - Done: Georges's goal notes. A click on a goal opens it (the title area is the button; the Expand button is gone). A plan goal shows its depth: its level range with each ascension it crosses, and each talent's range by name. Goals link: "Link to" puts a goal under another of the same profile (a weapon's farm under its character's), which lists it with its progress and Unlink; `PUT /api/tasks/:id { parentId }` refuses a goal under itself, under a goal that is itself linked (no loops), or across profiles. Plan farming lists the materials as the levels change (no Preview step), and its level defaults now follow the catalog once it loads (a quick Generate used to drop the level range).
 - Tests: written first: the route links, refuses a loop and a self-link, and unlinks; the Tasks journeys open goals by clicking them, check Clara's plan steps after generating from her sheet without a Preview button, and link a light cone's goal under hers. `npm run check` passes: 567 tests and 51 journeys.
@@ -297,9 +303,3 @@ Entry format:
 - Tests: docs only.
 - Scope/decisions: the Genshin constellation reference card was dropped by the redesign, so §14.2 no longer lists it.
 - Next: Georges's steps in HANDOFF.md.
-
-## 2026-10-10 · claude · stack/ui/02-real-capabilities · #175
-- Done: the hub and the Library show what each game really has. Endfield's hub drops the Gear and Planner tabs, since its catalog lists characters only (PROJECT-GUIDE §14.2 item 6). The Library's Live data cells show what F11 shipped (HoYoLAB, history links, Enka, WuWa's convene link) instead of plans, and its Capabilities card no longer says "Coming with F11".
-- Tests: written first: Endfield's tabs are Activities, Endgame, Pulls, Characters and Profile; Star Rail's and ZZZ's live-data cells. `npm run check` passes: 502 tests and 38 journeys.
-- Scope/decisions: `CHARACTERS_ONLY` in GameTabs names Endfield. Remove it when Endfield's catalog gets gear and costs.
-- Next: the docs refresh and the handoff.

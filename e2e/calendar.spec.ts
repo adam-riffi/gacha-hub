@@ -124,3 +124,24 @@ test("Banners: a tick for every day and each bar's dates, a month view of what s
   await page.getByRole("complementary", { name: "Selected" }).getByRole("link", { name: "Kafka" }).click();
   await expect(page).toHaveURL(new RegExp(`/games/${id}/units/1005$`));
 });
+
+test("an event is wishlisted from its Selected panel, and Only what I wishlisted keeps it @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  await page.request.post("/api/admin/payload", {
+    data: { kind: "events", gameKey: "hsr", items: [{ key: "e2e-wish-me", name: "E2E event to wish", startsAt: iso(-1), endsAt: iso(4) }, { key: "e2e-not-me", name: "E2E event left out", startsAt: iso(-1), endsAt: iso(4) }] },
+  });
+  await page.request.put(`/api/instances/${id}/wishlist`, { data: { kind: "event", catalogId: "e2e-wish-me", wished: false } });
+
+  await page.goto("/timeline?game=hsr");
+  const timeline = page.getByRole("region", { name: "Timeline" });
+  await timeline.getByRole("button", { name: /E2E event to wish/ }).click();
+  const wish = page.getByRole("complementary", { name: "Selected" }).getByRole("button", { name: "Wishlist" });
+  await wish.click();
+  await expect(wish).toHaveAttribute("aria-pressed", "true");
+  await page.getByRole("checkbox", { name: "Only what I wishlisted" }).check();
+  await expect(timeline.getByRole("button", { name: /E2E event to wish/ })).toBeVisible();
+  await expect(timeline.getByRole("button", { name: /E2E event left out/ })).toHaveCount(0);
+});
