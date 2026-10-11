@@ -100,3 +100,20 @@ test("Character sheet: KPI targets on the tiles, and the teams the character is 
 
   await expect(page.getByRole("region", { name: "Used in" })).toContainText("E2E Kafka DoT");
 });
+
+test("Character sheet: each skill opens to its description @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "genshin" } })).json()) as { id: string };
+  // The smoke journey adds Genshin through the Games page, so this one removes its profile.
+  try {
+    const build = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "10000014" } })).json()) as { id: string };
+    await page.goto(`/characters/${build.id}`);
+    const skills = page.getByRole("region", { name: "Talents" });
+    await skills.getByText("Let the Show Begin♪").click();
+    await expect(skills).toContainText("Melody Loop");
+  } finally {
+    await page.request.delete(`/api/instances/${id}`);
+  }
+});
