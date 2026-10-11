@@ -20,7 +20,7 @@ function PullIcon({ kind }: { kind: Kind }) {
   );
 }
 
-function Count({ n, kind }: { n: number | null; kind: Kind }) {
+export function Count({ n, kind }: { n: number | null; kind: Kind }) {
   return (
     <span className={`pull-n is-${kind}`} title={`${kind} pulls`}>
       {n ?? "—"}

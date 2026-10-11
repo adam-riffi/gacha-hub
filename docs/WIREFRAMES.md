@@ -31,8 +31,8 @@ Keeps the 2026-10-08 dashboard layout.
 
 Picture: [`a2-games-library.png`](design/wireframes/a2-games-library.png) · static page: [`a2-games-library.html`](design/wireframes/a2-games-library.html)
 
-- One row per installed game, draggable to reorder the top strip: icon, name, server and version; capability cells **M** (manifest, manual tracking), **C** (catalog: ownership, builds, planning) and **L** (live data: sync and imports), each with a short status ("HoYoLAB · link", "history link only", "terms forbid tools"); today's dailies and time to reset; Open hub; Sleep (hides it from Home and pauses its reminders).
-- Side: a capabilities legend, and "Add a game" (a new game starts at M; ADR 0004).
+- One row per installed game, draggable to reorder the top strip: icon, name, server and version; what it holds (Georges, 2026-10-11: "catalog should be character owned/not owned … pull count and energy and goal count and backlog"), each opening its screen: **Owned** (characters owned / in the catalog), **Pulls** (limited), the game's energy (current / cap), **Goals** and **Backlog**; today's dailies and time to reset; Open hub; Sleep (hides it from Home and pauses its reminders).
+- Side: "Add a game". The manifest, catalog and live-data cells and the capabilities legend are gone: they described the pipeline, not your games.
 
 ## A3 · Tasks and reminders (TASKS)
 
