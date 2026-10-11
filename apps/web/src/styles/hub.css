@@ -190,3 +190,14 @@ label.act-row { margin: 0; cursor: pointer; color: var(--text); font: 400 15px/1
 .ov-own-cell { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin: 0; }
 .ov-own-value { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); }
 .ov-own-value input { width: 96px; }
+/* A rotating mode's enemies (Georges, 2026-10-11): each stage, each half, its weaknesses as element dots. */
+.eg-enemies { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--surface-3); }
+.eg-enemies ul { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 8px; }
+.eg-enemies li { display: grid; grid-template-columns: 120px minmax(0, 1fr) auto; align-items: center; gap: 10px; }
+.eg-stage { font-size: 12px; }
+.eg-groups { display: flex; flex-wrap: wrap; gap: 10px; min-width: 0; }
+.eg-group { display: inline-flex; flex-wrap: wrap; gap: 3px; }
+.eg-group + .eg-group { padding-left: 10px; border-left: 1px solid var(--surface-3); }
+.eg-group .gicon { width: 30px; height: 30px; font-size: 9px; }
+.eg-weak { display: inline-flex; gap: 4px; }
+.eg-weak > i { width: 10px; height: 10px; border-radius: 50%; }

@@ -1,3 +1,4 @@
+import type { EndgameEnemies } from "../enemies.js";
 import type { z } from "zod";
 import type { TaskCadence } from "../common.js";
 import type { Catalog, CatalogCharacter } from "../catalog/types.js";
@@ -155,4 +156,6 @@ export interface GameDefinition {
    * materials + costs). Absent for games without a catalog.
    */
   loadCatalog?: () => Promise<Catalog>;
+  /** Who each cycle of the rotating endgame modes sends at you, from the importer (lazy, like the catalog). */
+  loadEndgame?: () => Promise<EndgameEnemies>;
 }

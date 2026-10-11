@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r4/11-enemies · #230
+- Done: Georges's "for the endgame there should be information about what enemies are on what level, when relevant, like Stygian or Shiyu Defense, but not Imaginarium Theater or Abyss". A new importer (`npm run catalog:endgame`, Hakushin's dataset) writes Zenless Zone Zero's dated Shiyu Defense cycles (each frontier's level and each half's enemies) and Deadly Assault cycles (three bosses) to `packages/shared/src/games/zzz/endgame.json`, loaded lazily (`loadEndgame`). The Endgame tab's mode cards list each stage with its level, each half's enemies as icons, and their weaknesses as element dots; a cycle the data has not reached shows the last one with its dates.
+- Tests: written first: `enemiesFor` picks the cycle running on the server's day, else the last one that began (not current), else none; the shipped data has both modes' cycles, each stage with enemies; the Endgame journey finds the enemies list on Shiyu Defense and Deadly Assault and on no other mode. `npm run check` passes: 578 tests and 64 journeys.
+- Scope/decisions: Genshin's Stygian Onslaught has no file at Hakushin, and Star Rail's Apocalyptic Shadow has no dates there, so both wait for a dated source (noted in WIREFRAMES G2 and the round's audit). Images are the dataset's URLs (static.nanoka.cc, already in the CSP); no art is committed.
+- Next: the handoff.
+
 ## 2026-10-11 · claude · stack/r4/10-own-card · #229
 - Done: the last cards of Georges's designs: each game's own card on its Overview, declared in its manifest (`ownCard`). NTE's **City**: Tycoon Level, Café income (a daily box), Fons, and City Stamina over its cap, which follows the Tycoon Level (100 / 200 / 350 / 500 / 700 at 1 / 5 / 10 / 16 / 23). Endfield's **AIC and outposts**: AIC output collected, AIC lines running, Depot delivery, Outpost trades, Stock Bills. Currencies are typed in place, dailies are boxes, and a daily a profile lacks is added with +.
 - Tests: written first: the conformance suite refuses a card item that is not a currency or a default task of the game, or that the reference sheet does not name; the Overview journey sets Tycoon Level 23 and finds City Stamina's cap at 700, adds Café income from the card, and finds Endfield's Stock Bills. `npm run check` passes: 575 tests and 63 journeys.
@@ -259,9 +265,3 @@ Entry format:
 - Tests: written first: the reader's stats, and the link storing them on the profile. `npm run check` passes: 532 tests and 40 journeys.
 - Scope/decisions: chests, waypoints and exploration per region would need the chronicle's index endpoint; the card's stats are what HoYoLAB shows on the card. The export leaves the column out: it is synced, not entered.
 - Next: the sheets' unverified values.
-
-## 2026-10-10 · claude · stack/docs/05-screens · #190
-- Done: PROJECT-GUIDE §7 (screen map) and §8 (screen by screen) describe today's app: Home, Games, Tasks and reminders, the calendar, the game hub's tabs (Activities, Endgame, Pulls, Characters, gear, Planner, Profile), the character sheet, Settings, Admin and the bot. The retired Overview, Ownership and Equipment pages are gone from the chapter. Fifteen new screenshots at 1440×900 replace the seventeen from 2026-10-08. They were taken with every image from outside the app blocked, so the cards show placeholders and no game art is committed (ADR 0006).
-- Tests: docs only; every image the guide names exists.
-- Scope/decisions: two stale texts on Profile ("(F11)") are fixed in their own PR.
-- Next: Profile's stale texts, then the sheets' unverified values.

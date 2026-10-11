@@ -61,3 +61,19 @@ test("an endgame cycle keeps each half's team and clear time, on its card and in
   await expect(history.getByRole("img", { name: "Bennett" })).toBeVisible();
   await expect(history).toContainText("1:35");
 });
+
+// What each cycle sends at you, where the mode rotates it (Georges, 2026-10-11): Shiyu Defense's frontiers, Deadly Assault's bosses.
+test("a rotating endgame mode shows its enemies per stage, with what they are weak to @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "zzz" } })).json()) as { id: string };
+  await page.goto(`/games/${id}/endgame`);
+  for (const mode of ["Shiyu Defense", "Deadly Assault"]) {
+    const enemies = page.getByRole("region", { name: mode }).getByRole("list", { name: "Enemies" });
+    await expect(enemies.getByRole("listitem").first()).toBeVisible();
+    await expect(enemies.getByRole("img").first()).toBeVisible();
+  }
+  // Modes that do not rotate enemies show none.
+  await expect(page.getByRole("list", { name: "Enemies" })).toHaveCount(2);
+});

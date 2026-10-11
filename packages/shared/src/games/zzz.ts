@@ -1,3 +1,4 @@
+import { endgameEnemiesSchema } from "../enemies.js";
 import { z } from "zod";
 import { statRowSchema } from "../common.js";
 import type { GameDefinition } from "./types.js";
@@ -131,4 +132,6 @@ export const zzz: GameDefinition = {
   emptyDoc: (): ZzzDoc => ({ discs: {}, skills: {}, wEngine: {}, stats: {} }),
   docVersion: 1,
   loadCatalog: async () => (await import("./zzz/catalog.js")).default as Catalog,
+  // Shiyu Defense's frontiers and Deadly Assault's bosses per cycle (`npm run catalog:endgame`).
+  loadEndgame: async () => endgameEnemiesSchema.parse((await import("./zzz/endgame.js")).default),
 };
