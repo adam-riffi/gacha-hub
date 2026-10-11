@@ -1,5 +1,6 @@
 /* Characters (WIREFRAMES.md G4), in the dashboard's look (VISUAL-DESIGN.md). */
-.ch-filters { display: grid; grid-template-columns: 2fr repeat(6, minmax(0, 1fr)); gap: 12px; margin-bottom: 16px; }
+.ch-filters { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 14px 22px; margin-bottom: 16px; }
+.ch-filters > label:first-child { width: 260px; }
 .ch-filters label { margin: 0; }
 .ch-filters input, .ch-filters select { margin-top: 6px; }
 .ch-counts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 16px; }
@@ -85,3 +86,16 @@
 .tm-add { align-self: center; }
 .sh-used-add { margin-top: 12px; gap: 10px; }
 .sh-used-add select { width: auto; }
+/* Filters as chips (Georges, 2026-10-11). */
+.ch-chipset { display: flex; flex-direction: column; gap: 6px; }
+.ch-chipset > div { display: flex; flex-wrap: wrap; gap: 6px; }
+.ch-chip { --el: var(--text-muted); display: inline-flex; align-items: center; gap: 6px; padding: 6px 9px; border: 1px solid var(--hairline); background: transparent; color: var(--text-muted); font: 400 12px/1 var(--font-mono); cursor: pointer; }
+.ch-chip i { width: 10px; height: 10px; border-radius: 50%; background: var(--el); }
+.ch-chip:hover { color: var(--text); border-color: var(--hairline-strong); }
+.ch-chip[aria-pressed="true"] { border-color: var(--el); color: var(--text); background: color-mix(in srgb, var(--el) 18%, transparent); }
+/* Select mode: the card is the checkbox's label. */
+.ch-picking { cursor: pointer; }
+.ch-picking .ch-pick { position: absolute; top: 44px; left: 10px; }
+/* The default build's weapon on the card. */
+.ch-weapon { display: inline-flex; align-items: center; gap: 6px; }
+.ch-weapon .gicon { width: 28px; height: 28px; font-size: 10px; }
