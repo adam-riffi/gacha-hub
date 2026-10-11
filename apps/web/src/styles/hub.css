@@ -201,3 +201,8 @@ label.act-row { margin: 0; cursor: pointer; color: var(--text); font: 400 15px/1
 .eg-group .gicon { width: 30px; height: 30px; font-size: 9px; }
 .eg-weak { display: inline-flex; gap: 4px; }
 .eg-weak > i { width: 10px; height: 10px; border-radius: 50%; }
+/* A counted daily's steps (the designs' squares): ticked up to the one clicked. */
+.ov-steps { display: inline-flex; gap: 4px; }
+.ov-step { width: 14px; height: 16px; padding: 0; background: transparent; border: 1px solid var(--text-muted); cursor: pointer; }
+.ov-step[aria-pressed="true"] { background: var(--paper); border-color: var(--paper); }
+.ov-count input { width: 72px; }

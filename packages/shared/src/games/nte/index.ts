@@ -80,9 +80,9 @@ export const nte: GameDefinition = {
     version: { name: "1.4", start: "2026-09-30", days: 42 },
   },
   defaultTasks: [
-    { key: "dailies", title: "Daily quests", cadence: "daily" },
+    { key: "dailies", title: "Daily quests", cadence: "daily", target: 4 },
     { key: "cafe", title: "Café income", cadence: "daily" },
-    { key: "pilgrimage", title: "Anomaly Pilgrimage", cadence: "weekly" },
+    { key: "pilgrimage", title: "Anomaly Pilgrimage", cadence: "weekly", target: 3 },
   ],
   docSchema: nteDocSchema,
   emptyDoc: (): NteDoc => ({ arc: {}, console: {}, skills: {}, stats: {} }),

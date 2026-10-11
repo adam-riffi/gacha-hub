@@ -126,8 +126,8 @@ export const wuwa: GameDefinition = {
     version: { name: "3.7", start: "2026-09-30", days: 42 },
   },
   defaultTasks: [
-    { key: "dailyActivity", title: "Daily Activity", cadence: "daily" },
-    { key: "weeklyBosses", title: "Weekly Bosses", cadence: "weekly" },
+    { key: "dailyActivity", title: "Daily Activity", cadence: "daily", target: 5 },
+    { key: "weeklyBosses", title: "Weekly Bosses", cadence: "weekly", target: 3 },
   ],
   docSchema: wuwaDocSchema,
   emptyDoc: (): WuwaDoc => ({ echoes: {}, skills: {}, weapon: {}, stats: {} }),
