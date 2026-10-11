@@ -82,8 +82,9 @@ export async function registerGameRoutes(app: FastifyInstance) {
     });
 
     if (game.defaultTasks.length > 0) {
+      const seededAt = Date.now();
       await prisma.task.createMany({
-        data: game.defaultTasks.map((t) => ({
+        data: game.defaultTasks.map((t, i) => ({
           userId,
           scope: "game",
           refId: created.id,
@@ -91,6 +92,8 @@ export async function registerGameRoutes(app: FastifyInstance) {
           title: t.title,
           cadence: t.cadence,
           target: t.target ?? null,
+          // A millisecond apart, so lists keep the game's own order.
+          createdAt: new Date(seededAt + i),
           regionAware: true,
         })),
       });
@@ -221,8 +224,9 @@ export async function registerGameRoutes(app: FastifyInstance) {
       const have = new Set(existing.map((t) => t.title.toLowerCase()));
       const missing = game.defaultTasks.filter((t) => !have.has(t.title.toLowerCase()));
       if (missing.length > 0) {
+        const seededAt = Date.now();
         await prisma.task.createMany({
-          data: missing.map((t) => ({
+          data: missing.map((t, i) => ({
             userId,
             scope: "game",
             refId: gi.id,
@@ -230,6 +234,8 @@ export async function registerGameRoutes(app: FastifyInstance) {
             title: t.title,
             cadence: t.cadence,
             target: t.target ?? null,
+            // A millisecond apart, so lists keep the game's own order.
+            createdAt: new Date(seededAt + i),
             regionAware: true,
           })),
         });
