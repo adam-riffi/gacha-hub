@@ -1,3 +1,4 @@
+import { getGame } from "@gacha/shared";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import type { FastifyInstance } from "fastify";
 import { catalogSchema, genshin, type Catalog } from "@gacha/shared";
@@ -153,14 +154,21 @@ describe("planning + materials (routes)", () => {
     expect(noGoal.json.requirements.length).toBe(0);
   });
 
-  // NTE is the game without a catalog since ZZZ got the Hakushin data.
+  // Every game has a catalog since NTE got the Hakushin data (round 4); a game scaffolded by game:new has none until imported.
   it("returns no_catalog for a game without one", async () => {
     const zid = await installGame(c, "nte");
-    const r = await c.req<{ error: string }>("POST", `/api/instances/${zid}/plans/preview`, { kind: "character", catalogId: "x", level: { from: 20, to: 60 } });
-    expect(r.status).toBe(404);
-    expect(r.json.error).toBe("no_catalog");
-    const needed = await c.req<unknown[]>("GET", `/api/instances/${zid}/materials/needed`);
-    expect(needed.json).toEqual([]);
+    const game = getGame("nte")!;
+    const load = game.loadCatalog;
+    game.loadCatalog = undefined;
+    try {
+      const r = await c.req<{ error: string }>("POST", `/api/instances/${zid}/plans/preview`, { kind: "character", catalogId: "x", level: { from: 20, to: 60 } });
+      expect(r.status).toBe(404);
+      expect(r.json.error).toBe("no_catalog");
+      const needed = await c.req<unknown[]>("GET", `/api/instances/${zid}/materials/needed`);
+      expect(needed.json).toEqual([]);
+    } finally {
+      game.loadCatalog = load;
+    }
   });
 
   it("generates a hidden completionist backlog, idempotently, skipping built characters", async () => {

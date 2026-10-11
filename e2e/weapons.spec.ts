@@ -53,11 +53,11 @@ test("Weapons: every copy its own card with its level and refinement and who wie
   await expect(page).toHaveURL(new RegExp(`/games/${id}/characters$`));
 });
 
-test("Weapons on every game: by name where the game has no weapon catalog (NTE, Endfield) @smoke", async ({ page }) => {
+test("Weapons on every game: by name where the game has no weapon catalog (Endfield; NTE has its Arcs since round 4) @smoke", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
-  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "nte" } })).json()) as { id: string };
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "endfield" } })).json()) as { id: string };
   await clearCopies(page, id);
 
   await page.goto(`/games/${id}/characters`);
@@ -68,7 +68,8 @@ test("Weapons on every game: by name where the game has no weapon catalog (NTE, 
   await add.getByRole("button", { name: "Add" }).click();
   await expect(page.getByRole("region", { name: "Weapons" }).getByRole("article", { name: "E2E Silver Arc" })).toContainText("Lv 20");
 
-  const endfield = (await (await page.request.post("/api/instances", { data: { gameKey: "endfield" } })).json()) as { id: string };
-  await page.goto(`/games/${endfield.id}/characters`);
-  await expect(page.getByRole("navigation", { name: "Game screens" }).getByRole("link", { name: "Weapons" })).toBeVisible();
+  // NTE's Arcs come from its catalog.
+  const nte = (await (await page.request.post("/api/instances", { data: { gameKey: "nte" } })).json()) as { id: string };
+  await page.goto(`/games/${nte.id}/weapons`);
+  await expect(page.getByRole("region", { name: "Weapons" }).getByRole("article", { name: "Eternal Waltz" })).toBeVisible();
 });
