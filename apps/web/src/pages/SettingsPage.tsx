@@ -54,7 +54,7 @@ export function SettingsPage() {
         <a href="#pulls">Pull history</a>
         <a href="#notifications">Notifications</a>
         <a href="#account">Data</a>
-        {me?.isAdmin && <Link to="/admin">Admin</Link>}
+        {me?.isAdmin && <Link to="/settings/data">Data sources</Link>}
       </nav>
       <div className="st-main">
         <LinkedAccounts links={links.data ?? []} games={mine} />
@@ -342,7 +342,7 @@ function AccountData() {
     <section className="card" id="account" aria-label="Account and data">
       <h3>Account and data</h3>
       <div className="st-rows">
-        <div><span className="st-k">Signed in with Discord</span><span className="mn">{me?.user?.username}</span></div>
+        <div><span className="st-k">Signed in as</span><span className="mn">{me?.user?.username}</span></div>
         <div><span className="st-k">Download my data</span><span><a className="btn" href="/api/export" download aria-label="Download my data">JSON</a></span></div>
         <div>
           <span className="st-k">Delete my account and data</span>
@@ -364,7 +364,7 @@ function AccountData() {
             {remove.isError && <span className="st-bad">That is not your username.</span>}
           </form>
         )}
-        {me?.isAdmin && <div><span className="st-k">Admin: feeds, uploads, audit</span><span><Link className="btn" to="/admin">Open admin</Link></span></div>}
+        {me?.isAdmin && <div><span className="st-k">Feeds, uploads, log</span><span><Link className="btn" to="/settings/data">Data sources</Link></span></div>}
         <div><span className="st-k">Sign out</span><span><button className="btn" onClick={() => void logout()}>Sign out</button></span></div>
       </div>
     </section>

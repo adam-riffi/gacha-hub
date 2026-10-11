@@ -14,7 +14,6 @@ const ICONS: Record<Section, ReactNode> = {
   games: <path d="M9 1.5L16.5 9L9 16.5L1.5 9z" />,
   tasks: <path d="M9 2L16.5 16H1.5z" />,
   banners: <path d="M2 3h14v12H2zM2 7h14" />,
-  admin: <path d="M9 1.8 3 4.2v4.6c0 3.6 2.6 6.2 6 7.4 3.4-1.2 6-3.8 6-7.4V4.2z" />,
   settings: <path d="M2 5h14M2 13h14M5 3v4M12 11v4" />,
 };
 const RAIL: { section: Section; label: string; name: string }[] = [
@@ -53,11 +52,11 @@ export function Layout({ children }: { children: ReactNode }) {
   const scopeKey = section === "games" ? (instances.find((i) => i.id === hubId)?.gameKey ?? character?.gameKey) : params.get("game");
   const current = instances.find((i) => i.gameKey === scopeKey);
   const scope: ScopeGame | null = current ? { key: current.gameKey, instanceId: current.id } : null;
-  // Settings and Admin have no scope: picking a game there opens its hub.
-  const stripSection: Section = section === "settings" || section === "admin" ? "games" : section;
+  // Settings has no scope: picking a game there opens its hub.
+  const stripSection: Section = section === "settings" ? "games" : section;
 
   const railItem = (s: Section, label: string, name: string) => (
-    <Link key={s} to={sectionHref(s, s === "settings" || s === "admin" ? null : scope)} className="rail-item" aria-label={name} aria-current={section === s ? "page" : undefined}>
+    <Link key={s} to={sectionHref(s, s === "settings" ? null : scope)} className="rail-item" aria-label={name} aria-current={section === s ? "page" : undefined}>
       <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">{ICONS[s]}</svg>
       <span>{label}</span>
     </Link>
@@ -69,7 +68,6 @@ export function Layout({ children }: { children: ReactNode }) {
         <span className="rail-logo" aria-hidden="true" />
         {RAIL.map((r) => railItem(r.section, r.label, r.name))}
         <span className="rail-gap" />
-        {me?.isAdmin && railItem("admin", "ADMIN", "Admin")}
         {railItem("settings", "SETTINGS", "Settings")}
       </nav>
       <div className="shell-main">

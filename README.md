@@ -5,7 +5,7 @@ One place to run several gacha games at once: pulls you can afford, dailies left
 [![CI](https://github.com/adam-riffi/gacha-hub/actions/workflows/ci.yml/badge.svg)](https://github.com/adam-riffi/gacha-hub/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-**Live:** https://gacha-hub-two.vercel.app (Discord sign-in, whitelisted friends). Ships with Genshin Impact, Honkai: Star Rail, Wuthering Waves, Zenless Zone Zero, Arknights: Endfield and Neverness to Everness (tracked by hand only: its terms forbid third-party tools). Add a game with `npm run game:new -- <key> "<Name>"` (ADR 0004).
+**Live:** https://gacha-hub-two.vercel.app (Discord sign-in; one user, self-hosted). Ships with Genshin Impact, Honkai: Star Rail, Wuthering Waves, Zenless Zone Zero, Arknights: Endfield and Neverness to Everness (tracked by hand only: its terms forbid third-party tools). Add a game with `npm run game:new -- <key> "<Name>"` (ADR 0004).
 
 ## Why it is interesting
 
@@ -61,7 +61,7 @@ npm run db:sqlite           # create the local SQLite database
 npm run dev                 # web :5173, API :3000
 ```
 
-Open http://localhost:5173 and click **Continue as Dev User**. To act as admin locally, set `ADMIN_DISCORD_IDS=dev-local-user`.
+Open http://localhost:5173 and click **Continue**: the local account owns Settings' Data sources.
 
 Before a pull request, run "Check all": `npm run check` (lint, typecheck, tests, build, E2E; run `npx playwright install chromium` once). Every command is listed in [AGENTS.md](AGENTS.md); the workflow rules are in [docs/ENGINEERING.md](docs/ENGINEERING.md).
 

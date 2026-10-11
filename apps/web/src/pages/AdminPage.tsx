@@ -156,10 +156,10 @@ export function AdminPage() {
     onError: () => toast("No official feed for this game yet", "err"),
   });
 
-  if (!me?.isAdmin) return <div className="card empty">Admins only. Add your Discord id to ADMIN_DISCORD_IDS.</div>;
+  if (!me?.isAdmin) return <div className="card empty">Only the owner sees this page.</div>;
 
   const q = auditFilter.trim().toLowerCase();
-  const shownAudit = (audit ?? []).filter((a) => !q || `${a.actorName} ${a.action} ${a.targetKind} ${a.targetKey}`.toLowerCase().includes(q));
+  const shownAudit = (audit ?? []).filter((a) => !q || `${a.action} ${a.targetKind} ${a.targetKey}`.toLowerCase().includes(q));
 
   const submit = () => {
     let parsed: unknown;
@@ -176,7 +176,7 @@ export function AdminPage() {
   return (
     <>
       <div className="page-head">
-        <h1>Admin</h1>
+        <h1>Data sources</h1>
         <div className="row">
           <button className="btn sm primary" disabled={importFeed.isPending} onClick={() => importFeed.mutate()} title="Pull current banners + events from the in-game announcement feed (also runs hourly)">
             {importFeed.isPending ? "Importing…" : "Import official feed"}
@@ -197,7 +197,6 @@ export function AdminPage() {
           <div className="ad-tiles">
             {(
               [
-                ["Users", stats.totals.users],
                 ["Game profiles", stats.totals.profiles],
                 ["Builds", stats.totals.builds],
                 ["Pulls logged", stats.totals.pulls],
@@ -241,23 +240,7 @@ export function AdminPage() {
               </table>
             </div>
             <div className="card">
-              <h3>Users</h3>
-              <table aria-label="Users">
-                <thead>
-                  <tr><th>User</th><th>Since</th><th className="num">Games</th><th className="num">Builds</th></tr>
-                </thead>
-                <tbody>
-                  {stats.users.map((u) => (
-                    <tr key={u.username + u.createdAt}>
-                      <td>{u.username}</td>
-                      <td className="small muted">{formatDate(u.createdAt)}</td>
-                      <td className="num" title={u.gameKeys.join(", ")}>{u.games}</td>
-                      <td className="num">{u.builds}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              <h3 style={{ marginTop: 16 }}>Latest imports</h3>
+              <h3>Latest imports</h3>
               {stats.imports.length === 0 && <p className="small muted">No import yet.</p>}
               {stats.imports.map((r, i) => (
                 <div key={i} className="small" style={{ padding: "3px 0" }}>
@@ -331,13 +314,13 @@ export function AdminPage() {
           <section className="card" aria-label="Audit log">
             <div className="spread">
               <h3>Audit log</h3>
-              <input type="search" aria-label="Filter the audit log" placeholder="who, what, game/key" value={auditFilter} onChange={(e) => setAuditFilter(e.target.value)} style={{ width: 200 }} />
+              <input type="search" aria-label="Filter the audit log" placeholder="what, game/key" value={auditFilter} onChange={(e) => setAuditFilter(e.target.value)} style={{ width: 200 }} />
             </div>
             {(audit ?? []).length === 0 && <p className="small">No admin actions yet.</p>}
             {(audit ?? []).length > 0 && shownAudit.length === 0 && <p className="small">No entry matches the filter.</p>}
             {shownAudit.map((a) => (
               <div className="small" key={a.id} style={{ padding: "4px 0", borderBottom: "1px solid var(--border)" }}>
-                <span className="muted">{formatDate(a.createdAt)}</span> · <strong>{a.actorName}</strong> {a.action} {a.targetKind} <code>{a.targetKey}</code>
+                <span className="muted">{formatDate(a.createdAt)}</span> · {a.action} {a.targetKind} <code>{a.targetKey}</code>
               </div>
             ))}
             {(audit ?? []).length >= auditLimit && auditLimit < 200 && (

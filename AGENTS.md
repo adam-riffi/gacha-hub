@@ -11,7 +11,7 @@ Operating manual for coding agents in this repository. Codex and Copilot read th
 
 ## Project at a glance
 
-- **What:** A cross-game gacha tracker for a few whitelisted friends: currencies and pulls, dailies, character builds and ownership, banners and events, Discord reminders.
+- **What:** A cross-game gacha tracker for one user, self-hosted: currencies and pulls, dailies, character builds and ownership, banners and events, Discord reminders.
 - **Stack:** TypeScript monorepo on npm workspaces: React + Vite (`apps/web`), Fastify (`apps/server`, one Vercel function), Prisma + Postgres, zod DTOs and game modules in `packages/shared`. ESLint + Prettier, Vitest.
 - **Hosting:** Vercel (`gacha-hub-two.vercel.app`), Supabase Postgres, GitHub Actions as the cron.
 - **Hand-written core:** per-game modules, reset and domain-day math, reminder due logic, planning and cost math, official-feed parsing. Full list and allowed libraries: `docs/DESIGN.md` §6.

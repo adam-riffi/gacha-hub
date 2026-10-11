@@ -4,7 +4,7 @@
 
 ## 1. Summary
 
-One place to run several gacha games at once: how many pulls you can afford, which dailies are left before reset, which characters you own and how far their builds are, what to farm today, and which banners and events are running. Discord sign-in, Discord DM reminders. Built for a handful of whitelisted friends plus a public demo; code is public (`adam-riffi/gacha-hub`).
+One place to run several gacha games at once: how many pulls you can afford, which dailies are left before reset, which characters you own and how far their builds are, what to farm today, and which banners and events are running. Discord sign-in, Discord DM reminders. One user per deployment, self-hosted (Georges, round 4: "a one user project that people can host themselves"); code is public (`adam-riffi/gacha-hub`).
 
 ## 2. Goals and non-goals
 
@@ -23,7 +23,7 @@ One place to run several gacha games at once: how many pulls you can afford, whi
 
 ## 3. Users and demo story
 
-A whitelisted player signs in with Discord, adds Genshin and HSR, sets currencies and ticks owned characters. Home shows pulls across games, today's dailies, current banners with the featured units they own, and goals. The Genshin page shows what is happening now, the to-do list and which domains are open today for the characters they own. A Discord DM arrives an hour before reset if dailies are left.
+The player signs in with Discord, adds Genshin and HSR, sets currencies and ticks owned characters. Home shows pulls across games, today's dailies, current banners with the featured units they own, and goals. The Genshin page shows what is happening now, the to-do list and which domains are open today for the characters they own. A Discord DM arrives an hour before reset if dailies are left.
 
 ## 4. Scope
 
