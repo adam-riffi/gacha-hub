@@ -84,13 +84,16 @@ const characters: CatalogCharacter[] = avatars
   .map((d) => {
     const costsByKey: Record<string, CostStep[]> = {};
     const names: Record<string, string> = {};
+    // What each does (Georges, 2026-10-11): Yatta's short text, which has no level numbers to fill in.
+    const texts: Record<string, string> = {};
     for (const node of Object.values(d.traces?.mainSkills ?? {})) {
-      const first = Object.values(node.skillList ?? {})[0] as { type?: string; name?: string } | undefined;
+      const first = Object.values(node.skillList ?? {})[0] as { type?: string; name?: string; descriptionSimple?: string } | undefined;
       const key = first?.type ? TRACE_KEY[first.type] : undefined;
       if (!key) continue;
       const steps = promoteSteps(node.promote);
       if (steps.length) costsByKey[key] = steps;
       if (first?.name) names[key] = stripTags(first.name);
+      if (first?.descriptionSimple) texts[key] = stripTags(first.descriptionSimple).trim();
     }
     const keys = ["basic", "skill", "ultimate", "talent"].filter((k) => costsByKey[k]);
     const subTraces = Object.values(d.traces?.subSkills ?? {})
@@ -107,7 +110,7 @@ const characters: CatalogCharacter[] = avatars
       maxLevel: ascension.at(-1)?.atLevel ?? 80,
       icon: d.icon ? String(d.icon) : undefined,
       ascension,
-      talents: { keys, costs: costsByKey.skill ?? costsByKey.basic ?? [], costsByKey, info: keys.flatMap((key) => (names[key] ? [{ key, name: names[key] }] : [])) },
+      talents: { keys, costs: costsByKey.skill ?? costsByKey.basic ?? [], costsByKey, info: keys.flatMap((key) => (names[key] ? [{ key, name: names[key], ...(texts[key] ? { description: texts[key] } : {}) }] : [])) },
       extra: {
         path: label(d.types?.pathType),
         element: label(d.types?.combatType),

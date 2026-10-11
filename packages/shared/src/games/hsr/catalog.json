@@ -842,19 +842,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Frigid Cold Arrow"
+            "name": "Frigid Cold Arrow",
+            "description": "Deals minor Ice DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "The Power of Cuteness"
+            "name": "The Power of Cuteness",
+            "description": "Applies a Shield on a single ally."
           },
           {
             "key": "ultimate",
-            "name": "Glacial Cascade"
+            "name": "Glacial Cascade",
+            "description": "Deals Ice DMG to all enemies, with a chance of Freezing them."
           },
           {
             "key": "talent",
-            "name": "Girl Power"
+            "name": "Girl Power",
+            "description": "After a Shielded ally is attacked by an enemy, March 7th immediately launches a Counter against the attacker, dealing minor Ice DMG."
           }
         ]
       },
@@ -2010,19 +2014,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Cloudlancer Art: North Wind"
+            "name": "Cloudlancer Art: North Wind",
+            "description": "Deals minor Wind DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Cloudlancer Art: Torrent"
+            "name": "Cloudlancer Art: Torrent",
+            "description": "Deals Wind DMG to one enemy. Upon a CRIT Hit, there is a high chance of Slowing the enemy."
           },
           {
             "key": "ultimate",
-            "name": "Ethereal Dream"
+            "name": "Ethereal Dream",
+            "description": "Deals massive Wind DMG to one enemy. If the enemy is Slowed, DMG multiplier dealt will be increased."
           },
           {
             "key": "talent",
-            "name": "Superiority of Reach"
+            "name": "Superiority of Reach",
+            "description": "When this unit becomes the target of an ally's ability, this unit's next attack's Wind RES PEN increases. This effect can be triggered again after 2 turns."
           }
         ]
       },
@@ -3194,19 +3202,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Sawblade Tuning"
+            "name": "Sawblade Tuning",
+            "description": "Deals minor Fire DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Molten Detonation"
+            "name": "Molten Detonation",
+            "description": "Deals Fire DMG to one enemy and minor Fire DMG to enemies adjacent to it."
           },
           {
             "key": "ultimate",
-            "name": "Heavenly Flare"
+            "name": "Heavenly Flare",
+            "description": "Deals Fire DMG to all enemies and regenerates Energy if enemies are defeated."
           },
           {
             "key": "talent",
-            "name": "Victory Rush"
+            "name": "Victory Rush",
+            "description": "At the start of battle or when an enemy's Weakness is Broken, gains Charge.\\nAfter any ally target performs an attack, if fully Charged, launches Follow-Up ATK and deals Fire DMG to all enemies, consuming all Charge points."
           }
         ]
       },
@@ -4378,19 +4390,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Gravity Suppression"
+            "name": "Gravity Suppression",
+            "description": "Deals minor Imaginary DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Edge of the Void"
+            "name": "Edge of the Void",
+            "description": "Deals minor Imaginary DMG to one enemy. This attack can Bounce 3 times, with a chance of Slowing the hit enemies."
           },
           {
             "key": "ultimate",
-            "name": "Synthetic Black Hole"
+            "name": "Synthetic Black Hole",
+            "description": "Deals Imaginary DMG to all enemies, with a high chance of Imprisoning them."
           },
           {
             "key": "talent",
-            "name": "Time Distortion"
+            "name": "Time Distortion",
+            "description": "When hitting a Slowed enemy, additionally deals minor Imaginary Additional DMG."
           }
         ]
       },
@@ -5562,19 +5578,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Midnight Tumult"
+            "name": "Midnight Tumult",
+            "description": "Deals minor Lightning DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Caressing Moonlight"
+            "name": "Caressing Moonlight",
+            "description": "Deals Lightning DMG to one enemy and minor Lightning DMG to adjacent targets.\\nIf the primary target is currently afflicted with a DoT effect, the DoT deals DMG 1 extra time."
           },
           {
             "key": "ultimate",
-            "name": "Twilight Trill"
+            "name": "Twilight Trill",
+            "description": "Deals minor Lightning DMG to all enemies, with a high chance of Shocking them.\\nIf the enemies are currently Shocked, the Shock status deals DMG 1 extra time."
           },
           {
             "key": "talent",
-            "name": "Gentle but Cruel"
+            "name": "Gentle but Cruel",
+            "description": "After a teammate uses Basic ATK on an enemy, Kafka immediately launches Follow-Up ATK and deals Lightning DMG with a high chance of inflicting Shock to that target. This effect can only be triggered 1 time per turn."
           }
         ]
       },
@@ -6746,19 +6766,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "System Warning"
+            "name": "System Warning",
+            "description": "Deals minor Quantum DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Allow Changes?"
+            "name": "Allow Changes?",
+            "description": "There is a high chance to apply additional Weakness to one enemy and deals Quantum DMG to this enemy."
           },
           {
             "key": "ultimate",
-            "name": "User Banned"
+            "name": "User Banned",
+            "description": "There is a high chance of lowering one enemy's DEF and deals massive Quantum DMG to this enemy."
           },
           {
             "key": "talent",
-            "name": "Awaiting System Response..."
+            "name": "Awaiting System Response...",
+            "description": "After this unit attacks, there is a chance of implanting the target with 1 random Bug."
           }
         ]
       },
@@ -7914,19 +7938,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Lightning Rush"
+            "name": "Lightning Rush",
+            "description": "Deals minor Lightning DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Shackle Breaker"
+            "name": "Shackle Breaker",
+            "description": "Consumes a portion of HP to deal Lightning DMG to one enemy."
           },
           {
             "key": "ultimate",
-            "name": "Frenzied Punishment"
+            "name": "Frenzied Punishment",
+            "description": "Deals massive Lightning DMG to one enemy and Lightning DMG to enemies adjacent to it."
           },
           {
             "key": "talent",
-            "name": "Pain and Anger"
+            "name": "Pain and Anger",
+            "description": "Gain DMG bonus based on currently missing HP percentage."
           }
         ]
       },
@@ -9082,19 +9110,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Spectrum Beam"
+            "name": "Spectrum Beam",
+            "description": "Deals minor Fire DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Meteor Storm"
+            "name": "Meteor Storm",
+            "description": "Deals minor Fire DMG to single enemy targets with 5 Bounces in total."
           },
           {
             "key": "ultimate",
-            "name": "Astral Blessing"
+            "name": "Astral Blessing",
+            "description": "Increases SPD for all allies."
           },
           {
             "key": "talent",
-            "name": "Astrometry"
+            "name": "Astrometry",
+            "description": "The character will receive 1 stack of Charging for every different enemy they hit, for a maximum of 5 stacks. Every stack of Charging increases ATK for all allies. At the beginning of their turn, reduce Charging stacks."
           }
         ]
       },
@@ -10250,19 +10282,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "What Are You Looking At?"
+            "name": "What Are You Looking At?",
+            "description": "Deals minor Ice DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "One-Time Offer"
+            "name": "One-Time Offer",
+            "description": "Deals minor Ice DMG to all enemies. Targets with higher HP will receive increased DMG."
           },
           {
             "key": "ultimate",
-            "name": "It's Magic, I Added Some Magic"
+            "name": "It's Magic, I Added Some Magic",
+            "description": "Deals Ice DMG to all enemies."
           },
           {
             "key": "talent",
-            "name": "Fine, I'll Do It Myself"
+            "name": "Fine, I'll Do It Myself",
+            "description": "When any ally target's attack reduces the enemy target's current HP percentage to #1[i]% or lower, Herta immediately launches Follow-Up ATK, dealing minor Ice DMG to all enemies."
           }
         ]
       },
@@ -11434,19 +11470,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Invisible Air: Barrier of the Wind King"
+            "name": "Invisible Air: Barrier of the Wind King",
+            "description": "Deals minor Wind DMG to one designated enemy."
           },
           {
             "key": "skill",
-            "name": "Strike Air: Hammer of the Wind King"
+            "name": "Strike Air: Hammer of the Wind King",
+            "description": "Deals Wind DMG to one designated enemy and minor Wind DMG to adjacent targets. If Energy can be fully regenerated by consuming \"Core Resonance\" after attacking, then increases the DMG multiplier for this instance of Skill based on \"Core Resonance\" points and consumes all \"Core Resonance\" after the attack. Otherwise, gains #3[i] \"Core Resonance\" point(s)."
           },
           {
             "key": "ultimate",
-            "name": "Excalibur"
+            "name": "Excalibur",
+            "description": "Deals massive Wind DMG to all enemies. Additionally deals minor Wind DMG to random enemies, bouncing #3[i] time(s). And enhances the next Basic ATK."
           },
           {
             "key": "talent",
-            "name": "Dragon Reactor Core"
+            "name": "Dragon Reactor Core",
+            "description": "When entering combat, gains #8[i] \"Core Resonance\" point(s). When any ally target uses Ultimate, increases the DMG dealt by Saber and gains #1[i] \"Core Resonance\" point(s). Consuming \"Core Resonance\" will regenerate Energy for Saber."
           }
         ]
       },
@@ -12618,19 +12658,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Kanshou and Bakuya"
+            "name": "Kanshou and Bakuya",
+            "description": "Deals minor Quantum DMG to one designated enemy."
           },
           {
             "key": "skill",
-            "name": "Caladbolg II: Fake Spiral Sword"
+            "name": "Caladbolg II: Fake Spiral Sword",
+            "description": "Enters the \"Circuit Connection\" state. Deals massive Quantum DMG to one designated enemy. During the \"Circuit Connection\" state, the current turn does not end after using his Skill, and the DMG dealt by Archer's Skill increases. When Skill Points are insufficient to use Skill again, exits the \"Circuit Connection\" state."
           },
           {
             "key": "ultimate",
-            "name": "Unlimited Blade Works"
+            "name": "Unlimited Blade Works",
+            "description": "Deals massive Quantum DMG to one designated enemy and gains Charge."
           },
           {
             "key": "talent",
-            "name": "Mind's Eye (True)"
+            "name": "Mind's Eye (True)",
+            "description": "After a teammate uses an attack, Archer consumes 1 Charge and launches Follow-Up ATK on the primary target, dealing Quantum DMG and recovering 1 Skill Point."
           }
         ]
       },
@@ -13802,19 +13846,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Windrider Bullet"
+            "name": "Windrider Bullet",
+            "description": "Deals minor Wind DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Combat Redeployment"
+            "name": "Combat Redeployment",
+            "description": "Dispels 1 debuff from a single ally, increases the damage they deal, and allows them to immediately take action."
           },
           {
             "key": "ultimate",
-            "name": "The Belobog March"
+            "name": "The Belobog March",
+            "description": "Increases ATK and CRIT DMG of all allies."
           },
           {
             "key": "talent",
-            "name": "Leading the Way"
+            "name": "Leading the Way",
+            "description": "After this character uses Basic ATK, their next action will be Advanced Forward."
           }
         ]
       },
@@ -14986,19 +15034,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Thwack"
+            "name": "Thwack",
+            "description": "Deals minor Quantum DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Sheathed Blade"
+            "name": "Sheathed Blade",
+            "description": "Deals Quantum DMG to one enemy and increases SPD."
           },
           {
             "key": "ultimate",
-            "name": "Butterfly Flurry"
+            "name": "Butterfly Flurry",
+            "description": "Enters the Amplification state and deals massive Quantum DMG to one enemy."
           },
           {
             "key": "talent",
-            "name": "Resurgence"
+            "name": "Resurgence",
+            "description": "When defeating enemy targets with Basic ATK, Skill, or Ultimate, gains an extra turn and enters the Amplification state. While in Amplification, increases the DMG dealt by this unit."
           }
         ]
       },
@@ -16154,19 +16206,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Roaring Thunderclap"
+            "name": "Roaring Thunderclap",
+            "description": "Deals minor Lightning DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Lightning Flash"
+            "name": "Lightning Flash",
+            "description": "Deals Lightning DMG to one enemy and minor Lightning DMG to adjacent targets, with a high chance of applying Shock on the target."
           },
           {
             "key": "ultimate",
-            "name": "Here Comes the Mechanical Fever"
+            "name": "Here Comes the Mechanical Fever",
+            "description": "Deals Lightning DMG to all enemies and increases the duration of Shock."
           },
           {
             "key": "talent",
-            "name": "Galvanic Chords"
+            "name": "Galvanic Chords",
+            "description": "After attacking, deals a minor amount of Additional DMG to all Shocked enemies."
           }
         ]
       },
@@ -17338,19 +17394,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Fist of Conviction"
+            "name": "Fist of Conviction",
+            "description": "Deals minor Ice DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Daunting Smite"
+            "name": "Daunting Smite",
+            "description": "Deals Ice DMG to one enemy, with a chance of Freezing them."
           },
           {
             "key": "ultimate",
-            "name": "Enduring Bulwark"
+            "name": "Enduring Bulwark",
+            "description": "Provides a Shield to all allies."
           },
           {
             "key": "talent",
-            "name": "Unyielding Will"
+            "name": "Unyielding Will",
+            "description": "When struck by a killing blow, instead of being knocked down, immediately restores HP. This effect can only trigger 1 time per battle."
           }
         ]
       },
@@ -18506,19 +18566,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Behind the Kindness"
+            "name": "Behind the Kindness",
+            "description": "Deals minor Physical DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Love, Heal, and Choose"
+            "name": "Love, Heal, and Choose",
+            "description": "Restores HP for a single ally and provides Healing Over Time to them."
           },
           {
             "key": "ultimate",
-            "name": "Gift of Rebirth"
+            "name": "Gift of Rebirth",
+            "description": "Restores HP for all allies."
           },
           {
             "key": "talent",
-            "name": "Innervation"
+            "name": "Innervation",
+            "description": "When healing allies with low HP percentage, increases Outgoing Healing. This effect also works on continuous healing."
           }
         ]
       },
@@ -19674,19 +19738,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Frost Shot"
+            "name": "Frost Shot",
+            "description": "Deals minor Ice DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Frostbite"
+            "name": "Frostbite",
+            "description": "Dispels 1 buff from one enemy target, and deals Ice DMG to the target enemy."
           },
           {
             "key": "ultimate",
-            "name": "Zone Suppression"
+            "name": "Zone Suppression",
+            "description": "Has a high chance of lowering enemies' DEF and deals minor Ice DMG to all enemies."
           },
           {
             "key": "talent",
-            "name": "Data Collecting"
+            "name": "Data Collecting",
+            "description": "After using an attack, if the enemy target is currently inflicted with debuff(s), Pela regenerates Energy."
           }
         ]
       },
@@ -20858,19 +20926,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "I Want to Help"
+            "name": "I Want to Help",
+            "description": "Deals minor Physical DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Svarog Watches Over You"
+            "name": "Svarog Watches Over You",
+            "description": "Deals Physical DMG to all enemies. Additionally deals Physical DMG to targets with Marks of Counter."
           },
           {
             "key": "ultimate",
-            "name": "Promise, Not Command"
+            "name": "Promise, Not Command",
+            "description": "Reduces DMG received, increases chance to be attacked by enemies, and enhances Counters."
           },
           {
             "key": "talent",
-            "name": "Because We're Family"
+            "name": "Because We're Family",
+            "description": "DMG received from enemy attacks is reduced. Enemies who attack Clara will be marked with a Mark of Counter and met with Svarog's Counter, dealing Physical DMG."
           }
         ]
       },
@@ -22026,19 +22098,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Dazzling Blades"
+            "name": "Dazzling Blades",
+            "description": "Deals minor Wind DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Ricochet Love"
+            "name": "Ricochet Love",
+            "description": "Deals minor Wind DMG to single enemy targets with 5 Bounces in total."
           },
           {
             "key": "ultimate",
-            "name": "Surprise Present"
+            "name": "Surprise Present",
+            "description": "Deals Wind DMG to all enemies, with a high chance to cause increased DoT taken to them."
           },
           {
             "key": "talent",
-            "name": "Windtorn Dagger"
+            "name": "Windtorn Dagger",
+            "description": "After hitting an enemy, there is a chance of inflicting Wind Shear on the target."
           }
         ]
       },
@@ -23194,19 +23270,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Hehe! Don't Get Burned!"
+            "name": "Hehe! Don't Get Burned!",
+            "description": "Deals minor Fire DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Hey! Remember Hook?"
+            "name": "Hey! Remember Hook?",
+            "description": "Deals Fire DMG to one enemy, with a high chance to inflict Burn on the enemy."
           },
           {
             "key": "ultimate",
-            "name": "Boom! Here Comes the Fire!"
+            "name": "Boom! Here Comes the Fire!",
+            "description": "Deals massive Fire DMG to one enemy and Enhances this unit's next Skill."
           },
           {
             "key": "talent",
-            "name": "Ha! Oil to the Flames!"
+            "name": "Ha! Oil to the Flames!",
+            "description": "When attacking a Burned enemy, deals Fire Additional DMG for a moderate amount, and additionally regenerates energy."
           }
         ]
       },
@@ -24362,19 +24442,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Ice Crampon Technique"
+            "name": "Ice Crampon Technique",
+            "description": "Deals minor Quantum DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Salted Camping Cans"
+            "name": "Salted Camping Cans",
+            "description": "Applies \"Survival Response\" to a single ally, increases their Max HP, and restores their HP."
           },
           {
             "key": "ultimate",
-            "name": "Snowfield First Aid"
+            "name": "Snowfield First Aid",
+            "description": "Dispels 1 debuff from all allies and restores their HP."
           },
           {
             "key": "talent",
-            "name": "Outdoor Survival Experience"
+            "name": "Outdoor Survival Experience",
+            "description": "When using Skill or Ultimate, applies continuous healing on the target ally. If the target has \"Survival Response,\" the continuous healing effect additionally increases."
           }
         ]
       },
@@ -25530,19 +25614,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Direct Punch"
+            "name": "Direct Punch",
+            "description": "Deals minor Physical DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Lacerating Fist"
+            "name": "Lacerating Fist",
+            "description": "Deals Physical DMG to one enemy, with a high chance of causing Bleed."
           },
           {
             "key": "ultimate",
-            "name": "Coup de Grâce"
+            "name": "Coup de Grâce",
+            "description": "Receives #5[i] stack(s) of \"Fighting Will,\" with a high chance of increasing the one enemy's DMG received, and deals massive Physical DMG to the target."
           },
           {
             "key": "talent",
-            "name": "Flying Sparks"
+            "name": "Flying Sparks",
+            "description": "After using the Basic ATK \"Direct Punch\" or the Skill \"Lacerating Fist,\" receives 1 stack of Fighting Will. When 2 or more stacks of Fighting Will are present, Basic ATK becomes Enhanced.\\nIf the enemy is Bleeding, the Enhanced Basic ATK will cause Bleed to deal extra DMG for 1 time."
           }
         ]
       },
@@ -26714,19 +26802,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Deficit..."
+            "name": "Deficit...",
+            "description": "Deals minor Fire DMG to an enemy."
           },
           {
             "key": "skill",
-            "name": "Difficulty Paying?"
+            "name": "Difficulty Paying?",
+            "description": "Inflicts one enemy with a \"Proof of Debt\" state and causes it to receive increased Follow-Up ATK DMG. Numby deals Fire DMG to the target."
           },
           {
             "key": "ultimate",
-            "name": "Turn a Profit!"
+            "name": "Turn a Profit!",
+            "description": "Numby enters the Windfall Bonanza! state and increases its DMG multiplier and CRIT DMG."
           },
           {
             "key": "talent",
-            "name": "Trotter Market!?"
+            "name": "Trotter Market!?",
+            "description": "At the start of the battle, summons Numby. When Numby takes action, it launches Follow-Up ATK on a target afflicted with \"Proof of Debt\", dealing Fire DMG.\\nWhen an enemy afflicted with \"Proof of Debt\" receives Follow-Up ATK, Numby's action advances."
           }
         ]
       },
@@ -27882,19 +27974,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Flower Pick"
+            "name": "Flower Pick",
+            "description": "Tosses a tile to deal minor Quantum DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "A Scoop of Moon"
+            "name": "A Scoop of Moon",
+            "description": "Draws tiles and increases DMG dealt. This turn does not end after this action."
           },
           {
             "key": "ultimate",
-            "name": "A Quartet? Woo-hoo!"
+            "name": "A Quartet? Woo-hoo!",
+            "description": "Deals Quantum DMG to all enemies, then obtains 4 tiles of the same suit."
           },
           {
             "key": "talent",
-            "name": "Celestial Jade"
+            "name": "Celestial Jade",
+            "description": "At the start of any ally's turn, draws a tile. At the start of this character's turn, if this character holds 4 tiles from the same suit, remove all tiles in possession and Enhance this Basic ATK while increasing this character's ATK."
           }
         ]
       },
@@ -29050,19 +29146,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Dislodged"
+            "name": "Dislodged",
+            "description": "Deals minor Lightning DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Soothing Melody"
+            "name": "Soothing Melody",
+            "description": "Increases the ATK of a single ally and grants them Benediction. Ally with Benediction additionally deals minor Lightning Additional DMG when attacking."
           },
           {
             "key": "ultimate",
-            "name": "Amidst the Rejoicing Clouds"
+            "name": "Amidst the Rejoicing Clouds",
+            "description": "Regenerates a target ally's Energy and increases their DMG dealt."
           },
           {
             "key": "talent",
-            "name": "Violet Sparknado"
+            "name": "Violet Sparknado",
+            "description": "When an enemy is attacked by Tingyun, the ally with Benediction immediately deals minor Lightning Additional DMG to the same enemy."
           }
         ]
       },
@@ -30234,19 +30334,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Thorns of the Abyss"
+            "name": "Thorns of the Abyss",
+            "description": "Deals minor Imaginary DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Prayer of Abyss Flower"
+            "name": "Prayer of Abyss Flower",
+            "description": "Restores a single ally's HP and gains 1 stack of Abyss Flower."
           },
           {
             "key": "ultimate",
-            "name": "Death Wish"
+            "name": "Death Wish",
+            "description": "Removes 1 buff from all enemies, deals Imaginary DMG to all enemies, and gains 1 stack of Abyss Flower."
           },
           {
             "key": "talent",
-            "name": "Cycle of Life"
+            "name": "Cycle of Life",
+            "description": "Deploys a Zone when Abyss Flower reaches 2 stacks. While the Zone is active, allies will restore HP after they attack."
           }
         ]
       },
@@ -31418,19 +31522,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Glistening Light"
+            "name": "Glistening Light",
+            "description": "Deals minor Lightning DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Rifting Zenith"
+            "name": "Rifting Zenith",
+            "description": "Deals minor Lightning DMG to all enemies and increases Lightning-Lord's Hits Per Action."
           },
           {
             "key": "ultimate",
-            "name": "Lightbringer"
+            "name": "Lightbringer",
+            "description": "Deals Lightning DMG to all enemies and increases Lightning-Lord's Hits Per Action."
           },
           {
             "key": "talent",
-            "name": "Prana Extirpated"
+            "name": "Prana Extirpated",
+            "description": "At the start of the battle, summons \"Lightning-Lord.\" When \"Lightning-Lord\" takes action, launches Follow-Up ATK to automatically deal minor Lightning DMG to one random enemy and adjacent targets."
           }
         ]
       },
@@ -32602,19 +32710,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Shard Sword"
+            "name": "Shard Sword",
+            "description": "Deals minor Wind DMG to an enemy."
           },
           {
             "key": "skill",
-            "name": "Hellscape"
+            "name": "Hellscape",
+            "description": "Consumes HP to Enhance Basic ATK, and this turn does not end after this Skill is used."
           },
           {
             "key": "ultimate",
-            "name": "Death Sentence"
+            "name": "Death Sentence",
+            "description": "Sets current HP to 50% of Max HP, and deals massive Wind DMG to one enemy and Wind DMG to adjacent targets."
           },
           {
             "key": "talent",
-            "name": "Shuhu's Gift"
+            "name": "Shuhu's Gift",
+            "description": "When Blade's HP decreases, gains 1 stack of Charge. Upon reaching maximum Charge, launches Follow-Up ATK, dealing Wind DMG to all enemies, restoring HP, and consuming all Charges."
           }
         ]
       },
@@ -33770,19 +33882,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Cloudfencer Art: Starshine"
+            "name": "Cloudfencer Art: Starshine",
+            "description": "Deals minor Physical DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Cloudfencer Art: Mountainfall"
+            "name": "Cloudfencer Art: Mountainfall",
+            "description": "Deals Physical DMG to one enemy with a small chance of triggering \"Sword Stance\". If the enemy has Weakness Break, \"Sword Stance\" is guaranteed to trigger."
           },
           {
             "key": "ultimate",
-            "name": "Shape of Taixu: Dawn Herald"
+            "name": "Shape of Taixu: Dawn Herald",
+            "description": "Deals massive Physical DMG to one enemy, enhances \"Sword Stance's\" effect, and takes action immediately."
           },
           {
             "key": "talent",
-            "name": "Dancing Blade"
+            "name": "Dancing Blade",
+            "description": "When an enemy on the field has its Weakness Broken, this character's SPD increases."
           }
         ]
       },
@@ -34938,19 +35054,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Arrowslinger"
+            "name": "Arrowslinger",
+            "description": "Deals minor Imaginary DMG to an enemy."
           },
           {
             "key": "skill",
-            "name": "Emboldening Salvo"
+            "name": "Emboldening Salvo",
+            "description": "Obtains 2 stacks of Roaring Bowstrings. All allies' ATK increases when Roaring Bowstrings is active on this character."
           },
           {
             "key": "ultimate",
-            "name": "Diving Kestrel"
+            "name": "Diving Kestrel",
+            "description": "When \"Roaring Bowstrings\" is active on this character, increases the CRIT Rate and CRIT DMG of all allies and deals massive Imaginary DMG to one enemy."
           },
           {
             "key": "talent",
-            "name": "Seven Layers, One Arrow"
+            "name": "Seven Layers, One Arrow",
+            "description": "Basic Attack additionally deals minor DMG, and the Toughness Reduction of this Basic Attack is increased. This effect can be triggered again after 1 turn has passed."
           }
         ]
       },
@@ -36122,19 +36242,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Novaburst"
+            "name": "Novaburst",
+            "description": "Deals minor Quantum DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Known by Stars, Shown by Hearts"
+            "name": "Known by Stars, Shown by Hearts",
+            "description": "Activates Matrix of Prescience. DMG received by Fu Xuan's teammates is Distributed to her. Also increases CRIT Rate and Max HP of all allies."
           },
           {
             "key": "ultimate",
-            "name": "Woes of Many Morphed to One"
+            "name": "Woes of Many Morphed to One",
+            "description": "Deals Quantum DMG to all enemies and increases Fu Xuan's Talent trigger count."
           },
           {
             "key": "talent",
-            "name": "Bleak Breeds Bliss"
+            "name": "Bleak Breeds Bliss",
+            "description": "While Fu Xuan is still active in combat, the DMG taken by all team members is reduced.\\nWhen her HP is low, automatically restores her own HP based on the HP percentage already lost. This effect can have up to 2 trigger counts at any given time."
           }
         ]
       },
@@ -37306,19 +37430,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Frost Thorn"
+            "name": "Frost Thorn",
+            "description": "Deals minor Ice DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Darting Ironthorn"
+            "name": "Darting Ironthorn",
+            "description": "Deals Ice DMG to one designated enemy and activates the \"Soulsteel Sync.\""
           },
           {
             "key": "ultimate",
-            "name": "Amidst the Raining Bliss"
+            "name": "Amidst the Raining Bliss",
+            "description": "Increases Yanqing's CRIT Rate. Enhances \"Soulsteel Sync\" and deals massive Ice DMG to one enemy."
           },
           {
             "key": "talent",
-            "name": "One With the Sword"
+            "name": "One With the Sword",
+            "description": "During \"Soulsteel Sync\", reduces the chance of this character being attacked and increases their CRIT Rate and CRIT DMG. After attacking an enemy, there is a chance of launching a Follow-Up ATK, dealing Ice DMG with a chance to Freeze the target.\\n\"Soulsteel Sync\" will be removed after this character receives damage."
           }
         ]
       },
@@ -38474,19 +38602,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Standing Ovation"
+            "name": "Standing Ovation",
+            "description": "Deals minor Fire DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Blazing Welcome"
+            "name": "Blazing Welcome",
+            "description": "Deals Fire DMG to one enemy and minor Fire DMG to adjacent enemies, with a high chance of Burning them."
           },
           {
             "key": "ultimate",
-            "name": "Watch This Showstopper"
+            "name": "Watch This Showstopper",
+            "description": "Deals Fire DMG to all enemies. If the enemies are inflicted with Burn, the Burn status deals DMG 1 extra time."
           },
           {
             "key": "talent",
-            "name": "PatrAeon Benefits"
+            "name": "PatrAeon Benefits",
+            "description": "After the Burn status causes DMG on the enemy, there is a high chance of applying Firekiss to the enemy."
           }
         ]
       },
@@ -39658,19 +39790,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Diagnostic Kick"
+            "name": "Diagnostic Kick",
+            "description": "Deals minor Lightning DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Singing Among Clouds"
+            "name": "Singing Among Clouds",
+            "description": "Restores HP for a single ally, then heals random allies."
           },
           {
             "key": "ultimate",
-            "name": "Felicitous Thunderleap"
+            "name": "Felicitous Thunderleap",
+            "description": "Restores HP for all allies, and grants them Invigoration, or prolongs the duration of their Invigoration."
           },
           {
             "key": "talent",
-            "name": "Gourdful of Elixir"
+            "name": "Gourdful of Elixir",
+            "description": "When an ally target with Invigoration is attacked, restores HP for the ally.\\nWhen a teammate suffers a killing blow, Bailu immediately restores their HP. This effect can only trigger 1 time per battle."
           }
         ]
       },
@@ -40842,19 +40978,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Lucent Moonglow"
+            "name": "Lucent Moonglow",
+            "description": "Deals minor Ice DMG to one designated enemy target."
           },
           {
             "key": "skill",
-            "name": "Transcendent Flash"
+            "name": "Transcendent Flash",
+            "description": "Deals Ice DMG to a target enemy and obtains 1 stack of Syzygy."
           },
           {
             "key": "ultimate",
-            "name": "Florephemeral Dreamflux"
+            "name": "Florephemeral Dreamflux",
+            "description": "Deals massive Ice DMG to a target enemy and deals Ice DMG to adjacent targets. Obtains 1 stack of Syzygy."
           },
           {
             "key": "talent",
-            "name": "Crescent Transmigration"
+            "name": "Crescent Transmigration",
+            "description": "When possessing #5[i] stacks of Syzygy, Jingliu enters the Spectral Transmigration state with her action advanced by 100%, her CRIT Rate increased, and her Skill becoming enhanced. Using an attack in this state consumes HP from her teammates and increases Jingliu's ATK according to the total HP consumed. When Syzygy stacks become 0, exits the Spectral Transmigration state."
           }
         ]
       },
@@ -42026,19 +42166,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Beneficent Lotus"
+            "name": "Beneficent Lotus",
+            "description": "Deals minor Imaginary DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Dracore Libre"
+            "name": "Dracore Libre",
+            "description": "Enhances the Basic ATK Beneficent Lotus to Transcendence, Divine Spear, or Fulgurant Leap."
           },
           {
             "key": "ultimate",
-            "name": "Azure's Aqua Ablutes All"
+            "name": "Azure's Aqua Ablutes All",
+            "description": "Deals massive Imaginary DMG to one enemy, deals Imaginary DMG to adjacent targets, and gains 2 \"Squama Sacrosancta,\" which can offset Dan Heng • Imbibitor Lunae's consumption of skill points. Consuming Squama Sacrosancta is considered equivalent to consuming skill points."
           },
           {
             "key": "talent",
-            "name": "Righteous Heart"
+            "name": "Righteous Heart",
+            "description": "Increases DMG for every hit dealt. This effect is stackable and lasts until the end of this character's turn."
           }
         ]
       },
@@ -43194,19 +43338,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Mara-Sunder Awl"
+            "name": "Mara-Sunder Awl",
+            "description": "Deals minor Quantum DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Iniquity Obliteration"
+            "name": "Iniquity Obliteration",
+            "description": "Deals Quantum DMG to one enemy and minor Quantum DMG to enemies adjacent to it."
           },
           {
             "key": "ultimate",
-            "name": "Divine Castigation"
+            "name": "Divine Castigation",
+            "description": "Deals massive Quantum DMG to one enemy. This attack ignores Weakness Types and reduces the target's Toughness. The more Toughness is reduced, the higher the DMG will be dealt."
           },
           {
             "key": "talent",
-            "name": "Karmic Perpetuation"
+            "name": "Karmic Perpetuation",
+            "description": "When Xueyi or her teammates reduce enemy Toughness with attacks, she gains stacks of \"Karma.\" When \"Karma\" reaches the max number of stacks, immediately launches Follow-Up ATK, dealing minor Quantum DMG to one enemy target, bouncing for 3 times and consuming all \"Karma.\""
           }
         ]
       },
@@ -44362,19 +44510,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Oracle Brush"
+            "name": "Oracle Brush",
+            "description": "Deals minor Physical DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Samsara, Locked"
+            "name": "Samsara, Locked",
+            "description": "Deals Physical DMG to one enemy and applies \"Burden\" to them. For every 2 Basic ATKs, Skills, or Ultimates allies use on an enemy with Burden, allies recover 1 Skill Point."
           },
           {
             "key": "ultimate",
-            "name": "Ten-Lords' Decree, All Shall Obey"
+            "name": "Ten-Lords' Decree, All Shall Obey",
+            "description": "Increases an ally's SPD and ATK."
           },
           {
             "key": "talent",
-            "name": "Sanction"
+            "name": "Sanction",
+            "description": "When an ally target uses a Basic ATK, Skill, or Ultimate on an enemy target inflicted with \"Burden,\" the DMG dealt increases."
           }
         ]
       },
@@ -45546,19 +45698,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Banner: Stormcaller"
+            "name": "Banner: Stormcaller",
+            "description": "Deals minor Wind DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Talisman: Protection"
+            "name": "Talisman: Protection",
+            "description": "Dispels 1 debuff from one ally and restore HP to that ally and their adjacent allies."
           },
           {
             "key": "ultimate",
-            "name": "Tail: Spiritual Domination"
+            "name": "Tail: Spiritual Domination",
+            "description": "Regenerates Energy for all teammates (i.e., excluding this unit) and increases their ATK."
           },
           {
             "key": "talent",
-            "name": "Possession: Ethereal Metaflow"
+            "name": "Possession: Ethereal Metaflow",
+            "description": "Huohuo gains Divine Provision after using her Skill. If Huohuo possesses Divine Provision when an ally's turn starts or when an ally uses Ultimate, restores the ally's HP. At the same time, every ally with low HP receives healing once. When Divine Provision is triggered to heal an ally, dispel 1 debuff from that ally."
           }
         ]
       },
@@ -46730,19 +46886,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Heart Afire"
+            "name": "Heart Afire",
+            "description": "Deals minor Fire DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Scorch Onslaught"
+            "name": "Scorch Onslaught",
+            "description": "Deals Fire DMG to one enemy and minor Fire DMG to adjacent targets, with a high chance to inflict 1 stack of \"Ashen Roast\" on the primary target."
           },
           {
             "key": "ultimate",
-            "name": "Pyrograph Arcanum"
+            "name": "Pyrograph Arcanum",
+            "description": "Sets the number of \"Ashen Roast\" stacks on enemy targets to the highest number of \"Ashen Roast\" stacks present on the battlefield. Then, activates a Zone and deals Fire DMG to all enemies. While inside the Zone, enemy targets receive increased Ultimate DMG, with a chance of being inflicted with 1 stack of Ashen Roast when taking action."
           },
           {
             "key": "talent",
-            "name": "Quartet Finesse, Octave Finery"
+            "name": "Quartet Finesse, Octave Finery",
+            "description": "When attacking with Basic ATK, Skill, or Ultimate, there is a high chance to inflict 1 stack of \"Ashen Roast\" on the target, causing the enemy to take increased DMG and also be considered as Burned at the same time."
           }
         ]
       },
@@ -47914,19 +48074,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Boltsunder"
+            "name": "Boltsunder",
+            "description": "Deals minor Wind DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Waraxe"
+            "name": "Waraxe",
+            "description": "Deals Wind DMG to an enemy, and additionally launches Talent's Follow-Up ATK 1 time."
           },
           {
             "key": "ultimate",
-            "name": "Terrasplit"
+            "name": "Terrasplit",
+            "description": "During the Ultimate, can ignore Weakness Type to reduce enemy Toughness. When the target is not Weakness Broken, Feixiao's Weakness Break Efficiency increases.\\nLaunches \"Boltsunder Blitz\" or \"Waraxe Skyward\" on one enemy #3[i] time(s). Deals Wind DMG at the end."
           },
           {
             "key": "talent",
-            "name": "Thunderhunt"
+            "name": "Thunderhunt",
+            "description": "Can activate Ultimate when \"Flying Aureus\" reaches #3[i] points, accumulating up to #4[i] points. For every #2[i] attacks by ally targets, Feixiao gains \"Flying Aureus\".\\nAfter teammates attack, Feixiao launches Follow-Up ATK against the primary target, dealing Wind DMG. This effect can only trigger once per turn. When using this attack, increases DMG dealt by this unit."
           }
         ]
       },
@@ -49098,19 +49262,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Galespin Summersault"
+            "name": "Galespin Summersault",
+            "description": "Deals minor Physical DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Bladeborne Quake"
+            "name": "Bladeborne Quake",
+            "description": "Restores this unit's HP. Deals Physical DMG to one enemy and minor Physical DMG to adjacent targets."
           },
           {
             "key": "ultimate",
-            "name": "Earthbind, Etherbreak"
+            "name": "Earthbind, Etherbreak",
+            "description": "Enters \"Parry\" and taunts all enemies. When attacked during this period, triggers powerful Counter and deals Physical DMG to the attacker and adjacent targets. Then, deals minor Physical DMG to one enemy that bounces 6 times. If no Counter is triggered while \"Parry\" is active, deals Physical DMG to a random enemy target and adjacent targets when \"Parry\" ends."
           },
           {
             "key": "talent",
-            "name": "Flashforge"
+            "name": "Flashforge",
+            "description": "When Yunli is attacked by any enemy target, additionally regenerates Energy and immediately Counters, dealing Physical DMG to the attacker and minor Physical DMG to adjacent targets."
           }
         ]
       },
@@ -50282,19 +50450,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Votive Incense"
+            "name": "Votive Incense",
+            "description": "Deals minor Fire DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Smoke and Splendor"
+            "name": "Smoke and Splendor",
+            "description": "Deals minor Fire DMG to all enemies and, at the same time, restores HP for all allies. Fuyuan's action advances."
           },
           {
             "key": "ultimate",
-            "name": "Dripping Mistscape"
+            "name": "Dripping Mistscape",
+            "description": "Increases Break DMG taken by all enemies, deals Fire DMG to all enemies, and at the same time, restores HP for all allies. Fuyuan's action advances."
           },
           {
             "key": "talent",
-            "name": "Mistdance Manifest"
+            "name": "Mistdance Manifest",
+            "description": "Using Skill summons \"Fuyuan\": When taking action, launches Follow-Up ATK and deals minor Fire DMG to all enemies. Additionally deals minor Fire DMG to one random enemy, prioritizing targets with both Toughness greater than 0 and Fire Weakness. Dispels 1 debuff from all allies, and restores HP.\\nUsing Skill repeatedly will increase \"Fuyuan's\" action count."
           }
         ]
       },
@@ -51450,19 +51622,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Hurlthorn"
+            "name": "Hurlthorn",
+            "description": "Deals minor Lightning DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Fleetwinged Raid"
+            "name": "Fleetwinged Raid",
+            "description": "Marks one enemy as \"Prey\" and deals Lightning DMG to it. Gains #2[i] points of Charge."
           },
           {
             "key": "ultimate",
-            "name": "Dash In, Gash Out"
+            "name": "Dash In, Gash Out",
+            "description": "Deals Lightning DMG to one enemy, and launches Talent's Follow-Up ATK."
           },
           {
             "key": "talent",
-            "name": "Cascading Featherblade"
+            "name": "Cascading Featherblade",
+            "description": "When \"Prey\" exists on the field, Moze will enter the Departed state.\\nAfter allies attack \"Prey,\" Moze deals Lightning Additional DMG and consumes 1 Charge point. For every #2[i] point(s) of Charge consumed, Moze launches Follow-Up ATK on \"Prey,\" dealing Lightning DMG. When Charge is 0, dispels the target's \"Prey\" state."
           }
         ]
       },
@@ -52618,19 +52794,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "My Sword Zaps Demons"
+            "name": "My Sword Zaps Demons",
+            "description": "Deals minor Imaginary DMG to one enemy and gains #2[i] point(s) of Charge."
           },
           {
             "key": "skill",
-            "name": "Master, It's Tea Time!"
+            "name": "Master, It's Tea Time!",
+            "description": "Makes a single ally become \"Shifu.\" When using Basic ATK or dealing Enhanced Basic ATK's DMG, triggers the corresponding effect based on the \"Shifu\"'s Path:\\nErudition, Destruction, The Hunt, Remembrance, Elation: Deals Additional DMG based on Shifu's Type.\\nHarmony, Nihility, Preservation, Abundance: Toughness Reduction increases."
           },
           {
             "key": "ultimate",
-            "name": "March 7th, the Apex Heroine"
+            "name": "March 7th, the Apex Heroine",
+            "description": "Deals Imaginary DMG to one enemy and increases the Hits Per Action and DMG chance of the next Enhanced Basic ATK."
           },
           {
             "key": "talent",
-            "name": "Master, I've Ascended!"
+            "name": "Master, I've Ascended!",
+            "description": "After Shifu uses an attack or Ultimate, March 7th gains Charge. When reaching #1[i] points of Charge, March 7th immediately takes action and increases the DMG she deals. Basic ATK gets Enhanced."
           }
         ]
       },
@@ -53802,19 +53982,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Radiant Streak"
+            "name": "Radiant Streak",
+            "description": "Deals minor Fire DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Virtue Beckons Bliss"
+            "name": "Virtue Beckons Bliss",
+            "description": "Grants one ally \"Foxian Prayer\", which increases Break Effect, and enables to reduce Toughness when attacking enemies that don't have the corresponding Weakness Type.\\nMakes this unit enter the \"Torrid Scorch\" state, enhancing Basic ATK. When ally units with \"Foxian Prayer\" attack, Fugue has a high chance to reduce the enemy target's DEF."
           },
           {
             "key": "ultimate",
-            "name": "Solar Splendor Shines Upon All"
+            "name": "Solar Splendor Shines Upon All",
+            "description": "Deals Fire DMG to all enemies. This attack ignores Weakness Type to reduce all enemies' Toughness."
           },
           {
             "key": "talent",
-            "name": "Fortune Follows Where Virtue Spreads"
+            "name": "Fortune Follows Where Virtue Spreads",
+            "description": "While Fugue is on the field, enemy targets will get additionally afflicted with \"Cloudflame Luster.\" When \"Cloudflame Luster\" is reduced to 0, the enemy will take Weakness Break DMG again. After allies attack Weakness Broken enemy targets, additionally deals Super Break DMG."
           }
         ]
       },
@@ -54970,19 +55154,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Corkage Fee"
+            "name": "Corkage Fee",
+            "description": "Deals minor Fire DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Special Brew"
+            "name": "Special Brew",
+            "description": "Immediately restores an ally's HP."
           },
           {
             "key": "ultimate",
-            "name": "Champagne Etiquette"
+            "name": "Champagne Etiquette",
+            "description": "Inflicts Besotted on all enemies and deals Fire DMG to them at the same time. Enhances the next Basic ATK to Nectar Blitz."
           },
           {
             "key": "talent",
-            "name": "Tipsy Tussle"
+            "name": "Tipsy Tussle",
+            "description": "The Besotted state makes targets receive more Break DMG. Every time the target gets attacked by an ally character, the attacker's HP is restored."
           }
         ]
       },
@@ -56154,19 +56342,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Fleeting Fragrance"
+            "name": "Fleeting Fragrance",
+            "description": "Deals minor Physical DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Justice, Hereby Blooms"
+            "name": "Justice, Hereby Blooms",
+            "description": "Deals minor Physical DMG to all enemies."
           },
           {
             "key": "ultimate",
-            "name": "For In This Garden, Supreme Beauty Bestows"
+            "name": "For In This Garden, Supreme Beauty Bestows",
+            "description": "Consumes #2[i] Energy and deals Physical DMG to all enemies."
           },
           {
             "key": "talent",
-            "name": "Sublime Object"
+            "name": "Sublime Object",
+            "description": "When Argenti uses his Basic ATK, Skill, or Ultimate, he regenerates Energy and increases his CRIT Rate for every enemy target hit."
           }
         ]
       },
@@ -57338,19 +57530,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Threading Fragrance"
+            "name": "Threading Fragrance",
+            "description": "Deals minor Ice DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "String Sings Slow Swirls"
+            "name": "String Sings Slow Swirls",
+            "description": "After using her Skill, Ruan Mei gains Overtone. When Ruan Mei has Overtone, increase all allies' DMG and Weakness Break Efficiency."
           },
           {
             "key": "ultimate",
-            "name": "Petals to Stream, Repose in Dream"
+            "name": "Petals to Stream, Repose in Dream",
+            "description": "Increases All-Type RES PEN for all allies, and their attacks apply Thanatoplum Rebloom to enemies hit."
           },
           {
             "key": "talent",
-            "name": "Somatotypical Helix"
+            "name": "Somatotypical Helix",
+            "description": "Increases SPD for all teammates (i.e., excluding this unit). Breaking an enemy target's Weakness will additionally deal Ice Break DMG."
           }
         ]
       },
@@ -58522,19 +58718,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Straight Bet"
+            "name": "Straight Bet",
+            "description": "Deals minor Imaginary DMG to one designated enemy target."
           },
           {
             "key": "skill",
-            "name": "Cornerstone Deluxe"
+            "name": "Cornerstone Deluxe",
+            "description": "Provides all allies with a Fortified Wager shield, whose Shield Effect is stackable."
           },
           {
             "key": "ultimate",
-            "name": "Roulette Shark"
+            "name": "Roulette Shark",
+            "description": "Gains a random amount of \"Blind Bet\" points and inflicts \"Unnerved \"on one enemy, dealing Imaginary DMG. When an ally target hits an \"Unnerved\" enemy, the CRIT DMG dealt increases."
           },
           {
             "key": "talent",
-            "name": "Shot Loaded Right"
+            "name": "Shot Loaded Right",
+            "description": "For any single ally with \"Fortified Wager,\" their Effect RES increases, and when they get attacked, Aventurine accumulates \"Blind Bet.\" When Aventurine has \"Fortified Wager,\" he can resist Crowd Control debuffs. Upon reaching 7 points of \"Blind Bet,\" Aventurine consumes the 7 points to launch a Follow-Up ATK that deals minor Imaginary DMG to random single enemy targets, bouncing a total of 7 times."
           }
         ]
       },
@@ -59706,19 +59906,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Mind is Might"
+            "name": "Mind is Might",
+            "description": "Deals minor Imaginary DMG to one designated enemy target."
           },
           {
             "key": "skill",
-            "name": "Intellectual Midwifery"
+            "name": "Intellectual Midwifery",
+            "description": "Deals Imaginary DMG to one designated enemy."
           },
           {
             "key": "ultimate",
-            "name": "Syllogistic Paradox"
+            "name": "Syllogistic Paradox",
+            "description": "Deals Imaginary DMG to one designated enemy target and applies \"Wiseman's Folly.\" When Dr. Ratio's teammates attack a target afflicted with \"Wiseman's Folly,\" Dr. Ratio launches 1 instance of Follow-Up ATK on this target."
           },
           {
             "key": "talent",
-            "name": "Cogito, Ergo Sum"
+            "name": "Cogito, Ergo Sum",
+            "description": "When using Skill, there is a chance to launch 1 instance of Follow-Up ATK on the target, dealing Imaginary DMG."
           }
         ]
       },
@@ -60890,19 +61094,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Monodrama"
+            "name": "Monodrama",
+            "description": "Deals minor Quantum DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Dreamdiver"
+            "name": "Dreamdiver",
+            "description": "Increases an ally's CRIT DMG and Advances Forward their action."
           },
           {
             "key": "ultimate",
-            "name": "The Hero with a Thousand Faces"
+            "name": "The Hero with a Thousand Faces",
+            "description": "Recovers Skill Points for the team, and enables the DMG Boost provided by Sparkle's Talent to be additionally enhanced."
           },
           {
             "key": "talent",
-            "name": "Red Herring"
+            "name": "Red Herring",
+            "description": "Increases the team's Max Skill Points. Whenever an ally consumes Skill Points, enables all allies to deal more damage."
           }
         ]
       },
@@ -62074,19 +62282,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Percipience, Silent Dawn"
+            "name": "Percipience, Silent Dawn",
+            "description": "Deals minor Wind DMG to one enemy and has a chance of applying \"Arcana\" to the target. After attacking a target that suffers Wind Shear, Bleed, Burn, or Shock, there is respectively a chance of additionally applying \"Arcana\"."
           },
           {
             "key": "skill",
-            "name": "Decadence, False Twilight"
+            "name": "Decadence, False Twilight",
+            "description": "Deals minor Wind DMG to one enemy target and any adjacent targets, with a high chance of inflicting \"Arcana\" on the targets and lowering their DEF."
           },
           {
             "key": "ultimate",
-            "name": "Bliss of Otherworld's Embrace"
+            "name": "Bliss of Otherworld's Embrace",
+            "description": "Inflicts Epiphany on all enemies, increasing the DMG the targets take in their turn. Additionally, having Arcana is regarded as having Wind Shear, Bleed, Burn, and Shock. Furthermore, Arcana will not reset its stacks after causing DMG at the start of the next turn. Deals Wind DMG to all enemies."
           },
           {
             "key": "talent",
-            "name": "Loom of Fate's Caprice"
+            "name": "Loom of Fate's Caprice",
+            "description": "When an enemy target receives DoT at the start of each turn, there is a chance for it to be inflicted with Arcana. They receive Wind DoT at the start of the turn, and Black Swan triggers additional effects based on the number of Arcana stacks."
           }
         ]
       },
@@ -63258,19 +63470,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Trilateral Wiltcross"
+            "name": "Trilateral Wiltcross",
+            "description": "Deals minor Lightning DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Octobolt Flash"
+            "name": "Octobolt Flash",
+            "description": "Gains #3[i] point(s) of Slashed Dream. Inflicts #3[i] stack(s) of Crimson Knot on one enemy, dealing Lightning DMG to this target, as well as minor Lightning DMG to adjacent targets."
           },
           {
             "key": "ultimate",
-            "name": "Slashed Dream Cries in Red"
+            "name": "Slashed Dream Cries in Red",
+            "description": "Deals 3 hits of minor Lightning DMG to one enemy. If \"Crimson Knot\" is removed from the target, then deals minor Lightning DMG to all enemies. Finally, deals 1 hit of Lightning DMG to all enemies and removes all \"Crimson Knots.\""
           },
           {
             "key": "talent",
-            "name": "Atop Rainleaf Hangs Oneness"
+            "name": "Atop Rainleaf Hangs Oneness",
+            "description": "When Slashed Dream reaches its upper limit, the Ultimate can be activated. During the Ultimate, reduces enemies' Toughness regardless of Weakness Types and reduces all enemies' All-Type RES.\\nWhen any unit inflicts debuffs on an enemy target while using their ability, Acheron gains Slashed Dream and inflicts Crimson Knot on an enemy target."
           }
         ]
       },
@@ -64442,19 +64658,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Wingflip White Noise"
+            "name": "Wingflip White Noise",
+            "description": "Deals minor Physical DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Pinion's Aria"
+            "name": "Pinion's Aria",
+            "description": "Increases DMG dealt by all allies."
           },
           {
             "key": "ultimate",
-            "name": "Vox Harmonique, Opus Cosmique"
+            "name": "Vox Harmonique, Opus Cosmique",
+            "description": "Enters the \"Concerto\" state, increases all allies' ATK, and causes all teammates to immediately take action. After an attack, Robin deals Physical Additional DMG. While \"Concerto\" lasts, Robin is immune to Crowd Control debuffs. Before Concerto ends, Robin won't take a turn or action, lasting until the end of the countdown."
           },
           {
             "key": "talent",
-            "name": "Tonal Resonance"
+            "name": "Tonal Resonance",
+            "description": "Increase all allies' CRIT DMG. After an ally target attacks the enemy, Robin additionally regenerates Energy."
           }
         ]
       },
@@ -65626,19 +65846,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Order: Flare Propulsion"
+            "name": "Order: Flare Propulsion",
+            "description": "Deals minor Fire DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Order: Aerial Bombardment"
+            "name": "Order: Aerial Bombardment",
+            "description": "Consumes a portion of this unit's own HP to regenerate Energy. Deals Fire DMG to one enemy. Advances this unit's next Action."
           },
           {
             "key": "ultimate",
-            "name": "Fyrefly Type-IV: Complete Combustion"
+            "name": "Fyrefly Type-IV: Complete Combustion",
+            "description": "Enters the Complete Combustion state. Advances this unit's Action by 100%. Gains Enhanced Basic ATK and Enhanced Skill. Increases this unit's SPD, Weakness Break Efficiency, and the Break DMG received by the enemy targets, lasting until the countdown ends."
           },
           {
             "key": "talent",
-            "name": "Chrysalid Pyronexus"
+            "name": "Chrysalid Pyronexus",
+            "description": "The lower the HP, the less DMG received. During the Complete Combustion state, the DMG Reduction effect remains at its maximum extent and Effect RES is increased. If Energy is lower than #2[i]% when the battle starts, regenerates Energy to #2[i]%. Once Energy is regenerated to its maximum, dispels all debuffs on this unit."
           }
         ]
       },
@@ -66794,19 +67018,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "E—Excuse Me, Please!"
+            "name": "E—Excuse Me, Please!",
+            "description": "Deals minor Ice DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "R—Room Service!"
+            "name": "R—Room Service!",
+            "description": "Deals Ice DMG to an enemy and minor Ice DMG to enemies adjacent to them. In addition, increases Misha's next Ultimate's Hits Per Action."
           },
           {
             "key": "ultimate",
-            "name": "G—Gonna Be Late!"
+            "name": "G—Gonna Be Late!",
+            "description": "Deals minor Ice DMG to single enemies. The attack bounces #1[i] times by default and up to a maximum of #5[i] times. Before each hit lands, there is a minor chance to Freeze the target."
           },
           {
             "key": "talent",
-            "name": "Horological Escapement"
+            "name": "Horological Escapement",
+            "description": "For every 1 Skill Point allies consume, Misha's next Ultimate delivers more Hits Per Action, and Misha regenerates his Energy."
           }
         ]
       },
@@ -67978,19 +68206,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Gleaming Admonition"
+            "name": "Gleaming Admonition",
+            "description": "Deals minor Imaginary DMG to one designated enemy."
           },
           {
             "key": "skill",
-            "name": "Benison of Paper and Rites"
+            "name": "Benison of Paper and Rites",
+            "description": "Enables one designated ally character and their summon to immediately take action, and increases their DMG dealt. If the target has a summon, then the DMG dealt increase is further boosted.\\nAfter using Skill on The Beatified, recovers 1 Skill Point.\\nWhen Sunday uses this ability on characters following the Path of Harmony, cannot trigger the \"immediate action\" effect."
           },
           {
             "key": "ultimate",
-            "name": "Ode to Caress and Cicatrix"
+            "name": "Ode to Caress and Cicatrix",
+            "description": "Regenerates Energy for one designated ally character and turns the target and their summon into \"The Beatified.\" \"The Beatified\" increases their CRIT DMG."
           },
           {
             "key": "talent",
-            "name": "The Sorrowing Body"
+            "name": "The Sorrowing Body",
+            "description": "When using Skill, increases the target's CRIT Rate."
           }
         ]
       },
@@ -69162,19 +69394,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Lash of Riches"
+            "name": "Lash of Riches",
+            "description": "Deals minor Quantum DMG to one enemy and minor Quantum DMG to enemies adjacent to it."
           },
           {
             "key": "skill",
-            "name": "Acquisition Surety"
+            "name": "Acquisition Surety",
+            "description": "Makes a single ally become the Debt Collector and increases their SPD. After the Debt Collector attacks, deals minor Quantum Additional DMG to each enemy target hit and consume the Debt Collector's own HP. When Jade becomes the Debt Collector, she cannot gain the SPD boost effect, and her attacks do not consume her HP."
           },
           {
             "key": "ultimate",
-            "name": "Vow of the Deep"
+            "name": "Vow of the Deep",
+            "description": "Deals Quantum DMG to all enemy units, and this unit's Talent's Follow-Up ATK DMG multiplier increases."
           },
           {
             "key": "talent",
-            "name": "Fang of Flare Flaying"
+            "name": "Fang of Flare Flaying",
+            "description": "After Jade or the \"Debt Collector\" unit attacks, gains 1 point of Charge for each enemy target hit. Upon reaching #3[i] points of Charge, consumes the #3[i] points to launch 1 instance of Follow-Up ATK, dealing Quantum DMG to all enemies.\\nWhen Jade launches the Follow-Up ATK, gains \"Pawned Asset\" and increases CRIT DMG, stacking up to #2[i] times."
           }
         ]
       },
@@ -70346,19 +70582,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Skullcrush Spurs"
+            "name": "Skullcrush Spurs",
+            "description": "Deals minor Physical DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Sizzlin' Tango"
+            "name": "Sizzlin' Tango",
+            "description": "Initiates Standoff. After the target in the Standoff is defeated or Weakness Broken, Boothill receives Pocket Trickshot and dispels the Standoff. Boothill gains Enhanced Basic ATK and this turn does not end."
           },
           {
             "key": "ultimate",
-            "name": "Dust Devil's Sunset Rodeo"
+            "name": "Dust Devil's Sunset Rodeo",
+            "description": "Applies Physical Weakness to one enemy, deals massive Physical DMG to them, and delays their action."
           },
           {
             "key": "talent",
-            "name": "Five Peas in a Pod"
+            "name": "Five Peas in a Pod",
+            "description": "Pocket Trickshot increases the Enhanced Basic ATK's Toughness Reduction and additionally deals Physical Break DMG if the target is Weakness Broken. After winning the battle, retains Pocket Trickshot for the next battle."
           }
         ]
       },
@@ -71530,19 +71770,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Ninjutsu: Rise Above Tumbles"
+            "name": "Ninjutsu: Rise Above Tumbles",
+            "description": "Deals minor Imaginary DMG to one designated enemy."
           },
           {
             "key": "skill",
-            "name": "Ninja Strike: Rooted Resolute"
+            "name": "Ninja Strike: Rooted Resolute",
+            "description": "Deals Imaginary DMG to all enemies."
           },
           {
             "key": "ultimate",
-            "name": "Nindō Supreme: Aishiteru"
+            "name": "Nindō Supreme: Aishiteru",
+            "description": "Enters the \"Sealform\" state, gains an extra turn, obtains 3 points of \"Chroma Ink,\" and increases Weakness Break Efficiency and Break Effect.\\nWhile in the \"Sealform\" state, gains Enhanced Basic ATK. After using Enhanced Basic ATK, consumes 1 point of \"Chroma Ink.\" When \"Chroma Ink\" is depleted, exits the \"Sealform\" state."
           },
           {
             "key": "talent",
-            "name": "Ninja Tech: Endurance Gauge"
+            "name": "Ninja Tech: Endurance Gauge",
+            "description": "When the enemy target is Weakness Broken, Rappa gains 1 point of Charge. When launching the third hit of \"Ningu: Demonbane Petalblade,\" additionally deals Imaginary Break DMG to all enemies. This DMG can ignore Weakness Type to reduce Toughness and consume all Charge, increasing the Break DMG multiplier and Toughness Reduction."
           }
         ]
       },
@@ -72714,19 +72958,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Fiddle... Fissured Memory"
+            "name": "Fiddle... Fissured Memory",
+            "description": "Deals minor Fire DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Lick... Enkindled Betrayal"
+            "name": "Lick... Enkindled Betrayal",
+            "description": "Deploys a Zone. Deals Fire DMG to one enemy and their adjacent targets.\\nWhile the Zone lasts, increases all allies' Weakness Break Efficiency, and enemy targets will also take Super Break DMG even when they are not Weakness Broken."
           },
           {
             "key": "ultimate",
-            "name": "Wallow... Entombed Ash"
+            "name": "Wallow... Entombed Ash",
+            "description": "Applies Weaknesses of Dance Partners' Types to all enemies and reduces their DEF. Deals massive Fire DMG, which is distributed evenly across all enemies."
           },
           {
             "key": "talent",
-            "name": "Who's Afraid of Constance?"
+            "name": "Who's Afraid of Constance?",
+            "description": "When entering combat, The Dahlia regenerates Energy and becomes \"Dance Partner\" along with the teammate that triggered combat. When a \"Dance Partner\" attacks a Weakness Broken enemy target, additionally deals Super Break DMG.\\nAfter an enemy target gets attacked by the other \"Dance Partner,\" The Dahlia triggers Follow-Up ATK, deals minor Fire DMG to random enemies, and additionally deals Super Break DMG to Weakness Broken enemy targets, bouncing a total of #2[i] time(s)."
           }
         ]
       },
@@ -73898,19 +74146,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Did You Get It"
+            "name": "Did You Get It",
+            "description": "Deals minor Ice DMG to one designated enemy."
           },
           {
             "key": "skill",
-            "name": "Big Brain Energy"
+            "name": "Big Brain Energy",
+            "description": "Deals DMG to one designated enemy. Deals DMG to the targets hit by this instance of Skill and their respective adjacent targets, repeating 2 times."
           },
           {
             "key": "ultimate",
-            "name": "Told Ya! Magic Happens"
+            "name": "Told Ya! Magic Happens",
+            "description": "Rearranges the numbers of \"Interpretation\" stacks on all enemies, prioritizing the transfer of the higher numbers of \"Interpretation\" stacks to Elite-level targets and above. Then, deals Ice DMG to all enemies. After use, enhances Skill and immediately takes action."
           },
           {
             "key": "talent",
-            "name": "Hand Them Over"
+            "name": "Hand Them Over",
+            "description": "Enhanced Skill increases the DMG dealt based on the target's \"Interpretation\" stacks."
           }
         ]
       },
@@ -75082,19 +75334,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Thorned Nectar"
+            "name": "Thorned Nectar",
+            "description": "Deals minor Lightning DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Rise, Exalted Renown"
+            "name": "Rise, Exalted Renown",
+            "description": "Restores HP for Garmentmaker. If Garmentmaker is absent, summons the memosprite Garmentmaker and makes this unit immediately take action."
           },
           {
             "key": "ultimate",
-            "name": "Dance, Destined Weaveress"
+            "name": "Dance, Destined Weaveress",
+            "description": "Summons the memosprite Garmentmaker, enabling Aglaea to enter the \"Supreme Stance\" state, immediately take action, and gain Enhanced Basic ATK."
           },
           {
             "key": "talent",
-            "name": "Rosy-Fingered"
+            "name": "Rosy-Fingered",
+            "description": "While Garmentmaker is on the field, Aglaea's attacks inflict the target with the \"Seam Stitch\" state. After attacking enemies in the \"Seam Stitch\" state, deals minor Lightning Additional DMG."
           }
         ]
       },
@@ -76266,19 +76522,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Hundred Rockets"
+            "name": "Hundred Rockets",
+            "description": "Deals minor Quantum DMG to one enemy and adjacent targets."
           },
           {
             "key": "skill",
-            "name": "Where'd the Gifts Go"
+            "name": "Where'd the Gifts Go",
+            "description": "Gains \"Numinosity,\" during which all ally targets have their All-Type RES PEN increased."
           },
           {
             "key": "ultimate",
-            "name": "Guess Who Lives Here"
+            "name": "Guess Who Lives Here",
+            "description": "Activates a Zone and deals minor Quantum DMG to all enemies. While the Zone lasts, increases the DMG taken by enemies and deals minor Quantum Additional DMG to the target that has the highest HP among the hit targets based on the number of enemies attacked."
           },
           {
             "key": "talent",
-            "name": "Busy as Tribbie"
+            "name": "Busy as Tribbie",
+            "description": "After other ally characters use Ultimate, Tribbie launches Follow-Up ATK, dealing minor Quantum DMG to all enemies. This effect triggers up to 1 time per character. When Tribbie uses Ultimate, resets the trigger count for other ally characters."
           }
         ]
       },
@@ -77450,19 +77710,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Vow of Voyage"
+            "name": "Vow of Voyage",
+            "description": "Deals minor Imaginary DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Deaths are Legion, Regrets are None"
+            "name": "Deaths are Legion, Regrets are None",
+            "description": "Consumes HP and deals Imaginary DMG to one designated enemy unit and minor Imaginary DMG to adjacent targets."
           },
           {
             "key": "ultimate",
-            "name": "Throne of Bones"
+            "name": "Throne of Bones",
+            "description": "Restores HP and accumulates Talent's Charge. Deals massive Imaginary DMG to one designated enemy and Imaginary DMG to adjacent targets, then Taunts the target and their adjacent targets."
           },
           {
             "key": "talent",
-            "name": "Blood for Blood"
+            "name": "Blood for Blood",
+            "description": "When losing HP, accumulates Charge. When Charge is at 100, enters the \"Vendetta\" state, restores HP and advances action. During \"Vendetta,\" Max HP increases and DEF remains at 0. At the start of this unit's turn, automatically uses \"Kingslayer Be King.\"\\nWhen Charge reaches 150 during \"Vendetta,\" Mydei immediately gains 1 extra turn and automatically uses \"Godslayer Be God.\"\\nWhen Mydei receives a killing blow, he exits the \"Vendetta\" state."
           }
         ]
       },
@@ -78634,19 +78898,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Pain, Brews Truth"
+            "name": "Pain, Brews Truth",
+            "description": "Deals minor Wind DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Fractal, Exiles Fallacy"
+            "name": "Fractal, Exiles Fallacy",
+            "description": "Deals minor Wind DMG to one enemy and Bounces 5 times in total, prioritizing Bouncing to targets that have not been hit. The more enemy targets on the battlefield, the higher the DMG."
           },
           {
             "key": "ultimate",
-            "name": "Sprouting Life Sculpts Earth"
+            "name": "Sprouting Life Sculpts Earth",
+            "description": "Inflicts \"Sublimation\" on all enemies and deals Wind DMG. In the \"Sublimation\" state, targets will be simultaneously inflicted with 7 types of Weaknesses, and can't take action if they do not have Control RES."
           },
           {
             "key": "talent",
-            "name": "Tetrad Wisdom Reigns Thrice"
+            "name": "Tetrad Wisdom Reigns Thrice",
+            "description": "After hitting enemy targets, inflicts 1 random Weakness. Enemies whose Weaknesses reach #3[i] get inflicted with \"Qualitative Disclosure.\" Anaxa deals increased DMG to targets in the \"Qualitative Disclosure\" state. After Anaxa uses Basic ATK or Skill on them, unleashes 1 additional instance of Skill without consumption."
           }
         ]
       },
@@ -79818,19 +80086,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Oops, a Missed Catch"
+            "name": "Oops, a Missed Catch",
+            "description": "Deals minor Quantum DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Hey, Jackpot for the Taking"
+            "name": "Hey, Jackpot for the Taking",
+            "description": "Has a high chance to decrease one enemy and adjacent targets' DMG dealt and increases Cipher's ATK. Deals Quantum DMG to one designated enemy and minor Quantum DMG to adjacent targets."
           },
           {
             "key": "ultimate",
-            "name": "Yours Truly, Kitty Phantom Thief!"
+            "name": "Yours Truly, Kitty Phantom Thief!",
+            "description": "Deals Quantum DMG and True DMG equal to a percentage of the current tally kept by Talent to one enemy. Moreover, deals minor Quantum DMG and True DMG equal to a percentage of the current tally kept by Talent to the one enemy and its adjacent targets. And this True DMG is distributed evenly among all targets of this ability."
           },
           {
             "key": "talent",
-            "name": "The Hospitable Dolosian"
+            "name": "The Hospitable Dolosian",
+            "description": "Cipher causes one enemy target to enter the \"Patron\" state. After the target in this state gets attacked by teammates, Cipher launches Follow-Up ATK, dealing Quantum DMG to the target. This can trigger #3[i] time(s) per turn.\\nCipher will keep a tally of the DMG dealt by allies to the target in the \"Patron\" state. After using Ultimate, clears this tally."
           }
         ]
       },
@@ -81002,19 +81274,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Lament, Nethersea's Ripple"
+            "name": "Lament, Nethersea's Ripple",
+            "description": "Deals minor Quantum DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Silence, Wraithfly's Caress"
+            "name": "Silence, Wraithfly's Caress",
+            "description": "Consumes all allies' HP. Deals Quantum DMG to one enemy and minor Quantum DMG to adjacent targets."
           },
           {
             "key": "ultimate",
-            "name": "Doomshriek, Dawn's Chime"
+            "name": "Doomshriek, Dawn's Chime",
+            "description": "Summons the memosprite Netherwing and advances its action by 100%. At the same time, deploys a Territory that decreases All-Type RES for all enemies."
           },
           {
             "key": "talent",
-            "name": "Desolation Across Palms"
+            "name": "Desolation Across Palms",
+            "description": "When allies lose HP, Castorice gains \"Newbud\". Increases Castorice's and Netherwing's DMG dealt. When \"Newbud\" reaches its maximum limit, can activate the Ultimate. While Netherwing is on the field, HP lost by allies (except Netherwing) will be converted to an equal amount of HP for Netherwing."
           }
         ]
       },
@@ -82186,19 +82462,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Stride to Deliverance"
+            "name": "Stride to Deliverance",
+            "description": "Deals minor Physical DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Let There Be Light"
+            "name": "Let There Be Light",
+            "description": "Gains #3[i] point(s) of \"Coreflame\", dealing massive Physical DMG to one enemy and Physical DMG to adjacent targets."
           },
           {
             "key": "ultimate",
-            "name": "He Who Bears the World Must Burn"
+            "name": "He Who Bears the World Must Burn",
+            "description": "Transforms into Khaslana and deploys a Territory: Teammates depart and cannot take action, and all enemies have Physical Weaknesses.\\nKhaslana does not enter his own turn, but has #4[i] Khaslana's extra turn(s). In the final turn, launches a final hit and deals massive Physical DMG that is distributed evenly across all enemies."
           },
           {
             "key": "talent",
-            "name": "Pyric Corpus"
+            "name": "Pyric Corpus",
+            "description": "Phainon's Talent. When \"Coreflame\" reaches #4[i], can activate Ultimate.\\nWhen Phainon is targeted by abilities from other targets, gains \"Coreflame\". When targeted by a teammate's ability, increases CRIT DMG."
           }
         ]
       },
@@ -83370,19 +83650,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "When Breeze Kisses Cirrus"
+            "name": "When Breeze Kisses Cirrus",
+            "description": "Deals minor Wind DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Love Over the Rainbow"
+            "name": "Love Over the Rainbow",
+            "description": "Summons memosprite Little Ica, and restores HP for all allies."
           },
           {
             "key": "ultimate",
-            "name": "We Who Fly Into Twilight"
+            "name": "We Who Fly Into Twilight",
+            "description": "Summons memosprite Little Ica, and restores HP for all allies. Enters the \"After Rain\" state. While Hyacine is in this state, increases all allies' Max HP."
           },
           {
             "key": "talent",
-            "name": "First Light Heals the World"
+            "name": "First Light Heals the World",
+            "description": "When Hyacine or Little Ica provides healing, increases Little Ica's DMG dealt."
           }
         ]
       },
@@ -84554,19 +84838,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Aeolian Mode: Echoes in Still Waters"
+            "name": "Aeolian Mode: Echoes in Still Waters",
+            "description": "Deals minor Physical DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Overtone Hum: Chorus After Dark Tides"
+            "name": "Overtone Hum: Chorus After Dark Tides",
+            "description": "There is a high chance to increase the DMG taken by all enemies, and deals Physical DMG to them."
           },
           {
             "key": "ultimate",
-            "name": "Maelstrom Rhapsody"
+            "name": "Maelstrom Rhapsody",
+            "description": "Deploys a Zone that reduces all enemies' ATK and DEF, and deals Physical DMG to them. While the Zone exists, for every 1 instance of DoT received by enemy targets, deals 1 instance of Physical DoT to them."
           },
           {
             "key": "talent",
-            "name": "Sirenic Serenade"
+            "name": "Sirenic Serenade",
+            "description": "When an ally target attacks, Hysilens has a high chance to inflict the hit enemy target with one of the following states: Wind Shear/Bleed/Burn/Shock."
           }
         ]
       },
@@ -85738,19 +86026,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "King's Castling"
+            "name": "King's Castling",
+            "description": "Deals minor Wind DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Pawn's Promotion"
+            "name": "Pawn's Promotion",
+            "description": "Grants \"Military Merit\" to an ally character and gives Charge to Cerydra. When Charge reaches #4[i] points, automatically upgrades the ally character's \"Military Merit\" to \"Peerage.\" The character with \"Peerage\" increases the CRIT DMG for their dealt Skill DMG, increases All-Type RES PEN, and can trigger Coup de Main."
           },
           {
             "key": "ultimate",
-            "name": "Scholar's Mate"
+            "name": "Scholar's Mate",
+            "description": "Gains Charge. Deals Wind DMG to all enemies."
           },
           {
             "key": "talent",
-            "name": "Ave Imperator"
+            "name": "Ave Imperator",
+            "description": "The character with \"Military Merit\" increases their ATK. When they use Basic ATK or Skill, Cerydra gains Charge. After the character with \"Military Merit\" uses an attack, Cerydra additionally deals minor Wind Additional DMG."
           }
         ]
       },
@@ -86922,19 +87214,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Time Thence Blurs"
+            "name": "Time Thence Blurs",
+            "description": "Deals minor Ice DMG to one designated enemy."
           },
           {
             "key": "skill",
-            "name": "Day Gently Slips"
+            "name": "Day Gently Slips",
+            "description": "Consumes this unit's HP to summon memosprite Evey and increase CRIT DMG for all ally memosprites. If Evey is already on the field, restores its HP. When using this, gains #3[i] \"Memoria.\" If in the \"Darkest Riddle\" state, additionally gains #5[i] \"Memoria.\""
           },
           {
             "key": "ultimate",
-            "name": "O Wakeful World, Goodnight"
+            "name": "O Wakeful World, Goodnight",
+            "description": "Deals Ice DMG to all enemies. Summons memosprite Evey and causes Evernight to enter the \"Darkest Riddle\" state, during which enemies take increased DMG and both Evernight and her memosprite deal increased DMG and are immune to Crowd Control debuffs."
           },
           {
             "key": "talent",
-            "name": "With Me, This Night"
+            "name": "With Me, This Night",
+            "description": "When entering combat, summons memosprite Evey. Each time this unit or Evey loses HP, increases CRIT DMG for this unit and Evey, and gains \"Memoria.\"\\nWhen Evernight has #6[i] or more \"Memoria,\" Evey immediately takes action."
           }
         ]
       },
@@ -88106,19 +88402,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Aegis Vitae"
+            "name": "Aegis Vitae",
+            "description": "Deals minor Physical DMG to one designated enemy."
           },
           {
             "key": "skill",
-            "name": "Terra Omnibus"
+            "name": "Terra Omnibus",
+            "description": "Designates one ally character as the \"Bondmate\" and grants all allies a Shield with stackable Shield Effect."
           },
           {
             "key": "ultimate",
-            "name": "A Dragon's Zenith Knows No Rue"
+            "name": "A Dragon's Zenith Knows No Rue",
+            "description": "Deals massive Physical DMG to all enemies and provides a Shield with stackable Shield Effect to all allies. Enhances \"Souldragon.\" When \"Souldragon\" takes action, launches Follow-Up ATK, dealing minor Physical DMG and minor DMG of the Bondmate's Type to all enemies. The enhancement lasts for #3[i] \"Souldragon\" action(s)."
           },
           {
             "key": "talent",
-            "name": "Of Virtue, Forms Unfold"
+            "name": "Of Virtue, Forms Unfold",
+            "description": "When an ally character becomes the \"Bondmate,\" Dan Heng • Permansor Terrae will summon \"Souldragon\" for them.\\nWhen \"Souldragon\" takes action, dispels 1 debuff from all allies and provides a Shield with stackable Shield Effect."
           }
         ]
       },
@@ -89290,19 +89590,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Lo, Hope Takes Flight!"
+            "name": "Lo, Hope Takes Flight!",
+            "description": "Gains \"Recollection\" and deals minor Ice DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Bloom, Elysium of Beyond"
+            "name": "Bloom, Elysium of Beyond",
+            "description": "Gains \"Recollection\" and deploys a Zone. Additionally deals True DMG after all ally targets deal DMG."
           },
           {
             "key": "ultimate",
-            "name": "Verse ◦ Vow ∞"
+            "name": "Verse ◦ Vow ∞",
+            "description": "Summons memosprite Demiurge, causes it to immediately gain 1 extra turn, and activates all teammates' Ultimate. Then, enters the \"Ripples of Past Reverie\" state and gains Enhanced Basic ATK. Increases Cyrene's and Demiurge's CRIT Rate, and deploys the Zone effect from Skill with no duration limit."
           },
           {
             "key": "talent",
-            "name": "Hearts Gather as One"
+            "name": "Hearts Gather as One",
+            "description": "When combat begins or after Cyrene takes action, teammates and their memosprites gain \"Future.\" When ally targets with \"Future\" take action, Cyrene gains \"Recollection.\" While Cyrene is on the field, increases DMG dealt by ally targets."
           }
         ]
       },
@@ -90474,19 +90778,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Cat Got Your Flametongue?"
+            "name": "Cat Got Your Flametongue?",
+            "description": "Deals minor Fire DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Boom! Sparxicle's Poppin'"
+            "name": "Boom! Sparxicle's Poppin'",
+            "description": "Start a livestream to turn Basic ATK into \"Bloom! Winner Takes All\" and trigger \"Engagement Farming\" 1 time. \"Engagement Farming\" can be triggered repeatedly during this ability."
           },
           {
             "key": "ultimate",
-            "name": "Party's Wildin' and Camera's Rollin'"
+            "name": "Party's Wildin' and Camera's Rollin'",
+            "description": "Gains Punchline. Deals Fire DMG to all enemies."
           },
           {
             "key": "talent",
-            "name": "Sleight of Sparx Hand"
+            "name": "Sleight of Sparx Hand",
+            "description": "While Sparxie holds \"Certified Banger,\" using Enhanced Basic ATK or Ultimate deals Fire Elation DMG to enemies."
           }
         ]
       },
@@ -91658,19 +91966,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Whistlebolt Sings Joy"
+            "name": "Whistlebolt Sings Joy",
+            "description": "Deals minor Physical DMG to one enemy target and minor Physical DMG to adjacent targets."
           },
           {
             "key": "skill",
-            "name": "Decalight Unveils All"
+            "name": "Decalight Unveils All",
+            "description": "Deploys a Zone that increases Elation for all ally targets. After Yao Guang uses Basic ATK or Skill, gains Punchline."
           },
           {
             "key": "ultimate",
-            "name": "Hexagram of Feathered Fortune"
+            "name": "Hexagram of Feathered Fortune",
+            "description": "Gains Punchline. Immediately grants Aha 1 extra turn where a fixed amount of Punchline is taken into account, and increases all allies' All-Type RES PEN."
           },
           {
             "key": "talent",
-            "name": "Behold Wherever Light Unfolds"
+            "name": "Behold Wherever Light Unfolds",
+            "description": "While Yao Guang is in possession of \"Certified Banger,\" after an ally target uses an attack, triggers \"Great Boon\": Additionally deals 1 instance of minor Elation DMG of the corresponding Type to 1 random hit target. If this attack consumes Skill Points, this effect triggers 1 extra time. This effect is not considered as using 1 instance of attack."
           }
         ]
       },
@@ -92842,19 +93154,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Brushstroke: Trace the Severed Stream"
+            "name": "Brushstroke: Trace the Severed Stream",
+            "description": "Deals minor Ice DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Relume Life's Light"
+            "name": "Relume Life's Light",
+            "description": "Gains \"Certified Banger\" and restores HP for all allies."
           },
           {
             "key": "ultimate",
-            "name": "Appraise Soul's Ground"
+            "name": "Appraise Soul's Ground",
+            "description": "Gains \"Certified Banger.\" \"Deep Learning\" designates one ally, making them the \"Aesthetic Archetype.\" Advances the \"Aesthetic Archetype's\" action. The more Elation characters in the team, the more the action is advanced. When there are 4 or more Elation characters in the team, the \"Aesthetic Archetype\" gains 1 extra turn, and gains Punchline and \"Certified Banger\" during the extra turn, which are removed at the end of the extra turn. Pearl's Basic ATK gets enhanced. If the \"Aesthetic Archetype\" is on the Path of Elation, Pearl's Basic ATK gets further enhanced, and after attacking, additionally deals Ice Elation DMG. This Elation DMG is calculated based on the \"Aesthetic Archetype's\" stats."
           },
           {
             "key": "talent",
-            "name": "Grow Grace from Grit"
+            "name": "Grow Grace from Grit",
+            "description": "When Pearl holds \"Certified Banger,\" she can consume \"Certified Banger\" to take a portion of DMG for all allies. When an ally target's current HP percentage reaches a certain threshold or lower, DMG taken gets reduced."
           }
         ]
       },
@@ -94026,19 +94342,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Talons: Inculcate Decorum"
+            "name": "Talons: Inculcate Decorum",
+            "description": "Deals minor Lightning DMG to one designated enemy."
           },
           {
             "key": "skill",
-            "name": "Flog: Smite Evil"
+            "name": "Flog: Smite Evil",
+            "description": "Makes one designated enemy become the \"Bait,\" dealing massive Lightning DMG to them. If the target is already the \"Bait,\" additionally deals minor Lightning DMG to them, and recovers #5[i] Skill Point(s). When the \"Bait\" exists on the field, all enemies' DEF gets reduced."
           },
           {
             "key": "ultimate",
-            "name": "Banquet: Insatiable Appetite"
+            "name": "Banquet: Insatiable Appetite",
+            "description": "Makes one designated enemy become the \"Bait,\" dealing massive Lightning DMG to them. Then, immediately launches against the \"Bait\" 1 instance of enhanced Talent's Follow-Up ATK. And Ashveil gains Charge.\\nThis enhanced Talent's Follow-Up ATK does not consume Charge. Whenever \"Gluttony\" reaches #3[i] stack(s) or more, consumes #3[i] stack(s) of \"Gluttony\" to additionally deal massive Lightning DMG. And when this instance of Follow-Up ATK deals a killing blow to the target, it will continue to deal DMG to a new \"Bait\". This triggers until \"Gluttony\" becomes lower than #3[i] stack(s)."
           },
           {
             "key": "talent",
-            "name": "Rancor: Enmity Reprisal"
+            "name": "Rancor: Enmity Reprisal",
+            "description": "After the \"Bait\" gets attacked by other ally targets, Ashveil regenerates a fixed amount of Energy, then consumes Charge to launch Follow-Up ATK against the \"Bait,\" dealing massive Lightning DMG. Afterwards, gains #5[i] stack(s) of \"Gluttony.\""
           }
         ]
       },
@@ -95210,19 +95530,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Syllabus: Pop Quiz"
+            "name": "Syllabus: Pop Quiz",
+            "description": "Deals minor Physical DMG to one designated enemy."
           },
           {
             "key": "skill",
-            "name": "Discipline: Final Verdict"
+            "name": "Discipline: Final Verdict",
+            "description": "Deals massive Physical DMG to one enemy and Physical DMG to adjacent targets. Additionally gains Punchline."
           },
           {
             "key": "ultimate",
-            "name": "Swordsong: Absolution Denied"
+            "name": "Swordsong: Absolution Denied",
+            "description": "Deals Physical DMG to all enemies. Then, deals Physical DMG to one random enemy, bouncing a total of 5 times."
           },
           {
             "key": "talent",
-            "name": "Youth: Halcyon Evermore"
+            "name": "Youth: Halcyon Evermore",
+            "description": "When Evanescia gains Energy, she will simultaneously gain an equal amount of \"Certified Banger\". When Evanescia gains \"Certified Banger,\" she will simultaneously gain an equal amount of Energy. After a certain amount of Energy is accumulated, \"Master Fox\" launches Follow-Up ATK, dealing minor Physical DMG to all enemies, and regenerates Energy for Evanescia. While Evanescia holds \"Certified Banger,\" using Skill, Ultimate, or Master Fox's Follow-Up ATK can deal minor Physical Elation DMG to enemies."
           }
         ]
       },
@@ -96394,19 +96718,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "One Punch!"
+            "name": "One Punch!",
+            "description": "Deals minor Imaginary DMG to one designated enemy."
           },
           {
             "key": "skill",
-            "name": "Trigger Happy"
+            "name": "Trigger Happy",
+            "description": "Gains Punchline. Deals Imaginary DMG to all enemies."
           },
           {
             "key": "ultimate",
-            "name": "God Mode: ON!"
+            "name": "God Mode: ON!",
+            "description": "Transforms and advances action by 100%.\\nDeploys a Zone during Transformation. While holding \"Certified Banger,\" for every 1 Skill Point consumed by allies, there is a high chance to trigger 1 \"Top Loot Box\": Deals massive Imaginary Elation DMG that is distributed evenly among all enemies, and randomly triggers 1 of the following effects:\\nDeals True DMG to the target with the highest HP based on total DMG dealt.\\nRecovers Skill Points.\\nGains Punchline.\\nThe trigger chance decreases proportionally after each trigger."
           },
           {
             "key": "talent",
-            "name": "I Carry, We Win"
+            "name": "I Carry, We Win",
+            "description": "After \"Hidden MMR\" reaches #1[i], the Ultimate can be activated. When gaining Punchline, gains an equal amount of \"Hidden MMR\". The higher the \"Hidden MMR\", the higher the CRIT Rate. Once CRIT Rate reaches 100%, increases CRIT DMG instead.\\nDuring Transformation, Silver Wolf LV.999 becomes immune to Crowd Control debuffs, and her Basic ATK and Elation Skill get enhanced. She exits the Transformation after using Enhanced Basic ATK #5[i] time(s).\\nWhile holding \"Certified Banger,\" using Basic ATK or Skill additionally deals Imaginary Elation DMG. And the Enhanced Basic ATK's ability DMG changes to Elation DMG."
           }
         ]
       },
@@ -97578,19 +97906,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "A Broken Blade Still Slays"
+            "name": "A Broken Blade Still Slays",
+            "description": "Deals minor Fire DMG to one enemy and inflicts the Taunt state on the target."
           },
           {
             "key": "skill",
-            "name": "A Rain of Blades Seals Fate"
+            "name": "A Rain of Blades Seals Fate",
+            "description": "Consumes HP and deals Fire DMG to all enemies. Then, deals minor Fire DMG to single enemies, bouncing #2[i] time(s)."
           },
           {
             "key": "ultimate",
-            "name": "Fornax Ex Corpore"
+            "name": "Fornax Ex Corpore",
+            "description": "Inflicts \"Balefire Bind\" on all enemies, causing the targets to decrease their DEF and increase the DMG they receive. Then, consumes this unit's HP to activate a Zone. While the Zone is active, this unit gains the \"Infinite Fury\" state, increases CRIT Rate, increases CRIT DMG, enhances Basic ATK, unlocks Skill, and gains a new Ultimate, lasting until the countdown ends.\\nWhen Mortenax Blade receives a killing blow, the Zone is dispelled."
           },
           {
             "key": "talent",
-            "name": "All Karma Comes Due"
+            "name": "All Karma Comes Due",
+            "description": "While the Zone is active, after an ally target attacks an enemy, inflicts the \"Balefire Bind\" state on the enemy and grants Charge to Mortenax Blade. When Charge reaches #1[i] points and his HP is higher than 1, consumes #1[i] Charge to regenerate Energy, and enables Mortenax Blade to use his Skill 1 extra time."
           }
         ]
       },
@@ -98762,19 +99094,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Bajiquan"
+            "name": "Bajiquan",
+            "description": "Deals minor Quantum DMG to one designated enemy."
           },
           {
             "key": "skill",
-            "name": "Jeweled Sword Zelretch"
+            "name": "Jeweled Sword Zelretch",
+            "description": "Deals Quantum DMG to one designated enemy."
           },
           {
             "key": "ultimate",
-            "name": "An Gal Ta Ki Gal Šè"
+            "name": "An Gal Ta Ki Gal Šè",
+            "description": "Deals massive Quantum DMG to one designated enemy and Quantum DMG to other enemy targets. When used, increases the DMG taken by all enemies and recovers Skill Point(s) for allies."
           },
           {
             "key": "talent",
-            "name": "Gem Magecraft"
+            "name": "Gem Magecraft",
+            "description": "When entering combat, gains #1[i] \"Gem Energy\". When an ally target consumes or recovers Skill Points, increases their CRIT DMG and grants Rin Tohsaka \"Gem Energy.\" If Rin Tohsaka holds #5[i] or more \"Gem Energy,\" or the current Skill Points are #4[i] or more, her Skill is enhanced to \"Second Magic Experiment.\""
           }
         ]
       },
@@ -99946,19 +100282,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Halfhearted Blow"
+            "name": "Halfhearted Blow",
+            "description": "Deals minor Lightning DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Gate of Babylon"
+            "name": "Gate of Babylon",
+            "description": "Gains \"King's Acknowledgement,\" enabling this unit to ignore part of the target's DEF when dealing DMG. Deals Lightning DMG to one enemy and Lightning DMG to adjacent targets."
           },
           {
             "key": "ultimate",
-            "name": "Enuma Elish"
+            "name": "Enuma Elish",
+            "description": "Deals massive Lightning DMG to all enemies. Additionally deals minor Lightning DMG to random enemies, bouncing #3[i] time(s)."
           },
           {
             "key": "talent",
-            "name": "\"Amuse Me to the Fullest\""
+            "name": "\"Amuse Me to the Fullest\"",
+            "description": "When a teammate uses their Ultimate, Gilgamesh gains \"King's Burden,\" which increases Ultimate DMG dealt by this unit.\\nInitially, automatically uses Basic ATK at the start of this unit's turn. When another ally target takes action, Gilgamesh gains 1 point of \"Interest\". For each point of \"Interest\" in possession, increases SPD for this unit.\\nWhen \"Interest\" reaches #2[i] for the first time, enters the \"Interest Piqued!\" state. In that state, can only use Skill, lasting for the entire battle. After using Skill, clears this unit's \"Interest.\""
           }
         ]
       },
@@ -101130,19 +101470,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Enkindle the First Lodestar"
+            "name": "Enkindle the First Lodestar",
+            "description": "Deals minor Fire DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Upraise the Vanward Cresset"
+            "name": "Upraise the Vanward Cresset",
+            "description": "After using Skill, immediately recovers all Assist Skill uses. Himeko • Nova gains \"Navigator's Semaphore.\" When Himeko • Nova has \"Navigator's Semaphore,\" DMG dealt increases. At the start of every turn, immediately regains 1 Assist Skill use."
           },
           {
             "key": "ultimate",
-            "name": "We, Too, Stride the Stars"
+            "name": "We, Too, Stride the Stars",
+            "description": "During the Ultimate, can launch \"Hyperluminal Particle Beam\" or \"Orbital Annihilation Pulse\" on all enemies. At the end, deals Fire DMG to #6[i] random single enemies."
           },
           {
             "key": "talent",
-            "name": "Of Fire and Far Faring"
+            "name": "Of Fire and Far Faring",
+            "description": "When Himeko • Nova is on the field, deploys a Territory, granting all ally characters Assist Skill. When an ally character uses Assist Skill, Himeko • Nova gains increased All-Type RES PEN and increased CRIT DMG. When attacking, ignores Weakness Types to reduce Toughness.\\nWhen ally characters other than Himeko • Nova use Assist Skill, regenerates Energy for them."
           }
         ]
       },
@@ -102314,19 +102658,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "The Sea Sings in My Key"
+            "name": "The Sea Sings in My Key",
+            "description": "Deals minor Wind DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Summer Strums the Soul"
+            "name": "Summer Strums the Soul",
+            "description": "Summons memosprite \"Summer Songbirds\" Bessie. If \"Summer Songbirds\" is already on the field, restores HP for \"Summer Songbirds\" and gains Vibes."
           },
           {
             "key": "ultimate",
-            "name": "Ascend That Rhapsody in Blue"
+            "name": "Ascend That Rhapsody in Blue",
+            "description": "Advances the action of one designated ally character (excluding Robin • Summeretto) and regenerates Energy. Then, grants them the \"Special Guest\" effect. When this character or their summon attacks, they additionally grant Robin • Summeretto Vibes, but cannot make other friendly targets gain the action advance effect."
           },
           {
             "key": "talent",
-            "name": "Wings Heed No Borders"
+            "name": "Wings Heed No Borders",
+            "description": "When an ally target uses an attack, or provides healing or Shield, Robin • Summeretto gains Vibes. Once Vibes reaches a certain value, summons \"Summer Songbirds\" Drummie and \"Summer Songbirds\" Paddie respectively. After all \"Summer Songbirds\" take the stage, Robin • Summeretto and the \"Summer Songbirds\" enter the \"Fever\" state and deploy a Zone. When ally targets deal DMG inside the Zone, they ignore a portion of enemy targets' DEF.\\nWhile in the \"Fever\" state, Robin • Summeretto and the \"Summer Songbirds\" are immune to Crowd Control debuffs. Robin • Summeretto will not enter her turn until the \"Fever\" state ends."
           }
         ]
       },
@@ -103498,19 +103846,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Dead Center, the Torrent Hits"
+            "name": "Dead Center, the Torrent Hits",
+            "description": "Deals minor Quantum DMG to one designated enemy."
           },
           {
             "key": "skill",
-            "name": "Kill Shot, the Sands Boil"
+            "name": "Kill Shot, the Sands Boil",
+            "description": "Deals Quantum DMG to all enemies. Gains Punchline and \"Fervor.\""
           },
           {
             "key": "ultimate",
-            "name": "Grand Slam, Crest That High Tide"
+            "name": "Grand Slam, Crest That High Tide",
+            "description": "Deals massive Quantum DMG to all enemies. Gains Punchline and \"Fervor.\" And increases SPD."
           },
           {
             "key": "talent",
-            "name": "Ante Up, the Abyss Answers"
+            "name": "Ante Up, the Abyss Answers",
+            "description": "The duration of Aventurine • Waveflair's \"Certified Banger\" increases by 1 turn. After a teammate uses an attack, Aventurine • Waveflair gains \"Fervor\" and Punchline.\\nWhen \"Fervor\" reaches a certain value, Aventurine • Waveflair immediately uses 1 instance of \"Cheers! To Summer's Blaze\" that takes into account a fixed amount of Punchline, and enhances the next Elation Skill used in the Aha Instant to \"All In! To Summer's Blaze.\"\\nWhile Aventurine • Waveflair holds \"Certified Banger,\" Skill and Ultimate additionally deal Quantum Elation DMG to all enemies."
           }
         ]
       },
@@ -104666,19 +105018,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Farewell Hit"
+            "name": "Farewell Hit",
+            "description": "Deals minor Physical DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "RIP Home Run"
+            "name": "RIP Home Run",
+            "description": "Deals Physical DMG to one enemy and enemies adjacent to it."
           },
           {
             "key": "ultimate",
-            "name": "Stardust Ace"
+            "name": "Stardust Ace",
+            "description": "Uses Single Target ATK or Blast to strike with full force."
           },
           {
             "key": "talent",
-            "name": "Perfect Pickoff"
+            "name": "Perfect Pickoff",
+            "description": "Every time this unit breaks an enemy target's Weakness, ATK increases."
           }
         ]
       },
@@ -105834,19 +106190,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Farewell Hit"
+            "name": "Farewell Hit",
+            "description": "Deals minor Physical DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "RIP Home Run"
+            "name": "RIP Home Run",
+            "description": "Deals Physical DMG to one enemy and enemies adjacent to it."
           },
           {
             "key": "ultimate",
-            "name": "Stardust Ace"
+            "name": "Stardust Ace",
+            "description": "Uses Single Target ATK or Blast to strike with full force."
           },
           {
             "key": "talent",
-            "name": "Perfect Pickoff"
+            "name": "Perfect Pickoff",
+            "description": "Every time this unit breaks an enemy target's Weakness, ATK increases."
           }
         ]
       },
@@ -107002,19 +107362,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Ice-Breaking Light"
+            "name": "Ice-Breaking Light",
+            "description": "Deals minor Fire DMG to one enemy and gains \"Magma Will.\""
           },
           {
             "key": "skill",
-            "name": "Ever-Burning Amber"
+            "name": "Ever-Burning Amber",
+            "description": "Reduces DMG taken and gains Magma Will, with a high chance to Taunt all enemies."
           },
           {
             "key": "ultimate",
-            "name": "War-Flaming Lance"
+            "name": "War-Flaming Lance",
+            "description": "Deals Fire DMG to all enemies and enhances this unit's next Basic ATK."
           },
           {
             "key": "talent",
-            "name": "Treasure of the Architects"
+            "name": "Treasure of the Architects",
+            "description": "When attacked, stacks \"Magma Will.\" When \"Magma Will\" is at no fewer than 4 stacks, Basic ATK gets enhanced. After using Basic ATK, Skill, or Ultimate, provides a Shield for team."
           }
         ]
       },
@@ -108170,19 +108534,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Ice-Breaking Light"
+            "name": "Ice-Breaking Light",
+            "description": "Deals minor Fire DMG to one enemy and gains \"Magma Will.\""
           },
           {
             "key": "skill",
-            "name": "Ever-Burning Amber"
+            "name": "Ever-Burning Amber",
+            "description": "Reduces DMG taken and gains Magma Will, with a high chance to Taunt all enemies."
           },
           {
             "key": "ultimate",
-            "name": "War-Flaming Lance"
+            "name": "War-Flaming Lance",
+            "description": "Deals Fire DMG to all enemies and enhances this unit's next Basic ATK."
           },
           {
             "key": "talent",
-            "name": "Treasure of the Architects"
+            "name": "Treasure of the Architects",
+            "description": "When attacked, stacks \"Magma Will.\" When \"Magma Will\" is at no fewer than 4 stacks, Basic ATK gets enhanced. After using Basic ATK, Skill, or Ultimate, provides a Shield for team."
           }
         ]
       },
@@ -109338,19 +109706,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Swing Dance Etiquette"
+            "name": "Swing Dance Etiquette",
+            "description": "Deals minor Imaginary DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Halftime to Make It Rain"
+            "name": "Halftime to Make It Rain",
+            "description": "Deals minor Imaginary DMG to single enemy targets with 5 Bounces in total."
           },
           {
             "key": "ultimate",
-            "name": "All-Out Footlight Parade"
+            "name": "All-Out Footlight Parade",
+            "description": "Grants all allies the Backup Dancer effect. Allies with Backup Dancer have their Break Effect increased and additionally deal Super Break DMG 1 time when they attack enemy targets that are Weakness Broken."
           },
           {
             "key": "talent",
-            "name": "Full-on Aerial Dance"
+            "name": "Full-on Aerial Dance",
+            "description": "The Trailblazer regenerates Energy when an enemy target's Weakness is Broken."
           }
         ]
       },
@@ -110506,19 +110878,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Swing Dance Etiquette"
+            "name": "Swing Dance Etiquette",
+            "description": "Deals minor Imaginary DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Halftime to Make It Rain"
+            "name": "Halftime to Make It Rain",
+            "description": "Deals minor Imaginary DMG to single enemy targets with 5 Bounces in total."
           },
           {
             "key": "ultimate",
-            "name": "All-Out Footlight Parade"
+            "name": "All-Out Footlight Parade",
+            "description": "Grants all allies the Backup Dancer effect. Allies with Backup Dancer have their Break Effect increased and additionally deal Super Break DMG 1 time when they attack enemy targets that are Weakness Broken."
           },
           {
             "key": "talent",
-            "name": "Full-on Aerial Dance"
+            "name": "Full-on Aerial Dance",
+            "description": "The Trailblazer regenerates Energy when an enemy target's Weakness is Broken."
           }
         ]
       },
@@ -111674,19 +112050,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Leave It to Me!"
+            "name": "Leave It to Me!",
+            "description": "Deals minor Ice DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "I Choose You!"
+            "name": "I Choose You!",
+            "description": "Summons the memosprite Mem. If Mem is already on the field, restores Mem's HP, and grants Mem Charge."
           },
           {
             "key": "ultimate",
-            "name": "Together, Mem!"
+            "name": "Together, Mem!",
+            "description": "Summons memosprite Mem. Grants Mem Charge, then makes Mem deal massive Ice DMG to all enemies."
           },
           {
             "key": "talent",
-            "name": "Almighty Companion"
+            "name": "Almighty Companion",
+            "description": "Every time a certain amount of Energy is regenerated by all allies, Mem gains Charge."
           }
         ]
       },
@@ -112842,19 +113222,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Leave It to Me!"
+            "name": "Leave It to Me!",
+            "description": "Deals minor Ice DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "I Choose You!"
+            "name": "I Choose You!",
+            "description": "Summons the memosprite Mem. If Mem is already on the field, restores Mem's HP, and grants Mem Charge."
           },
           {
             "key": "ultimate",
-            "name": "Together, Mem!"
+            "name": "Together, Mem!",
+            "description": "Summons memosprite Mem. Grants Mem Charge, then makes Mem deal massive Ice DMG to all enemies."
           },
           {
             "key": "talent",
-            "name": "Almighty Companion"
+            "name": "Almighty Companion",
+            "description": "Every time a certain amount of Energy is regenerated by all allies, Mem gains Charge."
           }
         ]
       },
@@ -114010,19 +114394,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Make Some Noise"
+            "name": "Make Some Noise",
+            "description": "Deals minor Lightning DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Let the Storm Rage On"
+            "name": "Let the Storm Rage On",
+            "description": "Deals minor Lightning DMG to all enemies and gains \"Certified Banger.\""
           },
           {
             "key": "ultimate",
-            "name": "May the Trailblaze Fly You Starward"
+            "name": "May the Trailblaze Fly You Starward",
+            "description": "Gains Punchline. Increases the CRIT DMG of one designated ally, and dispels Crowd Control debuffs on that target. If the target has Elation Skill, the target additionally gains \"Certified Banger\" and immediately uses their Elation Skill. Otherwise, their action advances."
           },
           {
             "key": "talent",
-            "name": "That Smile Hits Different"
+            "name": "That Smile Hits Different",
+            "description": "After using an attack, regenerates Energy and gains Punchline.\\nWhen the Trailblazer holds \"Certified Banger,\" their Skill additionally deals minor Lightning Elation DMG to all enemies."
           }
         ]
       },
@@ -115178,19 +115566,23 @@
         "info": [
           {
             "key": "basic",
-            "name": "Make Some Noise"
+            "name": "Make Some Noise",
+            "description": "Deals minor Lightning DMG to one enemy."
           },
           {
             "key": "skill",
-            "name": "Let the Storm Rage On"
+            "name": "Let the Storm Rage On",
+            "description": "Deals minor Lightning DMG to all enemies and gains \"Certified Banger.\""
           },
           {
             "key": "ultimate",
-            "name": "May the Trailblaze Fly You Starward"
+            "name": "May the Trailblaze Fly You Starward",
+            "description": "Gains Punchline. Increases the CRIT DMG of one designated ally, and dispels Crowd Control debuffs on that target. If the target has Elation Skill, the target additionally gains \"Certified Banger\" and immediately uses their Elation Skill. Otherwise, their action advances."
           },
           {
             "key": "talent",
-            "name": "That Smile Hits Different"
+            "name": "That Smile Hits Different",
+            "description": "After using an attack, regenerates Energy and gains Punchline.\\nWhen the Trailblazer holds \"Certified Banger,\" their Skill additionally deals minor Lightning Elation DMG to all enemies."
           }
         ]
       },
