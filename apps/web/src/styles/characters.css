@@ -103,3 +103,33 @@
 .wp-name { display: inline-flex; align-items: center; gap: 10px; }
 .wp-name .gicon { width: 36px; height: 36px; font-size: 11px; flex: none; }
 .wp-table input[type="number"] { width: 72px; }
+
+/* Weapons (Georges, 2026-10-11): a card per copy you hold, the catalog's others dimmed; a panel per weapon. */
+.wp-page { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; align-items: start; }
+.wp-page.has-panel { grid-template-columns: minmax(0, 1fr) 380px; }
+.wp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+.wp-card { --el: var(--paper); position: relative; display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 12px; background: var(--card); border: 1px solid var(--edge); }
+.wp-card:hover, .wp-card.is-on { border-color: var(--el); }
+.wp-card.is-unowned { border-style: dashed; }
+.wp-card.is-unowned .wp-art { opacity: 0.4; filter: grayscale(0.6); }
+.wp-open { position: absolute; inset: 0; z-index: 1; padding: 0; background: transparent; border: 0; cursor: pointer; }
+.wp-open:focus-visible { outline: 2px solid var(--el); outline-offset: 2px; }
+.wp-art { width: 64px; height: 64px; font-size: 14px; }
+.wp-body { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.wp-body strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wp-body .mn { font-size: 12px; }
+.wp-holder { width: 32px; height: 32px; font-size: 10px; border-color: var(--el); }
+.wp-wish { position: absolute; top: 6px; right: 6px; }
+.wp-panel { position: sticky; top: 16px; display: grid; gap: 12px; }
+.wp-panel-title { display: flex; align-items: center; gap: 12px; }
+.wp-panel-title .gicon { width: 56px; height: 56px; font-size: 12px; }
+.wp-panel-title h3 { margin: 0 0 4px; }
+.wp-copy { display: flex; align-items: flex-end; gap: 10px; margin: 0; padding: 10px 0 0; border: 0; border-top: 1px solid var(--surface-3); }
+.wp-copy legend { float: left; width: 60px; padding: 0; align-self: center; }
+.wp-copy label { margin: 0; }
+.wp-copy input { width: 72px; margin-top: 4px; }
+.wp-held .gicon { width: 32px; height: 32px; font-size: 10px; }
+.wp-actions { flex-wrap: wrap; gap: 8px; }
+.wp-add { display: flex; align-items: flex-end; gap: 14px; margin-bottom: 16px; }
+.wp-add label { margin: 0; }
+.wp-add input { margin-top: 6px; }
