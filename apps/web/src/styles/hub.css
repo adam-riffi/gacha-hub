@@ -176,3 +176,13 @@ label.act-row { margin: 0; cursor: pointer; color: var(--text); font: 400 15px/1
 .ov-squares { display: inline-flex; gap: 4px; }
 .ov-squares > i { width: 12px; height: 14px; border: 1px solid var(--text-muted); }
 .ov-squares > i.on { background: var(--paper); border-color: var(--paper); }
+.ov-goals { display: grid; grid-template-columns: 120px minmax(0, 1fr); align-items: center; gap: 18px; }
+.ov-ring { width: 120px; height: 120px; }
+.ov-ring circle { fill: none; stroke-width: 10; }
+.ov-ring-track { stroke: var(--surface-3); }
+.ov-ring-fill { stroke: var(--paper); }
+.ov-ring text { fill: var(--text); font: 600 18px var(--font-display); }
+.ov-goals .ov-table td a { color: var(--text); }
+.ov-backlog { display: flex; align-items: flex-end; gap: 16px; }
+.ov-spark { flex: 1; height: 40px; }
+.ov-spark polyline { fill: none; stroke: var(--text-muted); stroke-width: 1.5; }

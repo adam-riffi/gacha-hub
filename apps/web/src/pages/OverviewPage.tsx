@@ -53,6 +53,8 @@ export function OverviewPage() {
         <StaminaCard g={g} game={game} instance={instance.data} />
         <BuildsCard instanceId={id!} game={game} builds={(builds.data ?? []).filter((b) => b.buildStatus === "building" || b.buildStatus === "good")} />
         <EndgameCard instanceId={id!} game={game} region={region} cycles={cycles.data} />
+        <GoalsCard gameKey={game.key} tasks={tasks.data ?? []} />
+        <BacklogCard g={g} tasks={tasks.data ?? []} />
       </div>
     </>
   );
@@ -360,6 +362,79 @@ function EndgameCard({ instanceId, game, region, cycles }: { instanceId: string;
           })}
         </tbody>
       </table>
+    </section>
+  );
+}
+
+/** A goal's progress, 0 to 1: its material steps met, its checklist ticked, or its count over its target. */
+function progressOf(t: TaskDto, all: TaskDto[]) {
+  const kids = all.filter((k) => k.parentId === t.id && k.materialId);
+  if (kids.length) return kids.filter((k) => k.progress >= (k.target ?? 0)).length / kids.length;
+  if (t.items?.length) return t.items.filter((i) => i.done).length / t.items.length;
+  return t.target ? Math.min(1, t.progress / t.target) : t.lastCompletedAt ? 1 : 0;
+}
+const topGoals = (tasks: TaskDto[]) => tasks.filter((t) => !t.parentId && t.type !== "recurring");
+
+/** The game's active goals with their progress, and their average as a ring. */
+function GoalsCard({ gameKey, tasks }: { gameKey: string; tasks: TaskDto[] }) {
+  const goals = topGoals(tasks)
+    .filter((t) => !t.backlog)
+    .map((t) => ({ t, p: progressOf(t, tasks) }))
+    .sort((a, b) => b.p - a.p);
+  const avg = goals.length ? goals.reduce((s, g) => s + g.p, 0) / goals.length : 0;
+  const R = 34;
+  const C = 2 * Math.PI * R;
+  return (
+    <section className="card ov-card is-wide" aria-label="Goals">
+      <Head title="Goals" to={`/tasks?game=${gameKey}`} />
+      <div className="ov-goals">
+        <svg viewBox="0 0 84 84" className="ov-ring" role="img" aria-label={`${Math.round(avg * 100)}% done on average`}>
+          <circle cx="42" cy="42" r={R} className="ov-ring-track" />
+          <circle cx="42" cy="42" r={R} className="ov-ring-fill" strokeDasharray={`${avg * C} ${C}`} transform="rotate(-90 42 42)" />
+          <text x="42" y="47" textAnchor="middle">
+            {Math.round(avg * 100)}%
+          </text>
+        </svg>
+        <div className="ov-scroll">
+          <table className="ov-table">
+            <tbody>
+              {goals.map(({ t, p }) => (
+                <tr key={t.id}>
+                  <td>
+                    <Link to={`/tasks?game=${gameKey}`}>{t.title}</Link>
+                  </td>
+                  <td className="mn num">{Math.round(p * 100)}%</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {goals.length === 0 && <p className="mu">None</p>}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/** The goals still open (the backlog included), and how many there were each of the last ten days. */
+function BacklogCard({ g, tasks }: { g: DashGame; tasks: TaskDto[] }) {
+  const open = topGoals(tasks).filter((t) => progressOf(t, tasks) < 1).length;
+  const days = g.days.slice(-10).map((d) => d.goalsOpen);
+  const max = Math.max(1, ...days, open);
+  const pts = days.map((v, i) => `${days.length > 1 ? (i * 160) / (days.length - 1) : 80},${36 - (v / max) * 32}`).join(" ");
+  return (
+    <section className="card ov-card" aria-label="Backlog">
+      <Head title="Backlog" to={`/tasks?game=${g.gameKey}`} />
+      <div className="ov-backlog">
+        <span className="ov-big" data-testid="open">
+          {open}
+        </span>
+        {days.length > 1 && (
+          <svg viewBox="0 0 160 40" className="ov-spark" role="img" aria-label={`Open goals, last ${days.length} days: ${days.join(", ")}`}>
+            <polyline points={pts} />
+          </svg>
+        )}
+      </div>
+      <span className="mn mu">open, last 10 days</span>
     </section>
   );
 }
