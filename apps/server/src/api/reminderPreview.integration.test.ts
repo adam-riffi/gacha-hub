@@ -39,6 +39,17 @@ describe("reminder preview and test DM (WIREFRAMES.md A3)", () => {
     expect(r.json[0]!.text).toContain("Dailies left: Daily Commissions");
   });
 
+  // Postgres returns rows in no set order: the list is dailies first, then weeklies, whatever order they were made in.
+  it("lists the tasks left dailies first, then weeklies, whatever order they were made in", async () => {
+    const tasks = (await c.req<{ id: string; title: string; refId: string }[]>("GET", "/api/tasks")).json;
+    const daily = tasks.find((t) => t.refId === gid && t.title === "Daily Commissions")!;
+    await c.req("DELETE", `/api/tasks/${daily.id}`);
+    await c.req("POST", "/api/tasks", { scope: "game", refId: gid, type: "recurring", title: "Daily Commissions", cadence: "daily" });
+    await c.req("PUT", `/api/instances/${gid}/reminder`, rule);
+    const r = await c.req<ReminderPreviewDto>("GET", "/api/reminders/preview");
+    expect(r.json[0]!.text).toContain("Dailies left: Daily Commissions, Weekly Bosses");
+  });
+
   it("sends the preview as a test DM once the bot is set up, and says why it cannot otherwise", async () => {
     await c.req("PUT", `/api/instances/${gid}/reminder`, rule);
     expect((await c.req("POST", "/api/reminders/test")).json).toEqual({ sent: false, reason: "no_bot" });

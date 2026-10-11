@@ -65,6 +65,8 @@ async function openDomains(instance: GameInstance, game: GameDefinition, now: Da
 async function undoneDailies(userId: string, instance: GameInstance, game: GameDefinition) {
   const tasks = await prisma.task.findMany({
     where: { userId, scope: "game", refId: instance.id, type: "recurring" },
+    // Dailies, then monthlies and weeklies, each in the order they were made: Postgres keeps no order otherwise.
+    orderBy: [{ cadence: "asc" }, { createdAt: "asc" }, { title: "asc" }],
   });
   const region = regionForInstance(game, instance);
   const now = new Date();
