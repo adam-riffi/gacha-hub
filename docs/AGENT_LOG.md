@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-12 · claude · stack/r8/06-weapon-sync · #260
+- Done: weapons and characters synced (Georges, round 5: "check if I have the extra weapon copy and ask me if I either want to take it from a character or create a separate instance of the weapon shared between different builds or add a copy"). Each game's weapon object can name its copy (`copyId`; ZZZ's W-Engine gains its catalog id too). On the sheet, picking a weapon takes a free copy with its level and refinement; where every copy is held, a prompt lists each holder with Take it from … and Share …'s, then Add a copy. The server (`syncHolders`) keeps a copy and every sheet holding it in step both ways (a sheet's save sets the copy and the other holders; a level typed on Weapons sets the sheets) and lets go of a deleted copy; it refuses a copy of another weapon or profile (`copy_mismatch`). Weapons shows each holder of a shared copy; sheets from before pair with copies in order as they did.
+- Tests: written first: integration: a sheet sets its copy's level and refinement and the other sheet sharing it; Weapons' level reaches the sheets; a deleted copy lets go (the weapon stays); a copy of another weapon or profile is refused. A journey with three The Hunt characters: Sushang takes the free Arrows at Lv 50; Yanqing is asked and shares Sushang's; Lv 60 typed on Weapons reaches both, and the card shows Yanqing; Dan Heng adds a copy (two now); Yanqing takes Dan Heng's, whose sheet lets go.
+- Scope/decisions: Take it from empties the other sheet's weapon at once; the sheet that took it saves as usual.
+- Next: the per-game dashboard as a hybrid of the Overview.
+
 ## 2026-10-12 · claude · stack/r8/05-card-stats · #261
 - Done: the stats the character cards show, picked per game (Georges, round 5: "if I wanna see my HP, EM and DEF I should be able to"): Card stats chips under the filters (crit value, HP, ATK, DEF, the game's KPI stats and any typed), up to six in the order picked, Role going back; saved on the profile (`cardStats`, migration `card_stats`). A completed set's bonus to a shown stat ("include set bonuses like crit or ATK bonus … in another colour … the original amount + the set bonus"): `statKpis` reads the set's top-tier text and adds it in the element's colour where both are percentages or both flat, else sets it beside the stat ("+6%" of a flat SPD); the stat and the bonus on hover, written out on a click. Star Rail's relic set texts carry their numbers again (they read "#1[i]%"; the importer fills them from the params).
 - Tests: written first: `statKpis` shows picked stats; adds Blizzard Strayer's 4-piece CRIT Rate (50% → 70%, the stat and bonus apart); leaves out a 2-piece bonus, an unfinished set and a bonus to one kind of attack (Charged Attack CRIT Rate); sets Musketeer's +6% SPD and Woodpecker's +9% ATK beside flat stats; reads WuWa's 5-piece Glacio DMG onto its DMG Bonus. The HSR catalog's Musketeer and Hunter texts have their numbers and no "#" is left. The route keeps up to six stats, refuses seven, empty and doubles, and clears with null. A journey picks HP, CRIT DMG and SPD for Qingque in four Hunter relics: CRIT DMG reads 125% with "100% + 25% · Hunter of Glacial Forest 4pc" on hover and written out on a click, kept after a reload, Role clearing it.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the Planner journey plans Lisa's first talent level and finds "Wed Sat" for Teachings of Ballad, Lisa's icon on her goal and the book's icon on its row; the first journey reads a material's name from its field, since the cell now holds the icon too. `npm run check` passes: 571 tests and 55 journeys.
 - Scope/decisions: Sunday left out (it is every material's day). The material names stay beside their icons in the table, where the counts are typed.
 - Next: Farm today as icons.
-
-## 2026-10-11 · claude · stack/r4/02-order · #221
-- Done: the cause of #218's one-off `test-postgres` failure. The reminder's "Dailies left" list read the profile's recurring tasks with no order, and Postgres returned Weekly Bosses before Daily Commissions once. The list is now ordered: dailies, then monthlies and weeklies, each in the order they were made.
-- Tests: written first: a Daily Commissions deleted and made again (so it comes after Weekly Bosses) still reads first in the preview. `npm run check` passes: 571 tests and 55 journeys.
-- Scope/decisions: the order is by cadence name ("daily" < "monthly" < "weekly"), then creation, then title.
-- Next: the planner's days.
