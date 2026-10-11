@@ -484,7 +484,7 @@ Stock edits here are the source of truth for every goal's progress.
 
 ### 8.15 Settings · Data sources
 
-![Data sources](screens/15-admin.jpg)
+![Data sources](screens/15-data-sources.jpg)
 
 **For:** keeping banners and events correct, for the owner (`ADMIN_DISCORD_IDS`), from Settings (`/settings/data`; `/admin` leads there).
 
