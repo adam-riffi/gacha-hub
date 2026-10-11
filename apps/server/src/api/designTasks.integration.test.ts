@@ -9,6 +9,8 @@ const EXPECTED: Record<string, [title: string, cadence: string, target: number |
   hsr: [["Check-in", "daily", null], ["Echo of War", "weekly", 3]],
   zzz: [["Coffee", "daily", null], ["Video store", "daily", null], ["Notorious Hunt", "weekly", 3]],
   nte: [["Nakupenda Pool", "daily", null], ["Fortune reading", "daily", null], ["Gifts", "daily", null], ["Auction House", "weekly", null], ["Old Mailbox commission", "weekly", null]],
+  // WuWa's Nightmare Nests: up to 36 Tacet Discords a day (Prydwen's game modes guide).
+  wuwa: [["Nightmare Nests", "daily", 36]],
   endfield: [["Spend Sanity", "daily", null], ["Credit store", "daily", null], ["Weekly missions", "weekly", null], ["Severe Energy Alluvium", "weekly", null]],
 };
 
