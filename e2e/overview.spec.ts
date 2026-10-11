@@ -20,7 +20,8 @@ test("Home with a game picked shows its dashboard: pulls, pity and banners at a 
   await expect(pulls.getByTestId("pulls-total")).toHaveText("13");
   await expect(pulls).toContainText("From Stellar Jade");
   await expect(page.getByRole("region", { name: "Pity" })).toContainText("/90");
-  await expect(page.locator(".banner-card")).toContainText("E2E overview warp");
+  // Home's carousel, for this game alone: its banners rotate, nearest deadline first.
+  await expect(page.locator(".banner-card")).toContainText("Honkai: Star Rail");
 
   await pulls.getByRole("link", { name: "Pulls" }).click();
   await expect(page).toHaveURL(new RegExp(`/games/${id}/pulls$`));
