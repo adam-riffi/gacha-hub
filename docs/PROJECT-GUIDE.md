@@ -666,7 +666,6 @@ Every milestone in DESIGN.md §9 is built, V through F12. What is left waits on 
 **Decided against, with the reason (2026-10-10, at Georges's request to take every decision)**
 
 - **Endfield art:** its wiki serves images by name, but it answered HTTP 429 after a short burst. It can neither serve as a hotlinked fallback nor feed the mirror reliably. No other host exists.
-- **WuWa material and Sonata set art:** no screen shows material icons (WIREFRAMES.md), and the Sonata "icons" are the same element icon for every set.
 - **Shiyu Defense's newer layout (v2) in the chronicle:** it rates floors 4 and 5 by score, unlike the manifest's "S-rank frontiers". Without a recorded answer, the mapping would be a guess. The first layout is read.
 - **Endgame eligibility in Used in:** no source publishes each cycle's rules in a structured form. Typing them in every cycle goes against the pipeline rule.
 - **The Genshin constellation reference card:** the redesigned sheet has no slot for it (WIREFRAMES.md).
@@ -688,6 +687,7 @@ Every milestone in DESIGN.md §9 is built, V through F12. What is left waits on 
 - Genshin talents from Enka (#185);
 - Stygian Onslaught (#186);
 - default KPI targets (#187);
+- art for WuWa's materials and Sonata sets (each set's own icon, from its group) and Genshin's newest materials, from Yatta (round 4);
 - Georges's feedback rounds (#187–#237), including the per-game Overview with each game's own resources;
 - endgame enemies for Shiyu Defense, Deadly Assault and Stygian Onslaught (#230, #232);
 - talent and skill descriptions (#238–#241).

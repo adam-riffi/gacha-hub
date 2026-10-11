@@ -84009,7 +84009,7 @@
         "2pc: Glacio DMG + 10%.",
         "5pc: Glacio DMG + 10% after releasing Basic Attack or Heavy Attack. This effect stacks up to 3 times, each stack lasts 15s."
       ],
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconElement/T_IconElementIce1.T_IconElementIce1",
+      "icon": "IconElementAttri/T_IconElementAttriIce",
       "extra": {
         "fetterIds": [
           1,
@@ -84032,7 +84032,7 @@
         "2pc: Fusion DMG + 10%.",
         "5pc: Fusion DMG + 30% for 15s after releasing Resonance Skill."
       ],
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconElement/T_IconElementIce1.T_IconElementIce1",
+      "icon": "IconElementAttri/T_IconElementAttriFire",
       "extra": {
         "fetterIds": [
           3,
@@ -84055,7 +84055,7 @@
         "2pc: Electro DMG + 10%.",
         "5pc: Electro DMG + 15% after releasing Heavy Attack or Resonance Skill. This effect stacks up to 2 times, each stack lasts 15s."
       ],
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconElement/T_IconElementIce1.T_IconElementIce1",
+      "icon": "IconElementAttri/T_IconElementAttriThunder",
       "extra": {
         "fetterIds": [
           5,
@@ -84078,7 +84078,7 @@
         "2pc: Aero DMG + 10%.",
         "5pc: Aero DMG + 30% for 15s after releasing Intro Skill."
       ],
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconElement/T_IconElementIce1.T_IconElementIce1",
+      "icon": "IconElementAttri/T_IconElementAttriWind",
       "extra": {
         "fetterIds": [
           7,
@@ -84101,7 +84101,7 @@
         "2pc: Spectro DMG + 10%.",
         "5pc: Spectro DMG + 30% for 15s after releasing Intro Skill."
       ],
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconElement/T_IconElementIce1.T_IconElementIce1",
+      "icon": "IconElementAttri/T_IconElementAttriLight",
       "extra": {
         "fetterIds": [
           9,
@@ -84124,7 +84124,7 @@
         "2pc: Havoc DMG + 10%.",
         "5pc: Havoc DMG + 7.5% after releasing Basic Attack or Heavy Attack. This effect stacks up to 4 times, each stack lasts 15s."
       ],
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconElement/T_IconElementIce1.T_IconElementIce1",
+      "icon": "IconElementAttri/T_IconElementAttriDark",
       "extra": {
         "fetterIds": [
           11,
@@ -84147,7 +84147,7 @@
         "2pc: Healing Bonus + 10%.",
         "5pc: Increases the ATK of all party members by 15% for 30s upon healing allies."
       ],
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconElement/T_IconElementIce1.T_IconElementIce1",
+      "icon": "IconElementAttri/T_IconElementAttriCure",
       "extra": {
         "fetterIds": [
           13,
@@ -84170,7 +84170,7 @@
         "2pc: Energy Regen + 10%.",
         "5pc: Upon using Outro Skill, increases the ATK of the next Resonator by 22.5% for 15s."
       ],
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconElement/T_IconElementIce1.T_IconElementIce1",
+      "icon": "IconElementAttri/T_IconElementAttriCloud",
       "extra": {
         "fetterIds": [
           15,
@@ -84193,7 +84193,7 @@
         "2pc: ATK +10%",
         "5pc: While on the field, ATK increases by 5% every 1.5s. This effect stacks up to 4 times. Outro Skill DMG + 60%."
       ],
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconElement/T_IconElementIce1.T_IconElementIce1",
+      "icon": "IconElementAttri/T_IconElementAttriAttack",
       "extra": {
         "fetterIds": [
           17,
@@ -84216,7 +84216,7 @@
         "2pc: Resonance Skill DMG + 12%",
         "5pc: Casting Resonance Skill grants 22.5% Glacio DMG Bonus for 15s and casting Resonance Liberation increases Resonance Skill DMG by 18%, lasting for 5s. This effect stacks up to 2 times."
       ],
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconElement/T_IconElementIce1.T_IconElementIce1",
+      "icon": "IconElementAttri/T_IconElementAttriIceUltimateSkill",
       "extra": {
         "fetterIds": [
           102,
@@ -84239,7 +84239,7 @@
         "2pc: Spectro DMG + 10%",
         "5pc: Inflicting Spectro Frazzle on enemies increases Crit. Rate by 20% for 15s. Attacking enemies inflicted with 10 stacks of Spectro Frazzle grants 15% Spectro DMG Bonus for 15s."
       ],
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconElement/T_IconElementIce1.T_IconElementIce1",
+      "icon": "IconElementAttri/T_IconElementAttriLightError",
       "extra": {
         "fetterIds": [
           112,
@@ -84262,7 +84262,7 @@
         "2pc: Havoc DMG + 10%",
         "5pc: When Outro Skill is triggered, deal additional 480% Havoc DMG to surrounding enemies, considered Outro Skill DMG, and grant the incoming Resonator 15% Havoc DMG Bonus for 15s."
       ],
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconElement/T_IconElementIce1.T_IconElementIce1",
+      "icon": "IconElementAttri/T_IconElementAttriDarkAssist",
       "extra": {
         "fetterIds": [
           122,
@@ -84285,7 +84285,7 @@
         "2pc: Energy Regen + 10%",
         "5pc: Increase the Resonator's Coordinated Attack DMG by 80%. Upon a critical hit of Coordinated Attack, increase the active Resonator's ATK by 20% for 4s."
       ],
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconElement/T_IconElementIce1.T_IconElementIce1",
+      "icon": "IconElementAttri/T_IconElementAttriCooperate",
       "extra": {
         "fetterIds": [
           132,
@@ -84308,7 +84308,7 @@
         "2pc: Energy Regen + 10%",
         "5pc: Increase the Resonator's ATK by 15%. Reaching 250% Energy Regen increases all Attribute DMG by 30% for the Resonator."
       ],
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconElement/T_IconElementIce1.T_IconElementIce1",
+      "icon": "IconElementAttri/T_IconElementAttriEnergy",
       "extra": {
         "fetterIds": [
           142,
@@ -84331,7 +84331,7 @@
         "2pc: Max HP + 10%",
         "5pc: When the Resonator has a shield, their max HP is increased by 20%. Upon losing HP, the Resonator's Crit. Rate is increased by 5% for 15s, triggered up to once every second, stacking up to 3 times."
       ],
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconElement/T_IconElementIce1.T_IconElementIce1",
+      "icon": "IconElement/T_IconElementIce1",
       "extra": {
         "fetterIds": [
           152,
@@ -84354,7 +84354,7 @@
         "2pc: Aero DMG + 10%",
         "5pc: Inflicting Aero Erosion upon enemies increases Aero DMG for all Resonators in the team by 15%, and for the Resonator triggering this effect by an additional 15%, lasting for 20s."
       ],
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconElement/T_IconElementIce1.T_IconElementIce1",
+      "icon": "IconElementAttri/T_IconElementAttriWindError",
       "extra": {
         "fetterIds": [
           162,
@@ -84377,7 +84377,7 @@
         "2pc: Aero DMG + 10%",
         "5pc: Hitting a target with Aero Erosion increases Crit. Rate by 10% and grants 30% Aero DMG Bonus, lasting for 10s."
       ],
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconElement/T_IconElementIce1.T_IconElementIce1",
+      "icon": "IconElementAttri/T_IconElementAttriWindErrorA",
       "extra": {
         "fetterIds": [
           172,
@@ -84400,7 +84400,7 @@
         "2pc: Fusion DMG + 10%",
         "5pc: Casting Resonance Liberation grants all Resonators in the team 15% Fusion DMG Bonus and the caster 20% Resonance Liberation DMG Bonus, lasting for 35s."
       ],
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconElement/T_IconElementIce1.T_IconElementIce1",
+      "icon": "IconElementAttri/T_IconElementAttriFireUltimateSkill",
       "extra": {
         "fetterIds": [
           182,
@@ -84422,7 +84422,7 @@
       "bonuses": [
         "2pc: Holding 0 Resonance Energy increases Crit. Rate by 20% and grants 35% Echo Skill DMG Bonus."
       ],
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconElement/T_IconElementIce1.T_IconElementIce1",
+      "icon": "IconElementAttri/T_IconElementAttriDarkVision",
       "extra": {
         "fetterIds": [
           192
@@ -84443,7 +84443,7 @@
       "bonuses": [
         "2pc: Upon gaining a Shield, increase the Resonator's ATK by 6% and Crit. DMG by 4% for 4s. This effect can be triggered once every 0.5s and stacks up to 5 times."
       ],
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconElement/T_IconElementIce1.T_IconElementIce1",
+      "icon": "IconElementAttri/T_IconElementAttriShield",
       "extra": {
         "fetterIds": [
           203
@@ -84464,7 +84464,7 @@
       "bonuses": [
         "2pc: Casting Echo Skill grants 30% Heavy Attack DMG Bonus to the caster for 4s. Additionally, all Resonators in the team gain 4% Echo Skill DMG Bonus for 30s, stacking up to 4 times. Echoes of the same name can only trigger this effect once. The record of Echo triggering this effect is cleared along with this effect. At 4 stacks, casting Echo Skill again resets the duration of this effect."
       ],
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconElement/T_IconElementIce1.T_IconElementIce1",
+      "icon": "IconElementAttri/T_IconElementAttriSupport",
       "extra": {
         "fetterIds": [
           213
@@ -84485,7 +84485,7 @@
       "bonuses": [
         "2pc: Dealing Echo Skill DMG increases Heavy Attack Crit. Rate by 20% for 6s. Dealing Heavy Attack DMG increases Echo Skill Crit. Rate by 20% for 6s. While both effects are active, gain 16% Fusion DMG Bonus."
       ],
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconElement/T_IconElementIce1.T_IconElementIce1",
+      "icon": "IconElementAttri/T_IconElementAttriFireA",
       "extra": {
         "fetterIds": [
           223
@@ -84506,7 +84506,7 @@
       "bonuses": [
         "2pc: Inflicting Havoc Bane increases the Resonator's ATK by 20% and grants 30% Resonance Liberation DMG Bonus for 5s."
       ],
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconElement/T_IconElementIce1.T_IconElementIce1",
+      "icon": "IconElementAttri/T_IconElementAttriQianXiao",
       "extra": {
         "fetterIds": [
           233
@@ -84528,7 +84528,7 @@
         "2pc: Spectro DMG + 10%",
         "5pc: Casting Outro Skill increases the ATK of the incoming Resonator who casts Intro Skill by 15%. Each point of Tune Break Boost the incoming Resonator has additionally increases their ATK by 0.3%, up to 15%. This effect lasts for 15s, or until the Resonator is switched out."
       ],
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconElement/T_IconElementIce1.T_IconElementIce1",
+      "icon": "IconElementAttri/T_IconElementAttriLightWeakness",
       "extra": {
         "fetterIds": [
           242,
@@ -84551,7 +84551,7 @@
         "2pc: Healing Bonus + 10%.",
         "5pc: When healing a Resonator in the team, every 1% of Off-Tune Buildup Rate grants a 0.2% ATK increase to all Resonators in the team for 4s, up to 25%. Effects of the same name cannot be stacked."
       ],
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconElement/T_IconElementIce1.T_IconElementIce1",
+      "icon": "IconElementAttri/T_IconElementAttriCureWeakness",
       "extra": {
         "fetterIds": [
           252,
@@ -84574,7 +84574,7 @@
         "2pc: Spectro DMG + 10%",
         "5pc: Dealing Basic Attack DMG increases Spectro DMG by 10% for 5s, stacking up to 3 times. With 3 stacks, casting Resonance Liberation grants 40% Basic Attack DMG Bonus."
       ],
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconElement/T_IconElementIce1.T_IconElementIce1",
+      "icon": "IconElementAttri/T_IconElementAttriAttackWeakness",
       "extra": {
         "fetterIds": [
           262,
@@ -84597,7 +84597,7 @@
         "2pc: Fusion DMG + 10%",
         "5pc: Inflicting Fusion Burst or Tune Rupture - Shifting increases the Resonator's Crit. Rate by 20% and grants 20% Fusion DMG Bonus for 8s."
       ],
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconElement/T_IconElementIce1.T_IconElementIce1",
+      "icon": "IconElementAttri/T_IconElementAttriFireA1",
       "extra": {
         "fetterIds": [
           272,
@@ -84620,7 +84620,7 @@
         "2pc: Fusion DMG + 10%",
         "5pc: When the Resonator inflicts Fusion Burst on the enemies, they gain the following effects: Gain 10% Fusion DMG Bonus for 15 s. While this effect is active, casting an Outro Skill grants the incoming Resonator 25% Fusion DMG Bonus for 15s."
       ],
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconElement/T_IconElementIce1.T_IconElementIce1",
+      "icon": "IconElementAttri/T_IconElementAttriFireA2",
       "extra": {
         "fetterIds": [
           282,
@@ -84643,7 +84643,7 @@
         "2pc: Aero DMG + 10%",
         "5pc: Dealing Echo Skill DMG to enemies increases the Resonator's Echo Skill Crit. Rate by 20%, and grants 15% Aero DMG Bonus for 5s."
       ],
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconElement/T_IconElementIce1.T_IconElementIce1",
+      "icon": "IconElementAttri/T_IconElementAttriWindVision",
       "extra": {
         "fetterIds": [
           292,
@@ -84659,7 +84659,7 @@
       "name": "Shell Credit",
       "category": "Material",
       "rarity": 3,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconA/T_IconA_hsb_UI.T_IconA_hsb_UI",
+      "icon": "IconA/T_IconA_hsb_UI",
       "extra": {
         "itemType": 0,
         "mainTypeId": 0
@@ -84671,7 +84671,7 @@
       "name": "LF Whisperin Core",
       "category": "Development Materials",
       "rarity": 2,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_002_1_UI.T_IconMout_O_002_1_UI",
+      "icon": "IconMout/T_IconMout_O_002_1_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -84683,7 +84683,7 @@
       "name": "MF Whisperin Core",
       "category": "Development Materials",
       "rarity": 3,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_002_2_UI.T_IconMout_O_002_2_UI",
+      "icon": "IconMout/T_IconMout_O_002_2_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -84695,7 +84695,7 @@
       "name": "HF Whisperin Core",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_002_3_UI.T_IconMout_O_002_3_UI",
+      "icon": "IconMout/T_IconMout_O_002_3_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -84707,7 +84707,7 @@
       "name": "FF Whisperin Core",
       "category": "Development Materials",
       "rarity": 5,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_002_4_UI.T_IconMout_O_002_4_UI",
+      "icon": "IconMout/T_IconMout_O_002_4_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -84719,7 +84719,7 @@
       "name": "LF Howler Core",
       "category": "Development Materials",
       "rarity": 2,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_E_002_1_UI.T_IconMout_E_002_1_UI",
+      "icon": "IconMout/T_IconMout_E_002_1_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -84731,7 +84731,7 @@
       "name": "MF Howler Core",
       "category": "Development Materials",
       "rarity": 3,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_E_002_2_UI.T_IconMout_E_002_2_UI",
+      "icon": "IconMout/T_IconMout_E_002_2_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -84743,7 +84743,7 @@
       "name": "HF Howler Core",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_E_002_3_UI.T_IconMout_E_002_3_UI",
+      "icon": "IconMout/T_IconMout_E_002_3_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -84755,7 +84755,7 @@
       "name": "FF Howler Core",
       "category": "Development Materials",
       "rarity": 5,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_E_002_4_UI.T_IconMout_E_002_4_UI",
+      "icon": "IconMout/T_IconMout_E_002_4_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -84767,7 +84767,7 @@
       "name": "Crude Ring",
       "category": "Development Materials",
       "rarity": 2,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_003_1_UI.T_IconMout_O_003_1_UI",
+      "icon": "IconMout/T_IconMout_O_003_1_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -84779,7 +84779,7 @@
       "name": "Basic Ring",
       "category": "Development Materials",
       "rarity": 3,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_003_2_UI.T_IconMout_O_003_2_UI",
+      "icon": "IconMout/T_IconMout_O_003_2_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -84791,7 +84791,7 @@
       "name": "Improved Ring",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_003_3_UI.T_IconMout_O_003_3_UI",
+      "icon": "IconMout/T_IconMout_O_003_3_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -84803,7 +84803,7 @@
       "name": "Tailored Ring",
       "category": "Development Materials",
       "rarity": 5,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_003_4_UI.T_IconMout_O_003_4_UI",
+      "icon": "IconMout/T_IconMout_O_003_4_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -84815,7 +84815,7 @@
       "name": "LF Polygon Core",
       "category": "Development Materials",
       "rarity": 2,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_004_1_UI.T_IconMout_O_004_1_UI",
+      "icon": "IconMout/T_IconMout_O_004_1_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -84827,7 +84827,7 @@
       "name": "MF Polygon Core",
       "category": "Development Materials",
       "rarity": 3,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_004_2_UI.T_IconMout_O_004_2_UI",
+      "icon": "IconMout/T_IconMout_O_004_2_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -84839,7 +84839,7 @@
       "name": "HF Polygon Core",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_004_3_UI.T_IconMout_O_004_3_UI",
+      "icon": "IconMout/T_IconMout_O_004_3_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -84851,7 +84851,7 @@
       "name": "FF Polygon Core",
       "category": "Development Materials",
       "rarity": 5,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_004_4_UI.T_IconMout_O_004_4_UI",
+      "icon": "IconMout/T_IconMout_O_004_4_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -84863,7 +84863,7 @@
       "name": "LF Tidal Residuum",
       "category": "Development Materials",
       "rarity": 2,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_005_1_UI.T_IconMout_O_005_1_UI",
+      "icon": "IconMout/T_IconMout_O_005_1_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -84875,7 +84875,7 @@
       "name": "MF Tidal Residuum",
       "category": "Development Materials",
       "rarity": 3,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_005_2_UI.T_IconMout_O_005_2_UI",
+      "icon": "IconMout/T_IconMout_O_005_2_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -84887,7 +84887,7 @@
       "name": "HF Tidal Residuum",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_005_3_UI.T_IconMout_O_005_3_UI",
+      "icon": "IconMout/T_IconMout_O_005_3_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -84899,7 +84899,7 @@
       "name": "FF Tidal Residuum",
       "category": "Development Materials",
       "rarity": 5,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_005_4_UI.T_IconMout_O_005_4_UI",
+      "icon": "IconMout/T_IconMout_O_005_4_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -84911,7 +84911,7 @@
       "name": "LF Exoswarm Core",
       "category": "Development Materials",
       "rarity": 2,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconWup/T_IconWup_021_UI.T_IconWup_021_UI",
+      "icon": "IconWup/T_IconWup_021_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -84923,7 +84923,7 @@
       "name": "MF Exoswarm Core",
       "category": "Development Materials",
       "rarity": 3,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconWup/T_IconWup_022_UI.T_IconWup_022_UI",
+      "icon": "IconWup/T_IconWup_022_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -84935,7 +84935,7 @@
       "name": "HF Exoswarm Core",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconWup/T_IconWup_023_UI.T_IconWup_023_UI",
+      "icon": "IconWup/T_IconWup_023_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -84947,7 +84947,7 @@
       "name": "FF Exoswarm Core",
       "category": "Development Materials",
       "rarity": 5,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconWup/T_IconWup_024_UI.T_IconWup_024_UI",
+      "icon": "IconWup/T_IconWup_024_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -84959,7 +84959,7 @@
       "name": "LF Mech Core",
       "category": "Development Materials",
       "rarity": 2,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconWup/T_IconWup_025_UI.T_IconWup_025_UI",
+      "icon": "IconWup/T_IconWup_025_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -84971,7 +84971,7 @@
       "name": "MF Mech Core",
       "category": "Development Materials",
       "rarity": 3,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconWup/T_IconWup_026_UI.T_IconWup_026_UI",
+      "icon": "IconWup/T_IconWup_026_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -84983,7 +84983,7 @@
       "name": "HF Mech Core",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconWup/T_IconWup_027_UI.T_IconWup_027_UI",
+      "icon": "IconWup/T_IconWup_027_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -84995,7 +84995,7 @@
       "name": "FF Mech Core",
       "category": "Development Materials",
       "rarity": 5,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconWup/T_IconWup_028_UI.T_IconWup_028_UI",
+      "icon": "IconWup/T_IconWup_028_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85007,7 +85007,7 @@
       "name": "Fractured Exoswarm Pendant",
       "category": "Development Materials",
       "rarity": 2,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_007_1_UI.T_IconMout_O_007_1_UI",
+      "icon": "IconMout/T_IconMout_O_007_1_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85019,7 +85019,7 @@
       "name": "Worn Exoswarm Pendant",
       "category": "Development Materials",
       "rarity": 3,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_007_2_UI.T_IconMout_O_007_2_UI",
+      "icon": "IconMout/T_IconMout_O_007_2_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85031,7 +85031,7 @@
       "name": "Chipped Exoswarm Pendant",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_007_3_UI.T_IconMout_O_007_3_UI",
+      "icon": "IconMout/T_IconMout_O_007_3_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85043,7 +85043,7 @@
       "name": "Intact Exoswarm Pendant",
       "category": "Development Materials",
       "rarity": 5,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_007_4_UI.T_IconMout_O_007_4_UI",
+      "icon": "IconMout/T_IconMout_O_007_4_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85055,7 +85055,7 @@
       "name": "Mysterious Code",
       "category": "Development Materials",
       "rarity": 5,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_L_002_1_UI.T_IconMout_L_002_1_UI",
+      "icon": "IconMout/T_IconMout_L_002_1_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85067,7 +85067,7 @@
       "name": "Strife Tacet Core",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_L_004_1_UI.T_IconMout_L_004_1_UI",
+      "icon": "IconMout/T_IconMout_L_004_1_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85079,7 +85079,7 @@
       "name": "Thundering Tacet Core",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_L_001_1_UI.T_IconMout_L_001_1_UI",
+      "icon": "IconMout/T_IconMout_L_001_1_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85091,7 +85091,7 @@
       "name": "Elegy Tacet Core",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_L_006_UI.T_IconMout_L_006_UI",
+      "icon": "IconMout/T_IconMout_L_006_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85103,7 +85103,7 @@
       "name": "Rage Tacet Core",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_L_008_UI.T_IconMout_L_008_UI",
+      "icon": "IconMout/T_IconMout_L_008_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85115,7 +85115,7 @@
       "name": "Roaring Rock Fist",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_L_011_UI.T_IconMout_L_011_UI",
+      "icon": "IconMout/T_IconMout_L_011_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85127,7 +85127,7 @@
       "name": "Gold-Dissolving Feather",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_L_010_UI.T_IconMout_L_010_UI",
+      "icon": "IconMout/T_IconMout_L_010_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85139,7 +85139,7 @@
       "name": "Sound-Keeping Tacet Core",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_L_007_UI.T_IconMout_L_007_UI",
+      "icon": "IconMout/T_IconMout_L_007_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85151,7 +85151,7 @@
       "name": "Group Abomination Tacet Core",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_L_009_UI.T_IconMout_L_009_UI",
+      "icon": "IconMout/T_IconMout_L_009_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85163,7 +85163,7 @@
       "name": "Monument Bell",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_L_003_1_UI.T_IconMout_L_003_1_UI",
+      "icon": "IconMout/T_IconMout_L_003_1_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85175,7 +85175,7 @@
       "name": "Unending Destruction",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_L_014_UI.T_IconMout_L_014_UI",
+      "icon": "IconMout/T_IconMout_L_014_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85187,7 +85187,7 @@
       "name": "Dreamless Feather",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_L_013_UI.T_IconMout_L_013_UI",
+      "icon": "IconMout/T_IconMout_L_013_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85199,7 +85199,7 @@
       "name": "Hidden Thunder Tacet Core",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_L_012_UI.T_IconMout_L_012_UI",
+      "icon": "IconMout/T_IconMout_L_012_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85211,7 +85211,7 @@
       "name": "Sentinel's Dagger",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_005_UI.T_IconMout_005_UI",
+      "icon": "IconMout/T_IconMout_005_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85223,7 +85223,7 @@
       "name": "Topological Confinement",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_L_015_UI.T_IconMout_L_015_UI",
+      "icon": "IconMout/T_IconMout_L_015_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85235,7 +85235,7 @@
       "name": "Cleansing Conch",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_009_UI.T_IconMout_009_UI",
+      "icon": "IconMout/T_IconMout_009_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85247,7 +85247,7 @@
       "name": "Platinum Core",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_006_UI.T_IconMout_006_UI",
+      "icon": "IconMout/T_IconMout_006_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85259,7 +85259,7 @@
       "name": "Blazing Bone",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_008_UI.T_IconMout_008_UI",
+      "icon": "IconMout/T_IconMout_008_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85271,7 +85271,7 @@
       "name": "The Netherworld's Stare",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_007_UI.T_IconMout_007_UI",
+      "icon": "IconMout/T_IconMout_007_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85283,7 +85283,7 @@
       "name": "When Irises Bloom",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_L_017_UI.T_IconMout_L_017_UI",
+      "icon": "IconMout/T_IconMout_L_017_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85295,7 +85295,7 @@
       "name": "Unfading Glory",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_L_018_UI.T_IconMout_L_018_UI",
+      "icon": "IconMout/T_IconMout_L_018_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85307,7 +85307,7 @@
       "name": "Truth in Lies",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_L_019_UI.T_IconMout_L_019_UI",
+      "icon": "IconMout/T_IconMout_L_019_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85319,7 +85319,7 @@
       "name": "Blighted Crown of Puppet King",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_L_020_UI.T_IconMout_L_020_UI",
+      "icon": "IconMout/T_IconMout_L_020_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85331,7 +85331,7 @@
       "name": "Abyssal Husk",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_010_UI.T_IconMout_010_UI",
+      "icon": "IconMout/T_IconMout_010_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85343,7 +85343,7 @@
       "name": "Curse of the Abyss",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_L_021_UI.T_IconMout_L_021_UI",
+      "icon": "IconMout/T_IconMout_L_021_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85355,7 +85355,7 @@
       "name": "Suncoveter's Reach",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_L_023_UI.T_IconMout_L_023_UI",
+      "icon": "IconMout/T_IconMout_L_023_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85367,7 +85367,7 @@
       "name": "Burning Judgment",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_L_022_UI.T_IconMout_L_022_UI",
+      "icon": "IconMout/T_IconMout_L_022_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85379,7 +85379,7 @@
       "name": "Our Choice",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_L_024_UI.T_IconMout_L_024_UI",
+      "icon": "IconMout/T_IconMout_L_024_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85391,7 +85391,7 @@
       "name": "Gold in Memory",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_L_025_UI.T_IconMout_L_025_UI",
+      "icon": "IconMout/T_IconMout_L_025_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85403,7 +85403,7 @@
       "name": "Iris",
       "category": "Resources",
       "rarity": 1,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconRup/T_IconRup_SM_Gat_33A_UI.T_IconRup_SM_Gat_33A_UI",
+      "icon": "IconRup/T_IconRup_SM_Gat_33A_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 5
@@ -85415,7 +85415,7 @@
       "name": "Terraspawn Fungus",
       "category": "Resources",
       "rarity": 1,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconC/T_IconC_HuiYanGu_UI.T_IconC_HuiYanGu_UI",
+      "icon": "IconC/T_IconC_HuiYanGu_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 5
@@ -85427,7 +85427,7 @@
       "name": "Lanternberry",
       "category": "Resources",
       "rarity": 1,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconC/T_IconC_denglongguo_UI.T_IconC_denglongguo_UI",
+      "icon": "IconC/T_IconC_denglongguo_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 5
@@ -85439,7 +85439,7 @@
       "name": "Pecok Flower",
       "category": "Resources",
       "rarity": 1,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconRup/T_IconRup_SM_Gat_18A_UI.T_IconRup_SM_Gat_18A_UI",
+      "icon": "IconRup/T_IconRup_SM_Gat_18A_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 5
@@ -85451,7 +85451,7 @@
       "name": "Belle Poppy",
       "category": "Resources",
       "rarity": 1,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconRup/T_IconRup_SM_Gat_29A_UI.T_IconRup_SM_Gat_29A_UI",
+      "icon": "IconRup/T_IconRup_SM_Gat_29A_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 5
@@ -85463,7 +85463,7 @@
       "name": "Coriolus",
       "category": "Resources",
       "rarity": 1,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconRup/T_IconRup_SM_Gat_30A_UI.T_IconRup_SM_Gat_30A_UI",
+      "icon": "IconRup/T_IconRup_SM_Gat_30A_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 5
@@ -85475,7 +85475,7 @@
       "name": "Wintry Bell",
       "category": "Resources",
       "rarity": 1,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconRup/T_IconRup_SM_Gat_31A_UI.T_IconRup_SM_Gat_31A_UI",
+      "icon": "IconRup/T_IconRup_SM_Gat_31A_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 5
@@ -85487,7 +85487,7 @@
       "name": "Violet Coral",
       "category": "Resources",
       "rarity": 1,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconC/T_IconC_Sep_061_UI.T_IconC_Sep_061_UI",
+      "icon": "IconC/T_IconC_Sep_061_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 5
@@ -85499,7 +85499,7 @@
       "name": "Pavo Plum",
       "category": "Resources",
       "rarity": 1,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconC/T_IconC_029_UI.T_IconC_029_UI",
+      "icon": "IconC/T_IconC_029_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 5
@@ -85511,7 +85511,7 @@
       "name": "Loong's Pearl",
       "category": "Resources",
       "rarity": 1,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconC/T_IconC_030_UI.T_IconC_030_UI",
+      "icon": "IconC/T_IconC_030_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 5
@@ -85523,7 +85523,7 @@
       "name": "Nova",
       "category": "Resources",
       "rarity": 1,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconTask/T_IconTask_Task_084_UI.T_IconTask_Task_084_UI",
+      "icon": "IconTask/T_IconTask_Task_084_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 5
@@ -85535,7 +85535,7 @@
       "name": "Golden Fleece",
       "category": "Resources",
       "rarity": 1,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconC/T_IconC_045_UI.T_IconC_045_UI",
+      "icon": "IconC/T_IconC_045_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 5
@@ -85547,7 +85547,7 @@
       "name": "Sword Acorus",
       "category": "Resources",
       "rarity": 1,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconC/T_IconC_044_UI.T_IconC_044_UI",
+      "icon": "IconC/T_IconC_044_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 5
@@ -85559,7 +85559,7 @@
       "name": "Firecracker Jewelweed",
       "category": "Resources",
       "rarity": 1,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconC/T_IconC_043_UI.T_IconC_043_UI",
+      "icon": "IconC/T_IconC_043_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 5
@@ -85571,7 +85571,7 @@
       "name": "Seaside Cendrelis",
       "category": "Resources",
       "rarity": 1,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconTask/T_IconTask_Task_144_UI.T_IconTask_Task_144_UI",
+      "icon": "IconTask/T_IconTask_Task_144_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 5
@@ -85583,7 +85583,7 @@
       "name": "Bamboo Iris",
       "category": "Resources",
       "rarity": 1,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconC/T_IconC_bianzhuhua_UI.T_IconC_bianzhuhua_UI",
+      "icon": "IconC/T_IconC_bianzhuhua_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 5
@@ -85595,7 +85595,7 @@
       "name": "Bloodleaf Viburnum",
       "category": "Resources",
       "rarity": 1,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconC/T_IconC_xueyejiami_UI.T_IconC_xueyejiami_UI",
+      "icon": "IconC/T_IconC_xueyejiami_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 5
@@ -85607,7 +85607,7 @@
       "name": "\"Afterlife\"",
       "category": "Resources",
       "rarity": 1,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconC/T_IconC_054_UI.T_IconC_054_UI",
+      "icon": "IconC/T_IconC_054_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 5
@@ -85619,7 +85619,7 @@
       "name": "Stone Rose",
       "category": "Resources",
       "rarity": 1,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconC/T_IconC_056_UI.T_IconC_056_UI",
+      "icon": "IconC/T_IconC_056_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 5
@@ -85631,7 +85631,7 @@
       "name": "Sliverglow Bloom",
       "category": "Resources",
       "rarity": 1,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconC/T_IconC_057_UI.T_IconC_057_UI",
+      "icon": "IconC/T_IconC_057_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 5
@@ -85643,7 +85643,7 @@
       "name": "Luminous Calendula",
       "category": "Resources",
       "rarity": 1,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconC/T_IconC_058_UI.T_IconC_058_UI",
+      "icon": "IconC/T_IconC_058_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 5
@@ -85655,7 +85655,7 @@
       "name": "Summer Flower",
       "category": "Resources",
       "rarity": 1,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconC/T_IconC_060_UI.T_IconC_060_UI",
+      "icon": "IconC/T_IconC_060_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 5
@@ -85667,7 +85667,7 @@
       "name": "Gemini Spore",
       "category": "Resources",
       "rarity": 1,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconC/T_IconC_066_UI.T_IconC_066_UI",
+      "icon": "IconC/T_IconC_066_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 5
@@ -85679,7 +85679,7 @@
       "name": "Rimewisp",
       "category": "Resources",
       "rarity": 1,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconC/T_IconC_067_UI.T_IconC_067_UI",
+      "icon": "IconC/T_IconC_067_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 5
@@ -85691,7 +85691,7 @@
       "name": "Moss Amber",
       "category": "Resources",
       "rarity": 1,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconC/T_IconC_072_UI.T_IconC_072_UI",
+      "icon": "IconC/T_IconC_072_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 5
@@ -85703,7 +85703,7 @@
       "name": "Edelschnee",
       "category": "Resources",
       "rarity": 1,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconC/T_IconC_074_UI.T_IconC_074_UI",
+      "icon": "IconC/T_IconC_074_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 5
@@ -85715,7 +85715,7 @@
       "name": "Inert Metallic Drip",
       "category": "Development Materials",
       "rarity": 2,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconWup/T_IconWup_Setpup_004_1_UI.T_IconWup_Setpup_004_1_UI",
+      "icon": "IconWup/T_IconWup_Setpup_004_1_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85727,7 +85727,7 @@
       "name": "Reactive Metallic Drip",
       "category": "Development Materials",
       "rarity": 3,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconWup/T_IconWup_Setpup_004_2_UI.T_IconWup_Setpup_004_2_UI",
+      "icon": "IconWup/T_IconWup_Setpup_004_2_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85739,7 +85739,7 @@
       "name": "Polarized Metallic Drip",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconWup/T_IconWup_Setpup_004_3_UI.T_IconWup_Setpup_004_3_UI",
+      "icon": "IconWup/T_IconWup_Setpup_004_3_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85751,7 +85751,7 @@
       "name": "Heterized Metallic Drip",
       "category": "Development Materials",
       "rarity": 5,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconWup/T_IconWup_Setpup_004_4_UI.T_IconWup_Setpup_004_4_UI",
+      "icon": "IconWup/T_IconWup_Setpup_004_4_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85763,7 +85763,7 @@
       "name": "Impure Phlogiston",
       "category": "Development Materials",
       "rarity": 2,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconWup/T_IconWup_01_UI.T_IconWup_01_UI",
+      "icon": "IconWup/T_IconWup_01_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85775,7 +85775,7 @@
       "name": "Extracted Phlogiston",
       "category": "Development Materials",
       "rarity": 3,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconWup/T_IconWup_02_UI.T_IconWup_02_UI",
+      "icon": "IconWup/T_IconWup_02_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85787,7 +85787,7 @@
       "name": "Refined Phlogiston",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconWup/T_IconWup_03_UI.T_IconWup_03_UI",
+      "icon": "IconWup/T_IconWup_03_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85799,7 +85799,7 @@
       "name": "Flawless Phlogiston",
       "category": "Development Materials",
       "rarity": 5,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconWup/T_IconWup_04_UI.T_IconWup_04_UI",
+      "icon": "IconWup/T_IconWup_04_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85811,7 +85811,7 @@
       "name": "Lento Helix",
       "category": "Development Materials",
       "rarity": 2,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconWup/T_IconWup_005_UI.T_IconWup_005_UI",
+      "icon": "IconWup/T_IconWup_005_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85823,7 +85823,7 @@
       "name": "Adagio Helix",
       "category": "Development Materials",
       "rarity": 3,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconWup/T_IconWup_006_UI.T_IconWup_006_UI",
+      "icon": "IconWup/T_IconWup_006_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85835,7 +85835,7 @@
       "name": "Andante Helix",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconWup/T_IconWup_007_UI.T_IconWup_007_UI",
+      "icon": "IconWup/T_IconWup_007_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85847,7 +85847,7 @@
       "name": "Presto Helix",
       "category": "Development Materials",
       "rarity": 5,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconWup/T_IconWup_008_UI.T_IconWup_008_UI",
+      "icon": "IconWup/T_IconWup_008_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85859,7 +85859,7 @@
       "name": "Waveworn Residue 210",
       "category": "Development Materials",
       "rarity": 2,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconWup/T_IconWup_009_UI.T_IconWup_009_UI",
+      "icon": "IconWup/T_IconWup_009_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85871,7 +85871,7 @@
       "name": "Waveworn Residue 226",
       "category": "Development Materials",
       "rarity": 3,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconWup/T_IconWup_010_UI.T_IconWup_010_UI",
+      "icon": "IconWup/T_IconWup_010_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85883,7 +85883,7 @@
       "name": "Waveworn Residue 235",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconWup/T_IconWup_011_UI.T_IconWup_011_UI",
+      "icon": "IconWup/T_IconWup_011_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85895,7 +85895,7 @@
       "name": "Waveworn Residue 239",
       "category": "Development Materials",
       "rarity": 5,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconWup/T_IconWup_012_UI.T_IconWup_012_UI",
+      "icon": "IconWup/T_IconWup_012_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85907,7 +85907,7 @@
       "name": "Cadence Seed",
       "category": "Development Materials",
       "rarity": 2,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconWup/T_IconWup_013_UI.T_IconWup_013_UI",
+      "icon": "IconWup/T_IconWup_013_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85919,7 +85919,7 @@
       "name": "Cadence Bud",
       "category": "Development Materials",
       "rarity": 3,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconWup/T_IconWup_014_UI.T_IconWup_014_UI",
+      "icon": "IconWup/T_IconWup_014_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85931,7 +85931,7 @@
       "name": "Cadence Leaf",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconWup/T_IconWup_015_UI.T_IconWup_015_UI",
+      "icon": "IconWup/T_IconWup_015_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85943,7 +85943,7 @@
       "name": "Cadence Blossom",
       "category": "Development Materials",
       "rarity": 5,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconWup/T_IconWup_016_UI.T_IconWup_016_UI",
+      "icon": "IconWup/T_IconWup_016_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85955,7 +85955,7 @@
       "name": "Broken Wing Polarizer",
       "category": "Development Materials",
       "rarity": 2,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_010_1_UI.T_IconMout_O_010_1_UI",
+      "icon": "IconMout/T_IconMout_O_010_1_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85967,7 +85967,7 @@
       "name": "Monowing Polarizer",
       "category": "Development Materials",
       "rarity": 3,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_010_2_UI.T_IconMout_O_010_2_UI",
+      "icon": "IconMout/T_IconMout_O_010_2_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85979,7 +85979,7 @@
       "name": "Polywing Polarizer",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_010_3_UI.T_IconMout_O_010_3_UI",
+      "icon": "IconMout/T_IconMout_O_010_3_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -85991,7 +85991,7 @@
       "name": "Layered Wing Polarizer",
       "category": "Development Materials",
       "rarity": 5,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_010_4_UI.T_IconMout_O_010_4_UI",
+      "icon": "IconMout/T_IconMout_O_010_4_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -86003,7 +86003,7 @@
       "name": "Incomplete Combustor",
       "category": "Development Materials",
       "rarity": 2,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_009_1_UI.T_IconMout_O_009_1_UI",
+      "icon": "IconMout/T_IconMout_O_009_1_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -86015,7 +86015,7 @@
       "name": "Aftertune Combustor",
       "category": "Development Materials",
       "rarity": 3,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_009_2_UI.T_IconMout_O_009_2_UI",
+      "icon": "IconMout/T_IconMout_O_009_2_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -86027,7 +86027,7 @@
       "name": "Remnant Combustor",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_009_3_UI.T_IconMout_O_009_3_UI",
+      "icon": "IconMout/T_IconMout_O_009_3_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -86039,7 +86039,7 @@
       "name": "Reverb Combustor",
       "category": "Development Materials",
       "rarity": 5,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_009_4_UI.T_IconMout_O_009_4_UI",
+      "icon": "IconMout/T_IconMout_O_009_4_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -86051,7 +86051,7 @@
       "name": "Spliced String",
       "category": "Development Materials",
       "rarity": 2,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_012_1_UI.T_IconMout_O_012_1_UI",
+      "icon": "IconMout/T_IconMout_O_012_1_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -86063,7 +86063,7 @@
       "name": "Broken String",
       "category": "Development Materials",
       "rarity": 3,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_012_2_UI.T_IconMout_O_012_2_UI",
+      "icon": "IconMout/T_IconMout_O_012_2_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -86075,7 +86075,7 @@
       "name": "Solidified String",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_012_3_UI.T_IconMout_O_012_3_UI",
+      "icon": "IconMout/T_IconMout_O_012_3_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -86087,7 +86087,7 @@
       "name": "Melodic String",
       "category": "Development Materials",
       "rarity": 5,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_012_4_UI.T_IconMout_O_012_4_UI",
+      "icon": "IconMout/T_IconMout_O_012_4_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -86099,7 +86099,7 @@
       "name": "LF Carved Crystal",
       "category": "Development Materials",
       "rarity": 2,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_011_1_UI.T_IconMout_O_011_1_UI",
+      "icon": "IconMout/T_IconMout_O_011_1_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -86111,7 +86111,7 @@
       "name": "MF Carved Crystal",
       "category": "Development Materials",
       "rarity": 3,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_011_2_UI.T_IconMout_O_011_2_UI",
+      "icon": "IconMout/T_IconMout_O_011_2_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -86123,7 +86123,7 @@
       "name": "HF Carved Crystal",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_011_3_UI.T_IconMout_O_011_3_UI",
+      "icon": "IconMout/T_IconMout_O_011_3_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -86135,7 +86135,7 @@
       "name": "FF Carved Crystal",
       "category": "Development Materials",
       "rarity": 5,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_011_4_UI.T_IconMout_O_011_4_UI",
+      "icon": "IconMout/T_IconMout_O_011_4_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -86147,7 +86147,7 @@
       "name": "LF Waveworn Shard",
       "category": "Development Materials",
       "rarity": 2,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_008_1_UI.T_IconMout_O_008_1_UI",
+      "icon": "IconMout/T_IconMout_O_008_1_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -86159,7 +86159,7 @@
       "name": "MF Waveworn Shard",
       "category": "Development Materials",
       "rarity": 3,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_008_2_UI.T_IconMout_O_008_2_UI",
+      "icon": "IconMout/T_IconMout_O_008_2_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -86171,7 +86171,7 @@
       "name": "HF Waveworn Shard",
       "category": "Development Materials",
       "rarity": 4,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_008_3_UI.T_IconMout_O_008_3_UI",
+      "icon": "IconMout/T_IconMout_O_008_3_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
@@ -86183,7 +86183,7 @@
       "name": "FF Waveworn Shard",
       "category": "Development Materials",
       "rarity": 5,
-      "icon": "/Game/Aki/UI/UIResources/Common/Image/IconMout/T_IconMout_O_008_4_UI.T_IconMout_O_008_4_UI",
+      "icon": "IconMout/T_IconMout_O_008_4_UI",
       "extra": {
         "itemType": 1,
         "mainTypeId": 4
