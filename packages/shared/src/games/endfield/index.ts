@@ -119,6 +119,11 @@ export const endfield: GameDefinition = {
     { key: "aicOutput", title: "AIC output collected", cadence: "daily" },
     { key: "depot", title: "Depot delivery", cadence: "daily" },
     { key: "outposts", title: "Outpost trades", cadence: "daily" },
+    // From Georges's design (2026-10-11).
+    { key: "sanity", title: "Spend Sanity", cadence: "daily" },
+    { key: "creditStore", title: "Credit store", cadence: "daily" },
+    { key: "weeklyMissions", title: "Weekly missions", cadence: "weekly" },
+    { key: "alluvium", title: "Severe Energy Alluvium", cadence: "weekly" },
   ],
   docSchema: endfieldDocSchema,
   emptyDoc: (): EndfieldDoc => ({ gear: {}, skills: {}, weapon: {}, stats: {} }),

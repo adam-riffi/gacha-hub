@@ -20,6 +20,7 @@
 | Overview card | City: Tycoon Level; Café income (daily); Fons; City Stamina, refilled each Monday, its cap 100 / 200 / 350 / 500 / 700 at Tycoon Level 1 / 5 / 10 / 16 / 23 ~ | Georges's design (2026-10-11); research notes |
 | Version | 1.4 "For Whom the Verses Mourn", 30 Sep – 11 Nov 2026 (42 days) | [official news](https://nte.perfectworld.com/en/article/news/) |
 | Counted tasks | Daily quests, 4 a day; Anomaly Pilgrimage, 3 reward claims a week ~ | research notes |
+| Tasks from the design | Daily: Nakupenda Pool, Fortune reading, Gifts; weekly: Auction House, Old Mailbox commission | Georges's design (2026-10-11); research notes |
 
 ## Research notes (2026-10-09)
 

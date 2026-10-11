@@ -83,6 +83,12 @@ export const nte: GameDefinition = {
     { key: "dailies", title: "Daily quests", cadence: "daily", target: 4 },
     { key: "cafe", title: "Café income", cadence: "daily" },
     { key: "pilgrimage", title: "Anomaly Pilgrimage", cadence: "weekly", target: 3 },
+    // From Georges's design (2026-10-11) and the research notes' dailies and weeklies.
+    { key: "pool", title: "Nakupenda Pool", cadence: "daily" },
+    { key: "fortune", title: "Fortune reading", cadence: "daily" },
+    { key: "gifts", title: "Gifts", cadence: "daily" },
+    { key: "auction", title: "Auction House", cadence: "weekly" },
+    { key: "mailbox", title: "Old Mailbox commission", cadence: "weekly" },
   ],
   docSchema: nteDocSchema,
   emptyDoc: (): NteDoc => ({ arc: {}, console: {}, skills: {}, stats: {} }),

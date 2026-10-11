@@ -127,6 +127,10 @@ export const zzz: GameDefinition = {
   defaultTasks: [
     { key: "dailies", title: "Daily Missions", cadence: "daily", target: 4 },
     { key: "scratch", title: "Scratch Card", cadence: "daily" },
+    // From Georges's design (2026-10-11): coffee, the video store, the Notorious Hunt's three weekly claims.
+    { key: "coffee", title: "Coffee", cadence: "daily" },
+    { key: "videoStore", title: "Video store", cadence: "daily" },
+    { key: "hunt", title: "Notorious Hunt", cadence: "weekly", target: 3 },
   ],
   docSchema: zzzDocSchema,
   emptyDoc: (): ZzzDoc => ({ discs: {}, skills: {}, wEngine: {}, stats: {} }),
