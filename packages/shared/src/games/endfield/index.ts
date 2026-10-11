@@ -88,6 +88,8 @@ export const endfield: GameDefinition = {
     { key: "oroberyl", label: "Oroberyl", pullCost: 500, pullLabel: "headhunt" },
     // Earned from headhunting; a 10-pull on the Arsenal costs 1,980.
     { key: "arsenal", label: "Arsenal Tickets", pullCost: 198, pullLabel: "pull", onlyFor: "weapon" },
+    { key: "aicLines", label: "AIC lines running" },
+    { key: "stockBills", label: "Stock Bills" },
   ],
   // Sources per value: docs/games/endfield.md.
   manifest: {
@@ -96,6 +98,8 @@ export const endfield: GameDefinition = {
     // Seasons of three weekly cycles; a season's first cycle opens with its phase, mid-day.
     endgame: [{ key: "echoes", name: "Echoes of War", anchor: { cadence: "cycle", start: "2026-10-01", days: 7 }, metric: { label: "stars", max: 9 } }],
     battlePass: { name: "Protocol Pass" },
+    // The AIC and outposts (Georges's design, 2026-10-11): output, lines, the daily delivery and trades, Stock Bills.
+    ownCard: { title: "AIC and outposts", items: [{ task: "aicOutput" }, { currency: "aicLines" }, { task: "depot" }, { task: "outposts" }, { currency: "stockBills" }] },
     // Armour, gloves and two kits; set effects need three pieces; no main stat to choose.
     gear: {
       name: "Gear",
@@ -110,7 +114,12 @@ export const endfield: GameDefinition = {
     accountLevel: { label: "AL", name: "Authority Level" },
     version: { name: "Dreamscape of Wind and Snow", start: "2026-09-02", days: 43 },
   },
-  defaultTasks: [{ key: "dailies", title: "Daily Tasks", cadence: "daily" }],
+  defaultTasks: [
+    { key: "dailies", title: "Daily Tasks", cadence: "daily" },
+    { key: "aicOutput", title: "AIC output collected", cadence: "daily" },
+    { key: "depot", title: "Depot delivery", cadence: "daily" },
+    { key: "outposts", title: "Outpost trades", cadence: "daily" },
+  ],
   docSchema: endfieldDocSchema,
   emptyDoc: (): EndfieldDoc => ({ gear: {}, skills: {}, weapon: {}, stats: {} }),
   docVersion: 1,

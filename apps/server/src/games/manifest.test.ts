@@ -138,6 +138,15 @@ describe("the conformance suite", () => {
     const broken = { ...g, regions: [{ ...g.regions[0]!, dailyResetHour: 24 }], manifest: { ...g.manifest, kpis: { damage: [] } } };
     expect(conformance(broken, doc("genshin"))).toEqual(expect.arrayContaining([expect.stringMatching(/reset hour/), expect.stringMatching(/KPIs/)]));
   });
+
+  // A game's own Overview card (Georges's designs, 2026-10-11) reads what the game tracks, each item named in its reference sheet.
+  it("checks a game's own card: its currencies and dailies exist, and the sheet names them", () => {
+    const g = getGame("nte")!;
+    const card = { title: "City", items: [{ currency: "noSuchCurrency" }, { task: "noSuchTask" }] };
+    const broken = { ...g, manifest: { ...g.manifest, ownCard: card } };
+    expect(conformance(broken, doc("nte"))).toEqual(expect.arrayContaining([expect.stringMatching(/noSuchCurrency/), expect.stringMatching(/noSuchTask/)]));
+    expect(conformance(g, doc("nte").replace(/City Stamina/g, ""))).toEqual(expect.arrayContaining([expect.stringMatching(/City Stamina/)]));
+  });
 });
 
 describe("game facts", () => {

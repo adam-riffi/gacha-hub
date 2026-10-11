@@ -90,3 +90,26 @@ test("the Overview's last row: each goal's progress and their average, and the o
   await expect(page.getByRole("region", { name: "Backlog" }).getByTestId("open")).toHaveText(/^\d+$/);
   await page.request.delete(`/api/tasks/${goal.id}`);
 });
+
+// Each game's own card (Georges's designs, 2026-10-11): NTE's city, Endfield's AIC and outposts.
+test("the Overview's own card: NTE's city, its City Stamina capped by the Tycoon Level; Endfield's AIC and outposts @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const nte = (await (await page.request.post("/api/instances", { data: { gameKey: "nte" } })).json()) as { id: string };
+
+  await page.goto(`/games/${nte.id}`);
+  const city = page.getByRole("region", { name: "City" });
+  await city.getByRole("spinbutton", { name: "Tycoon Level" }).fill("23");
+  await city.getByRole("spinbutton", { name: "Tycoon Level" }).blur();
+  await expect(city.getByTestId("cityStamina-cap")).toHaveText("/ 700");
+  // A profile made before the card adds its daily from it.
+  const cafe = city.getByRole("checkbox", { name: "Café income" });
+  if (!(await cafe.count())) await city.getByRole("button", { name: "Add Café income" }).click();
+  await expect(city.getByRole("checkbox", { name: "Café income" })).toBeVisible();
+
+  const endfield = (await (await page.request.post("/api/instances", { data: { gameKey: "endfield" } })).json()) as { id: string };
+  await page.goto(`/games/${endfield.id}`);
+  const aic = page.getByRole("region", { name: "AIC and outposts" });
+  await expect(aic.getByRole("spinbutton", { name: "Stock Bills" })).toBeVisible();
+});

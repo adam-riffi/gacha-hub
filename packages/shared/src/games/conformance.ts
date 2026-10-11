@@ -103,5 +103,12 @@ export function conformance(game: GameDefinition, sheet: string): string[] {
     m.dupes.weapon?.label,
   ];
   for (const n of names) if (n) fail(sheet.includes(n), `the reference sheet must name "${n}"`);
+  // The game's own Overview card reads currencies and default tasks it has, each named in the sheet.
+  for (const item of m.ownCard?.items ?? []) {
+    const label = "currency" in item ? game.currencies.find((c) => c.key === item.currency)?.label : game.defaultTasks.find((t) => t.key === item.task)?.title;
+    const key = "currency" in item ? item.currency : item.task;
+    fail(Boolean(label), `the own card's "${key}" must be a currency or a default task of the game`);
+    if (label) fail(sheet.includes(label), `the reference sheet must name "${label}"`);
+  }
   return out;
 }

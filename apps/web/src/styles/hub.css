@@ -186,3 +186,7 @@ label.act-row { margin: 0; cursor: pointer; color: var(--text); font: 400 15px/1
 .ov-backlog { display: flex; align-items: flex-end; gap: 16px; }
 .ov-spark { flex: 1; height: 40px; }
 .ov-spark polyline { fill: none; stroke: var(--text-muted); stroke-width: 1.5; }
+.ov-own { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 18px; }
+.ov-own-cell { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin: 0; }
+.ov-own-value { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); }
+.ov-own-value input { width: 96px; }
