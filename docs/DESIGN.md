@@ -49,6 +49,8 @@ A whitelisted player signs in with Discord, adds Genshin and HSR, sets currencie
 
 **Later**
 - **A per-game overview** (Georges, 2026-10-10): each game hub opens on a dashboard of its own. It shows what that game needs and nothing else: NTE's page shows Fons, not Genshin's resin. Each game defines its overview's cards in its module, like its other features (ADR 0004).
+- **Talent and skill descriptions** (Georges, 2026-10-11): each talent's and skill's text on the character page and the unit page, from the catalogs' datasets.
+- **Real element, weapon-type and currency icons**, once the art bucket is live (ADR 0006); glyphs and colour chips until then.
 - **Public showcase pages:** a read-only page of a user's builds to share.
 - **PWA:** installable, with offline reading of the last data.
 - **i18n:** the interface and the catalogs in other languages, through the datasets' text maps.
