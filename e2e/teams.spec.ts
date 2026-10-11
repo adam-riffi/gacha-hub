@@ -15,7 +15,8 @@ test("Teams: a tab of its own to make, fill, rename and delete teams; the sheet'
   await page.getByRole("textbox", { name: "New team name" }).fill("E2E Teams tab");
   await page.getByRole("button", { name: "Create team" }).click();
   const team = page.getByRole("region", { name: "E2E Teams tab" });
-  await team.getByRole("combobox", { name: "Add a member to E2E Teams tab" }).selectOption({ label: "Kafka" });
+  await team.getByRole("combobox", { name: "Add a member to E2E Teams tab" }).fill("Kaf");
+  await team.getByRole("option", { name: "Kafka" }).click();
   await expect(team.getByRole("link", { name: "Kafka" })).toBeVisible();
 
   await team.getByRole("textbox", { name: "Team name" }).fill("E2E Teams renamed");

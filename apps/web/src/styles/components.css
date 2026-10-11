@@ -166,3 +166,16 @@ tbody tr:hover { background: var(--surface-2); }
 .ad-tile { display: flex; flex-direction: column; gap: 6px; }
 .ad-tiles .kpi-value { font-size: 28px; }
 .ad-tables { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 16px; align-items: start; }
+
+/* The picker (Georges, 2026-10-11): type or scroll, icons, the list right under its field. */
+.pk { position: relative; width: 100%; }
+.pk input { width: 100%; }
+.pk.has-icon input { padding-left: 40px; }
+.pk-current { position: absolute; top: 50%; left: 6px; width: 26px; height: 26px; transform: translateY(-50%); font-size: 10px; pointer-events: none; }
+.pk-list { position: absolute; top: 100%; left: 0; right: 0; z-index: 40; max-height: 300px; margin: 2px 0 0; padding: 4px 0; overflow-y: auto; list-style: none; background: var(--card); border: 1px solid var(--hairline-strong); box-shadow: 0 12px 28px rgba(0, 0, 0, 0.55); }
+.pk-list li { display: flex; align-items: center; gap: 10px; padding: 6px 10px; cursor: pointer; font-size: 13px; }
+.pk-list li.is-active { background: var(--surface-2); }
+.pk-list li[aria-selected="true"] { color: var(--accent); }
+.pk-list .gicon { width: 28px; height: 28px; flex: none; font-size: 10px; }
+.pk-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pk-none, .pk-clear { cursor: default; }

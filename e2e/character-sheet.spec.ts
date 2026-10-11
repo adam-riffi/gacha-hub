@@ -27,6 +27,21 @@ test("Character sheet: identity, KPIs, character, skills, weapon, stats and the 
   await expect(page.getByRole("region", { name: "Weapon" })).toContainText("S1");
   await expect(page.getByRole("region", { name: "Relics" })).toContainText("CV 26");
 
+  // Pickers (Georges, 2026-10-11): type or scroll, each option with its icon, the list right under its field.
+  const weaponPicker = page.getByRole("region", { name: "Weapon" }).getByRole("combobox", { name: "Weapon name" });
+  await weaponPicker.fill("Patience");
+  const option = page.getByRole("listbox", { name: "Weapon name" }).getByRole("option", { name: "Patience Is All You Need" });
+  await expect(option.getByRole("img")).toHaveCount(1);
+  const field = await weaponPicker.boundingBox();
+  const list = await page.getByRole("listbox", { name: "Weapon name" }).boundingBox();
+  expect(Math.abs(list!.y - (field!.y + field!.height))).toBeLessThan(12);
+  await option.click();
+  await expect(weaponPicker).toHaveValue("Patience Is All You Need");
+  const setPicker = page.getByRole("region", { name: "Relics" }).getByRole("combobox", { name: "Head set" });
+  await setPicker.fill("Musketeer");
+  await page.getByRole("listbox", { name: "Head set" }).getByRole("option", { name: /Musketeer/ }).click();
+  await expect(setPicker).toHaveValue(/Musketeer/);
+
   await character.getByLabel("Level").fill("80");
   await page.getByRole("button", { name: "Save" }).click();
   await expect(page.getByText("Saved", { exact: true })).toBeVisible();
@@ -44,26 +59,26 @@ test("Character sheet: a character opens on its default build; builds switch by 
   await page.getByRole("button", { name: "Continue as Dev User" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
-  // Herta's builds start from nothing, whatever other journeys did.
-  for (const b of ((await (await page.request.get(`/api/instances/${id}/characters`)).json()) as { id: string; catalogId: string }[]).filter((x) => x.catalogId === "1013")) {
+  // Pela's builds start from nothing; no other journey uses her.
+  for (const b of ((await (await page.request.get(`/api/instances/${id}/characters`)).json()) as { id: string; catalogId: string }[]).filter((x) => x.catalogId === "1106")) {
     await page.request.delete(`/api/characters/${b.id}`);
   }
-  const first = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1013", doc: { level: 60 } } })).json()) as { id: string };
+  const first = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1106", doc: { level: 60 } } })).json()) as { id: string };
 
   await page.goto(`/characters/${first.id}`);
   const tabs = page.getByRole("tablist", { name: "Builds" });
   await expect(tabs.getByRole("tab", { name: "Build 1 ★" })).toHaveAttribute("aria-selected", "true");
   await page.getByRole("button", { name: "+ New build" }).click();
   await expect(page).not.toHaveURL(new RegExp(first.id));
-  await expect(page.getByRole("heading", { name: "Herta", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Pela", exact: true })).toBeVisible();
   await expect(tabs.getByRole("tab", { name: "Build 2" })).toHaveAttribute("aria-selected", "true");
   await page.getByRole("button", { name: "Make default" }).click();
   await expect(tabs.getByRole("tab", { name: "Build 2 ★" })).toBeVisible();
 
   // Characters opens the default build.
   await page.goto(`/games/${id}/characters`);
-  await page.getByRole("searchbox", { name: "Search" }).fill("Herta");
-  await page.getByRole("article", { name: "Herta", exact: true }).click();
+  await page.getByRole("searchbox", { name: "Search" }).fill("Pela");
+  await page.getByRole("article", { name: "Pela", exact: true }).click();
   await expect(page.getByRole("tablist", { name: "Builds" }).getByRole("tab", { name: "Build 2 ★" })).toHaveAttribute("aria-selected", "true");
 });
 

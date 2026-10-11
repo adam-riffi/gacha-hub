@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getGame, type CharacterDto, type OwnershipDto, type TaskPriority } from "@gacha/shared";
+import type { CharacterDto, OwnershipDto, TaskPriority } from "@gacha/shared";
 import { api } from "../../lib/api";
 import { useToast } from "../../lib/toast";
 import { useCatalog } from "../../lib/catalog";
 import { Segmented } from "../ui";
+import { Picker } from "../Picker";
+import { assetUrl, communityAssetUrl } from "../../lib/assets";
 import { TaskGeneratorPanel } from "../TaskGeneratorPanel";
 import { WeaponFarm } from "../characters/WeaponFarm";
 import type { InstanceListItem } from "../../lib/types";
@@ -29,7 +31,6 @@ export function GoalMaker({ games, onDone }: { games: InstanceListItem[]; onDone
   const [priority, setPriority] = useState<TaskPriority>("normal");
   const [unit, setUnit] = useState("");
   const gi = games.find((g) => g.id === refId);
-  const game = gi && getGame(gi.gameKey);
   const planning = kind === "character" || kind === "weapon";
   const { catalog } = useCatalog(planning ? gi?.gameKey : undefined);
   const builds = useQuery({ queryKey: ["characters", refId], queryFn: () => api.get<CharacterDto[]>(`/api/instances/${refId}/characters`), enabled: kind === "character" && Boolean(refId) });
@@ -134,16 +135,18 @@ export function GoalMaker({ games, onDone }: { games: InstanceListItem[]; onDone
       {planning && (
         <>
           <div className="tk-new-title">
-            <label htmlFor="tk-unit">{kind === "character" ? "Character" : "Weapon"}</label>
-            <select id="tk-unit" value={unit} disabled={!catalog} onChange={(e) => setUnit(e.target.value)}>
-              <option value="">{catalog ? `Pick a ${kind === "character" ? "character" : "weapon"}…` : `${game?.name ?? "This game"} has no catalog to plan from`}</option>
-              {options.map((u) => (
-                <option key={u.id} value={u.id}>
-                  {u.name}
-                  {ownedIds.has(`${kind}:${u.id}`) ? "" : " (not owned)"}
-                </option>
-              ))}
-            </select>
+            <span className="kpi-label">{kind === "character" ? "Character" : "Weapon"}</span>
+            {catalog ? (
+              <Picker
+                label={kind === "character" ? "Character" : "Weapon"}
+                placeholder="Name"
+                value={options.find((u) => u.id === unit)?.name ?? ""}
+                options={options.map((u) => ({ id: u.id, name: u.name, src: assetUrl(gi!.gameKey, kind, u.icon), fallback: communityAssetUrl(gi!.gameKey, kind, u.icon), sub: ownedIds.has(`${kind}:${u.id}`) ? undefined : "not owned" }))}
+                onPick={(u) => setUnit(u?.id ?? "")}
+              />
+            ) : (
+              <p className="mu">No catalog</p>
+            )}
           </div>
           {unit && gi && (
             <div className="tk-new-plan">

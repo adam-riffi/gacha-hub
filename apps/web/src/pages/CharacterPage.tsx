@@ -23,6 +23,7 @@ import { assetUrl, communityAssetUrl, splashKey } from "../lib/assets";
 import { GameTabs } from "../components/GameTabs";
 import { GameIcon } from "../components/GameIcon";
 import { GearBlock } from "../components/sheet/GearBlock";
+import { Picker } from "../components/Picker";
 import { TaskGeneratorPanel } from "../components/TaskGeneratorPanel";
 import type { CharacterDetail, TaskItem } from "../lib/types";
 
@@ -266,21 +267,14 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
               <h3>Weapon</h3>
               {holder ? (
                 <>
-                  <input
-                    aria-label="Weapon name"
-                    list="sh-weapons"
+                  <Picker
+                    label="Weapon name"
                     placeholder="Name"
                     value={weapon?.name ?? ""}
-                    onChange={(e) => {
-                      const w = weapons.find((x) => x.name === e.target.value);
-                      setDoc((d) => ({ ...d, [holder]: { ...((d[holder] ?? {}) as Doc), name: e.target.value || undefined, ...(w ? { catalogId: w.id } : {}) } }));
-                    }}
+                    free
+                    options={weapons.map((w) => ({ id: w.id, name: w.name, src: assetUrl(game.key, "weapon", w.icon), fallback: communityAssetUrl(game.key, "weapon", w.icon), sub: `★${w.rarity}` }))}
+                    onPick={(w, text) => setDoc((d) => ({ ...d, [holder]: { ...((d[holder] ?? {}) as Doc), name: text || undefined, catalogId: w?.id } }))}
                   />
-                  <datalist id="sh-weapons">
-                    {weapons.map((w) => (
-                      <option key={w.id} value={w.name} />
-                    ))}
-                  </datalist>
                   <div className="sh-row">
                     <label htmlFor="sh-wlevel">Level</label>
                     <input id="sh-wlevel" type="number" min={1} max={90} value={weapon?.level ?? ""} onChange={(e) => setDoc((d) => ({ ...d, [holder]: { ...((d[holder] ?? {}) as Doc), level: e.target.value === "" ? undefined : Number(e.target.value) } }))} />
@@ -320,7 +314,7 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
         </div>
       </div>
 
-      <GearBlock game={game} doc={doc} setDoc={setDoc} setNames={catalog?.gear.map((g) => g.name) ?? []} />
+      <GearBlock game={game} doc={doc} setDoc={setDoc} sets={(catalog?.gear ?? []).map((g) => ({ id: g.id, name: g.name, src: assetUrl(game.key, "gear", g.icon), fallback: communityAssetUrl(game.key, "gear", g.icon) }))} />
 
       {data.catalogId && (
         <section className="card sh-plan" aria-label="Plan farming">

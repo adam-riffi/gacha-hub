@@ -8,6 +8,11 @@ test("Tasks: farm today, goals with their steps, filtering, and an event goal cl
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   // HSR, not Genshin: the smoke journey adds Genshin through the library.
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  // Herta starts unowned and without builds, whatever other journeys did: the reward reads "new".
+  for (const b of ((await (await page.request.get(`/api/instances/${id}/characters`)).json()) as { id: string; catalogId: string }[]).filter((x) => x.catalogId === "1013")) {
+    await page.request.delete(`/api/characters/${b.id}`);
+  }
+  await page.request.put(`/api/instances/${id}/ownership`, { data: { items: [{ kind: "character", catalogId: "1013", owned: false }] } });
   const parent = (await (await page.request.post("/api/tasks", { data: { scope: "game", refId: id, type: "goal", title: "Farm Asta" } })).json()) as { id: string };
   await page.request.post("/api/tasks", { data: { scope: "game", refId: id, type: "goal", title: "Farm Lifeless Blade", target: 5, materialId: "110112", parentId: parent.id } });
   await page.request.post("/api/admin/payload", {
@@ -104,6 +109,7 @@ test("Tasks: the goal maker makes anything: a gameplay goal with a count, a chec
   await page.getByRole("button", { name: "New goal" }).click();
   await maker.getByRole("button", { name: "Character build" }).click();
   await maker.getByLabel("Game").selectOption({ label: "Honkai: Star Rail" });
-  await maker.getByLabel("Character").selectOption("1005");
+  await maker.getByRole("combobox", { name: "Character" }).fill("Kafka");
+  await maker.getByRole("option", { name: /^Kafka/ }).click();
   await expect(maker.getByRole("button", { name: "Generate tasks" })).toBeVisible();
 });
