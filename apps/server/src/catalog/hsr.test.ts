@@ -12,6 +12,17 @@ describe("hsr catalog", () => {
     expect(catalog.materials.length).toBeGreaterThanOrEqual(80);
   });
 
+  // A relic set's bonus with its numbers (it read "#1[i]%"); set bonuses on the cards read them (round 5).
+  it("fills each relic set bonus with its numbers", async () => {
+    const catalog = catalogSchema.parse(await hsr.loadCatalog!());
+    expect(catalog.gear.find((g) => g.name === "Musketeer of Wild Wheat")?.bonuses).toEqual([
+      "2pc: Increases ATK by 12%.",
+      "4pc: The wearer's SPD increases by 6% and DMG dealt by Basic ATK increases by 10%.",
+    ]);
+    expect(catalog.gear.find((g) => g.name === "Hunter of Glacial Forest")?.bonuses[1]).toBe("4pc: After the wearer uses their Ultimate, their CRIT DMG increases by 25% for 2 turn(s).");
+    expect(catalog.gear.flatMap((g) => g.bonuses).filter((b) => b.includes("#"))).toEqual([]);
+  });
+
   it("every cost references a catalog material", async () => {
     const catalog = catalogSchema.parse(await hsr.loadCatalog!());
     const ids = new Set(catalog.materials.map((m) => m.id));
