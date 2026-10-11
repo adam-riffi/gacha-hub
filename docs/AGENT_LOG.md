@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r3/12-handoff · #218
+- Done: the end of Georges's second feedback round. HANDOFF.md rewritten (`main` at #217, #207–#217, this round's decisions, the four migrations the next deploy runs); DESIGN.md §4 "Later" gains talent and skill descriptions and real icons after the art bucket; the audit marks every line done with its PR.
+- Tests: docs only. `npm run check` passes: 570 tests and 53 journeys.
+- Scope/decisions: none new; the round's decisions are listed in HANDOFF.md.
+- Next: Georges's secrets and real data, a deploy when he asks.
+
 ## 2026-10-11 · claude · stack/r3/11-sheets · #217
 - Done: the audit's last clean-up. The six per-game sheets (`apps/web/src/games/*/Sheet.tsx`), their dispatcher (`apps/web/src/render/`), `GearPieceCard` and `inputs` were unused since builds became tabs on the shared character page (#208): gone, with their CSS (the Genshin sheet's `gs-*` rules, slot cards, stat rows, `.sheet`, `.portrait`, `.field-inline`). The gear inventory keeps Genshin's stat lists itself. `npm run game:new` writes the module and its reference sheet only; AGENTS.md, README, PROJECT-GUIDE and the public games README say so.
 - Tests: written first: the scaffolder test expects no web sheet and only the shared registry edit. `npm run check` passes: 570 tests and 53 journeys; initial JavaScript 145.3 KB of 200 KB.
@@ -284,13 +290,3 @@ Entry format:
 - Tests: written first: `pullsFor` keeps weapon-only tickets apart; an E2E journey checks Endfield's 6★ labels and the Arsenal funded by tickets. `npm run check` passes: 517 tests and 40 journeys.
 - Scope/decisions: the Arsenal is left out of Endfield's savings planner, since its pulls come from their own tickets.
 - Next: WuWa material art, the ZZZ catalog (Hakushin data on static.nanoka.cc).
-
-## 2026-10-10 · claude · stack/endfield/03-import · #179
-- Done: Endfield's pulls import from the Headhunting records link (ADR 0009). `fetchRecords` pages each tracked pool (Chartered, Arsenal, Basic headhunting) from `ef-webview.gryphline.com`. It stops at stored records or the last page, and hands back a cursor when its 20 s budget runs out. The history-link route reads Endfield links with `readRecordsLink` and takes the longer pool names in its cursor. Settings' Endfield card and pull-history row name the method, and the paste box shows the right placeholder per game.
-- Tests: written first:
-  - an integration test: official host only, paging, stopping at known records, expiry, no token stored;
-  - a cursor test for the time budget.
-
-  `npm run check` passes: 516 tests and 39 journeys.
-- Scope/decisions: the SKPORT account token is never asked for (ADR 0009).
-- Next: 6★ labels and Arsenal Tickets on Pulls.
