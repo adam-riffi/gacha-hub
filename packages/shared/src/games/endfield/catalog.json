@@ -1,6 +1,6 @@
 {
   "gameKey": "endfield",
-  "source": "EndFieldGameData@v0.3.0 (ownership-only; no cost data published)",
+  "source": "EndFieldGameData@v0.3.0 (no cost data published)",
   "characters": [
     {
       "id": "chr_0002_endminm",
@@ -8,7 +8,7 @@
       "name": "Endministrator",
       "rarity": 6,
       "tag": "Physical",
-      "weaponType": "Guard",
+      "weaponType": "Sword",
       "maxLevel": 80,
       "ascension": [],
       "talents": {
@@ -29,7 +29,7 @@
       "name": "Endministrator",
       "rarity": 6,
       "tag": "Physical",
-      "weaponType": "Guard",
+      "weaponType": "Sword",
       "maxLevel": 80,
       "ascension": [],
       "talents": {
@@ -50,7 +50,7 @@
       "name": "Perlica",
       "rarity": 5,
       "tag": "Electric",
-      "weaponType": "Caster",
+      "weaponType": "Arts Unit",
       "maxLevel": 80,
       "ascension": [],
       "talents": {
@@ -71,7 +71,7 @@
       "name": "Chen Qianyu",
       "rarity": 5,
       "tag": "Physical",
-      "weaponType": "Guard",
+      "weaponType": "Sword",
       "maxLevel": 80,
       "ascension": [],
       "talents": {
@@ -92,7 +92,7 @@
       "name": "Wulfgard",
       "rarity": 5,
       "tag": "Heat",
-      "weaponType": "Caster",
+      "weaponType": "Handcannon",
       "maxLevel": 80,
       "ascension": [],
       "talents": {
@@ -113,7 +113,7 @@
       "name": "Arclight",
       "rarity": 5,
       "tag": "Electric",
-      "weaponType": "Vanguard",
+      "weaponType": "Sword",
       "maxLevel": 80,
       "ascension": [],
       "talents": {
@@ -134,7 +134,7 @@
       "name": "Ember",
       "rarity": 6,
       "tag": "Heat",
-      "weaponType": "Defender",
+      "weaponType": "Greatsword",
       "maxLevel": 80,
       "ascension": [],
       "talents": {
@@ -155,7 +155,7 @@
       "name": "Xaihi",
       "rarity": 5,
       "tag": "Cryo",
-      "weaponType": "Supporter",
+      "weaponType": "Arts Unit",
       "maxLevel": 80,
       "ascension": [],
       "talents": {
@@ -176,7 +176,7 @@
       "name": "Avywenna",
       "rarity": 5,
       "tag": "Electric",
-      "weaponType": "Striker",
+      "weaponType": "Polearm",
       "maxLevel": 80,
       "ascension": [],
       "talents": {
@@ -197,7 +197,7 @@
       "name": "Gilberta",
       "rarity": 6,
       "tag": "Nature",
-      "weaponType": "Supporter",
+      "weaponType": "Arts Unit",
       "maxLevel": 80,
       "ascension": [],
       "talents": {
@@ -218,7 +218,7 @@
       "name": "Snowshine",
       "rarity": 5,
       "tag": "Cryo",
-      "weaponType": "Defender",
+      "weaponType": "Greatsword",
       "maxLevel": 80,
       "ascension": [],
       "talents": {
@@ -239,7 +239,7 @@
       "name": "Lifeng",
       "rarity": 6,
       "tag": "Physical",
-      "weaponType": "Guard",
+      "weaponType": "Polearm",
       "maxLevel": 80,
       "ascension": [],
       "talents": {
@@ -260,7 +260,7 @@
       "name": "Laevatain",
       "rarity": 6,
       "tag": "Heat",
-      "weaponType": "Striker",
+      "weaponType": "Sword",
       "maxLevel": 80,
       "ascension": [],
       "talents": {
@@ -281,7 +281,7 @@
       "name": "Yvonne",
       "rarity": 6,
       "tag": "Cryo",
-      "weaponType": "Striker",
+      "weaponType": "Handcannon",
       "maxLevel": 80,
       "ascension": [],
       "talents": {
@@ -302,7 +302,7 @@
       "name": "Da Pan",
       "rarity": 5,
       "tag": "Physical",
-      "weaponType": "Striker",
+      "weaponType": "Greatsword",
       "maxLevel": 80,
       "ascension": [],
       "talents": {
@@ -323,7 +323,7 @@
       "name": "Akekuri",
       "rarity": 4,
       "tag": "Heat",
-      "weaponType": "Vanguard",
+      "weaponType": "Sword",
       "maxLevel": 80,
       "ascension": [],
       "talents": {
@@ -344,7 +344,7 @@
       "name": "Catcher",
       "rarity": 4,
       "tag": "Physical",
-      "weaponType": "Defender",
+      "weaponType": "Greatsword",
       "maxLevel": 80,
       "ascension": [],
       "talents": {
@@ -365,7 +365,7 @@
       "name": "Estella",
       "rarity": 4,
       "tag": "Cryo",
-      "weaponType": "Guard",
+      "weaponType": "Polearm",
       "maxLevel": 80,
       "ascension": [],
       "talents": {
@@ -386,7 +386,7 @@
       "name": "Fluorite",
       "rarity": 4,
       "tag": "Nature",
-      "weaponType": "Caster",
+      "weaponType": "Handcannon",
       "maxLevel": 80,
       "ascension": [],
       "talents": {
@@ -407,7 +407,7 @@
       "name": "Antal",
       "rarity": 4,
       "tag": "Electric",
-      "weaponType": "Supporter",
+      "weaponType": "Arts Unit",
       "maxLevel": 80,
       "ascension": [],
       "talents": {
@@ -428,7 +428,7 @@
       "name": "Alesh",
       "rarity": 5,
       "tag": "Cryo",
-      "weaponType": "Vanguard",
+      "weaponType": "Sword",
       "maxLevel": 80,
       "ascension": [],
       "talents": {
@@ -449,7 +449,7 @@
       "name": "Ardelia",
       "rarity": 6,
       "tag": "Nature",
-      "weaponType": "Supporter",
+      "weaponType": "Arts Unit",
       "maxLevel": 80,
       "ascension": [],
       "talents": {
@@ -470,7 +470,7 @@
       "name": "Last Rite",
       "rarity": 6,
       "tag": "Cryo",
-      "weaponType": "Striker",
+      "weaponType": "Greatsword",
       "maxLevel": 80,
       "ascension": [],
       "talents": {
@@ -491,7 +491,7 @@
       "name": "Tangtang",
       "rarity": 6,
       "tag": "Cryo",
-      "weaponType": "Caster",
+      "weaponType": "Handcannon",
       "maxLevel": 80,
       "ascension": [],
       "talents": {
@@ -512,7 +512,7 @@
       "name": "Rossi",
       "rarity": 6,
       "tag": "Physical",
-      "weaponType": "Guard",
+      "weaponType": "Sword",
       "maxLevel": 80,
       "ascension": [],
       "talents": {
@@ -533,7 +533,7 @@
       "name": "Pogranichnik",
       "rarity": 6,
       "tag": "Physical",
-      "weaponType": "Vanguard",
+      "weaponType": "Sword",
       "maxLevel": 80,
       "ascension": [],
       "talents": {
@@ -554,7 +554,7 @@
       "name": "Zhuang Fangyi",
       "rarity": 6,
       "tag": "Electric",
-      "weaponType": "Striker",
+      "weaponType": "Arts Unit",
       "maxLevel": 80,
       "ascension": [],
       "talents": {
@@ -575,7 +575,7 @@
       "name": "Mifu",
       "rarity": 6,
       "tag": "Physical",
-      "weaponType": "Guard",
+      "weaponType": "Greatsword",
       "maxLevel": 80,
       "ascension": [],
       "talents": {
@@ -596,7 +596,7 @@
       "name": "Endministrator",
       "rarity": 6,
       "tag": "Physical",
-      "weaponType": "Guard",
+      "weaponType": "Sword",
       "maxLevel": 80,
       "ascension": [],
       "talents": {
@@ -612,7 +612,1252 @@
       }
     }
   ],
-  "weapons": [],
-  "gear": [],
+  "weapons": [
+    {
+      "id": "wpn_claym_0003",
+      "key": "industry-0-1",
+      "name": "Industry 0.1",
+      "rarity": 4,
+      "type": "Greatsword",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_claym_0004",
+      "key": "exemplar",
+      "name": "Exemplar",
+      "rarity": 6,
+      "type": "Greatsword",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_claym_0006",
+      "key": "former-finery",
+      "name": "Former Finery",
+      "rarity": 6,
+      "type": "Greatsword",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_claym_0007",
+      "key": "thunderberge",
+      "name": "Thunderberge",
+      "rarity": 6,
+      "type": "Greatsword",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_claym_0008",
+      "key": "sundered-prince",
+      "name": "Sundered Prince",
+      "rarity": 6,
+      "type": "Greatsword",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_claym_0009",
+      "key": "quencher",
+      "name": "Quencher",
+      "rarity": 4,
+      "type": "Greatsword",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_claym_0010",
+      "key": "darhoff-7",
+      "name": "Darhoff 7",
+      "rarity": 3,
+      "type": "Greatsword",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_claym_0011",
+      "key": "seeker-of-dark-lung",
+      "name": "Seeker of Dark Lung",
+      "rarity": 5,
+      "type": "Greatsword",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_claym_0012",
+      "key": "finishing-call",
+      "name": "Finishing Call",
+      "rarity": 5,
+      "type": "Greatsword",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_claym_0013",
+      "key": "khravengger",
+      "name": "Khravengger",
+      "rarity": 6,
+      "type": "Greatsword",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_claym_0014",
+      "key": "ancient-canal",
+      "name": "Ancient Canal",
+      "rarity": 5,
+      "type": "Greatsword",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_claym_0015",
+      "key": "obj-heavy-burden",
+      "name": "OBJ Heavy Burden",
+      "rarity": 5,
+      "type": "Greatsword",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_claym_0016",
+      "key": "phantom-pain",
+      "name": "Phantom Pain",
+      "rarity": 6,
+      "type": "Greatsword",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_claym_0017",
+      "key": "amaranthine-tassel",
+      "name": "Amaranthine Tassel",
+      "rarity": 6,
+      "type": "Greatsword",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_funnel_0001",
+      "key": "hypernova-auto",
+      "name": "Hypernova Auto",
+      "rarity": 4,
+      "type": "Arts Unit",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_funnel_0002",
+      "key": "jiminy-12",
+      "name": "Jiminy 12",
+      "rarity": 3,
+      "type": "Arts Unit",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_funnel_0003",
+      "key": "fluorescent-roc",
+      "name": "Fluorescent Roc",
+      "rarity": 4,
+      "type": "Arts Unit",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_funnel_0004",
+      "key": "wild-wanderer",
+      "name": "Wild Wanderer",
+      "rarity": 5,
+      "type": "Arts Unit",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_funnel_0005",
+      "key": "stanza-of-memorials",
+      "name": "Stanza of Memorials",
+      "rarity": 5,
+      "type": "Arts Unit",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_funnel_0006",
+      "key": "opus-etch-figure",
+      "name": "Opus: Etch Figure",
+      "rarity": 6,
+      "type": "Arts Unit",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_funnel_0007",
+      "key": "monaihe",
+      "name": "Monaihe",
+      "rarity": 5,
+      "type": "Arts Unit",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_funnel_0008",
+      "key": "detonation-unit",
+      "name": "Detonation Unit",
+      "rarity": 6,
+      "type": "Arts Unit",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_funnel_0009",
+      "key": "oblivion",
+      "name": "Oblivion",
+      "rarity": 6,
+      "type": "Arts Unit",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_funnel_0010",
+      "key": "chivalric-virtues",
+      "name": "Chivalric Virtues",
+      "rarity": 6,
+      "type": "Arts Unit",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_funnel_0011",
+      "key": "delivery-guaranteed",
+      "name": "Delivery Guaranteed",
+      "rarity": 6,
+      "type": "Arts Unit",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_funnel_0012",
+      "key": "freedom-to-proselytize",
+      "name": "Freedom to Proselytize",
+      "rarity": 5,
+      "type": "Arts Unit",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_funnel_0013",
+      "key": "dreams-of-the-starry-beach",
+      "name": "Dreams of the Starry Beach",
+      "rarity": 6,
+      "type": "Arts Unit",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_funnel_0014",
+      "key": "obj-arts-identifier",
+      "name": "OBJ Arts Identifier",
+      "rarity": 5,
+      "type": "Arts Unit",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_funnel_0015",
+      "key": "lone-barge",
+      "name": "Lone Barge",
+      "rarity": 6,
+      "type": "Arts Unit",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_funnel_0017",
+      "key": "flickers-in-the-mist",
+      "name": "Flickers in the Mist",
+      "rarity": 6,
+      "type": "Arts Unit",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_lance_0003",
+      "key": "pathfinders-beacon",
+      "name": "Pathfinder's Beacon",
+      "rarity": 4,
+      "type": "Polearm",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_lance_0004",
+      "key": "chimeric-justice",
+      "name": "Chimeric Justice",
+      "rarity": 5,
+      "type": "Polearm",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_lance_0006",
+      "key": "cohesive-traction",
+      "name": "Cohesive Traction",
+      "rarity": 5,
+      "type": "Polearm",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_lance_0007",
+      "key": "beacon-of-duty",
+      "name": "Beacon of Duty",
+      "rarity": 6,
+      "type": "Polearm",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_lance_0008",
+      "key": "aggeloslayer",
+      "name": "Aggeloslayer",
+      "rarity": 4,
+      "type": "Polearm",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_lance_0009",
+      "key": "opero-77",
+      "name": "Opero 77",
+      "rarity": 3,
+      "type": "Polearm",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_lance_0010",
+      "key": "valiant",
+      "name": "Valiant",
+      "rarity": 6,
+      "type": "Polearm",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_lance_0011",
+      "key": "jet",
+      "name": "JET",
+      "rarity": 6,
+      "type": "Polearm",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_lance_0012",
+      "key": "mountain-bearer",
+      "name": "Mountain Bearer",
+      "rarity": 6,
+      "type": "Polearm",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_lance_0013",
+      "key": "obj-razorhorn",
+      "name": "OBJ Razorhorn",
+      "rarity": 5,
+      "type": "Polearm",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_pistol_0001",
+      "key": "peco-5",
+      "name": "Peco 5",
+      "rarity": 3,
+      "type": "Handcannon",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_pistol_0002",
+      "key": "howling-guard",
+      "name": "Howling Guard",
+      "rarity": 4,
+      "type": "Handcannon",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_pistol_0003",
+      "key": "long-road",
+      "name": "Long Road",
+      "rarity": 4,
+      "type": "Handcannon",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_pistol_0004",
+      "key": "rational-farewell",
+      "name": "Rational Farewell",
+      "rarity": 5,
+      "type": "Handcannon",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_pistol_0005",
+      "key": "navigator",
+      "name": "Navigator",
+      "rarity": 6,
+      "type": "Handcannon",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_pistol_0006",
+      "key": "opus-the-living",
+      "name": "Opus: The Living",
+      "rarity": 5,
+      "type": "Handcannon",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_pistol_0007",
+      "key": "home-longing",
+      "name": "Home Longing",
+      "rarity": 6,
+      "type": "Handcannon",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_pistol_0008",
+      "key": "wedge",
+      "name": "Wedge",
+      "rarity": 6,
+      "type": "Handcannon",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_pistol_0009",
+      "key": "clannibal",
+      "name": "Clannibal",
+      "rarity": 6,
+      "type": "Handcannon",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_pistol_0010",
+      "key": "artzy-tyrannical",
+      "name": "Artzy Tyrannical",
+      "rarity": 6,
+      "type": "Handcannon",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_pistol_0011",
+      "key": "brigands-calling",
+      "name": "Brigand's Calling",
+      "rarity": 6,
+      "type": "Handcannon",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_pistol_0012",
+      "key": "obj-velocitous",
+      "name": "OBJ Velocitous",
+      "rarity": 5,
+      "type": "Handcannon",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_sword_0003",
+      "key": "tarr-11",
+      "name": "Tarr 11",
+      "rarity": 3,
+      "type": "Sword",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_sword_0005",
+      "key": "sundering-steel",
+      "name": "Sundering Steel",
+      "rarity": 5,
+      "type": "Sword",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_sword_0006",
+      "key": "forgeborn-scathe",
+      "name": "Forgeborn Scathe",
+      "rarity": 6,
+      "type": "Sword",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_sword_0007",
+      "key": "fortmaker",
+      "name": "Fortmaker",
+      "rarity": 5,
+      "type": "Sword",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_sword_0008",
+      "key": "prominent-edge",
+      "name": "Prominent Edge",
+      "rarity": 4,
+      "type": "Sword",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_sword_0009",
+      "key": "wave-tide",
+      "name": "Wave Tide",
+      "rarity": 4,
+      "type": "Sword",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_sword_0010",
+      "key": "umbral-torch",
+      "name": "Umbral Torch",
+      "rarity": 6,
+      "type": "Sword",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_sword_0011",
+      "key": "rapid-ascent",
+      "name": "Rapid Ascent",
+      "rarity": 6,
+      "type": "Sword",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_sword_0012",
+      "key": "thermite-cutter",
+      "name": "Thermite Cutter",
+      "rarity": 6,
+      "type": "Sword",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_sword_0013",
+      "key": "eminent-repute",
+      "name": "Eminent Repute",
+      "rarity": 6,
+      "type": "Sword",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_sword_0014",
+      "key": "white-night-nova",
+      "name": "White Night Nova",
+      "rarity": 6,
+      "type": "Sword",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_sword_0015",
+      "key": "aspirant",
+      "name": "Aspirant",
+      "rarity": 5,
+      "type": "Sword",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_sword_0016",
+      "key": "never-rest",
+      "name": "Never Rest",
+      "rarity": 6,
+      "type": "Sword",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_sword_0017",
+      "key": "glorious-memory",
+      "name": "Glorious Memory",
+      "rarity": 6,
+      "type": "Sword",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_sword_0018",
+      "key": "twelve-questions",
+      "name": "Twelve Questions",
+      "rarity": 5,
+      "type": "Sword",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_sword_0019",
+      "key": "obj-edge-of-lightness",
+      "name": "OBJ Edge of Lightness",
+      "rarity": 5,
+      "type": "Sword",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_sword_0020",
+      "key": "finchaser-3-0",
+      "name": "Finchaser 3.0",
+      "rarity": 5,
+      "type": "Sword",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_sword_0021",
+      "key": "grand-vision",
+      "name": "Grand Vision",
+      "rarity": 6,
+      "type": "Sword",
+      "maxLevel": 80,
+      "ascension": []
+    },
+    {
+      "id": "wpn_sword_0022",
+      "key": "lupine-scarlet",
+      "name": "Lupine Scarlet",
+      "rarity": 6,
+      "type": "Sword",
+      "maxLevel": 80,
+      "ascension": []
+    }
+  ],
+  "gear": [
+    {
+      "id": "suit_agi01",
+      "key": "roving-msgr",
+      "name": "Roving MSGR",
+      "slots": [
+        "slot1",
+        "slot2",
+        "slot3",
+        "slot4"
+      ],
+      "bonuses": [],
+      "extra": {
+        "rarityList": [
+          3,
+          4
+        ],
+        "pieces": [
+          "item_equip_t2_suit_agi01_body_01",
+          "item_equip_t2_suit_agi01_edc_01",
+          "item_equip_t2_suit_agi01_edc_02",
+          "item_equip_t2_suit_agi01_hand_01",
+          "item_equip_t3_suit_agi01_body_01",
+          "item_equip_t3_suit_agi01_edc_01",
+          "item_equip_t3_suit_agi01_edc_02",
+          "item_equip_t3_suit_agi01_edc_03",
+          "item_equip_t3_suit_agi01_hand_01"
+        ]
+      }
+    },
+    {
+      "id": "suit_atb01",
+      "key": "frontiers",
+      "name": "Frontiers",
+      "slots": [
+        "slot1",
+        "slot2",
+        "slot3",
+        "slot4"
+      ],
+      "bonuses": [],
+      "extra": {
+        "rarityList": [
+          5
+        ],
+        "pieces": [
+          "item_equip_t4_suit_atb01_body_01",
+          "item_equip_t4_suit_atb01_body_02",
+          "item_equip_t4_suit_atb01_body_03",
+          "item_equip_t4_suit_atb01_body_04",
+          "item_equip_t4_suit_atb01_body_05",
+          "item_equip_t4_suit_atb01_edc_01",
+          "item_equip_t4_suit_atb01_edc_02",
+          "item_equip_t4_suit_atb01_edc_03",
+          "item_equip_t4_suit_atb01_edc_04",
+          "item_equip_t4_suit_atb01_edc_05",
+          "item_equip_t4_suit_atb01_edc_06",
+          "item_equip_t4_suit_atb01_hand_01",
+          "item_equip_t4_suit_atb01_hand_02",
+          "item_equip_t4_suit_atb01_hand_03"
+        ]
+      }
+    },
+    {
+      "id": "suit_atk01",
+      "key": "aburrey-heavy",
+      "name": "Aburrey Heavy",
+      "slots": [
+        "slot1",
+        "slot2",
+        "slot3",
+        "slot4"
+      ],
+      "bonuses": [],
+      "extra": {
+        "rarityList": [
+          4
+        ],
+        "pieces": [
+          "item_equip_t3_suit_atk01_body_01",
+          "item_equip_t3_suit_atk01_body_02",
+          "item_equip_t3_suit_atk01_body_03",
+          "item_equip_t3_suit_atk01_body_04",
+          "item_equip_t3_suit_atk01_edc_01",
+          "item_equip_t3_suit_atk01_edc_02",
+          "item_equip_t3_suit_atk01_edc_03",
+          "item_equip_t3_suit_atk01_edc_04",
+          "item_equip_t3_suit_atk01_edc_05",
+          "item_equip_t3_suit_atk01_edc_06",
+          "item_equip_t3_suit_atk01_hand_01"
+        ]
+      }
+    },
+    {
+      "id": "suit_atk02",
+      "key": "type-50-yinglung-heavy",
+      "name": "Type 50 Yinglung Heavy",
+      "slots": [
+        "slot1",
+        "slot2",
+        "slot3",
+        "slot4"
+      ],
+      "bonuses": [],
+      "extra": {
+        "rarityList": [
+          5
+        ],
+        "pieces": [
+          "item_equip_t4_suit_atk02_body_01",
+          "item_equip_t4_suit_atk02_body_02",
+          "item_equip_t4_suit_atk02_body_03",
+          "item_equip_t4_suit_atk02_body_04",
+          "item_equip_t4_suit_atk02_edc_01",
+          "item_equip_t4_suit_atk02_edc_02",
+          "item_equip_t4_suit_atk02_edc_03",
+          "item_equip_t4_suit_atk02_edc_04",
+          "item_equip_t4_suit_atk02_edc_05",
+          "item_equip_t4_suit_atk02_hand_01",
+          "item_equip_t4_suit_atk02_hand_02"
+        ]
+      }
+    },
+    {
+      "id": "suit_attri01",
+      "key": "bonekrusha-heavy",
+      "name": "Bonekrusha Heavy",
+      "slots": [
+        "slot1",
+        "slot2",
+        "slot3",
+        "slot4"
+      ],
+      "bonuses": [],
+      "extra": {
+        "rarityList": [
+          5
+        ],
+        "pieces": [
+          "item_equip_t4_suit_attri01_body_01",
+          "item_equip_t4_suit_attri01_body_02",
+          "item_equip_t4_suit_attri01_body_03",
+          "item_equip_t4_suit_attri01_body_04",
+          "item_equip_t4_suit_attri01_body_05",
+          "item_equip_t4_suit_attri01_edc_02",
+          "item_equip_t4_suit_attri01_edc_03",
+          "item_equip_t4_suit_attri01_edc_04",
+          "item_equip_t4_suit_attri01_edc_05",
+          "item_equip_t4_suit_attri01_edc_06",
+          "item_equip_t4_suit_attri01_edc_07",
+          "item_equip_t4_suit_attri01_hand_01",
+          "item_equip_t4_suit_attri01_hand_02",
+          "item_equip_t4_suit_attri01_hand_03"
+        ]
+      }
+    },
+    {
+      "id": "suit_burst01",
+      "key": "tide-fall-light",
+      "name": "Tide Fall Light",
+      "slots": [
+        "slot1",
+        "slot2",
+        "slot3",
+        "slot4"
+      ],
+      "bonuses": [],
+      "extra": {
+        "rarityList": [
+          5
+        ],
+        "pieces": [
+          "item_equip_t4_suit_burst01_body_01",
+          "item_equip_t4_suit_burst01_edc_01",
+          "item_equip_t4_suit_burst01_edc_02",
+          "item_equip_t4_suit_burst01_hand_01"
+        ]
+      }
+    },
+    {
+      "id": "suit_combo_cd01",
+      "key": "qingbo-heavy",
+      "name": "Qingbo Heavy",
+      "slots": [
+        "slot1",
+        "slot2",
+        "slot3",
+        "slot4"
+      ],
+      "bonuses": [],
+      "extra": {
+        "rarityList": [
+          5
+        ],
+        "pieces": [
+          "item_equip_t4_suit_combo_cd01_body_01",
+          "item_equip_t4_suit_combo_cd01_body_02",
+          "item_equip_t4_suit_combo_cd01_edc_01",
+          "item_equip_t4_suit_combo_cd01_edc_02",
+          "item_equip_t4_suit_combo_cd01_edc_03",
+          "item_equip_t4_suit_combo_cd01_edc_04",
+          "item_equip_t4_suit_combo_cd01_hand_01",
+          "item_equip_t4_suit_combo_cd01_hand_02"
+        ]
+      }
+    },
+    {
+      "id": "suit_criti01",
+      "key": "mi-security",
+      "name": "MI Security",
+      "slots": [
+        "slot1",
+        "slot2",
+        "slot3",
+        "slot4"
+      ],
+      "bonuses": [],
+      "extra": {
+        "rarityList": [
+          5
+        ],
+        "pieces": [
+          "item_equip_t4_suit_criti01_body_01",
+          "item_equip_t4_suit_criti01_body_02",
+          "item_equip_t4_suit_criti01_body_03",
+          "item_equip_t4_suit_criti01_body_04",
+          "item_equip_t4_suit_criti01_body_06",
+          "item_equip_t4_suit_criti01_edc_01",
+          "item_equip_t4_suit_criti01_edc_02",
+          "item_equip_t4_suit_criti01_edc_03",
+          "item_equip_t4_suit_criti01_edc_04",
+          "item_equip_t4_suit_criti01_edc_05",
+          "item_equip_t4_suit_criti01_edc_06",
+          "item_equip_t4_suit_criti01_hand_01",
+          "item_equip_t4_suit_criti01_hand_02",
+          "item_equip_t4_suit_criti01_hand_03",
+          "item_equip_t4_suit_criti01_hand_04"
+        ]
+      }
+    },
+    {
+      "id": "suit_crush_fracture",
+      "key": "grizzled-edge",
+      "name": "Grizzled Edge",
+      "slots": [
+        "slot1",
+        "slot2",
+        "slot3",
+        "slot4"
+      ],
+      "bonuses": [],
+      "extra": {
+        "rarityList": [
+          5
+        ],
+        "pieces": [
+          "item_equip_t4_suit_crush_fracture_body_01",
+          "item_equip_t4_suit_crush_fracture_body_02",
+          "item_equip_t4_suit_crush_fracture_edc_01",
+          "item_equip_t4_suit_crush_fracture_edc_02",
+          "item_equip_t4_suit_crush_fracture_hand_01",
+          "item_equip_t4_suit_crush_fracture_hand_02"
+        ]
+      }
+    },
+    {
+      "id": "suit_expend_spell01",
+      "key": "xiranflow-light",
+      "name": "Xiranflow Light",
+      "slots": [
+        "slot1",
+        "slot2",
+        "slot3",
+        "slot4"
+      ],
+      "bonuses": [],
+      "extra": {
+        "rarityList": [
+          5
+        ],
+        "pieces": [
+          "item_equip_t4_suit_expend_spell01_body_02",
+          "item_equip_t4_suit_expend_spell01_edc_02",
+          "item_equip_t4_suit_expend_spell01_hand_02"
+        ]
+      }
+    },
+    {
+      "id": "suit_fire_natr01",
+      "key": "hot-work",
+      "name": "Hot Work",
+      "slots": [
+        "slot1",
+        "slot2",
+        "slot3",
+        "slot4"
+      ],
+      "bonuses": [],
+      "extra": {
+        "rarityList": [
+          5
+        ],
+        "pieces": [
+          "item_equip_t4_suit_fire_natr01_body_01",
+          "item_equip_t4_suit_fire_natr01_body_02",
+          "item_equip_t4_suit_fire_natr01_edc_01",
+          "item_equip_t4_suit_fire_natr01_edc_02",
+          "item_equip_t4_suit_fire_natr01_edc_03",
+          "item_equip_t4_suit_fire_natr01_hand_01",
+          "item_equip_t4_suit_fire_natr01_hand_02",
+          "item_equip_t4_suit_fire_natr01_hand_03"
+        ]
+      }
+    },
+    {
+      "id": "suit_heal01",
+      "key": "lynx-heavy",
+      "name": "LYNX Heavy",
+      "slots": [
+        "slot1",
+        "slot2",
+        "slot3",
+        "slot4"
+      ],
+      "bonuses": [],
+      "extra": {
+        "rarityList": [
+          5
+        ],
+        "pieces": [
+          "item_equip_t4_suit_heal01_body_01",
+          "item_equip_t4_suit_heal01_body_02",
+          "item_equip_t4_suit_heal01_edc_01",
+          "item_equip_t4_suit_heal01_edc_02",
+          "item_equip_t4_suit_heal01_edc_03",
+          "item_equip_t4_suit_heal01_edc_04",
+          "item_equip_t4_suit_heal01_edc_05",
+          "item_equip_t4_suit_heal01_hand_01",
+          "item_equip_t4_suit_heal01_hand_02"
+        ]
+      }
+    },
+    {
+      "id": "suit_phy01",
+      "key": "swordmancer-light",
+      "name": "Swordmancer Light",
+      "slots": [
+        "slot1",
+        "slot2",
+        "slot3",
+        "slot4"
+      ],
+      "bonuses": [],
+      "extra": {
+        "rarityList": [
+          5
+        ],
+        "pieces": [
+          "item_equip_t4_suit_phy01_body_01",
+          "item_equip_t4_suit_phy01_body_02",
+          "item_equip_t4_suit_phy01_body_03",
+          "item_equip_t4_suit_phy01_body_04",
+          "item_equip_t4_suit_phy01_edc_01",
+          "item_equip_t4_suit_phy01_edc_02",
+          "item_equip_t4_suit_phy01_edc_03",
+          "item_equip_t4_suit_phy01_edc_04",
+          "item_equip_t4_suit_phy01_hand_01",
+          "item_equip_t4_suit_phy01_hand_02",
+          "item_equip_t4_suit_phy01_hand_03"
+        ]
+      }
+    },
+    {
+      "id": "suit_poise01",
+      "key": "thertech",
+      "name": "Æthertech",
+      "slots": [
+        "slot1",
+        "slot2",
+        "slot3",
+        "slot4"
+      ],
+      "bonuses": [],
+      "extra": {
+        "rarityList": [
+          5
+        ],
+        "pieces": [
+          "item_equip_t4_suit_poise01_body_01",
+          "item_equip_t4_suit_poise01_edc_01",
+          "item_equip_t4_suit_poise01_edc_02",
+          "item_equip_t4_suit_poise01_edc_03",
+          "item_equip_t4_suit_poise01_edc_04",
+          "item_equip_t4_suit_poise01_hand_01",
+          "item_equip_t4_suit_poise01_hand_02"
+        ]
+      }
+    },
+    {
+      "id": "suit_pulse_cryst01",
+      "key": "pulser-labs-disruptor",
+      "name": "Pulser Labs Disruptor",
+      "slots": [
+        "slot1",
+        "slot2",
+        "slot3",
+        "slot4"
+      ],
+      "bonuses": [],
+      "extra": {
+        "rarityList": [
+          5
+        ],
+        "pieces": [
+          "item_equip_t4_suit_pulse_cryst01_body_01",
+          "item_equip_t4_suit_pulse_cryst01_edc_01",
+          "item_equip_t4_suit_pulse_cryst01_edc_02",
+          "item_equip_t4_suit_pulse_cryst01_edc_03",
+          "item_equip_t4_suit_pulse_cryst01_hand_01"
+        ]
+      }
+    },
+    {
+      "id": "suit_str01",
+      "key": "armored-msgr",
+      "name": "Armored MSGR",
+      "slots": [
+        "slot1",
+        "slot2",
+        "slot3",
+        "slot4"
+      ],
+      "bonuses": [],
+      "extra": {
+        "rarityList": [
+          3,
+          4
+        ],
+        "pieces": [
+          "item_equip_t2_suit_str01_body_01",
+          "item_equip_t2_suit_str01_edc_01",
+          "item_equip_t2_suit_str01_edc_02",
+          "item_equip_t2_suit_str01_hand_01",
+          "item_equip_t3_suit_str01_body_01",
+          "item_equip_t3_suit_str01_edc_01",
+          "item_equip_t3_suit_str01_edc_02",
+          "item_equip_t3_suit_str01_hand_01",
+          "item_equip_t3_suit_str01_hand_02"
+        ]
+      }
+    },
+    {
+      "id": "suit_stragi01",
+      "key": "aic-heavy",
+      "name": "AIC Heavy",
+      "slots": [
+        "slot1",
+        "slot2",
+        "slot3",
+        "slot4"
+      ],
+      "bonuses": [],
+      "extra": {
+        "rarityList": [
+          2
+        ],
+        "pieces": [
+          "item_equip_t1_suit_stragi01_body_01",
+          "item_equip_t1_suit_stragi01_edc_01",
+          "item_equip_t1_suit_stragi01_edc_02",
+          "item_equip_t1_suit_stragi01_hand_01"
+        ]
+      }
+    },
+    {
+      "id": "suit_usp01",
+      "key": "catastrophe-heavy",
+      "name": "Catastrophe Heavy",
+      "slots": [
+        "slot1",
+        "slot2",
+        "slot3",
+        "slot4"
+      ],
+      "bonuses": [],
+      "extra": {
+        "rarityList": [
+          4
+        ],
+        "pieces": [
+          "item_equip_t3_suit_usp01_body_01",
+          "item_equip_t3_suit_usp01_body_02",
+          "item_equip_t3_suit_usp01_edc_01",
+          "item_equip_t3_suit_usp01_edc_02",
+          "item_equip_t3_suit_usp01_edc_03",
+          "item_equip_t3_suit_usp01_hand_01"
+        ]
+      }
+    },
+    {
+      "id": "suit_usp02",
+      "key": "eternal-xiranite",
+      "name": "Eternal Xiranite",
+      "slots": [
+        "slot1",
+        "slot2",
+        "slot3",
+        "slot4"
+      ],
+      "bonuses": [],
+      "extra": {
+        "rarityList": [
+          5
+        ],
+        "pieces": [
+          "item_equip_t4_suit_usp02_body_01",
+          "item_equip_t4_suit_usp02_edc_01",
+          "item_equip_t4_suit_usp02_edc_02",
+          "item_equip_t4_suit_usp02_edc_03",
+          "item_equip_t4_suit_usp02_hand_01",
+          "item_equip_t4_suit_usp02_hand_02"
+        ]
+      }
+    },
+    {
+      "id": "suit_will01",
+      "key": "mordvolt-resistant",
+      "name": "Mordvolt Resistant",
+      "slots": [
+        "slot1",
+        "slot2",
+        "slot3",
+        "slot4"
+      ],
+      "bonuses": [],
+      "extra": {
+        "rarityList": [
+          3,
+          4
+        ],
+        "pieces": [
+          "item_equip_t2_suit_will01_body_01",
+          "item_equip_t2_suit_will01_edc_01",
+          "item_equip_t2_suit_will01_edc_02",
+          "item_equip_t2_suit_will01_hand_01",
+          "item_equip_t3_suit_will01_body_01",
+          "item_equip_t3_suit_will01_edc_01",
+          "item_equip_t3_suit_will01_edc_02",
+          "item_equip_t3_suit_will01_hand_01"
+        ]
+      }
+    },
+    {
+      "id": "suit_wisd01",
+      "key": "mordvolt-insulation",
+      "name": "Mordvolt Insulation",
+      "slots": [
+        "slot1",
+        "slot2",
+        "slot3",
+        "slot4"
+      ],
+      "bonuses": [],
+      "extra": {
+        "rarityList": [
+          3,
+          4
+        ],
+        "pieces": [
+          "item_equip_t2_suit_wisd01_body_01",
+          "item_equip_t2_suit_wisd01_edc_01",
+          "item_equip_t2_suit_wisd01_edc_02",
+          "item_equip_t2_suit_wisd01_edc_03",
+          "item_equip_t2_suit_wisd01_hand_01",
+          "item_equip_t3_suit_wisd01_body_01",
+          "item_equip_t3_suit_wisd01_body_02",
+          "item_equip_t3_suit_wisd01_edc_01",
+          "item_equip_t3_suit_wisd01_edc_02",
+          "item_equip_t3_suit_wisd01_hand_01"
+        ]
+      }
+    },
+    {
+      "id": "suit_wisdwill01",
+      "key": "aic-light",
+      "name": "AIC Light",
+      "slots": [
+        "slot1",
+        "slot2",
+        "slot3",
+        "slot4"
+      ],
+      "bonuses": [],
+      "extra": {
+        "rarityList": [
+          2
+        ],
+        "pieces": [
+          "item_equip_t1_suit_wisdwill01_body_01",
+          "item_equip_t1_suit_wisdwill01_edc_01",
+          "item_equip_t1_suit_wisdwill01_edc_02",
+          "item_equip_t1_suit_wisdwill01_hand_01"
+        ]
+      }
+    }
+  ],
   "materials": []
 }

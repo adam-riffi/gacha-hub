@@ -14,7 +14,7 @@
 | 30-day pass | | |
 | Gear | Gear: four pieces (armour, gloves, two kits), set effects from three pieces of a set, no main stat to choose; level 20 in the build sheet | [Gear](https://endfield.wiki.gg/wiki/Gear) |
 | Dupes | A character copy raises Potential by one (to 6); weapon copies: | [Operator](https://endfield.wiki.gg/wiki/Operator) |
-| Art | | |
+| Art and catalog | Characters, weapons (Sword, Greatsword, Polearm, Handcannon, Arts Unit) and gear sets from the game's tables, a set named from its body piece (the suits have no names); no costs and no art are published | [EndFieldGameData](https://github.com/3aKHP/EndFieldGameData); Georges, round 4 |
 | KPIs per role | Our choice for the Characters cards (WIREFRAMES.md G4), listed in the module's manifest | |
 | Account level | Authority Level (AL); the abbreviation is the community's | [Authority Level](https://endfield.wiki.gg/wiki/Authority_Level) |
 | Gacha · Chartered headhunting | 6★ 0.8% a pull, +5% a pull after pull 65 (5.8% on the 66th), certain by 80; 50/50 with no guarantee after a loss ~; the 120th pull on a banner gives its featured operator, once, not carried over; 500 Oroberyl a pull; pity shared by every Chartered banner | [Game8: pity system](https://game8.co/games/Arknights-Endfield/archives/576231), [GameWith: rates](https://gamewith.net/akendfield/72373); [Headhunting](https://endfield.wiki.gg/wiki/Headhunting) |

@@ -63,7 +63,7 @@ Every game is a bespoke module and sheet · Discord-only sign-in, admins listed 
 
 | Area | What ships |
 | --- | --- |
-| Games | Genshin, HSR, WuWa, ZZZ (catalog, builds, planner); Endfield (catalog for ownership only); NTE (catalog from Hakushin, progress by hand: its terms forbid third-party tools) |
+| Games | Genshin, HSR, WuWa, ZZZ (catalog, builds, planner); Endfield (catalog of characters, weapons and gear sets, no costs); NTE (catalog from Hakushin, progress by hand: its terms forbid third-party tools) |
 | Profiles | One per game, region-aware resets, currencies and pull counts, "put to sleep" |
 | Roster | Ownership grid; catalog-backed builds with a bespoke sheet per game; several named builds per character |
 | Gear | Genshin artifacts: set browser, inventory bag with equip/unequip, farming planner. Other games: set browser |
@@ -271,7 +271,7 @@ The rail on the left is on every signed-in page: All (Home), Games, Tasks, Banne
 
 The game hub's tabs depend on the game (§9):
 - Pulls needs pull rules.
-- The gear tab needs gear sets in the catalog, the Planner costs: Endfield has neither; NTE has a Planner (its consoles' modules are not sets).
+- The gear tab needs gear sets in the catalog, the Planner costs: Endfield has gear sets but no costs (no Planner); NTE has costs but no sets (no gear tab).
 
 The old routes `/games/:id/overview` and `/games/:id/activities` redirect to Activities, `/games/:id/equipment` to Characters. `/games/:id/ownership` and `/games/:id/materials` still answer but are no longer tabs.
 
@@ -529,8 +529,8 @@ So the host app stays generic over what all games share (profiles, currencies, r
 
 | | Genshin | HSR | ZZZ | WuWa | Endfield | NTE |
 | --- | --- | --- | --- | --- | --- | --- |
-| Catalog (chars / weapons / sets / materials) | 122 / 255 / 63 / 536 (genshin-db) | 98 / 170 / 62 / 134 (Project Yatta) | 60 / 100 / 30 / 65 (Hakushin) | 50 / 112 / 29 / 128 (WutheringData) | 29 / 0 / 0 / 0 (EndFieldGameData) | 23 / 49 / 0 / 53 (Hakushin, round 4) |
-| Hub tabs besides Activities, Endgame, Pulls, Characters, Profile | Artifacts, Planner | Relics, Planner | Drive discs, Planner | Echoes, Planner | — (characters only, #175) | Teams, Planner |
+| Catalog (chars / weapons / sets / materials) | 122 / 255 / 63 / 536 (genshin-db) | 98 / 170 / 62 / 134 (Project Yatta) | 60 / 100 / 30 / 65 (Hakushin) | 50 / 112 / 29 / 128 (WutheringData) | 29 / 71 / 22 / 0 (EndFieldGameData, round 4) | 23 / 49 / 0 / 53 (Hakushin, round 4) |
+| Hub tabs besides Activities, Endgame, Pulls, Characters, Profile | Artifacts, Planner | Relics, Planner | Drive discs, Planner | Echoes, Planner | Gear (round 4) | Teams, Planner |
 | Character sheet | the shared sheet: catalog weapon picker, main stats per slot, sets, KPIs, splash art | same | same | same, with the echo cost cap | same, operator list | same; Console cartridges typed |
 | Plan farming (levels, talents → tasks) | yes | yes | yes | yes | no costs in the dataset | yes |
 | Domains today, "domains open today" DM | yes | — | — | — | — | — |
@@ -551,7 +551,7 @@ So the host app stays generic over what all games share (profiles, currencies, r
 - **Honkai: Star Rail** shares HoYoverse's gacha rules, announcement API, history link and HoYoLAB, so it gets the same imports and sync. Its feed notices bundle several warps per notice, so the parser splits them into one banner per section with its own dates. Its relic stat tables come from Enka's store so showcases can be read.
 - **Zenless Zone Zero** got its catalog on 2026-10-10 from the Hakushin data (static.nanoka.cc, the dataset behind hakush.in, back under a new host): agents with promotions and five skill tables, W-Engines, Drive Disc sets and materials, so ownership, builds and planning work as for the other HoYoverse games. Its pulls come from the history link and UIGF, its live data from HoYoLAB.
 - **Wuthering Waves** has a catalog with costs (so ownership, materials and planning work) and its own gacha rules (80 pity everywhere, 100% featured weapon). Echoes have a cost budget, which is why its sheet has a cost cap. Its pulls import from the convene link, and its art comes from Wuthery's copy of the game's textures.
-- **Arknights: Endfield** has a character list only (the dataset has no upgrade costs), so ownership works and planning does not; its hub has no Gear or Planner tab. Its pulls import from the records link (ADR 0009). Its account data stays manual: only the SKPORT account token reaches it, and that token can act for the account.
+- **Arknights: Endfield** has characters, weapons and gear sets from its tables (round 4; a set named from its body piece, as the suits have none), but no upgrade costs, so ownership and gear work and planning does not: its hub has a Gear tab and no Planner. Its pulls import from the records link (ADR 0009). Its account data stays manual: only the SKPORT account token reaches it, and that token can act for the account.
 - **Neverness to Everness** (Perfect World) is tracked by hand only (capability M, ADR 0004): its terms forbid third-party tools, so there are no imports, no catalog and no art. The manifest still gives it everything shared: resets at 05:00 on four servers, currencies and stamina, the Limited Board's pity (90, no 50/50), Beyond the Rails, the battle pass and monthly pass, and the shared sheet with its Console cartridges.
 
 ## 10. Cross-cutting features

@@ -11,7 +11,7 @@ const GEAR_LABEL: Record<string, string> = {
 };
 
 /** Games whose catalog has no gear sets (NTE's consoles are modules, not sets): no gear tab. */
-const NO_GEAR_SETS = new Set(["endfield", "nte"]);
+const NO_GEAR_SETS = new Set(["nte"]);
 /** Games whose catalog has no costs (Endfield's public tables publish none): no Planner. */
 const NO_COSTS = new Set(["endfield"]);
 
