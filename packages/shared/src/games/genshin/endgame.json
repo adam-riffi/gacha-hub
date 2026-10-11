@@ -1,0 +1,152 @@
+{
+  "source": "hakushin@static.nanoka.cc/gi/7.1",
+  "cycles": [
+    {
+      "modeKey": "stygian",
+      "begin": "2026-07-08",
+      "end": "2026-08-19",
+      "stages": [
+        {
+          "name": "Lord of the Hidden Depths: Whisperer of Nightmares — Ravager's Edge",
+          "level": 109,
+          "groups": [
+            [
+              {
+                "name": "Lord of the Hidden Depths: Whisperer of Nightmares — Ravager's Edge",
+                "image": "https://static.nanoka.cc/assets/gi/UI_MonsterIcon_Lloigor_Primo.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": []
+        },
+        {
+          "name": "Shadow of the Precursor's Secret Source Matrix of Overseer Network: Will of the Hive",
+          "level": 109,
+          "groups": [
+            [
+              {
+                "name": "Shadow of the Precursor's Secret Source Matrix of Overseer Network: Will of the Hive",
+                "image": "https://static.nanoka.cc/assets/gi/UI_MonsterIcon_Monitor_02.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": []
+        },
+        {
+          "name": "Secret Source Automaton: Configuration Device - Lysis Shears",
+          "level": 109,
+          "groups": [
+            [
+              {
+                "name": "Secret Source Automaton: Configuration Device - Lysis Shears",
+                "image": "https://static.nanoka.cc/assets/gi/UI_MonsterIcon_DragonClaw.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": []
+        }
+      ]
+    },
+    {
+      "modeKey": "stygian",
+      "begin": "2026-08-19",
+      "end": "2026-09-30",
+      "stages": [
+        {
+          "name": "Knuckle Duckle: Armored Arsenal",
+          "level": 109,
+          "groups": [
+            [
+              {
+                "name": "Knuckle Duckle: Armored Arsenal",
+                "image": "https://static.nanoka.cc/assets/gi/UI_MonsterIcon_Gastrobot_01.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": []
+        },
+        {
+          "name": "Chimeric Winged Lion: Power Overwhelming",
+          "level": 109,
+          "groups": [
+            [
+              {
+                "name": "Chimeric Winged Lion: Power Overwhelming",
+                "image": "https://static.nanoka.cc/assets/gi/UI_MonsterIcon_Chimera_Manticore.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": []
+        },
+        {
+          "name": "Veteran Wind Operative: Treacherous Blade",
+          "level": 109,
+          "groups": [
+            [
+              {
+                "name": "Veteran Wind Operative: Treacherous Blade",
+                "image": "https://static.nanoka.cc/assets/gi/UI_MonsterIcon_Fatuus_Escadron_Wind.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": []
+        }
+      ]
+    },
+    {
+      "modeKey": "stygian",
+      "begin": "2026-09-30",
+      "end": "2026-11-11",
+      "stages": [
+        {
+          "name": "Secret Source Automaton: Overseer Device - Obliterator Panoply",
+          "level": 109,
+          "groups": [
+            [
+              {
+                "name": "Secret Source Automaton: Overseer Device - Obliterator Panoply",
+                "image": "https://static.nanoka.cc/assets/gi/UI_MonsterIcon_DragonCollar.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": []
+        },
+        {
+          "name": "Battle-Hardened Domovoy Sculptor: Gale Hewing",
+          "level": 109,
+          "groups": [
+            [
+              {
+                "name": "Battle-Hardened Domovoy Sculptor: Gale Hewing",
+                "image": "https://static.nanoka.cc/assets/gi/UI_MonsterIcon_Karzelek_Tsereteli_01.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": []
+        },
+        {
+          "name": "Guardian Blade of Drifting Snow: Endless Reverberation",
+          "level": 109,
+          "groups": [
+            [
+              {
+                "name": "Guardian Blade of Drifting Snow: Endless Reverberation",
+                "image": "https://static.nanoka.cc/assets/gi/UI_MonsterIcon_Snegurochka_Contessa_02.webp",
+                "weak": []
+              }
+            ]
+          ],
+          "weak": []
+        }
+      ]
+    }
+  ]
+}
