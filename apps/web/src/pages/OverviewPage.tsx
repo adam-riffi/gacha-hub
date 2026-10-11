@@ -1,12 +1,13 @@
 import { useState, type ReactNode } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getGame, passView, pullsFor, type BannerDto, type GameDefinition, type PassesDto, type TaskDto } from "@gacha/shared";
+import { endgameNow, getGame, passView, pullsFor, skillsField, weaponHolder, type BannerDto, type CharacterDto, type CycleResultsDto, type GameDefinition, type PassesDto, type TaskDto } from "@gacha/shared";
 import { LoadError } from "../components/LoadError";
 import { api } from "../lib/api";
 import { formatRemaining } from "../lib/time";
 import { GameTabs } from "../components/GameTabs";
 import { CatalogIcon } from "../components/CatalogIcon";
+import { useCatalog } from "../lib/catalog";
 import type { DashboardData, InstanceDetail } from "../lib/types";
 
 type DashGame = DashboardData["games"][number];
@@ -22,6 +23,8 @@ export function OverviewPage() {
   const dash = useQuery({ queryKey: ["dashboard"], queryFn: () => api.get<DashboardData>("/api/dashboard") });
   const tasks = useQuery({ queryKey: ["tasks", "game", id], queryFn: () => api.get<TaskDto[]>(`/api/tasks?scope=game&refId=${id}`) });
   const passes = useQuery({ queryKey: ["passes", id], queryFn: () => api.get<PassesDto>(`/api/instances/${id}/passes`) });
+  const builds = useQuery({ queryKey: ["characters", id], queryFn: () => api.get<CharacterDto[]>(`/api/instances/${id}/characters`) });
+  const cycles = useQuery({ queryKey: ["cycles", id], queryFn: () => api.get<CycleResultsDto>(`/api/instances/${id}/cycles`) });
   const game = instance.data && getGame(instance.data.gameKey);
   if (instance.isError || dash.isError) return <LoadError what="The overview" retry={() => Promise.all([instance.refetch(), dash.refetch()])} />;
   const g = dash.data?.games.find((x) => x.instanceId === id);
@@ -48,6 +51,10 @@ export function OverviewPage() {
         <TodayCard instanceId={id!} items={recurring.filter((t) => t.cadence === "daily")} />
         <WeeklyCard instanceId={id!} game={game} pv={pv} items={recurring.filter((t) => t.cadence === "weekly")} />
         <StaminaCard g={g} game={game} instance={instance.data} />
+        <BuildsCard instanceId={id!} game={game} builds={(builds.data ?? []).filter((b) => b.buildStatus === "building" || b.buildStatus === "good")} />
+        <EndgameCard instanceId={id!} game={game} region={region} cycles={cycles.data} />
+        <GoalsCard gameKey={game.key} tasks={tasks.data ?? []} />
+        <BacklogCard g={g} tasks={tasks.data ?? []} />
       </div>
     </>
   );
@@ -257,6 +264,177 @@ function StaminaCard({ g, game, instance }: { g: DashGame; game: GameDefinition;
           </div>
         )}
       </dl>
+    </section>
+  );
+}
+
+const DAY = 86_400_000;
+type Doc = Record<string, unknown>;
+const num = (v: unknown) => (typeof v === "number" ? v : null);
+
+/** Builds being worked on: level, skills, weapon level, and a square per gear slot filled. */
+function BuildsCard({ instanceId, game, builds }: { instanceId: string; game: GameDefinition; builds: CharacterDto[] }) {
+  const { index } = useCatalog(game.key);
+  const skills = skillsField(game);
+  const holder = weaponHolder(game);
+  const gear = game.manifest.gear;
+  return (
+    <section className="card ov-card is-wide" aria-label="Builds in progress">
+      <Head title="Builds in progress" to={`/games/${instanceId}/characters`} />
+      {builds.length === 0 ? (
+        <p className="mu">None</p>
+      ) : (
+        <div className="ov-scroll">
+          <table className="ov-table">
+            <thead>
+              <tr>
+                <th>Character</th>
+                <th>Level</th>
+                <th>Skills</th>
+                <th>{holder ? "Weapon" : ""}</th>
+                <th>{gear.name}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {builds.map((b) => {
+                const doc = (b.doc ?? {}) as Doc;
+                const unit = b.catalogId ? index?.characters.get(b.catalogId) : undefined;
+                const levels = Object.values((doc[skills] ?? {}) as Doc).filter((v): v is number => typeof v === "number");
+                const pieces = (doc[gear.field] ?? {}) as Record<string, Doc | undefined>;
+                return (
+                  <tr key={b.id}>
+                    <td>
+                      <Link to={`/characters/${b.id}`} className="ov-unit">
+                        <CatalogIcon gameKey={game.key} kind="character" icon={unit?.icon} name={unit?.name ?? b.name} tag={unit?.tag} />
+                        {unit?.name ?? b.name}
+                      </Link>
+                    </td>
+                    <td className="mn">{num(doc.level) ?? "—"}</td>
+                    <td className="mn">{levels.length ? levels.join("·") : "—"}</td>
+                    <td className="mn">{holder ? (num((doc[holder] as Doc | undefined)?.level) ?? "—") : ""}</td>
+                    <td>
+                      <span className="ov-squares" role="img" aria-label={`${gear.slots.filter((s) => pieces[s.key]?.setName || pieces[s.key]?.mainStat).length} of ${gear.slots.length} ${gear.name}`}>
+                        {gear.slots.map((s) => (
+                          <i key={s.key} className={pieces[s.key]?.setName || pieces[s.key]?.mainStat ? "on" : ""} />
+                        ))}
+                      </span>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </section>
+  );
+}
+
+/** Each endgame mode's current cycle: its result over its best, and when it resets. */
+function EndgameCard({ instanceId, game, region, cycles }: { instanceId: string; game: GameDefinition; region: GameDefinition["regions"][number]; cycles?: CycleResultsDto }) {
+  const [now] = useState(() => new Date());
+  if (game.manifest.endgame.length === 0) return null;
+  const results = (cycles?.results ?? []).map((r) => ({ ...r, cycleStart: new Date(r.cycleStart) }));
+  const eg = endgameNow(game, region, now, results);
+  const unit = (label: string) => (label === "stars" ? "★" : ` ${label}`);
+  return (
+    <section className="card ov-card" aria-label="Endgame · cycle">
+      <Head title="Endgame · cycle" to={`/games/${instanceId}/endgame`} />
+      <table className="ov-table">
+        <thead>
+          <tr>
+            <th>Mode</th>
+            <th>Progress</th>
+            <th>Resets</th>
+          </tr>
+        </thead>
+        <tbody>
+          {eg.modes.map((m) => {
+            const at = m.open ? m.closes : m.end;
+            const days = Math.ceil((at.getTime() - now.getTime()) / DAY);
+            return (
+              <tr key={m.mode.key}>
+                <td>{m.mode.name}</td>
+                <td className="mn">{m.result === null ? "—" : `${m.result}${m.mode.metric.max !== undefined ? `/${m.mode.metric.max}` : ""}${unit(m.mode.metric.label)}`}</td>
+                <td className="mn">{days > 1 ? `${days}d` : formatRemaining(at.toISOString(), now.getTime())}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </section>
+  );
+}
+
+/** A goal's progress, 0 to 1: its material steps met, its checklist ticked, or its count over its target. */
+function progressOf(t: TaskDto, all: TaskDto[]) {
+  const kids = all.filter((k) => k.parentId === t.id && k.materialId);
+  if (kids.length) return kids.filter((k) => k.progress >= (k.target ?? 0)).length / kids.length;
+  if (t.items?.length) return t.items.filter((i) => i.done).length / t.items.length;
+  return t.target ? Math.min(1, t.progress / t.target) : t.lastCompletedAt ? 1 : 0;
+}
+const topGoals = (tasks: TaskDto[]) => tasks.filter((t) => !t.parentId && t.type !== "recurring");
+
+/** The game's active goals with their progress, and their average as a ring. */
+function GoalsCard({ gameKey, tasks }: { gameKey: string; tasks: TaskDto[] }) {
+  const goals = topGoals(tasks)
+    .filter((t) => !t.backlog)
+    .map((t) => ({ t, p: progressOf(t, tasks) }))
+    .sort((a, b) => b.p - a.p);
+  const avg = goals.length ? goals.reduce((s, g) => s + g.p, 0) / goals.length : 0;
+  const R = 34;
+  const C = 2 * Math.PI * R;
+  return (
+    <section className="card ov-card is-wide" aria-label="Goals">
+      <Head title="Goals" to={`/tasks?game=${gameKey}`} />
+      <div className="ov-goals">
+        <svg viewBox="0 0 84 84" className="ov-ring" role="img" aria-label={`${Math.round(avg * 100)}% done on average`}>
+          <circle cx="42" cy="42" r={R} className="ov-ring-track" />
+          <circle cx="42" cy="42" r={R} className="ov-ring-fill" strokeDasharray={`${avg * C} ${C}`} transform="rotate(-90 42 42)" />
+          <text x="42" y="47" textAnchor="middle">
+            {Math.round(avg * 100)}%
+          </text>
+        </svg>
+        <div className="ov-scroll">
+          <table className="ov-table">
+            <tbody>
+              {goals.map(({ t, p }) => (
+                <tr key={t.id}>
+                  <td>
+                    <Link to={`/tasks?game=${gameKey}`}>{t.title}</Link>
+                  </td>
+                  <td className="mn num">{Math.round(p * 100)}%</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {goals.length === 0 && <p className="mu">None</p>}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/** The goals still open (the backlog included), and how many there were each of the last ten days. */
+function BacklogCard({ g, tasks }: { g: DashGame; tasks: TaskDto[] }) {
+  const open = topGoals(tasks).filter((t) => progressOf(t, tasks) < 1).length;
+  const days = g.days.slice(-10).map((d) => d.goalsOpen);
+  const max = Math.max(1, ...days, open);
+  const pts = days.map((v, i) => `${days.length > 1 ? (i * 160) / (days.length - 1) : 80},${36 - (v / max) * 32}`).join(" ");
+  return (
+    <section className="card ov-card" aria-label="Backlog">
+      <Head title="Backlog" to={`/tasks?game=${g.gameKey}`} />
+      <div className="ov-backlog">
+        <span className="ov-big" data-testid="open">
+          {open}
+        </span>
+        {days.length > 1 && (
+          <svg viewBox="0 0 160 40" className="ov-spark" role="img" aria-label={`Open goals, last ${days.length} days: ${days.join(", ")}`}>
+            <polyline points={pts} />
+          </svg>
+        )}
+      </div>
+      <span className="mn mu">open, last 10 days</span>
     </section>
   );
 }

@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r4/09-overview-rows · #228
+- Done: the Overview's last rows. Builds in progress (status Building or Good): icon and name, level, skill levels ("9·9·6"), weapon level, a square per gear slot filled. Endgame · cycle: each mode's result over its best ("36/36★") and the days until it resets. Goals: the game's active goals with their progress and their average as a ring. Backlog: the goals still open, and a line of how many were open each of the last ten days.
+- Tests: written first: a Seele build in progress shows level 70 and weapon level 60; a Memory of Chaos typed on the Endgame tab shows 30/36 on the Overview; a goal at 4 of 10 shows 40% with the ring's average; Backlog shows its count. `npm run check` passes: 574 tests and 62 journeys.
+- Scope/decisions: a goal's progress is its material steps met, its checklist ticked, or its count over its target, as on Tasks.
+- Next: each game's own card (NTE's city, Endfield's AIC).
+
 ## 2026-10-11 · claude · stack/r4/08-overview · #227
 - Done: the per-game overview Georges designed (six pictures, now in `docs/design/overview/`), first half. The hub opens on an **Overview** tab, Activities second (`/games/:id/activities`; the old `/overview` link lands on the Overview). First row: Pulls (limited on hand, then each ticket and "From" the premium currency), Pity (each banner type over its hard pity, "guaranteed" or the game's split, 50/50 or 75/25), Banners (the current phase's featured units with "ends in", the next with "starts in", ◀ ▶ through the phases). Second row: Today (the game's dailies, boxes ticked in place), the pass and weekly (level, weekly EXP, the weeklies as boxes), stamina (projected, Full in or Full · now, its reserve). Each card opens its screen.
 - Tests: written first: the Overview journeys check the landing tab, 13 pulls from 1,600 Stellar Jade and 3 passes, pity and a running banner, a ZZZ daily ticked and kept after a reload, the City Fund card and 120 / 240 Battery Charge with its backup; the Activities, hub, smoke, NTE and Profile journeys follow the new landing tab. `npm run check` passes: 574 tests and 62 journeys.
@@ -259,9 +265,3 @@ Entry format:
 - Tests: `serverless.trace.test.ts`, written first in #105, traces `api/index.mjs` with `@vercel/nft` as Vercel does. It failed on the rebased base with `.env` and a worktree's schema, and passes with the wider exclude. `npm run check` passes: 531 tests and 40 journeys.
 - Scope/decisions: previews are off (#189), so the check on Vercel comes with the next deploy Georges orders: the smoke check and the function's file count.
 - Next: the guide's screen chapter, then the sheets' unverified values.
-
-## 2026-10-10 · claude · stack/ops/04-manual-deploys · #189
-- Done: deploys only at Georges's command or a milestone. `vercel.json` sets `git.deploymentEnabled: false`, so no push or merge, on `main` or any branch, deploys. Before, only `stack/**`, `spike/**` and `dependabot/**` were off. DEPLOY.md (Redeploys) says how to deploy `main` when asked: the dashboard's Redeploy, or the agent through the Vercel connector. AGENTS.md and HANDOFF.md say it too.
-- Tests: written first: `deployConfig.test.ts` expects Git deployments off. `npm run check` passes: 530 tests and 40 journeys.
-- Scope/decisions: production stays on #186 until Georges asks.
-- Next: at his command, deploy `main` and run the smoke check.
