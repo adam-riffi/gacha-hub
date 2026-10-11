@@ -59,26 +59,26 @@ test("Character sheet: a character opens on its default build; builds switch by 
   await page.getByRole("button", { name: "Continue as Dev User" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
-  // Herta's builds start from nothing, whatever other journeys did.
-  for (const b of ((await (await page.request.get(`/api/instances/${id}/characters`)).json()) as { id: string; catalogId: string }[]).filter((x) => x.catalogId === "1013")) {
+  // Pela's builds start from nothing; no other journey uses her.
+  for (const b of ((await (await page.request.get(`/api/instances/${id}/characters`)).json()) as { id: string; catalogId: string }[]).filter((x) => x.catalogId === "1106")) {
     await page.request.delete(`/api/characters/${b.id}`);
   }
-  const first = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1013", doc: { level: 60 } } })).json()) as { id: string };
+  const first = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1106", doc: { level: 60 } } })).json()) as { id: string };
 
   await page.goto(`/characters/${first.id}`);
   const tabs = page.getByRole("tablist", { name: "Builds" });
   await expect(tabs.getByRole("tab", { name: "Build 1 ★" })).toHaveAttribute("aria-selected", "true");
   await page.getByRole("button", { name: "+ New build" }).click();
   await expect(page).not.toHaveURL(new RegExp(first.id));
-  await expect(page.getByRole("heading", { name: "Herta", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Pela", exact: true })).toBeVisible();
   await expect(tabs.getByRole("tab", { name: "Build 2" })).toHaveAttribute("aria-selected", "true");
   await page.getByRole("button", { name: "Make default" }).click();
   await expect(tabs.getByRole("tab", { name: "Build 2 ★" })).toBeVisible();
 
   // Characters opens the default build.
   await page.goto(`/games/${id}/characters`);
-  await page.getByRole("searchbox", { name: "Search" }).fill("Herta");
-  await page.getByRole("article", { name: "Herta", exact: true }).click();
+  await page.getByRole("searchbox", { name: "Search" }).fill("Pela");
+  await page.getByRole("article", { name: "Pela", exact: true }).click();
   await expect(page.getByRole("tablist", { name: "Builds" }).getByRole("tab", { name: "Build 2 ★" })).toHaveAttribute("aria-selected", "true");
 });
 

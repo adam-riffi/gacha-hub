@@ -10,6 +10,7 @@ import { communityAssetUrl, assetUrl } from "../lib/assets";
 
 import { GameTabs } from "../components/GameTabs";
 import { GameIcon } from "../components/GameIcon";
+import { Picker } from "../components/Picker";
 import type { InstanceDetail } from "../lib/types";
 
 /**
@@ -104,17 +105,17 @@ export function TeamsPage() {
                 );
               })}
               {t.members.length < size && catalog && (
-                <select className="tm-add" aria-label={`Add a member to ${t.name}`} value="" onChange={(e) => e.target.value && update.mutate({ teamId: t.id, members: [...t.members, e.target.value] })}>
-                  <option value="">+ Add a member…</option>
-                  {units
-                    .filter((u) => !t.members.includes(u.id))
-                    .map((u) => (
-                      <option key={u.id} value={u.id}>
-                        {u.name}
-                        {ownedIds.has(u.id) ? "" : " (not owned)"}
-                      </option>
-                    ))}
-                </select>
+                <div className="tm-add">
+                  <Picker
+                    label={`Add a member to ${t.name}`}
+                    placeholder="+ Add a member"
+                    value=""
+                    options={units
+                      .filter((u) => !t.members.includes(u.id))
+                      .map((u) => ({ id: u.id, name: u.name, src: assetUrl(game.key, "character", u.icon), fallback: communityAssetUrl(game.key, "character", u.icon), sub: ownedIds.has(u.id) ? undefined : "not owned" }))}
+                    onPick={(u) => u && update.mutate({ teamId: t.id, members: [...t.members, u.id] })}
+                  />
+                </div>
               )}
             </div>
           </section>

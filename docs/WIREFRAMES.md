@@ -4,6 +4,7 @@
 
 ## Conventions
 
+- **Pickers** (Georges, 2026-10-11): sets, weapons, substats and characters are chosen from a field you type in, with a list of icons right under it to scroll and click; no native dropdown lists that open away from their field.
 - Data synced or imported says so (**AUTO**, the sync's time); what the user types carries no label (Georges, 2026-10-10: the "Manual" tags were noise). Editing an AUTO field makes it the user's until the next sync.
 - Words follow each game: Artifacts, Relics, Drive Discs, Echoes, Gear, Console; Resin, Trailblaze Power, Battery Charge, Waveplates, Character Pixels, Sanity.
 - Times show in the viewer's zone, with server time where it matters (resets, banner ends). Daylight saving applies to the viewer, never to the servers.
