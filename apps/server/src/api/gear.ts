@@ -1,6 +1,5 @@
 import type { FastifyInstance } from "fastify";
 import {
-  GENSHIN_ARTIFACT_SLOTS,
   equipGearInput,
   gearPieceDto,
   gearPieceInput,
@@ -13,12 +12,14 @@ import { requireUser } from "../auth/plugin.js";
 import { gameOrThrow, loadCharacter, loadInstance, validateDoc, type PrismaJson } from "./util.js";
 
 /**
- * Games whose builds support the bag ↔ build swap: the doc key that holds gear
- * (keyed by slot) and the valid slots. Genshin first; others add an entry.
+ * Every game's bag ↔ build swap (Georges, round 4: one gear screen for every
+ * game): the doc key that holds its gear, keyed by slot, and its slots, as
+ * its manifest names them.
  */
-const GEAR: Record<string, { docKey: string; slots: readonly string[] }> = {
-  genshin: { docKey: "artifacts", slots: GENSHIN_ARTIFACT_SLOTS.map((s) => s.key) },
-};
+function gearSpec(gameKey: string): { docKey: string; slots: readonly string[] } {
+  const gear = gameOrThrow(gameKey).manifest.gear;
+  return { docKey: gear.field, slots: gear.slots.map((s) => s.key) };
+}
 
 type DocPiece = { setName?: string; mainStat?: string; level?: number; substats?: unknown[] };
 const hasData = (p?: DocPiece) => Boolean(p && (p.setName || p.mainStat || p.level || p.substats?.length));
@@ -57,8 +58,7 @@ export async function registerGearRoutes(app: FastifyInstance) {
   app.post<{ Params: { id: string } }>("/api/instances/:id/gear", { preHandler: requireUser }, async (req, reply) => {
     const gi = await loadInstance(req.user!.id, req.params.id);
     if (!gi) return reply.code(404).send({ error: "not_found" });
-    const spec = GEAR[gi.gameKey];
-    if (!spec) return reply.code(400).send({ error: "unsupported_game" });
+    const spec = gearSpec(gi.gameKey);
     const body = gearPieceInput.parse(req.body);
     if (!spec.slots.includes(body.slot)) return reply.code(400).send({ error: "unknown_slot" });
     const row = await prisma.gearPiece.create({
@@ -71,7 +71,7 @@ export async function registerGearRoutes(app: FastifyInstance) {
     const piece = await ownedPiece(req.user!.id, req.params.id);
     if (!piece) return reply.code(404).send({ error: "not_found" });
     const body = gearPieceInput.parse(req.body);
-    if (!GEAR[piece.gameInstance.gameKey]?.slots.includes(body.slot)) return reply.code(400).send({ error: "unknown_slot" });
+    if (!gearSpec(piece.gameInstance.gameKey).slots.includes(body.slot)) return reply.code(400).send({ error: "unknown_slot" });
     const row = await prisma.gearPiece.update({
       where: { id: piece.id },
       data: { ...body, substats: body.substats as PrismaJson },
@@ -97,8 +97,7 @@ export async function registerGearRoutes(app: FastifyInstance) {
       return reply.code(404).send({ error: "character_not_found" });
     }
     const game = gameOrThrow(piece.gameInstance.gameKey);
-    const spec = GEAR[game.key];
-    if (!spec) return reply.code(400).send({ error: "unsupported_game" });
+    const spec = gearSpec(game.key);
 
     const { doc, gear } = gearOf(game, character, spec.docKey);
     const previous = gear[piece.slot];
@@ -120,8 +119,7 @@ export async function registerGearRoutes(app: FastifyInstance) {
     const character = await loadCharacter(req.user!.id, req.params.id);
     if (!character) return reply.code(404).send({ error: "not_found" });
     const game = gameOrThrow(character.gameInstance.gameKey);
-    const spec = GEAR[game.key];
-    if (!spec) return reply.code(400).send({ error: "unsupported_game" });
+    const spec = gearSpec(game.key);
     const { slot } = unequipGearInput.parse(req.body);
 
     const { doc, gear } = gearOf(game, character, spec.docKey);
