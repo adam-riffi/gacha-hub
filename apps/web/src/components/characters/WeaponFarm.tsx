@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { levelCaps, type CatalogWeapon, type PlanGenerateResultDto, type PlanPreviewDto } from "@gacha/shared";
 import { api } from "../../lib/api";
@@ -13,10 +13,16 @@ export function WeaponFarm({ instanceId, weapon, onDone }: { instanceId: string;
   const [to, setTo] = useState(caps.at(-1) ?? 90);
   const [preview, setPreview] = useState<PlanPreviewDto | null>(null);
   const body = { kind: "weapon" as const, catalogId: weapon.id, level: { from, to } };
-  const previewMut = useMutation({
+  const { mutate: runPreview } = useMutation({
     mutationFn: () => api.post<PlanPreviewDto>(`/api/instances/${instanceId}/plans/preview`, body),
     onSuccess: setPreview,
   });
+  // The materials follow the levels as they change (no Preview step).
+  useEffect(() => {
+    if (to <= from) return;
+    const t = setTimeout(() => runPreview(), 250);
+    return () => clearTimeout(t);
+  }, [from, to, runPreview]);
   const generate = useMutation({
     mutationFn: () => api.post<PlanGenerateResultDto>(`/api/instances/${instanceId}/plans/generate`, body),
     onSuccess: (r) => {
@@ -30,7 +36,6 @@ export function WeaponFarm({ instanceId, weapon, onDone }: { instanceId: string;
       <div className="row" style={{ alignItems: "flex-end" }}>
         <div><label>From cap</label><select aria-label="From cap" value={from} onChange={(e) => setFrom(Number(e.target.value))}>{caps.map((c) => <option key={c} value={c}>{c}</option>)}</select></div>
         <div><label>To</label><select aria-label="To" value={to} onChange={(e) => setTo(Number(e.target.value))}>{caps.map((c) => <option key={c} value={c}>{c}</option>)}</select></div>
-        <button type="button" className="btn sm" disabled={to <= from || previewMut.isPending} onClick={() => previewMut.mutate()}>Preview</button>
         <button type="button" className="btn sm primary" disabled={to <= from || generate.isPending} onClick={() => generate.mutate()}>Farm</button>
       </div>
       {preview && <div style={{ marginTop: 8 }}><PlanTable preview={preview} /></div>}

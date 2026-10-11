@@ -32,7 +32,8 @@ test("Tasks: farm today, goals with their steps, filtering, and an event goal cl
   const goals = page.getByRole("region", { name: "Goals" });
   const event = goals.getByRole("article", { name: "E2E tasks reward" });
   await expect(event).toContainText("→ Herta new → E0");
-  await event.getByRole("button", { name: "Expand" }).click();
+  // A click on the goal itself opens it (Georges, 2026-10-11).
+  await event.getByRole("button", { name: /E2E tasks reward/ }).click();
   await event.getByRole("checkbox", { name: "Stage 1" }).check();
   await expect(event).toContainText("1 / 2");
   await event.getByRole("button", { name: "Claim" }).click();
@@ -41,7 +42,7 @@ test("Tasks: farm today, goals with their steps, filtering, and an event goal cl
   expect(owned.some((o) => o.catalogId === "1013")).toBe(true);
 
   const farm = goals.getByRole("article", { name: "Farm Asta" });
-  await farm.getByRole("button", { name: "Expand" }).click();
+  await farm.getByRole("button", { name: /Farm Asta/ }).click();
   await expect(farm.getByText("Lifeless Blade")).toBeVisible();
   await expect(farm).toContainText("0 / 5");
 
@@ -112,4 +113,37 @@ test("Tasks: the goal maker makes anything: a gameplay goal with a count, a chec
   await maker.getByRole("combobox", { name: "Character" }).fill("Kafka");
   await maker.getByRole("option", { name: /^Kafka/ }).click();
   await expect(maker.getByRole("button", { name: "Generate tasks" })).toBeVisible();
+});
+
+test("Tasks: a character goal shows its plan (each ascension, each talent), and a weapon's goal links under it @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  // Plan farming lists the materials as the levels change: no Preview step.
+  const build = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1107" } })).json()) as { id: string };
+  await page.goto(`/characters/${build.id}`);
+  const plan = page.getByRole("region", { name: "Plan farming" });
+  await expect(plan.getByRole("button", { name: "Preview" })).toHaveCount(0);
+  await expect(plan.getByRole("columnheader", { name: "Missing" })).toBeVisible();
+  await plan.getByRole("button", { name: "Generate tasks" }).click();
+  const weapon = (await (await page.request.post("/api/tasks", { data: { scope: "game", refId: id, type: "goal", title: "E2E farm a light cone", target: 1 } })).json()) as { id: string };
+
+  await page.goto("/tasks?game=hsr");
+  const goals = page.getByRole("region", { name: "Goals" });
+  const clara = goals.getByRole("article", { name: /Clara/ }).first();
+  await clara.getByRole("button", { name: /Clara/ }).first().click();
+  // The plan's depth: the level range with each ascension, and each talent's range.
+  const steps = clara.getByRole("list", { name: "Plan" });
+  await expect(steps).toContainText("Lv");
+  await expect(steps.getByRole("listitem")).not.toHaveCount(0);
+
+  // Link the light cone's goal under Clara's: it leaves the list and shows inside hers.
+  const cone = goals.getByRole("article", { name: "E2E farm a light cone" });
+  await cone.getByRole("button", { name: /E2E farm a light cone/ }).click();
+  await cone.getByRole("combobox", { name: "Link to" }).fill("Clara");
+  await cone.getByRole("option", { name: /Clara/ }).first().click();
+  await expect(goals.getByRole("article", { name: "E2E farm a light cone" })).toHaveCount(0);
+  await expect(clara).toContainText("E2E farm a light cone");
+  await page.request.delete(`/api/tasks/${weapon.id}`);
 });

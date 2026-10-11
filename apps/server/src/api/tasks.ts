@@ -165,9 +165,17 @@ export async function registerTaskRoutes(app: FastifyInstance) {
       const task = await ownedTask(req.user!.id, req.params.id);
       if (!task) return reply.code(404).send({ error: "not_found" });
       const body = updateTaskInput.parse(req.body);
+      // A link goes under a top-level goal of the same profile, never under itself: no loops.
+      if (body.parentId) {
+        const parent = await ownedTask(req.user!.id, body.parentId);
+        if (!parent || parent.id === task.id || parent.parentId !== null || parent.scope !== task.scope || parent.refId !== task.refId) {
+          return reply.code(400).send({ error: "bad_link" });
+        }
+      }
       const updated = await prisma.task.update({
         where: { id: task.id },
         data: {
+          ...(body.parentId !== undefined ? { parentId: body.parentId } : {}),
           ...(body.title !== undefined ? { title: body.title } : {}),
           ...(body.cadence !== undefined ? { cadence: body.cadence } : {}),
           ...(body.anchorKey !== undefined ? { anchorKey: body.anchorKey } : {}),

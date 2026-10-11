@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { farmableToday, getGame, type ChecklistItem, type RewardDto, type TaskPriority } from "@gacha/shared";
+import { farmableToday, getGame, levelCaps, type ChecklistItem, type RewardDto, type TaskPriority } from "@gacha/shared";
 import { api } from "../../lib/api";
 import { useCatalog } from "../../lib/catalog";
 import type { InstanceListItem, TaskItem } from "../../lib/types";
 import { GameIcon } from "../GameIcon";
 import { stepText } from "../calendar/CalendarSelected";
+import { Picker } from "../Picker";
 
 const NEXT: Record<TaskPriority, TaskPriority> = { high: "normal", normal: "low", low: "high" };
 const ENDS = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
@@ -26,12 +27,14 @@ function planned(origin: unknown): string | null {
 }
 
 /**
- * One goal on Tasks (WIREFRAMES.md A3): its game, where it came from, its
- * progress (materials, stages or a number), priority and notify; expanded,
- * its steps with a TODAY tag where farming is possible today. An event goal
- * shows its effect and is claimed here, which applies it (ADR 0008).
+ * One goal on Tasks (WIREFRAMES.md A3): its game, its progress (materials,
+ * stages or a number), priority and notify; a click on it opens it (Georges,
+ * 2026-10-11): a plan's steps (each ascension, each talent's range), its
+ * materials with a TODAY tag where farming is possible today, the goals linked
+ * under it, and Link to another goal. An event goal shows its effect and is
+ * claimed here, which applies it (ADR 0008).
  */
-export function GoalCard({ t, kids, gi, reward, weekday }: { t: TaskItem; kids: TaskItem[]; gi: InstanceListItem; reward?: RewardDto; weekday?: number }) {
+export function GoalCard({ t, kids: allKids, kidsOf, linkable = [], gi, reward, weekday }: { t: TaskItem; kids: TaskItem[]; kidsOf?: (id: string) => TaskItem[]; linkable?: TaskItem[]; gi: InstanceListItem; reward?: RewardDto; weekday?: number }) {
   const qc = useQueryClient();
   const [open, setOpen] = useState(false);
   const refresh = () => Promise.all(["tasks", "rewards", "farm-today", "dashboard"].map((k) => qc.invalidateQueries({ queryKey: [k] })));
@@ -40,6 +43,10 @@ export function GoalCard({ t, kids, gi, reward, weekday }: { t: TaskItem; kids: 
   const claim = useMutation({ mutationFn: (done: boolean) => api.post(`/api/tasks/${t.id}/complete`, { done }), onSuccess: refresh });
   const progress = useMutation({ mutationFn: (v: { id: string; progress: number }) => api.post(`/api/tasks/${v.id}/progress`, { progress: v.progress }), onSuccess: refresh });
   const remove = useMutation({ mutationFn: () => api.del(`/api/tasks/${t.id}`), onSuccess: refresh });
+  const link = useMutation({ mutationFn: (v: { id: string; parentId: string | null }) => api.put(`/api/tasks/${v.id}`, { parentId: v.parentId }), onSuccess: refresh });
+  // Material steps and linked goals both hang under a goal; linked ones are goals of their own.
+  const kids = allKids.filter((k) => k.materialId);
+  const linked = allKids.filter((k) => !k.materialId);
 
   const short = getGame(gi.gameKey)?.shortName ?? gi.name;
   const items = t.items ?? [];
@@ -56,11 +63,13 @@ export function GoalCard({ t, kids, gi, reward, weekday }: { t: TaskItem; kids: 
   return (
     <article className={`tk-card ${open ? "is-open" : ""}`} aria-label={t.title}>
       <div className="tk-row">
-        <GameIcon src={null} alt={gi.name} label={short.slice(0, 2)} className="tk-thumb" />
-        <div className="tk-title">
-          <strong>{t.title}</strong>
-          <div className="mn mu">{sub}</div>
-        </div>
+        <button type="button" className="tk-open" aria-expanded={open} onClick={() => setOpen(!open)}>
+          <GameIcon src={null} alt={gi.name} label={short.slice(0, 2)} className="tk-thumb" />
+          <span className="tk-title">
+            <strong>{t.title}</strong>
+            <span className="mn mu">{sub}</span>
+          </span>
+        </button>
         {total > 0 && (
           <div className="tk-prog">
             <span className="mn">
@@ -80,12 +89,10 @@ export function GoalCard({ t, kids, gi, reward, weekday }: { t: TaskItem; kids: 
           <input type="checkbox" key={String(t.notify)} defaultChecked={t.notify} onChange={(e) => update.mutate({ notify: e.target.checked })} />
           Notify
         </label>
-        <button className="btn" aria-expanded={open} onClick={() => setOpen(!open)}>
-          {open ? "Collapse" : "Expand"}
-        </button>
       </div>
       {open && (
         <div className="tk-steps">
+          <PlanSteps origin={t.origin} gameKey={gi.gameKey} />
           {kids.length > 0 && <MaterialSteps kids={kids} gameKey={gi.gameKey} weekday={weekday} onProgress={(id, v) => progress.mutate({ id, progress: v })} />}
           {items.map((it, i) => (
             <label key={i} className="tk-step tk-check">
@@ -120,7 +127,34 @@ export function GoalCard({ t, kids, gi, reward, weekday }: { t: TaskItem; kids: 
               <span className="mn mu">/ {t.target ?? "∞"}</span>
             </label>
           )}
+          {linked.length > 0 && (
+            <ul className="tk-linked" aria-label="Linked goals">
+              {linked.map((k) => {
+                const sub = kidsOf?.(k.id).filter((x) => x.materialId) ?? [];
+                const [d, n] = sub.length ? [sub.filter((x) => x.progress >= (x.target ?? 0)).length, sub.length] : [k.progress, k.target ?? 0];
+                return (
+                  <li key={k.id} className="tk-step">
+                    <span className="tk-step-name">{k.title}</span>
+                    {n > 0 && (
+                      <span className="mn">
+                        {d} / {n}
+                      </span>
+                    )}
+                    <Meter done={d} total={n} />
+                    <button className="btn ghost sm" onClick={() => link.mutate({ id: k.id, parentId: null })}>
+                      Unlink
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
           <div className="tk-actions">
+            {!t.parentId && !t.eventId && linkable.length > 0 && (
+              <div className="tk-link">
+                <Picker label="Link to" placeholder="Link to…" value="" icons={false} options={linkable.map((g) => ({ id: g.id, name: g.title }))} onPick={(g) => g && link.mutate({ id: t.id, parentId: g.id })} />
+              </div>
+            )}
             {t.eventId &&
               (claimed ? (
                 <button className="btn" disabled={claim.isPending} onClick={() => claim.mutate(false)}>
@@ -184,4 +218,35 @@ function MaterialSteps({ kids, gameKey, weekday, onProgress }: { kids: TaskItem[
       </div>
     );
   });
+}
+
+/** A plan's depth (Georges, 2026-10-11): its level range with each ascension it crosses, then each talent's range, by name. */
+function PlanSteps({ origin, gameKey }: { origin: unknown; gameKey: string }) {
+  const o = origin as { catalogId?: string; kind?: string; goal?: { level?: Range; talents?: Record<string, Range> } } | null;
+  const { index } = useCatalog(o?.goal ? gameKey : undefined);
+  if (!o?.goal || !o.catalogId) return null;
+  const entry = o.kind === "weapon" ? index?.weapons.get(o.catalogId) : index?.characters.get(o.catalogId);
+  const level = o.goal.level;
+  const caps = level && entry ? levelCaps(entry.ascension, 20).filter((c) => c > level.from && c <= level.to) : [];
+  const talentName = (k: string) => (entry && "talents" in entry ? entry.talents.info?.find((i) => i.key === k)?.name : undefined) ?? k.charAt(0).toUpperCase() + k.slice(1);
+  return (
+    <ul className="tk-plan" aria-label="Plan">
+      {level && (
+        <li>
+          <span className="tk-step-name">
+            Lv {level.from} → {level.to}
+          </span>
+          <span className="tk-caps mn mu">{caps.map((c) => `▸ ${c}`).join("  ")}</span>
+        </li>
+      )}
+      {Object.entries(o.goal.talents ?? {}).map(([k, r]) => (
+        <li key={k}>
+          <span className="tk-step-name">{talentName(k)}</span>
+          <span className="mn">
+            {r.from} → {r.to}
+          </span>
+        </li>
+      ))}
+    </ul>
+  );
 }
