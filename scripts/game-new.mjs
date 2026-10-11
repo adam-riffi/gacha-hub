@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 // npm run game:new -- <key> "<Name>": scaffold a hardcoded game (ADR 0004, step 1).
 // Writes the module with a placeholder manifest that passes the conformance
-// suite, its reference sheet and a web sheet stub, and registers the game in
-// packages/shared/src/games/index.ts and apps/web/src/render/index.tsx.
+// suite and its reference sheet, and registers the game in
+// packages/shared/src/games/index.ts (every game shares the character page).
 // Then fill the manifest with sourced values, citing each in docs/games/<key>.md.
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
@@ -76,28 +76,6 @@ export const ${key}: GameDefinition = {
   docVersion: 1,
 };
 `;
-  const sheet = `import type { ${P}Doc } from "@gacha/shared";
-import type { SheetProps } from "../../render/types";
-import { PortraitPanel } from "../../render/PortraitPanel";
-import { Labeled, Num } from "../../components/inputs";
-
-/** ${name}'s character sheet: a stub from \`npm run game:new\`; build it from WIREFRAMES.md G5. */
-export function ${P}Sheet({ doc, setDoc, name, portraitUrl, onName, onPortrait }: SheetProps<${P}Doc>) {
-  return (
-    <div className="sheet">
-      <PortraitPanel name={name} portraitUrl={portraitUrl} onName={onName} onPortrait={onPortrait}>
-        <hr />
-        <Labeled label="Level">
-          <Num value={doc.level} min={1} max={90} onChange={(v) => setDoc((d) => ({ ...d, level: v }))} />
-        </Labeled>
-        <Labeled label="Dupes">
-          <Num value={doc.dupes} min={0} max={6} onChange={(v) => setDoc((d) => ({ ...d, dupes: v }))} />
-        </Labeled>
-      </PortraitPanel>
-    </div>
-  );
-}
-`;
   const doc = `# ${name}
 
 > Manifest sources (ADR 0004), scaffolded ${today}. Every value is a placeholder until a source is cited here; \`~\` marks a value not verified yet, and a field with no value has no source and stays out of the manifest. Refresh at each version: the version row, the endgame anchors, the battle pass level cap.
@@ -117,7 +95,6 @@ export function ${P}Sheet({ doc, setDoc, name, portraitUrl, onName, onPortrait }
     files: {
       [`packages/shared/src/games/${key}/index.ts`]: module,
       [`docs/games/${key}.md`]: doc,
-      [`apps/web/src/games/${key}/Sheet.tsx`]: sheet,
     },
     edits: {
       "packages/shared/src/games/index.ts": (s) => {
@@ -125,12 +102,6 @@ export function ${P}Sheet({ doc, setDoc, name, portraitUrl, onName, onPortrait }
         let out = before(s, "\n/** The registry of hardcoded games.", `\nimport { ${key} } from "./${key}/index.js";`, where);
         out = before(out, "\n};\n\nexport const gameList", `\n  [${key}.key]: ${key},`, where);
         return `${out.trimEnd()}\nexport * from "./${key}/index.js";\n`;
-      },
-      "apps/web/src/render/index.tsx": (s) => {
-        const where = "apps/web/src/render/index.tsx";
-        let out = before(s, "\n\n/** Game keys that have a hardcoded", `\nimport { ${P}Sheet } from "../games/${key}/Sheet";`, where);
-        out = out.replace(/const SHEET_KEYS = new Set\(\[([^\]]*)\]\)/, (_m, keys) => `const SHEET_KEYS = new Set([${keys}, "${key}"])`);
-        return before(out, "    default:\n", `    case "${key}":\n      return <${P}Sheet {...props} />;\n`, where);
       },
     },
   };
