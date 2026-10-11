@@ -86,7 +86,11 @@ export const eventGoalInput = z.object({
 
 export const updateTaskInput = createTaskInput
   .omit({ scope: true, refId: true, type: true })
-  .partial();
+  .partial()
+  .extend({
+    /** Link this goal under another of the same profile (a weapon's farm under its character's), or unlink it with null. */
+    parentId: idSchema.nullable().optional(),
+  });
 export type UpdateTaskInput = z.infer<typeof updateTaskInput>;
 
 export const completeTaskInput = z.object({ done: z.boolean().default(true) });

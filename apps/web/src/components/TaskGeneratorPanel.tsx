@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
@@ -76,8 +76,11 @@ export function TaskGeneratorPanel({
   const currentLevel = typeof doc.level === "number" ? (doc.level as number) : BASE_CAP;
   const defaultFrom = caps.filter((c) => c <= currentLevel).at(-1) ?? BASE_CAP;
 
-  const [levelFrom, setLevelFrom] = useState(defaultFrom);
-  const [levelTo, setLevelTo] = useState(caps.at(-1) ?? BASE_CAP);
+  // Unset until changed, so the defaults follow the catalog once it has loaded.
+  const [fromPicked, setLevelFrom] = useState<number | null>(null);
+  const [toPicked, setLevelTo] = useState<number | null>(null);
+  const levelFrom = fromPicked ?? defaultFrom;
+  const levelTo = toPicked ?? caps.at(-1) ?? BASE_CAP;
   const [talents, setTalents] = useState<Record<string, { from: number; to: number }>>({});
   const [preview, setPreview] = useState<PlanPreviewDto | null>(null);
 
@@ -98,11 +101,17 @@ export function TaskGeneratorPanel({
     ),
   });
 
-  const previewMut = useMutation({
+  const { mutate: runPreview } = useMutation({
     mutationFn: () => api.post<PlanPreviewDto>(`/api/instances/${instanceId}/plans/preview`, request()),
     onSuccess: setPreview,
-    onError: () => toast("Preview failed — check the ranges", "err"),
   });
+  // The materials follow the levels as they change (Georges, 2026-10-11: no Preview step).
+  const asked = JSON.stringify([levelFrom, levelTo, talents]);
+  useEffect(() => {
+    if (!entry) return;
+    const t = setTimeout(() => runPreview(), 250);
+    return () => clearTimeout(t);
+  }, [entry, asked, runPreview]);
   const generate = useMutation({
     mutationFn: () => api.post<PlanGenerateResultDto>(`/api/instances/${instanceId}/plans/generate`, request()),
     onSuccess: (r) => {
@@ -154,7 +163,6 @@ export function TaskGeneratorPanel({
             </div>
           );
         })}
-        <button type="button" className="btn" disabled={previewMut.isPending} onClick={() => previewMut.mutate()}>Preview</button>
         <button type="button" className="btn primary" disabled={generate.isPending} onClick={() => generate.mutate()}>Generate tasks</button>
       </div>
       {preview && <div style={{ marginTop: 12 }}><PlanTable preview={preview} /></div>}

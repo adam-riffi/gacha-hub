@@ -147,6 +147,8 @@ export function TasksPage() {
                 key={t.id}
                 t={t}
                 kids={kidsOf.get(t.id) ?? []}
+                kidsOf={(k) => kidsOf.get(k) ?? []}
+                linkable={top.filter((x) => x.id !== t.id && x.refId === t.refId && x.type === "goal" && !x.backlog)}
                 gi={byId.get(t.refId)!}
                 reward={rewards.data?.find((r) => r.goal?.id === t.id)}
                 weekday={lines.find((f) => f.instanceId === t.refId)?.weekday}
