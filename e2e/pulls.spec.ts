@@ -123,3 +123,34 @@ test("Pulls: a running banner's featured character opens its page @smoke", async
   await expect(page).toHaveURL(new RegExp(`/games/${id}/units/1005$`));
   await page.request.delete("/api/admin/banners/hsr/e2e-nav");
 });
+
+test("Pulls: a logged 5★ is corrected from History, and Banner history shows your pulls on each banner with its characters @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  const iso = (days: number) => new Date(Date.now() + days * 86_400_000).toISOString();
+  await page.request.post("/api/admin/payload", {
+    data: { kind: "banners", gameKey: "hsr", items: [{ key: "e2e-history", name: "E2E history warp", kind: "character", startsAt: iso(-2), endsAt: iso(12), featured: [{ catalogId: "1005", kind: "character" }] }] },
+  });
+  await page.request.post(`/api/instances/${id}/pulls/calibrate`, { data: { bannerKey: "character", pity: 0, guaranteed: false } });
+  await page.request.post(`/api/instances/${id}/pulls`, { data: { bannerKey: "character", count: 10, fiveStarAt: 10, featured: true, catalogId: "1005" } });
+
+  await page.goto(`/games/${id}/pulls`);
+  // Logged at the tenth pull, it was the seventh: corrected in place.
+  const history = page.getByRole("region", { name: "History" });
+  const row = history.getByRole("row").filter({ hasText: "Kafka" }).first();
+  await row.getByRole("button", { name: "Edit" }).click();
+  await row.getByRole("spinbutton", { name: "Pity" }).fill("7");
+  await row.getByRole("button", { name: "Save" }).click();
+  await expect(history.getByRole("row").filter({ hasText: "Kafka" }).first()).toContainText("7");
+  await expect(page.getByRole("region", { name: "Character event warp" }).getByTestId("pity")).toHaveText("3");
+
+  // Banner history: each banner with your pulls on it; its characters open their pages.
+  const past = page.getByRole("region", { name: "Banner history" });
+  const warp = past.getByRole("row").filter({ hasText: "E2E history warp" });
+  await expect(warp.locator(".bh-pulls")).toHaveText(/^\d+$/);
+  await warp.getByRole("link", { name: "Kafka" }).click();
+  await expect(page).toHaveURL(new RegExp(`/games/${id}/units/1005$`));
+  await page.request.delete("/api/admin/banners/hsr/e2e-history");
+});

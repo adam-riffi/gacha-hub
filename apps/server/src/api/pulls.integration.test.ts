@@ -1,6 +1,6 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import type { FastifyInstance } from "fastify";
-import type { DashboardDto, PullLogDto } from "@gacha/shared";
+import type { BannerHistoryDto, DashboardDto, PullLogDto } from "@gacha/shared";
 import { installGame, login, makeApp, resetDb, type Client } from "../test/helpers.js";
 
 const AMBER = "10000021";
@@ -22,6 +22,51 @@ describe("pull log (routes)", () => {
     await resetDb();
     c = await login(app);
     gid = await installGame(c, "genshin");
+  });
+
+  // Correcting a logged 5★ (Georges, 2026-10-11: "logged as the tenth, it was the seventh").
+  it("corrects a logged 5★: the pull it came at, won or lost, and the unit; the batch keeps its size", async () => {
+    await c.req("POST", `/api/instances/${gid}/pulls`, { bannerKey: "character", count: 10, fiveStarAt: 10, featured: false, catalogId: AMBER });
+    const drop = (await banner("character")).fiveStars[0]!;
+    expect(drop.pity).toBe(10);
+
+    expect((await c.req("PATCH", `/api/instances/${gid}/pulls/${drop.id}`, { pity: 7 })).status).toBe(200);
+    let b = await banner("character");
+    expect(b.fiveStars[0]).toMatchObject({ pity: 7, featured: false, catalogId: AMBER });
+    expect(b.state).toMatchObject({ pity: 3, guaranteed: true });
+
+    expect((await c.req("PATCH", `/api/instances/${gid}/pulls/${drop.id}`, { featured: true, catalogId: null })).status).toBe(200);
+    b = await banner("character");
+    expect(b.fiveStars[0]).toMatchObject({ pity: 7, featured: true, catalogId: null });
+    expect(b.state.guaranteed).toBe(false);
+
+    // Later than logged: the pulls after it shrink.
+    expect((await c.req("PATCH", `/api/instances/${gid}/pulls/${drop.id}`, { pity: 9 })).status).toBe(200);
+    expect((await banner("character")).state.pity).toBe(1);
+    expect((await c.req("PATCH", `/api/instances/${gid}/pulls/${drop.id}`, { pity: 0 })).status).toBe(400);
+  });
+
+  it("lists the game's banners, newest first, with your pulls on each and the 5★ you got", async () => {
+    const DAY = 86_400_000;
+    const at = (d: number) => new Date(Date.now() + d * DAY).toISOString();
+    const upload = await c.req("POST", "/api/admin/payload", {
+      kind: "banners",
+      gameKey: "genshin",
+      items: [
+        { key: "it-hist-now", name: "History now", kind: "character", startsAt: at(-1), endsAt: at(10), featured: [{ catalogId: AMBER, kind: "character" }] },
+        { key: "it-hist-old", name: "History old", kind: "character", startsAt: at(-30), endsAt: at(-20) },
+        { key: "it-hist-next", name: "History next", kind: "character", startsAt: at(20), endsAt: at(30) },
+      ],
+    });
+    expect(upload.status).toBe(200);
+    await c.req("POST", `/api/instances/${gid}/pulls`, { bannerKey: "character", count: 10, fiveStarAt: 4, featured: true, catalogId: AMBER });
+    const r = await c.req<BannerHistoryDto>("GET", `/api/instances/${gid}/pulls/history`);
+    expect(r.status).toBe(200);
+    expect(r.json.map((h) => [h.key, h.pulls, h.fiveStars.map((f) => f.catalogId)])).toEqual([
+      ["it-hist-now", 10, [AMBER]],
+      ["it-hist-old", 0, []],
+    ]);
+    expect(r.json[0]!.featured).toEqual([expect.objectContaining({ catalogId: AMBER, kind: "character" })]);
   });
 
   it("lists the game's banner types at zero pity", async () => {
