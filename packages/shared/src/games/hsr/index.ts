@@ -149,6 +149,9 @@ export const hsr: GameDefinition = {
     { key: "dailyTraining", title: "Daily Training", cadence: "daily", target: 5 },
     { key: "assignments", title: "Assignments", cadence: "daily" },
     { key: "su", title: "Simulated Universe", cadence: "weekly" },
+    // From Georges's design (2026-10-11): the check-in, and Echo of War's three weekly claims.
+    { key: "checkIn", title: "Check-in", cadence: "daily" },
+    { key: "echo", title: "Echo of War", cadence: "weekly", target: 3 },
   ],
   docSchema: hsrDocSchema,
   emptyDoc: (): HsrDoc => ({ relics: {}, traces: {}, lightCone: {}, stats: {} }),

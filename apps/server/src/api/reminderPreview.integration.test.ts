@@ -47,7 +47,10 @@ describe("reminder preview and test DM (WIREFRAMES.md A3)", () => {
     await c.req("POST", "/api/tasks", { scope: "game", refId: gid, type: "recurring", title: "Daily Commissions", cadence: "daily" });
     await c.req("PUT", `/api/instances/${gid}/reminder`, rule);
     const r = await c.req<ReminderPreviewDto>("GET", "/api/reminders/preview");
-    expect(r.json[0]!.text).toContain("Dailies left: Daily Commissions, Weekly Bosses");
+    // Every daily before every weekly: Daily Commissions, made again last, still comes before Weekly Bosses.
+    const text = r.json[0]!.text;
+    expect(text.indexOf("Daily Commissions")).toBeGreaterThan(text.indexOf("Dailies left:"));
+    expect(text.indexOf("Daily Commissions")).toBeLessThan(text.indexOf("Weekly Bosses"));
   });
 
   it("sends the preview as a test DM once the bot is set up, and says why it cannot otherwise", async () => {

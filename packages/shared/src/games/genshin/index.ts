@@ -145,6 +145,11 @@ export const genshin: GameDefinition = {
   defaultTasks: [
     { key: "commissions", title: "Daily Commissions", cadence: "daily", target: 4 },
     { key: "weeklyBosses", title: "Weekly Bosses", cadence: "weekly", target: 3 },
+    // From Georges's design (2026-10-11): the commission reward, Resin, the check-in, the Transformer.
+    { key: "commissionReward", title: "Commission reward", cadence: "daily" },
+    { key: "resin", title: "Spend Resin", cadence: "daily" },
+    { key: "checkIn", title: "Check-in", cadence: "daily" },
+    { key: "transformer", title: "Parametric Transformer", cadence: "weekly" },
   ],
   docSchema: genshinDocSchema,
   emptyDoc: (): GenshinDoc => ({ artifacts: {}, talents: {}, weapon: {}, stats: {} }),

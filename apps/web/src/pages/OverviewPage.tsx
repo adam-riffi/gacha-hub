@@ -48,7 +48,7 @@ export function OverviewPage() {
           </>
         ) : null}
         <BannersCard banners={banners} game={game} />
-        <TodayCard instanceId={id!} items={recurring.filter((t) => t.cadence === "daily")} />
+        <TodayCard instanceId={id!} game={game} items={recurring.filter((t) => t.cadence === "daily")} />
         <WeeklyCard instanceId={id!} game={game} pv={pv} items={recurring.filter((t) => t.cadence === "weekly")} />
         <StaminaCard g={g} game={game} instance={instance.data} />
         <BuildsCard instanceId={id!} game={game} builds={(builds.data ?? []).filter((b) => b.buildStatus === "building" || b.buildStatus === "good")} />
@@ -196,8 +196,19 @@ function TickBox({ instanceId, task }: { instanceId: string; task: TaskDto }) {
   return <input type="checkbox" className="ov-tick" aria-label={task.title} key={String(task.doneThisCycle)} defaultChecked={Boolean(task.doneThisCycle)} onChange={(e) => tick.mutate(e.target.checked)} />;
 }
 
-/** A row per recurring task, its box ticked in place. */
-function Ticks({ instanceId, items }: { instanceId: string; items: TaskDto[] }) {
+/**
+ * A row per recurring task, its box ticked in place; then the game's own
+ * dailies or weeklies the profile lacks (it was made before they joined),
+ * each added with +.
+ */
+function Ticks({ instanceId, items, game, cadence }: { instanceId: string; items: TaskDto[]; game?: GameDefinition; cadence?: "daily" | "weekly" }) {
+  const qc = useQueryClient();
+  const restore = useMutation({
+    mutationFn: () => api.post(`/api/instances/${instanceId}/tasks/defaults`, {}),
+    onSuccess: () => Promise.all([["tasks", "game", instanceId], ["tasks"]].map((queryKey) => qc.invalidateQueries({ queryKey }))),
+  });
+  const have = new Set(items.map((t) => t.title.toLowerCase()));
+  const missing = (game?.defaultTasks ?? []).filter((t) => t.cadence === cadence && !have.has(t.title.toLowerCase()));
   return (
     <>
       {items.map((t) => (
@@ -208,19 +219,29 @@ function Ticks({ instanceId, items }: { instanceId: string; items: TaskDto[] }) 
           </dd>
         </div>
       ))}
+      {missing.map((t) => (
+        <div key={t.key}>
+          <dt className="mu">{t.title}</dt>
+          <dd>
+            <button className="btn ghost sm" aria-label={`Add ${t.title}`} disabled={restore.isPending} onClick={() => restore.mutate()}>
+              +
+            </button>
+          </dd>
+        </div>
+      ))}
     </>
   );
 }
 
 /** Today's dailies, each a box ticked in place. */
-function TodayCard({ instanceId, items }: { instanceId: string; items: TaskDto[] }) {
+function TodayCard({ instanceId, game, items }: { instanceId: string; game: GameDefinition; items: TaskDto[] }) {
   return (
     <section className="card ov-card" aria-label="Today">
       <Head title="Today" to={`/games/${instanceId}/activities`} />
       <dl className="ov-rows">
-        <Ticks instanceId={instanceId} items={items} />
+        <Ticks instanceId={instanceId} items={items} game={game} cadence="daily" />
       </dl>
-      {items.length === 0 && <p className="mu">None</p>}
+      {items.length === 0 && !game.defaultTasks.some((t) => t.cadence === "daily") && <p className="mu">None</p>}
     </section>
   );
 }
@@ -250,7 +271,7 @@ function WeeklyCard({ instanceId, game, pv, items }: { instanceId: string; game:
             </dd>
           </div>
         )}
-        <Ticks instanceId={instanceId} items={items} />
+        <Ticks instanceId={instanceId} items={items} game={game} cadence="weekly" />
       </dl>
     </section>
   );

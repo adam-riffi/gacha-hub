@@ -26,3 +26,4 @@
 | Gacha · rates | S-Rank Agent 0.6% (1.6% with the guarantee), W-Engine 1.0% (2.0%) ~; soft pity from about 74 (Agents) and 64 (W-Engines), climbing to certainty at hard pity ~ (no official curve) | [Icy Veins: W-Engine Channel](https://icy-veins.com/zenless-zone-zero/w-engine-channel), [GameWith](https://gamewith.net/zenless-zone-zero/46129); [Stable Channel](https://zenless-zone-zero.fandom.com/wiki/Stable_Channel) (0.6%, 1.6% with pity); the wiki states no W-Engine rate or soft pity |
 | Version | 3.2 from 9 Sep 2026; 42 days (3.3 on 21 Oct 2026) | [Version](https://zenless-zone-zero.fandom.com/wiki/Version) |
 | Counted tasks | Daily engagement, 4 reward tiers a day (100–400) | [Errands](https://zenless-zone-zero.fandom.com/wiki/Errands) |
+| Tasks from the design | Daily: Coffee, Video store; weekly: Notorious Hunt, 3 reward claims ~ | Georges's design (2026-10-11); [Notorious Hunt](https://zenless-zone-zero.fandom.com/wiki/Notorious_Hunt) |

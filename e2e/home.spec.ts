@@ -24,15 +24,15 @@ test("Home is the dashboard: its panels, the dailies card per game, the pulls an
     await expect(row.locator(".pull-row-pity")).toHaveText(/^Character \d+\/\d+.*Weapon \d+\/\d+.*Standard \d+\/\d+/);
   }
 
-  // Dailies & weeklies: the game's own items (HSR seeds two dailies and one weekly) apart from the ones you add.
+  // Dailies & weeklies: the game's own items (HSR seeds three dailies, with the design's Check-in, and two weeklies, with Echo of War) apart from the ones you add.
   const dailies = page.locator(".dailies-card");
   await expect(dailies).toContainText("Honkai: Star Rail");
   await expect(dailies).toContainText("resets in");
   const tiles = dailies.locator(".kpi");
-  await expect(tiles.nth(0)).toContainText("0 / 2");
+  await expect(tiles.nth(0)).toContainText("0 / 3");
   await expect(tiles.nth(1)).toContainText("0 / 0");
-  await expect(tiles.nth(2)).toContainText("0 / 1");
-  await expect(dailies.getByRole("img", { name: /0 of 3 recurring items done/ })).toBeVisible();
+  await expect(tiles.nth(2)).toContainText("0 / 2");
+  await expect(dailies.getByRole("img", { name: /0 of 5 recurring items done/ })).toBeVisible();
 
   // Pulls: 1600 jade is 10 warps, limited; nothing permanent yet.
   const pulls = page.locator(".pulls-card");

@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r5/02-items · #234
+- Done: each game's dailies and weeklies from Georges's designs, as default tasks: Genshin's Commission reward, Spend Resin, Check-in and Parametric Transformer; Star Rail's Check-in and Echo of War (3 a week); ZZZ's Coffee, Video store and Notorious Hunt (3 a week); NTE's Nakupenda Pool, Fortune reading, Gifts, Auction House and Old Mailbox commission; Endfield's Spend Sanity, Credit store, Weekly missions and Severe Energy Alluvium. A profile made before them shows each on the Overview's Today or weekly card with +, which adds the game's missing defaults.
+- Tests: written first: a new profile of each game seeds its design's tasks with their cadence and count; the Overview journey deletes ZZZ's Coffee and adds it back with +; the Activities journey counts ZZZ's four dailies, and the day record, Farm today, the dashboard, the reminder and Home count the new ones (Genshin, HSR)'s new ones. `npm run check` passes: 586 tests and 67 journeys.
+- Scope/decisions: names follow the designs (and NTE's research notes); counts only where a source gives them (Echo of War and Notorious Hunt, 3 a week, marked `~`). WuWa's design items (Nightmare Nests, echo bosses, Gateways) wait for a source.
+- Next: the designs' missing endgame modes.
+
 ## 2026-10-11 · claude · stack/r5/01-counts · #233
 - Done: the first of the designs' remaining details: counted dailies and weeklies ("Daily Commissions ▮▮▮▯", "Weekly Bosses ▮▯▯"). A recurring task with a target counts its steps within its cycle (`Task.progressAt`, migration `recurring_counts`): its progress reads as zero in a new cycle, it is done at its target, and ticking it done sets the target. The Overview's Today and weekly cards show a box per step, ticked up to the one clicked (over eight steps, a number to type). Default tasks gain counts where a source gives them: Genshin's four commissions and three weekly bosses, Star Rail's five Daily Training tiers, ZZZ's four engagement tiers, WuWa's five activity tiers and three weekly bosses, NTE's four daily quests and three Anomaly Pilgrimage claims; the migration gives existing profiles' rows of them their targets.
 - Tests: written first: a counted daily counts within the cycle, is done at its target and reads empty three days later; a new Genshin profile seeds four Daily Commissions and three Weekly Bosses; the Overview journey ticks ZZZ's Daily Missions to 3 of 4 and keeps it after a reload. `npm run check` passes: 581 tests and 66 journeys.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: 30 pulls on one Arsenal banner, 5 on the next, then 10 by hand give pity 15, while Chartered over the same pulls gives 35; the records import keeps each record's pool. `npm run check` passes: 534 tests and 40 journeys.
 - Scope/decisions: no column; the pool rides in the pull's stored record. Pulls imported before this change have no pool and count as before.
 - Next: ZZZ core skills, every banner with a hide button.
-
-## 2026-10-10 · claude · stack/profile/02-long-term-goals · #194
-- Done: Profile's Long-term progress holds the game's hand-typed goals, as Georges decided: exploring, chests, events, one kind ("gameplay" on Home and Tasks). Each goal is a checkbox that ticks at once, and an "Add goal" field creates one (target 1). Goals with a larger target show their count. The HoYoLAB stats stay above when linked. Plan, gear and event goals and their material steps stay out of the list.
-- Tests: written first: the Profile journey adds "Finish exploring Amphoreus" and ticks it. `npm run check` passes: 533 tests and 40 journeys.
-- Scope/decisions: no new goal kind or column; the card filters the existing hand-typed goals.
-- Next: Endfield's per-banner weapon pity, ZZZ core skills, every banner with a hide button.

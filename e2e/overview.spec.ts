@@ -134,3 +134,19 @@ test("the Overview counts a daily's steps in boxes, kept after a reload @smoke",
   await expect(page.getByRole("region", { name: "Today" }).getByRole("group", { name: "Daily Missions" }).getByRole("button", { name: "2 of 4" })).toHaveAttribute("aria-pressed", "true");
   await page.request.post(`/api/tasks/${daily.id}/progress`, { data: { progress: 0 } });
 });
+
+// A profile made before an item joined the game's defaults adds it from the card.
+test("the Overview adds a game's daily the profile lacks with + @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "zzz" } })).json()) as { id: string };
+  const tasks = (await (await page.request.get(`/api/tasks?scope=game&refId=${id}`)).json()) as { id: string; title: string }[];
+  const coffee = tasks.find((t) => t.title === "Coffee");
+  if (coffee) await page.request.delete(`/api/tasks/${coffee.id}`);
+
+  await page.goto(`/games/${id}`);
+  const today = page.getByRole("region", { name: "Today" });
+  await today.getByRole("button", { name: "Add Coffee" }).click();
+  await expect(today.getByRole("checkbox", { name: "Coffee" })).toBeVisible();
+});
