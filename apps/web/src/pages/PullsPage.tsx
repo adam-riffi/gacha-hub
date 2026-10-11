@@ -193,7 +193,6 @@ export function PullsPage() {
           instanceId={instance.data.id}
           active="pulls"
           gameKey={game.key}
-          hasCatalog={Boolean(game.loadCatalog)}
         />
       </div>
       <div className="pl-top">

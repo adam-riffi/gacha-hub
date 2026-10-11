@@ -62,7 +62,7 @@ export function TeamsPage() {
   return (
     <>
       <div style={{ marginBottom: 14 }}>
-        <GameTabs instanceId={id!} active="teams" gameKey={game.key} hasCatalog={Boolean(game.loadCatalog)} />
+        <GameTabs instanceId={id!} active="teams" gameKey={game.key} />
       </div>
       <form
         className="card tm-new"

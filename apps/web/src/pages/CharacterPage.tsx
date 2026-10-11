@@ -161,7 +161,7 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
   return (
     <>
       <div style={{ marginBottom: 14 }}>
-        <GameTabs instanceId={data.gameInstanceId} active="characters" gameKey={game.key} hasCatalog={Boolean(game.loadCatalog)} />
+        <GameTabs instanceId={data.gameInstanceId} active="characters" gameKey={game.key} />
       </div>
       {data.catalogId && (
         <div className="sh-builds">

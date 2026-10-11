@@ -70,7 +70,7 @@ export function EndgamePage() {
   return (
     <>
       <div style={{ marginBottom: 14 }}>
-        <GameTabs instanceId={id!} active="endgame" gameKey={instance.gameKey} hasCatalog={Boolean(game.loadCatalog)} />
+        <GameTabs instanceId={id!} active="endgame" gameKey={instance.gameKey} />
       </div>
       <div className="endgame">
         <section className="graph eg-this" aria-label="This cycle">

@@ -58,7 +58,7 @@ export function ActivitiesPage() {
   return (
     <>
       <div style={{ marginBottom: 14 }}>
-        <GameTabs instanceId={id!} active="activities" gameKey={instance.gameKey} hasCatalog={Boolean(game.loadCatalog)} />
+        <GameTabs instanceId={id!} active="activities" gameKey={instance.gameKey} />
       </div>
       <div className="activities">
         <Stamina game={game} instance={instance} projection={dg?.stamina ?? null} />

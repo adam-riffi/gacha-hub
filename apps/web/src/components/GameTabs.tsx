@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { getGame } from "@gacha/shared";
 import { HubHeader } from "./hub/HubHeader";
 
-type Screen = "activities" | "endgame" | "ownership" | "characters" | "teams" | "weapons" | "gear" | "materials" | "planner" | "pulls" | "profile";
+export type Screen = "activities" | "endgame" | "ownership" | "characters" | "teams" | "weapons" | "gear" | "materials" | "planner" | "pulls" | "profile";
 
 /** What each game calls its gear sets. */
 const GEAR_LABEL: Record<string, string> = {
@@ -15,19 +15,14 @@ const GEAR_LABEL: Record<string, string> = {
 /** Games whose catalog lists characters only (Endfield's public tables have no gear sets or costs): no Gear or Planner tab. */
 const CHARACTERS_ONLY = new Set(["endfield"]);
 
-/** The game hub's header and its tabs, on every screen of the hub. */
-export function GameTabs({
-  instanceId,
-  active,
-  gameKey,
-  hasCatalog = true,
-}: {
-  instanceId: string;
-  active: Screen;
-  gameKey?: string;
-  hasCatalog?: boolean;
-}) {
-  const tabs: { key: Screen; label: string; to: string }[] = [
+/**
+ * The hub's tabs a game has, in order, each with its path under the hub
+ * (Activities is the hub itself): Pulls needs pull rules, Teams a catalog,
+ * the gear tab and the Planner a catalog with gear and costs.
+ */
+export function hubScreens(gameKey: string, instanceId: string): { key: Screen; label: string; to: string }[] {
+  const hasCatalog = Boolean(getGame(gameKey)?.loadCatalog);
+  return [
     // Activities opens the hub; each game's dashboard is Home with the game picked (Georges, round 4).
     { key: "activities", label: "Activities", to: `/games/${instanceId}` },
     { key: "endgame", label: "Endgame", to: `/games/${instanceId}/endgame` },
@@ -47,6 +42,11 @@ export function GameTabs({
     // Profile (G8) closes the row; the old overview keeps its route, linked from Profile.
     { key: "profile", label: "Profile", to: `/games/${instanceId}/profile` },
   ];
+}
+
+/** The game hub's header and its tabs, on every screen of the hub. */
+export function GameTabs({ instanceId, active, gameKey }: { instanceId: string; active: Screen; gameKey?: string }) {
+  const tabs = gameKey ? hubScreens(gameKey, instanceId) : [];
   return (
     <>
       <HubHeader instanceId={instanceId} />
