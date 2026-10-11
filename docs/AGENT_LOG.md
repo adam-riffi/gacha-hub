@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r4/03-days · #222
+- Done: Georges's "on planner, 'day' for farming isn't readable … just write the first 3 letters like Mon Tue Wed separated by a space". A material's days read "Wed Sat", today's in the accent; Sunday, which opens every domain, is left out beside a material's own days. This round's audit adds icons: each Planner goal shows its unit's icon, each material its own (`CatalogIcon`, a small wrapper over `GameIcon` for any catalog entry).
+- Tests: written first: the Planner journey plans Lisa's first talent level and finds "Wed Sat" for Teachings of Ballad, Lisa's icon on her goal and the book's icon on its row; the first journey reads a material's name from its field, since the cell now holds the icon too. `npm run check` passes: 571 tests and 55 journeys.
+- Scope/decisions: Sunday left out (it is every material's day). The material names stay beside their icons in the table, where the counts are typed.
+- Next: Farm today as icons.
+
 ## 2026-10-11 · claude · stack/r4/02-order · #221
 - Done: the cause of #218's one-off `test-postgres` failure. The reminder's "Dailies left" list read the profile's recurring tasks with no order, and Postgres returned Weekly Bosses before Daily Commissions once. The list is now ordered: dailies, then monthlies and weeklies, each in the order they were made.
 - Tests: written first: a Daily Commissions deleted and made again (so it comes after Weekly Bosses) still reads first in the preview. `npm run check` passes: 571 tests and 55 journeys.
@@ -269,15 +275,3 @@ Entry format:
 - Tests: written first: Amber's, Kafka's and Chixia's names. Every Genshin character has names but the Traveler, whose talents change with the element. `npm run check` passes: 525 tests and 40 journeys.
 - Scope/decisions: talent descriptions are left out to keep the catalogs small. ZZZ's skill kinds are already readable (basic, dodge…).
 - Next: Genshin talent levels from Enka.
-
-## 2026-10-10 · claude · stack/zzz/03-enka · #183
-- Done: ZZZ builds from the Enka showcase (`enka.network/api/zzz/uid/…`). `readEnkaZzz` reads:
-  - level and Mindscape;
-  - the W-Engine (name, level, phase);
-  - the five skills' base levels (Enka's indexes; the core skill is left out);
-  - each Drive Disc: its set from its id (set + rarity × 10 + slot, true for all 540 in Enka's store), its main stat's name, its level, and its substats as base × rolls.
-
-  The sync and Settings' Sync builds cover ZZZ.
-- Tests: written first: the reader on a fixture in Enka's documented shape; the sync route creates the build. `npm run check` passes: 524 tests and 40 journeys.
-- Scope/decisions: the fixture follows Enka's documentation, not a recorded answer; a real one replaces it when shared.
-- Next: talent names in the catalogs.

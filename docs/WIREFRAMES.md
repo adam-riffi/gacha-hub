@@ -159,8 +159,8 @@ Picture: [`g6-gear.png`](design/wireframes/g6-gear.png) · static page: [`g6-gea
 
 Picture: [`g7-planner.png`](design/wireframes/g7-planner.png) · static page: [`g7-planner.html`](design/wireframes/g7-planner.html)
 
-- Goals list with the selected goal highlighted.
-- Materials for the selected goal or all goals: source, weekday availability (today outlined; Genshin only), have, need, missing.
+- Goals list with the selected goal highlighted, each with its unit's icon.
+- Materials for the selected goal or all goals, each with its icon: source, the days it farms written out ("Wed Sat", today in the accent; Sunday, open to all, left out beside other days; Georges, 2026-10-11), have, need, missing.
 - Stamina estimate in days; **Farm today** across goals, with Generate tasks.
 
 ### G8 · Profile

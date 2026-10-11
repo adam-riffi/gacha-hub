@@ -77,10 +77,10 @@
 .pn-bar .tk-meter { flex: 1; width: auto; }
 .pn-main { display: grid; gap: 24px; min-width: 0; }
 .pn-materials td input { width: 80px; min-height: 26px; padding: 2px 6px; text-align: right; }
-.pn-days { display: inline-flex; gap: 2px; }
-.pn-days > i { display: inline-grid; place-items: center; width: 16px; height: 16px; font: 400 9px/1 var(--font-mono); font-style: normal; color: var(--text-muted); border: 1px solid transparent; }
-.pn-days > i.on { background: var(--paper); color: var(--on-paper); }
-.pn-days > i.today { border-color: var(--accent); }
+.pn-days { font: 400 13px/1 var(--font-mono); white-space: nowrap; }
+.pn-days .today { color: var(--accent); font-weight: 700; }
+.pn-goal-name, .pn-mat { display: inline-flex; align-items: center; gap: 8px; }
+.pn-goal-name .gicon, .pn-mat .gicon { width: 28px; height: 28px; font-size: 9px; flex: none; }
 .pn-line { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-top: 1px solid var(--surface-3); }
 .pn-line .mu { margin-left: auto; font-size: 13px; }
 .pn-today .btn { margin-top: 12px; }
