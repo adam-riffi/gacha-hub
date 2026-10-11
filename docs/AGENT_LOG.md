@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r6/02-hsr-talents · #239
+- Done: Star Rail's skill descriptions. The importer now fills each skill's description from Yatta's `descriptionSimple` (its short text, with no level numbers to fill in), stripped of colour tags; the regenerated catalog changes only those. The sheet's Traces open them the way Genshin's Talents do (#238). HANDOFF.md now says `main` is at #238 and names WuWa's and ZZZ's descriptions as what is left of that Later item.
+- Tests: written first: every Star Rail character's skills have a short description without colour tags (Silver Wolf's skill applies additional Weakness). `npm run check` passes: 589 tests and 69 journeys.
+- Scope/decisions: the short text, not the full one: the full text's numbers change with the skill's level, which the sheet would have to pick.
+- Next: Georges's secrets, data and the NTE decision; WuWa's and ZZZ's descriptions need their level numbers filled in.
+
 ## 2026-10-11 · claude · stack/r6/01-talents · #238
 - Done: Georges's "for later, add game data such as talent / skill descriptions", for Genshin first. The importer now fills each combat talent's description from genshin-db (`talents.info[].description`, already in the catalog schema); the regenerated catalog changes only those. On the sheet, a talent's name opens what it does, across the card under its row; a talent without a text (the Traveler's, which change with the element) keeps its plain name.
 - Tests: written first: every Genshin character with three combat talents has their descriptions (Barbara's skill names its Melody Loop); the sheet journey opens Barbara's skill and finds it. `npm run check` passes: 588 tests and 69 journeys.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the Characters journey checks that a 13th card shows with no Show more or Compact, that Kafka shows Nihility and an element colour, that her card opens her build, that Wishlist filters and unpresses, and that unowned Welt's card opens his page, where Own then Start a build opens the new build. The Compact steps went with the view. `npm run check` passes: 559 tests and 40 journeys.
 - Scope/decisions: element colours are one palette across games, light enough for dark text. The Owned and Build status selects gave way to the count buttons.
 - Next: the Builds view and several characters at once, then teams.
-
-## 2026-10-10 · claude · stack/ui/02-home-pulls · #199
-- Done: Home's Pulls card shows each game's pulls as a number and its icon, as Georges asked: limited (the total counts only these), permanent (standard tickets), and special, a banner's own tickets, where the game has them. A currency's `onlyFor` names the banner it alone funds; it replaces `weaponOnly`. WuWa's Forging Tide (weapon) and ZZZ's Boopons (Bangboo) are tracked. Endfield's Arsenal and the Bangboo channel spend only their own tickets (`fund: "own"`); WuWa's weapon banner adds Forging Tide to the limited pulls.
-- Tests: written first: `pullsFor` keeps special tickets apart by banner; the games declare Forging Tide and Boopons; the Home journey checks the limited icon and five Boopons as ZZZ's special pulls. `npm run check` passes: 559 tests and 40 journeys.
-- Scope/decisions: three pull types for every game, as Georges suggested; the icons are glyphs (sparkle, ring, diamond), not game art.
-- Next: the Characters page.
