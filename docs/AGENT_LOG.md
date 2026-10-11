@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r7/07-gear-bag · #250
+- Done: every game has a gear bag (round 4's gear screens, first half). The bag ↔ build swap (add, edit, equip, unequip) was Genshin's alone; its doc field and slots now come from each game's manifest, so a set's pieces live on a build or in the bag the same way in every game.
+- Tests: written first: Star Rail's bag refuses Genshin's "flower", keeps a Musketeer head and equips it onto Seele's relics; WuWa's echoes and ZZZ's discs go in theirs. `npm run check` passes: 596 tests and 70 journeys.
+- Scope/decisions: server only; the next PR draws one gear screen for every game on it.
+- Next: the gear screen.
+
 ## 2026-10-11 · claude · stack/r7/06-art-sources · #249
 - Done: icons where materials and sets showed initials (Georges, round 4: his screenshot's "SG UD OO AR" were Genshin's Far-North Scions materials, missing on Enka). Genshin's materials now come from Yatta (529 of 536 icons, to Enka's 410). WuWa's materials and Sonata sets get a source at last (its game files on wuthery), their keys keeping the folder ("IconMout/T_IconMout_L_014_UI"); each Sonata set takes its own icon from `PhantomFetterGroup` (every `PhantomFetter` row carried the same placeholder). The guide's "decided against" line for WuWa art goes.
 - Tests: written first: Genshin's material URL is Yatta's; WuWa's material and Sonata URLs keep the folder; every WuWa material and set has such a key, each set its own icon. A follow-up test commit: Wrath of the Deep has no group row yet, so it keeps its fetter's icon. `npm run check` passes: 594 tests and 70 journeys.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the sheet journey types "Patience", finds the option with its icon in a list within 12 px under the field, picks it, and picks a relic set; Teams and the goal maker pick by typing and clicking. The Tasks journey now resets Herta first (other journeys own her), and the default-build journey uses Pela, whom no other journey touches. `npm run check` passes: 564 tests and 49 journeys.
 - Scope/decisions: main stats stay a short native select (a handful of values, no icons).
 - Next: pulls (correcting a logged 5★, banner history).
-
-## 2026-10-11 · claude · stack/r3/04-weapons · #210
-- Done: Georges: "I need a weapons screen to add all of my weapons, with their level, refinement…". A Weapons tab (after Teams, for games whose catalog lists weapons; not Endfield) lists every weapon, owned first: icon, rarity and type; Owned; level, refinement (the game's word: Superimposition, Phase, Syntonize…) and copies typed in place; who wields it; Farm and Wishlist. Level and refinement live on the ownership row's `meta`, checked by `weaponMetaSchema` (level 1–100, refinement 1–10, nothing else). Characters keeps Characters | Builds; the filter chips moved to the shared UI module.
-- Tests: written first: the route keeps Amos' Bow at level 80, refinement 3 and two copies, and refuses level 999, refinement 0 and unknown keys; the Weapons journey owns a light cone, sets its level and superimposition (checked through the API and after a reload), sees Kafka · S2, wishlists and opens Farm. The old Characters Weapons test moved here. `npm run check` passes: 564 tests and 49 journeys.
-- Scope/decisions: two quick edits on a row keep each other (a draft per row while the save is in flight).
-- Next: the picker (a searchable list with icons).
