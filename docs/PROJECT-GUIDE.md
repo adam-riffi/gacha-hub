@@ -255,10 +255,13 @@ flowchart TB
   H --- C["Banners and events<br/>/timeline"]
   H --- S["Settings<br/>/settings"]
   H --- AD["Admin<br/>/admin (admins only)"]
-  G --> A["Game hub · Activities<br/>/games/:id"]
+  G --> A["Game hub · Overview<br/>/games/:id"]
+  A --- AC["Activities<br/>/games/:id/activities"]
   A --- EG["Endgame<br/>/games/:id/endgame"]
   A --- PU["Pulls<br/>/games/:id/pulls"]
   A --- CH["Characters<br/>/games/:id/characters"]
+  A --- TE["Teams<br/>/games/:id/teams"]
+  A --- WE["Weapons<br/>/games/:id/weapons"]
   A --- GR["Artifacts / Relics / Drive discs / Echoes<br/>/games/:id/gear"]
   A --- PL["Planner<br/>/games/:id/planner"]
   A --- PR["Profile<br/>/games/:id/profile"]
@@ -271,7 +274,7 @@ The game hub's tabs depend on the game (§9):
 - Pulls needs pull rules.
 - Gear and Planner need a catalog with gear and costs, so Endfield and NTE have neither.
 
-The old routes `/games/:id/overview` and `/games/:id/equipment` redirect to Profile and Characters. `/games/:id/ownership` and `/games/:id/materials` still answer but are no longer tabs.
+The old routes `/games/:id/overview` and `/games/:id/equipment` redirect to the Overview and Characters. `/games/:id/ownership` and `/games/:id/materials` still answer but are no longer tabs.
 
 ## 8. Screen by screen
 
@@ -340,11 +343,21 @@ The side panel explains the capabilities and lists games to add.
 
 Genshin, Star Rail and ZZZ rows come from the hourly official feed; the others come from admin uploads.
 
-### 8.6 Game hub · Activities
+### 8.6 Game hub · Overview and Activities
+
+![Overview](screens/06-overview.jpg)
+
+**Overview** (G0) is where a game opens: its whole state on one page, each card linking to its tab.
+- **Pulls:** what the currencies and tickets make, then the pity of each banner (50/50 or guaranteed; Endfield's featured guarantee toward its 120-pull spark).
+- **Banners:** the running and the next phase, ◀ ▶ through the version's phases.
+- **Today and the weekly card:** each default task ticked in place, a box per step for counted ones (four commissions, three weekly bosses) and a number past eight (36 Nightmare Nests); + adds a default the profile lacks.
+- **Stamina:** now / cap, when full, and its reserve.
+- **Builds in progress, endgame (progress and next reset), goals (a ring) and the backlog** (open tasks over ten days).
+- **The game's own card,** declared in its manifest: NTE's City, Endfield's AIC and outposts.
 
 ![Activities](screens/06-activities.jpg)
 
-**For:** a game's day (G1). The hub's header, on every tab, shows:
+**Activities** is a game's day (G1). The hub's header, on every tab, shows:
 - server and UID (masked);
 - account and world level;
 - daily and weekly resets;
@@ -396,6 +409,10 @@ Imports come from Settings.
   - build status, and Build → to the sheet.
 - **Own** and **Wishlist** sit on unowned cards. The wishlist feeds the calendar filter and the savings planner.
 
+![Weapons](screens/09-weapons.jpg)
+
+**Weapons** (G4c), on every game: a card per copy, so two copies of a weapon are two cards, each with its level, refinement and holder; catalog weapons not owned are dimmed. A card opens its panel: each copy's level and refinement, Add a copy, Wishlist and Farm. Games without a weapon catalog add weapons by name.
+
 ### 8.10 Character sheet
 
 ![Character sheet](screens/10-character-sheet.jpg)
@@ -407,7 +424,7 @@ Imports come from Settings.
   - the Role picker;
   - "Make these the game's defaults".
 - **Character:** level, ascension, dupes.
-- **Talents,** with their names, now → target.
+- **Talents,** with their names, now → target; a name opens its description (Genshin, Star Rail, WuWa and ZZZ).
 - **Weapon,** picked from the catalog by type.
 - **Combat stats.**
 - **The gear block** in the game's shape:
@@ -591,22 +608,9 @@ The workflow is the portfolio standard (`docs/ENGINEERING.md`, synced from portf
 
 ## 13. Work state
 
-As of 2026-10-08, `main` at `36edfc0` (docs(agents): read and rewrite HANDOFF.md every session, #83), deployed, smoke green.
+`HANDOFF.md` holds the current state: `main`'s commit, the open PRs, what production serves, and what comes next. This chapter keeps only the history.
 
-**Merged history, by milestone:** phases 1–9 (#1–#9: foundation, catalogs, ownership, planning, banners/admin, integration tests, deploy runbook); product iterations #14–#39 (tasks board, builds, teams, artifacts sets/inventory/planner, reminders at chosen times, Home rebuild, design pass, sleep); process P (#42–#44); F1 feed + calendar (#40, #49); F2–F4 (domains core, farm-today DM, HSR feed); F5 pull log (#60, #62); P2 smoke (#66); F6 export (#67); F7 calendar history (#68); hardening and upgrades (#63–#77: art fix, Dependabot groups, Fastify plugins, harness DB, node-cron 4, Vitest 5, Vite 8, React 19, React Router 7, CSP, zod 4); #80 PR memes; #81–#83 standards sync and the handoff procedure.
-
-**Open PRs** (both draft, CI green, waiting for the owner):
-
-| PR | Branch | What |
-| --- | --- | --- |
-| #78 | `stack/perf/01-budget` | CI fails when initial JS passes 200 KB gzipped |
-| #79 | `stack/ops/03-prisma7-prep` (on #78) | Prisma-7-ready scripts (absolute SQLite URLs, no `--accept-data-loss`), Prisma 7 spike recorded in ADR 0003 |
-
-**Branches with unmerged work:**
-
-- `stack/a11y/01-axe` (on #79): `49c113c` an axe E2E test (no serious violations on the main pages), `b2066a6` WIP accessible names (a `FieldLabel` context with `aria-labelledby` in `components/inputs.tsx`). Not a PR yet; the test still fails (§14.2).
-- `spike/prisma7`: the Prisma 7 experiment. Never merge; ADR 0003 holds the findings.
-- Many old `feat/*`, `fix/*`, `ui/*` remote branches belong to merged PRs and can be deleted.
+**Merged history, by milestone:** phases 1–9 (#1–#9: foundation, catalogs, ownership, planning, banners/admin, integration tests, deploy runbook); product iterations #14–#39 (tasks board, builds, teams, artifacts sets/inventory/planner, reminders at chosen times, Home rebuild, design pass, sleep); process P (#42–#44); F1 feed + calendar (#40, #49); F2–F4 (domains core, farm-today DM, HSR feed); F5 pull log (#60, #62); P2 smoke (#66); F6 export (#67); F7 calendar history (#68); hardening and upgrades (#63–#77); #80 PR memes; #81–#83 standards sync and the handoff procedure; V through F12 and the redesign (#84–#186, deployed with #186); Georges's first two feedback rounds (#187–#218); the third round and the designs' details (#219–#237: icons over names, Weapons cards on every game, the per-game Overview, endgame enemies, counted dailies); talent and skill descriptions for Genshin, Star Rail, WuWa and ZZZ (#238–#241); WuWa's Nightmare Nests (#242).
 
 ## 14. To do
 
@@ -684,9 +688,12 @@ Every milestone in DESIGN.md §9 is built, V through F12. What is left waits on 
 - talent names (#184);
 - Genshin talents from Enka (#185);
 - Stygian Onslaught (#186);
-- default KPI targets (#187).
+- default KPI targets (#187);
+- Georges's feedback rounds (#187–#237), including the per-game Overview with each game's own resources;
+- endgame enemies for Shiyu Defense, Deadly Assault and Stygian Onslaught (#230, #232);
+- talent and skill descriptions (#238–#241).
 
-**Later (DESIGN.md §4):** a per-game overview that shows each game's own resources (NTE's Fons, not Genshin's resin), public showcase pages, PWA, and i18n through the datasets' text maps.
+**Later (DESIGN.md §4):** public showcase pages, PWA, and i18n through the datasets' text maps.
 
 **Long-term progress** (Georges, 2026-10-10): chests, waypoints, exploration and events are not synced. They are goals typed by hand, one type ("gameplay" on Home), listed and added on Profile.
 
