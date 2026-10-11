@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r4/12-handoff · #231
+- Done: the end of Georges's third round. HANDOFF.md rewritten (`main` at #230, #219–#230, this round's decisions, the five migrations the next deploy runs, the endgame-enemies gap, new notes on tests and rebases).
+- Tests: docs only. `npm run check` on the tree below (#230): 578 tests and 64 journeys.
+- Scope/decisions: none new; the round's decisions are in HANDOFF.md.
+- Next: Georges's secrets and real data; a deploy when he asks; a dated source for Stygian Onslaught and Apocalyptic Shadow enemies.
+
 ## 2026-10-11 · claude · stack/r4/11-enemies · #230
 - Done: Georges's "for the endgame there should be information about what enemies are on what level, when relevant, like Stygian or Shiyu Defense, but not Imaginarium Theater or Abyss". A new importer (`npm run catalog:endgame`, Hakushin's dataset) writes Zenless Zone Zero's dated Shiyu Defense cycles (each frontier's level and each half's enemies) and Deadly Assault cycles (three bosses) to `packages/shared/src/games/zzz/endgame.json`, loaded lazily (`loadEndgame`). The Endgame tab's mode cards list each stage with its level, each half's enemies as icons, and their weaknesses as element dots; a cycle the data has not reached shows the last one with its dates.
 - Tests: written first: `enemiesFor` picks the cycle running on the server's day, else the last one that began (not current), else none; the shipped data has both modes' cycles, each stage with enemies; the Endgame journey finds the enemies list on Shiyu Defense and Deadly Assault and on no other mode. `npm run check` passes: 578 tests and 64 journeys.
@@ -259,9 +265,3 @@ Entry format:
 - Tests: written first: the Activities journey names the Signal Shop; the odds test pins Endfield's 5.8% on the 66th pull and 10.8% on the 67th. The manifest-to-sheet test passes. `npm run check` passes: 532 tests and 40 journeys.
 - Scope/decisions: values no wiki states keep their `~` (community soft pity, unfinished versions' lengths, some rewards).
 - Next: nothing agent-side; re-check the `~` values each version.
-
-## 2026-10-10 · claude · stack/profile/01-progress · #191
-- Done: Profile's "Long-term progress" (WIREFRAMES.md G8) shows the HoYoLAB record card's stats: days active, characters, achievements, endgame, as genshin.py's `RecordCardData` names them. `readRecordCards` returns each game's `stats`. Linking stores them on the profile, and Sync now (or the cron's 6-hourly chronicle pass) refreshes them. They live in the new column `GameInstance.progress` (migration `20261011100000_progress`) and come with the instance. Profile's texts no longer promise "(F11)". Games HoYoLAB doesn't cover say why the card stays empty.
-- Tests: written first: the reader's stats, and the link storing them on the profile. `npm run check` passes: 532 tests and 40 journeys.
-- Scope/decisions: chests, waypoints and exploration per region would need the chronicle's index endpoint; the card's stats are what HoYoLAB shows on the card. The export leaves the column out: it is synced, not entered.
-- Next: the sheets' unverified values.
