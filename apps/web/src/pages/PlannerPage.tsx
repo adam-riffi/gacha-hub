@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { farmableToday, gameWeekday, getGame, type MaterialStockDto, type TaskOrigin } from "@gacha/shared";
@@ -8,9 +8,10 @@ import { useCatalog } from "../lib/catalog";
 import { useToast } from "../lib/toast";
 import { GameTabs } from "../components/GameTabs";
 import { Segmented } from "../components/ui";
+import { CatalogIcon } from "../components/CatalogIcon";
 import type { InstanceDetail, TaskItem } from "../lib/types";
 
-const DAYS = ["M", "T", "W", "T", "F", "S", "S"];
+const DAY = ["", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const WEEKDAY = ["", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 const NUM = new Intl.NumberFormat("en-GB");
 type Range = { from: number; to: number };
@@ -65,7 +66,7 @@ export function PlannerPage() {
   }
   const rows = [...needs].map(([materialId, need]) => {
     const m = index?.materials.get(materialId);
-    return { materialId, name: m?.name ?? materialId, source: m?.source ?? "", availability: m?.availability ?? [], need, have: have.get(materialId) ?? 0 };
+    return { materialId, name: m?.name ?? materialId, icon: m?.icon, source: m?.source ?? "", availability: m?.availability ?? [], need, have: have.get(materialId) ?? 0 };
   });
   const open = rows.filter((r) => r.have < r.need).sort((a, b) => b.need - b.have - (a.need - a.have));
   const done = rows.filter((r) => r.have >= r.need);
@@ -93,11 +94,16 @@ export function PlannerPage() {
           {goals.length === 0 && <p className="mu">No farming goal yet: plan one from a character's sheet.</p>}
           {goals.map((g) => {
             const kids = kidsOf(g);
+            const cid = (g.origin as TaskOrigin | null)?.catalogId;
+            const unit = cid ? (index?.characters.get(cid) ?? index?.weapons.get(cid)) : undefined;
             const got = kids.filter((k) => (have.get(k.materialId!) ?? 0) >= (k.target ?? 0)).length;
             return (
               <button key={g.id} type="button" className={`pn-goal ${g.id === current?.id ? "is-on" : ""}`} aria-pressed={g.id === current?.id} onClick={() => setPicked(g.id)}>
                 <span className="spread">
-                  <strong>{g.title}</strong>
+                  <span className="pn-goal-name">
+                    {unit && <CatalogIcon gameKey={game.key} kind={index?.characters.has(cid!) ? "character" : "weapon"} icon={unit.icon} name={unit.name} tag={"tag" in unit ? unit.tag : undefined} />}
+                    <strong>{g.title}</strong>
+                  </span>
                   <span className="badge">{g.backlog ? "backlog" : g.priority}</span>
                 </span>
                 <span className="mn mu">{planned(g.origin)}</span>
@@ -126,12 +132,23 @@ export function PlannerPage() {
                 <tbody>
                   {[...open, ...done].map((r) => (
                     <tr key={r.materialId}>
-                      <td>{r.name}</td>
+                      <td>
+                        <span className="pn-mat">
+                          <CatalogIcon gameKey={game.key} kind="material" icon={r.icon} name={r.name} />
+                          {r.name}
+                        </span>
+                      </td>
                       <td className="mu">{r.source}</td>
                       <td>
                         {r.availability.length ? (
-                          <span className="pn-days" role="img" aria-label={`Open ${r.availability.map((d) => WEEKDAY[d]).join(", ")}`}>
-                            {DAYS.map((d, i) => <i key={i} className={`${r.availability.includes(i + 1) ? "on" : ""} ${i + 1 === weekday ? "today" : ""}`}>{d}</i>)}
+                          // The open days written out (Georges, 2026-10-11): "Wed Sat"; Sunday opens every domain, so it is left out beside others.
+                          <span className="pn-days" data-testid="days">
+                            {(r.availability.length > 1 ? r.availability.filter((d) => d !== 7) : r.availability).map((d, i) => (
+                              <Fragment key={d}>
+                                {i > 0 && " "}
+                                <span className={d === weekday ? "today" : ""}>{DAY[d]}</span>
+                              </Fragment>
+                            ))}
                           </span>
                         ) : (
                           <span className="mu">any day</span>
