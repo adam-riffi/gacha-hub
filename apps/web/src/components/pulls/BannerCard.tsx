@@ -138,7 +138,7 @@ export function BannerCard(props: {
           <tr><td>Next 10 pulls</td><td className="num">{pct(within(10))}</td></tr>
           {soft && <tr><td>By {b.softPity}</td><td className="num">{pct(within(b.softPity! - s.pity))}</td></tr>}
           <tr><td>With {available}</td><td className="num">{pct(featuredWithin(b, state, available))}</td></tr>
-          {extra > 0 && <tr><td>Top-up {available + extra}</td><td className="num">{pct(featuredWithin(b, state, available + extra))}</td></tr>}
+          {extra > 0 && <tr><td>+{extra}</td><td className="num">{pct(featuredWithin(b, state, available + extra))}</td></tr>}
         </tbody>
       </table>
 
@@ -148,7 +148,7 @@ export function BannerCard(props: {
         <span className="kpi-value">{pct(worst!.chance)}</span>
         <span>
           with {available}
-          {extra > 0 && <strong> · {pct(featuredWithin(b, state, available + extra))} top-up</strong>}
+          {extra > 0 && <strong> · +{extra} {pct(featuredWithin(b, state, available + extra))}</strong>}
           <span className="mn mu"> · avg {average!.needs} · max {Number.isFinite(worst!.needs) ? worst!.needs : "—"}</span>
         </span>
       </div>

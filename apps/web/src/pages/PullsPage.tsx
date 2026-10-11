@@ -219,17 +219,17 @@ export function PullsPage() {
           </table>
           {sim && (
             <div className="pl-sim">
-              <span className="kpi-label">Top-up</span>
+              <span className="kpi-value pl-plus" aria-hidden="true">+</span>
               <input
                 type="number"
                 min={0}
                 max={10_000_000}
-                aria-label="Top-up amount"
+                aria-label="Amount to add"
                 placeholder="0"
                 value={topUp.amount || ""}
                 onChange={(e) => setTopUp({ key: sim.key, amount: Math.max(0, Math.min(10_000_000, Number(e.target.value) || 0)) })}
               />
-              <select aria-label="Top-up currency" value={sim.key} onChange={(e) => setTopUp({ ...topUp, key: e.target.value })}>
+              <select aria-label="Currency to add" value={sim.key} onChange={(e) => setTopUp({ ...topUp, key: e.target.value })}>
                 {pullCurrencies.map((c) => (
                   <option key={c.key} value={c.key}>{c.label}</option>
                 ))}

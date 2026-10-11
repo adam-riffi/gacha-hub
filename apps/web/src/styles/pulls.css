@@ -31,6 +31,7 @@
 .pl-form select { width: auto; }
 .pl-sim { display: grid; grid-template-columns: auto 120px minmax(0, 1fr) auto; align-items: center; gap: 10px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--surface-3); }
 .pl-sim select { width: auto; }
+.pl-sim .pl-plus { font-size: 40px; line-height: 1; color: var(--accent); }
 .pl-figure { margin: 6px 0 12px; }
 .pl-mark line { stroke-width: 1.5; }
 .pl-mark circle { stroke-width: 2; }
