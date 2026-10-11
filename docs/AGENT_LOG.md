@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-12 · claude · stack/r8/04-character-cards · #259
+- Done: Characters' cards (Georges, round 5): in Select, a picked card lights up whole in its element's colour (border, glow, tint over the art), the checkbox unseen but still focusable (the card outlines on keyboard focus); the default build's weapon sits on the right of the name card, its level top-left and refinement bottom-right on the icon.
+- Tests: written first: Kafka's weapon icon is right of her name, the level badge at its top-left corner and the refinement at its bottom-right; a picked card has `is-picked` and its box has no opacity.
+- Scope/decisions: none.
+- Next: the stats each card shows, picked per game, and set bonuses on top.
+
 ## 2026-10-12 · claude · stack/r8/03-pulls-odds · #258
 - Done: the Pulls tab's By the end of the version is filled (Georges, round 5: "a large amount of nothing … fill it up by data like X% chance to get X limited (use icons)"): under the forecast, each target of the savings planner (the running banners' featured units, then the wishlist) by its icon, with its chance alone now and by the version's end as two bars and percentages. A target's unit rides along (`PlannerTarget.unit`); a banner without a featured unit on record shows its initials.
 - Tests: written first: with Seele wishlisted on Star Rail, her row in the card has her icon and a chance by the version's end at least her chance now; the first row is an icon too.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the visual journey checks that a game's placeholder on the Games page is a centred grid with a border. `npm run check` passes: 570 tests and 54 journeys.
 - Scope/decisions: #217's check found classes used only by the deleted files; this rule's class is used everywhere, so the block should have been split. Lesson kept in HANDOFF notes: when deleting a CSS section, check each rule, not only the section's name.
 - Next: the reminder's order and the planner's days.
-
-## 2026-10-11 · claude · stack/r4/01-plus · #219
-- Done: Georges's third round begins; its plan is `docs/AUDIT-2026-10-11-round3.md` (his list, and this round's audit of things that are not explicit: what the app can show, it shows as its icon). First item, "remove top-up and change it to a plus sign": the simulation field is a "+" before the amount and its currency, the curve's marker reads "+10", and the odds row and headline read "+10". No "Top-up" word is left on screen.
-- Tests: written first: the Pulls journey adds an amount through "Amount to add" and finds "+10 ·" in the legend and no "top-up" on the page; the copy journey keeps "Top-up" off every screen. `npm run check` passes: 570 tests and 53 journeys.
-- Scope/decisions: the field keeps an accessible name ("Amount to add") since the plus sign is decorative.
-- Next: a stable order for the reminder's tasks left, then the planner's days.
