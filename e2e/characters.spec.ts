@@ -29,11 +29,16 @@ test("Characters: splash cards with their KPIs, counts, search, wishlist and own
   await expect(page.getByRole("article")).toHaveCount(1);
   // The card shows the weapon type (Star Rail's path) and tints to the element.
   await expect(kafka).toContainText("Nihility");
-  // Its default build's weapon on the left of the coloured name card, its level and refinement on the icon (Georges, round 4).
+  // Its default build's weapon on the coloured name card, its level and refinement on the icon (Georges, round 4),
+  // on the right of the name, the level top-left and the refinement bottom-right (round 5).
   const weapon = kafka.locator(".ch-namebox .ch-weapon");
   await expect(weapon.getByRole("img", { name: "Patience Is All You Need" })).toBeVisible();
   await expect(weapon.locator(".ch-weapon-lv")).toHaveText("80");
   await expect(weapon.locator(".ch-weapon-r")).toHaveText("S2");
+  const [w, name, lv, r] = await Promise.all([weapon, kafka.getByRole("heading", { name: "Kafka" }), weapon.locator(".ch-weapon-lv"), weapon.locator(".ch-weapon-r")].map(async (l) => (await l.boundingBox())!));
+  expect(w.x).toBeGreaterThan(name.x);
+  expect(Math.abs(lv.x - w.x) + Math.abs(lv.y - w.y)).toBeLessThan(2);
+  expect(Math.abs(r.x + r.width - (w.x + w.width)) + Math.abs(r.y + r.height - (w.y + w.height))).toBeLessThan(2);
   await expect(kafka.locator(".ch-foot .ch-weapon")).toHaveCount(0);
   // The name card's line leaves the refinement to the icon.
   await expect(kafka.locator(".ch-namebox-line")).not.toContainText("S2");
@@ -106,8 +111,11 @@ test("Characters: every build in one table, and several characters at once @smok
   await page.getByRole("group", { name: "Show" }).getByRole("button", { name: "Characters" }).click();
   await page.getByRole("button", { name: "Select", exact: true }).click();
   // A click anywhere on the card selects it; it no longer opens the character.
+  // The whole card lights up, not a small box (Georges, round 5).
   await page.getByRole("article", { name: "Arlan" }).click();
   await expect(page.getByRole("checkbox", { name: "Select Arlan" })).toBeChecked();
+  await expect(page.getByRole("article", { name: "Arlan" })).toHaveClass(/is-picked/);
+  await expect(page.getByRole("checkbox", { name: "Select Arlan" })).toHaveCSS("opacity", "0");
   await expect(page).toHaveURL(new RegExp(`/games/${id}/characters$`));
   await page.getByRole("checkbox", { name: "Select Herta" }).check();
   const selection = page.getByRole("region", { name: "Selection" });
