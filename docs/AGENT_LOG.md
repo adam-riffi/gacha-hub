@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r4/10-own-card · #229
+- Done: the last cards of Georges's designs: each game's own card on its Overview, declared in its manifest (`ownCard`). NTE's **City**: Tycoon Level, Café income (a daily box), Fons, and City Stamina over its cap, which follows the Tycoon Level (100 / 200 / 350 / 500 / 700 at 1 / 5 / 10 / 16 / 23). Endfield's **AIC and outposts**: AIC output collected, AIC lines running, Depot delivery, Outpost trades, Stock Bills. Currencies are typed in place, dailies are boxes, and a daily a profile lacks is added with +.
+- Tests: written first: the conformance suite refuses a card item that is not a currency or a default task of the game, or that the reference sheet does not name; the Overview journey sets Tycoon Level 23 and finds City Stamina's cap at 700, adds Café income from the card, and finds Endfield's Stock Bills. `npm run check` passes: 575 tests and 63 journeys.
+- Scope/decisions: new currencies (NTE: Tycoon Level, City Stamina; Endfield: AIC lines running, Stock Bills) and dailies (NTE: Café income; Endfield: AIC output collected, Depot delivery, Outpost trades), sourced in `docs/games/*.md` (NTE's research notes; for Endfield the wiki and community guides, with no caps since none is sourced).
+- Next: endgame enemies.
+
 ## 2026-10-11 · claude · stack/r4/09-overview-rows · #228
 - Done: the Overview's last rows. Builds in progress (status Building or Good): icon and name, level, skill levels ("9·9·6"), weapon level, a square per gear slot filled. Endgame · cycle: each mode's result over its best ("36/36★") and the days until it resets. Goals: the game's active goals with their progress and their average as a ring. Backlog: the goals still open, and a line of how many were open each of the last ten days.
 - Tests: written first: a Seele build in progress shows level 70 and weapon level 60; a Memory of Chaos typed on the Endgame tab shows 30/36 on the Overview; a goal at 4 of 10 shows 40% with the ring's average; Backlog shows its count. `npm run check` passes: 574 tests and 62 journeys.
@@ -259,9 +265,3 @@ Entry format:
 - Tests: docs only; every image the guide names exists.
 - Scope/decisions: two stale texts on Profile ("(F11)") are fixed in their own PR.
 - Next: Profile's stale texts, then the sheets' unverified values.
-
-## 2026-10-10 · claude · stack/vercel/01-function-trace · #105
-- Done: #105 rebased onto `main` (its four code commits replayed; the old log and handoff commit dropped). The Vercel function ships only `api/`, `dist-server/` and `node_modules/`, not the whole repository. `uploads.ts` no longer gives the tracer a path to expand, and `excludeFiles` now leaves out `prisma/**`, any `.env*` and `.claude/**`: the config's `.env` lookup and the `prisma/` walk would otherwise pick up a local secrets file and old worktrees.
-- Tests: `serverless.trace.test.ts`, written first in #105, traces `api/index.mjs` with `@vercel/nft` as Vercel does. It failed on the rebased base with `.env` and a worktree's schema, and passes with the wider exclude. `npm run check` passes: 531 tests and 40 journeys.
-- Scope/decisions: previews are off (#189), so the check on Vercel comes with the next deploy Georges orders: the smoke check and the function's file count.
-- Next: the guide's screen chapter, then the sheets' unverified values.
