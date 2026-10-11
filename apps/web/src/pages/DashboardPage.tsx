@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { lazy, useMemo } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { LoadError } from "../components/LoadError";
@@ -13,8 +13,10 @@ import { PassCard } from "../components/home/PassCard";
 import { PullsCard } from "../components/home/PullsCard";
 import { StaminaCard } from "../components/home/StaminaCard";
 import { EndgameNextCard, ExpiringSoonCard, homeGames } from "../components/home/HomeLists";
-import { GameDashboard } from "../components/home/GameDashboard";
 import type { DashboardData, InstanceListItem, TaskItem } from "../lib/types";
+
+// A game's dashboard loads when a game is picked: Home's first paint stays as light as it was.
+const GameDashboard = lazy(() => import("../components/home/GameDashboard").then((m) => ({ default: m.GameDashboard })));
 
 /**
  * Home is the dashboard (VISUAL-DESIGN.md §10): the gauges and charts, the
