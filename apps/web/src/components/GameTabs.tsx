@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { getGame } from "@gacha/shared";
 import { HubHeader } from "./hub/HubHeader";
 
-type Screen = "overview" | "activities" | "endgame" | "ownership" | "characters" | "teams" | "weapons" | "gear" | "materials" | "planner" | "pulls" | "profile";
+type Screen = "activities" | "endgame" | "ownership" | "characters" | "teams" | "weapons" | "gear" | "materials" | "planner" | "pulls" | "profile";
 
 /** What each game calls its gear sets. */
 const GEAR_LABEL: Record<string, string> = {
@@ -28,9 +28,8 @@ export function GameTabs({
   hasCatalog?: boolean;
 }) {
   const tabs: { key: Screen; label: string; to: string }[] = [
-    // Each game's own Overview is the hub's landing screen (Georges's designs, 2026-10-11).
-    { key: "overview", label: "Overview", to: `/games/${instanceId}` },
-    { key: "activities", label: "Activities", to: `/games/${instanceId}/activities` },
+    // Activities opens the hub; each game's dashboard is Home with the game picked (Georges, round 4).
+    { key: "activities", label: "Activities", to: `/games/${instanceId}` },
     { key: "endgame", label: "Endgame", to: `/games/${instanceId}/endgame` },
     // The board's order (WIREFRAMES.md Game hub): Pulls, then Characters (which replaces Ownership).
     ...(gameKey && getGame(gameKey)?.pullBanners?.length ? [{ key: "pulls" as const, label: "Pulls", to: `/games/${instanceId}/pulls` }] : []),

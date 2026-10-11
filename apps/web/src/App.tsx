@@ -7,7 +7,6 @@ import { DashboardPage } from "./pages/DashboardPage";
 // Every screen but Home loads on first visit, so the shell stays inside the JavaScript budget (DESIGN.md §13).
 const page = <K extends string>(load: () => Promise<Record<K, ComponentType>>, name: K) => lazy(() => load().then((m) => ({ default: m[name] })));
 const LibraryPage = page(() => import("./pages/LibraryPage"), "LibraryPage");
-const OverviewPage = page(() => import("./pages/OverviewPage"), "OverviewPage");
 const ActivitiesPage = page(() => import("./pages/ActivitiesPage"), "ActivitiesPage");
 const EndgamePage = page(() => import("./pages/EndgamePage"), "EndgamePage");
 const OwnershipPage = page(() => import("./pages/OwnershipPage"), "OwnershipPage");
@@ -42,8 +41,8 @@ export function App() {
       <Routes>
         <Route path="/" element={<DashboardPage />} />
         <Route path="/library" element={<LibraryPage />} />
-        <Route path="/games/:id" element={<OverviewPage />} />
-        <Route path="/games/:id/activities" element={<ActivitiesPage />} />
+        <Route path="/games/:id" element={<ActivitiesPage />} />
+        <Route path="/games/:id/activities" element={<Navigate to=".." relative="path" replace />} />
         <Route path="/games/:id/overview" element={<Navigate to=".." relative="path" replace />} />
         <Route path="/games/:id/endgame" element={<EndgamePage />} />
         <Route path="/games/:id/ownership" element={<OwnershipPage />} />

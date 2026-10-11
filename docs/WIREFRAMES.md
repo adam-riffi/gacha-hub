@@ -15,7 +15,7 @@
 Picture: [`00-screen-map.png`](design/wireframes/00-screen-map.png) · static page: [`00-screen-map.html`](design/wireframes/00-screen-map.html)
 
 - **Left rail (sections):** ALL (Home), GAMES (library and game hubs), TASKS, BANNERS (calendar), SETTINGS.
-- **Top strip (scope):** Overview or one game, in the user's order. Picking a game on ALL shows the same Home for that game only; on GAMES it opens the game hub.
+- **Top strip (scope):** Overview or one game, in the user's order. Picking a game on ALL shows that game's dashboard (G0); on GAMES it opens the game hub.
 
 ## A1 · Home (ALL)
 
@@ -86,7 +86,7 @@ Picture: [`g1-activities.png`](design/wireframes/g1-activities.png) · static pa
 
 ### G0 · Overview
 
-Designs: [`docs/design/overview/`](design/overview/) (Georges, 2026-10-11: one per game). The hub's landing screen and first tab; Activities follows. What this one game needs at a glance and nothing else, three cards to a row, each opening its screen:
+Designs: [`docs/design/overview/`](design/overview/) (Georges, 2026-10-11: one per game). Home with the game picked in the top strip (Georges, round 4: the hub opens on Activities again), drawn in Home's style. What this one game needs at a glance and nothing else, three cards to a row, each opening its screen:
 
 - **Pulls:** limited pulls on hand, then what makes them (each ticket, and "From" the premium currency). **Pity:** each banner type's count over its hard pity, "guaranteed" or "50/50" where a banner has a featured unit; under a banner with a spark (Endfield: 120 pulls on one banner give its featured unit), "Featured guarantee" with the running banner's pulls toward it. **Banners:** the current phase's featured units with "ends in", the next with "starts in"; ◀ ▶ step through the phases.
 - **Today:** the game's dailies, each a box ticked in place; a counted one has a box per step ("Daily Commissions ▮▮▮▯", four a day), ticked up to the one clicked, counting only within its cycle (over eight steps, a number to type). Each game's own dailies and weeklies come from its design (Genshin's Commission reward, Spend Resin, Check-in; ZZZ's Coffee and Video store…); one a profile lacks (made before it joined) shows with + to add it. **The pass and weekly** (its name, "Gnostic Hymn and weekly"): its level over its cap, this week's EXP over its cap, the weeklies as boxes. **Stamina:** projected to now over its cap, "Full in" (or "Full · now"), its reserve (Condensed Resin, Reserved Trailblaze Power…).

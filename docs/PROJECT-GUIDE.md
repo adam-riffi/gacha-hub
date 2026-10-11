@@ -255,8 +255,7 @@ flowchart TB
   H --- C["Banners and events<br/>/timeline"]
   H --- S["Settings<br/>/settings"]
   H --- AD["Admin<br/>/admin (admins only)"]
-  G --> A["Game hub · Overview<br/>/games/:id"]
-  A --- AC["Activities<br/>/games/:id/activities"]
+  G --> A["Game hub · Activities<br/>/games/:id"]
   A --- EG["Endgame<br/>/games/:id/endgame"]
   A --- PU["Pulls<br/>/games/:id/pulls"]
   A --- CH["Characters<br/>/games/:id/characters"]
@@ -274,7 +273,7 @@ The game hub's tabs depend on the game (§9):
 - Pulls needs pull rules.
 - Gear and Planner need a catalog with gear and costs, so Endfield and NTE have neither.
 
-The old routes `/games/:id/overview` and `/games/:id/equipment` redirect to the Overview and Characters. `/games/:id/ownership` and `/games/:id/materials` still answer but are no longer tabs.
+The old routes `/games/:id/overview` and `/games/:id/activities` redirect to Activities, `/games/:id/equipment` to Characters. `/games/:id/ownership` and `/games/:id/materials` still answer but are no longer tabs.
 
 ## 8. Screen by screen
 
@@ -290,7 +289,7 @@ The screenshots come from the local dev build (dev user, SQLite) on 2026-10-10, 
 
 ![Home](screens/02-home.jpg)
 
-**For:** "what should I do today, across my games?" (WIREFRAMES.md H1; VISUAL-DESIGN.md §10). Scope it to one game with the top strip. It holds:
+**For:** "what should I do today, across my games?" (WIREFRAMES.md H1; VISUAL-DESIGN.md §10). It holds:
 - **Daily and Weekly rings:** recurring items done this reset.
 - **Goals:** a ring.
 - **Goal types:** character, gear, weapons, gameplay.
@@ -304,6 +303,14 @@ The screenshots come from the local dev build (dev user, SQLite) on 2026-10-10, 
 - **Stamina:** "full at" times.
 - **Endgame · next resets.**
 - **Expiring soon.**
+
+**A game picked in the top strip** shows that game's dashboard instead (G0, from Georges's six designs), each card linking to its tab:
+- **Pulls:** what the currencies and tickets make, then the pity of each banner (50/50 or guaranteed; Endfield's featured guarantee toward its 120-pull spark).
+- **Banners:** Home's carousel, for this game.
+- **Today and the weekly card:** each default task ticked in place, a box per step for counted ones (four commissions, three weekly bosses) and a number past eight (36 Nightmare Nests); + adds a default the profile lacks.
+- **Stamina:** now / cap, when full, and its reserve.
+- **Builds in progress, endgame (progress and next reset), goals (a ring) and the backlog** (open tasks over ten days).
+- **The game's own card,** declared in its manifest: NTE's City, Endfield's AIC and outposts.
 
 Data: `GET /api/dashboard` and `GET /api/tasks`.
 
@@ -343,21 +350,11 @@ The side panel explains the capabilities and lists games to add.
 
 Genshin, Star Rail and ZZZ rows come from the hourly official feed; the others come from admin uploads.
 
-### 8.6 Game hub · Overview and Activities
-
-![Overview](screens/06-overview.jpg)
-
-**Overview** (G0) is where a game opens: its whole state on one page, each card linking to its tab.
-- **Pulls:** what the currencies and tickets make, then the pity of each banner (50/50 or guaranteed; Endfield's featured guarantee toward its 120-pull spark).
-- **Banners:** the running and the next phase, ◀ ▶ through the version's phases.
-- **Today and the weekly card:** each default task ticked in place, a box per step for counted ones (four commissions, three weekly bosses) and a number past eight (36 Nightmare Nests); + adds a default the profile lacks.
-- **Stamina:** now / cap, when full, and its reserve.
-- **Builds in progress, endgame (progress and next reset), goals (a ring) and the backlog** (open tasks over ten days).
-- **The game's own card,** declared in its manifest: NTE's City, Endfield's AIC and outposts.
+### 8.6 Game hub · Activities
 
 ![Activities](screens/06-activities.jpg)
 
-**Activities** is a game's day (G1). The hub's header, on every tab, shows:
+**For:** a game's day (G1), where the hub opens. The hub's header, on every tab, shows:
 - server and UID (masked);
 - account and world level;
 - daily and weekly resets;
