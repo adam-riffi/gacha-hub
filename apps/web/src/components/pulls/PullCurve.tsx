@@ -44,7 +44,7 @@ export function PullCurve({
   const markers = [
     { key: "you", at: state.pity, tag: "YOU", text: `Pity ${state.pity} · next ${pct(rate(state.pity))}` },
     ...(available > 0 ? [{ key: "all", at: state.pity + available, tag: "ALL", text: `${available} pulls · ${pct(chance(available))}` }] : []),
-    ...(extra > 0 ? [{ key: "top", at: state.pity + available + extra, tag: "TOP-UP", text: `Top-up ${available + extra} · ${pct(chance(available + extra))}` }] : []),
+    ...(extra > 0 ? [{ key: "top", at: state.pity + available + extra, tag: `+${extra}`, text: `+${extra} · ${pct(chance(available + extra))}` }] : []),
   ];
   // Each marker is a dot on the curve with its tag just above; a tag too close to the one before steps up a row.
   let lastX = -Infinity;

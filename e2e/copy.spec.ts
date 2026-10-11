@@ -33,6 +33,7 @@ const GONE = [
   "from Plan farming",
   "An asleep game",
   "never checks in",
+  "Top-up",
 ];
 
 test("the screens carry no report sentences and no source labels on your own records @smoke", async ({ page }) => {
