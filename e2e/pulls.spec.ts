@@ -156,3 +156,21 @@ test("Pulls: a logged 5★ is corrected from History, and Banner history shows y
   await expect(page).toHaveURL(new RegExp(`/games/${id}/units/1005$`));
   await page.request.delete("/api/admin/banners/hsr/e2e-history");
 });
+
+// By the end of the version, filled (Georges, round 5: "fill it up by data like X% chance to get X limited … use icons").
+test("Pulls: by the end of the version, each target by its icon with its chance now and by then @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  await page.request.put(`/api/instances/${id}/wishlist`, { data: { kind: "character", catalogId: "1102", wished: true } });
+
+  await page.goto(`/games/${id}/pulls`);
+  const end = page.getByRole("region", { name: /^By the end of/ });
+  const seele = end.getByRole("list", { name: "Chances" }).getByRole("listitem").filter({ hasText: "Seele" });
+  await expect(seele.getByRole("img", { name: "Seele" })).toBeVisible();
+  const [now, then] = (await seele.locator(".pl-odds-v .mn").allTextContents()).map((t) => Number(t.replace(/\D/g, "")));
+  expect(then).toBeGreaterThanOrEqual(now!);
+  // The running banners' featured units come first, each by its icon.
+  await expect(end.getByRole("list", { name: "Chances" }).getByRole("listitem").first().getByRole("img")).toBeVisible();
+});
