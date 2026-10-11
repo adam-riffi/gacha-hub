@@ -31,6 +31,12 @@ Zenless Zone Zero
            a non-commercial tool and removed on request (decided 2026-10-10).
   Content: © HoYoverse / COGNOSPHERE.
 
+Neverness to Everness
+  Source:  the Hakushin data (https://static.nanoka.cc, behind nte.hakush.in);
+           its live version only, fetched at import time and cached; credited
+           here and removed on request, as for Zenless Zone Zero (2026-10-11).
+  Content: © Perfect World / Hotta Studio.
+
 Artwork
   Genshin Impact art: Enka.Network (https://enka.network/ui/).
   Honkai: Star Rail art: Project Yatta (https://sr.yatta.moe/hsr/assets/).
@@ -39,6 +45,8 @@ Artwork
   Content: © Kuro Games.
   Zenless Zone Zero art: the Hakushin assets (https://static.nanoka.cc/assets/zzz/).
   Content: © HoYoverse / COGNOSPHERE.
+  Neverness to Everness art: the Hakushin assets (https://static.nanoka.cc/assets/nte/).
+  Content: © Perfect World / Hotta Studio.
   The app hotlinks these sources, or reads a copy mirrored into our own
   bucket (scripts/assets/mirror.ts, ADR 0006) for a non-commercial tool used
   by a few friends; art is removed on request.

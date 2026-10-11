@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r7/11-nte-catalog · #254
+- Done: NTE's catalog (Georges, round 4: "try to populate Endfield and NTE for data on them"), from Hakushin's dataset (`npm run catalog:nte`): 23 characters with their elements, ascension and four skills' costs and names (melee, skill, ultraskill, QTE as the doc's basic, skill, ultimate, support); 49 Arcs with their types and costs; the 53 materials they reference, Beetle Coins included (the data's "gold"); art from Hakushin's assets by the game's own paths. NTE gets Teams and the Planner; its consoles' modules are not sets, so no gear tab. A build's Arc keeps its catalog id. ADR 0005 is amended (the dataset is public; progress stays typed by hand); README, NOTICE, the guide and NTE's sheet follow. An empty filter chip set now shows nothing (NTE's characters have no weapon type).
+- Tests: written first: the catalog parses with real coverage; every cost references a material; Sakiri maps to an S-rank Incantation character to 80, her four skills to 10 under the doc's names; Eternal Waltz is a Condensate Arc; art URLs; a build keeps its Arc's id. Tests that used NTE as the game without a catalog: the planning one unsets NTE's catalog for its run; the art one and the weapons-by-name journey use Endfield; the NTE journey owns Sakiri and starts her build. `npm run check` passes: 602 tests and 71 journeys.
+- Scope/decisions: element colours are sampled from the game's own element icons (their most saturated tenth, lightened for dark text), as the element-colour test asks every catalog element to have one; skill descriptions are left for later; the last breakthrough (at the top level) is left out of the ascension, as ZZZ's last phase is.
+- Next: Endfield's weapons and gear sets.
+
 ## 2026-10-11 · claude · stack/r7/10-planner-tasks · #253
 - Done: the Planner's goals are the Tasks goal card (Georges, round 4: "the tasks features like linking should also be available on the game planner screen"): priority, notify, the plan's steps and Link to another goal, as on Tasks; a click still picks the goal whose materials show. In the Planner's column the card's title takes the full width, progress, priority and notify under it. WIREFRAMES.md G7 follows.
 - Tests: written first: a Star Rail goal on the Planner shows Notify and its priority, opens on a click to its plan (and picks its materials), and links under another goal, leaving the list. `npm run check` passes: 597 tests and 71 journeys.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the route keeps each stage's team and time, keeps them when a result is typed without them, and refuses an unknown stage, a unit outside the catalog, a team over the party size, and stages on a mode without any; the Endgame journeys find both reset times on a card and type two Spiral Abyss halves and finds them on the card and in History. `npm run check` passes: 570 tests and 53 journeys.
 - Scope/decisions: teams live in `CycleResult.teams` (already in the schema), so no migration. Timed modes are Spiral Abyss, Stygian Onslaught and Shiyu Defense, which rank by time; Imaginarium Theater, Whimpering Wastes, Echoes of War and Beyond the Rails list no stages until their structure is sourced.
 - Next: the games overview.
-
-## 2026-10-11 · claude · stack/r3/08-wishlist · #214
-- Done: Georges's "how do I even wishlist an event?". A selected event or banner on the timeline has a Wishlist toggle in its Selected panel, and "Only what I wishlisted" keeps the wished events and banners as well as the banners of wished units. The wishlist takes `event` and `banner` kinds by their key; the server checks the key exists for the profile's game.
-- Tests: written first: the route keeps an event and a banner on the wishlist and refuses an unknown key; the calendar journey wishes an event and filters to it. `npm run check` passes: 568 tests and 52 journeys.
-- Scope/decisions: events and banners reuse the wishlist table (kind + key), so no migration.
-- Next: endgame clear times and teams per stage.

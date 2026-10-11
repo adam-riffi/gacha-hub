@@ -30,10 +30,12 @@ test("Neverness to Everness works by hand on every screen @smoke", async ({ page
   await board.getByRole("button", { name: "+10" }).click();
   await expect(board.getByTestId("pity")).toHaveText("10");
 
-  // A build, by name (no catalog), is added on Characters and opens its sheet.
+  // A catalog character (Hakushin's data, round 4): owned from its card, its build opens the sheet.
   await tabs.getByRole("link", { name: "Characters" }).click();
-  await page.getByLabel("Character name").fill("Nanally");
-  await page.getByRole("button", { name: "+ Add" }).click();
+  await page.getByRole("searchbox", { name: "Search" }).fill("Sakiri");
+  const sakiri = page.getByRole("article", { name: "Sakiri" });
+  if (await sakiri.getByRole("button", { name: "Own" }).count()) await sakiri.getByRole("button", { name: "Own" }).click();
+  await sakiri.getByRole("button", { name: "Start a build" }).click();
   await expect(page).toHaveURL(/\/characters\//);
   await expect(page.getByText("Level").first()).toBeVisible();
 

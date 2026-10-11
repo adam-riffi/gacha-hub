@@ -63,7 +63,7 @@ Every game is a bespoke module and sheet · Discord-only sign-in, admins listed 
 
 | Area | What ships |
 | --- | --- |
-| Games | Genshin, HSR, WuWa, ZZZ (catalog, builds, planner); Endfield (catalog for ownership only); NTE (by hand only: its terms forbid third-party tools) |
+| Games | Genshin, HSR, WuWa, ZZZ (catalog, builds, planner); Endfield (catalog for ownership only); NTE (catalog from Hakushin, progress by hand: its terms forbid third-party tools) |
 | Profiles | One per game, region-aware resets, currencies and pull counts, "put to sleep" |
 | Roster | Ownership grid; catalog-backed builds with a bespoke sheet per game; several named builds per character |
 | Gear | Genshin artifacts: set browser, inventory bag with equip/unequip, farming planner. Other games: set browser |
@@ -271,7 +271,7 @@ The rail on the left is on every signed-in page: All (Home), Games, Tasks, Banne
 
 The game hub's tabs depend on the game (§9):
 - Pulls needs pull rules.
-- Gear and Planner need a catalog with gear and costs, so Endfield and NTE have neither.
+- The gear tab needs gear sets in the catalog, the Planner costs: Endfield has neither; NTE has a Planner (its consoles' modules are not sets).
 
 The old routes `/games/:id/overview` and `/games/:id/activities` redirect to Activities, `/games/:id/equipment` to Characters. `/games/:id/ownership` and `/games/:id/materials` still answer but are no longer tabs.
 
@@ -520,7 +520,7 @@ The games look alike from far away (a premium currency, a gacha, daily resets, c
 - **Builds have different shapes.** A Genshin character has 5 artifacts with fixed main-stat pools per slot and 3 talents; an HSR character has 6 relics split into cavern and planar sets plus traces; a WuWa character has echoes with a cost budget and sonata sets; Endfield attaches an essence to the weapon. One generic form would either lose these rules or turn into a form builder, which the owner ruled out.
 - **Planning data differs.** Genshin talent books and weapon materials drop on fixed weekdays, which is what "Domains today" and the "domains open today" DM are for; HSR and WuWa materials are farmable every day, so the same screen would be noise there.
 - **The gacha rules differ.** Hard pity is 90/80 in HoYoverse games but 80 for every WuWa banner; WuWa's weapon banner is always the featured weapon (100%), Genshin's and HSR's are 75%. The pull log's arithmetic is the same; its rules are per game.
-- **Data sources differ.** Each catalog comes from a different open dataset with its own quirks (genshin-db, Project Yatta, a WuWa dataset, the Hakushin data for ZZZ, an Endfield dump with int64 ids). NTE's terms forbid third-party tools, so it is typed by hand.
+- **Data sources differ.** Each catalog comes from a different open dataset with its own quirks (genshin-db, Project Yatta, a WuWa dataset, the Hakushin data for ZZZ and NTE, an Endfield dump with int64 ids). NTE's terms forbid third-party tools: its catalog comes from Hakushin, its progress is typed by hand.
 - **Each game skins itself** (Genshin gold, HSR violet, ZZZ green, WuWa sky blue, Endfield yellow, NTE blue) and uses its own vocabulary (wish, warp, signal, convene, headhunt, roll; artifacts, relics, drive discs, echoes, gear, console cartridges).
 
 So the host app stays generic over what all games share (profiles, currencies, resets, tasks, reminders, banners, pull log), and each game supplies a `GameDefinition` (`packages/shared/src/games/<key>`) and optional server hooks; the character page reads its manifest (gear slots, KPIs, dupes), so no game has a sheet of its own (`apps/server/src/games/<key>.ts`).
@@ -529,10 +529,10 @@ So the host app stays generic over what all games share (profiles, currencies, r
 
 | | Genshin | HSR | ZZZ | WuWa | Endfield | NTE |
 | --- | --- | --- | --- | --- | --- | --- |
-| Catalog (chars / weapons / sets / materials) | 122 / 255 / 63 / 536 (genshin-db) | 98 / 170 / 62 / 134 (Project Yatta) | 60 / 100 / 30 / 65 (Hakushin) | 50 / 112 / 29 / 128 (WutheringData) | 29 / 0 / 0 / 0 (EndFieldGameData) | none: typed by hand |
-| Hub tabs besides Activities, Endgame, Pulls, Characters, Profile | Artifacts, Planner | Relics, Planner | Drive discs, Planner | Echoes, Planner | — (characters only, #175) | — |
-| Character sheet | the shared sheet: catalog weapon picker, main stats per slot, sets, KPIs, splash art | same | same | same, with the echo cost cap | same, operator list | same, names typed; Console cartridges |
-| Plan farming (levels, talents → tasks) | yes | yes | yes | yes | no costs in the dataset | — |
+| Catalog (chars / weapons / sets / materials) | 122 / 255 / 63 / 536 (genshin-db) | 98 / 170 / 62 / 134 (Project Yatta) | 60 / 100 / 30 / 65 (Hakushin) | 50 / 112 / 29 / 128 (WutheringData) | 29 / 0 / 0 / 0 (EndFieldGameData) | 23 / 49 / 0 / 53 (Hakushin, round 4) |
+| Hub tabs besides Activities, Endgame, Pulls, Characters, Profile | Artifacts, Planner | Relics, Planner | Drive discs, Planner | Echoes, Planner | — (characters only, #175) | Teams, Planner |
+| Character sheet | the shared sheet: catalog weapon picker, main stats per slot, sets, KPIs, splash art | same | same | same, with the echo cost cap | same, operator list | same; Console cartridges typed |
+| Plan farming (levels, talents → tasks) | yes | yes | yes | yes | no costs in the dataset | yes |
 | Domains today, "domains open today" DM | yes | — | — | — | — | — |
 | Pull log (hard pity, featured rate) | 90 50% · 80 75% · 90 | 90 50% · 80 75% · 90 | 90 50% · 80 75% · 90 | 80 50% · 80 100% · 80 | 80 50% (featured at 120) · 40 25% (featured at 80) · 80 | 90 100% |
 | Pull history import | history link, UIGF | history link, UIGF | history link, UIGF | convene link | records link (ADR 0009) | — (by hand) |

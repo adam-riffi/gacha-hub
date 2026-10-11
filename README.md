@@ -5,7 +5,7 @@ One place to run several gacha games at once: pulls you can afford, dailies left
 [![CI](https://github.com/adam-riffi/gacha-hub/actions/workflows/ci.yml/badge.svg)](https://github.com/adam-riffi/gacha-hub/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-**Live:** https://gacha-hub-two.vercel.app (Discord sign-in; one user, self-hosted). Ships with Genshin Impact, Honkai: Star Rail, Wuthering Waves, Zenless Zone Zero, Arknights: Endfield and Neverness to Everness (tracked by hand only: its terms forbid third-party tools). Add a game with `npm run game:new -- <key> "<Name>"` (ADR 0004).
+**Live:** https://gacha-hub-two.vercel.app (Discord sign-in; one user, self-hosted). Ships with Genshin Impact, Honkai: Star Rail, Wuthering Waves, Zenless Zone Zero, Arknights: Endfield and Neverness to Everness (its catalog from Hakushin's dataset; progress typed by hand, as its terms forbid third-party tools). Add a game with `npm run game:new -- <key> "<Name>"` (ADR 0004).
 
 ## Why it is interesting
 
@@ -92,7 +92,7 @@ docs/                             DESIGN · VISUAL-DESIGN · WIREFRAMES · desig
 ## Limitations and next steps
 
 - Reminders need the owner's Discord bot token and cron secret in production.
-- Art comes from our R2 store once the owner sets it up (ADR 0006), else from Enka (Genshin), Yatta (HSR), the Hakushin assets (ZZZ) and Wuthery (WuWa); Endfield and NTE show initials.
+- Art comes from our R2 store once the owner sets it up (ADR 0006), else from Enka (Genshin), Yatta (HSR), the Hakushin assets (ZZZ, NTE) and Wuthery (WuWa); Endfield shows initials.
 - Account linking (HoYoLAB, Enka, pull-history links) needs the owner's `LINK_SECRET_KEY`; HoYoLAB stays read-only (ADR 0005).
 - No mobile layout (desktop only, by decision).
 - Next milestone: paging the calendar back through ended banners and events (docs/DESIGN.md §9).

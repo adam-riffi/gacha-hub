@@ -47,6 +47,15 @@ const BY_GAME: Record<string, Record<string, string>> = {
     Electric: "#ffd84a",
     Nature: "#9be06e",
   },
+  // Sampled from the game's own element icons (Hakushin's assets): each icon's most saturated tenth, lightened for dark text.
+  nte: {
+    Incantation: "#cb8793",
+    Chaos: "#a991bf",
+    Lakshana: "#d29a39",
+    Nature: "#30ad8c",
+    Psyche: "#729dcd",
+    Cosmos: "#b0aea4",
+  },
 };
 
 /** The element's colour in this game, or null where it has none (the card keeps the paper look). */
