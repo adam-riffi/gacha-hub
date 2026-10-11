@@ -127,6 +127,8 @@ export const wuwa: GameDefinition = {
   },
   defaultTasks: [
     { key: "dailyActivity", title: "Daily Activity", cadence: "daily", target: 5 },
+    // From Georges's design (2026-10-11): up to 36 Tacet Discords a day in the Nightmare Nests (Prydwen's game modes guide).
+    { key: "nests", title: "Nightmare Nests", cadence: "daily", target: 36 },
     { key: "weeklyBosses", title: "Weekly Bosses", cadence: "weekly", target: 3 },
   ],
   docSchema: wuwaDocSchema,
