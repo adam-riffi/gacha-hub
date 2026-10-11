@@ -70,7 +70,6 @@ input[type="checkbox"] {
 }
 input[type="checkbox"]:checked { background: var(--accent); border-color: var(--accent); }
 .field { margin-bottom: 14px; }
-.field-inline { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
 /* ---- Tags and chips; each laid-on piece has its bottom-right corner cut. ---- */
 .cut { clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%); }

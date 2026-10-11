@@ -147,7 +147,7 @@ flowchart LR
 
 ```
 gacha/
-├── apps/web/src/          pages/ (one per route), components/, games/<key>/Sheet.tsx, lib/ (api, auth, catalog, time, toast)
+├── apps/web/src/          pages/ (one per route), components/, lib/ (api, auth, catalog, time, toast)
 ├── apps/server/src/       api/ (one file per resource + *.integration.test.ts), lib/ (pure core), scheduler/, discord/, games/ (server hooks), auth/
 ├── packages/shared/src/   dto/, catalog/, planning/, games/<key>/ (definition + limits + catalog), domains.ts, pity.ts, art.ts, common.ts
 ├── prisma/                schema.prisma, migrations/ (schema.sqlite.prisma is generated)
@@ -506,7 +506,7 @@ The games look alike from far away (a premium currency, a gacha, daily resets, c
 - **Data sources differ.** Each catalog comes from a different open dataset with its own quirks (genshin-db, Project Yatta, a WuWa dataset, the Hakushin data for ZZZ, an Endfield dump with int64 ids). NTE's terms forbid third-party tools, so it is typed by hand.
 - **Each game skins itself** (Genshin gold, HSR violet, ZZZ green, WuWa sky blue, Endfield yellow, NTE blue) and uses its own vocabulary (wish, warp, signal, convene, headhunt, roll; artifacts, relics, drive discs, echoes, gear, console cartridges).
 
-So the host app stays generic over what all games share (profiles, currencies, resets, tasks, reminders, banners, pull log), and each game supplies a `GameDefinition` (`packages/shared/src/games/<key>`), a sheet (`apps/web/src/games/<key>/Sheet.tsx`) and optional server hooks (`apps/server/src/games/<key>.ts`).
+So the host app stays generic over what all games share (profiles, currencies, resets, tasks, reminders, banners, pull log), and each game supplies a `GameDefinition` (`packages/shared/src/games/<key>`) and optional server hooks; the character page reads its manifest (gear slots, KPIs, dupes), so no game has a sheet of its own (`apps/server/src/games/<key>.ts`).
 
 ### Feature matrix
 
