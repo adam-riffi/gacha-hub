@@ -1,8 +1,8 @@
 # Handoff — 2026-10-11 · claude
 
 ## State
-- `main` at #241: feat(catalog): ZZZ's skill names and descriptions. CI green.
-- Open PRs: #242 (WuWa's Nightmare Nests) and this one (#243, the project guide); they merge in that order on green CI.
+- `main` at #242: feat(tasks): WuWa's Nightmare Nests, a daily counted to 36. CI green.
+- Open PRs: this one (#243), the project guide; it merges on green CI.
 - Production serves #186 (deployed 2026-10-10 18:52 UTC). Merges do not deploy (#189): `main` goes live only when Georges asks (`docs/DEPLOY.md`, Redeploys), then run the smoke check. Since #186, `main` adds six migrations, and the next deploy runs them: `kpi_defaults`, `progress`, `hidden_banners`, `default_build`, `weapon_copies` and `recurring_counts` (which also gives existing profiles' counted dailies their targets).
 - Every milestone in DESIGN.md §9 is built, V through F13, and three feedback rounds (2026-10-10 and twice on 2026-10-11) are done. What is left needs Georges's secrets, real data or a decision (below), a source for a few of the designs' details (Next), or is in DESIGN.md §4 "Later".
 
