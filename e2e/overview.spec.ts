@@ -10,7 +10,7 @@ test("a game's hub opens on its Overview: pulls, pity and banners at a glance, e
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
   await page.request.put(`/api/instances/${id}/currencies/stellarJade`, { data: { value: 1600 } });
   await page.request.put(`/api/instances/${id}/currencies/specialPass`, { data: { value: 3 } });
-  await page.request.post("/api/admin/payload", { data: { kind: "banners", gameKey: "hsr", items: [{ key: "e2e-overview", name: "E2E overview warp", kind: "character", startsAt: iso(-1), endsAt: iso(2) }] } });
+  await page.request.post("/api/admin/payload", { data: { kind: "banners", gameKey: "hsr", items: [{ key: "e2e-overview", name: "E2E overview warp", kind: "character", startsAt: iso(-1), endsAt: iso(20) }] } });
 
   await page.goto(`/games/${id}`);
   const tabs = page.getByRole("navigation", { name: "Game screens" }).getByRole("link");
