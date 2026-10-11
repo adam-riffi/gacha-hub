@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { GENSHIN_ARTIFACT_SLOTS, type CatalogGearSet, type CharacterDto, type GearPieceDto, type TaskDto } from "@gacha/shared";
+import { GENSHIN_ARTIFACT_SLOTS, type CatalogGearSet, type CharacterDto, type GearPieceDto, type TaskDto, type TaskOrigin } from "@gacha/shared";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
 import { assetUrl, communityAssetUrl } from "../lib/assets";
@@ -74,15 +74,16 @@ export function ArtifactPlanner({
 
   // One checklist per domain: re-running updates it (keeping ticks on items still needed) instead of duplicating.
   const addTask = useMutation({
-    mutationFn: (v: { domain: string; items: string[] }) => {
+    mutationFn: (v: { domain: string; items: string[]; origin: TaskOrigin }) => {
       const existing = taskFor(v.domain);
       const items = v.items.map((label) => ({
         label: label.slice(0, 200),
         done: existing?.items?.find((i) => i.label === label)?.done ?? false,
       }));
+      // The set and who it is for ride along, so Tasks shows their icons, not only the domain's name.
       return existing
-        ? api.put(`/api/tasks/${existing.id}`, { items })
-        : api.post("/api/tasks", { scope: "game", refId: instanceId, type: "checklist", title: `Farm ${v.domain}`, items });
+        ? api.put(`/api/tasks/${existing.id}`, { items, origin: v.origin })
+        : api.post("/api/tasks", { scope: "game", refId: instanceId, type: "checklist", title: `Farm ${v.domain}`, items, origin: v.origin });
     },
     onSuccess: () => {
       toast("Tasks updated");
@@ -124,7 +125,17 @@ export function ArtifactPlanner({
               <button
                 className="btn sm primary"
                 disabled={items.length === 0 || addTask.isPending}
-                onClick={() => addTask.mutate({ domain, items })}
+                onClick={() =>
+                  addTask.mutate({
+                    domain,
+                    items,
+                    origin: {
+                      kind: "gear",
+                      catalogId: sets.find((s) => s.name === rows[0]!.set)?.id ?? rows[0]!.set,
+                      sources: rows.flatMap((n) => (n.build.catalogId ? [{ kind: "character" as const, catalogId: n.build.catalogId }] : [])),
+                    },
+                  })
+                }
               >
                 {items.length ? (taskFor(domain) ? "Update task" : "Add to Tasks") : "✓ Done"}
               </button>

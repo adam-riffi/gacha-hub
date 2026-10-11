@@ -170,6 +170,7 @@ export function TasksPage() {
                 gi={byId.get(t.refId)!}
                 reward={rewards.data?.find((r) => r.goal?.id === t.id)}
                 weekday={lines.find((f) => f.instanceId === t.refId)?.weekday}
+                showGame={!scope}
               />
             ))}
             {goals.length === 0 && (

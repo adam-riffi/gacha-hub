@@ -61,3 +61,8 @@
 .tk-plan li { display: flex; align-items: baseline; gap: 12px; }
 .tk-caps { font-size: 12px; }
 .tk-link { width: 260px; }
+.tk-title-row { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.tk-title-row .tk-for { width: 22px; height: 22px; font-size: 8px; }
+.tk-title-row .tk-game { width: 16px; height: 16px; font-size: 7px; }
+.tk-mat-name { display: inline-flex; align-items: center; gap: 8px; }
+.tk-mat-name .gicon { width: 24px; height: 24px; font-size: 8px; flex: none; }

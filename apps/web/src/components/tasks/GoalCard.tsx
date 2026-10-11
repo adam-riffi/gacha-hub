@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { farmableToday, getGame, levelCaps, type ChecklistItem, type RewardDto, type TaskPriority } from "@gacha/shared";
+import { farmableToday, getGame, levelCaps, type ChecklistItem, type FarmUnit, type RewardDto, type TaskOrigin, type TaskPriority } from "@gacha/shared";
 import { api } from "../../lib/api";
 import { useCatalog } from "../../lib/catalog";
 import type { InstanceListItem, TaskItem } from "../../lib/types";
 import { GameIcon } from "../GameIcon";
 import { stepText } from "../calendar/CalendarSelected";
 import { Picker } from "../Picker";
+import { CatalogIcon, UnitIcon } from "../CatalogIcon";
 
 const NEXT: Record<TaskPriority, TaskPriority> = { high: "normal", normal: "low", low: "high" };
 const ENDS = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
@@ -34,7 +35,7 @@ function planned(origin: unknown): string | null {
  * under it, and Link to another goal. An event goal shows its effect and is
  * claimed here, which applies it (ADR 0008).
  */
-export function GoalCard({ t, kids: allKids, kidsOf, linkable = [], gi, reward, weekday }: { t: TaskItem; kids: TaskItem[]; kidsOf?: (id: string) => TaskItem[]; linkable?: TaskItem[]; gi: InstanceListItem; reward?: RewardDto; weekday?: number }) {
+export function GoalCard({ t, kids: allKids, kidsOf, linkable = [], gi, reward, weekday, showGame = true }: { t: TaskItem; kids: TaskItem[]; kidsOf?: (id: string) => TaskItem[]; linkable?: TaskItem[]; gi: InstanceListItem; reward?: RewardDto; weekday?: number; showGame?: boolean }) {
   const qc = useQueryClient();
   const [open, setOpen] = useState(false);
   const refresh = () => Promise.all(["tasks", "rewards", "farm-today", "dashboard"].map((k) => qc.invalidateQueries({ queryKey: [k] })));
@@ -48,7 +49,14 @@ export function GoalCard({ t, kids: allKids, kidsOf, linkable = [], gi, reward, 
   const kids = allKids.filter((k) => k.materialId);
   const linked = allKids.filter((k) => !k.materialId);
 
-  const short = getGame(gi.gameKey)?.shortName ?? gi.name;
+  const game = getGame(gi.gameKey);
+  const short = game?.shortName ?? gi.name;
+  // Its own unit as its thumb (Georges, 2026-10-11): the character, weapon or set it farms; who it is for beside the title.
+  const origin = t.origin as TaskOrigin | null;
+  const change = reward?.options[t.choice ?? 0]?.changes[0];
+  // An event goal shows the unit its reward raises.
+  const unit: FarmUnit | null = origin?.catalogId ? { kind: origin.kind, catalogId: origin.catalogId } : change ? { kind: change.unit, catalogId: change.catalogId } : null;
+  const forWhom = (origin?.sources ?? []).filter((s) => s.kind === "character" && s.catalogId !== origin?.catalogId);
   const items = t.items ?? [];
   const claimed = Boolean(t.eventId) && t.lastCompletedAt !== null;
   const [done, total] = kids.length
@@ -58,15 +66,19 @@ export function GoalCard({ t, kids: allKids, kidsOf, linkable = [], gi, reward, 
       : [t.progress, t.target ?? 0];
   const option = reward?.options[t.choice ?? 0];
   const effect = option?.changes.map((c) => `${c.name} ${stepText(c)}`).join(", ");
-  const sub = [short, planned(t.origin), reward && `ends ${ENDS.format(new Date(reward.endsAt))}`, !claimed && effect && `→ ${effect}`].filter(Boolean).join(" · ");
+  const sub = [planned(t.origin), reward && `ends ${ENDS.format(new Date(reward.endsAt))}`, !claimed && effect && `→ ${effect}`].filter(Boolean).join(" · ");
 
   return (
     <article className={`tk-card ${open ? "is-open" : ""}`} aria-label={t.title}>
       <div className="tk-row">
         <button type="button" className="tk-open" aria-expanded={open} onClick={() => setOpen(!open)}>
-          <GameIcon src={null} alt={gi.name} label={short.slice(0, 2)} className="tk-thumb" />
+          {unit ? <UnitIcon gameKey={gi.gameKey} unit={unit} className="tk-thumb" /> : <GameIcon src={game?.art?.icon ?? null} alt={gi.name} label={short.slice(0, 2)} tint={game?.accent} className="tk-thumb" />}
           <span className="tk-title">
-            <strong>{t.title}</strong>
+            <span className="tk-title-row">
+              <strong>{t.title}</strong>
+              {forWhom.map((s) => <UnitIcon key={s.catalogId} gameKey={gi.gameKey} unit={{ kind: "character", catalogId: s.catalogId }} className="tk-for" />)}
+              {showGame && unit && <GameIcon src={game?.art?.icon ?? null} alt={gi.name} label={short.slice(0, 2)} tint={game?.accent} className="tk-game" />}
+            </span>
             <span className="mn mu">{sub}</span>
           </span>
         </button>
@@ -203,11 +215,14 @@ function MaterialSteps({ kids, gameKey, weekday, onProgress }: { kids: TaskItem[
           </span>
           <Meter done={done} total={mine.length} />
         </div>
-        {mine.map(({ k }) => {
+        {mine.map(({ k, material }) => {
           const name = k.title.replace(/^Farm /, "");
           return (
             <div key={k.id} className="tk-mat">
-              <span>{name}</span>
+              <span className="tk-mat-name">
+                <CatalogIcon gameKey={gameKey} kind="material" icon={material?.icon} name={material?.name ?? name} />
+                {name}
+              </span>
               <input type="number" min={0} aria-label={`${name} on hand`} key={k.progress} defaultValue={k.progress} onBlur={(e) => Number(e.target.value) !== k.progress && onProgress(k.id, Number(e.target.value))} />
               <span className="mn mu">
                 {k.progress} / {k.target ?? 0}
