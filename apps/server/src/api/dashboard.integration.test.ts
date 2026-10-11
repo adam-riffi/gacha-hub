@@ -63,21 +63,22 @@ describe("dashboard data for Home (routes)", () => {
   });
 
   it("splits recurring items into the game's dailies and weeklies and the ones you added", async () => {
-    const id = await installGame(c, "genshin"); // seeds Daily Commissions (daily) and Weekly Bosses (weekly)
+    // Seeds four dailies (Daily Commissions and the design's Commission reward, Spend Resin, Check-in) and two weeklies.
+    const id = await installGame(c, "genshin");
     const added = await c.req<{ id: string }>("POST", "/api/tasks", { scope: "game", refId: id, type: "recurring", cadence: "daily", title: "Expedition round" });
     expect(added.status).toBe(201);
     let g = await game(id);
     expect(g.recurring).toEqual({
-      daily: { done: 0, total: 1 },
+      daily: { done: 0, total: 4 },
       dailyTasks: { done: 0, total: 1 },
-      weekly: { done: 0, total: 1 },
+      weekly: { done: 0, total: 2 },
       weeklyTasks: { done: 0, total: 0 },
     });
     const commissions = g.dailies.find((t) => t.title === "Daily Commissions")!;
     await c.req("POST", `/api/tasks/${commissions.id}/complete`, { done: true });
     await c.req("POST", `/api/tasks/${added.json.id}/complete`, { done: true });
     g = await game(id);
-    expect(g.recurring.daily).toEqual({ done: 1, total: 1 });
+    expect(g.recurring.daily).toEqual({ done: 1, total: 4 });
     expect(g.recurring.dailyTasks).toEqual({ done: 1, total: 1 });
   });
 });
