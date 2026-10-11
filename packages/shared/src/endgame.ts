@@ -114,6 +114,14 @@ export function cycleHistory(mode: Mode, region: ServerClock, now: Date, results
   };
 }
 
+/** A mode's cycles newest first: the ones on record, and the current one, empty, before anything is typed in it. */
+export function modeCycles(mode: Mode, region: ServerClock, now: Date, results: readonly CycleRow[]) {
+  const rows = cycleHistory(mode, region, now, results).rows;
+  if (rows.some((r) => r.current)) return rows;
+  const w = cadenceWindow(mode.anchor, region, now);
+  return [{ modeKey: mode.key, cycleStart: w.start, end: w.end, current: true, full: false, result: null, premium: null, detail: null, source: "manual", teams: [] as Clear[] }, ...rows];
+}
+
 /** The history as CSV: first and last server-local day of each cycle, its result, detail, premium and source. */
 export function cycleCsv(mode: Mode, region: ServerClock, rows: ReturnType<typeof cycleHistory>["rows"], premium: string): string {
   const cell = (v: string | number | null) => {
