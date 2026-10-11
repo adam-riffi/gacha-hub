@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test("a game hub's header shows the server, UID, account level and next resets, and edits them @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const created = await page.request.post("/api/instances", { data: { gameKey: "wuwa" } });
   const { id } = (await created.json()) as { id: string };
@@ -28,7 +28,7 @@ test("a game hub's header shows the server, UID, account level and next resets, 
 
 test("Endfield's hub has no Gear or Planner tab: its catalog lists characters only, enough for Teams; Weapons by name, as on every game", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "endfield" } })).json()) as { id: string };
   try {

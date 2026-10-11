@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test("a game's Endgame tab: this cycle's rewards, a card per mode to type results in, upcoming resets @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const created = await page.request.post("/api/instances", { data: { gameKey: "zzz" } });
   const { id } = (await created.json()) as { id: string };
@@ -38,7 +38,7 @@ test("a game's Endgame tab: this cycle's rewards, a card per mode to type result
 
 test("an endgame cycle keeps each half's team and clear time, on its card and in the history @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "genshin" } })).json()) as { id: string };
   await page.goto(`/games/${id}/endgame`);
@@ -65,7 +65,7 @@ test("an endgame cycle keeps each half's team and clear time, on its card and in
 // What each cycle sends at you, where the mode rotates it (Georges, 2026-10-11): Shiyu Defense's frontiers, Deadly Assault's bosses.
 test("a rotating endgame mode shows its enemies per stage, with what they are weak to @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "zzz" } })).json()) as { id: string };
   await page.goto(`/games/${id}/endgame`);
@@ -80,7 +80,7 @@ test("a rotating endgame mode shows its enemies per stage, with what they are we
 
 test("Stygian Onslaught shows its three bosses; Spiral Abyss and Imaginarium Theater show no enemies @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "genshin" } })).json()) as { id: string };
   // The smoke journey adds Genshin through the Games page, so this one removes its profile.

@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test("a game's Activities tab: stamina, the daily, weekly and monthly lists, cycles and version @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const created = await page.request.post("/api/instances", { data: { gameKey: "zzz" } });
   const { id } = (await created.json()) as { id: string };
@@ -58,7 +58,7 @@ test("a game's Activities tab: stamina, the daily, weekly and monthly lists, cyc
 
 test("the hub carries no leftover labels: no Manual tags, no By cadence @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
   const build = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1005" } })).json()) as { id: string };

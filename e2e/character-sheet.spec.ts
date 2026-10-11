@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test("Character sheet: identity, KPIs, character, skills, weapon, stats and the gear block, saved @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   // HSR, not Genshin: the smoke journey adds Genshin through the library.
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
@@ -56,7 +56,7 @@ test("Character sheet: identity, KPIs, character, skills, weapon, stats and the 
 
 test("Character sheet: a character opens on its default build; builds switch by tab, and another can become the default @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
   // Pela's builds start from nothing; no other journey uses her.
@@ -84,7 +84,7 @@ test("Character sheet: a character opens on its default build; builds switch by 
 
 test("Character sheet: KPI targets on the tiles, and the teams the character is used in @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
   const build = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1005", doc: { level: 80, stats: { SPD: 130 } } } })).json()) as { id: string };
@@ -103,7 +103,7 @@ test("Character sheet: KPI targets on the tiles, and the teams the character is 
 
 test("Character sheet: each skill opens to its description @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "genshin" } })).json()) as { id: string };
   // The smoke journey adds Genshin through the Games page, so this one removes its profile.

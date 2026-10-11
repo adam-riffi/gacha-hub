@@ -3,14 +3,13 @@
  * top strip picks a scope, the Overview or one game. Home, Tasks and the
  * calendar take the game as `?game=<key>`; Games opens the game's hub.
  */
-export type Section = "all" | "games" | "tasks" | "banners" | "settings" | "admin";
+export type Section = "all" | "games" | "tasks" | "banners" | "settings";
 
 export function sectionOf(path: string): Section {
   if (path === "/library" || path.startsWith("/games/") || path.startsWith("/characters/")) return "games";
   if (path === "/tasks") return "tasks";
   if (path === "/timeline") return "banners";
-  if (path === "/settings") return "settings";
-  if (path === "/admin") return "admin";
+  if (path === "/settings" || path.startsWith("/settings/")) return "settings";
   return "all";
 }
 
@@ -30,7 +29,7 @@ export function hubPathFor(pathname: string, game: ScopeGame, screens: string[])
   return tab && screens.includes(tab) ? `/games/${game.instanceId}/${tab}` : `/games/${game.instanceId}`;
 }
 
-/** Where a section opens for a scope (null is the Overview). Settings and Admin have no scope. */
+/** Where a section opens for a scope (null is the Overview). Settings has no scope. */
 export function sectionHref(section: Section, game: ScopeGame | null): string {
   const q = game ? `?game=${game.key}` : "";
   switch (section) {
@@ -44,7 +43,5 @@ export function sectionHref(section: Section, game: ScopeGame | null): string {
       return `/timeline${q}`;
     case "settings":
       return "/settings";
-    case "admin":
-      return "/admin";
   }
 }

@@ -29,7 +29,7 @@
 ## 1. TL;DR
 
 - **What:** a tracker for people who play several gacha games at once (Genshin Impact, Honkai: Star Rail, Zenless Zone Zero, Wuthering Waves, Arknights: Endfield, Neverness to Everness). It answers "what should I do in my games today?": pulls I can afford, dailies left before reset, which characters I own and how far their builds are, what to farm today, which banners and events are running. Discord sign-in and Discord DM reminders.
-- **Who:** a handful of whitelisted friends plus a public demo. Code is public: `adam-riffi/gacha-hub`. Owner: Georges.
+- **Who:** one user per deployment, self-hosted (Georges, round 4). Code is public: `adam-riffi/gacha-hub`. Owner: Georges.
 - **Where:** live at https://gacha-hub-two.vercel.app (Vercel Hobby + Supabase Postgres eu-west-1 + GitHub Actions as the cron).
 - **State:** every milestone in `docs/DESIGN.md` §9 is built, V through F12. CI, the production smoke check and the security headers are in place.
 - **What blocks "done":** secrets only the owner can set: `CRON_SECRET` (reminders, the feed import and the HoYoLAB sync), `LINK_SECRET_KEY` (linking), the R2 bucket (our art store) and the Discord bot (§14.1).
@@ -69,7 +69,7 @@ Every game is a bespoke module and sheet · Discord-only sign-in, admins listed 
 | Gear | Genshin artifacts: set browser, inventory bag with equip/unequip, farming planner. Other games: set browser |
 | Planning | Material requirements from catalog costs, goal tasks with material subtasks, inventory as source of truth |
 | Home | KPI strip, banners now, Today, task board, pulls with pity, coming up, wallet |
-| Banners and events | Admin JSON uploads with audit log; Genshin and HSR official-feed import; calendar with paging back into history |
+| Banners and events | JSON uploads in Settings' Data sources, with a log; Genshin and HSR official-feed import; calendar with paging back into history |
 | Discord | OAuth sign-in, 10 slash commands, DM reminders before reset and at chosen times, optional "domains open today" line |
 | Pull log | Per banner type with pity and the 50/50 guarantee (ADR 0002) |
 | Export | Everything a user entered as one JSON file |
@@ -95,7 +95,7 @@ Every game is a bespoke module and sheet · Discord-only sign-in, admins listed 
 | `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET`, `DISCORD_OAUTH_REDIRECT` | web sign-in | set (`/api/me` reports `oauth: true`) |
 | `DISCORD_APP_ID`, `DISCORD_PUBLIC_KEY` | bot interactions | check |
 | `DISCORD_BOT_TOKEN` | sending DMs, registering commands | **not set** |
-| `ADMIN_DISCORD_IDS` | who sees Admin | set |
+| `ADMIN_DISCORD_IDS` | the owner's Discord id: who sees Data sources | set |
 | `CRON_SECRET` (Vercel) | guards `/api/cron/tick` | unknown: set it together with the GitHub one |
 | `BLOB_READ_WRITE_TOKEN` | image uploads | injected by the Blob store |
 | `DEV_LOGIN_ENABLED=false` | dev shortcut off | set (`devLogin: false`) |
@@ -103,7 +103,7 @@ Every game is a bespoke module and sheet · Discord-only sign-in, admins listed 
 
 **Production data** (checked during the 2026-10-07 audit): Banner and Event tables hold only the "Seed sample data" rows (2 per game, from 2026-10-04) and no `hoyo-` feed rows; `PullEntry` exists and is empty.
 
-**Local:** `npm ci`, `npm run db:sqlite`, `npm run dev` (web :5173, API :3000), then "Continue as Dev User". Add `ADMIN_DISCORD_IDS=dev-local-user` to `.env` to see Admin. Local and test databases are SQLite; Docker's Linux engine does not start on the owner's machine, so Postgres is never run locally.
+**Local:** `npm ci`, `npm run db:sqlite`, `npm run dev` (web :5173, API :3000), then "Continue": the local account owns Data sources. Local and test databases are SQLite; Docker's Linux engine does not start on the owner's machine, so Postgres is never run locally.
 
 ## 4. Architecture
 
@@ -254,7 +254,7 @@ flowchart TB
   H --- T["Tasks and reminders<br/>/tasks"]
   H --- C["Banners and events<br/>/timeline"]
   H --- S["Settings<br/>/settings"]
-  H --- AD["Admin<br/>/admin (admins only)"]
+  S --- AD["Data sources<br/>/settings/data (the owner)"]
   G --> A["Game hub · Activities<br/>/games/:id"]
   A --- EG["Endgame<br/>/games/:id/endgame"]
   A --- PU["Pulls<br/>/games/:id/pulls"]
@@ -267,7 +267,7 @@ flowchart TB
   CH --> SH["Character sheet<br/>/characters/:id"]
 ```
 
-The rail on the left is on every signed-in page: All (Home), Games, Tasks, Banners, then Admin (admins only) and Settings. The strip across the top scopes Home to one game or all of them, in the order set on the Games page; in a game's hub it switches game at the same tab (Activities where the other game lacks it).
+The rail on the left is on every signed-in page: All (Home), Games, Tasks, Banners, then Settings (its Data sources for the owner). The strip across the top scopes Home to one game or all of them, in the order set on the Games page; in a game's hub it switches game at the same tab (Activities where the other game lacks it).
 
 The game hub's tabs depend on the game (§9):
 - Pulls needs pull rules.
@@ -283,7 +283,7 @@ The screenshots come from the local dev build (dev user, SQLite) on 2026-10-10, 
 
 ![Sign-in](screens/01-sign-in.jpg)
 
-**For:** getting in. In production the button is "Sign in with Discord" (OAuth, whitelisted accounts only). Locally, "Continue as Dev User" appears when `DEV_LOGIN_ENABLED=true`. There is no sign-up.
+**For:** getting in. In production the button is "Sign in with Discord" (OAuth). Locally, "Continue" appears when `DEV_LOGIN_ENABLED=true`. There is no sign-up.
 
 ### 8.2 Home
 
@@ -350,7 +350,7 @@ The side panel explains the capabilities and lists games to add.
 - filters cover games, kinds, and "Only what I wishlisted";
 - paging goes back into ended banners.
 
-Genshin, Star Rail and ZZZ rows come from the hourly official feed; the others come from admin uploads.
+Genshin, Star Rail and ZZZ rows come from the hourly official feed; the others come from uploads in Data sources.
 
 ### 8.6 Game hub · Activities
 
@@ -482,11 +482,11 @@ Stock edits here are the source of truth for every goal's progress.
 - **Notifications:** Discord DMs, quiet hours, digest.
 - **Account and data:** Download my data (every table you entered), and delete the account.
 
-### 8.15 Admin
+### 8.15 Settings · Data sources
 
-![Admin](screens/15-admin.jpg)
+![Data sources](screens/15-data-sources.jpg)
 
-**For:** keeping banners and events correct, for admins only (`ADMIN_DISCORD_IDS`).
+**For:** keeping banners and events correct, for the owner (`ADMIN_DISCORD_IDS`), from Settings (`/settings/data`; `/admin` leads there).
 
 - **Import official feed** for the selected game (Genshin, HSR, ZZZ; also runs hourly from the cron).
 - **Seed sample data** (two sample banners and events, to preview the UI; delete them in production once the feed runs).
@@ -495,7 +495,7 @@ Stock edits here are the source of truth for every goal's progress.
   - **Example** fills a template, **Load current** loads what is live, and **Schema** shows the JSON schema;
   - **Validate & apply** upserts by key, with precise errors.
 - **Current banners and events**, with Delete. Feed rows have `hoyo-…` keys.
-- **Audit log:** every admin write, with actor, action and target.
+- **Audit log:** every write to banners and events, with its action and target.
 
 ### 8.16 Discord bot (no screen)
 
@@ -636,7 +636,7 @@ Every milestone in DESIGN.md §9 is built, V through F12. What is left waits on 
    4. Set `VITE_ASSET_BASE` in Vercel and redeploy.
 
    F12's acceptance ("every game shows art from our store") is checked after this.
-5. **Clean production banners and events:** in Admin, delete the `sample-*` rows for each game. Then import the official feed, or wait for the hourly tick after step 1.
+5. **Clean production banners and events:** in Settings' Data sources, delete the `sample-*` rows for each game. Then import the official feed, or wait for the hourly tick after step 1.
 6. **Branch ruleset on `main`:** require the checks `lint`, `typecheck`, `test`, `build` and `e2e`.
 7. **Decisions:** taken by the agent on 2026-10-10 at Georges's request: ADR 0009 accepted; Enka's store and the Hakushin data used with credit in NOTICE and removed on request; the items in §14.2 decided against, each with its reason. Overrule any of them by saying so.
 8. **Real data, to replace what the agent built from documentation.** Save each answer as JSON from the browser's network tab, with tokens, cookies and account ids removed:

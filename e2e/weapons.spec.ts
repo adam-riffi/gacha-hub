@@ -8,7 +8,7 @@ async function clearCopies(page: Page, id: string) {
 // Each copy its own card (Georges, 2026-10-11: "dupes of the weapons as separate entries … make them cards, not a list, like the characters").
 test("Weapons: every copy its own card with its level and refinement and who wields it; a weapon's panel adds copies, wishlists and farms @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
   const build = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1005", doc: { level: 80, lightCone: { catalogId: "23006", name: "Patience Is All You Need", level: 80, superimposition: 2 } } } })).json()) as { id: string };
@@ -55,7 +55,7 @@ test("Weapons: every copy its own card with its level and refinement and who wie
 
 test("Weapons on every game: by name where the game has no weapon catalog (NTE, Endfield) @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "nte" } })).json()) as { id: string };
   await clearCopies(page, id);

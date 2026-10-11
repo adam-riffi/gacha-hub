@@ -4,7 +4,7 @@ import { expect, test } from "@playwright/test";
 // instead of an empty Home or a "Loading…" that never ends.
 test("a page whose request fails says so, and Try again recovers", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
 
   await page.route("**/api/dashboard", (r) =>

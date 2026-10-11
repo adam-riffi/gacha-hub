@@ -39,7 +39,7 @@ const GONE = [
 test("the screens carry no report sentences and no source labels on your own records @smoke", async ({ page }) => {
   test.slow();
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
   // A cycle typed in, so the Endgame history has a row whose source used to show.

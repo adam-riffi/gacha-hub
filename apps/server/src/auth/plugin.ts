@@ -150,7 +150,7 @@ export async function registerAuth(app: FastifyInstance) {
     app.post("/api/auth/dev-login", async (_req, reply) => {
       const user = await upsertDiscordUser({
         id: DEV_LOGIN_DISCORD_ID,
-        username: "Dev User",
+        username: "Player",
         avatarUrl: null,
       });
       const session = await createSession(user.id);

@@ -5,7 +5,7 @@ const accent = (page: Page) =>
 
 test("the rail moves between sections and the strip sets the scope @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   // HSR, not Genshin: the smoke journey adds Genshin through the library.
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
@@ -18,13 +18,15 @@ test("the rail moves between sections and the strip sets the scope @smoke", asyn
     ["Tasks and goals", /\/tasks$/],
     ["Banners and events", /\/timeline$/],
     ["Settings", /\/settings$/],
-    ["Admin", /\/admin$/],
     ["Home, all games", /\/$/],
   ] as const) {
     await rail.getByRole("link", { name, exact: true }).click();
     await expect(page).toHaveURL(url);
     await expect(rail.getByRole("link", { name, exact: true })).toHaveAttribute("aria-current", "page");
   }
+
+  // One user, self-hosted (round 4): no Admin section in the rail.
+  await expect(rail.getByRole("link", { name: "Admin" })).toHaveCount(0);
 
   // On Home a game shows the same page for that game: only the accent changes.
   await expect(strip.getByRole("link", { name: "Overview" })).toHaveAttribute("aria-current", "page");
@@ -54,7 +56,7 @@ test("the rail moves between sections and the strip sets the scope @smoke", asyn
 // Georges, round 4: "if I am on the pulls screen of Genshin and I go to HSR I wanna end up on the HSR pull screen".
 test("another game in the strip opens the same tab, or its first where it has none @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const make = async (gameKey: string) => ((await (await page.request.post("/api/instances", { data: { gameKey } })).json()) as { id: string }).id;
   const [hsr, zzz, endfield] = [await make("hsr"), await make("zzz"), await make("endfield")];

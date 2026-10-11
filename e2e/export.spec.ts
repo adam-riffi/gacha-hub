@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 
 test("Settings downloads everything you entered as JSON @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
 
   await page.goto("/settings");

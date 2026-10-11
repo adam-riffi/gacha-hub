@@ -23,7 +23,7 @@ test("every screen has no serious accessibility violations @smoke", async ({ pag
   // Reduced motion: no auto-rotation or transitions, so every page scans in its settled state.
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const post = async <T>(url: string, data: object) => (await (await page.request.post(url, { data })).json()) as T;
 

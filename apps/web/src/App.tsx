@@ -59,7 +59,8 @@ export function App() {
         <Route path="/characters/:id" element={<CharacterPage />} />
         <Route path="/tasks" element={<TasksPage />} />
         <Route path="/timeline" element={<CalendarPage />} />
-        <Route path="/admin" element={<AdminPage />} />
+        <Route path="/settings/data" element={<AdminPage />} />
+        <Route path="/admin" element={<Navigate to="/settings/data" replace />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

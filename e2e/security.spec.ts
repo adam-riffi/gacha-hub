@@ -8,7 +8,7 @@ test("the app runs under its content security policy @smoke", async ({ page }) =
 
   const shell = await page.goto("/");
   expect(shell?.headers()["content-security-policy"]).toContain("script-src 'self'");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   for (const path of ["/library", "/timeline", "/settings"]) {
     await page.goto(path);

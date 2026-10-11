@@ -14,7 +14,7 @@ const uigf = {
 
 test("Settings: linked accounts, pull history from a UIGF file and a link, notifications, account and data @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   // HSR, not Genshin: the smoke journey adds Genshin through the library.
   await page.request.post("/api/instances", { data: { gameKey: "hsr" } });
@@ -53,7 +53,7 @@ test("Settings: linked accounts, pull history from a UIGF file and a link, notif
 
 test("Settings: the HoYoLAB card links with two cookies, and says so while the server has no key @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   await page.goto("/settings");
   const card = page.getByRole("article", { name: "HoYoLAB" });
@@ -67,7 +67,7 @@ test("Settings: the HoYoLAB card links with two cookies, and says so while the s
 
 test("Settings: the games you play, their server and whether they sleep, in one place @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
   await page.request.put(`/api/instances/${id}`, { data: { regionKey: "eu", sleeping: false } });

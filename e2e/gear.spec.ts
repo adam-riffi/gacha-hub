@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test("Gear: the inventory by crit value, adding a piece and equipping it, storage, the views @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   // Genshin alone has the artifact bag; removed again below, as the smoke journey adds Genshin through the library.
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "genshin" } })).json()) as { id: string };
@@ -38,7 +38,7 @@ test("Gear: the inventory by crit value, adding a piece and equipping it, storag
 
 test("Gear: a set is farmed from the Sets view (it lived on the Equipment tab) @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
   await page.goto(`/games/${id}/gear`);

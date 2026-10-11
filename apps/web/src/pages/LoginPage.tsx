@@ -26,15 +26,15 @@ export function LoginPage() {
               try {
                 await devLogin();
               } catch {
-                toast("Dev login failed — is the server running?", "err");
+                toast("Sign-in failed: is the server running?", "err");
               }
             }}
           >
-            Continue as Dev User
+            Continue
           </button>
         )}
         {!me?.oauth && !me?.devLogin && (
-          <p className="small">No sign-in method configured. Set Discord OAuth env vars or enable dev login.</p>
+          <p className="small">No sign-in set up: add the Discord OAuth variables (DEPLOY.md).</p>
         )}
       </div>
     </div>

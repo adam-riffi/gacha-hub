@@ -4,7 +4,7 @@ const iso = (days: number) => new Date(Date.now() + days * 86_400_000).toISOStri
 
 test("Tasks: farm today, goals with their steps, filtering, and an event goal claimed from its card @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   // HSR, not Genshin: the smoke journey adds Genshin through the library.
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
@@ -57,7 +57,7 @@ test("Tasks: farm today, goals with their steps, filtering, and an event goal cl
 
 test("Tasks: reminder rules across games, quiet hours, and the DM preview @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   await page.request.post("/api/instances", { data: { gameKey: "hsr" } });
 
@@ -81,7 +81,7 @@ test("Tasks: reminder rules across games, quiet hours, and the DM preview @smoke
 
 test("Tasks: the goal maker makes anything: a gameplay goal with a count, a checklist with its items, a character's build plan @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   await page.request.post("/api/instances", { data: { gameKey: "hsr" } });
   await page.goto("/");
@@ -121,7 +121,7 @@ test("Tasks: the goal maker makes anything: a gameplay goal with a count, a chec
 
 test("Tasks: a character goal shows its plan (each ascension, each talent), and a weapon's goal links under it @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
   // Plan farming lists the materials as the levels change: no Preview step.
@@ -154,7 +154,7 @@ test("Tasks: a character goal shows its plan (each ascension, each talent), and 
 
 test("Tasks: Farm today shows who it is for and the materials as icons; the game as an icon on the overview only @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "genshin" } })).json()) as { id: string };
   // Lisa's first talent level: Slime Condensate farms any day.
@@ -173,7 +173,7 @@ test("Tasks: Farm today shows who it is for and the materials as icons; the game
 
 test("Tasks: a goal shows its own unit as its icon and who it is for; the game as an icon on the overview only @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "genshin" } })).json()) as { id: string };
   // A set farmed for Arlecchino (Georges, 2026-10-11: "having Arlecchino's artifacts' icon is better").

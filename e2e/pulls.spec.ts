@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test("Pulls: what you have and what is coming, an event banner's status, pity and odds, logging a 5★ @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   // HSR, not Genshin: the smoke journey adds Genshin through the library, and
   // journeys share one database. The install call is idempotent.
@@ -60,7 +60,7 @@ test("Pulls: what you have and what is coming, an event banner's status, pity an
 
 test("Pulls: the savings planner plans each event banner's featured 5★ in order, worst case or on average @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
 
@@ -77,7 +77,7 @@ test("Pulls: the savings planner plans each event banner's featured 5★ in orde
 
 test("Pulls: the savings planner adds your wishlisted 5★ after the running banners @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
   await page.request.put(`/api/instances/${id}/wishlist`, { data: { kind: "character", catalogId: "1102", wished: true } });
@@ -90,7 +90,7 @@ test("Pulls: the savings planner adds your wishlisted 5★ after the running ban
 
 test("Pulls for Endfield: a 6★ is the top pull, and the Arsenal spends Arsenal Tickets", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "endfield" } })).json()) as { id: string };
   try {
@@ -111,7 +111,7 @@ test("Pulls for Endfield: a 6★ is the top pull, and the Arsenal spends Arsenal
 
 test("Pulls: a running banner's featured character opens its page @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
   const iso = (days: number) => new Date(Date.now() + days * 86_400_000).toISOString();
@@ -127,7 +127,7 @@ test("Pulls: a running banner's featured character opens its page @smoke", async
 
 test("Pulls: a logged 5★ is corrected from History, and Banner history shows your pulls on each banner with its characters @smoke", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
   const iso = (days: number) => new Date(Date.now() + days * 86_400_000).toISOString();
