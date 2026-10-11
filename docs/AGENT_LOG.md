@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r6/03-wuwa-talents · #240
+- Done: WuWa's skill descriptions. The importer gives each levelable skill the game's short text (`SkillResume`): its counts filled in from `SkillResumeNum` (fixed numbers, not level ones), input tokens in their PC wording, plurals by the number before them, tags dropped, a line per section. It also unswaps the Forte Circuit and Intro Skill: `SkillType` 5 is the Intro Skill and 6 the Forte Circuit (Chixia's Heroic Bullets hold her Thermobaric Bullets; Zani's "intro" text began "Forte Gauge"). The sheet opens them as Genshin's and Star Rail's.
+- Tests: written first: every resonator's skills have a short description with no tag or token left (Yangyang's Forte Circuit says she holds up to 3 Melodies). The test that pinned the swap now expects Chixia's Forte Circuit to be Heroic Bullets. `npm run check` passes.
+- Scope/decisions: the short text, as for Star Rail. A build's saved `forte` and `intro` levels keep their keys; only the names beside them move to the right skills.
+- Next: ZZZ's descriptions.
+
 ## 2026-10-11 · claude · stack/r6/02-hsr-talents · #239
 - Done: Star Rail's skill descriptions. The importer now fills each skill's description from Yatta's `descriptionSimple` (its short text, with no level numbers to fill in), stripped of colour tags; the regenerated catalog changes only those. The sheet's Traces open them the way Genshin's Talents do (#238). HANDOFF.md now says `main` is at #238 and names WuWa's and ZZZ's descriptions as what is left of that Later item.
 - Tests: written first: every Star Rail character's skills have a short description without colour tags (Silver Wolf's skill applies additional Weakness). `npm run check` passes: 589 tests and 69 journeys.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the journey sets Asta's build to Good from the Builds table and checks it through the API, then selects Arlan and Herta and owns both. `npm run check` passes: 559 tests and 41 journeys.
 - Scope/decisions: bulk actions call the existing routes once per unit; no new endpoint.
 - Next: Teams.
-
-## 2026-10-10 · claude · stack/ui/03-characters · #200
-- Done: Georges's Characters feedback. Every unit shows at once: no compact view, no Show more. The counts are filter buttons: All, Owned, Not owned, Wishlist, Perfect, Good, Building, Unbuilt. Cards show the weapon type and tint to their element: the name box in its colour, the art fading in from it, and the border lighting up on hover. The whole card opens the build, or a new unit page when there is none (`/games/:id/units/:catalogId`: facts, Own, Wishlist, Start a build, its builds and banners, dupes, plan farming). Every screen but Home now loads on first visit, so the initial JavaScript fell from 196.5 to 143.9 KB.
-- Tests: written first: the Characters journey checks that a 13th card shows with no Show more or Compact, that Kafka shows Nihility and an element colour, that her card opens her build, that Wishlist filters and unpresses, and that unowned Welt's card opens his page, where Own then Start a build opens the new build. The Compact steps went with the view. `npm run check` passes: 559 tests and 40 journeys.
-- Scope/decisions: element colours are one palette across games, light enough for dark text. The Owned and Build status selects gave way to the count buttons.
-- Next: the Builds view and several characters at once, then teams.

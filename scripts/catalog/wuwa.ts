@@ -25,7 +25,7 @@ type RoleInfo = {
 };
 type RoleBreach = { BreachGroupId: number; BreachLevel: number; MaxLevel: number; BreachConsume: KV[] | null };
 type SkillTreeNode = { Id: number; NodeGroup: number; NodeType: number; SkillId: number; Consume: KV[] | null; PropertyNodeTitle?: string };
-type Skill = { Id: number; SkillType: number; SkillName?: string; SkillLevelGroupId: number; MaxSkillLevel?: number };
+type Skill = { Id: number; SkillType: number; SkillName?: string; SkillLevelGroupId: number; MaxSkillLevel?: number; SkillResume?: string; SkillResumeNum?: string[] | null };
 type SkillLevel = { SkillLevelGroupId: number; SkillId: number; Consume: KV[] | null };
 type WeaponConf = { ItemId: number; WeaponName: string; QualityId: number; WeaponType: number; BreachId: number; Icon?: string; IconMiddle?: string };
 /** An Unreal texture path's file name ("/Game/…/T_X_UI.T_X_UI" → "T_X_UI"): the art key the manifest's sources take (ADR 0006). */
@@ -38,6 +38,22 @@ type ItemMainType = { Id: number; Name?: string; TypeName?: string };
 console.log("[catalog:wuwa] downloading tables (cached after first run)…");
 const mt = await fetchJson<Record<string, string>>(`${BASE}/TextMap/en/MultiText.json`, { cacheKey: "wuwa" });
 const text = (key: string | undefined | null) => (key ? (mt[key] ?? "") : "");
+/**
+ * A skill's short text: its {n} filled from SkillResumeNum (fixed counts, not level numbers),
+ * input tokens in their PC wording, plurals by the number before them, tags dropped, a line per section.
+ */
+const resume = (sk: Skill) =>
+  text(sk.SkillResume)
+    .replace(/\{(\d+)\}/g, (m, i: string) => sk.SkillResumeNum?.[Number(i)] ?? m)
+    .replace(/\{Cus:Ipt,[^}]*PC=([^\s}]+)[^}]*\}/g, "$1")
+    .replace(/\{Cus:Sap,S=([^\s}]+) P=([^\s}]+)[^}]*\}/g, (_m, one: string, many: string, at: number, all: string) =>
+      all.slice(0, at).match(/(\d+(?:\.\d+)?)\D*$/)?.[1] === "1" ? one : many,
+    )
+    .replace(/<[^>]+>/g, "")
+    .split("\n")
+    .map((l) => l.trim())
+    .filter(Boolean)
+    .join("\n");
 
 const [roles, breaches, tree, skills, skillLevels, weaponConfs, weaponBreaches, fetters, items, mainTypes] =
   await Promise.all([
@@ -56,7 +72,7 @@ const [roles, breaches, tree, skills, skillLevels, weaponConfs, weaponBreaches, 
 const ELEMENT: Record<number, string> = { 0: "Physical", 1: "Glacio", 2: "Fusion", 3: "Electro", 4: "Aero", 5: "Spectro", 6: "Havoc" };
 const WEAPON: Record<number, string> = { 1: "Broadblade", 2: "Sword", 3: "Pistols", 4: "Gauntlets", 5: "Rectifier" };
 /** Skill.SkillType → forte key, levelable skills only (types 4/11/12 are one-shot passives). */
-const SKILL_KEY: Record<number, string> = { 1: "basic", 2: "skill", 3: "liberation", 5: "forte", 6: "intro" };
+const SKILL_KEY: Record<number, string> = { 1: "basic", 2: "skill", 3: "liberation", 5: "intro", 6: "forte" };
 const SKILL_ORDER = ["basic", "skill", "forte", "liberation", "intro"];
 const SHELL_CREDIT = "2";
 
@@ -89,6 +105,7 @@ const characters: CatalogCharacter[] = playable.map((r) => {
 
   const costsByKey: Record<string, CostStep[]> = {};
   const skillNames: Record<string, string> = {};
+  const skillTexts: Record<string, string> = {};
   const forteNodes: { id: number; title: string; materials: { materialId: string; qty: number }[] }[] = [];
   for (const node of nodesByGroup.get(r.SkillTreeGroupId) ?? []) {
     const sk = node.SkillId ? skillById.get(node.SkillId) : undefined;
@@ -101,6 +118,7 @@ const characters: CatalogCharacter[] = playable.map((r) => {
       if (steps.length) {
         costsByKey[key] = steps;
         skillNames[key] = text(sk.SkillName);
+        skillTexts[key] = resume(sk);
       }
     } else {
       const m = mats(node.Consume);
@@ -120,7 +138,7 @@ const characters: CatalogCharacter[] = playable.map((r) => {
     icon: artKey(r.RoleHeadIconLarge) ?? r.RoleHeadIcon ?? r.Icon,
     splash: artKey(r.FormationRoleCard),
     ascension,
-    talents: { keys, costs: costsByKey.skill ?? costsByKey.basic ?? [], costsByKey, info: keys.flatMap((key) => (skillNames[key] ? [{ key, name: skillNames[key] }] : [])) },
+    talents: { keys, costs: costsByKey.skill ?? costsByKey.basic ?? [], costsByKey, info: keys.flatMap((key) => (skillNames[key] ? [{ key, name: skillNames[key], ...(skillTexts[key] ? { description: skillTexts[key] } : {}) }] : [])) },
     extra: { nickname: text(r.NickName) || null, skillNames, forteNodes },
   };
 });
