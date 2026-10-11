@@ -12,6 +12,8 @@ test("a game's Endgame tab: this cycle's rewards, a card per mode to type result
   await expect(page).toHaveURL(new RegExp(`/games/${id}/endgame$`));
 
   const assault = page.getByRole("region", { name: "Deadly Assault" });
+  // The cycle window gives its exact reset times, not only the days.
+  await expect(assault.getByRole("img", { name: /^Cycle / })).toContainText(/\d{2}:\d{2}[\s\S]*\d{2}:\d{2}/);
   await assault.getByRole("button", { name: "Update Deadly Assault" }).click();
   await assault.getByLabel("Stars", { exact: true }).fill("6");
   await assault.getByLabel("Polychrome", { exact: true }).fill("200");
