@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r7/06-art-sources · #249
+- Done: icons where materials and sets showed initials (Georges, round 4: his screenshot's "SG UD OO AR" were Genshin's Far-North Scions materials, missing on Enka). Genshin's materials now come from Yatta (529 of 536 icons, to Enka's 410). WuWa's materials and Sonata sets get a source at last (its game files on wuthery), their keys keeping the folder ("IconMout/T_IconMout_L_014_UI"); each Sonata set takes its own icon from `PhantomFetterGroup` (every `PhantomFetter` row carried the same placeholder). The guide's "decided against" line for WuWa art goes.
+- Tests: written first: Genshin's material URL is Yatta's; WuWa's material and Sonata URLs keep the folder; every WuWa material and set has such a key, each set its own icon. A follow-up test commit: Wrath of the Deep has no group row yet, so it keeps its fetter's icon. `npm run check` passes: 594 tests and 70 journeys.
+- Scope/decisions: Wuthery serves the folder `%2F`-encoded, so `communityArtUrl` keeps encoding keys whole (no path can be smuggled through a key). The art mirror will store such keys flat; it falls back to the community URL if R2 decodes them.
+- Next: endgame enemies as icons.
+
 ## 2026-10-11 · claude · stack/r7/05-card-weapon · #248
 - Done: on the Characters cards, the default build's weapon sits on the left of the coloured name card, its level and refinement on its icon (Georges, round 4: "add the weapons on the name card not under it"); the footer no longer holds it, and the name card's line leaves the refinement to the icon (`buildLine` takes `withWeapon`). WIREFRAMES.md G4 follows.
 - Tests: written first: Kafka's card shows her light cone's icon in the name card with 80 and S2 on it, none in the footer, and no S2 in the line. `npm run check` passes: 592 tests and 70 journeys.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the route keeps Amos' Bow at level 80, refinement 3 and two copies, and refuses level 999, refinement 0 and unknown keys; the Weapons journey owns a light cone, sets its level and superimposition (checked through the API and after a reload), sees Kafka · S2, wishlists and opens Farm. The old Characters Weapons test moved here. `npm run check` passes: 564 tests and 49 journeys.
 - Scope/decisions: two quick edits on a row keep each other (a draft per row while the save is in flight).
 - Next: the picker (a searchable list with icons).
-
-## 2026-10-11 · claude · stack/r3/03-characters · #209
-- Done: Georges's Characters notes. Element colours follow each game (`elementColor(gameKey, tag)` in the shared package): Endfield's Electric is yellow, ZZZ's Physical yellow and its Electric blue, WuWa's Havoc crimson. Element, weapon type and rarity filter as toggle chips (elements with their colour dot); Sort stays a list. In Select mode a click anywhere on a card selects it (the card is the checkbox's label) instead of opening it. Each card shows its default build's weapon: icon, level and refinement.
-- Tests: written first: every catalog element has a colour dark text reads on (4.5:1), and the hues match the games; the Characters journey filters by the Lightning chip, finds Kafka's light cone "Lv 80 · S2" on her card, and selects Arlan by clicking his card. `npm run check` passes: 563 tests and 49 journeys.
-- Scope/decisions: chips carry names and colour dots; real element and weapon icons wait for the art bucket (audit, Later).
-- Next: a Weapons screen.
