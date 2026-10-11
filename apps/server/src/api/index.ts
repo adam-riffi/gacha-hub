@@ -3,6 +3,7 @@ import { registerHealthRoutes } from "./health.js";
 import { registerGameRoutes } from "./games.js";
 import { registerCharacterRoutes } from "./characters.js";
 import { registerOwnershipRoutes } from "./ownership.js";
+import { registerWeaponRoutes } from "./weapons.js";
 import { registerPlanningRoutes } from "./planning.js";
 import { registerMaterialRoutes } from "./materials.js";
 import { registerTeamRoutes } from "./teams.js";
@@ -34,6 +35,7 @@ export async function registerApi(app: FastifyInstance) {
   await registerGameRoutes(app);
   await registerCharacterRoutes(app);
   await registerOwnershipRoutes(app);
+  await registerWeaponRoutes(app);
   await registerPlanningRoutes(app);
   await registerMaterialRoutes(app);
   await registerTeamRoutes(app);
