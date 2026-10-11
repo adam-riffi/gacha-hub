@@ -156,6 +156,8 @@ export function CalendarPage() {
       );
       const keep = (i: CalItem) =>
         !onlyWished ||
+        Boolean(i.event && wished.has(i.event.key)) ||
+        Boolean(i.banners?.some((b) => wished.has(b.key))) ||
         Boolean(i.banners?.some((b) => b.featured.some((f) => wished.has(f.catalogId)))) ||
         [...JSON.stringify(i.event?.effects ?? []).matchAll(/"catalogId":"([^"]+)"/g)].some((x) =>
           wished.has(x[1]!),

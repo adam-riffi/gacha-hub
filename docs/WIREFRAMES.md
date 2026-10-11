@@ -49,7 +49,7 @@ Picture: [`a3-tasks.png`](design/wireframes/a3-tasks.png) · static page: [`a3-t
 
 Picture: [`a4-calendar.png`](design/wireframes/a4-calendar.png) · static page: [`a4-calendar.html`](design/wireframes/a4-calendar.html)
 
-- Layers: banners, events and version updates on; endgame cycles and battle passes **off by default** (they live on the game hub). "Only what I wishlisted" trims further.
+- Layers: banners, events and version updates on; endgame cycles and battle passes **off by default** (they live on the game hub). "Only what I wishlisted" trims further; a selected event or banner has a **Wishlist** toggle (Georges, 2026-10-11: "how do I even wishlist an event?").
 - Timeline (default), Month or List; six weeks, paged by two weeks, also into the past; a today line.
 - Readability (Georges, 2026-10-10: "I can't see when a banner ends and the other one begins"): a tick for every day with weekends shaded; each bar shows its start and end dates, with a gap before the next phase. **Month:** a calendar of the month listing, each day, what starts (▶) and what ends (■, with the time); paged by month; the layers and the wishlist filter apply.
 - A selected banner's featured characters link to their pages.

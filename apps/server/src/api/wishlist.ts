@@ -17,8 +17,15 @@ export async function registerWishlistRoutes(app: FastifyInstance) {
     const gi = await loadInstance(req.user!.id, req.params.id);
     if (!gi) return reply.code(404).send({ error: "not_found" });
     const { kind, catalogId, wished } = setWishlistInput.parse(req.body);
-    const index = (await getCatalog(gameOrThrow(gi.gameKey)))?.index;
-    if (index && !(kind === "character" ? index.characters : index.weapons).has(catalogId)) return reply.code(404).send({ error: "unknown_catalog_id" });
+    if (kind === "event" || kind === "banner") {
+      // An event or a banner, by its key in this game.
+      const where = { gameKey_key: { gameKey: gi.gameKey, key: catalogId } };
+      const found = kind === "event" ? await prisma.event.findUnique({ where }) : await prisma.banner.findUnique({ where });
+      if (!found) return reply.code(404).send({ error: `unknown_${kind}` });
+    } else {
+      const index = (await getCatalog(gameOrThrow(gi.gameKey)))?.index;
+      if (index && !(kind === "character" ? index.characters : index.weapons).has(catalogId)) return reply.code(404).send({ error: "unknown_catalog_id" });
+    }
     const key = { gameInstanceId_kind_catalogId: { gameInstanceId: gi.id, kind, catalogId } };
     if (wished) await prisma.wishlistItem.upsert({ where: key, create: { gameInstanceId: gi.id, kind, catalogId }, update: {} });
     else await prisma.wishlistItem.deleteMany({ where: { gameInstanceId: gi.id, kind, catalogId } });

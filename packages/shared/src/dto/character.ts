@@ -26,9 +26,11 @@ export const characterDto = z.object({
 export type CharacterDto = z.infer<typeof characterDto>;
 
 /** A unit on the profile's wishlist (WIREFRAMES.md G4). */
-export const wishlistItemDto = z.object({ kind: z.enum(["character", "weapon"]), catalogId: z.string(), createdAt: isoDate });
+/** What a wishlist holds: units, and events or banners by their key (Georges, 2026-10-11). */
+export const wishlistKindSchema = z.enum(["character", "weapon", "event", "banner"]);
+export const wishlistItemDto = z.object({ kind: wishlistKindSchema, catalogId: z.string(), createdAt: isoDate });
 export type WishlistItemDto = z.infer<typeof wishlistItemDto>;
-export const setWishlistInput = z.object({ kind: z.enum(["character", "weapon"]), catalogId: catalogIdSchema, wished: z.boolean() });
+export const setWishlistInput = z.object({ kind: wishlistKindSchema, catalogId: catalogIdSchema, wished: z.boolean() });
 
 /** Lightweight listing shape. */
 export const characterSummaryDto = characterDto.pick({
