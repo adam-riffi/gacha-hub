@@ -8,12 +8,15 @@ import type { CSSProperties, MouseEvent, ReactNode } from "react";
  */
 export function GraphPanel({
   title,
+  label,
   head,
   className = "",
   style,
   children,
 }: {
   title?: string;
+  /** Names the panel as a region, for screen readers. */
+  label?: string;
   /** What sits in the header instead of, or beside, the title (a period switch, a legend). */
   head?: ReactNode;
   className?: string;
@@ -32,7 +35,7 @@ export function GraphPanel({
     e.currentTarget.style.setProperty("--rx", "0deg");
   };
   return (
-    <section className={`graph ${className}`} style={style}>
+    <section className={`graph ${className}`} style={style} aria-label={label}>
       <div className="ph">
         {title && <h3>{title}</h3>}
         {head}

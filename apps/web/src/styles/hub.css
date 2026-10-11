@@ -146,50 +146,7 @@ label.act-row { margin: 0; cursor: pointer; color: var(--text); font: 400 15px/1
 }
 
 /* A game's Overview (WIREFRAMES.md G0; Georges's designs, 2026-10-11): small cards, three to a row. */
-.ov-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; align-items: stretch; }
-.ov-card { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
-.ov-card.is-wide { grid-column: span 2; }
-.ov-card.is-full { grid-column: 1 / -1; }
-.ov-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-.ov-head h3 { margin: 0; }
-.ov-head h3 a { color: inherit; text-decoration: none; }
-.ov-head h3 a:hover { color: var(--accent); }
-.ov-big { font: 600 48px/1 var(--font-display); font-variant-numeric: tabular-nums; }
-.ov-big small { font-size: 22px; color: var(--text-muted); }
-.ov-rows { display: grid; gap: 6px; margin: 0; }
-.ov-rows > div { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-.ov-rows dt { color: var(--text-muted); }
-.ov-rows dd { margin: 0; font-family: var(--font-mono); white-space: nowrap; }
-.ov-hot { color: var(--accent); }
-.ov-arrows { display: inline-flex; gap: 4px; }
-.ov-phase { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-.ov-units { display: inline-flex; align-items: center; gap: 4px; min-width: 0; }
-.ov-units .gicon { width: 36px; height: 36px; font-size: 10px; }
 /* A recurring task's box, ticked in place (the designs' squares). */
-.ov-tick { width: 16px; height: 16px; margin: 0; accent-color: var(--paper); cursor: pointer; }
-.ov-scroll { max-height: 220px; overflow-y: auto; }
-.ov-table { width: 100%; }
-.ov-table th { font-size: 12px; font-weight: 400; color: var(--text-muted); text-align: left; }
-.ov-table td { padding: 6px 8px 6px 0; vertical-align: middle; }
-.ov-unit { display: inline-flex; align-items: center; gap: 8px; color: var(--text); }
-.ov-unit .gicon { width: 28px; height: 28px; font-size: 9px; flex: none; }
-.ov-squares { display: inline-flex; gap: 4px; }
-.ov-squares > i { width: 12px; height: 14px; border: 1px solid var(--text-muted); }
-.ov-squares > i.on { background: var(--paper); border-color: var(--paper); }
-.ov-goals { display: grid; grid-template-columns: 120px minmax(0, 1fr); align-items: center; gap: 18px; }
-.ov-ring { width: 120px; height: 120px; }
-.ov-ring circle { fill: none; stroke-width: 10; }
-.ov-ring-track { stroke: var(--surface-3); }
-.ov-ring-fill { stroke: var(--paper); }
-.ov-ring text { fill: var(--text); font: 600 18px var(--font-display); }
-.ov-goals .ov-table td a { color: var(--text); }
-.ov-backlog { display: flex; align-items: flex-end; gap: 16px; }
-.ov-spark { flex: 1; height: 40px; }
-.ov-spark polyline { fill: none; stroke: var(--text-muted); stroke-width: 1.5; }
-.ov-own { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 18px; }
-.ov-own-cell { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin: 0; }
-.ov-own-value { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); }
-.ov-own-value input { width: 96px; }
 /* A rotating mode's enemies (Georges, 2026-10-11): each stage, each half, its weaknesses as element dots. */
 .eg-enemies { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--surface-3); }
 .eg-enemies ul { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 8px; }
@@ -202,7 +159,3 @@ label.act-row { margin: 0; cursor: pointer; color: var(--text); font: 400 15px/1
 .eg-weak { display: inline-flex; gap: 4px; }
 .eg-weak > i { width: 10px; height: 10px; border-radius: 50%; }
 /* A counted daily's steps (the designs' squares): ticked up to the one clicked. */
-.ov-steps { display: inline-flex; gap: 4px; }
-.ov-step { width: 14px; height: 16px; padding: 0; background: transparent; border: 1px solid var(--text-muted); cursor: pointer; }
-.ov-step[aria-pressed="true"] { background: var(--paper); border-color: var(--paper); }
-.ov-count input { width: 72px; }

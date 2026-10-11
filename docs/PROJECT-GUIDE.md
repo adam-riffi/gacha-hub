@@ -304,7 +304,9 @@ The screenshots come from the local dev build (dev user, SQLite) on 2026-10-10, 
 - **Endgame · next resets.**
 - **Expiring soon.**
 
-**A game picked in the top strip** shows that game's dashboard instead (G0, from Georges's six designs), each card linking to its tab:
+![Home with a game picked](screens/02-home-game.jpg)
+
+**A game picked in the top strip** shows that game's dashboard instead (G0, from Georges's six designs), drawn with Home's own pieces (its ring, tiles, chips, the backlog chart and the banner carousel), each card linking to its tab:
 - **Pulls:** what the currencies and tickets make, then the pity of each banner (50/50 or guaranteed; Endfield's featured guarantee toward its 120-pull spark).
 - **Banners:** Home's carousel, for this game.
 - **Today and the weekly card:** each default task ticked in place, a box per step for counted ones (four commissions, three weekly bosses) and a number past eight (36 Nightmare Nests); + adds a default the profile lacks.

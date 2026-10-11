@@ -1,7 +1,8 @@
-import { arcPath, dayOf, percent } from "@gacha/shared";
+import { dayOf } from "@gacha/shared";
 import type { HomeCarousel } from "../../lib/carousel";
 import type { RosterEntry } from "../../lib/roster";
 import { CarouselCard } from "../Carousel";
+import { Ring } from "../charts/Ring";
 import { Countdown } from "../ui";
 
 /**
@@ -22,7 +23,6 @@ export function DailiesCard({ roster, c, day = null }: { roster: RosterEntry[]; 
       : [];
   const done = tiles.reduce((s, [, t]) => s + (t?.done ?? 0), 0);
   const total = tiles.reduce((s, [, t]) => s + (t?.total ?? 0), 0);
-  const raw = total > 0 ? (done / total) * 100 : 0;
   return (
     <CarouselCard
       title="Dailies & weeklies"
@@ -52,21 +52,7 @@ export function DailiesCard({ roster, c, day = null }: { roster: RosterEntry[]; 
             )}
           </div>
           <div className="dailies-row">
-            <div className="dailies-gauge">
-              <svg viewBox="0 0 140 140" width="176" height="176" role="img" aria-label={`${g.name}: ${done} of ${total} recurring items done`} style={{ display: "block" }}>
-                <circle cx="70" cy="70" r="67" className="gl dash" />
-                <circle cx="70" cy="70" r="56" style={{ fill: "none", stroke: "var(--surface-3)", strokeWidth: 14 }} />
-                <path d={arcPath(70, 70, 56, raw)} transform="translate(4 4)" style={{ fill: "none", stroke: "var(--ext)", strokeWidth: 14 }} />
-                <path d={arcPath(70, 70, 56, raw)} style={{ fill: "none", stroke: "var(--accent)", strokeWidth: 14 }} />
-                <circle cx="70" cy="70" r="44" className="gl" />
-              </svg>
-              <div className="gauge-figure">
-                <div className="cd gauge-small">
-                  {percent(done, total)}
-                  <span className="mu">%</span>
-                </div>
-              </div>
-            </div>
+            <Ring done={done} total={total} label={`${g.name}: ${done} of ${total} recurring items done`} />
             <div className="dailies-kpis">
               {tiles.map(([label, t]) => (
                 <div className="kpi" key={label}>

@@ -68,7 +68,7 @@ function pullSeries(games: DashGame[], period: Period, now: Date) {
  * Open goals from the day records, ending on `now`: each of the last 10 days,
  * or the last 8 weeks at their end. The last point is live unless `openNow` is null (a past day).
  */
-function backlogSeries(games: DashGame[], period: Period, openNow: number | null, now: Date) {
+export function backlogSeries(games: DashGame[], period: Period, openNow: number | null, now: Date) {
   const [n, step] = period === "daily" ? [10, 1] : [8, 7];
   const days = Array.from({ length: n }, (_, k) => daysBefore(now, (n - 1 - k) * step));
   const values = days.map(() => 0);

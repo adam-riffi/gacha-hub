@@ -44,7 +44,10 @@ test("the Overview's second row: today's dailies ticked in place, the pass and t
   await expect(page.getByRole("region", { name: "Today" }).getByRole("checkbox", { name: "Scratch Card" })).toBeChecked({ checked: !was });
   await page.getByRole("region", { name: "Today" }).getByRole("checkbox", { name: "Scratch Card" }).click();
 
+  // Drawn with Home's pieces (round 4): the ring over today's dailies, the pass's level as a tile over its segmented bar.
+  await expect(page.getByRole("region", { name: "Today" }).getByRole("img", { name: /of \d+ dailies done/ })).toBeVisible();
   await expect(page.getByRole("region", { name: /New Eridu City Fund and weekly/ })).toContainText("Level");
+  await expect(page.getByRole("region", { name: /New Eridu City Fund and weekly/ }).getByRole("img", { name: /New Eridu City Fund level \d+ of \d+/ })).toBeVisible();
   const stamina = page.getByRole("region", { name: "Battery Charge" });
   await expect(stamina.getByTestId("stamina")).toHaveText("120 / 240");
   await expect(stamina).toContainText("Backup Battery Charge");
@@ -86,7 +89,8 @@ test("the Overview's last row: each goal's progress and their average, and the o
   const goals = page.getByRole("region", { name: "Goals" });
   await expect(goals.getByRole("row", { name: /E2E overview goal/ })).toContainText("40%");
   await expect(goals.getByRole("img", { name: /% done on average/ })).toBeVisible();
-  await expect(page.getByRole("region", { name: "Backlog" }).getByTestId("open")).toHaveText(/^\d+$/);
+  // Home's backlog chart, for this game.
+  await expect(page.getByRole("region", { name: "Backlog" }).getByRole("img", { name: /Open goals over time, latest \d+/ })).toBeVisible();
   await page.request.delete(`/api/tasks/${goal.id}`);
 });
 

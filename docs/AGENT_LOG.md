@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r7/02-dashboard-style · #245
+- Done: a game's dashboard drawn with Home's own pieces (Georges, round 4: "in the style of the current dashboard"). Each design card in Home's chrome: the pulls figure and rows; pity as rows with a bar toward hard pity and Home's chips ("guaranteed", the spark's count); Home's ring over today's dailies beside their boxes and the reset countdown; the pass as KPI tiles (its level over the segmented bar, this week's EXP); stamina's figure, its bar and Home's "full" chip; Home's tables for builds and the endgame cycle (resets as chips); the goals' average on the ring, each goal with its bar; Home's backlog chart for this game. The ring moved out of the Dailies card into `charts/Ring.tsx`; the Overview's `.ov-*` styles gave way to `.gd-*` ones. The guide shows the dashboard (`docs/screens/02-home-game.jpg`).
+- Tests: written first: the dashboard shows the ring over today's dailies, the pass's segmented bar and the backlog chart. `npm run check` passes: 592 tests and 69 journeys.
+- Scope/decisions: the designs give the cards and their order, Home gives their look; no new chart was drawn.
+- Next: the strip keeps the tab when switching games.
+
 ## 2026-10-11 · claude · stack/r7/01-dashboard-home · #244
 - Done: Georges's round 4 begins (plan: `docs/AUDIT-2026-10-11-round4.md`). A picked game's dashboard (his six designs) is now Home with that game picked in the strip, not a hub tab: the Overview's cards moved to `components/home/GameDashboard.tsx`, its banners are Home's carousel for that game, and it loads only when a game is picked. The hub opens on Activities again; `/games/:id/overview` and `/activities` land there.
 - Tests: written first: the dashboard specs open `/?game=<key>`; the hub's tabs start with Activities; the all-games Home specs (panels, heatmap, pinned day) run on Home itself, each game found by its own row. A follow-up test commit: the carousel rotates through every Star Rail banner other journeys made, so the dashboard test checks the game, not one banner. `npm run check` passes: 592 tests and 69 journeys; initial JavaScript 146.5 KB.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the admin route's totals, users, games and feeds; the Settings journey moves Star Rail to America and puts it to sleep through the Games table; the Admin journey reads the overview, finds Import feed on Genshin and Dev User in the users, and filters the audit log. `npm run check` passes: 560 tests and 47 journeys.
 - Scope/decisions: the overview reads existing tables; no schema change.
 - Next: Georges's secrets and real data; a deploy when he asks.
-
-## 2026-10-11 · claude · stack/ui/08-cleanup · #205
-- Done: the leftovers Georges named are gone: ten "Manual" tags (hub header, Activities, the sheet, Endgame, Gear, Profile) and the "By cadence" label. Synced data still says AUTO; Settings keeps NTE's "Manual" status, which explains why. Navigation: a Pulls banner card names every running banner of its kind (Genshin runs two character banners at once) and links each featured character to its page.
-- Tests: written first: a journey visits Activities, Endgame, Gear, Profile and a sheet and finds no Manual tag or By cadence; another opens Kafka's page from a running banner's card on Pulls. The hub header test now checks the tag is gone. `npm run check` passes: 559 tests and 45 journeys.
-- Scope/decisions: WIREFRAMES' convention changes: only synced data is labelled.
-- Next: Settings and Admin.
