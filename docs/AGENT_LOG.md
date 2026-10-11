@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r4/00-gicon · #220
+- Done: a regression from #217. The icon tile's base rules (`.gicon`, `img.gicon`, `.gicon-ph`: a block with its initials centred, a border and a background) sat inside the old Genshin sheet's CSS block that #217 removed, so every icon without its image lost its tile and showed bare initials in the corner. They are back, in `styles.css` where they were.
+- Tests: written first: the visual journey checks that a game's placeholder on the Games page is a centred grid with a border. `npm run check` passes: 570 tests and 54 journeys.
+- Scope/decisions: #217's check found classes used only by the deleted files; this rule's class is used everywhere, so the block should have been split. Lesson kept in HANDOFF notes: when deleting a CSS section, check each rule, not only the section's name.
+- Next: the reminder's order and the planner's days.
+
 ## 2026-10-11 · claude · stack/r4/01-plus · #219
 - Done: Georges's third round begins; its plan is `docs/AUDIT-2026-10-11-round3.md` (his list, and this round's audit of things that are not explicit: what the app can show, it shows as its icon). First item, "remove top-up and change it to a plus sign": the simulation field is a "+" before the amount and its currency, the curve's marker reads "+10", and the odds row and headline read "+10". No "Top-up" word is left on screen.
 - Tests: written first: the Pulls journey adds an amount through "Amount to add" and finds "+10 ·" in the legend and no "top-up" on the page; the copy journey keeps "Top-up" off every screen. `npm run check` passes: 570 tests and 53 journeys.
@@ -275,15 +281,3 @@ Entry format:
 - Tests: written first: artJobs covers every ZZZ agent's face and full art, W-Engine, disc set and material; the CSP host. The "no art source" test uses NTE now. `npm run check` passes: 522 tests and 40 journeys.
 - Scope/decisions: the full art is large (about 350 KB); the mirror converts it but does not resize it.
 - Next: Enka for ZZZ.
-
-## 2026-10-10 · claude · stack/zzz/01-catalog · #181
-- Done: a ZZZ catalog from the Hakushin data. It is the dataset behind hakush.in, back under `static.nanoka.cc`, and only its live version is read. It holds:
-  - 60 agents, each with promotions to 60, five skill tables (basic, dodge, assist, special, chain) to 12, and Mindscapes;
-  - 100 W-Engines with promotions to 60;
-  - 30 Drive Disc sets;
-  - 65 materials.
-
-  The build doc keeps `dodge` and `assist`. ZZZ's hub gains Drive discs and Planner, and its Characters list shows all 60 agents. NOTICE, DESIGN §4, README, the ZZZ sheet and the guide are updated; `npm run catalog:zzz` is new.
-- Tests: written first: catalog coverage (Ellen's promotions and skills, W-Engine caps, disc sets, every cost referencing a material, the doc's skills). The Library journey now expects ZZZ's character count. The no-catalog planning test uses NTE, now the only game without a catalog. `npm run check` passes: 521 tests and 40 journeys.
-- Scope/decisions: the data has no licence file; it is used with credit and removed on request, like Yatta and Enka. Core skills have no cost table and are left out.
-- Next: ZZZ art from the Hakushin assets, then Enka for ZZZ.
