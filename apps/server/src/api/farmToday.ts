@@ -1,5 +1,5 @@
 import type { FastifyInstance } from "fastify";
-import { farmToday, farmTodayDto, gameWeekday, getGame } from "@gacha/shared";
+import { farmToday, farmTodayDto, gameWeekday, getGame, type FarmUnit } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
 import { requireUser } from "../auth/plugin.js";
 import { getCatalog, regionForInstance } from "./util.js";
@@ -27,12 +27,16 @@ export async function registerFarmTodayRoutes(app: FastifyInstance) {
       const mine = tasks.filter((t) => t.row.refId === gi.id);
       const goals = mine
         .filter((t) => t.row.type === "goal" && !t.row.parentId && !t.row.materialId)
-        .map((p) => ({
-          owner: p.row.title.replace(/^Farm /, ""),
-          materials: mine
-            .filter((c) => c.row.parentId === p.row.id && c.row.materialId)
-            .map((c) => ({ material: materials?.get(c.row.materialId!) ?? { name: c.row.materialId!, category: "" }, missing: (c.row.target ?? 0) - c.dto.progress })),
-        }));
+        .map((p) => {
+          const origin = p.row.origin as { kind?: FarmUnit["kind"]; catalogId?: string } | null;
+          return {
+            owner: p.row.title.replace(/^Farm /, ""),
+            unit: origin?.kind && origin.catalogId ? { kind: origin.kind, catalogId: origin.catalogId } : null,
+            materials: mine
+              .filter((c) => c.row.parentId === p.row.id && c.row.materialId)
+              .map((c) => ({ material: materials?.get(c.row.materialId!) ?? { id: c.row.materialId!, name: c.row.materialId!, category: "" }, missing: (c.row.target ?? 0) - c.dto.progress })),
+          };
+        });
       const weekly = mine.filter((t) => t.row.type === "recurring" && t.row.cadence === "weekly" && !t.dto.doneThisCycle);
       const lines = [
         ...farmToday(goals, weekday),

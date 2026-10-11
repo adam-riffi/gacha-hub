@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r4/04-farm · #223
+- Done: Georges's "the Farm today card has way too much text … I could just see the Lisa icon and the talent book icon". Each Farm today line now says, besides its words, who it is for (a goal's origin), its material ids and their days; the card shows them as icons: the unit, up to four materials then "+N", then "Wed Sat" or "any day". The game is a small tile on the overview and absent on a game's own Tasks; the sentence stays on hover. The Planner's own Farm today shows each domain's materials as icons too.
+- Tests: written first: `farmToday` returns the unit, materials and days (Sunday left out beside other days); the route returns them for a goal with an origin; the Tasks journeys find Lisa's and Slime Condensate's icons on Genshin's Tasks with no game name, and Genshin's tile on the overview; the first Tasks journey reads the material's icon instead of the old sentence. `npm run check` passes: 571 tests and 57 journeys.
+- Scope/decisions: the DTO keeps `text` (DMs and hover); `unit`, `materials` and `days` default to empty, so weekly lines need nothing new. `UnitIcon` and `MaterialIcons` join `CatalogIcon`.
+- Next: goal icons.
+
 ## 2026-10-11 · claude · stack/r4/03-days · #222
 - Done: Georges's "on planner, 'day' for farming isn't readable … just write the first 3 letters like Mon Tue Wed separated by a space". A material's days read "Wed Sat", today's in the accent; Sunday, which opens every domain, is left out beside a material's own days. This round's audit adds icons: each Planner goal shows its unit's icon, each material its own (`CatalogIcon`, a small wrapper over `GameIcon` for any catalog entry).
 - Tests: written first: the Planner journey plans Lisa's first talent level and finds "Wed Sat" for Teachings of Ballad, Lisa's icon on her goal and the book's icon on its row; the first journey reads a material's name from its field, since the cell now holds the icon too. `npm run check` passes: 571 tests and 55 journeys.
@@ -264,14 +270,3 @@ Entry format:
 - Tests: written first: Amber's skill order in the catalog, and the showcase's talent levels. The fixture already had skill levels, which are now used. `npm run check` passes: 528 tests and 40 journeys.
 - Scope/decisions: the Traveler has one skill order per element, so it keeps manual talents.
 - Next: Stygian Onslaught in the chronicle; the KPI target template.
-
-## 2026-10-10 · claude · stack/catalog/02-talent-names · #184
-- Done: talent names in the catalogs (`talents.info`), which the sheet shows instead of the keys:
-  - Genshin from genshin-db's combat talents (Amber: Sharpshooter, Explosive Puppet, Fiery Rain);
-  - Star Rail from Yatta's main traces (Kafka: Midnight Tumult…);
-  - WuWa from the skill names its importer already read.
-
-  `info[].description` is optional now; names are what the sheet needs. A talent's controls stay on one line beside a long name.
-- Tests: written first: Amber's, Kafka's and Chixia's names. Every Genshin character has names but the Traveler, whose talents change with the element. `npm run check` passes: 525 tests and 40 journeys.
-- Scope/decisions: talent descriptions are left out to keep the catalogs small. ZZZ's skill kinds are already readable (basic, dodge…).
-- Next: Genshin talent levels from Enka.

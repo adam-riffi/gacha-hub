@@ -38,7 +38,7 @@ Picture: [`a2-games-library.png`](design/wireframes/a2-games-library.png) · sta
 
 Picture: [`a3-tasks.png`](design/wireframes/a3-tasks.png) · static page: [`a3-tasks.html`](design/wireframes/a3-tasks.html)
 
-- **Farm today:** per game, for the current game day: talent books open today and for whom, weekly bosses left, any-day farms.
+- **Farm today:** per game, for the current game day, as icons (Georges, 2026-10-11: "I could just see the Lisa icon and the talent book icon"): who it is for, the materials (the first four, then "+N"), their days ("Wed Sat") or "any day"; weekly bosses left. The game is an icon on the overview, and absent on a game's own Tasks; the sentence stays on hover.
 - **Goals:** created by Plan farming, by an event reward on the calendar, or by hand. Each shows its game, source, progress (from material stock or event stages), priority and notify. An expanded goal lists its steps (ascension, talents, weapon) with a TODAY tag where farming is possible today.
 - **The goal maker** (New goal here, "+ New goal" on Home's Goals panel; Georges, 2026-10-10: "I should be able to create anything from that screen"): Gameplay (finish the story, do X quests or events: a title and how many times), Checklist (its items, one per line), Character build (pick the unit, then plan its levels and talents in place) or Weapon (pick it, then plan its levels).
 - **A goal opens on a click** (Georges, 2026-10-11): a plan's steps (its level range with each ascension it crosses, each talent's range by name), its materials, the goals linked under it (Unlink), and **Link to** another goal of the game (a weapon's farm under its character's). Plan farming lists the materials as the levels change; there is no Preview step.
@@ -161,7 +161,7 @@ Picture: [`g7-planner.png`](design/wireframes/g7-planner.png) · static page: [`
 
 - Goals list with the selected goal highlighted, each with its unit's icon.
 - Materials for the selected goal or all goals, each with its icon: source, the days it farms written out ("Wed Sat", today in the accent; Sunday, open to all, left out beside other days; Georges, 2026-10-11), have, need, missing.
-- Stamina estimate in days; **Farm today** across goals, with Generate tasks.
+- Stamina estimate in days; **Farm today** across goals, each domain with its materials as icons, with Generate tasks.
 
 ### G8 · Profile
 

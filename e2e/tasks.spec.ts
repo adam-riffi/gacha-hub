@@ -27,7 +27,11 @@ test("Tasks: farm today, goals with their steps, filtering, and an event goal cl
 
   await page.goto("/tasks?game=hsr");
   await expect(page.getByRole("heading", { name: "Tasks and reminders" })).toBeVisible();
-  await expect(page.getByRole("region", { name: "Farm today" }).getByText("Star Rail · materials for Asta (any day)")).toBeVisible();
+  // Farm today as icons: the material Asta needs, any day; no game name on a game's own page.
+  const farmToday = page.getByRole("region", { name: "Farm today" });
+  await expect(farmToday.getByRole("img", { name: "Lifeless Blade" }).first()).toBeVisible();
+  await expect(farmToday).toContainText("any day");
+  await expect(farmToday).not.toContainText("Star Rail");
 
   const goals = page.getByRole("region", { name: "Goals" });
   const event = goals.getByRole("article", { name: "E2E tasks reward" });
@@ -146,4 +150,23 @@ test("Tasks: a character goal shows its plan (each ascension, each talent), and 
   await expect(goals.getByRole("article", { name: "E2E farm a light cone" })).toHaveCount(0);
   await expect(clara).toContainText("E2E farm a light cone");
   await page.request.delete(`/api/tasks/${weapon.id}`);
+});
+
+test("Tasks: Farm today shows who it is for and the materials as icons; the game as an icon on the overview only @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "genshin" } })).json()) as { id: string };
+  // Lisa's first talent level: Slime Condensate farms any day.
+  expect((await page.request.post(`/api/instances/${id}/plans/generate`, { data: { kind: "character", catalogId: "10000006", talents: { normal: { from: 1, to: 2 } } } })).ok()).toBe(true);
+
+  await page.goto("/tasks?game=genshin");
+  const farm = page.getByRole("region", { name: "Farm today" });
+  await expect(farm.getByRole("img", { name: "Lisa" }).first()).toBeVisible();
+  await expect(farm.getByRole("img", { name: "Slime Condensate" }).first()).toBeVisible();
+  await expect(farm).not.toContainText("Genshin");
+  await expect(farm).not.toContainText("for Lisa");
+
+  await page.goto("/tasks");
+  await expect(page.getByRole("region", { name: "Farm today" }).getByRole("img", { name: "Genshin Impact" }).first()).toBeVisible();
 });

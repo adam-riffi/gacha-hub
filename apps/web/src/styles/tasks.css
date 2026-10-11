@@ -19,7 +19,11 @@
 .tk-new { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; margin-bottom: 24px; }
 .tk-new-title { flex: 2; min-width: 200px; }
 .tk-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-.tk-chip { padding: 5px 10px; border: 1px solid var(--hairline); color: var(--text); font: 400 12px/1.2 var(--font-mono); }
+.tk-chip { display: inline-flex; align-items: center; gap: 8px; padding: 5px 10px; border: 1px solid var(--hairline); color: var(--text); font: 400 12px/1.2 var(--font-mono); }
+.tk-chip .gicon { width: 32px; height: 32px; font-size: 10px; flex: none; }
+.tk-chip .tk-chip-game { width: 20px; height: 20px; font-size: 8px; }
+.mat-icons { display: inline-flex; align-items: center; gap: 3px; }
+.mat-icons .gicon { width: 26px; height: 26px; font-size: 8px; }
 .tk-chip.is-weekly { color: var(--text-muted); }
 .tk-card { margin-top: 10px; padding: 12px 14px; border: 1px solid var(--edge); background: var(--surface-2); }
 .tk-card.is-open { border-color: var(--hairline-strong); }

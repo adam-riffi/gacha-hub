@@ -108,7 +108,16 @@ export const farmTodayDto = z.array(
     instanceId: idSchema,
     /** ISO weekday of the profile's game day (1 = Mon … 7 = Sun). */
     weekday: z.number().int().min(1).max(7),
-    lines: z.array(z.object({ kind: z.enum(["domain", "anyday", "weekly"]), text: z.string() })),
+    lines: z.array(
+      z.object({
+        kind: z.enum(["domain", "anyday", "weekly"]),
+        text: z.string(),
+        /** Who it is for, which materials and their days: what the card shows as icons. */
+        unit: z.object({ kind: z.enum(["character", "weapon", "gear"]), catalogId: z.string() }).nullable().default(null),
+        materials: z.array(z.string()).default([]),
+        days: z.array(z.number().int().min(1).max(7)).default([]),
+      }),
+    ),
   }),
 );
 export type FarmTodayDto = z.infer<typeof farmTodayDto>;
