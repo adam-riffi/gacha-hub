@@ -170,7 +170,7 @@ One screen for every game (Georges, round 4: the screens were inconsistent):
 
 Picture: [`g7-planner.png`](design/wireframes/g7-planner.png) · static page: [`g7-planner.html`](design/wireframes/g7-planner.html)
 
-- Goals list with the selected goal highlighted, each with its unit's icon.
+- Goals list with the selected goal highlighted: each the Tasks goal card (A3; Georges, round 4), its unit's icon, priority, notify, its plan's steps and Link to another goal; a click also picks it for the materials.
 - Materials for the selected goal or all goals, each with its icon: source, the days it farms written out ("Wed Sat", today in the accent; Sunday, open to all, left out beside other days; Georges, 2026-10-11), have, need, missing.
 - Stamina estimate in days; **Farm today** across goals, each domain with its materials as icons, with Generate tasks.
 

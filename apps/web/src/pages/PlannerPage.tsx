@@ -9,20 +9,12 @@ import { useToast } from "../lib/toast";
 import { GameTabs } from "../components/GameTabs";
 import { Segmented } from "../components/ui";
 import { CatalogIcon, MaterialIcons } from "../components/CatalogIcon";
-import type { InstanceDetail, TaskItem } from "../lib/types";
+import { GoalCard } from "../components/tasks/GoalCard";
+import type { InstanceDetail, InstanceListItem, TaskItem } from "../lib/types";
 
 const DAY = ["", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const WEEKDAY = ["", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 const NUM = new Intl.NumberFormat("en-GB");
-type Range = { from: number; to: number };
-
-/** "Lv 1 → 90 · talents 1/1/1 → 9/9/9" from a plan goal's origin. */
-function planned(origin: unknown) {
-  const goal = (origin as { goal?: { level?: Range; talents?: Record<string, Range> } } | null)?.goal;
-  if (!goal) return "";
-  const t = Object.values(goal.talents ?? {});
-  return [goal.level && `Lv ${goal.level.from} → ${goal.level.to}`, t.length > 0 && `talents ${t.map((r) => r.from).join("/")} → ${t.map((r) => r.to).join("/")}`].filter(Boolean).join(" · ");
-}
 
 /**
  * A game's Planner (WIREFRAMES.md G7): the farming goals with their progress;
@@ -38,6 +30,7 @@ export function PlannerPage() {
   const [scope, setScope] = useState<"goal" | "all">("goal");
   const instance = useQuery({ queryKey: ["instance", id], queryFn: () => api.get<InstanceDetail>(`/api/instances/${id}`) });
   const tasks = useQuery({ queryKey: ["tasks"], queryFn: () => api.get<TaskItem[]>("/api/tasks") });
+  const instances = useQuery({ queryKey: ["instances"], queryFn: () => api.get<InstanceListItem[]>("/api/instances") });
   const stock = useQuery({ queryKey: ["stock", id], queryFn: () => api.get<MaterialStockDto[]>(`/api/instances/${id}/materials`) });
   const { index } = useCatalog(instance.data?.gameKey);
   const setQty = useMutation({
@@ -48,7 +41,8 @@ export function PlannerPage() {
 
   const game = instance.data && getGame(instance.data.gameKey);
   if (instance.isError || tasks.isError) return <LoadError what="The planner" retry={() => Promise.all([instance.refetch(), tasks.refetch()])} />;
-  if (!instance.data || !tasks.data || !game) return <div className="mu">Loading…</div>;
+  const gi = instances.data?.find((i) => i.id === id);
+  if (!instance.data || !tasks.data || !game || !gi) return <div className="mu">Loading…</div>;
 
   const region = game.regions.find((r) => r.key === instance.data.regionKey) ?? game.regions[0]!;
   const weekday = gameWeekday(region, new Date());
@@ -92,28 +86,20 @@ export function PlannerPage() {
             <Link className="btn" to={`/games/${id}/characters`}>New goal</Link>
           </div>
           {goals.length === 0 && <p className="mu">No farming goal yet: plan one from a character's sheet.</p>}
-          {goals.map((g) => {
-            const kids = kidsOf(g);
-            const cid = (g.origin as TaskOrigin | null)?.catalogId;
-            const unit = cid ? (index?.characters.get(cid) ?? index?.weapons.get(cid)) : undefined;
-            const got = kids.filter((k) => (have.get(k.materialId!) ?? 0) >= (k.target ?? 0)).length;
-            return (
-              <button key={g.id} type="button" className={`pn-goal ${g.id === current?.id ? "is-on" : ""}`} aria-pressed={g.id === current?.id} onClick={() => setPicked(g.id)}>
-                <span className="spread">
-                  <span className="pn-goal-name">
-                    {unit && <CatalogIcon gameKey={game.key} kind={index?.characters.has(cid!) ? "character" : "weapon"} icon={unit.icon} name={unit.name} tag={"tag" in unit ? unit.tag : undefined} />}
-                    <strong>{g.title}</strong>
-                  </span>
-                  <span className="badge">{g.backlog ? "backlog" : g.priority}</span>
-                </span>
-                <span className="mn mu">{planned(g.origin)}</span>
-                <span className="pn-bar">
-                  <span className="tk-meter"><span style={{ width: `${kids.length ? (got / kids.length) * 100 : 0}%` }} /></span>
-                  <span className="mn">{got} / {kids.length}</span>
-                </span>
-              </button>
-            );
-          })}
+          {/* The Tasks goal card (Georges, round 4): priority, notify, its plan, Link to; a click also picks it for the materials. */}
+          {goals.map((g) => (
+            <div key={g.id} className={`pn-goal ${g.id === current?.id ? "is-on" : ""}`} onClickCapture={() => setPicked(g.id)}>
+              <GoalCard
+                t={g}
+                kids={mine.filter((t) => t.parentId === g.id)}
+                kidsOf={(k) => mine.filter((t) => t.parentId === k)}
+                linkable={mine.filter((x) => x.id !== g.id && !x.parentId && x.type === "goal" && !x.backlog)}
+                gi={gi}
+                weekday={weekday}
+                showGame={false}
+              />
+            </div>
+          ))}
         </section>
 
         <div className="pn-main">
