@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r7/08-gear-screen · #251
+- Done: one gear screen for every game (Georges, round 4: "each set of gear shown, I can click on them to see what piece I have currently, or click on farming to generate a task and choose what pieces I need"). Each set is a card with how many of its slots you hold; a click opens it beside the cards: its pieces by slot, on whom (Unequip) or in the bag (Equip on a build), and Add a piece; Farm ticks the pieces you need (the empty slots first) and makes a checklist goal, a step per piece, with the set as its origin. Bonus labels come from each bonus's own "2pc:" prefix (WuWa showed "2-pc 2pc:"), one-piece sets say 1pc. Genshin's inventory and farm-targets views, and their components, go: the set panel does their work the same way everywhere. WIREFRAMES.md G6, the guide and its screenshot follow.
+- Tests: written first: Star Rail's Musketeer set opens with an empty Head, a piece added to the bag shows there, equipped on Seele it shows her and the card counts 1 / 4; WuWa's and ZZZ's first sets farm two picked pieces into a checklist goal. The a11y walk opens a Genshin set and its Farm picker. A follow-up test commit: the set journey checks its own piece, as other journeys' builds may wear the set. `npm run check` passes: 596 tests and 70 journeys.
+- Scope/decisions: Genshin loses its crit-value inventory and storage meter, and the per-domain farm targets: Georges asked for one system; a set's pieces and Farm cover what they did.
+- Next: endgame enemies as icons.
+
 ## 2026-10-11 · claude · stack/r7/07-gear-bag · #250
 - Done: every game has a gear bag (round 4's gear screens, first half). The bag ↔ build swap (add, edit, equip, unequip) was Genshin's alone; its doc field and slots now come from each game's manifest, so a set's pieces live on a build or in the bag the same way in every game.
 - Tests: written first: Star Rail's bag refuses Genshin's "flower", keeps a Musketeer head and equips it onto Seele's relics; WuWa's echoes and ZZZ's discs go in theirs. `npm run check` passes: 596 tests and 70 journeys.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the route moves Amber from pull 10 to 7 (pity then 3, guaranteed after the loss), marks it won without a unit, moves it to 9 (pity 1) and refuses 0; the history lists the running and the ended banner with 10 and 0 pulls and leaves out the upcoming one. The Pulls journey corrects Kafka to 7 and opens her page from Banner history. `npm run check` passes: 566 tests and 50 journeys.
 - Scope/decisions: a banner's pulls are those logged or imported inside its dates for its kind; banners sharing dates share them.
 - Next: goals.
-
-## 2026-10-11 · claude · stack/r3/05-picker · #211
-- Done: Georges: dropdowns "way too offset", and "I'd rather have a mix between a list and a clickable list with the icons, where I can scroll and click or type the name". A `Picker` (a combobox with a listbox right under its field: icons, typing filters, arrows and Enter pick, Escape or a click away closes, `free` keeps typed text) replaces the native datalists on the sheet (weapon, each piece's set and substats), Teams' "+ Add a member" and the goal maker's unit. The datalists were what opened off their fields.
-- Tests: written first: the sheet journey types "Patience", finds the option with its icon in a list within 12 px under the field, picks it, and picks a relic set; Teams and the goal maker pick by typing and clicking. The Tasks journey now resets Herta first (other journeys own her), and the default-build journey uses Pela, whom no other journey touches. `npm run check` passes: 564 tests and 49 journeys.
-- Scope/decisions: main stats stay a short native select (a handful of values, no icons).
-- Next: pulls (correcting a logged 5★, banner history).

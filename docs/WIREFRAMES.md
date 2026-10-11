@@ -161,9 +161,10 @@ Picture: [`g5-character-sheet.png`](design/wireframes/g5-character-sheet.png) ·
 
 Picture: [`g6-gear.png`](design/wireframes/g6-gear.png) · static page: [`g6-gear.html`](design/wireframes/g6-gear.html)
 
-- Inventory filtered by set, slot, main stat and equipped, sorted by crit value. Equipped pieces sync from the showcase; the full inventory comes from a scanner export (GOOD for Genshin). Move, Equip on.
-- **Farm targets** grouped by the domain that drops them, from build targets; Update or Create task.
-- **Storage** meter against the game's cap, with salvage candidates.
+One screen for every game (Georges, round 4: the screens were inconsistent):
+- **Each set as a card:** its icon, rarity and source, its bonuses, and how many of its slots you hold. Search, rarity and "Pieces I have".
+- **A click opens the set** beside the cards: its pieces by slot, each on whom (Unequip) or in the bag (Equip on a build); Add a piece to the bag. Equipped pieces sync from the showcase.
+- **Farm** ticks the pieces you need, the empty slots first, and makes a goal with a step per piece.
 
 ### G7 · Planner
 

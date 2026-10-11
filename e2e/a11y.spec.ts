@@ -52,11 +52,11 @@ test("every screen has no serious accessibility violations @smoke", async ({ pag
     const amber = await post<{ id: string }>(`/api/instances/${genshin.id}/characters`, { catalogId: "10000021" });
     await page.goto(`/characters/${amber.id}`);
     found.push(...(await violations(page, "genshin sheet")));
-    for (const view of ["Inventory", "Farm targets"]) {
-      await page.goto(`/games/${genshin.id}/gear`);
-      await page.getByRole("button", { name: view, exact: true }).click();
-      found.push(...(await violations(page, `genshin gear ${view}`)));
-    }
+    // Gear with a set opened, its Farm picker shown (round 4: one gear screen for every game).
+    await page.goto(`/games/${genshin.id}/gear`);
+    await page.getByRole("article").first().getByRole("button", { name: /^Open / }).click();
+    await page.getByRole("complementary").getByRole("button", { name: "Farm" }).click();
+    found.push(...(await violations(page, "genshin gear set")));
   } finally {
     await page.request.delete(`/api/instances/${genshin.id}`);
   }
