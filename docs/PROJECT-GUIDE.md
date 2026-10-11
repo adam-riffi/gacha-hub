@@ -471,7 +471,8 @@ Stock edits here are the source of truth for every goal's progress.
 
 ![Settings](screens/14-settings.jpg)
 
-**For:** links, imports, notifications and your data (S1).
+**For:** links, imports, notifications and your data (S1). A tab per section (round 5), each at its own address: Games (the default), Linked accounts, Pull history, Notifications, Account and data, and Data sources for the owner.
+- **Games:** each game's server, awake or asleep, and its hidden banners.
 - **Linked accounts:**
   - HoYoLAB, read-only: notes every 30 minutes, the chronicle and roster on Sync now;
   - Enka showcases by UID for Genshin, Star Rail and ZZZ;
@@ -480,14 +481,14 @@ Stock edits here are the source of truth for every goal's progress.
   - paste the history, convene or records link (used once, never stored);
   - UIGF files in and out;
   - the last import.
-- **Notifications:** Discord DMs, quiet hours, digest.
+- **Notifications:** Discord DMs, quiet hours, digest, and the reminder rules with the DM each game would send now.
 - **Account and data:** Download my data (every table you entered), and delete the account.
 
 ### 8.15 Settings · Data sources
 
 ![Data sources](screens/15-data-sources.jpg)
 
-**For:** keeping banners and events correct, for the owner (`ADMIN_DISCORD_IDS`), from Settings (`/settings/data`; `/admin` leads there).
+**For:** keeping banners and events correct, for the owner (`ADMIN_DISCORD_IDS`): Settings' last tab (`/settings/data`; `/admin` leads there).
 
 - **Import official feed** for the selected game (Genshin, HSR, ZZZ; also runs hourly from the cron).
 - **Seed sample data** (two sample banners and events, to preview the UI; delete them in production once the feed runs).

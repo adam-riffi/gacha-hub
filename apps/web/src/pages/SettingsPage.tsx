@@ -1,11 +1,13 @@
 import { useState, type FormEvent } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink, Navigate, useParams } from "react-router-dom";
 import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getGame, hasHistoryLink, hasUigf, type ImportRunDto, type LinkedAccountDto } from "@gacha/shared";
 import { api, ApiError } from "../lib/api";
 import { useAuth } from "../lib/auth";
 import { useToast } from "../lib/toast";
 import { masked } from "../components/hub/HubHeader";
+import { RemindersPanel } from "../components/tasks/RemindersPanel";
+import { AdminPage } from "./AdminPage";
 import type { InstanceListItem, ReminderRule } from "../lib/types";
 
 const ZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -32,49 +34,68 @@ const errorText = (e: unknown) => {
   return IMPORT_ERROR[body.error ?? ""] ?? "The import failed.";
 };
 
+/** Settings' tabs, each at /settings/<path>: the games first. Data sources is the owner's. */
+const TABS = [
+  { path: "", label: "Games" },
+  { path: "accounts", label: "Linked accounts" },
+  { path: "pulls", label: "Pull history" },
+  { path: "notifications", label: "Notifications" },
+  { path: "account", label: "Account and data" },
+  { path: "data", label: "Data sources", owner: true },
+];
+
 /**
- * Settings (WIREFRAMES.md A5): linked accounts (read-only providers, ADR
- * 0005), pull history per game (paste a history link, a UIGF file, export),
- * notifications at a glance, and account and data (download, delete, admin).
+ * Settings (WIREFRAMES.md A5), a tab per section (Georges, round 5: "it's ok
+ * to have multiple tabs instead of one big one"): the games you play; linked
+ * accounts (read-only providers, ADR 0005); pull history per game (paste a
+ * history link, a UIGF file, export); notifications and the reminder rules;
+ * account and data (download, delete); the data sources.
  */
 export function SettingsPage() {
   const { me } = useAuth();
+  const { tab = "" } = useParams<{ tab?: string }>();
   const games = useQuery({ queryKey: ["instances"], queryFn: () => api.get<InstanceListItem[]>("/api/instances") });
-  const links = useQuery({ queryKey: ["links"], queryFn: () => api.get<LinkedAccountDto[]>("/api/links") });
-  const imports = useQuery({ queryKey: ["imports"], queryFn: () => api.get<ImportRunDto[]>("/api/imports") });
+  const links = useQuery({ queryKey: ["links"], queryFn: () => api.get<LinkedAccountDto[]>("/api/links"), enabled: tab === "accounts" });
+  const imports = useQuery({ queryKey: ["imports"], queryFn: () => api.get<ImportRunDto[]>("/api/imports"), enabled: tab === "pulls" });
   const mine = games.data ?? [];
+  const tabs = TABS.filter((t) => !t.owner || me?.isAdmin);
+  if (!tabs.some((t) => t.path === tab)) return <Navigate to="/settings" replace />;
 
   return (
     <div className="st-page">
       <h1>Settings</h1>
-      <nav className="st-nav" aria-label="On this page">
-        <a href="#account">Account</a>
-        <a href="#games">Games</a>
-        <a href="#linked">Linked accounts</a>
-        <a href="#pulls">Pull history</a>
-        <a href="#notifications">Notifications</a>
-        <a href="#account">Data</a>
-        {me?.isAdmin && <Link to="/settings/data">Data sources</Link>}
+      <nav className="st-nav" aria-label="Settings sections">
+        {tabs.map((t) => (
+          <NavLink key={t.path} to={t.path ? `/settings/${t.path}` : "/settings"} end>
+            {t.label}
+          </NavLink>
+        ))}
       </nav>
       <div className="st-main">
-        <LinkedAccounts links={links.data ?? []} games={mine} />
-        <GamesSettings games={mine} />
-        <section className="card" id="pulls" aria-label="Pull history">
-          <h3>Pull history</h3>
-          <table>
-            <thead>
-              <tr><th>Game</th><th>Method</th><th>Last import</th><th className="num">Action</th></tr>
-            </thead>
-            <tbody>
-              {mine.map((gi) => <PullRow key={gi.id} gi={gi} last={(imports.data ?? []).find((r) => r.gameInstanceId === gi.id && r.kind === "pulls")} />)}
-            </tbody>
-          </table>
-          {!mine.length && <p className="mu">Add a game first.</p>}
-        </section>
-        <div className="st-pair">
-          <Notifications games={mine} />
-          <AccountData />
-        </div>
+        {tab === "" && <GamesSettings games={mine} />}
+        {tab === "accounts" && <LinkedAccounts links={links.data ?? []} games={mine} />}
+        {tab === "pulls" && (
+          <section className="card" id="pulls" aria-label="Pull history">
+            <h3>Pull history</h3>
+            <table>
+              <thead>
+                <tr><th>Game</th><th>Method</th><th>Last import</th><th className="num">Action</th></tr>
+              </thead>
+              <tbody>
+                {mine.map((gi) => <PullRow key={gi.id} gi={gi} last={(imports.data ?? []).find((r) => r.gameInstanceId === gi.id && r.kind === "pulls")} />)}
+              </tbody>
+            </table>
+            {!mine.length && <p className="mu">Add a game first.</p>}
+          </section>
+        )}
+        {tab === "notifications" && (
+          <div className="st-pair">
+            <Notifications games={mine} />
+            <RemindersPanel games={mine} />
+          </div>
+        )}
+        {tab === "account" && <AccountData />}
+        {tab === "data" && <AdminPage />}
       </div>
     </div>
   );
@@ -326,7 +347,6 @@ function Notifications({ games }: { games: InstanceListItem[] }) {
         <div><span className="st-k">Daily digest</span><span className="mn">{digest ?? "off"}</span></div>
         <div><span className="st-k">Time zone</span><span className="mn">{ZONE}</span></div>
       </div>
-      <Link className="btn st-wide" to="/tasks">Manage reminder rules</Link>
     </section>
   );
 }
@@ -364,7 +384,6 @@ function AccountData() {
             {remove.isError && <span className="st-bad">That is not your username.</span>}
           </form>
         )}
-        {me?.isAdmin && <div><span className="st-k">Feeds, uploads, log</span><span><Link className="btn" to="/settings/data">Data sources</Link></span></div>}
         <div><span className="st-k">Sign out</span><span><button className="btn" onClick={() => void logout()}>Sign out</button></span></div>
       </div>
     </section>

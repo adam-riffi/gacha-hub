@@ -12,7 +12,8 @@ const uigf = {
   ],
 };
 
-test("Settings: linked accounts, pull history from a UIGF file and a link, notifications, account and data @smoke", async ({ page }) => {
+// Settings as tabs (Georges, round 5: "it's ok to have multiple tabs instead of one big one"): each section its own tab, Data sources among them.
+test("Settings: a tab each for linked accounts, pull history from a UIGF file and a link, notifications, account and data @smoke", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
@@ -21,13 +22,24 @@ test("Settings: linked accounts, pull history from a UIGF file and a link, notif
 
   await page.goto("/settings");
   await expect(page.getByRole("heading", { name: "Settings", level: 1 })).toBeVisible();
+  const tabs = page.getByRole("navigation", { name: "Settings sections" });
+  const open = async (name: string, url: RegExp) => {
+    await tabs.getByRole("link", { name, exact: true }).click();
+    await expect(page).toHaveURL(url);
+    await expect(tabs.getByRole("link", { name, exact: true })).toHaveAttribute("aria-current", "page");
+  };
+  // The games open first; the other sections wait on their tabs.
+  await expect(page.getByRole("region", { name: "Games" })).toBeVisible();
+  await expect(page.getByRole("region", { name: "Pull history" })).toHaveCount(0);
 
+  await open("Linked accounts", /\/settings\/accounts$/);
   // Linked accounts: read only, as ADR 0005 decided (no check-in, no codes).
   const linked = page.getByRole("region", { name: "Linked accounts" });
   await expect(linked.getByRole("article", { name: "HoYoLAB" })).toContainText("Not linked");
   await expect(linked.getByRole("checkbox", { name: /check-in|redeem/i })).toHaveCount(0);
 
   // Pull history: a UIGF file, then a link without its key.
+  await open("Pull history", /\/settings\/pulls$/);
   const pulls = page.getByRole("region", { name: "Pull history" });
   await pulls.getByLabel("UIGF file for Honkai: Star Rail").setInputFiles({ name: "uigf.json", mimeType: "application/json", buffer: Buffer.from(JSON.stringify(uigf)) });
   await expect(pulls.getByRole("status")).toHaveText("10 added, 0 already there");
@@ -37,12 +49,14 @@ test("Settings: linked accounts, pull history from a UIGF file and a link, notif
   await pulls.getByRole("button", { name: "Import" }).click();
   await expect(pulls.getByRole("status")).toContainText("No authkey in this link");
 
-  // Notifications at a glance, rules on Tasks.
+  // Notifications at a glance, and the reminder rules themselves on the same tab.
+  await open("Notifications", /\/settings\/notifications$/);
   const notes = page.getByRole("region", { name: "Notifications" });
   await expect(notes).toContainText("Time zone");
-  await expect(notes.getByRole("link", { name: "Manage reminder rules" })).toHaveAttribute("href", "/tasks");
+  await expect(page.getByRole("complementary", { name: "Reminders" })).toBeVisible();
 
   // Account and data: deleting asks for the username typed back.
+  await open("Account and data", /\/settings\/account$/);
   const account = page.getByRole("region", { name: "Account and data" });
   await expect(account.getByRole("link", { name: "Download my data" })).toHaveAttribute("href", "/api/export");
   await account.getByRole("button", { name: "Delete", exact: true }).click();
@@ -55,7 +69,7 @@ test("Settings: the HoYoLAB card links with two cookies, and says so while the s
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
-  await page.goto("/settings");
+  await page.goto("/settings/accounts");
   const card = page.getByRole("article", { name: "HoYoLAB" });
   await expect(card).toContainText("ltuid_v2");
   await card.getByLabel("Account ID (ltuid_v2)").fill("123456789");

@@ -8,8 +8,14 @@ test("paging the calendar back shows what already ended @smoke", async ({ page }
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   // HSR, not Genshin: the smoke journey adds Genshin through the library.
   await page.request.post("/api/instances", { data: { gameKey: "hsr" } });
+  // A banner that began before the window two weeks back and ends four days into it, whatever the weekday:
+  // its short bar keeps its name, its dates give way first (it failed on Mondays, round 5).
+  const monday = new Date();
+  monday.setHours(0, 0, 0, 0);
+  monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7));
+  const fromMonday = (days: number) => new Date(monday.getTime() + days * 86_400_000).toISOString();
   const upload = await page.request.post("/api/admin/payload", {
-    data: { kind: "banners", gameKey: "hsr", items: [{ key: "e2e-ended", name: "E2E ended warp", kind: "character", startsAt: iso(-20), endsAt: iso(-10) }] },
+    data: { kind: "banners", gameKey: "hsr", items: [{ key: "e2e-ended", name: "E2E ended warp", kind: "character", startsAt: fromMonday(-20), endsAt: fromMonday(-10) }] },
   });
   expect(upload.ok()).toBe(true);
 

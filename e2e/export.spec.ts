@@ -6,7 +6,7 @@ test("Settings downloads everything you entered as JSON @smoke", async ({ page }
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
 
-  await page.goto("/settings");
+  await page.goto("/settings/account");
   const [download] = await Promise.all([page.waitForEvent("download"), page.getByRole("link", { name: "Download my data" }).click()]);
   expect(download.suggestedFilename()).toMatch(/^gacha-hub-export-\d{4}-\d{2}-\d{2}\.json$/);
   const data = JSON.parse(await readFile((await download.path())!, "utf8")) as { format: string; user: { username: string } };

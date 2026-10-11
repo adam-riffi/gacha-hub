@@ -176,7 +176,7 @@ export function AdminPage() {
   return (
     <>
       <div className="page-head">
-        <h1>Data sources</h1>
+        <h2>Data sources</h2>
         <div className="row">
           <button className="btn sm primary" disabled={importFeed.isPending} onClick={() => importFeed.mutate()} title="Pull current banners + events from the in-game announcement feed (also runs hourly)">
             {importFeed.isPending ? "Importing…" : "Import official feed"}
@@ -254,7 +254,7 @@ export function AdminPage() {
       )}
       </div>
 
-      <div className="grid cols-2" style={{ alignItems: "start" }}>
+      <div className="ad-work">
         <div className="card">
           <div className="spread">
             <h3 style={{ margin: 0 }}>Upload payload</h3>
