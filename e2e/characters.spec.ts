@@ -29,10 +29,14 @@ test("Characters: splash cards with their KPIs, counts, search, wishlist and own
   await expect(page.getByRole("article")).toHaveCount(1);
   // The card shows the weapon type (Star Rail's path) and tints to the element.
   await expect(kafka).toContainText("Nihility");
-  // Its default build's weapon: icon, level and refinement.
-  const weapon = kafka.locator(".ch-weapon");
+  // Its default build's weapon on the left of the coloured name card, its level and refinement on the icon (Georges, round 4).
+  const weapon = kafka.locator(".ch-namebox .ch-weapon");
   await expect(weapon.getByRole("img", { name: "Patience Is All You Need" })).toBeVisible();
-  await expect(weapon).toContainText("Lv 80 · S2");
+  await expect(weapon.locator(".ch-weapon-lv")).toHaveText("80");
+  await expect(weapon.locator(".ch-weapon-r")).toHaveText("S2");
+  await expect(kafka.locator(".ch-foot .ch-weapon")).toHaveCount(0);
+  // The name card's line leaves the refinement to the icon.
+  await expect(kafka.locator(".ch-namebox-line")).not.toContainText("S2");
   expect(await kafka.evaluate((e) => getComputedStyle(e).getPropertyValue("--el").trim())).not.toBe("");
   // The whole card opens the build.
   await kafka.click();
