@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r5/05-handoff · #237
+- Done: the handoff after the designs' details (#233–#236): HANDOFF.md says `main` is at #236, lists six migrations for the next deploy (with `recurring_counts`), the decisions taken (counted progress per cycle, defaults in the game's order, names from the designs and counts only when sourced), the details still without a source, and one decision for Georges: an NTE catalog from Hakushin, or NTE stays manual (ADR 0005). The round's audit points to #233–#236.
+- Tests: docs only. `npm run check` on the tree below (#236): 587 tests and 68 journeys.
+- Scope/decisions: none new.
+- Next: Georges's secrets, data and decision; a deploy when he asks.
+
 ## 2026-10-11 · claude · stack/r5/04-spark · #236
 - Done: the Endfield design's "Featured guarantee 68/120". A banner type with a spark (Endfield's 120 pulls on one banner give its featured unit) reports, on the dashboard's pity, the pulls logged on that type since the banner of its kind running now began, up to the spark; none without a running banner. The Overview's Pity card shows it as a row under that banner type.
 - Tests: written first: pulls before the banner began do not count, pulls since do, the count stops at 120, and no running banner gives none; the Overview journey finds "Featured guarantee …/120" on Endfield. `npm run check` passes: 587 tests and 68 journeys.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the Pulls journey checks that the curve's path is the same after +10 while the label moves to pity 10, that a 1600-jade top-up gives +10 pulls and "With the top-up: 40 pulls", and that Stellar warp has a full card. `npm run check` passes: 558 tests and 40 journeys; initial JavaScript 196.3 KB.
 - Scope/decisions: the curve plots the per-pull rate, not the cumulative chance, so its shape never depends on your pity; the cumulative chances sit in the legend, the odds table and the headline.
 - Next: Home's pulls by type, the Characters page, teams, the goal maker, the banner timeline, the clean-up, Settings and Admin.
-
-## 2026-10-10 · claude · stack/banners/01-every-banner · #197
-- Done: every banner type each game's history names gets a banner: Genshin's Chronicled and Beginners' wishes, Star Rail's two collaboration warps and Departure warp, ZZZ's Bangboo channel, WuWa's standard weapon, Novice and Beginner's Choice convenes, Endfield's Joint and Beginner headhunting. A banner's `fund` says which pulls it spends (standard tickets, or a currency the tracker does not count). Each banner has a Hide button on Pulls; hidden ones wait in a "Hidden" line with a Show button each, and Home leaves them out of its pity line (`GameInstance.hiddenBanners`, migration `20261011110000_hidden_banners`). The other event banners join the savings planner only while one is running.
-- Tests: written first: each game's banner types with their history types and funds; hiding and showing through `PUT /api/instances/:id` (an unknown key is refused) and Home's pity; the Pulls journey hides and shows Departure warp. Eight older tests expected three banner types per game (the importers now ask the new types too) and were updated. `npm run check` passes: 558 tests and 40 journeys.
-- Scope/decisions: shown by default, beginner banners too, as Georges asked. Endfield's Joint (Chartered rules, per-banner pity) and Beginner (a 6★ within 40) are `~`. NTE's standard board has no source, so no banner yet.
-- Next: the owner's secrets and real data; the per-game overview when Georges asks.
