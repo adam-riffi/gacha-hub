@@ -5,7 +5,7 @@ import { getGame } from "@gacha/shared";
 import { useAuth } from "../lib/auth";
 import { api } from "../lib/api";
 import { hubPathFor, sectionHref, sectionOf, type ScopeGame, type Section } from "../lib/scope";
-import { hubScreens } from "./GameTabs";
+import { hubScreens } from "../lib/hubScreens";
 import type { CharacterDetail, InstanceListItem } from "../lib/types";
 
 /** 18 px line icons, 1.5 px stroke (VISUAL-DESIGN.md §7). */
