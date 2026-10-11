@@ -238,7 +238,7 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
                     ))}
                   </select>
                 </label>
-                <button className="btn primary" onClick={() => save.mutate()} disabled={save.isPending}>Save</button>
+                <button className="btn primary" onClick={() => save.mutate()} disabled={save.isPending || addCopy.isPending || takeFrom.isPending}>Save</button>
               <button className="btn" onClick={() => confirm("Delete this build?") && del.mutate()}>Delete build</button>
               </div>
             </div>
