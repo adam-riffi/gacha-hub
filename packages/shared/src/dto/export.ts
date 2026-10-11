@@ -25,6 +25,7 @@ export const userExportSchema = z.object({
       currencies: z.array(row),
       characters: z.array(row),
       ownership: z.array(row),
+      weaponCopies: z.array(row),
       materials: z.array(row),
       gearPieces: z.array(row),
       teams: z.array(row),

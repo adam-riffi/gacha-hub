@@ -75,6 +75,7 @@ model GameInstance {
   currencies    CurrencyState[]
   characters    Character[]
   ownerships    Ownership[]
+  weaponCopies  WeaponCopy[]
   materials     MaterialStock[]
   reminderRules ReminderRule[]
   teams         Team[]
@@ -183,6 +184,22 @@ model GearPiece {
   mainStat       String       @default("")
   substats       Json // StatRow[]
   createdAt      DateTime     @default(now())
+
+  @@index([gameInstanceId])
+}
+
+/// One copy of a weapon a profile holds (Georges, 2026-10-11: "dupes of the weapons as separate entries"):
+/// a catalog weapon (its ownership row counts the copies), or one named by hand where the game has no weapon catalog.
+model WeaponCopy {
+  id             String       @id @default(cuid())
+  gameInstanceId String
+  gameInstance   GameInstance @relation(fields: [gameInstanceId], references: [id], onDelete: Cascade)
+  catalogId      String?
+  name           String
+  level          Int          @default(1)
+  refinement     Int          @default(1)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
 
   @@index([gameInstanceId])
 }

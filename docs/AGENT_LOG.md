@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r4/06-weapon-copies · #225
+- Done: Georges's "I wanna see dupes of the weapons as separate entries", the data half. A new `WeaponCopy` table holds each copy a profile holds, with its level and refinement: a catalog weapon, or one named by hand where the game has no weapon catalog (Endfield, NTE). `GET/POST /api/instances/:id/weapons`, `PUT/DELETE …/weapons/:copyId`. A catalog weapon's ownership row stays its count: adding or removing a copy recounts it, and reading the list makes or drops copies to match it, so syncs and event rewards that grant a weapon show up as a copy (with the level and refinement the ownership knew). Copies join the export.
+- Tests: written first: two copies of Favonius Sword keep their own level and refinement and the ownership counts them; a weapon owned through the ownership becomes a copy; NTE takes a weapon by name; an unknown id, a nameless copy and a refinement over the game's cap are refused. `npm run check` passes: 574 tests and 58 journeys.
+- Scope/decisions: migration `weapon_copies` (with RLS); ownership kept as the count rather than migrated away, so HoYoLAB sync, Enka and event effects need no change. Caps: the weapon's top level (100 without a catalog), the game's refinement (1 where it has none, Endfield).
+- Next: Weapons as cards.
+
 ## 2026-10-11 · claude · stack/r4/05-goals · #224
 - Done: this round's audit, "things that aren't very explicit" (Georges: "the task 'farm faded theater' doesn't really mean anything, but having Arlecchino's artifacts' icon is better"). Each goal's thumb is now its own unit: the character, weapon or gear set it farms, or the unit an event's reward raises; a set goal shows who it is for beside its title; the game is a small tile on the overview only (and its name left the subtitle); material steps carry their icons. The artifact planner's domain tasks now record their set and characters, so "Farm Faded Theater" shows the set and Arlecchino once it is updated.
 - Tests: written first: the Tasks journey makes a set goal for Arlecchino and finds the set's icon, Arlecchino's, and no game name on Genshin's Tasks, and Genshin's tile on the overview. `npm run check` passes: 571 tests and 57 journeys.
@@ -264,9 +270,3 @@ Entry format:
   `npm run check` passes: 529 tests and 40 journeys.
 - Scope/decisions: one set of defaults per game, by KPI label, not per role; labels shared by roles share a target.
 - Next: the final docs and handoff.
-
-## 2026-10-10 · claude · stack/chronicle/01-stygian · #186
-- Done: Stygian Onslaught from HoYoLAB's chronicle (`hard_challenge`, genshin.py's HardChallenge). Its record is the best solo difficulty and time of the season running now, which fits the manifest's 1–6 metric. Shiyu Defense's newer layout (v2) stays unread: it scores floors 4 and 5 differently from the manifest's "S-rank frontiers", and without a recorded answer the mapping would be a guess.
-- Tests: written first: the request, and the current season's best difficulty. `npm run check` passes: 527 tests and 40 journeys.
-- Scope/decisions: endgame eligibility in Used in is left out. No source publishes each cycle's rules in a structured form, and typing them in by hand every cycle goes against the pipeline rule.
-- Next: shared KPI targets.
