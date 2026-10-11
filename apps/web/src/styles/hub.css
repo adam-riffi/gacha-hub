@@ -101,29 +101,20 @@ label.act-row { margin: 0; cursor: pointer; color: var(--text); font: 400 15px/1
 .eg-last > button:hover, .eg-last > button:focus-visible { background: var(--text-muted); }
 .eg-last > button.on { background: var(--accent); }
 /* Any cycle opens (round 5): the bars, the chart's points, the table's rows, a mode's History. */
-.eg-mode-actions { gap: 8px; }
 .eg-pt { cursor: pointer; }
 .eg-pt:hover circle:not(.eg-ring) { stroke-width: 4; }
 .eg-row { cursor: pointer; }
 .eg-row:hover td { background: var(--surface-2); }
 .eg-open { padding: 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer; }
 .eg-open:hover { color: var(--accent); }
-.eg-dialog { width: 560px; max-width: calc(100vw - 32px); max-height: calc(100vh - 64px); overflow: auto; padding: 20px 24px; color: var(--text); }
-.eg-dialog::backdrop { background: rgba(0, 0, 0, 0.65); }
-.eg-dialog-head { align-items: flex-start; }
-.eg-dialog-head h3 { margin: 0 0 6px; }
-.eg-dialog-head .tag { margin-left: 8px; }
-.eg-dialog-head .row { gap: 6px; }
 .eg-detail { margin: 12px 0 0; color: var(--text-muted); }
-.eg-dialog .act-add-btn { margin-top: 16px; }
-.eg-cycles { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
-.eg-cycles button { display: grid; grid-template-columns: 160px minmax(0, 1fr) 48px; align-items: center; gap: 12px; width: 100%; padding: 8px 10px; border: 0; background: transparent; color: var(--text); font: inherit; text-align: left; cursor: pointer; }
-.eg-cycles button:hover { background: var(--surface-2); }
-.eg-cycles button[aria-current="true"] { background: var(--surface-2); box-shadow: inset 2px 0 0 var(--accent); }
-.eg-cycles .mn { font-size: 12px; }
-.eg-cycles .mn:last-child { text-align: right; }
-.eg-cycle-bar { height: 6px; background: var(--surface-3); }
-.eg-cycle-bar i { display: block; height: 100%; background: var(--accent); }
+/* A card's cycle: older and newer a step away, back to now (round 6). */
+.eg-cycle-nav { display: flex; align-items: center; gap: 8px; margin: -6px 0 12px; }
+.eg-cycle-nav .mn { font-size: 12px; }
+.eg-cycle-nav > .btn:last-child { margin-left: auto; }
+.eg-mode.is-past { border-color: var(--hairline-strong); }
+.eg-last > button[aria-pressed="true"] { background: var(--accent); }
+.eg-clears li > .mu { font-size: 13px; }
 .eg-none { font-size: 14px; align-self: center; }
 .eg-clears { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 8px; }
 .eg-clears li { display: grid; grid-template-columns: 96px 1fr auto; align-items: center; gap: 12px; }

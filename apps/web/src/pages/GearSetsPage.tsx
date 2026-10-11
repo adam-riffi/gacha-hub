@@ -1,9 +1,10 @@
-import { useMemo, useState, type FormEvent } from "react";
+import { useMemo, useRef, useState, type FormEvent } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getGame, type CatalogGearSet, type CharacterDto, type GameDefinition, type GearPieceDto } from "@gacha/shared";
 import { LoadError } from "../components/LoadError";
 import { useToast } from "../lib/toast";
+import { useDismiss } from "../lib/dismiss";
 import { api } from "../lib/api";
 import { useCatalog } from "../lib/catalog";
 import { CatalogIcon, UnitIcon } from "../components/CatalogIcon";
@@ -160,6 +161,8 @@ function SetPanel({ instanceId, game, set, pieces, builds, onClose }: { instance
   const [farming, setFarming] = useState(false);
   const [want, setWant] = useState(() => new Set(slots.filter((s) => !pieces.some((p) => p.slot === s.key)).map((s) => s.key)));
   const [slot, setSlot] = useState(slots[0]?.key ?? "");
+  const ref = useRef<HTMLElement>(null);
+  useDismiss(ref, onClose);
   const refresh = () => Promise.all([["gear", instanceId], ["builds", instanceId], ["characters", instanceId], ["tasks"]].map((queryKey) => qc.invalidateQueries({ queryKey })));
   const add = useMutation({ mutationFn: (body: { slot: string; mainStat: string; level: number }) => api.post(`/api/instances/${instanceId}/gear`, { setName: set.name, ...body }), onSuccess: refresh, onError: () => toast("Could not add the piece", "err") });
   const equip = useMutation({ mutationFn: (v: { pieceId: string; characterId: string }) => api.post(`/api/gear/${v.pieceId}/equip`, { characterId: v.characterId }), onSuccess: refresh, onError: () => toast("Could not equip it", "err") });
@@ -189,7 +192,7 @@ function SetPanel({ instanceId, game, set, pieces, builds, onClose }: { instance
   };
 
   return (
-    <aside className="card gs-panel" aria-label={set.name}>
+    <aside ref={ref} className="card gs-panel" aria-label={set.name}>
       <div className="spread">
         <span className="gs-title">
           <CatalogIcon gameKey={game.key} kind="gear" icon={set.icon} name={set.name} className="set-icon" />
