@@ -1,12 +1,13 @@
 import { useState, type ReactNode } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getGame, passView, pullsFor, type BannerDto, type GameDefinition, type PassesDto, type TaskDto } from "@gacha/shared";
+import { endgameNow, getGame, passView, pullsFor, skillsField, weaponHolder, type BannerDto, type CharacterDto, type CycleResultsDto, type GameDefinition, type PassesDto, type TaskDto } from "@gacha/shared";
 import { LoadError } from "../components/LoadError";
 import { api } from "../lib/api";
 import { formatRemaining } from "../lib/time";
 import { GameTabs } from "../components/GameTabs";
 import { CatalogIcon } from "../components/CatalogIcon";
+import { useCatalog } from "../lib/catalog";
 import type { DashboardData, InstanceDetail } from "../lib/types";
 
 type DashGame = DashboardData["games"][number];
@@ -22,6 +23,8 @@ export function OverviewPage() {
   const dash = useQuery({ queryKey: ["dashboard"], queryFn: () => api.get<DashboardData>("/api/dashboard") });
   const tasks = useQuery({ queryKey: ["tasks", "game", id], queryFn: () => api.get<TaskDto[]>(`/api/tasks?scope=game&refId=${id}`) });
   const passes = useQuery({ queryKey: ["passes", id], queryFn: () => api.get<PassesDto>(`/api/instances/${id}/passes`) });
+  const builds = useQuery({ queryKey: ["characters", id], queryFn: () => api.get<CharacterDto[]>(`/api/instances/${id}/characters`) });
+  const cycles = useQuery({ queryKey: ["cycles", id], queryFn: () => api.get<CycleResultsDto>(`/api/instances/${id}/cycles`) });
   const game = instance.data && getGame(instance.data.gameKey);
   if (instance.isError || dash.isError) return <LoadError what="The overview" retry={() => Promise.all([instance.refetch(), dash.refetch()])} />;
   const g = dash.data?.games.find((x) => x.instanceId === id);
@@ -48,6 +51,8 @@ export function OverviewPage() {
         <TodayCard instanceId={id!} items={recurring.filter((t) => t.cadence === "daily")} />
         <WeeklyCard instanceId={id!} game={game} pv={pv} items={recurring.filter((t) => t.cadence === "weekly")} />
         <StaminaCard g={g} game={game} instance={instance.data} />
+        <BuildsCard instanceId={id!} game={game} builds={(builds.data ?? []).filter((b) => b.buildStatus === "building" || b.buildStatus === "good")} />
+        <EndgameCard instanceId={id!} game={game} region={region} cycles={cycles.data} />
       </div>
     </>
   );
@@ -257,6 +262,104 @@ function StaminaCard({ g, game, instance }: { g: DashGame; game: GameDefinition;
           </div>
         )}
       </dl>
+    </section>
+  );
+}
+
+const DAY = 86_400_000;
+type Doc = Record<string, unknown>;
+const num = (v: unknown) => (typeof v === "number" ? v : null);
+
+/** Builds being worked on: level, skills, weapon level, and a square per gear slot filled. */
+function BuildsCard({ instanceId, game, builds }: { instanceId: string; game: GameDefinition; builds: CharacterDto[] }) {
+  const { index } = useCatalog(game.key);
+  const skills = skillsField(game);
+  const holder = weaponHolder(game);
+  const gear = game.manifest.gear;
+  return (
+    <section className="card ov-card is-wide" aria-label="Builds in progress">
+      <Head title="Builds in progress" to={`/games/${instanceId}/characters`} />
+      {builds.length === 0 ? (
+        <p className="mu">None</p>
+      ) : (
+        <div className="ov-scroll">
+          <table className="ov-table">
+            <thead>
+              <tr>
+                <th>Character</th>
+                <th>Level</th>
+                <th>Skills</th>
+                <th>{holder ? "Weapon" : ""}</th>
+                <th>{gear.name}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {builds.map((b) => {
+                const doc = (b.doc ?? {}) as Doc;
+                const unit = b.catalogId ? index?.characters.get(b.catalogId) : undefined;
+                const levels = Object.values((doc[skills] ?? {}) as Doc).filter((v): v is number => typeof v === "number");
+                const pieces = (doc[gear.field] ?? {}) as Record<string, Doc | undefined>;
+                return (
+                  <tr key={b.id}>
+                    <td>
+                      <Link to={`/characters/${b.id}`} className="ov-unit">
+                        <CatalogIcon gameKey={game.key} kind="character" icon={unit?.icon} name={unit?.name ?? b.name} tag={unit?.tag} />
+                        {unit?.name ?? b.name}
+                      </Link>
+                    </td>
+                    <td className="mn">{num(doc.level) ?? "—"}</td>
+                    <td className="mn">{levels.length ? levels.join("·") : "—"}</td>
+                    <td className="mn">{holder ? (num((doc[holder] as Doc | undefined)?.level) ?? "—") : ""}</td>
+                    <td>
+                      <span className="ov-squares" role="img" aria-label={`${gear.slots.filter((s) => pieces[s.key]?.setName || pieces[s.key]?.mainStat).length} of ${gear.slots.length} ${gear.name}`}>
+                        {gear.slots.map((s) => (
+                          <i key={s.key} className={pieces[s.key]?.setName || pieces[s.key]?.mainStat ? "on" : ""} />
+                        ))}
+                      </span>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </section>
+  );
+}
+
+/** Each endgame mode's current cycle: its result over its best, and when it resets. */
+function EndgameCard({ instanceId, game, region, cycles }: { instanceId: string; game: GameDefinition; region: GameDefinition["regions"][number]; cycles?: CycleResultsDto }) {
+  const [now] = useState(() => new Date());
+  if (game.manifest.endgame.length === 0) return null;
+  const results = (cycles?.results ?? []).map((r) => ({ ...r, cycleStart: new Date(r.cycleStart) }));
+  const eg = endgameNow(game, region, now, results);
+  const unit = (label: string) => (label === "stars" ? "★" : ` ${label}`);
+  return (
+    <section className="card ov-card" aria-label="Endgame · cycle">
+      <Head title="Endgame · cycle" to={`/games/${instanceId}/endgame`} />
+      <table className="ov-table">
+        <thead>
+          <tr>
+            <th>Mode</th>
+            <th>Progress</th>
+            <th>Resets</th>
+          </tr>
+        </thead>
+        <tbody>
+          {eg.modes.map((m) => {
+            const at = m.open ? m.closes : m.end;
+            const days = Math.ceil((at.getTime() - now.getTime()) / DAY);
+            return (
+              <tr key={m.mode.key}>
+                <td>{m.mode.name}</td>
+                <td className="mn">{m.result === null ? "—" : `${m.result}${m.mode.metric.max !== undefined ? `/${m.mode.metric.max}` : ""}${unit(m.mode.metric.label)}`}</td>
+                <td className="mn">{days > 1 ? `${days}d` : formatRemaining(at.toISOString(), now.getTime())}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </section>
   );
 }
