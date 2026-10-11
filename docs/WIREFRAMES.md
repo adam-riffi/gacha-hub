@@ -84,6 +84,13 @@ Picture: [`g1-activities.png`](design/wireframes/g1-activities.png) · static pa
 - **Cycles:** each endgame mode with its progress and reset date, linking to Endgame.
 - **Version:** battle pass level, levels per day needed to finish, weekly XP against the cap; version events with progress and end dates.
 
+### G0 · Overview
+
+Designs: [`docs/design/overview/`](design/overview/) (Georges, 2026-10-11: one per game). The hub's landing screen and first tab; Activities follows. What this one game needs at a glance and nothing else, three cards to a row, each opening its screen:
+
+- **Pulls:** limited pulls on hand, then what makes them (each ticket, and "From" the premium currency). **Pity:** each banner type's count over its hard pity, "guaranteed" or "50/50" where a banner has a featured unit. **Banners:** the current phase's featured units with "ends in", the next with "starts in"; ◀ ▶ step through the phases.
+- Later rows (F13): Today, the pass and weeklies, stamina; builds in progress, the endgame cycle; goals and backlog; each game's own card.
+
 ### G2 · Endgame
 
 Picture: [`g2-endgame.png`](design/wireframes/g2-endgame.png) · static page: [`g2-endgame.html`](design/wireframes/g2-endgame.html)
