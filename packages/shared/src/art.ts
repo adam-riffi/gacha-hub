@@ -4,7 +4,7 @@ import type { Catalog } from "./catalog/types.js";
 
 /** Kinds of catalog art the UI asks for. */
 /** splash = full-length character art (Genshin's gacha art, Star Rail's large art; ADR 0006). */
-export type ArtKind = "character" | "portrait" | "splash" | "weapon" | "gear" | "material" | "talent" | "constellation";
+export type ArtKind = "character" | "portrait" | "splash" | "weapon" | "gear" | "material" | "talent" | "constellation" | "element";
 
 /** Public folders of the web app; other root-relative keys are source-internal paths (e.g. Unreal's "/Game/…"). */
 const OWN_PATHS = /^\/(assets|games|uploads)\//;

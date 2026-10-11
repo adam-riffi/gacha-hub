@@ -32,6 +32,10 @@ describe("communityArtUrl", () => {
     expect(communityArtUrl("hsr", "material", "2")).toBe(`${yatta}/item/2.png`);
   });
 
+  it("serves ZZZ's element icons from Hakushin, for what enemies are weak to", () => {
+    expect(communityArtUrl("zzz", "element", "Ether")).toBe("https://static.nanoka.cc/assets/zzz/IconEther.webp");
+  });
+
   it("has nothing for missing keys, other kinds or games without a source", () => {
     expect(communityArtUrl("hsr", "character", undefined)).toBeNull();
     expect(communityArtUrl("hsr", "talent", "1503")).toBeNull();

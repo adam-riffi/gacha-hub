@@ -86,13 +86,21 @@ export function CharactersPage() {
   const rewards = useQuery({ queryKey: ["rewards"], queryFn: () => api.get<RewardDto[]>("/api/rewards") });
   const { catalog, isLoading: catalogLoading } = useCatalog(instance.data?.gameKey);
 
+  // The cache takes what was saved at once, then refetches: the cards flip on the answer, not on a refetch that can lag.
+  const markOwned = (ids: string[], owned: boolean) => {
+    qc.setQueryData<OwnershipDto[]>(["ownership", id], (old = []) => [
+      ...old.filter((o) => !(o.kind === "character" && ids.includes(o.catalogId))),
+      ...(owned ? ids.map((catalogId) => ({ kind: "character" as const, catalogId, qty: 1, meta: null })) : []),
+    ]);
+    return qc.invalidateQueries({ queryKey: ["ownership", id] });
+  };
   const own = useMutation({
     mutationFn: (ids: string[]) => api.put(`/api/instances/${id}/ownership`, { items: ids.map((catalogId) => ({ kind: "character", catalogId, owned: true })) }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["ownership", id] }),
+    onSuccess: (_r, ids) => markOwned(ids, true),
   });
   const unown = useMutation({
     mutationFn: (ids: string[]) => api.put(`/api/instances/${id}/ownership`, { items: ids.map((catalogId) => ({ kind: "character", catalogId, owned: false })) }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["ownership", id] }),
+    onSuccess: (_r, ids) => markOwned(ids, false),
   });
   const wishMany = useMutation({
     mutationFn: (v: { ids: string[]; wished: boolean }) => Promise.all(v.ids.map((catalogId) => api.put(`/api/instances/${id}/wishlist`, { kind: "character", catalogId, wished: v.wished }))),
