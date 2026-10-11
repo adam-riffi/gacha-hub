@@ -113,3 +113,24 @@ test("the Overview's own card: NTE's city, its City Stamina capped by the Tycoon
   const aic = page.getByRole("region", { name: "AIC and outposts" });
   await expect(aic.getByRole("spinbutton", { name: "Stock Bills" })).toBeVisible();
 });
+
+// Counted dailies (Georges's designs: "Engagement ▮▮▮▯"): a box per step, ticked up to the one clicked.
+test("the Overview counts a daily's steps in boxes, kept after a reload @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "zzz" } })).json()) as { id: string };
+  const tasks = (await (await page.request.get(`/api/tasks?scope=game&refId=${id}`)).json()) as { id: string; title: string }[];
+  const daily = tasks.find((t) => t.title === "Daily Missions")!;
+  await page.request.post(`/api/tasks/${daily.id}/progress`, { data: { progress: 0 } });
+
+  await page.goto(`/games/${id}`);
+  const steps = page.getByRole("region", { name: "Today" }).getByRole("group", { name: "Daily Missions" });
+  await expect(steps.getByRole("button")).toHaveCount(4);
+  await steps.getByRole("button", { name: "3 of 4" }).click();
+  await expect(steps.getByRole("button", { name: "3 of 4" })).toHaveAttribute("aria-pressed", "true");
+  await expect(steps.getByRole("button", { name: "4 of 4" })).toHaveAttribute("aria-pressed", "false");
+  await page.reload();
+  await expect(page.getByRole("region", { name: "Today" }).getByRole("group", { name: "Daily Missions" }).getByRole("button", { name: "2 of 4" })).toHaveAttribute("aria-pressed", "true");
+  await page.request.post(`/api/tasks/${daily.id}/progress`, { data: { progress: 0 } });
+});
