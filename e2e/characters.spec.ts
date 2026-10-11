@@ -124,3 +124,35 @@ test("Characters: every build in one table, and several characters at once @smok
   await expect(page.getByRole("article", { name: "Arlan" })).not.toContainText("Not owned");
   await expect(page.getByRole("article", { name: "Herta", exact: true })).not.toContainText("Not owned");
 });
+
+// The stats each card shows, picked for the game (Georges, round 5: "if i wanna see my HP EM and DEF for example i should be able to"),
+// and a set's bonus on top "in another colour", the stat and the bonus on hover or click.
+test("Characters: the stats the cards show, picked for the game; a set's bonus added in another colour @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  // Qingque, whom no other journey builds, in four Hunter of Glacial Forest relics: CRIT DMG +25% after her Ultimate.
+  const { id: build } = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1201" } })).json()) as { id: string };
+  const hunter = { setName: "Hunter of Glacial Forest" };
+  await page.request.put(`/api/characters/${build}`, { data: { doc: { relics: { head: hunter, hands: hunter, body: hunter, feet: hunter }, traces: {}, lightCone: {}, stats: { HP: 3000, "CRIT DMG": 100, SPD: 110 } } } });
+
+  await page.goto(`/games/${id}/characters`);
+  await page.getByRole("searchbox", { name: "Search" }).fill("Qingque");
+  const card = page.getByRole("article", { name: "Qingque" });
+  const pick = page.getByRole("group", { name: "Card stats" });
+  for (const stat of ["HP", "CRIT DMG", "SPD"]) await pick.getByRole("button", { name: stat, exact: true }).click();
+  await expect(card.locator(".ch-kpis .kpi-label")).toHaveText(["HP", "CRIT DMG", "SPD"]);
+  const crit = card.getByRole("button", { name: /^CRIT DMG 125%/ });
+  await expect(crit).toHaveAttribute("title", "100% + 25% · Hunter of Glacial Forest 4pc");
+  await crit.click();
+  await expect(crit).toContainText("100% + 25%");
+
+  // Saved for the game.
+  await page.reload();
+  await page.getByRole("searchbox", { name: "Search" }).fill("Qingque");
+  await expect(page.getByRole("article", { name: "Qingque" }).locator(".ch-kpis .kpi-label")).toHaveText(["HP", "CRIT DMG", "SPD"]);
+  // Back to the role's stats, for the journeys after this one.
+  await page.getByRole("group", { name: "Card stats" }).getByRole("button", { name: "Role" }).click();
+  await expect.poll(async () => ((await (await page.request.get(`/api/instances/${id}`)).json()) as { cardStats: unknown }).cardStats).toBeNull();
+});

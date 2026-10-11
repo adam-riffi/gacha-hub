@@ -29,18 +29,52 @@ function critValue(game: GameDefinition, doc: Doc): number | null {
   return pieces.some((p) => p.substats?.length) ? pieces.reduce((t, p) => t + gearPieceCv(p), 0) : null;
 }
 
+/** A gear set as its bonuses read: its name, and a text per tier (prefixed "4pc:", or in the game's tier order). */
+export type GearSetBonuses = { name: string; bonuses: readonly string[] };
+/** A card's stat: its value, and where a set raises it, the stat without the set and the set's bonus. */
+export type StatKpi = { label: string; value: string; base?: string; bonus?: { value: string; from: string } };
+
+const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
 /**
- * The three KPIs a build card shows for its role (WIREFRAMES.md G4, ADR 0004
- * `kpis`): crit value from the gear's substats, "A / B" pairs, and stats as
- * the sheet stores them, "—" where a value is missing.
+ * A completed set's bonus to a stat, read from the set's text (Georges, round
+ * 5): the tiers above the smallest only (the 2-piece's is in the character
+ * screen's stats already); the stat named as such ("CRIT Rate is increased by
+ * 20%", "ATK +18%", "Increases ATK by 12%", "Glacio DMG + 10%"), not one kind
+ * of attack's ("Charged Attack CRIT Rate").
  */
-export function buildKpis(game: GameDefinition, doc: Doc, role: string | null | undefined) {
+function setBonus(game: GameDefinition, doc: Doc, sets: readonly GearSetBonuses[], label: string) {
+  const counts = new Map<string, number>();
+  for (const p of gearPieces(game, doc)) if (p.setName) counts.set(p.setName, (counts.get(p.setName) ?? 0) + 1);
+  const tiers = [...game.manifest.gear.sets].sort((a, b) => a - b);
+  const names = [...new Set([label, label.replace(/ Bonus$/, "")])].map(escape);
+  for (const set of sets) {
+    const n = counts.get(set.name) ?? 0;
+    for (const [i, text] of set.bonuses.entries()) {
+      const tier = Number(/^(\d)pc:/.exec(text)?.[1] ?? tiers[i]);
+      if (!tier || tier === tiers[0] || n < tier) continue;
+      for (const name of names) {
+        const m = new RegExp(`(?:(?<![A-Z][\\w'-]* )\\b${name}(?:\\s+(?:is|are))?\\s*(?:\\+\\s*|(?:increased|increases)\\s+by\\s+)|\\b[Ii]ncreases\\s+(?:(?:the\\s+)?(?:wearer|equipper)'s\\s+)?${name}\\s+by\\s+)(\\d+(?:\\.\\d+)?)\\s*(%)?`).exec(text);
+        if (m) return { value: Number(m[1]), percent: Boolean(m[2]), from: `${set.name} ${tier}pc` };
+      }
+    }
+  }
+  return null;
+}
+
+/**
+ * Stats as a card shows them (WIREFRAMES.md G4): crit value from the gear's
+ * substats, "A / B" pairs, and stats as the sheet stores them, "—" where a
+ * value is missing. A completed set's bonus to a stat is added where both are
+ * percentages (or both flat), else shown beside it ("+6%" of a flat SPD).
+ */
+export function statKpis(game: GameDefinition, doc: Doc, labels: readonly string[], sets: readonly GearSetBonuses[] = []): StatKpi[] {
   const stats = (doc.stats ?? {}) as Record<string, unknown>;
   const stat = (label: string) => {
     const key = Object.keys(stats).find((k) => k.toLowerCase() === label.toLowerCase());
     return key === undefined ? null : num(stats[key]);
   };
-  return game.manifest.kpis[buildRole(game, role)]!.map((label) => {
+  return labels.map((label) => {
     if (/^crit value$/i.test(label)) {
       const cv = critValue(game, doc);
       return { label, value: cv === null ? "—" : String(Math.round(cv)) };
@@ -50,8 +84,20 @@ export function buildKpis(game: GameDefinition, doc: Doc, role: string | null | 
       return { label, value: parts.every((p) => p !== null) ? parts.map((p) => Math.round(p!)).join(" / ") : "—" };
     }
     const v = stat(label);
-    return { label, value: v === null ? "—" : `${Math.round(v)}${isPercent(game.key, label) ? "%" : ""}` };
+    if (v === null) return { label, value: "—" };
+    const unit = isPercent(game.key, label) ? "%" : "";
+    const base = `${Math.round(v)}${unit}`;
+    const b = setBonus(game, doc, sets, label);
+    if (!b) return { label, value: base };
+    return b.percent === (unit === "%")
+      ? { label, value: `${Math.round(v + b.value)}${unit}`, base, bonus: { value: `${b.value}${unit}`, from: b.from } }
+      : { label, value: base, base, bonus: { value: `+${b.value}${b.percent ? "%" : ""}`, from: b.from } };
   });
+}
+
+/** The three KPIs a build card shows for its role (WIREFRAMES.md G4, ADR 0004 `kpis`), as `statKpis` reads them. */
+export function buildKpis(game: GameDefinition, doc: Doc, role: string | null | undefined, sets: readonly GearSetBonuses[] = []) {
+  return statKpis(game, doc, game.manifest.kpis[buildRole(game, role)]!, sets);
 }
 
 /** The set bonuses the gear completes: "Whimsy 4pc", "Gladiator 2pc + Whimsy 2pc", or null. */

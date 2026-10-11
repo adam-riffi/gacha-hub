@@ -135123,7 +135123,7 @@
         "feet"
       ],
       "bonuses": [
-        "2pc: Increases Outgoing Healing by #1[i]%.",
+        "2pc: Increases Outgoing Healing by 10%.",
         "4pc: At the start of the battle, immediately regenerates 1 Skill Point."
       ],
       "icon": "71000",
@@ -135154,8 +135154,8 @@
         "feet"
       ],
       "bonuses": [
-        "2pc: Increases ATK by #1[i]%.",
-        "4pc: The wearer's SPD increases by #1[i]% and DMG dealt by Basic ATK increases by #2[i]%."
+        "2pc: Increases ATK by 12%.",
+        "4pc: The wearer's SPD increases by 6% and DMG dealt by Basic ATK increases by 10%."
       ],
       "icon": "71001",
       "extra": {
@@ -135185,8 +135185,8 @@
         "feet"
       ],
       "bonuses": [
-        "2pc: Increases DEF by #1[i]%.",
-        "4pc: Increases the max DMG that can be absorbed by the Shield created by the wearer by #1[i]%."
+        "2pc: Increases DEF by 15%.",
+        "4pc: Increases the max DMG that can be absorbed by the Shield created by the wearer by 20%."
       ],
       "icon": "71002",
       "extra": {
@@ -135216,8 +135216,8 @@
         "feet"
       ],
       "bonuses": [
-        "2pc: Increases Ice DMG by #1[i]%.",
-        "4pc: After the wearer uses their Ultimate, their CRIT DMG increases by #1[i]% for #2[i] turn(s)."
+        "2pc: Increases Ice DMG by 10%.",
+        "4pc: After the wearer uses their Ultimate, their CRIT DMG increases by 25% for 2 turn(s)."
       ],
       "icon": "71003",
       "extra": {
@@ -135247,8 +135247,8 @@
         "feet"
       ],
       "bonuses": [
-        "2pc: Increases Physical DMG by #1[i]%.",
-        "4pc: After the wearer attacks or is hit, their ATK increases by #1[i]% for the rest of the battle. This effect can stack up to #2[i] time(s)."
+        "2pc: Increases Physical DMG by 10%.",
+        "4pc: After the wearer attacks or is hit, their ATK increases by 5% for the rest of the battle. This effect can stack up to 5 time(s)."
       ],
       "icon": "71004",
       "extra": {
@@ -135278,8 +135278,8 @@
         "feet"
       ],
       "bonuses": [
-        "2pc: Reduces DMG taken by #1[i]%.",
-        "4pc: At the beginning of the turn, if the wearer's HP percentage is equal to or less than #1[i]%, restores HP equal to #2[i]% of their Max HP and regenerates #3[i] Energy."
+        "2pc: Reduces DMG taken by 8%.",
+        "4pc: At the beginning of the turn, if the wearer's HP percentage is equal to or less than 50%, restores HP equal to 8% of their Max HP and regenerates 5 Energy."
       ],
       "icon": "71005",
       "extra": {
@@ -135309,8 +135309,8 @@
         "feet"
       ],
       "bonuses": [
-        "2pc: Increases Fire DMG by #1[i]%.",
-        "4pc: Increases DMG by the wearer's Skill by #1[i]%. After unleashing Ultimate, increases the wearer's Fire DMG by #2[i]% for the next attack."
+        "2pc: Increases Fire DMG by 10%.",
+        "4pc: Increases DMG by the wearer's Skill by 12%. After unleashing Ultimate, increases the wearer's Fire DMG by 12% for the next attack."
       ],
       "icon": "71006",
       "extra": {
@@ -135340,8 +135340,8 @@
         "feet"
       ],
       "bonuses": [
-        "2pc: Increases Quantum DMG by #1[i]%.",
-        "4pc: When the wearer deals DMG to the target enemy, ignores #1[i]% DEF. If the target enemy has Quantum Weakness, the wearer additionally ignores #2[i]% DEF."
+        "2pc: Increases Quantum DMG by 10%.",
+        "4pc: When the wearer deals DMG to the target enemy, ignores 10% DEF. If the target enemy has Quantum Weakness, the wearer additionally ignores 10% DEF."
       ],
       "icon": "71007",
       "extra": {
@@ -135371,8 +135371,8 @@
         "feet"
       ],
       "bonuses": [
-        "2pc: Increases Lightning DMG by #1[i]%.",
-        "4pc: When the wearer uses their Skill, increases the wearer's ATK by #1[i]% for #2[i] turn(s)."
+        "2pc: Increases Lightning DMG by 10%.",
+        "4pc: When the wearer uses their Skill, increases the wearer's ATK by 20% for 1 turn(s)."
       ],
       "icon": "71008",
       "extra": {
@@ -135402,8 +135402,8 @@
         "feet"
       ],
       "bonuses": [
-        "2pc: Increases Wind DMG by #1[i]%.",
-        "4pc: After the wearer uses their Ultimate, their action is Advanced Forward by #1[i]%."
+        "2pc: Increases Wind DMG by 10%.",
+        "4pc: After the wearer uses their Ultimate, their action is Advanced Forward by 25%."
       ],
       "icon": "71009",
       "extra": {
@@ -135433,8 +135433,8 @@
         "feet"
       ],
       "bonuses": [
-        "2pc: Increases Break Effect by #1[i]%.",
-        "4pc: Increases the wearer's Break Effect by #1[i]%. After the wearer inflicts Weakness Break on an enemy, regenerates #2[i] Energy."
+        "2pc: Increases Break Effect by 16%.",
+        "4pc: Increases the wearer's Break Effect by 16%. After the wearer inflicts Weakness Break on an enemy, regenerates 3 Energy."
       ],
       "icon": "71010",
       "extra": {
@@ -135464,8 +135464,8 @@
         "feet"
       ],
       "bonuses": [
-        "2pc: Increases Imaginary DMG by #1[i]%.",
-        "4pc: When dealing DMG to debuffed enemy targets, the wearer has their CRIT Rate increased by #1[i]%. And when they deal DMG to Imprisoned enemy targets, their CRIT DMG increases by #2[i]%."
+        "2pc: Increases Imaginary DMG by 10%.",
+        "4pc: When dealing DMG to debuffed enemy targets, the wearer has their CRIT Rate increased by 10%. And when they deal DMG to Imprisoned enemy targets, their CRIT DMG increases by 20%."
       ],
       "icon": "71011",
       "extra": {
@@ -135495,8 +135495,8 @@
         "feet"
       ],
       "bonuses": [
-        "2pc: Increases Max HP by #1[i]%.",
-        "4pc: When the wearer is hit or has their HP consumed by an ally or themselves, their CRIT Rate increases by #1[i]% for #2[i] turn(s) and up to #3[i] stacks."
+        "2pc: Increases Max HP by 12%.",
+        "4pc: When the wearer is hit or has their HP consumed by an ally or themselves, their CRIT Rate increases by 8% for 2 turn(s) and up to 2 stacks."
       ],
       "icon": "71020",
       "extra": {
@@ -135526,8 +135526,8 @@
         "feet"
       ],
       "bonuses": [
-        "2pc: Increases SPD by #1[i]%.",
-        "4pc: When the wearer uses their Ultimate on an ally, SPD for all allies increases by #1[i]% for #2[i] turn(s). This effect cannot be stacked."
+        "2pc: Increases SPD by 6%.",
+        "4pc: When the wearer uses their Ultimate on an ally, SPD for all allies increases by 12% for 1 turn(s). This effect cannot be stacked."
       ],
       "icon": "71021",
       "extra": {
@@ -135557,8 +135557,8 @@
         "feet"
       ],
       "bonuses": [
-        "2pc: Increases the DMG dealt by Follow-Up ATK by #1[i]%.",
-        "4pc: When the wearer uses a Follow-Up ATK, increases the wearer's ATK by #1[i]% for every time the Follow-Up ATK deals DMG. This effect can stack up to #2[i] time(s) and lasts for #3[i] turn(s). This effect is removed the next time the wearer uses a Follow-Up ATK."
+        "2pc: Increases the DMG dealt by Follow-Up ATK by 20%.",
+        "4pc: When the wearer uses a Follow-Up ATK, increases the wearer's ATK by 6% for every time the Follow-Up ATK deals DMG. This effect can stack up to 8 time(s) and lasts for 3 turn(s). This effect is removed the next time the wearer uses a Follow-Up ATK."
       ],
       "icon": "71024",
       "extra": {
@@ -135588,8 +135588,8 @@
         "feet"
       ],
       "bonuses": [
-        "2pc: Increases ATK by #1[i]%.",
-        "4pc: For every DoT the enemy target is afflicted with, the wearer will ignore #1[i]% of its DEF when dealing DMG to it. This effect is valid for a max of #2[i] DoTs."
+        "2pc: Increases ATK by 12%.",
+        "4pc: For every DoT the enemy target is afflicted with, the wearer will ignore 6% of its DEF when dealing DMG to it. This effect is valid for a max of 3 DoTs."
       ],
       "icon": "71025",
       "extra": {
@@ -135619,8 +135619,8 @@
         "feet"
       ],
       "bonuses": [
-        "2pc: Increases DMG dealt to enemies with debuffs by #1[i]%.",
-        "4pc: Increases CRIT Rate by #1[i]%. The wearer deals #2[i]%/#3[i]% increased CRIT DMG to enemies with at least #4[i]/#5[i] debuffs. After the wearer inflicts a debuff on enemy targets, the aforementioned effects increase by 100%, lasting for #6[i] turn(s)."
+        "2pc: Increases DMG dealt to enemies with debuffs by 12%.",
+        "4pc: Increases CRIT Rate by 4%. The wearer deals 8%/12% increased CRIT DMG to enemies with at least 2/3 debuffs. After the wearer inflicts a debuff on enemy targets, the aforementioned effects increase by 100%, lasting for 1 turn(s)."
       ],
       "icon": "71028",
       "extra": {
@@ -135650,8 +135650,8 @@
         "feet"
       ],
       "bonuses": [
-        "2pc: Increases Break Effect by #1[i]%.",
-        "4pc: When the wearer uses their Ultimate on an ally, all allies' Break Effect increases by #1[i]% for #2[i] turn(s). This effect cannot be stacked."
+        "2pc: Increases Break Effect by 16%.",
+        "4pc: When the wearer uses their Ultimate on an ally, all allies' Break Effect increases by 30% for 2 turn(s). This effect cannot be stacked."
       ],
       "icon": "71029",
       "extra": {
@@ -135681,8 +135681,8 @@
         "feet"
       ],
       "bonuses": [
-        "2pc: Increases Break Effect by #1[i]%.",
-        "4pc: If the wearer's Break Effect is #1[i]% or higher, the Break DMG dealt to the enemy target ignores #3[i]% of their DEF. If the wearer's Break Effect is #2[i]% or higher, the Super Break DMG dealt to the enemy target additionally ignores #4[i]% of their DEF."
+        "2pc: Increases Break Effect by 16%.",
+        "4pc: If the wearer's Break Effect is 150% or higher, the Break DMG dealt to the enemy target ignores 10% of their DEF. If the wearer's Break Effect is 250% or higher, the Super Break DMG dealt to the enemy target additionally ignores 15% of their DEF."
       ],
       "icon": "71032",
       "extra": {
@@ -135712,8 +135712,8 @@
         "feet"
       ],
       "bonuses": [
-        "2pc: Increases ATK by #1[i]%.",
-        "4pc: Increases the wearer's CRIT Rate by #1[i]%. After the wearer uses a Follow-Up ATK, increases DMG dealt by Ultimate by #2[i]%, lasting for #3[i] turn(s)."
+        "2pc: Increases ATK by 12%.",
+        "4pc: Increases the wearer's CRIT Rate by 6%. After the wearer uses a Follow-Up ATK, increases DMG dealt by Ultimate by 36%, lasting for 1 turn(s)."
       ],
       "icon": "71033",
       "extra": {
@@ -135743,8 +135743,8 @@
         "feet"
       ],
       "bonuses": [
-        "2pc: Increases SPD by #1[i]%.",
-        "4pc: When using Skill or Ultimate on one ally target, increases the ability target's CRIT DMG by #1[i]%, lasting for #2[i] turn(s). This effect can stack up to #3[i] time(s)."
+        "2pc: Increases SPD by 6%.",
+        "4pc: When using Skill or Ultimate on one ally target, increases the ability target's CRIT DMG by 18%, lasting for 2 turn(s). This effect can stack up to 2 time(s)."
       ],
       "icon": "71038",
       "extra": {
@@ -135774,8 +135774,8 @@
         "feet"
       ],
       "bonuses": [
-        "2pc: Increases CRIT Rate by #1[i]%.",
-        "4pc: Increases DMG dealt by Skill and Ultimate by #1[i]%. After using Ultimate, additionally increases the DMG dealt by the next Skill by #2[i]%."
+        "2pc: Increases CRIT Rate by 8%.",
+        "4pc: Increases DMG dealt by Skill and Ultimate by 20%. After using Ultimate, additionally increases the DMG dealt by the next Skill by 25%."
       ],
       "icon": "71039",
       "extra": {
@@ -135805,8 +135805,8 @@
         "feet"
       ],
       "bonuses": [
-        "2pc: Increases ATK by #1[i]%.",
-        "4pc: While the wearer's memosprite is on the field, increases the wearer's SPD by #1[i]%. When the wearer's memosprite attacks, increases the wearer's and memosprite's CRIT DMG by #2[i]%, lasting for #3[i] turn(s)."
+        "2pc: Increases ATK by 12%.",
+        "4pc: While the wearer's memosprite is on the field, increases the wearer's SPD by 6%. When the wearer's memosprite attacks, increases the wearer's and memosprite's CRIT DMG by 30%, lasting for 2 turn(s)."
       ],
       "icon": "71040",
       "extra": {
@@ -135836,8 +135836,8 @@
         "feet"
       ],
       "bonuses": [
-        "2pc: Increases Quantum DMG by #1[i]%.",
-        "4pc: Decreases the wearer's SPD by #6[i]%. Before entering battle, if the wearer's SPD is lower than #2[i]/#3[i], increases the wearer's CRIT Rate by #4[i]%/#5[i]%. This effect applies to the wearer's memosprite at the same time."
+        "2pc: Increases Quantum DMG by 10%.",
+        "4pc: Decreases the wearer's SPD by 8%. Before entering battle, if the wearer's SPD is lower than 110/95, increases the wearer's CRIT Rate by 20%/32%. This effect applies to the wearer's memosprite at the same time."
       ],
       "icon": "71041",
       "extra": {
@@ -135867,8 +135867,8 @@
         "feet"
       ],
       "bonuses": [
-        "2pc: Increases SPD by #1[i]%.",
-        "4pc: When the wearer or their memosprite provides healing to ally targets other than themselves, the wearer gains \"Gentle Rain,\" which lasts for #3[i] turn(s) and can only trigger once per turn. While the wearer has \"Gentle Rain,\" SPD increases by #1[i]% and all allies' CRIT DMG increases by #2[i]%. This effect cannot stack."
+        "2pc: Increases SPD by 6%.",
+        "4pc: When the wearer or their memosprite provides healing to ally targets other than themselves, the wearer gains \"Gentle Rain,\" which lasts for 2 turn(s) and can only trigger once per turn. While the wearer has \"Gentle Rain,\" SPD increases by 6% and all allies' CRIT DMG increases by 15%. This effect cannot stack."
       ],
       "icon": "71044",
       "extra": {
@@ -135898,8 +135898,8 @@
         "feet"
       ],
       "bonuses": [
-        "2pc: Increases CRIT DMG by #1[i]%.",
-        "4pc: When the wearer becomes the target of another ally target's ability, gains 1 stack of \"Help,\" stacking up to #1[i] time(s). If there are #1[i] stack(s) of \"Help\" when the wearer uses their Ultimate, consumes all \"Help\" to increase the wearer's ATK by #2[i]% for #3[i] turn(s)."
+        "2pc: Increases CRIT DMG by 16%.",
+        "4pc: When the wearer becomes the target of another ally target's ability, gains 1 stack of \"Help,\" stacking up to 2 time(s). If there are 2 stack(s) of \"Help\" when the wearer uses their Ultimate, consumes all \"Help\" to increase the wearer's ATK by 48% for 1 turn(s)."
       ],
       "icon": "71045",
       "extra": {
@@ -135929,8 +135929,8 @@
         "feet"
       ],
       "bonuses": [
-        "2pc: Increases CRIT Rate by #1[i]%.",
-        "4pc: After the wearer uses Basic ATK or Skill, if the wearer's memosprite is on the field, increases Max HP of the wearer and their memosprite by #1[i]%, and increases all allies' DMG dealt by #2[i]%, lasting until after the wearer's next use of Basic ATK or Skill."
+        "2pc: Increases CRIT Rate by 8%.",
+        "4pc: After the wearer uses Basic ATK or Skill, if the wearer's memosprite is on the field, increases Max HP of the wearer and their memosprite by 24%, and increases all allies' DMG dealt by 15%, lasting until after the wearer's next use of Basic ATK or Skill."
       ],
       "icon": "71048",
       "extra": {
@@ -135960,8 +135960,8 @@
         "feet"
       ],
       "bonuses": [
-        "2pc: The provided Shield Effect increases by #1[i]%.",
-        "4pc: Increases the Shield Effect provided by the wearer by #1[i]%. When an ally target holds a Shield provided by the wearer, the ally target's CRIT DMG increases by #2[i]%."
+        "2pc: The provided Shield Effect increases by 10%.",
+        "4pc: Increases the Shield Effect provided by the wearer by 12%. When an ally target holds a Shield provided by the wearer, the ally target's CRIT DMG increases by 15%."
       ],
       "icon": "71049",
       "extra": {
@@ -135991,8 +135991,8 @@
         "feet"
       ],
       "bonuses": [
-        "2pc: Increases CRIT DMG by #1[i]%.",
-        "4pc: The Elation DMG dealt by the wearer and their memosprites ignores #1[i]% of targets' DEF. For every #2[i] accumulated Punchline allies gain, the Elation DMG dealt additionally ignores #3[i]% of targets' DEF, stacking up to #4[i] time(s)."
+        "2pc: Increases CRIT DMG by 16%.",
+        "4pc: The Elation DMG dealt by the wearer and their memosprites ignores 10% of targets' DEF. For every 5 accumulated Punchline allies gain, the Elation DMG dealt additionally ignores 1% of targets' DEF, stacking up to 10 time(s)."
       ],
       "icon": "71052",
       "extra": {
@@ -136022,8 +136022,8 @@
         "feet"
       ],
       "bonuses": [
-        "2pc: Increases SPD by #1[i]%.",
-        "4pc: Before entering combat, if the wearer's SPD is greater than or equal to #1[i]/#2[i], increases the wearer's CRIT Rate by #3[i]%/#4[i]%. When the wearer uses Elation Skill for the first time in each battle, increases all allies' Elation by #5[i]%. This effect cannot stack."
+        "2pc: Increases SPD by 6%.",
+        "4pc: Before entering combat, if the wearer's SPD is greater than or equal to 120/160, increases the wearer's CRIT Rate by 10%/18%. When the wearer uses Elation Skill for the first time in each battle, increases all allies' Elation by 10%. This effect cannot stack."
       ],
       "icon": "71053",
       "extra": {
@@ -136053,8 +136053,8 @@
         "feet"
       ],
       "bonuses": [
-        "2pc: Increases ATK by #1[i]%.",
-        "4pc: When the wearer enters combat or uses Skill, the DMG dealt by their Skill and Ultimate increases by #1[i]%, stacking up to #2[i] time(s). At the start of the wearer's turn or after using Ultimate, removes #3[i] stack(s) of this effect."
+        "2pc: Increases ATK by 12%.",
+        "4pc: When the wearer enters combat or uses Skill, the DMG dealt by their Skill and Ultimate increases by 18%, stacking up to 3 time(s). At the start of the wearer's turn or after using Ultimate, removes 1 stack(s) of this effect."
       ],
       "icon": "71056",
       "extra": {
@@ -136084,8 +136084,8 @@
         "feet"
       ],
       "bonuses": [
-        "2pc: Increases Max HP by #1[i]%.",
-        "4pc: Increases the wearer's CRIT DMG dealt to enemy targets in the DEF reduction state by #1[i]%. After the wearer inflicts the DEF reduction state on an enemy target, all allies gain \"Comburent\" for #2[i] turn(s). This effect cannot be stacked. The DMG dealt by ally targets with \"Comburent\" increases by #3[i]%. This effect can be triggered again after the wearer uses an attack."
+        "2pc: Increases Max HP by 12%.",
+        "4pc: Increases the wearer's CRIT DMG dealt to enemy targets in the DEF reduction state by 28%. After the wearer inflicts the DEF reduction state on an enemy target, all allies gain \"Comburent\" for 2 turn(s). This effect cannot be stacked. The DMG dealt by ally targets with \"Comburent\" increases by 15%. This effect can be triggered again after the wearer uses an attack."
       ],
       "icon": "71057",
       "extra": {
@@ -136115,8 +136115,8 @@
         "feet"
       ],
       "bonuses": [
-        "2pc: Increases SPD by #1[i]%.",
-        "4pc: When the wearer uses their Skill or Ultimate on one other ally target, increases the ability target's Elation by #1[i]%, lasting for #2[i] turn(s). If the wearer has #3[i] or more points of Certified Banger, additionally increases all ally targets' CRIT DMG by #4[i]%, lasting for #5[i] turn(s)."
+        "2pc: Increases SPD by 6%.",
+        "4pc: When the wearer uses their Skill or Ultimate on one other ally target, increases the ability target's Elation by 16%, lasting for 3 turn(s). If the wearer has 10 or more points of Certified Banger, additionally increases all ally targets' CRIT DMG by 12%, lasting for 3 turn(s)."
       ],
       "icon": "71060",
       "extra": {
@@ -136146,8 +136146,8 @@
         "feet"
       ],
       "bonuses": [
-        "2pc: Increases CRIT DMG by #1[i]%.",
-        "4pc: Increases DMG dealt by the wearer's Basic ATK by #1[i]%. When the wearer uses Basic ATK, increases the wearer's ATK by #2[i]%, lasting for #3[i] turn(s)."
+        "2pc: Increases CRIT DMG by 16%.",
+        "4pc: Increases DMG dealt by the wearer's Basic ATK by 36%. When the wearer uses Basic ATK, increases the wearer's ATK by 20%, lasting for 2 turn(s)."
       ],
       "icon": "71061",
       "extra": {
@@ -136175,7 +136175,7 @@
         "rope"
       ],
       "bonuses": [
-        "2pc: Increases the wearer's ATK by #1[i]%. When the wearer's SPD reaches #2[i] or higher, the wearer's ATK increases by an extra #3[i]%."
+        "2pc: Increases the wearer's ATK by 12%. When the wearer's SPD reaches 120 or higher, the wearer's ATK increases by an extra 12%."
       ],
       "icon": "71012",
       "extra": {
@@ -136201,7 +136201,7 @@
         "rope"
       ],
       "bonuses": [
-        "2pc: Increases the wearer's Max HP by #1[i]%. When the wearer's SPD reaches #2[i] or higher, all allies' ATK increases by #3[i]%."
+        "2pc: Increases the wearer's Max HP by 12%. When the wearer's SPD reaches 120 or higher, all allies' ATK increases by 8%."
       ],
       "icon": "71013",
       "extra": {
@@ -136227,7 +136227,7 @@
         "rope"
       ],
       "bonuses": [
-        "2pc: Increases the wearer's Effect Hit Rate by #1[i]%. Meanwhile, the wearer's ATK increases by an amount that is equal to #2[i]% of the current Effect Hit Rate, up to a maximum increase of #3[i]%."
+        "2pc: Increases the wearer's Effect Hit Rate by 10%. Meanwhile, the wearer's ATK increases by an amount that is equal to 25% of the current Effect Hit Rate, up to a maximum increase of 25%."
       ],
       "icon": "71014",
       "extra": {
@@ -136253,7 +136253,7 @@
         "rope"
       ],
       "bonuses": [
-        "2pc: Increases the wearer's DEF by #1[i]%. When the wearer's Effect Hit Rate is #2[i]% or higher, the wearer gains an extra #3[i]% DEF."
+        "2pc: Increases the wearer's DEF by 15%. When the wearer's Effect Hit Rate is 50% or higher, the wearer gains an extra 15% DEF."
       ],
       "icon": "71015",
       "extra": {
@@ -136279,7 +136279,7 @@
         "rope"
       ],
       "bonuses": [
-        "2pc: Increases the wearer's CRIT DMG by #1[i]%. When the wearer's current CRIT DMG reaches #2[i]% or higher, after entering battle, the wearer's CRIT Rate increases by #3[i]% until the end of their first attack."
+        "2pc: Increases the wearer's CRIT DMG by 16%. When the wearer's current CRIT DMG reaches 120% or higher, after entering battle, the wearer's CRIT Rate increases by 60% until the end of their first attack."
       ],
       "icon": "71016",
       "extra": {
@@ -136305,7 +136305,7 @@
         "rope"
       ],
       "bonuses": [
-        "2pc: Increases the wearer's CRIT Rate by #1[i]%. When the wearer's current CRIT Rate reaches #2[i]% or higher, the DMG dealt by the wearer's Ultimate and Follow-Up ATK increases by #3[i]%."
+        "2pc: Increases the wearer's CRIT Rate by 8%. When the wearer's current CRIT Rate reaches 50% or higher, the DMG dealt by the wearer's Ultimate and Follow-Up ATK increases by 15%."
       ],
       "icon": "71017",
       "extra": {
@@ -136331,7 +136331,7 @@
         "rope"
       ],
       "bonuses": [
-        "2pc: Increases the wearer's Break Effect by #1[i]%. When the wearer's SPD reaches #2[i] or higher, the wearer's Break Effect increases by an extra #3[i]%."
+        "2pc: Increases the wearer's Break Effect by 16%. When the wearer's SPD reaches 145 or higher, the wearer's Break Effect increases by an extra 20%."
       ],
       "icon": "71018",
       "extra": {
@@ -136357,7 +136357,7 @@
         "rope"
       ],
       "bonuses": [
-        "2pc: Increases the wearer's Energy Regeneration Rate by #1[i]%. When the wearer's SPD reaches #2[i] or higher, the wearer's action is Advanced Forward by #3[i]% immediately upon entering battle."
+        "2pc: Increases the wearer's Energy Regeneration Rate by 5%. When the wearer's SPD reaches 120 or higher, the wearer's action is Advanced Forward by 40% immediately upon entering battle."
       ],
       "icon": "71019",
       "extra": {
@@ -136383,7 +136383,7 @@
         "rope"
       ],
       "bonuses": [
-        "2pc: Increases the wearer's CRIT Rate by #1[i]%. When the wearer's current CRIT Rate reaches #2[i]% or higher, DMG dealt by Basic ATK and Skill increases by #3[i]%."
+        "2pc: Increases the wearer's CRIT Rate by 8%. When the wearer's current CRIT Rate reaches 70% or higher, DMG dealt by Basic ATK and Skill increases by 20%."
       ],
       "icon": "71022",
       "extra": {
@@ -136409,7 +136409,7 @@
         "rope"
       ],
       "bonuses": [
-        "2pc: Increases the wearer's Effect RES by #1[i]%. When the wearer's Effect RES is at #2[i]% or higher, all allies' CRIT DMG increases by #3[i]%."
+        "2pc: Increases the wearer's Effect RES by 10%. When the wearer's Effect RES is at 30% or higher, all allies' CRIT DMG increases by 10%."
       ],
       "icon": "71023",
       "extra": {
@@ -136435,7 +136435,7 @@
         "rope"
       ],
       "bonuses": [
-        "2pc: Increases the wearer's ATK by #1[i]%. When the wearer's SPD is equal to or higher than #2[i]/#3[i], the wearer deals #4[i]%/#5[i]% more DMG."
+        "2pc: Increases the wearer's ATK by 12%. When the wearer's SPD is equal to or higher than 135/160, the wearer deals 12%/18% more DMG."
       ],
       "icon": "71026",
       "extra": {
@@ -136461,7 +136461,7 @@
         "rope"
       ],
       "bonuses": [
-        "2pc: Increases wearer's Energy Regeneration Rate by #1[i]%. Increases DMG by #2[i]% for all other allies that are of the same Type as the wearer."
+        "2pc: Increases wearer's Energy Regeneration Rate by 5%. Increases DMG by 10% for all other allies that are of the same Type as the wearer."
       ],
       "icon": "71027",
       "extra": {
@@ -136487,7 +136487,7 @@
         "rope"
       ],
       "bonuses": [
-        "2pc: Increases the wearer's CRIT Rate by #3[i]%. When an enemy target gets defeated, the wearer's CRIT DMG increases by #1[i]%, stacking up to #2[i] time(s)."
+        "2pc: Increases the wearer's CRIT Rate by 4%. When an enemy target gets defeated, the wearer's CRIT DMG increases by 4%, stacking up to 10 time(s)."
       ],
       "icon": "71030",
       "extra": {
@@ -136513,7 +136513,7 @@
         "rope"
       ],
       "bonuses": [
-        "2pc: Increases the wearer's ATK by #1[i]%. When entering battle, if at least one teammate follows the same Path as the wearer, then the wearer's CRIT Rate increases by #2[i]%."
+        "2pc: Increases the wearer's ATK by 12%. When entering battle, if at least one teammate follows the same Path as the wearer, then the wearer's CRIT Rate increases by 12%."
       ],
       "icon": "71031",
       "extra": {
@@ -136539,7 +136539,7 @@
         "rope"
       ],
       "bonuses": [
-        "2pc: When an ally character uses a Follow-Up ATK, the wearer gains 1 stack of \"Merit,\" stacking up to #1[i] time(s). Each stack of \"Merit\" increases the DMG dealt by the wearer's Follow-Up ATKs by #2[i]%. When there are #1[i] stacks, additionally increases the wearer's CRIT DMG by #3[i]%."
+        "2pc: When an ally character uses a Follow-Up ATK, the wearer gains 1 stack of \"Merit,\" stacking up to 5 time(s). Each stack of \"Merit\" increases the DMG dealt by the wearer's Follow-Up ATKs by 5%. When there are 5 stacks, additionally increases the wearer's CRIT DMG by 25%."
       ],
       "icon": "71034",
       "extra": {
@@ -136565,7 +136565,7 @@
         "rope"
       ],
       "bonuses": [
-        "2pc: Increases the wearer's SPD by #1[i]%. When the wearer hits an enemy target that has Fire Weakness, the wearer's Break Effect increases by #2[i]%, lasting for #3[i] turn(s)."
+        "2pc: Increases the wearer's SPD by 6%. When the wearer hits an enemy target that has Fire Weakness, the wearer's Break Effect increases by 40%, lasting for 1 turn(s)."
       ],
       "icon": "71035",
       "extra": {
@@ -136591,7 +136591,7 @@
         "rope"
       ],
       "bonuses": [
-        "2pc: Increases the wearer's Energy Regeneration Rate by #1[i]%. If the wearer is not the first character in the team lineup, then increases the ATK of the first character in the team lineup by #2[i]%."
+        "2pc: Increases the wearer's Energy Regeneration Rate by 5%. If the wearer is not the first character in the team lineup, then increases the ATK of the first character in the team lineup by 12%."
       ],
       "icon": "71036",
       "extra": {
@@ -136617,7 +136617,7 @@
         "rope"
       ],
       "bonuses": [
-        "2pc: Increases the wearer's CRIT DMG by #1[i]%. When a target summoned by the wearer is on the field, CRIT DMG additionally increases by #2[i]%."
+        "2pc: Increases the wearer's CRIT DMG by 16%. When a target summoned by the wearer is on the field, CRIT DMG additionally increases by 32%."
       ],
       "icon": "71037",
       "extra": {
@@ -136643,7 +136643,7 @@
         "rope"
       ],
       "bonuses": [
-        "2pc: Increases the wearer's Max HP by #1[i]%. When the wearer's Max HP is #2[i] or higher, increases the wearer's and their memosprite's CRIT DMG by #3[i]%."
+        "2pc: Increases the wearer's Max HP by 12%. When the wearer's Max HP is 5000 or higher, increases the wearer's and their memosprite's CRIT DMG by 28%."
       ],
       "icon": "71042",
       "extra": {
@@ -136669,7 +136669,7 @@
         "rope"
       ],
       "bonuses": [
-        "2pc: Increases the wearer's SPD by #1[i]%. When the wearer's SPD is #2[i]/#3[i] or higher, the wearer and their memosprite's Outgoing Healing increases by #4[i]%/#5[i]%."
+        "2pc: Increases the wearer's SPD by 6%. When the wearer's SPD is 135/180 or higher, the wearer and their memosprite's Outgoing Healing increases by 12%/20%."
       ],
       "icon": "71043",
       "extra": {
@@ -136695,7 +136695,7 @@
         "rope"
       ],
       "bonuses": [
-        "2pc: When the number of ally targets on the field is not equal to 4, for every 1 additional/missing ally target, increases the DMG dealt by the wearer and their memosprite by #1[i]%/#2[i]%, stacking up to #3[i]/#4[i] time(s)."
+        "2pc: When the number of ally targets on the field is not equal to 4, for every 1 additional/missing ally target, increases the DMG dealt by the wearer and their memosprite by 9%/12%, stacking up to 4/3 time(s)."
       ],
       "icon": "71046",
       "extra": {
@@ -136721,7 +136721,7 @@
         "rope"
       ],
       "bonuses": [
-        "2pc: Increases the wearer's ATK by #1[i]%. When the wearer's ATK is higher than or equal to #2[i]/#3[i], increases the DoT DMG dealt by #4[i]%/#5[i]% respectively."
+        "2pc: Increases the wearer's ATK by 12%. When the wearer's ATK is higher than or equal to 2400/3600, increases the DoT DMG dealt by 12%/24% respectively."
       ],
       "icon": "71047",
       "extra": {
@@ -136747,7 +136747,7 @@
         "rope"
       ],
       "bonuses": [
-        "2pc: Increases the wearer's CRIT Rate by #1[i]%. While the wearer's memosprite is on the field, increases all allies' SPD by #2[i]%. This effect cannot be stacked."
+        "2pc: Increases the wearer's CRIT Rate by 8%. While the wearer's memosprite is on the field, increases all allies' SPD by 8%. This effect cannot be stacked."
       ],
       "icon": "71050",
       "extra": {
@@ -136773,7 +136773,7 @@
         "rope"
       ],
       "bonuses": [
-        "2pc: Increases the wearer's CRIT DMG by #1[i]%. If #2[i] or more Skill Points are consumed in the same turn, additionally increases the wearer's CRIT DMG by #3[i]%, lasting for #4[i] turns."
+        "2pc: Increases the wearer's CRIT DMG by 16%. If 3 or more Skill Points are consumed in the same turn, additionally increases the wearer's CRIT DMG by 32%, lasting for 3 turns."
       ],
       "icon": "71051",
       "extra": {
@@ -136799,7 +136799,7 @@
         "rope"
       ],
       "bonuses": [
-        "2pc: Increases the wearer's Elation by #1[i]%. When Elation reaches #2[i]%/#3[i]% for the first time in combat, increases the wearer's CRIT DMG by #4[i]%/#5[i]%."
+        "2pc: Increases the wearer's Elation by 8%. When Elation reaches 40%/80% for the first time in combat, increases the wearer's CRIT DMG by 20%/32%."
       ],
       "icon": "71054",
       "extra": {
@@ -136825,7 +136825,7 @@
         "rope"
       ],
       "bonuses": [
-        "2pc: When the wearer uses Follow-Up ATK, increases ATK by #1[i]% for #2[i] turn(s). When an enemy target gets defeated, increases CRIT DMG for all allies by #3[i]% in the current battle. This effect cannot stack."
+        "2pc: When the wearer uses Follow-Up ATK, increases ATK by 24% for 2 turn(s). When an enemy target gets defeated, increases CRIT DMG for all allies by 12% in the current battle. This effect cannot stack."
       ],
       "icon": "71055",
       "extra": {
@@ -136851,7 +136851,7 @@
         "rope"
       ],
       "bonuses": [
-        "2pc: Increases the wearer's CRIT Rate by #1[i]%. When entering combat, if the wearer and another teammate are both Trailblaze Companions characters, increases the wearer's CRIT DMG by #2[i]%."
+        "2pc: Increases the wearer's CRIT Rate by 8%. When entering combat, if the wearer and another teammate are both Trailblaze Companions characters, increases the wearer's CRIT DMG by 32%."
       ],
       "icon": "71058",
       "extra": {
@@ -136877,7 +136877,7 @@
         "rope"
       ],
       "bonuses": [
-        "2pc: When entering combat, if the wearer's Max Energy is greater than or equal to #1[i], for every 1 excess point, increases the wearer's DMG dealt by #2[f1]%, up to a max increase of #3[i]%."
+        "2pc: When entering combat, if the wearer's Max Energy is greater than or equal to 200, for every 1 excess point, increases the wearer's DMG dealt by 0.2%, up to a max increase of 32%."
       ],
       "icon": "71059",
       "extra": {

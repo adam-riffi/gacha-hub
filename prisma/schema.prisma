@@ -69,6 +69,8 @@ model GameInstance {
   progress     Json?
   /// Pull banner types hidden from Pulls and Home (["beginner"]), `pullBanners` keys.
   hiddenBanners Json?
+  /// The stats the character cards show (["HP", "Elemental Mastery", "DEF"]), up to six; null shows each build's role's.
+  cardStats    Json?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

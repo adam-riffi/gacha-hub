@@ -5,6 +5,7 @@ import {
   elementColor,
   buildKpis,
   buildLine,
+  statKpis,
   dupeBadge,
   dupeLetter,
   featuredWithin,
@@ -19,6 +20,7 @@ import {
   type OwnershipDto,
   type PullLogDto,
   type RewardDto,
+  type StatKpi,
   type WishlistItemDto,
 } from "@gacha/shared";
 import { LoadError } from "../components/LoadError";
@@ -114,6 +116,12 @@ export function CharactersPage() {
     mutationFn: (v: { catalogId: string; wished: boolean; kind?: "character" | "weapon" }) => api.put(`/api/instances/${id}/wishlist`, { kind: "character", ...v }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["wishlist", id] }),
   });
+  // The stats the cards show, picked for the game (Georges, round 5); none picked shows each build's role's.
+  const setCardStats = useMutation({
+    mutationFn: (cardStats: string[] | null) => api.put(`/api/instances/${id}`, { cardStats }),
+    onMutate: (cardStats) => qc.setQueryData<InstanceDetail>(["instance", id], (old) => (old ? { ...old, cardStats } : old)),
+    onSettled: () => qc.invalidateQueries({ queryKey: ["instance", id] }),
+  });
   const start = useMutation({
     mutationFn: (v: string | { name: string }) => api.post<{ id: string }>(`/api/instances/${id}/characters`, typeof v === "string" ? { catalogId: v } : v),
     onSuccess: (r) => nav(`/characters/${r.id}`),
@@ -184,6 +192,15 @@ export function CharactersPage() {
   };
   const holder = weaponHolder(game);
   const dupeField = game.manifest.dupes.weapon?.field;
+  const cardStats = instance.data.cardStats ?? null;
+  const statOptions = [
+    ...new Set(["Crit value", "HP", "ATK", "DEF", ...Object.values(game.manifest.kpis).flat().flatMap((k) => k.split(" / ")), ...builds.data.flatMap((b) => Object.keys(((b.doc as Record<string, unknown>).stats ?? {}) as object))]),
+  ];
+  const toggleStat = (s: string) => {
+    const now = cardStats ?? [];
+    const next = now.includes(s) ? now.filter((x) => x !== s) : [...now, s].slice(-6);
+    setCardStats.mutate(next.length ? next : null);
+  };
 
   return (
     <>
@@ -219,6 +236,19 @@ export function CharactersPage() {
             onChange={setKind}
           />
         )}
+        <div className="ch-chipset ch-stats">
+          <span className="kpi-label">Card stats</span>
+          <div role="group" aria-label="Card stats">
+            <button type="button" className="ch-chip" aria-pressed={!cardStats} onClick={() => setCardStats.mutate(null)}>
+              Role
+            </button>
+            {statOptions.map((s) => (
+              <button key={s} type="button" className="ch-chip" aria-pressed={cardStats?.includes(s) ?? false} onClick={() => toggleStat(s)}>
+                {s}
+              </button>
+            ))}
+          </div>
+        </div>
       </section>
 
       {kind === "builds" ? (
@@ -324,11 +354,11 @@ export function CharactersPage() {
                 </div>
               </div>
               {c.build ? (
-                <div className="ch-kpis">
-                  {buildKpis(game, doc, c.build.role).map((k) => (
+                <div className="ch-kpis" style={cardStats && cardStats.length !== 3 ? { gridTemplateColumns: `repeat(${Math.min(3, cardStats.length)}, minmax(0, 1fr))` } : undefined}>
+                  {(cardStats ? statKpis(game, doc, cardStats, catalog?.gear ?? []) : buildKpis(game, doc, c.build.role, catalog?.gear ?? [])).map((k) => (
                     <div key={k.label}>
                       <span className="kpi-label">{k.label}</span>
-                      <span className="cd">{k.value}</span>
+                      <KpiValue k={k} />
                     </div>
                   ))}
                 </div>
@@ -384,5 +414,30 @@ export function CharactersPage() {
         </>
       )}
     </>
+  );
+}
+
+/**
+ * A card's stat; where a set raises it, in its element's colour, the stat and
+ * the set's bonus on hover, and written out on a click (Georges, round 5).
+ */
+function KpiValue({ k }: { k: StatKpi }) {
+  const [open, setOpen] = useState(false);
+  if (!k.bonus) return <span className="cd">{k.value}</span>;
+  const add = k.bonus.value.replace(/^\+/, "");
+  const why = `${k.base} + ${add} · ${k.bonus.from}`;
+  return (
+    <button type="button" className="cd ch-boost" title={why} aria-label={`${k.label} ${k.value}: ${why}`} aria-expanded={open} onClick={() => setOpen(!open)}>
+      {open ? (
+        <>
+          {k.base} <small>+ {add}</small>
+        </>
+      ) : (
+        <>
+          {k.value}
+          {k.bonus.value.startsWith("+") && <small> {k.bonus.value}</small>}
+        </>
+      )}
+    </button>
   );
 }

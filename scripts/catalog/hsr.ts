@@ -147,7 +147,13 @@ const weapons: CatalogWeapon[] = cones
 // ---- Relic sets ----
 const SLOT: Record<string, string> = { HEAD: "head", HAND: "hands", BODY: "body", FOOT: "feet", NECK: "sphere", OBJECT: "rope" };
 type RelicIndex = { id: number; name: string; icon: string; levelList: number[]; isPlanarSuit: boolean };
-type RelicDetail = RelicIndex & { skillList?: Record<string, { description: string }>; suite?: Record<string, { name: string }> };
+type RelicDetail = RelicIndex & { skillList?: Record<string, { description: string; params?: Record<string, number[]> }>; suite?: Record<string, { name: string }> };
+/** A relic set bonus with its numbers: "#1[i]%" from its params, fractions as percentages before a "%" ("#2[i] turn(s)" as is). */
+const fill = (text: string, params: Record<string, number[]> = {}) =>
+  text.replace(/#(\d+)\[(i|f\d)\](%?)/g, (_, n: string, f: string, pct: string) => {
+    const v = (params[n]?.[0] ?? 0) * (pct ? 100 : 1);
+    return `${f === "i" ? Math.round(v) : v.toFixed(Number(f.slice(1)))}${pct}`;
+  });
 const relicList = await items<RelicIndex>("/relic");
 console.log(`[catalog:hsr] ${relicList.length} relic sets…`);
 const relics = await mapLimit(relicList, CONCURRENCY, (r) => detail<RelicDetail>(`/relic/${r.id}`));
@@ -156,7 +162,7 @@ const gear: CatalogGearSet[] = relics.map((d) => ({
   key: slugify(stripTags(d.name)),
   name: stripTags(d.name),
   slots: Object.keys(d.suite ?? {}).map((k) => SLOT[k] ?? k.toLowerCase()),
-  bonuses: Object.entries(d.skillList ?? {}).map(([n, s]) => `${n}pc: ${stripTags(s.description)}`),
+  bonuses: Object.entries(d.skillList ?? {}).map(([n, s]) => `${n}pc: ${fill(stripTags(s.description), s.params)}`),
   icon: d.icon ? String(d.icon) : undefined,
   extra: {
     isPlanarSuit: d.isPlanarSuit,
