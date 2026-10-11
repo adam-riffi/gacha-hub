@@ -1,8 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { elementColor, endgameNow, enemiesFor, gameDay, getGame, premiumCurrency, type Clear, type CycleResultsDto, type GameDefinition, type GameRegion, type TeamDto } from "@gacha/shared";
-import { GameIcon } from "../components/GameIcon";
+import { endgameNow, gameDay, getGame, modeCycles, premiumCurrency, type Clear, type CycleResultsDto, type GameDefinition, type GameRegion, type TeamDto } from "@gacha/shared";
 import { api } from "../lib/api";
 import { assetUrl, communityAssetUrl } from "../lib/assets";
 import { useCatalog } from "../lib/catalog";
@@ -11,6 +10,7 @@ import { formatRemaining } from "../lib/time";
 import type { InstanceDetail } from "../lib/types";
 import { GameTabs } from "../components/GameTabs";
 import { ClearList, EndgameHistory, TeamIcons, mss, type UnitOf } from "../components/hub/EndgameHistory";
+import { CycleDialog, Enemies } from "../components/hub/CycleDialog";
 import { useReminderFlag } from "../lib/reminder";
 
 const NUM = new Intl.NumberFormat("en-GB");
@@ -41,7 +41,8 @@ function cadenceLabel(m: Mode) {
  * A game's Endgame tab (WIREFRAMES.md G2): the premium claimed across the
  * open cycles and the next reset; a card per mode with its cycle window,
  * result, rewards and last six cycles, typed in place; each mode's history;
- * the upcoming resets.
+ * the upcoming resets. Any cycle opens, from its bar, point or row, or a
+ * mode's History (Georges, round 5).
  */
 export function EndgamePage() {
   const { id } = useParams<{ id: string }>();
@@ -51,6 +52,8 @@ export function EndgamePage() {
   const game = instance && getGame(instance.gameKey);
   const { catalog, index } = useCatalog(instance?.gameKey);
   const teams = useQuery({ queryKey: ["teams", id], queryFn: () => api.get<TeamDto[]>(`/api/instances/${id}/teams`), enabled: Boolean(game?.loadCatalog) });
+  // The cycle open in the dialog: its mode and its start.
+  const [open, setOpen] = useState<{ modeKey: string; at: number } | null>(null);
   if (!instance || !game) return <div className="muted">Loading…</div>;
 
   const region = game.regions.find((r) => r.key === instance.regionKey) ?? game.regions[0]!;
@@ -58,6 +61,7 @@ export function EndgamePage() {
   const results = (cycles?.results ?? []).map((r) => ({ ...r, cycleStart: new Date(r.cycleStart) }));
   const eg = endgameNow(game, region, now, results);
   const premium = premiumCurrency(game);
+  const openMode = open ? game.manifest.endgame.find((e) => e.key === open.modeKey) : undefined;
   const unitOf: UnitOf = (cid) => index?.characters.get(cid);
   const roster: Roster = {
     gameKey: game.key,
@@ -111,12 +115,12 @@ export function EndgamePage() {
 
         <div className="eg-modes">
           {eg.modes.map((m) => (
-            <ModeCard key={m.mode.key} instanceId={id!} game={game} m={m} region={region} now={now} premium={premium} roster={roster} history={results.filter((r) => r.modeKey === m.mode.key)} />
+            <ModeCard key={m.mode.key} instanceId={id!} game={game} m={m} region={region} now={now} premium={premium} roster={roster} history={results.filter((r) => r.modeKey === m.mode.key)} onOpen={(at) => setOpen({ modeKey: m.mode.key, at })} />
           ))}
           {eg.modes.length === 0 && <p className="mu">No endgame mode on record for this game yet.</p>}
         </div>
 
-        <EndgameHistory instanceId={id!} game={game} region={region} now={now} results={results} premium={premium} unitOf={unitOf} />
+        <EndgameHistory instanceId={id!} game={game} region={region} now={now} results={results} premium={premium} unitOf={unitOf} onOpen={(modeKey, at) => setOpen({ modeKey, at })} />
 
         <section className="card eg-upcoming" aria-label="Upcoming resets">
           <h3>Upcoming resets</h3>
@@ -133,6 +137,21 @@ export function EndgamePage() {
           </div>
         </section>
       </div>
+      {open && openMode && (
+        <CycleDialog
+          key={open.modeKey}
+          instanceId={id!}
+          game={game}
+          region={region}
+          mode={openMode}
+          rows={modeCycles(openMode, region, now, results)}
+          at={open.at}
+          premium={premium}
+          unitOf={unitOf}
+          onPick={(at) => setOpen({ ...open, at })}
+          onClose={() => setOpen(null)}
+        />
+      )}
     </>
   );
 }
@@ -146,6 +165,7 @@ function ModeCard({
   premium,
   roster,
   history,
+  onOpen,
 }: {
   instanceId: string;
   game: GameDefinition;
@@ -155,6 +175,7 @@ function ModeCard({
   premium: string;
   roster: Roster;
   history: { cycleStart: Date; result: number | null; teams?: Clear[] }[];
+  onOpen: (at: number) => void;
 }) {
   const qc = useQueryClient();
   const [editing, setEditing] = useState(false);
@@ -227,7 +248,15 @@ function ModeCard({
       <div className="kpi-label eg-last-label">Last {last.length || ""} cycles</div>
       <div className="eg-last" role="img" aria-label={`Last cycles: ${last.map((c) => c.result ?? "none").join(", ") || "none recorded"}`}>
         {last.map((c, k) => (
-          <span key={c.cycleStart.toISOString()} className={k === last.length - 1 && c.cycleStart.getTime() === m.start.getTime() ? "on" : ""} style={{ height: `${mode.metric.max ? Math.max(4, ((c.result ?? 0) / mode.metric.max) * 100) : 50}%` }} />
+          <button
+            type="button"
+            key={c.cycleStart.toISOString()}
+            className={k === last.length - 1 && c.cycleStart.getTime() === m.start.getTime() ? "on" : ""}
+            style={{ height: `${mode.metric.max ? Math.max(4, ((c.result ?? 0) / mode.metric.max) * 100) : 50}%` }}
+            aria-label={`Cycle of ${DATE.format(c.cycleStart)}: ${c.result ?? "—"} ${mode.metric.label}`}
+            title={`${DATE.format(c.cycleStart)} · ${c.result ?? "—"} ${mode.metric.label}`}
+            onClick={() => onOpen(c.cycleStart.getTime())}
+          />
         ))}
         {last.length === 0 && <span className="mu eg-none">No cycle recorded yet.</span>}
       </div>
@@ -294,70 +323,15 @@ function ModeCard({
           {save.isError && <span className="hub-error">Not saved: over the mode's best or offer.</span>}
         </form>
       ) : (
-        <button type="button" className="btn act-add-btn" aria-label={`Update ${mode.name}`} onClick={open}>
-          Update
-        </button>
+        <span className="row eg-mode-actions">
+          <button type="button" className="btn act-add-btn" aria-label={`Update ${mode.name}`} onClick={open}>
+            Update
+          </button>
+          <button type="button" className="btn act-add-btn" aria-label={`${mode.name} history`} onClick={() => onOpen(m.start.getTime())}>
+            History
+          </button>
+        </span>
       )}
     </section>
-  );
-}
-
-/**
- * Who this cycle sends at you, where the mode rotates it (Georges, 2026-10-11:
- * "what enemies are on what level … like Stygian or Shiyu Defense"): each
- * stage with its level, each half's enemies, what they are weak to. A cycle
- * the data has not reached yet shows the last one, with its dates.
- */
-function Enemies({ game, modeKey, today }: { game: GameDefinition; modeKey: string; today: string }) {
-  const { data } = useQuery({ queryKey: ["endgame-enemies", game.key], queryFn: () => game.loadEndgame!(), enabled: Boolean(game.loadEndgame), staleTime: Infinity });
-  const cycle = data && enemiesFor(data, modeKey, today);
-  if (!cycle) return null;
-  return (
-    <div className="eg-enemies">
-      <div className="spread">
-        <span className="kpi-label">Enemies</span>
-        {!cycle.current && (
-          <span className="mn mu">
-            {cycle.begin} → {cycle.end}
-          </span>
-        )}
-      </div>
-      <ul aria-label="Enemies">
-        {cycle.stages.map((s) => {
-          // A boss stage (Deadly Assault, Stygian Onslaught) is named by its boss: its icon says it, the label keeps the level.
-          const all = s.groups.flat();
-          const boss = all.length === 1 && all[0]!.name === s.name;
-          return (
-            <li key={s.name}>
-              <span className="mn mu eg-stage">{boss ? s.level && `Lv ${s.level}` : `${s.name}${s.level ? ` · Lv ${s.level}` : ""}`}</span>
-              <span className="eg-groups">
-                {s.groups.map((g, i) => (
-                  <span key={i} className="eg-group">
-                    {g.map((e) => (
-                      <span key={e.name} className="eg-enemy" title={e.name}>
-                        <GameIcon src={e.image ?? null} alt={e.name} />
-                      </span>
-                    ))}
-                  </span>
-                ))}
-              </span>
-              <span className="eg-weak">
-                {s.weak.map((w) => {
-                  // The element's icon where the game has a source for it, else its colour.
-                  const icon = communityAssetUrl(game.key, "element", w);
-                  return icon ? (
-                    <span key={w} title={`Weak to ${w}`}>
-                      <GameIcon src={icon} alt={`Weak to ${w}`} tint={elementColor(game.key, w) ?? undefined} />
-                    </span>
-                  ) : (
-                    <i key={w} role="img" aria-label={`Weak to ${w}`} title={`Weak to ${w}`} style={{ background: elementColor(game.key, w) ?? "var(--text-muted)" }} />
-                  );
-                })}
-              </span>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
   );
 }

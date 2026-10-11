@@ -13,7 +13,7 @@ const DAY = 86_400_000;
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 /** "16 Aug – 15 Sep": a cycle's first and last day. */
-const span = (start: Date, end: Date) => `${DM.format(start)} – ${DM.format(new Date(end.getTime() - DAY))}`;
+export const cycleSpan = (start: Date, end: Date) => `${DM.format(start)} – ${DM.format(new Date(end.getTime() - DAY))}`;
 
 type Rows = ReturnType<typeof cycleHistory>["rows"];
 export type UnitOf = (id: string) => { name: string; icon?: string; tag?: string } | undefined;
@@ -52,7 +52,8 @@ export function TeamIcons({ gameKey, members, unitOf }: { gameKey: string; membe
  * Endgame history per mode (WIREFRAMES.md G2): best, average, premium earned
  * and the current result; the result per cycle as a line (filled dots are
  * full clears; each point's title gives its dates and rewards); the cycles as
- * a table, older ones on demand; earlier cycles typed in; a CSV export.
+ * a table, older ones on demand; earlier cycles typed in; a CSV export. A
+ * point or a row opens its cycle (round 5).
  */
 export function EndgameHistory({
   instanceId,
@@ -62,6 +63,7 @@ export function EndgameHistory({
   results,
   premium,
   unitOf,
+  onOpen,
 }: {
   instanceId: string;
   game: GameDefinition;
@@ -70,6 +72,7 @@ export function EndgameHistory({
   results: CycleRow[];
   premium: string;
   unitOf: UnitOf;
+  onOpen: (modeKey: string, at: number) => void;
 }) {
   const modes = game.manifest.endgame;
   const [modeKey, setModeKey] = useState(modes[0]?.key ?? "");
@@ -161,7 +164,7 @@ export function EndgameHistory({
         <Tile label="Now" value={current?.result ?? "—"} unit={`/ ${mode.metric.max ?? "—"} ${mode.metric.label}`} note={current?.detail ?? "this cycle"} />
       </div>
 
-      <ResultsChart rows={[...rows].reverse()} max={mode.metric.max} label={mode.metric.label} premium={premium} offer={mode.maxPremium} />
+      <ResultsChart rows={[...rows].reverse()} max={mode.metric.max} label={mode.metric.label} premium={premium} offer={mode.maxPremium} onOpen={(at) => onOpen(mode.key, at)} />
 
       <table className="eg-table">
         <thead>
@@ -175,9 +178,11 @@ export function EndgameHistory({
         </thead>
         <tbody>
           {rows.map((r) => (
-            <tr key={r.cycleStart.toISOString()}>
+            <tr key={r.cycleStart.toISOString()} className="eg-row" onClick={() => onOpen(mode.key, r.cycleStart.getTime())}>
               <td>
-                {span(r.cycleStart, r.end)}
+                <button type="button" className="eg-open">
+                  {cycleSpan(r.cycleStart, r.end)}
+                </button>
                 {r.current && <span className="tag eg-now">Now</span>}
               </td>
               <td className="num">
@@ -227,7 +232,7 @@ const CH = 240;
 const PAD = { l: 40, r: 24, t: 24, b: 40 };
 
 /** The result per cycle, oldest first: filled dots are full clears, the current cycle has a ring. */
-function ResultsChart({ rows, max, label, premium, offer }: { rows: Rows; max?: number; label: string; premium: string; offer?: number }) {
+function ResultsChart({ rows, max, label, premium, offer, onOpen }: { rows: Rows; max?: number; label: string; premium: string; offer?: number; onOpen: (at: number) => void }) {
   if (rows.length === 0) return null;
   const top = max ?? niceMax(Math.max(1, ...rows.map((r) => r.result ?? 0))).max;
   const w = CW - PAD.l - PAD.r;
@@ -249,8 +254,8 @@ function ResultsChart({ rows, max, label, premium, offer }: { rows: Rows; max?: 
         ))}
         <polyline points={pts.map((p) => `${p.x},${p.y}`).join(" ")} className="eg-line" />
         {pts.map((p) => (
-          <g key={p.r.cycleStart.toISOString()}>
-            <title>{`${span(p.r.cycleStart, p.r.end)} · ${p.r.result ?? "—"} ${label}${offer !== undefined ? ` · ${p.r.premium ?? 0} / ${offer} ${premium}` : ""}`}</title>
+          <g key={p.r.cycleStart.toISOString()} className="eg-pt" onClick={() => onOpen(p.r.cycleStart.getTime())}>
+            <title>{`${cycleSpan(p.r.cycleStart, p.r.end)} · ${p.r.result ?? "—"} ${label}${offer !== undefined ? ` · ${p.r.premium ?? 0} / ${offer} ${premium}` : ""}`}</title>
             {p.r.current && <circle cx={p.x} cy={p.y} r={13} className="eg-ring" />}
             <circle cx={p.x} cy={p.y} r={6} className={p.r.full ? "eg-full" : "eg-part"} />
             <text x={p.x} y={CH - 12} textAnchor="middle" className="eg-axis">

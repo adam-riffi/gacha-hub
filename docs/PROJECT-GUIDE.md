@@ -373,7 +373,7 @@ Activities holds:
 
 ![Endgame](screens/07-endgame.jpg)
 
-**For:** each endgame mode's cycle (G2): this cycle's result (stars, acts, difficulty…) and reward, the next reset, and the history of past cycles. Results come from the HoYoLAB chronicle when linked, or are typed in. Saved teams sit here too.
+**For:** each endgame mode's cycle (G2): this cycle's result (stars, acts, difficulty…) and reward, the next reset, and the history of past cycles. Results come from the HoYoLAB chronicle when linked, or are typed in. Saved teams sit here too. Any cycle opens (round 5), from a card's bars, the chart or the table, in a dialog with its version, result, rewards, teams and enemies, and the mode's other cycles to step through.
 
 ### 8.8 Pulls
 
