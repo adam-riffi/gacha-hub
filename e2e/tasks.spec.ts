@@ -170,3 +170,27 @@ test("Tasks: Farm today shows who it is for and the materials as icons; the game
   await page.goto("/tasks");
   await expect(page.getByRole("region", { name: "Farm today" }).getByRole("img", { name: "Genshin Impact" }).first()).toBeVisible();
 });
+
+test("Tasks: a goal shows its own unit as its icon and who it is for; the game as an icon on the overview only @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "genshin" } })).json()) as { id: string };
+  // A set farmed for Arlecchino (Georges, 2026-10-11: "having Arlecchino's artifacts' icon is better").
+  const goal = (await (
+    await page.request.post("/api/tasks", {
+      data: { scope: "game", refId: id, type: "goal", title: "E2E farm a set", target: 4, origin: { kind: "gear", catalogId: "15035", sources: [{ kind: "character", catalogId: "10000096" }] } },
+    })
+  ).json()) as { id: string };
+
+  await page.goto("/tasks?game=genshin");
+  const card = page.getByRole("region", { name: "Goals" }).getByRole("article", { name: "E2E farm a set" });
+  await expect(card.getByRole("img", { name: "Fragment of Harmonic Whimsy" })).toBeVisible();
+  await expect(card.getByRole("img", { name: "Arlecchino" })).toBeVisible();
+  await expect(card.getByRole("img", { name: "Genshin Impact" })).toHaveCount(0);
+  await expect(card).not.toContainText("Genshin");
+
+  await page.goto("/tasks");
+  await expect(page.getByRole("region", { name: "Goals" }).getByRole("article", { name: "E2E farm a set" }).getByRole("img", { name: "Genshin Impact" })).toBeVisible();
+  await page.request.delete(`/api/tasks/${goal.id}`);
+});
