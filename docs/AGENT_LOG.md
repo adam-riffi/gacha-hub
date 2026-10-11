@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-12 · claude · stack/r8/03-pulls-odds · #258
+- Done: the Pulls tab's By the end of the version is filled (Georges, round 5: "a large amount of nothing … fill it up by data like X% chance to get X limited (use icons)"): under the forecast, each target of the savings planner (the running banners' featured units, then the wishlist) by its icon, with its chance alone now and by the version's end as two bars and percentages. A target's unit rides along (`PlannerTarget.unit`); a banner without a featured unit on record shows its initials.
+- Tests: written first: with Seele wishlisted on Star Rail, her row in the card has her icon and a chance by the version's end at least her chance now; the first row is an icon too.
+- Scope/decisions: each chance is the target's own (as if every pull went to it); the savings planner below still spends the pulls in order.
+- Next: the Characters cards: the whole card lit when picked, the weapon on the right.
+
 ## 2026-10-12 · claude · stack/r8/02-endgame-cycles · #257
 - Done: every endgame cycle opens (Georges, round 5: "click on something and get the data from that version on endgame or have the opportunity to open a small version history"): a bar of a mode card's last cycles, a point of the history chart or a row of its table opens that cycle in a dialog (native `<dialog>`): its dates and version, result, rewards, detail, teams and the enemies of that cycle, typed in place; the older and newer cycles a step away; every cycle of the mode listed with its result as a bar. A card's History opens its current cycle. `modeCycles` lists a mode's cycles with the current one even before it is typed; `versionAt` names the version an instant falls in. Enemies moved with the dialog (`CycleDialog.tsx`).
 - Tests: written first: `modeCycles` adds the current cycle, empty, and leaves typed histories as they are; `versionAt` counts back and forth by the version's length and gives none before the major's first. A journey opens Shiyu Defense's cycle of 18 Sept from its bar (version, rewards, detail, clear time), steps to the older one, finds it marked in the list, edits its detail in place, closes with Escape, opens the current cycle from History and another from the table.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the Pulls journey adds an amount through "Amount to add" and finds "+10 ·" in the legend and no "top-up" on the page; the copy journey keeps "Top-up" off every screen. `npm run check` passes: 570 tests and 53 journeys.
 - Scope/decisions: the field keeps an accessible name ("Amount to add") since the plus sign is decorative.
 - Next: a stable order for the reminder's tasks left, then the planner's days.
-
-## 2026-10-11 · claude · stack/r3/12-handoff · #218
-- Done: the end of Georges's second feedback round. HANDOFF.md rewritten (`main` at #217, #207–#217, this round's decisions, the four migrations the next deploy runs); DESIGN.md §4 "Later" gains talent and skill descriptions and real icons after the art bucket; the audit marks every line done with its PR.
-- Tests: docs only. `npm run check` passes: 570 tests and 53 journeys.
-- Scope/decisions: none new; the round's decisions are listed in HANDOFF.md.
-- Next: Georges's secrets and real data, a deploy when he asks.

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  featuredWithin,
   getGame,
   topStar,
   pullForecast,
@@ -22,7 +23,9 @@ import {
   type CalibrateBody,
   type Unit,
 } from "../components/pulls/BannerCard";
-import { SavingsPlanner, type PlannerTarget } from "../components/pulls/SavingsPlanner";
+import { SavingsPlanner, pct, type PlannerTarget } from "../components/pulls/SavingsPlanner";
+import { UnitIcon } from "../components/CatalogIcon";
+import { GameIcon } from "../components/GameIcon";
 import { BannerHistory, PullHistory } from "../components/pulls/PullHistory";
 import type { InstanceDetail } from "../lib/types";
 
@@ -31,8 +34,9 @@ const DAY = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" })
 
 /**
  * A game's Pulls tab (WIREFRAMES.md G3): the pulls you have and the ones
- * coming by the end of the version; each event banner with its status, pity,
- * odds and curve; the other banners in short; every 5★ you logged.
+ * coming by the end of the version, with each target's chance now and by then;
+ * each event banner with its status, pity, odds and curve; the other banners
+ * in short; every 5★ you logged.
  */
 export function PullsPage() {
   const { id } = useParams<{ id: string }>();
@@ -165,7 +169,7 @@ export function PullsPage() {
   const wished = (wishlist.data ?? []).flatMap((w) => {
     const unit = w.kind === "character" ? catalog?.characters.find((c) => c.id === w.catalogId) : catalog?.weapons.find((x) => x.id === w.catalogId);
     const b = planned.find((x) => x.key === w.kind);
-    return unit && b && unit.rarity >= 5 && !runningIds.has(w.catalogId) ? [{ b, name: unit.name }] : [];
+    return unit && b && unit.rarity >= 5 && !runningIds.has(w.catalogId) ? [{ b, name: unit.name, unit: { kind: w.kind as "character" | "weapon", catalogId: w.catalogId } }] : [];
   });
   const firstOn = new Set<string>();
   // Only a banner's first target starts from its pity and guarantee; the ones after start fresh.
@@ -182,8 +186,9 @@ export function PullsPage() {
       rules: b,
       state: stateFor(b),
       available: topped.limited,
+      unit: feat ? { kind: feat.kind, catalogId: feat.catalogId } : undefined,
     })),
-    ...wished.map(({ b, name }) => ({ label: name, sub: `Wishlist · ${b.label}`, rules: b, state: stateFor(b), available: topped.limited })),
+    ...wished.map(({ b, name, unit }) => ({ label: name, sub: `Wishlist · ${b.label}`, rules: b, state: stateFor(b), available: topped.limited, unit })),
   ];
 
   return (
@@ -264,6 +269,38 @@ export function PullsPage() {
               )}
             </tbody>
           </table>
+          {/* Each target alone (Georges, round 5: "X% chance to get X limited … use icons"): its chance with the pulls you have, and with the forecast added. */}
+          {targets.length > 0 && (
+            <ul className="pl-odds" aria-label="Chances">
+              <li className="pl-odds-head mn mu" aria-hidden="true">
+                <span />
+                <span />
+                <span>now</span>
+                <span>by {DAY.format(forecast.until)}</span>
+              </li>
+              {targets.map((t, i) => {
+                const now = featuredWithin(t.rules, t.state, t.available);
+                const then = featuredWithin(t.rules, t.state, t.available + forecast.pulls);
+                return (
+                  <li key={t.label + i} className="pl-odds-row">
+                    {t.unit ? <UnitIcon gameKey={game.key} unit={t.unit} /> : <GameIcon src={null} alt={t.label} />}
+                    <span className="pl-odds-name">
+                      <strong>{t.label}</strong>
+                      <span className="mn mu">{t.sub}</span>
+                    </span>
+                    {[now, then].map((v, k) => (
+                      <span key={k} className="pl-odds-v" title={`${pct(v)} ${k ? `by ${DAY.format(forecast.until)}, with ${t.available + forecast.pulls} pulls` : `now, with ${t.available} pulls`}`}>
+                        <span className={`act-meter act-meter-thin ${k ? "" : "is-now"}`} aria-hidden="true">
+                          <span style={{ width: `${Math.round(v * 100)}%` }} />
+                        </span>
+                        <span className="mn">{pct(v)}</span>
+                      </span>
+                    ))}
+                  </li>
+                );
+              })}
+            </ul>
+          )}
         </section>
       </div>
 

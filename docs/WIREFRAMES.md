@@ -110,7 +110,7 @@ Picture: [`g2-endgame.png`](design/wireframes/g2-endgame.png) · static page: [`
 
 Picture: [`g3-pulls.png`](design/wireframes/g3-pulls.png) · static page: [`g3-pulls.html`](design/wireframes/g3-pulls.html)
 
-- **Pulls available:** premium currency ÷ pull cost plus tickets; standard tickets apart. **+ an amount** of one pull currency (Georges, 2026-10-10; a plus sign, not a word, since 2026-10-11), added on every banner card ("+N"), its curve and the savings planner. **Forecast** to the end of the version (dailies, 30-day pass); events and codes are not counted.
+- **Pulls available:** premium currency ÷ pull cost plus tickets; standard tickets apart. **+ an amount** of one pull currency (Georges, 2026-10-10; a plus sign, not a word, since 2026-10-11), added on every banner card ("+N"), its curve and the savings planner. **Forecast** to the end of the version (dailies, 30-day pass); events and codes are not counted. Under it (Georges, round 5: "fill it up by data like X% chance to get X limited … use icons"), each target of the savings planner by its icon (the running banners' featured units, then the wishlist), with its chance alone now and by the version's end as two bars.
 - **Banner cards,** one for every banner type, the standard ones too (Georges, 2026-10-10):
   - **Status** as a two-state switch: `50/50 | GUARANTEED`, or for weapons `75/25 · PATH 0/1 | PATH 1/1 · GUARANTEED`; no sentence beside it (Georges, 2026-10-11: the switch says it).
   - 5★ pity bar with the soft-pity tick; 4★ pity bar.
