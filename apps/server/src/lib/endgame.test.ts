@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { cycleCsv, cycleHistory, endgameNow, getGame } from "@gacha/shared";
+import { cycleCsv, cycleHistory, endgameNow, getGame, modeCycles, versionAt } from "@gacha/shared";
 
 const genshin = getGame("genshin")!;
 const EU = genshin.regions.find((r) => r.key === "eu")!;
@@ -73,8 +73,35 @@ describe("cycleHistory", () => {
     expect(h.average).toBeCloseTo((34 + 36 + 35 + 36) / 4);
   });
 
+  // Every cycle opens (Georges, round 5), the current one too before anything is typed in it.
+  it("lists a mode's cycles with the current one, empty, when nothing is typed in it yet", () => {
+    const rows = modeCycles(abyss, EU, now, results.slice(1));
+    expect(rows.map((x) => [x.cycleStart.toISOString().slice(0, 10), x.current, x.result])).toEqual([
+      ["2026-09-16", true, null],
+      ["2026-08-16", false, 34],
+      ["2026-07-16", false, 36],
+      ["2026-06-16", false, 35],
+      ["2026-05-16", false, 36],
+    ]);
+    expect(rows[0]?.end.toISOString()).toBe("2026-10-16T03:00:00.000Z");
+    expect(modeCycles(abyss, EU, now, results)).toEqual(cycleHistory(abyss, EU, now, results).rows);
+  });
+
   it("exports a CSV with server-local dates, quoting what needs it", () => {
     const csv = cycleCsv(abyss, EU, cycleHistory(abyss, EU, now, [r("2026-09-16T03:00:00Z", 33, 700, 'floor 12, "6/9"')]).rows, "Primogems");
     expect(csv.split("\n")).toEqual(["first day,last day,stars,detail,Primogems,source", '2026-09-16,2026-10-15,33,"floor 12, ""6/9""",700,manual']);
+  });
+});
+
+// The version a cycle began in (Georges, round 5: "where i was at x endgame version").
+describe("versionAt", () => {
+  it("counts back and forth from the current version by its length", () => {
+    expect(versionAt(genshin, EU, now)).toBe("7.1");
+    expect(versionAt(genshin, EU, new Date("2026-09-16T03:00:00Z"))).toBe("7.0");
+    expect(versionAt(genshin, EU, new Date("2026-11-05T12:00:00Z"))).toBe("7.2");
+  });
+
+  it("names none before the major version's first, whose predecessor it cannot know", () => {
+    expect(versionAt(genshin, EU, new Date("2026-08-01T12:00:00Z"))).toBeNull();
   });
 });
