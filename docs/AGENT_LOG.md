@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r4/01-plus · #219
+- Done: Georges's third round begins; its plan is `docs/AUDIT-2026-10-11-round3.md` (his list, and this round's audit of things that are not explicit: what the app can show, it shows as its icon). First item, "remove top-up and change it to a plus sign": the simulation field is a "+" before the amount and its currency, the curve's marker reads "+10", and the odds row and headline read "+10". No "Top-up" word is left on screen.
+- Tests: written first: the Pulls journey adds an amount through "Amount to add" and finds "+10 ·" in the legend and no "top-up" on the page; the copy journey keeps "Top-up" off every screen. `npm run check` passes: 570 tests and 53 journeys.
+- Scope/decisions: the field keeps an accessible name ("Amount to add") since the plus sign is decorative.
+- Next: a stable order for the reminder's tasks left, then the planner's days.
+
 ## 2026-10-11 · claude · stack/r3/12-handoff · #218
 - Done: the end of Georges's second feedback round. HANDOFF.md rewritten (`main` at #217, #207–#217, this round's decisions, the four migrations the next deploy runs); DESIGN.md §4 "Later" gains talent and skill descriptions and real icons after the art bucket; the audit marks every line done with its PR.
 - Tests: docs only. `npm run check` passes: 570 tests and 53 journeys.
@@ -281,12 +287,3 @@ Entry format:
 - Tests: written first: catalog coverage (Ellen's promotions and skills, W-Engine caps, disc sets, every cost referencing a material, the doc's skills). The Library journey now expects ZZZ's character count. The no-catalog planning test uses NTE, now the only game without a catalog. `npm run check` passes: 521 tests and 40 journeys.
 - Scope/decisions: the data has no licence file; it is used with credit and removed on request, like Yatta and Enka. Core skills have no cost table and are left out.
 - Next: ZZZ art from the Hakushin assets, then Enka for ZZZ.
-
-## 2026-10-10 · claude · stack/endfield/04-labels · #180
-- Done:
-  - Pulls labels use each game's top rarity (`topStar`): Endfield says 6★ everywhere (cards, forms, curve, history, planner).
-  - `weaponOnly` currencies: Endfield's Arsenal Tickets (1,980 a 10-pull) fund the Arsenal alone. They are kept out of limited pulls on Pulls, on Home and in the planner. Pulls available shows "+N Arsenal".
-  - The History card no longer says imports "come with F11".
-- Tests: written first: `pullsFor` keeps weapon-only tickets apart; an E2E journey checks Endfield's 6★ labels and the Arsenal funded by tickets. `npm run check` passes: 517 tests and 40 journeys.
-- Scope/decisions: the Arsenal is left out of Endfield's savings planner, since its pulls come from their own tickets.
-- Next: WuWa material art, the ZZZ catalog (Hakushin data on static.nanoka.cc).
