@@ -161,6 +161,9 @@ tbody tr:hover { background: var(--surface-2); }
 
 /* Admin's overview (Georges, 2026-10-10). */
 .ad-overview { display: grid; gap: 16px; margin-bottom: 24px; }
+/* A thing without art, as its kind's icon (round 6). */
+.glyph-box { display: inline-grid; place-items: center; background: var(--surface-2); color: var(--text-muted); }
+.glyph { width: 60%; height: 60%; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 .ad-tiles { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 12px; }
 .ad-tile { display: flex; flex-direction: column; gap: 6px; }
 .ad-tiles .kpi-value { font-size: 28px; }

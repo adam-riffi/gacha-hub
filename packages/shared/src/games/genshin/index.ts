@@ -95,7 +95,7 @@ export const genshin: GameDefinition = {
     { key: "weapon", label: "Weapon event wish", baseRate: 0.007, softPity: 63, softStep: 0.07, hardPity: 80, featuredRate: 0.75, gachaTypes: ["302"] },
     { key: "chronicled", label: "Chronicled wish", baseRate: 0.006, softPity: 74, softStep: 0.06, hardPity: 90, featuredRate: 0.5, gachaTypes: ["500"] },
     { key: "standard", label: "Standard wish", baseRate: 0.006, softPity: 74, softStep: 0.06, hardPity: 90, featuredRate: 1, gachaTypes: ["200"] },
-    { key: "beginner", label: "Beginners' wish", baseRate: 0.006, softPity: 74, softStep: 0.06, hardPity: 90, featuredRate: 1, gachaTypes: ["100"], fund: "standard" },
+    { key: "beginner", label: "Beginners' wish", baseRate: 0.006, softPity: 74, softStep: 0.06, hardPity: 90, featuredRate: 1, gachaTypes: ["100"], fund: "standard", beginner: true },
   ],
   name: "Genshin Impact",
   shortName: "Genshin",

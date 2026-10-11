@@ -2,19 +2,24 @@
 .pl-top { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-bottom: 28px; }
 .pl-top .kpi-value { margin: 4px 0 10px; }
 /* By the end of the version: each target's chance now and by then (round 5). */
-.pl-odds { list-style: none; margin: 14px 0 0; padding: 12px 0 0; border-top: 1px solid var(--surface-3); display: grid; gap: 10px; }
-.pl-odds li { display: grid; grid-template-columns: 40px minmax(0, 1fr) 120px 120px; align-items: center; gap: 12px; }
-.pl-odds .gicon { width: 40px; height: 40px; font-size: 11px; }
-.pl-odds-head { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; }
-.pl-odds-name { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.pl-odds-name strong, .pl-odds-name .mn { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.pl-odds-name .mn { font-size: 11px; }
-.pl-odds-v { display: grid; grid-template-columns: minmax(0, 1fr) 40px; align-items: center; gap: 8px; }
-.pl-odds-v .act-meter { flex: none; }
-.pl-odds-v .act-meter.is-now > span { background: var(--text-muted); }
-.pl-odds-v .mn { text-align: right; font-size: 13px; }
+.pl-chances { list-style: none; margin: 14px 0 0; padding: 12px 0 0; border-top: 1px solid var(--surface-3); display: grid; gap: 10px; }
+.pl-chances li { display: grid; grid-template-columns: 40px minmax(0, 1fr) 120px 120px; align-items: center; gap: 12px; }
+.pl-chances .gicon { width: 40px; height: 40px; font-size: 11px; }
+.pl-chances-head { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; }
+.pl-chances-name { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.pl-chances-name strong, .pl-chances-name .mn { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pl-chances-name .mn { font-size: 11px; }
+.pl-chances-v { display: grid; grid-template-columns: minmax(0, 1fr) 40px; align-items: center; gap: 8px; }
+.pl-chances-v .act-meter { flex: none; }
+.pl-chances-v .act-meter.is-now > span { background: var(--text-muted); }
+.pl-chances-v .mn { text-align: right; font-size: 13px; }
 .pl-label { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-.pl-banners { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; align-items: start; margin-bottom: 24px; }
+/* One grid whose rows line up (round 6): cards stretch, their actions at the foot; an odd last card spans the row, its curve beside its odds. */
+.pl-banners { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; align-items: stretch; margin-bottom: 24px; }
+.pl-banner { display: flex; flex-direction: column; }
+.pl-banner-side { display: flex; flex-direction: column; flex: 1; }
+.pl-banner-side > .pl-actions { margin-top: auto; }
+.pl-banners > .pl-banner:last-child:nth-child(odd) { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 40px; align-items: start; }
 .pl-banner-head { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
 .pl-banner-head h3 { margin-bottom: 10px; }
 .pl-banner-head .mn { font-size: 12px; }

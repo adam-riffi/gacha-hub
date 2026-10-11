@@ -29,7 +29,12 @@ export interface PullBannerRules {
   pityPerPool?: boolean;
   /** The pulls it spends when not the limited ones: the standard banner's tickets, or only its own (`onlyFor` currencies: Arsenal Tickets, Boopons). */
   fund?: "standard" | "own";
+  /** A beginner banner (Beginners' wish, Departure warp…): imports still map its history, no screen shows it (Georges, round 6). */
+  beginner?: boolean;
 }
+
+/** The banner types a game's screens show: all but the beginner ones. */
+export const shownBanners = (game: { pullBanners?: readonly PullBannerRules[] }) => (game.pullBanners ?? []).filter((b) => !b.beginner);
 
 /**
  * A logged run of pulls; when `fiveStar`, the last of them was a 5★. A 5★

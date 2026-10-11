@@ -9,6 +9,7 @@ import {
   getGame,
   instanceDto,
   setCurrencyInput,
+  shownBanners,
   updateInstanceInput,
 } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
@@ -142,7 +143,7 @@ export async function registerGameRoutes(app: FastifyInstance) {
       }
       const numeric = numericKpis(game);
       if (kpiTargets && Object.keys(kpiTargets).some((k) => !numeric.has(k))) return reply.code(400).send({ error: "unknown_kpi" });
-      if (hiddenBanners?.some((k) => !game.pullBanners?.some((b) => b.key === k))) return reply.code(400).send({ error: "unknown_banner" });
+      if (hiddenBanners?.some((k) => !shownBanners(game).some((b) => b.key === k))) return reply.code(400).send({ error: "unknown_banner" });
       if (cardStats && new Set(cardStats).size < cardStats.length) return reply.code(400).send({ error: "duplicate_stat" });
       const updated = await prisma.gameInstance.update({
         where: { id: gi.id },

@@ -1,5 +1,5 @@
 import type { FastifyInstance } from "fastify";
-import { BUILT_STATUSES, dashboardDto, gameDay, getGame, pityState } from "@gacha/shared";
+import { BUILT_STATUSES, dashboardDto, gameDay, getGame, pityState, shownBanners } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
 import { requireUser } from "../auth/plugin.js";
 import { getGameServerModule } from "../games/index.js";
@@ -133,7 +133,7 @@ export async function registerDashboardRoutes(app: FastifyInstance) {
         dailies,
         nextReset: soonest ?? null,
         extras: extras[i],
-        pity: (game?.pullBanners ?? []).filter((b) => !((gi.hiddenBanners as string[] | null) ?? []).includes(b.key)).map((rules) => {
+        pity: (game ? shownBanners(game) : []).filter((b) => !((gi.hiddenBanners as string[] | null) ?? []).includes(b.key)).map((rules) => {
           const s = pityState(pullRows.filter((p) => p.gameInstanceId === gi.id && p.bannerKey === rules.key), rules);
           // The spark counts the pulls on the banner running now since it began.
           const running = rules.spark ? rawBanners.find((b) => b.gameKey === gi.gameKey && b.kind === rules.key && new Date(b.startsAt) <= now && new Date(b.endsAt) > now) : undefined;

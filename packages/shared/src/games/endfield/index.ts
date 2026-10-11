@@ -74,7 +74,7 @@ export const endfield: GameDefinition = {
     { key: "weapon", label: "Arsenal", baseRate: 0.04, hardPity: 40, featuredRate: 0.25, lossGuarantee: false, spark: 80, gachaTypes: ["weapon"], pityPerPool: true, fund: "own" },
     { key: "joint", label: "Joint headhunting", baseRate: 0.008, softPity: 66, softStep: 0.05, hardPity: 80, featuredRate: 0.5, lossGuarantee: false, spark: 120, gachaTypes: ["E_CharacterGachaPoolType_Joint"], pityPerPool: true },
     { key: "standard", label: "Basic headhunting", baseRate: 0.008, softPity: 66, hardPity: 80, featuredRate: 1, gachaTypes: ["E_CharacterGachaPoolType_Standard"] },
-    { key: "beginner", label: "Beginner headhunting", baseRate: 0.008, hardPity: 40, featuredRate: 1, gachaTypes: ["E_CharacterGachaPoolType_Beginner"], fund: "standard" },
+    { key: "beginner", label: "Beginner headhunting", baseRate: 0.008, hardPity: 40, featuredRate: 1, gachaTypes: ["E_CharacterGachaPoolType_Beginner"], fund: "standard", beginner: true },
   ],
   topRarity: 6,
   name: "Arknights: Endfield",

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { featuredWithin, fiveStarDistribution, rateAt, savingsPlan, topStar, type BannerDto, type PullBannerLogDto } from "@gacha/shared";
 import { assetUrl, communityAssetUrl } from "../../lib/assets";
 import { GameIcon } from "../GameIcon";
+import { Glyph, bannerGlyph } from "../Glyph";
 import { Segmented } from "../ui";
 import { PullCurve } from "./PullCurve";
 
@@ -81,11 +82,12 @@ export function BannerCard(props: {
 
   return (
     <section className="card pl-banner" aria-label={b.label}>
+      <div className="pl-banner-main">
       <div className="pl-banner-head">
         {feat ? (
           <GameIcon src={assetUrl(props.gameKey, feat.kind, feat.icon)} fallback={communityAssetUrl(props.gameKey, feat.kind, feat.icon)} alt={feat.name ?? feat.catalogId} className="pl-art" />
         ) : (
-          <GameIcon src={null} alt={b.label} label={star} className="pl-art" />
+          <Glyph kind={bannerGlyph(b.key)} label={b.label} className="pl-art" />
         )}
         <div>
           <h3>{b.label}</h3>
@@ -141,7 +143,9 @@ export function BannerCard(props: {
           {extra > 0 && <tr><td>+{extra}</td><td className="num">{pct(featuredWithin(b, state, available + extra))}</td></tr>}
         </tbody>
       </table>
+      </div>
 
+      <div className="pl-banner-side">
       <PullCurve rules={b} state={state} available={available} extra={extra} star={star} />
 
       <div className="pl-headline">
@@ -154,6 +158,7 @@ export function BannerCard(props: {
       </div>
       {actions}
       {forms}
+      </div>
     </section>
   );
 }

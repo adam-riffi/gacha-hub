@@ -7,6 +7,7 @@ import {
   correctPullInput,
   calibration,
   pityState,
+  shownBanners,
   pullLogDto,
   splitPulls,
   type GameDefinition,
@@ -63,7 +64,7 @@ export async function registerPullRoutes(app: FastifyInstance) {
     const game = gameOrThrow(gi.gameKey);
     const entries = await ordered(gi.id);
     return pullLogDto.parse({
-      banners: (game.pullBanners ?? []).map((rules) => {
+      banners: shownBanners(game).map((rules) => {
         const mine = entries.filter((e) => e.bannerKey === rules.key);
         return { ...rules, state: pityState(mine, rules), fiveStars: drops(mine), recent: mine.slice(-RECENT).reverse() };
       }),
