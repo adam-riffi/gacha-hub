@@ -1,19 +1,31 @@
 import { useState, type FormEvent } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { endgameNow, gameDay, getGame, premiumCurrency, type CycleResultsDto, type GameDefinition, type GameRegion } from "@gacha/shared";
+import { endgameNow, gameDay, getGame, premiumCurrency, type Clear, type CycleResultsDto, type GameDefinition, type GameRegion, type TeamDto } from "@gacha/shared";
 import { api } from "../lib/api";
+import { assetUrl, communityAssetUrl } from "../lib/assets";
+import { useCatalog } from "../lib/catalog";
+import { Picker, type PickerOption } from "../components/Picker";
 import { formatRemaining } from "../lib/time";
 import type { InstanceDetail } from "../lib/types";
 import { GameTabs } from "../components/GameTabs";
-import { EndgameHistory } from "../components/hub/EndgameHistory";
+import { ClearList, EndgameHistory, TeamIcons, mss, type UnitOf } from "../components/hub/EndgameHistory";
 import { useReminderFlag } from "../lib/reminder";
 
 const NUM = new Intl.NumberFormat("en-GB");
 const DATE = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" });
+const AT = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
 const WHEN = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
 const ordinal = (n: number) => `${n}${n % 10 === 1 && n !== 11 ? "st" : n % 10 === 2 && n !== 12 ? "nd" : n % 10 === 3 && n !== 13 ? "rd" : "th"}`;
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+/** "1:35" or "95" as seconds; anything else (or out of range) as none. */
+const secs = (s: string) => {
+  const m = /^(?:(\d{1,2}):)?(\d{1,4})$/.exec(s.trim());
+  const v = m ? Number(m[1] ?? 0) * 60 + Number(m[2]) : 0;
+  return v >= 1 && v <= 3600 ? v : null;
+};
+/** What the stage pickers need: the units, the saved teams, the party size. */
+type Roster = { gameKey: string; units: PickerOption[]; teams: TeamDto[]; size: number; unitOf: UnitOf };
 type Mode = GameDefinition["manifest"]["endgame"][number];
 type Now = ReturnType<typeof endgameNow>["modes"][number];
 
@@ -36,6 +48,8 @@ export function EndgamePage() {
   const { data: cycles } = useQuery({ queryKey: ["cycles", id], queryFn: () => api.get<CycleResultsDto>(`/api/instances/${id}/cycles`) });
   const remind = useReminderFlag(id!, "beforeEndgameReset");
   const game = instance && getGame(instance.gameKey);
+  const { catalog, index } = useCatalog(instance?.gameKey);
+  const teams = useQuery({ queryKey: ["teams", id], queryFn: () => api.get<TeamDto[]>(`/api/instances/${id}/teams`), enabled: Boolean(game?.loadCatalog) });
   if (!instance || !game) return <div className="muted">Loading…</div>;
 
   const region = game.regions.find((r) => r.key === instance.regionKey) ?? game.regions[0]!;
@@ -43,6 +57,14 @@ export function EndgamePage() {
   const results = (cycles?.results ?? []).map((r) => ({ ...r, cycleStart: new Date(r.cycleStart) }));
   const eg = endgameNow(game, region, now, results);
   const premium = premiumCurrency(game);
+  const unitOf: UnitOf = (cid) => index?.characters.get(cid);
+  const roster: Roster = {
+    gameKey: game.key,
+    units: [...(catalog?.characters ?? [])].sort((a, b) => a.name.localeCompare(b.name)).map((u) => ({ id: u.id, name: u.name, src: assetUrl(game.key, "character", u.icon), fallback: communityAssetUrl(game.key, "character", u.icon) })),
+    teams: teams.data ?? [],
+    size: game.teamSize ?? 4,
+    unitOf,
+  };
 
   return (
     <>
@@ -88,12 +110,12 @@ export function EndgamePage() {
 
         <div className="eg-modes">
           {eg.modes.map((m) => (
-            <ModeCard key={m.mode.key} instanceId={id!} m={m} region={region} now={now} premium={premium} history={results.filter((r) => r.modeKey === m.mode.key)} />
+            <ModeCard key={m.mode.key} instanceId={id!} m={m} region={region} now={now} premium={premium} roster={roster} history={results.filter((r) => r.modeKey === m.mode.key)} />
           ))}
           {eg.modes.length === 0 && <p className="mu">No endgame mode on record for this game yet.</p>}
         </div>
 
-        <EndgameHistory instanceId={id!} game={game} region={region} now={now} results={results} premium={premium} />
+        <EndgameHistory instanceId={id!} game={game} region={region} now={now} results={results} premium={premium} unitOf={unitOf} />
 
         <section className="card eg-upcoming" aria-label="Upcoming resets">
           <h3>Upcoming resets</h3>
@@ -110,14 +132,6 @@ export function EndgamePage() {
           </div>
         </section>
       </div>
-      {game.loadCatalog && (
-        <section className="card eg-teams" aria-label="Teams">
-          <div className="spread">
-            <h3>Teams</h3>
-            <Link to={`/games/${id}/teams`}>Manage teams →</Link>
-          </div>
-        </section>
-      )}
     </>
   );
 }
@@ -128,6 +142,7 @@ function ModeCard({
   region,
   now,
   premium,
+  roster,
   history,
 }: {
   instanceId: string;
@@ -135,10 +150,22 @@ function ModeCard({
   region: GameRegion;
   now: Date;
   premium: string;
-  history: { cycleStart: Date; result: number | null }[];
+  roster: Roster;
+  history: { cycleStart: Date; result: number | null; teams?: Clear[] }[];
 }) {
   const qc = useQueryClient();
   const [editing, setEditing] = useState(false);
+  const stages = m.mode.clears?.stages ?? [];
+  const current = history.find((c) => c.cycleStart.getTime() === m.start.getTime());
+  // Each stage's team and typed time while the form is open.
+  const [draft, setDraft] = useState<Record<string, { members: string[]; time: string }>>({});
+  const open = () => {
+    setDraft(Object.fromEntries(stages.map((s) => {
+      const t = current?.teams?.find((x) => x.stage === s);
+      return [s, { members: t?.members ?? [], time: t?.time ? mss(t.time) : "" }];
+    })));
+    setEditing(true);
+  };
   const save = useMutation({
     mutationFn: (body: object) => api.put(`/api/instances/${instanceId}/cycles`, body),
     onSuccess: () => {
@@ -155,7 +182,8 @@ function ModeCard({
     e.preventDefault();
     const f = new FormData(e.currentTarget);
     const num = (k: string) => (String(f.get(k) ?? "") === "" ? null : Number(f.get(k)));
-    save.mutate({ modeKey: mode.key, day: gameDay(region, now), result: num("result"), premium: num("premium"), detail: String(f.get("detail") ?? "") || null });
+    const teams = stages.map((s) => ({ stage: s, members: draft[s]?.members ?? [], time: secs(draft[s]?.time ?? "") })).filter((t) => t.members.length > 0 || t.time !== null);
+    save.mutate({ modeKey: mode.key, day: gameDay(region, now), result: num("result"), premium: num("premium"), detail: String(f.get("detail") ?? "") || null, ...(stages.length ? { teams } : {}) });
   };
   return (
     <section className="card eg-mode" aria-label={mode.name}>
@@ -169,8 +197,8 @@ function ModeCard({
           <i style={{ left: `${at * 100}%` }} />
         </div>
         <div className="eg-window-dates mn mu">
-          <span>{DATE.format(m.start)}</span>
-          <span>{DATE.format(m.closes)}</span>
+          <span>{AT.format(m.start)}</span>
+          <span>{AT.format(m.closes)}</span>
         </div>
       </div>
       <div className="kpi-value eg-result">
@@ -200,6 +228,7 @@ function ModeCard({
         ))}
         {last.length === 0 && <span className="mu eg-none">No cycle recorded yet.</span>}
       </div>
+      {!editing && <ClearList gameKey={roster.gameKey} teams={current?.teams ?? []} unitOf={roster.unitOf} />}
       {editing ? (
         <form className="act-add" onSubmit={submit}>
           <label>
@@ -216,6 +245,42 @@ function ModeCard({
             <span>Detail</span>
             <input name="detail" maxLength={80} placeholder="floor 12 · 6/9" />
           </label>
+          {stages.map((s) => {
+            const d = draft[s] ?? { members: [], time: "" };
+            const set = (p: Partial<typeof d>) => setDraft((all) => ({ ...all, [s]: { ...d, ...p } }));
+            return (
+              <fieldset key={s} className="eg-clear-edit">
+                <legend className="kpi-label">{s}</legend>
+                {d.members.length > 0 && (
+                  <button type="button" className="btn ghost sm" aria-label={`Clear ${s}`} onClick={() => set({ members: [] })}>
+                    <TeamIcons gameKey={roster.gameKey} members={d.members} unitOf={roster.unitOf} /> ×
+                  </button>
+                )}
+                {d.members.length < roster.size && roster.units.length > 0 && (
+                  <Picker
+                    label={`Add to ${s}`}
+                    placeholder="+ Unit or team"
+                    value=""
+                    options={[
+                      ...roster.teams.filter((t) => t.members.length > 0).map((t) => ({ id: `team:${t.id}`, name: t.name, sub: "team" })),
+                      ...roster.units.filter((u) => !d.members.includes(u.id)),
+                    ]}
+                    onPick={(o) => {
+                      if (!o) return;
+                      const team = roster.teams.find((t) => `team:${t.id}` === o.id);
+                      set({ members: team ? team.members.slice(0, roster.size) : [...d.members, o.id] });
+                    }}
+                  />
+                )}
+                {mode.clears?.timed && (
+                  <label>
+                    <span>Clear time</span>
+                    <input inputMode="numeric" placeholder="m:ss" maxLength={5} value={d.time} onChange={(e) => set({ time: e.target.value })} />
+                  </label>
+                )}
+              </fieldset>
+            );
+          })}
           <button type="submit" className="btn primary" disabled={save.isPending}>
             Save
           </button>
@@ -225,7 +290,7 @@ function ModeCard({
           {save.isError && <span className="hub-error">Not saved: over the mode's best or offer.</span>}
         </form>
       ) : (
-        <button type="button" className="btn act-add-btn" aria-label={`Update ${mode.name}`} onClick={() => setEditing(true)}>
+        <button type="button" className="btn act-add-btn" aria-label={`Update ${mode.name}`} onClick={open}>
           Update
         </button>
       )}

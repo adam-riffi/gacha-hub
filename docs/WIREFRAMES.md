@@ -89,8 +89,8 @@ Picture: [`g1-activities.png`](design/wireframes/g1-activities.png) · static pa
 Picture: [`g2-endgame.png`](design/wireframes/g2-endgame.png) · static page: [`g2-endgame.html`](design/wireframes/g2-endgame.html)
 
 - **This cycle:** premium currency claimed against the maximum across current cycles; the next reset and what is left; "remind 24 h before a reset with rewards left".
-- **One card per mode:** cycle window with today marked, result (stars, acts or difficulties), rewards, teams used, and the last six cycles linking to History.
-- **History**, per mode (switch between modes): tiles for best, average, rewards earned and the current key metric; a line chart of the result per cycle, where filled dots are full clears and hovering shows dates and rewards; a table of cycles with dates, result, sub-metric (for example floor 12), rewards, teams and source (AUTO snapshot or MANUAL); "Show older"; CSV export. Snapshots are taken at every reset; earlier cycles can be typed in.
+- **One card per mode:** cycle window with its exact reset times and today marked, result (stars, acts or difficulties), rewards and the last six cycles. **Clears** (Georges, 2026-10-11: "clear times as well as teams for levels/bosses"): each stage the mode has (halves, towers or bosses) with its team as icons, and its clear time where the mode ranks by time (Spiral Abyss, Stygian Onslaught, Shiyu Defense); typed in Update, picking units or a saved team.
+- **History**, per mode (switch between modes): tiles for best, average, rewards earned and the current key metric; a line chart of the result per cycle, where filled dots are full clears and hovering shows dates and rewards; a table of cycles with dates, result, sub-metric (for example floor 12), rewards and each stage's team and time; "Show older"; CSV export. Snapshots are taken at every reset; earlier cycles can be typed in.
 - **Upcoming resets:** each mode's next reset and what changes.
 
 ### G3 · Pulls

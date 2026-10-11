@@ -72,6 +72,8 @@ export interface GameManifest {
     metric: { label: string; max?: number };
     /** Premium currency on offer per cycle; absent when unsourced. */
     maxPremium?: number;
+    /** The stages a cycle is cleared in, a team each, and whether the clear time counts (Georges, 2026-10-11). */
+    clears?: { stages: string[]; timed?: boolean };
   }[];
   battlePass?: { name: string; maxLevel?: number; weeklyXpCap?: number };
   /** `daily`: premium currency the pass gives each day (the Pulls forecast). */

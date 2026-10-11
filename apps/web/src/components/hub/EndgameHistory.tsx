@@ -1,7 +1,9 @@
 import { useState, type FormEvent } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { cycleCsv, cycleHistory, niceMax, type CycleRow, type GameDefinition, type GameRegion } from "@gacha/shared";
+import { cycleCsv, cycleHistory, elementColor, niceMax, type Clear, type CycleRow, type GameDefinition, type GameRegion } from "@gacha/shared";
 import { api } from "../../lib/api";
+import { assetUrl, communityAssetUrl } from "../../lib/assets";
+import { GameIcon } from "../GameIcon";
 import { Segmented } from "../ui";
 
 const NUM = new Intl.NumberFormat("en-GB");
@@ -14,6 +16,37 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(
 const span = (start: Date, end: Date) => `${DM.format(start)} – ${DM.format(new Date(end.getTime() - DAY))}`;
 
 type Rows = ReturnType<typeof cycleHistory>["rows"];
+export type UnitOf = (id: string) => { name: string; icon?: string; tag?: string } | undefined;
+
+/** A clear time in seconds as m:ss. */
+export const mss = (t: number) => `${Math.floor(t / 60)}:${String(t % 60).padStart(2, "0")}`;
+
+/** Each stage's team as icons, with its clear time. */
+export function ClearList({ gameKey, teams, unitOf }: { gameKey: string; teams: Clear[]; unitOf: UnitOf }) {
+  if (!teams.length) return null;
+  return (
+    <ul className="eg-clears" aria-label="Clears">
+      {teams.map((t) => (
+        <li key={t.stage}>
+          <span className="mn mu">{t.stage}</span>
+          <TeamIcons gameKey={gameKey} members={t.members} unitOf={unitOf} />
+          {t.time !== null && <span className="mn">{mss(t.time)}</span>}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+export function TeamIcons({ gameKey, members, unitOf }: { gameKey: string; members: string[]; unitOf: UnitOf }) {
+  return (
+    <span className="eg-team">
+      {members.map((m) => {
+        const u = unitOf(m);
+        return <GameIcon key={m} src={assetUrl(gameKey, "character", u?.icon)} fallback={communityAssetUrl(gameKey, "character", u?.icon)} alt={u?.name ?? m} tint={elementColor(gameKey, u?.tag) ?? undefined} />;
+      })}
+    </span>
+  );
+}
 
 /**
  * Endgame history per mode (WIREFRAMES.md G2): best, average, premium earned
@@ -28,6 +61,7 @@ export function EndgameHistory({
   now,
   results,
   premium,
+  unitOf,
 }: {
   instanceId: string;
   game: GameDefinition;
@@ -35,6 +69,7 @@ export function EndgameHistory({
   now: Date;
   results: CycleRow[];
   premium: string;
+  unitOf: UnitOf;
 }) {
   const modes = game.manifest.endgame;
   const [modeKey, setModeKey] = useState(modes[0]?.key ?? "");
@@ -134,6 +169,7 @@ export function EndgameHistory({
             <th>Cycle</th>
             <th className="num">{cap(mode.metric.label)}</th>
             <th>Detail</th>
+            {mode.clears && <th>Teams</th>}
             {mode.maxPremium !== undefined && <th className="num">{premium}</th>}
           </tr>
         </thead>
@@ -149,6 +185,11 @@ export function EndgameHistory({
                 {r.result ?? "—"}
               </td>
               <td className="mu">{r.detail ?? ""}</td>
+              {mode.clears && (
+                <td>
+                  <ClearList gameKey={game.key} teams={r.teams ?? []} unitOf={unitOf} />
+                </td>
+              )}
               {mode.maxPremium !== undefined && (
                 <td className="num">
                   {r.premium === null ? "—" : NUM.format(r.premium)} / {NUM.format(mode.maxPremium)}

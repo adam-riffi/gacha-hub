@@ -112,11 +112,12 @@ export const genshin: GameDefinition = {
     stamina: { currency: "resin", reserve: { currency: "condensedResin" } },
     monthlyShops: [{ key: "bargains", name: "Paimon's Bargains", day: 1 }],
     endgame: [
-      { key: "abyss", name: "Spiral Abyss", anchor: { cadence: "monthly", day: 16 }, metric: { label: "stars", max: 36 }, maxPremium: 800 },
+      { key: "abyss", name: "Spiral Abyss", anchor: { cadence: "monthly", day: 16 }, metric: { label: "stars", max: 36 }, maxPremium: 800, clears: { stages: ["First half", "Second half"], timed: true } },
       { key: "theater", name: "Imaginarium Theater", anchor: { cadence: "monthly", day: 1 }, metric: { label: "acts", max: 10 }, maxPremium: 1000 },
       {
         key: "stygian",
         name: "Stygian Onslaught",
+        clears: { stages: ["Boss 1", "Boss 2", "Boss 3"], timed: true },
         anchor: { cadence: "version", start: "2026-09-30", days: 42 },
         openDays: 35,
         metric: { label: "difficulty", max: 6 },

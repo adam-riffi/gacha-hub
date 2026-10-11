@@ -1,8 +1,17 @@
 import { z } from "zod";
 import { cadenceWindow, type ServerClock } from "./cadence.js";
 import type { GameDefinition } from "./games/types.js";
+import { catalogIdSchema } from "./dto/common.js";
 
 const DAY = 86_400_000;
+
+/** One stage of a cycle: the team that cleared it (character catalog ids) and its clear time in seconds. */
+export const clearSchema = z.object({
+  stage: z.string().trim().min(1).max(40),
+  members: z.array(catalogIdSchema).max(8),
+  time: z.number().int().min(1).max(3600).nullable(),
+});
+export type Clear = z.infer<typeof clearSchema>;
 
 /** A stored endgame result: one mode's cycle (by its window's start). */
 export const cycleResultDto = z.object({
@@ -12,6 +21,7 @@ export const cycleResultDto = z.object({
   detail: z.string().nullable(),
   premium: z.number().int().nullable(),
   source: z.string(),
+  teams: z.array(clearSchema).default([]),
 });
 export const cycleResultsDto = z.object({ results: z.array(cycleResultDto) });
 export type CycleResultsDto = z.infer<typeof cycleResultsDto>;
@@ -23,6 +33,8 @@ export const cycleResultInput = z.object({
   result: z.number().int().min(0).max(100_000).nullable(),
   premium: z.number().int().min(0).max(100_000).nullable().optional(),
   detail: z.string().trim().max(80).nullable().optional(),
+  /** Each stage's team and clear time; left out, the stored ones stay. */
+  teams: z.array(clearSchema).max(6).optional(),
 });
 
 /** An instant inside a server-local game day (an hour after its reset). */
@@ -63,6 +75,7 @@ type Mode = GameDefinition["manifest"]["endgame"][number];
 export interface CycleRow extends CycleResultLike {
   detail: string | null;
   source: string;
+  teams?: Clear[];
 }
 
 /** A server-local date of an instant (YYYY-MM-DD). */
