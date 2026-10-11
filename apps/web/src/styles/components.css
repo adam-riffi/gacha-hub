@@ -165,6 +165,8 @@ tbody tr:hover { background: var(--surface-2); }
 .ad-tile { display: flex; flex-direction: column; gap: 6px; }
 .ad-tiles .kpi-value { font-size: 28px; }
 .ad-tables { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 16px; align-items: start; }
+/* The payload and what is live, side by side in Settings' column (round 5). */
+.ad-work { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; }
 
 /* The picker (Georges, 2026-10-11): type or scroll, icons, the list right under its field. */
 .pk { position: relative; width: 100%; }

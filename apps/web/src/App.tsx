@@ -18,7 +18,6 @@ const MaterialsPage = page(() => import("./pages/MaterialsPage"), "MaterialsPage
 const PullsPage = page(() => import("./pages/PullsPage"), "PullsPage");
 const CharacterPage = page(() => import("./pages/CharacterPage"), "CharacterPage");
 const CalendarPage = page(() => import("./pages/CalendarPage"), "CalendarPage");
-const AdminPage = page(() => import("./pages/AdminPage"), "AdminPage");
 const SettingsPage = page(() => import("./pages/SettingsPage"), "SettingsPage");
 const TasksPage = page(() => import("./pages/TasksPage"), "TasksPage");
 const UnitPage = page(() => import("./pages/UnitPage"), "UnitPage");
@@ -59,9 +58,8 @@ export function App() {
         <Route path="/characters/:id" element={<CharacterPage />} />
         <Route path="/tasks" element={<TasksPage />} />
         <Route path="/timeline" element={<CalendarPage />} />
-        <Route path="/settings/data" element={<AdminPage />} />
         <Route path="/admin" element={<Navigate to="/settings/data" replace />} />
-        <Route path="/settings" element={<SettingsPage />} />
+        <Route path="/settings/:tab?" element={<SettingsPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       </Suspense>
