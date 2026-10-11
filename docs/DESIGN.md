@@ -48,7 +48,6 @@ A whitelisted player signs in with Discord, adds Genshin and HSR, sets currencie
 - Account linking and imports (ADR 0005); game art in our own store (ADR 0006); a game manifest and a pipeline for new games, starting with Neverness to Everness (ADR 0004).
 
 **Later**
-- **A per-game overview** (Georges, 2026-10-10): each game hub opens on a dashboard of its own. It shows what that game needs and nothing else: NTE's page shows Fons, not Genshin's resin. Each game defines its overview's cards in its module, like its other features (ADR 0004).
 - **Talent and skill descriptions** (Georges, 2026-10-11): each talent's and skill's text on the character page and the unit page, from the catalogs' datasets.
 - **Real element, weapon-type and currency icons**, once the art bucket is live (ADR 0006); glyphs and colour chips until then.
 - **Public showcase pages:** a read-only page of a user's builds to share.
@@ -138,6 +137,7 @@ Postgres on Supabase (own project `gacha-hub`, eu-west-1; ADR 0001). Migrations 
 | F10 Screens and build parity | the remaining screens in `docs/WIREFRAMES.md`: Home proposals, Library, Tasks with event goals, Calendar layers and reward goals, Pulls odds and guarantee, Characters splash cards and KPIs, character sheet, gear, planner, profile; gear blocks for every game | Each screen matches its section in WIREFRAMES.md, with loading, empty and error states; odds match a seeded simulation within 0.5 points |
 | F11 Automatic data | `LinkedAccount` and encryption; HoYoLAB notes and chronicle sync; pull-history imports (history link, UIGF v4.2, WuWa convene, Endfield SKPORT); Enka showcase sync (ADR 0005) | Link, sync and revoke work end to end against recorded fixtures; tokens never appear in logs, responses or exports |
 | F12 Art store | `splash` art kind; `scripts/assets` mirror to R2; CSP update (ADR 0006) | Every game shows art for owned characters from our store; a missing file falls back to the placeholder |
+| F13 Per-game overview | Georges's designs of 2026-10-11 (`docs/design/overview/`): the hub opens on an Overview tab, Activities second; pulls, pity and banners; today, the pass and weeklies, stamina; builds in progress and the endgame cycle; goals and backlog; each game's own card (NTE's city, Endfield's AIC) | Each game's Overview matches its design: every card from the profile's data, each opening its screen; a game without pull rules or a catalog leaves those cards out |
 
 F5 follows the owner's listed nice-to-have (the Phase 8 handoff notes, in git history before 2026-10-08) under ADR 0002. Account import was approved on 2026-10-09 (ADR 0005). Each milestone ships its own screens; F10 covers the screens no earlier milestone owns. V and D come first, in either order: V so the later screens are built in the new look, D so the new tables start on Prisma 7. ADRs 0001–0007 were accepted on 2026-10-09.
 

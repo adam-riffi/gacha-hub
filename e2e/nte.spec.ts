@@ -5,14 +5,15 @@ test("Neverness to Everness works by hand on every screen @smoke", async ({ page
   await page.getByRole("button", { name: "Continue as Dev User" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
 
-  // Added from the library, like any game; it lands on Activities.
+  // Added from the library, like any game; it lands on its Overview, Activities next.
   await page.goto("/library");
   await page.getByRole("button", { name: "+ Neverness to Everness" }).click();
   await expect(page).toHaveURL(/\/games\/[^/]+$/);
   await expect(page.getByRole("heading", { level: 1, name: "Neverness to Everness" })).toBeVisible();
   await expect(page.getByRole("region", { name: "Character Pixels" })).toContainText("/ 240");
-  await expect(page.getByRole("region", { name: "Daily" })).toBeVisible();
   const tabs = page.getByRole("navigation", { name: "Game screens" });
+  await tabs.getByRole("link", { name: "Activities" }).click();
+  await expect(page.getByRole("region", { name: "Daily" })).toBeVisible();
 
   // Endgame: Beyond the Rails, typed by hand.
   await tabs.getByRole("link", { name: "Endgame" }).click();
