@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r6/06-guide · #243
+- Done: the project guide caught up with round 3. §8.6 now covers the Overview (G0) with a screenshot, §8.9 the Weapons cards (G4c) with another, §8.10 the skill descriptions; §7's screen map opens a game on its Overview and lists Activities, Teams and Weapons; §13 leaves the current state to HANDOFF.md and keeps the history through #242; §14.2 moves the per-game Overview, the enemies and the descriptions to "Done". HANDOFF.md says `main` is at #241.
+- Tests: docs only. `npm run check` passes: 592 tests and 69 journeys.
+- Scope/decisions: the two screenshots block every image from `/assets/` as well as from other hosts, so no game art is committed (ADR 0006); the guide's own script blocked only other hosts, and the Weapons page showed mirrored art before the fix.
+- Next: Georges's secrets, data and the NTE decision.
+
 ## 2026-10-11 · claude · stack/r6/05-wuwa-nests · #242
 - Done: WuWa's Nightmare Nests, from the design's Today card ("24/36"): a daily counted to 36 Tacet Discords (Prydwen's game modes guide), entered as a number on the Overview. Profiles made before it add it with + there. HANDOFF.md records what a search for the designs' other details found, and why each stays out.
 - Tests: written first: a new WuWa profile seeds Nightmare Nests, daily, target 36. `npm run check` passes: 592 tests and 69 journeys.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the calendar journey counts 42 day ticks, checks a bar's dates, finds "Starts:" and "Ends:" entries in the month view, and opens Kafka's page from the selected banner. `npm run check` passes: 559 tests and 43 journeys.
 - Scope/decisions: the month view shows starts and ends, not every running bar, so a day stays readable with six games.
 - Next: the clean-up, Settings and Admin.
-
-## 2026-10-11 · claude · stack/ui/06-goal-maker · #203
-- Done: the goal maker makes anything (Georges: "I can't create gameplay goals yet like finish the story or do X quests; I should be able to create anything from that screen including character build goals"). New goal on Tasks, and "+ New goal" on Home's Goals panel, open one form with four kinds: Gameplay (a title and how many times), Checklist (its items, one per line), Character build (pick the unit, owned first, then plan its levels and talents in place) and Weapon (pick it, then plan its levels). The old two-kind form is gone. The plan panels' buttons are `type="button"` now, as they sit inside the form.
-- Tests: written first: the Tasks journey opens the maker from Home, adds "Do 20 Calyx runs", a checklist whose two items the API returns, and picks Kafka to see Generate tasks. `npm run check` passes: 559 tests and 42 journeys.
-- Scope/decisions: no API change; gameplay goals are plain goals with a target, so Home counts them as "gameplay" and Profile lists them.
-- Next: the banner timeline, the clean-up, Settings and Admin.
