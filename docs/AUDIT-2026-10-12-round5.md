@@ -2,7 +2,7 @@
 
 Georges's fifth round, after #244–#255. The rules of the earlier rounds stand: every text adds to the data, and a thing the app can show, it shows as its icon.
 
-**Status:** in progress.
+**Status:** done in #256–#262 (#256 also fixed the calendar's short bars, whose names hid on Mondays).
 
 ## Georges's list
 
