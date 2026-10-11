@@ -50,3 +50,33 @@ test("the rail moves between sections and the strip sets the scope @smoke", asyn
   await expect(page.getByRole("heading", { name: "Tasks", level: 1 })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Today" })).toBeVisible();
 });
+
+// Georges, round 4: "if I am on the pulls screen of Genshin and I go to HSR I wanna end up on the HSR pull screen".
+test("another game in the strip opens the same tab, or its first where it has none @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue as Dev User" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const make = async (gameKey: string) => ((await (await page.request.post("/api/instances", { data: { gameKey } })).json()) as { id: string }).id;
+  const [hsr, zzz, endfield] = [await make("hsr"), await make("zzz"), await make("endfield")];
+  const strip = page.getByRole("navigation", { name: "Scope" });
+
+  await page.goto(`/games/${hsr}/pulls`);
+  await strip.getByRole("link", { name: "Zenless Zone Zero" }).click();
+  await expect(page).toHaveURL(new RegExp(`/games/${zzz}/pulls$`));
+  await expect(page.getByRole("navigation", { name: "Game screens" }).getByRole("link", { name: "Pulls" })).toHaveAttribute("aria-current", "page");
+
+  // Endfield has no Planner: its first tab.
+  await page.goto(`/games/${zzz}/planner`);
+  await strip.getByRole("link", { name: "Arknights: Endfield" }).click();
+  await expect(page).toHaveURL(new RegExp(`/games/${endfield}$`));
+
+  // A character's sheet leads to the other game's characters.
+  const build = (await (await page.request.post(`/api/instances/${hsr}/characters`, { data: { catalogId: "1102" } })).json()) as { id: string };
+  try {
+    await page.goto(`/characters/${build.id}`);
+    await strip.getByRole("link", { name: "Zenless Zone Zero" }).click();
+    await expect(page).toHaveURL(new RegExp(`/games/${zzz}/characters$`));
+  } finally {
+    await page.request.delete(`/api/characters/${build.id}`);
+  }
+});
