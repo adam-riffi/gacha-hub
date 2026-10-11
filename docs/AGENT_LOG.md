@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r5/01-counts · #233
+- Done: the first of the designs' remaining details: counted dailies and weeklies ("Daily Commissions ▮▮▮▯", "Weekly Bosses ▮▯▯"). A recurring task with a target counts its steps within its cycle (`Task.progressAt`, migration `recurring_counts`): its progress reads as zero in a new cycle, it is done at its target, and ticking it done sets the target. The Overview's Today and weekly cards show a box per step, ticked up to the one clicked (over eight steps, a number to type). Default tasks gain counts where a source gives them: Genshin's four commissions and three weekly bosses, Star Rail's five Daily Training tiers, ZZZ's four engagement tiers, WuWa's five activity tiers and three weekly bosses, NTE's four daily quests and three Anomaly Pilgrimage claims; the migration gives existing profiles' rows of them their targets.
+- Tests: written first: a counted daily counts within the cycle, is done at its target and reads empty three days later; a new Genshin profile seeds four Daily Commissions and three Weekly Bosses; the Overview journey ticks ZZZ's Daily Missions to 3 of 4 and keeps it after a reload. `npm run check` passes: 581 tests and 66 journeys.
+- Scope/decisions: progress belongs to its cycle by `progressAt`, not `updatedAt` (editing a task must not carry old steps into a new cycle). Counts are sourced in `docs/games/*.md` ("Counted tasks").
+- Next: each game's items from the designs, then the missing endgame modes.
+
 ## 2026-10-11 · claude · stack/r4/13-stygian · #232
 - Done: Genshin's Stygian Onslaught enemies, the gap #230 left. Hakushin files the mode as "leyline" (dated cycles, six difficulties, three bosses each); the endgame importer now writes `packages/shared/src/games/genshin/endgame.json` with each cycle's three bosses at the top difficulty (their names there and its monster level, 109), loaded lazily like ZZZ's. The enemy rows give the stage's name the free width, so long boss names read in two lines.
 - Tests: written first: the shipped data has Stygian cycles of three bosses with a level; the Genshin Endgame journey finds three on Stygian Onslaught and no enemies list on Spiral Abyss or Imaginarium Theater. `npm run check` passes: 579 tests and 65 journeys.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the Profile journey adds "Finish exploring Amphoreus" and ticks it. `npm run check` passes: 533 tests and 40 journeys.
 - Scope/decisions: no new goal kind or column; the card filters the existing hand-typed goals.
 - Next: Endfield's per-banner weapon pity, ZZZ core skills, every banner with a hide button.
-
-## 2026-10-10 · claude · stack/docs/07-later · #193
-- Done: DESIGN.md §4 "Later" lists what it includes. It gains a per-game overview at Georges's request: each hub opens on its own dashboard, showing NTE's Fons and not Genshin's resin. Not built. Alongside: public showcase pages, PWA, i18n. PROJECT-GUIDE §14.1 step 8 says exactly which real data the agent needs and how to save it. §14 records the decision that long-term progress (chests, exploration, events) is hand-typed goals, not synced.
-- Tests: docs only.
-- Scope/decisions: the per-game overview is recorded, not designed; it needs a design pass per game before code.
-- Next: long-term goals on Profile, Endfield's per-banner weapon pity, ZZZ core skills, every banner with a hide button.
