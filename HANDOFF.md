@@ -1,10 +1,10 @@
 # Handoff — 2026-10-11 · claude
 
 ## State
-- `main` at #231: docs: hand off the third feedback round. CI green.
-- Open PRs: #232, Stygian Onslaught's enemies; it merges on green CI.
-- Production serves #186 (deployed 2026-10-10 18:52 UTC). Merges do not deploy (#189): `main` goes live only when Georges asks (`docs/DEPLOY.md`, Redeploys), then run the smoke check. Since #186, `main` adds five migrations, and the next deploy runs them: `kpi_defaults`, `progress`, `hidden_banners`, `default_build` and `weapon_copies`.
-- Every milestone in DESIGN.md §9 is built, V through F13, and three feedback rounds (2026-10-10 and twice on 2026-10-11) are done. What is left needs Georges's secrets or real data (below), a dated source for Apocalyptic Shadow's enemies, or is in DESIGN.md §4 "Later".
+- `main` at #236: feat(pulls): the featured guarantee. CI green.
+- Open PRs: this one (#237), the handoff; it merges on green CI.
+- Production serves #186 (deployed 2026-10-10 18:52 UTC). Merges do not deploy (#189): `main` goes live only when Georges asks (`docs/DEPLOY.md`, Redeploys), then run the smoke check. Since #186, `main` adds six migrations, and the next deploy runs them: `kpi_defaults`, `progress`, `hidden_banners`, `default_build`, `weapon_copies` and `recurring_counts` (which also gives existing profiles' counted dailies their targets).
+- Every milestone in DESIGN.md §9 is built, V through F13, and three feedback rounds (2026-10-10 and twice on 2026-10-11) are done. What is left needs Georges's secrets, real data or a decision (below), a source for a few of the designs' details (Next), or is in DESIGN.md §4 "Later".
 
 ## Done this session
 - Georges's first round (2026-10-10): #198–#206. His second (2026-10-11, `docs/AUDIT-2026-10-11.md`, "every text adds to the data"): #207–#218.
@@ -20,6 +20,11 @@
   - #227–#229, F13, the per-game **Overview** from Georges's six designs (`docs/design/overview/`): the hub opens on it; pulls, pity, banners; today, the pass and weekly, stamina; builds in progress, the endgame cycle; goals, backlog; each game's own card (NTE's City, Endfield's AIC and outposts);
   - #230, endgame enemies per stage with their weaknesses: ZZZ's Shiyu Defense and Deadly Assault, from a new importer (`npm run catalog:endgame`);
   - #232, Genshin's Stygian Onslaught enemies (its three bosses at the top difficulty), from the same importer.
+- Then the designs' remaining details, against the six Overview pictures:
+  - #233, counted dailies and weeklies (a box per step within the cycle: four commissions, three weekly bosses…);
+  - #234, each game's dailies and weeklies from its design (Coffee, Video store, Check-in, Nakupenda Pool…), added with + on profiles made before them;
+  - #235, Star Rail's Anomaly Arbitration and ZZZ's Lost Void;
+  - #236, Endfield's featured guarantee (the running banner's pulls toward its 120-pull spark) on the Overview's pity.
 
 ## Decisions taken (2026-10-11; Georges: "take every decision")
 - Earlier ones stand, except one: the Weapons tab is now on every game (Georges asked), by name where the catalog has no weapons.
@@ -27,17 +32,20 @@
 - The Planner leaves Sunday out of a material's days beside its own days: Sunday opens every domain.
 - Weapon copies live in `WeaponCopy`; a catalog weapon's ownership row stays its count, so syncs and rewards that grant a weapon still work, and reading the list makes or drops copies to match it. Holders are matched to copies in order.
 - The Overview reads the data the hub already loads; a game's own card is declared in its manifest (`ownCard`), each item a currency or a default task, named in its reference sheet (the conformance suite checks). Endfield's AIC items carry no caps: none is sourced.
+- A counted daily's progress belongs to its cycle by `Task.progressAt`; ticking it done sets its target. A game's defaults are seeded a millisecond apart, so lists keep the game's own order.
+- Item names follow the designs; counts and endgame metrics only where a source gives them, marked `~` when unverified.
+- NTE gets no catalog without Georges's say: Hakushin now publishes NTE characters and Arcs, but ADR 0005 keeps NTE manual because its terms forbid third-party tools.
 - Enemies come from Hakushin: ZZZ's Shiyu Defense and Deadly Assault, Genshin's Stygian Onslaught (filed there as "leyline"; shown at its top difficulty, Dire). Star Rail's Apocalyptic Shadow has no dates there. A cycle the data has not reached shows the last one with its dates.
 
 ## Verified
-- `npm run check` before each PR and CI green on each: 578 tests and 64 journeys; initial JavaScript 145.8 KB of 200 KB.
+- `npm run check` before each PR and CI green on each: 587 tests and 68 journeys; initial JavaScript 146.3 KB of 200 KB.
 - Checked in the browser at 1440 with game art blocked, and attached to each PR: the plus sign, the Planner, Farm today, goal icons, Weapons cards and panel, each game's Overview, the ZZZ enemies.
 
 ## Next
 1. When Georges shares them: replace the fixtures built from documentation with real answers (PROJECT-GUIDE §14.1 step 8), then fix whatever differs.
 2. Once the bucket exists, check F12's acceptance, then swap the glyphs for real element, weapon-type and currency icons (DESIGN.md §4 "Later").
 3. Each game version: refresh the catalogs (`npm run catalog:<game>`) and the endgame enemies (`npm run catalog:endgame`), then run mirror-art. Re-check the values still marked `~` in `docs/games/*.md`.
-4. A dated source for Apocalyptic Shadow enemies; Hakushin also has NTE characters and weapons now (static.nanoka.cc), a possible NTE catalog.
+4. Sources for the designs' details still missing: WuWa's Nightmare Nests, echo bosses and Gateways; the endgame modes WuWa's Doubled Pawns, NTE's Realm of Greed and Pink Paws Heist, Endfield's Umbral Monument, Etchspace Salvage and Contingency Contract; NTE's De-noise Solutions and Endfield's Emergency boosters; Genshin's Epitomized Path. A dated source for Apocalyptic Shadow enemies; Hakushin also has NTE characters and weapons now (static.nanoka.cc), a possible NTE catalog.
 5. When Georges asks: talent and skill descriptions (DESIGN.md §4 "Later").
 
 ## Needs from Georges
@@ -45,6 +53,7 @@
 - **Real data, with tokens removed** (PROJECT-GUIDE §14.1 step 8): an Endfield records page (char and weapon); a ZZZ UID; HoYoLAB answers (record card, notes, each chronicle mode, character list); one gacha log page; one WuWa convene answer; in-game details pages for the `~` values.
 - The `main` ruleset, the `sample-*` banners, the README demo GIF, and the stale remote branches (§14.1 step 10).
 - A deploy, when he wants the three rounds live.
+- **A decision:** an NTE catalog (characters and Arcs) from Hakushin's dataset, or NTE stays manual as ADR 0005 says.
 - Overrule any decision above by saying so.
 
 ## Notes
