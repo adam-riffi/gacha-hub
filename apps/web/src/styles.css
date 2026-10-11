@@ -70,6 +70,15 @@ p { color: var(--muted); }
 }
 .task-row + .task-row { margin-top: 8px; }
 
+/* An icon, or the tile with initials standing in for a missing image (GameIcon). */
+.gicon { display: block; border-radius: 0; }
+img.gicon { object-fit: cover; }
+.gicon-ph {
+  display: grid; place-items: center; background: var(--bg-elev);
+  border: 1px solid var(--border); color: var(--muted);
+  font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; line-height: 1;
+}
+
 /* ---- Toast ---- */
 .toast {
   position: fixed; bottom: 20px; right: 20px; z-index: 100;
