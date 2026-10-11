@@ -74,6 +74,13 @@ test("a rotating endgame mode shows its enemies per stage, with what they are we
     await expect(enemies.getByRole("listitem").first()).toBeVisible();
     await expect(enemies.getByRole("img").first()).toBeVisible();
   }
+  // Icons where the data has them (Georges, round 4): what Shiyu's stages are weak to as element icons;
+  // Deadly Assault's bosses by their icon, named on hover, the label keeping their level.
+  const shiyu = page.getByRole("region", { name: "Shiyu Defense" }).getByRole("list", { name: "Enemies" });
+  await expect(shiyu.getByRole("img", { name: /^Weak to (Fire|Ice|Electric|Ether|Physical|Wind)$/ }).first()).toBeVisible();
+  const boss = page.getByRole("region", { name: "Deadly Assault" }).getByRole("list", { name: "Enemies" }).getByRole("listitem").first();
+  await expect(boss.locator(".eg-stage")).toHaveText(/^Lv \d+$/);
+  await expect(boss.locator(".eg-enemy").first()).toHaveAttribute("title", /\w/);
   // Modes that do not rotate enemies show none.
   await expect(page.getByRole("list", { name: "Enemies" })).toHaveCount(2);
 });
