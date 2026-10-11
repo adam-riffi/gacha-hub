@@ -120,6 +120,8 @@ export const hsr: GameDefinition = {
       { key: "moc", name: "Memory of Chaos", anchor: { cadence: "cycle", start: "2026-09-28", days: 77 }, metric: { label: "stars", max: 36 }, maxPremium: 800, clears: { stages: ["First half", "Second half"] } },
       { key: "pf", name: "Pure Fiction", anchor: { cadence: "cycle", start: "2026-09-14", days: 35 }, metric: { label: "stars", max: 12 }, maxPremium: 800, clears: { stages: ["First half", "Second half"] } },
       { key: "as", name: "Apocalyptic Shadow", anchor: { cadence: "cycle", start: "2026-10-05", days: 42 }, metric: { label: "stars", max: 12 }, maxPremium: 800, clears: { stages: ["First half", "Second half"] } },
+      // A phase each version: three Knights, then the King (Georges's design, 2026-10-11).
+      { key: "arbitration", name: "Anomaly Arbitration", anchor: { cadence: "version", start: "2026-09-28", days: 42 }, metric: { label: "stars", max: 9 }, clears: { stages: ["Knight 1", "Knight 2", "Knight 3", "King"] } },
     ],
     battlePass: { name: "Nameless Honor", maxLevel: 70, weeklyXpCap: 8000 },
     monthlyPass: { name: "Express Supply Pass", days: 30, maxDays: 180, daily: 90 },

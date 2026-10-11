@@ -106,6 +106,8 @@ export const zzz: GameDefinition = {
     endgame: [
       { key: "shiyu", name: "Shiyu Defense", anchor: { cadence: "cycle", start: "2026-10-02", days: 14 }, metric: { label: "S-rank frontiers", max: 5 }, maxPremium: 780, clears: { stages: ["First half", "Second half"], timed: true } },
       { key: "assault", name: "Deadly Assault", anchor: { cadence: "cycle", start: "2026-10-09", days: 14 }, metric: { label: "stars", max: 9 }, maxPremium: 300, clears: { stages: ["Boss 1", "Boss 2", "Boss 3"] } },
+      // Hollow Zero's Lost Void: Investigation Points each week from Monday's reset (Georges's design, 2026-10-11); the cap is not sourced.
+      { key: "lostVoid", name: "Lost Void", anchor: { cadence: "cycle", start: "2026-10-05", days: 7 }, metric: { label: "points" } },
     ],
     battlePass: { name: "New Eridu City Fund", maxLevel: 50 },
     monthlyPass: { name: "Inter-Knot Membership", days: 30, daily: 90 },
