@@ -7,6 +7,8 @@ import {
   type FarmTodayDto,
   type RewardDto,
 } from "@gacha/shared";
+import { GameIcon } from "../components/GameIcon";
+import { MaterialIcons, UnitIcon } from "../components/CatalogIcon";
 import { LoadError } from "../components/LoadError";
 import { api } from "../lib/api";
 import type { InstanceListItem, TaskItem } from "../lib/types";
@@ -15,6 +17,28 @@ import { RemindersPanel } from "../components/tasks/RemindersPanel";
 import { GoalMaker } from "../components/tasks/GoalMaker";
 
 const WEEKDAY = ["", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+const DAY = ["", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+type FarmLineDto = FarmTodayDto[number]["lines"][number];
+
+/**
+ * A Farm today line as icons (Georges, 2026-10-11: "I could just see the Lisa
+ * icon and the talent book icon"): the game on the overview only, who it is
+ * for, the materials, then their days; the words stay for hover.
+ */
+function FarmChip({ gameKey, line, showGame }: { gameKey: string; line: FarmLineDto; showGame: boolean }) {
+  const game = getGame(gameKey);
+  return (
+    <span className={`tk-chip is-${line.kind}`} title={line.text}>
+      {showGame && game && <GameIcon src={game.art?.icon ?? null} alt={game.name} label={(game.shortName ?? game.name).slice(0, 2)} tint={game.accent} className="tk-chip-game" />}
+      {line.unit && <UnitIcon gameKey={gameKey} unit={line.unit} />}
+      {line.materials.length > 0 && <MaterialIcons gameKey={gameKey} ids={line.materials} />}
+      {line.kind === "domain" && <span>{line.days.map((d) => DAY[d]).join(" ")}</span>}
+      {line.kind === "anyday" && <span className="mu">any day</span>}
+      {line.kind === "weekly" && <span>{line.text}</span>}
+    </span>
+  );
+}
 
 /**
  * Tasks and reminders (WIREFRAMES.md A3): what to farm today per game, then
@@ -118,13 +142,7 @@ export function TasksPage() {
               )}
             </div>
             <div className="tk-chips">
-              {lines.flatMap((f) =>
-                f.lines.map((l, i) => (
-                  <span key={`${f.instanceId}:${i}`} className={`tk-chip is-${l.kind}`}>
-                    {`${getGame(f.gameKey)?.shortName ?? f.gameKey} · ${l.text}`}
-                  </span>
-                )),
-              )}
+              {lines.flatMap((f) => f.lines.map((l, i) => <FarmChip key={`${f.instanceId}:${i}`} gameKey={f.gameKey} line={l} showGame={!scope} />))}
               {farm.data && lines.every((f) => f.lines.length === 0) && (
                 <p className="mu">
                   Nothing to farm today. Plan a character from its sheet to see what its materials

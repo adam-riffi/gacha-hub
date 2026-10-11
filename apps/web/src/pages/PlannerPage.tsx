@@ -8,7 +8,7 @@ import { useCatalog } from "../lib/catalog";
 import { useToast } from "../lib/toast";
 import { GameTabs } from "../components/GameTabs";
 import { Segmented } from "../components/ui";
-import { CatalogIcon } from "../components/CatalogIcon";
+import { CatalogIcon, MaterialIcons } from "../components/CatalogIcon";
 import type { InstanceDetail, TaskItem } from "../lib/types";
 
 const DAY = ["", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -173,23 +173,23 @@ export function PlannerPage() {
             </div>
             {/* One line per domain and day: today's first, then each one's next open day. */}
             {[...today.map((r) => ({ ...r, when: "Today" })), ...later.map((r) => ({ ...r, when: next(r.availability) }))]
-              .reduce<{ when: string; source: string; names: string[] }[]>((lines, r) => {
+              .reduce<{ when: string; source: string; ids: string[] }[]>((lines, r) => {
                 const line = lines.find((l) => l.when === r.when && l.source === (r.source || r.name));
-                if (line) line.names.push(r.name);
-                else lines.push({ when: r.when, source: r.source || r.name, names: [r.name] });
+                if (line) line.ids.push(r.materialId);
+                else lines.push({ when: r.when, source: r.source || r.name, ids: [r.materialId] });
                 return lines;
               }, [])
               .map((l) => (
                 <div className="pn-line" key={l.when + l.source}>
                   <span className={`badge ${l.when === "Today" ? "done" : ""}`}>{l.when}</span>
                   <span>{l.source}</span>
-                  <span className="mu">{l.names.join(", ")}</span>
+                  <MaterialIcons gameKey={game.key} ids={l.ids} max={6} />
                 </div>
               ))}
             {open.filter((r) => !r.availability.length).length > 0 && (
               <div className="pn-line">
                 <span className="badge">Any day</span>
-                <span>{open.filter((r) => !r.availability.length).length} materials farmable any day</span>
+                <MaterialIcons gameKey={game.key} ids={open.filter((r) => !r.availability.length).map((r) => r.materialId)} max={10} />
               </div>
             )}
             {open.length === 0 && <p className="mu">Nothing left to farm.</p>}
