@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { isUrgent } from "@gacha/shared";
 import { formatRemaining } from "../lib/time";
 
@@ -49,6 +49,23 @@ export function Segmented<T extends string>({
           {o.label}
         </button>
       ))}
+    </div>
+  );
+}
+
+export /** A filter as toggle chips: one pressed at a time, pressed again to clear; an element's chip carries its colour. */
+function Chips({ label, value, onChange, options, color, text = (o) => o }: { label: string; value: string; onChange: (v: string) => void; options: string[]; color?: (o: string) => string | null; text?: (o: string) => string }) {
+  return (
+    <div className="ch-chipset" role="group" aria-label={label}>
+      <span className="kpi-label">{label}</span>
+      <div>
+        {options.map((o) => (
+          <button key={o} type="button" className="ch-chip" aria-pressed={value === o} aria-label={o} title={o} onClick={() => onChange(value === o ? "" : o)} style={color?.(o) ? ({ "--el": color(o) } as CSSProperties) : undefined}>
+            {color && <i aria-hidden="true" />}
+            {text(o)}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }

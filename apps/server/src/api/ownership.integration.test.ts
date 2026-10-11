@@ -22,6 +22,18 @@ describe("ownership + catalog-backed builds (routes)", () => {
     gid = await installGame(c, "genshin");
   });
 
+  // A weapons screen with level and refinement (Georges, 2026-10-11): kept on the weapon's ownership, within limits.
+  it("keeps a weapon's level, refinement and copies, and refuses values past the limits", async () => {
+    const AMOS = "15502";
+    const put = (meta: unknown, qty?: number) => c.req("PUT", `/api/instances/${gid}/ownership`, { items: [{ kind: "weapon", catalogId: AMOS, owned: true, meta, ...(qty ? { qty } : {}) }] });
+    expect((await put({ level: 80, refinement: 3 }, 2)).status).toBe(200);
+    const rows = (await c.req<OwnershipDto[]>("GET", `/api/instances/${gid}/ownership`)).json;
+    expect(rows.find((r) => r.catalogId === AMOS)).toMatchObject({ qty: 2, meta: { level: 80, refinement: 3 } });
+    expect((await put({ level: 999 })).status).toBe(400);
+    expect((await put({ refinement: 0 })).status).toBe(400);
+    expect((await put({ level: 90, note: "x" })).status).toBe(400);
+  });
+
   it("starts with no ownership", async () => {
     const r = await c.req<OwnershipDto[]>("GET", `/api/instances/${gid}/ownership`);
     expect(r.status).toBe(200);

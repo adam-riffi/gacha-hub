@@ -14,6 +14,15 @@ export const ownershipDto = z.object({
 });
 export type OwnershipDto = z.infer<typeof ownershipDto>;
 
+/** An owned weapon's level and refinement (or superimposition, phase…), on its row (Georges, 2026-10-11). */
+export const weaponMetaSchema = z
+  .object({
+    level: z.number().int().min(1).max(100).optional(),
+    refinement: z.number().int().min(1).max(10).optional(),
+  })
+  .strict();
+export type WeaponMetaDto = z.infer<typeof weaponMetaSchema>;
+
 /** Bulk toggle: `owned: false` removes the row. */
 export const setOwnershipInput = z.object({
   items: z

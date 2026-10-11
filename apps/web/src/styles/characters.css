@@ -99,3 +99,7 @@
 /* The default build's weapon on the card. */
 .ch-weapon { display: inline-flex; align-items: center; gap: 6px; }
 .ch-weapon .gicon { width: 28px; height: 28px; font-size: 10px; }
+/* Weapons (Georges, 2026-10-11). */
+.wp-name { display: inline-flex; align-items: center; gap: 10px; }
+.wp-name .gicon { width: 36px; height: 36px; font-size: 11px; flex: none; }
+.wp-table input[type="number"] { width: 72px; }

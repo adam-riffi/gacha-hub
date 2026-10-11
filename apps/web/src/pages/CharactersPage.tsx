@@ -27,9 +27,8 @@ import { useCatalog } from "../lib/catalog";
 import { assetUrl, communityAssetUrl, splashKey } from "../lib/assets";
 import { GameTabs } from "../components/GameTabs";
 import { GameIcon } from "../components/GameIcon";
-import { Segmented } from "../components/ui";
+import { Chips, Segmented } from "../components/ui";
 
-import { WeaponsTable, type WeaponRow } from "../components/characters/WeaponsTable";
 import { BuildsTable } from "../components/characters/BuildsTable";
 import type { InstanceDetail } from "../lib/types";
 
@@ -72,7 +71,7 @@ export function CharactersPage() {
   const [owned, setOwned] = useState<"all" | "owned" | "unowned" | "wishlist">("all");
   const [status, setStatus] = useState<"" | BuildStatus>("");
   const [sort, setSort] = useState<"status" | "name" | "rarity" | "level">("status");
-  const [kind, setKind] = useState<"characters" | "builds" | "weapons">("characters");
+  const [kind, setKind] = useState<"characters" | "builds">("characters");
   // Several units at once (Georges, 2026-10-10): Select shows a box on each card.
   const [selecting, setSelecting] = useState(false);
   const [picked, setPicked] = useState<Set<string>>(new Set());
@@ -106,10 +105,6 @@ export function CharactersPage() {
   const wish = useMutation({
     mutationFn: (v: { catalogId: string; wished: boolean; kind?: "character" | "weapon" }) => api.put(`/api/instances/${id}/wishlist`, { kind: "character", ...v }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["wishlist", id] }),
-  });
-  const ownWeapon = useMutation({
-    mutationFn: (v: { catalogId: string; owned: boolean }) => api.put(`/api/instances/${id}/ownership`, { items: [{ kind: "weapon", ...v }] }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["ownership", id] }),
   });
   const start = useMutation({
     mutationFn: (v: string | { name: string }) => api.post<{ id: string }>(`/api/instances/${id}/characters`, typeof v === "string" ? { catalogId: v } : v),
@@ -161,8 +156,6 @@ export function CharactersPage() {
   const options = (pick: (c: Card) => string | null) => [...new Set(cards.map(pick).filter((v): v is string => Boolean(v)))].sort();
   const unownedShown = filtered.filter((c) => !c.owned && c.entry).map((c) => c.id);
 
-  // The Weapons view: each catalog weapon, owned or wished, and the builds that wield it.
-  const weaponsOn = kind === "weapons" && Boolean(catalog);
   const togglePick = (cid: string) =>
     setPicked((p) => {
       const n = new Set(p);
@@ -183,26 +176,6 @@ export function CharactersPage() {
   };
   const holder = weaponHolder(game);
   const dupeField = game.manifest.dupes.weapon?.field;
-  const ownedWeapons = new Set((ownership.data ?? []).filter((o) => o.kind === "weapon").map((o) => o.catalogId));
-  const wishedWeapons = new Set((wishlist.data ?? []).filter((w) => w.kind === "weapon").map((w) => w.catalogId));
-  const weaponRows: WeaponRow[] = (catalog?.weapons ?? []).map((w) => ({
-    weapon: w,
-    owned: ownedWeapons.has(w.id),
-    wished: wishedWeapons.has(w.id),
-    holders: builds.data.flatMap((b) => {
-      const held = holder ? ((b.doc as Record<string, unknown>)[holder] as Record<string, unknown> | undefined) : undefined;
-      if (held?.catalogId !== w.id) return [];
-      const dupe = dupeField ? held[dupeField.split(".").at(-1)!] : undefined;
-      return [{ buildId: b.id, name: b.name, dupe: `${dupeLetter(dupeField ?? "")}${typeof dupe === "number" ? dupe : 1}` }];
-    }),
-  }));
-  const weaponsShown = weaponRows
-    .filter((r) => !q || r.weapon.name.toLowerCase().includes(q.toLowerCase()))
-    .filter((r) => !weapon || r.weapon.type === weapon)
-    .filter((r) => !rarity || String(r.weapon.rarity) === rarity)
-    .filter((r) => (owned === "owned" ? r.owned : owned === "unowned" ? !r.owned : owned === "wishlist" ? r.wished : true))
-    .sort((a, b) => b.holders.length - a.holders.length || Number(b.owned) - Number(a.owned) || b.weapon.rarity - a.weapon.rarity || a.weapon.name.localeCompare(b.weapon.name));
-  const weaponOptions = (pick: (w: NonNullable<typeof catalog>["weapons"][number]) => string | null | undefined) => [...new Set((catalog?.weapons ?? []).map(pick).filter((v): v is string => Boolean(v)))].sort();
 
   return (
     <>
@@ -216,13 +189,11 @@ export function CharactersPage() {
         </label>
         {catalog && (
           <>
-            {!weaponsOn && <Chips label="Element" value={element} onChange={setElement} options={options((c) => (c.tag === "None" ? null : c.tag))} color={(t) => elementColor(game.key, t)} />}
-            <Chips label="Weapon" value={weapon} onChange={setWeapon} options={weaponsOn ? weaponOptions((w) => w.type) : options((c) => c.weaponType)} />
-            <Chips label="Rarity" value={rarity} onChange={setRarity} options={(weaponsOn ? weaponOptions((w) => String(w.rarity)) : options((c) => (c.rarity ? String(c.rarity) : null))).reverse()} text={(r) => `★${r}`} />
+            <Chips label="Element" value={element} onChange={setElement} options={options((c) => (c.tag === "None" ? null : c.tag))} color={(t) => elementColor(game.key, t)} />
+            <Chips label="Weapon" value={weapon} onChange={setWeapon} options={options((c) => c.weaponType)} />
+            <Chips label="Rarity" value={rarity} onChange={setRarity} options={options((c) => (c.rarity ? String(c.rarity) : null)).reverse()} text={(r) => `★${r}`} />
           </>
         )}
-        {!weaponsOn && (
-          <>
         <label>
           Sort
           <select value={sort} onChange={(e) => setSort(e.target.value as typeof sort)}>
@@ -232,40 +203,18 @@ export function CharactersPage() {
             <option value="level">Level</option>
           </select>
         </label>
-          </>
-        )}
         {catalog && (
           <Segmented
             label="Show"
-            options={[{ value: "characters", label: "Characters" }, { value: "builds", label: "Builds" }, { value: "weapons", label: "Weapons" }]}
+            options={[{ value: "characters", label: "Characters" }, { value: "builds", label: "Builds" }]}
             value={kind}
-            onChange={(k) => {
-              setKind(k);
-              setWeapon("");
-              setRarity("");
-            }}
+            onChange={setKind}
           />
         )}
       </section>
 
       {kind === "builds" ? (
         <BuildsTable instanceId={id!} game={game} builds={builds.data.filter((b) => !q || b.name.toLowerCase().includes(q.toLowerCase()))} entryOf={(cid) => (cid ? catalog?.characters.find((c) => c.id === cid) : undefined)} />
-      ) : weaponsOn ? (
-        <>
-          <div className="ch-counts">
-            <span className="badge done">{weaponRows.filter((r) => r.owned).length} / {weaponRows.length} owned</span>
-            <span className="badge todo">Wishlist {weaponRows.filter((r) => r.wished).length}</span>
-          </div>
-          <WeaponsTable
-            instanceId={id!}
-            rows={weaponsShown}
-            onOwn={(catalogId, isOwned) => ownWeapon.mutate({ catalogId, owned: isOwned })}
-            onWish={(catalogId, wished) => wish.mutate({ catalogId, wished, kind: "weapon" })}
-          />
-          <div className="ch-more">
-            <span className="mu">{weaponsShown.length}</span>
-          </div>
-        </>
       ) : (
         <>
 
@@ -422,22 +371,5 @@ export function CharactersPage() {
         </>
       )}
     </>
-  );
-}
-
-/** A filter as toggle chips: one pressed at a time, pressed again to clear; an element's chip carries its colour. */
-function Chips({ label, value, onChange, options, color, text = (o) => o }: { label: string; value: string; onChange: (v: string) => void; options: string[]; color?: (o: string) => string | null; text?: (o: string) => string }) {
-  return (
-    <div className="ch-chipset" role="group" aria-label={label}>
-      <span className="kpi-label">{label}</span>
-      <div>
-        {options.map((o) => (
-          <button key={o} type="button" className="ch-chip" aria-pressed={value === o} aria-label={o} title={o} onClick={() => onChange(value === o ? "" : o)} style={color?.(o) ? ({ "--el": color(o) } as CSSProperties) : undefined}>
-            {color && <i aria-hidden="true" />}
-            {text(o)}
-          </button>
-        ))}
-      </div>
-    </div>
   );
 }

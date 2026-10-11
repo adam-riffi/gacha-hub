@@ -79,39 +79,6 @@ test("Characters: splash cards with their KPIs, counts, search, wishlist and own
   await expect(page).toHaveURL(/\/characters\/[a-z0-9]+$/);
 });
 
-test("Characters: the Weapons view with holders, owning and the wishlist @smoke", async ({ page }) => {
-  await page.goto("/");
-  await page.getByRole("button", { name: "Continue as Dev User" }).click();
-  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
-  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
-  await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1005", doc: { level: 80, eidolon: 1, lightCone: { catalogId: "23006", name: "Patience Is All You Need", level: 80, superimposition: 2 } } } });
-  // The light cone starts unowned and off the wishlist, whatever other journeys did.
-  await page.request.put(`/api/instances/${id}/ownership`, { data: { items: [{ kind: "weapon", catalogId: "23006", owned: false }] } });
-  await page.request.put(`/api/instances/${id}/wishlist`, { data: { kind: "weapon", catalogId: "23006", wished: false } });
-  await page.goto(`/games/${id}/characters`);
-
-  // Weapons: the catalog's light cones, who holds them, owning and the wishlist.
-  await page.getByRole("group", { name: "Show" }).getByRole("button", { name: "Weapons" }).click();
-  await page.getByRole("searchbox", { name: "Search" }).fill("Patience");
-  const cone = page.getByRole("table", { name: "Weapons" }).getByRole("row", { name: /Patience Is All You Need/ });
-  await expect(cone).toContainText("Kafka · S2");
-  await cone.getByRole("button", { name: "Wishlist" }).click();
-  await expect(cone.getByRole("button", { name: "Wishlist" })).toHaveAttribute("aria-pressed", "true");
-  await cone.getByRole("checkbox", { name: "Owned" }).check();
-  await expect(cone.getByRole("checkbox", { name: "Owned" })).toBeChecked();
-  await expect(page.getByText(/^\d+ \/ \d+ owned$/)).toBeVisible();
-
-  // Farming a weapon, which lived on the Equipment tab: pick the levels, preview the materials.
-  await cone.getByRole("button", { name: "Farm" }).click();
-  const farm = page.getByRole("region", { name: "Farm Patience Is All You Need" });
-  await farm.getByRole("button", { name: "Preview" }).click();
-  await expect(farm.getByRole("columnheader", { name: "Missing" })).toBeVisible();
-
-  // Equipment's old link lands on Characters.
-  await page.goto(`/games/${id}/equipment`);
-  await expect(page).toHaveURL(new RegExp(`/games/${id}/characters$`));
-});
-
 test("Characters: every build in one table, and several characters at once @smoke", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue as Dev User" }).click();

@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-11 · claude · stack/r3/04-weapons · #210
+- Done: Georges: "I need a weapons screen to add all of my weapons, with their level, refinement…". A Weapons tab (after Teams, for games whose catalog lists weapons; not Endfield) lists every weapon, owned first: icon, rarity and type; Owned; level, refinement (the game's word: Superimposition, Phase, Syntonize…) and copies typed in place; who wields it; Farm and Wishlist. Level and refinement live on the ownership row's `meta`, checked by `weaponMetaSchema` (level 1–100, refinement 1–10, nothing else). Characters keeps Characters | Builds; the filter chips moved to the shared UI module.
+- Tests: written first: the route keeps Amos' Bow at level 80, refinement 3 and two copies, and refuses level 999, refinement 0 and unknown keys; the Weapons journey owns a light cone, sets its level and superimposition (checked through the API and after a reload), sees Kafka · S2, wishlists and opens Farm. The old Characters Weapons test moved here. `npm run check` passes: 564 tests and 49 journeys.
+- Scope/decisions: two quick edits on a row keep each other (a draft per row while the save is in flight).
+- Next: the picker (a searchable list with icons).
+
 ## 2026-10-11 · claude · stack/r3/03-characters · #209
 - Done: Georges's Characters notes. Element colours follow each game (`elementColor(gameKey, tag)` in the shared package): Endfield's Electric is yellow, ZZZ's Physical yellow and its Electric blue, WuWa's Havoc crimson. Element, weapon type and rarity filter as toggle chips (elements with their colour dot); Sort stays a list. In Select mode a click anywhere on a card selects it (the card is the checkbox's label) instead of opening it. Each card shows its default build's weapon: icon, level and refinement.
 - Tests: written first: every catalog element has a colour dark text reads on (4.5:1), and the hues match the games; the Characters journey filters by the Lightning chip, finds Kafka's light cone "Lv 80 · S2" on her card, and selects Arlan by clicking his card. `npm run check` passes: 563 tests and 49 journeys.
@@ -297,9 +303,3 @@ Entry format:
 - Tests: written first: Wuthery URLs per kind, the own splash key, artJobs covering every WuWa character and weapon, and the CSP host. The "no art sources" artJobs test now uses Endfield. `npm run check` passes. On the dev account, all 12 WuWa cards load their splash art.
 - Scope/decisions: materials and Sonata sets keep the game's paths (their textures sit in several folders), so they show the placeholder. Endfield has no icon keys and no public asset host was found; ZZZ and NTE have no catalog.
 - Next: the handoff; Endfield art once a source exists.
-
-## 2026-10-10 · claude · stack/f12/02-mirror · #171
-- Done: the art mirror (ADR 0006): `scripts/assets/mirror.ts` (an isolated package with `sharp` and the S3 client, as the ADR allows) walks `artJobs` per game, converts each image to WebP and uploads it to `{game}/{kind}/{key}.webp` only when the bucket lacks it or holds different bytes (MD5 against the ETag), four at a time; `--dry-run` lists the work (1,455 Genshin and 660 Star Rail images), `--out DIR` writes locally; a manual `mirror-art` workflow with the R2 secrets; `https://*.r2.dev` in the CSP (server and Vercel); `npm run assets:install` and `assets:mirror` (AGENTS.md); DEPLOY.md §7 for the bucket; NOTICE and PROJECT-GUIDE updated.
-- Tests: written first: the CSP test expects R2's hosts. The mirror ran with `--dry-run` and wrote three real WebP files with `--out`; the bucket path waits for its credentials.
-- Scope/decisions: a custom domain for the bucket would need adding to the CSP; art is never committed.
-- Next: Georges creates the bucket and secrets, runs mirror-art, sets `VITE_ASSET_BASE`.
