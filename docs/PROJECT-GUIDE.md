@@ -382,7 +382,7 @@ Activities holds:
 **For:** how close the next top pull is, and whether it will be the featured one (G3).
 - **The top cards:**
   - "Pulls available" converts premium currency and tickets into pulls. Standard and weapon-only tickets are kept apart.
-  - "By the end of the version" forecasts income.
+  - "By the end of the version" forecasts income, then gives each target's chance now and by then, by its icon (round 5).
 - **One card per event banner:**
   - the 50/50 or guaranteed status;
   - pity against hard pity;

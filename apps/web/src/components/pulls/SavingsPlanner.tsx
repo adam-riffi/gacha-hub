@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { savingsPlan, type SavingsTarget } from "@gacha/shared";
+import { savingsPlan, type FarmUnit, type SavingsTarget } from "@gacha/shared";
 
 const ENDS = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
-const pct = (v: number) => `${v >= 0.995 && v < 1 ? ">99" : Math.round(v * 100)}%`;
+export const pct = (v: number) => `${v >= 0.995 && v < 1 ? ">99" : Math.round(v * 100)}%`;
 
-export type PlannerTarget = SavingsTarget & { sub: string; endsAt?: string; available: number };
+export type PlannerTarget = SavingsTarget & { sub: string; endsAt?: string; available: number; unit?: FarmUnit };
 
 /**
  * The savings planner (WIREFRAMES.md G3): targets in order, each with what it
