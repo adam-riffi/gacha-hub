@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import fc from "fast-check";
-import { calibration, gameList, getGame, pityState, splitPulls, type PullBannerRules, type PullEntryLike } from "@gacha/shared";
+import { calibration, gameList, getGame, pityState, shownBanners, splitPulls, type PullBannerRules, type PullEntryLike } from "@gacha/shared";
 
 const RUNS = { seed: 20261006, numRuns: 500 };
 const character: PullBannerRules = { key: "character", label: "Character", baseRate: 0.006, hardPity: 90, softPity: 74, featuredRate: 0.5 };
@@ -100,6 +100,18 @@ describe("game pull rules", () => {
     // Endfield's Joint banners keep their own pity; Star Rail's Departure Warp is certain by 50.
     expect(getGame("endfield")!.pullBanners!.find((b) => b.key === "joint")!.pityPerPool).toBe(true);
     expect(getGame("hsr")!.pullBanners!.find((b) => b.key === "departure")!.hardPity).toBe(50);
+  });
+
+  // Georges, round 6: "remove any beginner banner". Imports still map their history; no screen shows them.
+  it("keeps the beginner banners for imports and leaves them off every screen", () => {
+    const shown = (key: string) => shownBanners(getGame(key)!).map((b) => b.key);
+    expect(shown("genshin")).toEqual(["character", "weapon", "chronicled", "standard"]);
+    expect(shown("hsr")).toEqual(["character", "weapon", "collab", "collab-weapon", "standard"]);
+    expect(shown("wuwa")).toEqual(["character", "weapon", "standard", "standard-weapon"]);
+    expect(shown("endfield")).toEqual(["character", "weapon", "joint", "standard"]);
+    expect(shown("zzz")).toEqual(["character", "weapon", "standard", "bangboo"]);
+    const beginners = gameList.flatMap((g) => (g.pullBanners ?? []).filter((b) => b.beginner).map((b) => `${g.key}:${b.key}`));
+    expect(beginners).toEqual(["genshin:beginner", "hsr:departure", "wuwa:novice", "wuwa:beginner", "endfield:beginner"]);
   });
 
   it("counts only the newest banner's pulls where each banner keeps its own pity (Endfield's Arsenal)", () => {

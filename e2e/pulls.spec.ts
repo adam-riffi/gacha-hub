@@ -174,3 +174,23 @@ test("Pulls: by the end of the version, each target by its icon with its chance 
   // The running banners' featured units come first, each by its icon.
   await expect(end.getByRole("list", { name: "Chances" }).getByRole("listitem").first().getByRole("img")).toBeVisible();
 });
+
+// One grid whose rows line up, whatever is hidden; no beginner banner; a banner without art by its kind's icon (Georges, round 6).
+test("Pulls: one grid of banners whose rows line up, their odds tables whole, no beginner banner @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  await page.goto(`/games/${id}/pulls`);
+  await expect(page.getByRole("region", { name: "Departure warp" })).toHaveCount(0);
+  await expect(page.getByText(/Departure/)).toHaveCount(0);
+  const cards = page.locator(".pl-banners > .pl-banner");
+  await expect(cards.nth(1)).toBeVisible();
+  await expect(page.locator(".pl-banners")).toHaveCount(1);
+  const [a, b] = [(await cards.nth(0).boundingBox())!, (await cards.nth(1).boundingBox())!];
+  expect(Math.abs(a.y - b.y)).toBeLessThan(2);
+  expect(Math.abs(a.height - b.height)).toBeLessThan(2);
+  await expect(cards.first().locator("table.pl-odds")).toHaveCSS("display", "table");
+  // A banner without a featured unit shows its kind as an icon, not letters.
+  await expect(page.getByRole("region", { name: "Stellar warp" }).locator(".pl-banner-head svg.glyph")).toBeVisible();
+});
