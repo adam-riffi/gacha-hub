@@ -8,7 +8,7 @@
  * for Endfield until cost data exists. Run from scripts/catalog: `npm run endfield`.
  */
 import AdmZip from "adm-zip";
-import type { Catalog, CatalogCharacter } from "../../packages/shared/src/catalog/types.js";
+import type { Catalog, CatalogCharacter, CatalogGearSet, CatalogWeapon } from "../../packages/shared/src/catalog/types.js";
 import { byId, fetchBuffer, parseInt64Safe, slugify, uniqueKeys, writeCatalog } from "./common.js";
 
 const RELEASE = "v0.3.0";
@@ -46,6 +46,11 @@ const charTypes = new Map(
     .map((c) => [c.charTypeId ?? c.id ?? "", t(c.name)]),
 );
 
+/** A character's weapon kind by its weaponType, as the game names them (EN text). */
+const WEAPON_KIND: Record<number, string> = { 1: "Sword", 2: "Arts Unit", 3: "Greatsword", 5: "Polearm", 6: "Handcannon" };
+/** A weapon item's kind, from its id ("wpn_claym_0004"). */
+const KIND_OF_ID: Record<string, string> = { sword: "Sword", funnel: "Arts Unit", claym: "Greatsword", lance: "Polearm", pistol: "Handcannon" };
+
 const table = parseInt64Safe<Record<string, Character>>(read("tables/CharacterTable.json"));
 const characters: CatalogCharacter[] = Object.values(table)
   .filter((c) => c.charId && (c.engName || t(c.name)))
@@ -57,7 +62,8 @@ const characters: CatalogCharacter[] = Object.values(table)
       name,
       rarity: Math.min(6, Math.max(1, c.rarity)),
       tag: charTypes.get(c.charTypeId) ?? c.charTypeId,
-      weaponType: professions.get(c.profession),
+      // The weapon kind, which the sheet's weapon picker filters by; the profession seeds the build's class.
+      weaponType: c.weaponType !== undefined ? WEAPON_KIND[c.weaponType] : undefined,
       maxLevel: 80,
       ascension: [],
       talents: { keys: [], costs: [] },
@@ -71,12 +77,40 @@ const characters: CatalogCharacter[] = Object.values(table)
     };
   });
 
+// ---- Weapons: the weapon items (type 5), their kind from the id ----
+type Item = { id: string; name: TextRef; rarity: number; type: number };
+const items = parseInt64Safe<Record<string, Item>>(read("tables/ItemTable.json"));
+const weapons: CatalogWeapon[] = Object.values(items)
+  .filter((i) => i.type === 5 && i.id.startsWith("wpn_") && t(i.name))
+  .map((i) => {
+    const name = t(i.name);
+    return { id: i.id, key: slugify(name), name, rarity: Math.min(6, Math.max(1, i.rarity)), type: KIND_OF_ID[i.id.split("_")[1] ?? ""], maxLevel: 80, ascension: [] };
+  });
+
+// ---- Gear sets: pieces sharing a suit; body, hands, then two kits in the four slots ----
+type Equip = { itemId: string; partType: number; suitID?: string };
+const equips = parseInt64Safe<Record<string, Equip>>(read("tables/EquipTable.json"));
+const suits = new Map<string, Equip[]>();
+for (const e of Object.values(equips)) if (e.suitID) suits.set(e.suitID, [...(suits.get(e.suitID) ?? []), e]);
+/** The suits have no names of their own: a set is its body piece's name without the piece ("Roving MSGR Jacket T1" → "Roving MSGR"). */
+const setName = (pieces: Equip[]) => {
+  const first = [...pieces].sort((a, b) => a.partType - b.partType || a.itemId.localeCompare(b.itemId))[0];
+  const words = (first && items[first.itemId] ? t(items[first.itemId]!.name) : "").replace(/\s+T\d+$/, "").split(" ");
+  return words.length > 1 ? words.slice(0, -1).join(" ") : words.join(" ");
+};
+const gear: CatalogGearSet[] = [...suits.entries()].flatMap(([suit, pieces]): CatalogGearSet[] => {
+  const name = setName(pieces);
+  if (!name) return [];
+  const rarities = [...new Set(pieces.map((p) => items[p.itemId]?.rarity).filter((r): r is number => typeof r === "number"))].sort();
+  return [{ id: suit, key: slugify(name), name, slots: ["slot1", "slot2", "slot3", "slot4"], bonuses: [], extra: { rarityList: rarities, pieces: pieces.map((p) => p.itemId) } }];
+});
+
 const catalog: Catalog = {
   gameKey: "endfield",
-  source: `EndFieldGameData@${RELEASE} (ownership-only; no cost data published)`,
+  source: `EndFieldGameData@${RELEASE} (no cost data published)`,
   characters: uniqueKeys(characters.sort(byId)),
-  weapons: [],
-  gear: [],
+  weapons: uniqueKeys(weapons.sort(byId)),
+  gear: uniqueKeys(gear.sort(byId)),
   materials: [],
 };
 

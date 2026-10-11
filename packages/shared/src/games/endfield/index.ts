@@ -129,7 +129,8 @@ export const endfield: GameDefinition = {
   emptyDoc: (): EndfieldDoc => ({ gear: {}, skills: {}, weapon: {}, stats: {} }),
   docVersion: 1,
   seedDoc: (c) => ({
-    ...((ENDFIELD_CLASSES as readonly string[]).includes(c.weaponType ?? "") ? { class: c.weaponType } : {}),
+    // The class is the operator's profession; the catalog's weaponType is its weapon kind.
+    ...((ENDFIELD_CLASSES as readonly string[]).includes(String(c.extra?.profession ?? "")) ? { class: String(c.extra!.profession) } : {}),
     ...((ENDFIELD_ELEMENTS as readonly string[]).includes(c.tag ?? "") ? { element: c.tag } : {}),
   }),
   // Ownership-only catalog: the public data has no upgrade costs.
