@@ -11,7 +11,7 @@ test("pinning a past day switches Home to that day until BACK TO TODAY @smoke", 
   // A pinned day lives in the URL, so it survives a reload and the back button.
   const d = new Date();
   d.setDate(d.getDate() - 10);
-  await page.goto(`/?game=hsr&day=${iso(d)}`);
+  await page.goto(`/?day=${iso(d)}`);
   const banner = page.getByRole("status", { name: "Viewing a past day" });
   await expect(banner).toContainText(`VIEWING · ${["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"][d.getDay()]} ${iso(d)}`);
   await expect(page.locator(".dailies-card")).toContainText(/day closed/i); // capitals come from CSS
