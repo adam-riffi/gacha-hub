@@ -17,7 +17,7 @@ Entry format:
 ## 2026-10-12 · claude · stack/r8/01-settings-tabs · #256
 - Done: Settings as tabs (Georges, round 5: Data sources opened "a whole new window" with no way back; "it's ok to have multiple tabs instead of one big one"): Games (the default), Linked accounts, Pull history, Notifications, Account and data, and Data sources for the owner, each at `/settings/<tab>`, the tabs on the left of every one. Notifications also holds the reminder rules and their preview (Tasks' panel). Data sources' payload and current items sit side by side in the narrower column. Round 5's list is in `docs/AUDIT-2026-10-12-round5.md`.
 - Tests: written first: the Settings journey walks the tabs (each its address and `aria-current`; Pull history absent from Games); Data sources is a tab with Settings' heading over it, and Games is one click back; export and HoYoLAB open their tabs; the a11y sweep covers the new tabs.
-- Scope/decisions: a tab's queries load with it (links, imports).
+- Scope/decisions: a tab's queries load with it (links, imports). Also fixed: the calendar journey failed on Mondays, as a banner that began before the window drew a short bar whose dates squeezed its name to nothing; the dates now give way first, and the test hits that case on any weekday.
 - Next: the Endgame's cycles, each one opening.
 
 ## 2026-10-11 · claude · stack/r7/12-endfield-data · #255
