@@ -404,7 +404,7 @@ Imports come from Settings.
   - rarity and element;
   - the dupe count (C, E, M, S or A in each game's words);
   - level and talents;
-  - three KPIs chosen by the build's role;
+  - three KPIs chosen by the build's role, or the stats picked for the game (Card stats, up to six; round 5), a completed set's bonus added in the element's colour, the stat and the bonus on hover;
   - build status, and Build → to the sheet.
 - **Own** and **Wishlist** sit on unowned cards. The wishlist feeds the calendar filter and the savings planner.
 

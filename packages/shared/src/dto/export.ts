@@ -21,6 +21,7 @@ export const userExportSchema = z.object({
       worldLevel: z.number().nullable(),
       kpiTargets: jsonValue.nullable().optional(),
       hiddenBanners: jsonValue.nullable().optional(),
+      cardStats: jsonValue.nullable().optional(),
       createdAt: isoDate,
       currencies: z.array(row),
       characters: z.array(row),

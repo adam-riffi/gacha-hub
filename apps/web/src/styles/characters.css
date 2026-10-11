@@ -35,6 +35,13 @@
 .ch-kpis .kpi-label { font-size: 10px; }
 .ch-kpis .cd { font-size: 20px; }
 .ch-chance { grid-template-columns: 1fr; }
+/* A stat a set raises (round 5): in the element's colour, a button that writes the stat and the bonus out. */
+.ch-boost { position: relative; z-index: 2; padding: 0; border: 0; background: transparent; color: var(--el); font: inherit; text-align: left; cursor: help; }
+.ch-boost { white-space: nowrap; }
+.ch-boost small { font-size: 13px; }
+.ch-kpis > div:nth-child(3n + 1) { border-left: 0; }
+.ch-kpis > div:nth-child(n + 4) { border-top: 1px solid var(--surface-3); }
+.ch-stats { flex-basis: 100%; }
 .ch-foot { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 12px; font-size: 13px; }
 .ch-foot a { color: var(--text); white-space: nowrap; }
 .ch-foot a:hover { color: var(--accent); }

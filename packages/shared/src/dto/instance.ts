@@ -18,6 +18,8 @@ export const instanceDto = z.object({
   progress: z.array(z.object({ name: z.string(), value: z.string() })).nullable().default(null),
   /** Pull banner types the user hid from Pulls and Home (beginner banners…). */
   hiddenBanners: z.array(z.string()).nullable().default(null),
+  /** The stats the character cards show (Georges, round 5); null shows each build's role's. */
+  cardStats: z.array(z.string()).nullable().default(null),
   createdAt: isoDate,
 });
 export type InstanceDto = z.infer<typeof instanceDto>;
@@ -39,5 +41,7 @@ export const updateInstanceInput = z.object({
   kpiTargets: kpiTargetsInput.nullable().optional(),
   /** The game's pull banner types to hide (`pullBanners` keys); null shows them all. */
   hiddenBanners: z.array(z.string().min(1).max(40)).max(20).nullable().optional(),
+  /** The stats the character cards show, in order, up to six; null goes back to each build's role's. */
+  cardStats: z.array(z.string().trim().min(1).max(40)).min(1).max(6).nullable().optional(),
 });
 export type UpdateInstanceInput = z.infer<typeof updateInstanceInput>;

@@ -55,6 +55,7 @@ export async function registerExportRoutes(app: FastifyInstance) {
           worldLevel: gi.worldLevel,
           kpiTargets: gi.kpiTargets,
           hiddenBanners: gi.hiddenBanners,
+          cardStats: gi.cardStats,
           createdAt: gi.createdAt,
           currencies: gi.currencies.map(own),
           characters: gi.characters.map(own),
