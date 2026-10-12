@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-12 · claude · stack/r9/04-card-art · #266
+- Done: Characters' art and icons (Georges, round 6: "WuWa character art is too low on the cards, we can barely see their heads … make sure to correctly center any character art; on the character cards I should see the icon of the set instead of just the name; use icons instead of squares with letters"): cards carry their game (`data-game`), and WuWa's portraits are drawn larger and raised (`--art-h`, `--art-y`); Genshin, Star Rail, ZZZ and NTE already frame on the face. The card's foot shows each completed set as its icon with its piece count (`completedSets`), the role where none is. `GameIcon` takes a `glyph`: a tile without art draws its kind (character, weapon, gear, material, game) instead of initials, through `CatalogIcon`, the cards, the sheet, the library and the tasks' game tiles.
+- Tests: written first: WuWa's first card's image is taller than its frame and raised above it; Qingque's card shows Hunter of Glacial Forest as an icon with 4; the library's art-less game tile is a centred tile with an icon and no letters.
+- Scope/decisions: framing is per game in CSS.
+- Next: the stats each card shows picked per character.
+
 ## 2026-10-12 · claude · stack/r9/03-ownership · #265
 - Done: Characters' ownership (Georges, round 6: "I cannot change the status from owned to not owned right now; selecting multiple characters achieves nothing"): a card showed a character with a build as owned whatever its ownership row, and the selection's Not owned skipped built characters, so un-owning them did nothing. Ownership is now the owned list alone (creating a build still owns its character; a build stays when its character is marked not owned), and the selection gains a Build status menu for the picked builds.
 - Tests: written first: Natasha with a build is marked not owned from the selection (her Lv 60 build stays), her build set to Good from the selection, then owned again.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the Overview journeys check the landing tab, 13 pulls from 1,600 Stellar Jade and 3 passes, pity and a running banner, a ZZZ daily ticked and kept after a reload, the City Fund card and 120 / 240 Battery Charge with its backup; the Activities, hub, smoke, NTE and Profile journeys follow the new landing tab. `npm run check` passes: 574 tests and 62 journeys.
 - Scope/decisions: DESIGN.md §9 gains F13 (the per-game overview) and §4's Later loses it; WIREFRAMES.md gains G0. The cards read the dashboard, tasks and passes the hub already loads.
 - Next: the Overview's last rows.
-
-## 2026-10-11 · claude · stack/r4/07-weapon-cards · #226
-- Done: Georges's "make them cards, not a list, like the characters", and Weapons on every game. Every copy you hold is a card ("Lv 80 · S3", rarity and type, the character wielding it); the catalog's other weapons follow, dimmed. A click opens the weapon's panel: each copy's level and refinement typed in place, Remove, Add a copy, Wishlist, Farm. Endfield and NTE get the tab, adding weapons by name (and refinement where the game has it). The old table is gone.
-- Tests: written first: the Weapons journey adds two copies of a light cone from its panel, sets the first to Lv 80 · S3, finds Kafka's icon on it, wishlists and farms it, removes the second; NTE adds a weapon by name; Endfield shows the tab (and its hub's tab list says so). `npm run check` passes: 574 tests and 58 journeys.
-- Scope/decisions: holders are matched to copies in order (the first holder on the first copy), since builds name a weapon, not a copy.
-- Next: the per-game overview.
