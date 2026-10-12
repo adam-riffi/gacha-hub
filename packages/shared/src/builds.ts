@@ -102,14 +102,19 @@ export function buildKpis(game: GameDefinition, doc: Doc, role: string | null | 
 
 /** The set bonuses the gear completes: "Whimsy 4pc", "Gladiator 2pc + Whimsy 2pc", or null. */
 export function gearSetLabel(game: GameDefinition, doc: Doc): string | null {
+  const done = completedSets(game, doc);
+  return done.length ? done.map((s) => `${s.name} ${s.size}pc`).join(" + ") : null;
+}
+
+/** The sets the gear completes, each with the bonus size it reaches, the largest first. */
+export function completedSets(game: GameDefinition, doc: Doc): { name: string; size: number }[] {
   const counts = new Map<string, number>();
   for (const p of gearPieces(game, doc)) if (p.setName) counts.set(p.setName, (counts.get(p.setName) ?? 0) + 1);
   const sizes = [...game.manifest.gear.sets].sort((a, b) => b - a);
-  const done = [...counts]
+  return [...counts]
     .map(([name, n]) => ({ name, size: sizes.find((s) => n >= s) }))
     .filter((s): s is { name: string; size: number } => s.size !== undefined)
     .sort((a, b) => b.size - a.size || a.name.localeCompare(b.name));
-  return done.length ? done.map((s) => `${s.name} ${s.size}pc`).join(" + ") : null;
 }
 
 const getPath = (doc: unknown, path: string): unknown => path.split(".").reduce<unknown>((o, k) => (o as Doc | undefined)?.[k], doc);

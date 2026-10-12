@@ -30,7 +30,7 @@ function FarmChip({ gameKey, line, showGame }: { gameKey: string; line: FarmLine
   const game = getGame(gameKey);
   return (
     <span className={`tk-chip is-${line.kind}`} title={line.text}>
-      {showGame && game && <GameIcon src={game.art?.icon ?? null} alt={game.name} label={(game.shortName ?? game.name).slice(0, 2)} tint={game.accent} className="tk-chip-game" />}
+      {showGame && game && <GameIcon src={game.art?.icon ?? null} alt={game.name} glyph="game" tint={game.accent} className="tk-chip-game" />}
       {line.unit && <UnitIcon gameKey={gameKey} unit={line.unit} />}
       {line.materials.length > 0 && <MaterialIcons gameKey={gameKey} ids={line.materials} />}
       {line.kind === "domain" && <span>{line.days.map((d) => DAY[d]).join(" ")}</span>}

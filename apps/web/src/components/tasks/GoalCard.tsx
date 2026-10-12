@@ -50,7 +50,6 @@ export function GoalCard({ t, kids: allKids, kidsOf, linkable = [], gi, reward, 
   const linked = allKids.filter((k) => !k.materialId);
 
   const game = getGame(gi.gameKey);
-  const short = game?.shortName ?? gi.name;
   // Its own unit as its thumb (Georges, 2026-10-11): the character, weapon or set it farms; who it is for beside the title.
   const origin = t.origin as TaskOrigin | null;
   const change = reward?.options[t.choice ?? 0]?.changes[0];
@@ -72,12 +71,12 @@ export function GoalCard({ t, kids: allKids, kidsOf, linkable = [], gi, reward, 
     <article className={`tk-card ${open ? "is-open" : ""}`} aria-label={t.title}>
       <div className="tk-row">
         <button type="button" className="tk-open" aria-expanded={open} onClick={() => setOpen(!open)}>
-          {unit ? <UnitIcon gameKey={gi.gameKey} unit={unit} className="tk-thumb" /> : <GameIcon src={game?.art?.icon ?? null} alt={gi.name} label={short.slice(0, 2)} tint={game?.accent} className="tk-thumb" />}
+          {unit ? <UnitIcon gameKey={gi.gameKey} unit={unit} className="tk-thumb" /> : <GameIcon src={game?.art?.icon ?? null} alt={gi.name} glyph="game" tint={game?.accent} className="tk-thumb" />}
           <span className="tk-title">
             <span className="tk-title-row">
               <strong>{t.title}</strong>
               {forWhom.map((s) => <UnitIcon key={s.catalogId} gameKey={gi.gameKey} unit={{ kind: "character", catalogId: s.catalogId }} className="tk-for" />)}
-              {showGame && unit && <GameIcon src={game?.art?.icon ?? null} alt={gi.name} label={short.slice(0, 2)} tint={game?.accent} className="tk-game" />}
+              {showGame && unit && <GameIcon src={game?.art?.icon ?? null} alt={gi.name} glyph="game" tint={game?.accent} className="tk-game" />}
             </span>
             <span className="mn mu">{sub}</span>
           </span>

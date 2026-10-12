@@ -219,7 +219,7 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
       )}
       <div className="sh-top">
         <div className="sh-art">
-          <GameIcon src={state.portraitUrl ?? assetUrl(game.key, "splash", art)} fallback={[communityAssetUrl(game.key, "splash", art), communityAssetUrl(game.key, "character", entry?.icon)]} alt={state.name} label={state.name.slice(0, 2)} />
+          <GameIcon src={state.portraitUrl ?? assetUrl(game.key, "splash", art)} fallback={[communityAssetUrl(game.key, "splash", art), communityAssetUrl(game.key, "character", entry?.icon)]} alt={state.name} glyph="character" />
           <label className="btn sh-upload">
             {busy ? "Uploading…" : "Change art"}
             <input type="file" accept="image/*" hidden disabled={busy} onChange={(e) => void upload(e.target.files?.[0])} />

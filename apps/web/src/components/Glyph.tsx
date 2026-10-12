@@ -1,9 +1,9 @@
 import type { ReactNode } from "react";
 
 /** The kinds a thing without art can be drawn as. */
-export type GlyphKind = "character" | "weapon" | "standard" | "bangboo";
+export type GlyphKind = "character" | "weapon" | "standard" | "bangboo" | "gear" | "material" | "game";
 
-const PATHS: Record<GlyphKind, ReactNode> = {
+export const GLYPHS: Record<GlyphKind, ReactNode> = {
   character: (
     <>
       <circle cx="12" cy="8" r="4" />
@@ -18,7 +18,19 @@ const PATHS: Record<GlyphKind, ReactNode> = {
       <path d="M8 7V3M16 7V3M9.5 13h0M14.5 13h0" />
     </>
   ),
+  gear: <path d="M12 3 4 6v6c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V6z" />,
+  material: <path d="m12 3 8 4.5v9L12 21l-8-4.5v-9zM4 7.5l8 4.5 8-4.5M12 12v9" />,
+  game: (
+    <>
+      <rect x="3" y="7" width="18" height="11" rx="5" />
+      <path d="M7.5 12.5h3M9 11v3M15 12h0M17 14h0" />
+    </>
+  ),
 };
+
+/** A catalog kind's glyph, for art that is missing. */
+export const artGlyph = (kind: string): GlyphKind =>
+  kind === "weapon" ? "weapon" : kind === "gear" ? "gear" : kind === "material" ? "material" : /character|portrait|splash/.test(kind) ? "character" : "standard";
 
 /** A banner type's glyph: weapons, Bangboos, characters, else the standard star. */
 export const bannerGlyph = (key: string): GlyphKind => (/weapon/.test(key) ? "weapon" : /bangboo/.test(key) ? "bangboo" : /character|collab|joint/.test(key) ? "character" : "standard");
@@ -28,7 +40,7 @@ export function Glyph({ kind, label, className = "" }: { kind: GlyphKind; label:
   return (
     <span className={`gicon glyph-box ${className}`}>
       <svg className="glyph" viewBox="0 0 24 24" role="img" aria-label={label}>
-        {PATHS[kind]}
+        {GLYPHS[kind]}
       </svg>
     </span>
   );
