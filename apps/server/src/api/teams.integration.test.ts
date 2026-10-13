@@ -50,4 +50,14 @@ describe("teams (routes)", () => {
     const missing = await c.req("PUT", `/api/instances/${gid}/teams/does-not-exist`, { name: "Y" });
     expect(missing.status).toBe(404);
   });
+
+  // A team's companion where the game has one (Georges, round 6: "add Bangboos to ZZZ").
+  it("keeps a ZZZ team's Bangboo, and refuses a companion the game has not", async () => {
+    const zzz = await installGame(c, "zzz");
+    const made = await c.req<{ id: string; companion: string | null }>("POST", `/api/instances/${zzz}/teams`, { name: "Z", members: [], companion: "53001" });
+    expect(made.json.companion).toBe("53001");
+    expect((await c.req<{ companion: string | null }>("PUT", `/api/instances/${zzz}/teams/${made.json.id}`, { companion: null })).json.companion).toBeNull();
+    expect((await c.req("PUT", `/api/instances/${zzz}/teams/${made.json.id}`, { companion: "99999" })).status).toBe(400);
+    expect((await c.req("POST", `/api/instances/${gid}/teams`, { name: "G", members: [], companion: "53001" })).status).toBe(400);
+  });
 });
