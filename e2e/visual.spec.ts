@@ -87,3 +87,33 @@ test("an icon without its image is a tile with its kind's icon, centred @smoke",
   await expect(tile.locator("svg.glyph")).toBeVisible();
   await expect(tile).not.toHaveText(/\w/);
 });
+
+// No tile without its image shows letters anywhere (Georges, round 6: "you're still using squares with letters on it, use icons instead"):
+// a team's members, a picker's options, a unit's page, the ownership grid.
+test("no tile without its image shows letters: teams, pickers, a unit's page, ownership @smoke", async ({ page }) => {
+  // Outside art blocked, so every tile is a placeholder.
+  await page.route("**/*", (r) => (r.request().resourceType() === "image" && new URL(r.request().url()).hostname !== "localhost" ? r.abort() : r.continue()));
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "zzz" } })).json()) as { id: string };
+  const team = (await (await page.request.post(`/api/instances/${id}/teams`, { data: { name: "E2E glyph team", members: ["1091"] } })).json()) as { id: string };
+  const noLetters = async () => {
+    await expect(page.locator(".gicon-ph").first()).toBeVisible();
+    expect((await page.locator(".gicon-ph").allInnerTexts()).filter((t) => t.trim())).toEqual([]);
+  };
+  try {
+    await page.goto(`/games/${id}/teams`);
+    await expect(page.getByRole("region", { name: "E2E glyph team" }).getByRole("img", { name: "Miyabi" })).toBeVisible();
+    await noLetters();
+    await page.getByRole("combobox", { name: "Add a member to E2E glyph team" }).fill("a");
+    await expect(page.getByRole("option").first()).toBeVisible();
+    await noLetters();
+    await page.goto(`/games/${id}/units/1091`);
+    await noLetters();
+    await page.goto(`/games/${id}/ownership`);
+    await noLetters();
+  } finally {
+    await page.request.delete(`/api/instances/${id}/teams/${team.id}`);
+  }
+});

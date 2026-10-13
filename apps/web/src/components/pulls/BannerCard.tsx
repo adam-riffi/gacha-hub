@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { featuredWithin, fiveStarDistribution, rateAt, savingsPlan, topStar, type BannerDto, type PullBannerLogDto } from "@gacha/shared";
 import { assetUrl, communityAssetUrl } from "../../lib/assets";
 import { GameIcon } from "../GameIcon";
-import { Glyph, bannerGlyph } from "../Glyph";
+import { Glyph, artGlyph, bannerGlyph } from "../Glyph";
 import { Segmented } from "../ui";
 import { PullCurve } from "./PullCurve";
 
@@ -85,7 +85,7 @@ export function BannerCard(props: {
       <div className="pl-banner-main">
       <div className="pl-banner-head">
         {feat ? (
-          <GameIcon src={assetUrl(props.gameKey, feat.kind, feat.icon)} fallback={communityAssetUrl(props.gameKey, feat.kind, feat.icon)} alt={feat.name ?? feat.catalogId} className="pl-art" />
+          <GameIcon src={assetUrl(props.gameKey, feat.kind, feat.icon)} fallback={communityAssetUrl(props.gameKey, feat.kind, feat.icon)} alt={feat.name ?? feat.catalogId} glyph={artGlyph(feat.kind)} className="pl-art" />
         ) : (
           <Glyph kind={bannerGlyph(b.key)} label={b.label} className="pl-art" />
         )}

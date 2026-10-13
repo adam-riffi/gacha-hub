@@ -1,13 +1,6 @@
 import { useState } from "react";
 import { GLYPHS, type GlyphKind } from "./Glyph";
 
-/** Initials for the placeholder tile when no image is available. */
-function initials(s: string): string {
-  const parts = s.trim().split(/\s+/).filter(Boolean);
-  if (!parts.length) return "?";
-  return (parts[0]![0]! + (parts[1]?.[0] ?? "")).toUpperCase();
-}
-
 /**
  * An <img> that tries `src`, then `fallback`, then degrades to a generated
  * placeholder tile (the common case until real assets are populated). `tint`
@@ -18,7 +11,6 @@ export function GameIcon({
   src,
   fallback,
   alt,
-  label,
   tint,
   glyph,
   className = "",
@@ -27,11 +19,9 @@ export function GameIcon({
   /** Tried in order when `src` is missing or fails to load (e.g. community CDN copies). */
   fallback?: string | null | (string | null | undefined)[];
   alt: string;
-  /** Short text for the placeholder (defaults to initials of `alt`). */
-  label?: string;
   /** Accent color for the placeholder tile. */
   tint?: string;
-  /** What the thing is: the tile draws its icon rather than letters (Georges, round 6). */
+  /** What the thing is: the tile draws its icon, never letters (Georges, round 6); the standard star by default. */
   glyph?: GlyphKind;
   className?: string;
 }) {
@@ -57,20 +47,16 @@ export function GameIcon({
   const tinted = tint
     ? {
         background: `color-mix(in srgb, ${tint} 20%, var(--bg-elev))`,
-        // Lightened so the initials keep 4.5:1 on the tinted tile.
+        // Lightened so the icon keeps 4.5:1 on the tinted tile.
         color: `color-mix(in srgb, ${tint} 60%, white)`,
         borderColor: `color-mix(in srgb, ${tint} 40%, var(--border))`,
       }
     : undefined;
   return (
     <span className={`gicon gicon-ph ${className}`} role="img" aria-label={alt} style={tinted}>
-      {glyph ? (
-        <svg className="glyph" viewBox="0 0 24 24" aria-hidden="true">
-          {GLYPHS[glyph]}
-        </svg>
-      ) : (
-        (label ?? initials(alt))
-      )}
+      <svg className="glyph" viewBox="0 0 24 24" aria-hidden="true">
+        {GLYPHS[glyph ?? "standard"]}
+      </svg>
     </span>
   );
 }

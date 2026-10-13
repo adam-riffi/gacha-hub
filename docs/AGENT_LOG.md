@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-14 · claude · stack/r9/10-glyphs · #273
+- Done: no letters left on any tile (Georges, round 6: "you're still using squares with letters on it, use icons instead"): `GameIcon` loses its `label` and initials, and a tile without its image always draws a glyph (its kind's, the standard star by default). `Picker` takes a `glyph` for its options; the teams' members and Bangboos, a unit's page, the ownership grid, the timeline, the carousel, the endgame history, the banners, the sheet's weapon and set pickers, the goal maker and the endgame's roster pass their kind.
+- Tests: written first: with outside art blocked, a ZZZ team with Miyabi, its member picker open, Miyabi's unit page and the ownership grid show no tile with text.
+- Scope/decisions: none.
+- Next: linked goals adding up, and the Planner's layout, filters and sort.
+
 ## 2026-10-14 · claude · stack/r9/09-teams · #272
 - Done: Teams (Georges, round 6: "adapt the teams layout to any games, some use 3 some use 4; add Bangboos to ZZZ"): a team's slots sit in one row of the game's party size (`teamSize`: three in ZZZ and WuWa, four elsewhere). The catalog schema gains `companions` and its index a map of them; ZZZ's importer reads Hakushin's Bangboo list (42, with art keys); the manifest names the companion (`companion: { label: "Bangboo" }`). A team gains `companion` (migration `team_companion`), validated against the catalog; ZZZ's team cards pick a Bangboo beside the members.
 - Tests: written first: ZZZ's catalog lists 40+ Bangboos, Penguinboo (53001) with its art, ranks A and S; a ZZZ team keeps a Bangboo, clears it, refuses an unknown one, and Genshin refuses one; a ZZZ team card has three columns and picks Penguinboo.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: a counted daily counts within the cycle, is done at its target and reads empty three days later; a new Genshin profile seeds four Daily Commissions and three Weekly Bosses; the Overview journey ticks ZZZ's Daily Missions to 3 of 4 and keeps it after a reload. `npm run check` passes: 581 tests and 66 journeys.
 - Scope/decisions: progress belongs to its cycle by `progressAt`, not `updatedAt` (editing a task must not carry old steps into a new cycle). Counts are sourced in `docs/games/*.md` ("Counted tasks").
 - Next: each game's items from the designs, then the missing endgame modes.
-
-## 2026-10-11 · claude · stack/r4/13-stygian · #232
-- Done: Genshin's Stygian Onslaught enemies, the gap #230 left. Hakushin files the mode as "leyline" (dated cycles, six difficulties, three bosses each); the endgame importer now writes `packages/shared/src/games/genshin/endgame.json` with each cycle's three bosses at the top difficulty (their names there and its monster level, 109), loaded lazily like ZZZ's. The enemy rows give the stage's name the free width, so long boss names read in two lines.
-- Tests: written first: the shipped data has Stygian cycles of three bosses with a level; the Genshin Endgame journey finds three on Stygian Onslaught and no enemies list on Spiral Abyss or Imaginarium Theater. `npm run check` passes: 579 tests and 65 journeys.
-- Scope/decisions: the top difficulty only (the bosses are the same at each; their names and level change). HANDOFF.md, WIREFRAMES G2, AGENTS.md and the round's audit now name only Star Rail's Apocalyptic Shadow as waiting for a dated source.
-- Next: the designs' remaining details (counted boxes, each game's items, the missing endgame modes).

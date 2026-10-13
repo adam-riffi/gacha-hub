@@ -1,5 +1,6 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { GameIcon } from "./GameIcon";
+import type { GlyphKind } from "./Glyph";
 
 export type PickerOption = { id: string; name: string; src?: string | null; fallback?: string | null | (string | null | undefined)[]; sub?: string };
 
@@ -17,6 +18,7 @@ export function Picker({
   onPick,
   placeholder = "Search",
   icons = true,
+  glyph,
   free = false,
 }: {
   label: string;
@@ -26,6 +28,8 @@ export function Picker({
   onPick: (option: PickerOption | null, text: string) => void;
   placeholder?: string;
   icons?: boolean;
+  /** What the options are, drawn where one has no image. */
+  glyph?: GlyphKind;
   free?: boolean;
 }) {
   const listId = useId();
@@ -58,7 +62,7 @@ export function Picker({
 
   return (
     <div className={`pk ${icons && current ? "has-icon" : ""}`} ref={wrap}>
-      {icons && current && !open && <GameIcon className="pk-current" src={current.src ?? null} fallback={current.fallback} alt="" label={current.name.slice(0, 2)} />}
+      {icons && current && !open && <GameIcon className="pk-current" src={current.src ?? null} fallback={current.fallback} alt="" glyph={glyph} />}
       <input
         role="combobox"
         aria-label={label}
@@ -118,7 +122,7 @@ export function Picker({
                 pick(o);
               }}
             >
-              {icons && <GameIcon src={o.src ?? null} fallback={o.fallback} alt={o.name} label={o.name.slice(0, 2)} />}
+              {icons && <GameIcon src={o.src ?? null} fallback={o.fallback} alt={o.name} glyph={glyph} />}
               <span className="pk-name">{o.name}</span>
               {o.sub && <span className="mn mu">{o.sub}</span>}
             </li>

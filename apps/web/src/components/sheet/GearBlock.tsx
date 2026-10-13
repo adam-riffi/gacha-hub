@@ -47,7 +47,7 @@ export function GearBlock({ game, doc, setDoc, sets: setOptions }: { game: GameD
                 <span className="kpi-label">{slot.label}</span>
                 <span className="mn">CV {fmt(gearPieceCv(p))}</span>
               </div>
-              <Picker label={`${slot.label} set`} placeholder="Set" value={p.setName ?? ""} free options={setOptions} onPick={(_, text) => setPiece(slot.key, { setName: text || undefined })} />
+              <Picker label={`${slot.label} set`} glyph="gear" placeholder="Set" value={p.setName ?? ""} free options={setOptions} onPick={(_, text) => setPiece(slot.key, { setName: text || undefined })} />
               {slot.mainStats.length > 0 ? (
                 <select aria-label={`${slot.label} main stat`} value={p.mainStat ?? ""} onChange={(e) => setPiece(slot.key, { mainStat: e.target.value || undefined })}>
                   <option value="">Main stat</option>

@@ -99,7 +99,7 @@ export function TeamsPage() {
                 const el = elementColor(game.key, unit?.tag);
                 return (
                   <div key={m} className="tm-slot" style={el ? ({ "--el": el } as CSSProperties) : undefined}>
-                    <GameIcon src={assetUrl(game.key, "character", unit?.icon)} fallback={communityAssetUrl(game.key, "character", unit?.icon)} alt={unit?.name ?? m} label={(unit?.name ?? m).slice(0, 2)} />
+                    <GameIcon src={assetUrl(game.key, "character", unit?.icon)} fallback={communityAssetUrl(game.key, "character", unit?.icon)} alt={unit?.name ?? m} glyph="character" />
                     <Link to={build ? `/characters/${build.id}` : `/games/${id}/units/${m}`}>{unit?.name ?? m}</Link>
                     <span className="mn mu">{build ? (build.buildStatus === "none" ? "unbuilt" : build.buildStatus) : ownedIds.has(m) ? "no build" : "not owned"}</span>
                     <button className="btn ghost sm" aria-label={`Remove ${unit?.name ?? m} from ${t.name}`} onClick={() => update.mutate({ teamId: t.id, members: t.members.filter((x) => x !== m) })}>
@@ -112,6 +112,7 @@ export function TeamsPage() {
                 <div className="tm-add">
                   <Picker
                     label={`Add a member to ${t.name}`}
+                    glyph="character"
                     placeholder="+ Add a member"
                     value=""
                     options={units
@@ -136,6 +137,7 @@ export function TeamsPage() {
                 ) : (
                   <Picker
                     label={`${companion.label} of ${t.name}`}
+                    glyph="bangboo"
                     placeholder={`+ ${companion.label}`}
                     value=""
                     options={(catalog?.companions ?? []).map((b) => ({ id: b.id, name: b.name, src: assetUrl(game.key, "character", b.icon), fallback: communityAssetUrl(game.key, "character", b.icon), sub: `★${b.rarity}` }))}

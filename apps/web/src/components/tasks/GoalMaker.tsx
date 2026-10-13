@@ -139,6 +139,7 @@ export function GoalMaker({ games, onDone }: { games: InstanceListItem[]; onDone
             {catalog ? (
               <Picker
                 label={kind === "character" ? "Character" : "Weapon"}
+                glyph={kind}
                 placeholder="Name"
                 value={options.find((u) => u.id === unit)?.name ?? ""}
                 options={options.map((u) => ({ id: u.id, name: u.name, src: assetUrl(gi!.gameKey, kind, u.icon), fallback: communityAssetUrl(gi!.gameKey, kind, u.icon), sub: ownedIds.has(`${kind}:${u.id}`) ? undefined : "not owned" }))}
