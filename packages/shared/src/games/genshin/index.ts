@@ -89,6 +89,8 @@ export type GenshinDoc = z.infer<typeof genshinDocSchema>;
 export const genshin: GameDefinition = {
   key: "genshin",
   teamSize: 4,
+  // Georges's example, in the sheet's order (Normal Attack, Skill, Burst).
+  quickBuild: { talents: { normal: 10, skill: 6, burst: 6 } },
   // Pity rules (community-documented): hard pity, soft pity, featured-unit rate.
   pullBanners: [
     { key: "character", label: "Character event wish", baseRate: 0.006, softPity: 74, softStep: 0.06, hardPity: 90, featuredRate: 0.5, featuredOdds: 0.55, gachaTypes: ["301", "400"] },

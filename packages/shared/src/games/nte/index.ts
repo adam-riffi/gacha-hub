@@ -56,6 +56,7 @@ export const nte: GameDefinition = {
     { key: "cityStamina", label: "City Stamina" },
   ],
   // The Limited Board has no 50/50: every S-rank is the featured one; pity carries over.
+  quickBuild: { talents: { basic: 6, skill: 10, ultimate: 10, support: 6 } },
   pullBanners: [{ key: "character", label: "Limited Board", baseRate: 0.0099, softPity: 70, hardPity: 90, featuredRate: 1 }],
   manifest: {
     stamina: { currency: "pixels" },

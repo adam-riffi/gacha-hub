@@ -91,6 +91,7 @@ export type HsrDoc = z.infer<typeof hsrDocSchema>;
 export const hsr: GameDefinition = {
   key: "hsr",
   teamSize: 4,
+  quickBuild: { talents: { basic: 6, skill: 10, ultimate: 10, talent: 10 } },
   // Pity rules (community-documented): hard pity, soft pity, featured-unit rate.
   pullBanners: [
     { key: "character", label: "Character event warp", baseRate: 0.006, softPity: 74, softStep: 0.06, hardPity: 90, featuredRate: 0.5, gachaTypes: ["11"] },

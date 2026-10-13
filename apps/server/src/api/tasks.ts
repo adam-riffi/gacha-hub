@@ -137,6 +137,11 @@ export async function registerTaskRoutes(app: FastifyInstance) {
     if (!(await assertRefOwnership(userId, body.scope, body.refId))) {
       return reply.code(404).send({ error: "ref_not_found" });
     }
+    // Made under another goal (the quick build's weapon and set): the same rule as a link.
+    if (body.parentId) {
+      const parent = await ownedTask(userId, body.parentId);
+      if (!parent || parent.parentId !== null || parent.scope !== body.scope || parent.refId !== body.refId) return reply.code(400).send({ error: "bad_link" });
+    }
     const created = await prisma.task.create({
       data: {
         userId,

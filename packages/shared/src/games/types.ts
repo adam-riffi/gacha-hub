@@ -139,6 +139,13 @@ export interface GameDefinition {
   topRarity?: number;
   /** Party size for the team builder (Genshin/HSR 4, ZZZ/WuWa 3…). Default 4. */
   teamSize?: number;
+  /**
+   * The quick build goal's skill levels by default (Georges, round 6: "a quick
+   * way to make a building goal depending on the game, for example Genshin is
+   * max ascension, lvl 80, weapon lvl 90, talents 10/6/6"), by catalog skill
+   * key; each is clamped to its skill's maximum.
+   */
+  quickBuild?: { talents: Record<string, number> };
   manifest: GameManifest;
   /** Recurring tasks seeded when a new profile is created. */
   defaultTasks: GameTaskSeed[];

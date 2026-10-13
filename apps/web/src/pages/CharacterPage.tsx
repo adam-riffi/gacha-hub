@@ -27,6 +27,7 @@ import { CatalogIcon } from "../components/CatalogIcon";
 import { GearBlock } from "../components/sheet/GearBlock";
 import { Picker } from "../components/Picker";
 import { TaskGeneratorPanel } from "../components/TaskGeneratorPanel";
+import { QuickBuild } from "../components/tasks/QuickBuild";
 import type { CharacterDetail, TaskItem } from "../lib/types";
 
 type Doc = Record<string, unknown>;
@@ -67,6 +68,7 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
   const toast = useToast();
   const [state, setState] = useState(() => ({ name: data.name, portraitUrl: data.portraitUrl, doc: (data.doc as Doc) ?? {}, buildStatus: data.buildStatus, role: data.role }));
   const [busy, setBusy] = useState(false);
+  const [quick, setQuick] = useState(false);
   const game = getGame(data.gameKey)!;
   const { index, catalog } = useCatalog(data.gameKey);
   const tasks = useQuery({ queryKey: ["tasks"], queryFn: () => api.get<TaskItem[]>("/api/tasks") });
@@ -386,6 +388,10 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
 
       {data.catalogId && (
         <section className="card sh-plan" aria-label="Plan farming">
+          <button type="button" className="btn" onClick={() => setQuick(true)}>
+            Quick goal
+          </button>
+          {quick && <QuickBuild instanceId={data.gameInstanceId} gameKey={data.gameKey} catalogIds={[data.catalogId]} onClose={() => setQuick(false)} />}
           <TaskGeneratorPanel instanceId={data.gameInstanceId} gameKey={data.gameKey} catalogId={data.catalogId} doc={state.doc} />
         </section>
       )}

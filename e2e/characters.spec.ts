@@ -286,8 +286,8 @@ test("Characters: a quick build goal from the sheet (the last ascension, the ski
     // Himeko and Asta at once, from the selection.
     await page.goto(`/games/${id}/characters`);
     await page.getByRole("button", { name: "Select", exact: true }).click();
-    await page.getByRole("checkbox", { name: "Select Himeko" }).check();
-    await page.getByRole("checkbox", { name: "Select Asta" }).check();
+    await page.getByRole("checkbox", { name: "Select Himeko", exact: true }).check();
+    await page.getByRole("checkbox", { name: "Select Asta", exact: true }).check();
     await page.getByRole("region", { name: "Selection" }).getByRole("button", { name: "Make goals" }).click();
     await quick.getByRole("button", { name: "Make 2 goals" }).click();
     await expect.poll(async () => (await tasks()).filter((t) => ["Farm Himeko", "Farm Asta"].includes(t.title) && !t.materialId).length).toBe(2);

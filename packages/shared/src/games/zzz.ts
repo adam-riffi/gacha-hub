@@ -80,6 +80,7 @@ export type ZzzDoc = z.infer<typeof zzzDocSchema>;
 export const zzz: GameDefinition = {
   key: "zzz",
   teamSize: 3,
+  quickBuild: { talents: { basic: 9, dodge: 9, assist: 9, special: 12, chain: 12, core: 7 } },
   // Pity rules (community-documented): hard pity, soft pity, featured-unit rate.
   pullBanners: [
     { key: "character", label: "Exclusive channel", baseRate: 0.006, softPity: 74, hardPity: 90, featuredRate: 0.5, gachaTypes: ["2"] },

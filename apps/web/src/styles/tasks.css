@@ -48,6 +48,17 @@
 .tk-actions { display: flex; gap: 8px; padding-top: 10px; border-top: 1px solid var(--surface-3); }
 /* The goal maker (Georges, 2026-10-10): any kind of goal from one form. */
 .tk-new-kind { flex-basis: 100%; }
+/* The quick build goal (round 6): a window over the page, closed by a click outside it. */
+.qb-veil { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; background: color-mix(in srgb, var(--bg) 70%, transparent); }
+.qb { display: grid; gap: 14px; width: min(560px, calc(100vw - 32px)); max-height: calc(100vh - 64px); overflow: auto; }
+.qb-who { display: flex; flex-wrap: wrap; gap: 6px; }
+.qb-who .gicon { width: 40px; height: 40px; }
+.qb-form { display: grid; gap: 14px; }
+.qb-field { display: grid; gap: 6px; }
+.qb-skills { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; margin: 0; padding: 0; border: 0; }
+.qb-skills legend { margin-bottom: 6px; }
+.qb-skill { display: grid; gap: 4px; margin: 0; font-size: 13px; color: var(--text); }
+.qb-skill span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .tk-new-items { flex: 2; min-width: 220px; }
 .tk-new-items textarea { width: 100%; }
 .tk-new-plan { flex-basis: 100%; }

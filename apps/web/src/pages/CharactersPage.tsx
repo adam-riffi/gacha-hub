@@ -34,6 +34,7 @@ import { GameIcon } from "../components/GameIcon";
 import { Chips, Segmented } from "../components/ui";
 
 import { BuildsTable } from "../components/characters/BuildsTable";
+import { QuickBuild } from "../components/tasks/QuickBuild";
 import type { InstanceDetail } from "../lib/types";
 
 const ENDS = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
@@ -79,6 +80,7 @@ export function CharactersPage() {
   // Several units at once (Georges, 2026-10-10): in Select, a click picks the card, and the whole card lights up (round 5).
   const [selecting, setSelecting] = useState(false);
   const [picked, setPicked] = useState<Set<string>>(new Set());
+  const [quick, setQuick] = useState<string[] | null>(null);
   const [newName, setNewName] = useState("");
 
   const instance = useQuery({ queryKey: ["instance", id], queryFn: () => api.get<InstanceDetail>(`/api/instances/${id}`) });
@@ -440,6 +442,7 @@ export function CharactersPage() {
           );
         })}
       </div>
+      {quick && <QuickBuild instanceId={id!} gameKey={game.key} catalogIds={quick} onClose={() => setQuick(null)} />}
       {picked.size > 0 && (
         <div className="ch-bulk ch-bulk-bar" role="region" aria-label="Selection">
           <span className="mn">{picked.size} selected</span>
@@ -447,6 +450,7 @@ export function CharactersPage() {
           <button className="btn" onClick={() => unown.mutate([...picked])}>Not owned</button>
           <button className="btn" onClick={() => wishMany.mutate({ ids: [...picked], wished: true })}>Wishlist</button>
           <button className="btn" onClick={() => wishMany.mutate({ ids: [...picked], wished: false })}>Off the wishlist</button>
+          <button className="btn" onClick={() => setQuick(pickedCards.flatMap((c) => (c.entry ? [c.entry.id] : [])))}>Make goals</button>
           <button className="btn" disabled={startMany.isPending} onClick={() => startMany.mutate(pickedCards.filter((c) => c.owned && !c.build).map((c) => c.id))}>
             Start builds
           </button>
