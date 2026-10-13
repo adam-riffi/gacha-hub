@@ -9,11 +9,17 @@ import { api } from "../lib/api";
 import { useCatalog } from "../lib/catalog";
 import { CatalogIcon, UnitIcon } from "../components/CatalogIcon";
 import { GameTabs, gearLabel } from "../components/GameTabs";
+import { Picker } from "../components/Picker";
+import { Chips, Segmented } from "../components/ui";
+import { assetUrl, communityAssetUrl } from "../lib/assets";
 import type { InstanceDetail } from "../lib/types";
 
-type DocPiece = { setName?: string; mainStat?: string; level?: number };
+type Sub = { stat: string; value: number | string };
+type DocPiece = { setName?: string; mainStat?: string; level?: number; substats?: Sub[] };
 /** A piece of a set you have: on a build (its wearer), or in the bag (its id). */
-type Owned = { slot: string; mainStat?: string; level?: number; wearer?: CharacterDto; bagId?: string };
+type Owned = { slot: string; mainStat?: string; level?: number; substats?: Sub[]; wearer?: CharacterDto; bagId?: string };
+/** A piece with its set's name, as the pieces list shows it. */
+type Piece = Owned & { set: string; key: string };
 
 const maxRarity = (g: CatalogGearSet) => Math.max(0, ...((g.extra?.rarityList as number[] | undefined) ?? []));
 
@@ -24,23 +30,30 @@ function bonusParts(b: string, i: number, set: CatalogGearSet, counts: readonly 
   return [`${Math.min(counts[i] ?? i + 1, set.slots.length)}pc`, b];
 }
 
-/** Every piece of every set you have: each build's gear by slot, and the bag. */
-function ownedBySet(field: string, builds: CharacterDto[], bag: GearPieceDto[]): Map<string, Owned[]> {
-  const out = new Map<string, Owned[]>();
-  const put = (set: string, o: Owned) => out.set(set, [...(out.get(set) ?? []), o]);
+/** Every piece you have: each build's gear by slot, then the bag. */
+function allPieces(field: string, builds: CharacterDto[], bag: GearPieceDto[]): Piece[] {
+  const out: Piece[] = [];
   for (const b of builds) {
     const gear = ((b.doc as Record<string, unknown> | null)?.[field] ?? {}) as Record<string, DocPiece | undefined>;
-    for (const [slot, p] of Object.entries(gear)) if (p?.setName) put(p.setName, { slot, mainStat: p.mainStat, level: p.level, wearer: b });
+    for (const [slot, p] of Object.entries(gear)) if (p?.setName) out.push({ key: `${b.id}:${slot}`, set: p.setName, slot, mainStat: p.mainStat, level: p.level, substats: p.substats, wearer: b });
   }
-  for (const p of bag) if (p.setName) put(p.setName, { slot: p.slot, mainStat: p.mainStat, level: p.level, bagId: p.id });
+  for (const p of bag) if (p.setName) out.push({ key: p.id, set: p.setName, slot: p.slot, mainStat: p.mainStat, level: p.level, substats: p.substats as Sub[] | undefined, bagId: p.id });
+  return out;
+}
+
+/** The same pieces by set. */
+function ownedBySet(pieces: Piece[]): Map<string, Owned[]> {
+  const out = new Map<string, Owned[]>();
+  for (const p of pieces) out.set(p.set, [...(out.get(p.set) ?? []), p]);
   return out;
 }
 
 /**
- * Every game's gear (Georges, round 4: the screens were inconsistent): each
- * set as a card with how many of its pieces you have; a click opens it, the
- * pieces by slot on whom or in the bag; Farm picks the pieces you need and
- * makes a goal with a step per piece.
+ * Every game's gear (Georges, rounds 4 and 6): every piece you have, on a
+ * build or in the bag, filtered by set, slot, main stat and where, in the
+ * game's words; or each set as a card with how many of its pieces you have.
+ * A piece or a set opens the set: its pieces by slot on whom or in the bag;
+ * Farm picks the pieces you need and makes a goal with a step per piece.
  */
 export function GearSetsPage() {
   const { id } = useParams();
@@ -48,13 +61,19 @@ export function GearSetsPage() {
   const [rarity, setRarity] = useState<number | null>(null);
   const [usedOnly, setUsedOnly] = useState(false);
   const [openId, setOpenId] = useState<string | null>(null);
+  const [view, setView] = useState<"pieces" | "sets">("pieces");
+  const [setFilter, setSetFilter] = useState("");
+  const [slotFilter, setSlotFilter] = useState("");
+  const [mainFilter, setMainFilter] = useState("");
+  const [where, setWhere] = useState("");
 
   const { data: instance, isError, refetch } = useQuery({ queryKey: ["instance", id], queryFn: () => api.get<InstanceDetail>(`/api/instances/${id}`), enabled: Boolean(id) });
   const { catalog, isLoading } = useCatalog(instance?.gameKey);
   const { data: bag = [] } = useQuery({ queryKey: ["gear", id], queryFn: () => api.get<GearPieceDto[]>(`/api/instances/${id}/gear`), enabled: Boolean(id) });
   const { data: builds = [] } = useQuery({ queryKey: ["builds", id], queryFn: () => api.get<CharacterDto[]>(`/api/instances/${id}/characters`), enabled: Boolean(id) });
   const game = instance && getGame(instance.gameKey);
-  const owned = useMemo(() => (game ? ownedBySet(game.manifest.gear.field, builds, bag) : new Map<string, Owned[]>()), [game, builds, bag]);
+  const pieces = useMemo(() => (game ? allPieces(game.manifest.gear.field, builds, bag) : []), [game, builds, bag]);
+  const owned = useMemo(() => ownedBySet(pieces), [pieces]);
 
   if (isError) return <LoadError what="Gear" retry={refetch} />;
   if (!instance || !game) return <div className="muted">Loading…</div>;
@@ -71,6 +90,12 @@ export function GearSetsPage() {
     )
     .sort((a, b) => (owned.get(b.name)?.length ?? 0) - (owned.get(a.name)?.length ?? 0) || maxRarity(b) - maxRarity(a) || a.name.localeCompare(b.name));
   const open = sets.find((g) => g.id === openId);
+  const slotLabel = (key: string) => game.manifest.gear.slots.find((s) => s.key === key)?.label ?? key;
+  const setsByName = new Map(sets.map((g) => [g.name, g]));
+  const shownPieces = pieces
+    .filter((p) => (!setFilter || p.set === setFilter) && (!slotFilter || slotLabel(p.slot) === slotFilter) && (!mainFilter || p.mainStat === mainFilter) && (!where || (where === "Bag") === Boolean(p.bagId)))
+    .sort((a, b) => a.set.localeCompare(b.set) || game.manifest.gear.slots.findIndex((s) => s.key === a.slot) - game.manifest.gear.slots.findIndex((s) => s.key === b.slot) || (b.level ?? 0) - (a.level ?? 0));
+  const mainStats = [...new Set([...game.manifest.gear.slots.flatMap((s) => s.mainStats ?? []), ...pieces.flatMap((p) => p.mainStat ?? [])])];
 
   return (
     <>
@@ -78,6 +103,25 @@ export function GearSetsPage() {
         <GameTabs instanceId={id!} active="gear" gameKey={instance.gameKey} />
       </div>
       <section className="card gr-head" aria-label="Filters">
+        <Segmented label="Show" options={[{ value: "pieces", label: "Pieces" }, { value: "sets", label: "Sets" }]} value={view} onChange={setView} />
+        {view === "pieces" ? (
+          <>
+            <Picker
+              label="Set"
+              placeholder="Any set"
+              value={setFilter}
+              free
+              options={sets.map((g) => ({ id: g.id, name: g.name, src: assetUrl(game.key, "gear", g.icon), fallback: communityAssetUrl(game.key, "gear", g.icon) }))}
+              onPick={(o) => setSetFilter(o?.name ?? "")}
+            />
+            <Chips label="Slot" value={slotFilter} onChange={setSlotFilter} options={game.manifest.gear.slots.map((s) => s.label)} />
+            <Chips label="Main stat" value={mainFilter} onChange={setMainFilter} options={mainStats} />
+            <Chips label="Where" value={where} onChange={setWhere} options={["Equipped", "Bag"]} />
+            <span className="ch-sp" />
+            <span className="badge">{shownPieces.length} pieces</span>
+          </>
+        ) : (
+          <>
         <input aria-label="Search" placeholder="Name or bonus" value={search} onChange={(e) => setSearch(e.target.value)} style={{ width: 240 }} />
         {rarities.length > 1 && (
           <select aria-label="Rarity" value={rarity ?? ""} onChange={(e) => setRarity(e.target.value ? Number(e.target.value) : null)} style={{ width: "auto" }}>
@@ -97,12 +141,53 @@ export function GearSetsPage() {
         <span className="badge">
           {owned.size} of {sets.length} {label.toLowerCase()} held
         </span>
+          </>
+        )}
       </section>
 
       {sets.length === 0 ? (
         <div className="card empty">No {label.toLowerCase()} in this game's catalog yet.</div>
       ) : (
         <div className={`gs-page ${open ? "has-panel" : ""}`}>
+          {view === "pieces" ? (
+            <section className="gs-pieces" aria-label="Pieces">
+              {shownPieces.map((p) => {
+                const set = setsByName.get(p.set);
+                return (
+                  <article key={p.key} className={`card gs-piece ${set && set.id === openId ? "is-open" : ""}`} aria-label={`${p.set} · ${slotLabel(p.slot)}`}>
+                    <button type="button" className="set-open" aria-label={`Open ${p.set}`} onClick={() => set && setOpenId(set.id === openId ? null : set.id)} />
+                    <div className="gs-piece-head">
+                      <CatalogIcon gameKey={game.key} kind="gear" icon={set?.icon} name={p.set} className="gs-piece-icon" />
+                      <div className="gs-piece-title">
+                        <strong>{p.set}</strong>
+                        <span className="mn mu">{slotLabel(p.slot)}</span>
+                      </div>
+                      {p.wearer ? (
+                        p.wearer.catalogId ? <UnitIcon gameKey={game.key} unit={{ kind: "character", catalogId: p.wearer.catalogId }} className="gs-piece-who" /> : <span className="mn">{p.wearer.name}</span>
+                      ) : (
+                        <span className="tag is-off">Bag</span>
+                      )}
+                    </div>
+                    <div className="gs-piece-main">
+                      <span>{p.mainStat || "—"}</span>
+                      <span className="mn">+{p.level ?? 0}</span>
+                    </div>
+                    {p.substats?.length ? (
+                      <ul className="gs-piece-subs mn">
+                        {p.substats.map((s, i) => (
+                          <li key={i}>
+                            <span>{s.stat}</span>
+                            <span>{s.value}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
+                  </article>
+                );
+              })}
+              {shownPieces.length === 0 && <div className="card empty">{pieces.length ? "No piece matches." : `No ${label.toLowerCase()} on a build or in the bag yet: open Sets to add one.`}</div>}
+            </section>
+          ) : (
           <div className="set-grid">
             {shown.map((g) => {
               const have = owned.get(g.name) ?? [];
@@ -141,6 +226,7 @@ export function GearSetsPage() {
               </div>
             )}
           </div>
+          )}
           {open && <SetPanel key={open.id} instanceId={id!} game={game} set={open} pieces={owned.get(open.name) ?? []} builds={builds} onClose={() => setOpenId(null)} />}
         </div>
       )}

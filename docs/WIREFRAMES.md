@@ -165,8 +165,9 @@ Picture: [`g5-character-sheet.png`](design/wireframes/g5-character-sheet.png) ·
 
 Picture: [`g6-gear.png`](design/wireframes/g6-gear.png) · static page: [`g6-gear.html`](design/wireframes/g6-gear.html)
 
-One screen for every game (Georges, round 4: the screens were inconsistent):
-- **Each set as a card:** its icon, rarity and source, its bonuses, and how many of its slots you hold. Search, rarity and "Pieces I have".
+One screen for every game (Georges, round 4: the screens were inconsistent), two views:
+- **Pieces** (the default, round 6: "I can't even look at my pieces"): every piece you have, on a build or in the bag, as a card: its set's icon, slot, main stat and level, substats and wearer (or "Bag"). Filtered by set, slot and main stat in the game's words, and where (equipped or bag). A piece opens its set.
+- **Sets: each set as a card:** its icon, rarity and source, its bonuses, and how many of its slots you hold. Search, rarity and "Pieces I have".
 - **A click opens the set** beside the cards: its pieces by slot, each on whom (Unequip) or in the bag (Equip on a build); Add a piece to the bag. Equipped pieces sync from the showcase.
 - **Farm** ticks the pieces you need, the empty slots first, and makes a goal with a step per piece.
 

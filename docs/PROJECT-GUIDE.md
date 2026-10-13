@@ -440,7 +440,8 @@ Values from a sync are marked AUTO; what you change stays yours.
 ![Gear](screens/11-gear.jpg)
 
 **For:** set pieces (G6), the same screen in every game (round 4).
-- **Each set as a card,** with how many of its slots you hold.
+- **Pieces** (round 6, the default): every piece you have, equipped or in the bag, with its set, slot, main stat, level, substats and wearer, filtered by set, slot, main stat and where.
+- **Sets: each set as a card,** with how many of its slots you hold.
 - **A click opens it** beside the cards: its pieces by slot, on whom (Unequip) or in the bag (Equip on a build), and Add a piece.
 - **Farm** ticks the pieces you need, the empty slots first, and makes a goal with a step per piece.
 

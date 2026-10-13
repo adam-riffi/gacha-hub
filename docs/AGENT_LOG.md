@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-14 · claude · stack/r9/08-gear-pieces · #271
+- Done: Gear (Georges, round 6: "the artifact/gear screen needs work, I can't even look at my pieces; make it show all the pieces I have and then filter by set, main stat and type for each game depending on their system"): a Pieces view, the default, lists every piece on a build or in the bag (`allPieces`) as a card: the set's icon and name, the slot in the game's words, main stat and level, substats, and the wearer's icon or Bag. Filters: Set (a combobox with the sets' icons), Slot and Main stat chips from the game's gear slots (and the stats the pieces carry), Where (Equipped, Bag). A piece opens its set's panel. The set cards with Farm are the Sets view.
+- Tests: written first: Pela's Hunter body (CRIT Rate +12, SPD) shows with her icon, a Musketeer head (+15) in the bag; Slot Body, Where Bag, Main stat CRIT Rate and Set Musketeer each keep the right one. The set and Farm journeys and the a11y sweep switch to Sets first.
+- Scope/decisions: the pieces sort by set, then slot order, then level.
+- Next: Teams in each game's party size, and ZZZ's Bangboos.
+
 ## 2026-10-13 · claude · stack/r9/07-weapons · #270
 - Done: Weapons (Georges, round 6: "there is still some desync between equipped weapons and the weapons' character data; I should be able to select multiple to do some change like mass modify level or ownership; also filter by main stat"). The desync's root: sheets saved before #260 (and showcase syncs) name a weapon but no copy, so Weapons paired them by order. Reading Weapons now links each such sheet (`linkSheets`) to a copy of that weapon no sheet holds, which takes the sheet's level and refinement, else to a new copy at them (ownership recounted). Select on Weapons picks cards (copies, and weapons not owned) for a bar that sets level or refinement, owns (a copy each) or removes; picked cards light up. The main stat shows on each card and filters (Main stat chips).
 - Tests: written first: a sheet naming Favonius at Lv 70 R3 gets a new copy at them and owns it; another sheet takes a free copy, which moves to the sheet's Lv 40; on ZZZ, the CRIT Rate filter, two Steel Cushions set to Lv 50 at once, then removed. The copies journey now starts from Kafka's sheet's copy (Lv 80 S2), which is what linking means.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: docs only. `npm run check` on the tree below (#230): 578 tests and 64 journeys.
 - Scope/decisions: none new; the round's decisions are in HANDOFF.md.
 - Next: Georges's secrets and real data; a deploy when he asks; a dated source for Stygian Onslaught and Apocalyptic Shadow enemies.
-
-## 2026-10-11 · claude · stack/r4/11-enemies · #230
-- Done: Georges's "for the endgame there should be information about what enemies are on what level, when relevant, like Stygian or Shiyu Defense, but not Imaginarium Theater or Abyss". A new importer (`npm run catalog:endgame`, Hakushin's dataset) writes Zenless Zone Zero's dated Shiyu Defense cycles (each frontier's level and each half's enemies) and Deadly Assault cycles (three bosses) to `packages/shared/src/games/zzz/endgame.json`, loaded lazily (`loadEndgame`). The Endgame tab's mode cards list each stage with its level, each half's enemies as icons, and their weaknesses as element dots; a cycle the data has not reached shows the last one with its dates.
-- Tests: written first: `enemiesFor` picks the cycle running on the server's day, else the last one that began (not current), else none; the shipped data has both modes' cycles, each stage with enemies; the Endgame journey finds the enemies list on Shiyu Defense and Deadly Assault and on no other mode. `npm run check` passes: 578 tests and 64 journeys.
-- Scope/decisions: Genshin's Stygian Onslaught has no file at Hakushin, and Star Rail's Apocalyptic Shadow has no dates there, so both wait for a dated source (noted in WIREFRAMES G2 and the round's audit). Images are the dataset's URLs (static.nanoka.cc, already in the CSP); no art is committed.
-- Next: the handoff.

@@ -19,7 +19,7 @@ Georges's sixth round, after #256–#262. The rules of the earlier rounds stand:
 | Characters · card stats | picked per game | **picked per character**, the game's classic stats by default | #268 |
 | Characters · ascension stat | not shown | the character's **ascension stat** on its card, highlighted | #269 |
 | Weapons | a weapon on a sheet and its copy on Weapons can disagree | **synced**: every sheet's weapon is a copy; several selected at once for level and ownership; **filtered by main stat** | #270 |
-| Gear | every set's text, no pieces | **every piece you have**, filtered by set, main stat and slot in each game's words | |
+| Gear | every set's text, no pieces | **every piece you have**, filtered by set, main stat and slot in each game's words | #271 |
 | Teams | four slots everywhere | **each game's party size** (three or four); ZZZ's **Bangboo** | |
 | Planner | a goal opened spills over its card; the goal's steps twice; no filter | goals on **two rows**, **filtered and sorted**, the materials shorter; an opened goal stays in its card | |
 | Goals · links | a linked goal hides under the other | linked goals **stay**, and their progress **adds to** the goal they link to | |
