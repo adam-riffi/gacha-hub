@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { farmableToday, gameWeekday, getGame, type MaterialStockDto, type TaskOrigin } from "@gacha/shared";
+import { PRIORITY_RANK, farmableToday, gameWeekday, getGame, goalSteps, type MaterialStockDto, type TaskOrigin } from "@gacha/shared";
 import { LoadError } from "../components/LoadError";
 import { api } from "../lib/api";
 import { useCatalog } from "../lib/catalog";
@@ -15,12 +15,17 @@ import type { InstanceDetail, InstanceListItem, TaskItem } from "../lib/types";
 const DAY = ["", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const WEEKDAY = ["", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 const NUM = new Intl.NumberFormat("en-GB");
+/** Two rows of three goals until All (Georges, round 6). */
+const SHOWN = 6;
+type Sort = "priority" | "progress" | "name";
 
 /**
- * A game's Planner (WIREFRAMES.md G7): the farming goals with their progress;
- * the materials of the selected goal or of all goals, with where they drop,
- * the days they can be farmed (today outlined), what you have (typed here),
- * what you need and what is missing; what to farm today across goals.
+ * A game's Planner (WIREFRAMES.md G7): the farming goals in rows of three
+ * (two rows until All), filtered and sorted, each opening in its own card;
+ * below, the materials of the picked goal (its linked goals' too) or of all
+ * goals, with where they drop, the days they can be farmed (today outlined),
+ * what you have (typed here), what you need and what is missing, beside what
+ * to farm today. A goal's materials show only in the table (round 6).
  */
 export function PlannerPage() {
   const { id } = useParams<{ id: string }>();
@@ -28,6 +33,9 @@ export function PlannerPage() {
   const toast = useToast();
   const [picked, setPicked] = useState<string | null>(null);
   const [scope, setScope] = useState<"goal" | "all">("goal");
+  const [q, setQ] = useState("");
+  const [sort, setSort] = useState<Sort>("priority");
+  const [all, setAll] = useState(false);
   const instance = useQuery({ queryKey: ["instance", id], queryFn: () => api.get<InstanceDetail>(`/api/instances/${id}`) });
   const tasks = useQuery({ queryKey: ["tasks"], queryFn: () => api.get<TaskItem[]>("/api/tasks") });
   const instances = useQuery({ queryKey: ["instances"], queryFn: () => api.get<InstanceListItem[]>("/api/instances") });
@@ -47,15 +55,28 @@ export function PlannerPage() {
   const region = game.regions.find((r) => r.key === instance.data.regionKey) ?? game.regions[0]!;
   const weekday = gameWeekday(region, new Date());
   const mine = tasks.data.filter((t) => t.scope === "game" && t.refId === id);
-  const goals = mine.filter((t) => t.type === "goal" && !t.parentId && !t.materialId && (t.origin as TaskOrigin | null)?.catalogId);
+  // Linked goals keep their own cards (round 6).
+  const goals = mine.filter((t) => t.type === "goal" && !t.materialId && (t.origin as TaskOrigin | null)?.catalogId);
   const kidsOf = (g: TaskItem) => mine.filter((t) => t.parentId === g.id && t.materialId);
+  const linkedOf = (g: TaskItem) => goals.filter((t) => t.parentId === g.id);
+  const share = (g: TaskItem) => {
+    const [done, total] = goalSteps(g, mine);
+    return total ? done / total : 0;
+  };
+  const needle = q.trim().toLowerCase();
+  const listed = goals
+    .filter((g) => !needle || [g.title, ...kidsOf(g).map((k) => k.title)].some((s) => s.toLowerCase().includes(needle)))
+    .sort((a, b) =>
+      sort === "name" ? a.title.localeCompare(b.title) : sort === "progress" ? share(b) - share(a) || a.title.localeCompare(b.title) : PRIORITY_RANK[a.priority] - PRIORITY_RANK[b.priority] || a.title.localeCompare(b.title),
+    );
+  const shown = all ? listed : listed.slice(0, SHOWN);
   // The picked goal, else the first active one that still needs materials.
   const current = goals.find((g) => g.id === picked) ?? goals.find((g) => !g.backlog && kidsOf(g).length > 0) ?? goals[0];
   const have = new Map((stock.data ?? []).map((s) => [s.materialId, s.qty]));
 
-  // This goal's materials, or every goal's summed (backlog left out).
+  // This goal's materials with its linked goals', or every goal's summed (backlog left out).
   const needs = new Map<string, number>();
-  for (const g of scope === "goal" ? (current ? [current] : []) : goals.filter((x) => !x.backlog)) {
+  for (const g of scope === "goal" ? (current ? [current, ...linkedOf(current)] : []) : goals.filter((x) => !x.backlog)) {
     for (const k of kidsOf(g)) needs.set(k.materialId!, (needs.get(k.materialId!) ?? 0) + (k.target ?? 0));
   }
   const rows = [...needs].map(([materialId, need]) => {
@@ -81,25 +102,28 @@ export function PlannerPage() {
       </div>
       <div className="pn-page">
         <section className="card pn-goals" aria-label="Goals">
-          <div className="spread">
+          <div className="pn-goals-head">
             <h3>Goals</h3>
+            <input type="search" aria-label="Filter goals" placeholder="Character or material" value={q} onChange={(e) => setQ(e.target.value)} />
+            <Segmented label="Sort" options={[{ value: "priority", label: "Priority" }, { value: "progress", label: "Progress" }, { value: "name", label: "Name" }]} value={sort} onChange={setSort} />
+            <span className="ch-sp" />
             <Link className="btn" to={`/games/${id}/characters`}>New goal</Link>
           </div>
           {goals.length === 0 && <p className="mu">No farming goal yet: plan one from a character's sheet.</p>}
+          {goals.length > 0 && listed.length === 0 && <p className="mu">No goal matches.</p>}
           {/* The Tasks goal card (Georges, round 4): priority, notify, its plan, Link to; a click also picks it for the materials. */}
-          {goals.map((g) => (
-            <div key={g.id} className={`pn-goal ${g.id === current?.id ? "is-on" : ""}`} onClickCapture={() => setPicked(g.id)}>
-              <GoalCard
-                t={g}
-                kids={mine.filter((t) => t.parentId === g.id)}
-                kidsOf={(k) => mine.filter((t) => t.parentId === k)}
-                linkable={mine.filter((x) => x.id !== g.id && !x.parentId && x.type === "goal" && !x.backlog)}
-                gi={gi}
-                weekday={weekday}
-                showGame={false}
-              />
-            </div>
-          ))}
+          <div className="pn-goal-grid">
+            {shown.map((g) => (
+              <div key={g.id} className={`pn-goal ${g.id === current?.id ? "is-on" : ""}`} onClickCapture={() => setPicked(g.id)}>
+                <GoalCard t={g} tasks={mine} linkable={goals.filter((x) => x.id !== g.id && !x.parentId && !x.backlog)} gi={gi} weekday={weekday} showGame={false} materials={false} />
+              </div>
+            ))}
+          </div>
+          {listed.length > SHOWN && (
+            <button type="button" className="btn ghost pn-all" onClick={() => setAll(!all)}>
+              {all ? "Two rows" : `All ${listed.length} goals`}
+            </button>
+          )}
         </section>
 
         <div className="pn-main">
@@ -111,6 +135,7 @@ export function PlannerPage() {
             {rows.length === 0 ? (
               <p className="mu">Nothing to farm here.</p>
             ) : (
+              <div className="pn-table">
               <table>
                 <thead>
                   <tr><th>Material</th><th>Source</th><th>Days</th><th className="num">Have</th><th className="num">Need</th><th className="num">Missing</th></tr>
@@ -149,6 +174,7 @@ export function PlannerPage() {
                   ))}
                 </tbody>
               </table>
+              </div>
             )}
           </section>
 

@@ -142,13 +142,20 @@ test("Tasks: a character goal shows its plan (each ascension, each talent), and 
   await expect(steps).toContainText("Lv");
   await expect(steps.getByRole("listitem")).not.toHaveCount(0);
 
-  // Link the light cone's goal under Clara's: it leaves the list and shows inside hers.
+  // Link the light cone's goal under Clara's (round 6): it keeps its card, tagged with hers, and its progress adds to hers.
+  const total = async () => Number((await clara.locator(".tk-prog .mn").first().textContent())!.split("/")[1]);
+  const before = await total();
   const cone = goals.getByRole("article", { name: "E2E farm a light cone" });
   await cone.getByRole("button", { name: /E2E farm a light cone/ }).click();
   await cone.getByRole("combobox", { name: "Link to" }).fill("Clara");
   await cone.getByRole("option", { name: /Clara/ }).first().click();
-  await expect(goals.getByRole("article", { name: "E2E farm a light cone" })).toHaveCount(0);
-  await expect(clara).toContainText("E2E farm a light cone");
+  await expect(cone).toBeVisible();
+  await expect(cone.getByText(/↳ Farm Clara/)).toBeVisible();
+  await expect.poll(total).toBe(before + 1);
+  await expect(clara.getByRole("list", { name: "Linked goals" })).toContainText("E2E farm a light cone");
+  // Unlinked from its own card.
+  await cone.getByRole("button", { name: "Unlink" }).click();
+  await expect.poll(total).toBe(before);
   await page.request.delete(`/api/tasks/${weapon.id}`);
 });
 

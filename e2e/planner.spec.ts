@@ -59,7 +59,7 @@ test("Planner: each goal is the Tasks goal card: priority, notify, its plan, Lin
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
   for (const catalogId of ["1005", "1102"]) {
-    expect((await page.request.post(`/api/instances/${id}/plans/generate`, { data: { kind: "character", catalogId, level: { from: 1, to: 20 } } })).ok()).toBe(true);
+    expect((await page.request.post(`/api/instances/${id}/plans/generate`, { data: { kind: "character", catalogId, level: { from: 1, to: 30 } } })).ok()).toBe(true);
   }
   await page.goto(`/games/${id}/planner`);
   const goals = page.getByRole("region", { name: "Goals" });
@@ -71,14 +71,72 @@ test("Planner: each goal is the Tasks goal card: priority, notify, its plan, Lin
   await expect(page.getByRole("region", { name: /^Materials/ })).toContainText("Farm Seele");
   await expect(seele.getByRole("list", { name: "Plan" })).toContainText("Lv");
 
-  // Link Seele's goal under Kafka's: it leaves the list and shows inside hers.
+  // Link Seele's goal under Kafka's (round 6): Seele's keeps its card, and its steps add to Kafka's.
   const kafka = goals.getByRole("article", { name: /Farm Kafka/ }).first();
+  const steps = async (card: typeof kafka) => (await card.locator(".tk-prog .mn").first().textContent())!.split("/").map((s) => Number(s.trim()));
+  const [, kafkaTotal] = await steps(kafka);
+  const [, seeleTotal] = await steps(seele);
   await kafka.getByRole("button", { name: /Farm Kafka/ }).click();
   await seele.getByRole("combobox", { name: "Link to" }).fill("Kafka");
   await seele.getByRole("option", { name: /Kafka/ }).first().click();
-  await expect(goals.getByRole("article", { name: /Farm Seele/ })).toHaveCount(0);
+  await expect(seele).toBeVisible();
+  await expect.poll(async () => (await steps(kafka))[1]).toBe(kafkaTotal! + seeleTotal!);
   await expect(kafka.getByRole("list", { name: "Linked goals" })).toContainText("Farm Seele");
 
   const tasks = (await (await page.request.get(`/api/tasks?scope=game&refId=${id}`)).json()) as { id: string; title: string }[];
   for (const t of tasks.filter((x) => x.title === "Farm Seele")) await page.request.delete(`/api/tasks/${t.id}`);
+});
+
+// Georges, round 6: "the planner screen is hard to read and gets crooked when opening a goal: the inner cards go over the outer cards
+// into the background, and I get the information twice; I should be able to filter and sort goals; two rows of goals, and the
+// materials a bit shorter without squishing them".
+test("Planner: goals in rows of three, two rows until All; filtered and sorted; an open goal stays in its card, its materials once @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  // Seven characters no other journey plans.
+  const names = ["March 7th", "Himeko", "Welt", "Silver Wolf", "Arlan", "Asta", "Herta"];
+  for (const catalogId of ["1001", "1003", "1004", "1006", "1008", "1009", "1013"]) {
+    expect((await page.request.post(`/api/instances/${id}/plans/generate`, { data: { kind: "character", catalogId, level: { from: 1, to: 30 } } })).ok()).toBe(true);
+  }
+  try {
+    await page.goto(`/games/${id}/planner`);
+    const goals = page.getByRole("region", { name: "Goals" });
+    const cards = goals.getByRole("article");
+    // Two rows of three, then All.
+    await expect(cards).toHaveCount(6);
+    const [a, c, d] = [(await cards.nth(0).boundingBox())!, (await cards.nth(2).boundingBox())!, (await cards.nth(3).boundingBox())!];
+    expect(Math.abs(a.y - c.y)).toBeLessThan(2);
+    expect(d.y).toBeGreaterThan(a.y + a.height - 2);
+    const all = goals.getByRole("button", { name: /^All \d+ goals$/ });
+    const count = Number((await all.textContent())!.replace(/\D/g, ""));
+    await all.click();
+    await expect(cards).toHaveCount(count);
+
+    // Sorted by name, then filtered.
+    await goals.getByRole("group", { name: "Sort" }).getByRole("button", { name: "Name" }).click();
+    const titles = await cards.locator(".tk-title strong").allTextContents();
+    expect(titles).toEqual([...titles].sort((x, y) => x.localeCompare(y)));
+    await goals.getByRole("searchbox", { name: "Filter goals" }).fill("Asta");
+    await expect(cards).toHaveCount(1);
+
+    // Open, it shows its plan, inside its card and the page; its materials only in the Materials table.
+    const asta = cards.first();
+    await asta.getByRole("button", { name: /Farm Asta/ }).click();
+    await expect(asta.getByRole("list", { name: "Plan" })).toBeVisible();
+    await expect(asta.getByRole("spinbutton")).toHaveCount(0);
+    await expect(page.getByRole("region", { name: /^Materials/ }).getByRole("spinbutton").first()).toBeVisible();
+    const [card, grid] = [(await asta.boundingBox())!, (await goals.boundingBox())!];
+    expect(card.x + card.width).toBeLessThanOrEqual(grid.x + grid.width + 1);
+    expect(await asta.evaluate((el) => el.scrollWidth <= el.clientWidth)).toBe(true);
+
+    // The materials beside Farm today, no taller than the screen.
+    const [mats, today] = [(await page.getByRole("region", { name: /^Materials/ }).boundingBox())!, (await page.getByRole("region", { name: /^Farm today/ }).boundingBox())!];
+    expect(Math.abs(mats.y - today.y)).toBeLessThan(2);
+    expect(mats.height).toBeLessThanOrEqual(640);
+  } finally {
+    const tasks = (await (await page.request.get(`/api/tasks?scope=game&refId=${id}`)).json()) as { id: string; title: string }[];
+    for (const t of tasks.filter((x) => names.some((n) => x.title === `Farm ${n}`))) await page.request.delete(`/api/tasks/${t.id}`);
+  }
 });

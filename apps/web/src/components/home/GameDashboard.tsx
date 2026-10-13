@@ -1,7 +1,7 @@
 import { Fragment, useState, type ReactNode } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { endgameNow, getGame, hubResets, passView, pullsFor, skillsField, weaponHolder, type CharacterDto, type CycleResultsDto, type GameDefinition, type PassesDto, type TaskDto } from "@gacha/shared";
+import { endgameNow, getGame, goalSteps, hubResets, listedGoal, passView, pullsFor, skillsField, weaponHolder, type CharacterDto, type CycleResultsDto, type GameDefinition, type PassesDto, type TaskDto } from "@gacha/shared";
 import { LoadError } from "../LoadError";
 import { api } from "../../lib/api";
 import { formatRemaining } from "../../lib/time";
@@ -448,14 +448,12 @@ function EndgameCard({ instanceId, game, region, cycles }: { instanceId: string;
   );
 }
 
-/** A goal's progress, 0 to 1: its material steps met, its checklist ticked, or its count over its target. */
+/** A goal's progress, 0 to 1: its steps (its linked goals' added), else done or not. */
 function progressOf(t: TaskDto, all: TaskDto[]) {
-  const kids = all.filter((k) => k.parentId === t.id && k.materialId);
-  if (kids.length) return kids.filter((k) => k.progress >= (k.target ?? 0)).length / kids.length;
-  if (t.items?.length) return t.items.filter((i) => i.done).length / t.items.length;
-  return t.target ? Math.min(1, t.progress / t.target) : t.lastCompletedAt ? 1 : 0;
+  const [done, total] = goalSteps(t, all);
+  return total ? done / total : t.lastCompletedAt ? 1 : 0;
 }
-const topGoals = (tasks: TaskDto[]) => tasks.filter((t) => !t.parentId && t.type !== "recurring");
+const topGoals = (tasks: TaskDto[]) => tasks.filter((t) => listedGoal(t) && t.type !== "recurring");
 
 /** The game's active goals, each with its bar (the Overview's goals gauge sits on top). */
 function GoalsCard({ gameKey, tasks, span }: { gameKey: string; tasks: TaskDto[]; span?: "full" }) {

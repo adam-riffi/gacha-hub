@@ -44,9 +44,17 @@
 .gr-head { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 18px; }
 
 /* Planner (WIREFRAMES.md G7) */
-.pn-page { display: grid; grid-template-columns: 380px minmax(0, 1fr); gap: 24px; align-items: start; }
-.pn-goals { display: grid; gap: 10px; }
-.pn-goal { display: grid; border: 1px solid transparent; }
+/* Goals on top in rows of three, then the materials beside Farm today (Georges, round 6: "two rows of goals; the materials a bit shorter"). */
+.pn-page { display: grid; gap: 24px; }
+.pn-goals { display: grid; gap: 12px; }
+.pn-goals-head { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.pn-goals-head input[type="search"] { width: 240px; }
+.pn-goal-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-items: start; }
+.pn-all { justify-self: start; }
+.pn-goal { display: grid; min-width: 0; border: 1px solid transparent; }
+.pn-goal .tk-card { min-width: 0; overflow: hidden; }
+.pn-goal .tk-actions { flex-wrap: wrap; }
+.pn-goal .tk-link { width: auto; flex: 1 1 200px; min-width: 0; }
 .pn-goal.is-on { border-color: var(--text); }
 .pn-goal .tk-card { margin: 0; }
 /* The Tasks goal card in the Planner's column: the title on its own line, progress, priority and notify under it. */
@@ -58,7 +66,9 @@
 .pn-goal .mn { font-size: 12px; }
 .pn-bar { display: flex; align-items: center; gap: 8px; }
 .pn-bar .tk-meter { flex: 1; width: auto; }
-.pn-main { display: grid; gap: 24px; min-width: 0; }
+.pn-main { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 24px; align-items: start; min-width: 0; }
+.pn-table { max-height: 480px; overflow: auto; }
+.pn-table thead th { position: sticky; top: 0; z-index: 1; background: var(--card); }
 .pn-materials td input { width: 80px; min-height: 26px; padding: 2px 6px; text-align: right; }
 .pn-days { font: 400 13px/1 var(--font-mono); white-space: nowrap; }
 .pn-days .today { color: var(--accent); font-weight: 700; }

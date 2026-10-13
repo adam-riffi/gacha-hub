@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getGame, type TaskDto } from "@gacha/shared";
+import { getGame, listedGoal, type TaskDto } from "@gacha/shared";
 import { LoadError } from "../components/LoadError";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
@@ -56,7 +56,7 @@ export function LibraryPage() {
   };
   // Goals as Tasks counts them: a profile's top-level goals, active or in the backlog.
   const goalsOf = (instanceId: string) => {
-    const top = (tasks.data ?? []).filter((t) => t.scope === "game" && t.refId === instanceId && !t.parentId && t.type !== "recurring");
+    const top = (tasks.data ?? []).filter((t) => t.scope === "game" && t.refId === instanceId && listedGoal(t) && t.type !== "recurring");
     return { active: top.filter((t) => !t.backlog).length, backlog: top.filter((t) => t.backlog).length };
   };
   const installed = new Set(rows.map((g) => g.gameKey));

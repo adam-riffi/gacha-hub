@@ -26,7 +26,8 @@ export async function registerFarmTodayRoutes(app: FastifyInstance) {
       const materials = (await getCatalog(game))?.index.materials;
       const mine = tasks.filter((t) => t.row.refId === gi.id);
       const goals = mine
-        .filter((t) => t.row.type === "goal" && !t.row.parentId && !t.row.materialId)
+        // Linked goals too (round 6): each farms its own materials.
+        .filter((t) => t.row.type === "goal" && !t.row.materialId)
         .map((p) => {
           const origin = p.row.origin as { kind?: FarmUnit["kind"]; catalogId?: string } | null;
           return {

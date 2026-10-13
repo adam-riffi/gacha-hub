@@ -138,7 +138,7 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
   const skillName = (k: string) => entry?.talents.info?.find((i) => i.key === k)?.name ?? cap(k);
   // What each skill does, from the catalog, opened from its name (Georges, 2026-10-11).
   const skillText = (k: string) => entry?.talents.info?.find((i) => i.key === k)?.description;
-  const plan = (tasks.data ?? []).find((t) => !t.parentId && (t.origin as TaskOrigin | null)?.catalogId === data.catalogId && (t.origin as TaskOrigin | null)?.kind === "character");
+  const plan = (tasks.data ?? []).find((t) => !t.materialId && (t.origin as TaskOrigin | null)?.catalogId === data.catalogId && (t.origin as TaskOrigin | null)?.kind === "character");
   const targets = ((plan?.origin as { goal?: { talents?: Record<string, { to: number }> } } | null)?.goal?.talents ?? {}) as Record<string, { to: number }>;
   const holder = weaponHolder(game);
   const weapon = (holder ? doc[holder] : undefined) as { name?: string; catalogId?: string; level?: number; [k: string]: unknown } | undefined;
