@@ -148,3 +148,32 @@ test("Weapons: a weapon's panel closes on a click outside it @smoke", async ({ p
   await page.getByRole("searchbox", { name: "Search" }).click();
   await expect(page.getByRole("complementary", { name: "Arrows" })).toHaveCount(0);
 });
+
+// Several at once, and the main stat as a filter (Georges, round 6: "I should be able to select multiple to do some change
+// like mass modify level or ownership; also filter by main stat").
+test("Weapons: several copies changed at once, level and ownership; the main stat as a filter @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "zzz" } })).json()) as { id: string };
+  await clearCopies(page, id);
+  // Two Steel Cushions (CRIT Rate).
+  for (let i = 0; i < 2; i++) await page.request.post(`/api/instances/${id}/weapons`, { data: { catalogId: "14102" } });
+  await page.goto(`/games/${id}/weapons`);
+  const grid = page.getByRole("region", { name: "Weapons" });
+
+  await page.getByRole("group", { name: "Main stat" }).getByRole("button", { name: "CRIT Rate" }).click();
+  await expect(grid.getByRole("article").first()).toContainText("CRIT Rate");
+
+  await page.getByRole("button", { name: "Select", exact: true }).click();
+  const cushions = grid.getByRole("article", { name: "Steel Cushion" });
+  await cushions.nth(0).click();
+  await cushions.nth(1).click();
+  const selection = page.getByRole("region", { name: "Selection" });
+  await expect(selection).toContainText("2 selected");
+  await selection.getByRole("spinbutton", { name: "Level" }).fill("50");
+  await selection.getByRole("button", { name: "Set level" }).click();
+  await expect.poll(async () => ((await (await page.request.get(`/api/instances/${id}/weapons`)).json()) as { level: number }[]).map((w) => w.level)).toEqual([50, 50]);
+  await selection.getByRole("button", { name: "Remove", exact: true }).click();
+  await expect.poll(async () => ((await (await page.request.get(`/api/instances/${id}/weapons`)).json()) as unknown[]).length).toBe(0);
+});
