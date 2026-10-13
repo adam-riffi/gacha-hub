@@ -134,3 +134,17 @@ test("Weapons and characters synced: a build holds a copy; a held one is taken, 
   await expect.poll(async () => (await cone(danHeng)).copyId).toBeUndefined();
   await clearCopies(page, id);
 });
+
+// Every window closes on a click outside it (Georges, round 6).
+test("Weapons: a weapon's panel closes on a click outside it @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  await page.goto(`/games/${id}/weapons`);
+  await page.getByRole("searchbox", { name: "Search" }).fill("Arrows");
+  await page.getByRole("region", { name: "Weapons" }).getByRole("article", { name: "Arrows" }).first().click();
+  await expect(page.getByRole("complementary", { name: "Arrows" })).toBeVisible();
+  await page.getByRole("searchbox", { name: "Search" }).click();
+  await expect(page.getByRole("complementary", { name: "Arrows" })).toHaveCount(0);
+});

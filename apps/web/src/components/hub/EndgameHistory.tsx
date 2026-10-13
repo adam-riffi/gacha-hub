@@ -21,16 +21,21 @@ export type UnitOf = (id: string) => { name: string; icon?: string; tag?: string
 /** A clear time in seconds as m:ss. */
 export const mss = (t: number) => `${Math.floor(t / 60)}:${String(t % 60).padStart(2, "0")}`;
 
-/** Each stage's team as icons, with its clear time. */
-export function ClearList({ gameKey, teams, unitOf }: { gameKey: string; teams: Clear[]; unitOf: UnitOf }) {
-  if (!teams.length) return null;
+/**
+ * Each stage's team as icons, with its clear time; given the mode's stages,
+ * every stage shows, "—" where nothing is typed yet (Georges, round 6: "for
+ * Stygian I wanna see my teams, time and difficulty").
+ */
+export function ClearList({ gameKey, teams, unitOf, stages }: { gameKey: string; teams: Clear[]; unitOf: UnitOf; stages?: readonly string[] }) {
+  const rows = stages ? stages.map((stage) => teams.find((t) => t.stage === stage) ?? { stage, members: [], time: null }) : teams;
+  if (!rows.length) return null;
   return (
     <ul className="eg-clears" aria-label="Clears">
-      {teams.map((t) => (
+      {rows.map((t) => (
         <li key={t.stage}>
           <span className="mn mu">{t.stage}</span>
-          <TeamIcons gameKey={gameKey} members={t.members} unitOf={unitOf} />
-          {t.time !== null && <span className="mn">{mss(t.time)}</span>}
+          {t.members.length ? <TeamIcons gameKey={gameKey} members={t.members} unitOf={unitOf} /> : <span className="mu">—</span>}
+          <span className="mn">{t.time !== null ? mss(t.time) : ""}</span>
         </li>
       ))}
     </ul>
@@ -53,7 +58,7 @@ export function TeamIcons({ gameKey, members, unitOf }: { gameKey: string; membe
  * and the current result; the result per cycle as a line (filled dots are
  * full clears; each point's title gives its dates and rewards); the cycles as
  * a table, older ones on demand; earlier cycles typed in; a CSV export. A
- * point or a row opens its cycle (round 5).
+ * point or a row makes its cycle the mode card's (rounds 5 and 6).
  */
 export function EndgameHistory({
   instanceId,

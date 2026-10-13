@@ -1,4 +1,4 @@
-import { useState, type CSSProperties, type FormEvent } from "react";
+import { useRef, useState, type CSSProperties, type FormEvent } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { dupeLetter, elementColor, getGame, weaponHolder, type CatalogWeapon, type CharacterDto, type WeaponCopyDto, type WishlistItemDto } from "@gacha/shared";
@@ -6,6 +6,7 @@ import { LoadError } from "../components/LoadError";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
 import { useCatalog } from "../lib/catalog";
+import { useDismiss } from "../lib/dismiss";
 import { GameTabs } from "../components/GameTabs";
 import { Chips } from "../components/ui";
 import { CatalogIcon } from "../components/CatalogIcon";
@@ -251,9 +252,11 @@ function WeaponPanel({
   onClose: () => void;
 }) {
   const [farming, setFarming] = useState(false);
+  const ref = useRef<HTMLElement>(null);
+  useDismiss(ref, onClose);
   const num = (v: string) => (v === "" ? undefined : Number(v));
   return (
-    <aside className="card wp-panel" aria-label={weapon.name}>
+    <aside ref={ref} className="card wp-panel" aria-label={weapon.name}>
       <div className="spread">
         <span className="wp-panel-title">
           <CatalogIcon gameKey={gameKey} kind="weapon" icon={weapon.icon} name={weapon.name} />

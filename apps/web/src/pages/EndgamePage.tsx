@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { endgameNow, gameDay, getGame, modeCycles, premiumCurrency, type Clear, type CycleResultsDto, type GameDefinition, type GameRegion, type TeamDto } from "@gacha/shared";
+import { endgameNow, gameDay, getGame, modeCycles, premiumCurrency, versionAt, type CycleResultsDto, type GameDefinition, type GameRegion, type TeamDto } from "@gacha/shared";
 import { api } from "../lib/api";
 import { assetUrl, communityAssetUrl } from "../lib/assets";
 import { useCatalog } from "../lib/catalog";
@@ -9,8 +9,8 @@ import { Picker, type PickerOption } from "../components/Picker";
 import { formatRemaining } from "../lib/time";
 import type { InstanceDetail } from "../lib/types";
 import { GameTabs } from "../components/GameTabs";
-import { ClearList, EndgameHistory, TeamIcons, mss, type UnitOf } from "../components/hub/EndgameHistory";
-import { CycleDialog, Enemies } from "../components/hub/CycleDialog";
+import { ClearList, EndgameHistory, TeamIcons, cycleSpan, mss, type UnitOf } from "../components/hub/EndgameHistory";
+import { Enemies } from "../components/hub/Enemies";
 import { useReminderFlag } from "../lib/reminder";
 
 const NUM = new Intl.NumberFormat("en-GB");
@@ -41,8 +41,8 @@ function cadenceLabel(m: Mode) {
  * A game's Endgame tab (WIREFRAMES.md G2): the premium claimed across the
  * open cycles and the next reset; a card per mode with its cycle window,
  * result, rewards and last six cycles, typed in place; each mode's history;
- * the upcoming resets. Any cycle opens, from its bar, point or row, or a
- * mode's History (Georges, round 5).
+ * the upcoming resets. Any cycle becomes its card's, from a bar, the arrows,
+ * a point or a row of the history (Georges, rounds 5 and 6).
  */
 export function EndgamePage() {
   const { id } = useParams<{ id: string }>();
@@ -52,8 +52,8 @@ export function EndgamePage() {
   const game = instance && getGame(instance.gameKey);
   const { catalog, index } = useCatalog(instance?.gameKey);
   const teams = useQuery({ queryKey: ["teams", id], queryFn: () => api.get<TeamDto[]>(`/api/instances/${id}/teams`), enabled: Boolean(game?.loadCatalog) });
-  // The cycle open in the dialog: its mode and its start.
-  const [open, setOpen] = useState<{ modeKey: string; at: number } | null>(null);
+  // Each mode's picked cycle (its start), the current one when none.
+  const [picked, setPicked] = useState<Record<string, number | null>>({});
   if (!instance || !game) return <div className="muted">Loading…</div>;
 
   const region = game.regions.find((r) => r.key === instance.regionKey) ?? game.regions[0]!;
@@ -61,7 +61,6 @@ export function EndgamePage() {
   const results = (cycles?.results ?? []).map((r) => ({ ...r, cycleStart: new Date(r.cycleStart) }));
   const eg = endgameNow(game, region, now, results);
   const premium = premiumCurrency(game);
-  const openMode = open ? game.manifest.endgame.find((e) => e.key === open.modeKey) : undefined;
   const unitOf: UnitOf = (cid) => index?.characters.get(cid);
   const roster: Roster = {
     gameKey: game.key,
@@ -115,12 +114,24 @@ export function EndgamePage() {
 
         <div className="eg-modes">
           {eg.modes.map((m) => (
-            <ModeCard key={m.mode.key} instanceId={id!} game={game} m={m} region={region} now={now} premium={premium} roster={roster} history={results.filter((r) => r.modeKey === m.mode.key)} onOpen={(at) => setOpen({ modeKey: m.mode.key, at })} />
+            <ModeCard key={m.mode.key} instanceId={id!} game={game} m={m} region={region} now={now} premium={premium} roster={roster} rows={modeCycles(m.mode, region, now, results)} at={picked[m.mode.key] ?? null} onSelect={(at) => setPicked((p) => ({ ...p, [m.mode.key]: at }))} />
           ))}
           {eg.modes.length === 0 && <p className="mu">No endgame mode on record for this game yet.</p>}
         </div>
 
-        <EndgameHistory instanceId={id!} game={game} region={region} now={now} results={results} premium={premium} unitOf={unitOf} onOpen={(modeKey, at) => setOpen({ modeKey, at })} />
+        <EndgameHistory
+          instanceId={id!}
+          game={game}
+          region={region}
+          now={now}
+          results={results}
+          premium={premium}
+          unitOf={unitOf}
+          onOpen={(modeKey, at) => {
+            setPicked((p) => ({ ...p, [modeKey]: at }));
+            document.getElementById(`eg-${modeKey}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+          }}
+        />
 
         <section className="card eg-upcoming" aria-label="Upcoming resets">
           <h3>Upcoming resets</h3>
@@ -137,25 +148,16 @@ export function EndgamePage() {
           </div>
         </section>
       </div>
-      {open && openMode && (
-        <CycleDialog
-          key={open.modeKey}
-          instanceId={id!}
-          game={game}
-          region={region}
-          mode={openMode}
-          rows={modeCycles(openMode, region, now, results)}
-          at={open.at}
-          premium={premium}
-          unitOf={unitOf}
-          onPick={(at) => setOpen({ ...open, at })}
-          onClose={() => setOpen(null)}
-        />
-      )}
     </>
   );
 }
 
+/**
+ * A mode's card: the cycle picked (the current one by default; a bar, the
+ * arrows, a point or a row of the history pick another, round 6) with its
+ * dates and version, result, rewards, detail, each stage's team and time,
+ * the enemies, typed in place; the last six cycles as bars.
+ */
 function ModeCard({
   instanceId,
   game,
@@ -164,8 +166,9 @@ function ModeCard({
   now,
   premium,
   roster,
-  history,
-  onOpen,
+  rows,
+  at,
+  onSelect,
 }: {
   instanceId: string;
   game: GameDefinition;
@@ -174,18 +177,27 @@ function ModeCard({
   now: Date;
   premium: string;
   roster: Roster;
-  history: { cycleStart: Date; result: number | null; teams?: Clear[] }[];
-  onOpen: (at: number) => void;
+  rows: ReturnType<typeof modeCycles>;
+  at: number | null;
+  onSelect: (at: number | null) => void;
 }) {
   const qc = useQueryClient();
   const [editing, setEditing] = useState(false);
-  const stages = m.mode.clears?.stages ?? [];
-  const current = history.find((c) => c.cycleStart.getTime() === m.start.getTime());
+  const { mode } = m;
+  const stages = mode.clears?.stages ?? [];
+  const i = Math.max(0, at === null ? rows.findIndex((r) => r.current) : rows.findIndex((r) => r.cycleStart.getTime() === at));
+  const r = rows[i]!;
+  const day = gameDay(region, r.current ? now : r.cycleStart);
+  const version = versionAt(game, region, r.cycleStart);
+  const pick = (k: number) => {
+    setEditing(false);
+    onSelect(rows[k]!.current ? null : rows[k]!.cycleStart.getTime());
+  };
   // Each stage's team and typed time while the form is open.
   const [draft, setDraft] = useState<Record<string, { members: string[]; time: string }>>({});
   const open = () => {
     setDraft(Object.fromEntries(stages.map((s) => {
-      const t = current?.teams?.find((x) => x.stage === s);
+      const t = r.teams?.find((x) => x.stage === s);
       return [s, { members: t?.members ?? [], time: t?.time ? mss(t.time) : "" }];
     })));
     setEditing(true);
@@ -197,36 +209,55 @@ function ModeCard({
       qc.invalidateQueries({ queryKey: ["cycles", instanceId] });
     },
   });
-  const { mode } = m;
   const span = m.closes.getTime() - m.start.getTime();
-  const at = span > 0 ? Math.min(1, Math.max(0, (now.getTime() - m.start.getTime()) / span)) : 1;
-  // The last six cycles, oldest first; the current one is the last bar.
-  const last = [...history].sort((a, b) => a.cycleStart.getTime() - b.cycleStart.getTime()).slice(-6);
+  const done = !r.current ? 1 : span > 0 ? Math.min(1, Math.max(0, (now.getTime() - m.start.getTime()) / span)) : 1;
+  const from = r.current ? m.start : r.cycleStart;
+  const to = r.current ? m.closes : r.end;
+  // The last six cycles, oldest first.
+  const last = [...rows].reverse().slice(-6);
   const submit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const f = new FormData(e.currentTarget);
     const num = (k: string) => (String(f.get(k) ?? "") === "" ? null : Number(f.get(k)));
     const teams = stages.map((s) => ({ stage: s, members: draft[s]?.members ?? [], time: secs(draft[s]?.time ?? "") })).filter((t) => t.members.length > 0 || t.time !== null);
-    save.mutate({ modeKey: mode.key, day: gameDay(region, now), result: num("result"), premium: num("premium"), detail: String(f.get("detail") ?? "") || null, ...(stages.length ? { teams } : {}) });
+    save.mutate({ modeKey: mode.key, day, result: num("result"), premium: num("premium"), detail: String(f.get("detail") ?? "") || null, ...(stages.length ? { teams } : {}) });
   };
   return (
-    <section className="card eg-mode" aria-label={mode.name}>
+    <section className={`card eg-mode ${r.current ? "" : "is-past"}`} aria-label={mode.name} id={`eg-${mode.key}`}>
       <div className="spread">
         <h3>{mode.name}</h3>
         <span className="badge">{cadenceLabel(mode)}</span>
       </div>
-      <div className="eg-window" role="img" aria-label={`Cycle ${DATE.format(m.start)} to ${DATE.format(m.closes)}`}>
+      <div className="eg-cycle-nav">
+        <button type="button" className="btn ghost sm" aria-label="Older cycle" disabled={i === rows.length - 1} onClick={() => pick(i + 1)}>
+          ‹
+        </button>
+        <span className="mn">
+          {cycleSpan(r.cycleStart, r.end)}
+          {version && <span className="mu"> · version {version}</span>}
+        </span>
+        {r.current ? <span className="tag eg-now">Now</span> : null}
+        <button type="button" className="btn ghost sm" aria-label="Newer cycle" disabled={i === 0} onClick={() => pick(i - 1)}>
+          ›
+        </button>
+        {!r.current && (
+          <button type="button" className="btn sm" onClick={() => onSelect(null)}>
+            Back to now
+          </button>
+        )}
+      </div>
+      <div className="eg-window" role="img" aria-label={`Cycle ${DATE.format(from)} to ${DATE.format(to)}`}>
         <div className="eg-window-bar">
-          <span style={{ width: `${at * 100}%` }} />
-          <i style={{ left: `${at * 100}%` }} />
+          <span style={{ width: `${done * 100}%` }} />
+          {r.current && <i style={{ left: `${done * 100}%` }} />}
         </div>
         <div className="eg-window-dates mn mu">
-          <span>{AT.format(m.start)}</span>
-          <span>{AT.format(m.closes)}</span>
+          <span>{AT.format(from)}</span>
+          <span>{AT.format(to)}</span>
         </div>
       </div>
       <div className="kpi-value eg-result">
-        {m.result ?? "—"}
+        {r.result ?? "—"}
         <small>
           {" "}
           / {mode.metric.max ?? "—"} {mode.metric.label}
@@ -237,46 +268,47 @@ function ModeCard({
           <div className="act-xp">
             <span className="kpi-label">Rewards</span>
             <span className="mn">
-              {NUM.format(m.premium)} / {NUM.format(mode.maxPremium)}
+              {NUM.format(r.premium ?? 0)} / {NUM.format(mode.maxPremium)}
             </span>
           </div>
-          <div className="act-meter act-meter-thin" role="img" aria-label={`${m.premium} of ${mode.maxPremium} ${premium}`}>
-            <span style={{ width: `${Math.min(100, (m.premium / mode.maxPremium) * 100)}%` }} />
+          <div className="act-meter act-meter-thin" role="img" aria-label={`${r.premium ?? 0} of ${mode.maxPremium} ${premium}`}>
+            <span style={{ width: `${Math.min(100, ((r.premium ?? 0) / mode.maxPremium) * 100)}%` }} />
           </div>
         </div>
       )}
+      {r.detail && !editing && <p className="eg-detail">{r.detail}</p>}
       <div className="kpi-label eg-last-label">Last {last.length || ""} cycles</div>
-      <div className="eg-last" role="img" aria-label={`Last cycles: ${last.map((c) => c.result ?? "none").join(", ") || "none recorded"}`}>
-        {last.map((c, k) => (
+      <div className="eg-last">
+        {last.map((c) => (
           <button
             type="button"
             key={c.cycleStart.toISOString()}
-            className={k === last.length - 1 && c.cycleStart.getTime() === m.start.getTime() ? "on" : ""}
+            className={c === r ? "on" : ""}
+            aria-pressed={c === r}
             style={{ height: `${mode.metric.max ? Math.max(4, ((c.result ?? 0) / mode.metric.max) * 100) : 50}%` }}
             aria-label={`Cycle of ${DATE.format(c.cycleStart)}: ${c.result ?? "—"} ${mode.metric.label}`}
             title={`${DATE.format(c.cycleStart)} · ${c.result ?? "—"} ${mode.metric.label}`}
-            onClick={() => onOpen(c.cycleStart.getTime())}
+            onClick={() => pick(rows.indexOf(c))}
           />
         ))}
-        {last.length === 0 && <span className="mu eg-none">No cycle recorded yet.</span>}
       </div>
-      {!editing && <ClearList gameKey={roster.gameKey} teams={current?.teams ?? []} unitOf={roster.unitOf} />}
-      <Enemies game={game} modeKey={mode.key} today={gameDay(region, now)} />
+      {!editing && <ClearList gameKey={roster.gameKey} teams={r.teams ?? []} unitOf={roster.unitOf} stages={stages.length ? stages : undefined} />}
+      <Enemies game={game} modeKey={mode.key} today={day} />
       {editing ? (
         <form className="act-add" onSubmit={submit}>
           <label>
             <span>{cap(mode.metric.label)}</span>
-            <input name="result" type="number" min={0} max={mode.metric.max} defaultValue={m.result ?? ""} autoFocus />
+            <input name="result" type="number" min={0} max={mode.metric.max} defaultValue={r.result ?? ""} autoFocus />
           </label>
           {mode.maxPremium !== undefined && (
             <label>
               <span>{premium}</span>
-              <input name="premium" type="number" min={0} max={mode.maxPremium} defaultValue={m.premium || ""} />
+              <input name="premium" type="number" min={0} max={mode.maxPremium} defaultValue={r.premium ?? ""} />
             </label>
           )}
           <label>
             <span>Detail</span>
-            <input name="detail" maxLength={80} placeholder="floor 12 · 6/9" />
+            <input name="detail" maxLength={80} placeholder="floor 12 · 6/9" defaultValue={r.detail ?? ""} />
           </label>
           {stages.map((s) => {
             const d = draft[s] ?? { members: [], time: "" };
@@ -323,14 +355,9 @@ function ModeCard({
           {save.isError && <span className="hub-error">Not saved: over the mode's best or offer.</span>}
         </form>
       ) : (
-        <span className="row eg-mode-actions">
-          <button type="button" className="btn act-add-btn" aria-label={`Update ${mode.name}`} onClick={open}>
-            Update
-          </button>
-          <button type="button" className="btn act-add-btn" aria-label={`${mode.name} history`} onClick={() => onOpen(m.start.getTime())}>
-            History
-          </button>
-        </span>
+        <button type="button" className="btn act-add-btn" aria-label={`Update ${mode.name}`} onClick={open}>
+          Update
+        </button>
       )}
     </section>
   );

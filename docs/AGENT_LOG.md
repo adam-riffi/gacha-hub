@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-12 · claude · stack/r9/02-endgame-card · #264
+- Done: Endgame (Georges, round 6: "when clicking on past endgames I'd rather have the highlighted card change rather than opening a window … get out of windows by clicking outside … for Stygian I wanna see my teams, time and difficulty"): each mode card shows its picked cycle (the current one by default): a bar, the card's ‹ › arrows, a chart point or a table row picks another, Back to now returns; the card shows its dates and version, result, rewards, detail, each stage's team and time and the enemies, and Update edits that cycle. A mode with stages lists them all, "—" where nothing is typed. The round-5 dialog is gone (`Enemies` has its own file). Side panels (a weapon's, a gear set's) close on a press outside or Escape (`useDismiss`).
+- Tests: written first: Shiyu's 18 Sept bar becomes the card's cycle (pressed; no dialog; dates, version, rewards, detail, clear time), the older one a step away and edited in place (saved on that cycle), Back to now, a table row picking its cycle; Stygian lists its three bosses before anything is typed; a weapon's panel closes on a click on the search box.
+- Scope/decisions: none.
+- Next: ownership apart from builds, and the selection's actions.
+
 ## 2026-10-12 · claude · stack/r9/01-pulls-layout · #263
 - Done: Pulls (Georges, round 6: "make the pull layout adaptable, if I hide something it all becomes crooked; remove any beginner banner; you're still using squares with letters, use icons instead"): every shown banner in one grid whose cards stretch to their row, actions at the foot, an odd last card spanning the row with its curve beside its odds (the card has two blocks now); the chances list has its own class (`pl-chances`: sharing `pl-odds` had broken every banner's odds table); the Hidden line only for banners the screen shows. Beginner banners (Genshin's Beginners' wish, Star Rail's Departure warp, WuWa's Novice and Beginner's Choice convenes, Endfield's Beginner headhunting) are flagged `beginner`: imports still map their history, `shownBanners` leaves them off Pulls, Home and the dashboard. A banner or target without art is drawn as its kind (`Glyph`: character, weapon, Bangboo, standard). Round 6's list is in `docs/AUDIT-2026-10-12-round6.md`.
 - Tests: written first: `shownBanners` per game and the five beginner banners; the pulls route and the dashboard's pity lists without them; hiding works on the shown ones; a journey on Star Rail finds no Departure warp, one grid whose first two cards share their top and height, whole odds tables, and the Stellar warp's glyph.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: two copies of Favonius Sword keep their own level and refinement and the ownership counts them; a weapon owned through the ownership becomes a copy; NTE takes a weapon by name; an unknown id, a nameless copy and a refinement over the game's cap are refused. `npm run check` passes: 574 tests and 58 journeys.
 - Scope/decisions: migration `weapon_copies` (with RLS); ownership kept as the count rather than migrated away, so HoYoLAB sync, Enka and event effects need no change. Caps: the weapon's top level (100 without a catalog), the game's refinement (1 where it has none, Endfield).
 - Next: Weapons as cards.
-
-## 2026-10-11 · claude · stack/r4/05-goals · #224
-- Done: this round's audit, "things that aren't very explicit" (Georges: "the task 'farm faded theater' doesn't really mean anything, but having Arlecchino's artifacts' icon is better"). Each goal's thumb is now its own unit: the character, weapon or gear set it farms, or the unit an event's reward raises; a set goal shows who it is for beside its title; the game is a small tile on the overview only (and its name left the subtitle); material steps carry their icons. The artifact planner's domain tasks now record their set and characters, so "Farm Faded Theater" shows the set and Arlecchino once it is updated.
-- Tests: written first: the Tasks journey makes a set goal for Arlecchino and finds the set's icon, Arlecchino's, and no game name on Genshin's Tasks, and Genshin's tile on the overview. `npm run check` passes: 571 tests and 57 journeys.
-- Scope/decisions: "who it is for" reuses the origin's `sources` (characters); old domain tasks without an origin keep the game's tile until the planner updates them.
-- Next: weapon copies.
