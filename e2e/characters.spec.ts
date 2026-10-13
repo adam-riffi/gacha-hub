@@ -204,3 +204,29 @@ test("Characters: WuWa's art is raised so the faces sit high on the card @smoke"
   expect(img.y).toBeLessThan(box.y - 20);
   expect(img.height).toBeGreaterThan(box.height * 1.2);
 });
+
+// Each character its own stats (Georges, round 6: "I can choose for each one character what I want to show").
+test("Characters: a card's own stats, picked on the card, over the game's @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  // Hook, whom no other journey builds.
+  const build = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1109", doc: { stats: { HP: 3000, DEF: 900, SPD: 104 } } } })).json()) as { id: string };
+  try {
+    await page.goto(`/games/${id}/characters`);
+    await page.getByRole("searchbox", { name: "Search" }).fill("Hook");
+    const card = page.getByRole("article", { name: "Hook" });
+    await card.getByRole("button", { name: "Stats shown on Hook" }).click();
+    const pick = card.getByRole("group", { name: "Hook's card stats" });
+    for (const stat of ["HP", "DEF"]) await pick.getByRole("button", { name: stat, exact: true }).click();
+    await expect(card.locator(".ch-kpis .kpi-label")).toHaveText(["HP", "DEF"]);
+    await expect(card.locator(".ch-kpis")).toContainText("3000");
+    // A click outside closes the picker; the choice is kept.
+    await page.getByRole("searchbox", { name: "Search" }).click();
+    await expect(pick).toHaveCount(0);
+    await expect.poll(async () => ((await (await page.request.get(`/api/characters/${build.id}`)).json()) as { cardStats: unknown }).cardStats).toEqual(["HP", "DEF"]);
+  } finally {
+    await page.request.delete(`/api/characters/${build.id}`);
+  }
+});
