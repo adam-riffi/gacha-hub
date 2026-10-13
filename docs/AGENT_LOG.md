@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-14 · claude · stack/r9/09-teams · #272
+- Done: Teams (Georges, round 6: "adapt the teams layout to any games, some use 3 some use 4; add Bangboos to ZZZ"): a team's slots sit in one row of the game's party size (`teamSize`: three in ZZZ and WuWa, four elsewhere). The catalog schema gains `companions` and its index a map of them; ZZZ's importer reads Hakushin's Bangboo list (42, with art keys); the manifest names the companion (`companion: { label: "Bangboo" }`). A team gains `companion` (migration `team_companion`), validated against the catalog; ZZZ's team cards pick a Bangboo beside the members.
+- Tests: written first: ZZZ's catalog lists 40+ Bangboos, Penguinboo (53001) with its art, ranks A and S; a ZZZ team keeps a Bangboo, clears it, refuses an unknown one, and Genshin refuses one; a ZZZ team card has three columns and picks Penguinboo.
+- Scope/decisions: Bangboos are a team's companion only (no ownership list yet).
+- Next: linked goals adding up, and the Planner's layout, filters and sort.
+
 ## 2026-10-14 · claude · stack/r9/08-gear-pieces · #271
 - Done: Gear (Georges, round 6: "the artifact/gear screen needs work, I can't even look at my pieces; make it show all the pieces I have and then filter by set, main stat and type for each game depending on their system"): a Pieces view, the default, lists every piece on a build or in the bag (`allPieces`) as a card: the set's icon and name, the slot in the game's words, main stat and level, substats, and the wearer's icon or Bag. Filters: Set (a combobox with the sets' icons), Slot and Main stat chips from the game's gear slots (and the stats the pieces carry), Where (Equipped, Bag). A piece opens its set's panel. The set cards with Farm are the Sets view.
 - Tests: written first: Pela's Hunter body (CRIT Rate +12, SPD) shows with her icon, a Musketeer head (+15) in the bag; Slot Body, Where Bag, Main stat CRIT Rate and Set Musketeer each keep the right one. The set and Farm journeys and the a11y sweep switch to Sets first.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the shipped data has Stygian cycles of three bosses with a level; the Genshin Endgame journey finds three on Stygian Onslaught and no enemies list on Spiral Abyss or Imaginarium Theater. `npm run check` passes: 579 tests and 65 journeys.
 - Scope/decisions: the top difficulty only (the bosses are the same at each; their names and level change). HANDOFF.md, WIREFRAMES G2, AGENTS.md and the round's audit now name only Star Rail's Apocalyptic Shadow as waiting for a dated source.
 - Next: the designs' remaining details (counted boxes, each game's items, the missing endgame modes).
-
-## 2026-10-11 · claude · stack/r4/12-handoff · #231
-- Done: the end of Georges's third round. HANDOFF.md rewritten (`main` at #230, #219–#230, this round's decisions, the five migrations the next deploy runs, the endgame-enemies gap, new notes on tests and rebases).
-- Tests: docs only. `npm run check` on the tree below (#230): 578 tests and 64 journeys.
-- Scope/decisions: none new; the round's decisions are in HANDOFF.md.
-- Next: Georges's secrets and real data; a deploy when he asks; a dated source for Stygian Onslaught and Apocalyptic Shadow enemies.
