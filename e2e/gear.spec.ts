@@ -74,7 +74,7 @@ test("Gear: every piece you have, on a build or in the bag, filtered by set, slo
   // Pela, whom no other journey builds, in a Hunter body; a Musketeer head in the bag.
   const build = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1106" } })).json()) as { id: string };
   await page.request.put(`/api/characters/${build.id}`, { data: { doc: { relics: { body: { setName: "Hunter of Glacial Forest", mainStat: "CRIT Rate", level: 12, substats: [{ stat: "SPD", value: 4 }] } }, traces: {}, lightCone: {}, stats: {} } } });
-  const bag = (await (await page.request.post(`/api/instances/${id}/gear`, { data: { setName: "Musketeer of Wild Wheat", slot: "head", mainStat: "HP", level: 15 } })).json()) as { id: string };
+  const bag = (await (await page.request.post(`/api/instances/${id}/gear`, { data: { setName: "Musketeer of Wild Wheat", slot: "head", mainStat: "HP", level: 13 } })).json()) as { id: string };
   try {
     await page.goto(`/games/${id}/gear`);
     const pieces = page.getByRole("region", { name: "Pieces" });
@@ -82,8 +82,9 @@ test("Gear: every piece you have, on a build or in the bag, filtered by set, slo
     await expect(body).toContainText("CRIT Rate");
     await expect(body).toContainText("SPD");
     await expect(body.getByRole("img", { name: "Pela" })).toBeVisible();
-    const head = pieces.getByRole("article", { name: "Musketeer of Wild Wheat · Head" }).filter({ hasText: "+15" });
-    await expect(head).toContainText("Bag");
+    // Other journeys equip Musketeer heads too: this one is the bag's +13.
+    const head = pieces.getByRole("article", { name: "Musketeer of Wild Wheat · Head" }).filter({ hasText: "Bag" }).filter({ hasText: "+13" });
+    await expect(head).toBeVisible();
 
     const filters = page.getByRole("region", { name: "Filters" });
     await filters.getByRole("group", { name: "Slot" }).getByRole("button", { name: "Body" }).click();
