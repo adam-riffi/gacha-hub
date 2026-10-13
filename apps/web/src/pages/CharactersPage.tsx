@@ -125,6 +125,8 @@ export function CharactersPage() {
   });
   // A card's own stats (Georges, round 6: "I can choose for each one character what I want to show").
   const setBuildStats = useMutation({
+    // One save at a time, as the game's card stats.
+    scope: { id: `build-stats-${id}` },
     mutationFn: (v: { id: string; cardStats: string[] | null }) => api.put(`/api/characters/${v.id}`, { cardStats: v.cardStats }),
     onMutate: (v) => qc.setQueryData<CharacterDto[]>(["characters", id], (old) => old?.map((b) => (b.id === v.id ? { ...b, cardStats: v.cardStats } : b))),
     onSettled: () => qc.invalidateQueries({ queryKey: ["characters", id] }),
