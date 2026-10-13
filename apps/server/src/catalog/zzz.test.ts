@@ -59,6 +59,14 @@ describe("zzz catalog", () => {
     expect(catalog.weapons.filter((w) => w.mainStat).length).toBe(catalog.weapons.length);
   });
 
+  // Georges, round 6: "add Bangboos to ZZZ".
+  it("lists the Bangboos as the game's companions, with their art", async () => {
+    const catalog = catalogSchema.parse(await zzz.loadCatalog!());
+    expect(catalog.companions?.length).toBeGreaterThanOrEqual(40);
+    expect(catalog.companions?.find((b) => b.name === "Penguinboo")).toMatchObject({ id: "53001", icon: "BangbooGarageRole12" });
+    expect(new Set(catalog.companions?.map((b) => b.rarity))).toEqual(new Set([4, 5]));
+  });
+
   it("keeps every skill the catalog levels in the build doc", () => {
     expect(
       zzzDocSchema.parse({

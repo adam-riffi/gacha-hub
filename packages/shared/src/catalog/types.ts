@@ -109,6 +109,8 @@ export const catalogSchema = z.object({
   weapons: z.array(catalogWeaponSchema),
   gear: z.array(catalogGearSetSchema),
   materials: z.array(catalogMaterialSchema),
+  /** The game's companions beside a team (ZZZ's Bangboos; round 6), where it has them. */
+  companions: z.array(z.object({ id, key, name: z.string().min(1), rarity: z.number().int().min(1).max(6), icon: z.string().optional() })).optional(),
   /**
    * Star Rail's relic stat tables, to read a showcase's relics (ADR 0005): each
    * piece by game id (slot, set, main and substat groups), and each group's
@@ -131,5 +133,6 @@ export function indexCatalog(catalog: Catalog) {
     weapons: new Map(catalog.weapons.map((w) => [w.id, w])),
     gear: new Map(catalog.gear.map((g) => [g.id, g])),
     materials: new Map(catalog.materials.map((m) => [m.id, m])),
+    companions: new Map((catalog.companions ?? []).map((b) => [b.id, b])),
   };
 }

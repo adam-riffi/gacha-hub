@@ -10,6 +10,7 @@ import { communityAssetUrl, assetUrl } from "../lib/assets";
 
 import { GameTabs } from "../components/GameTabs";
 import { GameIcon } from "../components/GameIcon";
+import { CatalogIcon } from "../components/CatalogIcon";
 import { Picker } from "../components/Picker";
 import type { InstanceDetail } from "../lib/types";
 
@@ -40,7 +41,8 @@ export function TeamsPage() {
     onError: () => toast("Could not create the team", "err"),
   });
   const update = useMutation({
-    mutationFn: (v: { teamId: string; name?: string; members?: string[] }) => api.put(`/api/instances/${id}/teams/${v.teamId}`, { ...(v.name ? { name: v.name } : {}), ...(v.members ? { members: v.members } : {}) }),
+    mutationFn: (v: { teamId: string; name?: string; members?: string[]; companion?: string | null }) =>
+      api.put(`/api/instances/${id}/teams/${v.teamId}`, { ...(v.name ? { name: v.name } : {}), ...(v.members ? { members: v.members } : {}), ...(v.companion !== undefined ? { companion: v.companion } : {}) }),
     onSuccess: refresh,
     onError: () => toast("Could not save the team", "err"),
   });
@@ -54,6 +56,7 @@ export function TeamsPage() {
   if (!instance.data || !game || !teams.data) return <div className="mu">Loading…</div>;
 
   const size = game.teamSize ?? 4;
+  const companion = game.manifest.companion;
   const ownedIds = new Set((ownership.data ?? []).filter((o) => o.kind === "character").map((o) => o.catalogId));
   for (const b of builds.data ?? []) if (b.catalogId) ownedIds.add(b.catalogId);
   const units = [...(catalog?.characters ?? [])].sort((a, b) => Number(ownedIds.has(b.id)) - Number(ownedIds.has(a.id)) || a.name.localeCompare(b.name));
@@ -88,7 +91,8 @@ export function TeamsPage() {
                 Delete team
               </button>
             </div>
-            <div className="tm-slots">
+            {/* The game's party size, three or four (Georges, round 6), its companion beside it (ZZZ's Bangboo). */}
+            <div className="tm-slots" style={{ gridTemplateColumns: `repeat(${size}, minmax(0, 1fr))` }}>
               {t.members.map((m) => {
                 const unit = index?.characters.get(m);
                 const build = buildOf(m);
@@ -118,6 +122,28 @@ export function TeamsPage() {
                 </div>
               )}
             </div>
+            {companion && (
+              <div className="tm-companion">
+                <span className="kpi-label">{companion.label}</span>
+                {t.companion ? (
+                  <span className="tm-companion-pick">
+                    <CatalogIcon gameKey={game.key} kind="character" icon={index?.companions.get(t.companion)?.icon} name={index?.companions.get(t.companion)?.name ?? t.companion} />
+                    <span>{index?.companions.get(t.companion)?.name ?? t.companion}</span>
+                    <button className="btn ghost sm" aria-label={`Remove the ${companion.label} from ${t.name}`} onClick={() => update.mutate({ teamId: t.id, companion: null })}>
+                      ×
+                    </button>
+                  </span>
+                ) : (
+                  <Picker
+                    label={`${companion.label} of ${t.name}`}
+                    placeholder={`+ ${companion.label}`}
+                    value=""
+                    options={(catalog?.companions ?? []).map((b) => ({ id: b.id, name: b.name, src: assetUrl(game.key, "character", b.icon), fallback: communityAssetUrl(game.key, "character", b.icon), sub: `★${b.rarity}` }))}
+                    onPick={(b) => b && update.mutate({ teamId: t.id, companion: b.id })}
+                  />
+                )}
+              </div>
+            )}
           </section>
         ))}
       </div>

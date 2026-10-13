@@ -86,6 +86,8 @@ export interface GameManifest {
    */
   ownCard?: { title: string; items: ({ currency: string; capBy?: { currency: string; steps: [number, number][] } } | { task: string })[] };
   battlePass?: { name: string; maxLevel?: number; weeklyXpCap?: number };
+    /** The companion a team takes beside its members, in the game's word (ZZZ's Bangboo; round 6); its list is the catalog's `companions`. */
+    companion?: { label: string };
   /** `daily`: premium currency the pass gives each day (the Pulls forecast). */
   monthlyPass?: { name: string; days: number; maxDays?: number; daily?: number };
   /** Premium currency the daily activity gives each day (the Pulls forecast, WIREFRAMES.md G3). */

@@ -7,6 +7,8 @@ export const teamDto = z.object({
   gameInstanceId: idSchema,
   name: z.string(),
   members: z.array(catalogIdSchema),
+  /** The companion beside the members (ZZZ's Bangboo). */
+  companion: z.string().nullable().default(null),
   createdAt: isoDate,
   updatedAt: isoDate,
 });
@@ -15,6 +17,7 @@ export type TeamDto = z.infer<typeof teamDto>;
 export const createTeamInput = z.object({
   name: z.string().min(1).max(80),
   members: z.array(catalogIdSchema).max(12).default([]),
+  companion: catalogIdSchema.nullable().optional(),
 });
 export type CreateTeamInput = z.infer<typeof createTeamInput>;
 

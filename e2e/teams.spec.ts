@@ -36,3 +36,24 @@ test("Teams: a tab of its own to make, fill, rename and delete teams; the sheet'
   await expect(usedIn.getByRole("link", { name: "E2E Sheet team" })).toBeVisible();
   await expect(usedIn.getByRole("link", { name: "Manage teams →" })).toBeVisible();
 });
+
+// Each game's party size, and ZZZ's Bangboo (Georges, round 6: "adapt the teams layout to any games, some use 3 some use 4; add Bangboos to ZZZ").
+test("Teams: the slots in the game's party size; a ZZZ team's Bangboo @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "zzz" } })).json()) as { id: string };
+  const team = (await (await page.request.post(`/api/instances/${id}/teams`, { data: { name: "E2E Bangboo team", members: [] } })).json()) as { id: string };
+  try {
+    await page.goto(`/games/${id}/teams`);
+    const card = page.getByRole("region", { name: "E2E Bangboo team" });
+    const columns = await card.locator(".tm-slots").evaluate((el) => getComputedStyle(el).gridTemplateColumns.split(" ").length);
+    expect(columns).toBe(3);
+    await card.getByRole("combobox", { name: "Bangboo of E2E Bangboo team" }).fill("Penguin");
+    await page.getByRole("option", { name: /^Penguinboo/ }).click();
+    await expect(card.locator(".tm-companion").getByRole("img", { name: "Penguinboo" })).toBeVisible();
+    await expect.poll(async () => ((await (await page.request.get(`/api/instances/${id}/teams`)).json()) as { id: string; companion: string | null }[]).find((t) => t.id === team.id)?.companion).toBe("53001");
+  } finally {
+    await page.request.delete(`/api/instances/${id}/teams/${team.id}`);
+  }
+});

@@ -238,6 +238,12 @@ if (missing.length)
     `[catalog:zzz] ${missing.length} referenced ids not in the item index: ${missing.slice(0, 10).join(", ")}`,
   );
 
+// ---- Bangboos: a team's companion (Georges, round 6: "add Bangboos to ZZZ") ----
+type BangbooIndex = Record<string, { icon: string; rank: number; en: string }>;
+const bangboos = Object.entries(await get<BangbooIndex>(`/zzz/${version}/bangboo.json`))
+  .filter(([, b]) => b.en)
+  .map(([id, b]) => ({ id, key: slugify(b.en), name: stripTags(b.en), rarity: rarity(b.rank), icon: b.icon.split("/").at(-1)?.replace(/\.\w+$/, "") }));
+
 const catalog: Catalog = {
   gameKey: "zzz",
   source: `hakushin@static.nanoka.cc/zzz/${version}`,
@@ -245,6 +251,7 @@ const catalog: Catalog = {
   weapons: uniqueKeys(weapons.sort(byId)),
   gear: uniqueKeys(gear.sort(byId)),
   materials: uniqueKeys(materials.sort(byId)),
+  companions: uniqueKeys(bangboos.sort(byId)),
 };
 
 writeCatalog(catalog, "zzz");

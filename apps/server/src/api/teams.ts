@@ -14,6 +14,13 @@ export async function registerTeamRoutes(app: FastifyInstance) {
     return members.filter((m) => !cat.index.characters.has(m));
   }
 
+  /** A companion is one of the game's (its catalog's `companions`, ZZZ's Bangboos); a game without them takes none. */
+  async function badCompanion(gameKey: string, companion: string | null | undefined) {
+    if (!companion) return false;
+    const game = gameOrThrow(gameKey);
+    return !game.manifest.companion || !(await getCatalog(game))?.index.companions.has(companion);
+  }
+
   app.get<{ Params: { id: string } }>(
     "/api/instances/:id/teams",
     { preHandler: requireUser },
@@ -34,8 +41,9 @@ export async function registerTeamRoutes(app: FastifyInstance) {
       const body = createTeamInput.parse(req.body);
       const unknown = await validateMembers(gi.gameKey, body.members);
       if (unknown?.length) return reply.code(400).send({ error: "unknown_catalog_id", ids: unknown.slice(0, 20) });
+      if (await badCompanion(gi.gameKey, body.companion)) return reply.code(400).send({ error: "unknown_companion" });
       const row = await prisma.team.create({
-        data: { gameInstanceId: gi.id, name: body.name, members: body.members as PrismaJson },
+        data: { gameInstanceId: gi.id, name: body.name, members: body.members as PrismaJson, companion: body.companion ?? null },
       });
       return reply.code(201).send(serialize(row));
     },
@@ -54,11 +62,13 @@ export async function registerTeamRoutes(app: FastifyInstance) {
         const unknown = await validateMembers(gi.gameKey, body.members);
         if (unknown?.length) return reply.code(400).send({ error: "unknown_catalog_id", ids: unknown.slice(0, 20) });
       }
+      if (await badCompanion(gi.gameKey, body.companion)) return reply.code(400).send({ error: "unknown_companion" });
       const row = await prisma.team.update({
         where: { id: team.id },
         data: {
           ...(body.name !== undefined ? { name: body.name } : {}),
           ...(body.members !== undefined ? { members: body.members as PrismaJson } : {}),
+          ...(body.companion !== undefined ? { companion: body.companion } : {}),
         },
       });
       return serialize(row);

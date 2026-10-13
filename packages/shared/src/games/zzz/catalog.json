@@ -76905,5 +76905,301 @@
         "class": 10
       }
     }
+  ],
+  "companions": [
+    {
+      "id": "53001",
+      "key": "penguinboo",
+      "name": "Penguinboo",
+      "rarity": 4,
+      "icon": "BangbooGarageRole12"
+    },
+    {
+      "id": "53002",
+      "key": "luckyboo",
+      "name": "Luckyboo",
+      "rarity": 4,
+      "icon": "BangbooGarageRole11"
+    },
+    {
+      "id": "53003",
+      "key": "exploreboo",
+      "name": "Exploreboo",
+      "rarity": 4,
+      "icon": "BangbooGarageRole06"
+    },
+    {
+      "id": "53004",
+      "key": "sumoboo",
+      "name": "Sumoboo",
+      "rarity": 4,
+      "icon": "BangbooGarageRole05"
+    },
+    {
+      "id": "53005",
+      "key": "paperboo",
+      "name": "Paperboo",
+      "rarity": 4,
+      "icon": "BangbooGarageRole04"
+    },
+    {
+      "id": "53006",
+      "key": "bagboo",
+      "name": "Bagboo",
+      "rarity": 4,
+      "icon": "BangbooGarageRole01"
+    },
+    {
+      "id": "53007",
+      "key": "cryboo",
+      "name": "Cryboo",
+      "rarity": 4,
+      "icon": "BangbooGarageRole02"
+    },
+    {
+      "id": "53008",
+      "key": "avocaboo",
+      "name": "Avocaboo",
+      "rarity": 4,
+      "icon": "BangbooGarageRole03"
+    },
+    {
+      "id": "53009",
+      "key": "boollseye",
+      "name": "Boollseye",
+      "rarity": 4,
+      "icon": "BangbooGarageRole18"
+    },
+    {
+      "id": "53010",
+      "key": "electroboo",
+      "name": "Electroboo",
+      "rarity": 4,
+      "icon": "BangbooGarageRole16"
+    },
+    {
+      "id": "53011",
+      "key": "magnetiboo",
+      "name": "Magnetiboo",
+      "rarity": 4,
+      "icon": "BangbooGarageRole21"
+    },
+    {
+      "id": "53012",
+      "key": "booressure",
+      "name": "Booressure",
+      "rarity": 4,
+      "icon": "BangbooGarageRole17"
+    },
+    {
+      "id": "53013",
+      "key": "baddieboo",
+      "name": "Baddieboo",
+      "rarity": 4,
+      "icon": "BangbooGarageRole24"
+    },
+    {
+      "id": "53014",
+      "key": "overtimeboo",
+      "name": "Overtimeboo",
+      "rarity": 4,
+      "icon": "BangbooGarageRole32"
+    },
+    {
+      "id": "53015",
+      "key": "brawlerboo",
+      "name": "Brawlerboo",
+      "rarity": 4,
+      "icon": "BangbooGarageRole29"
+    },
+    {
+      "id": "53016",
+      "key": "excaliboo",
+      "name": "Excaliboo",
+      "rarity": 4,
+      "icon": "BangbooGarageRole39"
+    },
+    {
+      "id": "53017",
+      "key": "knightboo",
+      "name": "Knightboo",
+      "rarity": 4,
+      "icon": "BangbooGarageRole27"
+    },
+    {
+      "id": "53019",
+      "key": "bild-n-boolok",
+      "name": "Bild N. Boolok",
+      "rarity": 4,
+      "icon": "BangbooGarageRole41"
+    },
+    {
+      "id": "53021",
+      "key": "booltergeist",
+      "name": "Booltergeist",
+      "rarity": 4,
+      "icon": "BangbooGarageRole45"
+    },
+    {
+      "id": "54001",
+      "key": "sharkboo",
+      "name": "Sharkboo",
+      "rarity": 5,
+      "icon": "BangbooGarageRole07"
+    },
+    {
+      "id": "54002",
+      "key": "safety",
+      "name": "Safety",
+      "rarity": 5,
+      "icon": "BangbooGarageRole10"
+    },
+    {
+      "id": "54003",
+      "key": "devilboo",
+      "name": "Devilboo",
+      "rarity": 4,
+      "icon": "BangbooGarageRole14"
+    },
+    {
+      "id": "54004",
+      "key": "butler",
+      "name": "Butler",
+      "rarity": 5,
+      "icon": "BangbooGarageRole09"
+    },
+    {
+      "id": "54005",
+      "key": "amillion",
+      "name": "Amillion",
+      "rarity": 5,
+      "icon": "BangbooGarageRole13"
+    },
+    {
+      "id": "54006",
+      "key": "rocketboo",
+      "name": "Rocketboo",
+      "rarity": 5,
+      "icon": "BangbooGarageRole15"
+    },
+    {
+      "id": "54008",
+      "key": "plugboo",
+      "name": "Plugboo",
+      "rarity": 5,
+      "icon": "BangbooGarageRole19"
+    },
+    {
+      "id": "54009",
+      "key": "resonaboo",
+      "name": "Resonaboo",
+      "rarity": 5,
+      "icon": "BangbooGarageRole20"
+    },
+    {
+      "id": "54010",
+      "key": "biggest-fan",
+      "name": "Biggest Fan",
+      "rarity": 5,
+      "icon": "BangbooGarageRole46"
+    },
+    {
+      "id": "54011",
+      "key": "red-moccus",
+      "name": "Red Moccus",
+      "rarity": 5,
+      "icon": "BangbooGarageRole26"
+    },
+    {
+      "id": "54012",
+      "key": "officer-cui",
+      "name": "Officer Cui",
+      "rarity": 5,
+      "icon": "BangbooGarageRole25"
+    },
+    {
+      "id": "54013",
+      "key": "bangvolver",
+      "name": "Bangvolver",
+      "rarity": 5,
+      "icon": "BangbooGarageRole23"
+    },
+    {
+      "id": "54014",
+      "key": "agent-gulliver",
+      "name": "Agent Gulliver",
+      "rarity": 5,
+      "icon": "BangbooGarageRole28"
+    },
+    {
+      "id": "54015",
+      "key": "snap",
+      "name": "Snap",
+      "rarity": 5,
+      "icon": "BangbooGarageRole30"
+    },
+    {
+      "id": "54016",
+      "key": "robin",
+      "name": "Robin",
+      "rarity": 5,
+      "icon": "BangbooGarageRole31"
+    },
+    {
+      "id": "54017",
+      "key": "belion",
+      "name": "Belion",
+      "rarity": 5,
+      "icon": "BangbooGarageRole36"
+    },
+    {
+      "id": "54018",
+      "key": "miss-esme",
+      "name": "Miss Esme",
+      "rarity": 5,
+      "icon": "BangbooGarageRole37"
+    },
+    {
+      "id": "54019",
+      "key": "mercury",
+      "name": "Mercury",
+      "rarity": 5,
+      "icon": "BangbooGarageRole38"
+    },
+    {
+      "id": "54020",
+      "key": "birkblick",
+      "name": "Birkblick",
+      "rarity": 5,
+      "icon": "BangbooGarageRole42"
+    },
+    {
+      "id": "54021",
+      "key": "sprout",
+      "name": "Sprout",
+      "rarity": 5,
+      "icon": "BangbooGarageRole43"
+    },
+    {
+      "id": "54022",
+      "key": "ultra-jake",
+      "name": "Ultra Jake",
+      "rarity": 5,
+      "icon": "BangbooGarageRole47"
+    },
+    {
+      "id": "54023",
+      "key": "ariel",
+      "name": "Ariel",
+      "rarity": 5,
+      "icon": "BangbooGarageRole48"
+    },
+    {
+      "id": "55098",
+      "key": "eous",
+      "name": "Eous",
+      "rarity": 4,
+      "icon": ""
+    }
   ]
 }

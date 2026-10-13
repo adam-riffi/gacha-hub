@@ -213,6 +213,8 @@ model Team {
   gameInstance   GameInstance @relation(fields: [gameInstanceId], references: [id], onDelete: Cascade)
   name           String
   members        Json // string[] of character catalog ids
+  /// The companion beside the members (ZZZ's Bangboo; round 6): a catalog `companions` id.
+  companion      String?
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
 
