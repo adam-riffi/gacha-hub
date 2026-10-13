@@ -44,4 +44,15 @@ describe("the character cards' stats, per game", () => {
     expect((await put(["HP", "ATK", "DEF", "Elemental Mastery", "Energy Recharge", "CRIT Rate", "CRIT DMG"])).status).toBe(400);
     expect((await put(null)).json.cardStats).toBeNull();
   });
+
+  // Georges, round 6: "a misc part for each character where non-upgradable talents, skins and other things are included,
+  // or where I could write notes or add pictures".
+  it("keeps a build's notes, skins and pictures; refuses a picture that is not an upload; clears them with null", async () => {
+    const build = (await c.req<{ id: string }>("POST", `/api/instances/${gid}/characters`, { catalogId: "10000014" })).json;
+    const misc = { notes: "C6 when she reruns", skins: ["Summertime Sparkle"], pictures: ["/uploads/0123456789abcdef0123456789abcdef.png"] };
+    expect((await c.req<{ misc: unknown }>("PUT", `/api/characters/${build.id}`, { misc })).json.misc).toEqual(misc);
+    expect((await c.req<{ misc: unknown }>("GET", `/api/characters/${build.id}`)).json.misc).toEqual(misc);
+    expect((await c.req("PUT", `/api/characters/${build.id}`, { misc: { pictures: ["javascript:alert(1)"] } })).status).toBe(400);
+    expect((await c.req<{ misc: unknown }>("PUT", `/api/characters/${build.id}`, { misc: null })).json.misc).toBeNull();
+  });
 });

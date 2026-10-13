@@ -117,3 +117,49 @@ test("Character sheet: each skill opens to its description @smoke", async ({ pag
     await page.request.delete(`/api/instances/${id}`);
   }
 });
+
+// Georges, round 6: "when unrolling the talent effect it stretches everything; I'd rather read it in a bubble; also add the
+// talent icon … a misc part for each character where non-upgradable talents, skins and other things are included, or where I
+// could write notes or add pictures".
+test("Character sheet: a talent's effect in a bubble over the card, with its icon; the misc: passives, skins, notes and pictures @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "genshin" } })).json()) as { id: string };
+  try {
+    const build = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "10000014" } })).json()) as { id: string };
+    await page.goto(`/characters/${build.id}`);
+    const skills = page.getByRole("region", { name: "Talents" });
+    await expect(skills.getByRole("img", { name: "Let the Show Begin♪" })).toBeVisible();
+    const height = (await skills.boundingBox())!.height;
+    await skills.getByRole("button", { name: "Let the Show Begin♪" }).click();
+    const bubble = page.getByRole("note", { name: "Let the Show Begin♪" });
+    await expect(bubble).toContainText("Melody Loop");
+    // Over the card: the card keeps its height.
+    expect((await skills.boundingBox())!.height).toBe(height);
+    await page.getByRole("heading", { name: "Talents" }).click();
+    await expect(bubble).toHaveCount(0);
+
+    const misc = page.getByRole("region", { name: "Misc" });
+    // The passives the talents do not level, with their icons and effects.
+    await expect(misc.getByRole("img", { name: "Glorious Season" })).toBeVisible();
+    await misc.getByRole("button", { name: "Encore" }).click();
+    await expect(page.getByRole("note", { name: "Encore" })).toContainText("Elemental Orb");
+    await misc.getByRole("heading", { name: "Misc" }).click();
+    await misc.getByRole("textbox", { name: "Add a skin" }).fill("Summertime Sparkle");
+    await misc.getByRole("button", { name: "Add", exact: true }).click();
+    await expect(misc.getByRole("listitem").filter({ hasText: "Summertime Sparkle" })).toBeVisible();
+    await misc.getByRole("textbox", { name: "Notes" }).fill("C6 when she reruns");
+    await misc.getByRole("textbox", { name: "Notes" }).blur();
+    await misc.getByLabel("Add a picture").setInputFiles({ name: "pic.png", mimeType: "image/png", buffer: Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==", "base64") });
+    await expect(misc.getByRole("img", { name: "Picture 1" })).toBeVisible();
+    await expect
+      .poll(async () => {
+        const m = ((await (await page.request.get(`/api/characters/${build.id}`)).json()) as { misc: { notes?: string; skins?: string[]; pictures?: string[] } | null }).misc;
+        return [m?.notes, m?.skins, m?.pictures?.length];
+      })
+      .toEqual(["C6 when she reruns", ["Summertime Sparkle"], 1]);
+  } finally {
+    await page.request.delete(`/api/instances/${id}`);
+  }
+});
