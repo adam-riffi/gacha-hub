@@ -118,6 +118,8 @@ export function CharactersPage() {
   });
   // The stats the cards show, picked for the game (Georges, round 5); none picked shows each build's role's.
   const setCardStats = useMutation({
+    // One save at a time: quick picks sent together could land out of order and keep an older pick.
+    scope: { id: `card-stats-${id}` },
     mutationFn: (cardStats: string[] | null) => api.put(`/api/instances/${id}`, { cardStats }),
     onMutate: (cardStats) => qc.setQueryData<InstanceDetail>(["instance", id], (old) => (old ? { ...old, cardStats } : old)),
     onSettled: () => qc.invalidateQueries({ queryKey: ["instance", id] }),
