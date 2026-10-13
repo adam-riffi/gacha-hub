@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-13 · claude · stack/r9/05-character-stats · #268
+- Done: each card's own stats (Georges, round 6: "the attributes shown should be character dependent so I can choose for each one character what I want to show; put some classic ones as default for each game"): a pencil in a card's stat strip opens a picker of that build's stats (`cardStats` on the build, migration `build_card_stats`, up to six; Game's goes back); a build's pick wins over the game's (round 5), which wins over the role's KPIs, each game's classic stats. The picker closes on a click outside (`useDismiss` gains an `active` flag, so closed pickers listen to nothing).
+- Tests: written first: the route keeps a build's stats, refuses doubles and seven, clears with null; a journey picks HP and DEF for Hook on his card (3000 shown), closes the picker with a click outside, and finds them saved.
+- Scope/decisions: none.
+- Next: the catalogs' ascension and main stats.
+
 ## 2026-10-12 · claude · stack/r9/04-card-art · #267
 - Done: Characters' art and icons (Georges, round 6: "WuWa character art is too low on the cards, we can barely see their heads … make sure to correctly center any character art; on the character cards I should see the icon of the set instead of just the name; use icons instead of squares with letters"): cards carry their game (`data-game`), and WuWa's portraits are drawn larger and raised (`--art-h`, `--art-y`); Genshin, Star Rail, ZZZ and NTE already frame on the face. The card's foot shows each completed set as its icon with its piece count (`completedSets`), the role where none is. `GameIcon` takes a `glyph`: a tile without art draws its kind (character, weapon, gear, material, game) instead of initials, through `CatalogIcon`, the cards, the sheet, the library and the tasks' game tiles.
 - Tests: written first: WuWa's first card's image is taller than its frame and raised above it; Qingque's card shows Hunter of Glacial Forest as an icon with 4; the library's art-less game tile is a centred tile with an icon and no letters.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: a Seele build in progress shows level 70 and weapon level 60; a Memory of Chaos typed on the Endgame tab shows 30/36 on the Overview; a goal at 4 of 10 shows 40% with the ring's average; Backlog shows its count. `npm run check` passes: 574 tests and 62 journeys.
 - Scope/decisions: a goal's progress is its material steps met, its checklist ticked, or its count over its target, as on Tasks.
 - Next: each game's own card (NTE's city, Endfield's AIC).
-
-## 2026-10-11 · claude · stack/r4/08-overview · #227
-- Done: the per-game overview Georges designed (six pictures, now in `docs/design/overview/`), first half. The hub opens on an **Overview** tab, Activities second (`/games/:id/activities`; the old `/overview` link lands on the Overview). First row: Pulls (limited on hand, then each ticket and "From" the premium currency), Pity (each banner type over its hard pity, "guaranteed" or the game's split, 50/50 or 75/25), Banners (the current phase's featured units with "ends in", the next with "starts in", ◀ ▶ through the phases). Second row: Today (the game's dailies, boxes ticked in place), the pass and weekly (level, weekly EXP, the weeklies as boxes), stamina (projected, Full in or Full · now, its reserve). Each card opens its screen.
-- Tests: written first: the Overview journeys check the landing tab, 13 pulls from 1,600 Stellar Jade and 3 passes, pity and a running banner, a ZZZ daily ticked and kept after a reload, the City Fund card and 120 / 240 Battery Charge with its backup; the Activities, hub, smoke, NTE and Profile journeys follow the new landing tab. `npm run check` passes: 574 tests and 62 journeys.
-- Scope/decisions: DESIGN.md §9 gains F13 (the per-game overview) and §4's Later loses it; WIREFRAMES.md gains G0. The cards read the dashboard, tasks and passes the hub already loads.
-- Next: the Overview's last rows.
