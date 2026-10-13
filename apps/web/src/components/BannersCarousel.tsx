@@ -40,6 +40,7 @@ export function BannersCarousel({ roster, c }: { roster: RosterEntry[]; c: HomeC
                 src={assetUrl(banner.gameKey, "splash", splashKey(banner.gameKey, lead.icon, lead.splash))}
                 fallback={[communityAssetUrl(banner.gameKey, "splash", splashKey(banner.gameKey, lead.icon, lead.splash)), communityAssetUrl(banner.gameKey, "portrait", lead.icon)]}
                 alt={lead.name ?? ""}
+                glyph="character"
               />
             )}
           </div>

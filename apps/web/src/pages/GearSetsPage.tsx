@@ -108,6 +108,7 @@ export function GearSetsPage() {
           <>
             <Picker
               label="Set"
+              glyph="gear"
               placeholder="Any set"
               value={setFilter}
               free

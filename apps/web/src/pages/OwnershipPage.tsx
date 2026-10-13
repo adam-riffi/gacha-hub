@@ -8,6 +8,7 @@ import { useToast } from "../lib/toast";
 import { useCatalog } from "../lib/catalog";
 import { GameTabs } from "../components/GameTabs";
 import { GameIcon } from "../components/GameIcon";
+import { artGlyph } from "../components/Glyph";
 import { assetUrl, communityAssetUrl } from "../lib/assets";
 import type { InstanceDetail } from "../lib/types";
 import { Segmented } from "../components/ui";
@@ -185,6 +186,7 @@ export function OwnershipPage() {
                   src={assetUrl(instance.gameKey, kind, e.icon)}
                   fallback={communityAssetUrl(instance.gameKey, kind, e.icon)}
                   alt={e.name}
+                  glyph={artGlyph(kind)}
                 />
                 {isOwned && <span className="rtile-check">✓</span>}
               </button>

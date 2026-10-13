@@ -47,7 +47,7 @@ export function TeamIcons({ gameKey, members, unitOf }: { gameKey: string; membe
     <span className="eg-team">
       {members.map((m) => {
         const u = unitOf(m);
-        return <GameIcon key={m} src={assetUrl(gameKey, "character", u?.icon)} fallback={communityAssetUrl(gameKey, "character", u?.icon)} alt={u?.name ?? m} tint={elementColor(gameKey, u?.tag) ?? undefined} />;
+        return <GameIcon key={m} src={assetUrl(gameKey, "character", u?.icon)} fallback={communityAssetUrl(gameKey, "character", u?.icon)} alt={u?.name ?? m} tint={elementColor(gameKey, u?.tag) ?? undefined} glyph="character" />;
       })}
     </span>
   );

@@ -303,6 +303,7 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
                 <>
                   <Picker
                     label="Weapon name"
+                    glyph="weapon"
                     placeholder="Name"
                     value={weapon?.name ?? ""}
                     free

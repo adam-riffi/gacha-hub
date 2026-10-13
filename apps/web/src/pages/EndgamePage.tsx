@@ -324,6 +324,7 @@ function ModeCard({
                 {d.members.length < roster.size && roster.units.length > 0 && (
                   <Picker
                     label={`Add to ${s}`}
+                    glyph="character"
                     placeholder="+ Unit or team"
                     value=""
                     options={[

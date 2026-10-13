@@ -76,7 +76,7 @@ export function UnitPage() {
       </div>
       <div className="sh-top">
         <div className="sh-art un-art">
-          <GameIcon src={assetUrl(game.key, "splash", art)} fallback={[communityAssetUrl(game.key, "splash", art), communityAssetUrl(game.key, "character", entry.icon)]} alt={entry.name} label={entry.name.slice(0, 2)} />
+          <GameIcon src={assetUrl(game.key, "splash", art)} fallback={[communityAssetUrl(game.key, "splash", art), communityAssetUrl(game.key, "character", entry.icon)]} alt={entry.name} glyph="character" />
         </div>
         <div className="sh-main">
           <section className="card sh-head">
