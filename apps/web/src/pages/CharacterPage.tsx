@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -28,6 +28,7 @@ import { GearBlock } from "../components/sheet/GearBlock";
 import { Picker } from "../components/Picker";
 import { TaskGeneratorPanel } from "../components/TaskGeneratorPanel";
 import { QuickBuild } from "../components/tasks/QuickBuild";
+import { MiscCard, SkillRow } from "../components/sheet/MiscCard";
 import type { CharacterDetail, TaskItem } from "../lib/types";
 
 type Doc = Record<string, unknown>;
@@ -140,6 +141,7 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
   const skillName = (k: string) => entry?.talents.info?.find((i) => i.key === k)?.name ?? cap(k);
   // What each skill does, from the catalog, opened from its name (Georges, 2026-10-11).
   const skillText = (k: string) => entry?.talents.info?.find((i) => i.key === k)?.description;
+  const skillIcon = (k: string) => entry?.talents.info?.find((i) => i.key === k)?.icon;
   const plan = (tasks.data ?? []).find((t) => !t.materialId && (t.origin as TaskOrigin | null)?.catalogId === data.catalogId && (t.origin as TaskOrigin | null)?.kind === "character");
   const targets = ((plan?.origin as { goal?: { talents?: Record<string, { to: number }> } } | null)?.goal?.talents ?? {}) as Record<string, { to: number }>;
   const holder = weaponHolder(game);
@@ -290,7 +292,7 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
               </div>
               {skillKeys.length === 0 && <p className="mu">No skills on record for this unit.</p>}
               {skillKeys.map((k) => (
-                <SkillRow key={k} name={skillName(k)} text={skillText(k)}>
+                <SkillRow key={k} name={skillName(k)} text={skillText(k)} icon={skillIcon(k)} gameKey={game.key}>
                   <span className="sh-ctl">
                     <input type="number" aria-label={`${k} now`} min={1} max={15} value={skillDoc[k] ?? 1} onChange={(e) => setDoc((d) => ({ ...d, [skills]: { ...((d[skills] ?? {}) as Doc), [k]: Number(e.target.value) } }))} />
                     <span className="mu"> → {targets[k]?.to ?? "—"}</span>
@@ -386,6 +388,8 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
 
       <GearBlock game={game} doc={doc} setDoc={setDoc} sets={(catalog?.gear ?? []).map((g) => ({ id: g.id, name: g.name, src: assetUrl(game.key, "gear", g.icon), fallback: communityAssetUrl(game.key, "gear", g.icon) }))} />
 
+      <MiscCard buildId={data.id} gameKey={game.key} misc={data.misc} passives={entry?.passives ?? []} />
+
       {data.catalogId && (
         <section className="card sh-plan" aria-label="Plan farming">
           <button type="button" className="btn" onClick={() => setQuick(true)}>
@@ -471,25 +475,5 @@ function KpiTile({ label, value, target, fallback, onTarget }: { label: string; 
         </span>
       )}
     </div>
-  );
-}
-
-/** A skill's row: its name opens what it does, across the card under the row (Georges, 2026-10-11). */
-function SkillRow({ name, text, children }: { name: string; text?: string; children: ReactNode }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <>
-      <div className="sh-row">
-        {text ? (
-          <button type="button" className="sh-skill" aria-expanded={open} onClick={() => setOpen(!open)}>
-            {open ? "▾" : "▸"} {name}
-          </button>
-        ) : (
-          <span>{name}</span>
-        )}
-        {children}
-      </div>
-      {open && text && <p className="mu sh-skill-text">{text}</p>}
-    </>
   );
 }

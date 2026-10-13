@@ -150,6 +150,7 @@ export async function registerCharacterRoutes(app: FastifyInstance) {
           ...(body.role !== undefined ? { role: body.role } : {}),
           ...(body.targets !== undefined ? { targets: body.targets === null ? Prisma.DbNull : (body.targets as PrismaJson) } : {}),
           ...(body.cardStats !== undefined ? { cardStats: body.cardStats === null ? Prisma.DbNull : body.cardStats } : {}),
+          ...(body.misc !== undefined ? { misc: body.misc === null ? Prisma.DbNull : body.misc } : {}),
         },
       });
       if (copy) await syncHolders(game, character.gameInstanceId, copy.id, copy, character.id);

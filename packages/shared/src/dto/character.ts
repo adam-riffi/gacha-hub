@@ -7,6 +7,20 @@ import { catalogIdSchema, idSchema, isoDate, jsonValue, kpiTargetsInput } from "
  * (optional until catalogs ship; required once ownership is catalog-backed).
  * `doc` is the game's bespoke build document, validated per game.
  */
+/**
+ * A build's misc (Georges, round 6: "where I could write notes or add
+ * pictures"): its notes, its skins by name, its pictures (uploads only).
+ */
+export const characterMiscSchema = z.object({
+  notes: z.string().max(4000).optional(),
+  skins: z.array(z.string().trim().min(1).max(80)).max(30).optional(),
+  pictures: z
+    .array(z.string().max(2048).regex(/^(\/uploads\/[\w.-]+|https:\/\/[\w.-]+\/[^\s"'<>]+)$/))
+    .max(12)
+    .optional(),
+});
+export type CharacterMisc = z.infer<typeof characterMiscSchema>;
+
 export const characterDto = z.object({
   id: idSchema,
   gameInstanceId: idSchema,
@@ -22,6 +36,7 @@ export const characterDto = z.object({
   isDefault: z.boolean().default(false),
   /** The stats its card shows (Georges, round 6); null shows the game's. */
   cardStats: z.array(z.string()).nullable().default(null),
+  misc: characterMiscSchema.nullable().default(null),
   createdAt: isoDate,
   updatedAt: isoDate,
 });
@@ -60,6 +75,8 @@ export const createCharacterInput = z.object({
   targets: kpiTargetsInput.nullable().optional(),
   /** The stats its card shows, in order, up to six; null goes back to the game's. */
   cardStats: z.array(z.string().trim().min(1).max(40)).min(1).max(6).nullable().optional(),
+  /** Its notes, skins and pictures; null clears them. */
+  misc: characterMiscSchema.nullable().optional(),
 });
 export type CreateCharacterInput = z.infer<typeof createCharacterInput>;
 
