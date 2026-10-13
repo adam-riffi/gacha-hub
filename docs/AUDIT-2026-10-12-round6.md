@@ -2,7 +2,7 @@
 
 Georges's sixth round, after #256–#262. The rules of the earlier rounds stand: every text adds to the data, and a thing the app can show, it shows as its icon.
 
-**Status:** in progress.
+**Status:** done: #264–#278 (2026-10-14).
 
 ## Georges's list
 
@@ -11,7 +11,7 @@ Georges's sixth round, after #256–#262. The rules of the earlier rounds stand:
 | Pulls | two grids of banners; a hidden one leaves the rows uneven, and the chances list's class broke each banner's odds table | **one grid** whose rows line up, an odd last banner across the row; the odds tables whole again | #264 |
 | Pulls · beginner banners | Beginners' wish, Departure warp, Novice and Beginner's Choice convenes, Beginner headhunting on screen | **gone from every screen**; imports still know them | #264 |
 | Icons | squares with letters where a banner or target has no art | **icons** (a banner's kind as a glyph; a unit, weapon, set or game without art as its kind's icon, #267) | #264 |
-| Pulls · top-up | none | the **chance by the banner's end** with what comes until then, and the **cheapest top-ups** (the game's packs) that make it certain | |
+| Pulls · top-up | none | the **chance by the banner's end** with what comes until then, and the **cheapest top-ups** (the game's packs) that make it certain | #278 |
 | Endgame | a past cycle opens a dialog | a past cycle **becomes the card's cycle** (the card shows it); every dialog closes on a click outside; teams, times and difficulty shown where the mode has them | #265 |
 | Characters · owned | a character with a build cannot be marked not owned; the selection's buttons seem to do nothing | ownership **apart from builds**; the selection owns, un-owns, wishlists, sets build status (#266) and **makes goals** (quick build goals) | #266 |
 | Characters · art | WuWa's portraits sit low, heads under the chips or the name | **each game's art framed** on its face | #267 |
@@ -21,10 +21,11 @@ Georges's sixth round, after #256–#262. The rules of the earlier rounds stand:
 | Weapons | a weapon on a sheet and its copy on Weapons can disagree | **synced**: every sheet's weapon is a copy; several selected at once for level and ownership; **filtered by main stat** | #270 |
 | Gear | every set's text, no pieces | **every piece you have**, filtered by set, main stat and slot in each game's words | #271 |
 | Teams | four slots everywhere | **each game's party size** (three or four); ZZZ's **Bangboo** | #272 |
-| Planner | a goal opened spills over its card; the goal's steps twice; no filter | goals on **two rows**, **filtered and sorted**, the materials shorter; an opened goal stays in its card | |
-| Goals · links | a linked goal hides under the other | linked goals **stay**, and their progress **adds to** the goal they link to | |
-| Quick build goal | goals made field by field | **one window**: the ascension target (the bare minimum to the last ascension by default), the weapon, the gear set to farm, the skill levels | |
-| Character sheet | a skill's text opens in place and stretches the page | a **bubble** with the skill's icon; a **misc** part (passives, notes, pictures); **base stats** from the catalog for characters, weapons and gear | |
+| Icons, everywhere | letters on team members, pickers, a unit's page, the ownership grid, the timeline | **no letters left**: every tile without art is its kind's icon | #273 |
+| Planner | a goal opened spills over its card; the goal's steps twice; no filter | goals on **two rows**, **filtered and sorted**, the materials shorter; an opened goal stays in its card | #274 |
+| Goals · links | a linked goal hides under the other | linked goals **stay**, and their progress **adds to** the goal they link to | #274 |
+| Quick build goal | goals made field by field | **one window**: the ascension target (the bare minimum to the last ascension by default), the weapon, the gear set to farm, the skill levels | #275 |
+| Character sheet | a skill's text opens in place and stretches the page | a **bubble** with the skill's icon; a **misc** part (passives, notes, pictures); **base stats** from the catalog for characters and weapons (gear: see below) | #276, #277 |
 
 ## Decisions (Georges: "take every decision")
 
@@ -35,3 +36,9 @@ Georges's sixth round, after #256–#262. The rules of the earlier rounds stand:
 - **Card stats:** a build's own (`cardStats` on the build, migration `build_card_stats`) win over the game's pick, which wins over the role's KPIs (each game's classic stats). The picker opens on the card itself and closes on a click outside.
 - **Ownership** is the owned list alone; a build no longer makes its character owned on Characters, and stays when its character is marked not owned (planning before pulling).
 - **Beginner banners** stay in each game's module (imports of their history still map), flagged `beginner`, and no screen shows them.
+- **Linked goals** keep their own cards; a goal's progress is its steps plus each linked goal's (`goalSteps`), on Tasks, the Planner, Home and the dashboards, and Farm today now farms linked goals' materials too.
+- **Planner:** goals on top in rows of three (two rows until All), filtered and sorted by priority, progress or name; a goal's materials only in the table, which holds its linked goals' too.
+- **Quick build goal** defaults: the last ascension; skills Genshin 10/6/6 (Georges's example, in the sheet's order), Star Rail 6/10/10/10, ZZZ 9/9/9/12/12 with core 7, WuWa 6/10/10/10/6, NTE 6/10/10/6; the weapon's and the set's goals made under the character's. A goal made under another checks its parent as a link does.
+- **Misc** on every build: the catalog's passives, skins typed by name, notes, and pictures through the upload route (production needs `BLOB_READ_WRITE_TOKEN`).
+- **Base stats:** Genshin, Star Rail and ZZZ characters and weapons, at both ends of each ascension phase; the sheet shows them as placeholders and the cards count them, in italics, where nothing is typed. Gear is not counted (no dataset here gives Genshin's, ZZZ's or WuWa's main-stat tables); WuWa, Endfield and NTE have none yet; Genshin's universal 5% / 50% crit is not in its dataset.
+- **Top-ups:** the four games' packs and passes from their wikis (prices in US cents, the bonus past each pack's first purchase; the first-purchase double is not counted); the pass counts once, its dailies for the days it adds before the banner ends. A sure featured 5★ is the worst case: hard pity, twice after a lost 50/50.
