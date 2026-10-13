@@ -25,7 +25,7 @@ import {
 } from "../components/pulls/BannerCard";
 import { SavingsPlanner, pct, type PlannerTarget } from "../components/pulls/SavingsPlanner";
 import { UnitIcon } from "../components/CatalogIcon";
-import { GameIcon } from "../components/GameIcon";
+import { Glyph, bannerGlyph } from "../components/Glyph";
 import { BannerHistory, PullHistory } from "../components/pulls/PullHistory";
 import type { InstanceDetail } from "../lib/types";
 
@@ -271,8 +271,8 @@ export function PullsPage() {
           </table>
           {/* Each target alone (Georges, round 5: "X% chance to get X limited … use icons"): its chance with the pulls you have, and with the forecast added. */}
           {targets.length > 0 && (
-            <ul className="pl-odds" aria-label="Chances">
-              <li className="pl-odds-head mn mu" aria-hidden="true">
+            <ul className="pl-chances" aria-label="Chances">
+              <li className="pl-chances-head mn mu" aria-hidden="true">
                 <span />
                 <span />
                 <span>now</span>
@@ -282,14 +282,14 @@ export function PullsPage() {
                 const now = featuredWithin(t.rules, t.state, t.available);
                 const then = featuredWithin(t.rules, t.state, t.available + forecast.pulls);
                 return (
-                  <li key={t.label + i} className="pl-odds-row">
-                    {t.unit ? <UnitIcon gameKey={game.key} unit={t.unit} /> : <GameIcon src={null} alt={t.label} />}
-                    <span className="pl-odds-name">
+                  <li key={t.label + i} className="pl-chances-row">
+                    {t.unit ? <UnitIcon gameKey={game.key} unit={t.unit} /> : <Glyph kind={bannerGlyph(t.rules.key)} label={t.label} />}
+                    <span className="pl-chances-name">
                       <strong>{t.label}</strong>
                       <span className="mn mu">{t.sub}</span>
                     </span>
                     {[now, then].map((v, k) => (
-                      <span key={k} className="pl-odds-v" title={`${pct(v)} ${k ? `by ${DAY.format(forecast.until)}, with ${t.available + forecast.pulls} pulls` : `now, with ${t.available} pulls`}`}>
+                      <span key={k} className="pl-chances-v" title={`${pct(v)} ${k ? `by ${DAY.format(forecast.until)}, with ${t.available + forecast.pulls} pulls` : `now, with ${t.available} pulls`}`}>
                         <span className={`act-meter act-meter-thin ${k ? "" : "is-now"}`} aria-hidden="true">
                           <span style={{ width: `${Math.round(v * 100)}%` }} />
                         </span>
@@ -305,11 +305,12 @@ export function PullsPage() {
       </div>
 
       <div className="pl-label">
-        <span className="kpi-label">Event banners</span>
+        <span className="kpi-label">Banners</span>
       </div>
-      <div className="pl-banners">{event.map(card)}</div>
-      {rest.length > 0 && <div className="pl-banners">{rest.map(card)}</div>}
-      {hidden.length > 0 && (
+      {/* One grid, so hiding a banner keeps the rows even (Georges, round 6); an odd last one spans the row. */}
+      <div className="pl-banners">{[...event, ...rest].map(card)}</div>
+      {/* Only banners the screen shows: a hidden beginner banner is gone for good (round 6). */}
+      {log.data.banners.some((b) => hidden.includes(b.key)) && (
         <p className="mn mu pl-hidden">
           Hidden:{" "}
           {log.data.banners

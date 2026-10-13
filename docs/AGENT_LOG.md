@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-12 · claude · stack/r9/01-pulls-layout · #263
+- Done: Pulls (Georges, round 6: "make the pull layout adaptable, if I hide something it all becomes crooked; remove any beginner banner; you're still using squares with letters, use icons instead"): every shown banner in one grid whose cards stretch to their row, actions at the foot, an odd last card spanning the row with its curve beside its odds (the card has two blocks now); the chances list has its own class (`pl-chances`: sharing `pl-odds` had broken every banner's odds table); the Hidden line only for banners the screen shows. Beginner banners (Genshin's Beginners' wish, Star Rail's Departure warp, WuWa's Novice and Beginner's Choice convenes, Endfield's Beginner headhunting) are flagged `beginner`: imports still map their history, `shownBanners` leaves them off Pulls, Home and the dashboard. A banner or target without art is drawn as its kind (`Glyph`: character, weapon, Bangboo, standard). Round 6's list is in `docs/AUDIT-2026-10-12-round6.md`.
+- Tests: written first: `shownBanners` per game and the five beginner banners; the pulls route and the dashboard's pity lists without them; hiding works on the shown ones; a journey on Star Rail finds no Departure warp, one grid whose first two cards share their top and height, whole odds tables, and the Stellar warp's glyph.
+- Scope/decisions: beginner banners are kept in the modules for imports rather than deleted.
+- Next: the endgame cards' cycles, dialogs closed by a click outside.
+
 ## 2026-10-12 · claude · stack/r8/07-game-dashboard · #262
 - Done: a game's dashboard as a hybrid of the Overview and Georges's designs, in the Overview's language (round 5: "you can do better than what I made … make a hybrid … following the same design language, especially for the graphs … I'd rather see the banners than the battle pass at the top; put the battle pass next to the stamina"): the Overview's top row for the game (dailies and weeklies gauge, goals gauge and goal types, backlog line, pull history); Dailies & weeklies ticked in place, each column with its reset, beside the game's banners; Pulls and Pity; Stamina beside the battle pass and the endgame cycle; the dailies' heatmap (a day pins the gauges and charts, `?day=`); builds in progress and goal progress, left out when empty; the game's own card. Graph panels are named by their titles. Round 5's audit is marked done and HANDOFF.md rewritten.
 - Tests: written first: a journey on ZZZ finds the Overview's gauge, Goals, Goal types, Backlog, Pull history and the heatmap; the ticks card level with the banners, the pass level with the stamina and below the banners, and no all-games pass carousel. The dashboard journeys follow the new names (Dailies & weeklies, the pass card by its name, Goal progress, the Overview's goals gauge).
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the Tasks journey makes a set goal for Arlecchino and finds the set's icon, Arlecchino's, and no game name on Genshin's Tasks, and Genshin's tile on the overview. `npm run check` passes: 571 tests and 57 journeys.
 - Scope/decisions: "who it is for" reuses the origin's `sources` (characters); old domain tasks without an origin keep the game's tile until the planner updates them.
 - Next: weapon copies.
-
-## 2026-10-11 · claude · stack/r4/04-farm · #223
-- Done: Georges's "the Farm today card has way too much text … I could just see the Lisa icon and the talent book icon". Each Farm today line now says, besides its words, who it is for (a goal's origin), its material ids and their days; the card shows them as icons: the unit, up to four materials then "+N", then "Wed Sat" or "any day". The game is a small tile on the overview and absent on a game's own Tasks; the sentence stays on hover. The Planner's own Farm today shows each domain's materials as icons too.
-- Tests: written first: `farmToday` returns the unit, materials and days (Sunday left out beside other days); the route returns them for a goal with an origin; the Tasks journeys find Lisa's and Slime Condensate's icons on Genshin's Tasks with no game name, and Genshin's tile on the overview; the first Tasks journey reads the material's icon instead of the old sentence. `npm run check` passes: 571 tests and 57 journeys.
-- Scope/decisions: the DTO keeps `text` (DMs and hover); `unit`, `materials` and `days` default to empty, so weekly lines need nothing new. `UnitIcon` and `MaterialIcons` join `CatalogIcon`.
-- Next: goal icons.
