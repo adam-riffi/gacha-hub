@@ -1,8 +1,8 @@
 # Handoff — 2026-10-14 · claude
 
 ## State
-- `main` at #276: feat(sheet): a talent's effect in a bubble with its icon; a build's misc. CI green.
-- Open PRs, stacked: #277 (base stats from the catalogs) ← #279 (the top-up to a sure featured 5★, round 6's audit marked done, and this handoff). They merge in that order on green CI. Dependabot's #278 (twelve dependency bumps, which replaced #263) waits for its CI; #263's NTE failure came from an older `main`.
+- `main` at #277: feat(catalog): each character's and weapon's base stats; the sheet and cards count them where nothing is typed. CI green.
+- Open PRs: #279 (the top-up to a sure featured 5★, round 6's audit marked done, and this handoff); it merges on green CI. Dependabot's #278 (twelve dependency bumps, which replaced #263) waits for its CI; #263's NTE failure came from an older `main`.
 - Production serves #186 (deployed 2026-10-10 18:52 UTC). Merges do not deploy (#189): `main` goes live only when Georges asks (`docs/DEPLOY.md`, Redeploys), then run the smoke check. Since #186, `main` adds eleven migrations, and the next deploy runs them: `kpi_defaults`, `progress`, `hidden_banners`, `default_build`, `weapon_copies`, `recurring_counts`, `card_stats`, `build_card_stats`, `team_companion` and `character_misc` (all columns on existing tables).
 - Every milestone in DESIGN.md §9 is built, V through F13, and six feedback rounds (2026-10-10 to 2026-10-14) are done. What is left needs Georges's secrets, real data or a decision (below), a source for a few details (Next), or is in DESIGN.md §4 "Later".
 
