@@ -43,9 +43,11 @@ type CharDetail = {
   talent?: Record<string, { name?: string; desc?: string }>;
   /** The core skill's enhancements: materials["n"] takes it from level n to n + 1 (base, then A to F). */
   passive?: { materials?: Record<string, Costs> | null };
+  /** The core skill's stats by level ("Base ATK" and the agent's own: CRIT Rate, Impact…). */
+  extra_level?: Record<string, { extra?: Record<string, { name: string }> }>;
 };
 type WeaponIndex = Record<string, { icon: string; rank: number; type: number; en: string }>;
-type WeaponDetail = { materials?: string; weapon_type?: Record<string, string> };
+type WeaponDetail = { materials?: string; weapon_type?: Record<string, string>; rand_property?: { name?: string } };
 type DiscIndex = Record<
   string,
   { icon: string; en: { name: string; desc2: string; desc4: string } }
@@ -148,6 +150,11 @@ const characters: CatalogCharacter[] = await mapLimit(Object.keys(charIndex), 4,
         return { key: k, name: SKILL_NAME[k], ...(description ? { description } : {}) };
       }),
     },
+    // The core skill's own stat, beside the Base ATK every agent's gains (round 6).
+    ...((() => {
+      const stats = [...new Set(Object.values(d.extra_level ?? {}).flatMap((l) => Object.values(l.extra ?? {}).map((e) => e.name)))].filter((s) => !/^Base /.test(s));
+      return stats.length ? { bonusStats: stats } : {};
+    })()),
     constellations: Object.values(d.talent ?? {}).map((t) => ({
       name: stripTags(t.name),
       description: stripTags(t.desc),
@@ -186,6 +193,7 @@ const weapons: CatalogWeapon[] = await mapLimit(Object.keys(weaponIndex), 4, asy
     maxLevel: 60,
     icon: w.icon,
     ascension,
+    ...(d.rand_property?.name ? { mainStat: d.rand_property.name } : {}),
   };
 });
 

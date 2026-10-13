@@ -862,6 +862,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "Ice DMG Boost",
+        "DEF",
+        "Effect RES"
+      ],
       "extra": {
         "path": "Preservation",
         "element": "Ice",
@@ -2034,6 +2039,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "Wind DMG Boost",
+        "ATK",
+        "DEF"
+      ],
       "extra": {
         "path": "The Hunt",
         "element": "Wind",
@@ -3222,6 +3232,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "Fire DMG Boost",
+        "ATK",
+        "Effect RES"
+      ],
       "extra": {
         "path": "Erudition",
         "element": "Fire",
@@ -4410,6 +4425,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "ATK",
+        "Imaginary DMG Boost",
+        "Effect RES"
+      ],
       "extra": {
         "path": "Nihility",
         "element": "Imaginary",
@@ -5598,6 +5618,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "ATK",
+        "Effect Hit Rate",
+        "HP"
+      ],
       "extra": {
         "path": "Nihility",
         "element": "Lightning",
@@ -6786,6 +6811,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "ATK",
+        "Effect Hit Rate",
+        "Quantum DMG Boost"
+      ],
       "extra": {
         "path": "Nihility",
         "element": "Quantum",
@@ -7958,6 +7988,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "ATK",
+        "Effect RES",
+        "HP"
+      ],
       "extra": {
         "path": "Destruction",
         "element": "Lightning",
@@ -9130,6 +9165,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "Fire DMG Boost",
+        "DEF",
+        "CRIT Rate"
+      ],
       "extra": {
         "path": "Harmony",
         "element": "Fire",
@@ -10302,6 +10342,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "Ice DMG Boost",
+        "DEF",
+        "CRIT Rate"
+      ],
       "extra": {
         "path": "Erudition",
         "element": "Ice",
@@ -11490,6 +11535,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "Wind DMG Boost",
+        "CRIT Rate",
+        "HP"
+      ],
       "extra": {
         "path": "Destruction",
         "element": "Wind",
@@ -12678,6 +12728,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "Quantum DMG Boost",
+        "ATK",
+        "CRIT Rate"
+      ],
       "extra": {
         "path": "The Hunt",
         "element": "Quantum",
@@ -13866,6 +13921,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "Wind DMG Boost",
+        "CRIT DMG",
+        "Effect RES"
+      ],
       "extra": {
         "path": "Harmony",
         "element": "Wind",
@@ -15054,6 +15114,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "ATK",
+        "CRIT DMG",
+        "DEF"
+      ],
       "extra": {
         "path": "The Hunt",
         "element": "Quantum",
@@ -16226,6 +16291,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT Rate",
+        "Effect Hit Rate",
+        "Effect RES"
+      ],
       "extra": {
         "path": "Erudition",
         "element": "Lightning",
@@ -17414,6 +17484,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "Ice DMG Boost",
+        "Effect RES",
+        "DEF"
+      ],
       "extra": {
         "path": "Preservation",
         "element": "Ice",
@@ -18586,6 +18661,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "HP",
+        "Effect RES",
+        "DEF"
+      ],
       "extra": {
         "path": "Abundance",
         "element": "Physical",
@@ -19758,6 +19838,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "Ice DMG Boost",
+        "ATK",
+        "Effect Hit Rate"
+      ],
       "extra": {
         "path": "Nihility",
         "element": "Ice",
@@ -20946,6 +21031,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "ATK",
+        "Physical DMG Boost",
+        "HP"
+      ],
       "extra": {
         "path": "Destruction",
         "element": "Physical",
@@ -22118,6 +22208,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "ATK",
+        "Effect Hit Rate",
+        "Effect RES"
+      ],
       "extra": {
         "path": "Nihility",
         "element": "Wind",
@@ -23290,6 +23385,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "ATK",
+        "HP",
+        "CRIT DMG"
+      ],
       "extra": {
         "path": "Destruction",
         "element": "Fire",
@@ -24462,6 +24562,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "HP",
+        "DEF",
+        "Effect RES"
+      ],
       "extra": {
         "path": "Abundance",
         "element": "Quantum",
@@ -25634,6 +25739,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "ATK",
+        "Effect Hit Rate",
+        "DEF"
+      ],
       "extra": {
         "path": "Nihility",
         "element": "Physical",
@@ -26822,6 +26932,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "Fire DMG Boost",
+        "CRIT Rate",
+        "HP"
+      ],
       "extra": {
         "path": "The Hunt",
         "element": "Fire",
@@ -27994,6 +28109,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "ATK",
+        "Quantum DMG Boost",
+        "DEF"
+      ],
       "extra": {
         "path": "Erudition",
         "element": "Quantum",
@@ -29166,6 +29286,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "ATK",
+        "DEF",
+        "Lightning DMG Boost"
+      ],
       "extra": {
         "path": "Harmony",
         "element": "Lightning",
@@ -30354,6 +30479,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "ATK",
+        "HP",
+        "DEF"
+      ],
       "extra": {
         "path": "Abundance",
         "element": "Imaginary",
@@ -31542,6 +31672,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "ATK",
+        "CRIT Rate",
+        "DEF"
+      ],
       "extra": {
         "path": "Erudition",
         "element": "Lightning",
@@ -32730,6 +32865,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "HP",
+        "CRIT Rate",
+        "Effect RES"
+      ],
       "extra": {
         "path": "Destruction",
         "element": "Wind",
@@ -33902,6 +34042,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "ATK",
+        "HP",
+        "DEF"
+      ],
       "extra": {
         "path": "The Hunt",
         "element": "Physical",
@@ -35074,6 +35219,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "Imaginary DMG Boost",
+        "HP",
+        "ATK"
+      ],
       "extra": {
         "path": "Harmony",
         "element": "Imaginary",
@@ -36262,6 +36412,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT Rate",
+        "HP",
+        "Effect RES"
+      ],
       "extra": {
         "path": "Preservation",
         "element": "Quantum",
@@ -37450,6 +37605,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "ATK",
+        "Ice DMG Boost",
+        "HP"
+      ],
       "extra": {
         "path": "The Hunt",
         "element": "Ice",
@@ -38622,6 +38782,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "Fire DMG Boost",
+        "Break",
+        "Effect Hit Rate"
+      ],
       "extra": {
         "path": "Nihility",
         "element": "Fire",
@@ -39810,6 +39975,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "HP",
+        "DEF",
+        "Effect RES"
+      ],
       "extra": {
         "path": "Abundance",
         "element": "Lightning",
@@ -40998,6 +41168,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT DMG",
+        "SPD",
+        "HP"
+      ],
       "extra": {
         "path": "Destruction",
         "element": "Ice",
@@ -42186,6 +42361,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "Imaginary DMG Boost",
+        "CRIT Rate",
+        "HP"
+      ],
       "extra": {
         "path": "Destruction",
         "element": "Imaginary",
@@ -43358,6 +43538,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "Break",
+        "HP",
+        "Quantum DMG Boost"
+      ],
       "extra": {
         "path": "Destruction",
         "element": "Quantum",
@@ -44530,6 +44715,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "ATK",
+        "SPD",
+        "HP"
+      ],
       "extra": {
         "path": "Harmony",
         "element": "Physical",
@@ -45718,6 +45908,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "HP",
+        "Effect RES",
+        "SPD"
+      ],
       "extra": {
         "path": "Abundance",
         "element": "Wind",
@@ -46906,6 +47101,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "Effect Hit Rate",
+        "Fire DMG Boost",
+        "SPD"
+      ],
       "extra": {
         "path": "Nihility",
         "element": "Fire",
@@ -48094,6 +48294,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "ATK",
+        "CRIT Rate",
+        "DEF"
+      ],
       "extra": {
         "path": "The Hunt",
         "element": "Wind",
@@ -49282,6 +49487,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "ATK",
+        "HP",
+        "CRIT Rate"
+      ],
       "extra": {
         "path": "Destruction",
         "element": "Physical",
@@ -50470,6 +50680,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "Break",
+        "HP",
+        "ATK"
+      ],
       "extra": {
         "path": "Abundance",
         "element": "Fire",
@@ -51642,6 +51857,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT DMG",
+        "ATK",
+        "HP"
+      ],
       "extra": {
         "path": "The Hunt",
         "element": "Lightning",
@@ -52814,6 +53034,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "ATK",
+        "CRIT DMG",
+        "DEF"
+      ],
       "extra": {
         "path": "The Hunt",
         "element": "Imaginary",
@@ -54002,6 +54227,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "SPD",
+        "Break",
+        "HP"
+      ],
       "extra": {
         "path": "Nihility",
         "element": "Fire",
@@ -55174,6 +55404,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "Effect RES",
+        "HP",
+        "Break"
+      ],
       "extra": {
         "path": "Abundance",
         "element": "Fire",
@@ -56362,6 +56597,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "ATK",
+        "Physical DMG Boost",
+        "HP"
+      ],
       "extra": {
         "path": "Erudition",
         "element": "Physical",
@@ -57550,6 +57790,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "Break",
+        "DEF",
+        "SPD"
+      ],
       "extra": {
         "path": "Harmony",
         "element": "Ice",
@@ -58738,6 +58983,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "DEF",
+        "Imaginary DMG Boost",
+        "Effect RES"
+      ],
       "extra": {
         "path": "Preservation",
         "element": "Imaginary",
@@ -59926,6 +60176,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "ATK",
+        "CRIT Rate",
+        "DEF"
+      ],
       "extra": {
         "path": "The Hunt",
         "element": "Imaginary",
@@ -61114,6 +61369,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "HP",
+        "CRIT DMG",
+        "Effect RES"
+      ],
       "extra": {
         "path": "Harmony",
         "element": "Quantum",
@@ -62302,6 +62562,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "ATK",
+        "Wind DMG Boost",
+        "Effect Hit Rate"
+      ],
       "extra": {
         "path": "Nihility",
         "element": "Wind",
@@ -63490,6 +63755,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "ATK",
+        "CRIT DMG",
+        "Lightning DMG Boost"
+      ],
       "extra": {
         "path": "Nihility",
         "element": "Lightning",
@@ -64678,6 +64948,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "ATK",
+        "HP",
+        "SPD"
+      ],
       "extra": {
         "path": "Harmony",
         "element": "Physical",
@@ -65866,6 +66141,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "Break",
+        "Effect RES",
+        "SPD"
+      ],
       "extra": {
         "path": "Destruction",
         "element": "Fire",
@@ -67038,6 +67318,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "Ice DMG Boost",
+        "DEF",
+        "CRIT Rate"
+      ],
       "extra": {
         "path": "Destruction",
         "element": "Ice",
@@ -68226,6 +68511,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT DMG",
+        "Effect RES",
+        "DEF"
+      ],
       "extra": {
         "path": "Harmony",
         "element": "Imaginary",
@@ -69414,6 +69704,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "Quantum DMG Boost",
+        "ATK",
+        "Effect RES"
+      ],
       "extra": {
         "path": "Erudition",
         "element": "Quantum",
@@ -70602,6 +70897,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "Break",
+        "ATK",
+        "HP"
+      ],
       "extra": {
         "path": "The Hunt",
         "element": "Physical",
@@ -71790,6 +72090,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "ATK",
+        "SPD",
+        "Break"
+      ],
       "extra": {
         "path": "Erudition",
         "element": "Imaginary",
@@ -72978,6 +73283,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "Break",
+        "Effect RES",
+        "SPD"
+      ],
       "extra": {
         "path": "Nihility",
         "element": "Fire",
@@ -74166,6 +74476,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "Ice DMG Boost",
+        "ATK",
+        "SPD"
+      ],
       "extra": {
         "path": "Erudition",
         "element": "Ice",
@@ -75354,6 +75669,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "Lightning DMG Boost",
+        "CRIT Rate",
+        "DEF"
+      ],
       "extra": {
         "path": "Remembrance",
         "element": "Lightning",
@@ -76542,6 +76862,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT DMG",
+        "CRIT Rate",
+        "HP"
+      ],
       "extra": {
         "path": "Harmony",
         "element": "Quantum",
@@ -77730,6 +78055,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT DMG",
+        "HP",
+        "SPD"
+      ],
       "extra": {
         "path": "Destruction",
         "element": "Imaginary",
@@ -78918,6 +79248,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "Wind DMG Boost",
+        "CRIT Rate",
+        "HP"
+      ],
       "extra": {
         "path": "Erudition",
         "element": "Wind",
@@ -80106,6 +80441,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "SPD",
+        "Quantum DMG Boost",
+        "Effect Hit Rate"
+      ],
       "extra": {
         "path": "Nihility",
         "element": "Quantum",
@@ -81294,6 +81634,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT Rate",
+        "Quantum DMG Boost",
+        "CRIT DMG"
+      ],
       "extra": {
         "path": "Remembrance",
         "element": "Quantum",
@@ -82482,6 +82827,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT DMG",
+        "CRIT Rate",
+        "SPD"
+      ],
       "extra": {
         "path": "Destruction",
         "element": "Physical",
@@ -83670,6 +84020,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "SPD",
+        "Effect RES",
+        "HP"
+      ],
       "extra": {
         "path": "Remembrance",
         "element": "Wind",
@@ -84858,6 +85213,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "SPD",
+        "ATK",
+        "Effect Hit Rate"
+      ],
       "extra": {
         "path": "Nihility",
         "element": "Physical",
@@ -86046,6 +86406,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "Wind DMG Boost",
+        "ATK",
+        "HP"
+      ],
       "extra": {
         "path": "Harmony",
         "element": "Wind",
@@ -87234,6 +87599,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT Rate",
+        "HP",
+        "CRIT DMG"
+      ],
       "extra": {
         "path": "Remembrance",
         "element": "Ice",
@@ -88422,6 +88792,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "ATK",
+        "DEF",
+        "SPD"
+      ],
       "extra": {
         "path": "Preservation",
         "element": "Physical",
@@ -89610,6 +89985,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT DMG",
+        "SPD",
+        "HP"
+      ],
       "extra": {
         "path": "Remembrance",
         "element": "Ice",
@@ -90798,6 +91178,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "Elation",
+        "CRIT Rate",
+        "CRIT DMG"
+      ],
       "extra": {
         "path": "Elation",
         "element": "Fire",
@@ -91986,6 +92371,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT Rate",
+        "SPD",
+        "Elation"
+      ],
       "extra": {
         "path": "Elation",
         "element": "Physical",
@@ -93174,6 +93564,12 @@
           }
         ]
       },
+      "bonusStats": [
+        "DEF",
+        "SPD",
+        "Effect RES",
+        "Elation"
+      ],
       "extra": {
         "path": "Elation",
         "element": "Ice",
@@ -94362,6 +94758,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT DMG",
+        "Lightning DMG Boost",
+        "ATK"
+      ],
       "extra": {
         "path": "The Hunt",
         "element": "Lightning",
@@ -95550,6 +95951,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT Rate",
+        "Elation",
+        "SPD"
+      ],
       "extra": {
         "path": "Elation",
         "element": "Physical",
@@ -96738,6 +97144,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT Rate",
+        "SPD",
+        "Elation"
+      ],
       "extra": {
         "path": "Elation",
         "element": "Imaginary",
@@ -97926,6 +98337,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "Fire DMG Boost",
+        "CRIT Rate",
+        "HP"
+      ],
       "extra": {
         "path": "Nihility",
         "element": "Fire",
@@ -99114,6 +99530,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT DMG",
+        "ATK",
+        "Quantum DMG Boost"
+      ],
       "extra": {
         "path": "Erudition",
         "element": "Quantum",
@@ -100302,6 +100723,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT Rate",
+        "ATK",
+        "Lightning DMG Boost"
+      ],
       "extra": {
         "path": "Destruction",
         "element": "Lightning",
@@ -101490,6 +101916,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "ATK",
+        "CRIT Rate",
+        "Fire DMG Boost"
+      ],
       "extra": {
         "path": "Erudition",
         "element": "Fire",
@@ -102678,6 +103109,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "SPD",
+        "HP",
+        "CRIT Rate"
+      ],
       "extra": {
         "path": "Remembrance",
         "element": "Wind",
@@ -103866,6 +104302,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT Rate",
+        "SPD",
+        "Elation"
+      ],
       "extra": {
         "path": "Elation",
         "element": "Quantum",
@@ -105038,6 +105479,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "ATK",
+        "HP",
+        "DEF"
+      ],
       "extra": {
         "path": "Destruction",
         "element": "Physical",
@@ -106210,6 +106656,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "ATK",
+        "HP",
+        "DEF"
+      ],
       "extra": {
         "path": "Destruction",
         "element": "Physical",
@@ -107382,6 +107833,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "DEF",
+        "ATK",
+        "HP"
+      ],
       "extra": {
         "path": "Preservation",
         "element": "Fire",
@@ -108554,6 +109010,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "DEF",
+        "ATK",
+        "HP"
+      ],
       "extra": {
         "path": "Preservation",
         "element": "Fire",
@@ -109726,6 +110187,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "Break",
+        "Imaginary DMG Boost",
+        "Effect RES"
+      ],
       "extra": {
         "path": "Harmony",
         "element": "Imaginary",
@@ -110898,6 +111364,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "Break",
+        "Imaginary DMG Boost",
+        "Effect RES"
+      ],
       "extra": {
         "path": "Harmony",
         "element": "Imaginary",
@@ -112070,6 +112541,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT DMG",
+        "ATK",
+        "HP"
+      ],
       "extra": {
         "path": "Remembrance",
         "element": "Ice",
@@ -113242,6 +113718,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT DMG",
+        "ATK",
+        "HP"
+      ],
       "extra": {
         "path": "Remembrance",
         "element": "Ice",
@@ -114414,6 +114895,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "ATK",
+        "CRIT Rate",
+        "CRIT DMG"
+      ],
       "extra": {
         "path": "Elation",
         "element": "Lightning",
@@ -115586,6 +116072,11 @@
           }
         ]
       },
+      "bonusStats": [
+        "ATK",
+        "CRIT Rate",
+        "CRIT DMG"
+      ],
       "extra": {
         "path": "Elation",
         "element": "Lightning",

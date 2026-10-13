@@ -1100,6 +1100,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "Impact"
+      ],
       "constellations": [
         {
           "name": "Rapid Charge Mode",
@@ -2225,6 +2228,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT Rate"
+      ],
       "constellations": [
         {
           "name": "Bird Hunter",
@@ -4475,6 +4481,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT Rate"
+      ],
       "constellations": [
         {
           "name": "Rapid Heat",
@@ -5600,6 +5609,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT Rate"
+      ],
       "constellations": [
         {
           "name": "The Past Lost Beneath the Abyss",
@@ -6725,6 +6737,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT DMG"
+      ],
       "constellations": [
         {
           "name": "Open Trauma",
@@ -7850,6 +7865,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "Impact"
+      ],
       "constellations": [
         {
           "name": "Spearhead Advance",
@@ -8975,6 +8993,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT Rate"
+      ],
       "constellations": [
         {
           "name": "Dazzling Entrance",
@@ -10100,6 +10121,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "Anomaly Proficiency"
+      ],
       "constellations": [
         {
           "name": "Frost Atop the Snow",
@@ -11225,6 +11249,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "Impact"
+      ],
       "constellations": [
         {
           "name": "Beat of the Hammer",
@@ -12350,6 +12377,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT Rate"
+      ],
       "constellations": [
         {
           "name": "Warm-Up Exercises",
@@ -15725,6 +15755,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "Impact"
+      ],
       "constellations": [
         {
           "name": "Full Moon Momentum",
@@ -17975,6 +18008,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "Impact"
+      ],
       "constellations": [
         {
           "name": "The Champion",
@@ -20225,6 +20261,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "Anomaly Mastery"
+      ],
       "constellations": [
         {
           "name": "Recharge Chamber",
@@ -21350,6 +21389,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT Rate"
+      ],
       "constellations": [
         {
           "name": "Glacial Omen",
@@ -22475,6 +22517,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT Rate"
+      ],
       "constellations": [
         {
           "name": "\"High Spirit\"",
@@ -23600,6 +23645,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "PEN Ratio"
+      ],
       "constellations": [
         {
           "name": "Dance Duet",
@@ -24725,6 +24773,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "Anomaly Mastery"
+      ],
       "constellations": [
         {
           "name": "Know Thy Self, Know Thy Enemy",
@@ -25850,6 +25901,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT DMG"
+      ],
       "constellations": [
         {
           "name": "Quick Reload",
@@ -26975,6 +27029,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "Impact"
+      ],
       "constellations": [
         {
           "name": "Insulation Breakdown",
@@ -28100,6 +28157,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "Anomaly Mastery"
+      ],
       "constellations": [
         {
           "name": "Crime Counsel",
@@ -31475,6 +31535,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT Rate"
+      ],
       "constellations": [
         {
           "name": "Child of Hatred",
@@ -34850,6 +34913,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT Rate"
+      ],
       "constellations": [
         {
           "name": "Dreamweave",
@@ -35975,6 +36041,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "Anomaly Mastery"
+      ],
       "constellations": [
         {
           "name": "\"Walking Into the Orchard in Spring\"",
@@ -37100,6 +37169,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "HP"
+      ],
       "constellations": [
         {
           "name": "Righteous Verdict",
@@ -38225,6 +38297,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "Impact"
+      ],
       "constellations": [
         {
           "name": "Self-Interest",
@@ -39350,6 +39425,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "Impact"
+      ],
       "constellations": [
         {
           "name": "Sharpened Senses",
@@ -40475,6 +40553,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "HP",
+        "CRIT Rate"
+      ],
       "constellations": [
         {
           "name": "Spiritual Path",
@@ -41600,6 +41682,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT Rate"
+      ],
       "constellations": [
         {
           "name": "Static Charge",
@@ -42725,6 +42810,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT Rate"
+      ],
       "constellations": [
         {
           "name": "Super Scary Little Tiger",
@@ -43850,6 +43938,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "Anomaly Mastery"
+      ],
       "constellations": [
         {
           "name": "Palmful of Cilantro",
@@ -44975,6 +45066,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "Anomaly Mastery"
+      ],
       "constellations": [
         {
           "name": "Lucky Constitution",
@@ -47225,6 +47319,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT Rate"
+      ],
       "constellations": [
         {
           "name": "Dreambound Self",
@@ -48350,6 +48447,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "HP"
+      ],
       "constellations": [
         {
           "name": "Drifter's Rules of Survival",
@@ -50600,6 +50700,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT DMG"
+      ],
       "constellations": [
         {
           "name": "\"Hibernation Period\"",
@@ -51725,6 +51828,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT Rate"
+      ],
       "constellations": [
         {
           "name": "Greed Burns Like Fire",
@@ -52850,6 +52956,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT Rate"
+      ],
       "constellations": [
         {
           "name": "Boundless Hospitality",
@@ -53975,6 +54084,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "ATK"
+      ],
       "constellations": [
         {
           "name": "\"Loneliness Corruption Symptoms\"",
@@ -55100,6 +55212,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "Anomaly Mastery"
+      ],
       "constellations": [
         {
           "name": "Energetic Sound Waves",
@@ -56225,6 +56340,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "Anomaly Mastery"
+      ],
       "constellations": [
         {
           "name": "Lazy Spotlight",
@@ -58475,6 +58593,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT Rate"
+      ],
       "constellations": [
         {
           "name": "Heroic Entrance",
@@ -59600,6 +59721,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "Anomaly Mastery"
+      ],
       "constellations": [
         {
           "name": "Innocent Idealism",
@@ -60725,6 +60849,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT Rate"
+      ],
       "constellations": [
         {
           "name": "Shadows of Twilight Past",
@@ -61850,6 +61977,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "Anomaly Proficiency"
+      ],
       "constellations": [
         {
           "name": "Orderly Elegance",
@@ -62975,6 +63105,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT Rate"
+      ],
       "constellations": [
         {
           "name": "Visionary Extremism",
@@ -64100,6 +64233,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "Anomaly Proficiency"
+      ],
       "constellations": [
         {
           "name": "Naive Oath",
@@ -65225,6 +65361,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT Rate"
+      ],
       "constellations": [
         {
           "name": "Long, Long Ago",
@@ -66350,6 +66489,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT Rate"
+      ],
       "constellations": [
         {
           "name": "Bloodstained Chronicle",
@@ -67475,6 +67617,9 @@
           }
         ]
       },
+      "bonusStats": [
+        "CRIT Rate"
+      ],
       "constellations": [
         {
           "name": "Versatile Attendant",
@@ -67578,7 +67723,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "12002",
@@ -67654,7 +67800,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "12003",
@@ -67730,7 +67877,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "CRIT Rate"
     },
     {
       "id": "12004",
@@ -67806,7 +67954,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "12005",
@@ -67882,7 +68031,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Energy Regen"
     },
     {
       "id": "12006",
@@ -67958,7 +68108,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "HP"
     },
     {
       "id": "12007",
@@ -68034,7 +68185,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "12008",
@@ -68110,7 +68262,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Impact"
     },
     {
       "id": "12009",
@@ -68186,7 +68339,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Energy Regen"
     },
     {
       "id": "12010",
@@ -68262,7 +68416,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "12011",
@@ -68338,7 +68493,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Anomaly Proficiency"
     },
     {
       "id": "12012",
@@ -68414,7 +68570,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "PEN Ratio"
     },
     {
       "id": "12013",
@@ -68490,7 +68647,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "DEF"
     },
     {
       "id": "12014",
@@ -68566,7 +68724,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "DEF"
     },
     {
       "id": "12015",
@@ -68642,7 +68801,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "HP"
     },
     {
       "id": "12016",
@@ -68718,7 +68878,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "DEF"
     },
     {
       "id": "13001",
@@ -68794,7 +68955,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "13002",
@@ -68870,7 +69032,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "PEN Ratio"
     },
     {
       "id": "13003",
@@ -68946,7 +69109,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Anomaly Proficiency"
     },
     {
       "id": "13004",
@@ -69022,7 +69186,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "13005",
@@ -69098,7 +69263,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Energy Regen"
     },
     {
       "id": "13006",
@@ -69174,7 +69340,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Impact"
     },
     {
       "id": "13007",
@@ -69250,7 +69417,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "HP"
     },
     {
       "id": "13008",
@@ -69326,7 +69494,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "13009",
@@ -69402,7 +69571,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Anomaly Proficiency"
     },
     {
       "id": "13010",
@@ -69478,7 +69648,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "DEF"
     },
     {
       "id": "13011",
@@ -69554,7 +69725,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "13012",
@@ -69630,7 +69802,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "13013",
@@ -69706,7 +69879,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "13014",
@@ -69782,7 +69956,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "HP"
     },
     {
       "id": "13015",
@@ -69858,7 +70033,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "CRIT Rate"
     },
     {
       "id": "13016",
@@ -69934,7 +70110,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Impact"
     },
     {
       "id": "13017",
@@ -70010,7 +70187,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "DEF"
     },
     {
       "id": "13018",
@@ -70086,7 +70264,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Anomaly Proficiency"
     },
     {
       "id": "13019",
@@ -70162,7 +70341,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "HP"
     },
     {
       "id": "13020",
@@ -70238,7 +70418,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Impact"
     },
     {
       "id": "13021",
@@ -70314,7 +70495,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "CRIT Rate"
     },
     {
       "id": "13101",
@@ -70390,7 +70572,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Impact"
     },
     {
       "id": "13103",
@@ -70466,7 +70649,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Energy Regen"
     },
     {
       "id": "13106",
@@ -70542,7 +70726,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "13108",
@@ -70618,7 +70803,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "13111",
@@ -70694,7 +70880,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Energy Regen"
     },
     {
       "id": "13112",
@@ -70770,7 +70957,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "DEF"
     },
     {
       "id": "13113",
@@ -70846,7 +71034,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "13115",
@@ -70922,7 +71111,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Energy Regen"
     },
     {
       "id": "13127",
@@ -70998,7 +71188,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "13128",
@@ -71074,7 +71265,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "13135",
@@ -71150,7 +71342,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Impact"
     },
     {
       "id": "13142",
@@ -71226,7 +71419,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "13144",
@@ -71302,7 +71496,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "HP"
     },
     {
       "id": "14001",
@@ -71378,7 +71573,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "CRIT Rate"
     },
     {
       "id": "14002",
@@ -71454,7 +71650,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Energy Regen"
     },
     {
       "id": "14003",
@@ -71530,7 +71727,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Impact"
     },
     {
       "id": "14102",
@@ -71606,7 +71804,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "CRIT Rate"
     },
     {
       "id": "14104",
@@ -71682,7 +71881,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "14105",
@@ -71758,7 +71958,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "HP"
     },
     {
       "id": "14107",
@@ -71834,7 +72035,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Impact"
     },
     {
       "id": "14109",
@@ -71910,7 +72112,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "CRIT Rate"
     },
     {
       "id": "14110",
@@ -71986,7 +72189,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Impact"
     },
     {
       "id": "14114",
@@ -72062,7 +72266,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Impact"
     },
     {
       "id": "14116",
@@ -72138,7 +72343,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Impact"
     },
     {
       "id": "14117",
@@ -72214,7 +72420,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "14118",
@@ -72290,7 +72497,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "PEN Ratio"
     },
     {
       "id": "14119",
@@ -72366,7 +72574,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "CRIT Rate"
     },
     {
       "id": "14120",
@@ -72442,7 +72651,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "CRIT DMG"
     },
     {
       "id": "14121",
@@ -72518,7 +72728,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "PEN Ratio"
     },
     {
       "id": "14122",
@@ -72594,7 +72805,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "14124",
@@ -72670,7 +72882,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "CRIT DMG"
     },
     {
       "id": "14125",
@@ -72746,7 +72959,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Impact"
     },
     {
       "id": "14126",
@@ -72822,7 +73036,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Anomaly Proficiency"
     },
     {
       "id": "14129",
@@ -72898,7 +73113,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "CRIT Rate"
     },
     {
       "id": "14130",
@@ -72974,7 +73190,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Energy Regen"
     },
     {
       "id": "14131",
@@ -73050,7 +73267,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "14132",
@@ -73126,7 +73344,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "CRIT Rate"
     },
     {
       "id": "14133",
@@ -73202,7 +73421,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Anomaly Proficiency"
     },
     {
       "id": "14134",
@@ -73278,7 +73498,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "HP"
     },
     {
       "id": "14136",
@@ -73354,7 +73575,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "CRIT Rate"
     },
     {
       "id": "14137",
@@ -73430,7 +73652,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "HP"
     },
     {
       "id": "14138",
@@ -73506,7 +73729,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "CRIT DMG"
     },
     {
       "id": "14139",
@@ -73582,7 +73806,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "14140",
@@ -73658,7 +73883,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "14141",
@@ -73734,7 +73960,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Energy Regen"
     },
     {
       "id": "14143",
@@ -73810,7 +74037,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "CRIT DMG"
     },
     {
       "id": "14145",
@@ -73886,7 +74114,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "HP"
     },
     {
       "id": "14146",
@@ -73962,7 +74191,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "CRIT Rate"
     },
     {
       "id": "14147",
@@ -74038,7 +74268,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "HP"
     },
     {
       "id": "14148",
@@ -74114,7 +74345,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "CRIT Rate"
     },
     {
       "id": "14149",
@@ -74190,7 +74422,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Energy Regen"
     },
     {
       "id": "14150",
@@ -74266,7 +74499,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Anomaly Mastery"
     },
     {
       "id": "14151",
@@ -74342,7 +74576,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Anomaly Mastery"
     },
     {
       "id": "14152",
@@ -74418,7 +74653,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Energy Regen"
     },
     {
       "id": "14153",
@@ -74494,7 +74730,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "HP"
     },
     {
       "id": "14154",
@@ -74570,7 +74807,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Anomaly Mastery"
     },
     {
       "id": "14155",
@@ -74646,7 +74884,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "14156",
@@ -74722,7 +74961,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Energy Regen"
     },
     {
       "id": "14157",
@@ -74798,7 +75038,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "CRIT Rate"
     },
     {
       "id": "14158",
@@ -74874,7 +75115,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "14159",
@@ -74950,7 +75192,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "CRIT DMG"
     },
     {
       "id": "14161",
@@ -75026,7 +75269,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "DEF"
     },
     {
       "id": "14162",
@@ -75102,7 +75346,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Energy Regen"
     }
   ],
   "gear": [

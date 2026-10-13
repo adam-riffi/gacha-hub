@@ -41,8 +41,12 @@ export const catalogCharacterSchema = z.object({
     /** Per-talent tables when they differ (HSR: Basic ATK is cheaper). */
     costsByKey: z.record(z.string(), z.array(costStepSchema)).optional(),
     /** Human-readable talent info (name + what it does); filled by importers. */
-    info: z.array(z.object({ key: z.string().optional(), name: z.string().optional(), description: z.string().optional() })).optional(),
+    info: z.array(z.object({ key: z.string().optional(), name: z.string().optional(), description: z.string().optional(), icon: z.string().optional() })).optional(),
   }),
+  /** The stats the character grows (Genshin's ascension stat, Star Rail's trace stats, ZZZ's core stat, WuWa's forte bonuses), the game's words, the main one first (round 6). */
+  bonusStats: z.array(z.string()).optional(),
+  /** Talents that do not level (Genshin's passives), for the sheet's misc part (round 6). */
+  passives: z.array(z.object({ name: z.string(), description: z.string().optional(), icon: z.string().optional() })).optional(),
   /** Constellations / eidolons (dupes) — what each rank does; filled by importers. */
   constellations: z
     .array(z.object({ name: z.string().optional(), description: z.string() }))
@@ -60,6 +64,8 @@ export const catalogWeaponSchema = z.object({
   maxLevel: z.number().int().positive(),
   icon: z.string().optional(),
   ascension: z.array(costStepSchema),
+  /** The weapon's second stat (CRIT DMG, Energy Regen…), the game's words; none where the game has none (light cones). */
+  mainStat: z.string().optional(),
   extra: z.record(z.string(), z.unknown()).optional(),
 });
 export type CatalogWeapon = z.infer<typeof catalogWeaponSchema>;
