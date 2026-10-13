@@ -33,4 +33,15 @@ describe("the character cards' stats, per game", () => {
     expect((await put([""])).status).toBe(400);
     expect((await put(["HP", "HP"])).json).toEqual({ error: "duplicate_stat" });
   });
+
+  // Picked per character (Georges, round 6: "the attributes shown should be character dependent").
+  it("keeps a build's own card stats, over the game's, and clears them", async () => {
+    const build = (await c.req<{ id: string }>("POST", `/api/instances/${gid}/characters`, { catalogId: "10000032" })).json.id;
+    const put = (cardStats: unknown) => c.req<{ cardStats?: unknown; error?: string }>("PUT", `/api/characters/${build}`, { cardStats });
+    expect((await put(["HP", "Elemental Mastery"])).json.cardStats).toEqual(["HP", "Elemental Mastery"]);
+    expect((await c.req<{ cardStats: unknown }>("GET", `/api/characters/${build}`)).json.cardStats).toEqual(["HP", "Elemental Mastery"]);
+    expect((await put(["HP", "HP"])).json).toEqual({ error: "duplicate_stat" });
+    expect((await put(["HP", "ATK", "DEF", "Elemental Mastery", "Energy Recharge", "CRIT Rate", "CRIT DMG"])).status).toBe(400);
+    expect((await put(null)).json.cardStats).toBeNull();
+  });
 });
