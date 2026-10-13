@@ -27,6 +27,28 @@ test("Home with a game picked shows its dashboard: pulls, pity and banners at a 
   await expect(page).toHaveURL(new RegExp(`/games/${id}/pulls$`));
 });
 
+// A hybrid of the Overview and the designs, in the Overview's language (Georges, round 5): its gauges and charts on top,
+// the banners where the Overview has the battle pass, the battle pass beside the stamina, the dailies' heatmap.
+test("a game's dashboard: the Overview's gauges and charts for the game, its banners up top, the pass beside the stamina @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  await page.request.post("/api/instances", { data: { gameKey: "zzz" } });
+
+  await page.goto("/?game=zzz");
+  await expect(page.getByRole("img", { name: /^(Dailies|Weeklies) done: \d+ of \d+/ })).toBeVisible();
+  for (const name of ["Goals", "Goal types", "Backlog", "Pull history"]) await expect(page.getByRole("region", { name, exact: true })).toBeVisible();
+  await expect(page.getByRole("region", { name: "Dailies, last 26 weeks" })).toBeVisible();
+
+  const box = async (name: string) => (await page.getByRole("region", { name, exact: true }).boundingBox())!;
+  const [ticks, banners, stamina, pass] = [await box("Dailies & weeklies"), (await page.locator(".banner-card").boundingBox())!, await box("Battery Charge"), await box("New Eridu City Fund")];
+  expect(Math.abs(ticks.y - banners.y)).toBeLessThan(4);
+  expect(Math.abs(stamina.y - pass.y)).toBeLessThan(4);
+  expect(banners.y).toBeLessThan(pass.y);
+  // One dashboard: the all-games Overview's battle-pass carousel is not on it.
+  await expect(page.locator(".pass-card")).toHaveCount(0);
+});
+
 test("the Overview's second row: today's dailies ticked in place, the pass and the weeklies, stamina with its reserve @smoke", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
@@ -36,18 +58,17 @@ test("the Overview's second row: today's dailies ticked in place, the pass and t
 
   await page.goto("/?game=zzz");
   // A daily ticked on the card stays ticked; another journey may have ticked it, so this one flips it and back.
-  const scratch = page.getByRole("region", { name: "Today" }).getByRole("checkbox", { name: "Scratch Card" });
+  const scratch = page.getByRole("region", { name: "Dailies & weeklies" }).getByRole("checkbox", { name: "Scratch Card" });
   const was = await scratch.isChecked();
   await scratch.click();
   await expect(scratch).toBeChecked({ checked: !was });
   await page.reload();
-  await expect(page.getByRole("region", { name: "Today" }).getByRole("checkbox", { name: "Scratch Card" })).toBeChecked({ checked: !was });
-  await page.getByRole("region", { name: "Today" }).getByRole("checkbox", { name: "Scratch Card" }).click();
+  await expect(page.getByRole("region", { name: "Dailies & weeklies" }).getByRole("checkbox", { name: "Scratch Card" })).toBeChecked({ checked: !was });
+  await page.getByRole("region", { name: "Dailies & weeklies" }).getByRole("checkbox", { name: "Scratch Card" }).click();
 
-  // Drawn with Home's pieces (round 4): the ring over today's dailies, the pass's level as a tile over its segmented bar.
-  await expect(page.getByRole("region", { name: "Today" }).getByRole("img", { name: /of \d+ dailies done/ })).toBeVisible();
-  await expect(page.getByRole("region", { name: /New Eridu City Fund and weekly/ })).toContainText("Level");
-  await expect(page.getByRole("region", { name: /New Eridu City Fund and weekly/ }).getByRole("img", { name: /New Eridu City Fund level \d+ of \d+/ })).toBeVisible();
+  // Drawn with Home's pieces: the pass's level as a tile over its segmented bar, beside the stamina (round 5).
+  await expect(page.getByRole("region", { name: "New Eridu City Fund", exact: true })).toContainText("Level");
+  await expect(page.getByRole("region", { name: "New Eridu City Fund", exact: true }).getByRole("img", { name: /New Eridu City Fund level \d+ of \d+/ })).toBeVisible();
   const stamina = page.getByRole("region", { name: "Battery Charge" });
   await expect(stamina.getByTestId("stamina")).toHaveText("120 / 240");
   await expect(stamina).toContainText("Backup Battery Charge");
@@ -86,9 +107,8 @@ test("the Overview's last row: each goal's progress and their average, and the o
   await page.request.post(`/api/tasks/${goal.id}/progress`, { data: { progress: 4 } });
 
   await page.goto("/?game=wuwa");
-  const goals = page.getByRole("region", { name: "Goals" });
-  await expect(goals.getByRole("row", { name: /E2E overview goal/ })).toContainText("40%");
-  await expect(goals.getByRole("img", { name: /% done on average/ })).toBeVisible();
+  await expect(page.getByRole("region", { name: "Goal progress" }).getByRole("row", { name: /E2E overview goal/ })).toContainText("40%");
+  await expect(page.getByRole("region", { name: "Goals", exact: true }).getByRole("img", { name: /^Overall goal completion/ })).toBeVisible();
   // Home's backlog chart, for this game.
   await expect(page.getByRole("region", { name: "Backlog" }).getByRole("img", { name: /Open goals over time, latest \d+/ })).toBeVisible();
   await page.request.delete(`/api/tasks/${goal.id}`);
@@ -128,13 +148,13 @@ test("the Overview counts a daily's steps in boxes, kept after a reload @smoke",
   await page.request.post(`/api/tasks/${daily.id}/progress`, { data: { progress: 0 } });
 
   await page.goto("/?game=zzz");
-  const steps = page.getByRole("region", { name: "Today" }).getByRole("group", { name: "Daily Missions" });
+  const steps = page.getByRole("region", { name: "Dailies & weeklies" }).getByRole("group", { name: "Daily Missions" });
   await expect(steps.getByRole("button")).toHaveCount(4);
   await steps.getByRole("button", { name: "3 of 4" }).click();
   await expect(steps.getByRole("button", { name: "3 of 4" })).toHaveAttribute("aria-pressed", "true");
   await expect(steps.getByRole("button", { name: "4 of 4" })).toHaveAttribute("aria-pressed", "false");
   await page.reload();
-  await expect(page.getByRole("region", { name: "Today" }).getByRole("group", { name: "Daily Missions" }).getByRole("button", { name: "2 of 4" })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByRole("region", { name: "Dailies & weeklies" }).getByRole("group", { name: "Daily Missions" }).getByRole("button", { name: "2 of 4" })).toHaveAttribute("aria-pressed", "true");
   await page.request.post(`/api/tasks/${daily.id}/progress`, { data: { progress: 0 } });
 });
 
@@ -149,7 +169,7 @@ test("the Overview adds a game's daily the profile lacks with + @smoke", async (
   if (coffee) await page.request.delete(`/api/tasks/${coffee.id}`);
 
   await page.goto("/?game=zzz");
-  const today = page.getByRole("region", { name: "Today" });
+  const today = page.getByRole("region", { name: "Dailies & weeklies" });
   await today.getByRole("button", { name: "Add Coffee" }).click();
   await expect(today.getByRole("checkbox", { name: "Coffee" })).toBeVisible();
 });
