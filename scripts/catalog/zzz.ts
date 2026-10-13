@@ -38,7 +38,8 @@ type CharDetail = {
   rarity: number;
   weapon_type: Record<string, string>;
   element_type: Record<string, string>;
-  level: Record<string, { level_max: number; materials: Costs }>;
+  level: Record<string, { level_max: number; level_min?: number; materials: Costs }>;
+  stats?: Record<string, unknown>;
   skill: Record<string, { material?: Record<string, Costs>; description?: { name: string; desc?: string; param?: unknown }[] }>;
   talent?: Record<string, { name?: string; desc?: string }>;
   /** The core skill's enhancements: materials["n"] takes it from level n to n + 1 (base, then A to F). */
@@ -47,7 +48,14 @@ type CharDetail = {
   extra_level?: Record<string, { extra?: Record<string, { name: string }> }>;
 };
 type WeaponIndex = Record<string, { icon: string; rank: number; type: number; en: string }>;
-type WeaponDetail = { materials?: string; weapon_type?: Record<string, string>; rand_property?: { name?: string } };
+type WeaponDetail = {
+  materials?: string;
+  weapon_type?: Record<string, string>;
+  base_property?: { value?: number };
+  rand_property?: { name?: string; format?: string; value?: number };
+  level?: Record<string, { rate: number }>;
+  stars?: Record<string, { star_rate: number; rand_rate: number }>;
+};
 type DiscIndex = Record<
   string,
   { icon: string; en: { name: string; desc2: string; desc4: string } }
@@ -105,6 +113,53 @@ const skillText = (entries: { name: string; desc?: string; param?: unknown }[]) 
     .filter(Boolean)
     .join("\n");
 
+/**
+ * Base stats at both ends of every phase (round 6: "base stats should be auto
+ * included"): an agent's base plus its growth per level past the first and
+ * the phase's add, without its core skill; crit as percents.
+ */
+function agentPoints(d: CharDetail) {
+  const s = d.stats as Record<string, number> | undefined;
+  if (!s) return {};
+  const phases = Object.entries(d.level).sort(([a], [b]) => Number(a) - Number(b)).map(([, p]) => p as unknown as Record<string, number>);
+  const flat: [string, string, string?, string?][] = [["HP", "hp_max", "hp_growth", "hp_max"], ["ATK", "attack", "attack_growth", "attack"], ["DEF", "defence", "defence_growth", "defence"], ["Impact", "break_stun"], ["Anomaly Mastery", "element_mystery"], ["Anomaly Proficiency", "element_abnormal_power"]];
+  const at = (p: Record<string, number>, level: number, phase: number) => [
+    level,
+    phase,
+    ...flat.map(([, base, growth, add]) => Math.round(((s[base] ?? 0) + (growth ? ((s[growth] ?? 0) * (level - 1)) / 10000 : 0) + (add ? (p[add] ?? 0) : 0)) * 100) / 100),
+    (s.crit ?? 0) / 100,
+    (s.crit_damage ?? 0) / 100,
+  ];
+  return {
+    baseStats: {
+      stats: [...flat.map(([name]) => name), "CRIT Rate", "CRIT DMG"],
+      points: phases.flatMap((p, i) => [at(p, Math.max(1, p.level_min ?? 0), i), at(p, p.level_max ?? 60, i)]),
+    },
+  };
+}
+
+/** A W-Engine's base ATK and advanced stat at both ends of every phase: scaled by the level's rate and the phase's star rate. */
+function enginePoints(d: WeaponDetail) {
+  const base = d.base_property?.value;
+  const levels = d.level as Record<string, { rate: number }> | undefined;
+  const stars = d.stars as Record<string, { star_rate: number; rand_rate: number }> | undefined;
+  if (!base || !levels || !stars) return {};
+  const pct = /%/.test(d.rand_property?.format ?? "");
+  const at = (level: number, phase: number) => [
+    level,
+    phase,
+    Math.round(base * (1 + ((levels[String(level)]?.rate ?? 0) + (stars[String(phase)]?.star_rate ?? 0)) / 10000) * 100) / 100,
+    ...(d.rand_property?.value ? [Math.round(((d.rand_property.value * (1 + (stars[String(phase)]?.rand_rate ?? 0) / 10000)) / (pct ? 100 : 1)) * 100) / 100] : []),
+  ];
+  const phases = Object.keys(stars).map(Number).sort((a, b) => a - b);
+  return {
+    baseStats: {
+      stats: ["ATK", ...(d.rand_property?.value ? [d.rand_property.name] : [])],
+      points: phases.flatMap((p) => [at(p === 0 ? 1 : p * 10, p), at((p + 1) * 10, p)]),
+    },
+  };
+}
+
 // ---- Agents ----
 const charIndex = await get<CharIndex>(`/zzz/${version}/character.json`);
 const characters: CatalogCharacter[] = await mapLimit(Object.keys(charIndex), 4, async (id) => {
@@ -155,6 +210,7 @@ const characters: CatalogCharacter[] = await mapLimit(Object.keys(charIndex), 4,
       const stats = [...new Set(Object.values(d.extra_level ?? {}).flatMap((l) => Object.values(l.extra ?? {}).map((e) => e.name)))].filter((s) => !/^Base /.test(s));
       return stats.length ? { bonusStats: stats } : {};
     })()),
+    ...agentPoints(d),
     constellations: Object.values(d.talent ?? {}).map((t) => ({
       name: stripTags(t.name),
       description: stripTags(t.desc),
@@ -194,6 +250,7 @@ const weapons: CatalogWeapon[] = await mapLimit(Object.keys(weaponIndex), 4, asy
     icon: w.icon,
     ascension,
     ...(d.rand_property?.name ? { mainStat: d.rand_property.name } : {}),
+    ...enginePoints(d),
   };
 });
 

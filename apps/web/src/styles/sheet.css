@@ -27,7 +27,8 @@
 .sh-pips > i.on { background: var(--accent); border-color: var(--accent); }
 .sh-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px 18px; }
 .sh-stat { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 0; color: var(--text); font: 400 14px/1.3 var(--font-body); letter-spacing: 0; text-transform: none; border-top: 1px solid var(--surface-3); padding-top: 6px; }
-.sh-stat input { width: 90px; }
+.sh-stat input { width: 112px; flex: none; }
+.sh-stat input::placeholder { font-size: 12px; }
 .sh-gear { margin-bottom: 24px; }
 .sh-gear .row h3 { margin-bottom: 0; }
 .sh-pieces { display: grid; gap: 12px; margin-top: 16px; }
@@ -130,6 +131,8 @@
 .sh-bubble { position: absolute; z-index: 30; top: calc(100% + 4px); left: 0; width: min(440px, 80vw); max-height: 360px; overflow: auto; padding: 12px 14px; background: var(--card); border: 1px solid var(--hairline-strong); box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55); color: var(--text); font-size: 13px; line-height: 1.5; white-space: pre-line; }
 /* The misc (round 6): passives, skins, notes, pictures. */
 .sh-misc { display: grid; gap: 14px; }
+/* A value read from the base stats, nothing typed (round 6). */
+.is-auto { color: var(--text-muted); font-style: italic; }
 .sh-misc-block { display: grid; gap: 6px; }
 .sh-misc textarea { width: 100%; }
 .sh-misc .row { flex-wrap: nowrap; gap: 8px; }

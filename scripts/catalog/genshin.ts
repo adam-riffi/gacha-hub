@@ -82,6 +82,29 @@ const enkaCharacters = await fetchJson<Record<string, { SkillOrder?: number[] }>
   { cacheKey: "genshin-enka" },
 );
 
+/**
+ * Base stats at both ends of every ascension phase (round 6: "base stats
+ * should be auto included"), from genshin-db's stats(level, "+"/"-"): the flat
+ * stats, then the ascension or second stat as a percent (HP, ATK and DEF ones
+ * named with %), Elemental Mastery flat.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function basePoints(unit: any, ascension: CostStep[], flat: [string, string][], second?: string) {
+  const extra = second ? (["HP", "ATK", "DEF"].includes(second) ? `${second}%` : second) : undefined;
+  const scale = second === "Elemental Mastery" ? 1 : 100;
+  const caps = [20, ...ascension.map((s) => s.atLevel)];
+  const at = (level: number, sign: "+" | "-", phase: number) => {
+    const s = unit.stats(level, sign) as Record<string, number>;
+    return [level, phase, ...flat.map(([, k]) => s[k] ?? 0), ...(extra ? [(s.specialized ?? 0) * scale] : [])].map((v) => Math.round(v * 100) / 100);
+  };
+  return {
+    baseStats: {
+      stats: [...flat.map(([name]) => name), ...(extra ? [extra] : [])],
+      points: caps.flatMap((hi, p) => [at(p === 0 ? 1 : caps[p - 1]!, p === 0 ? "-" : "+", p), at(hi, "-", p)]),
+    },
+  };
+}
+
 const characters: CatalogCharacter[] = all("characters")
   .filter((c) => {
     const ok =
@@ -114,6 +137,7 @@ const characters: CatalogCharacter[] = all("characters")
       }),
     },
     ...(c.substatText ? { bonusStats: [c.substatText as string] } : {}),
+    ...basePoints(gdb.characters(c.name), ascension, [["HP", "hp"], ["ATK", "attack"], ["DEF", "defense"]], c.substatText),
     ...(passivesOf.get(c.name)?.length ? { passives: passivesOf.get(c.name) } : {}),
     extra: {
       region: c.region,
@@ -146,6 +170,7 @@ const weapons: CatalogWeapon[] = all("weapons")
     icon: w.images?.filename_icon ?? w.images?.icon,
     ascension,
     ...(w.mainStatText ? { mainStat: w.mainStatText as string } : {}),
+    ...basePoints(gdb.weapons(w.name), ascension, [["ATK", "attack"]], w.mainStatText),
     extra: { baseAtk: w.baseAtkValue, version: w.version },
   };
 });

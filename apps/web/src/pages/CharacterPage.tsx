@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   ascensionPips,
+  buildBase,
   buildKpis,
   dupeBadge,
   getGame,
@@ -142,6 +143,8 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
   // What each skill does, from the catalog, opened from its name (Georges, 2026-10-11).
   const skillText = (k: string) => entry?.talents.info?.find((i) => i.key === k)?.description;
   const skillIcon = (k: string) => entry?.talents.info?.find((i) => i.key === k)?.icon;
+  // What the level and the weapon give before gear (round 6), shown where nothing is typed.
+  const base = buildBase(game, index, data.catalogId, doc);
   const plan = (tasks.data ?? []).find((t) => !t.materialId && (t.origin as TaskOrigin | null)?.catalogId === data.catalogId && (t.origin as TaskOrigin | null)?.kind === "character");
   const targets = ((plan?.origin as { goal?: { talents?: Record<string, { to: number }> } } | null)?.goal?.talents ?? {}) as Record<string, { to: number }>;
   const holder = weaponHolder(game);
@@ -257,8 +260,8 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
           </section>
 
           <section className="sh-kpis" aria-label="KPIs">
-            {buildKpis(game, doc, state.role).map((k) => (
-              <KpiTile key={k.label} label={k.label} value={k.value} target={data.targets?.[k.label]} fallback={data.defaultTargets?.[k.label]} onTarget={(v) => setTarget.mutate({ ...(data.targets ?? {}), ...v })} />
+            {buildKpis(game, doc, state.role, [], base).map((k) => (
+              <KpiTile key={k.label} label={k.label} value={k.value} auto={k.auto} target={data.targets?.[k.label]} fallback={data.defaultTargets?.[k.label]} onTarget={(v) => setTarget.mutate({ ...(data.targets ?? {}), ...v })} />
             ))}
           </section>
 
@@ -377,6 +380,7 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
                     type="number"
                     step="0.1"
                     value={num(((doc.stats ?? {}) as Doc)[s]) ?? ""}
+                    placeholder={base[s] !== undefined ? `${Math.round(base[s])} base` : undefined}
                     onChange={(e) => setDoc((d) => ({ ...d, stats: { ...((d.stats ?? {}) as Doc), [s]: e.target.value === "" ? undefined : Number(e.target.value) } }))}
                   />
                 </label>
@@ -445,7 +449,7 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
 }
 
 /** A KPI tile with its target (WIREFRAMES.md G5): how far off, typed in place; pairs take no target. */
-function KpiTile({ label, value, target, fallback, onTarget }: { label: string; value: string; target?: number; fallback?: number; onTarget: (t: Record<string, number | undefined>) => void }) {
+function KpiTile({ label, value, auto, target, fallback, onTarget }: { label: string; value: string; auto?: boolean; target?: number; fallback?: number; onTarget: (t: Record<string, number | undefined>) => void }) {
   const now = Number.parseFloat(value);
   const numeric = !label.includes(" / ");
   // The build's own target, else the game's default.
@@ -454,7 +458,9 @@ function KpiTile({ label, value, target, fallback, onTarget }: { label: string; 
   return (
     <div className="card sh-kpi" role="group" aria-label={label}>
       <span className="kpi-label">{label}</span>
-      <span className="kpi-value">{value}</span>
+      <span className={`kpi-value ${auto ? "is-auto" : ""}`} title={auto ? "Base: the level and the weapon, until a value is typed" : undefined}>
+        {value}
+      </span>
       {numeric && (
         <span className="sh-target">
           <label className="mu">

@@ -26,12 +26,13 @@ describe("base stats", () => {
     close(baseStatsAt(kafka, 80), { HP: 1086.62, ATK: 679.14, DEF: 485.1, SPD: 100 });
     // Lv 75: the 70→80 phase's base and its growth per level.
     close(baseStatsAt(kafka, 75), { HP: 502.66 + 7.392 * 74, ATK: 314.16 + 4.62 * 74 });
-    close(baseStatsAt(c.weapons.find((w) => w.id === "20000")!, 80), { HP: 585.6, ATK: 219.6, DEF: 183 });
+    close(baseStatsAt(c.weapons.find((w) => w.id === "20000")!, 80), { HP: 846.72, ATK: 317.52, DEF: 264.6 });
   });
 
   it("ZZZ: Ellen at 60 without her core skill; Steel Cushion at 60", async () => {
     const c = await load(zzz);
-    close(baseStatsAt(c.characters.find((x) => x.name === "Ellen")!, 60), { HP: 7673, DEF: 606 });
+    // The game shows them floored: 7673 HP, 606 DEF, and 938 ATK with the core skill's 75.
+    close(baseStatsAt(c.characters.find((x) => x.name === "Ellen")!, 60), { HP: 7673.7, DEF: 606.6, ATK: 863.21 });
     close(baseStatsAt(c.weapons.find((w) => w.name === "Steel Cushion")!, 60), { ATK: 684, "CRIT Rate": 24 });
   });
 

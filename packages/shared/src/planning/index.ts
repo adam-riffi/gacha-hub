@@ -1,4 +1,4 @@
-import type { CatalogCharacter, CatalogWeapon, CostStep } from "../catalog/types.js";
+import type { BaseStats, CatalogCharacter, CatalogWeapon, CostStep } from "../catalog/types.js";
 
 /**
  * Pure material-requirement math, shared by the server (task generation)
@@ -75,3 +75,21 @@ export function levelCaps(steps: CostStep[], baseCap = 20): number[] {
 export function talentMax(table: CostStep[]): number {
   return table.reduce((m, s) => Math.max(m, s.atLevel), 1);
 }
+
+/**
+ * A unit's base stats at a level, on its phase's line between the catalog's
+ * points; at a cap the phase before the ascension unless `ascended`. Null for a
+ * unit without them.
+ */
+export function baseStatsAt(unit: { baseStats?: BaseStats }, level: number, ascended = false): Record<string, number> | null {
+  const b = unit.baseStats;
+  if (!b) return null;
+  const phases = new Map<number, number[][]>();
+  for (const p of b.points) phases.set(p[1]!, [...(phases.get(p[1]!) ?? []), p].sort((x, y) => x[0]! - y[0]!));
+  const ranges = [...phases].sort(([x], [y]) => x - y).map(([, ends]) => [ends[0]!, ends.at(-1)!] as const);
+  const holding = ranges.filter(([lo, hi]) => lo[0]! <= level && level <= hi[0]!);
+  const [lo, hi] = (ascended ? holding.at(-1) : holding[0]) ?? (level < ranges[0]![0][0]! ? ranges[0]! : ranges.at(-1)!);
+  const t = hi[0] === lo[0] ? 0 : Math.min(1, Math.max(0, (level - lo[0]!) / (hi[0]! - lo[0]!)));
+  return Object.fromEntries(b.stats.map((name, i) => [name, lo[i + 2]! + (hi[i + 2]! - lo[i + 2]!) * t]));
+}
+

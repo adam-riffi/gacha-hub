@@ -19,6 +19,15 @@ export const costStepSchema = z.object({
 });
 export type CostStep = z.infer<typeof costStepSchema>;
 
+/**
+ * A unit's base stats (Georges, round 6: "base stats should be auto included
+ * for everything"): `stats` names them; each point is [level, phase, …values in
+ * that order] at both ends of every ascension phase, between which a level is
+ * read on the line (`baseStatsAt`). Percentages are kept as percents.
+ */
+export const baseStatsSchema = z.object({ stats: z.array(z.string().min(1)).min(1), points: z.array(z.array(z.number())).min(2) });
+export type BaseStats = z.infer<typeof baseStatsSchema>;
+
 export const catalogCharacterSchema = z.object({
   id,
   key,
@@ -45,6 +54,7 @@ export const catalogCharacterSchema = z.object({
   }),
   /** The stats the character grows (Genshin's ascension stat, Star Rail's trace stats, ZZZ's core stat, WuWa's forte bonuses), the game's words, the main one first (round 6). */
   bonusStats: z.array(z.string()).optional(),
+  baseStats: baseStatsSchema.optional(),
   /** Talents that do not level (Genshin's passives), for the sheet's misc part (round 6). */
   passives: z.array(z.object({ name: z.string(), description: z.string().optional(), icon: z.string().optional() })).optional(),
   /** Constellations / eidolons (dupes) — what each rank does; filled by importers. */
@@ -66,6 +76,7 @@ export const catalogWeaponSchema = z.object({
   ascension: z.array(costStepSchema),
   /** The weapon's second stat (CRIT DMG, Energy Regen…), the game's words; none where the game has none (light cones). */
   mainStat: z.string().optional(),
+  baseStats: baseStatsSchema.optional(),
   extra: z.record(z.string(), z.unknown()).optional(),
 });
 export type CatalogWeapon = z.infer<typeof catalogWeaponSchema>;
