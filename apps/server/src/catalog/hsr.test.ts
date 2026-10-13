@@ -23,6 +23,12 @@ describe("hsr catalog", () => {
     expect(catalog.gear.flatMap((g) => g.bonuses).filter((b) => b.includes("#"))).toEqual([]);
   });
 
+  // Georges, round 6: a character's growth stats (its minor traces'), most first.
+  it("keeps each character's trace stats, most first", async () => {
+    const catalog = catalogSchema.parse(await hsr.loadCatalog!());
+    expect(catalog.characters.find((c) => c.id === "1005")?.bonusStats).toEqual(["ATK", "Effect Hit Rate", "HP"]);
+  });
+
   it("every cost references a catalog material", async () => {
     const catalog = catalogSchema.parse(await hsr.loadCatalog!());
     const ids = new Set(catalog.materials.map((m) => m.id));
