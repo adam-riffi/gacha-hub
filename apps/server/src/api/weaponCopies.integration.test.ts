@@ -100,5 +100,23 @@ describe("weapon copies (routes)", () => {
       const cone = (await c.req<WeaponCopyDto>("POST", `/api/instances/${other}/weapons`, { catalogId: "20000" })).json;
       expect((await hold(bennett, { catalogId: FAVONIUS, name: "Favonius Sword", copyId: cone.id })).json).toEqual({ error: "copy_mismatch" });
     });
+
+    // Every sheet's weapon is a copy (Georges, round 6: "there is still some desync between equipped weapons and the weapons'
+    // character data"): a sheet that names a weapon but no copy is linked to an unused copy of it, or to a new one.
+    it("links a sheet that names a weapon but no copy: a free copy takes the sheet's level, else a new copy is made", async () => {
+      const bennett = await build("10000032");
+      await hold(bennett, { catalogId: FAVONIUS, name: "Favonius Sword", level: 70, refinement: 3 });
+      expect((await list()).map((w) => [w.catalogId, w.level, w.refinement])).toEqual([[FAVONIUS, 70, 3]]);
+      const copyId = (await weaponOf(bennett)).copyId;
+      expect(copyId).toBe((await list())[0]!.id);
+      expect((await owned())?.qty).toBe(1);
+
+      const xingqiu = await build("10000025");
+      const free = (await c.req<WeaponCopyDto>("POST", `/api/instances/${gid}/weapons`, { catalogId: FAVONIUS })).json;
+      await hold(xingqiu, { catalogId: FAVONIUS, name: "Favonius Sword", level: 40, refinement: 1 });
+      expect(await list()).toHaveLength(2);
+      expect((await weaponOf(xingqiu)).copyId).toBe(free.id);
+      expect((await list()).find((w) => w.id === free.id)).toMatchObject({ level: 40, refinement: 1 });
+    });
   });
 });

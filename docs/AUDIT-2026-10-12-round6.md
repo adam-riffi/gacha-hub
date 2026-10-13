@@ -18,7 +18,7 @@ Georges's sixth round, after #256–#262. The rules of the earlier rounds stand:
 | Characters · set | the set's name in words | the **set's icon** with its count | #267 |
 | Characters · card stats | picked per game | **picked per character**, the game's classic stats by default | #268 |
 | Characters · ascension stat | not shown | the character's **ascension stat** on its card, highlighted | #269 |
-| Weapons | a weapon on a sheet and its copy on Weapons can disagree | **synced**: every sheet's weapon is a copy; several selected at once for level and ownership; **filtered by main stat** | |
+| Weapons | a weapon on a sheet and its copy on Weapons can disagree | **synced**: every sheet's weapon is a copy; several selected at once for level and ownership; **filtered by main stat** | #270 |
 | Gear | every set's text, no pieces | **every piece you have**, filtered by set, main stat and slot in each game's words | |
 | Teams | four slots everywhere | **each game's party size** (three or four); ZZZ's **Bangboo** | |
 | Planner | a goal opened spills over its card; the goal's steps twice; no filter | goals on **two rows**, **filtered and sorted**, the materials shorter; an opened goal stays in its card | |
@@ -30,6 +30,7 @@ Georges's sixth round, after #256–#262. The rules of the earlier rounds stand:
 
 - **Endgame:** the dialog of round 5 is gone: its cycle navigation lives on each card. Side panels (a weapon's, a gear set's) close on a press outside or on Escape (`useDismiss`).
 - **Growth stats** (`bonusStats`): Genshin's ascension stat, Star Rail's minor-trace stats (most first), ZZZ's core-skill stat, WuWa's forte bonuses (its own before ATK, HP, DEF); Endfield and NTE publish none. A weapon's `mainStat` for Genshin, ZZZ and WuWa (light cones have none). Genshin's talent icons and passives come with them, for the sheet.
+- **Weapons:** reading Weapons links every sheet that names a weapon but no copy: to a copy of it no sheet holds (which takes the sheet's level and refinement, the sheet being the newer word), else to a new copy. Select on Weapons sets level or refinement, owns or removes.
 - **Card stats:** a build's own (`cardStats` on the build, migration `build_card_stats`) win over the game's pick, which wins over the role's KPIs (each game's classic stats). The picker opens on the card itself and closes on a click outside.
 - **Ownership** is the owned list alone; a build no longer makes its character owned on Characters, and stays when its character is marked not owned (planning before pulling).
 - **Beginner banners** stay in each game's module (imports of their history still map), flagged `beginner`, and no screen shows them.
