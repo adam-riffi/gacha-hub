@@ -2,7 +2,7 @@
 
 Georges's sixth round, after #256–#262. The rules of the earlier rounds stand: every text adds to the data, and a thing the app can show, it shows as its icon.
 
-**Status:** done: #264–#278 (2026-10-14).
+**Status:** done: #264–#279 (2026-10-14).
 
 ## Georges's list
 
@@ -11,7 +11,7 @@ Georges's sixth round, after #256–#262. The rules of the earlier rounds stand:
 | Pulls | two grids of banners; a hidden one leaves the rows uneven, and the chances list's class broke each banner's odds table | **one grid** whose rows line up, an odd last banner across the row; the odds tables whole again | #264 |
 | Pulls · beginner banners | Beginners' wish, Departure warp, Novice and Beginner's Choice convenes, Beginner headhunting on screen | **gone from every screen**; imports still know them | #264 |
 | Icons | squares with letters where a banner or target has no art | **icons** (a banner's kind as a glyph; a unit, weapon, set or game without art as its kind's icon, #267) | #264 |
-| Pulls · top-up | none | the **chance by the banner's end** with what comes until then, and the **cheapest top-ups** (the game's packs) that make it certain | #278 |
+| Pulls · top-up | none | the **chance by the banner's end** with what comes until then, and the **cheapest top-ups** (the game's packs) that make it certain | #279 |
 | Endgame | a past cycle opens a dialog | a past cycle **becomes the card's cycle** (the card shows it); every dialog closes on a click outside; teams, times and difficulty shown where the mode has them | #265 |
 | Characters · owned | a character with a build cannot be marked not owned; the selection's buttons seem to do nothing | ownership **apart from builds**; the selection owns, un-owns, wishlists, sets build status (#266) and **makes goals** (quick build goals) | #266 |
 | Characters · art | WuWa's portraits sit low, heads under the chips or the name | **each game's art framed** on its face | #267 |

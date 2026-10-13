@@ -2,7 +2,7 @@
 
 ## State
 - `main` at #276: feat(sheet): a talent's effect in a bubble with its icon; a build's misc. CI green.
-- Open PRs, stacked: #277 (base stats from the catalogs) ← #278 (the top-up to a sure featured 5★, round 6's audit marked done, and this handoff). They merge in that order on green CI. Dependabot's #263 (eight dependency bumps) fails its E2E in the NTE journey and waits.
+- Open PRs, stacked: #277 (base stats from the catalogs) ← #279 (the top-up to a sure featured 5★, round 6's audit marked done, and this handoff). They merge in that order on green CI. Dependabot's #278 (twelve dependency bumps, which replaced #263) waits for its CI; #263's NTE failure came from an older `main`.
 - Production serves #186 (deployed 2026-10-10 18:52 UTC). Merges do not deploy (#189): `main` goes live only when Georges asks (`docs/DEPLOY.md`, Redeploys), then run the smoke check. Since #186, `main` adds eleven migrations, and the next deploy runs them: `kpi_defaults`, `progress`, `hidden_banners`, `default_build`, `weapon_copies`, `recurring_counts`, `card_stats`, `build_card_stats`, `team_companion` and `character_misc` (all columns on existing tables).
 - Every milestone in DESIGN.md §9 is built, V through F13, and six feedback rounds (2026-10-10 to 2026-10-14) are done. What is left needs Georges's secrets, real data or a decision (below), a source for a few details (Next), or is in DESIGN.md §4 "Later".
 
@@ -23,20 +23,20 @@
   - #275, **the quick build goal** per game from the sheet, the Characters selection and the Planner;
   - #276, **a talent's effect in a bubble** with its icon; a build's **misc** (passives, skins, notes, pictures);
   - #277, **base stats** from the catalogs on the sheet and the cards;
-  - #278, **the top-up to 100%**: each running banner's chance by its end and the cheapest packs to a sure featured 5★.
+  - #279, **the top-up to 100%**: each running banner's chance by its end and the cheapest packs to a sure featured 5★.
 
 ## Decisions taken (2026-10-12 to 14; Georges: "take every decision")
 - Earlier ones stand; round 6's are listed in its audit. In short: the endgame dialog is gone (cycles live on the cards); ownership is the owned list alone; a build's card stats win over the game's, which win over the role's; every sheet's weapon is a copy, the sheet winning over a free copy; linked goals add their steps to the parent's; quick build defaults per game (Genshin 10/6/6, Georges's example in the sheet's order); pictures go through the upload route; base stats for Genshin, Star Rail and ZZZ characters and weapons, without gear; top-up prices in US cents from each game's wiki, first-purchase doubles not counted, a sure featured 5★ being the worst case.
 
 ## Verified
-- `npm run check` before each PR and CI green on each merged one: 637 tests and 91 journeys at #277; initial JavaScript 147.4 KB of 200 KB.
+- `npm run check` before each PR and CI green on each merged one: 641 tests and 92 journeys at #279; initial JavaScript 147.9 KB of 200 KB.
 - Checked in the browser at 1440, art blocked for the PRs' screenshots: each round 6 screen.
 - The stack merged by rebasing each PR onto `main` after its parent's squash; each rebased branch's tree was checked equal to the one CI passed before merging.
 
 ## Next
 1. When Georges shares them: replace the fixtures built from documentation with real answers (PROJECT-GUIDE §14.1 step 8), then fix whatever differs.
 2. Base stats for WuWa (its ConfigDB has the growth tables), and gear main stats where a dataset gives them (Star Rail's relic tables are already in its catalog).
-3. Dependabot #263: its NTE journey fails with the new Playwright; look at it before merging.
+3. Dependabot #278: merge it once its CI is green (its predecessor #263 failed only on an older `main`).
 4. Each game version: refresh the catalogs (`npm run catalog:<game>`) and the endgame enemies (`npm run catalog:endgame`), then run mirror-art; re-check the values marked `~` in `docs/games/*.md` (the HSR and ZZZ pass prices among them); bump each manifest's `version`.
 5. Sources still missing for some designs' details (the list in the previous handoff stands: WuWa's echo bosses and Gateways, a few endgame modes, NTE's and Endfield's boosters, Genshin's Epitomized Path).
 
