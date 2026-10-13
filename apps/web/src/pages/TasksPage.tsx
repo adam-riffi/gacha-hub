@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import {
   PRIORITY_RANK,
   getGame,
+  listedGoal,
   type FarmTodayDto,
   type RewardDto,
 } from "@gacha/shared";
@@ -88,7 +89,7 @@ export function TasksPage() {
     );
   };
   const top = tasks.data.filter(
-    (t) => t.scope === "game" && byId.has(t.refId) && !t.parentId && t.type !== "recurring",
+    (t) => t.scope === "game" && byId.has(t.refId) && listedGoal(t) && t.type !== "recurring",
   );
   const goals = top
     .filter((t) => (showBacklog || !t.backlog) && matches(t))
@@ -164,9 +165,8 @@ export function TasksPage() {
               <GoalCard
                 key={t.id}
                 t={t}
-                kids={kidsOf.get(t.id) ?? []}
-                kidsOf={(k) => kidsOf.get(k) ?? []}
-                linkable={top.filter((x) => x.id !== t.id && x.refId === t.refId && x.type === "goal" && !x.backlog)}
+                tasks={tasks.data}
+                linkable={top.filter((x) => x.id !== t.id && x.refId === t.refId && x.type === "goal" && !x.parentId && !x.backlog)}
                 gi={byId.get(t.refId)!}
                 reward={rewards.data?.find((r) => r.goal?.id === t.id)}
                 weekday={lines.find((f) => f.instanceId === t.refId)?.weekday}

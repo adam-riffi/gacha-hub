@@ -59,7 +59,7 @@ test("Planner: each goal is the Tasks goal card: priority, notify, its plan, Lin
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
   for (const catalogId of ["1005", "1102"]) {
-    expect((await page.request.post(`/api/instances/${id}/plans/generate`, { data: { kind: "character", catalogId, level: { from: 1, to: 20 } } })).ok()).toBe(true);
+    expect((await page.request.post(`/api/instances/${id}/plans/generate`, { data: { kind: "character", catalogId, level: { from: 1, to: 30 } } })).ok()).toBe(true);
   }
   await page.goto(`/games/${id}/planner`);
   const goals = page.getByRole("region", { name: "Goals" });
@@ -98,7 +98,7 @@ test("Planner: goals in rows of three, two rows until All; filtered and sorted; 
   // Seven characters no other journey plans.
   const names = ["March 7th", "Himeko", "Welt", "Silver Wolf", "Arlan", "Asta", "Herta"];
   for (const catalogId of ["1001", "1003", "1004", "1006", "1008", "1009", "1013"]) {
-    expect((await page.request.post(`/api/instances/${id}/plans/generate`, { data: { kind: "character", catalogId, level: { from: 1, to: 20 } } })).ok()).toBe(true);
+    expect((await page.request.post(`/api/instances/${id}/plans/generate`, { data: { kind: "character", catalogId, level: { from: 1, to: 30 } } })).ok()).toBe(true);
   }
   try {
     await page.goto(`/games/${id}/planner`);

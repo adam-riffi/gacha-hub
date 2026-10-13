@@ -1,4 +1,4 @@
-import { gameDay, getGame, pullsFor, type TaskDto } from "@gacha/shared";
+import { gameDay, getGame, goalSteps, listedGoal, pullsFor, type TaskDto } from "@gacha/shared";
 import { prisma } from "./prisma.js";
 import type { RegionReset } from "./resets.js";
 import { buildRegionContext, serializeTask } from "../api/tasks.js";
@@ -19,14 +19,11 @@ export interface DayValues {
 export function dayRecordFor(region: RegionReset, tasks: TaskDto[], pulls: number, now: Date): DayValues {
   const day = gameDay(region, now);
   const dailies = tasks.filter((t) => t.type === "recurring" && (t.cadence ?? "daily") === "daily");
-  const met = (t: TaskDto) => (t.target ?? 0) > 0 && t.progress >= (t.target ?? 0);
   const finished = (t: TaskDto) => {
-    const materials = tasks.filter((m) => m.parentId === t.id);
-    if (materials.length) return materials.every(met);
-    if (t.type === "checklist") return Boolean(t.items?.length) && t.items!.every((i) => i.done);
-    return met(t);
+    const [done, total] = goalSteps(t, tasks);
+    return total > 0 && done >= total;
   };
-  const goals = tasks.filter((t) => !t.parentId && !t.backlog && t.type !== "recurring");
+  const goals = tasks.filter((t) => listedGoal(t) && !t.backlog && t.type !== "recurring");
   return {
     day,
     dailiesDone: dailies.filter((t) => t.doneThisCycle).length,

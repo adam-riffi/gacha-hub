@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { carryForward, dailyGains, dayOf } from "@gacha/shared";
+import { carryForward, dailyGains, dayOf, listedGoal } from "@gacha/shared";
 import type { DashboardData, TaskItem } from "../lib/types";
 import { GraphPanel } from "./charts/GraphPanel";
 import { HeroGauge, SmallGauge } from "./charts/Gauge";
@@ -98,8 +98,8 @@ export function HomeTop({
   const recurring = games.flatMap((g) => g.dailies).filter((t) => (t.cadence ?? "daily") === period);
   const recDone = recurring.filter((t) => t.doneThisCycle).length;
 
-  // Goals: top-level, not backlog. A farming goal is done when its materials are; a checklist when every item is ticked.
-  const goals = tasks.filter((t) => !t.parentId && !t.backlog && t.type !== "recurring");
+  // Goals on their own (linked ones too), not backlog. A farming goal is done when its steps are; a checklist when every item is ticked.
+  const goals = tasks.filter((t) => listedGoal(t) && !t.backlog && t.type !== "recurring");
   const finished = (t: TaskItem) => {
     const mat = goalMaterials[t.id];
     if (mat) return mat.total > 0 && mat.done >= mat.total;

@@ -101,7 +101,7 @@ export type GameDashboardExtras = z.infer<typeof gameDashboardExtrasDto>;
 export const dashboardDto = z.object({
   games: z.array(dashboardGameDto),
   goals: z.array(taskDto),
-  /** Per goal id: material subtasks done / total (goals without subtasks are absent). */
+  /** Per goal id: its material steps (and its linked goals' steps) done / total (goals with nothing under them are absent). */
   goalMaterials: z.record(z.string(), z.object({ done: z.number().int(), total: z.number().int() })),
   timeline: timelineDto,
 });

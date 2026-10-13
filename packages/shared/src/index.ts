@@ -32,3 +32,4 @@ export * from "./roster.js";
 export * from "./enka.js";
 export * from "./builds.js";
 export * from "./elements.js";
+export * from "./goals.js";

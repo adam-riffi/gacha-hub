@@ -1,5 +1,5 @@
 import type { FastifyInstance } from "fastify";
-import { BUILT_STATUSES, dashboardDto, gameDay, getGame, pityState, shownBanners } from "@gacha/shared";
+import { BUILT_STATUSES, dashboardDto, gameDay, getGame, goalSteps, listedGoal, pityState, shownBanners } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
 import { requireUser } from "../auth/plugin.js";
 import { getGameServerModule } from "../games/index.js";
@@ -165,20 +165,19 @@ export async function registerDashboardRoutes(app: FastifyInstance) {
 
     const banners = await withFeaturedDetails(rawBanners, instances);
 
-    // Material subtasks done/total per parent goal (same "done" rule as the board).
+    // Each goal's steps done/total, its linked goals' added (the board's rule).
     const goalMaterials: Record<string, { done: number; total: number }> = {};
     for (const t of enriched) {
-      if (!t.parentId) continue;
-      const m = (goalMaterials[t.parentId] ??= { done: 0, total: 0 });
-      m.total += 1;
-      if ((t.target ?? 0) > 0 && t.progress >= (t.target ?? 0)) m.done += 1;
+      if (!listedGoal(t) || !enriched.some((k) => k.parentId === t.id)) continue;
+      const [done, total] = goalSteps(t, enriched);
+      goalMaterials[t.id] = { done, total };
     }
 
     return dashboardDto.parse({
       games,
-      // Top-level, non-backlog goals — subtasks live under their parent, and
-      // completionist backlog goals stay out of the active list.
-      goals: enriched.filter((t) => t.type === "goal" && !t.parentId && !t.backlog),
+      // Goals on their own (linked ones too), not backlog — material steps live
+      // under their goal, and completionist backlog goals stay out of the active list.
+      goals: enriched.filter((t) => t.type === "goal" && listedGoal(t) && !t.backlog),
       goalMaterials,
       timeline: { banners, events },
     });

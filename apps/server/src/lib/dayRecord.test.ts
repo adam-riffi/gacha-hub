@@ -53,8 +53,8 @@ describe("dayRecordFor", () => {
       task({ type: "checklist", items: [{ label: "a", done: true }] }), // done
       task({ target: 10, progress: 0, backlog: true }), // backlog: not counted
       parent, // open while a material is short
-      task({ parentId: parent.id, target: 5, progress: 5 }),
-      task({ parentId: parent.id, target: 5, progress: 2 }),
+      task({ parentId: parent.id, materialId: "m1", target: 5, progress: 5 }),
+      task({ parentId: parent.id, materialId: "m2", target: 5, progress: 2 }),
     ];
     expect(dayRecordFor(EU, tasks, 0, new Date()).goalsOpen).toBe(3);
   });
