@@ -362,6 +362,12 @@ export function CharactersPage() {
                   {c.rarity && <span className="badge">★{c.rarity}</span>}
                   {c.tag && c.tag !== "None" && <span className="badge ch-el">{c.tag}</span>}
                   {c.weaponType && <span className="badge">{c.weaponType}</span>}
+                  {/* The stat it grows (its ascension, traces, core skill or forte), highlighted (Georges, round 6). */}
+                  {c.entry?.bonusStats?.[0] && (
+                    <span className="badge ch-bonus" title={`Grows ${c.entry.bonusStats.join(", ")}`}>
+                      {c.entry.bonusStats[0]}
+                    </span>
+                  )}
                 </div>
                 <span className={`ch-dupes ${c.owned ? "" : "is-off"}`}>{c.owned ? dupeBadge(game, doc) : "Not owned"}</span>
                 <div className="ch-namebox">
@@ -388,6 +394,7 @@ export function CharactersPage() {
                   options={statOptions}
                   kpis={(c.build.cardStats ?? cardStats) ? statKpis(game, doc, (c.build.cardStats ?? cardStats)!, catalog?.gear ?? []) : buildKpis(game, doc, c.build.role, catalog?.gear ?? [])}
                   own={c.build.cardStats}
+                  bonus={c.entry?.bonusStats ?? []}
                   onPick={(stats) => setBuildStats.mutate({ id: c.build!.id, cardStats: stats })}
                 />
               ) : !c.owned && onBanner && characterBanner ? (
@@ -501,7 +508,7 @@ function KpiValue({ k }: { k: StatKpi }) {
  * picked for this character, else the game's; the picker opens from the
  * strip's corner and closes on a click outside.
  */
-function CardStats({ name, labels, options, kpis, own, onPick }: { name: string; labels: string[] | null; options: string[]; kpis: StatKpi[]; own: string[] | null; onPick: (stats: string[] | null) => void }) {
+function CardStats({ name, labels, options, kpis, own, bonus, onPick }: { name: string; labels: string[] | null; options: string[]; kpis: StatKpi[]; own: string[] | null; bonus: string[]; onPick: (stats: string[] | null) => void }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   useDismiss(ref, () => setOpen(false), open);
@@ -515,7 +522,7 @@ function CardStats({ name, labels, options, kpis, own, onPick }: { name: string;
       <div className="ch-kpis" style={labels && labels.length !== 3 ? { gridTemplateColumns: `repeat(${Math.min(3, labels.length)}, minmax(0, 1fr))` } : undefined}>
         {kpis.map((k) => (
           <div key={k.label}>
-            <span className="kpi-label">{k.label}</span>
+            <span className={`kpi-label ${bonus.some((b) => b.toLowerCase() === k.label.toLowerCase()) ? "is-bonus" : ""}`}>{k.label}</span>
             <KpiValue k={k} />
           </div>
         ))}

@@ -17,7 +17,7 @@ Georges's sixth round, after #256–#262. The rules of the earlier rounds stand:
 | Characters · art | WuWa's portraits sit low, heads under the chips or the name | **each game's art framed** on its face | #267 |
 | Characters · set | the set's name in words | the **set's icon** with its count | #267 |
 | Characters · card stats | picked per game | **picked per character**, the game's classic stats by default | #268 |
-| Characters · ascension stat | not shown | the character's **ascension stat** on its card, highlighted | |
+| Characters · ascension stat | not shown | the character's **ascension stat** on its card, highlighted | #269 |
 | Weapons | a weapon on a sheet and its copy on Weapons can disagree | **synced**: every sheet's weapon is a copy; several selected at once for level and ownership; **filtered by main stat** | |
 | Gear | every set's text, no pieces | **every piece you have**, filtered by set, main stat and slot in each game's words | |
 | Teams | four slots everywhere | **each game's party size** (three or four); ZZZ's **Bangboo** | |
@@ -29,6 +29,7 @@ Georges's sixth round, after #256–#262. The rules of the earlier rounds stand:
 ## Decisions (Georges: "take every decision")
 
 - **Endgame:** the dialog of round 5 is gone: its cycle navigation lives on each card. Side panels (a weapon's, a gear set's) close on a press outside or on Escape (`useDismiss`).
+- **Growth stats** (`bonusStats`): Genshin's ascension stat, Star Rail's minor-trace stats (most first), ZZZ's core-skill stat, WuWa's forte bonuses (its own before ATK, HP, DEF); Endfield and NTE publish none. A weapon's `mainStat` for Genshin, ZZZ and WuWa (light cones have none). Genshin's talent icons and passives come with them, for the sheet.
 - **Card stats:** a build's own (`cardStats` on the build, migration `build_card_stats`) win over the game's pick, which wins over the role's KPIs (each game's classic stats). The picker opens on the card itself and closes on a click outside.
 - **Ownership** is the owned list alone; a build no longer makes its character owned on Characters, and stays when its character is marked not owned (planning before pulling).
 - **Beginner banners** stay in each game's module (imports of their history still map), flagged `beginner`, and no screen shows them.
