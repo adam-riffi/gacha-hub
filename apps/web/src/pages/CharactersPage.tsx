@@ -120,9 +120,15 @@ export function CharactersPage() {
   const setCardStats = useMutation({
     // One save at a time: quick picks sent together could land out of order and keep an older pick.
     scope: { id: `card-stats-${id}` },
+    mutationKey: ["card-stats", id],
     mutationFn: (cardStats: string[] | null) => api.put(`/api/instances/${id}`, { cardStats }),
-    onMutate: (cardStats) => qc.setQueryData<InstanceDetail>(["instance", id], (old) => (old ? { ...old, cardStats } : old)),
-    onSettled: () => qc.invalidateQueries({ queryKey: ["instance", id] }),
+    // A read in flight would put back the stats from before the picks, and the next pick would build on them.
+    onMutate: async (cardStats) => {
+      await qc.cancelQueries({ queryKey: ["instance", id] });
+      qc.setQueryData<InstanceDetail>(["instance", id], (old) => (old ? { ...old, cardStats } : old));
+    },
+    // Read back once the last pick is saved.
+    onSettled: () => qc.isMutating({ mutationKey: ["card-stats", id] }) === 1 && qc.invalidateQueries({ queryKey: ["instance", id] }),
   });
   const start = useMutation({
     mutationFn: (v: string | { name: string }) => api.post<{ id: string }>(`/api/instances/${id}/characters`, typeof v === "string" ? { catalogId: v } : v),
