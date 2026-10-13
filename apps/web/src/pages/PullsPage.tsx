@@ -24,6 +24,7 @@ import {
   type Unit,
 } from "../components/pulls/BannerCard";
 import { SavingsPlanner, pct, type PlannerTarget } from "../components/pulls/SavingsPlanner";
+import { TopUpCard } from "../components/pulls/TopUpCard";
 import { UnitIcon } from "../components/CatalogIcon";
 import { Glyph, bannerGlyph } from "../components/Glyph";
 import { BannerHistory, PullHistory } from "../components/pulls/PullHistory";
@@ -303,6 +304,8 @@ export function PullsPage() {
           )}
         </section>
       </div>
+
+      {game.manifest.topUp && targets.some((t) => t.endsAt) && <TopUpCard game={game} region={region} passEnds={passEnds} targets={targets.filter((t) => t.endsAt)} />}
 
       <div className="pl-label">
         <span className="kpi-label">Banners</span>

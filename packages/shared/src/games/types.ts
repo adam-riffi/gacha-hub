@@ -90,6 +90,13 @@ export interface GameManifest {
     companion?: { label: string };
   /** `daily`: premium currency the pass gives each day (the Pulls forecast). */
   monthlyPass?: { name: string; days: number; maxDays?: number; daily?: number };
+  /**
+   * The store's top-ups (round 6: the cheapest top-up to a sure featured 5★):
+   * each pack's premium currency, its bonus past the first purchase and its
+   * price in US cents; the monthly pass's price and upfront amount (its daily
+   * part is `monthlyPass.daily`). Sources: docs/games/<game>.md.
+   */
+  topUp?: { packs: { amount: number; bonus: number; price: number }[]; pass?: { amount: number; price: number } };
   /** Premium currency the daily activity gives each day (the Pulls forecast, WIREFRAMES.md G3). */
   income?: { label: string; daily: number };
   /**

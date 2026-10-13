@@ -112,14 +112,14 @@ describe("odds against a seeded simulation (F10 acceptance: within 0.5 points)",
 describe("the top-up to a sure featured 5★", () => {
   const top = genshin.manifest.topUp!;
   const pass = genshin.manifest.monthlyPass!;
-  /** Every mix of up to four of each pack, the pass once or not: the cheapest that reaches the need. */
+  /** Every mix of up to eight of each pack, the pass once or not: the cheapest that reaches the need. */
   function brute(need: number, passDays: number) {
     let best = Infinity;
     const packs = top.packs;
     const go = (i: number, amount: number, price: number) => {
       if (amount >= need) return void (best = Math.min(best, price));
       if (i === packs.length) return;
-      for (let k = 0; k <= 4; k++) go(i + 1, amount + k * (packs[i]!.amount + packs[i]!.bonus), price + k * packs[i]!.price);
+      for (let k = 0; k <= 8; k++) go(i + 1, amount + k * (packs[i]!.amount + packs[i]!.bonus), price + k * packs[i]!.price);
     };
     go(0, 0, 0);
     go(0, top.pass!.amount + (pass.daily ?? 0) * passDays, top.pass!.price);
