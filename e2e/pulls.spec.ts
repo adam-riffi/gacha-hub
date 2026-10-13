@@ -194,3 +194,18 @@ test("Pulls: one grid of banners whose rows line up, their odds tables whole, no
   // A banner without a featured unit shows its kind as an icon, not letters.
   await expect(page.getByRole("region", { name: "Stellar warp" }).locator(".pl-banner-head svg.glyph")).toBeVisible();
 });
+
+// Georges, round 6: "a top-up suggestion … a % of chance of getting the character by the end of the banner, and how many top-ups
+// of what kind at the lowest price would get the chances to 100%".
+test("Pulls: each running banner's chance by its end, and the cheapest top-up to a sure featured 5★ @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  await page.goto(`/games/${id}/pulls`);
+  const top = page.getByRole("region", { name: "Top-up to 100%" });
+  const row = top.getByRole("listitem").first();
+  await expect(row.getByRole("img").first()).toBeVisible();
+  await expect(row).toContainText(/by \d+ \w+ · \d+%/);
+  await expect(row).toContainText(/\$\d+\.\d\d|Covered/);
+});
