@@ -33,7 +33,8 @@ test("Pulls: what you have and what is coming, an event banner's status, pity an
   await page.getByLabel("Amount to add").fill("1600");
   await expect(page.getByRole("region", { name: "Pulls available" })).toContainText("+10 pulls");
   await expect(banner.locator(".pl-legend")).toContainText("+10 ·");
-  await expect(page.locator("main")).not.toContainText(/top-up/i);
+  // The simulator is a plus sign; round 6's "Top-up to 100%" card is its own.
+  await expect(page.getByRole("region", { name: "Pulls available" })).not.toContainText(/top-up/i);
   await page.getByLabel("Amount to add").fill("");
 
   // Standard banners get the full card too.
@@ -202,13 +203,13 @@ test("Pulls: each running banner's chance by its end, and the cheapest top-up to
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
-  // Kafka's banner, running for ten more days.
+  // A banner running for ten more days, in case no other journey's runs (the first running one of a kind is shown).
   const iso = (days: number) => new Date(Date.now() + days * 86_400_000).toISOString();
   expect((await page.request.post("/api/admin/payload", { data: { kind: "banners", gameKey: "hsr", items: [{ key: "e2e-topup", name: "E2E top-up warp", kind: "character", startsAt: iso(-1), endsAt: iso(10), featured: [{ catalogId: "1005", kind: "character" }] }] } })).ok()).toBe(true);
   try {
     await page.goto(`/games/${id}/pulls`);
-    const row = page.getByRole("region", { name: "Top-up to 100%" }).getByRole("listitem").filter({ hasText: "Kafka" });
-    await expect(row.getByRole("img", { name: "Kafka" })).toBeVisible();
+    const row = page.getByRole("region", { name: "Top-up to 100%" }).getByRole("listitem").first();
+    await expect(row.getByRole("img").first()).toBeVisible();
     await expect(row).toContainText(/by \d+ \w+ · (>?\d+)%/);
     await expect(row).toContainText(/\$\d+\.\d\d|Covered/);
   } finally {
