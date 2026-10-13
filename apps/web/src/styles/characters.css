@@ -152,6 +152,11 @@
 .wp-holder { width: 32px; height: 32px; font-size: 10px; border-color: var(--el); }
 .wp-holders { display: inline-flex; flex-direction: column; gap: 4px; }
 .wp-wish { position: absolute; top: 6px; right: 6px; }
+/* Several at once (round 6): a picked card lit whole; the bar's inputs inline. */
+.wp-card.is-picked { border-color: var(--el); box-shadow: 0 0 0 2px var(--el); background: color-mix(in srgb, var(--el) 14%, var(--card)); }
+.wp-bulk label { display: inline-flex; align-items: center; gap: 6px; margin: 0; }
+.wp-bulk input { width: 72px; }
+.wp-page > .wp-bulk { grid-column: 1 / -1; }
 .wp-panel { position: sticky; top: 16px; display: grid; gap: 12px; }
 .wp-panel-title { display: flex; align-items: center; gap: 12px; }
 .wp-panel-title .gicon { width: 56px; height: 56px; font-size: 12px; }

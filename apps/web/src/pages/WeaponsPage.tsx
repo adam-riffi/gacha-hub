@@ -33,7 +33,18 @@ export function WeaponsPage() {
   const [type, setType] = useState("");
   const [rarity, setRarity] = useState("");
   const [shown, setShown] = useState<"all" | "owned" | "wishlist">("all");
+  const [mainStat, setMainStat] = useState("");
   const [open, setOpen] = useState<string | null>(null);
+  // Several at once (Georges, round 6): copies by id, weapons not owned by "w:<catalogId>".
+  const [selecting, setSelecting] = useState(false);
+  const [picked, setPicked] = useState<Set<string>>(new Set());
+  const togglePick = (key: string) =>
+    setPicked((p) => {
+      const n = new Set(p);
+      if (n.has(key)) n.delete(key);
+      else n.add(key);
+      return n;
+    });
   const instance = useQuery({ queryKey: ["instance", id], queryFn: () => api.get<InstanceDetail>(`/api/instances/${id}`) });
   const builds = useQuery({ queryKey: ["characters", id], queryFn: () => api.get<CharacterDto[]>(`/api/instances/${id}/characters`) });
   const copies = useQuery({ queryKey: ["weapons", id], queryFn: () => api.get<WeaponCopyDto[]>(`/api/instances/${id}/weapons`) });
@@ -51,6 +62,19 @@ export function WeaponsPage() {
     onError: () => toast("Not saved: over the weapon's cap", "err"),
   });
   const remove = useMutation({ mutationFn: (copyId: string) => api.del(`/api/instances/${id}/weapons/${copyId}`), onSuccess: refresh });
+  const many = useMutation({
+    mutationFn: async (v: { update?: { level?: number; refinement?: number }; remove?: boolean; own?: string[] }) => {
+      const copyIds = [...picked].filter((k) => !k.startsWith("w:"));
+      if (v.update) await Promise.all(copyIds.map((c) => api.put(`/api/instances/${id}/weapons/${c}`, v.update)));
+      if (v.remove) for (const c of copyIds) await api.del(`/api/instances/${id}/weapons/${c}`);
+      for (const catalogId of v.own ?? []) await api.post(`/api/instances/${id}/weapons`, { catalogId });
+    },
+    onSuccess: (_r, v) => {
+      if (v.remove || v.own) setPicked(new Set());
+      return Promise.all([refresh(), qc.invalidateQueries({ queryKey: ["characters", id] })]);
+    },
+    onError: () => toast("Not saved: check the values", "err"),
+  });
   const wish = useMutation({
     mutationFn: (v: { catalogId: string; wished: boolean }) => api.put(`/api/instances/${id}/wishlist`, { kind: "weapon", ...v }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["wishlist", id] }),
@@ -84,7 +108,11 @@ export function WeaponsPage() {
     into.set(key, [...(into.get(key) ?? []), h]);
   }
   const matches = (w: Weapon) =>
-    (!q || w.name.toLowerCase().includes(q.toLowerCase())) && (!type || w.type === type) && (!rarity || String(w.rarity) === rarity) && (shown !== "wishlist" || (w.catalogId !== null && wished.has(w.catalogId)));
+    (!q || w.name.toLowerCase().includes(q.toLowerCase())) &&
+    (!type || w.type === type) &&
+    (!rarity || String(w.rarity) === rarity) &&
+    (!mainStat || w.entry?.mainStat === mainStat) &&
+    (shown !== "wishlist" || (w.catalogId !== null && wished.has(w.catalogId)));
   const mine = copies.data.map((c, i) => ({ copy: c, weapon: weaponOf(c), nth: copies.data.slice(0, i).filter((x) => weaponOf(x).key === weaponOf(c).key).length }));
   const holdersOf = (c: WeaponCopyDto): Holder[] => {
     const named = byCopy.get(c.id);
@@ -125,6 +153,7 @@ export function WeaponsPage() {
             </label>
             <Chips label="Type" value={type} onChange={setType} options={values((w) => w.type)} />
             <Chips label="Rarity" value={rarity} onChange={setRarity} options={values((w) => String(w.rarity)).reverse()} text={(r) => `★${r}`} />
+            <Chips label="Main stat" value={mainStat} onChange={setMainStat} options={values((w) => w.mainStat)} />
           </section>
           <div className="ch-counts" role="group" aria-label="Filter by count">
             {(
@@ -138,6 +167,17 @@ export function WeaponsPage() {
                 {label} {n}
               </button>
             ))}
+            <span className="ch-sp" />
+            <button
+              className="btn"
+              aria-pressed={selecting}
+              onClick={() => {
+                setSelecting(!selecting);
+                setPicked(new Set());
+              }}
+            >
+              Select
+            </button>
           </div>
         </>
       ) : (
@@ -168,8 +208,8 @@ export function WeaponsPage() {
             const hs = holdersOf(copy);
             const h = hs[0];
             return (
-              <article key={copy.id} className={`wp-card ${open === weapon.key ? "is-on" : ""}`} aria-label={weapon.name} style={tint(h) ? ({ "--el": tint(h) } as CSSProperties) : undefined}>
-                <button type="button" className="wp-open" aria-label={`Open ${weapon.name}`} onClick={() => setOpen(weapon.key)} />
+              <article key={copy.id} className={`wp-card ${open === weapon.key ? "is-on" : ""} ${picked.has(copy.id) ? "is-picked" : ""}`} aria-label={weapon.name} style={tint(h) ? ({ "--el": tint(h) } as CSSProperties) : undefined}>
+                <button type="button" className="wp-open" aria-label={selecting ? `Select ${weapon.name}` : `Open ${weapon.name}`} aria-pressed={selecting ? picked.has(copy.id) : undefined} onClick={() => (selecting ? togglePick(copy.id) : setOpen(weapon.key))} />
                 <CatalogIcon gameKey={game.key} kind="weapon" icon={weapon.icon} name={weapon.name} className="wp-art" />
                 <div className="wp-body">
                   <strong>{weapon.name}</strong>
@@ -177,7 +217,7 @@ export function WeaponsPage() {
                     Lv {copy.level}
                     {dupe && ` · ${dupeLetter(dupe.field)}${copy.refinement}`}
                   </span>
-                  <span className="mn mu">{[weapon.rarity && `★${weapon.rarity}`, weapon.type].filter(Boolean).join(" · ")}</span>
+                  <span className="mn mu">{[weapon.rarity && `★${weapon.rarity}`, weapon.type, weapon.entry?.mainStat].filter(Boolean).join(" · ")}</span>
                 </div>
                 {hs.length > 0 && (
                   <span className="wp-holders">
@@ -190,12 +230,18 @@ export function WeaponsPage() {
             );
           })}
           {others.map((weapon) => (
-            <article key={weapon.key} className={`wp-card is-unowned ${open === weapon.key ? "is-on" : ""}`} aria-label={weapon.name}>
-              <button type="button" className="wp-open" aria-label={`Open ${weapon.name}`} onClick={() => setOpen(weapon.key)} />
+            <article key={weapon.key} className={`wp-card is-unowned ${open === weapon.key ? "is-on" : ""} ${picked.has(`w:${weapon.catalogId}`) ? "is-picked" : ""}`} aria-label={weapon.name}>
+              <button
+                type="button"
+                className="wp-open"
+                aria-label={selecting ? `Select ${weapon.name}` : `Open ${weapon.name}`}
+                aria-pressed={selecting ? picked.has(`w:${weapon.catalogId}`) : undefined}
+                onClick={() => (selecting && weapon.catalogId ? togglePick(`w:${weapon.catalogId}`) : setOpen(weapon.key))}
+              />
               <CatalogIcon gameKey={game.key} kind="weapon" icon={weapon.icon} name={weapon.name} className="wp-art" />
               <div className="wp-body">
                 <strong>{weapon.name}</strong>
-                <span className="mn mu">{[weapon.rarity && `★${weapon.rarity}`, weapon.type].filter(Boolean).join(" · ")}</span>
+                <span className="mn mu">{[weapon.rarity && `★${weapon.rarity}`, weapon.type, weapon.entry?.mainStat].filter(Boolean).join(" · ")}</span>
               </div>
               {weapon.catalogId && wished.has(weapon.catalogId) && <span className="badge wp-wish">♥</span>}
             </article>
@@ -203,7 +249,19 @@ export function WeaponsPage() {
           {cards.length === 0 && others.length === 0 && <p className="mu">{fromCatalog ? "No weapon matches." : "No weapon yet."}</p>}
         </section>
 
-        {selected && (
+        {picked.size > 0 && (
+          <BulkBar
+            count={picked.size}
+            dupe={dupe}
+            pending={many.isPending}
+            onLevel={(level) => many.mutate({ update: { level } })}
+            onRefinement={(refinement) => many.mutate({ update: { refinement } })}
+            onOwn={() => many.mutate({ own: [...picked].filter((k) => k.startsWith("w:")).map((k) => k.slice(2)) })}
+            onRemove={() => many.mutate({ remove: true })}
+            onClear={() => setPicked(new Set())}
+          />
+        )}
+        {selected && !selecting && (
           <WeaponPanel
             instanceId={id!}
             gameKey={game.key}
@@ -309,5 +367,62 @@ function WeaponPanel({
       </div>
       {farming && weapon.entry && <WeaponFarm instanceId={instanceId} weapon={weapon.entry} onDone={() => setFarming(false)} />}
     </aside>
+  );
+}
+
+/** What to do with the picked copies (Georges, round 6: "mass modify level or ownership"). */
+function BulkBar({
+  count,
+  dupe,
+  pending,
+  onLevel,
+  onRefinement,
+  onOwn,
+  onRemove,
+  onClear,
+}: {
+  count: number;
+  dupe?: { field: string; label: string; max: number };
+  pending: boolean;
+  onLevel: (level: number) => void;
+  onRefinement: (refinement: number) => void;
+  onOwn: () => void;
+  onRemove: () => void;
+  onClear: () => void;
+}) {
+  const [level, setLevel] = useState("");
+  const [refinement, setRefinement] = useState("");
+  return (
+    <div className="ch-bulk ch-bulk-bar wp-bulk" role="region" aria-label="Selection">
+      <span className="mn">{count} selected</span>
+      <label>
+        Level
+        <input type="number" min={1} max={100} value={level} onChange={(e) => setLevel(e.target.value)} />
+      </label>
+      <button className="btn" disabled={pending || !level} onClick={() => onLevel(Number(level))}>
+        Set level
+      </button>
+      {dupe && (
+        <>
+          <label>
+            {dupe.label}
+            <input type="number" min={1} max={dupe.max} value={refinement} onChange={(e) => setRefinement(e.target.value)} />
+          </label>
+          <button className="btn" disabled={pending || !refinement} onClick={() => onRefinement(Number(refinement))}>
+            Set {dupe.label.toLowerCase()}
+          </button>
+        </>
+      )}
+      <button className="btn" disabled={pending} onClick={onOwn}>
+        Own
+      </button>
+      <button className="btn danger" disabled={pending} onClick={onRemove}>
+        Remove
+      </button>
+      <span className="ch-sp" />
+      <button className="btn ghost" onClick={onClear}>
+        Clear
+      </button>
+    </div>
   );
 }

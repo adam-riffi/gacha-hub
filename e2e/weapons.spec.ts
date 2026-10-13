@@ -23,11 +23,11 @@ test("Weapons: every copy its own card with its level and refinement and who wie
   const grid = page.getByRole("region", { name: "Weapons" });
   const cards = grid.getByRole("article", { name: "Patience Is All You Need" });
 
-  // Not owned yet: one card, which opens the weapon's panel.
+  // Kafka's sheet names it: that is a copy, at her sheet's Lv 80 S2 (round 6: every sheet's weapon is a copy). One card, which opens the weapon's panel.
   await expect(cards).toHaveCount(1);
+  await expect(cards.first()).toContainText("Lv 80 · S2");
   await cards.click();
   const panel = page.getByRole("complementary", { name: "Patience Is All You Need" });
-  await panel.getByRole("button", { name: "Add a copy" }).click();
   await panel.getByRole("button", { name: "Add a copy" }).click();
   await expect(cards).toHaveCount(2);
 
