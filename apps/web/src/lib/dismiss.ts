@@ -3,10 +3,11 @@ import { useEffect, type RefObject } from "react";
 /**
  * Closes a window (a side panel, a pop-up) on a press outside it or on Escape
  * (Georges, round 6: "for all the windows I wanna be able to get out of them
- * by clicking outside of it").
+ * by clicking outside of it"). Inactive while the window is closed.
  */
-export function useDismiss(ref: RefObject<HTMLElement | null>, onAway: () => void) {
+export function useDismiss(ref: RefObject<HTMLElement | null>, onAway: () => void, active = true) {
   useEffect(() => {
+    if (!active) return;
     const down = (e: PointerEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) onAway();
     };
@@ -19,5 +20,5 @@ export function useDismiss(ref: RefObject<HTMLElement | null>, onAway: () => voi
       document.removeEventListener("pointerdown", down);
       document.removeEventListener("keydown", key);
     };
-  }, [ref, onAway]);
+  }, [ref, onAway, active]);
 }

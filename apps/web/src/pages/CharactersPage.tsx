@@ -1,4 +1,4 @@
-import { useState, type CSSProperties } from "react";
+import { useRef, useState, type CSSProperties } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -25,6 +25,7 @@ import {
 } from "@gacha/shared";
 import { LoadError } from "../components/LoadError";
 import { api } from "../lib/api";
+import { useDismiss } from "../lib/dismiss";
 import { useCatalog } from "../lib/catalog";
 import { assetUrl, communityAssetUrl, splashKey } from "../lib/assets";
 import { GameTabs } from "../components/GameTabs";
@@ -121,6 +122,12 @@ export function CharactersPage() {
   const wish = useMutation({
     mutationFn: (v: { catalogId: string; wished: boolean; kind?: "character" | "weapon" }) => api.put(`/api/instances/${id}/wishlist`, { kind: "character", ...v }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["wishlist", id] }),
+  });
+  // A card's own stats (Georges, round 6: "I can choose for each one character what I want to show").
+  const setBuildStats = useMutation({
+    mutationFn: (v: { id: string; cardStats: string[] | null }) => api.put(`/api/characters/${v.id}`, { cardStats: v.cardStats }),
+    onMutate: (v) => qc.setQueryData<CharacterDto[]>(["characters", id], (old) => old?.map((b) => (b.id === v.id ? { ...b, cardStats: v.cardStats } : b))),
+    onSettled: () => qc.invalidateQueries({ queryKey: ["characters", id] }),
   });
   // The stats the cards show, picked for the game (Georges, round 5); none picked shows each build's role's.
   const setCardStats = useMutation({
@@ -369,14 +376,14 @@ export function CharactersPage() {
                 </div>
               </div>
               {c.build ? (
-                <div className="ch-kpis" style={cardStats && cardStats.length !== 3 ? { gridTemplateColumns: `repeat(${Math.min(3, cardStats.length)}, minmax(0, 1fr))` } : undefined}>
-                  {(cardStats ? statKpis(game, doc, cardStats, catalog?.gear ?? []) : buildKpis(game, doc, c.build.role, catalog?.gear ?? [])).map((k) => (
-                    <div key={k.label}>
-                      <span className="kpi-label">{k.label}</span>
-                      <KpiValue k={k} />
-                    </div>
-                  ))}
-                </div>
+                <CardStats
+                  name={c.name}
+                  labels={c.build.cardStats ?? cardStats}
+                  options={statOptions}
+                  kpis={(c.build.cardStats ?? cardStats) ? statKpis(game, doc, (c.build.cardStats ?? cardStats)!, catalog?.gear ?? []) : buildKpis(game, doc, c.build.role, catalog?.gear ?? [])}
+                  own={c.build.cardStats}
+                  onPick={(stats) => setBuildStats.mutate({ id: c.build!.id, cardStats: stats })}
+                />
               ) : !c.owned && onBanner && characterBanner ? (
                 <div className="ch-kpis ch-chance">
                   <div>
@@ -480,5 +487,50 @@ function KpiValue({ k }: { k: StatKpi }) {
         </>
       )}
     </button>
+  );
+}
+
+/**
+ * A card's stats, and the picker of its own (Georges, round 6): the stats
+ * picked for this character, else the game's; the picker opens from the
+ * strip's corner and closes on a click outside.
+ */
+function CardStats({ name, labels, options, kpis, own, onPick }: { name: string; labels: string[] | null; options: string[]; kpis: StatKpi[]; own: string[] | null; onPick: (stats: string[] | null) => void }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  useDismiss(ref, () => setOpen(false), open);
+  const toggle = (s: string) => {
+    const now = own ?? [];
+    const next = now.includes(s) ? now.filter((x) => x !== s) : [...now, s].slice(-6);
+    onPick(next.length ? next : null);
+  };
+  return (
+    <div className="ch-kpis-wrap" ref={ref}>
+      <div className="ch-kpis" style={labels && labels.length !== 3 ? { gridTemplateColumns: `repeat(${Math.min(3, labels.length)}, minmax(0, 1fr))` } : undefined}>
+        {kpis.map((k) => (
+          <div key={k.label}>
+            <span className="kpi-label">{k.label}</span>
+            <KpiValue k={k} />
+          </div>
+        ))}
+      </div>
+      <button type="button" className="ch-kpis-edit" aria-label={`Stats shown on ${name}`} aria-expanded={open} onClick={() => setOpen(!open)}>
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 20h4L19 9l-4-4L4 16zM14 6l4 4" />
+        </svg>
+      </button>
+      {open && (
+        <div className="ch-kpis-pick" role="group" aria-label={`${name}'s card stats`}>
+          <button type="button" className="ch-chip" aria-pressed={!own} onClick={() => onPick(null)}>
+            Game's
+          </button>
+          {options.map((s) => (
+            <button key={s} type="button" className="ch-chip" aria-pressed={own?.includes(s) ?? false} onClick={() => toggle(s)}>
+              {s}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }

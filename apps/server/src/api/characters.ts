@@ -117,6 +117,7 @@ export async function registerCharacterRoutes(app: FastifyInstance) {
       if (body.role && !game.manifest.kpis[body.role]) return reply.code(400).send({ error: "unknown_role" });
       const numeric = numericKpis(game);
       if (body.targets && Object.keys(body.targets).some((k) => !numeric.has(k))) return reply.code(400).send({ error: "unknown_kpi" });
+      if (body.cardStats && new Set(body.cardStats).size < body.cardStats.length) return reply.code(400).send({ error: "duplicate_stat" });
       if (body.catalogId !== undefined) {
         const cat = await getCatalog(game);
         if (cat && body.catalogId && !cat.index.characters.has(body.catalogId)) {
@@ -148,6 +149,7 @@ export async function registerCharacterRoutes(app: FastifyInstance) {
           ...(body.buildStatus !== undefined ? { buildStatus: body.buildStatus } : {}),
           ...(body.role !== undefined ? { role: body.role } : {}),
           ...(body.targets !== undefined ? { targets: body.targets === null ? Prisma.DbNull : (body.targets as PrismaJson) } : {}),
+          ...(body.cardStats !== undefined ? { cardStats: body.cardStats === null ? Prisma.DbNull : body.cardStats } : {}),
         },
       });
       if (copy) await syncHolders(game, character.gameInstanceId, copy.id, copy, character.id);

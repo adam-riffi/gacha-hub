@@ -45,6 +45,12 @@
 .ch-kpis > div:nth-child(3n + 1) { border-left: 0; }
 .ch-kpis > div:nth-child(n + 4) { border-top: 1px solid var(--surface-3); }
 .ch-stats { flex-basis: 100%; }
+/* A card's own stats (round 6): a pencil in the strip's corner opens the picker over the card. */
+.ch-kpis-wrap { position: relative; }
+.ch-kpis-edit { position: absolute; top: 4px; right: 4px; z-index: 3; display: grid; place-items: center; width: 22px; height: 22px; padding: 0; border: 0; background: transparent; color: var(--text-muted); cursor: pointer; opacity: 0; }
+.ch-card:hover .ch-kpis-edit, .ch-kpis-edit:focus-visible, .ch-kpis-edit[aria-expanded="true"] { opacity: 1; }
+.ch-kpis-edit svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.8; }
+.ch-kpis-pick { position: absolute; left: 8px; right: 8px; bottom: calc(100% - 4px); z-index: 4; display: flex; flex-wrap: wrap; gap: 6px; padding: 10px; background: var(--bg); border: 1px solid var(--el); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6); }
 .ch-foot { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 12px; font-size: 13px; }
 .ch-foot a { color: var(--text); white-space: nowrap; }
 .ch-foot a:hover { color: var(--accent); }

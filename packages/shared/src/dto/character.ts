@@ -20,6 +20,8 @@ export const characterDto = z.object({
   targets: z.record(z.string(), z.number()).nullable().default(null),
   /** The build the character opens on. */
   isDefault: z.boolean().default(false),
+  /** The stats its card shows (Georges, round 6); null shows the game's. */
+  cardStats: z.array(z.string()).nullable().default(null),
   createdAt: isoDate,
   updatedAt: isoDate,
 });
@@ -56,6 +58,8 @@ export const createCharacterInput = z.object({
   role: z.string().max(40).nullable().optional(),
   /** A target per numeric KPI (checked against the game's KPIs on save); null clears them. */
   targets: kpiTargetsInput.nullable().optional(),
+  /** The stats its card shows, in order, up to six; null goes back to the game's. */
+  cardStats: z.array(z.string().trim().min(1).max(40)).min(1).max(6).nullable().optional(),
 });
 export type CreateCharacterInput = z.infer<typeof createCharacterInput>;
 
