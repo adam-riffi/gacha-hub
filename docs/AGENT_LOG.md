@@ -14,25 +14,25 @@ Entry format:
 
 ---
 
-## 2026-10-12 · claude · stack/r9/04-card-art · #266
+## 2026-10-12 · claude · stack/r9/04-card-art · #267
 - Done: Characters' art and icons (Georges, round 6: "WuWa character art is too low on the cards, we can barely see their heads … make sure to correctly center any character art; on the character cards I should see the icon of the set instead of just the name; use icons instead of squares with letters"): cards carry their game (`data-game`), and WuWa's portraits are drawn larger and raised (`--art-h`, `--art-y`); Genshin, Star Rail, ZZZ and NTE already frame on the face. The card's foot shows each completed set as its icon with its piece count (`completedSets`), the role where none is. `GameIcon` takes a `glyph`: a tile without art draws its kind (character, weapon, gear, material, game) instead of initials, through `CatalogIcon`, the cards, the sheet, the library and the tasks' game tiles.
 - Tests: written first: WuWa's first card's image is taller than its frame and raised above it; Qingque's card shows Hunter of Glacial Forest as an icon with 4; the library's art-less game tile is a centred tile with an icon and no letters.
 - Scope/decisions: framing is per game in CSS.
 - Next: the stats each card shows picked per character.
 
-## 2026-10-12 · claude · stack/r9/03-ownership · #265
+## 2026-10-12 · claude · stack/r9/03-ownership · #266
 - Done: Characters' ownership (Georges, round 6: "I cannot change the status from owned to not owned right now; selecting multiple characters achieves nothing"): a card showed a character with a build as owned whatever its ownership row, and the selection's Not owned skipped built characters, so un-owning them did nothing. Ownership is now the owned list alone (creating a build still owns its character; a build stays when its character is marked not owned), and the selection gains a Build status menu for the picked builds.
 - Tests: written first: Natasha with a build is marked not owned from the selection (her Lv 60 build stays), her build set to Good from the selection, then owned again.
 - Scope/decisions: none.
 - Next: each game's art framed on the face; set icons on the cards.
 
-## 2026-10-12 · claude · stack/r9/02-endgame-card · #264
+## 2026-10-12 · claude · stack/r9/02-endgame-card · #265
 - Done: Endgame (Georges, round 6: "when clicking on past endgames I'd rather have the highlighted card change rather than opening a window … get out of windows by clicking outside … for Stygian I wanna see my teams, time and difficulty"): each mode card shows its picked cycle (the current one by default): a bar, the card's ‹ › arrows, a chart point or a table row picks another, Back to now returns; the card shows its dates and version, result, rewards, detail, each stage's team and time and the enemies, and Update edits that cycle. A mode with stages lists them all, "—" where nothing is typed. The round-5 dialog is gone (`Enemies` has its own file). Side panels (a weapon's, a gear set's) close on a press outside or Escape (`useDismiss`).
 - Tests: written first: Shiyu's 18 Sept bar becomes the card's cycle (pressed; no dialog; dates, version, rewards, detail, clear time), the older one a step away and edited in place (saved on that cycle), Back to now, a table row picking its cycle; Stygian lists its three bosses before anything is typed; a weapon's panel closes on a click on the search box.
 - Scope/decisions: none.
 - Next: ownership apart from builds, and the selection's actions.
 
-## 2026-10-12 · claude · stack/r9/01-pulls-layout · #263
+## 2026-10-12 · claude · stack/r9/01-pulls-layout · #264
 - Done: Pulls (Georges, round 6: "make the pull layout adaptable, if I hide something it all becomes crooked; remove any beginner banner; you're still using squares with letters, use icons instead"): every shown banner in one grid whose cards stretch to their row, actions at the foot, an odd last card spanning the row with its curve beside its odds (the card has two blocks now); the chances list has its own class (`pl-chances`: sharing `pl-odds` had broken every banner's odds table); the Hidden line only for banners the screen shows. Beginner banners (Genshin's Beginners' wish, Star Rail's Departure warp, WuWa's Novice and Beginner's Choice convenes, Endfield's Beginner headhunting) are flagged `beginner`: imports still map their history, `shownBanners` leaves them off Pulls, Home and the dashboard. A banner or target without art is drawn as its kind (`Glyph`: character, weapon, Bangboo, standard). Round 6's list is in `docs/AUDIT-2026-10-12-round6.md`.
 - Tests: written first: `shownBanners` per game and the five beginner banners; the pulls route and the dashboard's pity lists without them; hiding works on the shown ones; a journey on Star Rail finds no Departure warp, one grid whose first two cards share their top and height, whole odds tables, and the Stellar warp's glyph.
 - Scope/decisions: beginner banners are kept in the modules for imports rather than deleted.
