@@ -39,6 +39,18 @@ describe("genshin catalog", () => {
     expect(books.length).toBeGreaterThan(0);
   });
 
+  // Georges, round 6: "the character's ascension stat should be highlighted; filter weapons by main stat; add the talent icon; a misc part for non-upgradable talents".
+  it("keeps each character's ascension stat, talent icons and passives, and each weapon's main stat", async () => {
+    const catalog = catalogSchema.parse(await genshin.loadCatalog!());
+    const ayaka = catalog.characters.find((c) => c.name === "Kamisato Ayaka")!;
+    expect(ayaka.bonusStats).toEqual(["CRIT DMG"]);
+    expect(ayaka.talents.info?.map((i) => i.icon)).toEqual(["Skill_A_01", "Skill_S_Ayaka_01", "Skill_E_Ayaka_HD"]);
+    expect(ayaka.passives?.length).toBeGreaterThanOrEqual(3);
+    expect(ayaka.passives?.[0]).toMatchObject({ name: expect.any(String), description: expect.any(String), icon: expect.stringMatching(/^UI_Talent_/) });
+    expect(catalog.weapons.find((w) => w.name === "Mistsplitter Reforged")?.mainStat).toBe("CRIT DMG");
+    expect(catalog.characters.filter((c) => c.bonusStats?.length).length).toBeGreaterThanOrEqual(100);
+  });
+
   it("names each character's talents, which the sheet shows instead of Normal, Skill and Burst", async () => {
     const catalog = catalogSchema.parse(await genshin.loadCatalog!());
     const amber = catalog.characters.find((c) => c.name === "Amber")!;

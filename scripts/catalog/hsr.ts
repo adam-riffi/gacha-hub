@@ -100,6 +100,13 @@ const characters: CatalogCharacter[] = avatars
       .map((n) => ({ id: String(n.id), name: stripTags(n.name) || null, costs: promoteSteps(n.promote) }))
       .filter((n) => n.costs.length);
     const ascension = promotionSteps(d.upgrade, 80);
+    // The stats its minor traces grow ("ATK Boost" ×5, "Effect Hit Rate Boost" ×3…), most first (round 6).
+    const boosts = new Map<string, number>();
+    for (const t of subTraces) {
+      const stat = t.name?.match(/^DMG Boost: (.+)$/)?.[1]?.concat(" DMG Boost") ?? t.name?.match(/^(.+) Boost$/)?.[1];
+      if (stat) boosts.set(stat, (boosts.get(stat) ?? 0) + 1);
+    }
+    const bonusStats = [...boosts].sort((a, b) => b[1] - a[1]).map(([s]) => s);
     return {
       id: String(d.id),
       key: slugify(stripTags(d.name)),
@@ -111,6 +118,7 @@ const characters: CatalogCharacter[] = avatars
       icon: d.icon ? String(d.icon) : undefined,
       ascension,
       talents: { keys, costs: costsByKey.skill ?? costsByKey.basic ?? [], costsByKey, info: keys.flatMap((key) => (names[key] ? [{ key, name: names[key], ...(texts[key] ? { description: texts[key] } : {}) }] : [])) },
+      ...(bonusStats.length ? { bonusStats } : {}),
       extra: {
         path: label(d.types?.pathType),
         element: label(d.types?.combatType),

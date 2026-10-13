@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-13 · claude · stack/r9/06-catalog-stats · #269
+- Done: catalogs and the cards' growth stat (Georges, round 6: "character's ascension stat should be highlighted; filter by main stat; add the talent icon; a misc part for non-upgradable talents"). The catalog schema gains `bonusStats` (characters), `mainStat` (weapons), `passives` and talent `icon`s. Importers fill them: Genshin (genshin-db's ascension stat, weapon main stat, combat talent icons, passives; talent art from Enka), Star Rail (its minor traces' stats, most first), ZZZ (the core skill's own stat, a W-Engine's advanced stat), WuWa (its forte tree's bonuses, its own before ATK/HP/DEF; a weapon's secondary stat through PropertyIndex's ids). The four catalogs are regenerated (only the new fields change; Genshin's `extra.subStat` became `mainStat`). A card's chips gain the stat the character grows, filled in its element's colour, its label lit in the stat strip.
+- Tests: written first: Ayaka grows CRIT DMG with three talent icons and her passives, Mistsplitter's main stat is CRIT DMG, 100+ characters have one; Kafka's trace stats are ATK, Effect Hit Rate, HP; Ellen's core stat is CRIT Rate, Steel Cushion's CRIT Rate, every W-Engine has one; Chixia grows Fusion DMG Bonus then ATK, WuWa's weapon stats are the six; Kafka's card shows ATK, all three on hover.
+- Scope/decisions: Endfield and NTE publish no growth or weapon stats; light cones have no second stat.
+- Next: weapons synced with every sheet, many at once, filtered by main stat.
+
 ## 2026-10-13 · claude · stack/r9/05-character-stats · #268
 - Done: each card's own stats (Georges, round 6: "the attributes shown should be character dependent so I can choose for each one character what I want to show; put some classic ones as default for each game"): a pencil in a card's stat strip opens a picker of that build's stats (`cardStats` on the build, migration `build_card_stats`, up to six; Game's goes back); a build's pick wins over the game's (round 5), which wins over the role's KPIs, each game's classic stats. The picker closes on a click outside (`useDismiss` gains an `active` flag, so closed pickers listen to nothing).
 - Tests: written first: the route keeps a build's stats, refuses doubles and seven, clears with null; a journey picks HP and DEF for Hook on his card (3000 shown), closes the picker with a click outside, and finds them saved.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the conformance suite refuses a card item that is not a currency or a default task of the game, or that the reference sheet does not name; the Overview journey sets Tycoon Level 23 and finds City Stamina's cap at 700, adds Café income from the card, and finds Endfield's Stock Bills. `npm run check` passes: 575 tests and 63 journeys.
 - Scope/decisions: new currencies (NTE: Tycoon Level, City Stamina; Endfield: AIC lines running, Stock Bills) and dailies (NTE: Café income; Endfield: AIC output collected, Depot delivery, Outpost trades), sourced in `docs/games/*.md` (NTE's research notes; for Endfield the wiki and community guides, with no caps since none is sourced).
 - Next: endgame enemies.
-
-## 2026-10-11 · claude · stack/r4/09-overview-rows · #228
-- Done: the Overview's last rows. Builds in progress (status Building or Good): icon and name, level, skill levels ("9·9·6"), weapon level, a square per gear slot filled. Endgame · cycle: each mode's result over its best ("36/36★") and the days until it resets. Goals: the game's active goals with their progress and their average as a ring. Backlog: the goals still open, and a line of how many were open each of the last ten days.
-- Tests: written first: a Seele build in progress shows level 70 and weapon level 60; a Memory of Chaos typed on the Endgame tab shows 30/36 on the Overview; a goal at 4 of 10 shows 40% with the ring's average; Backlog shows its count. `npm run check` passes: 574 tests and 62 journeys.
-- Scope/decisions: a goal's progress is its material steps met, its checklist ticked, or its count over its target, as on Tasks.
-- Next: each game's own card (NTE's city, Endfield's AIC).

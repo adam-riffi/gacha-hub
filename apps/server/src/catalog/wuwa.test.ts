@@ -45,6 +45,13 @@ describe("wuwa catalog", () => {
     }
   });
 
+  // Georges, round 6: a resonator's bonus stats (its forte tree's) highlighted; weapons filtered by their secondary stat.
+  it("keeps each resonator's bonus stats and each weapon's secondary stat", async () => {
+    const catalog = catalogSchema.parse(await wuwa.loadCatalog!());
+    expect(catalog.characters.find((c) => c.name === "Chixia")?.bonusStats).toEqual(["Fusion DMG Bonus", "ATK"]);
+    expect(new Set(catalog.weapons.map((w) => w.mainStat))).toEqual(new Set(["Crit. Rate", "Crit. DMG", "Energy Regen", "ATK", "DEF", "HP"]));
+  });
+
   it("names each resonator's forte skills, which the sheet shows instead of the keys", async () => {
     const catalog = catalogSchema.parse(await wuwa.loadCatalog!());
     const chixia = catalog.characters.find((c) => c.id === "1202")!;

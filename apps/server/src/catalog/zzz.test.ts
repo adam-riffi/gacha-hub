@@ -51,6 +51,14 @@ describe("zzz catalog", () => {
     }
   });
 
+  // Georges, round 6: an agent's growth stat (its core skill's) highlighted; W-Engines filtered by their advanced stat.
+  it("keeps each agent's core stat and each W-Engine's advanced stat", async () => {
+    const catalog = catalogSchema.parse(await zzz.loadCatalog!());
+    expect(catalog.characters.find((c) => c.name === "Ellen")?.bonusStats).toEqual(["CRIT Rate"]);
+    expect(catalog.weapons.find((w) => w.name === "Steel Cushion")?.mainStat).toBe("CRIT Rate");
+    expect(catalog.weapons.filter((w) => w.mainStat).length).toBe(catalog.weapons.length);
+  });
+
   it("keeps every skill the catalog levels in the build doc", () => {
     expect(
       zzzDocSchema.parse({

@@ -1196,6 +1196,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Glacio DMG Bonus",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Snow Waltz",
         "skillNames": {
@@ -2635,6 +2639,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Healing Bonus",
+        "HP"
+      ],
       "extra": {
         "nickname": "Healing You'tan",
         "skillNames": {
@@ -4074,6 +4082,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Glacio DMG Bonus",
+        "ATK"
+      ],
       "extra": {
         "nickname": "White Tiger",
         "skillNames": {
@@ -5513,6 +5525,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Crit. Rate",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Zhezhi",
         "skillNames": {
@@ -6952,6 +6968,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Crit. Rate",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Youhu",
         "skillNames": {
@@ -8391,6 +8411,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Crit. Rate",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Carlotta",
         "skillNames": {
@@ -9830,6 +9854,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Fusion DMG Bonus",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Gallant Blaze",
         "skillNames": {
@@ -11269,6 +11297,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Fusion DMG Bonus",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Wooly-Counting Game",
         "skillNames": {
@@ -12708,6 +12740,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Fusion DMG Bonus",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Dragon's Breath",
         "skillNames": {
@@ -14147,6 +14183,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Crit. Rate",
+        "ATK"
+      ],
       "extra": {
         "nickname": "An error occurred. Please contact our Customer Service for assistance.",
         "skillNames": {
@@ -15586,6 +15626,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Crit. Rate",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Brant",
         "skillNames": {
@@ -17025,6 +17069,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Crit. Rate",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Lupa",
         "skillNames": {
@@ -18464,6 +18512,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Crit. DMG",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Galbrena",
         "skillNames": {
@@ -19903,6 +19955,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Healing Bonus",
+        "DEF"
+      ],
       "extra": {
         "nickname": null,
         "skillNames": {
@@ -21342,6 +21398,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Crit. Rate",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Aemeath",
         "skillNames": {
@@ -22781,6 +22841,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Crit. DMG",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Calcharo",
         "skillNames": {
@@ -24220,6 +24284,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Crit. Rate",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Lightning of Execution",
         "skillNames": {
@@ -25659,6 +25727,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Electro DMG Bonus",
+        "DEF"
+      ],
       "extra": {
         "nickname": "Fist of Thunder",
         "skillNames": {
@@ -27098,6 +27170,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Crit. Rate",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Jinhsi's Title",
         "skillNames": {
@@ -28537,6 +28613,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Crit. DMG",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Error detected. If you have any questions, please contact Customer Service.",
         "skillNames": {
@@ -29976,6 +30056,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Crit. Rate",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Augusta",
         "skillNames": {
@@ -31415,6 +31499,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Healing Bonus",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Buling",
         "skillNames": {
@@ -32854,6 +32942,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Aero DMG Bonus",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Breath of Winds",
         "skillNames": {
@@ -34293,6 +34385,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Aero DMG Bonus",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Mistcloak Strike",
         "skillNames": {
@@ -35732,6 +35828,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Crit. Rate",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Windborne Rider",
         "skillNames": {
@@ -37171,6 +37271,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Crit. Rate",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Jianxin's Nickname",
         "skillNames": {
@@ -38610,6 +38714,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Healing Bonus",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Rover: Aero",
         "skillNames": {
@@ -40049,6 +40157,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Crit. DMG",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Ciaccona",
         "skillNames": {
@@ -41488,6 +41600,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Healing Bonus",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Rover: Aero",
         "skillNames": {
@@ -42927,6 +43043,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Crit. Rate",
+        "HP"
+      ],
       "extra": {
         "nickname": "Cartethyia",
         "skillNames": {
@@ -44366,6 +44486,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Crit. Rate",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Iuno",
         "skillNames": {
@@ -45805,6 +45929,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Crit. Rate",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Qiuyuan",
         "skillNames": {
@@ -47244,6 +47372,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Spectro DMG Bonus",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Vessel of Sounds",
         "skillNames": {
@@ -48683,6 +48815,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Spectro DMG Bonus",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Vessel of Sounds",
         "skillNames": {
@@ -50122,6 +50258,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Healing Bonus",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Nature Calling",
         "skillNames": {
@@ -51561,6 +51701,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Crit. Rate",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Lumi",
         "skillNames": {
@@ -53000,6 +53144,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Healing Bonus",
+        "HP"
+      ],
       "extra": {
         "nickname": "Shorekeeper",
         "skillNames": {
@@ -54439,6 +54587,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Crit. DMG",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Phoebe",
         "skillNames": {
@@ -55878,6 +56030,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Crit. Rate",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Zani",
         "skillNames": {
@@ -57317,6 +57473,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Crit. Rate",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Chisa",
         "skillNames": {
@@ -58756,6 +58916,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Crit. Rate",
+        "ATK"
+      ],
       "extra": {
         "nickname": null,
         "skillNames": {
@@ -60195,6 +60359,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Crit. Rate",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Luuk Herssen",
         "skillNames": {
@@ -61634,6 +61802,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Havoc DMG Bonus",
+        "DEF"
+      ],
       "extra": {
         "nickname": "Power of Xuanwu",
         "skillNames": {
@@ -63073,6 +63245,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Havoc DMG Bonus",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Scarlet Shade",
         "skillNames": {
@@ -64512,6 +64688,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Crit. DMG",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Camellya",
         "skillNames": {
@@ -65951,6 +66131,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Havoc DMG Bonus",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Vessel of Sounds",
         "skillNames": {
@@ -67390,6 +67574,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Havoc DMG Bonus",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Vessel of Sounds",
         "skillNames": {
@@ -68829,6 +69017,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Crit. DMG",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Roccia",
         "skillNames": {
@@ -70268,6 +70460,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Crit. Rate",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Cantarella",
         "skillNames": {
@@ -71707,6 +71903,10 @@
           }
         ]
       },
+      "bonusStats": [
+        "Crit. Rate",
+        "ATK"
+      ],
       "extra": {
         "nickname": "Phrolova",
         "skillNames": {
@@ -72044,7 +72244,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21010012",
@@ -72136,7 +72337,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21010013",
@@ -72245,7 +72447,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21010015",
@@ -72354,7 +72557,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21010016",
@@ -72463,7 +72667,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. DMG"
     },
     {
       "id": "21010023",
@@ -72572,7 +72777,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "DEF"
     },
     {
       "id": "21010024",
@@ -72681,7 +72887,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Energy Regen"
     },
     {
       "id": "21010026",
@@ -72790,7 +72997,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. Rate"
     },
     {
       "id": "21010034",
@@ -72899,7 +73107,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Energy Regen"
     },
     {
       "id": "21010036",
@@ -73008,7 +73217,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. DMG"
     },
     {
       "id": "21010043",
@@ -73117,7 +73327,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Energy Regen"
     },
     {
       "id": "21010044",
@@ -73226,7 +73437,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "DEF"
     },
     {
       "id": "21010045",
@@ -73335,7 +73547,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. DMG"
     },
     {
       "id": "21010046",
@@ -73444,7 +73657,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. Rate"
     },
     {
       "id": "21010053",
@@ -73553,7 +73767,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21010056",
@@ -73662,7 +73877,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. Rate"
     },
     {
       "id": "21010063",
@@ -73771,7 +73987,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21010064",
@@ -73880,7 +74097,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21010066",
@@ -73989,7 +74207,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Energy Regen"
     },
     {
       "id": "21010074",
@@ -74098,7 +74317,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. Rate"
     },
     {
       "id": "21010084",
@@ -74207,7 +74427,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21010094",
@@ -74316,7 +74537,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21010104",
@@ -74425,7 +74647,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. DMG"
     },
     {
       "id": "21020011",
@@ -74517,7 +74740,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21020012",
@@ -74609,7 +74833,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21020013",
@@ -74718,7 +74943,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21020015",
@@ -74827,7 +75053,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. Rate"
     },
     {
       "id": "21020016",
@@ -74936,7 +75163,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. DMG"
     },
     {
       "id": "21020017",
@@ -75045,7 +75273,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21020023",
@@ -75154,7 +75383,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21020024",
@@ -75263,7 +75493,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Energy Regen"
     },
     {
       "id": "21020026",
@@ -75372,7 +75603,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. Rate"
     },
     {
       "id": "21020034",
@@ -75481,7 +75713,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21020036",
@@ -75590,7 +75823,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Energy Regen"
     },
     {
       "id": "21020043",
@@ -75699,7 +75933,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Energy Regen"
     },
     {
       "id": "21020044",
@@ -75808,7 +76043,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21020045",
@@ -75917,7 +76153,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Energy Regen"
     },
     {
       "id": "21020046",
@@ -76026,7 +76263,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Energy Regen"
     },
     {
       "id": "21020053",
@@ -76135,7 +76373,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "HP"
     },
     {
       "id": "21020056",
@@ -76244,7 +76483,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "HP"
     },
     {
       "id": "21020064",
@@ -76353,7 +76593,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21020066",
@@ -76462,7 +76703,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. Rate"
     },
     {
       "id": "21020074",
@@ -76571,7 +76813,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21020076",
@@ -76680,7 +76923,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. Rate"
     },
     {
       "id": "21020084",
@@ -76789,7 +77033,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21020094",
@@ -76898,7 +77143,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21020104",
@@ -77007,7 +77253,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. Rate"
     },
     {
       "id": "21030011",
@@ -77099,7 +77346,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21030012",
@@ -77191,7 +77439,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21030013",
@@ -77300,7 +77549,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21030015",
@@ -77409,7 +77659,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. Rate"
     },
     {
       "id": "21030016",
@@ -77518,7 +77769,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. DMG"
     },
     {
       "id": "21030023",
@@ -77627,7 +77879,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21030024",
@@ -77736,7 +77989,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Energy Regen"
     },
     {
       "id": "21030026",
@@ -77845,7 +78099,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. Rate"
     },
     {
       "id": "21030034",
@@ -77954,7 +78209,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21030036",
@@ -78063,7 +78319,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. DMG"
     },
     {
       "id": "21030043",
@@ -78172,7 +78429,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21030044",
@@ -78281,7 +78539,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21030045",
@@ -78390,7 +78649,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. DMG"
     },
     {
       "id": "21030046",
@@ -78499,7 +78759,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. Rate"
     },
     {
       "id": "21030053",
@@ -78608,7 +78869,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21030064",
@@ -78717,7 +78979,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21030074",
@@ -78826,7 +79089,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21030084",
@@ -78935,7 +79199,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21030094",
@@ -79044,7 +79309,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21030104",
@@ -79153,7 +79419,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. Rate"
     },
     {
       "id": "21040011",
@@ -79245,7 +79512,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21040012",
@@ -79337,7 +79605,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21040013",
@@ -79446,7 +79715,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21040015",
@@ -79555,7 +79825,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21040016",
@@ -79664,7 +79935,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. Rate"
     },
     {
       "id": "21040023",
@@ -79773,7 +80045,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. DMG"
     },
     {
       "id": "21040024",
@@ -79882,7 +80155,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Energy Regen"
     },
     {
       "id": "21040026",
@@ -79991,7 +80265,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. Rate"
     },
     {
       "id": "21040034",
@@ -80100,7 +80375,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Energy Regen"
     },
     {
       "id": "21040036",
@@ -80209,7 +80485,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. DMG"
     },
     {
       "id": "21040043",
@@ -80318,7 +80595,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "DEF"
     },
     {
       "id": "21040044",
@@ -80427,7 +80705,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "DEF"
     },
     {
       "id": "21040045",
@@ -80536,7 +80815,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. Rate"
     },
     {
       "id": "21040046",
@@ -80645,7 +80925,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. Rate"
     },
     {
       "id": "21040053",
@@ -80754,7 +81035,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "DEF"
     },
     {
       "id": "21040056",
@@ -80863,7 +81145,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. Rate"
     },
     {
       "id": "21040064",
@@ -80972,7 +81255,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21040074",
@@ -81081,7 +81365,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. Rate"
     },
     {
       "id": "21040084",
@@ -81190,7 +81475,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21040094",
@@ -81299,7 +81585,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21040104",
@@ -81408,7 +81695,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. DMG"
     },
     {
       "id": "21050011",
@@ -81500,7 +81788,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21050012",
@@ -81592,7 +81881,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21050013",
@@ -81701,7 +81991,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21050015",
@@ -81810,7 +82101,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21050016",
@@ -81919,7 +82211,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. Rate"
     },
     {
       "id": "21050017",
@@ -82028,7 +82321,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Energy Regen"
     },
     {
       "id": "21050023",
@@ -82137,7 +82431,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "HP"
     },
     {
       "id": "21050024",
@@ -82246,7 +82541,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Energy Regen"
     },
     {
       "id": "21050026",
@@ -82355,7 +82651,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. DMG"
     },
     {
       "id": "21050027",
@@ -82464,7 +82761,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21050034",
@@ -82573,7 +82871,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Energy Regen"
     },
     {
       "id": "21050036",
@@ -82682,7 +82981,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Energy Regen"
     },
     {
       "id": "21050043",
@@ -82791,7 +83091,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Energy Regen"
     },
     {
       "id": "21050044",
@@ -82900,7 +83201,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21050045",
@@ -83009,7 +83311,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Energy Regen"
     },
     {
       "id": "21050046",
@@ -83118,7 +83421,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. Rate"
     },
     {
       "id": "21050053",
@@ -83227,7 +83531,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21050056",
@@ -83336,7 +83641,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. DMG"
     },
     {
       "id": "21050064",
@@ -83445,7 +83751,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "HP"
     },
     {
       "id": "21050066",
@@ -83554,7 +83861,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. Rate"
     },
     {
       "id": "21050074",
@@ -83663,7 +83971,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. Rate"
     },
     {
       "id": "21050084",
@@ -83772,7 +84081,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21050094",
@@ -83881,7 +84191,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "ATK"
     },
     {
       "id": "21050104",
@@ -83990,7 +84301,8 @@
             }
           ]
         }
-      ]
+      ],
+      "mainStat": "Crit. DMG"
     }
   ],
   "gear": [

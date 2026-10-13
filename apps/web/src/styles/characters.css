@@ -16,6 +16,9 @@
 .ch-open:focus-visible { outline: 2px solid var(--el); outline-offset: 2px; }
 .ch-card .btn, .ch-card .ch-foot a { position: relative; z-index: 2; }
 .ch-el { border-color: var(--el); color: var(--el); }
+/* The stat the character grows (round 6): its chip filled, its label in the strip in the element's colour. */
+.ch-chips .badge.ch-bonus { background: var(--el); border-color: var(--el); color: var(--on-paper); max-width: 170px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ch-kpis .kpi-label.is-bonus { color: var(--el); }
 .ch-gap { width: 14px; }
 .ch-card.is-unowned { border-style: dashed; }
 .ch-card.is-unowned .ch-art .gicon { opacity: 0.35; filter: grayscale(0.6); }
@@ -25,7 +28,7 @@
 .ch-card[data-game="wuwa"] { --art-h: 135%; --art-y: -18%; }
 .ch-art .gicon-ph .glyph { width: 34%; height: 34%; opacity: 0.45; }
 .ch-art .gicon-ph { display: grid; place-items: center; border: 0; background: transparent; color: var(--hairline-strong); font: 600 44px/1 var(--font-display); }
-.ch-chips { position: absolute; top: 10px; left: 10px; display: flex; gap: 6px; }
+.ch-chips { position: absolute; top: 10px; left: 10px; right: 60px; display: flex; flex-wrap: wrap; gap: 6px; }
 .ch-chips .badge { background: var(--bg); }
 .ch-dupes { position: absolute; top: 10px; right: 10px; padding: 4px 8px; background: #000; color: var(--text); font: 500 12px/1 var(--font-mono); }
 .ch-dupes.is-off { background: var(--bg); border: 1px solid var(--hairline); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }

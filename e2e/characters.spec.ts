@@ -230,3 +230,16 @@ test("Characters: a card's own stats, picked on the card, over the game's @smoke
     await page.request.delete(`/api/characters/${build.id}`);
   }
 });
+
+// The character's growth stat highlighted (Georges, round 6: "character's ascension stat should be highlighted as well").
+test("Characters: a card shows the character's growth stat, highlighted @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  await page.goto(`/games/${id}/characters`);
+  await page.getByRole("searchbox", { name: "Search" }).fill("Kafka");
+  const chip = page.getByRole("article", { name: "Kafka" }).locator(".ch-chips .ch-bonus");
+  await expect(chip).toHaveText("ATK");
+  await expect(chip).toHaveAttribute("title", "Grows ATK, Effect Hit Rate, HP");
+});

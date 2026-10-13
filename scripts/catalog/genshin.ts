@@ -60,6 +60,18 @@ const talentsByName = new Map<string, RawCosts>(
 const talentNames = new Map<string, (string | undefined)[]>(
   all("talents").map((t) => [t.name as string, [t.combat1?.name, t.combat2?.name, t.combat3?.name]]),
 );
+// Each combat talent's icon (Georges, round 6: "add the talent icon"), and the talents that do not level (the sheet's misc part).
+const talentIcons = new Map<string, (string | undefined)[]>(
+  all("talents").map((t) => [t.name as string, [t.images?.filename_combat1, t.images?.filename_combat2, t.images?.filename_combat3]]),
+);
+const passivesOf = new Map<string, { name: string; description?: string; icon?: string }[]>(
+  all("talents").map((t) => [
+    t.name as string,
+    ["passive1", "passive2", "passive3", "passive4"].flatMap((p) =>
+      t[p]?.name ? [{ name: t[p].name as string, ...(t[p].description ? { description: String(t[p].description).trim() } : {}), ...(t.images?.[`filename_${p}`] ? { icon: t.images[`filename_${p}`] as string } : {}) }] : [],
+    ),
+  ]),
+);
 // What each does, opened on the sheet (Georges, 2026-10-11: "talent / skill descriptions"): genshin-db's plain text.
 const talentTexts = new Map<string, (string | undefined)[]>(
   all("talents").map((t) => [t.name as string, [t.combat1?.description, t.combat2?.description, t.combat3?.description]]),
@@ -97,9 +109,12 @@ const characters: CatalogCharacter[] = all("characters")
       info: ["normal", "skill", "burst"].flatMap((key, i) => {
         const name = talentNames.get(c.name)?.[i];
         const description = talentTexts.get(c.name)?.[i]?.trim();
-        return name ? [{ key, name, ...(description ? { description } : {}) }] : [];
+        const icon = talentIcons.get(c.name)?.[i];
+        return name ? [{ key, name, ...(description ? { description } : {}), ...(icon ? { icon } : {}) }] : [];
       }),
     },
+    ...(c.substatText ? { bonusStats: [c.substatText as string] } : {}),
+    ...(passivesOf.get(c.name)?.length ? { passives: passivesOf.get(c.name) } : {}),
     extra: {
       region: c.region,
       version: c.version,
@@ -130,7 +145,8 @@ const weapons: CatalogWeapon[] = all("weapons")
     maxLevel: ascension.at(-1)?.atLevel ?? 90,
     icon: w.images?.filename_icon ?? w.images?.icon,
     ascension,
-    extra: { baseAtk: w.baseAtkValue, subStat: w.mainStatText, version: w.version },
+    ...(w.mainStatText ? { mainStat: w.mainStatText as string } : {}),
+    extra: { baseAtk: w.baseAtkValue, version: w.version },
   };
 });
 

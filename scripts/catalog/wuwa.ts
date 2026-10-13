@@ -24,10 +24,10 @@ type RoleInfo = {
   RoleHeadIcon?: string; Icon?: string; RoleHeadIconLarge?: string; FormationRoleCard?: string;
 };
 type RoleBreach = { BreachGroupId: number; BreachLevel: number; MaxLevel: number; BreachConsume: KV[] | null };
-type SkillTreeNode = { Id: number; NodeGroup: number; NodeType: number; SkillId: number; Consume: KV[] | null; PropertyNodeTitle?: string };
+type SkillTreeNode = { Id: number; NodeGroup: number; NodeType: number; SkillId: number; Consume: KV[] | null; PropertyNodeTitle?: string; Property?: { Id: number }[] | null };
 type Skill = { Id: number; SkillType: number; SkillName?: string; SkillLevelGroupId: number; MaxSkillLevel?: number; SkillResume?: string; SkillResumeNum?: string[] | null };
 type SkillLevel = { SkillLevelGroupId: number; SkillId: number; Consume: KV[] | null };
-type WeaponConf = { ItemId: number; WeaponName: string; QualityId: number; WeaponType: number; BreachId: number; Icon?: string; IconMiddle?: string };
+type WeaponConf = { ItemId: number; WeaponName: string; QualityId: number; WeaponType: number; BreachId: number; Icon?: string; IconMiddle?: string; SecondPropId?: { Id: number } };
 /** An Unreal texture path's file name ("/Game/…/T_X_UI.T_X_UI" → "T_X_UI"): the art key the manifest's sources take (ADR 0006). */
 const artKey = (path?: string) => path?.split("/").at(-1)?.split(".")[0] || undefined;
 /** An image under Common/Image as "Folder/File" ("/Game/…/Common/Image/IconMout/T_X.T_X" → "IconMout/T_X"): materials and Sonata sets span folders. */
@@ -78,6 +78,9 @@ const ELEMENT: Record<number, string> = { 0: "Physical", 1: "Glacio", 2: "Fusion
 const WEAPON: Record<number, string> = { 1: "Broadblade", 2: "Sword", 3: "Pistols", 4: "Gauntlets", 5: "Rectifier" };
 /** Skill.SkillType → forte key, levelable skills only (types 4/11/12 are one-shot passives). */
 const SKILL_KEY: Record<number, string> = { 1: "basic", 2: "skill", 3: "liberation", 5: "intro", 6: "forte" };
+/** ConfigDB's PropertyIndex, in the game's words: 22–27 an element's DMG bonus (DamageChangeElement1–6), 10000 + n the percentage of n. */
+const PROPERTY: Record<number, string> = { 8: "Crit. Rate", 9: "Crit. DMG", 11: "Energy Regen", 35: "Healing Bonus", 10002: "HP", 10007: "ATK", 10010: "DEF" };
+const propertyName = (id: number) => PROPERTY[id] ?? (id >= 22 && id <= 27 ? `${ELEMENT[id - 21]} DMG Bonus` : undefined);
 const SKILL_ORDER = ["basic", "skill", "forte", "liberation", "intro"];
 const SHELL_CREDIT = "2";
 
@@ -131,6 +134,11 @@ const characters: CatalogCharacter[] = playable.map((r) => {
     }
   }
   const keys = SKILL_ORDER.filter((k) => costsByKey[k]);
+  // The forte tree's bonus stats (round 6): its own (an element's DMG, Crit., Healing) before ATK, HP or DEF.
+  const flat = new Set(["ATK", "HP", "DEF"]);
+  const bonusStats = [...new Set((nodesByGroup.get(r.SkillTreeGroupId) ?? []).flatMap((n) => (n.Property ?? []).map((p) => propertyName(p.Id)).filter((s): s is string => Boolean(s))))].sort(
+    (a, b) => Number(flat.has(a)) - Number(flat.has(b)),
+  );
   const name = text(r.Name);
   return {
     id: String(r.Id),
@@ -144,6 +152,7 @@ const characters: CatalogCharacter[] = playable.map((r) => {
     splash: artKey(r.FormationRoleCard),
     ascension,
     talents: { keys, costs: costsByKey.skill ?? costsByKey.basic ?? [], costsByKey, info: keys.flatMap((key) => (skillNames[key] ? [{ key, name: skillNames[key], ...(skillTexts[key] ? { description: skillTexts[key] } : {}) }] : [])) },
+    ...(bonusStats.length ? { bonusStats } : {}),
     extra: { nickname: text(r.NickName) || null, skillNames, forteNodes },
   };
 });
@@ -173,6 +182,7 @@ const weapons: CatalogWeapon[] = weaponConfs
       maxLevel: ascension.at(-1)?.atLevel ?? 90,
       icon: artKey(w.IconMiddle) ?? w.Icon,
       ascension,
+      ...(w.SecondPropId && propertyName(w.SecondPropId.Id) ? { mainStat: propertyName(w.SecondPropId.Id) } : {}),
     };
   });
 
