@@ -34,6 +34,19 @@ p { color: var(--muted); }
 
 .grid { display: grid; gap: 16px; }
 .grid.cols-2 { grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); }
+/* Gear's pieces (round 6): every piece you have as a card, its set, slot, main stat, level, substats and wearer. */
+.gs-pieces { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; align-content: start; }
+.card.gs-piece { position: relative; display: grid; align-content: start; gap: 8px; padding: 12px; }
+.gs-piece.is-open { border-color: var(--accent); }
+.gs-piece-head { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; align-items: center; gap: 10px; }
+.gs-piece-icon { width: 40px; height: 40px; font-size: 10px; }
+.gs-piece-title { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.gs-piece-title strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; }
+.gs-piece-title .mn { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; }
+.gs-piece-who { width: 32px; height: 32px; font-size: 10px; }
+.gs-piece-main { display: flex; justify-content: space-between; padding: 6px 8px; background: var(--surface-2); font-weight: 600; }
+.gs-piece-subs { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; font-size: 12px; }
+.gs-piece-subs li { display: flex; justify-content: space-between; color: var(--text-muted); }
 .grid.cols-3 { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
 .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 .spread { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
