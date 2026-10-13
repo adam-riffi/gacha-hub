@@ -256,6 +256,8 @@ model Character {
   isDefault      Boolean      @default(false)
   /// The stats its card shows (Georges, round 6: per character), up to six; null shows the game's.
   cardStats      Json?
+  /// Its notes, skins and pictures (Georges, round 6: a misc part per character).
+  misc           Json?
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
 
