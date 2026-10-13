@@ -9,7 +9,7 @@ import {
   dupeBadge,
   dupeLetter,
   featuredWithin,
-  gearSetLabel,
+  completedSets,
   getGame,
   pullsFor,
   weaponHolder,
@@ -28,6 +28,7 @@ import { api } from "../lib/api";
 import { useCatalog } from "../lib/catalog";
 import { assetUrl, communityAssetUrl, splashKey } from "../lib/assets";
 import { GameTabs } from "../components/GameTabs";
+import { CatalogIcon } from "../components/CatalogIcon";
 import { GameIcon } from "../components/GameIcon";
 import { Chips, Segmented } from "../components/ui";
 
@@ -205,6 +206,7 @@ export function CharactersPage() {
   };
   const holder = weaponHolder(game);
   const dupeField = game.manifest.dupes.weapon?.field;
+  const gearSets = new Map((catalog?.gear ?? []).map((g) => [g.name, g]));
   const cardStats = instance.data.cardStats ?? null;
   const statOptions = [
     ...new Set(["Crit value", "HP", "ATK", "DEF", ...Object.values(game.manifest.kpis).flat().flatMap((k) => k.split(" / ")), ...builds.data.flatMap((b) => Object.keys(((b.doc as Record<string, unknown>).stats ?? {}) as object))]),
@@ -328,7 +330,7 @@ export function CharactersPage() {
           // The whole card opens the build, or the unit's page when there is none.
           const to = c.build ? `/characters/${c.build.id}` : c.entry ? `/games/${id}/units/${c.id}` : null;
           return (
-            <article key={c.id} className={`ch-card ${c.owned ? "" : "is-unowned"} ${selecting && picked.has(c.id) ? "is-picked" : ""}`} aria-label={c.name} style={el ? ({ "--el": el } as CSSProperties) : undefined}>
+            <article key={c.id} className={`ch-card ${c.owned ? "" : "is-unowned"} ${selecting && picked.has(c.id) ? "is-picked" : ""}`} data-game={game.key} aria-label={c.name} style={el ? ({ "--el": el } as CSSProperties) : undefined}>
               {selecting && c.entry ? (
                 <label className="ch-open ch-picking">
                   <input type="checkbox" className="ch-pick" aria-label={`Select ${c.name}`} checked={picked.has(c.id)} onChange={() => togglePick(c.id)} />
@@ -341,7 +343,7 @@ export function CharactersPage() {
                   src={c.build?.portraitUrl ?? assetUrl(game.key, "splash", art)}
                   fallback={[communityAssetUrl(game.key, "splash", art), communityAssetUrl(game.key, "character", c.icon)]}
                   alt={c.name}
-                  label={c.name.slice(0, 2)}
+                  glyph="character"
                 />
                 <div className="ch-chips">
                   {c.rarity && <span className="badge">★{c.rarity}</span>}
@@ -359,7 +361,7 @@ export function CharactersPage() {
                   {/* Its weapon on the name card (Georges, round 4), on the right, its level top-left and refinement bottom-right (round 5). */}
                   {held && (
                     <span className="ch-weapon" title={[held.name, held.level !== null && `Lv ${held.level}`, held.rank].filter(Boolean).join(" · ")}>
-                      <GameIcon src={assetUrl(game.key, "weapon", held.icon)} fallback={communityAssetUrl(game.key, "weapon", held.icon)} alt={held.name} label={held.name.slice(0, 2)} />
+                      <GameIcon src={assetUrl(game.key, "weapon", held.icon)} fallback={communityAssetUrl(game.key, "weapon", held.icon)} alt={held.name} glyph="weapon" />
                       {held.level !== null && <span className="mn ch-weapon-lv">{held.level}</span>}
                       <span className="mn ch-weapon-r">{held.rank}</span>
                     </span>
@@ -385,7 +387,21 @@ export function CharactersPage() {
               ) : null}
               <div className="ch-foot">
                 {c.build && <span className={`badge ${c.build.buildStatus === "perfect" ? "done" : ""}`}>{c.build.buildStatus === "none" ? "Unbuilt" : c.build.buildStatus}</span>}
-                {c.build && <span className="mu ch-set">{gearSetLabel(game, doc) ?? c.build.role ?? ""}</span>}
+                {c.build && (
+                  <span className="mu ch-set">
+                    {/* The completed sets as their icons with their counts (Georges, round 6), the role where none is. */}
+                    {completedSets(game, doc).map((s) => {
+                      const set = gearSets.get(s.name);
+                      return (
+                        <span key={s.name} className="ch-set-icon" title={`${s.name} ${s.size}pc`}>
+                          <CatalogIcon gameKey={game.key} kind="gear" icon={set?.icon} name={s.name} />
+                          <b className="mn">{s.size}</b>
+                        </span>
+                      );
+                    })}
+                    {completedSets(game, doc).length === 0 && (c.build.role ?? "")}
+                  </span>
+                )}
                 {step && <span className="badge todo">→ {step.letter}{step.to} · event</span>}
                 <span className="ch-sp" />
                 {c.build ? null : c.owned ? (

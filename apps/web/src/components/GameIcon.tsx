@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { GLYPHS, type GlyphKind } from "./Glyph";
 
 /** Initials for the placeholder tile when no image is available. */
 function initials(s: string): string {
@@ -19,6 +20,7 @@ export function GameIcon({
   alt,
   label,
   tint,
+  glyph,
   className = "",
 }: {
   src: string | null;
@@ -29,6 +31,8 @@ export function GameIcon({
   label?: string;
   /** Accent color for the placeholder tile. */
   tint?: string;
+  /** What the thing is: the tile draws its icon rather than letters (Georges, round 6). */
+  glyph?: GlyphKind;
   className?: string;
 }) {
   const sources = [src, ...(Array.isArray(fallback) ? fallback : [fallback])].filter((s): s is string => Boolean(s));
@@ -60,7 +64,13 @@ export function GameIcon({
     : undefined;
   return (
     <span className={`gicon gicon-ph ${className}`} role="img" aria-label={alt} style={tinted}>
-      {label ?? initials(alt)}
+      {glyph ? (
+        <svg className="glyph" viewBox="0 0 24 24" aria-hidden="true">
+          {GLYPHS[glyph]}
+        </svg>
+      ) : (
+        (label ?? initials(alt))
+      )}
     </span>
   );
 }

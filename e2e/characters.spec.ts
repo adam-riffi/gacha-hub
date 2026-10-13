@@ -147,6 +147,9 @@ test("Characters: the stats the cards show, picked for the game; a set's bonus a
   await expect(crit).toHaveAttribute("title", "100% + 25% · Hunter of Glacial Forest 4pc");
   await crit.click();
   await expect(crit).toContainText("100% + 25%");
+  // The completed set as its icon with its count, not its name in words (round 6).
+  await expect(card.locator(".ch-set").getByRole("img", { name: "Hunter of Glacial Forest" })).toBeVisible();
+  await expect(card.locator(".ch-set")).toContainText("4");
 
   // Saved for the game.
   await page.reload();
@@ -187,4 +190,17 @@ test("Characters: a built character can be marked not owned; the selection sets 
   } finally {
     await page.request.delete(`/api/characters/${build.id}`);
   }
+});
+
+// Each game's art framed on the face (Georges, round 6: "WuWa character art is too low on the cards, we can barely see their heads").
+test("Characters: WuWa's art is raised so the faces sit high on the card @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "wuwa" } })).json()) as { id: string };
+  await page.goto(`/games/${id}/characters`);
+  const art = page.locator(".ch-card .ch-art").first();
+  const [box, img] = [(await art.boundingBox())!, (await art.locator(".gicon").boundingBox())!];
+  expect(img.y).toBeLessThan(box.y - 20);
+  expect(img.height).toBeGreaterThan(box.height * 1.2);
 });

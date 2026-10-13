@@ -154,7 +154,7 @@ function GameRow(props: {
       }}
     >
       <span className="lib-grip" aria-hidden="true">≡</span>
-      <GameIcon src={game?.art?.icon ?? null} alt={g.name} label={(game?.shortName ?? g.name).slice(0, 2)} className="lib-icon" />
+      <GameIcon src={game?.art?.icon ?? null} alt={g.name} glyph="game" tint={game?.accent} className="lib-icon" />
       <div className="lib-name">
         <h2 style={{ ["--c" as string]: g.accent }}>{g.name}</h2>
         <div className="mn mu">

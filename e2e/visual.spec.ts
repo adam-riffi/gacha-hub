@@ -73,8 +73,9 @@ test("deadlines within 48 hours are paper chips; view switches expose their stat
   await expect(view.getByRole("button", { name: /Characters/, pressed: false })).toBeVisible();
 });
 
-// A missing image falls back to a tile with initials (GameIcon); #217 dropped its base rule with the old sheets' CSS.
-test("an icon without its image is a tile with its initials, centred @smoke", async ({ page }) => {
+// A missing image falls back to a tile (GameIcon; #217 dropped its base rule with the old sheets' CSS), drawn as its kind's icon
+// rather than letters (Georges, round 6: "you're still using squares with letters on it, use icons instead").
+test("an icon without its image is a tile with its kind's icon, centred @smoke", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
@@ -83,4 +84,6 @@ test("an icon without its image is a tile with its initials, centred @smoke", as
   const tile = page.locator(".lib-icon.gicon-ph").first();
   await expect(tile).toBeVisible();
   expect(await tile.evaluate((el) => [getComputedStyle(el).display, getComputedStyle(el).alignItems, getComputedStyle(el).borderTopStyle])).toEqual(["grid", "center", "solid"]);
+  await expect(tile.locator("svg.glyph")).toBeVisible();
+  await expect(tile).not.toHaveText(/\w/);
 });
