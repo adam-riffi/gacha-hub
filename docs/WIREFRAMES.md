@@ -142,6 +142,7 @@ Added after Georges's feedback of 2026-10-10 ("no obvious way to make teams, loo
 
 - **New team** by name at the top.
 - **A card per team:** its name, renamed in place; its members, each with its portrait, tinted to its element, opening its build or its unit page, with its build status and a × to remove it; "+ Add a member…" from the units you own first, up to the game's party size; Delete team.
+- **The game's party size** (round 6): three slots a row in ZZZ and WuWa, four elsewhere; ZZZ's **Bangboo** beside them (the catalog's `companions`, from Hakushin).
 - The character sheet's **Used in** lists the teams with the character and their other members, adds it to a team with room, makes a new team around it, and links here; Endgame links here too.
 
 ### G4c · Weapons

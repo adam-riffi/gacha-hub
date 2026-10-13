@@ -113,6 +113,7 @@ export const zzz: GameDefinition = {
       { key: "lostVoid", name: "Lost Void", anchor: { cadence: "cycle", start: "2026-10-05", days: 7 }, metric: { label: "points" } },
     ],
     battlePass: { name: "New Eridu City Fund", maxLevel: 50 },
+    companion: { label: "Bangboo" },
     monthlyPass: { name: "Inter-Knot Membership", days: 30, daily: 90 },
     income: { label: "Daily engagement", daily: 60 },
     gear: {
