@@ -10,6 +10,7 @@ import { GameTabs } from "../components/GameTabs";
 import { Segmented } from "../components/ui";
 import { CatalogIcon, MaterialIcons } from "../components/CatalogIcon";
 import { GoalCard } from "../components/tasks/GoalCard";
+import { QuickBuild } from "../components/tasks/QuickBuild";
 import type { InstanceDetail, InstanceListItem, TaskItem } from "../lib/types";
 
 const DAY = ["", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -36,6 +37,7 @@ export function PlannerPage() {
   const [q, setQ] = useState("");
   const [sort, setSort] = useState<Sort>("priority");
   const [all, setAll] = useState(false);
+  const [making, setMaking] = useState(false);
   const instance = useQuery({ queryKey: ["instance", id], queryFn: () => api.get<InstanceDetail>(`/api/instances/${id}`) });
   const tasks = useQuery({ queryKey: ["tasks"], queryFn: () => api.get<TaskItem[]>("/api/tasks") });
   const instances = useQuery({ queryKey: ["instances"], queryFn: () => api.get<InstanceListItem[]>("/api/instances") });
@@ -107,7 +109,9 @@ export function PlannerPage() {
             <input type="search" aria-label="Filter goals" placeholder="Character or material" value={q} onChange={(e) => setQ(e.target.value)} />
             <Segmented label="Sort" options={[{ value: "priority", label: "Priority" }, { value: "progress", label: "Progress" }, { value: "name", label: "Name" }]} value={sort} onChange={setSort} />
             <span className="ch-sp" />
-            <Link className="btn" to={`/games/${id}/characters`}>New goal</Link>
+            <button type="button" className="btn" onClick={() => setMaking(true)}>
+              New goal
+            </button>
           </div>
           {goals.length === 0 && <p className="mu">No farming goal yet: plan one from a character's sheet.</p>}
           {goals.length > 0 && listed.length === 0 && <p className="mu">No goal matches.</p>}
@@ -125,6 +129,8 @@ export function PlannerPage() {
             </button>
           )}
         </section>
+
+        {making && <QuickBuild instanceId={id!} gameKey={game.key} catalogIds={[]} onClose={() => setMaking(false)} />}
 
         <div className="pn-main">
           <section className="card pn-materials" aria-label={`Materials · ${scope === "goal" ? (current?.title ?? "no goal") : "All goals"}`}>

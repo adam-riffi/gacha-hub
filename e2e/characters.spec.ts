@@ -243,3 +243,56 @@ test("Characters: a card shows the character's growth stat, highlighted @smoke",
   await expect(chip).toHaveText("ATK");
   await expect(chip).toHaveAttribute("title", "Grows ATK, Effect Hit Rate, HP");
 });
+
+// Georges, round 6: "a quick way to make a building goal depending on the game … a window where I choose an ascension goal, by
+// default the bare minimum to get to the last one for each game, the weapon I want to add to the goal, the gear set I want to
+// farm, the skill levels I wanna get … selecting multiple characters … add them to goals using the quick goal creation".
+test("Characters: a quick build goal from the sheet (the last ascension, the skills, a weapon and a set linked); several at once from the selection @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  type Task = { id: string; title: string; parentId: string | null; materialId: string | null; origin: { goal?: { level?: { to: number }; talents?: Record<string, { to: number }> } } | null };
+  const tasks = async () => (await (await page.request.get(`/api/tasks?scope=game&refId=${id}`)).json()) as Task[];
+  const titles = ["Farm Herta", "Farm Passkey", "Farm Genius of Brilliant Stars", "Farm Himeko", "Farm Asta"];
+  // Herta, whom no other journey builds.
+  const build = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1013" } })).json()) as { id: string };
+  try {
+    await page.goto(`/characters/${build.id}`);
+    await page.getByRole("button", { name: "Quick goal" }).click();
+    const quick = page.getByRole("dialog", { name: "Quick build goal" });
+    // The last ascension and the game's usual skills by default; a click outside closes it.
+    await expect(quick.getByRole("combobox", { name: "Ascension" })).toHaveValue("80");
+    await expect(quick.getByRole("group", { name: "Skill levels" }).getByRole("spinbutton").first()).toHaveValue("6");
+    await page.mouse.click(4, 4);
+    await expect(quick).toHaveCount(0);
+
+    await page.getByRole("button", { name: "Quick goal" }).click();
+    await quick.getByRole("combobox", { name: "Weapon" }).fill("Passkey");
+    await page.getByRole("option", { name: /^Passkey/ }).click();
+    await quick.getByRole("combobox", { name: "Set to farm" }).fill("Genius");
+    await page.getByRole("option", { name: /^Genius of Brilliant Stars/ }).click();
+    await quick.getByRole("button", { name: "Make goal" }).click();
+    await expect(quick).toHaveCount(0);
+    await expect
+      .poll(async () => {
+        const all = await tasks();
+        const herta = all.find((t) => t.title === "Farm Herta" && !t.materialId);
+        const under = (title: string) => all.find((t) => t.title === title && !t.materialId)?.parentId === herta?.id;
+        return [herta?.origin?.goal?.level?.to, herta?.origin?.goal?.talents?.skill?.to, under("Farm Passkey"), under("Farm Genius of Brilliant Stars")];
+      })
+      .toEqual([80, 10, true, true]);
+
+    // Himeko and Asta at once, from the selection.
+    await page.goto(`/games/${id}/characters`);
+    await page.getByRole("button", { name: "Select", exact: true }).click();
+    await page.getByRole("checkbox", { name: "Select Himeko", exact: true }).check();
+    await page.getByRole("checkbox", { name: "Select Asta", exact: true }).check();
+    await page.getByRole("region", { name: "Selection" }).getByRole("button", { name: "Make goals" }).click();
+    await quick.getByRole("button", { name: "Make 2 goals" }).click();
+    await expect.poll(async () => (await tasks()).filter((t) => ["Farm Himeko", "Farm Asta"].includes(t.title) && !t.materialId).length).toBe(2);
+  } finally {
+    await page.request.delete(`/api/characters/${build.id}`);
+    for (const t of (await tasks()).filter((x) => titles.includes(x.title) && !x.materialId)) await page.request.delete(`/api/tasks/${t.id}`);
+  }
+});

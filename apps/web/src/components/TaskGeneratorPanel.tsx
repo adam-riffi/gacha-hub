@@ -14,7 +14,7 @@ import { useToast } from "../lib/toast";
 import { useCatalog } from "../lib/catalog";
 
 const BASE_CAP = 20;
-const TALENT_LABELS: Record<string, string> = {
+export const TALENT_LABELS: Record<string, string> = {
   normal: "Normal Attack", skill: "Skill", burst: "Burst", basic: "Basic ATK", ultimate: "Ultimate",
   talent: "Talent", forte: "Forte Circuit", liberation: "Liberation", intro: "Intro Skill",
 };

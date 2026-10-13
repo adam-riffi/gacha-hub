@@ -71,6 +71,7 @@ export type WuwaDoc = z.infer<typeof wuwaDocSchema>;
 export const wuwa: GameDefinition = {
   key: "wuwa",
   teamSize: 3,
+  quickBuild: { talents: { basic: 6, skill: 10, forte: 10, liberation: 10, intro: 6 } },
   // Pity rules (community-documented): hard pity, soft pity, featured-unit rate.
   pullBanners: [
     { key: "character", label: "Featured resonator convene", baseRate: 0.008, hardPity: 80, softPity: 66, featuredRate: 0.5, gachaTypes: ["1"] },

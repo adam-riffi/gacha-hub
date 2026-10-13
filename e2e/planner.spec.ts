@@ -140,3 +140,25 @@ test("Planner: goals in rows of three, two rows until All; filtered and sorted; 
     for (const t of tasks.filter((x) => names.some((n) => x.title === `Farm ${n}`))) await page.request.delete(`/api/tasks/${t.id}`);
   }
 });
+
+// Making a goal streamlined (Georges, round 6): the Planner's New goal is the quick build, for any character.
+test("Planner: New goal opens the quick build, for any character @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  try {
+    await page.goto(`/games/${id}/planner`);
+    const goals = page.getByRole("region", { name: "Goals" });
+    await goals.getByRole("button", { name: "New goal" }).click();
+    const quick = page.getByRole("dialog", { name: "Quick build goal" });
+    await quick.getByRole("combobox", { name: "Character" }).fill("Welt");
+    await page.getByRole("option", { name: /^Welt/ }).click();
+    await quick.getByRole("button", { name: "Make goal" }).click();
+    await goals.getByRole("searchbox", { name: "Filter goals" }).fill("Welt");
+    await expect(goals.getByRole("article", { name: "Farm Welt" })).toBeVisible();
+  } finally {
+    const tasks = (await (await page.request.get(`/api/tasks?scope=game&refId=${id}`)).json()) as { id: string; title: string; materialId: string | null }[];
+    for (const t of tasks.filter((x) => x.title === "Farm Welt" && !x.materialId)) await page.request.delete(`/api/tasks/${t.id}`);
+  }
+});
