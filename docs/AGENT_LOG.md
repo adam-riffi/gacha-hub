@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-12 · claude · stack/r9/03-ownership · #265
+- Done: Characters' ownership (Georges, round 6: "I cannot change the status from owned to not owned right now; selecting multiple characters achieves nothing"): a card showed a character with a build as owned whatever its ownership row, and the selection's Not owned skipped built characters, so un-owning them did nothing. Ownership is now the owned list alone (creating a build still owns its character; a build stays when its character is marked not owned), and the selection gains a Build status menu for the picked builds.
+- Tests: written first: Natasha with a build is marked not owned from the selection (her Lv 60 build stays), her build set to Good from the selection, then owned again.
+- Scope/decisions: none.
+- Next: each game's art framed on the face; set icons on the cards.
+
 ## 2026-10-12 · claude · stack/r9/02-endgame-card · #264
 - Done: Endgame (Georges, round 6: "when clicking on past endgames I'd rather have the highlighted card change rather than opening a window … get out of windows by clicking outside … for Stygian I wanna see my teams, time and difficulty"): each mode card shows its picked cycle (the current one by default): a bar, the card's ‹ › arrows, a chart point or a table row picks another, Back to now returns; the card shows its dates and version, result, rewards, detail, each stage's team and time and the enemies, and Update edits that cycle. A mode with stages lists them all, "—" where nothing is typed. The round-5 dialog is gone (`Enemies` has its own file). Side panels (a weapon's, a gear set's) close on a press outside or Escape (`useDismiss`).
 - Tests: written first: Shiyu's 18 Sept bar becomes the card's cycle (pressed; no dialog; dates, version, rewards, detail, clear time), the older one a step away and edited in place (saved on that cycle), Back to now, a table row picking its cycle; Stygian lists its three bosses before anything is typed; a weapon's panel closes on a click on the search box.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the Weapons journey adds two copies of a light cone from its panel, sets the first to Lv 80 · S3, finds Kafka's icon on it, wishlists and farms it, removes the second; NTE adds a weapon by name; Endfield shows the tab (and its hub's tab list says so). `npm run check` passes: 574 tests and 58 journeys.
 - Scope/decisions: holders are matched to copies in order (the first holder on the first copy), since builds name a weapon, not a copy.
 - Next: the per-game overview.
-
-## 2026-10-11 · claude · stack/r4/06-weapon-copies · #225
-- Done: Georges's "I wanna see dupes of the weapons as separate entries", the data half. A new `WeaponCopy` table holds each copy a profile holds, with its level and refinement: a catalog weapon, or one named by hand where the game has no weapon catalog (Endfield, NTE). `GET/POST /api/instances/:id/weapons`, `PUT/DELETE …/weapons/:copyId`. A catalog weapon's ownership row stays its count: adding or removing a copy recounts it, and reading the list makes or drops copies to match it, so syncs and event rewards that grant a weapon show up as a copy (with the level and refinement the ownership knew). Copies join the export.
-- Tests: written first: two copies of Favonius Sword keep their own level and refinement and the ownership counts them; a weapon owned through the ownership becomes a copy; NTE takes a weapon by name; an unknown id, a nameless copy and a refinement over the game's cap are refused. `npm run check` passes: 574 tests and 58 journeys.
-- Scope/decisions: migration `weapon_copies` (with RLS); ownership kept as the count rather than migrated away, so HoYoLAB sync, Enka and event effects need no change. Caps: the weapon's top level (100 without a catalog), the game's refinement (1 where it has none, Endfield).
-- Next: Weapons as cards.

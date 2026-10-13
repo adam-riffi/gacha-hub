@@ -156,3 +156,35 @@ test("Characters: the stats the cards show, picked for the game; a set's bonus a
   await page.getByRole("group", { name: "Card stats" }).getByRole("button", { name: "Role" }).click();
   await expect.poll(async () => ((await (await page.request.get(`/api/instances/${id}`)).json()) as { cardStats: unknown }).cardStats).toBeNull();
 });
+
+// Ownership apart from builds, and the selection's actions doing what they say (Georges, round 6: "I cannot change the status
+// from owned to not owned; selecting multiple characters achieves nothing, I should be able to change their status").
+test("Characters: a built character can be marked not owned; the selection sets owned and build status @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  // Natasha, whom no other journey builds.
+  const build = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1105", doc: { level: 60 } } })).json()) as { id: string };
+  try {
+    await page.goto(`/games/${id}/characters`);
+    await page.getByRole("searchbox", { name: "Search" }).fill("Natasha");
+    const card = page.getByRole("article", { name: "Natasha" });
+    await expect(card).not.toContainText("Not owned");
+
+    await page.getByRole("button", { name: "Select", exact: true }).click();
+    await card.click();
+    const selection = page.getByRole("region", { name: "Selection" });
+    await selection.getByRole("button", { name: "Not owned", exact: true }).click();
+    await expect(card).toContainText("Not owned");
+    // The build stays.
+    await expect(card).toContainText("Lv 60");
+
+    await selection.getByRole("combobox", { name: "Build status" }).selectOption("good");
+    await expect.poll(async () => ((await (await page.request.get(`/api/characters/${build.id}`)).json()) as { buildStatus: string }).buildStatus).toBe("good");
+    await selection.getByRole("button", { name: "Own", exact: true }).click();
+    await expect(card).not.toContainText("Not owned");
+  } finally {
+    await page.request.delete(`/api/characters/${build.id}`);
+  }
+});
