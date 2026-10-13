@@ -20,7 +20,24 @@ const CONCURRENCY = 4;
 type Index<T> = { response: number; data: { items: Record<string, T> } };
 type Detail<T> = { response: number; data: T };
 type CostItems = Record<string, number> | null;
-type Upgrade = { level: number; costItems: CostItems; maxLevel: number };
+type Upgrade = { level: number; costItems: CostItems; maxLevel: number; skillBase?: Record<string, number>; skillAdd?: Record<string, number> };
+
+/**
+ * Base stats at both ends of every promotion (round 6: "base stats should be
+ * auto included"): a phase's value is its base plus its growth per level past
+ * the first; crit as percents.
+ */
+function basePoints(upgrade: Upgrade[] | undefined, stats: [string, string, string?, number?][]) {
+  const list = upgrade ?? [];
+  if (!list.length || !list[0]!.skillBase) return {};
+  const at = (u: Upgrade, level: number, phase: number) => [level, phase, ...stats.map(([, base, add, scale]) => Math.round(((u.skillBase?.[base] ?? 0) + (add ? (u.skillAdd?.[add] ?? 0) * (level - 1) : 0)) * (scale ?? 1) * 100) / 100)];
+  return {
+    baseStats: {
+      stats: stats.map(([name]) => name),
+      points: list.flatMap((u, p) => [at(u, p === 0 ? 1 : list[p - 1]!.maxLevel, p), at(u, u.maxLevel, p)]),
+    },
+  };
+}
 type Promote = Record<string, { costItems: CostItems }> | null;
 
 const get = <T>(path: string) => fetchJson<T>(`${BASE}${path}`, { cacheKey: "hsr" });
@@ -119,6 +136,7 @@ const characters: CatalogCharacter[] = avatars
       ascension,
       talents: { keys, costs: costsByKey.skill ?? costsByKey.basic ?? [], costsByKey, info: keys.flatMap((key) => (names[key] ? [{ key, name: names[key], ...(texts[key] ? { description: texts[key] } : {}) }] : [])) },
       ...(bonusStats.length ? { bonusStats } : {}),
+      ...basePoints(d.upgrade, [["HP", "hPBase", "hPAdd"], ["ATK", "attackBase", "attackAdd"], ["DEF", "defenceBase", "defenceAdd"], ["SPD", "speedBase"], ["CRIT Rate", "criticalChance", undefined, 100], ["CRIT DMG", "criticalDamage", undefined, 100]]),
       extra: {
         path: label(d.types?.pathType),
         element: label(d.types?.combatType),
@@ -148,6 +166,7 @@ const weapons: CatalogWeapon[] = cones
       maxLevel: ascension.at(-1)?.atLevel ?? 80,
       icon: d.icon ? String(d.icon) : undefined,
       ascension,
+      ...basePoints(d.upgrade, [["HP", "hPBase", "hPAdd"], ["ATK", "attackBase", "attackAdd"], ["DEF", "defenceBase", "defenceAdd"]]),
       extra: { path: label(d.types?.pathType), skill: d.skill?.name ?? null },
     };
   });

@@ -163,3 +163,28 @@ test("Character sheet: a talent's effect in a bubble over the card, with its ico
     await page.request.delete(`/api/instances/${id}`);
   }
 });
+
+// Georges, round 6: "base stats should be auto included for everything: characters, weapons, gear".
+test("Character sheet: the base stats of the level and the weapon fill what is not typed, marked as base @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  // A build of its own for Kafka at 80 with Arrows at 80: 1086.62 + 846.72 HP, 679.14 + 317.52 ATK, SPD 100, crit 5 / 50.
+  const build = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1005", doc: { level: 80, lightCone: { catalogId: "20000", name: "Arrows", level: 80 }, traces: {}, relics: {}, stats: {} } } })).json()) as { id: string };
+  try {
+    await page.goto(`/characters/${build.id}`);
+    const stats = page.getByRole("region", { name: "Combat stats" });
+    await expect(stats.getByRole("spinbutton", { name: "HP", exact: true })).toHaveAttribute("placeholder", "1933 base");
+    await expect(stats.getByRole("spinbutton", { name: "ATK", exact: true })).toHaveAttribute("placeholder", "997 base");
+    await expect(stats.getByRole("spinbutton", { name: "SPD", exact: true })).toHaveAttribute("placeholder", "100 base");
+    // The KPIs count them, marked as base, until a value is typed.
+    const kpis = page.getByRole("region", { name: "KPIs" });
+    await expect(kpis).toContainText("5 / 50");
+    await expect(kpis.getByTitle(/^Base/).first()).toBeVisible();
+    await stats.getByRole("spinbutton", { name: "SPD", exact: true }).fill("134");
+    await expect(kpis).toContainText("134");
+  } finally {
+    await page.request.delete(`/api/characters/${build.id}`);
+  }
+});

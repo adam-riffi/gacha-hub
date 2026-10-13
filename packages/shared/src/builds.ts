@@ -1,4 +1,6 @@
+import type { BaseStats } from "./catalog/types.js";
 import type { GameDefinition } from "./games/types.js";
+import { baseStatsAt } from "./planning/index.js";
 import { dupeLetter } from "./rewards.js";
 
 type Doc = Record<string, unknown>;
@@ -32,7 +34,8 @@ function critValue(game: GameDefinition, doc: Doc): number | null {
 /** A gear set as its bonuses read: its name, and a text per tier (prefixed "4pc:", or in the game's tier order). */
 export type GearSetBonuses = { name: string; bonuses: readonly string[] };
 /** A card's stat: its value, and where a set raises it, the stat without the set and the set's bonus. */
-export type StatKpi = { label: string; value: string; base?: string; bonus?: { value: string; from: string } };
+/** `auto`: read from the base stats, nothing typed (round 6). */
+export type StatKpi = { label: string; value: string; base?: string; bonus?: { value: string; from: string }; auto?: boolean };
 
 const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
@@ -68,36 +71,45 @@ function setBonus(game: GameDefinition, doc: Doc, sets: readonly GearSetBonuses[
  * value is missing. A completed set's bonus to a stat is added where both are
  * percentages (or both flat), else shown beside it ("+6%" of a flat SPD).
  */
-export function statKpis(game: GameDefinition, doc: Doc, labels: readonly string[], sets: readonly GearSetBonuses[] = []): StatKpi[] {
+export function statKpis(game: GameDefinition, doc: Doc, labels: readonly string[], sets: readonly GearSetBonuses[] = [], base: Record<string, number> = {}): StatKpi[] {
   const stats = (doc.stats ?? {}) as Record<string, unknown>;
-  const stat = (label: string) => {
-    const key = Object.keys(stats).find((k) => k.toLowerCase() === label.toLowerCase());
+  const keyIn = (o: object, label: string) => Object.keys(o).find((k) => k.toLowerCase() === label.toLowerCase());
+  // What the sheet has typed, else the base stats (round 6: "base stats should be auto included").
+  const typed = (label: string) => {
+    const key = keyIn(stats, label);
     return key === undefined ? null : num(stats[key]);
   };
+  const isAuto = (label: string) => typed(label) === null && keyIn(base, label) !== undefined;
+  const stat = (label: string) => typed(label) ?? (isAuto(label) ? base[keyIn(base, label)!]! : null);
+  const mark = (k: StatKpi, ...parts: string[]): StatKpi => (parts.some(isAuto) ? { ...k, auto: true } : k);
   return labels.map((label) => {
     if (/^crit value$/i.test(label)) {
       const cv = critValue(game, doc);
       return { label, value: cv === null ? "—" : String(Math.round(cv)) };
     }
     if (label.includes(" / ")) {
-      const parts = label.split(" / ").map(stat);
-      return { label, value: parts.every((p) => p !== null) ? parts.map((p) => Math.round(p!)).join(" / ") : "—" };
+      const names = label.split(" / ");
+      const parts = names.map(stat);
+      return mark({ label, value: parts.every((p) => p !== null) ? parts.map((p) => Math.round(p!)).join(" / ") : "—" }, ...names);
     }
     const v = stat(label);
     if (v === null) return { label, value: "—" };
     const unit = isPercent(game.key, label) ? "%" : "";
-    const base = `${Math.round(v)}${unit}`;
+    const shown = `${Math.round(v)}${unit}`;
     const b = setBonus(game, doc, sets, label);
-    if (!b) return { label, value: base };
-    return b.percent === (unit === "%")
-      ? { label, value: `${Math.round(v + b.value)}${unit}`, base, bonus: { value: `${b.value}${unit}`, from: b.from } }
-      : { label, value: base, base, bonus: { value: `+${b.value}${b.percent ? "%" : ""}`, from: b.from } };
+    if (!b) return mark({ label, value: shown }, label);
+    return mark(
+      b.percent === (unit === "%")
+        ? { label, value: `${Math.round(v + b.value)}${unit}`, base: shown, bonus: { value: `${b.value}${unit}`, from: b.from } }
+        : { label, value: shown, base: shown, bonus: { value: `+${b.value}${b.percent ? "%" : ""}`, from: b.from } },
+      label,
+    );
   });
 }
 
 /** The three KPIs a build card shows for its role (WIREFRAMES.md G4, ADR 0004 `kpis`), as `statKpis` reads them. */
-export function buildKpis(game: GameDefinition, doc: Doc, role: string | null | undefined, sets: readonly GearSetBonuses[] = []) {
-  return statKpis(game, doc, game.manifest.kpis[buildRole(game, role)]!, sets);
+export function buildKpis(game: GameDefinition, doc: Doc, role: string | null | undefined, sets: readonly GearSetBonuses[] = [], base: Record<string, number> = {}) {
+  return statKpis(game, doc, game.manifest.kpis[buildRole(game, role)]!, sets, base);
 }
 
 /** The set bonuses the gear completes: "Whimsy 4pc", "Gladiator 2pc + Whimsy 2pc", or null. */
@@ -157,3 +169,27 @@ export function dupeBadge(game: GameDefinition, doc: Doc): string {
   const d = game.manifest.dupes.character;
   return `${dupeLetter(d.field)}${num(getPath(doc, d.field)) ?? 0}`;
 }
+
+/**
+ * A build's base stats (Georges, round 6: "base stats should be auto included
+ * for everything"): its character's at its level and its weapon's at the
+ * weapon's, summed by name, a percent HP, ATK or DEF (a growth or weapon stat)
+ * applied to the flat one. Gear is not counted.
+ */
+export function buildBase(game: GameDefinition, index: { characters: Map<string, { baseStats?: BaseStats }>; weapons: Map<string, { baseStats?: BaseStats }> } | null | undefined, catalogId: string | null | undefined, doc: Doc): Record<string, number> {
+  const holder = weaponHolder(game);
+  const weapon = (holder ? doc[holder] : undefined) as { catalogId?: string; level?: unknown } | undefined;
+  const parts = [
+    baseStatsAt(index?.characters.get(catalogId ?? "") ?? {}, num(doc.level) ?? 1),
+    baseStatsAt(index?.weapons.get(weapon?.catalogId ?? "") ?? {}, num(weapon?.level) ?? 1),
+  ];
+  const sum: Record<string, number> = {};
+  for (const part of parts) for (const [k, v] of Object.entries(part ?? {})) sum[k] = (sum[k] ?? 0) + v;
+  for (const k of ["HP", "ATK", "DEF"]) {
+    if (sum[`${k}%`] === undefined) continue;
+    if (sum[k] !== undefined) sum[k] *= 1 + sum[`${k}%`]! / 100;
+    delete sum[`${k}%`];
+  }
+  return sum;
+}
+

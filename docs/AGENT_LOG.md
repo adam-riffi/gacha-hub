@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-14 · claude · stack/r9/14-base-stats · #277
+- Done: base stats (Georges, round 6: "base stats should be auto included for everything: characters, weapons, gear"). The catalog schema gains `baseStats` on characters and weapons: the stats' names and points [level, phase, …values] at both ends of every ascension phase; `baseStatsAt` reads a level on its phase's line (at a cap, before the ascension). Importers fill them: Genshin from genshin-db's `stats(level, +/-)` (HP, ATK, DEF and the ascension stat, as percents named HP%/ATK%/DEF%; a weapon's ATK and second stat), Star Rail from each promotion's base and growth (HP, ATK, DEF, SPD, crit; a light cone's HP, ATK, DEF), ZZZ from an agent's base, growth and phase adds without the core skill (HP, ATK, DEF, Impact, Anomaly Mastery and Proficiency, crit) and a W-Engine's level and star rates. The three catalogs are regenerated (only the new field). `buildBase` sums a build's character at its level and its weapon at the weapon's, a percent HP/ATK/DEF applied to the flat one; the sheet shows each as its stat's placeholder ("1933 base"), and the KPI tiles and cards count it where nothing is typed, in italics with a "Base" title.
+- Tests: written first: Barbara at 80, 80 ascended and 90, Mistsplitter at 90; Kafka at 80 and 75, Arrows at 80; Ellen at 60 (7673.7 HP, shown floored), Steel Cushion at 60 (684 ATK, 24% CRIT Rate); a journey on a Kafka build at 80 with Arrows at 80: 1933 HP, 997 ATK, 100 SPD as placeholders, 5 / 50 in the KPIs marked as base, then a typed SPD counted.
+- Scope/decisions: gear is not counted (no dataset here gives Genshin's, ZZZ's or WuWa's main-stat tables; Star Rail's relic tables are for a follow-up); WuWa's, Endfield's and NTE's units have no base stats yet; Genshin's universal 5% / 50% crit is not in its dataset, so its base crit stays empty. Two of my expectations were wrong before the data proved them (Arrows' HP, Ellen's floored values) and were corrected to the game's.
+- Next: the top-up suggestion on Pulls.
+
 ## 2026-10-14 · claude · stack/r9/13-sheet-misc · #276
 - Done: the character sheet (Georges, round 6: "when unrolling the talent effect it stretches everything; I'd rather read it in a bubble; also add the talent icon … a misc part for each character where non-upgradable talents, skins and other things are included, or where I could write notes or add pictures"). A skill's row shows its icon (the catalog's talent icons, Genshin's from Enka) and its name opens what it does in a bubble over the page, closed by a click outside; the card keeps its height. A Misc card on every build: the passives its talents do not level (catalog `passives`, each with its icon and bubble), skins by name, notes, and pictures through the upload route (Vercel Blob in production, the upload folder locally), saved as they change. A build gains `misc` (migration `character_misc`): notes up to 4000 characters, 30 skins, 12 pictures that must be uploads or https links (no `javascript:`).
 - Tests: written first: the route keeps a build's notes, skins and pictures, refuses a `javascript:` picture and clears with null; a journey on Barbara: her skill's icon, its bubble with Melody Loop while the card keeps its height, closed by a click outside; Glorious Season's icon, Encore's bubble, a skin added, notes typed and a picture uploaded, all saved.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: docs only. `npm run check` on the tree below (#236): 587 tests and 68 journeys.
 - Scope/decisions: none new.
 - Next: Georges's secrets, data and decision; a deploy when he asks.
-
-## 2026-10-11 · claude · stack/r5/04-spark · #236
-- Done: the Endfield design's "Featured guarantee 68/120". A banner type with a spark (Endfield's 120 pulls on one banner give its featured unit) reports, on the dashboard's pity, the pulls logged on that type since the banner of its kind running now began, up to the spark; none without a running banner. The Overview's Pity card shows it as a row under that banner type.
-- Tests: written first: pulls before the banner began do not count, pulls since do, the count stops at 120, and no running banner gives none; the Overview journey finds "Featured guarantee …/120" on Endfield. `npm run check` passes: 587 tests and 68 journeys.
-- Scope/decisions: the dashboard fetches the banners before building each game's row (the spark needs the running one). Genshin's Epitomized Path (fate points) is not tracked: the log does not record which weapon was charted.
-- Next: the handoff.

@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   elementColor,
+  buildBase,
   buildKpis,
   buildLine,
   statKpis,
@@ -90,7 +91,7 @@ export function CharactersPage() {
   const pulls = useQuery({ queryKey: ["pulls", id], queryFn: () => api.get<PullLogDto>(`/api/instances/${id}/pulls`) });
   const dash = useQuery({ queryKey: ["dashboard"], queryFn: () => api.get<DashboardDto>("/api/dashboard") });
   const rewards = useQuery({ queryKey: ["rewards"], queryFn: () => api.get<RewardDto[]>("/api/rewards") });
-  const { catalog, isLoading: catalogLoading } = useCatalog(instance.data?.gameKey);
+  const { catalog, index, isLoading: catalogLoading } = useCatalog(instance.data?.gameKey);
 
   // The cache takes what was saved at once, then refetches: the cards flip on the answer, not on a refetch that can lag.
   const markOwned = (ids: string[], owned: boolean) => {
@@ -394,7 +395,7 @@ export function CharactersPage() {
                   name={c.name}
                   labels={c.build.cardStats ?? cardStats}
                   options={statOptions}
-                  kpis={(c.build.cardStats ?? cardStats) ? statKpis(game, doc, (c.build.cardStats ?? cardStats)!, catalog?.gear ?? []) : buildKpis(game, doc, c.build.role, catalog?.gear ?? [])}
+                  kpis={(c.build.cardStats ?? cardStats) ? statKpis(game, doc, (c.build.cardStats ?? cardStats)!, catalog?.gear ?? [], buildBase(game, index, c.build.catalogId, doc)) : buildKpis(game, doc, c.build.role, catalog?.gear ?? [], buildBase(game, index, c.build.catalogId, doc))}
                   own={c.build.cardStats}
                   bonus={c.entry?.bonusStats ?? []}
                   onPick={(stats) => setBuildStats.mutate({ id: c.build!.id, cardStats: stats })}
@@ -488,7 +489,7 @@ export function CharactersPage() {
  */
 function KpiValue({ k }: { k: StatKpi }) {
   const [open, setOpen] = useState(false);
-  if (!k.bonus) return <span className="cd">{k.value}</span>;
+  if (!k.bonus) return <span className={`cd ${k.auto ? "is-auto" : ""}`} title={k.auto ? "Base: the level and the weapon" : undefined}>{k.value}</span>;
   const add = k.bonus.value.replace(/^\+/, "");
   const why = `${k.base} + ${add} · ${k.bonus.from}`;
   return (
