@@ -50,3 +50,35 @@ describe("recurring tasks on the five cadences (routes)", () => {
     expect((await add("monthly", "x".repeat(65))).status).toBe(400);
   });
 });
+
+// A goal made under another (round 6: the quick build makes the weapon's and the set's goals under the character's)
+// checks its parent as a link does: the same profile, a goal on its own, never one linked under another.
+describe("a goal made under another (routes)", () => {
+  let app: FastifyInstance;
+  let c: Client;
+  let gid: string;
+
+  beforeAll(async () => {
+    app = await makeApp();
+  });
+  afterAll(async () => {
+    await app.close();
+  });
+  beforeEach(async () => {
+    await resetDb();
+    c = await login(app);
+    gid = await installGame(c, "genshin");
+  });
+
+  it("keeps a parent of the same profile; refuses one of another profile, a linked one or a missing one", async () => {
+    const goal = (refId: string, parentId?: string) => c.req<TaskDto>("POST", "/api/tasks", { scope: "game", refId, type: "goal", title: "g", target: 1, ...(parentId ? { parentId } : {}) });
+    const parent = (await goal(gid)).json;
+    const kid = await goal(gid, parent.id);
+    expect(kid.status).toBe(201);
+    expect(kid.json.parentId).toBe(parent.id);
+    expect((await goal(gid, kid.json.id)).status).toBe(400);
+    const elsewhere = (await goal(await installGame(c, "hsr"))).json;
+    expect((await goal(gid, elsewhere.id)).status).toBe(400);
+    expect((await goal(gid, "cm0000000000000000000000z")).status).toBe(400);
+  });
+});

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { goalSteps, listedGoal, type TaskDto } from "@gacha/shared";
+import { catalogSchema, getGame, goalSteps, listedGoal, type TaskDto } from "@gacha/shared";
 
 let n = 0;
 const task = (t: Partial<TaskDto>): TaskDto => ({
@@ -54,5 +54,20 @@ describe("goals", () => {
     const tasks = [character, weapon, pulls, step(character.id, 5, 5), step(character.id, 0, 5), step(character.id, 0, 5), step(weapon.id, 9, 9), step(weapon.id, 4, 4)];
     expect(goalSteps(character, tasks)).toEqual([1 + 2 + 1, 3 + 2 + 1]);
     expect(goalSteps(weapon, tasks)).toEqual([2, 2]);
+  });
+});
+
+// Georges, round 6: "a quick way to make a building goal depending on the game, for example Genshin is max ascension,
+// lvl 80, weapon lvl 90, talents 10/6/6".
+describe("each game's quick build", () => {
+  it("names every skill its catalog levels, each above 1; Genshin's is 10/6/6", async () => {
+    for (const key of ["genshin", "hsr", "zzz", "wuwa", "nte"]) {
+      const game = getGame(key)!;
+      const catalog = catalogSchema.parse(await game.loadCatalog!());
+      const keys = new Set(catalog.characters.flatMap((c) => c.talents.keys));
+      expect(Object.keys(game.quickBuild?.talents ?? {}).sort(), key).toEqual([...keys].sort());
+      for (const level of Object.values(game.quickBuild!.talents)) expect(level).toBeGreaterThan(1);
+    }
+    expect(getGame("genshin")!.quickBuild!.talents).toEqual({ normal: 10, skill: 6, burst: 6 });
   });
 });
