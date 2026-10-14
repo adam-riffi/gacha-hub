@@ -112,3 +112,21 @@ test("the selected game spells its full name, each game with its icon; the rail'
   await expect(home).toHaveAttribute("aria-current", "page");
   expect(await home.evaluate((el) => getComputedStyle(el).backgroundColor)).not.toBe("rgba(0, 0, 0, 0)");
 });
+
+// Georges, round 8: "the responsivity of the app is pretty mediocre overall; I'd rather have it not responsive".
+test("One desktop layout: a narrow window scrolls sideways instead of rearranging the screens @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  const columns = () => page.locator(".ch-grid").evaluate((el) => getComputedStyle(el).gridTemplateColumns.split(" ").length);
+
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto(`/games/${id}/characters`);
+  await expect(page.locator(".ch-grid article").first()).toBeVisible();
+  const wide = await columns();
+
+  await page.setViewportSize({ width: 1100, height: 800 });
+  await expect.poll(columns).toBe(wide);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeGreaterThanOrEqual(1440);
+});
