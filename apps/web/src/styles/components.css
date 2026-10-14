@@ -196,3 +196,6 @@ tbody tr:hover { background: var(--surface-2); }
 .pk-list .gicon { width: 28px; height: 28px; flex: none; font-size: 10px; }
 .pk-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .pk-none, .pk-clear { cursor: default; }
+/* A window's Close, large and labelled (Georges, round 9: "the small x to close is barely visible"). */
+.btn.panel-close { min-height: 40px; padding: 8px 16px; border: 2px solid var(--text); background: var(--surface-2); color: var(--text); font: 600 15px/1 var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; }
+.btn.panel-close:hover { background: var(--text); color: var(--bg); }

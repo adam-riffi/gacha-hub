@@ -210,7 +210,7 @@ export function WeaponsPage() {
             const h = hs[0];
             return (
               <article key={copy.id} className={`wp-card ${open === weapon.key ? "is-on" : ""} ${picked.has(copy.id) ? "is-picked" : ""}`} aria-label={weapon.name} style={tint(h) ? ({ "--el": tint(h) } as CSSProperties) : undefined}>
-                <button type="button" className="wp-open" aria-label={selecting ? `Select ${weapon.name}` : `Open ${weapon.name}`} aria-pressed={selecting ? picked.has(copy.id) : undefined} onClick={() => (selecting ? togglePick(copy.id) : setOpen(weapon.key))} />
+                <button type="button" className="wp-open" aria-label={selecting ? `Select ${weapon.name}` : `Open ${weapon.name}`} aria-pressed={selecting ? picked.has(copy.id) : undefined} data-opens-panel onClick={() => (selecting ? togglePick(copy.id) : setOpen(open === weapon.key ? null : weapon.key))} />
                 {/* Larger cards (Georges, round 7): the art on a band in its rarity's colour, the level big, the main stat by its icon. */}
                 <span className="wp-rarity" data-rarity={weapon.rarity ?? ""}>
                   <CatalogIcon gameKey={game.key} kind="weapon" icon={weapon.icon} name={weapon.name} className="wp-art" />
@@ -244,7 +244,8 @@ export function WeaponsPage() {
                 className="wp-open"
                 aria-label={selecting ? `Select ${weapon.name}` : `Open ${weapon.name}`}
                 aria-pressed={selecting ? picked.has(`w:${weapon.catalogId}`) : undefined}
-                onClick={() => (selecting && weapon.catalogId ? togglePick(`w:${weapon.catalogId}`) : setOpen(weapon.key))}
+                data-opens-panel
+                onClick={() => (selecting && weapon.catalogId ? togglePick(`w:${weapon.catalogId}`) : setOpen(open === weapon.key ? null : weapon.key))}
               />
               <span className="wp-rarity" data-rarity={weapon.rarity ?? ""}>
                 <CatalogIcon gameKey={game.key} kind="weapon" icon={weapon.icon} name={weapon.name} className="wp-art" />
@@ -338,8 +339,8 @@ function WeaponPanel({
             <span className="mn mu">{[weapon.rarity && `★${weapon.rarity}`, weapon.type].filter(Boolean).join(" · ")}</span>
           </span>
         </span>
-        <button className="btn ghost sm" aria-label="Close" onClick={onClose}>
-          ×
+        <button type="button" className="btn panel-close" aria-label="Close" onClick={onClose}>
+          ✕ Close
         </button>
       </div>
       {copies.map((c, i) => (
