@@ -8,7 +8,7 @@
  * for Endfield until cost data exists. Run from scripts/catalog: `npm run endfield`.
  */
 import AdmZip from "adm-zip";
-import type { Catalog, CatalogCharacter, CatalogGearSet, CatalogWeapon } from "../../packages/shared/src/catalog/types.js";
+import type { Catalog, CatalogCharacter, CatalogGearSet, CatalogMaterial, CatalogWeapon } from "../../packages/shared/src/catalog/types.js";
 import { byId, fetchBuffer, fetchJson, parseInt64Safe, slugify, uniqueKeys, writeCatalog } from "./common.js";
 
 const RELEASE = "v0.3.0";
@@ -119,13 +119,45 @@ const gear: CatalogGearSet[] = [...suits.entries()].flatMap(([suit, pieces]): Ca
   return [{ id: suit, key: slugify(name), name, slots: ["slot1", "slot2", "slot3", "slot4"], bonuses: [], ...(icon ? { icon } : {}), extra: { rarityList: rarities, pieces: pieces.map((p) => p.itemId) } }];
 });
 
+// ---- Gifts (round 8): an operator likes the gifts matching its hobbies; each gift's text names its two ("[Lifestyle] and/or [Culture]") ----
+type Tags = { charId: string; hobbyTagIds: string[] };
+const tagTable = parseInt64Safe<Record<string, Tags>>(read("tables/CharacterTagTable.json"));
+/** The hobby tags by the words the gifts use for them; a secret one names none. */
+const HOBBY: Record<string, string> = {
+  tag_hobby_life: "Lifestyle",
+  tag_hobby_creativity: "Creative",
+  tag_hobby_culture: "Culture",
+  tag_hobby_charity: "Charity",
+  tag_hobby_nature: "Nature",
+  tag_hobby_exercise: "Sports",
+  tag_hobby_tech: "Technology",
+  tag_hobby_knowledge: "Mind Honing",
+  tag_hobby_fashion: "Fashion",
+  tag_hobby_art: "Fine Arts",
+};
+type GiftItem = Item & { desc?: TextRef };
+const giftItems = Object.values(items as Record<string, GiftItem>)
+  .filter((i) => i.id.startsWith("item_gift_") && t(i.name))
+  .map((i) => ({ id: i.id, name: t(i.name), rarity: i.rarity, hobbies: [...t(i.desc).matchAll(/\[([^\]]+)\]/g)].map((m) => m[1]!) }));
+for (const c of characters) {
+  const hobbies = (tagTable[c.id]?.hobbyTagIds ?? []).flatMap((h) => (HOBBY[h] ? [HOBBY[h]] : []));
+  if (!hobbies.length) continue;
+  c.extra = { ...c.extra, hobbies };
+  const gifts = giftItems
+    .map((g) => ({ itemId: g.id, hobbies: hobbies.filter((h) => g.hobbies.includes(h)) }))
+    .filter((g) => g.hobbies.length > 0)
+    .sort((a, b) => b.hobbies.length - a.hobbies.length || a.itemId.localeCompare(b.itemId));
+  if (gifts.length) c.gifts = gifts;
+}
+const materials: CatalogMaterial[] = giftItems.map((g) => ({ id: g.id, key: slugify(g.name), name: g.name, category: "Gift", rarity: Math.min(6, Math.max(1, g.rarity)) }));
+
 const catalog: Catalog = {
   gameKey: "endfield",
   source: `EndFieldGameData@${RELEASE} (no cost data published)`,
   characters: uniqueKeys(characters.sort(byId)),
   weapons: uniqueKeys(weapons.sort(byId)),
   gear: uniqueKeys(gear.sort(byId)),
-  materials: [],
+  materials: uniqueKeys(materials.sort(byId)),
 };
 
 writeCatalog(catalog, "endfield");

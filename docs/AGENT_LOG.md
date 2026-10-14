@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-14 · claude · stack/r11/08-gifts · #306
+- Done: gifts (Georges, round 8: "for relevant games I want a gift/intimacy item list, like for NTE or Endfield"). A catalog character gains `gifts`, the strongest first. NTE: each character's preferred gifts from Hakushin with their affinity points (A Handwritten Letter +2000, then +400, +200…); the gift items join the catalog's materials as Gifts with their names and icons; 18 of 23 characters have some. Endfield: an operator's two hobbies (CharacterTagTable) and the gifts whose text names one of them ("[Lifestyle] and/or [Culture]"), those matching both first; the 14 gifts join its materials (it had none); 26 of 29 operators (the Endministrators' hobbies are a secret). A Gifts card on the sheet and on the character's page: each gift's icon, name and points or matched hobbies, the strongest outlined; Endfield's operator's hobbies head it.
+- Tests: written first: Sakiri's first gift is the letter at 2000, her ticket, bunny box and flower among them, each a named Gift; Perlica's hobbies are Lifestyle and Creative, her gifts each match one, sorted by matches, Eureka Teabox for Lifestyle; no gifts for the Endministrator; Sakiri's page or sheet lists the letter first with 2000 and the ticket's icon.
+- Scope/decisions: NTE's food gifts are not named in the dataset, so they stay out (three of Sakiri's eight); the hobby tags are mapped to the words the gifts use in the importer (like its weapon kinds); no other game here has gifts.
+- Next: the assets list and the hosting, database and sign-in proposal.
+
 ## 2026-10-14 · claude · stack/r11/07-fixed-layout · #305
 - Done: one desktop layout (Georges, round 8: "the responsivity of the app is pretty mediocre overall; I'd rather have it not responsive or find a way to fix it"). The shell has a minimum width of 1440 px, the width every screen is designed and checked at: a narrower window scrolls sideways instead of rearranging the screens. The width breakpoints are gone (Home's side column at 1500 px, the Characters grid's three columns under 1280 px, the timeline, Overview and dashboard collapses under 1100 px, the hub's under 900 px); Home keeps the one-column layout it had at 1440 px. Wider windows still give the grids more room. Reduced-motion preferences stay.
 - Tests: written first: Star Rail's Characters grid has as many columns at 1100 px as at 1440 px, and the page is at least 1440 px wide.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: Natasha with a build is marked not owned from the selection (her Lv 60 build stays), her build set to Good from the selection, then owned again.
 - Scope/decisions: none.
 - Next: each game's art framed on the face; set icons on the cards.
-
-## 2026-10-12 · claude · stack/r9/02-endgame-card · #265
-- Done: Endgame (Georges, round 6: "when clicking on past endgames I'd rather have the highlighted card change rather than opening a window … get out of windows by clicking outside … for Stygian I wanna see my teams, time and difficulty"): each mode card shows its picked cycle (the current one by default): a bar, the card's ‹ › arrows, a chart point or a table row picks another, Back to now returns; the card shows its dates and version, result, rewards, detail, each stage's team and time and the enemies, and Update edits that cycle. A mode with stages lists them all, "—" where nothing is typed. The round-5 dialog is gone (`Enemies` has its own file). Side panels (a weapon's, a gear set's) close on a press outside or Escape (`useDismiss`).
-- Tests: written first: Shiyu's 18 Sept bar becomes the card's cycle (pressed; no dialog; dates, version, rewards, detail, clear time), the older one a step away and edited in place (saved on that cycle), Back to now, a table row picking its cycle; Stygian lists its three bosses before anything is typed; a weapon's panel closes on a click on the search box.
-- Scope/decisions: none.
-- Next: ownership apart from builds, and the selection's actions.

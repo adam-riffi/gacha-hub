@@ -57,6 +57,8 @@ export const catalogCharacterSchema = z.object({
   baseStats: baseStatsSchema.optional(),
   /** Talents that do not level (Genshin's passives), for the sheet's misc part (round 6). */
   passives: z.array(z.object({ name: z.string(), description: z.string().optional(), icon: z.string().optional() })).optional(),
+  /** The gifts it likes, the strongest first (round 8): NTE's affinity points, or the hobbies an Endfield gift matches; filled by importers. */
+  gifts: z.array(z.object({ itemId: z.string(), points: z.number().int().positive().optional(), hobbies: z.array(z.string()).optional() })).optional(),
   /** Constellations / eidolons (dupes) — what each rank does; filled by importers. */
   constellations: z
     .array(z.object({ name: z.string().optional(), description: z.string() }))

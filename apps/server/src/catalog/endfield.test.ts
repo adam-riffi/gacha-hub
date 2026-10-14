@@ -14,7 +14,8 @@ describe("endfield catalog", () => {
     expect(catalog.gear.length).toBeGreaterThanOrEqual(15);
     expect(catalog.gear.every((g) => g.slots.join() === "slot1,slot2,slot3,slot4" && g.name.length > 1)).toBe(true);
     expect(new Set(catalog.gear.map((g) => g.name)).size).toBe(catalog.gear.length);
-    expect(catalog.materials).toEqual([]);
+    // No cost data: its only items are its gifts (round 8).
+    expect(catalog.materials.every((m) => m.category === "Gift")).toBe(true);
   });
 
   it("names a gear set from its body piece: Roving MSGR", async () => {
@@ -53,5 +54,21 @@ describe("endfield catalog", () => {
     expect(catalog.weapons.filter((w) => w.icon).length).toBeGreaterThanOrEqual(60);
     expect(catalog.gear.find((g) => g.id === "suit_agi01")!.icon).toMatch(/^equipment\/agi01\//);
     expect(communityArtUrl("endfield", "character", perlica.icon)).toMatch(/^https:\/\/raw\.githubusercontent\.com\/Lieyuan621\/Endaxis\/[0-9a-f]{40}\/public\/operators%2Fperlica%2Favatar\.webp$/);
+  });
+
+  // Georges, round 8: "for relevant games I want a gift/intimacy item list". Endfield's gifts suit operators by their hobbies.
+  it("keeps each operator's hobbies and the gifts matching them, those matching both first", async () => {
+    const catalog = catalogSchema.parse(await endfield.loadCatalog!());
+    const perlica = catalog.characters.find((c) => c.key === "perlica")!;
+    expect(perlica.extra?.hobbies).toEqual(["Lifestyle", "Creative"]);
+    const gifts = perlica.gifts ?? [];
+    expect(gifts.length).toBeGreaterThan(0);
+    for (const g of gifts) expect(g.hobbies!.every((h) => ["Lifestyle", "Creative"].includes(h))).toBe(true);
+    expect(gifts.map((g) => g.hobbies!.length)).toEqual([...gifts.map((g) => g.hobbies!.length)].sort((a, b) => b - a));
+    const names = new Map(catalog.materials.map((m) => [m.id, m]));
+    expect(names.get("item_gift_jinlong_1")).toMatchObject({ name: "Eureka Teabox", category: "Gift" });
+    expect(gifts.find((g) => g.itemId === "item_gift_jinlong_1")?.hobbies).toEqual(["Lifestyle"]);
+    // The Endministrator's hobbies are a secret: no gifts.
+    expect(catalog.characters.find((c) => c.id === "chr_0002_endminm")!.gifts ?? []).toEqual([]);
   });
 });

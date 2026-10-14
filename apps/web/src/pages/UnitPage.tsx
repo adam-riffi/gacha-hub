@@ -9,6 +9,7 @@ import { assetUrl, communityAssetUrl, splashKey } from "../lib/assets";
 
 import { GameTabs } from "../components/GameTabs";
 import { GameIcon } from "../components/GameIcon";
+import { GiftsCard } from "../components/sheet/GiftsCard";
 import { TaskGeneratorPanel } from "../components/TaskGeneratorPanel";
 import type { InstanceDetail } from "../lib/types";
 
@@ -145,6 +146,8 @@ export function UnitPage() {
           )}
         </div>
       </div>
+
+      <GiftsCard gameKey={game.key} entry={entry} />
 
       <section className="card sh-plan" aria-label="Plan farming">
         <TaskGeneratorPanel instanceId={id!} gameKey={game.key} catalogId={entry.id} doc={(mine[0]?.doc as Record<string, unknown> | undefined) ?? {}} />

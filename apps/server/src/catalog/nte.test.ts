@@ -53,4 +53,16 @@ describe("nte catalog", () => {
     expect(lost.icon).toBeTruthy();
     expect(catalog.gear.find((g) => g.name === "Shadow Creed")!.extra).toMatchObject({ series: 3 });
   });
+
+  // Georges, round 8: "for relevant games I want a gift/intimacy item list, like for NTE or Endfield".
+  it("keeps each character's preferred gifts, the strongest first, each a named item", async () => {
+    const catalog = catalogSchema.parse(await nte.loadCatalog!());
+    const sakiri = catalog.characters.find((c) => c.name === "Sakiri")!;
+    expect(sakiri.gifts?.[0]).toEqual({ itemId: "SpecialGift_letter", points: 2000 });
+    expect(sakiri.gifts?.map((g) => g.itemId)).toEqual(expect.arrayContaining(["SpecialGift_ticket", "Furniture_Ornament_001", "Flower0002"]));
+    const names = new Map(catalog.materials.map((m) => [m.id, m]));
+    expect(names.get("SpecialGift_ticket")).toMatchObject({ name: "Floe Cinema Ticket", category: "Gift" });
+    // Gifts the dataset does not name (its foods) stay out.
+    expect(sakiri.gifts?.every((g) => names.has(g.itemId))).toBe(true);
+  });
 });

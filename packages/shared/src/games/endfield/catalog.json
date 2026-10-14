@@ -63,12 +63,60 @@
         "keys": [],
         "costs": []
       },
+      "gifts": [
+        {
+          "itemId": "item_gift_jinlong_1",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_3",
+          "hobbies": [
+            "Creative"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_4",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_6",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_7",
+          "hobbies": [
+            "Creative"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_4",
+          "hobbies": [
+            "Creative"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_6",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        }
+      ],
       "extra": {
         "profession": "Caster",
         "charTypeId": "Pulse",
         "weaponTypeId": 2,
         "defaultWeaponId": "wpn_funnel_0002",
-        "costsAvailable": false
+        "costsAvailable": false,
+        "hobbies": [
+          "Lifestyle",
+          "Creative"
+        ]
       }
     },
     {
@@ -86,12 +134,55 @@
         "keys": [],
         "costs": []
       },
+      "gifts": [
+        {
+          "itemId": "item_gift_jinlong_5",
+          "hobbies": [
+            "Culture",
+            "Charity"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_1",
+          "hobbies": [
+            "Culture"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_6",
+          "hobbies": [
+            "Culture"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_2",
+          "hobbies": [
+            "Culture"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_5",
+          "hobbies": [
+            "Culture"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_7",
+          "hobbies": [
+            "Charity"
+          ]
+        }
+      ],
       "extra": {
         "profession": "Guard",
         "charTypeId": "Physical",
         "weaponTypeId": 1,
         "defaultWeaponId": "wpn_sword_0003",
-        "costsAvailable": false
+        "costsAvailable": false,
+        "hobbies": [
+          "Culture",
+          "Charity"
+        ]
       }
     },
     {
@@ -109,12 +200,54 @@
         "keys": [],
         "costs": []
       },
+      "gifts": [
+        {
+          "itemId": "item_gift_jinlong_2",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_3",
+          "hobbies": [
+            "Creative"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_7",
+          "hobbies": [
+            "Creative"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_1",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_4",
+          "hobbies": [
+            "Creative"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_5",
+          "hobbies": [
+            "Nature"
+          ]
+        }
+      ],
       "extra": {
         "profession": "Caster",
         "charTypeId": "Fire",
         "weaponTypeId": 6,
         "defaultWeaponId": "wpn_pistol_0001",
-        "costsAvailable": false
+        "costsAvailable": false,
+        "hobbies": [
+          "Nature",
+          "Creative"
+        ]
       }
     },
     {
@@ -132,12 +265,49 @@
         "keys": [],
         "costs": []
       },
+      "gifts": [
+        {
+          "itemId": "item_gift_jinlong_2",
+          "hobbies": [
+            "Nature",
+            "Sports"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_4",
+          "hobbies": [
+            "Sports"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_1",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_3",
+          "hobbies": [
+            "Sports"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_5",
+          "hobbies": [
+            "Nature"
+          ]
+        }
+      ],
       "extra": {
         "profession": "Vanguard",
         "charTypeId": "Pulse",
         "weaponTypeId": 1,
         "defaultWeaponId": "wpn_sword_0003",
-        "costsAvailable": false
+        "costsAvailable": false,
+        "hobbies": [
+          "Nature",
+          "Sports"
+        ]
       }
     },
     {
@@ -155,12 +325,48 @@
         "keys": [],
         "costs": []
       },
+      "gifts": [
+        {
+          "itemId": "item_gift_jinlong_2",
+          "hobbies": [
+            "Sports"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_4",
+          "hobbies": [
+            "Sports"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_1",
+          "hobbies": [
+            "Technology"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_3",
+          "hobbies": [
+            "Sports"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_7",
+          "hobbies": [
+            "Technology"
+          ]
+        }
+      ],
       "extra": {
         "profession": "Defender",
         "charTypeId": "Fire",
         "weaponTypeId": 3,
         "defaultWeaponId": "wpn_claym_0010",
-        "costsAvailable": false
+        "costsAvailable": false,
+        "hobbies": [
+          "Sports",
+          "Technology"
+        ]
       }
     },
     {
@@ -178,12 +384,42 @@
         "keys": [],
         "costs": []
       },
+      "gifts": [
+        {
+          "itemId": "item_gift_jinlong_3",
+          "hobbies": [
+            "Mind Honing"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_1",
+          "hobbies": [
+            "Technology"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_2",
+          "hobbies": [
+            "Mind Honing"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_7",
+          "hobbies": [
+            "Technology"
+          ]
+        }
+      ],
       "extra": {
         "profession": "Supporter",
         "charTypeId": "Cryst",
         "weaponTypeId": 2,
         "defaultWeaponId": "wpn_funnel_0002",
-        "costsAvailable": false
+        "costsAvailable": false,
+        "hobbies": [
+          "Technology",
+          "Mind Honing"
+        ]
       }
     },
     {
@@ -201,12 +437,54 @@
         "keys": [],
         "costs": []
       },
+      "gifts": [
+        {
+          "itemId": "item_gift_jinlong_1",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_4",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_6",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_7",
+          "hobbies": [
+            "Fashion"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_4",
+          "hobbies": [
+            "Fashion"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_6",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        }
+      ],
       "extra": {
         "profession": "Striker",
         "charTypeId": "Pulse",
         "weaponTypeId": 5,
         "defaultWeaponId": "wpn_lance_0009",
-        "costsAvailable": false
+        "costsAvailable": false,
+        "hobbies": [
+          "Lifestyle",
+          "Fashion"
+        ]
       }
     },
     {
@@ -224,12 +502,60 @@
         "keys": [],
         "costs": []
       },
+      "gifts": [
+        {
+          "itemId": "item_gift_jinlong_1",
+          "hobbies": [
+            "Culture"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_5",
+          "hobbies": [
+            "Culture"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_6",
+          "hobbies": [
+            "Culture"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_7",
+          "hobbies": [
+            "Fashion"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_2",
+          "hobbies": [
+            "Culture"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_4",
+          "hobbies": [
+            "Fashion"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_5",
+          "hobbies": [
+            "Culture"
+          ]
+        }
+      ],
       "extra": {
         "profession": "Supporter",
         "charTypeId": "Natural",
         "weaponTypeId": 2,
         "defaultWeaponId": "wpn_funnel_0002",
-        "costsAvailable": false
+        "costsAvailable": false,
+        "hobbies": [
+          "Fashion",
+          "Culture"
+        ]
       }
     },
     {
@@ -247,12 +573,48 @@
         "keys": [],
         "costs": []
       },
+      "gifts": [
+        {
+          "itemId": "item_gift_jinlong_2",
+          "hobbies": [
+            "Sports"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_4",
+          "hobbies": [
+            "Sports"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_5",
+          "hobbies": [
+            "Charity"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_3",
+          "hobbies": [
+            "Sports"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_7",
+          "hobbies": [
+            "Charity"
+          ]
+        }
+      ],
       "extra": {
         "profession": "Defender",
         "charTypeId": "Cryst",
         "weaponTypeId": 3,
         "defaultWeaponId": "wpn_claym_0010",
-        "costsAvailable": false
+        "costsAvailable": false,
+        "hobbies": [
+          "Sports",
+          "Charity"
+        ]
       }
     },
     {
@@ -270,12 +632,49 @@
         "keys": [],
         "costs": []
       },
+      "gifts": [
+        {
+          "itemId": "item_gift_jinlong_2",
+          "hobbies": [
+            "Sports",
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_4",
+          "hobbies": [
+            "Sports"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_1",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_3",
+          "hobbies": [
+            "Sports"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_5",
+          "hobbies": [
+            "Nature"
+          ]
+        }
+      ],
       "extra": {
         "profession": "Guard",
         "charTypeId": "Physical",
         "weaponTypeId": 5,
         "defaultWeaponId": "wpn_lance_0009",
-        "costsAvailable": false
+        "costsAvailable": false,
+        "hobbies": [
+          "Sports",
+          "Nature"
+        ]
       }
     },
     {
@@ -293,12 +692,60 @@
         "keys": [],
         "costs": []
       },
+      "gifts": [
+        {
+          "itemId": "item_gift_jinlong_1",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_3",
+          "hobbies": [
+            "Creative"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_4",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_6",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_7",
+          "hobbies": [
+            "Creative"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_4",
+          "hobbies": [
+            "Creative"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_6",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        }
+      ],
       "extra": {
         "profession": "Striker",
         "charTypeId": "Fire",
         "weaponTypeId": 1,
         "defaultWeaponId": "wpn_sword_0003",
-        "costsAvailable": false
+        "costsAvailable": false,
+        "hobbies": [
+          "Creative",
+          "Lifestyle"
+        ]
       }
     },
     {
@@ -316,12 +763,42 @@
         "keys": [],
         "costs": []
       },
+      "gifts": [
+        {
+          "itemId": "item_gift_jinlong_7",
+          "hobbies": [
+            "Fashion"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_1",
+          "hobbies": [
+            "Technology"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_4",
+          "hobbies": [
+            "Fashion"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_7",
+          "hobbies": [
+            "Technology"
+          ]
+        }
+      ],
       "extra": {
         "profession": "Striker",
         "charTypeId": "Cryst",
         "weaponTypeId": 6,
         "defaultWeaponId": "wpn_pistol_0001",
-        "costsAvailable": false
+        "costsAvailable": false,
+        "hobbies": [
+          "Fashion",
+          "Technology"
+        ]
       }
     },
     {
@@ -339,12 +816,54 @@
         "keys": [],
         "costs": []
       },
+      "gifts": [
+        {
+          "itemId": "item_gift_jinlong_1",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_4",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_5",
+          "hobbies": [
+            "Charity"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_6",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_6",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_7",
+          "hobbies": [
+            "Charity"
+          ]
+        }
+      ],
       "extra": {
         "profession": "Striker",
         "charTypeId": "Physical",
         "weaponTypeId": 3,
         "defaultWeaponId": "wpn_claym_0010",
-        "costsAvailable": false
+        "costsAvailable": false,
+        "hobbies": [
+          "Lifestyle",
+          "Charity"
+        ]
       }
     },
     {
@@ -362,12 +881,48 @@
         "keys": [],
         "costs": []
       },
+      "gifts": [
+        {
+          "itemId": "item_gift_jinlong_2",
+          "hobbies": [
+            "Sports"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_4",
+          "hobbies": [
+            "Sports"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_5",
+          "hobbies": [
+            "Charity"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_3",
+          "hobbies": [
+            "Sports"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_7",
+          "hobbies": [
+            "Charity"
+          ]
+        }
+      ],
       "extra": {
         "profession": "Vanguard",
         "charTypeId": "Fire",
         "weaponTypeId": 1,
         "defaultWeaponId": "wpn_sword_0003",
-        "costsAvailable": false
+        "costsAvailable": false,
+        "hobbies": [
+          "Charity",
+          "Sports"
+        ]
       }
     },
     {
@@ -385,12 +940,55 @@
         "keys": [],
         "costs": []
       },
+      "gifts": [
+        {
+          "itemId": "item_gift_jinlong_4",
+          "hobbies": [
+            "Lifestyle",
+            "Sports"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_1",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_2",
+          "hobbies": [
+            "Sports"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_6",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_3",
+          "hobbies": [
+            "Sports"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_6",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        }
+      ],
       "extra": {
         "profession": "Defender",
         "charTypeId": "Physical",
         "weaponTypeId": 3,
         "defaultWeaponId": "wpn_claym_0010",
-        "costsAvailable": false
+        "costsAvailable": false,
+        "hobbies": [
+          "Lifestyle",
+          "Sports"
+        ]
       }
     },
     {
@@ -408,12 +1006,42 @@
         "keys": [],
         "costs": []
       },
+      "gifts": [
+        {
+          "itemId": "item_gift_jinlong_3",
+          "hobbies": [
+            "Mind Honing"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_2",
+          "hobbies": [
+            "Mind Honing"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_3",
+          "hobbies": [
+            "Fine Arts"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_6",
+          "hobbies": [
+            "Fine Arts"
+          ]
+        }
+      ],
       "extra": {
         "profession": "Guard",
         "charTypeId": "Cryst",
         "weaponTypeId": 5,
         "defaultWeaponId": "wpn_lance_0009",
-        "costsAvailable": false
+        "costsAvailable": false,
+        "hobbies": [
+          "Fine Arts",
+          "Mind Honing"
+        ]
       }
     },
     {
@@ -431,12 +1059,54 @@
         "keys": [],
         "costs": []
       },
+      "gifts": [
+        {
+          "itemId": "item_gift_jinlong_2",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_3",
+          "hobbies": [
+            "Creative"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_7",
+          "hobbies": [
+            "Creative"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_1",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_4",
+          "hobbies": [
+            "Creative"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_5",
+          "hobbies": [
+            "Nature"
+          ]
+        }
+      ],
       "extra": {
         "profession": "Caster",
         "charTypeId": "Natural",
         "weaponTypeId": 6,
         "defaultWeaponId": "wpn_pistol_0001",
-        "costsAvailable": false
+        "costsAvailable": false,
+        "hobbies": [
+          "Nature",
+          "Creative"
+        ]
       }
     },
     {
@@ -454,12 +1124,43 @@
         "keys": [],
         "costs": []
       },
+      "gifts": [
+        {
+          "itemId": "item_gift_jinlong_3",
+          "hobbies": [
+            "Mind Honing",
+            "Creative"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_7",
+          "hobbies": [
+            "Creative"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_2",
+          "hobbies": [
+            "Mind Honing"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_4",
+          "hobbies": [
+            "Creative"
+          ]
+        }
+      ],
       "extra": {
         "profession": "Supporter",
         "charTypeId": "Pulse",
         "weaponTypeId": 2,
         "defaultWeaponId": "wpn_funnel_0002",
-        "costsAvailable": false
+        "costsAvailable": false,
+        "hobbies": [
+          "Mind Honing",
+          "Creative"
+        ]
       }
     },
     {
@@ -477,12 +1178,66 @@
         "keys": [],
         "costs": []
       },
+      "gifts": [
+        {
+          "itemId": "item_gift_jinlong_1",
+          "hobbies": [
+            "Culture"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_2",
+          "hobbies": [
+            "Sports"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_4",
+          "hobbies": [
+            "Sports"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_5",
+          "hobbies": [
+            "Culture"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_6",
+          "hobbies": [
+            "Culture"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_2",
+          "hobbies": [
+            "Culture"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_3",
+          "hobbies": [
+            "Sports"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_5",
+          "hobbies": [
+            "Culture"
+          ]
+        }
+      ],
       "extra": {
         "profession": "Vanguard",
         "charTypeId": "Cryst",
         "weaponTypeId": 1,
         "defaultWeaponId": "wpn_sword_0003",
-        "costsAvailable": false
+        "costsAvailable": false,
+        "hobbies": [
+          "Culture",
+          "Sports"
+        ]
       }
     },
     {
@@ -500,12 +1255,60 @@
         "keys": [],
         "costs": []
       },
+      "gifts": [
+        {
+          "itemId": "item_gift_jinlong_1",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_2",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_4",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_6",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_1",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_5",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_6",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        }
+      ],
       "extra": {
         "profession": "Supporter",
         "charTypeId": "Natural",
         "weaponTypeId": 2,
         "defaultWeaponId": "wpn_funnel_0002",
-        "costsAvailable": false
+        "costsAvailable": false,
+        "hobbies": [
+          "Lifestyle",
+          "Nature"
+        ]
       }
     },
     {
@@ -523,12 +1326,42 @@
         "keys": [],
         "costs": []
       },
+      "gifts": [
+        {
+          "itemId": "item_gift_jinlong_3",
+          "hobbies": [
+            "Mind Honing"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_5",
+          "hobbies": [
+            "Charity"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_2",
+          "hobbies": [
+            "Mind Honing"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_7",
+          "hobbies": [
+            "Charity"
+          ]
+        }
+      ],
       "extra": {
         "profession": "Striker",
         "charTypeId": "Cryst",
         "weaponTypeId": 3,
         "defaultWeaponId": "wpn_claym_0010",
-        "costsAvailable": false
+        "costsAvailable": false,
+        "hobbies": [
+          "Mind Honing",
+          "Charity"
+        ]
       }
     },
     {
@@ -546,12 +1379,54 @@
         "keys": [],
         "costs": []
       },
+      "gifts": [
+        {
+          "itemId": "item_gift_jinlong_2",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_3",
+          "hobbies": [
+            "Creative"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_7",
+          "hobbies": [
+            "Creative"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_1",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_4",
+          "hobbies": [
+            "Creative"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_5",
+          "hobbies": [
+            "Nature"
+          ]
+        }
+      ],
       "extra": {
         "profession": "Caster",
         "charTypeId": "Cryst",
         "weaponTypeId": 6,
         "defaultWeaponId": "wpn_pistol_0001",
-        "costsAvailable": false
+        "costsAvailable": false,
+        "hobbies": [
+          "Nature",
+          "Creative"
+        ]
       }
     },
     {
@@ -569,12 +1444,49 @@
         "keys": [],
         "costs": []
       },
+      "gifts": [
+        {
+          "itemId": "item_gift_jinlong_2",
+          "hobbies": [
+            "Nature",
+            "Sports"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_4",
+          "hobbies": [
+            "Sports"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_1",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_3",
+          "hobbies": [
+            "Sports"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_5",
+          "hobbies": [
+            "Nature"
+          ]
+        }
+      ],
       "extra": {
         "profession": "Guard",
         "charTypeId": "Physical",
         "weaponTypeId": 1,
         "defaultWeaponId": "wpn_sword_0003",
-        "costsAvailable": false
+        "costsAvailable": false,
+        "hobbies": [
+          "Nature",
+          "Sports"
+        ]
       }
     },
     {
@@ -592,12 +1504,55 @@
         "keys": [],
         "costs": []
       },
+      "gifts": [
+        {
+          "itemId": "item_gift_tundra_2",
+          "hobbies": [
+            "Culture",
+            "Mind Honing"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_1",
+          "hobbies": [
+            "Culture"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_3",
+          "hobbies": [
+            "Mind Honing"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_5",
+          "hobbies": [
+            "Culture"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_6",
+          "hobbies": [
+            "Culture"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_5",
+          "hobbies": [
+            "Culture"
+          ]
+        }
+      ],
       "extra": {
         "profession": "Vanguard",
         "charTypeId": "Physical",
         "weaponTypeId": 1,
         "defaultWeaponId": "wpn_sword_0003",
-        "costsAvailable": false
+        "costsAvailable": false,
+        "hobbies": [
+          "Culture",
+          "Mind Honing"
+        ]
       }
     },
     {
@@ -615,12 +1570,55 @@
         "keys": [],
         "costs": []
       },
+      "gifts": [
+        {
+          "itemId": "item_gift_jinlong_5",
+          "hobbies": [
+            "Charity",
+            "Culture"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_1",
+          "hobbies": [
+            "Culture"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_6",
+          "hobbies": [
+            "Culture"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_2",
+          "hobbies": [
+            "Culture"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_5",
+          "hobbies": [
+            "Culture"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_7",
+          "hobbies": [
+            "Charity"
+          ]
+        }
+      ],
       "extra": {
         "profession": "Striker",
         "charTypeId": "Pulse",
         "weaponTypeId": 2,
         "defaultWeaponId": "wpn_funnel_0002",
-        "costsAvailable": false
+        "costsAvailable": false,
+        "hobbies": [
+          "Charity",
+          "Culture"
+        ]
       }
     },
     {
@@ -638,12 +1636,55 @@
         "keys": [],
         "costs": []
       },
+      "gifts": [
+        {
+          "itemId": "item_gift_jinlong_4",
+          "hobbies": [
+            "Sports",
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_1",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_2",
+          "hobbies": [
+            "Sports"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_6",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_3",
+          "hobbies": [
+            "Sports"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_6",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        }
+      ],
       "extra": {
         "profession": "Guard",
         "charTypeId": "Physical",
         "weaponTypeId": 3,
         "defaultWeaponId": "wpn_claym_0010",
-        "costsAvailable": false
+        "costsAvailable": false,
+        "hobbies": [
+          "Sports",
+          "Lifestyle"
+        ]
       }
     },
     {
@@ -2010,5 +3051,104 @@
       }
     }
   ],
-  "materials": []
+  "materials": [
+    {
+      "id": "item_gift_jinlong_1",
+      "key": "eureka-teabox",
+      "name": "Eureka Teabox",
+      "category": "Gift",
+      "rarity": 5
+    },
+    {
+      "id": "item_gift_jinlong_2",
+      "key": "yinglung-dumbbells",
+      "name": "Yinglung Dumbbells",
+      "category": "Gift",
+      "rarity": 5
+    },
+    {
+      "id": "item_gift_jinlong_3",
+      "key": "woven-aggelos",
+      "name": "Woven Aggelos",
+      "category": "Gift",
+      "rarity": 5
+    },
+    {
+      "id": "item_gift_jinlong_4",
+      "key": "scrimshaw-of-the-pack",
+      "name": "Scrimshaw of the Pack",
+      "category": "Gift",
+      "rarity": 5
+    },
+    {
+      "id": "item_gift_jinlong_5",
+      "key": "chubby-lung-fangxing-memorabilia",
+      "name": "Chubby Lung: Fangxing Memorabilia",
+      "category": "Gift",
+      "rarity": 5
+    },
+    {
+      "id": "item_gift_jinlong_6",
+      "key": "fin-n-chips",
+      "name": "Fin-n-Chips",
+      "category": "Gift",
+      "rarity": 5
+    },
+    {
+      "id": "item_gift_jinlong_7",
+      "key": "bizarro-cupcake",
+      "name": "Bizarro Cupcake",
+      "category": "Gift",
+      "rarity": 5
+    },
+    {
+      "id": "item_gift_tundra_1",
+      "key": "aurylene-camera",
+      "name": "Aurylene Camera",
+      "category": "Gift",
+      "rarity": 5
+    },
+    {
+      "id": "item_gift_tundra_2",
+      "key": "cosmic-gate-puzzle",
+      "name": "Cosmic Gate Puzzle",
+      "category": "Gift",
+      "rarity": 5
+    },
+    {
+      "id": "item_gift_tundra_3",
+      "key": "surfing-festival-ticket",
+      "name": "Surfing Festival Ticket",
+      "category": "Gift",
+      "rarity": 5
+    },
+    {
+      "id": "item_gift_tundra_4",
+      "key": "breeze-of-kjersch",
+      "name": "Breeze of Kjersch",
+      "category": "Gift",
+      "rarity": 5
+    },
+    {
+      "id": "item_gift_tundra_5",
+      "key": "tidestone-specimen",
+      "name": "Tidestone Specimen",
+      "category": "Gift",
+      "rarity": 5
+    },
+    {
+      "id": "item_gift_tundra_6",
+      "key": "simonch-shawl",
+      "name": "Simonch Shawl",
+      "category": "Gift",
+      "rarity": 5
+    },
+    {
+      "id": "item_gift_tundra_7",
+      "key": "frontiers-watch",
+      "name": "Frontiers Watch",
+      "category": "Gift",
+      "rarity": 5
+    }
+  ]
 }

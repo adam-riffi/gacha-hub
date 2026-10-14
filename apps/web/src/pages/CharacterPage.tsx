@@ -33,6 +33,7 @@ import { Picker } from "../components/Picker";
 import { TaskGeneratorPanel } from "../components/TaskGeneratorPanel";
 import { QuickBuild } from "../components/tasks/QuickBuild";
 import { MiscCard, SkillRow } from "../components/sheet/MiscCard";
+import { GiftsCard } from "../components/sheet/GiftsCard";
 import { WeaponWindow } from "../components/sheet/WeaponWindow";
 import { StatIcon } from "../components/StatIcon";
 import type { CharacterDetail, InstanceDetail, TaskItem } from "../lib/types";
@@ -463,6 +464,8 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
       <GearBlock game={game} doc={doc} setDoc={setDoc} sets={(catalog?.gear ?? []).map((g) => ({ id: g.id, name: g.name, src: assetUrl(game.key, "gear", g.icon), fallback: communityAssetUrl(game.key, "gear", g.icon) }))} />
 
       <MiscCard buildId={data.id} gameKey={game.key} misc={data.misc} passives={entry?.passives ?? []} />
+
+      {entry && <GiftsCard gameKey={game.key} entry={entry} />}
 
       {data.catalogId && (
         <section className="card sh-plan" aria-label="Plan farming">
