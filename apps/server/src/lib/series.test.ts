@@ -1,6 +1,23 @@
 import { describe, expect, it } from "vitest";
 import fc from "fast-check";
-import { carryForward, dailyGains, dayOf, heatLevel, linePoints, segmentedBar, streaks } from "@gacha/shared";
+import { carryForward, dailyGains, dayHeat, dayOf, heatLevel, linePoints, segmentedBar, streaks } from "@gacha/shared";
+
+// Georges, round 7: "heatmap for individual games doesn't show depth of completion; should it or not?" It should: a day's
+// shade is the share of its dailies done, summed over the games shown; a full day needs every daily of every game.
+describe("dayHeat", () => {
+  it("shades one game's day by its share of dailies done", () => {
+    expect(dayHeat([{ done: 0, total: 5 }])).toEqual({ level: 0, full: false });
+    expect(dayHeat([{ done: 3, total: 7 }])).toEqual({ level: 2, full: false });
+    expect(dayHeat([{ done: 6, total: 7 }])).toEqual({ level: 3, full: false });
+    expect(dayHeat([{ done: 7, total: 7 }])).toEqual({ level: 4, full: true });
+  });
+
+  it("sums the games shown, and is full only when every game is", () => {
+    expect(dayHeat([{ done: 7, total: 7 }, { done: 0, total: 4 }])).toEqual({ level: 2, full: false });
+    expect(dayHeat([{ done: 7, total: 7 }, { done: 4, total: 4 }])).toEqual({ level: 4, full: true });
+    expect(dayHeat([])).toEqual({ level: 0, full: false });
+  });
+});
 
 // VISUAL-DESIGN.md §8: heatmap levels by the share of games with every daily done.
 describe("heatLevel", () => {

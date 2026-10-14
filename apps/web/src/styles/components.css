@@ -65,8 +65,8 @@ input, select, textarea {
 input:hover, select:hover, textarea:hover { border-color: var(--text); }
 textarea { resize: vertical; min-height: 90px; font-family: var(--font-mono); font-size: 13px; }
 input[type="checkbox"] {
-  appearance: none; width: 12px; height: 12px; min-height: 0; padding: 0; margin: 0 6px 0 0; flex: 0 0 12px;
-  vertical-align: -1px; background: transparent; border: 1.5px solid var(--hairline-strong); cursor: pointer;
+  appearance: none; width: 16px; height: 16px; min-height: 0; padding: 0; margin: 0 8px 0 0; flex: 0 0 16px;
+  vertical-align: -3px; background: transparent; border: 2px solid var(--hairline-strong); cursor: pointer;
 }
 input[type="checkbox"]:checked { background: var(--accent); border-color: var(--accent); }
 .field { margin-bottom: 14px; }

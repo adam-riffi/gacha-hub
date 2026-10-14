@@ -10,6 +10,17 @@ export function heatLevel(done: number, total: number): HeatLevel {
   return share <= 1 / 3 ? 1 : share <= 2 / 3 ? 2 : done < total ? 3 : 4;
 }
 
+/**
+ * A day's heat by its share of dailies done, summed over the games shown
+ * (Georges, round 7: a game's map shows how much of its dailies was done);
+ * full when every game's dailies all were.
+ */
+export function dayHeat(games: readonly { done: number; total: number }[]): { level: HeatLevel; full: boolean } {
+  const done = games.reduce((s, g) => s + Math.min(g.done, g.total), 0);
+  const total = games.reduce((s, g) => s + g.total, 0);
+  return { level: heatLevel(done, total), full: games.length > 0 && games.every((g) => g.total > 0 && g.done >= g.total) };
+}
+
 /** Days with everything done, the best run, and the current run; the last day keeps the run alive while it is still open. */
 export function streaks(full: readonly boolean[]): { full: number; best: number; current: number } {
   let count = 0;

@@ -122,10 +122,5 @@
 .gd-unit .gicon { width: 28px; height: 28px; font-size: 9px; flex: none; }
 .gd-squares { display: inline-flex; gap: 4px; }
 .gd-squares > i { width: 12px; height: 14px; border: 1px solid var(--text-muted); }
-.gd-squares > i.on { background: var(--paper); border-color: var(--paper); }
-.gd-tick { width: 16px; height: 16px; margin: 0; accent-color: var(--paper); cursor: pointer; }
-.gd-steps { display: inline-flex; gap: 4px; }
-.gd-step { width: 14px; height: 16px; padding: 0; background: transparent; border: 1px solid var(--text-muted); cursor: pointer; }
-.gd-step[aria-pressed="true"] { background: var(--paper); border-color: var(--paper); }
-.gd-count input { width: 72px; }
+.gd-squares > i.on { background: var(--accent); border-color: var(--accent); }
 .gd-graph { min-height: 300px; }

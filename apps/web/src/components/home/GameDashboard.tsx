@@ -14,6 +14,7 @@ import { Countdown } from "../ui";
 import { HomeTop } from "../HomeTop";
 import { HomeHeat } from "../HomeHeat";
 import { SegmentedBar } from "../charts/SegmentedBar";
+import { TickBox, TickRow, tickColumn } from "../TickControl";
 import type { DashboardData, InstanceDetail } from "../../lib/types";
 
 type DashGame = DashboardData["games"][number];
@@ -178,37 +179,6 @@ function GameBanners({ g, banners }: { g: DashGame; banners: DashboardData["time
 }
 
 /**
- * A recurring task's box, ticked in place; a counted one (four commissions,
- * three weekly bosses) has a box per step, and a click ticks up to that one
- * (or back, on the last ticked). Over eight steps it is a number to type.
- */
-function TickBox({ instanceId, task }: { instanceId: string; task: TaskDto }) {
-  const qc = useQueryClient();
-  const refresh = () => Promise.all([["tasks", "game", instanceId], ["tasks"], ["dashboard"]].map((queryKey) => qc.invalidateQueries({ queryKey })));
-  const tick = useMutation({ mutationFn: (done: boolean) => api.post(`/api/tasks/${task.id}/complete`, { done }), onSuccess: refresh });
-  const step = useMutation({ mutationFn: (progress: number) => api.post(`/api/tasks/${task.id}/progress`, { progress }), onSuccess: refresh });
-  const n = task.target ?? 1;
-  if (n > 8) {
-    return (
-      <span className="gd-count mn">
-        <input type="number" min={0} max={n} aria-label={task.title} key={task.progress} defaultValue={task.progress} onBlur={(e) => Number(e.target.value) !== task.progress && step.mutate(Math.min(n, Math.max(0, Number(e.target.value))))} />
-        <span className="mu"> / {n}</span>
-      </span>
-    );
-  }
-  if (n > 1) {
-    return (
-      <span className="gd-steps" role="group" aria-label={task.title}>
-        {Array.from({ length: n }, (_, i) => (
-          <button key={i} type="button" className="gd-step" aria-label={`${i + 1} of ${n}`} aria-pressed={i < task.progress} onClick={() => step.mutate(task.progress === i + 1 ? i : i + 1)} />
-        ))}
-      </span>
-    );
-  }
-  return <input type="checkbox" className="gd-tick" aria-label={task.title} key={String(task.doneThisCycle)} defaultChecked={Boolean(task.doneThisCycle)} onChange={(e) => tick.mutate(e.target.checked)} />;
-}
-
-/**
  * A row per recurring task, its box ticked in place; then the game's own
  * dailies or weeklies the profile lacks (it was made before they joined),
  * each added with +.
@@ -222,19 +192,18 @@ function Ticks({ instanceId, items, game, cadence }: { instanceId: string; items
   const have = new Set(items.map((t) => t.title.toLowerCase()));
   const missing = game.defaultTasks.filter((t) => t.cadence === cadence && !have.has(t.title.toLowerCase()));
   return (
-    <div className="lst">
+    <div className="tick-list" style={tickColumn(items)}>
       {items.map((t) => (
-        <div className="rw" key={t.id}>
-          <span>{t.title}</span>
-          <TickBox instanceId={instanceId} task={t} />
-        </div>
+        <TickRow key={t.id} instanceId={instanceId} task={t} />
       ))}
       {missing.map((t) => (
-        <div className="rw" key={t.key}>
-          <span className="mu">{t.title}</span>
-          <button className="btn ghost sm" aria-label={`Add ${t.title}`} disabled={restore.isPending} onClick={() => restore.mutate()}>
-            +
-          </button>
+        <div className="tick-row is-missing" key={t.key}>
+          <span className="tick-boxes">
+            <button className="btn ghost sm" aria-label={`Add ${t.title}`} disabled={restore.isPending} onClick={() => restore.mutate()}>
+              +
+            </button>
+          </span>
+          <span className="tick-title mu">{t.title}</span>
         </div>
       ))}
       {items.length === 0 && missing.length === 0 && <p className="table-empty">None</p>}

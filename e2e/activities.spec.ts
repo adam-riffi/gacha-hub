@@ -25,7 +25,8 @@ test("a game's Activities tab: stamina, the daily, weekly and monthly lists, cyc
   // The daily list: ticking an item counts it.
   const daily = page.getByRole("region", { name: "Daily" });
   await expect(daily).toContainText(/resets in/i);
-  await daily.getByRole("checkbox", { name: "Daily Missions" }).check();
+  // A counted daily by its steps here too (round 7): the last step completes it.
+  await daily.getByRole("group", { name: "Daily Missions" }).getByRole("button", { name: "4 of 4" }).click();
   // ZZZ's four dailies: Daily Missions, Scratch Card, and the design's Coffee and Video store.
   await expect(daily.getByRole("heading")).toContainText("1 / 4");
 

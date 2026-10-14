@@ -162,7 +162,22 @@ label.act-row { margin: 0; cursor: pointer; color: var(--text); font: 400 15px/1
 }
 
 /* A game's Overview (WIREFRAMES.md G0; Georges's designs, 2026-10-11): small cards, three to a row. */
-/* A recurring task's box, ticked in place (the designs' squares). */
+/* A recurring task's box, ticked in place (the designs' squares), in the game's colour, its boxes in one column (round 7). */
+.tick-list { display: flex; flex-direction: column; }
+.tick-row { display: grid; grid-template-columns: var(--tick-col, 20px) minmax(0, 1fr) auto auto; align-items: center; gap: 14px; min-height: 42px; padding: 0 16px; border-top: 1px solid var(--surface-3); }
+.act-rows .tick-row { padding: 0; }
+.tick-boxes { display: flex; align-items: center; justify-self: start; }
+.tick-title { min-width: 0; font: 400 15px/1.3 var(--font-body); color: var(--text); }
+.tick-row.is-done .tick-title { color: var(--text-muted); text-decoration: line-through; }
+.tick-count { font-size: 13px; color: var(--text-muted); }
+.tick-row .mn { white-space: nowrap; }
+input.tick-check { appearance: none; display: block; flex: none; width: 20px; height: 20px; margin: 0; border: 2px solid color-mix(in srgb, var(--accent) 75%, transparent); background: transparent; cursor: pointer; }
+input.tick-check:checked { background: var(--accent); border-color: var(--accent); }
+.tick-check:focus-visible, .tick-step:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+.tick-steps { display: inline-flex; gap: 3px; }
+.tick-step { width: 14px; height: 20px; padding: 0; background: transparent; border: 2px solid color-mix(in srgb, var(--accent) 75%, transparent); cursor: pointer; }
+.tick-step[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); }
+.tick-count-in input { width: 72px; }
 /* A rotating mode's enemies (Georges, 2026-10-11): each stage, each half, its weaknesses as element dots. */
 .eg-enemies { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--surface-3); }
 .eg-enemies ul { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 8px; }
