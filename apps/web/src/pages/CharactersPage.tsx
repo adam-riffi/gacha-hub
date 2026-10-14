@@ -1,10 +1,11 @@
-import { useRef, useState, type CSSProperties } from "react";
+import { useState, type CSSProperties } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   elementColor,
   buildBase,
-  buildKpis,
+  cardStatLabels,
+  cardStatOptions,
   buildLine,
   statKpis,
   dupeBadge,
@@ -21,12 +22,10 @@ import {
   type OwnershipDto,
   type PullLogDto,
   type RewardDto,
-  type StatKpi,
   type WishlistItemDto,
 } from "@gacha/shared";
 import { LoadError } from "../components/LoadError";
 import { api } from "../lib/api";
-import { useDismiss } from "../lib/dismiss";
 import { useCatalog } from "../lib/catalog";
 import { assetUrl, communityAssetUrl, splashKey } from "../lib/assets";
 import { GameTabs } from "../components/GameTabs";
@@ -35,6 +34,7 @@ import { GameIcon } from "../components/GameIcon";
 import { Chips, Segmented } from "../components/ui";
 
 import { BuildsTable } from "../components/characters/BuildsTable";
+import { CardStats } from "../components/characters/CardStats";
 import { QuickBuild } from "../components/tasks/QuickBuild";
 import type { InstanceDetail } from "../lib/types";
 
@@ -224,9 +224,7 @@ export function CharactersPage() {
   const dupeField = game.manifest.dupes.weapon?.field;
   const gearSets = new Map((catalog?.gear ?? []).map((g) => [g.name, g]));
   const cardStats = instance.data.cardStats ?? null;
-  const statOptions = [
-    ...new Set(["Crit value", "HP", "ATK", "DEF", ...Object.values(game.manifest.kpis).flat().flatMap((k) => k.split(" / ")), ...builds.data.flatMap((b) => Object.keys(((b.doc as Record<string, unknown>).stats ?? {}) as object))]),
-  ];
+  const statOptions = cardStatOptions(game, builds.data.map((b) => b.doc as Record<string, unknown>));
   const toggleStat = (s: string) => {
     const now = cardStats ?? [];
     const next = now.includes(s) ? now.filter((x) => x !== s) : [...now, s].slice(-6);
@@ -365,12 +363,6 @@ export function CharactersPage() {
                   {c.rarity && <span className="badge">★{c.rarity}</span>}
                   {c.tag && c.tag !== "None" && <span className="badge ch-el">{c.tag}</span>}
                   {c.weaponType && <span className="badge">{c.weaponType}</span>}
-                  {/* The stat it grows (its ascension, traces, core skill or forte), highlighted (Georges, round 6). */}
-                  {c.entry?.bonusStats?.[0] && (
-                    <span className="badge ch-bonus" title={`Grows ${c.entry.bonusStats.join(", ")}`}>
-                      {c.entry.bonusStats[0]}
-                    </span>
-                  )}
                 </div>
                 <span className={`ch-dupes ${c.owned ? "" : "is-off"}`}>{c.owned ? dupeBadge(game, doc) : "Not owned"}</span>
                 <div className="ch-namebox">
@@ -393,11 +385,10 @@ export function CharactersPage() {
               {c.build ? (
                 <CardStats
                   name={c.name}
-                  labels={c.build.cardStats ?? cardStats}
                   options={statOptions}
-                  kpis={(c.build.cardStats ?? cardStats) ? statKpis(game, doc, (c.build.cardStats ?? cardStats)!, catalog?.gear ?? [], buildBase(game, index, c.build.catalogId, doc)) : buildKpis(game, doc, c.build.role, catalog?.gear ?? [], buildBase(game, index, c.build.catalogId, doc))}
+                  kpis={statKpis(game, doc, cardStatLabels(game, c.entry, c.build.role, c.build.cardStats, cardStats), catalog?.gear ?? [], buildBase(game, index, c.build.catalogId, doc))}
                   own={c.build.cardStats}
-                  bonus={c.entry?.bonusStats ?? []}
+                  growth={c.entry?.bonusStats?.[0]}
                   onPick={(stats) => setBuildStats.mutate({ id: c.build!.id, cardStats: stats })}
                 />
               ) : !c.owned && onBanner && characterBanner ? (
@@ -480,75 +471,5 @@ export function CharactersPage() {
         </>
       )}
     </>
-  );
-}
-
-/**
- * A card's stat; where a set raises it, in its element's colour, the stat and
- * the set's bonus on hover, and written out on a click (Georges, round 5).
- */
-function KpiValue({ k }: { k: StatKpi }) {
-  const [open, setOpen] = useState(false);
-  if (!k.bonus) return <span className={`cd ${k.auto ? "is-auto" : ""}`} title={k.auto ? "Base: the level and the weapon" : undefined}>{k.value}</span>;
-  const add = k.bonus.value.replace(/^\+/, "");
-  const why = `${k.base} + ${add} · ${k.bonus.from}`;
-  return (
-    <button type="button" className="cd ch-boost" title={why} aria-label={`${k.label} ${k.value}: ${why}`} aria-expanded={open} onClick={() => setOpen(!open)}>
-      {open ? (
-        <>
-          {k.base} <small>+ {add}</small>
-        </>
-      ) : (
-        <>
-          {k.value}
-          {k.bonus.value.startsWith("+") && <small> {k.bonus.value}</small>}
-        </>
-      )}
-    </button>
-  );
-}
-
-/**
- * A card's stats, and the picker of its own (Georges, round 6): the stats
- * picked for this character, else the game's; the picker opens from the
- * strip's corner and closes on a click outside.
- */
-function CardStats({ name, labels, options, kpis, own, bonus, onPick }: { name: string; labels: string[] | null; options: string[]; kpis: StatKpi[]; own: string[] | null; bonus: string[]; onPick: (stats: string[] | null) => void }) {
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  useDismiss(ref, () => setOpen(false), open);
-  const toggle = (s: string) => {
-    const now = own ?? [];
-    const next = now.includes(s) ? now.filter((x) => x !== s) : [...now, s].slice(-6);
-    onPick(next.length ? next : null);
-  };
-  return (
-    <div className="ch-kpis-wrap" ref={ref}>
-      <div className="ch-kpis" style={labels && labels.length !== 3 ? { gridTemplateColumns: `repeat(${Math.min(3, labels.length)}, minmax(0, 1fr))` } : undefined}>
-        {kpis.map((k) => (
-          <div key={k.label}>
-            <span className={`kpi-label ${bonus.some((b) => b.toLowerCase() === k.label.toLowerCase()) ? "is-bonus" : ""}`}>{k.label}</span>
-            <KpiValue k={k} />
-          </div>
-        ))}
-      </div>
-      <button type="button" className="ch-kpis-edit" aria-label={`Stats shown on ${name}`} aria-expanded={open} onClick={() => setOpen(!open)}>
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M4 20h4L19 9l-4-4L4 16zM14 6l4 4" />
-        </svg>
-      </button>
-      {open && (
-        <div className="ch-kpis-pick" role="group" aria-label={`${name}'s card stats`}>
-          <button type="button" className="ch-chip" aria-pressed={!own} onClick={() => onPick(null)}>
-            Game's
-          </button>
-          {options.map((s) => (
-            <button key={s} type="button" className="ch-chip" aria-pressed={own?.includes(s) ?? false} onClick={() => toggle(s)}>
-              {s}
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
   );
 }
