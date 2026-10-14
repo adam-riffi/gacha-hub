@@ -66,7 +66,9 @@ export function CalendarSelected({ item, reward, now, onClose }: { item: CalItem
     <aside className="card cal-sel" aria-label="Selected">
       <div className="spread">
         <h3>Selected</h3>
-        <button className="btn icon" aria-label="Close" onClick={onClose}>×</button>
+        <button type="button" className="btn panel-close" aria-label="Close" onClick={onClose}>
+          ✕ Close
+        </button>
       </div>
       <div className="cal-art">
         {art ? (

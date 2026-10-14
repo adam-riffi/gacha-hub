@@ -41,8 +41,8 @@ export function WeaponWindow({
         <header className="row">
           <h3>Choose weapon</h3>
           <span className="ch-sp" />
-          <button type="button" className="btn ghost sm" aria-label="Close" onClick={onClose}>
-            ✕
+          <button type="button" className="btn panel-close" aria-label="Close" onClick={onClose}>
+            ✕ Close
           </button>
         </header>
         {mine.length > 0 && (

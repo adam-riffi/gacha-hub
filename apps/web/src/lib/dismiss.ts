@@ -8,7 +8,10 @@ import { useEffect, type RefObject } from "react";
 export function useDismiss(ref: RefObject<HTMLElement | null>, onAway: () => void, active = true) {
   useEffect(() => {
     if (!active) return;
+    // A window's own opener (marked data-opens-panel) is left to toggle it (round 9: a second click on a weapon flickered,
+    // closing here then reopening on its click).
     const down = (e: PointerEvent) => {
+      if ((e.target as Element | null)?.closest?.("[data-opens-panel]")) return;
       if (ref.current && !ref.current.contains(e.target as Node)) onAway();
     };
     const key = (e: KeyboardEvent) => {

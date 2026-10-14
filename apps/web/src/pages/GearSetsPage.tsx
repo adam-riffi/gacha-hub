@@ -301,8 +301,8 @@ function SetPanel({ instanceId, game, set, pieces, builds, onClose }: { instance
           <CatalogIcon gameKey={game.key} kind="gear" icon={set.icon} name={set.name} className="set-icon" />
           <h3>{set.name}</h3>
         </span>
-        <button type="button" className="btn ghost sm" aria-label="Close" onClick={onClose}>
-          ×
+        <button type="button" className="btn panel-close" aria-label="Close" onClick={onClose}>
+          ✕ Close
         </button>
       </div>
       {/* Its bonuses, as the game counts them (round 9). */}

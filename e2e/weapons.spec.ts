@@ -218,3 +218,29 @@ test("Weapons on the sheet: a window of my copies first, then the rest; each wit
   await expect(card.getByLabel("Level")).toHaveValue("70");
   await clearCopies(page, id);
 });
+
+// Georges, round 9: "when I click on a weapon the bar appears on the side, and when I click again on the same weapon the screen
+// flickers instead of closing; I am visually impaired: the small x to close is barely visible".
+test("Weapons: a second click on the weapon closes its panel, without flicker; its Close is large and says so @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  await page.goto(`/games/${id}/weapons`);
+  const open = page.getByRole("article", { name: "Arrows" }).first().getByRole("button", { name: "Open Arrows" });
+  const panel = page.getByRole("complementary", { name: "Arrows" });
+  await open.click();
+  await expect(panel).toBeVisible();
+  await open.click();
+  await expect(panel).toHaveCount(0);
+  // Still closed a moment later: it did not reopen.
+  await page.waitForTimeout(400);
+  await expect(panel).toHaveCount(0);
+
+  await open.click();
+  const close = panel.getByRole("button", { name: "Close" });
+  await expect(close).toContainText("Close");
+  expect((await close.boundingBox())!.height).toBeGreaterThanOrEqual(36);
+  await close.click();
+  await expect(panel).toHaveCount(0);
+});

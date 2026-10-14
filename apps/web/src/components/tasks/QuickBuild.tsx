@@ -108,8 +108,8 @@ export function QuickBuild({ instanceId, gameKey, catalogIds, onClose }: { insta
       <div className="card qb" role="dialog" aria-label="Quick build goal" ref={box}>
         <div className="spread">
           <h3>Quick build goal</h3>
-          <button type="button" className="btn ghost sm" aria-label="Close" onClick={onClose}>
-            ×
+          <button type="button" className="btn panel-close" aria-label="Close" onClick={onClose}>
+            ✕ Close
           </button>
         </div>
         {catalogIds.length ? (

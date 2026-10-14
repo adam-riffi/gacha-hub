@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-14 · claude · stack/r12/02-panel-toggle · #309
+- Done: panels (Georges, round 9: "when I click on a weapon I have the bar appearing on the side, and when I click again on the same weapon the screen flickers instead of closing; I am visually impaired: the small x to close is barely visible"). The flicker: a press outside a window closed it (`useDismiss`), then the card's click opened it again. A window's opener now carries `data-opens-panel`, which the dismiss leaves alone, and the weapon's card toggles its panel (a gear piece's card already did). Every window's Close (a weapon's and a set's panel, the weapon window, Quick build, the timeline's Selected) is a 40 px button with a heavy border reading ✕ CLOSE.
+- Tests: written first: Arrows's card opens its panel, a second click closes it and it stays closed; its Close says Close, at least 36 px high, and closes it.
+- Scope/decisions: one fix in the dismiss hook for every window rather than per screen.
+- Next: the characters' cards the same owned or not.
+
 ## 2026-10-14 · claude · stack/r12/01-gear-pieces · #308
 - Done: the gear screen, again (Georges, round 9: "the artifact/gear screen is still bad: make it so I see all of my pieces, I can see the set icon and the type of piece + its stats, and that I can filter my artifacts the same way I can filter characters"). Every piece you have is a card again: its set's icon (64 px) and name, its type as a tag (Flower of Life, Head…), its main stat and level, its substats by their icons, and its wearer's icon or Bag; a click on it opens its set's panel. The filters are the Characters screen's: a search (sets, stats, wearers), chips for the sets you hold (each with its icon), the slots and the main stats (several at once), a sort (set, slot, level); then Where as counts (All, Equipped, Bag), Reset filters, Open a set (any set of the catalog, for adding or farming one you have none of) and Add a piece. A set's panel shows its bonuses.
 - Tests: written first: a set opened from the picker (add, equip on Seele) and its piece's card with its icon; Farm from the picker's first set; Pela's Hunter body with its set's icon and Body; filters by slot, where, main stat and two set chips (with their icons); Reset clears them and disables itself; the search finds Pela's piece; a piece added shows its set's icon and opens the panel without moving the cards; NTE's sets in the picker; the accessibility sweep opens a set from it. The journeys run at 1440 × 900, the app's one layout since #305.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: Ayaka grows CRIT DMG with three talent icons and her passives, Mistsplitter's main stat is CRIT DMG, 100+ characters have one; Kafka's trace stats are ATK, Effect Hit Rate, HP; Ellen's core stat is CRIT Rate, Steel Cushion's CRIT Rate, every W-Engine has one; Chixia grows Fusion DMG Bonus then ATK, WuWa's weapon stats are the six; Kafka's card shows ATK, all three on hover.
 - Scope/decisions: Endfield and NTE publish no growth or weapon stats; light cones have no second stat.
 - Next: weapons synced with every sheet, many at once, filtered by main stat.
-
-## 2026-10-13 · claude · stack/r9/05-character-stats · #268
-- Done: each card's own stats (Georges, round 6: "the attributes shown should be character dependent so I can choose for each one character what I want to show; put some classic ones as default for each game"): a pencil in a card's stat strip opens a picker of that build's stats (`cardStats` on the build, migration `build_card_stats`, up to six; Game's goes back); a build's pick wins over the game's (round 5), which wins over the role's KPIs, each game's classic stats. The picker closes on a click outside (`useDismiss` gains an `active` flag, so closed pickers listen to nothing).
-- Tests: written first: the route keeps a build's stats, refuses doubles and seven, clears with null; a journey picks HP and DEF for Hook on his card (3000 shown), closes the picker with a click outside, and finds them saved.
-- Scope/decisions: none.
-- Next: the catalogs' ascension and main stats.
