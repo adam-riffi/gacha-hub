@@ -99,9 +99,10 @@ function Dashboard({ view, tasks, pinned, setParams }: { view: DashboardData; ta
     <div className="home">
       <div className="home-main">
         <HomeTop games={view.games} tasks={tasks} goalMaterials={view.goalMaterials} day={day} />
+        {/* The banners first, beside the dailies (Georges, round 9: "I don't care that much about the battle pass"). */}
         <div className="home-carousels">
+          <BannersCarousel roster={roster} c={c} />
           <DailiesCard roster={roster} c={c} day={day} />
-          <PassCard roster={roster} c={c} />
         </div>
         <HomeHeat games={view.games} today={today} pinned={day} onPin={onPin} />
         <div className="home-lists">
@@ -110,8 +111,8 @@ function Dashboard({ view, tasks, pinned, setParams }: { view: DashboardData; ta
         </div>
       </div>
       <aside className="home-side">
-        <BannersCarousel roster={roster} c={c} />
         <PullsCard games={view.games} day={day} />
+        <PassCard roster={roster} c={c} />
         <StaminaCard games={view.games} />
       </aside>
     </div>

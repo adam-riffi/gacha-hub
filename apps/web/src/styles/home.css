@@ -6,6 +6,8 @@
 .home-main, .home-side { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
 .home-carousels { display: flex; gap: 36px; height: 352px; }
 .home-carousels > .carousel { flex: 1; min-width: 0; }
+/* The banners beside the dailies (round 9), as tall. */
+.home-carousels > .carousel.banner-card { height: 100%; }
 
 /* Dailies and weeklies: a text card, the gauge beside four KPI tiles. */
 .dailies-card .carousel-stage { background: transparent; }

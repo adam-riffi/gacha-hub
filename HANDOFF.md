@@ -1,20 +1,21 @@
 # Handoff — 2026-10-14 · claude
 
 ## State
-- `main` at #298 and Dependabot's #278 (twelve dependency bumps). CI green.
-- Open PRs, a stack on `main`: #299 (endgame team window, metric icons) ← #300 (top-ups at the bottom, packs in pulls) ← #301 (three stats on a card) ← #302 (every stat a card on the sheet) ← #303 (gear screen rebuilt) ← #304 (art framing: Endfield, Qiuyuan) ← #305 (one desktop layout) ← #306 (gifts for NTE and Endfield) ← #307 (the assets list, ADR 0010, round 8's audit and this handoff). Each merges on green CI, rebased onto `main` after its parent's squash.
+- `main` at #307: round 8 merged (#299–#307). CI green.
+- Open PRs, a stack on `main`: round 9's #308 (gear pieces, filtered like the characters) ← #309 (panels toggle, a large Close) ← #310 (one card for every character, builds to try) ← #311 (Overview banners first, round 9's audit, this handoff). Each merges on green CI, rebased onto `main` after its parent's squash.
 - Production serves #186 (deployed 2026-10-10 18:52 UTC). Merges do not deploy (#189). The next deploy runs every migration since #186 (`top_ups` the newest). **Georges wants to redo the hosting, database and sign-in first: ADR 0010 (proposed) lists the options and a recommendation to decide together.**
 - Every milestone in DESIGN.md §9 is built, V through F13, and eight feedback rounds (2026-10-10 to 2026-10-14) are done. What is left needs Georges's secrets, real data or a decision (below), a source for a few details (Next), or is in DESIGN.md §4 "Later".
 
 ## Done this session
 - Round 7 (#280–#298) merged, then Dependabot's #278.
+- Round 9 (2026-10-14, `docs/AUDIT-2026-10-14-round9.md`): #308 the gear screen again (every piece with its set's icon, filtered like the characters); #309 a weapon's card closes its panel, every Close large and labelled; #310 one full card for every character and builds to try; #311 the Overview's banners first.
 - Round 8 (2026-10-14, `docs/AUDIT-2026-10-14-round8.md`), one PR per area: #299 the **endgame team window** and **metric icons**; #300 **top-ups at the bottom**, each pack in pulls; #301 **three stats** on a card; #302 **every stat a card** on the sheet; #303 the **gear screen rebuilt** (several sets, Reset, grouped by set); #304 **art framing** (Endfield's portraits whole, Qiuyuan's card art); #305 **one desktop layout** from 1440 px; #306 **gifts** for NTE and Endfield; #307 **`docs/ASSETS.md`** and **ADR 0010**.
 ## Decisions taken (2026-10-14; Georges: "take every decision")
 - Round 8's are in its audit: difficulty icons as each mode's metric by its icon; three card stats; every stat a card with its target; the gear screen as one view; Endfield's portraits whole; one desktop layout at 1440 px; NTE's unnamed food gifts left out; Endfield's gifts by hobbies; ADR 0010 proposed, not built.
 - Earlier ones stand; round 7's are listed in its audit. In short: the heatmap's depth (yes, by share); endgame lines only for stage-by-stage modes; card stats: the build's, then the game's, then the growth stat first; skills without costs go to the game's usual level; panels open over the page; priority as three buttons; the timeline's colours (game, red, teal, gold); shop pulls counted only where a source counts them; top-ups do not touch the balance; no daily tick for the 30-day pass; NTE's sets are its cartridge series; Endfield's art linked from Endaxis at a pinned commit.
 
 ## Verified
-- `npm run check` before each PR and CI green on each merged one: 667 tests and 112 journeys at #307; initial JavaScript 151.6 KB of 200 KB.
+- `npm run check` before each PR and CI green on each merged one: 668 tests and 115 journeys at #311; initial JavaScript 151.7 KB of 200 KB.
 - Checked in the browser at 1440, art blocked for the PRs' screenshots: each round 7 and round 8 screen. Endfield's portraits checked loading in the browser pane (not in a screenshot, art being blocked there).
 - The stack merged by rebasing each PR onto `main` after its parent's squash; each rebased branch's tree was checked equal to the one CI passed before merging.
 

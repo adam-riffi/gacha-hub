@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-14 · claude · stack/r12/04-overview-banners · #311
+- Done: the Overview's order (Georges, round 9: "for the all games overview I don't care that much about the battle pass, I want to see the banners first"). The banners carousel takes the battle pass's place in the top row, beside the dailies and as tall; the battle pass moves below, with the pulls and stamina. Round 9's audit (`docs/AUDIT-2026-10-14-round9.md`) and the handoff.
+- Tests: written first: on Home the Banners heading sits level with Dailies & weeklies, above the battle pass and the heatmap.
+- Scope/decisions: the game dashboards keep their order (their banners already sit beside their dailies).
+- Next: the full check over round 9, then the merges.
+
 ## 2026-10-14 · claude · stack/r12/03-characters-one-card · #310
 - Done: one card for every character (Georges, round 9: "for the characters, not owning them shouldn't prevent me from having the full card or setting trying builds; don't make a different screen for owned/not owned, same screen, just a toggle for all characters to see which ones I have already"). An unowned character's card is no longer dashed and dimmed: the same art, stats and chips as an owned one, its badge saying Not owned. Every card without a build offers Start a build; from an unowned card it is a build to try (`own: false` on the create route), the character staying unowned; a build still owns its character otherwise (imports, owned cards). The count chips All / Owned / Not owned become one toggle, Owned only n / total; Wishlist stays.
 - Tests: written first: integration: a build with own false leaves Amber unowned. Journey: Lynx unowned has a bright card with its stats, no Not owned chip, Owned only hides her and shows her again, Start a build opens her sheet and she stays unowned.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: Pela's Hunter body (CRIT Rate +12, SPD) shows with her icon, a Musketeer head (+15) in the bag; Slot Body, Where Bag, Main stat CRIT Rate and Set Musketeer each keep the right one. The set and Farm journeys and the a11y sweep switch to Sets first.
 - Scope/decisions: the pieces sort by set, then slot order, then level.
 - Next: Teams in each game's party size, and ZZZ's Bangboos.
-
-## 2026-10-13 · claude · stack/r9/07-weapons · #270
-- Done: Weapons (Georges, round 6: "there is still some desync between equipped weapons and the weapons' character data; I should be able to select multiple to do some change like mass modify level or ownership; also filter by main stat"). The desync's root: sheets saved before #260 (and showcase syncs) name a weapon but no copy, so Weapons paired them by order. Reading Weapons now links each such sheet (`linkSheets`) to a copy of that weapon no sheet holds, which takes the sheet's level and refinement, else to a new copy at them (ownership recounted). Select on Weapons picks cards (copies, and weapons not owned) for a bar that sets level or refinement, owns (a copy each) or removes; picked cards light up. The main stat shows on each card and filters (Main stat chips).
-- Tests: written first: a sheet naming Favonius at Lv 70 R3 gets a new copy at them and owns it; another sheet takes a free copy, which moves to the sheet's Lv 40; on ZZZ, the CRIT Rate filter, two Steel Cushions set to Lv 50 at once, then removed. The copies journey now starts from Kafka's sheet's copy (Lv 80 S2), which is what linking means.
-- Scope/decisions: when a free copy and the sheet disagree, the sheet wins (it is the newer word).
-- Next: the gear screen as an inventory of pieces.
