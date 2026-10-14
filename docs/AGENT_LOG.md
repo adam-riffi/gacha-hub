@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-14 · claude · stack/r10/08-weapon-cards · #287
+- Done: weapon cards (Georges, round 7: "the weapon screen has very small cards that are hard to identify their rarity and see the character icons"). Each card stands upright: the weapon's art at 100 px on a band in its rarity's colour (3★ blue, 4★ violet, 5★ gold, 6★ orange) with its stars, the name, the level large with the refinement beside it, the type and main stat by its icon, the wielders' icons at 40 px in a row. Weapons not held keep the dashed, dimmed look.
+- Tests: written first: Kafka's Patience Is All You Need card shows its art at least 88 px wide, a 5★ band with a colour, and Kafka's icon at least 36 px wide.
+- Scope/decisions: rarity colours are the app's (the games use their own shades of the same hues).
+- Next: the gear screen.
+
 ## 2026-10-14 · claude · stack/r10/07-unbuilt-cards · #286
 - Done: cards without a build (Georges, round 7: "unbuilt character cards shouldn't be empty; I should be able to see character data"). A catalog character with no build shows its stat strip: its growth stat first, then HP, ATK and DEF, at its top level from the catalog's base stats (#277), in italics titled "Base at Lv 80" (or the game's top); no picker, there being no build to save it on. A character on a running banner and not owned keeps its chance instead.
 - Tests: written first: Serval, unbuilt, shows CRIT Rate, HP, ATK and DEF, the growth stat highlighted, 5%, 917, 653 and 375 at 80, titled as her base at Lv 80.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: Star Rail's Pulls → ZZZ's Pulls, ZZZ's Planner → Endfield's Activities (it has no Planner), a Star Rail sheet → ZZZ's Characters. `npm run check` passes: 592 tests and 70 journeys; initial JavaScript 146.9 KB.
 - Scope/decisions: the tab list sits in `lib`, not in `GameTabs`: importing it from there pulled the hub header into Home's first load (+2.6 KB).
 - Next: one user, self-hosted: no Dev User, no Admin section.
-
-## 2026-10-11 · claude · stack/r7/02-dashboard-style · #245
-- Done: a game's dashboard drawn with Home's own pieces (Georges, round 4: "in the style of the current dashboard"). Each design card in Home's chrome: the pulls figure and rows; pity as rows with a bar toward hard pity and Home's chips ("guaranteed", the spark's count); Home's ring over today's dailies beside their boxes and the reset countdown; the pass as KPI tiles (its level over the segmented bar, this week's EXP); stamina's figure, its bar and Home's "full" chip; Home's tables for builds and the endgame cycle (resets as chips); the goals' average on the ring, each goal with its bar; Home's backlog chart for this game. The ring moved out of the Dailies card into `charts/Ring.tsx`; the Overview's `.ov-*` styles gave way to `.gd-*` ones. The guide shows the dashboard (`docs/screens/02-home-game.jpg`).
-- Tests: written first: the dashboard shows the ring over today's dailies, the pass's segmented bar and the backlog chart. `npm run check` passes: 592 tests and 69 journeys.
-- Scope/decisions: the designs give the cards and their order, Home gives their look; no new chart was drawn.
-- Next: the strip keeps the tab when switching games.
