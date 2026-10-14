@@ -37,6 +37,7 @@
     "catalog:zzz": "npm --prefix scripts/catalog run zzz",
     "catalog:endfield": "npm --prefix scripts/catalog run endfield",
     "catalog:endgame": "npm --prefix scripts/catalog run endgame",
+    "catalog:banners": "npm --prefix scripts/catalog run banners",
     "db:up": "docker compose up -d",
     "db:down": "docker compose down",
     "db:sqlite": "node scripts/gen-sqlite-schema.mjs && prisma db push --schema prisma/schema.sqlite.prisma && prisma generate --schema prisma/schema.sqlite.prisma",

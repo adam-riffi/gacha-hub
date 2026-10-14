@@ -520,7 +520,8 @@ test("Characters: each character's last banner on its card, sorted by it; the sh
     const banners = page.getByRole("region", { name: "Banners" });
     await expect(banners).toContainText("E2E Saber warp");
     await expect(banners).toContainText("E2E Saber rerun");
-    await expect(banners.getByRole("row")).toHaveCount(3);
+    // Her two banners in the table, beside her real ones from the banner history (#318).
+    await expect(banners.getByRole("row").filter({ hasText: "E2E Saber" })).toHaveCount(2);
     const box = (await banners.boundingBox())!;
     expect(box.width).toBeGreaterThan(1000);
     const misc = (await page.getByRole("region", { name: "Misc" }).boundingBox())!;

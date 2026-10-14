@@ -13,13 +13,16 @@ export function useUnitAppearances(gameKey: string | undefined) {
   });
 }
 
-/** How long ago a date was, in the largest whole unit: "3 d ago", "1 wk ago", "2 mo ago", "1 yr ago". */
+const DAYS_PER_MONTH = 30.44;
+const DAYS_PER_YEAR = 365.25;
+
+/** How long ago a date was, rounded in its largest unit: "3 d ago", "1 wk ago", "10 mo ago", "6 yr ago". */
 export function timeAgo(isoDate: string, now = Date.now()): string {
   const days = Math.max(0, Math.round((now - Date.parse(isoDate)) / DAY_MS));
   if (days < 7) return days === 0 ? "today" : `${days} d ago`;
-  if (days < 30) return `${Math.floor(days / 7)} wk ago`;
-  if (days < 365) return `${Math.floor(days / 30)} mo ago`;
-  return `${Math.floor(days / 365)} yr ago`;
+  if (days < 30) return `${Math.round(days / 7)} wk ago`;
+  if (days < 365) return `${Math.max(1, Math.round(days / DAYS_PER_MONTH))} mo ago`;
+  return `${Math.round(days / DAYS_PER_YEAR)} yr ago`;
 }
 
 /** The order "Last seen" sorts by: the longest unseen first, then the ones on a banner now, then the ones never seen. */

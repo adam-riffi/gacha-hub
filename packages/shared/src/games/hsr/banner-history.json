@@ -1,0 +1,4165 @@
+{
+  "source": "samsara-web@4c1089c (MIT)",
+  "banners": [
+    {
+      "key": "history-character-2023-04-26",
+      "name": "1.0 · phase 1",
+      "kind": "character",
+      "startsAt": "2023-04-26T00:00:00.000Z",
+      "endsAt": "2023-05-17T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1102",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1105",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1106",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1109",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2023-04-26",
+      "name": "1.0 · phase 1",
+      "kind": "weapon",
+      "startsAt": "2023-04-26T00:00:00.000Z",
+      "endsAt": "2023-05-17T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23001",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21000",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21001",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21005",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2023-05-17",
+      "name": "1.0 · phase 2",
+      "kind": "character",
+      "startsAt": "2023-05-17T00:00:00.000Z",
+      "endsAt": "2023-06-07T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1204",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1001",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1202",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1206",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2023-05-17",
+      "name": "1.0 · phase 2",
+      "kind": "weapon",
+      "startsAt": "2023-05-17T00:00:00.000Z",
+      "endsAt": "2023-06-07T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23010",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21002",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21003",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21011",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2023-06-07",
+      "name": "1.1 · phase 1",
+      "kind": "character",
+      "startsAt": "2023-06-07T00:00:00.000Z",
+      "endsAt": "2023-06-28T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1006",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1002",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1009",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1103",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2023-06-07",
+      "name": "1.1 · phase 1",
+      "kind": "weapon",
+      "startsAt": "2023-06-07T00:00:00.000Z",
+      "endsAt": "2023-06-28T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23007",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21004",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21013",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21017",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2023-06-28",
+      "name": "1.1 · phase 2",
+      "kind": "character",
+      "startsAt": "2023-06-28T00:00:00.000Z",
+      "endsAt": "2023-07-19T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1203",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1106",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1201",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1207",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2023-06-28",
+      "name": "1.1 · phase 2",
+      "kind": "weapon",
+      "startsAt": "2023-06-28T00:00:00.000Z",
+      "endsAt": "2023-07-19T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23008",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21001",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21018",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21020",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2023-07-19",
+      "name": "1.2 · phase 1",
+      "kind": "character",
+      "startsAt": "2023-07-19T00:00:00.000Z",
+      "endsAt": "2023-08-09T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1205",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1008",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1105",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1206",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2023-07-19",
+      "name": "1.2 · phase 1",
+      "kind": "weapon",
+      "startsAt": "2023-07-19T00:00:00.000Z",
+      "endsAt": "2023-08-09T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23009",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21007",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21012",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2023-08-09",
+      "name": "1.2 · phase 2",
+      "kind": "character",
+      "startsAt": "2023-08-09T00:00:00.000Z",
+      "endsAt": "2023-08-30T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1005",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1103",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1108",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1111",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2023-08-09",
+      "name": "1.2 · phase 2",
+      "kind": "weapon",
+      "startsAt": "2023-08-09T00:00:00.000Z",
+      "endsAt": "2023-08-30T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23006",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21006",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21008",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21015",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2023-08-30",
+      "name": "1.3 · phase 1",
+      "kind": "character",
+      "startsAt": "2023-08-30T00:00:00.000Z",
+      "endsAt": "2023-09-20T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1213",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1001",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1009",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1207",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2023-08-30",
+      "name": "1.3 · phase 1",
+      "kind": "weapon",
+      "startsAt": "2023-08-30T00:00:00.000Z",
+      "endsAt": "2023-09-20T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23015",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21009",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21011",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21018",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2023-09-20",
+      "name": "1.3 · phase 2",
+      "kind": "character",
+      "startsAt": "2023-09-20T00:00:00.000Z",
+      "endsAt": "2023-10-11T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1208",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1106",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1109",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1110",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2023-09-20",
+      "name": "1.3 · phase 2",
+      "kind": "weapon",
+      "startsAt": "2023-09-20T00:00:00.000Z",
+      "endsAt": "2023-10-11T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23011",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21014",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21016",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21019",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2023-10-11",
+      "name": "1.4 · phase 1",
+      "kind": "character",
+      "startsAt": "2023-10-11T00:00:00.000Z",
+      "endsAt": "2023-10-27T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1212",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1108",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1201",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1202",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2023-10-11",
+      "name": "1.4 · phase 1",
+      "kind": "weapon",
+      "startsAt": "2023-10-11T00:00:00.000Z",
+      "endsAt": "2023-10-27T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23014",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21004",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21008",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21013",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2023-10-27",
+      "name": "1.4 · phase 2",
+      "kind": "character",
+      "startsAt": "2023-10-27T00:00:00.000Z",
+      "endsAt": "2023-11-15T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1102",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1112",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1111",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1206",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1210",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2023-10-27",
+      "name": "1.4 · phase 2",
+      "kind": "weapon",
+      "startsAt": "2023-10-27T00:00:00.000Z",
+      "endsAt": "2023-11-15T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23001",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23016",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21003",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21005",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21015",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2023-11-15",
+      "name": "1.5 · phase 1",
+      "kind": "character",
+      "startsAt": "2023-11-15T00:00:00.000Z",
+      "endsAt": "2023-12-06T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1217",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1002",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1008",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1103",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2023-11-15",
+      "name": "1.5 · phase 1",
+      "kind": "weapon",
+      "startsAt": "2023-11-15T00:00:00.000Z",
+      "endsAt": "2023-12-06T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23017",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21007",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21016",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21017",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2023-12-06",
+      "name": "1.5 · phase 2",
+      "kind": "character",
+      "startsAt": "2023-12-06T00:00:00.000Z",
+      "endsAt": "2023-12-27T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1006",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1302",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1009",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1110",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1215",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2023-12-06",
+      "name": "1.5 · phase 2",
+      "kind": "weapon",
+      "startsAt": "2023-12-06T00:00:00.000Z",
+      "endsAt": "2023-12-27T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23007",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23018",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21000",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21006",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21019",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2023-12-27",
+      "name": "1.6 · phase 1",
+      "kind": "character",
+      "startsAt": "2023-12-27T00:00:00.000Z",
+      "endsAt": "2024-01-17T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1205",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1303",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1001",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1202",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1214",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2023-12-27",
+      "name": "1.6 · phase 1",
+      "kind": "weapon",
+      "startsAt": "2023-12-27T00:00:00.000Z",
+      "endsAt": "2024-01-17T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23009",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23019",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21002",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21011",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21012",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2024-01-17",
+      "name": "1.6 · phase 2",
+      "kind": "character",
+      "startsAt": "2024-01-17T00:00:00.000Z",
+      "endsAt": "2024-02-06T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1005",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1305",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1105",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1109",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1206",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-01-17",
+      "name": "1.6 · phase 2",
+      "kind": "weapon",
+      "startsAt": "2024-01-17T00:00:00.000Z",
+      "endsAt": "2024-02-06T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23006",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23020",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21003",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21009",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21014",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2024-02-06",
+      "name": "2.0 · phase 1",
+      "kind": "character",
+      "startsAt": "2024-02-06T00:00:00.000Z",
+      "endsAt": "2024-02-29T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1213",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1307",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1202",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1210",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1312",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-02-06",
+      "name": "2.0 · phase 1",
+      "kind": "weapon",
+      "startsAt": "2024-02-06T00:00:00.000Z",
+      "endsAt": "2024-02-29T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23015",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23022",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21015",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21018",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21042",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2024-02-29",
+      "name": "2.0 · phase 2",
+      "kind": "character",
+      "startsAt": "2024-02-29T00:00:00.000Z",
+      "endsAt": "2024-03-27T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1204",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1306",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1108",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1201",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1215",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-02-29",
+      "name": "2.0 · phase 2",
+      "kind": "weapon",
+      "startsAt": "2024-02-29T00:00:00.000Z",
+      "endsAt": "2024-03-27T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23010",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23021",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21011",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21019",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21020",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2024-03-27",
+      "name": "2.1 · phase 1",
+      "kind": "character",
+      "startsAt": "2024-03-27T00:00:00.000Z",
+      "endsAt": "2024-04-17T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1203",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1308",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1002",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1106",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1301",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-03-27",
+      "name": "2.1 · phase 1",
+      "kind": "weapon",
+      "startsAt": "2024-03-27T00:00:00.000Z",
+      "endsAt": "2024-04-17T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23008",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23024",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21000",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21001",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21017",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2024-04-17",
+      "name": "2.1 · phase 2",
+      "kind": "character",
+      "startsAt": "2024-04-17T00:00:00.000Z",
+      "endsAt": "2024-05-08T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1212",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1304",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1103",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1110",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1111",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-04-17",
+      "name": "2.1 · phase 2",
+      "kind": "weapon",
+      "startsAt": "2024-04-17T00:00:00.000Z",
+      "endsAt": "2024-05-08T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23014",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23023",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21007",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21013",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21043",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2024-05-08",
+      "name": "2.2 · phase 1",
+      "kind": "character",
+      "startsAt": "2024-05-08T00:00:00.000Z",
+      "endsAt": "2024-05-29T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1112",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1309",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1001",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1214",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1215",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-05-08",
+      "name": "2.2 · phase 1",
+      "kind": "weapon",
+      "startsAt": "2024-05-08T00:00:00.000Z",
+      "endsAt": "2024-05-29T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23016",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23026",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21010",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21014",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21044",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2024-05-29",
+      "name": "2.2 · phase 2",
+      "kind": "character",
+      "startsAt": "2024-05-29T00:00:00.000Z",
+      "endsAt": "2024-06-19T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1208",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1315",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1106",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1109",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1111",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-05-29",
+      "name": "2.2 · phase 2",
+      "kind": "weapon",
+      "startsAt": "2024-05-29T00:00:00.000Z",
+      "endsAt": "2024-06-19T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23011",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23027",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21009",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21012",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21020",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2024-06-19",
+      "name": "2.3 · phase 1",
+      "kind": "character",
+      "startsAt": "2024-06-19T00:00:00.000Z",
+      "endsAt": "2024-07-10T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1303",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1310",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1214",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1301",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1312",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-06-19",
+      "name": "2.3 · phase 1",
+      "kind": "weapon",
+      "startsAt": "2024-06-19T00:00:00.000Z",
+      "endsAt": "2024-07-10T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23019",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23025",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21002",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21004",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21008",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2024-07-10",
+      "name": "2.3 · phase 2",
+      "kind": "character",
+      "startsAt": "2024-07-10T00:00:00.000Z",
+      "endsAt": "2024-07-31T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1302",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1314",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1009",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1103",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1105",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-07-10",
+      "name": "2.3 · phase 2",
+      "kind": "weapon",
+      "startsAt": "2024-07-10T00:00:00.000Z",
+      "endsAt": "2024-07-31T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23018",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23028",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21007",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21016",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21045",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2024-07-31",
+      "name": "2.4 · phase 1",
+      "kind": "character",
+      "startsAt": "2024-07-31T00:00:00.000Z",
+      "endsAt": "2024-08-21T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1217",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1221",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1110",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1207",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1215",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-07-31",
+      "name": "2.4 · phase 1",
+      "kind": "weapon",
+      "startsAt": "2024-07-31T00:00:00.000Z",
+      "endsAt": "2024-08-21T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23017",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23030",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21005",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21006",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21014",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2024-08-21",
+      "name": "2.4 · phase 2",
+      "kind": "character",
+      "startsAt": "2024-08-21T00:00:00.000Z",
+      "endsAt": "2024-09-10T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1218",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1306",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1008",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1109",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1210",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-08-21",
+      "name": "2.4 · phase 2",
+      "kind": "weapon",
+      "startsAt": "2024-08-21T00:00:00.000Z",
+      "endsAt": "2024-09-10T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23021",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23029",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21008",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21012",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21046",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2024-09-10",
+      "name": "2.5 · phase 1",
+      "kind": "character",
+      "startsAt": "2024-09-10T00:00:00.000Z",
+      "endsAt": "2024-10-02T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1005",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1220",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1307",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1309",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1009",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1111",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1223",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-09-10",
+      "name": "2.5 · phase 1",
+      "kind": "weapon",
+      "startsAt": "2024-09-10T00:00:00.000Z",
+      "endsAt": "2024-10-02T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23006",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23022",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23026",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23031",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21006",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21015",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2024-10-02",
+      "name": "2.5 · phase 2",
+      "kind": "character",
+      "startsAt": "2024-10-02T00:00:00.000Z",
+      "endsAt": "2024-10-23T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1112",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1222",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1105",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1210",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1312",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-10-02",
+      "name": "2.5 · phase 2",
+      "kind": "weapon",
+      "startsAt": "2024-10-02T00:00:00.000Z",
+      "endsAt": "2024-10-23T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23016",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23032",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21007",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21011",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21047",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2024-10-23",
+      "name": "2.6 · phase 1",
+      "kind": "character",
+      "startsAt": "2024-10-23T00:00:00.000Z",
+      "endsAt": "2024-11-13T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1213",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1317",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1110",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1207",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1214",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-10-23",
+      "name": "2.6 · phase 1",
+      "kind": "weapon",
+      "startsAt": "2024-10-23T00:00:00.000Z",
+      "endsAt": "2024-11-13T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23015",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23033",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21019",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21045",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21048",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2024-12-04",
+      "name": "2.7 · phase 1",
+      "kind": "character",
+      "startsAt": "2024-12-04T00:00:00.000Z",
+      "endsAt": "2024-12-25T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1204",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1313",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1008",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1201",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1202",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-12-04",
+      "name": "2.7 · phase 1",
+      "kind": "weapon",
+      "startsAt": "2024-12-04T00:00:00.000Z",
+      "endsAt": "2024-12-25T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23010",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23034",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21006",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21046",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2024-12-25",
+      "name": "2.7 · phase 2",
+      "kind": "character",
+      "startsAt": "2024-12-25T00:00:00.000Z",
+      "endsAt": "2025-01-15T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1225",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1310",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1207",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1301",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1312",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-12-25",
+      "name": "2.7 · phase 2",
+      "kind": "weapon",
+      "startsAt": "2024-12-25T00:00:00.000Z",
+      "endsAt": "2025-01-15T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23025",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23035",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21015",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21042",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21043",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-01-15",
+      "name": "3.0 · phase 1",
+      "kind": "character",
+      "startsAt": "2025-01-15T00:00:00.000Z",
+      "endsAt": "2025-02-05T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1220",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1222",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1314",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1401",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1009",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1105",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1223",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-01-15",
+      "name": "3.0 · phase 1",
+      "kind": "weapon",
+      "startsAt": "2025-01-15T00:00:00.000Z",
+      "endsAt": "2025-02-05T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23028",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23031",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23032",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23037",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21003",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21009",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21020",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-02-05",
+      "name": "3.0 · phase 2",
+      "kind": "character",
+      "startsAt": "2025-02-05T00:00:00.000Z",
+      "endsAt": "2025-02-26T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1006",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1309",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1315",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1402",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1202",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1206",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1215",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-02-05",
+      "name": "3.0 · phase 2",
+      "kind": "weapon",
+      "startsAt": "2025-02-05T00:00:00.000Z",
+      "endsAt": "2025-02-26T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23007",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23026",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23027",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23036",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21017",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21018",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21051",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-02-26",
+      "name": "3.1 · phase 1",
+      "kind": "character",
+      "startsAt": "2025-02-26T00:00:00.000Z",
+      "endsAt": "2025-03-19T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1221",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1403",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1109",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1110",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1210",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-02-26",
+      "name": "3.1 · phase 1",
+      "kind": "weapon",
+      "startsAt": "2025-02-26T00:00:00.000Z",
+      "endsAt": "2025-03-19T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23030",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23038",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21000",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21011",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21016",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-03-19",
+      "name": "3.1 · phase 2",
+      "kind": "character",
+      "startsAt": "2025-03-19T00:00:00.000Z",
+      "endsAt": "2025-04-09T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1217",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1404",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1008",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1105",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1214",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-03-19",
+      "name": "3.1 · phase 2",
+      "kind": "weapon",
+      "startsAt": "2025-03-19T00:00:00.000Z",
+      "endsAt": "2025-04-09T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23017",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23039",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21004",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21012",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21014",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-04-09",
+      "name": "3.2 · phase 1",
+      "kind": "character",
+      "startsAt": "2025-04-09T00:00:00.000Z",
+      "endsAt": "2025-04-30T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1218",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1225",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1308",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1407",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1106",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1110",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1301",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-04-09",
+      "name": "2.6 · phase 3",
+      "kind": "weapon",
+      "startsAt": "2025-04-09T00:00:00.000Z",
+      "endsAt": "2025-04-30T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23024",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23029",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23035",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23040",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21000",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21001",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21044",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-04-30",
+      "name": "3.2 · phase 2",
+      "kind": "character",
+      "startsAt": "2025-04-30T00:00:00.000Z",
+      "endsAt": "2025-05-21T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1305",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1405",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1002",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1103",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1223",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-04-30",
+      "name": "3.2 · phase 2",
+      "kind": "weapon",
+      "startsAt": "2025-04-30T00:00:00.000Z",
+      "endsAt": "2025-05-21T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23020",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23041",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21005",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21016",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21045",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-05-21",
+      "name": "3.3 · phase 1",
+      "kind": "character",
+      "startsAt": "2025-05-21T00:00:00.000Z",
+      "endsAt": "2025-06-11T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1401",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1409",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1103",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1105",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1312",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-05-21",
+      "name": "3.3 · phase 1",
+      "kind": "weapon",
+      "startsAt": "2025-05-21T00:00:00.000Z",
+      "endsAt": "2025-06-11T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23037",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23042",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21002",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21013",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21047",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-06-11",
+      "name": "3.3 · phase 2",
+      "kind": "character",
+      "startsAt": "2025-06-11T00:00:00.000Z",
+      "endsAt": "2025-07-02T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1402",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1406",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1201",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1206",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1214",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-06-11",
+      "name": "3.3 · phase 2",
+      "kind": "weapon",
+      "startsAt": "2025-06-11T00:00:00.000Z",
+      "endsAt": "2025-07-02T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23036",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23043",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21007",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21008",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21051",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-07-02",
+      "name": "3.4 · phase 1",
+      "kind": "character",
+      "startsAt": "2025-07-02T00:00:00.000Z",
+      "endsAt": "2025-07-11T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1306",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1313",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1403",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1408",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1001",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1202",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1207",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-07-02",
+      "name": "3.4 · phase 1",
+      "kind": "weapon",
+      "startsAt": "2025-07-02T00:00:00.000Z",
+      "endsAt": "2025-07-11T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23021",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23034",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23038",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23044",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21011",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21019",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21054",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-07-11",
+      "name": "3.4 · phase 2",
+      "kind": "character",
+      "startsAt": "2025-07-11T00:00:00.000Z",
+      "endsAt": "2025-07-23T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1014",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1015",
+          "kind": "character",
+          "rarity": 5
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-07-11",
+      "name": "3.4 · phase 2",
+      "kind": "weapon",
+      "startsAt": "2025-07-11T00:00:00.000Z",
+      "endsAt": "2025-07-23T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23045",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23046",
+          "kind": "weapon",
+          "rarity": 5
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-07-23",
+      "name": "3.4 · phase 3",
+      "kind": "character",
+      "startsAt": "2025-07-23T00:00:00.000Z",
+      "endsAt": "2025-08-13T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1205",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1212",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1310",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1110",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1111",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1215",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-07-23",
+      "name": "3.4 · phase 3",
+      "kind": "weapon",
+      "startsAt": "2025-07-23T00:00:00.000Z",
+      "endsAt": "2025-08-13T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23009",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23014",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23025",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21012",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21015",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21017",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-08-13",
+      "name": "3.5 · phase 1",
+      "kind": "character",
+      "startsAt": "2025-08-13T00:00:00.000Z",
+      "endsAt": "2025-09-02T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1005",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1410",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1008",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1009",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1109",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-08-13",
+      "name": "3.5 · phase 1",
+      "kind": "weapon",
+      "startsAt": "2025-08-13T00:00:00.000Z",
+      "endsAt": "2025-09-02T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23006",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23047",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21008",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21042",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21046",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-09-02",
+      "name": "3.5 · phase 2",
+      "kind": "character",
+      "startsAt": "2025-09-02T00:00:00.000Z",
+      "endsAt": "2025-09-24T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1006",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1412",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1002",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1108",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1201",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-09-02",
+      "name": "3.5 · phase 2",
+      "kind": "weapon",
+      "startsAt": "2025-09-02T00:00:00.000Z",
+      "endsAt": "2025-09-24T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23007",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23048",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21001",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21006",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-09-24",
+      "name": "3.6 · phase 1",
+      "kind": "character",
+      "startsAt": "2025-09-24T00:00:00.000Z",
+      "endsAt": "2025-10-15T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1401",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1413",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1210",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1214",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1312",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-09-24",
+      "name": "3.6 · phase 1",
+      "kind": "weapon",
+      "startsAt": "2025-09-24T00:00:00.000Z",
+      "endsAt": "2025-10-15T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23037",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23049",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21018",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21045",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21048",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-10-15",
+      "name": "3.6 · phase 2",
+      "kind": "character",
+      "startsAt": "2025-10-15T00:00:00.000Z",
+      "endsAt": "2025-11-05T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1405",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1414",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1103",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1206",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1215",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-10-15",
+      "name": "3.6 · phase 2",
+      "kind": "weapon",
+      "startsAt": "2025-10-15T00:00:00.000Z",
+      "endsAt": "2025-11-05T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23041",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23051",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21003",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21009",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21014",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-11-05",
+      "name": "3.7 · phase 1",
+      "kind": "character",
+      "startsAt": "2025-11-05T00:00:00.000Z",
+      "endsAt": "2025-11-26T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1403",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1407",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1409",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1415",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1106",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1110",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1223",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-11-05",
+      "name": "3.7 · phase 1",
+      "kind": "weapon",
+      "startsAt": "2025-11-05T00:00:00.000Z",
+      "endsAt": "2025-11-26T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23038",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23040",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23042",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23052",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21043",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21054",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-11-26",
+      "name": "3.7 · phase 2",
+      "kind": "character",
+      "startsAt": "2025-11-26T00:00:00.000Z",
+      "endsAt": "2025-12-17T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1404",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1406",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1408",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1106",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1110",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1223",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-11-26",
+      "name": "3.7 · phase 2",
+      "kind": "weapon",
+      "startsAt": "2025-11-26T00:00:00.000Z",
+      "endsAt": "2025-12-17T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23039",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23043",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23044",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21043",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21054",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-12-17",
+      "name": "3.8 · phase 1",
+      "kind": "character",
+      "startsAt": "2025-12-17T00:00:00.000Z",
+      "endsAt": "2026-01-07T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1310",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1321",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1001",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1111",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1301",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-12-17",
+      "name": "3.8 · phase 1",
+      "kind": "weapon",
+      "startsAt": "2025-12-17T00:00:00.000Z",
+      "endsAt": "2026-01-07T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23025",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23050",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21001",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21004",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21043",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-02-13",
+      "name": "4.0 · phase 1",
+      "kind": "character",
+      "startsAt": "2026-02-13T00:00:00.000Z",
+      "endsAt": "2026-03-03T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1307",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1410",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1413",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1502",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1106",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1201",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1215",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-02-13",
+      "name": "4.0 · phase 1",
+      "kind": "weapon",
+      "startsAt": "2026-02-13T00:00:00.000Z",
+      "endsAt": "2026-03-03T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23022",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23047",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23049",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23054",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21011",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21015",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21054",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-03-03",
+      "name": "4.0 · phase 2",
+      "kind": "character",
+      "startsAt": "2026-03-03T00:00:00.000Z",
+      "endsAt": "2026-03-25T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1306",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1317",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1412",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1501",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1106",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1201",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1215",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-03-03",
+      "name": "4.0 · phase 2",
+      "kind": "weapon",
+      "startsAt": "2026-03-03T00:00:00.000Z",
+      "endsAt": "2026-03-25T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23021",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23033",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23048",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23053",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21011",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21015",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21054",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-03-25",
+      "name": "4.1 · phase 1",
+      "kind": "character",
+      "startsAt": "2026-03-25T00:00:00.000Z",
+      "endsAt": "2026-04-08T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1409",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1504",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1009",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1223",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1312",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-03-25",
+      "name": "4.1 · phase 1",
+      "kind": "weapon",
+      "startsAt": "2026-03-25T00:00:00.000Z",
+      "endsAt": "2026-04-08T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23042",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23056",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21013",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21047",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21048",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-04-08",
+      "name": "4.1 · phase 2",
+      "kind": "character",
+      "startsAt": "2026-04-08T00:00:00.000Z",
+      "endsAt": "2026-04-22T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1315",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1009",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1223",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1312",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-04-08",
+      "name": "4.1 · phase 2",
+      "kind": "weapon",
+      "startsAt": "2026-04-08T00:00:00.000Z",
+      "endsAt": "2026-04-22T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23027",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21013",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21047",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21048",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-04-22",
+      "name": "4.2 · phase 1",
+      "kind": "character",
+      "startsAt": "2026-04-22T00:00:00.000Z",
+      "endsAt": "2026-05-13T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1310",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1321",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1407",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1506",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1109",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1214",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1301",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-04-22",
+      "name": "4.2 · phase 1",
+      "kind": "weapon",
+      "startsAt": "2026-04-22T00:00:00.000Z",
+      "endsAt": "2026-05-13T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23025",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23040",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23050",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23057",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21008",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21042",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21046",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-05-13",
+      "name": "4.2 · phase 2",
+      "kind": "character",
+      "startsAt": "2026-05-13T00:00:00.000Z",
+      "endsAt": "2026-06-01T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1220",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1313",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1403",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1505",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1110",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1206",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1210",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-05-13",
+      "name": "4.2 · phase 2",
+      "kind": "weapon",
+      "startsAt": "2026-05-13T00:00:00.000Z",
+      "endsAt": "2026-06-01T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23031",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23034",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23038",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23058",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21004",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21007",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-06-01",
+      "name": "4.3 · phase 1",
+      "kind": "character",
+      "startsAt": "2026-06-01T00:00:00.000Z",
+      "endsAt": "2026-06-24T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1502",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1507",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1108",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1111",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1202",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-06-01",
+      "name": "4.3 · phase 1",
+      "kind": "weapon",
+      "startsAt": "2026-06-01T00:00:00.000Z",
+      "endsAt": "2026-06-24T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23054",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23059",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21001",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21002",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21005",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-07-15",
+      "name": "4.4 · phase 1",
+      "kind": "character",
+      "startsAt": "2026-07-15T00:00:00.000Z",
+      "endsAt": "2026-07-24T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1413",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1414",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1501",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1510",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1103",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1215",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1223",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-07-15",
+      "name": "4.4 · phase 1",
+      "kind": "weapon",
+      "startsAt": "2026-07-15T00:00:00.000Z",
+      "endsAt": "2026-07-24T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23049",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23051",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23053",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23060",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21006",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21019",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21045",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-07-24",
+      "name": "4.4 · phase 2",
+      "kind": "character",
+      "startsAt": "2026-07-24T00:00:00.000Z",
+      "endsAt": "2026-08-05T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1508",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1509",
+          "kind": "character",
+          "rarity": 5
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-07-24",
+      "name": "4.4 · phase 2",
+      "kind": "weapon",
+      "startsAt": "2026-07-24T00:00:00.000Z",
+      "endsAt": "2026-08-05T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23061",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23062",
+          "kind": "weapon",
+          "rarity": 5
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-08-05",
+      "name": "4.4 · phase 3",
+      "kind": "character",
+      "startsAt": "2026-08-05T00:00:00.000Z",
+      "endsAt": "2026-08-26T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1304",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1405",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1412",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1103",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1215",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1223",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-08-05",
+      "name": "2.6 · phase 4",
+      "kind": "weapon",
+      "startsAt": "2026-08-05T00:00:00.000Z",
+      "endsAt": "2026-08-26T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23023",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23041",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23048",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21006",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21019",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21045",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-08-26",
+      "name": "4.5 · phase 1",
+      "kind": "character",
+      "startsAt": "2026-08-26T00:00:00.000Z",
+      "endsAt": "2026-09-12T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1409",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1512",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1002",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1201",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1301",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-08-26",
+      "name": "4.5 · phase 1",
+      "kind": "weapon",
+      "startsAt": "2026-08-26T00:00:00.000Z",
+      "endsAt": "2026-09-12T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23042",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23063",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21048",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21051",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21066",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-09-12",
+      "name": "4.5 · phase 2",
+      "kind": "character",
+      "startsAt": "2026-09-12T00:00:00.000Z",
+      "endsAt": "2026-09-28T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1504",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1513",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1108",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1109",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1210",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-09-12",
+      "name": "4.5 · phase 2",
+      "kind": "weapon",
+      "startsAt": "2026-09-12T00:00:00.000Z",
+      "endsAt": "2026-09-28T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23056",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23064",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21003",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21014",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21054",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-09-28",
+      "name": "4.6 · phase 1",
+      "kind": "character",
+      "startsAt": "2026-09-28T00:00:00.000Z",
+      "endsAt": "2026-10-21T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "1503",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1505",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1201",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1214",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1312",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-09-28",
+      "name": "4.6 · phase 1",
+      "kind": "weapon",
+      "startsAt": "2026-09-28T00:00:00.000Z",
+      "endsAt": "2026-10-21T00:00:00.000Z",
+      "featured": [
+        {
+          "catalogId": "23055",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "23058",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21000",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21011",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21044",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    }
+  ]
+}
