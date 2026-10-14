@@ -103,7 +103,8 @@ test("Activities: the game's redeem codes, each with its rewards, Copy and the o
   await expect(gift).toContainText("50 stellar jade");
   await expect(gift.getByRole("button", { name: "Copy" })).toBeVisible();
   await expect(gift.getByRole("link", { name: /Redeem/ })).toHaveAttribute("href", "https://hsr.hoyoverse.com/gift?code=STARRAILGIFT");
-  await gift.getByRole("checkbox", { name: "Redeemed" }).check();
+  // Ticked, it leaves the list for Redeemed below (so click, then look for it there).
+  await gift.getByRole("checkbox", { name: "Redeemed" }).click();
   await expect(card).toContainText("1 to redeem");
   await expect(card.getByText("Redeemed 1")).toBeVisible();
 });
