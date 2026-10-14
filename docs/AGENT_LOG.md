@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-15 · claude · stack/r15/04-css-utilities · #324
+- Done: ADR 0011's CSS utilities named for what they do: `.mu` → `.text-muted`, `.mn` → `.font-mono`, `.cd` → `.font-display`, `.sf` → `.font-serif`. 436 uses in the styles, the components and four journeys' selectors, renamed as whole class words only (a script over the CSS selectors and the class strings).
+- Tests: no behaviour change: same rules in the same order; the full suite passes; Home's screenshot shows the mono labels, condensed figures, serif banner title and muted text as before.
+- Scope/decisions: the chart marks ported from the dashboard design (`.gl`, `.rg`, `.mk`, `.lb`…) keep their names for now; they are the design's own vocabulary, documented in `charts.css`.
+- Next: objects for the domain: a gear piece and a character build first (ADR 0011's list).
+
 ## 2026-10-15 · claude · stack/r15/03-web-names · #323
 - Done: ADR 0011's third area, the web app. 1,614 one- and two-letter declarations named for what they hold (`(e) =>` → `event`, `qc` → `queryClient`, `(a, b)` comparators → `first, second`, `gi` → `gameInstance`), 92 abbreviations spelled out (`num` → `numberOrNull` / `numberField` by what it reads, `pct` → `percentText`, `cfg` → `config`, `res` → `response`, `ctx` → `context`, `nav` → `navigate`, `setQ` → `setQuery`, `cid` → `catalogId`, `NUM` → `NUMBER_FORMAT`), and the short properties of the app's own shapes (component props `g`, `b`, `c`, `gi`, `pv`, `useAuth`'s `me` → `currentUser`, `PADDING`'s `l, r, t, b` → `left, right, top, bottom`). `id-length` now holds `apps/web/src` too: the whole codebase.
 - Tests: no behaviour change: types clean; the shadowed names (`@typescript-eslint/no-shadow`, JSON report) are the eight from before. A first pass had made 65 new shadows, one of which rebound a reference (a reminder time's Remove filter had become `atTime !== atTime`, always false), so each got a distinct name and the pass was replayed from a clean tree; the full suite passes.
@@ -248,9 +254,3 @@ Entry format:
 - Tests: written first: the Traveler's sheet opens Quick goal from its header, with skills at 10 and 6 and a maximum of at least 10; Characters and Weapons show "0 selected" and All shown as soon as Select is on, and All shown picks.
 - Scope/decisions: the Traveler's plans have no materials for skills (the dataset has none); the levels are still planned.
 - Next: unbuilt cards with the character's data.
-
-## 2026-10-14 · claude · stack/r10/05-stat-icons · #284
-- Done: icons on the sheet (Georges, round 7: "artifact/gear's icons are too small, and even the artifact section has a very small place for the icons, which convey a lot of info by themselves … stat icons should also be used when possible"). `statKind` (shared) names any game's stat by its kind (HP, ATK, DEF, CRIT Rate, CRIT DMG, energy, mastery, SPD, healing, effect, break, PEN, DMG bonus) and `StatIcon` draws it beside the name: on the sheet's KPI tiles and Combat stats, the cards' stat strip, and the gear block's main stats and substats. Each gear piece on the sheet opens with its set as a 64 px icon beside the slot and its crit value, the piece being a named group.
-- Tests: written first: `statKind` maps seventeen stat names of the four games to their kinds; Kafka's sheet shows the SPD tile's and HP row's icons, her Head relic's set as an icon at least 56 px wide, and its main stat's and substat's icons.
-- Scope/decisions: the icons are drawn here (line icons in the app's style); a game's own stat art can replace them once the bucket holds it.
-- Next: Quick goal at the top of the sheet; skills without costs; Select all at once.
