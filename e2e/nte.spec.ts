@@ -53,8 +53,9 @@ test("Neverness to Everness: the Console tab lists the cartridge series as its s
   await page.goto(`/games/${id}`);
   await page.getByRole("navigation", { name: "Game screens" }).getByRole("link", { name: "Console" }).click();
   await expect(page).toHaveURL(new RegExp(`/games/${id}/gear$`));
-  await page.getByRole("group", { name: "Show" }).getByRole("button", { name: "Sets" }).click();
-  for (const name of ["Lost Radiance", "Diabolos", "Shadow Creed"]) await expect(page.getByRole("article", { name })).toBeVisible();
-  await page.getByRole("article", { name: "Lost Radiance" }).getByRole("button", { name: "Open Lost Radiance" }).click();
+  const sets = page.getByRole("region", { name: "Filters" }).getByRole("group", { name: "Sets" });
+  for (const name of ["Lost Radiance", "Diabolos", "Shadow Creed"]) await expect(sets.getByRole("button", { name })).toBeVisible();
+  await sets.getByRole("button", { name: "Lost Radiance" }).click();
+  await page.getByRole("region", { name: "Lost Radiance" }).getByRole("button", { name: "Open Lost Radiance" }).click();
   await expect(page.getByRole("complementary", { name: "Lost Radiance" })).toBeVisible();
 });

@@ -10,8 +10,8 @@ test("Gear: a set's pieces by slot, on a build or in the bag; one added and equi
   const build = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1102" } })).json()) as { id: string };
   try {
     await page.goto(`/games/${id}/gear`);
-    await page.getByRole("group", { name: "Show" }).getByRole("button", { name: "Sets" }).click();
-    const set = page.getByRole("article", { name: "Musketeer of Wild Wheat" });
+    await page.getByRole("region", { name: "Filters" }).getByRole("group", { name: "Sets" }).getByRole("button", { name: "Musketeer of Wild Wheat" }).click();
+    const set = page.getByRole("region", { name: "Musketeer of Wild Wheat" });
     await set.getByRole("button", { name: "Open Musketeer of Wild Wheat" }).click();
     const panel = page.getByRole("complementary", { name: "Musketeer of Wild Wheat" });
     // Other journeys' builds may wear this set already: this one checks its own piece.
@@ -42,10 +42,10 @@ test("Gear: Farm picks the pieces you need from a set and makes a goal, a step p
   for (const [gameKey, unwanted] of [["wuwa", ["Echo 3", "Echo 4", "Echo 5"]], ["zzz", ["Slot 3", "Slot 4", "Slot 5", "Slot 6"]]] as const) {
     const { id } = (await (await page.request.post("/api/instances", { data: { gameKey } })).json()) as { id: string };
     await page.goto(`/games/${id}/gear`);
-    await page.getByRole("group", { name: "Show" }).getByRole("button", { name: "Sets" }).click();
-    const set = page.getByRole("article").first();
-    const name = (await set.getAttribute("aria-label"))!;
-    await set.getByRole("button", { name: `Open ${name}` }).click();
+    const first = page.getByRole("region", { name: "Filters" }).getByRole("group", { name: "Sets" }).getByRole("button").first();
+    const name = (await first.getAttribute("aria-label"))!;
+    await first.click();
+    await page.getByRole("region", { name }).getByRole("button", { name: `Open ${name}` }).click();
     const panel = page.getByRole("complementary", { name });
     await panel.getByRole("button", { name: "Farm" }).click();
     const pick = panel.getByRole("group", { name: "Pieces to farm" });
@@ -99,10 +99,28 @@ test("Gear: every piece you have, on a build or in the bag, filtered by set, slo
     await expect(body).toBeVisible();
     await expect(head).toHaveCount(0);
     await filters.getByRole("group", { name: "Main stat" }).getByRole("button", { name: "CRIT Rate" }).click();
-    await filters.getByRole("combobox", { name: "Set" }).fill("Musketeer");
-    await page.getByRole("option", { name: /^Musketeer of Wild Wheat/ }).click();
+    const setList = filters.getByRole("group", { name: "Sets" });
+    await setList.getByRole("button", { name: "Musketeer of Wild Wheat" }).click();
     await expect(head).toBeVisible();
     await expect(body).toHaveCount(0);
+
+    // Round 8: "I can't even reset my searches nor search for multiple sets". Several sets at once, the list searched; one click resets all.
+    await filters.getByRole("searchbox", { name: "Search sets" }).fill("Hunter");
+    await expect(setList.getByRole("button", { name: "Musketeer of Wild Wheat" })).toHaveCount(0);
+    await setList.getByRole("button", { name: "Hunter of Glacial Forest" }).click();
+    await expect(head).toBeVisible();
+    await expect(body).toBeVisible();
+    await expect(pieces.getByRole("region", { name: "Musketeer of Wild Wheat" })).toBeVisible();
+    await expect(pieces.getByRole("region", { name: "Hunter of Glacial Forest" })).toBeVisible();
+    await filters.getByRole("group", { name: "Where" }).getByRole("button", { name: "Bag" }).click();
+    await expect(body).toHaveCount(0);
+    await filters.getByRole("button", { name: "Reset filters" }).click();
+    await expect(filters.getByRole("searchbox", { name: "Search sets" })).toHaveValue("");
+    await expect(setList.getByRole("button", { name: "Musketeer of Wild Wheat" })).toHaveAttribute("aria-pressed", "false");
+    await expect(filters.getByRole("group", { name: "Where" }).getByRole("button", { name: "Bag" })).toHaveAttribute("aria-pressed", "false");
+    await expect(head).toBeVisible();
+    await expect(body).toBeVisible();
+    await expect(filters.getByRole("button", { name: "Reset filters" })).toBeDisabled();
   } finally {
     await page.request.delete(`/api/characters/${build.id}`);
     await page.request.delete(`/api/gear/${bag.id}`);
@@ -128,14 +146,14 @@ test("Gear: a piece added from the pieces, its card readable with its set's and 
     await form.getByRole("button", { name: "Add", exact: true }).click();
     const piece = page.getByRole("region", { name: "Pieces" }).getByRole("article", { name: "Musketeer of Wild Wheat · Body" }).filter({ hasText: "+9" });
     await expect(piece).toContainText("Bag");
-    await expect.poll(async () => (await piece.getByRole("img", { name: "Musketeer of Wild Wheat" }).boundingBox())?.width ?? 0).toBeGreaterThanOrEqual(48);
+    // The set's icon heads its group of pieces (round 8).
+    await expect.poll(async () => (await page.getByRole("region", { name: "Musketeer of Wild Wheat" }).getByRole("img", { name: "Musketeer of Wild Wheat" }).first().boundingBox())?.width ?? 0).toBeGreaterThanOrEqual(48);
     await expect(piece.locator("svg.stat-icon[data-stat=critRate]")).toBeVisible();
 
-    // The set over the page: the cards stay where they were.
-    await page.getByRole("group", { name: "Show" }).getByRole("button", { name: "Sets" }).click();
-    const first = page.locator(".set-grid > *").first();
+    // The set over the page: the groups stay where they were.
+    const first = page.getByRole("region", { name: "Pieces" }).getByRole("region").first();
     const before = (await first.boundingBox())!;
-    await page.getByRole("button", { name: "Open Musketeer of Wild Wheat" }).click();
+    await page.getByRole("region", { name: "Musketeer of Wild Wheat" }).getByRole("button", { name: "Open Musketeer of Wild Wheat" }).click();
     const panel = page.getByRole("complementary", { name: "Musketeer of Wild Wheat" });
     await expect(panel).toBeVisible();
     expect(await panel.evaluate((el) => getComputedStyle(el).position)).toBe("fixed");
