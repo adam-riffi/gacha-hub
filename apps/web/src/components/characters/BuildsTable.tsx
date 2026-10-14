@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { buildKpis, buildLine, buildRole, gearSetLabel, type BuildStatus, type CatalogCharacter, type CharacterDto, type GameDefinition, type TeamDto } from "@gacha/shared";
+import { CharacterBuild, buildRole, type BuildStatus, type CatalogCharacter, type CharacterDto, type GameDefinition, type TeamDto } from "@gacha/shared";
 import { api } from "../../lib/api";
 import { useToast } from "../../lib/toast";
 
@@ -90,6 +90,7 @@ export function BuildsTable({
         <tbody>
           {rows.map((row) => {
             const doc = (row.doc ?? {}) as Record<string, unknown>;
+            const build = new CharacterBuild(game, doc);
             const entry = entryOf(row.catalogId);
             const inTeams = (teams.data ?? []).filter((team) => row.catalogId && team.members.includes(row.catalogId));
             return (
@@ -100,7 +101,7 @@ export function BuildsTable({
                 <td>
                   <Link to={`/characters/${row.id}`}>{row.name}</Link>
                   {entry && entry.name !== row.name && <span className="text-muted"> · {entry.name}</span>}
-                  <div className="font-mono text-muted">{buildLine(game, doc, entry?.talents.keys ?? [])}</div>
+                  <div className="font-mono text-muted">{build.line(entry?.talents.keys ?? [])}</div>
                 </td>
                 <td>
                   <select aria-label={`${row.name} status`} value={row.buildStatus} onChange={(event) => setStatus.mutate({ ids: [row.id], status: event.target.value as BuildStatus })}>
@@ -111,13 +112,13 @@ export function BuildsTable({
                 </td>
                 <td>{buildRole(game, row.role)}</td>
                 <td>
-                  {buildKpis(game, doc, row.role).map((kpi) => (
+                  {build.kpis(row.role).map((kpi) => (
                     <span key={kpi.label} className="ch-tkpi">
                       <span className="kpi-label">{kpi.label}</span> <span className="font-mono">{kpi.value}</span>
                     </span>
                   ))}
                 </td>
-                <td className="text-muted">{gearSetLabel(game, doc) ?? ""}</td>
+                <td className="text-muted">{build.gearSetLabel ?? ""}</td>
                 <td>{inTeams.length ? inTeams.map((team) => team.name).join(", ") : <span className="text-muted">—</span>}</td>
               </tr>
             );

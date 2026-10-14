@@ -4,15 +4,11 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   LIMITS,
   elementColor,
-  buildBase,
+  CharacterBuild,
   cardStatLabels,
   cardStatOptions,
-  buildLine,
-  statKpis,
-  dupeBadge,
   dupeLetter,
   featuredWithin,
-  completedSets,
   getGame,
   pullsFor,
   weaponHolder,
@@ -350,6 +346,7 @@ export function CharactersPage() {
       <div className="ch-grid">
         {filtered.map((card) => {
           const doc = (card.build?.doc ?? {}) as Record<string, unknown>;
+          const build = new CharacterBuild(game, doc);
           const onBanner = live.find((banner) => banner.featured.some((featuredUnit) => featuredUnit.catalogId === card.id));
           const step = eventStep(card.id);
           const art = splashKey(game.key, card.icon, card.splash);
@@ -378,12 +375,12 @@ export function CharactersPage() {
                   {card.tag && card.tag !== "None" && <span className="badge ch-el">{card.tag}</span>}
                   {card.weaponType && <span className="badge">{card.weaponType}</span>}
                 </div>
-                <span className={`ch-dupes ${card.owned ? "" : "is-off"}`}>{card.owned ? dupeBadge(game, doc) : "Not owned"}</span>
+                <span className={`ch-dupes ${card.owned ? "" : "is-off"}`}>{card.owned ? build.dupeBadge : "Not owned"}</span>
                 <div className="ch-namebox">
                   <div className="ch-namebox-text">
                     <h3>{card.name}</h3>
                     <div className="font-mono ch-namebox-line">
-                      {card.build ? buildLine(game, doc, card.entry?.talents.keys ?? [], !held) : onBanner ? `on the banner until ${ENDS.format(new Date(onBanner.endsAt))}` : card.owned ? "no build yet" : "not owned"}
+                      {card.build ? build.line(card.entry?.talents.keys ?? [], !held) : onBanner ? `on the banner until ${ENDS.format(new Date(onBanner.endsAt))}` : card.owned ? "no build yet" : "not owned"}
                     </div>
                   </div>
                   {/* Its weapon on the name card (Georges, round 4), on the right, its level top-left and refinement bottom-right (round 5). */}
@@ -400,7 +397,7 @@ export function CharactersPage() {
                 <CardStats
                   name={card.name}
                   options={statOptions}
-                  kpis={statKpis(game, doc, cardStatLabels(game, card.entry, card.build.role, card.build.cardStats, cardStats), catalog?.gear ?? [], buildBase(game, index, card.build.catalogId, doc))}
+                  kpis={build.statKpis(cardStatLabels(game, card.entry, card.build.role, card.build.cardStats, cardStats), catalog?.gear ?? [], build.baseStats(index, card.build.catalogId))}
                   own={card.build.cardStats}
                   growth={card.entry?.bonusStats?.[0]}
                   onPick={(stats) => saveBuildStats(card.build!.id, stats)}
@@ -413,7 +410,7 @@ export function CharactersPage() {
                   own={null}
                   growth={card.entry.bonusStats?.[0]}
                   baseNote={`Base at Lv ${card.entry.maxLevel}`}
-                  kpis={statKpis(game, {}, [...new Set([...(card.entry.bonusStats?.slice(0, 1) ?? []), "HP", "ATK", "DEF"])].slice(0, LIMITS.cardStats), [], buildBase(game, index, card.entry.id, { level: card.entry.maxLevel }))}
+                  kpis={new CharacterBuild(game, {}).statKpis([...new Set([...(card.entry.bonusStats?.slice(0, 1) ?? []), "HP", "ATK", "DEF"])].slice(0, LIMITS.cardStats), [], new CharacterBuild(game, { level: card.entry.maxLevel }).baseStats(index, card.entry.id))}
                 />
               ) : !card.owned && onBanner && characterBanner ? (
                 <div className="ch-kpis ch-chance">
@@ -428,7 +425,7 @@ export function CharactersPage() {
                 {card.build && (
                   <span className="text-muted ch-set">
                     {/* The completed sets as their icons with their counts (Georges, round 6), the role where none is. */}
-                    {completedSets(game, doc).map((completedSet) => {
+                    {build.completedSets.map((completedSet) => {
                       const set = gearSets.get(completedSet.name);
                       return (
                         <span key={completedSet.name} className="ch-set-icon" title={`${completedSet.name} ${completedSet.size}pc`}>
@@ -437,7 +434,7 @@ export function CharactersPage() {
                         </span>
                       );
                     })}
-                    {completedSets(game, doc).length === 0 && (card.build.role ?? "")}
+                    {build.completedSets.length === 0 && (card.build.role ?? "")}
                   </span>
                 )}
                 {step && <span className="badge todo">→ {step.letter}{step.to} · event</span>}

@@ -2,14 +2,12 @@ import { useState, type CSSProperties } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  CharacterBuild,
   ascensionPips,
-  buildBase,
   cardStatLabels,
   elementColor,
-  statKpis,
   sheetStats,
   LIMITS,
-  dupeBadge,
   getGame,
   skillsField,
   weaponHolder,
@@ -157,7 +155,8 @@ export function CharacterEditor({ data }: { data: CharacterDetail }) {
   const skillText = (skillKey: string) => entry?.talents.info?.find((info) => info.key === skillKey)?.description;
   const skillIcon = (skillKey: string) => entry?.talents.info?.find((info) => info.key === skillKey)?.icon;
   // What the level and the weapon give before gear (round 6), shown where nothing is typed.
-  const base = buildBase(game, index, data.catalogId, doc);
+  const characterBuild = new CharacterBuild(game, doc);
+  const base = characterBuild.baseStats(index, data.catalogId);
   // The card's stats on the sheet too (round 7), its growth stat first and in the character's colour.
   const instance = useQuery({ queryKey: ["instance", data.gameInstanceId], queryFn: () => api.get<InstanceDetail>(`/api/instances/${data.gameInstanceId}`) });
   const growth = entry?.bonusStats?.[0];
@@ -169,7 +168,7 @@ export function CharacterEditor({ data }: { data: CharacterDetail }) {
     const next = isOnCard(stat) ? onCard.filter((label) => !label.split(" / ").some((part) => part.toLowerCase() === stat.toLowerCase())) : [...onCard, stat].slice(-LIMITS.cardStats);
     setCardStats.mutate(next.length ? next : null);
   };
-  const critValue = statKpis(game, doc, ["Crit value"], catalog?.gear ?? [], base)[0]!.value;
+  const critValue = characterBuild.statKpis(["Crit value"], catalog?.gear ?? [], base)[0]!.value;
   const setCardStats = useMutation({
     mutationFn: (cardStats: string[] | null) => write({ cardStats }),
     // The box flips at once (round 8); the server's answer follows.
@@ -298,7 +297,7 @@ export function CharacterEditor({ data }: { data: CharacterDetail }) {
               {entry && <span className="badge">★{entry.rarity}</span>}
               {entry?.tag && entry.tag !== "None" && <span className="badge">{entry.tag}</span>}
               {entry?.weaponType && <span className="badge">{entry.weaponType}</span>}
-              <span className="badge">{dupeBadge(game, doc)}</span>
+              <span className="badge">{characterBuild.dupeBadge}</span>
               <span className="badge">Lv {level ?? "—"} / {maxLevel}</span>
             </div>
           </section>
@@ -321,7 +320,7 @@ export function CharacterEditor({ data }: { data: CharacterDetail }) {
               <div className="sh-row">
                 <label htmlFor="sh-dupes">{dupe.label}</label>
                 <span>
-                  <input id="sh-dupes" type="number" min={0} max={dupe.max} value={dupeValue} onChange={(event) => setDoc((currentDoc) => ({ ...currentDoc, [dupe.field]: Number(event.target.value) }))} /> <span className="font-mono">{dupeBadge(game, doc)}</span>
+                  <input id="sh-dupes" type="number" min={0} max={dupe.max} value={dupeValue} onChange={(event) => setDoc((currentDoc) => ({ ...currentDoc, [dupe.field]: Number(event.target.value) }))} /> <span className="font-mono">{characterBuild.dupeBadge}</span>
                 </span>
               </div>
             </section>

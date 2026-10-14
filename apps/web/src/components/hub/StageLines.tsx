@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { completedSets, elementColor, getGame, weaponHolder, type CharacterDto, type Clear, type ModeStage } from "@gacha/shared";
+import { CharacterBuild, elementColor, getGame, weaponHolder, type CharacterDto, type Clear, type ModeStage } from "@gacha/shared";
 import { api } from "../../lib/api";
 import { communityAssetUrl } from "../../lib/assets";
 import { useCatalog } from "../../lib/catalog";
@@ -115,7 +115,7 @@ function StageDetail({ instanceId, gameKey, stage, members }: { instanceId: stri
                 {weapon?.catalogId && <CatalogIcon gameKey={gameKey} kind="weapon" icon={index?.weapons.get(weapon.catalogId)?.icon} name={index?.weapons.get(weapon.catalogId)?.name ?? weapon.catalogId} />}
                 {weapon?.level ? <span className="font-mono text-muted">Lv {weapon.level}</span> : null}
                 {build &&
-                  completedSets(game, doc).map((set) => (
+                  new CharacterBuild(game, doc).completedSets.map((set) => (
                     <span key={set.name} className="eg-build-set" title={`${set.name} ${set.size}`}>
                       <CatalogIcon gameKey={gameKey} kind="gear" icon={index?.gear.get([...(index?.gear.values() ?? [])].find((gearSet) => gearSet.name === set.name)?.id ?? "")?.icon} name={set.name} />
                       <span className="font-mono">{set.size}</span>

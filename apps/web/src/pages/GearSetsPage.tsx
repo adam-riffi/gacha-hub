@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { gearPieceCv, getGame, type CatalogGearSet, type CharacterDto, type GameDefinition, type GearPieceDto } from "@gacha/shared";
+import { GearPiece, getGame, type CatalogGearSet, type CharacterDto, type GameDefinition, type GearPieceDto } from "@gacha/shared";
 import { LoadError } from "../components/LoadError";
 import { useToast } from "../lib/toast";
 import { useDismiss } from "../lib/dismiss";
@@ -139,7 +139,7 @@ export function GearSetsPage() {
     .filter((piece) => !where || (where === "bag") === Boolean(piece.bagId))
     .sort((first, second) =>
       sort === "cv"
-        ? gearPieceCv(second) - gearPieceCv(first) || first.set.localeCompare(second.set)
+        ? new GearPiece(second).critValue - new GearPiece(first).critValue || first.set.localeCompare(second.set)
         : sort === "level"
           ? (second.level ?? 0) - (first.level ?? 0) || first.set.localeCompare(second.set)
           : sort === "slot"
@@ -241,7 +241,7 @@ export function GearSetsPage() {
             <section className="gb-grid" aria-label="Pieces">
               {shown.map((piece) => {
                 const set = setsByName.get(piece.set);
-                const critValue = gearPieceCv(piece);
+                const critValue = new GearPiece(piece).critValue;
                 const name = `${piece.set} · ${slotLabel(piece.slot)}`;
                 return (
                   <article key={piece.key} className="card gb-tile" aria-label={name} aria-current={piece === picked ? true : undefined}>
@@ -360,7 +360,7 @@ function PieceColumn({ instanceId, game, piece, set, slotLabel, builds, onOpenSe
   const field = game.manifest.gear.field;
   // How many of this set its wearer has on, for the bonuses it lights.
   const worn = piece.wearer ? Object.values(((piece.wearer.doc as Record<string, unknown> | null)?.[field] ?? {}) as Record<string, DocPiece | undefined>).filter((wornPiece) => wornPiece?.setName === piece.set).length : 0;
-  const critValue = gearPieceCv(piece);
+  const critValue = new GearPiece(piece).critValue;
   const unit = piece.wearer?.catalogId ? index?.characters.get(piece.wearer.catalogId) : undefined;
   const pieceName = (set?.extra?.pieceNames as Record<string, string> | undefined)?.[piece.slot];
   return (
