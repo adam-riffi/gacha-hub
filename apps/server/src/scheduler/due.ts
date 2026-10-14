@@ -18,9 +18,9 @@ export function latestLocalTime(now: Date, hhmm: string, zone: string): Date {
   return at.toJSDate();
 }
 
-const fmtDuration = (ms: number) => {
-  const m = Math.max(0, Math.round(ms / 60_000));
-  return m >= 60 ? `${Math.floor(m / 60)}h ${m % 60}m` : `${m}m`;
+const fmtDuration = (milliseconds: number) => {
+  const minutes = Math.max(0, Math.round(milliseconds / 60_000));
+  return minutes >= 60 ? `${Math.floor(minutes / 60)}h ${minutes % 60}m` : `${minutes}m`;
 };
 
 /** The daily-reset DM's first line: "⏰ **Genshin Impact** resets in 5h 2m". */
@@ -33,9 +33,9 @@ export function inQuietHours(now: Date, quiet: { from: string; to: string } | nu
   if (!quiet || quiet.from === quiet.to) return false;
   let local = DateTime.fromJSDate(now).setZone(zone);
   if (!local.isValid) local = DateTime.fromJSDate(now, { zone: "utc" });
-  const m = local.hour * 60 + local.minute;
-  const [from, to] = [quiet.from, quiet.to].map((t) => Number(t.slice(0, 2)) * 60 + Number(t.slice(3)));
-  return from! < to! ? m >= from! && m < to! : m >= from! || m < to!;
+  const minuteOfDay = local.hour * 60 + local.minute;
+  const [from, to] = [quiet.from, quiet.to].map((timeText) => Number(timeText.slice(0, 2)) * 60 + Number(timeText.slice(3)));
+  return from! < to! ? minuteOfDay >= from! && minuteOfDay < to! : minuteOfDay >= from! || minuteOfDay < to!;
 }
 
 /**
@@ -73,10 +73,10 @@ export function dueReminders(cfg: ReminderConfig, region: RegionReset, gameName:
       due.push({ key: "", firedFor: boundary, headline });
     }
   }
-  for (const t of cfg.atTimes) {
-    const at = latestLocalTime(now, t, cfg.timezone);
+  for (const atTime of cfg.atTimes) {
+    const at = latestLocalTime(now, atTime, cfg.timezone);
     if (now.getTime() - at.getTime() < AT_TIME_GRACE_MS) {
-      due.push({ key: "", firedFor: at, headline: `⏰ **${gameName}** · your ${t} check-in (reset in ${untilReset})` });
+      due.push({ key: "", firedFor: at, headline: `⏰ **${gameName}** · your ${atTime} check-in (reset in ${untilReset})` });
     }
   }
   const full = extra.stamina?.fullAt;
@@ -84,10 +84,10 @@ export function dueReminders(cfg: ReminderConfig, region: RegionReset, gameName:
     due.push({ key: "stamina", firedFor: full, headline: `🔋 **${gameName}** · ${extra.stamina!.label} is full` });
   }
   if (cfg.beforeEndgameReset) {
-    for (const m of extra.endgame ?? []) {
-      const left = m.closes.getTime() - now.getTime();
-      if (m.unclaimed > 0 && left > 0 && left <= 24 * 60 * 60_000) {
-        due.push({ key: `endgame:${m.key}`, firedFor: m.closes, headline: `⏳ **${gameName}** · ${m.name} ends in ${fmtDuration(left)} · ${m.unclaimed} ${m.premium} unclaimed` });
+    for (const modeState of extra.endgame ?? []) {
+      const left = modeState.closes.getTime() - now.getTime();
+      if (modeState.unclaimed > 0 && left > 0 && left <= 24 * 60 * 60_000) {
+        due.push({ key: `endgame:${modeState.key}`, firedFor: modeState.closes, headline: `⏳ **${gameName}** · ${modeState.name} ends in ${fmtDuration(left)} · ${modeState.unclaimed} ${modeState.premium} unclaimed` });
       }
     }
   }
@@ -98,17 +98,17 @@ export function dueReminders(cfg: ReminderConfig, region: RegionReset, gameName:
       due.push({ key: "pass:monthly", firedFor: pass.endsAt, headline: `🎫 **${gameName}** · ${pass.name} ends in ${fmtDuration(left)}` });
     }
   }
-  const bp = extra.battlePass;
-  if (cfg.beforeBattlePassEnds && bp && bp.level < bp.maxLevel) {
-    const left = bp.endsAt.getTime() - now.getTime();
+  const battlePass = extra.battlePass;
+  if (cfg.beforeBattlePassEnds && battlePass && battlePass.level < battlePass.maxLevel) {
+    const left = battlePass.endsAt.getTime() - now.getTime();
     if (left > 0 && left <= 48 * 60 * 60_000) {
-      due.push({ key: "pass:battle", firedFor: bp.endsAt, headline: `🎫 **${gameName}** · ${bp.name} ends in ${fmtDuration(left)} at level ${bp.level} / ${bp.maxLevel}` });
+      due.push({ key: "pass:battle", firedFor: battlePass.endsAt, headline: `🎫 **${gameName}** · ${battlePass.name} ends in ${fmtDuration(left)} at level ${battlePass.level} / ${battlePass.maxLevel}` });
     }
   }
-  for (const g of extra.eventGoals ?? []) {
-    const left = g.endsAt.getTime() - now.getTime();
+  for (const eventGoal of extra.eventGoals ?? []) {
+    const left = eventGoal.endsAt.getTime() - now.getTime();
     if (left > 0 && left <= 48 * 60 * 60_000) {
-      due.push({ key: `event:${g.key}`, firedFor: g.endsAt, headline: `🎁 **${gameName}** · ${g.name} ends in ${fmtDuration(left)} · claim your reward` });
+      due.push({ key: `event:${eventGoal.key}`, firedFor: eventGoal.endsAt, headline: `🎁 **${gameName}** · ${eventGoal.name} ends in ${fmtDuration(left)} · claim your reward` });
     }
   }
   return due;

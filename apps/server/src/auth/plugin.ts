@@ -97,25 +97,25 @@ export async function registerAuth(app: FastifyInstance) {
       const { token } =
         await namespace.getAccessTokenFromAuthorizationCodeFlow(req);
 
-      const res = await fetch("https://discord.com/api/users/@me", {
+      const response = await fetch("https://discord.com/api/users/@me", {
         headers: { Authorization: `Bearer ${token.access_token}` },
       });
-      if (!res.ok) {
+      if (!response.ok) {
         reply.code(502).send({ error: "discord_profile_failed" });
         return;
       }
-      const me = (await res.json()) as {
+      const discordUser = (await response.json()) as {
         id: string;
         username: string;
         global_name?: string | null;
         avatar?: string | null;
       };
-      const avatarUrl = me.avatar
-        ? `https://cdn.discordapp.com/avatars/${me.id}/${me.avatar}.png`
+      const avatarUrl = discordUser.avatar
+        ? `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.png`
         : null;
       const user = await upsertDiscordUser({
-        id: me.id,
-        username: me.global_name || me.username,
+        id: discordUser.id,
+        username: discordUser.global_name || discordUser.username,
         avatarUrl,
       });
       const session = await createSession(user.id);

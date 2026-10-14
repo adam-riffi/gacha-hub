@@ -20,17 +20,17 @@ export async function registerReminderRoutes(app: FastifyInstance) {
     if (!hasDiscordBot()) return { sent: false, reason: "no_bot" };
     const previews = await previewReminders(req.user!.id);
     if (!previews.length) return { sent: false, reason: "no_rules" };
-    return { sent: await sendDirectMessage(req.user!.discordId, previews.map((p) => p.text).join("\n\n")) };
+    return { sent: await sendDirectMessage(req.user!.discordId, previews.map((preview) => preview.text).join("\n\n")) };
   });
 
   app.get<{ Params: { id: string } }>(
     "/api/instances/:id/reminder",
     { preHandler: requireUser },
     async (req, reply) => {
-      const gi = await loadInstance(req.user!.id, req.params.id);
-      if (!gi) return reply.code(404).send({ error: "not_found" });
+      const gameInstance = await loadInstance(req.user!.id, req.params.id);
+      if (!gameInstance) return reply.code(404).send({ error: "not_found" });
       const rule = await prisma.reminderRule.findFirst({
-        where: { userId: req.user!.id, gameInstanceId: gi.id },
+        where: { userId: req.user!.id, gameInstanceId: gameInstance.id },
       });
       return rule ? reminderRuleDto.parse(rule) : null;
     },
@@ -40,11 +40,11 @@ export async function registerReminderRoutes(app: FastifyInstance) {
     "/api/instances/:id/reminder",
     { preHandler: requireUser },
     async (req, reply) => {
-      const gi = await loadInstance(req.user!.id, req.params.id);
-      if (!gi) return reply.code(404).send({ error: "not_found" });
+      const gameInstance = await loadInstance(req.user!.id, req.params.id);
+      if (!gameInstance) return reply.code(404).send({ error: "not_found" });
       const config = setReminderInput.parse(req.body);
       const existing = await prisma.reminderRule.findFirst({
-        where: { userId: req.user!.id, gameInstanceId: gi.id },
+        where: { userId: req.user!.id, gameInstanceId: gameInstance.id },
       });
       const row = existing
         ? await prisma.reminderRule.update({
@@ -54,7 +54,7 @@ export async function registerReminderRoutes(app: FastifyInstance) {
         : await prisma.reminderRule.create({
             data: {
               userId: req.user!.id,
-              gameInstanceId: gi.id,
+              gameInstanceId: gameInstance.id,
               enabled: config.enabled,
               config: config as PrismaJson,
             },
@@ -67,10 +67,10 @@ export async function registerReminderRoutes(app: FastifyInstance) {
     "/api/instances/:id/reminder",
     { preHandler: requireUser },
     async (req, reply) => {
-      const gi = await loadInstance(req.user!.id, req.params.id);
-      if (!gi) return reply.code(404).send({ error: "not_found" });
+      const gameInstance = await loadInstance(req.user!.id, req.params.id);
+      if (!gameInstance) return reply.code(404).send({ error: "not_found" });
       await prisma.reminderRule.deleteMany({
-        where: { userId: req.user!.id, gameInstanceId: gi.id },
+        where: { userId: req.user!.id, gameInstanceId: gameInstance.id },
       });
       return { ok: true };
     },

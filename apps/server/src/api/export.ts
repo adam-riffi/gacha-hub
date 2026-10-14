@@ -4,8 +4,8 @@ import { prisma } from "../lib/prisma.js";
 import { requireUser } from "../auth/plugin.js";
 
 /** Rows without their owner keys: the export is already scoped to one user. */
-const own = <T extends object>(r: T) => {
-  const { gameInstanceId: _g, userId: _u, ...rest } = r as T & { gameInstanceId?: unknown; userId?: unknown };
+const own = <T extends object>(record: T) => {
+  const { gameInstanceId: _gameInstanceId, userId: _userId, ...rest } = record as T & { gameInstanceId?: unknown; userId?: unknown };
   return rest;
 };
 
@@ -46,31 +46,31 @@ export async function registerExportRoutes(app: FastifyInstance) {
         version: 1,
         exportedAt: now,
         user,
-        games: instances.map((gi) => ({
-          id: gi.id,
-          gameKey: gi.gameKey,
-          regionKey: gi.regionKey,
-          sleeping: gi.sleeping,
-          uid: gi.uid,
-          accountLevel: gi.accountLevel,
-          worldLevel: gi.worldLevel,
-          kpiTargets: gi.kpiTargets,
-          hiddenBanners: gi.hiddenBanners,
-          cardStats: gi.cardStats,
-          createdAt: gi.createdAt,
-          currencies: gi.currencies.map(own),
-          characters: gi.characters.map(own),
-          ownership: gi.ownerships.map(own),
-          weaponCopies: gi.weaponCopies.map(own),
-          materials: gi.materials.map(own),
-          gearPieces: gi.gearPieces.map(own),
-          teams: gi.teams.map(own),
-          pullEntries: gi.pullEntries.map(own),
-          cycleResults: gi.cycleResults.map(own),
-          passStates: gi.passStates.map(own),
-          topUps: gi.topUps.map(own),
-          dayRecords: gi.dayRecords.map(own),
-          reminderRule: gi.reminderRules[0] ? own(gi.reminderRules[0]) : null,
+        games: instances.map((gameInstance) => ({
+          id: gameInstance.id,
+          gameKey: gameInstance.gameKey,
+          regionKey: gameInstance.regionKey,
+          sleeping: gameInstance.sleeping,
+          uid: gameInstance.uid,
+          accountLevel: gameInstance.accountLevel,
+          worldLevel: gameInstance.worldLevel,
+          kpiTargets: gameInstance.kpiTargets,
+          hiddenBanners: gameInstance.hiddenBanners,
+          cardStats: gameInstance.cardStats,
+          createdAt: gameInstance.createdAt,
+          currencies: gameInstance.currencies.map(own),
+          characters: gameInstance.characters.map(own),
+          ownership: gameInstance.ownerships.map(own),
+          weaponCopies: gameInstance.weaponCopies.map(own),
+          materials: gameInstance.materials.map(own),
+          gearPieces: gameInstance.gearPieces.map(own),
+          teams: gameInstance.teams.map(own),
+          pullEntries: gameInstance.pullEntries.map(own),
+          cycleResults: gameInstance.cycleResults.map(own),
+          passStates: gameInstance.passStates.map(own),
+          topUps: gameInstance.topUps.map(own),
+          dayRecords: gameInstance.dayRecords.map(own),
+          reminderRule: gameInstance.reminderRules[0] ? own(gameInstance.reminderRules[0]) : null,
         })),
         tasks: tasks.map(own),
       });

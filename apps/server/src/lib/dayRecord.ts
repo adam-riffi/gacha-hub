@@ -18,17 +18,17 @@ export interface DayValues {
  */
 export function dayRecordFor(region: RegionReset, tasks: TaskDto[], pulls: number, now: Date): DayValues {
   const day = gameDay(region, now);
-  const dailies = tasks.filter((t) => t.type === "recurring" && (t.cadence ?? "daily") === "daily");
-  const finished = (t: TaskDto) => {
-    const [done, total] = goalSteps(t, tasks);
+  const dailies = tasks.filter((task) => task.type === "recurring" && (task.cadence ?? "daily") === "daily");
+  const finished = (task: TaskDto) => {
+    const [done, total] = goalSteps(task, tasks);
     return total > 0 && done >= total;
   };
-  const goals = tasks.filter((t) => listedGoal(t) && !t.backlog && t.type !== "recurring");
+  const goals = tasks.filter((task) => listedGoal(task) && !task.backlog && task.type !== "recurring");
   return {
     day,
-    dailiesDone: dailies.filter((t) => t.doneThisCycle).length,
+    dailiesDone: dailies.filter((daily) => daily.doneThisCycle).length,
     dailiesTotal: dailies.length,
-    goalsOpen: goals.filter((t) => !finished(t)).length,
+    goalsOpen: goals.filter((goal) => !finished(goal)).length,
     pulls,
   };
 }
@@ -39,19 +39,19 @@ export async function recordDays(userId: string, now = new Date()) {
     prisma.gameInstance.findMany({ where: { userId }, include: { currencies: true, characters: { select: { id: true } } } }),
     prisma.task.findMany({ where: { userId } }),
   ]);
-  const ctx = await buildRegionContext(tasks);
-  const dtos = tasks.map((t) => serializeTask(t, ctx, now));
+  const regionContext = await buildRegionContext(tasks);
+  const dtos = tasks.map((task) => serializeTask(task, regionContext, now));
   await Promise.all(
-    instances.map((gi) => {
-      const game = getGame(gi.gameKey);
+    instances.map((gameInstance) => {
+      const game = getGame(gameInstance.gameKey);
       if (!game) return null;
-      const builds = new Set(gi.characters.map((c) => c.id));
-      const mine = dtos.filter((t) => (t.scope === "game" ? t.refId === gi.id : builds.has(t.refId)));
-      const pulls = pullsFor(game.currencies.map((c) => ({ ...c, value: gi.currencies.find((s) => s.key === c.key)?.value ?? 0 }))).limited;
-      const v = dayRecordFor(regionForInstance(game, gi), mine, pulls, now);
-      const where = { gameInstanceId_day: { gameInstanceId: gi.id, day: v.day } };
+      const builds = new Set(gameInstance.characters.map((character) => character.id));
+      const mine = dtos.filter((taskDto) => (taskDto.scope === "game" ? taskDto.refId === gameInstance.id : builds.has(taskDto.refId)));
+      const pulls = pullsFor(game.currencies.map((currency) => ({ ...currency, value: gameInstance.currencies.find((held) => held.key === currency.key)?.value ?? 0 }))).limited;
+      const dayRecord = dayRecordFor(regionForInstance(game, gameInstance), mine, pulls, now);
+      const where = { gameInstanceId_day: { gameInstanceId: gameInstance.id, day: dayRecord.day } };
       // Two changes at once can both try to create the day's row; the loser updates it.
-      return prisma.dayRecord.upsert({ where, create: { gameInstanceId: gi.id, ...v }, update: v }).catch(() => prisma.dayRecord.update({ where, data: v }));
+      return prisma.dayRecord.upsert({ where, create: { gameInstanceId: gameInstance.id, ...dayRecord }, update: dayRecord }).catch(() => prisma.dayRecord.update({ where, data: dayRecord }));
     }),
   );
 }

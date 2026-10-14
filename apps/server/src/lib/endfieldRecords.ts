@@ -29,8 +29,8 @@ export async function fetchRecords(
 ): Promise<{ records: PullRecord[]; next: HistoryCursor | null; error?: HistoryError }> {
   const deadline = Date.now() + budgetMs;
   const types = (game.pullBanners ?? [])
-    .map((b) => b.gachaTypes?.[0])
-    .filter((t): t is string => Boolean(t));
+    .map((pullBanner) => pullBanner.gachaTypes?.[0])
+    .filter((gachaType): gachaType is string => Boolean(gachaType));
   const records: PullRecord[] = [];
   for (const type of types.slice(from ? Math.max(0, types.indexOf(from.gachaType)) : 0)) {
     let seqId: string | null = from?.gachaType === type ? from.endId : null;
@@ -40,12 +40,12 @@ export async function fetchRecords(
         type,
       );
       if (page.error) return { records, next: null, error: page.error };
-      const fresh = page.records.filter((r) => !seen.has(r.id));
+      const fresh = page.records.filter((record) => !seen.has(record.id));
       records.push(...fresh);
       if (!page.next || fresh.length < page.records.length) break;
       seqId = page.next;
       if (Date.now() >= deadline) return { records, next: { gachaType: type, endId: seqId } };
-      if (pauseMs) await new Promise((r) => setTimeout(r, pauseMs));
+      if (pauseMs) await new Promise((resolve) => setTimeout(resolve, pauseMs));
     }
   }
   return { records, next: null };

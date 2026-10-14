@@ -11,10 +11,10 @@ const ABSOLUTE = /^(?:[A-Za-z]:[\\/]|\/)/;
 export function resolveDatabase(url: string | undefined, prismaDir: string): Database {
   if (!url) throw new Error("DATABASE_URL is not set: give a file: URL for SQLite or a postgres:// URL.");
   if (!url.startsWith("file:")) return { kind: "postgres", connectionString: withTls(url) };
-  const p = url.slice("file:".length);
-  if (ABSOLUTE.test(p)) return { kind: "sqlite", path: p };
+  const path = url.slice("file:".length);
+  if (ABSOLUTE.test(path)) return { kind: "sqlite", path: path };
   const dir = prismaDir.replace(/\\/g, "/").replace(/\/$/, "");
-  return { kind: "sqlite", path: `${dir}/${p.replace(/^\.\//, "")}` };
+  return { kind: "sqlite", path: `${dir}/${path.replace(/^\.\//, "")}` };
 }
 
 const LOCAL = new Set(["localhost", "127.0.0.1", "[::1]"]);
@@ -27,9 +27,9 @@ const LOCAL = new Set(["localhost", "127.0.0.1", "[::1]"]);
  * only applies with uselibpqcompat. A local server (CI's) stays as written.
  */
 function withTls(url: string): string {
-  const u = new URL(url);
-  if (LOCAL.has(u.hostname)) return url;
-  if (!u.searchParams.has("sslmode")) u.searchParams.set("sslmode", "require");
-  if (!u.searchParams.has("uselibpqcompat")) u.searchParams.set("uselibpqcompat", "true");
-  return u.toString();
+  const parsedUrl = new URL(url);
+  if (LOCAL.has(parsedUrl.hostname)) return url;
+  if (!parsedUrl.searchParams.has("sslmode")) parsedUrl.searchParams.set("sslmode", "require");
+  if (!parsedUrl.searchParams.has("uselibpqcompat")) parsedUrl.searchParams.set("uselibpqcompat", "true");
+  return parsedUrl.toString();
 }

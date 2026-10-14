@@ -23,46 +23,46 @@ type Fetch = (
  * ones; what the user changed stays.
  */
 export async function syncEnka(
-  gi: GameInstance,
+  gameInstance: GameInstance,
   userId: string,
   fetchFn: Fetch = fetch as unknown as Fetch,
 ): Promise<{ created: number; updated: number } | { error: EnkaError }> {
-  if (gi.gameKey !== "genshin" && gi.gameKey !== "hsr" && gi.gameKey !== "zzz") return { error: "no_showcase" };
-  if (!gi.uid) return { error: "no_uid" };
-  const game = gameOrThrow(gi.gameKey);
-  const url = { genshin: enkaGenshinUrl, hsr: enkaHsrUrl, zzz: enkaZzzUrl }[gi.gameKey];
-  const res = await fetchFn(url(gi.uid), {
+  if (gameInstance.gameKey !== "genshin" && gameInstance.gameKey !== "hsr" && gameInstance.gameKey !== "zzz") return { error: "no_showcase" };
+  if (!gameInstance.uid) return { error: "no_uid" };
+  const game = gameOrThrow(gameInstance.gameKey);
+  const url = { genshin: enkaGenshinUrl, hsr: enkaHsrUrl, zzz: enkaZzzUrl }[gameInstance.gameKey];
+  const response = await fetchFn(url(gameInstance.uid), {
     headers: { "user-agent": "gacha-hub/1 (+https://gacha-hub-two.vercel.app)" },
   }).catch(() => null);
-  const failed: EnkaError | null = !res
+  const failed: EnkaError | null = !response
     ? "refused"
-    : res.status === 400 || res.status === 404
+    : response.status === 400 || response.status === 404
       ? "not_found"
-      : res.status === 424
+      : response.status === 424
         ? "maintenance"
-        : res.status === 429
+        : response.status === 429
           ? "too_frequent"
-          : res.ok
+          : response.ok
             ? null
             : "refused";
-  const cat = (await getCatalog(game))!;
-  const weaponName = (id: string) => cat.index.weapons.get(id)?.name;
-  const setName = (id: string) => cat.catalog.gear.find((x) => x.id === id)?.name;
-  const json = failed ? null : await res!.json();
+  const loadedCatalog = (await getCatalog(game))!;
+  const weaponName = (id: string) => loadedCatalog.index.weapons.get(id)?.name;
+  const setName = (id: string) => loadedCatalog.catalog.gear.find((gearSet) => gearSet.id === id)?.name;
+  const json = failed ? null : await response!.json();
   const read = failed
     ? { error: failed }
-    : gi.gameKey === "hsr"
-      ? cat.catalog.relicStats
-        ? readEnkaHsr(json, { weaponName, setName, relicStats: cat.catalog.relicStats })
+    : gameInstance.gameKey === "hsr"
+      ? loadedCatalog.catalog.relicStats
+        ? readEnkaHsr(json, { weaponName, setName, relicStats: loadedCatalog.catalog.relicStats })
         : { error: "no_showcase" as const }
-      : gi.gameKey === "zzz"
+      : gameInstance.gameKey === "zzz"
         ? readEnkaZzz(json, { weaponName, setName })
-        : readEnkaGenshin(json, { weaponName, setName, skillOrder: (id) => cat.index.characters.get(id)?.extra?.skillOrder as string[] | undefined });
+        : readEnkaGenshin(json, { weaponName, setName, skillOrder: (id) => loadedCatalog.index.characters.get(id)?.extra?.skillOrder as string[] | undefined });
   if ("error" in read) {
     await prisma.importRun.create({
       data: {
         userId,
-        gameInstanceId: gi.id,
+        gameInstanceId: gameInstance.id,
         provider: "enka",
         kind: "showcase",
         error: read.error,
@@ -72,39 +72,39 @@ export async function syncEnka(
   }
   let created = 0;
   let updated = 0;
-  for (const b of read.builds) {
-    const entry = cat.index.characters.get(b.catalogId);
+  for (const showcaseBuild of read.builds) {
+    const entry = loadedCatalog.index.characters.get(showcaseBuild.catalogId);
     if (!entry) continue;
     // ponytail: a showcase value outside the sheet's limits skips that character rather than the sync.
     try {
       const build = await prisma.character.findFirst({
-        where: { gameInstanceId: gi.id, catalogId: b.catalogId },
+        where: { gameInstanceId: gameInstance.id, catalogId: showcaseBuild.catalogId },
         orderBy: { createdAt: "asc" },
       });
       if (!build) {
         const doc = validateDoc(game, {
           ...(game.emptyDoc() as object),
           ...((game.seedDoc?.(entry) as object) ?? {}),
-          ...b.doc,
+          ...showcaseBuild.doc,
         });
         await prisma.character.create({
           data: {
-            gameInstanceId: gi.id,
-            catalogId: b.catalogId,
+            gameInstanceId: gameInstance.id,
+            catalogId: showcaseBuild.catalogId,
             name: entry.name,
             doc: doc as object,
-            synced: b.doc as object,
+            synced: showcaseBuild.doc as object,
           },
         });
         await prisma.ownership.upsert({
           where: {
             gameInstanceId_kind_catalogId: {
-              gameInstanceId: gi.id,
+              gameInstanceId: gameInstance.id,
               kind: "character",
-              catalogId: b.catalogId,
+              catalogId: showcaseBuild.catalogId,
             },
           },
-          create: { gameInstanceId: gi.id, kind: "character", catalogId: b.catalogId, qty: 1 },
+          create: { gameInstanceId: gameInstance.id, kind: "character", catalogId: showcaseBuild.catalogId, qty: 1 },
           update: {},
         });
         created += 1;
@@ -114,7 +114,7 @@ export async function syncEnka(
           mergeSynced(
             build.doc as Record<string, unknown>,
             build.synced as Record<string, unknown> | null,
-            b.doc,
+            showcaseBuild.doc,
           ),
         );
         await prisma.character.update({
@@ -124,7 +124,7 @@ export async function syncEnka(
             synced: mergeSynced(
               (build.synced as Record<string, unknown> | null) ?? {},
               build.synced as Record<string, unknown> | null,
-              b.doc,
+              showcaseBuild.doc,
             ) as object,
           },
         });
@@ -137,7 +137,7 @@ export async function syncEnka(
   await prisma.importRun.create({
     data: {
       userId,
-      gameInstanceId: gi.id,
+      gameInstanceId: gameInstance.id,
       provider: "enka",
       kind: "showcase",
       added: created + updated,

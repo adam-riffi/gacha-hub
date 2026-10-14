@@ -10,14 +10,14 @@ export async function registerEventGoalRoutes(app: FastifyInstance) {
   app.post<{ Params: { id: string } }>("/api/events/:id/goal", { preHandler: requireUser }, async (req, reply) => {
     const userId = req.user!.id;
     const body = eventGoalInput.parse(req.body);
-    const [gi, event] = await Promise.all([loadInstance(userId, body.instanceId), prisma.event.findUnique({ where: { id: req.params.id } })]);
+    const [gameInstance, event] = await Promise.all([loadInstance(userId, body.instanceId), prisma.event.findUnique({ where: { id: req.params.id } })]);
     const game = event && getGame(event.gameKey);
-    if (!gi || !event || !game) return reply.code(404).send({ error: "not_found" });
-    if (gi.gameKey !== event.gameKey) return reply.code(400).send({ error: "wrong_game" });
+    if (!gameInstance || !event || !game) return reply.code(404).send({ error: "not_found" });
+    if (gameInstance.gameKey !== event.gameKey) return reply.code(400).send({ error: "wrong_game" });
 
     const effects = readEffects(event.effects, game);
     if (!pickEffects(effects, body.choice)) return reply.code(400).send({ error: "choice_required" });
-    const choice = effects.some((e) => e.kind === "choose") ? (body.choice ?? null) : null;
+    const choice = effects.some((effect) => effect.kind === "choose") ? (body.choice ?? null) : null;
 
     const existing = await prisma.task.findFirst({ where: { userId, eventId: event.id } });
     if (existing?.lastCompletedAt) return reply.code(409).send({ error: "claimed" });
@@ -27,12 +27,12 @@ export async function registerEventGoalRoutes(app: FastifyInstance) {
           data: {
             userId,
             scope: "game",
-            refId: gi.id,
+            refId: gameInstance.id,
             type: "goal",
             title: event.name,
             eventId: event.id,
             choice,
-            items: effects.flatMap((e) => (e.kind === "goal.create" ? e.stages.map((label) => ({ label, done: false })) : [])) as PrismaJson,
+            items: effects.flatMap((effect) => (effect.kind === "goal.create" ? effect.stages.map((label) => ({ label, done: false })) : [])) as PrismaJson,
           },
         });
     return reply.code(existing ? 200 : 201).send(serializeTask(task, await buildRegionContext([task]), new Date()));

@@ -13,13 +13,13 @@ export async function registerOwnershipRoutes(app: FastifyInstance) {
     "/api/instances/:id/ownership",
     { preHandler: requireUser },
     async (req, reply) => {
-      const gi = await loadInstance(req.user!.id, req.params.id);
-      if (!gi) return reply.code(404).send({ error: "not_found" });
+      const gameInstance = await loadInstance(req.user!.id, req.params.id);
+      if (!gameInstance) return reply.code(404).send({ error: "not_found" });
       const rows = await prisma.ownership.findMany({
-        where: { gameInstanceId: gi.id },
+        where: { gameInstanceId: gameInstance.id },
         orderBy: [{ kind: "asc" }, { catalogId: "asc" }],
       });
-      return rows.map((r) => ownershipDto.parse(r));
+      return rows.map((row) => ownershipDto.parse(row));
     },
   );
 
@@ -27,54 +27,54 @@ export async function registerOwnershipRoutes(app: FastifyInstance) {
     "/api/instances/:id/ownership",
     { preHandler: requireUser },
     async (req, reply) => {
-      const gi = await loadInstance(req.user!.id, req.params.id);
-      if (!gi) return reply.code(404).send({ error: "not_found" });
-      const game = gameOrThrow(gi.gameKey);
+      const gameInstance = await loadInstance(req.user!.id, req.params.id);
+      if (!gameInstance) return reply.code(404).send({ error: "not_found" });
+      const game = gameOrThrow(gameInstance.gameKey);
       const { items } = setOwnershipInput.parse(req.body);
 
       // A weapon's meta is its level and refinement, within limits.
-      if (items.some((i) => i.kind === "weapon" && i.meta !== undefined && !weaponMetaSchema.safeParse(i.meta).success)) {
+      if (items.some((item) => item.kind === "weapon" && item.meta !== undefined && !weaponMetaSchema.safeParse(item.meta).success)) {
         return reply.code(400).send({ error: "bad_weapon_meta" });
       }
 
-      const cat = await getCatalog(game);
-      if (cat) {
-        const unknown = items.filter((i) =>
-          i.kind === "character"
-            ? !cat.index.characters.has(i.catalogId)
-            : i.kind === "weapon"
-              ? !cat.index.weapons.has(i.catalogId)
+      const loadedCatalog = await getCatalog(game);
+      if (loadedCatalog) {
+        const unknown = items.filter((item) =>
+          item.kind === "character"
+            ? !loadedCatalog.index.characters.has(item.catalogId)
+            : item.kind === "weapon"
+              ? !loadedCatalog.index.weapons.has(item.catalogId)
               : false,
         );
         if (unknown.length) {
           return reply.code(400).send({
             error: "unknown_catalog_id",
-            ids: unknown.map((u) => `${u.kind}:${u.catalogId}`).slice(0, 20),
+            ids: unknown.map((unknownItem) => `${unknownItem.kind}:${unknownItem.catalogId}`).slice(0, 20),
           });
         }
       }
 
       await prisma.$transaction(
-        items.map((i) => {
-          const key = { gameInstanceId: gi.id, kind: i.kind, catalogId: i.catalogId };
-          if (!i.owned) return prisma.ownership.deleteMany({ where: key });
+        items.map((item) => {
+          const key = { gameInstanceId: gameInstance.id, kind: item.kind, catalogId: item.catalogId };
+          if (!item.owned) return prisma.ownership.deleteMany({ where: key });
           const data = {
-            ...(i.qty !== undefined ? { qty: i.qty } : {}),
-            ...(i.meta !== undefined ? { meta: i.meta as PrismaJson } : {}),
+            ...(item.qty !== undefined ? { qty: item.qty } : {}),
+            ...(item.meta !== undefined ? { meta: item.meta as PrismaJson } : {}),
           };
           return prisma.ownership.upsert({
             where: { gameInstanceId_kind_catalogId: key },
-            create: { ...key, qty: i.qty ?? 1, meta: (i.meta ?? undefined) as PrismaJson | undefined },
+            create: { ...key, qty: item.qty ?? 1, meta: (item.meta ?? undefined) as PrismaJson | undefined },
             update: data,
           });
         }),
       );
 
       const rows = await prisma.ownership.findMany({
-        where: { gameInstanceId: gi.id },
+        where: { gameInstanceId: gameInstance.id },
         orderBy: [{ kind: "asc" }, { catalogId: "asc" }],
       });
-      return rows.map((r) => ownershipDto.parse(r));
+      return rows.map((row) => ownershipDto.parse(row));
     },
   );
 }

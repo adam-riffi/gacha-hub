@@ -38,15 +38,15 @@ export async function registerHoyolabRoutes(app: FastifyInstance) {
       update: data,
     });
     // Profiles it plays get their UID and level where none was typed, and the card's stats as long-term progress.
-    for (const g of cards.games) {
-      const gi = await prisma.gameInstance.findUnique({ where: { userId_gameKey: { userId, gameKey: g.gameKey } } });
-      if (!gi) continue;
+    for (const game of cards.games) {
+      const gameInstance = await prisma.gameInstance.findUnique({ where: { userId_gameKey: { userId, gameKey: game.gameKey } } });
+      if (!gameInstance) continue;
       await prisma.gameInstance.update({
-        where: { id: gi.id },
+        where: { id: gameInstance.id },
         data: {
-          ...(gi.uid ? {} : { uid: g.uid }),
-          ...(gi.accountLevel ? {} : { accountLevel: Math.min(g.level, LIMITS.accountLevel) }),
-          ...(g.stats ? { progress: g.stats } : {}),
+          ...(gameInstance.uid ? {} : { uid: game.uid }),
+          ...(gameInstance.accountLevel ? {} : { accountLevel: Math.min(game.level, LIMITS.accountLevel) }),
+          ...(game.stats ? { progress: game.stats } : {}),
         },
       });
     }
@@ -62,7 +62,7 @@ export async function registerHoyolabRoutes(app: FastifyInstance) {
     } catch {
       return reply.code(503).send({ error: "linking_off" });
     }
-    const r = await syncLink(link, new Date(), { chronicle: true });
-    return "error" in r ? reply.code(400).send({ error: r.error }) : r;
+    const syncResult = await syncLink(link, new Date(), { chronicle: true });
+    return "error" in syncResult ? reply.code(400).send({ error: syncResult.error }) : syncResult;
   });
 }

@@ -23,15 +23,15 @@ export async function registerCharacterRoutes(app: FastifyInstance) {
     "/api/instances/:id/characters",
     { preHandler: requireUser },
     async (req, reply) => {
-      const gi = await loadInstance(req.user!.id, req.params.id);
-      if (!gi) return reply.code(404).send({ error: "not_found" });
-      const game = gameOrThrow(gi.gameKey);
+      const gameInstance = await loadInstance(req.user!.id, req.params.id);
+      if (!gameInstance) return reply.code(404).send({ error: "not_found" });
+      const game = gameOrThrow(gameInstance.gameKey);
       const rows = await prisma.character.findMany({
-        where: { gameInstanceId: gi.id },
+        where: { gameInstanceId: gameInstance.id },
         orderBy: { createdAt: "asc" },
       });
-      const fresh = await Promise.all(rows.map((r) => upToDate(game, r)));
-      return fresh.map((r) => characterDto.parse(r));
+      const fresh = await Promise.all(rows.map((row) => upToDate(game, row)));
+      return fresh.map((freshRow) => characterDto.parse(freshRow));
     },
   );
 
@@ -45,17 +45,17 @@ export async function registerCharacterRoutes(app: FastifyInstance) {
     "/api/instances/:id/characters",
     { preHandler: requireUser },
     async (req, reply) => {
-      const gi = await loadInstance(req.user!.id, req.params.id);
-      if (!gi) return reply.code(404).send({ error: "not_found" });
-      const game = gameOrThrow(gi.gameKey);
+      const gameInstance = await loadInstance(req.user!.id, req.params.id);
+      if (!gameInstance) return reply.code(404).send({ error: "not_found" });
+      const game = gameOrThrow(gameInstance.gameKey);
       const body = createCharacterInput.parse(req.body);
 
       let name = body.name;
       let seed: object = {};
-      const cat = await getCatalog(game);
-      if (cat) {
+      const loadedCatalog = await getCatalog(game);
+      if (loadedCatalog) {
         if (!body.catalogId) return reply.code(400).send({ error: "catalog_id_required" });
-        const entry = cat.index.characters.get(body.catalogId);
+        const entry = loadedCatalog.index.characters.get(body.catalogId);
         if (!entry) return reply.code(404).send({ error: "unknown_catalog_id" });
         name = name ?? entry.name;
         seed = (game.seedDoc?.(entry) as object) ?? {};
@@ -63,9 +63,9 @@ export async function registerCharacterRoutes(app: FastifyInstance) {
         if (body.own !== false) {
           await prisma.ownership.upsert({
             where: {
-              gameInstanceId_kind_catalogId: { gameInstanceId: gi.id, kind: "character", catalogId: entry.id },
+              gameInstanceId_kind_catalogId: { gameInstanceId: gameInstance.id, kind: "character", catalogId: entry.id },
             },
-            create: { gameInstanceId: gi.id, kind: "character", catalogId: entry.id, qty: 1 },
+            create: { gameInstanceId: gameInstance.id, kind: "character", catalogId: entry.id, qty: 1 },
             update: {},
           });
         }
@@ -79,10 +79,10 @@ export async function registerCharacterRoutes(app: FastifyInstance) {
         ...((body.doc as object) ?? {}),
       });
       // A unit's first build is its default.
-      const siblings = body.catalogId ? await prisma.character.count({ where: { gameInstanceId: gi.id, catalogId: body.catalogId } }) : 0;
+      const siblings = body.catalogId ? await prisma.character.count({ where: { gameInstanceId: gameInstance.id, catalogId: body.catalogId } }) : 0;
       const created = await prisma.character.create({
         data: {
-          gameInstanceId: gi.id,
+          gameInstanceId: gameInstance.id,
           catalogId: body.catalogId ?? null,
           isDefault: siblings === 0,
           name: name!,
@@ -119,11 +119,11 @@ export async function registerCharacterRoutes(app: FastifyInstance) {
       const body = updateCharacterInput.parse(req.body);
       if (body.role && !game.manifest.kpis[body.role]) return reply.code(400).send({ error: "unknown_role" });
       const numeric = numericKpis(game);
-      if (body.targets && Object.keys(body.targets).some((k) => !numeric.has(k))) return reply.code(400).send({ error: "unknown_kpi" });
+      if (body.targets && Object.keys(body.targets).some((target) => !numeric.has(target))) return reply.code(400).send({ error: "unknown_kpi" });
       if (body.cardStats && new Set(body.cardStats).size < body.cardStats.length) return reply.code(400).send({ error: "duplicate_stat" });
       if (body.catalogId !== undefined) {
-        const cat = await getCatalog(game);
-        if (cat && body.catalogId && !cat.index.characters.has(body.catalogId)) {
+        const loadedCatalog = await getCatalog(game);
+        if (loadedCatalog && body.catalogId && !loadedCatalog.index.characters.has(body.catalogId)) {
           return reply.code(404).send({ error: "unknown_catalog_id" });
         }
       }

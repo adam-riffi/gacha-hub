@@ -19,59 +19,59 @@ for (const candidate of [
   }
 }
 
-function str(name: string, fallback = ""): string {
+function envString(name: string, fallback = ""): string {
   return process.env[name] ?? fallback;
 }
 function bool(name: string, fallback = false): boolean {
-  const v = process.env[name];
-  if (v === undefined) return fallback;
-  return v === "true" || v === "1";
+  const envValue = process.env[name];
+  if (envValue === undefined) return fallback;
+  return envValue === "true" || envValue === "1";
 }
 function int(name: string, fallback: number): number {
-  const v = process.env[name];
-  if (v === undefined) return fallback;
-  const n = Number.parseInt(v, 10);
-  return Number.isNaN(n) ? fallback : n;
+  const envValue = process.env[name];
+  if (envValue === undefined) return fallback;
+  const parsedNumber = Number.parseInt(envValue, 10);
+  return Number.isNaN(parsedNumber) ? fallback : parsedNumber;
 }
 
-const isProd = str("NODE_ENV") === "production";
+const isProd = envString("NODE_ENV") === "production";
 
 export const config = {
   isProd,
   port: int("PORT", 3000),
-  appBaseUrl: str("APP_BASE_URL", "http://localhost:3000").replace(/\/$/, ""),
-  sessionSecret: str(
+  appBaseUrl: envString("APP_BASE_URL", "http://localhost:3000").replace(/\/$/, ""),
+  sessionSecret: envString(
     "SESSION_SECRET",
     "dev-insecure-session-secret-change-me-32chars",
   ),
   cookieSecure: bool("COOKIE_SECURE", isProd),
-  databaseUrl: str("DATABASE_URL"),
-  uploadDir: str("UPLOAD_DIR", "./uploads"),
+  databaseUrl: envString("DATABASE_URL"),
+  uploadDir: envString("UPLOAD_DIR", "./uploads"),
   /** Vercel Blob token; when set, uploads go to Blob instead of local disk. */
-  blobToken: str("BLOB_READ_WRITE_TOKEN"),
+  blobToken: envString("BLOB_READ_WRITE_TOKEN"),
 
   /** Shared secret the external cron (GitHub Actions) sends to /api/cron/tick. */
-  cronSecret: str("CRON_SECRET"),
+  cronSecret: envString("CRON_SECRET"),
   /** Run node-cron in-process (only for always-on hosts like Docker). */
   inProcessCron: bool("ENABLE_INPROCESS_CRON", false),
   /** Discord user ids granted the admin role (comma-separated). */
-  adminDiscordIds: str("ADMIN_DISCORD_IDS")
+  adminDiscordIds: envString("ADMIN_DISCORD_IDS")
     .split(",")
-    .map((s) => s.trim())
+    .map((part) => part.trim())
     .filter(Boolean),
 
   discord: {
-    clientId: str("DISCORD_CLIENT_ID"),
-    clientSecret: str("DISCORD_CLIENT_SECRET"),
-    oauthRedirect: str(
+    clientId: envString("DISCORD_CLIENT_ID"),
+    clientSecret: envString("DISCORD_CLIENT_SECRET"),
+    oauthRedirect: envString(
       "DISCORD_OAUTH_REDIRECT",
       "http://localhost:3000/api/auth/discord/callback",
     ),
-    botToken: str("DISCORD_BOT_TOKEN"),
-    appId: str("DISCORD_APP_ID"),
+    botToken: envString("DISCORD_BOT_TOKEN"),
+    appId: envString("DISCORD_APP_ID"),
     /** Application public key — verifies HTTP Interactions signatures. */
-    publicKey: str("DISCORD_PUBLIC_KEY"),
-    devGuildId: str("DISCORD_DEV_GUILD_ID"),
+    publicKey: envString("DISCORD_PUBLIC_KEY"),
+    devGuildId: envString("DISCORD_DEV_GUILD_ID"),
   },
 
   /** Dev-only shortcut login (no Discord app needed). Never on in production. */

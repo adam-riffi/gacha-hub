@@ -16,9 +16,9 @@ export async function registerCommands(): Promise<void> {
   const path = devGuildId
     ? `/applications/${appId}/guilds/${devGuildId}/commands`
     : `/applications/${appId}/commands`;
-  const res = await discordFetch(path, { method: "PUT", body: JSON.stringify(commands) });
-  if (!res.ok) {
-    throw new Error(`Command registration failed: ${res.status} ${await res.text()}`);
+  const response = await discordFetch(path, { method: "PUT", body: JSON.stringify(commands) });
+  if (!response.ok) {
+    throw new Error(`Command registration failed: ${response.status} ${await response.text()}`);
   }
   console.log(
     devGuildId

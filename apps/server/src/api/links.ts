@@ -8,7 +8,7 @@ export async function registerLinkRoutes(app: FastifyInstance) {
   app.get("/api/links", { preHandler: requireUser }, async (req) => {
     const rows = await prisma.linkedAccount.findMany({ where: { userId: req.user!.id }, orderBy: { createdAt: "asc" } });
     // zod strips everything the DTO does not name, the secret and key version included.
-    return rows.map((r) => linkedAccountDto.parse(r));
+    return rows.map((row) => linkedAccountDto.parse(row));
   });
 
   app.delete<{ Params: { id: string } }>("/api/links/:id", { preHandler: requireUser }, async (req, reply) => {

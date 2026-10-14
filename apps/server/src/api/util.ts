@@ -7,9 +7,9 @@ import { toRegionReset, type RegionReset } from "../lib/resets.js";
 export function gameOrThrow(gameKey: string): GameDefinition {
   const game = getGame(gameKey);
   if (!game) {
-    const err = new Error("unknown_game") as Error & { statusCode?: number };
-    err.statusCode = 404;
-    throw err;
+    const unknownGame = new Error("unknown_game") as Error & { statusCode?: number };
+    unknownGame.statusCode = 404;
+    throw unknownGame;
   }
   return game;
 }
@@ -23,7 +23,7 @@ export function regionForInstance(
   instance: Pick<GameInstance, "regionKey">,
 ): RegionReset {
   const region =
-    game.regions.find((r) => r.key === instance.regionKey) ?? game.regions[0];
+    game.regions.find((candidate) => candidate.key === instance.regionKey) ?? game.regions[0];
   return toRegionReset(region);
 }
 
@@ -38,12 +38,12 @@ const catalogCache = new Map<string, Promise<LoadedCatalog>>();
 /** The game's catalog + id indexes, loaded once per process (null if none). */
 export function getCatalog(game: GameDefinition): Promise<LoadedCatalog | null> {
   if (!game.loadCatalog) return Promise.resolve(null);
-  let p = catalogCache.get(game.key);
-  if (!p) {
-    p = game.loadCatalog().then((catalog) => ({ catalog, index: indexCatalog(catalog) }));
-    catalogCache.set(game.key, p);
+  let cachedLoad = catalogCache.get(game.key);
+  if (!cachedLoad) {
+    cachedLoad = game.loadCatalog().then((catalog) => ({ catalog, index: indexCatalog(catalog) }));
+    catalogCache.set(game.key, cachedLoad);
   }
-  return p;
+  return cachedLoad;
 }
 
 export function loadInstance(userId: string, id: string) {
