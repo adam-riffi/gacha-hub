@@ -12,6 +12,7 @@ import { GameTabs, gearLabel } from "../components/GameTabs";
 import { Picker } from "../components/Picker";
 import { Chips, Segmented } from "../components/ui";
 import { assetUrl, communityAssetUrl } from "../lib/assets";
+import { StatIcon } from "../components/StatIcon";
 import type { InstanceDetail } from "../lib/types";
 
 type Sub = { stat: string; value: number | string };
@@ -66,6 +67,7 @@ export function GearSetsPage() {
   const [slotFilter, setSlotFilter] = useState("");
   const [mainFilter, setMainFilter] = useState("");
   const [where, setWhere] = useState("");
+  const [adding, setAdding] = useState(false);
 
   const { data: instance, isError, refetch } = useQuery({ queryKey: ["instance", id], queryFn: () => api.get<InstanceDetail>(`/api/instances/${id}`), enabled: Boolean(id) });
   const { catalog, isLoading } = useCatalog(instance?.gameKey);
@@ -120,6 +122,10 @@ export function GearSetsPage() {
             <Chips label="Where" value={where} onChange={setWhere} options={["Equipped", "Bag"]} />
             <span className="ch-sp" />
             <span className="badge">{shownPieces.length} pieces</span>
+            {/* A piece you have, made here without opening a set (Georges, round 7: "where can I create gear pieces I have in a vacuum?"). */}
+            <button type="button" className="btn primary" aria-expanded={adding} onClick={() => setAdding(!adding)}>
+              Add a piece
+            </button>
           </>
         ) : (
           <>
@@ -150,6 +156,7 @@ export function GearSetsPage() {
         <div className="card empty">No {label.toLowerCase()} in this game's catalog yet.</div>
       ) : (
         <div className={`gs-page ${open ? "has-panel" : ""}`}>
+          {view === "pieces" && adding && <NewPiece instanceId={id!} game={game} sets={sets} onDone={() => setAdding(false)} />}
           {view === "pieces" ? (
             <section className="gs-pieces" aria-label="Pieces">
               {shownPieces.map((p) => {
@@ -170,19 +177,23 @@ export function GearSetsPage() {
                       )}
                     </div>
                     <div className="gs-piece-main">
-                      <span>{p.mainStat || "—"}</span>
-                      <span className="mn">+{p.level ?? 0}</span>
+                      <span>
+                        {p.mainStat && <StatIcon stat={p.mainStat} />}
+                        {p.mainStat || "—"}
+                      </span>
+                      <span className="cd">+{p.level ?? 0}</span>
                     </div>
-                    {p.substats?.length ? (
-                      <ul className="gs-piece-subs mn">
-                        {p.substats.map((s, i) => (
-                          <li key={i}>
-                            <span>{s.stat}</span>
-                            <span>{s.value}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : null}
+                    <ul className="gs-piece-subs mn">
+                      {(p.substats ?? []).map((s, i) => (
+                        <li key={i}>
+                          <span>
+                            <StatIcon stat={s.stat} />
+                            {s.stat}
+                          </span>
+                          <span>{s.value}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </article>
                 );
               })}
@@ -395,5 +406,75 @@ function SetPanel({ instanceId, game, set, pieces, builds, onClose }: { instance
         </button>
       )}
     </aside>
+  );
+}
+
+/** A new piece in the bag, from the pieces: its set, slot, main stat (the slot's choices) and level. */
+function NewPiece({ instanceId, game, sets, onDone }: { instanceId: string; game: GameDefinition; sets: CatalogGearSet[]; onDone: () => void }) {
+  const qc = useQueryClient();
+  const toast = useToast();
+  const slots = game.manifest.gear.slots;
+  const [setName, setSetName] = useState("");
+  const [slot, setSlot] = useState(slots[0]?.key ?? "");
+  const mainStats = slots.find((s) => s.key === slot)?.mainStats ?? [];
+  const add = useMutation({
+    mutationFn: (body: { setName: string; slot: string; mainStat: string; level: number }) => api.post(`/api/instances/${instanceId}/gear`, body),
+    onSuccess: () => {
+      toast("Piece added");
+      onDone();
+      return qc.invalidateQueries({ queryKey: ["gear", instanceId] });
+    },
+    onError: () => toast("Could not add the piece", "err"),
+  });
+  const submit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const f = new FormData(e.currentTarget);
+    if (!setName) return;
+    add.mutate({ setName, slot, mainStat: String(f.get("mainStat") ?? ""), level: Math.min(game.manifest.gear.maxLevel ?? 25, Math.max(0, Number(f.get("level") ?? 0))) });
+  };
+  return (
+    <form className="card gs-new" aria-label="New piece" onSubmit={submit}>
+      <Picker
+        label="Piece set"
+        glyph="gear"
+        placeholder="Set"
+        value={setName}
+        free
+        options={sets.map((g) => ({ id: g.id, name: g.name, src: assetUrl(game.key, "gear", g.icon), fallback: communityAssetUrl(game.key, "gear", g.icon) }))}
+        onPick={(o, text) => setSetName(o?.name ?? text)}
+      />
+      <label>
+        Slot
+        <select value={slot} onChange={(e) => setSlot(e.target.value)}>
+          {slots.map((s) => (
+            <option key={s.key} value={s.key}>
+              {s.label}
+            </option>
+          ))}
+        </select>
+      </label>
+      <label>
+        Main stat
+        {mainStats.length > 0 ? (
+          <select name="mainStat" key={slot}>
+            {mainStats.map((m) => (
+              <option key={m}>{m}</option>
+            ))}
+          </select>
+        ) : (
+          <input name="mainStat" maxLength={60} />
+        )}
+      </label>
+      <label>
+        Level
+        <input name="level" type="number" min={0} max={game.manifest.gear.maxLevel ?? 25} defaultValue={0} />
+      </label>
+      <button className="btn primary" type="submit" disabled={add.isPending || !setName}>
+        Add
+      </button>
+      <button className="btn ghost" type="button" onClick={onDone}>
+        Cancel
+      </button>
+    </form>
   );
 }

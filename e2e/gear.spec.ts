@@ -108,3 +108,41 @@ test("Gear: every piece you have, on a build or in the bag, filtered by set, slo
     await page.request.delete(`/api/gear/${bag.id}`);
   }
 });
+
+// Georges, round 7: "where can I create gear pieces that I have in a vacuum? … the artifact screen is a mess, I can barely read it; the sets
+// part is even worse, the window opening and moving everything".
+test("Gear: a piece added from the pieces, its card readable with its set's and stats' icons; a set opens over the page without moving it @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  try {
+    await page.goto(`/games/${id}/gear`);
+    await page.getByRole("button", { name: "Add a piece" }).click();
+    const form = page.getByRole("form", { name: "New piece" });
+    await form.getByRole("combobox", { name: "Piece set" }).fill("Musketeer");
+    await page.getByRole("option", { name: /^Musketeer of Wild Wheat/ }).click();
+    await form.getByLabel("Slot").selectOption({ label: "Body" });
+    await form.getByLabel("Main stat").selectOption("CRIT Rate");
+    await form.getByLabel("Level").fill("9");
+    await form.getByRole("button", { name: "Add", exact: true }).click();
+    const piece = page.getByRole("region", { name: "Pieces" }).getByRole("article", { name: "Musketeer of Wild Wheat · Body" }).filter({ hasText: "+9" });
+    await expect(piece).toContainText("Bag");
+    expect((await piece.getByRole("img", { name: "Musketeer of Wild Wheat" }).boundingBox())!.width).toBeGreaterThanOrEqual(48);
+    await expect(piece.locator("svg.stat-icon[data-stat=critRate]")).toBeVisible();
+
+    // The set over the page: the cards stay where they were.
+    await page.getByRole("group", { name: "Show" }).getByRole("button", { name: "Sets" }).click();
+    const first = page.locator(".set-grid > *").first();
+    const before = (await first.boundingBox())!;
+    await page.getByRole("button", { name: "Open Musketeer of Wild Wheat" }).click();
+    const panel = page.getByRole("complementary", { name: "Musketeer of Wild Wheat" });
+    await expect(panel).toBeVisible();
+    expect(await panel.evaluate((el) => getComputedStyle(el).position)).toBe("fixed");
+    const after = (await first.boundingBox())!;
+    expect([after.x, after.width]).toEqual([before.x, before.width]);
+  } finally {
+    const bag = (await (await page.request.get(`/api/instances/${id}/gear`)).json()) as { id: string; setName: string; slot: string; level: number }[];
+    for (const p of bag.filter((x) => x.setName === "Musketeer of Wild Wheat" && x.slot === "body" && x.level === 9)) await page.request.delete(`/api/gear/${p.id}`);
+  }
+});
