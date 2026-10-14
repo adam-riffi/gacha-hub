@@ -52,52 +52,52 @@ export interface Client {
  * Dev-login and return a client that carries the session cookie. Pass a
  * distinct `ip` when a test must not share a rate-limit bucket with others.
  */
-export async function login(app: FastifyInstance, ip?: string): Promise<Client> {
-  const res = await app.inject({ method: "POST", url: "/api/auth/dev-login", remoteAddress: ip });
-  const raw = res.headers["set-cookie"];
+export async function login(app: FastifyInstance, ipAddress?: string): Promise<Client> {
+  const loginResponse = await app.inject({ method: "POST", url: "/api/auth/dev-login", remoteAddress: ipAddress });
+  const raw = loginResponse.headers["set-cookie"];
   const setCookie = Array.isArray(raw) ? raw[0] : raw;
   const cookie = (setCookie ?? "").split(";")[0] ?? "";
   return {
     cookie,
     async req(method, url, body) {
-      const r = await app.inject({
+      const response = await app.inject({
         method: method as "GET",
         url,
-        remoteAddress: ip,
+        remoteAddress: ipAddress,
         headers: { cookie, ...(body === undefined ? {} : { "content-type": "application/json" }) },
         payload: body === undefined ? undefined : JSON.stringify(body),
       });
       let json: unknown;
       try {
-        json = r.body ? JSON.parse(r.body) : undefined;
+        json = response.body ? JSON.parse(response.body) : undefined;
       } catch {
-        json = r.body;
+        json = response.body;
       }
-      return { status: r.statusCode, json: json as never };
+      return { status: response.statusCode, json: json as never };
     },
   };
 }
 
 /** Install a game and return its instance id (201 new, 200 already installed). */
-export async function installGame(c: Client, gameKey: string): Promise<string> {
-  const r = await c.req<{ id: string }>("POST", "/api/instances", { gameKey });
-  expect([200, 201], JSON.stringify(r.json)).toContain(r.status);
-  return r.json.id;
+export async function installGame(client: Client, gameKey: string): Promise<string> {
+  const response = await client.req<{ id: string }>("POST", "/api/instances", { gameKey });
+  expect([200, 201], JSON.stringify(response.json)).toContain(response.status);
+  return response.json.id;
 }
 
 /** POST a signed Discord interaction to the interactions endpoint. */
 export async function interaction(app: FastifyInstance, payload: unknown) {
   const key = (globalThis as { __discordPrivateKey?: KeyObject }).__discordPrivateKey!;
   const body = JSON.stringify(payload);
-  const ts = String(Math.floor(Date.now() / 1000));
-  const sigHex = sign(null, Buffer.from(ts + body), key).toString("hex");
-  const r = await app.inject({
+  const timestamp = String(Math.floor(Date.now() / 1000));
+  const sigHex = sign(null, Buffer.from(timestamp + body), key).toString("hex");
+  const response = await app.inject({
     method: "POST",
     url: "/api/discord/interactions",
-    headers: { "content-type": "application/json", "x-signature-ed25519": sigHex, "x-signature-timestamp": ts },
+    headers: { "content-type": "application/json", "x-signature-ed25519": sigHex, "x-signature-timestamp": timestamp },
     payload: body,
   });
-  return { status: r.statusCode, json: r.body ? JSON.parse(r.body) : undefined };
+  return { status: response.statusCode, json: response.body ? JSON.parse(response.body) : undefined };
 }
 
 /** Build a slash-command interaction body. */
@@ -106,10 +106,10 @@ export function slash(name: string, options: Record<string, string | number | bo
     type: 2,
     data: {
       name,
-      options: Object.entries(options).map(([n, v]) => ({
-        name: n,
-        type: typeof v === "boolean" ? 5 : typeof v === "number" ? 10 : 3,
-        value: v,
+      options: Object.entries(options).map(([optionName, optionValue]) => ({
+        name: optionName,
+        type: typeof optionValue === "boolean" ? 5 : typeof optionValue === "number" ? 10 : 3,
+        value: optionValue,
       })),
     },
     member: { user: { id: "dev-local-user" } },

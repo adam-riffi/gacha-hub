@@ -39,7 +39,7 @@ interface InteractionPayload {
 
 function normalizeOptions(payload: InteractionPayload): CommandOptions {
   const out: CommandOptions = {};
-  for (const o of payload.data?.options ?? []) out[o.name] = o.value;
+  for (const option of payload.data?.options ?? []) out[option.name] = option.value;
   return out;
 }
 
@@ -67,12 +67,12 @@ export async function registerDiscordInteractions(app: FastifyInstance) {
       { config: { rateLimit: { max: 120, timeWindow: "1 minute" } } },
       async (req, reply) => {
       const { raw, json } = req.body as { raw: string; json: InteractionPayload };
-      const sig = req.headers["x-signature-ed25519"];
-      const ts = req.headers["x-signature-timestamp"];
+      const signature = req.headers["x-signature-ed25519"];
+      const timestamp = req.headers["x-signature-timestamp"];
       const ok = await verifyDiscordSignature(
         raw,
-        typeof sig === "string" ? sig : undefined,
-        typeof ts === "string" ? ts : undefined,
+        typeof signature === "string" ? signature : undefined,
+        typeof timestamp === "string" ? timestamp : undefined,
         config.discord.publicKey,
       );
       if (!ok) return reply.code(401).send({ error: "bad_signature" });

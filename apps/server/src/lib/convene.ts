@@ -14,9 +14,9 @@ export async function fetchConvene(
   { fetchFn = fetch as Fetch, pauseMs = 300 }: { fetchFn?: Fetch; pauseMs?: number } = {},
 ): Promise<{ records: PullRecord[]; error?: HistoryError }> {
   const records: PullRecord[] = [];
-  const types = (game.pullBanners ?? []).map((b) => b.gachaTypes?.[0]).filter((t): t is string => Boolean(t));
-  for (const [i, type] of types.entries()) {
-    if (i && pauseMs) await new Promise((r) => setTimeout(r, pauseMs));
+  const types = (game.pullBanners ?? []).map((pullBanner) => pullBanner.gachaTypes?.[0]).filter((gachaType): gachaType is string => Boolean(gachaType));
+  for (const [typeIndex, type] of types.entries()) {
+    if (typeIndex && pauseMs) await new Promise((resolve) => setTimeout(resolve, pauseMs));
     const { url, body } = conveneRequest(link, type);
     const page = readConvenePage(await (await fetchFn(url, { method: "POST", headers: { "content-type": "application/json" }, body })).json(), type, timezone);
     if (page.error) return { records: [], error: page.error };

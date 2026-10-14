@@ -22,26 +22,26 @@ export async function syncLink(link: LinkedAccount, now: Date, opts: { chronicle
   const profiles = await prisma.gameInstance.findMany({ where: { userId: link.userId, gameKey: { in: ["genshin", "hsr", "zzz"] }, uid: { not: null } } });
   const synced: string[] = [];
   let error: HoyolabError | undefined;
-  for (const gi of profiles) {
-    const game = getGame(gi.gameKey)!;
-    const region = regionForInstance(game, gi);
-    const url = hoyolabNotesUrl(gi.gameKey, gi.regionKey, gi.uid!);
+  for (const gameInstance of profiles) {
+    const game = getGame(gameInstance.gameKey)!;
+    const region = regionForInstance(game, gameInstance);
+    const url = hoyolabNotesUrl(gameInstance.gameKey, gameInstance.regionKey, gameInstance.uid!);
     if (!url) continue;
-    const notes = readNotes(gi.gameKey, await hoyolabGet(url, cookie).catch(() => null));
+    const notes = readNotes(gameInstance.gameKey, await hoyolabGet(url, cookie).catch(() => null));
     if ("error" in notes) {
       error = notes.error;
       break;
     }
     for (const [key, value] of Object.entries(notes.currencies)) {
-      await prisma.currencyState.upsert({ where: { gameInstanceId_key: { gameInstanceId: gi.id, key } }, create: { gameInstanceId: gi.id, key, value }, update: { value } });
+      await prisma.currencyState.upsert({ where: { gameInstanceId_key: { gameInstanceId: gameInstance.id, key } }, create: { gameInstanceId: gameInstance.id, key, value }, update: { value } });
     }
     // The game's first daily is the one the notes speak of (commissions, daily training, daily missions).
-    const daily = game.defaultTasks.find((t) => t.cadence === "daily");
+    const daily = game.defaultTasks.find((defaultTask) => defaultTask.cadence === "daily");
     if (notes.dailyDone && daily) {
-      const task = await prisma.task.findFirst({ where: { userId: link.userId, scope: "game", refId: gi.id, title: daily.title } });
+      const task = await prisma.task.findFirst({ where: { userId: link.userId, scope: "game", refId: gameInstance.id, title: daily.title } });
       if (task && !isDoneThisCycle(task.lastCompletedAt, now, region, { cadence: "daily" })) await prisma.task.update({ where: { id: task.id }, data: { lastCompletedAt: now } });
     }
-    synced.push(gi.gameKey);
+    synced.push(gameInstance.gameKey);
   }
   await prisma.linkedAccount.update({ where: { id: link.id }, data: error ? { status: "attention", lastError: error } : { lastSyncAt: now, lastError: null } });
   await prisma.importRun.create({ data: { userId: link.userId, provider: "hoyolab", kind: "notes", added: synced.length, error: error ?? null } });
@@ -54,9 +54,9 @@ export async function syncLink(link: LinkedAccount, now: Date, opts: { chronicle
 /** The record card's stats again, as each profile's long-term progress (G8); a card that fails changes nothing. */
 async function syncProgress(link: LinkedAccount, cookie: string, profiles: { id: string; gameKey: string }[]): Promise<void> {
   const cards = readRecordCards(await hoyolabGet(`${HOYOLAB_CARDS_URL}?uid=${link.accountId}`, cookie).catch(() => null));
-  for (const g of cards.games) {
-    const gi = profiles.find((p) => p.gameKey === g.gameKey);
-    if (gi && g.stats) await prisma.gameInstance.update({ where: { id: gi.id }, data: { progress: g.stats } });
+  for (const game of cards.games) {
+    const gameInstance = profiles.find((profile) => profile.gameKey === game.gameKey);
+    if (gameInstance && game.stats) await prisma.gameInstance.update({ where: { id: gameInstance.id }, data: { progress: game.stats } });
   }
 }
 
@@ -68,28 +68,28 @@ async function syncProgress(link: LinkedAccount, cookie: string, profiles: { id:
  */
 async function syncRoster(cookie: string, profiles: { id: string; gameKey: string; regionKey: string; uid: string | null }[]): Promise<number> {
   let read = 0;
-  for (const gi of profiles) {
-    const req = rosterRequest(gi.gameKey, gi.regionKey, gi.uid!);
-    const game = getGame(gi.gameKey)!;
-    const cat = await getCatalog(game);
-    if (!req || !cat) continue;
+  for (const gameInstance of profiles) {
+    const req = rosterRequest(gameInstance.gameKey, gameInstance.regionKey, gameInstance.uid!);
+    const game = getGame(gameInstance.gameKey)!;
+    const loadedCatalog = await getCatalog(game);
+    if (!req || !loadedCatalog) continue;
     const { units } = readRoster(game, await hoyolabGet(req.url, cookie, undefined, req.body).catch(() => null));
     const holder = game.manifest.dupes.weapon?.field.split(".")[0];
-    for (const u of units) {
-      if (!cat.index.characters.has(u.catalogId)) continue;
+    for (const unit of units) {
+      if (!loadedCatalog.index.characters.has(unit.catalogId)) continue;
       read += 1;
       const own = (kind: string, catalogId: string) =>
-        prisma.ownership.upsert({ where: { gameInstanceId_kind_catalogId: { gameInstanceId: gi.id, kind, catalogId } }, create: { gameInstanceId: gi.id, kind, catalogId, qty: 1 }, update: {} });
-      await own("character", u.catalogId);
-      const weapon = u.weaponId ? cat.index.weapons.get(u.weaponId) : undefined;
+        prisma.ownership.upsert({ where: { gameInstanceId_kind_catalogId: { gameInstanceId: gameInstance.id, kind, catalogId } }, create: { gameInstanceId: gameInstance.id, kind, catalogId, qty: 1 }, update: {} });
+      await own("character", unit.catalogId);
+      const weapon = unit.weaponId ? loadedCatalog.index.weapons.get(unit.weaponId) : undefined;
       if (weapon) await own("weapon", weapon.id);
-      if (weapon && holder) (u.doc[holder] as Record<string, unknown>).name = weapon.name;
-      const build = await prisma.character.findFirst({ where: { gameInstanceId: gi.id, catalogId: u.catalogId }, orderBy: { createdAt: "asc" } });
+      if (weapon && holder) (unit.doc[holder] as Record<string, unknown>).name = weapon.name;
+      const build = await prisma.character.findFirst({ where: { gameInstanceId: gameInstance.id, catalogId: unit.catalogId }, orderBy: { createdAt: "asc" } });
       if (!build) continue;
       const synced = build.synced as Record<string, unknown> | null;
       try {
-        const doc = validateDoc(game, mergeSynced(build.doc as Record<string, unknown>, synced, u.doc));
-        await prisma.character.update({ where: { id: build.id }, data: { doc: doc as object, synced: mergeSynced(synced ?? {}, synced, u.doc) as object } });
+        const doc = validateDoc(game, mergeSynced(build.doc as Record<string, unknown>, synced, unit.doc));
+        await prisma.character.update({ where: { id: build.id }, data: { doc: doc as object, synced: mergeSynced(synced ?? {}, synced, unit.doc) as object } });
       } catch {
         // ponytail: a roster value outside the sheet's limits leaves that build as it was.
       }
@@ -106,11 +106,11 @@ async function syncRoster(cookie: string, profiles: { id: string; gameKey: strin
 async function syncChronicle(userId: string, cookie: string, profiles: { id: string; gameKey: string; regionKey: string; uid: string | null }[], now: Date): Promise<number> {
   let written = 0;
   let error: HoyolabError | null = null;
-  for (const gi of profiles) {
-    const game = getGame(gi.gameKey)!;
-    const region = regionForInstance(game, gi);
-    for (const req of chronicleRequests(gi.gameKey, gi.regionKey, gi.uid!)) {
-      const mode = game.manifest.endgame.find((m) => m.key === req.modeKey);
+  for (const gameInstance of profiles) {
+    const game = getGame(gameInstance.gameKey)!;
+    const region = regionForInstance(game, gameInstance);
+    for (const req of chronicleRequests(gameInstance.gameKey, gameInstance.regionKey, gameInstance.uid!)) {
+      const mode = game.manifest.endgame.find((endgameMode) => endgameMode.key === req.modeKey);
       if (!mode) continue;
       const read = readChronicle(req.modeKey, await hoyolabGet(req.url, cookie).catch(() => null), now);
       if (!read) continue;
@@ -119,11 +119,11 @@ async function syncChronicle(userId: string, cookie: string, profiles: { id: str
         continue;
       }
       const cycleStart = cadenceWindow(mode.anchor, region, now).start;
-      const key = { gameInstanceId_modeKey_cycleStart: { gameInstanceId: gi.id, modeKey: mode.key, cycleStart } };
+      const key = { gameInstanceId_modeKey_cycleStart: { gameInstanceId: gameInstance.id, modeKey: mode.key, cycleStart } };
       const typed = await prisma.cycleResult.findUnique({ where: key });
       if (typed && typed.source !== "hoyolab" && typed.result !== null) continue;
       const data = { result: Math.min(read.result, mode.metric.max ?? read.result), detail: read.detail ?? null, source: "hoyolab" };
-      await prisma.cycleResult.upsert({ where: key, create: { gameInstanceId: gi.id, modeKey: mode.key, cycleStart, ...data }, update: data });
+      await prisma.cycleResult.upsert({ where: key, create: { gameInstanceId: gameInstance.id, modeKey: mode.key, cycleStart, ...data }, update: data });
       written += 1;
     }
   }

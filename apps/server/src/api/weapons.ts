@@ -5,8 +5,8 @@ import { requireUser } from "../auth/plugin.js";
 import { gameOrThrow, getCatalog, loadInstance, type PrismaJson } from "./util.js";
 
 /** A copy's caps: the weapon's top level (100 without a catalog), the game's refinement (1 where it has none). */
-function overCap(game: GameDefinition, maxLevel: number | undefined, v: { level?: number; refinement?: number }) {
-  return (v.level ?? 1) > (maxLevel ?? 100) || (v.refinement ?? 1) > (game.manifest.dupes.weapon?.max ?? 1);
+function overCap(game: GameDefinition, maxLevel: number | undefined, copyValues: { level?: number; refinement?: number }) {
+  return (copyValues.level ?? 1) > (maxLevel ?? 100) || (copyValues.refinement ?? 1) > (game.manifest.dupes.weapon?.max ?? 1);
 }
 
 type Doc = Record<string, unknown>;
@@ -21,13 +21,13 @@ export async function syncHolders(game: GameDefinition, gameInstanceId: string, 
   const dupe = game.manifest.dupes.weapon?.field.split(".")[1];
   if (!holder || !dupe) return;
   const builds = await prisma.character.findMany({ where: { gameInstanceId, ...(except ? { NOT: { id: except } } : {}) } });
-  for (const b of builds) {
-    const doc = (b.doc ?? {}) as Doc;
-    const w = doc[holder] as Doc | undefined;
-    if (w?.copyId !== copyId) continue;
-    const { copyId: _gone, ...kept } = w;
-    const next = copy ? { ...w, level: copy.level, [dupe]: copy.refinement } : kept;
-    await prisma.character.update({ where: { id: b.id }, data: { doc: { ...doc, [holder]: next } as PrismaJson } });
+  for (const build of builds) {
+    const doc = (build.doc ?? {}) as Doc;
+    const heldWeapon = doc[holder] as Doc | undefined;
+    if (heldWeapon?.copyId !== copyId) continue;
+    const { copyId: _gone, ...kept } = heldWeapon;
+    const next = copy ? { ...heldWeapon, level: copy.level, [dupe]: copy.refinement } : kept;
+    await prisma.character.update({ where: { id: build.id }, data: { doc: { ...doc, [holder]: next } as PrismaJson } });
   }
 }
 
@@ -47,31 +47,31 @@ async function linkSheets(game: GameDefinition, gameInstanceId: string, nameOf: 
     prisma.character.findMany({ where: { gameInstanceId }, orderBy: [{ createdAt: "asc" }, { id: "asc" }] }),
     prisma.weaponCopy.findMany({ where: { gameInstanceId }, orderBy: [{ createdAt: "asc" }, { id: "asc" }] }),
   ]);
-  const byId = new Map(copies.map((c) => [c.id, c]));
+  const byId = new Map(copies.map((copy) => [copy.id, copy]));
   const weaponOf = (doc: unknown) => ((doc ?? {}) as Doc)[holder] as Doc | undefined;
-  const linked = (w: Doc | undefined) => {
-    const c = typeof w?.copyId === "string" ? byId.get(w.copyId) : undefined;
-    return c && c.catalogId === w?.catalogId ? c : undefined;
+  const linked = (heldWeapon: Doc | undefined) => {
+    const linkedCopy = typeof heldWeapon?.copyId === "string" ? byId.get(heldWeapon.copyId) : undefined;
+    return linkedCopy && linkedCopy.catalogId === heldWeapon?.catalogId ? linkedCopy : undefined;
   };
-  const held = new Set(builds.flatMap((b) => linked(weaponOf(b.doc))?.id ?? []));
+  const held = new Set(builds.flatMap((build) => linked(weaponOf(build.doc))?.id ?? []));
   let changed = false;
-  for (const b of builds) {
-    const w = weaponOf(b.doc);
-    if (!w || typeof w.catalogId !== "string" || linked(w)) continue;
-    const catalogId = w.catalogId;
-    const level = typeof w.level === "number" ? w.level : undefined;
-    const refinement = typeof w[dupe] === "number" ? (w[dupe] as number) : undefined;
-    const free = copies.find((c) => c.catalogId === catalogId && !held.has(c.id));
+  for (const build of builds) {
+    const heldWeapon = weaponOf(build.doc);
+    if (!heldWeapon || typeof heldWeapon.catalogId !== "string" || linked(heldWeapon)) continue;
+    const catalogId = heldWeapon.catalogId;
+    const level = typeof heldWeapon.level === "number" ? heldWeapon.level : undefined;
+    const refinement = typeof heldWeapon[dupe] === "number" ? (heldWeapon[dupe] as number) : undefined;
+    const free = copies.find((copy) => copy.catalogId === catalogId && !held.has(copy.id));
     const copy = free
       ? await prisma.weaponCopy.update({ where: { id: free.id }, data: { ...(level ? { level } : {}), ...(refinement ? { refinement } : {}) } })
-      : await prisma.weaponCopy.create({ data: { gameInstanceId, catalogId, name: nameOf(catalogId) ?? String(w.name ?? catalogId), level: level ?? 1, refinement: refinement ?? 1 } });
+      : await prisma.weaponCopy.create({ data: { gameInstanceId, catalogId, name: nameOf(catalogId) ?? String(heldWeapon.name ?? catalogId), level: level ?? 1, refinement: refinement ?? 1 } });
     if (!free) {
       copies.push(copy);
       await recount(gameInstanceId, catalogId);
     }
     byId.set(copy.id, copy);
     held.add(copy.id);
-    await prisma.character.update({ where: { id: b.id }, data: { doc: { ...((b.doc ?? {}) as Doc), [holder]: { ...w, copyId: copy.id } } as PrismaJson } });
+    await prisma.character.update({ where: { id: build.id }, data: { doc: { ...((build.doc ?? {}) as Doc), [holder]: { ...heldWeapon, copyId: copy.id } } as PrismaJson } });
     changed = true;
   }
   return changed;
@@ -92,73 +92,73 @@ async function recount(gameInstanceId: string, catalogId: string) {
  */
 export async function registerWeaponRoutes(app: FastifyInstance) {
   app.get<{ Params: { id: string } }>("/api/instances/:id/weapons", { preHandler: requireUser }, async (req, reply) => {
-    const gi = await loadInstance(req.user!.id, req.params.id);
-    if (!gi) return reply.code(404).send({ error: "not_found" });
-    const game = gameOrThrow(gi.gameKey);
-    const cat = await getCatalog(game);
+    const gameInstance = await loadInstance(req.user!.id, req.params.id);
+    if (!gameInstance) return reply.code(404).send({ error: "not_found" });
+    const game = gameOrThrow(gameInstance.gameKey);
+    const loadedCatalog = await getCatalog(game);
     const [copies, owned] = await Promise.all([
-      prisma.weaponCopy.findMany({ where: { gameInstanceId: gi.id }, orderBy: [{ createdAt: "asc" }, { id: "asc" }] }),
-      prisma.ownership.findMany({ where: { gameInstanceId: gi.id, kind: "weapon" } }),
+      prisma.weaponCopy.findMany({ where: { gameInstanceId: gameInstance.id }, orderBy: [{ createdAt: "asc" }, { id: "asc" }] }),
+      prisma.ownership.findMany({ where: { gameInstanceId: gameInstance.id, kind: "weapon" } }),
     ]);
     const add = [];
     const drop: string[] = [];
-    for (const catalogId of new Set([...owned.map((o) => o.catalogId), ...copies.flatMap((c) => (c.catalogId ? [c.catalogId] : []))])) {
-      const own = owned.find((o) => o.catalogId === catalogId);
-      const mine = copies.filter((c) => c.catalogId === catalogId);
+    for (const catalogId of new Set([...owned.map((ownedWeapon) => ownedWeapon.catalogId), ...copies.flatMap((copy) => (copy.catalogId ? [copy.catalogId] : []))])) {
+      const own = owned.find((ownedWeapon) => ownedWeapon.catalogId === catalogId);
+      const mine = copies.filter((copy) => copy.catalogId === catalogId);
       const want = own?.qty ?? 0;
       // A weapon granted with its level and refinement (a sync, the old Weapons table) gives them to its first copy.
       const meta = weaponMetaSchema.safeParse(own?.meta ?? {});
-      for (let i = mine.length; i < want; i++) {
-        const first = i === 0 && meta.success ? meta.data : {};
-        add.push({ gameInstanceId: gi.id, catalogId, name: cat?.index.weapons.get(catalogId)?.name ?? catalogId, level: first.level ?? 1, refinement: first.refinement ?? 1 });
+      for (let copyIndex = mine.length; copyIndex < want; copyIndex++) {
+        const first = copyIndex === 0 && meta.success ? meta.data : {};
+        add.push({ gameInstanceId: gameInstance.id, catalogId, name: loadedCatalog?.index.weapons.get(catalogId)?.name ?? catalogId, level: first.level ?? 1, refinement: first.refinement ?? 1 });
       }
-      drop.push(...mine.slice(want).map((c) => c.id));
+      drop.push(...mine.slice(want).map((copy) => copy.id));
     }
     if (add.length) await prisma.weaponCopy.createMany({ data: add });
     if (drop.length) await prisma.weaponCopy.deleteMany({ where: { id: { in: drop } } });
-    const relinked = await linkSheets(game, gi.id, (id) => cat?.index.weapons.get(id)?.name);
-    const rows = add.length || drop.length || relinked ? await prisma.weaponCopy.findMany({ where: { gameInstanceId: gi.id }, orderBy: [{ createdAt: "asc" }, { id: "asc" }] }) : copies;
-    return rows.map((c) => weaponCopyDto.parse(c));
+    const relinked = await linkSheets(game, gameInstance.id, (id) => loadedCatalog?.index.weapons.get(id)?.name);
+    const rows = add.length || drop.length || relinked ? await prisma.weaponCopy.findMany({ where: { gameInstanceId: gameInstance.id }, orderBy: [{ createdAt: "asc" }, { id: "asc" }] }) : copies;
+    return rows.map((row) => weaponCopyDto.parse(row));
   });
 
   app.post<{ Params: { id: string } }>("/api/instances/:id/weapons", { preHandler: requireUser }, async (req, reply) => {
-    const gi = await loadInstance(req.user!.id, req.params.id);
-    if (!gi) return reply.code(404).send({ error: "not_found" });
-    const game = gameOrThrow(gi.gameKey);
+    const gameInstance = await loadInstance(req.user!.id, req.params.id);
+    if (!gameInstance) return reply.code(404).send({ error: "not_found" });
+    const game = gameOrThrow(gameInstance.gameKey);
     const body = createWeaponCopyInput.parse(req.body);
     const entry = body.catalogId ? (await getCatalog(game))?.index.weapons.get(body.catalogId) : undefined;
     if (body.catalogId && !entry) return reply.code(400).send({ error: "unknown_catalog_id" });
     if (overCap(game, entry?.maxLevel, body)) return reply.code(400).send({ error: "over_the_cap" });
     const copy = await prisma.weaponCopy.create({
-      data: { gameInstanceId: gi.id, catalogId: entry?.id ?? null, name: entry?.name ?? body.name!, level: body.level ?? 1, refinement: body.refinement ?? 1 },
+      data: { gameInstanceId: gameInstance.id, catalogId: entry?.id ?? null, name: entry?.name ?? body.name!, level: body.level ?? 1, refinement: body.refinement ?? 1 },
     });
-    if (copy.catalogId) await recount(gi.id, copy.catalogId);
+    if (copy.catalogId) await recount(gameInstance.id, copy.catalogId);
     return weaponCopyDto.parse(copy);
   });
 
   app.put<{ Params: { id: string; copyId: string } }>("/api/instances/:id/weapons/:copyId", { preHandler: requireUser }, async (req, reply) => {
-    const gi = await loadInstance(req.user!.id, req.params.id);
-    if (!gi) return reply.code(404).send({ error: "not_found" });
-    const game = gameOrThrow(gi.gameKey);
-    const copy = await prisma.weaponCopy.findFirst({ where: { id: req.params.copyId, gameInstanceId: gi.id } });
+    const gameInstance = await loadInstance(req.user!.id, req.params.id);
+    if (!gameInstance) return reply.code(404).send({ error: "not_found" });
+    const game = gameOrThrow(gameInstance.gameKey);
+    const copy = await prisma.weaponCopy.findFirst({ where: { id: req.params.copyId, gameInstanceId: gameInstance.id } });
     if (!copy) return reply.code(404).send({ error: "not_found" });
     const body = updateWeaponCopyInput.parse(req.body);
     const entry = copy.catalogId ? (await getCatalog(game))?.index.weapons.get(copy.catalogId) : undefined;
     if (overCap(game, entry?.maxLevel, { level: body.level ?? copy.level, refinement: body.refinement ?? copy.refinement })) return reply.code(400).send({ error: "over_the_cap" });
     // A catalog weapon keeps its catalog name.
     const updated = await prisma.weaponCopy.update({ where: { id: copy.id }, data: { ...body, ...(copy.catalogId ? { name: copy.name } : {}) } });
-    await syncHolders(game, gi.id, copy.id, updated);
+    await syncHolders(game, gameInstance.id, copy.id, updated);
     return weaponCopyDto.parse(updated);
   });
 
   app.delete<{ Params: { id: string; copyId: string } }>("/api/instances/:id/weapons/:copyId", { preHandler: requireUser }, async (req, reply) => {
-    const gi = await loadInstance(req.user!.id, req.params.id);
-    if (!gi) return reply.code(404).send({ error: "not_found" });
-    const copy = await prisma.weaponCopy.findFirst({ where: { id: req.params.copyId, gameInstanceId: gi.id } });
+    const gameInstance = await loadInstance(req.user!.id, req.params.id);
+    if (!gameInstance) return reply.code(404).send({ error: "not_found" });
+    const copy = await prisma.weaponCopy.findFirst({ where: { id: req.params.copyId, gameInstanceId: gameInstance.id } });
     if (!copy) return reply.code(404).send({ error: "not_found" });
     await prisma.weaponCopy.delete({ where: { id: copy.id } });
-    await syncHolders(gameOrThrow(gi.gameKey), gi.id, copy.id, null);
-    if (copy.catalogId) await recount(gi.id, copy.catalogId);
+    await syncHolders(gameOrThrow(gameInstance.gameKey), gameInstance.id, copy.id, null);
+    if (copy.catalogId) await recount(gameInstance.id, copy.catalogId);
     return { ok: true };
   });
 }

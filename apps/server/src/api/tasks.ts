@@ -37,17 +37,17 @@ export async function buildRegionContext(tasks: Task[]) {
   const characterIds = new Set<string>();
   const instanceIds = new Set<string>();
   const stockInstanceIds = new Set<string>();
-  for (const t of tasks) {
-    if (t.materialId && t.scope === "game") stockInstanceIds.add(t.refId);
-    if (t.type !== "recurring") continue;
-    if (t.scope === "character") characterIds.add(t.refId);
-    else if (t.scope === "game") instanceIds.add(t.refId);
+  for (const task of tasks) {
+    if (task.materialId && task.scope === "game") stockInstanceIds.add(task.refId);
+    if (task.type !== "recurring") continue;
+    if (task.scope === "character") characterIds.add(task.refId);
+    else if (task.scope === "game") instanceIds.add(task.refId);
   }
 
   const stockRows = stockInstanceIds.size
     ? await prisma.materialStock.findMany({ where: { gameInstanceId: { in: [...stockInstanceIds] } } })
     : [];
-  const stock = new Map(stockRows.map((r) => [stockKey(r.gameInstanceId, r.materialId), r.qty]));
+  const stock = new Map(stockRows.map((stockRow) => [stockKey(stockRow.gameInstanceId, stockRow.materialId), stockRow.qty]));
 
   const characters = characterIds.size
     ? await prisma.character.findMany({
@@ -55,18 +55,18 @@ export async function buildRegionContext(tasks: Task[]) {
         select: { id: true, gameInstanceId: true },
       })
     : [];
-  const charToInstance = new Map(characters.map((c) => [c.id, c.gameInstanceId]));
-  for (const c of characters) instanceIds.add(c.gameInstanceId);
+  const charToInstance = new Map(characters.map((character) => [character.id, character.gameInstanceId]));
+  for (const character of characters) instanceIds.add(character.gameInstanceId);
 
   const instances = instanceIds.size
     ? await prisma.gameInstance.findMany({ where: { id: { in: [...instanceIds] } } })
     : [];
   const instanceRegion = new Map<string, RegionReset>();
   const instanceManifest = new Map<string, GameManifest>();
-  for (const gi of instances) {
-    const game = getGame(gi.gameKey);
-    instanceRegion.set(gi.id, game ? regionForInstance(game, gi) : DEFAULT_REGION);
-    if (game) instanceManifest.set(gi.id, game.manifest);
+  for (const gameInstance of instances) {
+    const game = getGame(gameInstance.gameKey);
+    instanceRegion.set(gameInstance.id, game ? regionForInstance(game, gameInstance) : DEFAULT_REGION);
+    if (game) instanceManifest.set(gameInstance.id, game.manifest);
   }
 
   return { charToInstance, instanceRegion, instanceManifest, stock };
@@ -125,9 +125,9 @@ export async function registerTaskRoutes(app: FastifyInstance) {
         },
         orderBy: { createdAt: "asc" },
       });
-      const ctx = await buildRegionContext(tasks);
+      const regionContext = await buildRegionContext(tasks);
       const now = new Date();
-      return tasks.map((t) => serializeTask(t, ctx, now));
+      return tasks.map((task) => serializeTask(task, regionContext, now));
     },
   );
 
@@ -163,8 +163,8 @@ export async function registerTaskRoutes(app: FastifyInstance) {
         parentId: body.parentId ?? null,
       },
     });
-    const ctx = await buildRegionContext([created]);
-    return reply.code(201).send(serializeTask(created, ctx, new Date()));
+    const regionContext = await buildRegionContext([created]);
+    return reply.code(201).send(serializeTask(created, regionContext, new Date()));
   });
 
   app.put<{ Params: { id: string } }>(
@@ -198,8 +198,8 @@ export async function registerTaskRoutes(app: FastifyInstance) {
           ...(body.notify !== undefined ? { notify: body.notify } : {}),
         },
       });
-      const ctx = await buildRegionContext([updated]);
-      return serializeTask(updated, ctx, new Date());
+      const regionContext = await buildRegionContext([updated]);
+      return serializeTask(updated, regionContext, new Date());
     },
   );
 
@@ -211,12 +211,12 @@ export async function registerTaskRoutes(app: FastifyInstance) {
       const task = await ownedTask(req.user!.id, req.params.id);
       if (!task) return reply.code(404).send({ error: "not_found" });
       const { done } = completeTaskInput.parse(req.body ?? {});
-      await prisma.$transaction(async (tx) => {
+      await prisma.$transaction(async (transaction) => {
         // An event goal applies its rewards when ticked and takes them back when unticked (ADR 0008).
-        if (task.eventId) await settleEventGoal(tx, req.user!.id, task, done);
+        if (task.eventId) await settleEventGoal(transaction, req.user!.id, task, done);
         // A counted daily ticked done is at its target; unticked, at none.
         const counted = task.type === "recurring" && task.target ? { progress: done ? task.target : 0, progressAt: new Date() } : {};
-        await tx.task.update({ where: { id: task.id }, data: { lastCompletedAt: done ? new Date() : null, ...counted } });
+        await transaction.task.update({ where: { id: task.id }, data: { lastCompletedAt: done ? new Date() : null, ...counted } });
       });
       return { ok: true };
     },

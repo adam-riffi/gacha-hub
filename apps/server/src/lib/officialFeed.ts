@@ -34,46 +34,46 @@ const WISH = /^(Event|Chronicled) Wish\b/;
 const NOISE = /Top-Up|Bundle/i;
 
 const ENTITIES: Record<string, string> = { "&amp;": "&", "&quot;": '"', "&#39;": "'", "&apos;": "'", "&lt;": "<", "&gt;": ">" };
-const strip = (s: string) =>
-  s
+const strip = (html: string) =>
+  html
     .replace(/<[^>]+>/g, " ")
-    .replace(/&[a-z#0-9]+;/gi, (e) => ENTITIES[e] ?? " ")
+    .replace(/&[a-z#0-9]+;/gi, (entity) => ENTITIES[entity] ?? " ")
     .replace(/\s+/g, " ")
     .trim();
-const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const escapeRegExp = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 /** "2026-09-21 12:00:00" in server time (UTC+tz hours) → ISO with offset. */
-function iso(s: string, tz: number): string {
-  const h = String(Math.abs(tz)).padStart(2, "0");
-  return `${s.replace(" ", "T")}${tz < 0 ? "-" : "+"}${h}:00`;
+function isoWithOffset(localTime: string, timezoneHours: number): string {
+  const hourText = String(Math.abs(timezoneHours)).padStart(2, "0");
+  return `${localTime.replace(" ", "T")}${timezoneHours < 0 ? "-" : "+"}${hourText}:00`;
 }
 
 /** Catalog units named in the text, highest rarity first. */
 function named<T extends { id: string; name: string; rarity: number }>(units: T[], text: string): T[] {
   // ponytail: one regex per unit (~400) per notice; fine for a handful of notices an hour.
   return units
-    .filter((u) => u.rarity >= 4 && u.name.length > 3 && new RegExp(`(?<!\\w)${esc(u.name)}(?!\\w)`).test(text))
-    .sort((a, b) => b.rarity - a.rarity);
+    .filter((unit) => unit.rarity >= 4 && unit.name.length > 3 && new RegExp(`(?<!\\w)${escapeRegExp(unit.name)}(?!\\w)`).test(text))
+    .sort((first, second) => second.rarity - first.rarity);
 }
 
 /** Pure mapping from the feed to upload-shaped banners/events (invalid ones dropped). */
 export function parseFeed(data: AnnList, contents: Map<number, string>, catalog: Catalog | null) {
   const banners: BannerInput[] = [];
   const events: EventInput[] = [];
-  for (const a of data.list.filter((l) => l.type_id === EVENT_TYPE).flatMap((l) => l.list)) {
-    const title = strip(a.subtitle);
+  for (const announcement of data.list.filter((group) => group.type_id === EVENT_TYPE).flatMap((group) => group.list)) {
+    const title = strip(announcement.subtitle);
     const base = {
-      key: `hoyo-${a.ann_id}`,
-      startsAt: iso(a.start_time, data.timezone),
-      endsAt: iso(a.end_time, data.timezone),
-      payload: { source: "hoyoverse", annId: a.ann_id },
+      key: `hoyo-${announcement.ann_id}`,
+      startsAt: isoWithOffset(announcement.start_time, data.timezone),
+      endsAt: isoWithOffset(announcement.end_time, data.timezone),
+      payload: { source: "hoyoverse", annId: announcement.ann_id },
     };
     if (WISH.test(title)) {
       const kind = /Epitome Invocation/.test(title) ? "weapon" : /^Chronicled/.test(title) ? "other" : "character";
-      const text = strip(contents.get(a.ann_id) ?? "");
+      const text = strip(contents.get(announcement.ann_id) ?? "");
       const featured = [
-        ...(kind !== "weapon" ? named(catalog?.characters ?? [], text).map((c) => ({ catalogId: c.id, kind: "character" as const })) : []),
-        ...(kind !== "character" ? named(catalog?.weapons ?? [], text).map((w) => ({ catalogId: w.id, kind: "weapon" as const })) : []),
+        ...(kind !== "weapon" ? named(catalog?.characters ?? [], text).map((character) => ({ catalogId: character.id, kind: "character" as const })) : []),
+        ...(kind !== "character" ? named(catalog?.weapons ?? [], text).map((weapon) => ({ catalogId: weapon.id, kind: "weapon" as const })) : []),
       ];
       const name = title.replace(WISH, "").replace(/["“”]/g, "").trim() || title;
       const parsed = bannerInput.safeParse({ ...base, name, kind, featured });
@@ -92,38 +92,38 @@ export type HsrAnnList = { timezone: number; list: unknown[]; pic_list: { type_l
 const WARP = /During (?:the )?"([^"]+)" (Character|Light Cone) Event Warp/g;
 const WARP_DATE = /(\d{4})\/(\d{2})\/(\d{2}) (\d{2}:\d{2}:\d{2})/g;
 const PIC_NOISE = /Warp|Store Update|in the Store|Update Details|Top-Up/i;
-const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40);
+const slug = (text: string) => text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40);
 /** Short event name: the quoted part of the title, else what precedes ": ". */
 const shortName = (title: string) => /^"([^"]+)"/.exec(title)?.[1] ?? title.split(": ")[0] ?? title;
 
 /** One banner of a multi-banner notice: its own period when the section states one, else the notice's. */
-function sectionBanner(a: HsrAnn, name: string, kind: "character" | "weapon", dates: string[], text: string, tz: number, catalog: Catalog | null) {
+function sectionBanner(announcement: HsrAnn, name: string, kind: "character" | "weapon", dates: string[], text: string, timezoneHours: number, catalog: Catalog | null) {
   const pool: { id: string; name: string; rarity: number }[] = (kind === "weapon" ? catalog?.weapons : catalog?.characters) ?? [];
   const parsed = bannerInput.safeParse({
-    key: `hoyo-${a.ann_id}-${slug(name)}`,
+    key: `hoyo-${announcement.ann_id}-${slug(name)}`,
     name,
     kind,
-    startsAt: dates.length >= 2 ? dates[0] : iso(a.start_time, tz),
-    endsAt: dates.at(-1) ?? iso(a.end_time, tz),
-    featured: named(pool, text).map((u) => ({ catalogId: u.id, kind })),
-    payload: { source: "hoyoverse", annId: a.ann_id },
+    startsAt: dates.length >= 2 ? dates[0] : isoWithOffset(announcement.start_time, timezoneHours),
+    endsAt: dates.at(-1) ?? isoWithOffset(announcement.end_time, timezoneHours),
+    featured: named(pool, text).map((unit) => ({ catalogId: unit.id, kind })),
+    payload: { source: "hoyoverse", annId: announcement.ann_id },
   });
   return parsed.success ? [parsed.data] : [];
 }
 
 /** HSR: one banner per `During "<name>" Character|Light Cone Event Warp` section of a notice. */
-function warps(a: HsrAnn, text: string, tz: number, catalog: Catalog | null): BannerInput[] {
+function warps(announcement: HsrAnn, text: string, timezoneHours: number, catalog: Catalog | null): BannerInput[] {
   const sections = [...text.matchAll(WARP)];
   const details = text.indexOf("Event Warp Details");
-  return sections.flatMap((m, i) => {
-    const from = (m.index ?? 0) + m[0].length;
+  return sections.flatMap((sectionMatch, sectionIndex) => {
+    const from = (sectionMatch.index ?? 0) + sectionMatch[0].length;
     const boosted = text.indexOf("will be boosted", from);
     const sentenceEnd = boosted < 0 ? from : boosted;
     // Units are named in the section's sentence; its period follows it.
     const sentence = text.slice(from, sentenceEnd);
-    const next = Math.min(sections[i + 1]?.index ?? text.length, details > sentenceEnd ? details : text.length);
-    const dates = [...text.slice(sentenceEnd, next).matchAll(WARP_DATE)].map((d) => iso(`${d[1]}-${d[2]}-${d[3]} ${d[4]}`, tz));
-    return sectionBanner(a, m[1] ?? "", m[2] === "Light Cone" ? "weapon" : "character", dates, sentence, tz, catalog);
+    const next = Math.min(sections[sectionIndex + 1]?.index ?? text.length, details > sentenceEnd ? details : text.length);
+    const dates = [...text.slice(sentenceEnd, next).matchAll(WARP_DATE)].map((dateMatch) => isoWithOffset(`${dateMatch[1]}-${dateMatch[2]}-${dateMatch[3]} ${dateMatch[4]}`, timezoneHours));
+    return sectionBanner(announcement, sectionMatch[1] ?? "", sectionMatch[2] === "Light Cone" ? "weapon" : "character", dates, sentence, timezoneHours, catalog);
   });
 }
 
@@ -131,14 +131,14 @@ const CHANNEL = /"([^"]+)" Signal Search Details/g;
 const CHANNEL_DATE = /(\d{4})\/(\d{2})\/(\d{2}) (\d{2}:\d{2})/g;
 
 /** ZZZ: one banner per `"<name>" Signal Search Details` section, which runs to the next one or to the "※" notes. */
-function channels(a: HsrAnn, text: string, tz: number, catalog: Catalog | null): BannerInput[] {
+function channels(announcement: HsrAnn, text: string, timezoneHours: number, catalog: Catalog | null): BannerInput[] {
   const sections = [...text.matchAll(CHANNEL)];
-  return sections.flatMap((m, i) => {
-    const from = (m.index ?? 0) + m[0].length;
+  return sections.flatMap((sectionMatch, sectionIndex) => {
+    const from = (sectionMatch.index ?? 0) + sectionMatch[0].length;
     const notes = text.indexOf("※", from);
-    const section = text.slice(from, Math.min(sections[i + 1]?.index ?? text.length, notes < 0 ? text.length : notes));
-    const dates = [...section.matchAll(CHANNEL_DATE)].map((d) => iso(`${d[1]}-${d[2]}-${d[3]} ${d[4]}:00`, tz));
-    return sectionBanner(a, m[1] ?? "", /limited S-Rank W-Engine/.test(section) ? "weapon" : "character", dates, section, tz, catalog);
+    const section = text.slice(from, Math.min(sections[sectionIndex + 1]?.index ?? text.length, notes < 0 ? text.length : notes));
+    const dates = [...section.matchAll(CHANNEL_DATE)].map((dateMatch) => isoWithOffset(`${dateMatch[1]}-${dateMatch[2]}-${dateMatch[3]} ${dateMatch[4]}:00`, timezoneHours));
+    return sectionBanner(announcement, sectionMatch[1] ?? "", /limited S-Rank W-Engine/.test(section) ? "weapon" : "character", dates, section, timezoneHours, catalog);
   });
 }
 
@@ -147,17 +147,17 @@ function picFeed(banner: RegExp, split: typeof warps) {
   return (data: HsrAnnList, contents: Map<number, string>, catalog: Catalog | null): Parsed => {
     const banners: BannerInput[] = [];
     const events: EventInput[] = [];
-    for (const a of data.pic_list.flatMap((g) => g.type_list).flatMap((t) => t.list)) {
-      const title = strip(a.title);
+    for (const announcement of data.pic_list.flatMap((group) => group.type_list).flatMap((typeGroup) => typeGroup.list)) {
+      const title = strip(announcement.title);
       if (banner.test(title)) {
-        banners.push(...split(a, strip(contents.get(a.ann_id) ?? ""), data.timezone, catalog));
+        banners.push(...split(announcement, strip(contents.get(announcement.ann_id) ?? ""), data.timezone, catalog));
       } else if (title && !PIC_NOISE.test(title)) {
         const parsed = eventInput.safeParse({
-          key: `hoyo-${a.ann_id}`,
+          key: `hoyo-${announcement.ann_id}`,
           name: shortName(title),
-          startsAt: iso(a.start_time, data.timezone),
-          endsAt: iso(a.end_time, data.timezone),
-          payload: { source: "hoyoverse", annId: a.ann_id },
+          startsAt: isoWithOffset(announcement.start_time, data.timezone),
+          endsAt: isoWithOffset(announcement.end_time, data.timezone),
+          payload: { source: "hoyoverse", annId: announcement.ann_id },
         });
         if (parsed.success) events.push(parsed.data);
       }
@@ -169,9 +169,9 @@ export const parseHsrFeed = picFeed(/Event Warp/, warps);
 export const parseZzzFeed = picFeed(/Limited-Time Channels/, channels);
 
 async function getJson<T>(url: string): Promise<T> {
-  const res = await fetch(url, { signal: AbortSignal.timeout(10_000) });
-  if (!res.ok) throw new Error(`feed ${res.status}`);
-  const body = (await res.json()) as { retcode: number; data: T };
+  const response = await fetch(url, { signal: AbortSignal.timeout(10_000) });
+  if (!response.ok) throw new Error(`feed ${response.status}`);
+  const body = (await response.json()) as { retcode: number; data: T };
   if (body.retcode !== 0) throw new Error(`feed retcode ${body.retcode}`);
   return body.data;
 }
@@ -185,14 +185,14 @@ const HOUR = 3_600_000;
  */
 export function settle(prev: Date | undefined, next: Date): Date {
   if (!prev) return next;
-  const lo = Math.min(prev.getTime(), next.getTime());
+  const lower = Math.min(prev.getTime(), next.getTime());
   switch (Math.abs(prev.getTime() - next.getTime()) / HOUR) {
     case 7:
-      return new Date(lo); // Europe vs Asia
+      return new Date(lower); // Europe vs Asia
     case 6:
-      return new Date(lo + 6 * HOUR); // America vs Europe
+      return new Date(lower + 6 * HOUR); // America vs Europe
     case 13:
-      return new Date(lo + 6 * HOUR); // America vs Asia
+      return new Date(lower + 6 * HOUR); // America vs Asia
     default:
       return next;
   }
@@ -209,7 +209,7 @@ export async function importOfficialFeed(gameKey: string) {
     getJson<{ list: Content[]; pic_list?: Content[] }>(feed.url.replace("{fn}", "getAnnContent")),
     getCatalog(game),
   ]);
-  const contents = new Map([...content.list, ...(content.pic_list ?? [])].map((c) => [c.ann_id, c.content]));
+  const contents = new Map([...content.list, ...(content.pic_list ?? [])].map((contentEntry) => [contentEntry.ann_id, contentEntry.content]));
   const { banners, events } = feed.parse(list, contents, cat?.catalog ?? null);
 
   let created = 0;
@@ -220,15 +220,15 @@ export async function importOfficialFeed(gameKey: string) {
     else created += 1;
     return { startsAt: settle(prev?.startsAt, new Date(item.startsAt)), endsAt: settle(prev?.endsAt, new Date(item.endsAt)) };
   };
-  for (const b of banners) {
-    const where = { gameKey_key: { gameKey, key: b.key } };
-    const data = { name: b.name, kind: b.kind, featured: b.featured as PrismaJson, payload: b.payload as PrismaJson, ...times(await prisma.banner.findUnique({ where, select }), b) };
-    await prisma.banner.upsert({ where, create: { gameKey, key: b.key, ...data }, update: data });
+  for (const banner of banners) {
+    const where = { gameKey_key: { gameKey, key: banner.key } };
+    const data = { name: banner.name, kind: banner.kind, featured: banner.featured as PrismaJson, payload: banner.payload as PrismaJson, ...times(await prisma.banner.findUnique({ where, select }), banner) };
+    await prisma.banner.upsert({ where, create: { gameKey, key: banner.key, ...data }, update: data });
   }
-  for (const e of events) {
-    const where = { gameKey_key: { gameKey, key: e.key } };
-    const data = { name: e.name, payload: e.payload as PrismaJson, ...times(await prisma.event.findUnique({ where, select }), e) };
-    await prisma.event.upsert({ where, create: { gameKey, key: e.key, ...data }, update: data });
+  for (const event of events) {
+    const where = { gameKey_key: { gameKey, key: event.key } };
+    const data = { name: event.name, payload: event.payload as PrismaJson, ...times(await prisma.event.findUnique({ where, select }), event) };
+    await prisma.event.upsert({ where, create: { gameKey, key: event.key, ...data }, update: data });
   }
   return { gameKey, banners: banners.length, events: events.length, created, updated };
 }

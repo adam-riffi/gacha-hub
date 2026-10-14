@@ -29,11 +29,11 @@ const RATE = { rateLimit: { max: 30, timeWindow: "1 minute" } };
 function duplicateKeys(items: { key: string }[]): string[] {
   const seen = new Set<string>();
   const dupes = new Set<string>();
-  for (const i of items) (seen.has(i.key) ? dupes : seen).add(i.key);
+  for (const item of items) (seen.has(item.key) ? dupes : seen).add(item.key);
   return [...dupes];
 }
 
-const jsonOrNull = (v: unknown) => (v === undefined ? Prisma.JsonNull : (v as PrismaJson));
+const jsonOrNull = (value: unknown) => (value === undefined ? Prisma.JsonNull : (value as PrismaJson));
 
 export async function registerAdminRoutes(app: FastifyInstance) {
   // JSON Schema of the upload payload (for editors / validation tooling).
@@ -76,35 +76,35 @@ export async function registerAdminRoutes(app: FastifyInstance) {
       prisma.importRun.findMany({ orderBy: { createdAt: "desc" }, take: 10, include: { user: { select: { username: true } } } }),
     ]);
     const split = (rows: { gameKey: string; startsAt: Date }[], key: string) => {
-      const mine = rows.filter((r) => r.gameKey === key);
-      return { active: mine.filter((r) => r.startsAt <= now).length, upcoming: mine.filter((r) => r.startsAt > now).length };
+      const mine = rows.filter((row) => row.gameKey === key);
+      return { active: mine.filter((banner) => banner.startsAt <= now).length, upcoming: mine.filter((banner) => banner.startsAt > now).length };
     };
     return adminStatsDto.parse({
       totals: {
         users: users.length,
-        profiles: profiles.reduce((n, p) => n + p._count._all, 0),
+        profiles: profiles.reduce((total, profile) => total + profile._count._all, 0),
         builds,
         pulls: pulls._sum.count ?? 0,
         goals,
         teams,
         links,
       },
-      users: users.map((u) => ({
-        username: u.username,
-        createdAt: u.createdAt,
-        games: u.gameInstances.length,
-        builds: u.gameInstances.reduce((n, gi) => n + gi._count.characters, 0),
-        gameKeys: u.gameInstances.map((gi) => gi.gameKey),
+      users: users.map((user) => ({
+        username: user.username,
+        createdAt: user.createdAt,
+        games: user.gameInstances.length,
+        builds: user.gameInstances.reduce((total, gameInstance) => total + gameInstance._count.characters, 0),
+        gameKeys: user.gameInstances.map((gameInstance) => gameInstance.gameKey),
       })),
-      games: gameList.map((g) => ({
-        gameKey: g.key,
-        name: g.name,
-        profiles: profiles.find((p) => p.gameKey === g.key)?._count._all ?? 0,
-        feed: FEED_GAMES.includes(g.key),
-        banners: split(banners, g.key),
-        events: split(events, g.key),
+      games: gameList.map((game) => ({
+        gameKey: game.key,
+        name: game.name,
+        profiles: profiles.find((profile) => profile.gameKey === game.key)?._count._all ?? 0,
+        feed: FEED_GAMES.includes(game.key),
+        banners: split(banners, game.key),
+        events: split(events, game.key),
       })),
-      imports: imports.map((r) => ({ ...r, username: r.user.username })),
+      imports: imports.map((importRun) => ({ ...importRun, username: importRun.user.username })),
     });
   });
 
@@ -118,7 +118,7 @@ export async function registerAdminRoutes(app: FastifyInstance) {
         take: limit,
         include: { actor: { select: { username: true } } },
       });
-      return rows.map((r) => adminAuditEntryDto.parse({ ...r, actorName: r.actor.username }));
+      return rows.map((row) => adminAuditEntryDto.parse({ ...row, actorName: row.actor.username }));
     },
   );
 
@@ -137,12 +137,12 @@ export async function registerAdminRoutes(app: FastifyInstance) {
 
       // Featured entries must exist in the game's catalog (when it has one).
       if (body.kind === "banners") {
-        const cat = await getCatalog(game);
-        if (cat) {
+        const loadedCatalog = await getCatalog(game);
+        if (loadedCatalog) {
           const unknown = body.items
-            .flatMap((b) => b.featured)
-            .filter((f) => !(f.kind === "character" ? cat.index.characters : cat.index.weapons).has(f.catalogId))
-            .map((f) => f.catalogId);
+            .flatMap((banner) => banner.featured)
+            .filter((featuredUnit) => !(featuredUnit.kind === "character" ? loadedCatalog.index.characters : loadedCatalog.index.weapons).has(featuredUnit.catalogId))
+            .map((featuredUnit) => featuredUnit.catalogId);
           if (unknown.length) return reply.code(400).send({ error: "unknown_catalog_id", ids: [...new Set(unknown)].slice(0, 20) });
         }
       }
@@ -152,10 +152,10 @@ export async function registerAdminRoutes(app: FastifyInstance) {
       let created = 0;
       let updated = 0;
 
-      await prisma.$transaction(async (tx) => {
+      await prisma.$transaction(async (transaction) => {
         if (body.kind === "banners") {
           for (const item of body.items as BannerInput[]) {
-            const prev = await tx.banner.findUnique({ where: { gameKey_key: { gameKey, key: item.key } } });
+            const prev = await transaction.banner.findUnique({ where: { gameKey_key: { gameKey, key: item.key } } });
             const data = {
               name: item.name,
               kind: item.kind,
@@ -165,12 +165,12 @@ export async function registerAdminRoutes(app: FastifyInstance) {
               version: item.version,
               payload: jsonOrNull(item.payload),
             };
-            await tx.banner.upsert({
+            await transaction.banner.upsert({
               where: { gameKey_key: { gameKey, key: item.key } },
               create: { gameKey, key: item.key, ...data },
               update: data,
             });
-            await tx.auditLog.create({
+            await transaction.auditLog.create({
               data: {
                 actorUserId,
                 action: prev ? "update" : "create",
@@ -184,7 +184,7 @@ export async function registerAdminRoutes(app: FastifyInstance) {
           }
         } else {
           for (const item of body.items as EventInput[]) {
-            const prev = await tx.event.findUnique({ where: { gameKey_key: { gameKey, key: item.key } } });
+            const prev = await transaction.event.findUnique({ where: { gameKey_key: { gameKey, key: item.key } } });
             const data = {
               name: item.name,
               startsAt: new Date(item.startsAt),
@@ -195,12 +195,12 @@ export async function registerAdminRoutes(app: FastifyInstance) {
               url: item.url ?? null,
               payload: jsonOrNull(item.payload),
             };
-            await tx.event.upsert({
+            await transaction.event.upsert({
               where: { gameKey_key: { gameKey, key: item.key } },
               create: { gameKey, key: item.key, ...data },
               update: data,
             });
-            await tx.auditLog.create({
+            await transaction.auditLog.create({
               data: {
                 actorUserId,
                 action: prev ? "update" : "create",

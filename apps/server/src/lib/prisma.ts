@@ -16,8 +16,8 @@ const prismaDir = (() => {
     if (dirname(dir) === dir) return resolve(process.cwd(), "prisma");
   }
 })();
-const db = resolveDatabase(process.env.DATABASE_URL, prismaDir);
-const adapter = db.kind === "sqlite" ? new PrismaBetterSqlite3({ url: db.path }) : new PrismaPg({ connectionString: db.connectionString });
+const database = resolveDatabase(process.env.DATABASE_URL, prismaDir);
+const adapter = database.kind === "sqlite" ? new PrismaBetterSqlite3({ url: database.path }) : new PrismaPg({ connectionString: database.connectionString });
 
 // Single shared client. `globalThis` guard avoids exhausting connections when
 // tsx watch reloads the module during development.

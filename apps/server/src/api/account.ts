@@ -10,7 +10,7 @@ const deleteAccountInput = z.object({ confirm: z.string().max(100) });
 export async function registerAccountRoutes(app: FastifyInstance) {
   app.get("/api/imports", { preHandler: requireUser }, async (req) => {
     const runs = await prisma.importRun.findMany({ where: { userId: req.user!.id }, orderBy: { createdAt: "desc" }, take: 50 });
-    return runs.map((r) => importRunDto.parse(r));
+    return runs.map((run) => importRunDto.parse(run));
   });
 
   // Everything the user owns goes with the user row (every relation cascades), sessions included.

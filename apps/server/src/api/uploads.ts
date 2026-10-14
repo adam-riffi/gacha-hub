@@ -28,14 +28,14 @@ export async function registerUploadRoutes(app: FastifyInstance) {
     const ext = ALLOWED.get(data.mimetype);
     if (!ext) return reply.code(415).send({ error: "unsupported_type" });
 
-    const buf = await data.toBuffer();
+    const fileBuffer = await data.toBuffer();
     if (data.file.truncated) return reply.code(413).send({ error: "file_too_large" });
 
     const name = randomBytes(16).toString("hex") + ext;
 
     if (config.blobToken) {
       const { put } = await import("@vercel/blob");
-      const blob = await put(`uploads/${name}`, buf, {
+      const blob = await put(`uploads/${name}`, fileBuffer, {
         access: "public",
         contentType: data.mimetype,
         token: config.blobToken,
@@ -47,7 +47,7 @@ export async function registerUploadRoutes(app: FastifyInstance) {
     // process.cwd() makes Vercel's file trace ship the whole repository.
     const dir = resolve(config.uploadDir);
     await mkdir(dir, { recursive: true });
-    await writeFile(resolve(dir, name), buf);
+    await writeFile(resolve(dir, name), fileBuffer);
     return { url: `/uploads/${name}` };
     },
   );

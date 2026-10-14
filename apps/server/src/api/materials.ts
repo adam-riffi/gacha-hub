@@ -12,13 +12,13 @@ export async function registerMaterialRoutes(app: FastifyInstance) {
     "/api/instances/:id/materials",
     { preHandler: requireUser },
     async (req, reply) => {
-      const gi = await loadInstance(req.user!.id, req.params.id);
-      if (!gi) return reply.code(404).send({ error: "not_found" });
+      const gameInstance = await loadInstance(req.user!.id, req.params.id);
+      if (!gameInstance) return reply.code(404).send({ error: "not_found" });
       const rows = await prisma.materialStock.findMany({
-        where: { gameInstanceId: gi.id },
+        where: { gameInstanceId: gameInstance.id },
         orderBy: { materialId: "asc" },
       });
-      return rows.map((r) => materialStockDto.parse(r));
+      return rows.map((row) => materialStockDto.parse(row));
     },
   );
 
@@ -26,31 +26,31 @@ export async function registerMaterialRoutes(app: FastifyInstance) {
     "/api/instances/:id/materials",
     { preHandler: requireUser },
     async (req, reply) => {
-      const gi = await loadInstance(req.user!.id, req.params.id);
-      if (!gi) return reply.code(404).send({ error: "not_found" });
-      const game = gameOrThrow(gi.gameKey);
+      const gameInstance = await loadInstance(req.user!.id, req.params.id);
+      if (!gameInstance) return reply.code(404).send({ error: "not_found" });
+      const game = gameOrThrow(gameInstance.gameKey);
       const { items } = setMaterialStockInput.parse(req.body);
-      const cat = await getCatalog(game);
-      if (cat) {
-        const unknown = items.filter((i) => !cat.index.materials.has(i.materialId)).map((i) => i.materialId);
+      const loadedCatalog = await getCatalog(game);
+      if (loadedCatalog) {
+        const unknown = items.filter((item) => !loadedCatalog.index.materials.has(item.materialId)).map((item) => item.materialId);
         if (unknown.length) return reply.code(400).send({ error: "unknown_material_id", ids: unknown.slice(0, 20) });
       }
       await prisma.$transaction(
-        items.map((i) =>
-          i.qty === 0
-            ? prisma.materialStock.deleteMany({ where: { gameInstanceId: gi.id, materialId: i.materialId } })
+        items.map((item) =>
+          item.qty === 0
+            ? prisma.materialStock.deleteMany({ where: { gameInstanceId: gameInstance.id, materialId: item.materialId } })
             : prisma.materialStock.upsert({
-                where: { gameInstanceId_materialId: { gameInstanceId: gi.id, materialId: i.materialId } },
-                create: { gameInstanceId: gi.id, materialId: i.materialId, qty: i.qty },
-                update: { qty: i.qty },
+                where: { gameInstanceId_materialId: { gameInstanceId: gameInstance.id, materialId: item.materialId } },
+                create: { gameInstanceId: gameInstance.id, materialId: item.materialId, qty: item.qty },
+                update: { qty: item.qty },
               }),
         ),
       );
       const rows = await prisma.materialStock.findMany({
-        where: { gameInstanceId: gi.id },
+        where: { gameInstanceId: gameInstance.id },
         orderBy: { materialId: "asc" },
       });
-      return rows.map((r) => materialStockDto.parse(r));
+      return rows.map((row) => materialStockDto.parse(row));
     },
   );
 
@@ -60,34 +60,34 @@ export async function registerMaterialRoutes(app: FastifyInstance) {
     "/api/instances/:id/materials/needed",
     { preHandler: requireUser },
     async (req, reply) => {
-      const gi = await loadInstance(req.user!.id, req.params.id);
-      if (!gi) return reply.code(404).send({ error: "not_found" });
-      const game = gameOrThrow(gi.gameKey);
+      const gameInstance = await loadInstance(req.user!.id, req.params.id);
+      if (!gameInstance) return reply.code(404).send({ error: "not_found" });
+      const game = gameOrThrow(gameInstance.gameKey);
       const [tasks, stockRows, cat] = await Promise.all([
         prisma.task.findMany({
-          where: { userId: req.user!.id, scope: "game", refId: gi.id, type: "goal", materialId: { not: null } },
+          where: { userId: req.user!.id, scope: "game", refId: gameInstance.id, type: "goal", materialId: { not: null } },
         }),
-        prisma.materialStock.findMany({ where: { gameInstanceId: gi.id } }),
+        prisma.materialStock.findMany({ where: { gameInstanceId: gameInstance.id } }),
         getCatalog(game),
       ]);
       const needed = new Map<string, number>();
-      for (const t of tasks) {
-        const total = Math.max(0, Math.round(t.target ?? 0));
-        if (total > 0) needed.set(t.materialId!, (needed.get(t.materialId!) ?? 0) + total);
+      for (const task of tasks) {
+        const total = Math.max(0, Math.round(task.target ?? 0));
+        if (total > 0) needed.set(task.materialId!, (needed.get(task.materialId!) ?? 0) + total);
       }
-      const have = new Map(stockRows.map((r) => [r.materialId, r.qty]));
-      const weekday = gameWeekday(regionForInstance(game, gi), new Date());
+      const have = new Map(stockRows.map((stockRow) => [stockRow.materialId, stockRow.qty]));
+      const weekday = gameWeekday(regionForInstance(game, gameInstance), new Date());
       const described = cat ? describeMaterials(cat, needed.keys(), weekday) : {};
       return [...needed.entries()]
-        .map(([materialId, n]) =>
+        .map(([materialId, neededCount]) =>
           materialNeedDto.parse({
             materialId,
-            needed: n,
+            needed: neededCount,
             have: have.get(materialId) ?? 0,
             material: described[materialId] ?? null,
           }),
         )
-        .sort((a, b) => b.needed - a.needed);
+        .sort((first, second) => second.needed - first.needed);
     },
   );
 }

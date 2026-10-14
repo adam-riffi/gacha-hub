@@ -22,13 +22,13 @@ export const genshinServer: GameServerModule = {
   handleBotCommand: async (name, _options, { instance }) => {
     if (name !== "resin") return null;
     if (!instance) return "You haven't installed Genshin Impact yet.";
-    const p = await resinProjection(instance.id);
-    if (!p) return "No resin data for this profile.";
-    if (p.full) return `⛲ **${p.label}**: ${p.value}/${p.cap} — full! Go spend it.`;
-    const mins = Math.max(0, Math.round((new Date(p.fullAt!).getTime() - Date.now()) / 60_000));
-    const h = Math.floor(mins / 60);
-    const m = mins % 60;
-    return `⛲ **${p.label}**: ${p.value}/${p.cap} — full in ${h}h ${String(m).padStart(2, "0")}m`;
+    const projection = await resinProjection(instance.id);
+    if (!projection) return "No resin data for this profile.";
+    if (projection.full) return `⛲ **${projection.label}**: ${projection.value}/${projection.cap} — full! Go spend it.`;
+    const mins = Math.max(0, Math.round((new Date(projection.fullAt!).getTime() - Date.now()) / 60_000));
+    const hours = Math.floor(mins / 60);
+    const minutes = mins % 60;
+    return `⛲ **${projection.label}**: ${projection.value}/${projection.cap} — full in ${hours}h ${String(minutes).padStart(2, "0")}m`;
   },
 
   dashboardExtras: async (instance) => {

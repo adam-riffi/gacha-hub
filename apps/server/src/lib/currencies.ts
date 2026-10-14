@@ -12,6 +12,6 @@ interface CurrencyRow {
  * list from stored rows would hide currencies added to a game later (tickets).
  */
 export function allCurrencies(defs: readonly GameCurrency[], rows: readonly CurrencyRow[], since: Date): CurrencyRow[] {
-  const byKey = new Map(rows.map((r) => [r.key, r]));
-  return defs.map((d) => byKey.get(d.key) ?? { key: d.key, value: 0, updatedAt: since });
+  const byKey = new Map(rows.map((row) => [row.key, row]));
+  return defs.map((definition) => byKey.get(definition.key) ?? { key: definition.key, value: 0, updatedAt: since });
 }

@@ -96,43 +96,43 @@ async function allInstances(userId: string): Promise<InstanceWithData[]> {
 
 function resolveInstance(instances: InstanceWithData[], name: string) {
   const lower = name.toLowerCase();
-  for (const gi of instances) {
-    const game = getGame(gi.gameKey);
+  for (const gameInstance of instances) {
+    const game = getGame(gameInstance.gameKey);
     if (game && (game.name.toLowerCase().includes(lower) || game.key === lower)) {
-      return { gi, game };
+      return { gi: gameInstance, game };
     }
   }
   return null;
 }
 
 function fmtCurrencies(game: GameDefinition, currencies: { key: string; value: number }[]) {
-  const byKey = new Map(game.currencies.map((c) => [c.key, c]));
+  const byKey = new Map(game.currencies.map((currency) => [currency.key, currency]));
   if (currencies.length === 0) return "_none_";
   return currencies
-    .map((c) => {
-      const d = byKey.get(c.key);
-      const label = d?.label ?? c.key;
-      return d?.cap ? `${label}: ${c.value}/${d.cap}` : `${label}: ${c.value}`;
+    .map((currencyState) => {
+      const definition = byKey.get(currencyState.key);
+      const label = definition?.label ?? currencyState.key;
+      return definition?.cap ? `${label}: ${currencyState.value}/${definition.cap}` : `${label}: ${currencyState.value}`;
     })
     .join(" · ");
 }
 
-async function undoneDailies(userId: string, gi: GameInstance, game: GameDefinition) {
+async function undoneDailies(userId: string, gameInstance: GameInstance, game: GameDefinition) {
   const tasks = await prisma.task.findMany({
-    where: { userId, scope: "game", refId: gi.id, type: "recurring" },
+    where: { userId, scope: "game", refId: gameInstance.id, type: "recurring" },
   });
-  const region = regionForInstance(game, gi);
+  const region = regionForInstance(game, gameInstance);
   const now = new Date();
   return tasks
     .filter(
-      (t) => !isDoneThisCycle(t.lastCompletedAt, now, region, taskAnchor(game.manifest, (t.cadence as TaskCadence) ?? "daily", t.anchorKey)),
+      (task) => !isDoneThisCycle(task.lastCompletedAt, now, region, taskAnchor(game.manifest, (task.cadence as TaskCadence) ?? "daily", task.anchorKey)),
     )
-    .map((t) => t.title);
+    .map((task) => task.title);
 }
 
 const LINK_HINT = `You have no linked account yet. Sign in with Discord at ${config.appBaseUrl} first.`;
-const str = (o: CommandOptions, k: string) => (typeof o[k] === "string" ? (o[k] as string) : "");
-const num = (o: CommandOptions, k: string) => (typeof o[k] === "number" ? (o[k] as number) : Number.NaN);
+const stringOption = (options: CommandOptions, key: string) => (typeof options[key] === "string" ? (options[key] as string) : "");
+const numberOption = (options: CommandOptions, key: string) => (typeof options[key] === "number" ? (options[key] as number) : Number.NaN);
 
 /**
  * Transport-agnostic command dispatcher: takes the command name, normalized
@@ -170,12 +170,12 @@ export async function handleCommand(
     default: {
       // Per-game modules may contribute their own commands.
       const { gameServerModules } = await import("../games/index.js");
-      for (const mod of Object.values(gameServerModules)) {
-        if (!mod.handleBotCommand || !mod.botCommands?.some((c) => c.name === name)) continue;
+      for (const gameModule of Object.values(gameServerModules)) {
+        if (!gameModule.handleBotCommand || !gameModule.botCommands?.some((botCommand) => botCommand.name === name)) continue;
         const instance = await prisma.gameInstance.findUnique({
-          where: { userId_gameKey: { userId: user.id, gameKey: mod.key } },
+          where: { userId_gameKey: { userId: user.id, gameKey: gameModule.key } },
         });
-        const reply = await mod.handleBotCommand(name, options, { userId: user.id, instance });
+        const reply = await gameModule.handleBotCommand(name, options, { userId: user.id, instance });
         if (reply !== null) return reply;
       }
       return "Unknown command.";
@@ -183,37 +183,37 @@ export async function handleCommand(
   }
 }
 
-async function handleStatus(o: CommandOptions, userId: string) {
-  const filter = str(o, "game");
+async function handleStatus(options: CommandOptions, userId: string) {
+  const filter = stringOption(options, "game");
   const lines: string[] = [];
-  for (const gi of await allInstances(userId)) {
-    const game = getGame(gi.gameKey);
+  for (const gameInstance of await allInstances(userId)) {
+    const game = getGame(gameInstance.gameKey);
     if (!game) continue;
     if (filter && !game.name.toLowerCase().includes(filter.toLowerCase())) continue;
-    const left = await undoneDailies(userId, gi, game);
-    lines.push(`__**${game.name}**__ — ${fmtCurrencies(game, gi.currencies)}`);
+    const left = await undoneDailies(userId, gameInstance, game);
+    lines.push(`__**${game.name}**__ — ${fmtCurrencies(game, gameInstance.currencies)}`);
     lines.push(left.length ? `   dailies left: ${left.join(", ")}` : "   ✅ dailies done");
   }
   return lines.length ? lines.join("\n").slice(0, 1900) : "No games found.";
 }
 
-async function handleCurrency(o: CommandOptions, userId: string) {
-  const name = str(o, "game");
+async function handleCurrency(options: CommandOptions, userId: string) {
+  const name = stringOption(options, "game");
   const found = resolveInstance(await allInstances(userId), name);
   if (!found) return `No game matching "${name}".`;
   return `**${found.game.name}** — ${fmtCurrencies(found.game, found.gi.currencies)}`.slice(0, 1900);
 }
 
-async function handleUpdate(o: CommandOptions, userId: string) {
-  const name = str(o, "game");
-  const currencyName = str(o, "currency");
-  const value = num(o, "value");
+async function handleUpdate(options: CommandOptions, userId: string) {
+  const name = stringOption(options, "game");
+  const currencyName = stringOption(options, "currency");
+  const value = numberOption(options, "value");
   if (Number.isNaN(value) || value < 0) return "Value must be a non-negative number.";
   const found = resolveInstance(await allInstances(userId), name);
   if (!found) return `No game matching "${name}".`;
   const lower = currencyName.toLowerCase();
   const cur = found.game.currencies.find(
-    (c) => c.key.toLowerCase() === lower || c.label.toLowerCase() === lower,
+    (currency) => currency.key.toLowerCase() === lower || currency.label.toLowerCase() === lower,
   );
   if (!cur) return `No currency "${currencyName}" in ${found.game.name}.`;
   await prisma.currencyState.upsert({
@@ -225,29 +225,29 @@ async function handleUpdate(o: CommandOptions, userId: string) {
   return `✅ ${found.game.name}: **${cur.label}** = ${value}`;
 }
 
-async function handleDone(o: CommandOptions, userId: string) {
-  const name = str(o, "game");
-  const taskName = str(o, "task");
+async function handleDone(options: CommandOptions, userId: string) {
+  const name = stringOption(options, "game");
+  const taskName = stringOption(options, "task");
   const found = resolveInstance(await allInstances(userId), name);
   if (!found) return `No game matching "${name}".`;
   const tasks = await prisma.task.findMany({
     where: { userId, scope: "game", refId: found.gi.id, type: "recurring" },
   });
   const lower = taskName.toLowerCase();
-  const task = tasks.find((t) => t.title.toLowerCase().includes(lower));
+  const task = tasks.find((candidate) => candidate.title.toLowerCase().includes(lower));
   if (!task) return `No task matching "${taskName}".`;
   await prisma.task.update({ where: { id: task.id }, data: { lastCompletedAt: new Date() } });
   await recordDays(userId);
   return `✅ Marked done: **${task.title}**`;
 }
 
-async function handleGoal(o: CommandOptions, userId: string) {
-  const taskName = str(o, "task");
-  const progress = num(o, "progress");
+async function handleGoal(options: CommandOptions, userId: string) {
+  const taskName = stringOption(options, "task");
+  const progress = numberOption(options, "progress");
   if (Number.isNaN(progress) || progress < 0) return "Progress must be a non-negative number.";
   const tasks = await prisma.task.findMany({ where: { userId, type: "goal" } });
   const lower = taskName.toLowerCase();
-  const task = tasks.find((t) => t.title.toLowerCase().includes(lower));
+  const task = tasks.find((candidate) => candidate.title.toLowerCase().includes(lower));
   if (!task) return `No goal matching "${taskName}".`;
   await prisma.task.update({ where: { id: task.id }, data: { progress } });
   await recordDays(userId);
@@ -259,26 +259,26 @@ async function handleGoal(o: CommandOptions, userId: string) {
 function summarizeDoc(doc: unknown): string {
   if (!doc || typeof doc !== "object") return "_empty_";
   const lines: string[] = [];
-  for (const [k, v] of Object.entries(doc as Record<string, unknown>)) {
-    if (v === null || v === undefined) continue;
-    if (typeof v === "object") {
-      const count = Array.isArray(v) ? v.length : Object.keys(v).length;
-      if (count > 0) lines.push(`${k}: ${count}`);
+  for (const [key, value] of Object.entries(doc as Record<string, unknown>)) {
+    if (value === null || value === undefined) continue;
+    if (typeof value === "object") {
+      const count = Array.isArray(value) ? value.length : Object.keys(value).length;
+      if (count > 0) lines.push(`${key}: ${count}`);
     } else {
-      lines.push(`${k}: ${v}`);
+      lines.push(`${key}: ${value}`);
     }
   }
   return lines.join(" · ") || "_empty_";
 }
 
-async function handleBuild(o: CommandOptions, userId: string) {
-  const name = str(o, "game");
-  const charName = str(o, "character");
+async function handleBuild(options: CommandOptions, userId: string) {
+  const name = stringOption(options, "game");
+  const charName = stringOption(options, "character");
   const found = resolveInstance(await allInstances(userId), name);
   if (!found) return `No game matching "${name}".`;
   const candidates = await prisma.character.findMany({ where: { gameInstanceId: found.gi.id } });
-  const lc = charName.toLowerCase();
-  const character = candidates.find((c) => c.name.toLowerCase().includes(lc)) ?? null;
+  const lowerName = charName.toLowerCase();
+  const character = candidates.find((candidate) => candidate.name.toLowerCase().includes(lowerName)) ?? null;
   if (!character) return `No character matching "${charName}".`;
   return `**${character.name}** — ${found.game.name}\n${summarizeDoc(character.doc)}`.slice(0, 1900);
 }
@@ -286,19 +286,19 @@ async function handleBuild(o: CommandOptions, userId: string) {
 /** The user's installed games, optionally narrowed by a name filter. */
 async function gamesFor(userId: string, filter: string) {
   const out: { gi: InstanceWithData; game: GameDefinition }[] = [];
-  for (const gi of await allInstances(userId)) {
-    const game = getGame(gi.gameKey);
+  for (const gameInstance of await allInstances(userId)) {
+    const game = getGame(gameInstance.gameKey);
     if (!game) continue;
     if (filter && !game.name.toLowerCase().includes(filter.toLowerCase()) && game.key !== filter.toLowerCase()) continue;
-    out.push({ gi, game });
+    out.push({ gi: gameInstance, game });
   }
   return out;
 }
 
 const STATUS_ICON = { active: "🟢", upcoming: "🕒", ended: "⚫" } as const;
 
-async function handleTimeline(o: CommandOptions, userId: string, kind: "banners" | "events") {
-  const games = await gamesFor(userId, str(o, "game"));
+async function handleTimeline(options: CommandOptions, userId: string, kind: "banners" | "events") {
+  const games = await gamesFor(userId, stringOption(options, "game"));
   if (games.length === 0) return "No games found.";
   const now = new Date();
   const lines: string[] = [];
@@ -306,13 +306,13 @@ async function handleTimeline(o: CommandOptions, userId: string, kind: "banners"
     const items = kind === "banners" ? await listBanners([game.key], "current", now) : await listEvents([game.key], "current", now);
     if (items.length === 0) continue;
     lines.push(`__**${game.name}**__`);
-    const cat = kind === "banners" ? await getCatalog(game) : null;
-    for (const it of items) {
-      const when = it.status === "upcoming" ? `starts in ${formatRemaining(it.startsAt, now)}` : `ends in ${formatRemaining(it.endsAt, now)}`;
-      let line = `${STATUS_ICON[it.status]} **${it.name}** — ${when}`;
-      if ("featured" in it && it.featured.length) {
-        const names = it.featured.map((f) =>
-          (f.kind === "character" ? cat?.index.characters.get(f.catalogId)?.name : cat?.index.weapons.get(f.catalogId)?.name) ?? f.catalogId,
+    const loadedCatalog = kind === "banners" ? await getCatalog(game) : null;
+    for (const item of items) {
+      const when = item.status === "upcoming" ? `starts in ${formatRemaining(item.startsAt, now)}` : `ends in ${formatRemaining(item.endsAt, now)}`;
+      let line = `${STATUS_ICON[item.status]} **${item.name}** — ${when}`;
+      if ("featured" in item && item.featured.length) {
+        const names = item.featured.map((featuredUnit) =>
+          (featuredUnit.kind === "character" ? loadedCatalog?.index.characters.get(featuredUnit.catalogId)?.name : loadedCatalog?.index.weapons.get(featuredUnit.catalogId)?.name) ?? featuredUnit.catalogId,
         );
         line += `\n   featured: ${names.join(", ")}`;
       }
@@ -323,29 +323,29 @@ async function handleTimeline(o: CommandOptions, userId: string, kind: "banners"
 }
 
 /** Rotating materials you're short on that are farmable today (per region). */
-async function handleFarm(o: CommandOptions, userId: string) {
-  const games = await gamesFor(userId, str(o, "game"));
+async function handleFarm(options: CommandOptions, userId: string) {
+  const games = await gamesFor(userId, stringOption(options, "game"));
   if (games.length === 0) return "No games found.";
   const lines: string[] = [];
-  for (const { gi, game } of games) {
-    const cat = await getCatalog(game);
-    if (!cat) continue;
+  for (const { gi: gameInstance, game } of games) {
+    const loadedCatalog = await getCatalog(game);
+    if (!loadedCatalog) continue;
     const [tasks, stock] = await Promise.all([
-      prisma.task.findMany({ where: { userId, scope: "game", refId: gi.id, type: "goal", materialId: { not: null } } }),
-      prisma.materialStock.findMany({ where: { gameInstanceId: gi.id } }),
+      prisma.task.findMany({ where: { userId, scope: "game", refId: gameInstance.id, type: "goal", materialId: { not: null } } }),
+      prisma.materialStock.findMany({ where: { gameInstanceId: gameInstance.id } }),
     ]);
-    const have = new Map(stock.map((s) => [s.materialId, s.qty]));
+    const have = new Map(stock.map((stockRow) => [stockRow.materialId, stockRow.qty]));
     const need = new Map<string, number>();
-    for (const t of tasks) need.set(t.materialId!, (need.get(t.materialId!) ?? 0) + Math.max(0, t.target ?? 0));
-    const weekday = gameWeekday(regionForInstance(game, gi), new Date());
+    for (const task of tasks) need.set(task.materialId!, (need.get(task.materialId!) ?? 0) + Math.max(0, task.target ?? 0));
+    const weekday = gameWeekday(regionForInstance(game, gameInstance), new Date());
     const today: string[] = [];
     let missingRotating = 0;
-    for (const [id, n] of need) {
-      const missing = n - (have.get(id) ?? 0);
-      const m = cat.index.materials.get(id);
-      if (missing <= 0 || !m?.availability?.length) continue;
+    for (const [id, neededCount] of need) {
+      const missing = neededCount - (have.get(id) ?? 0);
+      const material = loadedCatalog.index.materials.get(id);
+      if (missing <= 0 || !material?.availability?.length) continue;
       missingRotating += 1;
-      if (farmableToday(m.availability, weekday)) today.push(`${m.name} ×${missing}`);
+      if (farmableToday(material.availability, weekday)) today.push(`${material.name} ×${missing}`);
     }
     if (today.length) lines.push(`__**${game.name}**__ today: ${today.join(", ")}`);
     else if (missingRotating) lines.push(`__**${game.name}**__: nothing you're short on rotates in today`);
@@ -353,18 +353,18 @@ async function handleFarm(o: CommandOptions, userId: string) {
   return lines.length ? lines.join("\n").slice(0, 1900) : "No rotating materials needed — plan something from a character screen first.";
 }
 
-async function handleOwn(o: CommandOptions, userId: string) {
-  const name = str(o, "game");
-  const charName = str(o, "character");
-  const owned = typeof o.owned === "boolean" ? o.owned : true;
+async function handleOwn(options: CommandOptions, userId: string) {
+  const name = stringOption(options, "game");
+  const charName = stringOption(options, "character");
+  const owned = typeof options.owned === "boolean" ? options.owned : true;
   const found = resolveInstance(await allInstances(userId), name);
   if (!found) return `No game matching "${name}".`;
-  const cat = await getCatalog(found.game);
-  if (!cat) return `${found.game.name} has no character catalog yet.`;
-  const lc = charName.toLowerCase();
+  const loadedCatalog = await getCatalog(found.game);
+  if (!loadedCatalog) return `${found.game.name} has no character catalog yet.`;
+  const lowerName = charName.toLowerCase();
   const entry =
-    cat.catalog.characters.find((c) => c.name.toLowerCase() === lc) ??
-    cat.catalog.characters.find((c) => c.name.toLowerCase().includes(lc));
+    loadedCatalog.catalog.characters.find((character) => character.name.toLowerCase() === lowerName) ??
+    loadedCatalog.catalog.characters.find((character) => character.name.toLowerCase().includes(lowerName));
   if (!entry) return `No character matching "${charName}" in ${found.game.name}.`;
   const where = { gameInstanceId_kind_catalogId: { gameInstanceId: found.gi.id, kind: "character", catalogId: entry.id } };
   if (owned) {

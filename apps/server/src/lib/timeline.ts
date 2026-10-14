@@ -90,7 +90,7 @@ export async function listBanners(gameKeys: string[], filter: TimelineFilter, no
     orderBy: [{ startsAt: "asc" }, { key: "asc" }],
     take,
   });
-  return rows.map((r) => serializeBanner(r, now));
+  return rows.map((row) => serializeBanner(row, now));
 }
 
 export async function listEvents(gameKeys: string[], filter: TimelineFilter, now = new Date(), take = 200) {
@@ -100,19 +100,19 @@ export async function listEvents(gameKeys: string[], filter: TimelineFilter, now
     orderBy: [{ startsAt: "asc" }, { key: "asc" }],
     take,
   });
-  return rows.map((r) => serializeEvent(r, now));
+  return rows.map((row) => serializeEvent(row, now));
 }
 
 /** "3d 4h", "2h 05m", "12m", or "now". */
 export function formatRemaining(until: Date | string, now = new Date()): string {
-  const ms = new Date(until).getTime() - now.getTime();
-  if (ms <= 0) return "now";
-  const d = Math.floor(ms / 86_400_000);
-  const h = Math.floor((ms % 86_400_000) / 3_600_000);
-  const m = Math.floor((ms % 3_600_000) / 60_000);
-  if (d > 0) return `${d}d ${h}h`;
-  if (h > 0) return `${h}h ${String(m).padStart(2, "0")}m`;
-  return `${m}m`;
+  const milliseconds = new Date(until).getTime() - now.getTime();
+  if (milliseconds <= 0) return "now";
+  const days = Math.floor(milliseconds / 86_400_000);
+  const hours = Math.floor((milliseconds % 86_400_000) / 3_600_000);
+  const minutes = Math.floor((milliseconds % 3_600_000) / 60_000);
+  if (days > 0) return `${days}d ${hours}h`;
+  if (hours > 0) return `${hours}h ${String(minutes).padStart(2, "0")}m`;
+  return `${minutes}m`;
 }
 
 /** Banners and events overlapping [from, to) for these games, ended ones included. */
@@ -124,38 +124,38 @@ export async function listWindow(gameKeys: string[], from: Date, to: Date, now =
     prisma.banner.findMany({ where, orderBy, take: 300 }),
     prisma.event.findMany({ where, orderBy, take: 300 }),
   ]);
-  return { banners: banners.map((r) => serializeBanner(r, now)), events: events.map((r) => serializeEvent(r, now)) };
+  return { banners: banners.map((banner) => serializeBanner(banner, now)), events: events.map((event) => serializeEvent(event, now)) };
 }
 
 /** Featured units get catalog name/icon/rarity and whether the user owns them. */
 export async function withFeaturedDetails(banners: BannerDto[], instances: { id: string; gameKey: string }[]): Promise<BannerDto[]> {
-  const featuredIds = banners.flatMap((b) => b.featured.map((f) => f.catalogId));
+  const featuredIds = banners.flatMap((banner) => banner.featured.map((featuredUnit) => featuredUnit.catalogId));
   const owned = featuredIds.length
     ? await prisma.ownership.findMany({
-        where: { gameInstanceId: { in: instances.map((g) => g.id) }, catalogId: { in: featuredIds } },
+        where: { gameInstanceId: { in: instances.map((instance) => instance.id) }, catalogId: { in: featuredIds } },
         select: { gameInstanceId: true, kind: true, catalogId: true },
       })
     : [];
-  const instanceByGame = new Map(instances.map((gi) => [gi.gameKey, gi.id]));
-  const owns = new Set(owned.map((o) => `${o.gameInstanceId}:${o.kind}:${o.catalogId}`));
+  const instanceByGame = new Map(instances.map((gameInstance) => [gameInstance.gameKey, gameInstance.id]));
+  const owns = new Set(owned.map((ownedRow) => `${ownedRow.gameInstanceId}:${ownedRow.kind}:${ownedRow.catalogId}`));
   const catalogs = new Map(
     await Promise.all(
-      [...new Set(banners.map((b) => b.gameKey))].map(async (k) => {
-        const game = getGame(k);
-        return [k, game ? await getCatalog(game) : null] as const;
+      [...new Set(banners.map((banner) => banner.gameKey))].map(async (gameKey) => {
+        const game = getGame(gameKey);
+        return [gameKey, game ? await getCatalog(game) : null] as const;
       }),
     ),
   );
-  return banners.map((b) => {
-    const cat = catalogs.get(b.gameKey)?.index;
+  return banners.map((banner) => {
+    const catalogIndex = catalogs.get(banner.gameKey)?.index;
     return {
-      ...b,
-      featured: b.featured.map((f) => {
-        const e = f.kind === "character" ? cat?.characters.get(f.catalogId) : cat?.weapons.get(f.catalogId);
+      ...banner,
+      featured: banner.featured.map((featuredUnit) => {
+        const catalogEntry = featuredUnit.kind === "character" ? catalogIndex?.characters.get(featuredUnit.catalogId) : catalogIndex?.weapons.get(featuredUnit.catalogId);
         return {
-          ...f,
-          ...(e ? { name: e.name, icon: e.icon, splash: "splash" in e ? e.splash : undefined, rarity: e.rarity } : {}),
-          owned: owns.has(`${instanceByGame.get(b.gameKey)}:${f.kind}:${f.catalogId}`),
+          ...featuredUnit,
+          ...(catalogEntry ? { name: catalogEntry.name, icon: catalogEntry.icon, splash: "splash" in catalogEntry ? catalogEntry.splash : undefined, rarity: catalogEntry.rarity } : {}),
+          owned: owns.has(`${instanceByGame.get(banner.gameKey)}:${featuredUnit.kind}:${featuredUnit.catalogId}`),
         };
       }),
     };

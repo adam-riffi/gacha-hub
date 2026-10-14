@@ -36,5 +36,5 @@ export function getGameServerModule(key: string): GameServerModule | undefined {
 }
 
 export function allGameBotCommands(): BotCommandDef[] {
-  return Object.values(gameServerModules).flatMap((m) => m.botCommands ?? []);
+  return Object.values(gameServerModules).flatMap((gameServerModule) => gameServerModule.botCommands ?? []);
 }

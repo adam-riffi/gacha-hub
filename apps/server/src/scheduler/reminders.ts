@@ -26,40 +26,40 @@ function fmtCurrencies(
   game: GameDefinition,
   currencies: { key: string; value: number }[],
 ): string {
-  const byKey = new Map(game.currencies.map((c) => [c.key, c]));
+  const byKey = new Map(game.currencies.map((currency) => [currency.key, currency]));
   if (currencies.length === 0) return "";
   return currencies
-    .map((c) => {
-      const d = byKey.get(c.key);
-      const label = d?.label ?? c.key;
-      return d?.cap ? `${label} ${c.value}/${d.cap}` : `${label} ${c.value}`;
+    .map((currencyState) => {
+      const definition = byKey.get(currencyState.key);
+      const label = definition?.label ?? currencyState.key;
+      return definition?.cap ? `${label} ${currencyState.value}/${definition.cap}` : `${label} ${currencyState.value}`;
     })
     .join(" · ");
 }
 
 const MAX_DOMAINS = 4;
 const MAX_UNITS = 3;
-const more = (n: number, label = "") => (n > 0 ? ` +${n}${label}` : "");
+const more = (count: number, label = "") => (count > 0 ? ` +${count}${label}` : "");
 
 /** One DM line for today's domains, or null when none is open for you. */
 export function fmtDomains(domains: OpenDomain[]): string | null {
   if (domains.length === 0) return null;
-  const parts = domains.slice(0, MAX_DOMAINS).map((d) => {
-    const names = d.units.slice(0, MAX_UNITS).map((u) => u.name).join(", ");
-    return `${d.source.replace(/^Domain of \w+: /, "")} (${names}${more(d.units.length - MAX_UNITS)})`;
+  const parts = domains.slice(0, MAX_DOMAINS).map((domain) => {
+    const names = domain.units.slice(0, MAX_UNITS).map((unit) => unit.name).join(", ");
+    return `${domain.source.replace(/^Domain of \w+: /, "")} (${names}${more(domain.units.length - MAX_UNITS)})`;
   });
   return `🗺️ Domains today: ${parts.join(", ")}${more(domains.length - MAX_DOMAINS, " more")}`;
 }
 
 async function openDomains(instance: GameInstance, game: GameDefinition, now: Date): Promise<OpenDomain[]> {
-  const cat = await getCatalog(game);
-  if (!cat) return [];
+  const loadedCatalog = await getCatalog(game);
+  if (!loadedCatalog) return [];
   const [owned, builds] = await Promise.all([
     prisma.ownership.findMany({ where: { gameInstanceId: instance.id }, select: { kind: true, catalogId: true } }),
     prisma.character.findMany({ where: { gameInstanceId: instance.id, catalogId: { not: null } }, select: { catalogId: true } }),
   ]);
-  const builtIds = new Set(builds.map((b) => b.catalogId!));
-  return domainsToday(cat.catalog, owned, builtIds, gameWeekday(regionForInstance(game, instance), now));
+  const builtIds = new Set(builds.map((build) => build.catalogId!));
+  return domainsToday(loadedCatalog.catalog, owned, builtIds, gameWeekday(regionForInstance(game, instance), now));
 }
 
 async function undoneDailies(userId: string, instance: GameInstance, game: GameDefinition) {
@@ -72,10 +72,10 @@ async function undoneDailies(userId: string, instance: GameInstance, game: GameD
   const now = new Date();
   return tasks
     .filter(
-      (t) =>
-        !isDoneThisCycle(t.lastCompletedAt, now, region, taskAnchor(game.manifest, (t.cadence as TaskCadence) ?? "daily", t.anchorKey)),
+      (task) =>
+        !isDoneThisCycle(task.lastCompletedAt, now, region, taskAnchor(game.manifest, (task.cadence as TaskCadence) ?? "daily", task.anchorKey)),
     )
-    .map((t) => t.title);
+    .map((task) => task.title);
 }
 
 /**
@@ -85,19 +85,19 @@ async function undoneDailies(userId: string, instance: GameInstance, game: GameD
  */
 async function dueExtra(cfg: ReminderConfig, game: GameDefinition, instance: GameInstance & { currencies: CurrencyState[] }, region: RegionReset, now: Date): Promise<DueExtra> {
   const extra: DueExtra = {};
-  const def = game.currencies.find((c) => c.key === game.manifest.stamina.currency);
-  const row = instance.currencies.find((c) => c.key === def?.key);
-  if (cfg.whenStaminaFull && def?.cap && def.regenPerHour) {
+  const staminaCurrency = game.currencies.find((currency) => currency.key === game.manifest.stamina.currency);
+  const row = instance.currencies.find((held) => held.key === staminaCurrency?.key);
+  if (cfg.whenStaminaFull && staminaCurrency?.cap && staminaCurrency.regenPerHour) {
     const from = row ?? { value: 0, updatedAt: instance.createdAt };
-    const hours = Math.max(0, staminaCap(game, instance.accountLevel) - from.value) / def.regenPerHour;
-    extra.stamina = { label: def.label, fullAt: new Date(from.updatedAt.getTime() + hours * 3_600_000) };
+    const hours = Math.max(0, staminaCap(game, instance.accountLevel) - from.value) / staminaCurrency.regenPerHour;
+    extra.stamina = { label: staminaCurrency.label, fullAt: new Date(from.updatedAt.getTime() + hours * 3_600_000) };
   }
   if (cfg.beforeEndgameReset && game.manifest.endgame.length) {
     const rows = await prisma.cycleResult.findMany({ where: { gameInstanceId: instance.id } });
     const premium = premiumCurrency(game);
     extra.endgame = endgameNow(game, region, now, rows)
-      .modes.filter((m) => m.open && m.mode.maxPremium !== undefined)
-      .map((m) => ({ key: m.mode.key, name: m.mode.name, closes: m.closes, unclaimed: m.mode.maxPremium! - m.premium, premium }));
+      .modes.filter((modeState) => modeState.open && modeState.mode.maxPremium !== undefined)
+      .map((modeState) => ({ key: modeState.mode.key, name: modeState.mode.name, closes: modeState.closes, unclaimed: modeState.mode.maxPremium! - modeState.premium, premium }));
   }
   const monthly = game.manifest.monthlyPass;
   if (cfg.beforePassEnds && monthly) {
@@ -107,9 +107,9 @@ async function dueExtra(cfg: ReminderConfig, game: GameDefinition, instance: Gam
   const battle = game.manifest.battlePass;
   if (cfg.beforeBattlePassEnds && battle?.maxLevel) {
     const row = await prisma.passState.findUnique({ where: { gameInstanceId_kind: { gameInstanceId: instance.id, kind: "battle" } } });
-    const v = game.manifest.version;
+    const version = game.manifest.version;
     const level = passView(game, region, now, row ? { level: row.level ?? 0, weeklyXp: 0, updatedAt: row.updatedAt } : null, null).level;
-    const endsAt = cadenceWindow({ cadence: "version", start: v.start, days: v.days }, region, now).end;
+    const endsAt = cadenceWindow({ cadence: "version", start: version.start, days: version.days }, region, now).end;
     extra.battlePass = { name: battle.name, endsAt, level, maxLevel: battle.maxLevel };
   }
   const goals = await prisma.task.findMany({
@@ -117,8 +117,8 @@ async function dueExtra(cfg: ReminderConfig, game: GameDefinition, instance: Gam
     select: { eventId: true },
   });
   if (goals.length) {
-    const events = await prisma.event.findMany({ where: { id: { in: goals.map((g) => g.eventId!) } }, select: { id: true, name: true, endsAt: true } });
-    extra.eventGoals = events.map((e) => ({ key: e.id, name: e.name, endsAt: e.endsAt }));
+    const events = await prisma.event.findMany({ where: { id: { in: goals.map((goal) => goal.eventId!) } }, select: { id: true, name: true, endsAt: true } });
+    extra.eventGoals = events.map((event) => ({ key: event.id, name: event.name, endsAt: event.endsAt }));
   }
   return extra;
 }
@@ -143,7 +143,7 @@ async function dmParts(cfg: ReminderConfig, userId: string, instance: GameInstan
     where: { userId, scope: "game", refId: instance.id, notify: true, backlog: false, parentId: null },
     select: { title: true },
   });
-  if (flagged.length) parts.push(`🔔 Flagged: ${flagged.map((t) => t.title).join(", ")}`.slice(0, 400));
+  if (flagged.length) parts.push(`🔔 Flagged: ${flagged.map((task) => task.title).join(", ")}`.slice(0, 400));
   return parts;
 }
 
@@ -158,9 +158,9 @@ export async function previewReminders(userId: string, now = new Date()) {
   for (const rule of rules) {
     const instance = rule.gameInstance;
     const game = instance && getGame(instance.gameKey);
-    const cfg = reminderConfigSchema.parse(rule.config ?? {});
-    if (!instance || !game || !cfg.enabled) continue;
-    const parts = await dmParts(cfg, userId, instance, game, now);
+    const reminderConfig = reminderConfigSchema.parse(rule.config ?? {});
+    if (!instance || !game || !reminderConfig.enabled) continue;
+    const parts = await dmParts(reminderConfig, userId, instance, game, now);
     out.push({ gameKey: game.key, instanceId: instance.id, text: [resetHeadline(game.name, regionForInstance(game, instance), now), ...parts].join("\n") });
   }
   return out;
@@ -188,27 +188,27 @@ export async function runReminderTick(now = new Date()): Promise<void> {
       const game = getGame(instance.gameKey);
       if (!game) continue;
 
-      const cfg = reminderConfigSchema.parse(rule.config ?? {});
+      const reminderConfig = reminderConfigSchema.parse(rule.config ?? {});
       // Quiet hours hold everything; the log is untouched, so it goes out on the first tick after.
-      if (!cfg.enabled || inQuietHours(now, cfg.quietHours, cfg.timezone)) continue;
+      if (!reminderConfig.enabled || inQuietHours(now, reminderConfig.quietHours, reminderConfig.timezone)) continue;
 
       const region = regionForInstance(game, instance);
       const pending = [];
-      for (const d of dueReminders(cfg, region, game.name, now, await dueExtra(cfg, game, instance, region, now))) {
+      for (const dueReminder of dueReminders(reminderConfig, region, game.name, now, await dueExtra(reminderConfig, game, instance, region, now))) {
         const already = await prisma.reminderLog.findUnique({
-          where: { ruleId_firedFor_key: { ruleId: rule.id, firedFor: d.firedFor, key: d.key } },
+          where: { ruleId_firedFor_key: { ruleId: rule.id, firedFor: dueReminder.firedFor, key: dueReminder.key } },
         });
-        if (!already) pending.push(d);
+        if (!already) pending.push(dueReminder);
       }
       if (pending.length === 0) continue;
 
-      const parts = await dmParts(cfg, rule.userId, instance, game, now);
+      const parts = await dmParts(reminderConfig, rule.userId, instance, game, now);
 
       // Usually one; if a late tick finds several due (e.g. a check-in right
       // before reset), each gets its own DM and log row.
-      for (const d of pending) {
-        await sendDirectMessage(rule.user.discordId, [d.headline, ...parts].join("\n"));
-        await prisma.reminderLog.create({ data: { ruleId: rule.id, firedFor: d.firedFor, key: d.key } });
+      for (const pendingReminder of pending) {
+        await sendDirectMessage(rule.user.discordId, [pendingReminder.headline, ...parts].join("\n"));
+        await prisma.reminderLog.create({ data: { ruleId: rule.id, firedFor: pendingReminder.firedFor, key: pendingReminder.key } });
       }
     } catch (err) {
       console.error(`[scheduler] rule ${rule.id} failed:`, err);

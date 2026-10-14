@@ -27,17 +27,17 @@ export function describeMaterials(
 ): PlanPreviewDto["materials"] {
   const out: PlanPreviewDto["materials"] = {};
   for (const id of ids) {
-    const m = cat.index.materials.get(id);
-    out[id] = m
+    const material = cat.index.materials.get(id);
+    out[id] = material
       ? {
-          id: m.id,
-          name: m.name,
-          category: m.category,
-          rarity: m.rarity ?? null,
-          icon: m.icon ?? null,
-          availability: m.availability ?? null,
-          source: m.source ?? null,
-          farmableToday: farmableToday(m.availability, weekday),
+          id: material.id,
+          name: material.name,
+          category: material.category,
+          rarity: material.rarity ?? null,
+          icon: material.icon ?? null,
+          availability: material.availability ?? null,
+          source: material.source ?? null,
+          farmableToday: farmableToday(material.availability, weekday),
         }
       : { id, name: id, category: "Unknown", rarity: null, icon: null, availability: null, source: null, farmableToday: true };
   }
@@ -46,36 +46,36 @@ export function describeMaterials(
 
 async function stockOf(instanceId: string): Promise<Record<string, number>> {
   const rows = await prisma.materialStock.findMany({ where: { gameInstanceId: instanceId } });
-  return Object.fromEntries(rows.map((r) => [r.materialId, r.qty]));
+  return Object.fromEntries(rows.map((row) => [row.materialId, row.qty]));
 }
 
 type PlanResult =
   | { ok: false; status: 404; code: "no_catalog" | "unknown_catalog_id" }
   | { ok: true; preview: PlanPreviewDto };
 
-async function buildPlan(game: GameDefinition, gi: GameInstance, req: PlanRequestInput): Promise<PlanResult> {
-  const cat = await getCatalog(game);
-  if (!cat) return { ok: false, status: 404, code: "no_catalog" };
+async function buildPlan(game: GameDefinition, gameInstance: GameInstance, req: PlanRequestInput): Promise<PlanResult> {
+  const loadedCatalog = await getCatalog(game);
+  if (!loadedCatalog) return { ok: false, status: 404, code: "no_catalog" };
 
   let requirements: MaterialReq[];
   if (req.kind === "character") {
-    const entry = cat.index.characters.get(req.catalogId);
+    const entry = loadedCatalog.index.characters.get(req.catalogId);
     if (!entry) return { ok: false, status: 404, code: "unknown_catalog_id" };
     requirements = characterRequirements(entry, { level: req.level, talents: req.talents });
   } else {
-    const entry = cat.index.weapons.get(req.catalogId);
+    const entry = loadedCatalog.index.weapons.get(req.catalogId);
     if (!entry) return { ok: false, status: 404, code: "unknown_catalog_id" };
     requirements = weaponRequirements(entry, req.level);
   }
 
-  const stock = await stockOf(gi.id);
+  const stock = await stockOf(gameInstance.id);
   const missing = deficit(requirements, stock);
-  const weekday = gameWeekday(regionForInstance(game, gi), new Date());
+  const weekday = gameWeekday(regionForInstance(game, gameInstance), new Date());
   const preview: PlanPreviewDto = {
     requirements,
     deficit: missing,
-    stock: Object.fromEntries(requirements.map((r) => [r.materialId, stock[r.materialId] ?? 0])),
-    materials: describeMaterials(cat, requirements.map((r) => r.materialId), weekday),
+    stock: Object.fromEntries(requirements.map((requirement) => [requirement.materialId, stock[requirement.materialId] ?? 0])),
+    materials: describeMaterials(loadedCatalog, requirements.map((requirement) => requirement.materialId), weekday),
   };
   return { ok: true, preview };
 }
@@ -97,30 +97,30 @@ async function syncGoalTree(opts: {
   materialName: (id: string) => string;
   backlog: boolean;
 }): Promise<{ created: number; updated: number; parentId: string }> {
-  const { userId, gi, kind, catalogId, goal, entryName, requirements, materialName, backlog } = opts;
+  const { userId, gi: gameInstance, kind, catalogId, goal, entryName, requirements, materialName, backlog } = opts;
   const title = `Farm ${entryName}${backlog ? " (max)" : ""}`;
   const parentOrigin = { kind, catalogId, goal } as PrismaJson;
   let created = 0;
   let updated = 0;
 
   const parents = await prisma.task.findMany({
-    where: { userId, scope: "game", refId: gi.id, type: "goal", parentId: null, materialId: null, backlog },
+    where: { userId, scope: "game", refId: gameInstance.id, type: "goal", parentId: null, materialId: null, backlog },
   });
-  const existingParent = parents.find((p) => {
-    const o = (p.origin ?? {}) as Partial<TaskOrigin>;
-    return o.kind === kind && o.catalogId === catalogId;
+  const existingParent = parents.find((parent) => {
+    const origin = (parent.origin ?? {}) as Partial<TaskOrigin>;
+    return origin.kind === kind && origin.catalogId === catalogId;
   });
   const parent = existingParent
     ? ((updated += 1),
       await prisma.task.update({ where: { id: existingParent.id }, data: { title, origin: parentOrigin } }))
     : ((created += 1),
       await prisma.task.create({
-        data: { userId, scope: "game", refId: gi.id, type: "goal", title, origin: parentOrigin, backlog },
+        data: { userId, scope: "game", refId: gameInstance.id, type: "goal", title, origin: parentOrigin, backlog },
       }));
 
   const existingChildren = await prisma.task.findMany({ where: { parentId: parent.id } });
-  const byMaterial = new Map(existingChildren.map((c) => [c.materialId, c]));
-  const wanted = new Set(requirements.map((r) => r.materialId));
+  const byMaterial = new Map(existingChildren.map((existingChild) => [existingChild.materialId, existingChild]));
+  const wanted = new Set(requirements.map((requirement) => requirement.materialId));
   for (const need of requirements) {
     const name = materialName(need.materialId);
     const child = byMaterial.get(need.materialId);
@@ -132,7 +132,7 @@ async function syncGoalTree(opts: {
         data: {
           userId,
           scope: "game",
-          refId: gi.id,
+          refId: gameInstance.id,
           type: "goal",
           title: `Farm ${name}`,
           target: need.qty,
@@ -144,7 +144,7 @@ async function syncGoalTree(opts: {
       created += 1;
     }
   }
-  const stale = existingChildren.filter((c) => c.materialId && !wanted.has(c.materialId)).map((c) => c.id);
+  const stale = existingChildren.filter((existingChild) => existingChild.materialId && !wanted.has(existingChild.materialId)).map((existingChild) => existingChild.id);
   if (stale.length) await prisma.task.deleteMany({ where: { id: { in: stale } } });
 
   return { created, updated, parentId: parent.id };
@@ -155,9 +155,9 @@ export async function registerPlanningRoutes(app: FastifyInstance) {
     "/api/instances/:id/plans/preview",
     { preHandler: requireUser },
     async (req, reply) => {
-      const gi = await loadInstance(req.user!.id, req.params.id);
-      if (!gi) return reply.code(404).send({ error: "not_found" });
-      const result = await buildPlan(gameOrThrow(gi.gameKey), gi, planRequestInput.parse(req.body));
+      const gameInstance = await loadInstance(req.user!.id, req.params.id);
+      if (!gameInstance) return reply.code(404).send({ error: "not_found" });
+      const result = await buildPlan(gameOrThrow(gameInstance.gameKey), gameInstance, planRequestInput.parse(req.body));
       if (!result.ok) return reply.code(result.status).send({ error: result.code });
       return planPreviewDto.parse(result.preview);
     },
@@ -175,22 +175,22 @@ export async function registerPlanningRoutes(app: FastifyInstance) {
     { preHandler: requireUser },
     async (req, reply) => {
       const userId = req.user!.id;
-      const gi = await loadInstance(userId, req.params.id);
-      if (!gi) return reply.code(404).send({ error: "not_found" });
-      const game = gameOrThrow(gi.gameKey);
+      const gameInstance = await loadInstance(userId, req.params.id);
+      if (!gameInstance) return reply.code(404).send({ error: "not_found" });
+      const game = gameOrThrow(gameInstance.gameKey);
       const body = planRequestInput.parse(req.body);
-      const result = await buildPlan(game, gi, body);
+      const result = await buildPlan(game, gameInstance, body);
       if (!result.ok) return reply.code(result.status).send({ error: result.code });
       const { preview } = result;
 
-      const cat = await getCatalog(game);
+      const loadedCatalog = await getCatalog(game);
       const entry =
-        body.kind === "character" ? cat?.index.characters.get(body.catalogId) : cat?.index.weapons.get(body.catalogId);
+        body.kind === "character" ? loadedCatalog?.index.characters.get(body.catalogId) : loadedCatalog?.index.weapons.get(body.catalogId);
       const goal = body.kind === "character" ? { level: body.level, talents: body.talents } : { level: body.level };
 
       const { created, updated, parentId } = await syncGoalTree({
         userId,
-        gi,
+        gi: gameInstance,
         kind: body.kind,
         catalogId: body.catalogId,
         goal,
@@ -204,9 +204,9 @@ export async function registerPlanningRoutes(app: FastifyInstance) {
         where: { OR: [{ id: parentId }, { parentId }] },
         orderBy: { createdAt: "asc" },
       });
-      const ctx = await buildRegionContext(rows);
+      const regionContext = await buildRegionContext(rows);
       const now = new Date();
-      return planGenerateResultDto.parse({ created, updated, tasks: rows.map((t) => serializeTask(t, ctx, now)) });
+      return planGenerateResultDto.parse({ created, updated, tasks: rows.map((row) => serializeTask(row, regionContext, now)) });
     },
   );
 
@@ -220,47 +220,47 @@ export async function registerPlanningRoutes(app: FastifyInstance) {
     { preHandler: requireUser },
     async (req, reply) => {
       const userId = req.user!.id;
-      const gi = await loadInstance(userId, req.params.id);
-      if (!gi) return reply.code(404).send({ error: "not_found" });
-      const game = gameOrThrow(gi.gameKey);
-      const cat = await getCatalog(game);
-      if (!cat) return reply.code(404).send({ error: "no_catalog" });
+      const gameInstance = await loadInstance(userId, req.params.id);
+      if (!gameInstance) return reply.code(404).send({ error: "not_found" });
+      const game = gameOrThrow(gameInstance.gameKey);
+      const loadedCatalog = await getCatalog(game);
+      if (!loadedCatalog) return reply.code(404).send({ error: "no_catalog" });
 
       const [ownedRows, builtRows] = await Promise.all([
-        prisma.ownership.findMany({ where: { gameInstanceId: gi.id, kind: "character" }, select: { catalogId: true } }),
+        prisma.ownership.findMany({ where: { gameInstanceId: gameInstance.id, kind: "character" }, select: { catalogId: true } }),
         prisma.character.findMany({
-          where: { gameInstanceId: gi.id, buildStatus: { in: ["good", "perfect"] } },
+          where: { gameInstanceId: gameInstance.id, buildStatus: { in: ["good", "perfect"] } },
           select: { catalogId: true },
         }),
       ]);
-      const built = new Set(builtRows.map((c) => c.catalogId));
+      const built = new Set(builtRows.map((builtRow) => builtRow.catalogId));
       let created = 0;
       let updated = 0;
       let characters = 0;
 
       for (const { catalogId } of ownedRows) {
         if (built.has(catalogId)) continue;
-        const entry = cat.index.characters.get(catalogId);
+        const entry = loadedCatalog.index.characters.get(catalogId);
         if (!entry) continue;
         const goal = {
           level: { from: 20, to: entry.maxLevel },
-          talents: Object.fromEntries(entry.talents.keys.map((k) => [k, { from: 1, to: 8 }])),
+          talents: Object.fromEntries(entry.talents.keys.map((key) => [key, { from: 1, to: 8 }])),
         };
         const requirements = characterRequirements(entry, goal);
         if (requirements.length === 0) continue;
-        const res = await syncGoalTree({
+        const syncResult = await syncGoalTree({
           userId,
-          gi,
+          gi: gameInstance,
           kind: "character",
           catalogId,
           goal,
           entryName: entry.name,
           requirements,
-          materialName: (id) => cat.index.materials.get(id)?.name ?? id,
+          materialName: (id) => loadedCatalog.index.materials.get(id)?.name ?? id,
           backlog: true,
         });
-        created += res.created;
-        updated += res.updated;
+        created += syncResult.created;
+        updated += syncResult.updated;
         characters += 1;
       }
 
