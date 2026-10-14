@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState, type FormEvent } from "react";
+import { useMemo, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getGame, type CatalogGearSet, type CharacterDto, type GameDefinition, type GearPieceDto } from "@gacha/shared";
@@ -10,7 +10,6 @@ import { useCatalog } from "../lib/catalog";
 import { CatalogIcon, UnitIcon } from "../components/CatalogIcon";
 import { GameTabs, gearLabel } from "../components/GameTabs";
 import { Picker } from "../components/Picker";
-import { Chips } from "../components/ui";
 import { assetUrl, communityAssetUrl } from "../lib/assets";
 import { StatIcon } from "../components/StatIcon";
 import type { InstanceDetail } from "../lib/types";
@@ -21,8 +20,6 @@ type DocPiece = { setName?: string; mainStat?: string; level?: number; substats?
 type Owned = { slot: string; mainStat?: string; level?: number; substats?: Sub[]; wearer?: CharacterDto; bagId?: string };
 /** A piece with its set's name, as the pieces list shows it. */
 type Piece = Owned & { set: string; key: string };
-
-const maxRarity = (g: CatalogGearSet) => Math.max(0, ...((g.extra?.rarityList as number[] | undefined) ?? []));
 
 /** A bonus as label and text: its own "2pc:" prefix where it has one, else the game's piece count for its place (one-piece sets say 1pc). */
 function bonusParts(b: string, i: number, set: CatalogGearSet, counts: readonly number[]): [string, string] {
@@ -49,16 +46,16 @@ function ownedBySet(pieces: Piece[]): Map<string, Owned[]> {
   return out;
 }
 
-/** Several values picked at once (round 8), each its own chip, pressed again to drop it. */
-function MultiChips({ label, options, picked, onToggle, icons = false }: { label: string; options: { value: string; text: string }[]; picked: ReadonlySet<string>; onToggle: (v: string) => void; icons?: boolean }) {
+/** Several values picked at once (round 8), each its own chip with its icon, pressed again to drop it. */
+function MultiChips({ label, options, picked, onToggle }: { label: string; options: { value: string; text: string; icon?: ReactNode }[]; picked: ReadonlySet<string>; onToggle: (v: string) => void }) {
   if (options.length === 0) return null;
   return (
     <div className="ch-chipset" role="group" aria-label={label}>
       <span className="kpi-label">{label}</span>
       <div>
         {options.map((o) => (
-          <button key={o.value} type="button" className="ch-chip" aria-label={o.text} aria-pressed={picked.has(o.value)} onClick={() => onToggle(o.value)}>
-            {icons && <StatIcon stat={o.text} />}
+          <button key={o.value} type="button" className="ch-chip gp-chip" aria-label={o.text} aria-pressed={picked.has(o.value)} onClick={() => onToggle(o.value)}>
+            {o.icon}
             {o.text}
           </button>
         ))}
@@ -68,23 +65,25 @@ function MultiChips({ label, options, picked, onToggle, icons = false }: { label
 }
 
 /**
- * Every game's gear, rebuilt (Georges, round 8: "the artifact/gear screen is a mess; I can't even reset my searches nor search
- * for multiple sets; it should be rebuilt from the ground up to be readable"): the filters on the left (the sets as a list to
- * search and pick several of, the slots, main stats and where, one click resetting them all), the pieces on the right grouped
- * by set, each group headed by its set (icon, bonuses, slots held) whose panel adds, equips and farms.
+ * Every game's gear (Georges, round 9: "make it so I see all of my pieces, I can see the set icon and the type of piece + its
+ * stats, and I can filter my artifacts the same way I can filter characters"): every piece you have as a card (its set's icon
+ * and name, its type, its main stat and substats by their icons, who wears it), filtered as the characters are (a search,
+ * chips for the sets you hold, slots and main stats, where as counts, one Reset, a sort); any set opens from a picker for
+ * adding, equipping and farming.
  */
 export function GearSetsPage() {
   const { id } = useParams();
-  const [setSearch, setSetSearch] = useState("");
-  const [picked, setPicked] = useState<ReadonlySet<string>>(new Set());
+  const [q, setQ] = useState("");
+  const [setsPicked, setSetsPicked] = useState<ReadonlySet<string>>(new Set());
   const [slotsPicked, setSlotsPicked] = useState<ReadonlySet<string>>(new Set());
   const [mainsPicked, setMainsPicked] = useState<ReadonlySet<string>>(new Set());
-  const [where, setWhere] = useState("");
+  const [where, setWhere] = useState<"" | "equipped" | "bag">("");
+  const [sort, setSort] = useState<"set" | "slot" | "level">("set");
   const [openId, setOpenId] = useState<string | null>(null);
   const [adding, setAdding] = useState(false);
 
   const { data: instance, isError, refetch } = useQuery({ queryKey: ["instance", id], queryFn: () => api.get<InstanceDetail>(`/api/instances/${id}`), enabled: Boolean(id) });
-  const { catalog, isLoading } = useCatalog(instance?.gameKey);
+  const { catalog, index, isLoading } = useCatalog(instance?.gameKey);
   const { data: bag = [] } = useQuery({ queryKey: ["gear", id], queryFn: () => api.get<GearPieceDto[]>(`/api/instances/${id}/gear`), enabled: Boolean(id) });
   const { data: builds = [] } = useQuery({ queryKey: ["builds", id], queryFn: () => api.get<CharacterDto[]>(`/api/instances/${id}/characters`), enabled: Boolean(id) });
   const game = instance && getGame(instance.gameKey);
@@ -100,7 +99,7 @@ export function GearSetsPage() {
   const setsByName = new Map(sets.map((g) => [g.name, g]));
   const slotIndex = (key: string) => gear.slots.findIndex((s) => s.key === key);
   const slotLabel = (key: string) => gear.slots.find((s) => s.key === key)?.label ?? key;
-  const held = (name: string) => new Set((owned.get(name) ?? []).map((p) => p.slot)).size;
+  const wearerName = (p: Piece) => (p.wearer ? (index?.characters.get(p.wearer.catalogId ?? "")?.name ?? p.wearer.name) : "");
   const toggle = (set: (f: (s: ReadonlySet<string>) => ReadonlySet<string>) => void) => (v: string) =>
     set((s) => {
       const next = new Set(s);
@@ -108,25 +107,40 @@ export function GearSetsPage() {
       else next.add(v);
       return next;
     });
-  const q = setSearch.trim().toLowerCase();
-  const listed = sets
-    .filter((g) => !q || g.name.toLowerCase().includes(q) || g.bonuses.some((b) => b.toLowerCase().includes(q)))
-    .sort((a, b) => held(b.name) - held(a.name) || maxRarity(b) - maxRarity(a) || a.name.localeCompare(b.name));
-  const filtering = Boolean(q || picked.size || slotsPicked.size || mainsPicked.size || where);
+  const query = q.trim().toLowerCase();
+  const filtering = Boolean(query || setsPicked.size || slotsPicked.size || mainsPicked.size || where);
   const reset = () => {
-    setSetSearch("");
-    setPicked(new Set());
+    setQ("");
+    setSetsPicked(new Set());
     setSlotsPicked(new Set());
     setMainsPicked(new Set());
     setWhere("");
   };
-  const shownPieces = pieces.filter(
-    (p) => (!picked.size || picked.has(p.set)) && (!slotsPicked.size || slotsPicked.has(p.slot)) && (!mainsPicked.size || mainsPicked.has(p.mainStat ?? "")) && (!where || (where === "Bag") === Boolean(p.bagId)),
+  // Every filter but where, so its counts read what the others leave.
+  const matching = pieces.filter(
+    (p) =>
+      (!query || [p.set, slotLabel(p.slot), p.mainStat ?? "", wearerName(p), ...(p.substats ?? []).map((s) => s.stat)].some((t) => t.toLowerCase().includes(query))) &&
+      (!setsPicked.size || setsPicked.has(p.set)) &&
+      (!slotsPicked.size || slotsPicked.has(p.slot)) &&
+      (!mainsPicked.size || mainsPicked.has(p.mainStat ?? "")),
   );
-  // The sets picked, even without pieces; else every set a shown piece belongs to.
-  const groups = [...(picked.size ? picked : new Set(shownPieces.map((p) => p.set)))].sort((a, b) => held(b) - held(a) || a.localeCompare(b));
+  const shown = matching
+    .filter((p) => !where || (where === "bag") === Boolean(p.bagId))
+    .sort((a, b) =>
+      sort === "level"
+        ? (b.level ?? 0) - (a.level ?? 0) || a.set.localeCompare(b.set)
+        : sort === "slot"
+          ? slotIndex(a.slot) - slotIndex(b.slot) || a.set.localeCompare(b.set)
+          : a.set.localeCompare(b.set) || slotIndex(a.slot) - slotIndex(b.slot) || (b.level ?? 0) - (a.level ?? 0),
+    );
+  const heldSets = [...owned.keys()].sort((a, b) => (owned.get(b)?.length ?? 0) - (owned.get(a)?.length ?? 0) || a.localeCompare(b));
   const mainStats = [...new Set([...gear.slots.flatMap((s) => s.mainStats ?? []), ...pieces.flatMap((p) => p.mainStat ?? [])])];
   const open = sets.find((g) => g.id === openId);
+  const counts: ["" | "equipped" | "bag", string, number][] = [
+    ["", "All", matching.length],
+    ["equipped", "Equipped", matching.filter((p) => p.wearer).length],
+    ["bag", "Bag", matching.filter((p) => p.bagId).length],
+  ];
 
   return (
     <>
@@ -136,110 +150,102 @@ export function GearSetsPage() {
       {sets.length === 0 ? (
         <div className="card empty">No {label.toLowerCase()} in this game's catalog yet.</div>
       ) : (
-        <div className="gr-page">
-          <section className="card gr-filters" aria-label="Filters">
-            <div className="spread">
-              <h3>Filters</h3>
-              <button type="button" className="btn sm" disabled={!filtering} onClick={reset}>
-                Reset filters
-              </button>
-            </div>
-            <input type="search" aria-label="Search sets" placeholder="Set or bonus" value={setSearch} onChange={(e) => setSetSearch(e.target.value)} />
-            <div className="gr-sets" role="group" aria-label="Sets">
-              {listed.map((g) => (
-                <button key={g.id} type="button" className="gr-set" aria-label={g.name} aria-pressed={picked.has(g.name)} onClick={() => toggle(setPicked)(g.name)}>
-                  <CatalogIcon gameKey={game.key} kind="gear" icon={g.icon} name={g.name} className="gr-set-icon" />
-                  <span className="gr-set-name">{g.name}</span>
-                  <span className={`mn gr-set-held ${held(g.name) ? "" : "is-off"}`}>{held(g.name) || "—"}</span>
-                </button>
-              ))}
-              {listed.length === 0 && <p className="mu">No set matches.</p>}
-            </div>
+        <>
+          <section className="card ch-filters" aria-label="Filters">
+            <label>
+              Search
+              <input type="search" aria-label="Search" placeholder="Set, stat or wearer" value={q} onChange={(e) => setQ(e.target.value)} />
+            </label>
+            <MultiChips
+              label="Set"
+              options={heldSets.map((name) => ({ value: name, text: name, icon: <CatalogIcon gameKey={game.key} kind="gear" icon={setsByName.get(name)?.icon} name={name} className="gp-chip-icon" /> }))}
+              picked={setsPicked}
+              onToggle={toggle(setSetsPicked)}
+            />
             <MultiChips label="Slot" options={gear.slots.map((s) => ({ value: s.key, text: s.label }))} picked={slotsPicked} onToggle={toggle(setSlotsPicked)} />
-            <MultiChips label="Main stat" options={mainStats.map((m) => ({ value: m, text: m }))} picked={mainsPicked} onToggle={toggle(setMainsPicked)} icons />
-            <Chips label="Where" value={where} onChange={setWhere} options={["Equipped", "Bag"]} />
+            <MultiChips label="Main stat" options={mainStats.map((m) => ({ value: m, text: m, icon: <StatIcon stat={m} /> }))} picked={mainsPicked} onToggle={toggle(setMainsPicked)} />
+            <label>
+              Sort
+              <select value={sort} onChange={(e) => setSort(e.target.value as typeof sort)}>
+                <option value="set">Set</option>
+                <option value="slot">Slot</option>
+                <option value="level">Level</option>
+              </select>
+            </label>
           </section>
 
-          <div className="gr-results">
-            <div className="spread gr-results-head">
-              <span className="badge">
-                {shownPieces.length} pieces · {groups.length} sets
-              </span>
-              {/* A piece you have, made here without opening a set (round 7). */}
-              <button type="button" className="btn primary" aria-expanded={adding} onClick={() => setAdding(!adding)}>
-                Add a piece
-              </button>
+          <div className="ch-counts gp-bar">
+            <div className="row" role="group" aria-label="Where">
+              {counts.map(([v, text, n]) => (
+                <button key={text} type="button" className="chip" aria-pressed={where === v && (v !== "" || !where)} onClick={() => setWhere(where === v ? "" : v)}>
+                  {text} {n}
+                </button>
+              ))}
             </div>
-            {adding && <NewPiece instanceId={id!} game={game} sets={sets} onDone={() => setAdding(false)} />}
-            <section className="gr-groups" aria-label="Pieces">
-              {groups.map((name) => {
-                const set = setsByName.get(name);
-                const mine = shownPieces.filter((p) => p.set === name).sort((a, b) => slotIndex(a.slot) - slotIndex(b.slot) || (b.level ?? 0) - (a.level ?? 0));
-                return (
-                  <section key={name} className={`card gr-group ${set && set.id === openId ? "is-open" : ""}`} aria-label={name}>
-                    <header className="gr-group-head">
-                      <CatalogIcon gameKey={game.key} kind="gear" icon={set?.icon} name={name} className="gr-group-icon" />
-                      <div className="gr-group-title">
-                        <strong>{name}</strong>
-                        {set?.bonuses.map((b, i) => {
-                          const [k, text] = bonusParts(b, i, set, gear.sets);
-                          return (
-                            <span key={i} className="gr-bonus">
-                              <b>{k}</b> {text}
-                            </span>
-                          );
-                        })}
-                      </div>
-                      <span className="badge gr-held">
-                        {held(name)} / {set?.slots.length ?? gear.slots.length}
-                      </span>
-                      {set && (
-                        <button type="button" className="btn" aria-label={`Open ${name}`} aria-pressed={set.id === openId} onClick={() => setOpenId(set.id === openId ? null : set.id)}>
-                          Open
-                        </button>
-                      )}
-                    </header>
-                    <div className="gr-pieces">
-                      {mine.map((p) => (
-                        <article key={p.key} className="gr-piece" aria-label={`${p.set} · ${slotLabel(p.slot)}`}>
-                          <div className="gr-piece-top">
-                            <span className="kpi-label">{slotLabel(p.slot)}</span>
-                            <span className="cd gr-piece-level">+{p.level ?? 0}</span>
-                          </div>
-                          <div className="gr-piece-main">
-                            {p.mainStat && <StatIcon stat={p.mainStat} />}
-                            {p.mainStat || "—"}
-                          </div>
-                          <ul className="gr-piece-subs mn">
-                            {(p.substats ?? []).map((s, i) => (
-                              <li key={i}>
-                                <span>
-                                  <StatIcon stat={s.stat} />
-                                  {s.stat}
-                                </span>
-                                <span>{s.value}</span>
-                              </li>
-                            ))}
-                          </ul>
-                          <div className="gr-piece-who">
-                            {p.wearer ? (
-                              p.wearer.catalogId ? <UnitIcon gameKey={game.key} unit={{ kind: "character", catalogId: p.wearer.catalogId }} className="gr-wearer" /> : <span className="mn">{p.wearer.name}</span>
-                            ) : (
-                              <span className="tag is-off">Bag</span>
-                            )}
-                          </div>
-                        </article>
-                      ))}
-                      {mine.length === 0 && <p className="mu gr-none">No piece of it yet: Open to add one.</p>}
-                    </div>
-                  </section>
-                );
-              })}
-              {groups.length === 0 && <div className="card empty">{pieces.length ? "No piece matches." : `No ${label.toLowerCase()} on a build or in the bag yet: pick a set or Add a piece.`}</div>}
-            </section>
+            <span className="ch-sp" />
+            <button type="button" className="btn" disabled={!filtering} onClick={reset}>
+              Reset filters
+            </button>
+            <div className="gp-openset">
+              <Picker
+                label="Open a set"
+                glyph="gear"
+                placeholder="Open a set"
+                value=""
+                options={sets.map((g) => ({ id: g.id, name: g.name, src: assetUrl(game.key, "gear", g.icon), fallback: communityAssetUrl(game.key, "gear", g.icon) }))}
+                onPick={(o) => o && setOpenId(o.id)}
+              />
+            </div>
+            {/* A piece you have, made here without opening a set (round 7). */}
+            <button type="button" className="btn primary" aria-expanded={adding} onClick={() => setAdding(!adding)}>
+              Add a piece
+            </button>
           </div>
+          {adding && <NewPiece instanceId={id!} game={game} sets={sets} onDone={() => setAdding(false)} />}
+
+          <section className="gp-grid" aria-label="Pieces">
+            {shown.map((p) => {
+              const set = setsByName.get(p.set);
+              return (
+                <article key={p.key} className={`card gp ${set && set.id === openId ? "is-open" : ""}`} aria-label={`${p.set} · ${slotLabel(p.slot)}`}>
+                  {set && <button type="button" className="gp-open" aria-label={`Open ${p.set}`} data-opens-panel onClick={() => setOpenId(set.id === openId ? null : set.id)} />}
+                  <div className="gp-head">
+                    <CatalogIcon gameKey={game.key} kind="gear" icon={set?.icon} name={p.set} className="gp-icon" />
+                    <div className="gp-title">
+                      <strong>{p.set}</strong>
+                      <span className="gp-slot">{slotLabel(p.slot)}</span>
+                    </div>
+                    {p.wearer ? (
+                      p.wearer.catalogId ? <UnitIcon gameKey={game.key} unit={{ kind: "character", catalogId: p.wearer.catalogId }} className="gp-who" /> : <span className="mn">{p.wearer.name}</span>
+                    ) : (
+                      <span className="tag is-off">Bag</span>
+                    )}
+                  </div>
+                  <div className="gp-main">
+                    <span>
+                      {p.mainStat && <StatIcon stat={p.mainStat} />}
+                      {p.mainStat || "—"}
+                    </span>
+                    <span className="cd">+{p.level ?? 0}</span>
+                  </div>
+                  <ul className="gp-subs mn">
+                    {(p.substats ?? []).map((s, i) => (
+                      <li key={i}>
+                        <span>
+                          <StatIcon stat={s.stat} />
+                          {s.stat}
+                        </span>
+                        <span>{s.value}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              );
+            })}
+            {shown.length === 0 && <div className="card empty">{pieces.length ? "No piece matches." : `No ${label.toLowerCase()} on a build or in the bag yet: Add a piece, or open a set.`}</div>}
+          </section>
           {open && <SetPanel key={open.id} instanceId={id!} game={game} set={open} pieces={owned.get(open.name) ?? []} builds={builds} onClose={() => setOpenId(null)} />}
-        </div>
+        </>
       )}
     </>
   );
@@ -298,6 +304,17 @@ function SetPanel({ instanceId, game, set, pieces, builds, onClose }: { instance
         <button type="button" className="btn ghost sm" aria-label="Close" onClick={onClose}>
           ×
         </button>
+      </div>
+      {/* Its bonuses, as the game counts them (round 9). */}
+      <div className="gs-bonuses">
+        {set.bonuses.map((b, i) => {
+          const [k, text] = bonusParts(b, i, set, gear.sets);
+          return (
+            <p key={i} className="gs-bonus">
+              <b>{k}</b> {text}
+            </p>
+          );
+        })}
       </div>
       <ul className="gs-slots" aria-label="Pieces">
         {slots.map((s) => {

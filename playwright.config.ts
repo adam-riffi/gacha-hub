@@ -13,7 +13,8 @@ export default defineConfig({
     baseURL: `http://localhost:${PORT}`,
     trace: "retain-on-failure",
   },
-  projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
+  // The app has one desktop layout from 1440 px (round 8): the journeys see it at that width, without a sideways scroll.
+  projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 900 } } }],
   webServer: {
     command: "node scripts/e2e-server.mjs",
     url: `http://localhost:${PORT}/api/me`,
