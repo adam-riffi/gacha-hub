@@ -231,17 +231,47 @@ test("Characters: a card's own stats, picked on the card, over the game's @smoke
   }
 });
 
-// The character's growth stat highlighted (Georges, round 6: "character's ascension stat should be highlighted as well").
-test("Characters: a card shows the character's growth stat, highlighted @smoke", async ({ page }) => {
+// The character's growth stat highlighted (Georges, round 6: "character's ascension stat should be highlighted as well"), and in
+// round 7: "the highlighted main stat shouldn't be on the top, it should be in the stat showcase of the cards, highlighted with the
+// character's colours … by default each character has its main stat showcased first … the highlights should also be able to be set
+// from the build creation screen, and the main stat highlighted there as well".
+test("Characters: the growth stat first in a card's stats, in the character's colour; the card's stats picked on the sheet too @smoke", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
-  await page.goto(`/games/${id}/characters`);
-  await page.getByRole("searchbox", { name: "Search" }).fill("Kafka");
-  const chip = page.getByRole("article", { name: "Kafka" }).locator(".ch-chips .ch-bonus");
-  await expect(chip).toHaveText("ATK");
-  await expect(chip).toHaveAttribute("title", "Grows ATK, Effect Hit Rate, HP");
+  const build = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1005", doc: { level: 80, stats: { ATK: 2400, SPD: 120 } } } })).json()) as { id: string };
+  await page.request.put(`/api/characters/${build.id}`, { data: { isDefault: true } });
+  try {
+    await page.goto(`/games/${id}/characters`);
+    await page.getByRole("searchbox", { name: "Search" }).fill("Kafka");
+    const card = page.getByRole("article", { name: "Kafka" });
+    await expect(card.locator(".ch-chips .ch-bonus")).toHaveCount(0);
+    const first = card.locator(".ch-kpis > div").first();
+    await expect(first.locator(".kpi-label")).toHaveText("ATK");
+    await expect(first).toHaveClass(/is-growth/);
+    const [colour, el] = await first.locator(".cd").evaluate((v) => {
+      const probe = document.createElement("i");
+      probe.style.color = "var(--el)";
+      v.parentElement!.append(probe);
+      const out = [getComputedStyle(v).color, getComputedStyle(probe).color];
+      probe.remove();
+      return out;
+    });
+    expect(colour).toBe(el);
+
+    // The sheet's stats are the card's, the growth first and highlighted; picked there for the card.
+    await page.goto(`/characters/${build.id}`);
+    const kpis = page.getByRole("region", { name: "KPIs" });
+    await expect(kpis.getByRole("group").first()).toHaveAttribute("aria-label", "ATK");
+    await expect(kpis.getByRole("group", { name: "ATK" })).toHaveClass(/is-growth/);
+    await page.getByRole("button", { name: "Stats shown on Kafka" }).click();
+    await page.getByRole("group", { name: "Kafka's card stats" }).getByRole("button", { name: "HP", exact: true }).click();
+    await expect.poll(async () => ((await (await page.request.get(`/api/characters/${build.id}`)).json()) as { cardStats: string[] | null }).cardStats).toEqual(["HP"]);
+    await expect(kpis.getByRole("group", { name: "HP" })).toBeVisible();
+  } finally {
+    await page.request.delete(`/api/characters/${build.id}`);
+  }
 });
 
 // Georges, round 6: "a quick way to make a building goal depending on the game … a window where I choose an ascension goal, by

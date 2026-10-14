@@ -17,8 +17,17 @@
 .ch-card .btn, .ch-card .ch-foot a { position: relative; z-index: 2; }
 .ch-el { border-color: var(--el); color: var(--el); }
 /* The stat the character grows (round 6): its chip filled, its label in the strip in the element's colour. */
-.ch-chips .badge.ch-bonus { background: var(--el); border-color: var(--el); color: var(--on-paper); max-width: 170px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.ch-kpis .kpi-label.is-bonus { color: var(--el); }
+/* The growth stat in the stat strip, in the character's colour (round 7), on the cards and the sheet. */
+.ch-kpis .kpi-label.is-bonus, .sh-kpi .kpi-label.is-bonus { color: var(--el); }
+.ch-kpis > div.is-growth { background: color-mix(in srgb, var(--el) 16%, transparent); box-shadow: inset 3px 0 0 var(--el); }
+.ch-kpis > div.is-growth .cd, .sh-kpi.is-growth .kpi-value { color: var(--el); }
+.sh-kpi.is-growth { border-color: var(--el); background: color-mix(in srgb, var(--el) 12%, var(--card)); }
+.sh-stat.is-growth > span { color: var(--el); font-weight: 600; }
+.ch-kpis-pickwrap { position: relative; display: contents; }
+.sh-head .ch-kpis-pickwrap { position: relative; display: inline-block; }
+.ch-kpis-btn { display: inline-flex; align-items: center; gap: 6px; }
+.ch-kpis-btn svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.8; }
+.sh-head .ch-kpis-pick { left: auto; right: 0; top: calc(100% + 6px); bottom: auto; width: 420px; border-color: var(--hairline-strong); }
 .ch-gap { width: 14px; }
 .ch-card.is-unowned { border-style: dashed; }
 .ch-card.is-unowned .ch-art .gicon { opacity: 0.35; filter: grayscale(0.6); }

@@ -193,3 +193,23 @@ export function buildBase(game: GameDefinition, index: { characters: Map<string,
   return sum;
 }
 
+
+/**
+ * The stats a build's card and sheet show (rounds 6 and 7): the build's own
+ * pick, else the game's, else the character's growth stat first (Georges:
+ * "by default each character has its main stat showcased first"), then its
+ * role's stats without repeating it, up to four.
+ */
+export function cardStatLabels(game: GameDefinition, entry: { bonusStats?: string[] } | undefined, role: string | null | undefined, own?: string[] | null, gameStats?: string[] | null): string[] {
+  if (own?.length) return own;
+  if (gameStats?.length) return gameStats;
+  const growth = entry?.bonusStats?.[0];
+  const roleStats = game.manifest.kpis[buildRole(game, role)]!;
+  return [...(growth ? [growth] : []), ...roleStats.filter((k) => !growth || k.toLowerCase() !== growth.toLowerCase())].slice(0, 4);
+}
+
+/** The stats a card can show: the usual ones, every role's, and the ones the builds have typed. */
+export const cardStatOptions = (game: GameDefinition, docs: readonly Doc[]) => [
+  ...new Set(["Crit value", "HP", "ATK", "DEF", ...Object.values(game.manifest.kpis).flat().flatMap((k) => k.split(" / ")), ...docs.flatMap((d) => Object.keys((d.stats ?? {}) as object))]),
+];
+

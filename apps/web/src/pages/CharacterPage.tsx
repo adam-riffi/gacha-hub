@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   ascensionPips,
   buildBase,
-  buildKpis,
+  cardStatLabels,
+  cardStatOptions,
+  elementColor,
+  statKpis,
   dupeBadge,
   getGame,
   skillsField,
@@ -30,7 +33,8 @@ import { Picker } from "../components/Picker";
 import { TaskGeneratorPanel } from "../components/TaskGeneratorPanel";
 import { QuickBuild } from "../components/tasks/QuickBuild";
 import { MiscCard, SkillRow } from "../components/sheet/MiscCard";
-import type { CharacterDetail, TaskItem } from "../lib/types";
+import { StatPicker } from "../components/characters/CardStats";
+import type { CharacterDetail, InstanceDetail, TaskItem } from "../lib/types";
 
 type Doc = Record<string, unknown>;
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
@@ -145,6 +149,15 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
   const skillIcon = (k: string) => entry?.talents.info?.find((i) => i.key === k)?.icon;
   // What the level and the weapon give before gear (round 6), shown where nothing is typed.
   const base = buildBase(game, index, data.catalogId, doc);
+  // The card's stats on the sheet too (round 7), its growth stat first and in the character's colour.
+  const instance = useQuery({ queryKey: ["instance", data.gameInstanceId], queryFn: () => api.get<InstanceDetail>(`/api/instances/${data.gameInstanceId}`) });
+  const growth = entry?.bonusStats?.[0];
+  const isGrowth = (label: string) => growth !== undefined && growth.toLowerCase() === label.toLowerCase();
+  const kpis = statKpis(game, doc, cardStatLabels(game, entry, state.role, data.cardStats, instance.data?.cardStats), catalog?.gear ?? [], base);
+  const setCardStats = useMutation({
+    mutationFn: (cardStats: string[] | null) => api.put(`/api/characters/${data.id}`, { cardStats }),
+    onSuccess: () => Promise.all([["character", data.id], ["characters", data.gameInstanceId]].map((queryKey) => qc.invalidateQueries({ queryKey }))),
+  });
   const plan = (tasks.data ?? []).find((t) => !t.materialId && (t.origin as TaskOrigin | null)?.catalogId === data.catalogId && (t.origin as TaskOrigin | null)?.kind === "character");
   const targets = ((plan?.origin as { goal?: { talents?: Record<string, { to: number }> } } | null)?.goal?.talents ?? {}) as Record<string, { to: number }>;
   const holder = weaponHolder(game);
@@ -237,6 +250,7 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
             <div className="spread">
               <Link to={`/games/${data.gameInstanceId}/characters`}>← Characters</Link>
               <div className="row">
+                <StatPicker name={data.name} label="Card stats" options={cardStatOptions(game, (all.data ?? []).map((b) => b.doc as Doc))} own={data.cardStats} onPick={(stats) => setCardStats.mutate(stats)} />
                 <label className="sh-inline">
                   Build status
                   <select value={state.buildStatus} onChange={(e) => setState((s) => ({ ...s, buildStatus: e.target.value as BuildStatus }))}>
@@ -259,9 +273,9 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
             </div>
           </section>
 
-          <section className="sh-kpis" aria-label="KPIs">
-            {buildKpis(game, doc, state.role, [], base).map((k) => (
-              <KpiTile key={k.label} label={k.label} value={k.value} auto={k.auto} target={data.targets?.[k.label]} fallback={data.defaultTargets?.[k.label]} onTarget={(v) => setTarget.mutate({ ...(data.targets ?? {}), ...v })} />
+          <section className="sh-kpis" aria-label="KPIs" style={elementColor(game.key, entry?.tag) ? ({ "--el": elementColor(game.key, entry?.tag) } as CSSProperties) : undefined}>
+            {kpis.map((k) => (
+              <KpiTile key={k.label} label={k.label} value={k.value} auto={k.auto} growth={isGrowth(k.label)} target={data.targets?.[k.label]} fallback={data.defaultTargets?.[k.label]} onTarget={(v) => setTarget.mutate({ ...(data.targets ?? {}), ...v })} />
             ))}
           </section>
 
@@ -374,7 +388,7 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
             <h3>Combat stats</h3>
             <div className="sh-stats">
               {statNames(game, doc).map((s) => (
-                <label key={s} className="sh-stat">
+                <label key={s} className={`sh-stat ${isGrowth(s) ? "is-growth" : ""}`}>
                   <span>{s}</span>
                   <input
                     type="number"
@@ -449,15 +463,15 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
 }
 
 /** A KPI tile with its target (WIREFRAMES.md G5): how far off, typed in place; pairs take no target. */
-function KpiTile({ label, value, auto, target, fallback, onTarget }: { label: string; value: string; auto?: boolean; target?: number; fallback?: number; onTarget: (t: Record<string, number | undefined>) => void }) {
+function KpiTile({ label, value, auto, growth, target, fallback, onTarget }: { label: string; value: string; auto?: boolean; growth?: boolean; target?: number; fallback?: number; onTarget: (t: Record<string, number | undefined>) => void }) {
   const now = Number.parseFloat(value);
   const numeric = !label.includes(" / ");
   // The build's own target, else the game's default.
   const shown = target ?? fallback;
   const gap = shown !== undefined && Number.isFinite(now) ? shown - now : null;
   return (
-    <div className="card sh-kpi" role="group" aria-label={label}>
-      <span className="kpi-label">{label}</span>
+    <div className={`card sh-kpi ${growth ? "is-growth" : ""}`} role="group" aria-label={label}>
+      <span className={`kpi-label ${growth ? "is-bonus" : ""}`}>{label}</span>
       <span className={`kpi-value ${auto ? "is-auto" : ""}`} title={auto ? "Base: the level and the weapon, until a value is typed" : undefined}>
         {value}
       </span>
