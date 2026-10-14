@@ -30,6 +30,8 @@
 .sh-stat input { width: 112px; flex: none; }
 .sh-stat input::placeholder { font-size: 12px; }
 .sh-gear { margin-bottom: 24px; }
+.sh-quick { display: inline-flex; align-items: center; gap: 6px; }
+.sh-quick svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; }
 .sh-gear .row h3 { margin-bottom: 0; }
 .sh-pieces { display: grid; gap: 12px; margin-top: 16px; }
 .sh-piece { display: grid; gap: 6px; align-content: start; padding: 12px; border: 1px solid var(--hairline); }

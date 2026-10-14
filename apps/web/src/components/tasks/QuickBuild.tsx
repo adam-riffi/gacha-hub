@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getGame, levelCaps, skillsField, talentMax, talentTable, weaponHolder, type CharacterDto, type PlanGenerateResultDto, type TaskOrigin } from "@gacha/shared";
+import { getGame, levelCaps, skillsField, talentCap, weaponHolder, type CharacterDto, type PlanGenerateResultDto, type TaskOrigin } from "@gacha/shared";
 import { api } from "../../lib/api";
 import { assetUrl, communityAssetUrl } from "../../lib/assets";
 import { useCatalog } from "../../lib/catalog";
@@ -42,7 +42,8 @@ export function QuickBuild({ instanceId, gameKey, catalogIds, onClose }: { insta
   const [capPicked, setCap] = useState<number | null>(null);
   const cap = capPicked ?? caps.at(-1)!;
   const [levels, setLevels] = useState<Record<string, number>>({});
-  const levelOf = (k: string) => levels[k] ?? Math.min(game.quickBuild?.talents[k] ?? 99, entry ? talentMax(talentTable(entry, k)) : 1);
+  const skillCap = (e: NonNullable<typeof entry>, k: string) => talentCap(e, k, game.quickBuild?.talents[k] ?? 10);
+  const levelOf = (k: string) => levels[k] ?? Math.min(game.quickBuild?.talents[k] ?? 99, entry ? skillCap(entry, k) : 1);
 
   // One character: a weapon of its type and a set to farm.
   const single = ids.length === 1 && entry;
@@ -68,7 +69,7 @@ export function QuickBuild({ instanceId, gameKey, catalogIds, onClose }: { insta
         const to = Math.min(cap, own.at(-1)!);
         const have = (doc[skillsField(game)] ?? {}) as Record<string, number | undefined>;
         const talents = Object.fromEntries(
-          e.talents.keys.map((k) => [k, { from: have[k] ?? 1, to: Math.min(levelOf(k), talentMax(talentTable(e, k))) }] as const).filter(([, r]) => r.to > r.from),
+          e.talents.keys.map((k) => [k, { from: have[k] ?? 1, to: Math.min(levelOf(k), skillCap(e, k)) }] as const).filter(([, r]) => r.to > r.from),
         );
         const made = await api.post<PlanGenerateResultDto>(`/api/instances/${instanceId}/plans/generate`, { kind: "character", catalogId: id, ...(to > from ? { level: { from, to } } : {}), talents });
         const goal = made.tasks.find((t) => !t.materialId && (t.origin as TaskOrigin | null)?.catalogId === id);
@@ -152,7 +153,7 @@ export function QuickBuild({ instanceId, gameKey, catalogIds, onClose }: { insta
                 {entry.talents.keys.map((k) => (
                   <label key={k} className="qb-skill">
                     <span>{talentName(k)}</span>
-                    <input type="number" aria-label={talentName(k)} min={1} max={talentMax(talentTable(entry, k))} value={levelOf(k)} onChange={(e) => setLevels({ ...levels, [k]: Number(e.target.value) })} />
+                    <input type="number" aria-label={talentName(k)} min={1} max={skillCap(entry, k)} value={levelOf(k)} onChange={(e) => setLevels({ ...levels, [k]: Number(e.target.value) })} />
                   </label>
                 ))}
               </fieldset>

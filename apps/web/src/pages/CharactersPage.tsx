@@ -435,7 +435,8 @@ export function CharactersPage() {
         })}
       </div>
       {quick && <QuickBuild instanceId={id!} gameKey={game.key} catalogIds={quick} onClose={() => setQuick(null)} />}
-      {picked.size > 0 && (
+      {/* The bar from the moment Select is on, All shown in it (round 7: no select all until one was picked). */}
+      {(selecting || picked.size > 0) && (
         <div className="ch-bulk ch-bulk-bar" role="region" aria-label="Selection">
           <span className="mn">{picked.size} selected</span>
           <button className="btn" onClick={() => own.mutate([...picked])}>Own</button>

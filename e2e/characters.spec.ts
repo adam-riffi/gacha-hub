@@ -332,10 +332,11 @@ test("Characters and Weapons: Select shows All shown at once, before anything is
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
-  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  // ZZZ: reading Star Rail's Weapons here would link other journeys' sheets to copies before the weapons journeys run.
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "zzz" } })).json()) as { id: string };
   for (const screen of ["characters", "weapons"]) {
     await page.goto(`/games/${id}/${screen}`);
-    await page.getByRole("searchbox", { name: "Search" }).fill(screen === "weapons" ? "Arrows" : "Kafka");
+    await page.getByRole("searchbox", { name: "Search" }).fill(screen === "weapons" ? "Steel" : "Miyabi");
     await page.getByRole("button", { name: "Select", exact: true }).click();
     const selection = page.getByRole("region", { name: "Selection" });
     await expect(selection).toContainText("0 selected");
