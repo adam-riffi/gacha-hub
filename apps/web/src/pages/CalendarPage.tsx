@@ -53,6 +53,8 @@ export type CalItem = {
   end: number;
   source: "feed" | "admin" | "game";
   tag?: string | null;
+  /** A banner featuring a unit you wish for, or an event you wished or whose rewards name one. */
+  wished?: boolean;
   banners?: BannerDto[];
   event?: EventDto;
   region: GameRegion;
@@ -154,14 +156,14 @@ export function CalendarPage() {
       const wished = new Set(
         (wishlists[dash.data.games.indexOf(g)]?.data ?? []).map((w) => w.catalogId),
       );
-      const keep = (i: CalItem) =>
-        !onlyWished ||
+      const isWished = (i: CalItem) =>
         Boolean(i.event && wished.has(i.event.key)) ||
         Boolean(i.banners?.some((b) => wished.has(b.key))) ||
         Boolean(i.banners?.some((b) => b.featured.some((f) => wished.has(f.catalogId)))) ||
         [...JSON.stringify(i.event?.effects ?? []).matchAll(/"catalogId":"([^"]+)"/g)].some((x) =>
           wished.has(x[1]!),
         );
+      const keep = (i: CalItem) => !onlyWished || Boolean(i.wished);
 
       // Banners sharing a period are one phase: "Vodyanitsa +2".
       const phases = new Map<string, BannerDto[]>();
@@ -170,7 +172,7 @@ export function CalendarPage() {
           ...(phases.get(`${b.startsAt}|${b.endsAt}`) ?? []),
           b,
         ]);
-      const banners: CalItem[] = [...phases.values()].map((bs) => ({
+      const banners: CalItem[] = [...phases.values()].map((bs): CalItem => ({
         ...base,
         id: `b:${bs[0]!.id}`,
         kind: "banner",
@@ -179,10 +181,10 @@ export function CalendarPage() {
         end: Date.parse(bs[0]!.endsAt),
         source: sourceOf(bs[0]!.payload),
         banners: bs,
-      }));
+      })).map((i) => ({ ...i, wished: isWished(i) }));
       const events: CalItem[] = win.data.events
         .filter((e) => e.gameKey === g.gameKey)
-        .map((e) => ({
+        .map((e): CalItem => ({
           ...base,
           id: `e:${e.id}`,
           kind: "event",
@@ -192,7 +194,8 @@ export function CalendarPage() {
           source: sourceOf(e.payload),
           tag: rosterTag(e.effects ?? [], game),
           event: e,
-        }));
+        }))
+        .map((i) => ({ ...i, wished: isWished(i) }));
       const cycles: CalItem[] = m.endgame.flatMap((mode) => {
         const out: CalItem[] = [];
         let w = cadenceWindow(mode.anchor, region, new Date(start));
@@ -337,11 +340,13 @@ export function CalendarPage() {
           )}
         </div>
       </div>
-      <div className="cal-layers">
+      {/* One box per layer in its colour (round 7): banners in their games' colours, events edged in them, then endgames, passes, wishes. */}
+      <div className="cal-layers" style={{ ["--games" as string]: `linear-gradient(90deg, ${blocks.map((x) => x.g.accent).join(", ")})` }}>
         {LAYERS.map((l) => (
           <label key={l.key}>
             <input
               type="checkbox"
+              className={`cal-check is-${l.key}`}
               checked={layers.has(l.key)}
               onChange={(e) =>
                 setLayers((s) => {
@@ -352,12 +357,11 @@ export function CalendarPage() {
                 })
               }
             />
-            <i className={`cal-key is-${l.key}`} aria-hidden="true" />
             {l.label}
           </label>
         ))}
         <label>
-          <input type="checkbox" checked={onlyWished} onChange={(e) => setOnlyWished(e.target.checked)} />
+          <input type="checkbox" className="cal-check is-wished" checked={onlyWished} onChange={(e) => setOnlyWished(e.target.checked)} />
           Only what I wishlisted
         </label>
         <span className="cal-range mn mu">
@@ -424,7 +428,7 @@ export function CalendarPage() {
                               <button
                                 key={it.id}
                                 type="button"
-                                className={`cal-bar is-${it.kind} ${it.end < now ? "is-ended" : ""}`}
+                                className={`cal-bar is-${it.kind} ${it.wished ? "is-wished" : ""} ${it.end < now ? "is-ended" : ""}`}
                                 style={{
                                   left: `${pct(it.start)}%`,
                                   // A gap before the next bar, so one phase's end and the next's start stay apart.
@@ -435,6 +439,11 @@ export function CalendarPage() {
                                 title={`${it.name}\n${WHEN.format(it.start)} → ${WHEN.format(it.end)}`}
                                 onClick={() => setSelected(it.id)}
                               >
+                                {it.wished && (
+                                  <b className="cal-star" aria-label="Wishlisted" title="Wishlisted">
+                                    ★
+                                  </b>
+                                )}
                                 {it.tag && <b className="cal-tag">{it.tag}</b>}
                                 <span className="cal-name">{it.name}</span>
                                 <span className="cal-dates">

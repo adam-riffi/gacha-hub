@@ -151,3 +151,42 @@ test("an event is wishlisted from its Selected panel, and Only what I wishlisted
   await expect(timeline.getByRole("button", { name: /E2E event to wish/ })).toBeVisible();
   await expect(timeline.getByRole("button", { name: /E2E event left out/ })).toHaveCount(0);
 });
+
+// Georges, round 7: "a visual language: banners of the colour of the game, BPs a certain colour/tint, the same for endgames
+// and another for wishlist; wishlisted events should be more visible; fix the crooked boxes: there are two, one always on".
+test("Banners: each kind its colour, a wishlisted event starred in gold; one box per layer, in line @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  await page.request.post("/api/admin/payload", {
+    data: { kind: "events", gameKey: "hsr", items: [{ key: "e2e-gold", name: "E2E gold event", startsAt: iso(-1), endsAt: iso(4) }, { key: "e2e-plain", name: "E2E plain event", startsAt: iso(-1), endsAt: iso(4) }] },
+  });
+  await page.request.put(`/api/instances/${id}/wishlist`, { data: { kind: "event", catalogId: "e2e-gold", wished: true } });
+
+  await page.goto("/timeline?game=hsr");
+  const timeline = page.getByRole("region", { name: "Timeline" });
+  await expect(timeline.getByRole("button", { name: /E2E plain event/ })).toBeVisible();
+  // One box per layer, the layer's own, centred on its words.
+  await expect(page.locator(".cal-layers .cal-key")).toHaveCount(0);
+  const banners = page.getByRole("checkbox", { name: "Banners" });
+  const [box, words] = [(await banners.boundingBox())!, (await page.locator(".cal-layers label", { hasText: "Banners" }).boundingBox())!];
+  expect(Math.abs(box.y + box.height / 2 - (words.y + words.height / 2))).toBeLessThan(3);
+  await page.getByRole("checkbox", { name: "Endgame cycles" }).check();
+  await page.getByRole("checkbox", { name: "Battle passes" }).check();
+
+  const gold = timeline.getByRole("button", { name: /E2E gold event/ });
+  await expect(gold.getByLabel("Wishlisted")).toBeVisible();
+  await expect(timeline.getByRole("button", { name: /E2E plain event/ }).getByLabel("Wishlisted")).toHaveCount(0);
+  const colour = (sel: string, prop: string) => page.locator(sel).first().evaluate((el, p) => getComputedStyle(el).getPropertyValue(p), prop);
+  const [event, wished, cycle, pass, banner] = [
+    await colour(".cal-bar.is-event:not(.is-wished)", "border-left-color"),
+    await colour(".cal-bar.is-wished", "border-left-color"),
+    await colour(".cal-bar.is-cycle", "border-left-color"),
+    await colour(".cal-bar.is-pass", "border-left-color"),
+    await colour(".cal-bar.is-banner", "background-color"),
+  ];
+  // Events edged in the game's colour, as banners are filled with it; wishes, endgames and passes each their own.
+  expect(new Set([wished, cycle, pass, event]).size).toBe(4);
+  expect(banner).toBe(event);
+});
