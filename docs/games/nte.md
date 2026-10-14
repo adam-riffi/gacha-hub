@@ -15,7 +15,7 @@
 | Gear | Console: Cartridges in sets of 2 and 4, one main and four sub stats, +20 ~ | research notes; the wiki: modules always have ATK and HP as main attributes, and four sub attributes; sets and the level not stated |
 | Dupes | A character copy raises Awakening by one (A1–A6) ~; an Arc copy raises Mixing by one (M1–M5) ~ | research notes |
 | KPIs per role | Our choice for the Characters cards (WIREFRAMES.md G4), listed in the module's manifest | |
-| Art and catalog | Characters, Arcs (with their types), their ascension and skill costs, and art, from Hakushin's dataset; the Console's modules are not sets, so no gear sets | [nte.hakush.in](https://nte.hakush.in); Georges, round 4 |
+| Art and catalog | Characters, Arcs (with their types), their ascension and skill costs, and art, from Hakushin's dataset; the Console's gear sets are the nine cartridge series the Chameleon Packages name (three per Series I–III, the series' cartridge as their icon), without bonuses, which the dataset does not give | [nte.hakush.in](https://nte.hakush.in); Georges, rounds 4 and 7 |
 | Account level | Hunter Level (HL), cap 60 ~ | research notes |
 | Overview card | City: Tycoon Level; Café income (daily); Fons; City Stamina, refilled each Monday, its cap 100 / 200 / 350 / 500 / 700 at Tycoon Level 1 / 5 / 10 / 16 / 23 ~ | Georges's design (2026-10-11); research notes |
 | Version | 1.4 "For Whom the Verses Mourn", 30 Sep – 11 Nov 2026 (42 days) | [official news](https://nte.perfectworld.com/en/article/news/) |

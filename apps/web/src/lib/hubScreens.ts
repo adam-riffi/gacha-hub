@@ -8,10 +8,9 @@ const GEAR_LABEL: Record<string, string> = {
   hsr: "Relics",
   zzz: "Drive discs",
   wuwa: "Echoes",
+  nte: "Console",
 };
 
-/** Games whose catalog has no gear sets (NTE's consoles are modules, not sets): no gear tab. */
-const NO_GEAR_SETS = new Set(["nte"]);
 /** Games whose catalog has no costs (Endfield's public tables publish none): no Planner. */
 const NO_COSTS = new Set(["endfield"]);
 
@@ -33,7 +32,7 @@ export function hubScreens(gameKey: string, instanceId: string): { key: Screen; 
     ...(hasCatalog ? [{ key: "teams" as const, label: "Teams", to: `/games/${instanceId}/teams` }] : []),
     // Weapons have a tab of their own on every game (Georges, 2026-10-11): by name where the catalog lists none.
     { key: "weapons", label: "Weapons", to: `/games/${instanceId}/weapons` },
-    ...(hasCatalog && !NO_GEAR_SETS.has(gameKey) ? [{ key: "gear" as const, label: GEAR_LABEL[gameKey] || "Gear", to: `/games/${instanceId}/gear` }] : []),
+    ...(hasCatalog ? [{ key: "gear" as const, label: GEAR_LABEL[gameKey] || "Gear", to: `/games/${instanceId}/gear` }] : []),
     ...(hasCatalog && !NO_COSTS.has(gameKey) ? [{ key: "planner" as const, label: "Planner", to: `/games/${instanceId}/planner` }] : []),
     // Profile (G8) closes the row; the old overview keeps its route, linked from Profile.
     { key: "profile", label: "Profile", to: `/games/${instanceId}/profile` },

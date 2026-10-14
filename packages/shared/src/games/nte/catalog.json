@@ -27647,7 +27647,152 @@
       }
     }
   ],
-  "gear": [],
+  "gear": [
+    {
+      "id": "fireflies-and-the-forest",
+      "key": "fireflies-and-the-forest",
+      "name": "Fireflies and the Forest",
+      "slots": [
+        "cartridge1",
+        "cartridge2",
+        "cartridge3",
+        "cartridge4"
+      ],
+      "bonuses": [],
+      "icon": "Game/UI/UI/Equip/UI_YH_kongmuicon__03",
+      "extra": {
+        "series": 1
+      }
+    },
+    {
+      "id": "lost-radiance",
+      "key": "lost-radiance",
+      "name": "Lost Radiance",
+      "slots": [
+        "cartridge1",
+        "cartridge2",
+        "cartridge3",
+        "cartridge4"
+      ],
+      "bonuses": [],
+      "icon": "Game/UI/UI/Equip/UI_YH_kongmuicon__03",
+      "extra": {
+        "series": 1
+      }
+    },
+    {
+      "id": "street-boxer",
+      "key": "street-boxer",
+      "name": "Street Boxer",
+      "slots": [
+        "cartridge1",
+        "cartridge2",
+        "cartridge3",
+        "cartridge4"
+      ],
+      "bonuses": [],
+      "icon": "Game/UI/UI/Equip/UI_YH_kongmuicon__03",
+      "extra": {
+        "series": 1
+      }
+    },
+    {
+      "id": "crimson-twin-butterflies",
+      "key": "crimson-twin-butterflies",
+      "name": "Crimson: Twin Butterflies",
+      "slots": [
+        "cartridge1",
+        "cartridge2",
+        "cartridge3",
+        "cartridge4"
+      ],
+      "bonuses": [],
+      "icon": "Game/UI/UI/Equip/UI_YH_kongmuicon__03",
+      "extra": {
+        "series": 2
+      }
+    },
+    {
+      "id": "devils-blood-curse",
+      "key": "devils-blood-curse",
+      "name": "Devil's Blood: Curse",
+      "slots": [
+        "cartridge1",
+        "cartridge2",
+        "cartridge3",
+        "cartridge4"
+      ],
+      "bonuses": [],
+      "icon": "Game/UI/UI/Equip/UI_YH_kongmuicon__03",
+      "extra": {
+        "series": 2
+      }
+    },
+    {
+      "id": "diabolos",
+      "key": "diabolos",
+      "name": "Diabolos",
+      "slots": [
+        "cartridge1",
+        "cartridge2",
+        "cartridge3",
+        "cartridge4"
+      ],
+      "bonuses": [],
+      "icon": "Game/UI/UI/Equip/UI_YH_kongmuicon__03",
+      "extra": {
+        "series": 2
+      }
+    },
+    {
+      "id": "kingdoms-guard",
+      "key": "kingdoms-guard",
+      "name": "Kingdom's Guard",
+      "slots": [
+        "cartridge1",
+        "cartridge2",
+        "cartridge3",
+        "cartridge4"
+      ],
+      "bonuses": [],
+      "icon": "Game/UI/UI/Equip/UI_YH_kongmuicon__03",
+      "extra": {
+        "series": 3
+      }
+    },
+    {
+      "id": "shadow-creed",
+      "key": "shadow-creed",
+      "name": "Shadow Creed",
+      "slots": [
+        "cartridge1",
+        "cartridge2",
+        "cartridge3",
+        "cartridge4"
+      ],
+      "bonuses": [],
+      "icon": "Game/UI/UI/Equip/UI_YH_kongmuicon__03",
+      "extra": {
+        "series": 3
+      }
+    },
+    {
+      "id": "speedy-hedgehog",
+      "key": "speedy-hedgehog",
+      "name": "Speedy Hedgehog",
+      "slots": [
+        "cartridge1",
+        "cartridge2",
+        "cartridge3",
+        "cartridge4"
+      ],
+      "bonuses": [],
+      "icon": "Game/UI/UI/Equip/UI_YH_kongmuicon__03",
+      "extra": {
+        "series": 3
+      }
+    }
+  ],
   "materials": [
     {
       "id": "gold",
