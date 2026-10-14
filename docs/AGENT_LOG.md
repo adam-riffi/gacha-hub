@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-15 · claude · stack/r15/03-web-names · #323
+- Done: ADR 0011's third area, the web app. 1,614 one- and two-letter declarations named for what they hold (`(e) =>` → `event`, `qc` → `queryClient`, `(a, b)` comparators → `first, second`, `gi` → `gameInstance`), 92 abbreviations spelled out (`num` → `numberOrNull` / `numberField` by what it reads, `pct` → `percentText`, `cfg` → `config`, `res` → `response`, `ctx` → `context`, `nav` → `navigate`, `setQ` → `setQuery`, `cid` → `catalogId`, `NUM` → `NUMBER_FORMAT`), and the short properties of the app's own shapes (component props `g`, `b`, `c`, `gi`, `pv`, `useAuth`'s `me` → `currentUser`, `PADDING`'s `l, r, t, b` → `left, right, top, bottom`). `id-length` now holds `apps/web/src` too: the whole codebase.
+- Tests: no behaviour change: types clean; the shadowed names (`@typescript-eslint/no-shadow`, JSON report) are the eight from before. A first pass had made 65 new shadows, one of which rebound a reference (a reminder time's Remove filter had become `atTime !== atTime`, always false), so each got a distinct name and the pass was replayed from a clean tree; the full suite passes.
+- Scope/decisions: props and object keys renamed only where the app owns the shape; DTO fields and SVG's `d` stay. Prettier was not run over the files (the repository is not prettier-formatted as a whole; a run would rewrite 18,000 lines).
+- Next: CSS utilities named for what they do (`.mu`, `.mn`, `.cd`, `.sf`), then objects for the domain, area by area.
+
 ## 2026-10-15 · claude · stack/r15/02-server-names · #322
 - Done: ADR 0011's second area, the server. 492 one- and two-letter declarations named (`gi` → `gameInstance` 74 times, `tx` → `transaction`, `r` → `row`/`result`/`record` by what it holds), and the abbreviations spelled out: `cat` → `loadedCatalog` (20), `ctx` → `regionContext`, `res` → `response`, `cfg` → `reminderConfig`, `str`/`num` → `stringOption`/`numberOption`, `esc` → `escapeRegExp`, `iso` → `isoWithOffset`, and the rest. `id-length` now holds `apps/server/src` too. A helper proposes most names from their code (the singular of the collection a callback walks); each was reviewed by hand.
 - Tests: no behaviour change: types clean; the shadowed names (`@typescript-eslint/no-shadow`, read from a JSON report) are exactly the eight there were before ADR 0011, so no reference moved to another variable; the full suite passes. Found on the way: the earlier shadow check used ESLint's `unix` format, which ESLint 9 no longer ships, so it had read nothing; the real check found five harmless new shadows in #321, given distinct names there.
@@ -248,9 +254,3 @@ Entry format:
 - Tests: written first: `statKind` maps seventeen stat names of the four games to their kinds; Kafka's sheet shows the SPD tile's and HP row's icons, her Head relic's set as an icon at least 56 px wide, and its main stat's and substat's icons.
 - Scope/decisions: the icons are drawn here (line icons in the app's style); a game's own stat art can replace them once the bucket holds it.
 - Next: Quick goal at the top of the sheet; skills without costs; Select all at once.
-
-## 2026-10-14 · claude · stack/r10/04-notes · #283
-- Done: notes and pictures (Georges, round 7: "notes shouldn't be just a block of text: you can add, delete and modify them and have multiple of them; you can add notes to pictures as well"). A build's misc keeps `notes` as a list (up to 50, each up to 2000 characters) and each picture as `{ url, note }`; round 6's single block and bare links are read in the new shape (`characterMiscSchema` pre-processes them), so nothing stored is lost. The Misc card lists the notes as cards, each with Edit (in place, Save note) and Delete, under them Add a note; each picture has a note field under it, saved on leaving it.
-- Tests: written first: the route keeps two notes and a picture's note, and reads round 6's shape as one note and a picture without a note; Barbara's sheet adds three notes, edits the second, deletes the third, adds a picture and its note, and all of it is saved. Round 6's misc test follows the new shape.
-- Scope/decisions: no migration: the column is JSON and the old shape is read through.
-- Next: the gear block's icons and stat icons on the sheet.
