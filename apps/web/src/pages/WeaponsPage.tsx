@@ -9,6 +9,7 @@ import { useCatalog } from "../lib/catalog";
 import { useDismiss } from "../lib/dismiss";
 import { GameTabs } from "../components/GameTabs";
 import { Chips } from "../components/ui";
+import { StatIcon } from "../components/StatIcon";
 import { CatalogIcon } from "../components/CatalogIcon";
 import { WeaponFarm } from "../components/characters/WeaponFarm";
 import type { InstanceDetail } from "../lib/types";
@@ -210,14 +211,21 @@ export function WeaponsPage() {
             return (
               <article key={copy.id} className={`wp-card ${open === weapon.key ? "is-on" : ""} ${picked.has(copy.id) ? "is-picked" : ""}`} aria-label={weapon.name} style={tint(h) ? ({ "--el": tint(h) } as CSSProperties) : undefined}>
                 <button type="button" className="wp-open" aria-label={selecting ? `Select ${weapon.name}` : `Open ${weapon.name}`} aria-pressed={selecting ? picked.has(copy.id) : undefined} onClick={() => (selecting ? togglePick(copy.id) : setOpen(weapon.key))} />
-                <CatalogIcon gameKey={game.key} kind="weapon" icon={weapon.icon} name={weapon.name} className="wp-art" />
+                {/* Larger cards (Georges, round 7): the art on a band in its rarity's colour, the level big, the main stat by its icon. */}
+                <span className="wp-rarity" data-rarity={weapon.rarity ?? ""}>
+                  <CatalogIcon gameKey={game.key} kind="weapon" icon={weapon.icon} name={weapon.name} className="wp-art" />
+                  {weapon.rarity ? <span className="mn wp-stars">★{weapon.rarity}</span> : null}
+                </span>
                 <div className="wp-body">
                   <strong>{weapon.name}</strong>
-                  <span className="mn">
+                  <span className="cd wp-level">
                     Lv {copy.level}
-                    {dupe && ` · ${dupeLetter(dupe.field)}${copy.refinement}`}
+                    {dupe && <small> · {dupeLetter(dupe.field)}{copy.refinement}</small>}
                   </span>
-                  <span className="mn mu">{[weapon.rarity && `★${weapon.rarity}`, weapon.type, weapon.entry?.mainStat].filter(Boolean).join(" · ")}</span>
+                  <span className="mn mu">
+                    {weapon.entry?.mainStat && <StatIcon stat={weapon.entry.mainStat} />}
+                    {[weapon.type, weapon.entry?.mainStat].filter(Boolean).join(" · ")}
+                  </span>
                 </div>
                 {hs.length > 0 && (
                   <span className="wp-holders">
@@ -238,10 +246,16 @@ export function WeaponsPage() {
                 aria-pressed={selecting ? picked.has(`w:${weapon.catalogId}`) : undefined}
                 onClick={() => (selecting && weapon.catalogId ? togglePick(`w:${weapon.catalogId}`) : setOpen(weapon.key))}
               />
-              <CatalogIcon gameKey={game.key} kind="weapon" icon={weapon.icon} name={weapon.name} className="wp-art" />
+              <span className="wp-rarity" data-rarity={weapon.rarity ?? ""}>
+                <CatalogIcon gameKey={game.key} kind="weapon" icon={weapon.icon} name={weapon.name} className="wp-art" />
+                {weapon.rarity ? <span className="mn wp-stars">★{weapon.rarity}</span> : null}
+              </span>
               <div className="wp-body">
                 <strong>{weapon.name}</strong>
-                <span className="mn mu">{[weapon.rarity && `★${weapon.rarity}`, weapon.type, weapon.entry?.mainStat].filter(Boolean).join(" · ")}</span>
+                <span className="mn mu">
+                  {weapon.entry?.mainStat && <StatIcon stat={weapon.entry.mainStat} />}
+                  {[weapon.type, weapon.entry?.mainStat].filter(Boolean).join(" · ")}
+                </span>
               </div>
               {weapon.catalogId && wished.has(weapon.catalogId) && <span className="badge wp-wish">♥</span>}
             </article>
