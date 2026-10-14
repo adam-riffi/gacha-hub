@@ -158,3 +158,13 @@
 .sh-picture img { display: block; width: 140px; height: 140px; object-fit: cover; border: 1px solid var(--edge); }
 .sh-picture .btn { position: absolute; top: 4px; right: 4px; }
 .sh-picture-add { display: grid; place-items: center; width: 140px; height: 140px; }
+/* The weapon window: big cards, mine then the rest, each effect behind its i (round 7). */
+.sh-weapon-head { align-items: center; gap: 10px; }
+.sh-weapon-head h3 { margin: 0; }
+.wpw { width: min(1080px, calc(100vw - 48px)); }
+.wpw h4 { margin: 0 0 10px; font-size: 15px; }
+.wpw-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); align-items: start; gap: 12px; }
+.wpw-info { position: absolute; top: 8px; right: 8px; z-index: 2; width: 32px; height: 32px; padding: 0; border: 1px solid var(--r); border-radius: 50%; background: var(--bg); color: var(--paper); font: 700 16px/1 var(--font-mono, monospace); cursor: pointer; }
+.wpw-info[aria-expanded="true"] { background: var(--r); color: var(--bg); }
+.wpw-effect { position: relative; z-index: 2; margin: 0 12px; padding: 10px; background: var(--surface-2); border-left: 3px solid var(--el); font-size: 14px; line-height: 1.45; cursor: auto; }
+.wpw-effect p { margin: 6px 0 0; }

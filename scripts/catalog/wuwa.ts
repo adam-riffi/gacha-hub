@@ -27,7 +27,7 @@ type RoleBreach = { BreachGroupId: number; BreachLevel: number; MaxLevel: number
 type SkillTreeNode = { Id: number; NodeGroup: number; NodeType: number; SkillId: number; Consume: KV[] | null; PropertyNodeTitle?: string; Property?: { Id: number }[] | null };
 type Skill = { Id: number; SkillType: number; SkillName?: string; SkillLevelGroupId: number; MaxSkillLevel?: number; SkillResume?: string; SkillResumeNum?: string[] | null };
 type SkillLevel = { SkillLevelGroupId: number; SkillId: number; Consume: KV[] | null };
-type WeaponConf = { ItemId: number; WeaponName: string; QualityId: number; WeaponType: number; BreachId: number; Icon?: string; IconMiddle?: string; SecondPropId?: { Id: number } };
+type WeaponConf = { ItemId: number; WeaponName: string; QualityId: number; WeaponType: number; BreachId: number; Icon?: string; IconMiddle?: string; SecondPropId?: { Id: number }; Desc?: string; DescParams?: { ArrayString: string[] }[] };
 /** An Unreal texture path's file name ("/Game/…/T_X_UI.T_X_UI" → "T_X_UI"): the art key the manifest's sources take (ADR 0006). */
 const artKey = (path?: string) => path?.split("/").at(-1)?.split(".")[0] || undefined;
 /** An image under Common/Image as "Folder/File" ("/Game/…/Common/Image/IconMout/T_X.T_X" → "IconMout/T_X"): materials and Sonata sets span folders. */
@@ -183,6 +183,8 @@ const weapons: CatalogWeapon[] = weaponConfs
       icon: artKey(w.IconMiddle) ?? w.Icon,
       ascension,
       ...(w.SecondPropId && propertyName(w.SecondPropId.Id) ? { mainStat: propertyName(w.SecondPropId.Id) } : {}),
+      // "{0}" from each rank's column of DescParams.
+      ...(text(w.Desc) ? { effect: { ranks: [0, 1, 2, 3, 4].map((r) => stripTags(text(w.Desc).replace(/\{(\d+)\}/g, (_, j: string) => w.DescParams?.[Number(j)]?.ArrayString[r] ?? ""))) } } : {}),
     };
   });
 

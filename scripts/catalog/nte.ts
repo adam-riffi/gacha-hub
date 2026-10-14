@@ -22,7 +22,16 @@ type CharIndex = Record<string, { rarity: number; icon: string; en: string }>;
 type Ability = { type: string; name: string; materials?: Cost[] };
 type CharDetail = { id: string; name: string; element: string; rarity: number; icon: string; icon_gacha?: string; breakthrough?: Cost[]; abilities?: Ability[]; stats?: { values: number[] }[] };
 type WeaponIndex = Record<string, { rarity: number; en: string }>;
-type WeaponDetail = { id: string; name: string; rarity: number; type_name?: string; icon: string; stats?: { values: number[] }[]; materials?: (Cost & { cost_gold?: number })[] };
+type WeaponDetail = {
+  id: string;
+  name: string;
+  rarity: number;
+  type_name?: string;
+  icon: string;
+  stats?: { values: number[] }[];
+  materials?: (Cost & { cost_gold?: number })[];
+  effect?: { name?: string; description?: string; values?: { id_value: number; values: string[] }[] };
+};
 type Item = { id: string; name: string | null; icon: string; rarity?: number; type_name?: string };
 
 /** "/Game/UI/UI_Icon/AvatarImage/256/player_003_256" → "Game/UI/…/player_003_256": the manifest's art sources add the host and ".webp". */
@@ -92,6 +101,10 @@ const weapons: CatalogWeapon[] = await mapLimit(Object.keys(weaponIndex), 4, asy
     maxLevel: d.stats?.[0]?.values.length || 80,
     icon: artKey(d.icon),
     ascension: breakthroughs(d.materials),
+    // "{n}" from the value whose id_value is n, at each rank.
+    ...(d.effect?.description
+      ? { effect: { name: stripTags(d.effect.name), ranks: [0, 1, 2, 3, 4].map((r) => stripTags(d.effect!.description!.replace(/\{(\d+)\}/g, (_, n: string) => d.effect!.values?.find((v) => v.id_value === Number(n))?.values[r] ?? ""))) } }
+      : {}),
   };
 });
 

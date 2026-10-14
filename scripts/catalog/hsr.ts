@@ -149,7 +149,7 @@ const characters: CatalogCharacter[] = avatars
 
 // ---- Light cones ----
 type ConeIndex = { id: number; name: string; rank: number; types: { pathType: unknown }; icon: string };
-type ConeDetail = ConeIndex & { upgrade?: Upgrade[]; skill?: { name?: string } };
+type ConeDetail = ConeIndex & { upgrade?: Upgrade[]; skill?: { name?: string; description?: string; params?: Record<string, number[]> } };
 const coneList = await items<ConeIndex>("/equipment");
 console.log(`[catalog:hsr] ${coneList.length} light cones…`);
 const cones = await mapLimit(coneList, CONCURRENCY, (c) => detail<ConeDetail>(`/equipment/${c.id}`));
@@ -167,6 +167,7 @@ const weapons: CatalogWeapon[] = cones
       icon: d.icon ? String(d.icon) : undefined,
       ascension,
       ...basePoints(d.upgrade, [["HP", "hPBase", "hPAdd"], ["ATK", "attackBase", "attackAdd"], ["DEF", "defenceBase", "defenceAdd"]]),
+      ...(d.skill?.description ? { effect: { name: stripTags(d.skill.name), ranks: [0, 1, 2, 3, 4].map((r) => stripTags(fill(d.skill!.description!.replace(/\\n/g, " "), d.skill!.params, r))) } } : {}),
       extra: { path: label(d.types?.pathType), skill: d.skill?.name ?? null },
     };
   });
@@ -175,12 +176,13 @@ const weapons: CatalogWeapon[] = cones
 const SLOT: Record<string, string> = { HEAD: "head", HAND: "hands", BODY: "body", FOOT: "feet", NECK: "sphere", OBJECT: "rope" };
 type RelicIndex = { id: number; name: string; icon: string; levelList: number[]; isPlanarSuit: boolean };
 type RelicDetail = RelicIndex & { skillList?: Record<string, { description: string; params?: Record<string, number[]> }>; suite?: Record<string, { name: string }> };
-/** A relic set bonus with its numbers: "#1[i]%" from its params, fractions as percentages before a "%" ("#2[i] turn(s)" as is). */
-const fill = (text: string, params: Record<string, number[]> = {}) =>
-  text.replace(/#(\d+)\[(i|f\d)\](%?)/g, (_, n: string, f: string, pct: string) => {
-    const v = (params[n]?.[0] ?? 0) * (pct ? 100 : 1);
+/** A bonus with its numbers: "#1[i]%" from its params at a rank, fractions as percentages before a "%" ("#2[i] turn(s)" as is). */
+function fill(text: string, params: Record<string, number[]> = {}, rank = 0) {
+  return text.replace(/#(\d+)\[(i|f\d)\](%?)/g, (_, n: string, f: string, pct: string) => {
+    const v = (params[n]?.[rank] ?? params[n]?.[0] ?? 0) * (pct ? 100 : 1);
     return `${f === "i" ? Math.round(v) : v.toFixed(Number(f.slice(1)))}${pct}`;
   });
+}
 const relicList = await items<RelicIndex>("/relic");
 console.log(`[catalog:hsr] ${relicList.length} relic sets…`);
 const relics = await mapLimit(relicList, CONCURRENCY, (r) => detail<RelicDetail>(`/relic/${r.id}`));
