@@ -66,7 +66,10 @@ function phaseName(version: string): string {
   return lastDot > 0 ? `${version.slice(0, lastDot)} · phase ${version.slice(lastDot + 1)}` : version;
 }
 
-const comparableName = (name: string) => name.toLowerCase().replace(/[^a-z0-9]/g, "");
+const comparableName = (name: string) => name.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]/g, "");
+
+/** Units the source names differently from the catalog, by catalog id (Star Rail has two March 7ths). */
+const CATALOG_IDS_BY_SOURCE_NAME: Record<string, string> = { "character:March 7th (Preservation)": "1001" };
 
 /** One banner per phase and kind, its featured units by catalog id; the names the catalog does not know, apart. */
 function bannersFromRuns(units: UnitRuns[], catalog: Pick<Catalog, "characters" | "weapons">): { history: BannerHistory["banners"]; unmatched: string[] } {
@@ -76,7 +79,7 @@ function bannersFromRuns(units: UnitRuns[], catalog: Pick<Catalog, "characters" 
   const bannersByKey = new Map<string, BannerHistory["banners"][number]>();
   const unmatched = new Set<string>();
   for (const unit of units) {
-    const catalogId = idsByName.get(`${unit.kind}:${comparableName(unit.name)}`);
+    const catalogId = CATALOG_IDS_BY_SOURCE_NAME[`${unit.kind}:${unit.name}`] ?? idsByName.get(`${unit.kind}:${comparableName(unit.name)}`);
     if (!catalogId) {
       unmatched.add(`${unit.kind} ${unit.name}`);
       continue;
