@@ -480,5 +480,51 @@ test("Characters: card-stat picks made quickly are all kept, even when the page 
   } finally {
     await page.unroute(`**/api/instances/${id}`);
     await page.request.put(`/api/instances/${id}`, { data: { cardStats: null } });
+
+// Georges, round 11: "I'd like to have a 'last seen' info on characters to see their last banners"; and "there's a wild banner card on the character screen".
+test("Characters: each character's last banner on its card, sorted by it; the sheet's banners in full, across the sheet @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  const iso = (days: number) => new Date(Date.now() + days * 86_400_000).toISOString();
+  const featuring = (catalogId: string) => [{ catalogId, kind: "character" }];
+  // Saber (1014) last seen two months ago and back next week; Archer (1015) a week ago.
+  const upload = await page.request.post("/api/admin/payload", {
+    data: {
+      kind: "banners",
+      gameKey: "hsr",
+      items: [
+        { key: "e2e-seen-saber", name: "E2E Saber warp", kind: "character", startsAt: iso(-80), endsAt: iso(-60), featured: featuring("1014") },
+        { key: "e2e-next-saber", name: "E2E Saber rerun", kind: "character", startsAt: iso(7), endsAt: iso(27), featured: featuring("1014") },
+        { key: "e2e-seen-archer", name: "E2E Archer warp", kind: "character", startsAt: iso(-27), endsAt: iso(-7), featured: featuring("1015") },
+      ],
+    },
+  });
+  expect(upload.ok()).toBe(true);
+  try {
+    await page.goto(`/games/${id}/characters`);
+    const saber = page.getByRole("article", { name: "Saber" });
+    await expect(saber.getByRole("img", { name: "Last banner" })).toBeVisible();
+    await expect(saber).toContainText("2 mo ago");
+    await expect(page.getByRole("article", { name: "Archer" })).toContainText("1 wk ago");
+
+    // Sorted by it, the longest unseen first.
+    await page.getByLabel("Sort").selectOption({ label: "Last seen" });
+    const names = await page.locator("article.ch-card").evaluateAll((cards) => cards.map((card) => card.getAttribute("aria-label")));
+    expect(names.indexOf("Saber")).toBeLessThan(names.indexOf("Archer"));
+
+    // The sheet: its banners across the sheet, the last one, the next, every one, apart from the next card.
+    await saber.click();
+    const banners = page.getByRole("region", { name: "Banners" });
+    await expect(banners).toContainText("E2E Saber warp");
+    await expect(banners).toContainText("E2E Saber rerun");
+    await expect(banners.getByRole("row")).toHaveCount(3);
+    const box = (await banners.boundingBox())!;
+    expect(box.width).toBeGreaterThan(1000);
+    const misc = (await page.getByRole("region", { name: "Misc" }).boundingBox())!;
+    expect(misc.y - (box.y + box.height)).toBeGreaterThanOrEqual(12);
+  } finally {
+    for (const key of ["e2e-seen-saber", "e2e-next-saber", "e2e-seen-archer"]) await page.request.delete(`/api/admin/banners/hsr/${key}`);
   }
 });
