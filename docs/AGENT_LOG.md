@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-14 · claude · stack/r10/04-notes · #283
+- Done: notes and pictures (Georges, round 7: "notes shouldn't be just a block of text: you can add, delete and modify them and have multiple of them; you can add notes to pictures as well"). A build's misc keeps `notes` as a list (up to 50, each up to 2000 characters) and each picture as `{ url, note }`; round 6's single block and bare links are read in the new shape (`characterMiscSchema` pre-processes them), so nothing stored is lost. The Misc card lists the notes as cards, each with Edit (in place, Save note) and Delete, under them Add a note; each picture has a note field under it, saved on leaving it.
+- Tests: written first: the route keeps two notes and a picture's note, and reads round 6's shape as one note and a picture without a note; Barbara's sheet adds three notes, edits the second, deletes the third, adds a picture and its note, and all of it is saved. Round 6's misc test follows the new shape.
+- Scope/decisions: no migration: the column is JSON and the old shape is read through.
+- Next: the gear block's icons and stat icons on the sheet.
+
 ## 2026-10-14 · claude · stack/r10/03-card-stats · #282
 - Done: card stats (Georges, round 7: "the highlights should also be able to be set from the build creation screen; the highlighted main stat should be highlighted there as well; it shouldn't be on the top, it should be in the stat showcase of the cards, highlighted with the character's colours; by default each character has its main stat showcased first"). `cardStatLabels` gives a build's stats: its own pick, else the game's, else its growth stat first, then its role's without repeating it, up to four (`cardStatOptions` lists what can be picked). The growth chip at the top of the cards is gone: the growth stat sits in the stat strip, tinted and inset in the character's element colour, label and value; four stats sit two by two. The sheet's KPI tiles are the card's stats, the growth tile in the character's colour and its row in Combat stats too; a Card stats button beside Build status picks them for the build (`StatPicker`, shared with the cards' pencil). `KpiValue`, `CardStats` and `StatPicker` moved to `components/characters/CardStats.tsx`.
 - Tests: written first: `cardStatLabels` puts Kafka's ATK first then the damage role's three, drops a role stat the growth repeats, falls back to the role, and keeps the build's or the game's pick; a journey on a Kafka build finds no growth chip, ATK first in her strip, highlighted and in her element's colour, ATK first and highlighted on her sheet, and HP picked there saved for her build and shown.
@@ -246,10 +252,4 @@ Entry format:
 - Done: WuWa's Nightmare Nests, from the design's Today card ("24/36"): a daily counted to 36 Tacet Discords (Prydwen's game modes guide), entered as a number on the Overview. Profiles made before it add it with + there. HANDOFF.md records what a search for the designs' other details found, and why each stays out.
 - Tests: written first: a new WuWa profile seeds Nightmare Nests, daily, target 36. `npm run check` passes: 592 tests and 69 journeys.
 - Scope/decisions: the 36 is marked `~` in `docs/games/wuwa.md` (one source). Left out after searching: the Endstate Matrix (ex Doubled Pawns; its cycles span versions, no phase dates published), Umbral Monument (permanent, mostly one-time rewards), Etchspace Salvage (permanent, no reset found), Contingency Contract (one weak source), Pink Paws Heist (its cap now shared, its cadence disputed).
-- Next: Georges's secrets, data and the NTE decision.
-
-## 2026-10-11 · claude · stack/r6/04-zzz-talents · #241
-- Done: ZZZ's skill names and descriptions. Each of an agent's five skills gets its name (Basic Attack, Dodge, Assist, Special Attack, Chain Attack, where the sheet showed the bare keys) and its texts, not its multiplier tables, each under its own name: buttons in words, the PC wording, tags dropped, and the few `{CAL:…}` numbers that scale with the skill's level shown as their level 1–12 range (Zhao's charge: 13–24% of Max HP). The sheet opens them as for the other games. HANDOFF.md lists #239–#241 and what is left of that item.
-- Tests: written first: every agent's five skills are named and described with no tag or token left; Sunna's Basic Attack reads "Press Basic Attack to activate"; Zhao's shows 13–24%. `npm run check` passes: 591 tests and 69 journeys.
-- Scope/decisions: a range rather than one level's number, so the text stays the catalog's and needs no level from the sheet; 12 is the level without Mindscapes. The Core Skill's text is left out: Hakushin gives one per core level.
 - Next: Georges's secrets, data and the NTE decision.
