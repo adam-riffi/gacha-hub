@@ -90,11 +90,7 @@
 .pl-edit input[type="number"] { width: 64px; }
 .pl-edit .pk { min-width: 120px; }
 /* The top-up history (round 7): one click a pack, the spending, the purchases. */
-.pl-tops { display: grid; gap: 16px; margin-bottom: 28px; }
 .pl-tops input[type="date"] { width: auto; }
-.pl-tops-buys { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
-.pl-tops-buy { display: grid; gap: 4px; padding: 10px 12px; border: 1px solid var(--hairline); background: var(--surface-2); color: var(--text); text-align: left; cursor: pointer; }
-.pl-tops-buy strong { font-size: 16px; }
 .pl-tops-buy:hover { border-color: var(--accent); }
 .pl-tops-buy.is-pass { border-left: 4px solid var(--accent); }
 .pl-tops-totals { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
@@ -103,3 +99,13 @@
 .pl-tops-list { list-style: none; margin: 0; padding: 0; display: grid; max-height: 320px; overflow: auto; }
 .pl-tops-list li { display: grid; grid-template-columns: 120px minmax(0, 1fr) 110px 90px 36px; align-items: center; gap: 12px; padding: 6px 0; border-top: 1px solid var(--surface-3); }
 .pl-tops-list li.is-pass span:nth-child(2) { color: var(--accent); }
+/* Round 8: the top-ups at the bottom, side by side; each pack in pulls first. */
+.pl-tops-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: start; margin-top: 28px; }
+.pl-tops-row .pl-topup { margin-bottom: 0; }
+.pl-tops-row .pl-topup-list { grid-template-columns: 1fr; }
+.pl-tops { display: grid; gap: 14px; }
+.pl-tops-buys { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; }
+.pl-tops-buy { display: grid; gap: 4px; padding: 10px; border: 1px solid var(--hairline); background: var(--surface-2); color: var(--text); text-align: left; cursor: pointer; }
+.pl-tops-buy strong { font-size: 13px; font-weight: 500; color: var(--text-muted); }
+.pl-tops-pulls { display: flex; align-items: center; font-size: 22px; line-height: 1; color: var(--text); }
+.pl-tops-price { font-size: 15px; color: var(--accent); }

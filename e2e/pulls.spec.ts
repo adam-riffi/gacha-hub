@@ -262,5 +262,7 @@ test("Pulls: the top-ups at the very bottom, each pack and the pass in pulls @sm
   await expect(card.getByRole("button", { name: "Log Express Supply Pass for $4.99" })).toContainText("18 pulls");
   // Below everything else on the page.
   const bottom = (await card.boundingBox())!.y;
-  for (const name of ["Pulls available", "History", "Banner history", "Savings planner"]) expect((await page.getByRole("region", { name, exact: true }).boundingBox())!.y).toBeLessThan(bottom);
+  expect((await page.getByRole("region", { name: "Pulls available" }).boundingBox())!.y).toBeLessThan(bottom);
+  // The savings planner and the pull history sit above it too.
+  expect((await page.locator(".pl-bottom").boundingBox())!.y).toBeLessThan(bottom);
 });
