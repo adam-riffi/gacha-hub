@@ -1,4 +1,5 @@
 import type { BaseStats } from "./catalog/types.js";
+import { LIMITS } from "./common.js";
 import type { GameDefinition } from "./games/types.js";
 import { baseStatsAt } from "./planning/index.js";
 import { dupeLetter } from "./rewards.js";
@@ -201,11 +202,11 @@ export function buildBase(game: GameDefinition, index: { characters: Map<string,
  * role's stats without repeating it, up to four.
  */
 export function cardStatLabels(game: GameDefinition, entry: { bonusStats?: string[] } | undefined, role: string | null | undefined, own?: string[] | null, gameStats?: string[] | null): string[] {
-  if (own?.length) return own;
-  if (gameStats?.length) return gameStats;
+  if (own?.length) return own.slice(0, LIMITS.cardStats);
+  if (gameStats?.length) return gameStats.slice(0, LIMITS.cardStats);
   const growth = entry?.bonusStats?.[0];
   const roleStats = game.manifest.kpis[buildRole(game, role)]!;
-  return [...(growth ? [growth] : []), ...roleStats.filter((k) => !growth || k.toLowerCase() !== growth.toLowerCase())].slice(0, 4);
+  return [...(growth ? [growth] : []), ...roleStats.filter((k) => !growth || k.toLowerCase() !== growth.toLowerCase())].slice(0, LIMITS.cardStats);
 }
 
 /** The stats a card can show: the usual ones, every role's, and the ones the builds have typed. */

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { buildStatusSchema } from "../common.js";
+import { LIMITS, buildStatusSchema } from "../common.js";
 import { catalogIdSchema, idSchema, isoDate, jsonValue, kpiTargetsInput } from "./common.js";
 
 /**
@@ -88,7 +88,7 @@ export const createCharacterInput = z.object({
   /** A target per numeric KPI (checked against the game's KPIs on save); null clears them. */
   targets: kpiTargetsInput.nullable().optional(),
   /** The stats its card shows, in order, up to six; null goes back to the game's. */
-  cardStats: z.array(z.string().trim().min(1).max(40)).min(1).max(6).nullable().optional(),
+  cardStats: z.array(z.string().trim().min(1).max(40)).min(1).max(LIMITS.cardStats).nullable().optional(),
   /** Its notes, skins and pictures; null clears them. */
   misc: characterMiscSchema.nullable().optional(),
 });

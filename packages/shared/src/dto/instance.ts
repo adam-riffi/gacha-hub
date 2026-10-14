@@ -42,6 +42,6 @@ export const updateInstanceInput = z.object({
   /** The game's pull banner types to hide (`pullBanners` keys); null shows them all. */
   hiddenBanners: z.array(z.string().min(1).max(40)).max(20).nullable().optional(),
   /** The stats the character cards show, in order, up to six; null goes back to each build's role's. */
-  cardStats: z.array(z.string().trim().min(1).max(40)).min(1).max(6).nullable().optional(),
+  cardStats: z.array(z.string().trim().min(1).max(40)).min(1).max(LIMITS.cardStats).nullable().optional(),
 });
 export type UpdateInstanceInput = z.infer<typeof updateInstanceInput>;
