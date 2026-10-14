@@ -15,7 +15,6 @@ import {
   weaponHolder,
   type BuildStatus,
   type CatalogWeapon,
-  type GameDefinition,
   type CharacterDto,
   type TaskOrigin,
   type TeamDto,
