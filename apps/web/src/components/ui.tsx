@@ -62,7 +62,7 @@ function Chips({ label, value, onChange, options, color, text = (o) => o }: { la
       <span className="kpi-label">{label}</span>
       <div>
         {options.map((o) => (
-          <button key={o} type="button" className="ch-chip" aria-pressed={value === o} aria-label={o} title={o} onClick={() => onChange(value === o ? "" : o)} style={color?.(o) ? ({ "--el": color(o) } as CSSProperties) : undefined}>
+          <button key={o} type="button" className="ch-chip" aria-pressed={value === o} aria-label={text(o)} title={text(o)} onClick={() => onChange(value === o ? "" : o)} style={color?.(o) ? ({ "--el": color(o) } as CSSProperties) : undefined}>
             {color && <i aria-hidden="true" />}
             {text(o)}
           </button>
