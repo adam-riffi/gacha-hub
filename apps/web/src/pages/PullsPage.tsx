@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  currencyKind,
   featuredWithin,
   getGame,
   topStar,
@@ -26,6 +27,7 @@ import {
 import { SavingsPlanner, pct, type PlannerTarget } from "../components/pulls/SavingsPlanner";
 import { TopUpCard } from "../components/pulls/TopUpCard";
 import { TopUpHistory } from "../components/pulls/TopUpHistory";
+import { CurrencyIcon } from "../components/CurrencyIcon";
 import { UnitIcon } from "../components/CatalogIcon";
 import { Glyph, bannerGlyph } from "../components/Glyph";
 import { BannerHistory, PullHistory } from "../components/pulls/PullHistory";
@@ -216,7 +218,10 @@ export function PullsPage() {
             <tbody>
               {pullCurrencies.map((c) => (
                 <tr key={c.key}>
-                  <td>{c.label}</td>
+                  <td>
+                    <CurrencyIcon kind={currencyKind(game, c)} />
+                    {c.label}
+                  </td>
                   <td className="num">{NUM.format(c.value)}</td>
                   <td className="num mu">= {Math.floor(c.value / c.pullCost!)}</td>
                 </tr>

@@ -1,3 +1,20 @@
+import type { GameDefinition } from "./games/types.js";
+
+export type CurrencyKind = "stamina" | "reserve" | "premium" | "ticket" | "standard" | "special" | "coin";
+
+/**
+ * What a currency is, for its icon (Georges, round 7: "I need icons to understand quickly"): the stamina and its
+ * reserve, the premium currency, a limited, standard or one-banner ticket, else a coin.
+ */
+export function currencyKind(game: GameDefinition, c: { key: string; pullCost?: number | null; standardOnly?: boolean | null; onlyFor?: string | null }): CurrencyKind {
+  const stamina = game.manifest.stamina;
+  if (c.key === stamina.currency) return "stamina";
+  if (c.key === stamina.reserve?.currency) return "reserve";
+  if ((c.pullCost ?? 0) > 1) return "premium";
+  if (c.pullCost === 1) return c.standardOnly ? "standard" : c.onlyFor ? "special" : "ticket";
+  return "coin";
+}
+
 /**
  * One game's pulls: limited (premium currency + limited tickets), standard
  * (permanent) tickets, and special ones, a banner's own tickets (Endfield's
