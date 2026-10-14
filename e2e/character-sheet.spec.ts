@@ -19,7 +19,9 @@ test("Character sheet: identity, KPIs, character, skills, weapon, stats and the 
   await page.goto(`/characters/${build.id}`);
   await expect(page.getByRole("heading", { name: "Kafka" })).toBeVisible();
   await expect(page.getByRole("navigation", { name: "Game screens" }).getByRole("link", { name: "Characters" })).toHaveAttribute("aria-current", "page");
-  await expect(page.getByRole("region", { name: "KPIs" })).toContainText("50 / 120");
+  // Every stat a card (round 8): no row of highlighted stats over them.
+  await expect(page.getByRole("region", { name: "KPIs" })).toHaveCount(0);
+  await expect(page.getByRole("region", { name: "Combat stats" }).getByRole("spinbutton", { name: "CRIT Rate", exact: true })).toHaveValue("50");
   const character = page.getByRole("region", { name: "Character" });
   await expect(character.getByLabel("Level")).toHaveValue("70");
   await expect(character).toContainText("E1");
@@ -89,16 +91,14 @@ test("Character sheet: KPI targets on the tiles, and the teams the character is 
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
   const build = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1005", doc: { level: 80, stats: { SPD: 130 } } } })).json()) as { id: string };
   await page.request.post(`/api/instances/${id}/teams`, { data: { name: "E2E Kafka DoT", members: ["1005", "1006"] } });
-  // SPD among the build's card stats: three at most since round 8, and Kafka's first three are ATK and her crits.
-  await page.request.put(`/api/characters/${build.id}`, { data: { cardStats: ["SPD"] } });
 
   await page.goto(`/characters/${build.id}`);
-  const spd = page.getByRole("region", { name: "KPIs" }).getByRole("group", { name: "SPD" });
+  const spd = page.getByRole("region", { name: "Combat stats" }).getByRole("group", { name: "SPD" });
   await spd.getByRole("spinbutton", { name: "SPD target" }).fill("134");
   await spd.getByRole("spinbutton", { name: "SPD target" }).blur();
   await expect(spd).toContainText("4 short");
   await page.reload();
-  await expect(page.getByRole("region", { name: "KPIs" }).getByRole("group", { name: "SPD" }).getByRole("spinbutton", { name: "SPD target" })).toHaveValue("134");
+  await expect(page.getByRole("region", { name: "Combat stats" }).getByRole("group", { name: "SPD" }).getByRole("spinbutton", { name: "SPD target" })).toHaveValue("134");
 
   await expect(page.getByRole("region", { name: "Used in" })).toContainText("E2E Kafka DoT");
 });
@@ -187,19 +187,16 @@ test("Character sheet: the base stats of the level and the weapon fill what is n
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
   // A build of its own for Kafka at 80 with Arrows at 80: 1086.62 + 846.72 HP, 679.14 + 317.52 ATK, SPD 100, crit 5 / 50.
   const build = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1005", doc: { level: 80, lightCone: { catalogId: "20000", name: "Arrows", level: 80 }, traces: {}, relics: {}, stats: {} } } })).json()) as { id: string };
-  await page.request.put(`/api/characters/${build.id}`, { data: { cardStats: ["CRIT Rate / CRIT DMG", "SPD"] } });
   try {
     await page.goto(`/characters/${build.id}`);
     const stats = page.getByRole("region", { name: "Combat stats" });
     await expect(stats.getByRole("spinbutton", { name: "HP", exact: true })).toHaveAttribute("placeholder", "1933 base");
     await expect(stats.getByRole("spinbutton", { name: "ATK", exact: true })).toHaveAttribute("placeholder", "997 base");
     await expect(stats.getByRole("spinbutton", { name: "SPD", exact: true })).toHaveAttribute("placeholder", "100 base");
-    // The KPIs count them, marked as base, until a value is typed.
-    const kpis = page.getByRole("region", { name: "KPIs" });
-    await expect(kpis).toContainText("5 / 50");
-    await expect(kpis.getByTitle(/^Base/).first()).toBeVisible();
+    // A stat's card marks a base value as such until one is typed.
+    await expect(stats.getByRole("group", { name: "SPD" })).toHaveClass(/is-auto/);
     await stats.getByRole("spinbutton", { name: "SPD", exact: true }).fill("134");
-    await expect(kpis).toContainText("134");
+    await expect(stats.getByRole("group", { name: "SPD" })).not.toHaveClass(/is-auto/);
   } finally {
     await page.request.delete(`/api/characters/${build.id}`);
   }
@@ -216,8 +213,8 @@ test("Character sheet: each gear piece's set as a large icon; stat icons beside 
   const build = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1005", doc } })).json()) as { id: string };
   try {
     await page.goto(`/characters/${build.id}`);
-    await expect(page.getByRole("region", { name: "KPIs" }).getByRole("group", { name: "SPD" }).locator("svg.stat-icon[data-stat=spd]")).toBeVisible();
-    await expect(page.getByRole("region", { name: "Combat stats" }).locator("label", { hasText: "HP" }).first().locator("svg.stat-icon[data-stat=hp]")).toBeVisible();
+    await expect(page.getByRole("region", { name: "Combat stats" }).getByRole("group", { name: "SPD" }).locator("svg.stat-icon[data-stat=spd]")).toBeVisible();
+    await expect(page.getByRole("region", { name: "Combat stats" }).getByRole("group", { name: "HP" }).locator("svg.stat-icon[data-stat=hp]")).toBeVisible();
     const head = page.getByRole("region", { name: "Relics" }).getByRole("group", { name: "Head" });
     const icon = head.getByRole("img", { name: "Prisoner in Deep Confinement" });
     await expect(icon).toBeVisible();

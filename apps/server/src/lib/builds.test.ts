@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildKpis, buildLine, cardStatLabels, dupeBadge, gearSetLabel, getGame, statKind, statKpis } from "@gacha/shared";
+import { buildKpis, buildLine, cardStatLabels, dupeBadge, gearSetLabel, getGame, sheetStats, statKind, statKpis } from "@gacha/shared";
 
 const genshin = getGame("genshin")!;
 const wuwa = getGame("wuwa")!;
@@ -121,6 +121,14 @@ describe("cardStatLabels", () => {
     expect(cardStatLabels(hsr, kafka, null, null, ["DEF"])).toEqual(["DEF"]);
     // A pick of more, saved before round 8, shows its first three.
     expect(cardStatLabels(hsr, kafka, null, ["HP", "ATK", "DEF", "SPD"])).toEqual(["HP", "ATK", "DEF"]);
+  });
+});
+
+// Georges, round 8: "make all the stats into such cards": the sheet's stats, each a card with its target.
+describe("sheetStats", () => {
+  it("lists Crit value where a role reads it, the base three, then each KPI's stats once", () => {
+    expect(sheetStats(getGame("hsr")!)).toEqual(["Crit value", "HP", "ATK", "DEF", "CRIT Rate", "CRIT DMG", "SPD", "Energy Regeneration Rate", "Effect Hit Rate", "Outgoing Healing Boost"]);
+    expect(sheetStats(getGame("hsr")!, ["Break Effect", "SPD"]).slice(-1)).toEqual(["Break Effect"]);
   });
 });
 
