@@ -149,16 +149,29 @@ test("Character sheet: a talent's effect in a bubble over the card, with its ico
     await misc.getByRole("textbox", { name: "Add a skin" }).fill("Summertime Sparkle");
     await misc.getByRole("button", { name: "Add", exact: true }).click();
     await expect(misc.getByRole("listitem").filter({ hasText: "Summertime Sparkle" })).toBeVisible();
-    await misc.getByRole("textbox", { name: "Notes" }).fill("C6 when she reruns");
-    await misc.getByRole("textbox", { name: "Notes" }).blur();
+    // Several notes (round 7): added, edited, deleted.
+    const notes = misc.getByRole("list", { name: "Notes" });
+    for (const text of ["C6 when she reruns", "Hydro healer", "Remove me"]) {
+      await misc.getByRole("textbox", { name: "Add a note" }).fill(text);
+      await misc.getByRole("button", { name: "Add note" }).click();
+    }
+    await expect(notes.getByRole("listitem")).toHaveCount(3);
+    await notes.getByRole("listitem").nth(1).getByRole("button", { name: "Edit" }).click();
+    await notes.getByRole("listitem").nth(1).getByRole("textbox").fill("Hydro healer for Nilou");
+    await notes.getByRole("listitem").nth(1).getByRole("button", { name: "Save note" }).click();
+    await notes.getByRole("listitem").nth(2).getByRole("button", { name: "Delete" }).click();
+    await expect(notes.getByRole("listitem")).toHaveCount(2);
+    // A picture, and a note under it.
     await misc.getByLabel("Add a picture").setInputFiles({ name: "pic.png", mimeType: "image/png", buffer: Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==", "base64") });
     await expect(misc.getByRole("img", { name: "Picture 1" })).toBeVisible();
+    await misc.getByRole("textbox", { name: "Note for picture 1" }).fill("My Barbara at 90");
+    await misc.getByRole("textbox", { name: "Note for picture 1" }).blur();
     await expect
       .poll(async () => {
-        const m = ((await (await page.request.get(`/api/characters/${build.id}`)).json()) as { misc: { notes?: string; skins?: string[]; pictures?: string[] } | null }).misc;
-        return [m?.notes, m?.skins, m?.pictures?.length];
+        const m = ((await (await page.request.get(`/api/characters/${build.id}`)).json()) as { misc: { notes?: string[]; skins?: string[]; pictures?: { url: string; note?: string }[] } | null }).misc;
+        return [m?.notes, m?.skins, m?.pictures?.map((p) => p.note)];
       })
-      .toEqual(["C6 when she reruns", ["Summertime Sparkle"], 1]);
+      .toEqual([["C6 when she reruns", "Hydro healer for Nilou"], ["Summertime Sparkle"], ["My Barbara at 90"]]);
   } finally {
     await page.request.delete(`/api/instances/${id}`);
   }
