@@ -225,3 +225,25 @@ test("Character sheet: each gear piece's set as a large icon; stat icons beside 
     await page.request.delete(`/api/characters/${build.id}`);
   }
 });
+
+// Georges, round 7: "quick goal is too small and hidden at the bottom; it should be one of the first things I can do, and it forces me to
+// only have skills at level 1 for some reason".
+test("Character sheet: Quick goal at the top; the Traveler's skills go past 1 though the data has no costs for them @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "genshin" } })).json()) as { id: string };
+  try {
+    const build = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "10000005" } })).json()) as { id: string };
+    await page.goto(`/characters/${build.id}`);
+    const head = page.locator(".sh-head");
+    await head.getByRole("button", { name: "Quick goal" }).click();
+    const skills = page.getByRole("dialog", { name: "Quick build goal" }).getByRole("group", { name: "Skill levels" }).getByRole("spinbutton");
+    await expect(skills.first()).toHaveValue("10");
+    await expect(skills.nth(1)).toHaveValue("6");
+    expect(Number(await skills.first().getAttribute("max"))).toBeGreaterThanOrEqual(10);
+  } finally {
+    await page.request.delete(`/api/instances/${id}`);
+  }
+});
+

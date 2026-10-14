@@ -326,3 +326,21 @@ test("Characters: a quick build goal from the sheet (the last ascension, the ski
     for (const t of (await tasks()).filter((x) => titles.includes(x.title) && !x.materialId)) await page.request.delete(`/api/tasks/${t.id}`);
   }
 });
+
+// Georges, round 7: "there's no select all button until I select one".
+test("Characters and Weapons: Select shows All shown at once, before anything is picked @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  for (const screen of ["characters", "weapons"]) {
+    await page.goto(`/games/${id}/${screen}`);
+    await page.getByRole("searchbox", { name: "Search" }).fill(screen === "weapons" ? "Arrows" : "Kafka");
+    await page.getByRole("button", { name: "Select", exact: true }).click();
+    const selection = page.getByRole("region", { name: "Selection" });
+    await expect(selection).toContainText("0 selected");
+    await selection.getByRole("button", { name: "All shown" }).click();
+    await expect(selection).not.toContainText("0 selected");
+  }
+});
+
