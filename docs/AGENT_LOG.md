@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-14 · claude · stack/r14/00-card-stat-saves · #315
+- Done: main's CI went red after #313 on the card-stat journey: three quick picks of the game's card stats, then a reload, kept two. Not the gear: the picks were queued one at a time (to keep their order), and a reload dropped the queue's tail. Now every small write is `keepalive` (under 60 KB; browsers cap them at 64 KB), so a save in flight outlives the page, and card-stat picks go through a `LatestWriteQueue`: one save in flight per key, only the latest pick waiting, sent at once when the page is hidden or left. The build's own card stats use the same queue.
+- Tests: written first: on Zenless with every game save slowed to 400 ms, HP, ATK and DEF picked quickly, then leaving the page: the game keeps HP, ATK, DEF (it kept nothing before). Five repeats of it and of the card-stat journey pass.
+- Scope/decisions: the sheet's own card-stat box saves once per click with its optimistic tick, unchanged.
+- Next: round 11.
+
 ## 2026-10-14 · claude · stack/r13/02-gear-bag · #313
 - Done: the gear screen rebuilt as version A of four proposals (Georges, round 10: "propose me other versions of the gear system, it is always atrocious, let's refine it together"; then, of A, a bag of tiles beside the chosen piece: "this one, but with some tweaks"). Three columns: the filters on the left; every piece a tile with the piece's own art (Genshin's per slot, the set's elsewhere), its level, its wearer's face or Bag, its main stat by its icon, its type and its crit value; the chosen piece in full on the right (the first shown until one is picked): its art, set, type, level and piece name, its main stat large, its substats by their icons, its crit value, its set's bonuses lit as its wearer has them, its wearer, then To bag (worn) or Equip on and Delete (bag), and Open the set (adding and farming stay in the set's panel). Sort by crit value added. Round 9's `.gp` card rule, which also reached the graph panels' `.gp`, is gone.
 - Tests: written first: Luka's Hunter body as a tile (its art at least 80 px, Luka's face, CRIT DMG, Body); the filters left of the tiles, the tiles left of the chosen piece; chosen, it is marked current and its column shows the set, Body · +14, CRIT DMG, SPD, 2pc and Luka's link; To bag puts it in the bag, Equip on puts it back on Luka. Round 9's journeys read the substats and Open the set from the column.
@@ -248,9 +254,3 @@ Entry format:
 - Tests: written first: `goalSteps` counts steps, checklists and numbers and adds linked goals' to the parent only; `listedGoal` keeps linked goals, not material steps. Tasks: the light cone stays listed, tagged with Clara's goal, adds one step to hers, and unlinks from its own card. Planner: Seele's goal stays and Kafka's total becomes both; seven goals in rows of three with All, sorted by name, filtered to Asta, opened with its plan and no field in its card, inside the page, materials beside Farm today.
 - Scope/decisions: progress adds steps (a linked goal's materials count like the parent's), as asked. Fixtures: the day record's material steps gain a `materialId` (without one they are linked goals now); the Planner journeys plan levels 1→30, as 1→20 crosses no ascension and has no materials.
 - Next: the quick build goal per game.
-
-## 2026-10-14 · claude · stack/r9/10-glyphs · #273
-- Done: no letters left on any tile (Georges, round 6: "you're still using squares with letters on it, use icons instead"): `GameIcon` loses its `label` and initials, and a tile without its image always draws a glyph (its kind's, the standard star by default). `Picker` takes a `glyph` for its options; the teams' members and Bangboos, a unit's page, the ownership grid, the timeline, the carousel, the endgame history, the banners, the sheet's weapon and set pickers, the goal maker and the endgame's roster pass their kind.
-- Tests: written first: with outside art blocked, a ZZZ team with Miyabi, its member picker open, Miyabi's unit page and the ownership grid show no tile with text.
-- Scope/decisions: none.
-- Next: linked goals adding up, and the Planner's layout, filters and sort.
