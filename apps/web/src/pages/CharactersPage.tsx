@@ -38,6 +38,7 @@ import { BuildsTable } from "../components/characters/BuildsTable";
 import { CardStats } from "../components/characters/CardStats";
 import { QuickBuild } from "../components/tasks/QuickBuild";
 import type { InstanceDetail } from "../lib/types";
+import { fitsOwnershipView, OwnershipFilter, type OwnershipView } from "../components/OwnershipFilter";
 import { useLatestWriteQueue } from "../lib/latestWrite";
 
 import { LastSeenChip, lastSeenSortKey, useUnitAppearances } from "../components/LastSeen";
@@ -78,7 +79,7 @@ export function CharactersPage() {
   const [element, setElement] = useState("");
   const [weapon, setWeapon] = useState("");
   const [rarity, setRarity] = useState("");
-  const [owned, setOwned] = useState<"all" | "owned" | "wishlist">("all");
+  const [ownershipView, setOwnershipView] = useState<OwnershipView>("all");
   const [status, setStatus] = useState<"" | BuildStatus>("");
   const [sort, setSort] = useState<"status" | "name" | "rarity" | "level" | "lastSeen">("status");
   const [kind, setKind] = useState<"characters" | "builds">("characters");
@@ -187,7 +188,7 @@ export function CharactersPage() {
     .filter((c) => !element || c.tag === element)
     .filter((c) => !weapon || c.weaponType === weapon)
     .filter((c) => !rarity || String(c.rarity) === rarity)
-    .filter((c) => (owned === "owned" ? c.owned : owned === "wishlist" ? c.wished : true))
+    .filter((card) => fitsOwnershipView(ownershipView, card))
     .filter((c) => !status || (c.build?.buildStatus ?? "none") === status)
     .sort((a, b) =>
       sort === "name"
@@ -290,15 +291,17 @@ export function CharactersPage() {
         <>
 
       <div className="ch-counts" role="group" aria-label="Filter by count">
-        {/* One screen for every character, owned or not, with a toggle for the ones you have (Georges, round 9). */}
-        <button className="chip" aria-pressed={owned === "owned"} onClick={() => setOwned(owned === "owned" ? "all" : "owned")}>
-          Owned only {cards.filter((c) => c.owned).length} / {cards.length}
-        </button>
-        {catalog && (
-          <button className="chip" aria-pressed={owned === "wishlist"} onClick={() => setOwned(owned === "wishlist" ? "all" : "wishlist")}>
-            Wishlist {cards.filter((c) => c.wished).length}
-          </button>
-        )}
+        {/* One screen for every character, owned or not (round 9), filtered by ownership (round 11). */}
+        <OwnershipFilter
+          view={ownershipView}
+          counts={{
+            all: cards.length,
+            owned: cards.filter((card) => card.owned).length,
+            notOwned: cards.filter((card) => !card.owned).length,
+            ...(catalog ? { wishlist: cards.filter((card) => card.wished).length } : {}),
+          }}
+          onChange={setOwnershipView}
+        />
         <span className="ch-gap" />
         {(["perfect", "good", "building", "none"] as const).map((v) => (
           <button key={v} className="chip" aria-pressed={status === v} onClick={() => setStatus(status === v ? "" : v)}>
