@@ -243,3 +243,21 @@ test("A game's dashboard: the 30-day pass's days left, what it still pays and in
   const { monthly } = (await (await page.request.get(`/api/instances/${id}/passes`)).json()) as { monthly: { endsAt: string } };
   expect(Math.ceil((Date.parse(monthly.endsAt) - Date.now()) / 86_400_000)).toBe(40);
 });
+
+// Georges, round 7: "add icons wherever there can be; I have an eye condition … I need icons to understand quickly".
+test("Currencies by their icons: a game's pulls and stamina on its dashboard, the Pulls page's table @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "zzz" } })).json()) as { id: string };
+
+  await page.goto("/?game=zzz");
+  const pulls = page.getByRole("region", { name: "Pulls", exact: true });
+  await expect(pulls.locator("svg.cur-icon[data-kind=premium]")).toBeVisible();
+  await expect(pulls.locator("svg.cur-icon[data-kind=ticket]")).toBeVisible();
+  await expect(page.getByRole("region", { name: "Battery Charge" }).locator("svg.cur-icon[data-kind=stamina]").first()).toBeVisible();
+
+  await page.goto(`/games/${id}/pulls`);
+  const table = page.getByRole("region", { name: "Pulls available" });
+  for (const kind of ["premium", "ticket", "standard"]) await expect(table.locator(`svg.cur-icon[data-kind=${kind}]`).first()).toBeVisible();
+});
