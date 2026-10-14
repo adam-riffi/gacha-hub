@@ -40,6 +40,8 @@ import { QuickBuild } from "../components/tasks/QuickBuild";
 import type { InstanceDetail } from "../lib/types";
 import { useLatestWriteQueue } from "../lib/latestWrite";
 
+import { LastSeenChip, lastSeenSortKey, useUnitAppearances } from "../components/LastSeen";
+
 const ENDS = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
 const STATUS_RANK: Record<BuildStatus, number> = { perfect: 0, good: 1, building: 2, none: 3 };
 
@@ -78,7 +80,7 @@ export function CharactersPage() {
   const [rarity, setRarity] = useState("");
   const [owned, setOwned] = useState<"all" | "owned" | "wishlist">("all");
   const [status, setStatus] = useState<"" | BuildStatus>("");
-  const [sort, setSort] = useState<"status" | "name" | "rarity" | "level">("status");
+  const [sort, setSort] = useState<"status" | "name" | "rarity" | "level" | "lastSeen">("status");
   const [kind, setKind] = useState<"characters" | "builds">("characters");
   // Several units at once (Georges, 2026-10-10): in Select, a click picks the card, and the whole card lights up (round 5).
   const [selecting, setSelecting] = useState(false);
@@ -93,6 +95,7 @@ export function CharactersPage() {
   const pulls = useQuery({ queryKey: ["pulls", id], queryFn: () => api.get<PullLogDto>(`/api/instances/${id}/pulls`) });
   const dash = useQuery({ queryKey: ["dashboard"], queryFn: () => api.get<DashboardDto>("/api/dashboard") });
   const rewards = useQuery({ queryKey: ["rewards"], queryFn: () => api.get<RewardDto[]>("/api/rewards") });
+  const appearances = useUnitAppearances(instance.data?.gameKey);
   const { catalog, index, isLoading: catalogLoading } = useCatalog(instance.data?.gameKey);
 
   // The cache takes what was saved at once, then refetches: the cards flip on the answer, not on a refetch that can lag.
@@ -193,7 +196,9 @@ export function CharactersPage() {
           ? (b.rarity ?? 0) - (a.rarity ?? 0) || a.name.localeCompare(b.name)
           : sort === "level"
             ? level(b) - level(a) || a.name.localeCompare(b.name)
-            : // Built characters first: owned, then with a build, then by status; wishlisted before the rest.
+            : sort === "lastSeen"
+              ? lastSeenSortKey(appearances.data?.[a.id]) - lastSeenSortKey(appearances.data?.[b.id]) || a.name.localeCompare(b.name)
+              : // Built characters first: owned, then with a build, then by status; wishlisted before the rest.
               Number(b.owned) - Number(a.owned) || Number(Boolean(b.build)) - Number(Boolean(a.build)) || STATUS_RANK[a.build?.buildStatus ?? "none"] - STATUS_RANK[b.build?.buildStatus ?? "none"] || Number(b.wished) - Number(a.wished) || a.name.localeCompare(b.name),
     );
   const count = (s: BuildStatus) => cards.filter((c) => c.owned && (c.build?.buildStatus ?? "none") === s).length;
@@ -253,6 +258,7 @@ export function CharactersPage() {
             <option value="name">Name</option>
             <option value="rarity">Rarity</option>
             <option value="level">Level</option>
+            <option value="lastSeen">Last seen</option>
           </select>
         </label>
         {catalog && (
@@ -425,6 +431,7 @@ export function CharactersPage() {
                   </span>
                 )}
                 {step && <span className="badge todo">→ {step.letter}{step.to} · event</span>}
+                <LastSeenChip appearance={appearances.data?.[c.id]} />
                 <span className="ch-sp" />
                 {/* A build to try, owned or not (round 9). */}
                 {!c.build && !c.owned && onBanner && <Link to={`/games/${id}/pulls`}>Plan pulls →</Link>}

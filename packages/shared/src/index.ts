@@ -31,5 +31,6 @@ export * from "./chronicle.js";
 export * from "./roster.js";
 export * from "./enka.js";
 export * from "./builds.js";
+export * from "./appearances.js";
 export * from "./elements.js";
 export * from "./goals.js";
