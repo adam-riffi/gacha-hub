@@ -7,7 +7,7 @@
 | Servers | America UTC−5, Europe UTC+1, Asia UTC+8; 04:00 server time, weekly on Monday | the endgame tables below list their cycles at 04:00 server time |
 | Stamina | Trailblaze Power, cap 300, 1 every 6 minutes | [Trailblaze Power](https://honkai-star-rail.fandom.com/wiki/Trailblaze_Power) |
 | Reserve | Reserved Trailblaze Power, cap 2,400, 1 every 18 minutes while Trailblaze Power is full | [Trailblaze Power](https://honkai-star-rail.fandom.com/wiki/Trailblaze_Power) |
-| Monthly shop | Embers Exchange, monthly | [Embers Exchange](https://honkai-star-rail.fandom.com/wiki/Embers_Exchange) (stock refreshes monthly) |
+| Monthly shop | Embers Exchange, monthly; 5 Star Rail Special Passes and 5 Star Rail Passes for Undying Embers (a monthly task of 10) | [Embers Exchange](https://honkai-star-rail.fandom.com/wiki/Embers_Exchange) (stock refreshes monthly) |
 | Endgame | Memory of Chaos: 28 Sep – 14 Dec 2026; 36 stars | [Forgotten Hall/Stages](https://honkai-star-rail.fandom.com/wiki/Forgotten_Hall/Stages) |
 | Endgame | Pure Fiction: 14 Sep – 19 Oct 2026; 12 stars | [Pure Fiction/Stages](https://honkai-star-rail.fandom.com/wiki/Pure_Fiction/Stages), [Pure Fiction](https://honkai-star-rail.fandom.com/wiki/Pure_Fiction) |
 | Endgame | Apocalyptic Shadow: 5 Oct – 16 Nov 2026; 12 stars | [Apocalyptic Shadow/Stages](https://honkai-star-rail.fandom.com/wiki/Apocalyptic_Shadow/Stages), [Apocalyptic Shadow](https://honkai-star-rail.fandom.com/wiki/Apocalyptic_Shadow) |

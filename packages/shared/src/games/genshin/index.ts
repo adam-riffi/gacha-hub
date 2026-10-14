@@ -165,6 +165,8 @@ export const genshin: GameDefinition = {
     { key: "resin", title: "Spend Resin", cadence: "daily" },
     { key: "checkIn", title: "Check-in", cadence: "daily" },
     { key: "transformer", title: "Parametric Transformer", cadence: "weekly" },
+    // Paimon's Bargains: 5 Intertwined and 5 Acquaint Fates for Masterless Starglitter each month (docs/games/genshin.md).
+    { key: "bargains", title: "Paimon's Bargains", cadence: "monthly", target: 10, anchorKey: "bargains" },
   ],
   docSchema: genshinDocSchema,
   emptyDoc: (): GenshinDoc => ({ artifacts: {}, talents: {}, weapon: {}, stats: {} }),

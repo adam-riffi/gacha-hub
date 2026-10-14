@@ -8,7 +8,7 @@
 | Daily and weekly reset | 04:00 server time; weekly on Monday | [Reset](https://genshin-impact.fandom.com/wiki/Reset) |
 | Stamina | Original Resin, cap 200 (since 4.7), 1 every 8 minutes | [Original Resin](https://genshin-impact.fandom.com/wiki/Original_Resin) |
 | Reserve | Condensed Resin, at most 5 held, 60 Original Resin each | [Original Resin](https://genshin-impact.fandom.com/wiki/Original_Resin) |
-| Monthly shop | Paimon's Bargains, on the 1st | [Paimon's Bargains](https://genshin-impact.fandom.com/wiki/Paimon%27s_Bargains) |
+| Monthly shop | Paimon's Bargains, on the 1st; 5 Intertwined and 5 Acquaint Fates for Masterless Starglitter each month (a monthly task of 10) | [Paimon's Bargains](https://genshin-impact.fandom.com/wiki/Paimon%27s_Bargains) |
 | Endgame | Spiral Abyss: the Abyssal Moon Spire resets on the 16th (since 4.7); 36 stars; 800 Primogems | [Spiral Abyss](https://genshin-impact.fandom.com/wiki/Spiral_Abyss), [floors](https://genshin-impact.fandom.com/wiki/Spiral_Abyss/Floors) |
 | Endgame | Imaginarium Theater: resets on the 1st; 10 acts; 800 Primogems for the acts plus 200 for Lunar Mode's two Arcanum challenges | [Imaginarium Theater](https://genshin-impact.fandom.com/wiki/Imaginarium_Theater) |
 | Endgame | Stygian Onslaught: one season per version, from the version's second Wednesday to the day before the next version (7.1: 30 Sep – 3 Nov 2026); 6 difficulties; 150 Primogems for each of the first three | [Stygian Onslaught](https://genshin-impact.fandom.com/wiki/Stygian_Onslaught) |

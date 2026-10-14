@@ -93,6 +93,7 @@ export async function registerGameRoutes(app: FastifyInstance) {
           title: t.title,
           cadence: t.cadence,
           target: t.target ?? null,
+          anchorKey: t.anchorKey ?? null,
           // A millisecond apart, so lists keep the game's own order.
           createdAt: new Date(seededAt + i),
           regionAware: true,
@@ -237,6 +238,7 @@ export async function registerGameRoutes(app: FastifyInstance) {
             title: t.title,
             cadence: t.cadence,
             target: t.target ?? null,
+          anchorKey: t.anchorKey ?? null,
             // A millisecond apart, so lists keep the game's own order.
             createdAt: new Date(seededAt + i),
             regionAware: true,
