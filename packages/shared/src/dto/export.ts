@@ -33,6 +33,7 @@ export const userExportSchema = z.object({
       pullEntries: z.array(row),
       cycleResults: z.array(row),
       passStates: z.array(row),
+      topUps: z.array(row).default([]),
       dayRecords: z.array(row),
       reminderRule: row.nullable(),
     }),
