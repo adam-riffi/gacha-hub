@@ -106,19 +106,24 @@ test("Gear: every piece you have, on a build or in the bag, filtered by set, slo
     await expect(head).toHaveCount(0);
     await filters.getByRole("group", { name: "Main stat" }).getByRole("button", { name: "CRIT Rate" }).click();
 
-    // The sets as chips with their icons, several at once.
-    const sets = filters.getByRole("group", { name: "Set" });
-    await expect(sets.getByRole("button", { name: "Musketeer of Wild Wheat" }).getByRole("img")).toBeVisible();
-    await sets.getByRole("button", { name: "Musketeer of Wild Wheat" }).click();
+    // The sets from a window, with their icons, several at once (round 10: "filters might not be suited for all of the different sets").
+    await filters.getByRole("button", { name: /^Pick sets/ }).click();
+    const win = page.getByRole("dialog", { name: "Pick sets" });
+    await expect(win.getByRole("button", { name: "Musketeer of Wild Wheat", exact: true }).getByRole("img")).toBeVisible();
+    await win.getByRole("button", { name: "Musketeer of Wild Wheat", exact: true }).click();
     await expect(head).toBeVisible();
     await expect(body).toHaveCount(0);
-    await sets.getByRole("button", { name: "Hunter of Glacial Forest" }).click();
+    await win.getByRole("button", { name: "Hunter of Glacial Forest", exact: true }).click();
     await expect(head).toBeVisible();
     await expect(body).toBeVisible();
+    await win.getByRole("button", { name: "Close" }).click();
+    await expect(win).toHaveCount(0);
+    // The picked sets stay in the filters, each with its own remove.
+    await expect(filters.getByRole("button", { name: "Remove Musketeer of Wild Wheat" })).toBeVisible();
     await where.getByRole("button", { name: /^Bag/ }).click();
     await expect(body).toHaveCount(0);
     await page.getByRole("button", { name: "Reset filters" }).click();
-    await expect(sets.getByRole("button", { name: "Musketeer of Wild Wheat" })).toHaveAttribute("aria-pressed", "false");
+    await expect(filters.getByRole("button", { name: "Remove Musketeer of Wild Wheat" })).toHaveCount(0);
     await expect(where.getByRole("button", { name: /^Bag/ })).toHaveAttribute("aria-pressed", "false");
     await expect(head).toBeVisible();
     await expect(body).toBeVisible();
@@ -227,3 +232,63 @@ test("Gear: every piece a tile with its art; the chosen piece in full beside the
     for (const p of bag.filter((x) => x.setName === "Hunter of Glacial Forest" && x.level === 14)) await page.request.delete(`/api/gear/${p.id}`);
   }
 });
+
+// Georges, round 10, on version A: "filters might not be suited for all of the different sets".
+test("Gear: the filters fit each game's gear: sets from a window in the game's kinds, slots where they have types, the main stats you have @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  // Tingyun, whom no other journey builds, in a Genius body; a Pan-Cosmic sphere in the bag.
+  const build = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1202" } })).json()) as { id: string };
+  await page.request.put(`/api/characters/${build.id}`, { data: { doc: { relics: { body: { setName: "Genius of Brilliant Stars", mainStat: "CRIT DMG", level: 11 } }, traces: {}, lightCone: {}, stats: {} } } });
+  const sphere = (await (await page.request.post(`/api/instances/${id}/gear`, { data: { setName: "Pan-Cosmic Commercial Enterprise", slot: "sphere", mainStat: "Wind DMG Boost", level: 7 } })).json()) as { id: string };
+  // The main stats on the pieces you have, all of them or one slot's.
+  const mains = async (slot?: string) => {
+    const builds = (await (await page.request.get(`/api/instances/${id}/characters`)).json()) as { doc: { relics?: Record<string, { mainStat?: string; setName?: string }> } }[];
+    const bag = (await (await page.request.get(`/api/instances/${id}/gear`)).json()) as { slot: string; mainStat?: string }[];
+    const all = [...builds.flatMap((b) => Object.entries(b.doc.relics ?? {}).filter(([, p]) => p?.setName).map(([s, p]) => [s, p.mainStat])), ...bag.map((p) => [p.slot, p.mainStat])];
+    return [...new Set(all.filter(([s, m]) => m && (!slot || s === slot)).map(([, m]) => m!))].sort();
+  };
+  try {
+    await page.goto(`/games/${id}/gear`);
+    const filters = page.getByRole("region", { name: "Filters" });
+    const mainGroup = filters.getByRole("group", { name: "Main stat" });
+    await expect(mainGroup.getByRole("button", { name: "Wind DMG Boost" })).toBeVisible();
+    expect((await mainGroup.getByRole("button").allTextContents()).map((t) => t.trim()).sort()).toEqual(await mains());
+    // A slot picked: that slot's main stats only.
+    await filters.getByRole("group", { name: "Slot" }).getByRole("button", { name: "Body" }).click();
+    await expect(mainGroup.getByRole("button", { name: "Wind DMG Boost" })).toHaveCount(0);
+    expect((await mainGroup.getByRole("button").allTextContents()).map((t) => t.trim()).sort()).toEqual(await mains("body"));
+    await page.getByRole("button", { name: "Reset filters" }).click();
+
+    // The window: the sets you hold first, each with its count; every set, in Star Rail's two kinds; a search.
+    await filters.getByRole("button", { name: /^Pick sets/ }).click();
+    const win = page.getByRole("dialog", { name: "Pick sets" });
+    await expect(win.getByRole("button", { name: "Genius of Brilliant Stars", exact: true })).toBeVisible();
+    await expect(win.getByText("none yet")).toHaveCount(0);
+    await win.getByRole("button", { name: /^All \d+/ }).click();
+    await expect(win.getByText("none yet").first()).toBeVisible();
+    await expect(win.getByRole("group", { name: "Head · Hands · Body · Feet" }).getByRole("button", { name: "Genius of Brilliant Stars", exact: true })).toBeVisible();
+    const planar = win.getByRole("group", { name: "Planar Sphere · Link Rope" });
+    await expect(planar.getByRole("button", { name: "Pan-Cosmic Commercial Enterprise", exact: true })).toBeVisible();
+    await win.getByRole("searchbox", { name: "Search a set" }).fill("Pan-Cosmic");
+    await expect(win.getByRole("button", { name: "Genius of Brilliant Stars", exact: true })).toHaveCount(0);
+    await planar.getByRole("button", { name: "Pan-Cosmic Commercial Enterprise", exact: true }).click();
+    await win.getByRole("button", { name: /^Show \d+ piece/ }).click();
+    await expect(win).toHaveCount(0);
+    const pieces = page.getByRole("region", { name: "Pieces" });
+    await expect(pieces.getByRole("article", { name: "Pan-Cosmic Commercial Enterprise · Planar Sphere" }).filter({ hasText: "+7" })).toBeVisible();
+    await expect(pieces.getByRole("article", { name: "Genius of Brilliant Stars · Body" })).toHaveCount(0);
+
+    // Wuthering Waves' echoes have no slot types: no Slot filter there.
+    const wuwa = (await (await page.request.post("/api/instances", { data: { gameKey: "wuwa" } })).json()) as { id: string };
+    await page.goto(`/games/${wuwa.id}/gear`);
+    await expect(filters.getByRole("button", { name: /^Pick sets/ })).toBeVisible();
+    await expect(filters.getByRole("group", { name: "Slot" })).toHaveCount(0);
+  } finally {
+    await page.request.delete(`/api/characters/${build.id}`);
+    await page.request.delete(`/api/gear/${sphere.id}`);
+  }
+});
+
