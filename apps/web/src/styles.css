@@ -250,22 +250,45 @@ p a { text-decoration: underline; text-underline-offset: 2px; }
 /* Round 9: every piece a card with its set's icon, filtered the way the characters are. */
 .gp-chip { display: inline-flex; align-items: center; gap: 6px; }
 .gp-chip-icon { width: 24px; height: 24px; font-size: 8px; flex: none; }
-.gp-bar { align-items: center; }
 .gp-openset { width: 280px; }
-.gp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; align-content: start; margin-top: 14px; }
-.gp { position: relative; display: grid; gap: 10px; align-content: start; }
-.gp.is-open { border-color: var(--accent); }
-.gp-open { position: absolute; inset: 0; z-index: 1; padding: 0; border: 0; background: transparent; cursor: pointer; }
-.gp-head { display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; align-items: center; gap: 12px; }
-.gp-icon { width: 64px; height: 64px; font-size: 13px; }
-.gp-title { display: grid; gap: 4px; min-width: 0; }
-.gp-title strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 16px; }
-.gp-slot { justify-self: start; padding: 2px 8px; background: var(--surface-3); font: 600 13px/1.4 var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; }
-.gp-who { width: 44px; height: 44px; font-size: 11px; }
-.gp-main { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 10px; background: var(--surface-2); font-size: 16px; font-weight: 600; }
-.gp-main .cd { font-size: 22px; }
-.gp-subs { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; min-height: 92px; font-size: 14px; }
-.gp-subs li { display: flex; justify-content: space-between; gap: 8px; }
 .gs-bonuses { display: grid; gap: 6px; }
 .gs-bonus { margin: 0; font-size: 14px; line-height: 1.4; color: var(--text-muted); }
 .gs-bonus b { color: var(--accent); font-family: var(--font-mono); font-weight: 500; }
+/* The gear as the games' bags (Georges, round 10, version A): filters, tiles, the chosen piece. */
+.gb { display: grid; grid-template-columns: 270px minmax(0, 1fr) 380px; gap: 16px; align-items: start; }
+.gb-filters { display: grid; gap: 16px; }
+.gb-filters h3 { margin-bottom: 6px; }
+.gb-filters .row { flex-wrap: wrap; gap: 8px; }
+.gb-filters select { width: auto; }
+.gb-mid { display: grid; gap: 12px; min-width: 0; }
+.gb-bar { display: flex; align-items: center; gap: 10px; }
+.gb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 10px; align-content: start; }
+.card.gb-tile { position: relative; display: grid; justify-items: center; gap: 4px; padding: 10px 8px; text-align: center; }
+.gb-tile[aria-current="true"] { border: 3px solid var(--accent); padding: 8px 6px; }
+.gb-show { position: absolute; inset: 0; z-index: 1; padding: 0; border: 0; background: transparent; cursor: pointer; }
+.gb-art { width: 92px; height: 92px; font-size: 16px; background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 22%, var(--surface-2)), var(--surface-2)); }
+.gb-lv { position: absolute; left: 6px; top: 6px; padding: 3px 5px; background: var(--paper); color: var(--on-paper); font-size: 13px; }
+.gb-tile .gb-who { position: absolute; right: 6px; top: 6px; width: 36px; height: 36px; font-size: 9px; border-radius: 50%; }
+.gb-bag { position: absolute; right: 6px; top: 6px; padding: 3px 5px; border: 1px solid var(--hairline); color: var(--text-muted); font-size: 11px; }
+.gb-main { display: inline-flex; align-items: center; gap: 4px; max-width: 100%; font-size: 20px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gb-type { color: var(--text-muted); font-size: 12px; }
+.card.gb-col { position: sticky; top: 16px; display: grid; gap: 10px; align-content: start; min-height: 200px; }
+.gb-col-art { width: 120px; height: 120px; font-size: 20px; background: var(--surface-2); }
+.gb-col h3 { margin: 6px 0 4px; white-space: normal; font-size: 24px; line-height: 1.1; }
+.gb-col-type { margin: 0; font-size: 16px; }
+.gb-col-main { display: flex; align-items: center; gap: 8px; font-size: 36px; line-height: 1.1; }
+.gb-col-subs { list-style: none; margin: 0; padding: 0; display: grid; }
+.gb-col-subs li { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--surface-3); font-size: 17px; }
+.gb-col-subs li > span:first-child { display: inline-flex; align-items: center; gap: 6px; }
+.gb-col-subs .cd { font-size: 22px; }
+.gb-col-cv { border-bottom: 0; color: var(--text-muted); }
+.gb-col-cv .cd { color: var(--accent); }
+.gb-bonuses { display: grid; gap: 6px; }
+.gb-bonus { margin: 0; font-size: 15px; line-height: 1.4; color: var(--text-muted); }
+.gb-bonus b { display: inline-block; min-width: 40px; padding: 2px 4px; margin-right: 6px; border: 1px solid var(--hairline); color: var(--text); font: 500 13px/1.3 var(--font-mono); text-align: center; }
+.gb-bonus.is-on { color: var(--text); }
+.gb-bonus.is-on b { background: var(--accent); border-color: var(--accent); color: var(--on-paper); }
+.gb-col-who { display: inline-flex; align-items: center; gap: 10px; color: var(--text); font-size: 17px; }
+.gb-col-who .gicon { width: 44px; height: 44px; border-radius: 50%; font-size: 10px; }
+.gb-col-acts { flex-wrap: wrap; gap: 8px; }
+.gb-col-acts select { width: auto; }

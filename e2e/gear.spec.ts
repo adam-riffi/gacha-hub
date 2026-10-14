@@ -81,7 +81,6 @@ test("Gear: every piece you have, on a build or in the bag, filtered by set, slo
     const pieces = page.getByRole("region", { name: "Pieces" });
     const body = pieces.getByRole("article", { name: "Hunter of Glacial Forest · Body" }).filter({ hasText: "+12" });
     await expect(body).toContainText("CRIT Rate");
-    await expect(body).toContainText("SPD");
     await expect(body.getByRole("img", { name: "Pela" })).toBeVisible();
     // Other journeys equip Musketeer heads too: this one is the bag's +13.
     const head = pieces.getByRole("article", { name: "Musketeer of Wild Wheat · Head" }).filter({ hasText: "Bag" }).filter({ hasText: "+13" });
@@ -125,6 +124,10 @@ test("Gear: every piece you have, on a build or in the bag, filtered by set, slo
     await expect(body).toBeVisible();
     await expect(page.getByRole("button", { name: "Reset filters" })).toBeDisabled();
 
+    // Its substats in the chosen piece's column (round 10).
+    await body.getByRole("button", { name: "Show Hunter of Glacial Forest · Body" }).click();
+    await expect(page.getByRole("region", { name: "Chosen piece" })).toContainText("SPD");
+
     // The search reads sets, stats and wearers.
     await filters.getByRole("searchbox", { name: "Search" }).fill("Pela");
     await expect(body).toBeVisible();
@@ -160,10 +163,11 @@ test("Gear: a piece added from the pieces, its card readable with its set's and 
     await expect.poll(async () => (await piece.getByRole("img", { name: "Musketeer of Wild Wheat" }).boundingBox())?.width ?? 0).toBeGreaterThanOrEqual(48);
     await expect(piece.locator("svg.stat-icon[data-stat=critRate]")).toBeVisible();
 
-    // The set over the page, from its piece: the cards stay where they were.
+    // The set over the page, from its piece's column: the cards stay where they were.
     const first = page.getByRole("region", { name: "Pieces" }).getByRole("article").first();
     const before = (await first.boundingBox())!;
-    await piece.getByRole("button", { name: "Open Musketeer of Wild Wheat" }).click();
+    await piece.getByRole("button", { name: "Show Musketeer of Wild Wheat · Body" }).click();
+    await page.getByRole("region", { name: "Chosen piece" }).getByRole("button", { name: "Open the set" }).click();
     const panel = page.getByRole("complementary", { name: "Musketeer of Wild Wheat" });
     await expect(panel).toBeVisible();
     expect(await panel.evaluate((el) => getComputedStyle(el).position)).toBe("fixed");
@@ -172,5 +176,54 @@ test("Gear: a piece added from the pieces, its card readable with its set's and 
   } finally {
     const bag = (await (await page.request.get(`/api/instances/${id}/gear`)).json()) as { id: string; setName: string; slot: string; level: number }[];
     for (const p of bag.filter((x) => x.setName === "Musketeer of Wild Wheat" && x.slot === "body" && x.level === 9)) await page.request.delete(`/api/gear/${p.id}`);
+  }
+});
+
+// Georges, round 10, picking version A of four: "this one" (a bag of tiles like the games' own, the filters on the left, the chosen piece in full on the right).
+test("Gear: every piece a tile with its art; the chosen piece in full beside them, sent to the bag and equipped from there @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  // Luka, whom no other journey builds, in a Hunter body.
+  const build = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1111" } })).json()) as { id: string };
+  await page.request.put(`/api/characters/${build.id}`, { data: { doc: { relics: { body: { setName: "Hunter of Glacial Forest", mainStat: "CRIT DMG", level: 14, substats: [{ stat: "SPD", value: 5 }, { stat: "CRIT Rate", value: 6.2 }] } }, traces: {}, lightCone: {}, stats: {} } } });
+  try {
+    await page.goto(`/games/${id}/gear`);
+    const pieces = page.getByRole("region", { name: "Pieces" });
+    const tile = () => pieces.getByRole("article", { name: "Hunter of Glacial Forest · Body" }).filter({ hasText: "+14" });
+    // The tile: the piece's art, large; its level, its wearer, its main stat and its type.
+    await expect.poll(async () => (await tile().getByRole("img", { name: "Hunter of Glacial Forest" }).boundingBox())?.width ?? 0).toBeGreaterThanOrEqual(80);
+    await expect(tile().getByRole("img", { name: "Luka" })).toBeVisible();
+    await expect(tile()).toContainText("CRIT DMG");
+    await expect(tile()).toContainText("Body");
+
+    // The filters on the left, the tiles, the chosen piece on the right.
+    const filters = (await page.getByRole("region", { name: "Filters" }).boundingBox())!;
+    const grid = (await pieces.boundingBox())!;
+    const column = page.getByRole("region", { name: "Chosen piece" });
+    expect(filters.x + filters.width).toBeLessThanOrEqual(grid.x);
+    expect(grid.x + grid.width).toBeLessThanOrEqual((await column.boundingBox())!.x);
+
+    // Chosen: its set, type and level, its main stat and substats, the set's bonuses, its wearer.
+    await tile().getByRole("button", { name: "Show Hunter of Glacial Forest · Body" }).click();
+    await expect(tile()).toHaveAttribute("aria-current", "true");
+    await expect(column.getByRole("heading", { name: "Hunter of Glacial Forest" })).toBeVisible();
+    await expect(column).toContainText("Body · +14");
+    await expect(column).toContainText("CRIT DMG");
+    await expect(column).toContainText("SPD");
+    await expect(column).toContainText("2pc");
+    await expect(column.getByRole("link", { name: /Luka/ })).toBeVisible();
+
+    // To the bag, then on Luka again, from the column.
+    await column.getByRole("button", { name: "To bag" }).click();
+    await expect(tile()).toContainText("Bag");
+    await tile().getByRole("button", { name: "Show Hunter of Glacial Forest · Body" }).click();
+    await column.getByRole("combobox", { name: "Equip on" }).selectOption({ label: "Luka" });
+    await expect(tile().getByRole("img", { name: "Luka" })).toBeVisible();
+  } finally {
+    await page.request.delete(`/api/characters/${build.id}`);
+    const bag = (await (await page.request.get(`/api/instances/${id}/gear`)).json()) as { id: string; setName: string; level: number }[];
+    for (const p of bag.filter((x) => x.setName === "Hunter of Glacial Forest" && x.level === 14)) await page.request.delete(`/api/gear/${p.id}`);
   }
 });
