@@ -46,10 +46,10 @@ function toServerTime(at: Date, timezone: number): string {
 export function parseUigf(raw: unknown, game: GameDefinition): { uid: string; timezone: number; records: PullRecord[] }[] {
   const doc = uigfSchema.parse(raw);
   const section = SECTION[game.key];
-  return (section ? (doc[section] ?? []) : []).map((a) => ({
-    uid: a.uid,
-    timezone: a.timezone,
-    records: a.list.map((r) => ({ id: r.id, gachaType: r.gacha_type, time: fromServerTime(r.time, a.timezone), rank: Number(r.rank_type), itemId: r.item_id })),
+  return (section ? (doc[section] ?? []) : []).map((rawAccount) => ({
+    uid: rawAccount.uid,
+    timezone: rawAccount.timezone,
+    records: rawAccount.list.map((rawRecord) => ({ id: rawRecord.id, gachaType: rawRecord.gacha_type, time: fromServerTime(rawRecord.time, rawAccount.timezone), rank: Number(rawRecord.rank_type), itemId: rawRecord.item_id })),
   }));
 }
 
@@ -63,15 +63,15 @@ export interface UigfPull {
 /** A profile's imported pulls as a UIGF v4.2 file, times at the account's timezone. */
 export function toUigf(game: GameDefinition, account: { uid: string; timezone: number }, pulls: readonly UigfPull[], now: Date) {
   const section = SECTION[game.key];
-  const list = pulls.map((p) => ({
+  const list = pulls.map((pull) => ({
     // Genshin's alone: its second character banner (400) shares pity with the first.
-    ...(section === "hk4e" ? { uigf_gacha_type: p.record.gachaType === "400" ? "301" : p.record.gachaType } : {}),
-    gacha_type: p.record.gachaType,
-    item_id: p.record.itemId ?? "",
+    ...(section === "hk4e" ? { uigf_gacha_type: pull.record.gachaType === "400" ? "301" : pull.record.gachaType } : {}),
+    gacha_type: pull.record.gachaType,
+    item_id: pull.record.itemId ?? "",
     count: "1",
-    time: toServerTime(p.createdAt, account.timezone),
-    rank_type: String(p.record.rank),
-    id: p.recordId,
+    time: toServerTime(pull.createdAt, account.timezone),
+    rank_type: String(pull.record.rank),
+    id: pull.recordId,
   }));
   return {
     info: { export_timestamp: Math.floor(now.getTime() / 1000), export_app: "Gacha Hub", export_app_version: "1", version: "v4.2" },

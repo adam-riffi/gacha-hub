@@ -2,7 +2,7 @@ import { z } from "zod";
 import { statRowSchema } from "../../common.js";
 import type { Catalog } from "../../catalog/types.js";
 import type { GameDefinition, GameRegion } from "../types.js";
-import { ENDFIELD_LIMITS as L } from "./limits.js";
+import { ENDFIELD_LIMITS } from "./limits.js";
 
 export { ENDFIELD_LIMITS } from "./limits.js";
 
@@ -12,7 +12,7 @@ export const ENDFIELD_CLASSES = ["Guard", "Defender", "Supporter", "Caster", "Va
 export const ENDFIELD_ELEMENTS = ["Physical", "Heat", "Cryo", "Electric", "Nature"] as const;
 
 /** Gear comes in 4 numbered slots. */
-export const ENDFIELD_GEAR_SLOTS = [1, 2, 3, 4].map((n) => ({ key: `slot${n}`, label: `Gear ${n}` }));
+export const ENDFIELD_GEAR_SLOTS = [1, 2, 3, 4].map((slotNumber) => ({ key: `slot${slotNumber}`, label: `Gear ${slotNumber}` }));
 
 // Two server groups, both resetting at 04:00 server time with Monday weeklies. Stored
 // keys from before ("global") resolve to the first region (api/util.ts).
@@ -23,38 +23,38 @@ const endfieldRegions: GameRegion[] = [
 
 /** Sanity cap by Authority Level: +5 a level to 35, +3 to 50, +2 to 60. */
 export function endfieldSanityCap(level: number): number {
-  const l = Math.max(1, Math.min(60, Math.floor(level)));
-  return l <= 35 ? 120 + 5 * l : l <= 50 ? 190 + 3 * l : 240 + 2 * l;
+  const clampedLevel = Math.max(1, Math.min(60, Math.floor(level)));
+  return clampedLevel <= 35 ? 120 + 5 * clampedLevel : clampedLevel <= 50 ? 190 + 3 * clampedLevel : 240 + 2 * clampedLevel;
 }
 
 const gearSchema = z
   .object({
     setName: z.string(),
     mainStat: z.string(),
-    level: z.number().int().min(0).max(L.maxGearLevel),
+    level: z.number().int().min(0).max(ENDFIELD_LIMITS.maxGearLevel),
     substats: z.array(statRowSchema),
   })
   .partial();
 
 export const endfieldDocSchema = z
   .object({
-    level: z.number().int().min(1).max(L.maxLevel),
+    level: z.number().int().min(1).max(ENDFIELD_LIMITS.maxLevel),
     class: z.enum(ENDFIELD_CLASSES),
     element: z.enum(ENDFIELD_ELEMENTS),
-    potential: z.number().int().min(0).max(L.maxPotential),
+    potential: z.number().int().min(0).max(ENDFIELD_LIMITS.maxPotential),
     // Weapon carries a nested Essence — Endfield's distinctive gear feature.
     weapon: z
       .object({
         name: z.string(),
-        level: z.number().int().min(1).max(L.maxWeaponLevel),
+        level: z.number().int().min(1).max(ENDFIELD_LIMITS.maxWeaponLevel),
         essence: z.object({ name: z.string(), effect: z.string() }).partial(),
       })
       .partial(),
     gear: z.object({ slot1: gearSchema, slot2: gearSchema, slot3: gearSchema, slot4: gearSchema }).partial(),
     skills: z
       .object({
-        combat: z.number().int().min(1).max(L.maxSkill),
-        ultimate: z.number().int().min(1).max(L.maxSkill),
+        combat: z.number().int().min(1).max(ENDFIELD_LIMITS.maxSkill),
+        ultimate: z.number().int().min(1).max(ENDFIELD_LIMITS.maxSkill),
       })
       .partial(),
     stats: z.record(z.string(), z.union([z.number(), z.string()])),
@@ -104,12 +104,12 @@ export const endfield: GameDefinition = {
     gear: {
       name: "Gear",
       field: "gear",
-      slots: ENDFIELD_GEAR_SLOTS.map((s) => ({ ...s, mainStats: [] })),
+      slots: ENDFIELD_GEAR_SLOTS.map((slot) => ({ ...slot, mainStats: [] })),
       sets: [3],
-      maxLevel: L.maxGearLevel,
+      maxLevel: ENDFIELD_LIMITS.maxGearLevel,
     },
     kpis: { damage: ["ATK", "Crit value", "Attribute"], support: ["Ultimate gain", "HP", "Attribute"], defense: ["HP", "DEF", "Attribute"] },
-    dupes: { character: { field: "potential", label: "Potential", max: L.maxPotential } },
+    dupes: { character: { field: "potential", label: "Potential", max: ENDFIELD_LIMITS.maxPotential } },
     // The Endaxis timeline tool's public folders, pinned to the commit the importer read (scripts/catalog/endfield.ts, round 7).
     art: {
       character: "https://raw.githubusercontent.com/Lieyuan621/Endaxis/1cd67de1e45099f6676396012e134d97ff035d8b/public/{key}.webp",
@@ -135,10 +135,10 @@ export const endfield: GameDefinition = {
   docSchema: endfieldDocSchema,
   emptyDoc: (): EndfieldDoc => ({ gear: {}, skills: {}, weapon: {}, stats: {} }),
   docVersion: 1,
-  seedDoc: (c) => ({
+  seedDoc: (character) => ({
     // The class is the operator's profession; the catalog's weaponType is its weapon kind.
-    ...((ENDFIELD_CLASSES as readonly string[]).includes(String(c.extra?.profession ?? "")) ? { class: String(c.extra!.profession) } : {}),
-    ...((ENDFIELD_ELEMENTS as readonly string[]).includes(c.tag ?? "") ? { element: c.tag } : {}),
+    ...((ENDFIELD_CLASSES as readonly string[]).includes(String(character.extra?.profession ?? "")) ? { class: String(character.extra!.profession) } : {}),
+    ...((ENDFIELD_ELEMENTS as readonly string[]).includes(character.tag ?? "") ? { element: character.tag } : {}),
   }),
   // Ownership-only catalog: the public data has no upgrade costs.
   loadCatalog: async () =>

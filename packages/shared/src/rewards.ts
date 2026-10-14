@@ -12,25 +12,25 @@ export type RosterState = { dupes: Map<string, number>; owned: Set<string>; name
 export type RosterChange = { unit: "character" | "weapon"; catalogId: string; name: string; letter: string; from: number | null; to: number };
 
 /** The step a grant or copy takes, as applying it would (`from` null: not owned yet). */
-function change(e: BaseEffect, game: GameDefinition, s: RosterState): RosterChange | null {
-  if (e.kind !== "unit.copy" && e.kind !== "unit.grant") return null;
-  const key = `${e.unit}:${e.catalogId}`;
-  const dupe = game.manifest.dupes[e.unit];
-  const base = e.unit === "weapon" ? 1 : 0;
-  const owned = s.owned.has(key) || s.dupes.has(key);
-  const now = s.dupes.get(key);
-  const step = (from: number | null, to: number): RosterChange => ({ unit: e.unit, catalogId: e.catalogId, name: s.names.get(e.catalogId) ?? e.catalogId, letter: dupe ? dupeLetter(dupe.field) : "", from, to });
-  if (e.kind === "unit.grant" || !dupe) return owned ? step(now ?? base, now ?? base) : step(null, base);
-  if (now !== undefined) return step(now, Math.min(dupe.max, now + e.count));
-  if (e.unit === "weapon") return step(owned ? base : null, base);
-  return step(owned ? base : null, Math.min(dupe.max, e.count - (owned ? 0 : 1)));
+function change(effect: BaseEffect, game: GameDefinition, roster: RosterState): RosterChange | null {
+  if (effect.kind !== "unit.copy" && effect.kind !== "unit.grant") return null;
+  const key = `${effect.unit}:${effect.catalogId}`;
+  const dupe = game.manifest.dupes[effect.unit];
+  const base = effect.unit === "weapon" ? 1 : 0;
+  const owned = roster.owned.has(key) || roster.dupes.has(key);
+  const now = roster.dupes.get(key);
+  const step = (from: number | null, to: number): RosterChange => ({ unit: effect.unit, catalogId: effect.catalogId, name: roster.names.get(effect.catalogId) ?? effect.catalogId, letter: dupe ? dupeLetter(dupe.field) : "", from, to });
+  if (effect.kind === "unit.grant" || !dupe) return owned ? step(now ?? base, now ?? base) : step(null, base);
+  if (now !== undefined) return step(now, Math.min(dupe.max, now + effect.count));
+  if (effect.unit === "weapon") return step(owned ? base : null, base);
+  return step(owned ? base : null, Math.min(dupe.max, effect.count - (owned ? 0 : 1)));
 }
 
 /** A reward that is not a roster change, as a line of text ("420 Primogems"); stages and roster steps show elsewhere. */
-function other(e: BaseEffect, game: GameDefinition, s: RosterState): string | null {
-  if (e.kind === "currency.add") return `${e.amount} ${game.currencies.find((c) => c.key === e.currency)?.label ?? e.currency}`;
-  if (e.kind === "material.add") return `${e.amount} × ${s.names.get(e.materialId) ?? e.materialId}`;
-  return e.kind === "note" ? e.text : null;
+function other(effect: BaseEffect, game: GameDefinition, roster: RosterState): string | null {
+  if (effect.kind === "currency.add") return `${effect.amount} ${game.currencies.find((currency) => currency.key === effect.currency)?.label ?? effect.currency}`;
+  if (effect.kind === "material.add") return `${effect.amount} × ${roster.names.get(effect.materialId) ?? effect.materialId}`;
+  return effect.kind === "note" ? effect.text : null;
 }
 
 /**
@@ -38,25 +38,25 @@ function other(e: BaseEffect, game: GameDefinition, s: RosterState): string | nu
  * option per choice (or one unlabelled option) with each roster step, and
  * the other rewards as text. No options when nothing changes the roster.
  */
-export function rewardOptions(effects: Effect[], game: GameDefinition, s: RosterState) {
-  const plain = effects.filter((e): e is BaseEffect => e.kind !== "choose");
-  const choice = effects.find((e) => e.kind === "choose");
-  const top = plain.map((e) => change(e, game, s)).filter((c): c is RosterChange => c !== null);
-  const options = (choice?.kind === "choose" ? choice.options : [{ label: null, effects: [] }]).map((o) => ({
-    label: o.label as string | null,
-    changes: [...top, ...o.effects.map((e) => change(e, game, s)).filter((c): c is RosterChange => c !== null)],
-    others: o.effects.map((e) => other(e, game, s)).filter((t): t is string => t !== null),
+export function rewardOptions(effects: Effect[], game: GameDefinition, roster: RosterState) {
+  const plain = effects.filter((effect): effect is BaseEffect => effect.kind !== "choose");
+  const choice = effects.find((effect) => effect.kind === "choose");
+  const top = plain.map((effect) => change(effect, game, roster)).filter((rosterChange): rosterChange is RosterChange => rosterChange !== null);
+  const options = (choice?.kind === "choose" ? choice.options : [{ label: null, effects: [] }]).map((option) => ({
+    label: option.label as string | null,
+    changes: [...top, ...option.effects.map((effect) => change(effect, game, roster)).filter((rosterChange): rosterChange is RosterChange => rosterChange !== null)],
+    others: option.effects.map((effect) => other(effect, game, roster)).filter((otherText): otherText is string => otherText !== null),
   }));
   return {
-    options: options.some((o) => o.changes.length) ? options : [],
-    others: plain.map((e) => other(e, game, s)).filter((t): t is string => t !== null),
+    options: options.some((option) => option.changes.length) ? options : [],
+    others: plain.map((effect) => other(effect, game, roster)).filter((otherText): otherText is string => otherText !== null),
   };
 }
 
 /** The calendar's tag for a reward that changes the roster ("+1 C", "+1 R"); the first copy found, a choice's first option. */
 export function rosterTag(effects: Effect[], game: GameDefinition): string | null {
-  const flat = effects.flatMap((e) => (e.kind === "choose" ? (e.options[0]?.effects ?? []) : [e]));
-  const copy = flat.find((e) => e.kind === "unit.copy" || e.kind === "unit.grant");
+  const flat = effects.flatMap((effect) => (effect.kind === "choose" ? (effect.options[0]?.effects ?? []) : [effect]));
+  const copy = flat.find((effect) => effect.kind === "unit.copy" || effect.kind === "unit.grant");
   if (!copy || (copy.kind !== "unit.copy" && copy.kind !== "unit.grant")) return null;
   const dupe = game.manifest.dupes[copy.unit];
   return dupe ? `+${copy.kind === "unit.copy" ? copy.count : 1} ${dupeLetter(dupe.field)}` : null;

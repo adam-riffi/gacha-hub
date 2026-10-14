@@ -20,10 +20,10 @@ export function timedStatus(
   endsAt: Date | string,
   now: Date = new Date(),
 ): TimedStatus {
-  const s = new Date(startsAt).getTime();
-  const e = new Date(endsAt).getTime();
-  if (now.getTime() < s) return "upcoming";
-  if (now.getTime() >= e) return "ended";
+  const startTime = new Date(startsAt).getTime();
+  const endTime = new Date(endsAt).getTime();
+  if (now.getTime() < startTime) return "upcoming";
+  if (now.getTime() >= endTime) return "ended";
   return "active";
 }
 
@@ -55,7 +55,7 @@ export const bannerInput = z
     version: z.number().int().positive().default(1),
     payload: z.record(z.string(), jsonValue).optional(),
   })
-  .refine((b) => new Date(b.endsAt) > new Date(b.startsAt), {
+  .refine((banner) => new Date(banner.endsAt) > new Date(banner.startsAt), {
     message: "endsAt must be after startsAt",
     path: ["endsAt"],
   });

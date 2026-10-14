@@ -25,20 +25,20 @@ export interface CharacterGoal {
 /** Sum requirement lists by material, dropping zero rows, sorted by id. */
 export function mergeReqs(...lists: MaterialReq[][]): MaterialReq[] {
   const totals = new Map<string, number>();
-  for (const list of lists) for (const r of list) totals.set(r.materialId, (totals.get(r.materialId) ?? 0) + r.qty);
+  for (const list of lists) for (const requirement of list) totals.set(requirement.materialId, (totals.get(requirement.materialId) ?? 0) + requirement.qty);
   return [...totals.entries()]
     .filter(([, qty]) => qty > 0)
     .map(([materialId, qty]) => ({ materialId, qty }))
-    .sort((a, b) => a.materialId.localeCompare(b.materialId));
+    .sort((first, second) => first.materialId.localeCompare(second.materialId));
 }
 
 /** Steps whose unlocked cap lies in (from, to]. */
 export function stepsBetween(steps: CostStep[], range: LevelRange): CostStep[] {
-  return steps.filter((s) => s.atLevel > range.from && s.atLevel <= range.to);
+  return steps.filter((step) => step.atLevel > range.from && step.atLevel <= range.to);
 }
 
 export function sumSteps(steps: CostStep[]): MaterialReq[] {
-  return mergeReqs(...steps.map((s) => s.materials.map((m) => ({ materialId: m.materialId, qty: m.qty }))));
+  return mergeReqs(...steps.map((step) => step.materials.map((material) => ({ materialId: material.materialId, qty: material.qty }))));
 }
 
 /** Cost table for one talent key (per-key table when the game has them). */
@@ -62,18 +62,18 @@ export function weaponRequirements(entry: CatalogWeapon, level: LevelRange): Mat
 /** What's still missing after counting owned stock. */
 export function deficit(reqs: MaterialReq[], stock: Record<string, number>): MaterialReq[] {
   return reqs
-    .map((r) => ({ materialId: r.materialId, qty: Math.max(0, r.qty - (stock[r.materialId] ?? 0)) }))
-    .filter((r) => r.qty > 0);
+    .map((requirement) => ({ materialId: requirement.materialId, qty: Math.max(0, requirement.qty - (stock[requirement.materialId] ?? 0)) }))
+    .filter((requirement) => requirement.qty > 0);
 }
 
 /** Selectable level caps for an entry: the base cap plus each ascension cap. */
 export function levelCaps(steps: CostStep[], baseCap = 20): number[] {
-  return [baseCap, ...steps.map((s) => s.atLevel).filter((c) => c > baseCap)];
+  return [baseCap, ...steps.map((step) => step.atLevel).filter((cap) => cap > baseCap)];
 }
 
 /** Highest talent level a cost table reaches (or 1 when there is none). */
 export function talentMax(table: CostStep[]): number {
-  return table.reduce((m, s) => Math.max(m, s.atLevel), 1);
+  return table.reduce((highest, step) => Math.max(highest, step.atLevel), 1);
 }
 
 /**
@@ -82,15 +82,15 @@ export function talentMax(table: CostStep[]): number {
  * unit without them.
  */
 export function baseStatsAt(unit: { baseStats?: BaseStats }, level: number, ascended = false): Record<string, number> | null {
-  const b = unit.baseStats;
-  if (!b) return null;
+  const baseStats = unit.baseStats;
+  if (!baseStats) return null;
   const phases = new Map<number, number[][]>();
-  for (const p of b.points) phases.set(p[1]!, [...(phases.get(p[1]!) ?? []), p].sort((x, y) => x[0]! - y[0]!));
-  const ranges = [...phases].sort(([x], [y]) => x - y).map(([, ends]) => [ends[0]!, ends.at(-1)!] as const);
-  const holding = ranges.filter(([lo, hi]) => lo[0]! <= level && level <= hi[0]!);
-  const [lo, hi] = (ascended ? holding.at(-1) : holding[0]) ?? (level < ranges[0]![0][0]! ? ranges[0]! : ranges.at(-1)!);
-  const t = hi[0] === lo[0] ? 0 : Math.min(1, Math.max(0, (level - lo[0]!) / (hi[0]! - lo[0]!)));
-  return Object.fromEntries(b.stats.map((name, i) => [name, lo[i + 2]! + (hi[i + 2]! - lo[i + 2]!) * t]));
+  for (const point of baseStats.points) phases.set(point[1]!, [...(phases.get(point[1]!) ?? []), point].sort((firstPoint, secondPoint) => firstPoint[0]! - secondPoint[0]!));
+  const ranges = [...phases].sort(([firstPhase], [secondPhase]) => firstPhase - secondPhase).map(([, ends]) => [ends[0]!, ends.at(-1)!] as const);
+  const holding = ranges.filter(([rangeLower, rangeUpper]) => rangeLower[0]! <= level && level <= rangeUpper[0]!);
+  const [lower, upper] = (ascended ? holding.at(-1) : holding[0]) ?? (level < ranges[0]![0][0]! ? ranges[0]! : ranges.at(-1)!);
+  const progress = upper[0] === lower[0] ? 0 : Math.min(1, Math.max(0, (level - lower[0]!) / (upper[0]! - lower[0]!)));
+  return Object.fromEntries(baseStats.stats.map((name, statIndex) => [name, lower[statIndex + 2]! + (upper[statIndex + 2]! - lower[statIndex + 2]!) * progress]));
 }
 
 

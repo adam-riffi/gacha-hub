@@ -38,5 +38,14 @@ export default tseslint.config(
     plugins: { "react-hooks": reactHooks },
     rules: { ...reactHooks.configs.recommended.rules },
   },
+  {
+    // Explicit names (ADR 0011): no one- or two-letter names, area by area as each is renamed; x and y stay for
+    // coordinates, `id` and `to` are words.
+    files: ["packages/shared/src/**/*.ts"],
+    ignores: ["**/*.test.ts"],
+    rules: {
+      "id-length": ["error", { min: 3, exceptions: ["id", "to", "x", "y", "_", "ok", "at", "on", "up", "of"], properties: "never" }],
+    },
+  },
   prettier,
 );

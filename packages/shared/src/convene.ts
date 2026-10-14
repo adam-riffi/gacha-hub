@@ -24,15 +24,15 @@ export function readConveneLink(pasted: string): ConveneLink | null {
   } catch {
     return null;
   }
-  const q = new URLSearchParams(url.hash.includes("?") ? url.hash.slice(url.hash.indexOf("?") + 1) : url.search);
-  const id = (k: string) => {
-    const v = q.get(k);
-    return v && v.length <= 64 && /^[A-Za-z0-9]+$/.test(v) ? v : null;
+  const query = new URLSearchParams(url.hash.includes("?") ? url.hash.slice(url.hash.indexOf("?") + 1) : url.search);
+  const id = (key: string) => {
+    const value = query.get(key);
+    return value && value.length <= 64 && /^[A-Za-z0-9]+$/.test(value) ? value : null;
   };
   const [playerId, serverId, recordId, cardPoolId] = [id("player_id"), id("svr_id"), id("record_id"), id("resources_id")];
   if (!playerId || !serverId || !recordId || !cardPoolId) return null;
-  const lang = q.get("lang") ?? "en";
-  return { playerId, serverId, recordId, cardPoolId, lang: /^[A-Za-z-]{2,10}$/.test(lang) ? lang : "en", global: q.get("svr_area") !== "cn" };
+  const lang = query.get("lang") ?? "en";
+  return { playerId, serverId, recordId, cardPoolId, lang: /^[A-Za-z-]{2,10}$/.test(lang) ? lang : "en", global: query.get("svr_area") !== "cn" };
 }
 
 /** The request for one banner type's whole history, to the game's own API. */
@@ -58,17 +58,17 @@ export function readConvenePage(json: unknown, poolType: string, timezone: numbe
   if (page.code !== 0 || !Array.isArray(page.data)) return { records: [], error: "expired" };
   const records: PullRecord[] = [];
   const inSecond = new Map<string, number>();
-  for (const r of [...page.data].reverse()) {
-    for (let k = 0; k < Math.max(1, r.count ?? 1); k++) {
-      const n = inSecond.get(r.time) ?? 0;
-      inSecond.set(r.time, n + 1);
+  for (const record of [...page.data].reverse()) {
+    for (let copyIndex = 0; copyIndex < Math.max(1, record.count ?? 1); copyIndex++) {
+      const sameSecondCount = inSecond.get(record.time) ?? 0;
+      inSecond.set(record.time, sameSecondCount + 1);
       records.push({
-        id: `${r.time.replace(/\D/g, "")}${poolType.padStart(2, "0")}${n}`,
+        id: `${record.time.replace(/\D/g, "")}${poolType.padStart(2, "0")}${sameSecondCount}`,
         gachaType: poolType,
-        time: new Date(Date.parse(`${r.time.replace(" ", "T")}Z`) - timezone * 3_600_000),
-        rank: r.qualityLevel,
-        itemId: r.resourceId !== undefined ? String(r.resourceId) : undefined,
-        name: r.name || undefined,
+        time: new Date(Date.parse(`${record.time.replace(" ", "T")}Z`) - timezone * 3_600_000),
+        rank: record.qualityLevel,
+        itemId: record.resourceId !== undefined ? String(record.resourceId) : undefined,
+        name: record.name || undefined,
       });
     }
   }

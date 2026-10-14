@@ -36,7 +36,7 @@ export interface ImportedPull {
 }
 
 /** Record ids are digit strings of varying length: compare them as numbers. */
-const byId = (a: string, b: string) => a.length - b.length || (a < b ? -1 : a > b ? 1 : 0);
+const byId = (firstId: string, secondId: string) => firstId.length - secondId.length || (firstId < secondId ? -1 : firstId > secondId ? 1 : 0);
 
 /**
  * Records to pull entries, one each, oldest first (ADR 0005). The gacha type
@@ -47,24 +47,24 @@ const byId = (a: string, b: string) => a.length - b.length || (a < b ? -1 : a > 
  * second within a 10-pull, so each later one is moved a millisecond on.
  */
 export function pullsFromRecords(game: GameDefinition, records: readonly PullRecord[], windows: readonly FeaturedWindow[]): { pulls: ImportedPull[]; skipped: number } {
-  const bannerOf = new Map((game.pullBanners ?? []).flatMap((b) => (b.gachaTypes ?? []).map((t) => [t, b] as const)));
-  const sorted = [...records].sort((a, b) => a.time.getTime() - b.time.getTime() || byId(a.id, b.id));
+  const bannerOf = new Map((game.pullBanners ?? []).flatMap((banner) => (banner.gachaTypes ?? []).map((gachaType) => [gachaType, banner] as const)));
+  const sorted = [...records].sort((first, second) => first.time.getTime() - second.time.getTime() || byId(first.id, second.id));
   const pulls: ImportedPull[] = [];
   let lastSecond = NaN;
   let offset = 0;
-  for (const r of sorted) {
-    const banner = bannerOf.get(r.gachaType);
+  for (const record of sorted) {
+    const banner = bannerOf.get(record.gachaType);
     if (!banner) continue;
     // ponytail: a millisecond per pull within one second; a second holds at most a 10-pull.
-    offset = r.time.getTime() === lastSecond ? offset + 1 : 0;
-    lastSecond = r.time.getTime();
-    const fiveStar = r.rank >= (game.topRarity ?? 5);
+    offset = record.time.getTime() === lastSecond ? offset + 1 : 0;
+    lastSecond = record.time.getTime();
+    const fiveStar = record.rank >= (game.topRarity ?? 5);
     let featured: boolean | null = null;
     if (fiveStar && banner.featuredRate < 1) {
-      const running = windows.filter((w) => w.kind === banner.key && w.startsAt <= r.time && r.time < w.endsAt);
-      if (running.length) featured = running.some((w) => w.featured.some((f) => f.catalogId === r.itemId));
+      const running = windows.filter((bannerWindow) => bannerWindow.kind === banner.key && bannerWindow.startsAt <= record.time && record.time < bannerWindow.endsAt);
+      if (running.length) featured = running.some((bannerWindow) => bannerWindow.featured.some((featuredUnit) => featuredUnit.catalogId === record.itemId));
     }
-    pulls.push({ recordId: r.id, bannerKey: banner.key, createdAt: new Date(r.time.getTime() + offset), fiveStar, featured, catalogId: r.itemId ?? null, record: { gachaType: r.gachaType, itemId: r.itemId ?? null, rank: r.rank, ...(r.pool ? { pool: r.pool } : {}) } });
+    pulls.push({ recordId: record.id, bannerKey: banner.key, createdAt: new Date(record.time.getTime() + offset), fiveStar, featured, catalogId: record.itemId ?? null, record: { gachaType: record.gachaType, itemId: record.itemId ?? null, rank: record.rank, ...(record.pool ? { pool: record.pool } : {}) } });
   }
   return { pulls, skipped: records.length - pulls.length };
 }

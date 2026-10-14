@@ -8,11 +8,11 @@ import { LIMITS } from "../common.js";
 const dateLike = z.union([z.date(), z.string()]);
 
 /** Date | ISO string → ISO string. */
-export const isoDate = dateLike.transform((v) => new Date(v).toISOString());
+export const isoDate = dateLike.transform((value) => new Date(value).toISOString());
 /** Date | ISO string | null → ISO string | null. */
 export const isoDateNullable = dateLike
   .nullable()
-  .transform((v) => (v == null ? null : new Date(v).toISOString()));
+  .transform((value) => (value == null ? null : new Date(value).toISOString()));
 
 export const idSchema = z.string().min(1).max(64);
 export const gameKeySchema = z.string().min(1).max(32);
@@ -31,4 +31,4 @@ export const jsonValue = z.unknown();
 /** A target per numeric KPI, for a build or as a game's defaults (checked against the game's KPIs on save). */
 export const kpiTargetsInput = z
   .record(z.string().max(60), z.number().min(0).max(LIMITS.kpiTarget))
-  .refine((t) => Object.keys(t).length <= 12);
+  .refine((targets) => Object.keys(targets).length <= 12);

@@ -23,13 +23,13 @@ const miscShape = z.object({
     .optional(),
 });
 /** Round 6 kept one block of notes and bare picture links: read them as one note and pictures without notes. */
-const fromRound6 = (v: unknown) => {
-  if (!v || typeof v !== "object") return v;
-  const m = v as { notes?: unknown; pictures?: unknown };
+const fromRound6 = (value: unknown) => {
+  if (!value || typeof value !== "object") return value;
+  const misc = value as { notes?: unknown; pictures?: unknown };
   return {
-    ...m,
-    ...(typeof m.notes === "string" ? { notes: m.notes.trim() ? [m.notes] : [] } : {}),
-    ...(Array.isArray(m.pictures) ? { pictures: m.pictures.map((p) => (typeof p === "string" ? { url: p } : p)) } : {}),
+    ...misc,
+    ...(typeof misc.notes === "string" ? { notes: misc.notes.trim() ? [misc.notes] : [] } : {}),
+    ...(Array.isArray(misc.pictures) ? { pictures: misc.pictures.map((picture) => (typeof picture === "string" ? { url: picture } : picture)) } : {}),
   };
 };
 export const characterMiscSchema = z.preprocess(fromRound6, miscShape);

@@ -39,16 +39,16 @@ export function modeStages(manifest: readonly string[], cycle: { stages: EnemySt
   const enemy = cycle?.stages ?? [];
   if (!enemy.length) return manifest.map((key) => ({ key, label: key, groups: [], weak: [], main: null, boss: false }));
   const keyed = enemy.length === manifest.length;
-  return enemy.map((s, i) => {
-    const all = s.groups.flat();
+  return enemy.map((stage, stageIndex) => {
+    const all = stage.groups.flat();
     return {
-      key: keyed ? manifest[i]! : s.name,
-      label: s.name,
-      level: s.level,
-      groups: s.groups,
-      weak: s.weak,
-      main: s.groups.filter((g) => g.length).at(-1)?.at(-1) ?? null,
-      boss: all.length === 1 && all[0]!.name === s.name,
+      key: keyed ? manifest[stageIndex]! : stage.name,
+      label: stage.name,
+      level: stage.level,
+      groups: stage.groups,
+      weak: stage.weak,
+      main: stage.groups.filter((group) => group.length).at(-1)?.at(-1) ?? null,
+      boss: all.length === 1 && all[0]!.name === stage.name,
     };
   });
 }
@@ -59,7 +59,7 @@ export function modeStages(manifest: readonly string[], cycle: { stages: EnemySt
  * reads as such); none before the first.
  */
 export function enemiesFor(data: EndgameEnemies, modeKey: string, today: string) {
-  const began = data.cycles.filter((c) => c.modeKey === modeKey && c.begin <= today).sort((a, b) => b.begin.localeCompare(a.begin));
+  const began = data.cycles.filter((cycle) => cycle.modeKey === modeKey && cycle.begin <= today).sort((first, second) => second.begin.localeCompare(first.begin));
   const cycle = began[0];
   return cycle ? { ...cycle, current: today <= cycle.end } : null;
 }

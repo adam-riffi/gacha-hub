@@ -21,9 +21,9 @@ const ZZZ_MAIN_STATS = [
 ];
 
 /** Drive discs come in 6 numbered slots. */
-export const ZZZ_DISC_SLOTS = [1, 2, 3, 4, 5, 6].map((n) => ({
-  key: `slot${n}`,
-  label: `Slot ${n}`,
+export const ZZZ_DISC_SLOTS = [1, 2, 3, 4, 5, 6].map((slotNumber) => ({
+  key: `slot${slotNumber}`,
+  label: `Slot ${slotNumber}`,
 }));
 
 const discSchema = z
@@ -131,7 +131,7 @@ export const zzz: GameDefinition = {
     gear: {
       name: "Drive Discs",
       field: "discs",
-      slots: ZZZ_DISC_SLOTS.map((s, i) => ({ ...s, mainStats: ZZZ_MAIN_STATS[i]! })),
+      slots: ZZZ_DISC_SLOTS.map((slot, slotIndex) => ({ ...slot, mainStats: ZZZ_MAIN_STATS[slotIndex]! })),
       sets: [2, 4],
       maxLevel: 15,
     },

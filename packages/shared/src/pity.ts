@@ -34,7 +34,7 @@ export interface PullBannerRules {
 }
 
 /** The banner types a game's screens show: all but the beginner ones. */
-export const shownBanners = (game: { pullBanners?: readonly PullBannerRules[] }) => (game.pullBanners ?? []).filter((b) => !b.beginner);
+export const shownBanners = (game: { pullBanners?: readonly PullBannerRules[] }) => (game.pullBanners ?? []).filter((banner) => !banner.beginner);
 
 /**
  * A logged run of pulls; when `fiveStar`, the last of them was a 5★. A 5★
@@ -48,7 +48,7 @@ export interface PullEntryLike {
   record?: unknown;
 }
 
-const poolOf = (e: PullEntryLike) => (e.record as { pool?: string } | null | undefined)?.pool;
+const poolOf = (entry: PullEntryLike) => (entry.record as { pool?: string } | null | undefined)?.pool;
 
 /** The entries since the newest banner began: imported ones name their banner; those logged by hand belong to the one they follow. */
 function sinceNewestPool(entries: readonly PullEntryLike[]): readonly PullEntryLike[] {
@@ -75,13 +75,13 @@ export function pityState(all: readonly PullEntryLike[], rules: PullBannerRules)
   let pity = 0;
   let guaranteed = false;
   let fiveStars = 0;
-  for (const e of entries) {
-    if (e.fiveStar) {
+  for (const entry of entries) {
+    if (entry.fiveStar) {
       pity = 0;
-      if (e.count > 0) fiveStars += 1;
-      guaranteed = rules.featuredRate < 1 && rules.lossGuarantee !== false && e.featured === false;
+      if (entry.count > 0) fiveStars += 1;
+      guaranteed = rules.featuredRate < 1 && rules.lossGuarantee !== false && entry.featured === false;
     } else {
-      pity += e.count;
+      pity += entry.count;
     }
   }
   return {

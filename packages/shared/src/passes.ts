@@ -27,8 +27,8 @@ export function passView(
   battle: { level: number; weeklyXp: number; updatedAt: Date } | null,
   monthly: { endsAt: Date } | null,
 ) {
-  const v = game.manifest.version;
-  const version = cadenceWindow({ cadence: "version", start: v.start, days: v.days }, region, now);
+  const manifestVersion = game.manifest.version;
+  const version = cadenceWindow({ cadence: "version", start: manifestVersion.start, days: manifestVersion.days }, region, now);
   const week = cadenceWindow({ cadence: "weekly" }, region, now);
   const level = battle && battle.updatedAt >= version.start ? battle.level : 0;
   const weeklyXp = battle && battle.updatedAt >= week.start ? battle.weeklyXp : 0;

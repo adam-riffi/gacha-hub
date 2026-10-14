@@ -28,31 +28,31 @@ export function perBannerMs(bannerCount: number): number {
 
 /** Items sorted by their earliest deadline (epoch ms); ties and items without one keep their order. */
 export function byNearestDeadline<T>(items: readonly T[], deadlines: (item: T) => readonly number[]): T[] {
-  const next = (t: T) => {
-    const ds = deadlines(t).filter(Number.isFinite);
-    return ds.length ? Math.min(...ds) : Infinity;
+  const next = (item: T) => {
+    const itemDeadlines = deadlines(item).filter(Number.isFinite);
+    return itemDeadlines.length ? Math.min(...itemDeadlines) : Infinity;
   };
   return items
-    .map((t, i) => ({ t, i, n: next(t) }))
-    .sort((a, b) => a.n - b.n || a.i - b.i)
-    .map((x) => x.t);
+    .map((item, index) => ({ t: item, i: index, n: next(item) }))
+    .sort((first, second) => first.n - second.n || first.i - second.i)
+    .map((ranked) => ranked.t);
 }
 
 /** One banner forward or back; `counts[i]` is game i's banner count. */
 export function stepBanner(pos: CarouselPosition, dir: 1 | -1, counts: readonly number[]): CarouselPosition {
-  const n = counts.length;
-  if (n === 0) return { game: 0, banner: 0 };
-  const count = (g: number) => slots(counts[g] ?? 0);
+  const gameCount = counts.length;
+  if (gameCount === 0) return { game: 0, banner: 0 };
+  const count = (gameIndex: number) => slots(counts[gameIndex] ?? 0);
   let { game, banner } = pos;
   if (dir > 0) {
     if (banner + 1 < count(game)) banner++;
     else {
-      game = (game + 1) % n;
+      game = (game + 1) % gameCount;
       banner = 0;
     }
   } else if (banner > 0) banner--;
   else {
-    game = (game - 1 + n) % n;
+    game = (game - 1 + gameCount) % gameCount;
     banner = count(game) - 1;
   }
   return { game, banner };

@@ -55,10 +55,10 @@ export interface ArtJob {
  */
 export function artJobs(game: GameDefinition, catalog: Catalog): ArtJob[] {
   const keys: [ArtKind, string | null | undefined][] = [
-    ...catalog.characters.flatMap((c): [ArtKind, string | null | undefined][] => [["character", c.icon], ["portrait", c.icon], ["splash", splashKey(game.key, c.icon, c.splash)]]),
-    ...catalog.weapons.map((w): [ArtKind, string | undefined] => ["weapon", w.icon]),
-    ...catalog.gear.flatMap((g): [ArtKind, string | undefined][] => [["gear", g.icon], ...Object.values((g.extra?.pieceIcons ?? {}) as Record<string, string>).map((k): [ArtKind, string] => ["gear", k])]),
-    ...catalog.materials.map((m): [ArtKind, string | undefined] => ["material", m.icon]),
+    ...catalog.characters.flatMap((character): [ArtKind, string | null | undefined][] => [["character", character.icon], ["portrait", character.icon], ["splash", splashKey(game.key, character.icon, character.splash)]]),
+    ...catalog.weapons.map((weapon): [ArtKind, string | undefined] => ["weapon", weapon.icon]),
+    ...catalog.gear.flatMap((gearSet): [ArtKind, string | undefined][] => [["gear", gearSet.icon], ...Object.values((gearSet.extra?.pieceIcons ?? {}) as Record<string, string>).map((pieceIcon): [ArtKind, string] => ["gear", pieceIcon])]),
+    ...catalog.materials.map((material): [ArtKind, string | undefined] => ["material", material.icon]),
   ];
   const jobs = new Map<string, ArtJob>();
   for (const [kind, key] of keys) {

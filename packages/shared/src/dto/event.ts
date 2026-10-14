@@ -17,7 +17,7 @@ export const eventInput = z
     url: z.string().url().max(2048).optional(),
     payload: z.record(z.string(), jsonValue).optional(),
   })
-  .refine((e) => new Date(e.endsAt) > new Date(e.startsAt), {
+  .refine((event) => new Date(event.endsAt) > new Date(event.startsAt), {
     message: "endsAt must be after startsAt",
     path: ["endsAt"],
   });
