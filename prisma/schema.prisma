@@ -85,6 +85,7 @@ model GameInstance {
   pullEntries   PullEntry[]
   cycleResults  CycleResult[]
   passStates    PassState[]
+  topUps        TopUp[]
   dayRecords    DayRecord[]
   wishlist      WishlistItem[]
   importRuns    ImportRun[]
@@ -154,6 +155,21 @@ model PassState {
   updatedAt      DateTime     @updatedAt
 
   @@unique([gameInstanceId, kind])
+}
+
+/// A top-up bought (round 7): what it was, the premium currency it gave, its price in US cents, when; `pass` for the 30-day pass.
+model TopUp {
+  id             String       @id @default(cuid())
+  gameInstanceId String
+  gameInstance   GameInstance @relation(fields: [gameInstanceId], references: [id], onDelete: Cascade)
+  label          String
+  amount         Int
+  price          Int
+  at             DateTime
+  pass           Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+
+  @@index([gameInstanceId, at])
 }
 
 /// A profile's game day (server-local date, YYYY-MM-DD), written on every

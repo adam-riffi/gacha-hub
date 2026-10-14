@@ -73,6 +73,10 @@ export const LIMITS = {
   worldLevel: 20,
   kpiTarget: 1_000_000,
   uidLength: 32,
+  // A top-up's premium currency and its price in US cents ($10,000); top-ups kept per profile.
+  topUpAmount: 1_000_000,
+  topUpPrice: 1_000_000,
+  topUps: 5_000,
 } as const;
 
 /** A single {stat, value} row — reused by several games' gear substats. */

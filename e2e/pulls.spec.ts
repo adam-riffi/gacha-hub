@@ -216,3 +216,34 @@ test("Pulls: each running banner's chance by its end, and the cheapest top-up to
     await page.request.delete("/api/admin/banners/hsr/e2e-topup");
   }
 });
+
+// Georges, round 7: "add a top up history system too".
+// Star Rail, not Genshin: the smoke journey adds Genshin through the library.
+test("Pulls: a top-up logged in one click, the month's, year's and all spending; the pass adds its days @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  for (const t of (await (await page.request.get(`/api/instances/${id}/topups`)).json()) as { id: string }[]) await page.request.delete(`/api/instances/${id}/topups/${t.id}`);
+  await page.request.put(`/api/instances/${id}/passes/monthly`, { data: { daysLeft: 0 } });
+
+  await page.goto(`/games/${id}/pulls`);
+  const card = page.getByRole("region", { name: "Top-ups" });
+  await card.getByRole("button", { name: "Log 980 + 110 for $14.99" }).click();
+  const history = card.getByRole("list", { name: "Top-up history" });
+  await expect(history.getByRole("listitem")).toHaveCount(1);
+  await card.getByRole("button", { name: "Log Express Supply Pass for $4.99" }).click();
+  await expect(history.getByRole("listitem")).toHaveCount(2);
+  await expect(card.getByRole("group", { name: "This month" })).toContainText("$19.98");
+  await expect(card.getByRole("group", { name: "This month" })).toContainText("1,390");
+  // The pass bought adds its 30 days.
+  const daysLeft = async () => {
+    const { monthly } = (await (await page.request.get(`/api/instances/${id}/passes`)).json()) as { monthly: { endsAt: string } | null };
+    return monthly ? Math.ceil((Date.parse(monthly.endsAt) - Date.now()) / 86_400_000) : 0;
+  };
+  await expect.poll(daysLeft).toBe(30);
+
+  await history.getByRole("listitem").filter({ hasText: "980 + 110" }).getByRole("button", { name: "Delete" }).click();
+  await expect(history.getByRole("listitem")).toHaveCount(1);
+  await expect(card.getByRole("group", { name: "All time" })).toContainText("$4.99");
+});
