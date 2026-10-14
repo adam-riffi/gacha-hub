@@ -183,3 +183,37 @@ test("Weapons: several copies changed at once, level and ownership; the main sta
   await selection.getByRole("button", { name: "Remove", exact: true }).click();
   await expect.poll(async () => ((await (await page.request.get(`/api/instances/${id}/weapons`)).json()) as unknown[]).length).toBe(0);
 });
+
+// A window of big weapons on the sheet (Georges, round 7: "I'd rather have a window open with all of my weapons in big
+// with their level, refinement, name, rarity and an info i that I can click on to read the effect").
+test("Weapons on the sheet: a window of my copies first, then the rest; each with its effect; one picked @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  await clearCopies(page, id);
+  await page.request.post(`/api/instances/${id}/weapons`, { data: { catalogId: "23006", level: 70, refinement: 3 } });
+  const sampo = ((await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1108" } })).json()) as { id: string }).id;
+
+  await page.goto(`/characters/${sampo}`);
+  await page.getByRole("region", { name: "Weapon" }).getByRole("button", { name: "Choose weapon" }).click();
+  const box = page.getByRole("dialog", { name: "Choose weapon" });
+  const mine = box.getByRole("region", { name: "Mine" }).getByRole("article", { name: "Patience Is All You Need" });
+  await expect(mine).toContainText("Lv 70");
+  await expect(mine).toContainText("S3");
+  expect((await mine.getByRole("img").first().boundingBox())!.width).toBeGreaterThanOrEqual(80);
+  // Its effect at its superimposition: S3's 32%.
+  await mine.getByRole("button", { name: "Patience Is All You Need: effect" }).click();
+  await expect(mine.getByRole("note")).toContainText("Spider Web");
+  await expect(mine.getByRole("note")).toContainText("by 32%");
+  // The path's other cones follow, those not held.
+  await expect(box.getByRole("region", { name: "All" }).getByRole("article", { name: "Before the Tutorial Mission Starts" })).toBeVisible();
+  await expect(box.getByRole("region", { name: "All" }).getByRole("article", { name: "Patience Is All You Need" })).toHaveCount(0);
+
+  await mine.getByRole("button", { name: "Equip Patience Is All You Need" }).click();
+  await expect(box).toHaveCount(0);
+  const card = page.getByRole("region", { name: "Weapon" });
+  await expect(card.getByRole("combobox", { name: "Weapon name" })).toHaveValue("Patience Is All You Need");
+  await expect(card.getByLabel("Level")).toHaveValue("70");
+  await clearCopies(page, id);
+});
