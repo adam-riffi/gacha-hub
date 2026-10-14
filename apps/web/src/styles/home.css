@@ -124,3 +124,5 @@
 .gd-squares > i { width: 12px; height: 14px; border: 1px solid var(--text-muted); }
 .gd-squares > i.on { background: var(--accent); border-color: var(--accent); }
 .gd-graph { min-height: 300px; }
+/* The 30-day pass's 30 more days (round 7). */
+.gd-pass-add { justify-self: start; margin: 0 16px 16px; }
