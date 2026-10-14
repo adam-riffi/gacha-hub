@@ -34,7 +34,8 @@ describe("reminder preview and test DM (WIREFRAMES.md A3)", () => {
     await c.req("PUT", `/api/instances/${gid}/reminder`, rule);
     const r = await c.req<ReminderPreviewDto>("GET", "/api/reminders/preview");
     expect(r.json.map((p) => p.gameKey)).toEqual(["genshin"]);
-    expect(r.json[0]!.text).toMatch(/^⏰ \*\*Genshin Impact\*\* resets in \d+h \d+m/);
+    // Within the last hour before the reset there are no hours: "resets in 55m".
+    expect(r.json[0]!.text).toMatch(/^⏰ \*\*Genshin Impact\*\* resets in (\d+h )?\d+m/);
     expect(r.json[0]!.text).toContain("Original Resin 120/200");
     expect(r.json[0]!.text).toContain("Dailies left: Daily Commissions");
   });
