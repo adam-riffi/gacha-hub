@@ -128,7 +128,7 @@ test("Gear: a piece added from the pieces, its card readable with its set's and 
     await form.getByRole("button", { name: "Add", exact: true }).click();
     const piece = page.getByRole("region", { name: "Pieces" }).getByRole("article", { name: "Musketeer of Wild Wheat · Body" }).filter({ hasText: "+9" });
     await expect(piece).toContainText("Bag");
-    expect((await piece.getByRole("img", { name: "Musketeer of Wild Wheat" }).boundingBox())!.width).toBeGreaterThanOrEqual(48);
+    await expect.poll(async () => (await piece.getByRole("img", { name: "Musketeer of Wild Wheat" }).boundingBox())?.width ?? 0).toBeGreaterThanOrEqual(48);
     await expect(piece.locator("svg.stat-icon[data-stat=critRate]")).toBeVisible();
 
     // The set over the page: the cards stay where they were.
