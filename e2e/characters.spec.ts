@@ -382,3 +382,41 @@ test("Characters: Endfield's portraits shown whole on their cards, not enlarged 
   await page.goto(`/games/${hsr.id}/characters`);
   expect(await page.locator(".ch-card .ch-art .gicon").first().evaluate((el) => getComputedStyle(el).objectFit)).toBe("cover");
 });
+
+// Georges, round 9: "for the characters, not owning them shouldn't prevent me from having the full card or setting trying builds;
+// don't make a different screen for owned/not owned, same screen, just a toggle for all characters to see which ones I have already".
+test("Characters: an unowned character has the full card and a build to try; Owned only is a toggle @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  // Lynx, whom no other journey builds or owns.
+  for (const b of ((await (await page.request.get(`/api/instances/${id}/characters`)).json()) as { id: string; catalogId: string }[]).filter((x) => x.catalogId === "1110")) {
+    await page.request.delete(`/api/characters/${b.id}`);
+  }
+  await page.request.put(`/api/instances/${id}/ownership`, { data: { items: [{ kind: "character", catalogId: "1110", owned: false }] } });
+
+  await page.goto(`/games/${id}/characters`);
+  await page.getByRole("searchbox", { name: "Search" }).fill("Lynx");
+  const lynx = page.getByRole("article", { name: "Lynx" });
+  // The full card: its art as bright as an owned one's, its stats.
+  expect(await lynx.locator(".ch-art .gicon").evaluate((el) => [getComputedStyle(el).opacity, getComputedStyle(el).filter])).toEqual(["1", "none"]);
+  await expect(lynx.locator(".ch-kpis")).toBeVisible();
+  // One toggle for the owned ones; no screen of its own for the others.
+  await expect(page.getByRole("group", { name: "Filter by count" }).getByRole("button", { name: /^Not owned/ })).toHaveCount(0);
+  const ownedOnly = page.getByRole("button", { name: /^Owned only/ });
+  await ownedOnly.click();
+  await expect(ownedOnly).toHaveAttribute("aria-pressed", "true");
+  await expect(lynx).toHaveCount(0);
+  await ownedOnly.click();
+  await expect(lynx).toBeVisible();
+
+  // A build to try, without owning her.
+  await lynx.getByRole("button", { name: "Start a build" }).click();
+  await expect(page).toHaveURL(/\/characters\//);
+  const mine = (await (await page.request.get(`/api/instances/${id}/characters`)).json()) as { id: string; catalogId: string }[];
+  const build = mine.find((b) => b.catalogId === "1110")!;
+  const owned = (await (await page.request.get(`/api/instances/${id}/ownership`)).json()) as { catalogId: string }[];
+  expect(owned.some((o) => o.catalogId === "1110")).toBe(false);
+  await page.request.delete(`/api/characters/${build.id}`);
+});
