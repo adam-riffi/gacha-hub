@@ -4,19 +4,19 @@ import type { ReactNode } from "react";
 export function Pips({ index, total, label }: { index: number; total: number; label: string }) {
   return (
     <div className={`pips ${total > 8 ? "pips-s" : ""}`} role="img" aria-label={`${label} ${index + 1} of ${total}`}>
-      {Array.from({ length: total }, (_, i) => (
-        <i key={i} className={i === index ? "on" : ""} />
+      {Array.from({ length: total }, (_, dotIndex) => (
+        <i key={dotIndex} className={dotIndex === index ? "on" : ""} />
       ))}
     </div>
   );
 }
 
 const Chevron = ({ dir }: { dir: "l" | "r" }) => {
-  const d = dir === "l" ? "M22 30L12 44L22 58" : "M22 30L32 44L22 58";
+  const arrowPath = dir === "l" ? "M22 30L12 44L22 58" : "M22 30L32 44L22 58";
   return (
     <svg width="44" height="88" viewBox="0 0 44 88" aria-hidden="true">
-      <path d={d} className="cvh" />
-      <path d={d} className="cvl" />
+      <path d={arrowPath} className="cvh" />
+      <path d={arrowPath} className="cvl" />
     </svg>
   );
 };

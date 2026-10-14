@@ -15,7 +15,7 @@ import type { InstanceDetail, InstanceListItem, TaskItem } from "../lib/types";
 
 const DAY = ["", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const WEEKDAY = ["", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-const NUM = new Intl.NumberFormat("en-GB");
+const NUMBER_FORMAT = new Intl.NumberFormat("en-GB");
 /** Two rows of three goals until All (Georges, round 6). */
 const SHOWN = 6;
 type Sort = "priority" | "progress" | "name";
@@ -30,11 +30,11 @@ type Sort = "priority" | "progress" | "name";
  */
 export function PlannerPage() {
   const { id } = useParams<{ id: string }>();
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   const toast = useToast();
   const [picked, setPicked] = useState<string | null>(null);
   const [scope, setScope] = useState<"goal" | "all">("goal");
-  const [q, setQ] = useState("");
+  const [query, setQuery] = useState("");
   const [sort, setSort] = useState<Sort>("priority");
   const [all, setAll] = useState(false);
   const [making, setMaking] = useState(false);
@@ -44,55 +44,55 @@ export function PlannerPage() {
   const stock = useQuery({ queryKey: ["stock", id], queryFn: () => api.get<MaterialStockDto[]>(`/api/instances/${id}/materials`) });
   const { index } = useCatalog(instance.data?.gameKey);
   const setQty = useMutation({
-    mutationFn: (v: { materialId: string; qty: number }) => api.put(`/api/instances/${id}/materials`, { items: [v] }),
-    onSuccess: () => Promise.all([["stock", id], ["needed", id], ["tasks"], ["farm-today"]].map((queryKey) => qc.invalidateQueries({ queryKey }))),
+    mutationFn: (request: { materialId: string; qty: number }) => api.put(`/api/instances/${id}/materials`, { items: [request] }),
+    onSuccess: () => Promise.all([["stock", id], ["needed", id], ["tasks"], ["farm-today"]].map((queryKey) => queryClient.invalidateQueries({ queryKey }))),
     onError: () => toast("Could not save stock", "err"),
   });
 
   const game = instance.data && getGame(instance.data.gameKey);
   if (instance.isError || tasks.isError) return <LoadError what="The planner" retry={() => Promise.all([instance.refetch(), tasks.refetch()])} />;
-  const gi = instances.data?.find((i) => i.id === id);
-  if (!instance.data || !tasks.data || !game || !gi) return <div className="mu">Loading…</div>;
+  const gameInstance = instances.data?.find((listed) => listed.id === id);
+  if (!instance.data || !tasks.data || !game || !gameInstance) return <div className="mu">Loading…</div>;
 
-  const region = game.regions.find((r) => r.key === instance.data.regionKey) ?? game.regions[0]!;
+  const region = game.regions.find((candidate) => candidate.key === instance.data.regionKey) ?? game.regions[0]!;
   const weekday = gameWeekday(region, new Date());
-  const mine = tasks.data.filter((t) => t.scope === "game" && t.refId === id);
+  const mine = tasks.data.filter((task) => task.scope === "game" && task.refId === id);
   // Linked goals keep their own cards (round 6).
-  const goals = mine.filter((t) => t.type === "goal" && !t.materialId && (t.origin as TaskOrigin | null)?.catalogId);
-  const kidsOf = (g: TaskItem) => mine.filter((t) => t.parentId === g.id && t.materialId);
-  const linkedOf = (g: TaskItem) => goals.filter((t) => t.parentId === g.id);
-  const share = (g: TaskItem) => {
-    const [done, total] = goalSteps(g, mine);
+  const goals = mine.filter((task) => task.type === "goal" && !task.materialId && (task.origin as TaskOrigin | null)?.catalogId);
+  const kidsOf = (goal: TaskItem) => mine.filter((task) => task.parentId === goal.id && task.materialId);
+  const linkedOf = (goal: TaskItem) => goals.filter((candidate) => candidate.parentId === goal.id);
+  const share = (goal: TaskItem) => {
+    const [done, total] = goalSteps(goal, mine);
     return total ? done / total : 0;
   };
-  const needle = q.trim().toLowerCase();
+  const needle = query.trim().toLowerCase();
   const listed = goals
-    .filter((g) => !needle || [g.title, ...kidsOf(g).map((k) => k.title)].some((s) => s.toLowerCase().includes(needle)))
-    .sort((a, b) =>
-      sort === "name" ? a.title.localeCompare(b.title) : sort === "progress" ? share(b) - share(a) || a.title.localeCompare(b.title) : PRIORITY_RANK[a.priority] - PRIORITY_RANK[b.priority] || a.title.localeCompare(b.title),
+    .filter((goal) => !needle || [goal.title, ...kidsOf(goal).map((kid) => kid.title)].some((title) => title.toLowerCase().includes(needle)))
+    .sort((first, second) =>
+      sort === "name" ? first.title.localeCompare(second.title) : sort === "progress" ? share(second) - share(first) || first.title.localeCompare(second.title) : PRIORITY_RANK[first.priority] - PRIORITY_RANK[second.priority] || first.title.localeCompare(second.title),
     );
   const shown = all ? listed : listed.slice(0, SHOWN);
   // The picked goal, else the first active one that still needs materials.
-  const current = goals.find((g) => g.id === picked) ?? goals.find((g) => !g.backlog && kidsOf(g).length > 0) ?? goals[0];
-  const have = new Map((stock.data ?? []).map((s) => [s.materialId, s.qty]));
+  const current = goals.find((goal) => goal.id === picked) ?? goals.find((goal) => !goal.backlog && kidsOf(goal).length > 0) ?? goals[0];
+  const have = new Map((stock.data ?? []).map((stockItem) => [stockItem.materialId, stockItem.qty]));
 
   // This goal's materials with its linked goals', or every goal's summed (backlog left out).
   const needs = new Map<string, number>();
-  for (const g of scope === "goal" ? (current ? [current, ...linkedOf(current)] : []) : goals.filter((x) => !x.backlog)) {
-    for (const k of kidsOf(g)) needs.set(k.materialId!, (needs.get(k.materialId!) ?? 0) + (k.target ?? 0));
+  for (const goal of scope === "goal" ? (current ? [current, ...linkedOf(current)] : []) : goals.filter((candidate) => !candidate.backlog)) {
+    for (const kid of kidsOf(goal)) needs.set(kid.materialId!, (needs.get(kid.materialId!) ?? 0) + (kid.target ?? 0));
   }
   const rows = [...needs].map(([materialId, need]) => {
-    const m = index?.materials.get(materialId);
-    return { materialId, name: m?.name ?? materialId, icon: m?.icon, source: m?.source ?? "", availability: m?.availability ?? [], need, have: have.get(materialId) ?? 0 };
+    const material = index?.materials.get(materialId);
+    return { materialId, name: material?.name ?? materialId, icon: material?.icon, source: material?.source ?? "", availability: material?.availability ?? [], need, have: have.get(materialId) ?? 0 };
   });
-  const open = rows.filter((r) => r.have < r.need).sort((a, b) => b.need - b.have - (a.need - a.have));
-  const done = rows.filter((r) => r.have >= r.need);
-  const today = open.filter((r) => r.availability.length > 0 && farmableToday(r.availability, weekday));
-  const later = open.filter((r) => r.availability.length > 0 && !farmableToday(r.availability, weekday));
+  const open = rows.filter((row) => row.have < row.need).sort((first, second) => second.need - second.have - (first.need - first.have));
+  const done = rows.filter((row) => row.have >= row.need);
+  const today = open.filter((row) => row.availability.length > 0 && farmableToday(row.availability, weekday));
+  const later = open.filter((row) => row.availability.length > 0 && !farmableToday(row.availability, weekday));
   const next = (days: number[]) => {
-    for (let k = 1; k <= 7; k++) {
-      const d = ((weekday - 1 + k) % 7) + 1;
-      if (days.includes(d)) return WEEKDAY[d]!.slice(0, 3);
+    for (let offset = 1; offset <= 7; offset++) {
+      const day = ((weekday - 1 + offset) % 7) + 1;
+      if (days.includes(day)) return WEEKDAY[day]!.slice(0, 3);
     }
     return "";
   };
@@ -106,7 +106,7 @@ export function PlannerPage() {
         <section className="card pn-goals" aria-label="Goals">
           <div className="pn-goals-head">
             <h3>Goals</h3>
-            <input type="search" aria-label="Filter goals" placeholder="Character or material" value={q} onChange={(e) => setQ(e.target.value)} />
+            <input type="search" aria-label="Filter goals" placeholder="Character or material" value={query} onChange={(event) => setQuery(event.target.value)} />
             <Segmented label="Sort" options={[{ value: "priority", label: "Priority" }, { value: "progress", label: "Progress" }, { value: "name", label: "Name" }]} value={sort} onChange={setSort} />
             <span className="ch-sp" />
             <button type="button" className="btn" onClick={() => setMaking(true)}>
@@ -117,9 +117,9 @@ export function PlannerPage() {
           {goals.length > 0 && listed.length === 0 && <p className="mu">No goal matches.</p>}
           {/* The Tasks goal card (Georges, round 4): priority, notify, its plan, Link to; a click also picks it for the materials. */}
           <div className="pn-goal-grid">
-            {shown.map((g) => (
-              <div key={g.id} className={`pn-goal ${g.id === current?.id ? "is-on" : ""}`} onClickCapture={() => setPicked(g.id)}>
-                <GoalCard t={g} tasks={mine} linkable={goals.filter((x) => x.id !== g.id && !x.parentId && !x.backlog)} gi={gi} weekday={weekday} showGame={false} materials={false} />
+            {shown.map((goal) => (
+              <div key={goal.id} className={`pn-goal ${goal.id === current?.id ? "is-on" : ""}`} onClickCapture={() => setPicked(goal.id)}>
+                <GoalCard goal={goal} tasks={mine} linkable={goals.filter((candidate) => candidate.id !== goal.id && !candidate.parentId && !candidate.backlog)} gameInstance={gameInstance} weekday={weekday} showGame={false} materials={false} />
               </div>
             ))}
           </div>
@@ -147,23 +147,23 @@ export function PlannerPage() {
                   <tr><th>Material</th><th>Source</th><th>Days</th><th className="num">Have</th><th className="num">Need</th><th className="num">Missing</th></tr>
                 </thead>
                 <tbody>
-                  {[...open, ...done].map((r) => (
-                    <tr key={r.materialId}>
+                  {[...open, ...done].map((row) => (
+                    <tr key={row.materialId}>
                       <td>
                         <span className="pn-mat">
-                          <CatalogIcon gameKey={game.key} kind="material" icon={r.icon} name={r.name} />
-                          {r.name}
+                          <CatalogIcon gameKey={game.key} kind="material" icon={row.icon} name={row.name} />
+                          {row.name}
                         </span>
                       </td>
-                      <td className="mu">{r.source}</td>
+                      <td className="mu">{row.source}</td>
                       <td>
-                        {r.availability.length ? (
+                        {row.availability.length ? (
                           // The open days written out (Georges, 2026-10-11): "Wed Sat"; Sunday opens every domain, so it is left out beside others.
                           <span className="pn-days" data-testid="days">
-                            {(r.availability.length > 1 ? r.availability.filter((d) => d !== 7) : r.availability).map((d, i) => (
-                              <Fragment key={d}>
-                                {i > 0 && " "}
-                                <span className={d === weekday ? "today" : ""}>{DAY[d]}</span>
+                            {(row.availability.length > 1 ? row.availability.filter((day) => day !== 7) : row.availability).map((day, dayIndex) => (
+                              <Fragment key={day}>
+                                {dayIndex > 0 && " "}
+                                <span className={day === weekday ? "today" : ""}>{DAY[day]}</span>
                               </Fragment>
                             ))}
                           </span>
@@ -172,10 +172,10 @@ export function PlannerPage() {
                         )}
                       </td>
                       <td className="num">
-                        <input type="number" min={0} aria-label={`${r.name} on hand`} key={r.have} defaultValue={r.have} onBlur={(e) => Number(e.target.value) !== r.have && setQty.mutate({ materialId: r.materialId, qty: Number(e.target.value) })} />
+                        <input type="number" min={0} aria-label={`${row.name} on hand`} key={row.have} defaultValue={row.have} onBlur={(event) => Number(event.target.value) !== row.have && setQty.mutate({ materialId: row.materialId, qty: Number(event.target.value) })} />
                       </td>
-                      <td className="num" data-testid="need">{NUM.format(r.need)}</td>
-                      <td className="num" data-testid="missing">{r.have >= r.need ? "✓" : NUM.format(r.need - r.have)}</td>
+                      <td className="num" data-testid="need">{NUMBER_FORMAT.format(row.need)}</td>
+                      <td className="num" data-testid="missing">{row.have >= row.need ? "✓" : NUMBER_FORMAT.format(row.need - row.have)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -190,24 +190,24 @@ export function PlannerPage() {
               <span className="mn mu">{scope === "goal" ? "this goal" : "all goals"}</span>
             </div>
             {/* One line per domain and day: today's first, then each one's next open day. */}
-            {[...today.map((r) => ({ ...r, when: "Today" })), ...later.map((r) => ({ ...r, when: next(r.availability) }))]
-              .reduce<{ when: string; source: string; ids: string[] }[]>((lines, r) => {
-                const line = lines.find((l) => l.when === r.when && l.source === (r.source || r.name));
-                if (line) line.ids.push(r.materialId);
-                else lines.push({ when: r.when, source: r.source || r.name, ids: [r.materialId] });
+            {[...today.map((row) => ({ ...row, when: "Today" })), ...later.map((row) => ({ ...row, when: next(row.availability) }))]
+              .reduce<{ when: string; source: string; ids: string[] }[]>((lines, row) => {
+                const line = lines.find((candidate) => candidate.when === row.when && candidate.source === (row.source || row.name));
+                if (line) line.ids.push(row.materialId);
+                else lines.push({ when: row.when, source: row.source || row.name, ids: [row.materialId] });
                 return lines;
               }, [])
-              .map((l) => (
-                <div className="pn-line" key={l.when + l.source}>
-                  <span className={`badge ${l.when === "Today" ? "done" : ""}`}>{l.when}</span>
-                  <span>{l.source}</span>
-                  <MaterialIcons gameKey={game.key} ids={l.ids} max={6} />
+              .map((line) => (
+                <div className="pn-line" key={line.when + line.source}>
+                  <span className={`badge ${line.when === "Today" ? "done" : ""}`}>{line.when}</span>
+                  <span>{line.source}</span>
+                  <MaterialIcons gameKey={game.key} ids={line.ids} max={6} />
                 </div>
               ))}
-            {open.filter((r) => !r.availability.length).length > 0 && (
+            {open.filter((row) => !row.availability.length).length > 0 && (
               <div className="pn-line">
                 <span className="badge">Any day</span>
-                <MaterialIcons gameKey={game.key} ids={open.filter((r) => !r.availability.length).map((r) => r.materialId)} max={10} />
+                <MaterialIcons gameKey={game.key} ids={open.filter((row) => !row.availability.length).map((row) => row.materialId)} max={10} />
               </div>
             )}
             {open.length === 0 && <p className="mu">Nothing left to farm.</p>}

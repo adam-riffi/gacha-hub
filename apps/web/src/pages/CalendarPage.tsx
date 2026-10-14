@@ -61,23 +61,23 @@ export type CalItem = {
 };
 
 /** Local midnight `n` calendar days after `t` (safe across daylight saving). */
-const addDays = (t: number, n: number) => {
-  const d = new Date(t);
-  d.setHours(0, 0, 0, 0);
-  d.setDate(d.getDate() + n);
-  return d.getTime();
+const addDays = (instant: number, days: number) => {
+  const date = new Date(instant);
+  date.setHours(0, 0, 0, 0);
+  date.setDate(date.getDate() + days);
+  return date.getTime();
 };
-const mondayOf = (t: number) => addDays(t, -((new Date(t).getDay() + 6) % 7));
+const mondayOf = (instant: number) => addDays(instant, -((new Date(instant).getDay() + 6) % 7));
 const sourceOf = (payload: unknown): "feed" | "admin" =>
   (payload as { source?: string } | null)?.source === "hoyoverse" ? "feed" : "admin";
 
 /** Greedy lanes: each bar goes in the first lane free at its start. */
 function lanes(items: CalItem[]): CalItem[][] {
   const out: CalItem[][] = [];
-  for (const it of [...items].sort((a, b) => a.start - b.start)) {
-    const lane = out.find((l) => l.at(-1)!.end <= it.start);
-    if (lane) lane.push(it);
-    else out.push([it]);
+  for (const item of [...items].sort((first, second) => first.start - second.start)) {
+    const lane = out.find((candidate) => candidate.at(-1)!.end <= item.start);
+    if (lane) lane.push(item);
+    else out.push([item]);
   }
   return out;
 }
@@ -96,7 +96,7 @@ export function CalendarPage() {
   const [offset, setOffset] = useState(0);
   const [monthOffset, setMonthOffset] = useState(0);
   const [view, setView] = useState<"timeline" | "month" | "list">("timeline");
-  const [layers, setLayers] = useState(() => new Set(LAYERS.filter((l) => l.on).map((l) => l.key)));
+  const [layers, setLayers] = useState(() => new Set(LAYERS.filter((layer) => layer.on).map((layer) => layer.key)));
   const [selected, setSelected] = useState<string | null>(null);
   const [onlyWished, setOnlyWished] = useState(false);
   // The month view shows six weeks from the Monday before the month's first day.
@@ -121,9 +121,9 @@ export function CalendarPage() {
     queryFn: () => api.get<RewardDto[]>("/api/rewards"),
   });
   const wishlists = useQueries({
-    queries: (dash.data?.games ?? []).map((g) => ({
-      queryKey: ["wishlist", g.instanceId],
-      queryFn: () => api.get<WishlistItemDto[]>(`/api/instances/${g.instanceId}/wishlist`),
+    queries: (dash.data?.games ?? []).map((dashGame) => ({
+      queryKey: ["wishlist", dashGame.instanceId],
+      queryFn: () => api.get<WishlistItemDto[]>(`/api/instances/${dashGame.instanceId}/wishlist`),
     })),
   });
 
@@ -140,79 +140,79 @@ export function CalendarPage() {
     );
   }
 
-  const pct = (t: number) => ((Math.min(Math.max(t, start), end) - start) / (end - start)) * 100;
-  const inWindow = (i: CalItem) => i.end > start && i.start < end;
-  const myRewards = (rewards.data ?? []).filter((r) => !scope || r.gameKey === scope);
+  const percentAt = (instant: number) => ((Math.min(Math.max(instant, start), end) - start) / (end - start)) * 100;
+  const inWindow = (item: CalItem) => item.end > start && item.start < end;
+  const myRewards = (rewards.data ?? []).filter((reward) => !scope || reward.gameKey === scope);
 
   const blocks = dash.data.games
-    .filter((g) => !g.sleeping && (!scope || g.gameKey === scope))
-    .flatMap((g) => {
-      const game = getGame(g.gameKey);
+    .filter((dashGame) => !dashGame.sleeping && (!scope || dashGame.gameKey === scope))
+    .flatMap((dashGame) => {
+      const game = getGame(dashGame.gameKey);
       if (!game) return [];
-      const region = game.regions.find((r) => r.key === g.regionKey) ?? game.regions[0]!;
-      const base = { gameKey: g.gameKey, instanceId: g.instanceId, region };
-      const m = game.manifest;
+      const region = game.regions.find((candidate) => candidate.key === dashGame.regionKey) ?? game.regions[0]!;
+      const base = { gameKey: dashGame.gameKey, instanceId: dashGame.instanceId, region };
+      const manifest = game.manifest;
       // "Only what I wishlisted": banners featuring a wished unit, events whose rewards name one.
       const wished = new Set(
-        (wishlists[dash.data.games.indexOf(g)]?.data ?? []).map((w) => w.catalogId),
+        (wishlists[dash.data.games.indexOf(dashGame)]?.data ?? []).map((wishedItem) => wishedItem.catalogId),
       );
-      const isWished = (i: CalItem) =>
-        Boolean(i.event && wished.has(i.event.key)) ||
-        Boolean(i.banners?.some((b) => wished.has(b.key))) ||
-        Boolean(i.banners?.some((b) => b.featured.some((f) => wished.has(f.catalogId)))) ||
-        [...JSON.stringify(i.event?.effects ?? []).matchAll(/"catalogId":"([^"]+)"/g)].some((x) =>
-          wished.has(x[1]!),
+      const isWished = (item: CalItem) =>
+        Boolean(item.event && wished.has(item.event.key)) ||
+        Boolean(item.banners?.some((banner) => wished.has(banner.key))) ||
+        Boolean(item.banners?.some((banner) => banner.featured.some((featuredUnit) => wished.has(featuredUnit.catalogId)))) ||
+        [...JSON.stringify(item.event?.effects ?? []).matchAll(/"catalogId":"([^"]+)"/g)].some((catalogMatch) =>
+          wished.has(catalogMatch[1]!),
         );
-      const keep = (i: CalItem) => !onlyWished || Boolean(i.wished);
+      const keep = (item: CalItem) => !onlyWished || Boolean(item.wished);
 
       // Banners sharing a period are one phase: "Vodyanitsa +2".
       const phases = new Map<string, BannerDto[]>();
-      for (const b of win.data.banners.filter((x) => x.gameKey === g.gameKey))
-        phases.set(`${b.startsAt}|${b.endsAt}`, [
-          ...(phases.get(`${b.startsAt}|${b.endsAt}`) ?? []),
-          b,
+      for (const banner of win.data.banners.filter((candidate) => candidate.gameKey === dashGame.gameKey))
+        phases.set(`${banner.startsAt}|${banner.endsAt}`, [
+          ...(phases.get(`${banner.startsAt}|${banner.endsAt}`) ?? []),
+          banner,
         ]);
-      const banners: CalItem[] = [...phases.values()].map((bs): CalItem => ({
+      const banners: CalItem[] = [...phases.values()].map((phaseBanners): CalItem => ({
         ...base,
-        id: `b:${bs[0]!.id}`,
+        id: `b:${phaseBanners[0]!.id}`,
         kind: "banner",
-        name: bs.length > 1 ? `${bs[0]!.name} +${bs.length - 1}` : bs[0]!.name,
-        start: Date.parse(bs[0]!.startsAt),
-        end: Date.parse(bs[0]!.endsAt),
-        source: sourceOf(bs[0]!.payload),
-        banners: bs,
-      })).map((i) => ({ ...i, wished: isWished(i) }));
+        name: phaseBanners.length > 1 ? `${phaseBanners[0]!.name} +${phaseBanners.length - 1}` : phaseBanners[0]!.name,
+        start: Date.parse(phaseBanners[0]!.startsAt),
+        end: Date.parse(phaseBanners[0]!.endsAt),
+        source: sourceOf(phaseBanners[0]!.payload),
+        banners: phaseBanners,
+      })).map((item) => ({ ...item, wished: isWished(item) }));
       const events: CalItem[] = win.data.events
-        .filter((e) => e.gameKey === g.gameKey)
-        .map((e): CalItem => ({
+        .filter((event) => event.gameKey === dashGame.gameKey)
+        .map((event): CalItem => ({
           ...base,
-          id: `e:${e.id}`,
+          id: `e:${event.id}`,
           kind: "event",
-          name: e.name,
-          start: Date.parse(e.startsAt),
-          end: Date.parse(e.endsAt),
-          source: sourceOf(e.payload),
-          tag: rosterTag(e.effects ?? [], game),
-          event: e,
+          name: event.name,
+          start: Date.parse(event.startsAt),
+          end: Date.parse(event.endsAt),
+          source: sourceOf(event.payload),
+          tag: rosterTag(event.effects ?? [], game),
+          event: event,
         }))
-        .map((i) => ({ ...i, wished: isWished(i) }));
-      const cycles: CalItem[] = m.endgame.flatMap((mode) => {
+        .map((item) => ({ ...item, wished: isWished(item) }));
+      const cycles: CalItem[] = manifest.endgame.flatMap((mode) => {
         const out: CalItem[] = [];
-        let w = cadenceWindow(mode.anchor, region, new Date(start));
+        let cycleWindow = cadenceWindow(mode.anchor, region, new Date(start));
         for (
-          let i = 0;
-          i < 24 && w.start.getTime() < end;
-          i++, w = cadenceWindow(mode.anchor, region, w.end)
+          let cycleIndex = 0;
+          cycleIndex < 24 && cycleWindow.start.getTime() < end;
+          cycleIndex++, cycleWindow = cadenceWindow(mode.anchor, region, cycleWindow.end)
         ) {
           const close = mode.openDays
-            ? w.start.getTime() + mode.openDays * 86_400_000
-            : w.end.getTime();
+            ? cycleWindow.start.getTime() + mode.openDays * 86_400_000
+            : cycleWindow.end.getTime();
           out.push({
             ...base,
-            id: `c:${g.gameKey}:${mode.key}:${w.start.getTime()}`,
+            id: `c:${dashGame.gameKey}:${mode.key}:${cycleWindow.start.getTime()}`,
             kind: "cycle",
             name: mode.name,
-            start: w.start.getTime(),
+            start: cycleWindow.start.getTime(),
             end: close,
             source: "game",
           });
@@ -220,33 +220,33 @@ export function CalendarPage() {
         return out;
       });
       const version = cadenceWindow(
-        { cadence: "version", start: m.version.start, days: m.version.days },
+        { cadence: "version", start: manifest.version.start, days: manifest.version.days },
         region,
         new Date(now),
       );
       const passes: CalItem[] = [
-        ...(m.battlePass
+        ...(manifest.battlePass
           ? [
               {
                 ...base,
-                id: `p:${g.gameKey}:battle`,
+                id: `p:${dashGame.gameKey}:battle`,
                 kind: "pass" as const,
-                name: `${m.battlePass.name}${g.passes.battle ? ` · Lv ${g.passes.battle.level}` : ""}`,
+                name: `${manifest.battlePass.name}${dashGame.passes.battle ? ` · Lv ${dashGame.passes.battle.level}` : ""}`,
                 start: version.start.getTime(),
                 end: version.end.getTime(),
                 source: "game" as const,
               },
             ]
           : []),
-        ...(g.passes.monthly
+        ...(dashGame.passes.monthly
           ? [
               {
                 ...base,
-                id: `p:${g.gameKey}:monthly`,
+                id: `p:${dashGame.gameKey}:monthly`,
                 kind: "pass" as const,
-                name: m.monthlyPass?.name ?? "30-day pass",
+                name: manifest.monthlyPass?.name ?? "30-day pass",
                 start: now,
-                end: Date.parse(g.passes.monthly.endsAt),
+                end: Date.parse(dashGame.passes.monthly.endsAt),
                 source: "game" as const,
               },
             ]
@@ -261,14 +261,14 @@ export function CalendarPage() {
           ? lanes(events.filter(inWindow).filter(keep)).map((items) => ({ items }))
           : []),
         ...(layers.has("cycles")
-          ? lanes(cycles.filter(inWindow)).map((items, i) => ({
-              name: i === 0 ? "Endgame" : undefined,
+          ? lanes(cycles.filter(inWindow)).map((items, laneIndex) => ({
+              name: laneIndex === 0 ? "Endgame" : undefined,
               items,
             }))
           : []),
         ...(layers.has("passes")
-          ? lanes(passes.filter(inWindow)).map((items, i) => ({
-              name: i === 0 ? "Passes" : undefined,
+          ? lanes(passes.filter(inWindow)).map((items, laneIndex) => ({
+              name: laneIndex === 0 ? "Passes" : undefined,
               items,
             }))
           : []),
@@ -280,22 +280,22 @@ export function CalendarPage() {
           : null;
       return [
         {
-          g,
+          dashGame: dashGame,
           game,
           rows,
           all,
           tick,
-          versionName: m.version.name,
-          source: [...banners, ...events].some((i) => i.source === "feed") ? "feed" : "admin",
+          versionName: manifest.version.name,
+          source: [...banners, ...events].some((item) => item.source === "feed") ? "feed" : "admin",
         },
       ];
     });
 
-  const items = blocks.flatMap((b) => b.all.filter(inWindow));
-  const visible = blocks.flatMap((b) => b.rows.flatMap((r) => r.items));
+  const items = blocks.flatMap((block) => block.all.filter(inWindow));
+  const visible = blocks.flatMap((block) => block.rows.flatMap((row) => row.items));
   const firstReward = myRewards[0] && `e:${myRewards[0].eventId}`;
-  const current = items.find((i) => i.id === (selected ?? firstReward)) ?? null;
-  const nowPct = pct(now);
+  const current = items.find((item) => item.id === (selected ?? firstReward)) ?? null;
+  const nowPct = percentAt(now);
   const showNow = now > start && now < end;
 
   return (
@@ -341,27 +341,27 @@ export function CalendarPage() {
         </div>
       </div>
       {/* One box per layer in its colour (round 7): banners in their games' colours, events edged in them, then endgames, passes, wishes. */}
-      <div className="cal-layers" style={{ ["--games" as string]: `linear-gradient(90deg, ${blocks.map((x) => x.g.accent).join(", ")})` }}>
-        {LAYERS.map((l) => (
-          <label key={l.key}>
+      <div className="cal-layers" style={{ ["--games" as string]: `linear-gradient(90deg, ${blocks.map((block) => block.dashGame.accent).join(", ")})` }}>
+        {LAYERS.map((layer) => (
+          <label key={layer.key}>
             <input
               type="checkbox"
-              className={`cal-check is-${l.key}`}
-              checked={layers.has(l.key)}
-              onChange={(e) =>
-                setLayers((s) => {
-                  const next = new Set(s);
-                  if (e.target.checked) next.add(l.key);
-                  else next.delete(l.key);
+              className={`cal-check is-${layer.key}`}
+              checked={layers.has(layer.key)}
+              onChange={(event) =>
+                setLayers((previousLayers) => {
+                  const next = new Set(previousLayers);
+                  if (event.target.checked) next.add(layer.key);
+                  else next.delete(layer.key);
                   return next;
                 })
               }
             />
-            {l.label}
+            {layer.label}
           </label>
         ))}
         <label>
-          <input type="checkbox" className="cal-check is-wished" checked={onlyWished} onChange={(e) => setOnlyWished(e.target.checked)} />
+          <input type="checkbox" className="cal-check is-wished" checked={onlyWished} onChange={(event) => setOnlyWished(event.target.checked)} />
           Only what I wishlisted
         </label>
         <span className="cal-range mn mu">
@@ -378,9 +378,9 @@ export function CalendarPage() {
                   <div className="cal-r cal-wk">
                     <div className="cal-label mn mu">Week of</div>
                     <div className="cal-track">
-                      {Array.from({ length: WEEKS }, (_, i) => (
-                        <span key={i} style={{ left: `${(i / WEEKS) * 100}%` }}>
-                          {DAY.format(addDays(start, i * 7))}
+                      {Array.from({ length: WEEKS }, (_, weekIndex) => (
+                        <span key={weekIndex} style={{ left: `${(weekIndex / WEEKS) * 100}%` }}>
+                          {DAY.format(addDays(start, weekIndex * 7))}
                         </span>
                       ))}
                       {showNow && (
@@ -394,69 +394,69 @@ export function CalendarPage() {
                   <div className="cal-r cal-days">
                     <div className="cal-label mn mu">Day</div>
                     <div className="cal-track">
-                      {Array.from({ length: WEEKS * 7 }, (_, i) => {
-                        const d = new Date(addDays(start, i));
+                      {Array.from({ length: WEEKS * 7 }, (_, dayIndex) => {
+                        const date = new Date(addDays(start, dayIndex));
                         return (
-                          <span key={i} className={`cal-day ${i % 7 >= 5 ? "is-weekend" : ""} ${addDays(now, 0) === d.getTime() ? "is-today" : ""}`} style={{ left: `${(i / (WEEKS * 7)) * 100}%`, width: `${100 / (WEEKS * 7)}%` }}>
-                            {d.getDate()}
+                          <span key={dayIndex} className={`cal-day ${dayIndex % 7 >= 5 ? "is-weekend" : ""} ${addDays(now, 0) === date.getTime() ? "is-today" : ""}`} style={{ left: `${(dayIndex / (WEEKS * 7)) * 100}%`, width: `${100 / (WEEKS * 7)}%` }}>
+                            {date.getDate()}
                           </span>
                         );
                       })}
                     </div>
                   </div>
-                  {blocks.map((b) => (
-                    <div className="cal-block" key={b.g.gameKey}>
-                      {(b.rows.length ? b.rows : [{ items: [] as CalItem[] }]).map((row, i) => (
-                        <div className="cal-r" key={i}>
+                  {blocks.map((block) => (
+                    <div className="cal-block" key={block.dashGame.gameKey}>
+                      {(block.rows.length ? block.rows : [{ items: [] as CalItem[] }]).map((row, rowIndex) => (
+                        <div className="cal-r" key={rowIndex}>
                           <div className="cal-label">
-                            {i === 0 && (
+                            {rowIndex === 0 && (
                               <>
                                 <Link
                                   className="cal-game-name"
-                                  to={`/games/${b.g.instanceId}`}
-                                  style={{ ["--c" as string]: b.g.accent }}
+                                  to={`/games/${block.dashGame.instanceId}`}
+                                  style={{ ["--c" as string]: block.dashGame.accent }}
                                 >
-                                  {b.g.name}
+                                  {block.dashGame.name}
                                 </Link>
-                                <span className="mn mu cal-src">{/^\d/.test(b.versionName) ? `v${b.versionName}` : b.versionName}</span>
+                                <span className="mn mu cal-src">{/^\d/.test(block.versionName) ? `v${block.versionName}` : block.versionName}</span>
                               </>
                             )}
                             {row.name && <span className="cal-lane-name">{row.name}</span>}
                           </div>
                           <div className="cal-track">
-                            {row.items.map((it) => (
+                            {row.items.map((item) => (
                               <button
-                                key={it.id}
+                                key={item.id}
                                 type="button"
-                                className={`cal-bar is-${it.kind} ${it.wished ? "is-wished" : ""} ${it.end < now ? "is-ended" : ""}`}
+                                className={`cal-bar is-${item.kind} ${item.wished ? "is-wished" : ""} ${item.end < now ? "is-ended" : ""}`}
                                 style={{
-                                  left: `${pct(it.start)}%`,
+                                  left: `${percentAt(item.start)}%`,
                                   // A gap before the next bar, so one phase's end and the next's start stay apart.
-                                  width: `calc(${pct(it.end) - pct(it.start)}% - 3px)`,
-                                  ["--c" as string]: b.g.accent,
+                                  width: `calc(${percentAt(item.end) - percentAt(item.start)}% - 3px)`,
+                                  ["--c" as string]: block.dashGame.accent,
                                 }}
-                                aria-pressed={current?.id === it.id}
-                                title={`${it.name}\n${WHEN.format(it.start)} → ${WHEN.format(it.end)}`}
-                                onClick={() => setSelected(it.id)}
+                                aria-pressed={current?.id === item.id}
+                                title={`${item.name}\n${WHEN.format(item.start)} → ${WHEN.format(item.end)}`}
+                                onClick={() => setSelected(item.id)}
                               >
-                                {it.wished && (
+                                {item.wished && (
                                   <b className="cal-star" aria-label="Wishlisted" title="Wishlisted">
                                     ★
                                   </b>
                                 )}
-                                {it.tag && <b className="cal-tag">{it.tag}</b>}
-                                <span className="cal-name">{it.name}</span>
+                                {item.tag && <b className="cal-tag">{item.tag}</b>}
+                                <span className="cal-name">{item.name}</span>
                                 <span className="cal-dates">
-                                  {DAY.format(it.start)} → {DAY.format(it.end)}
+                                  {DAY.format(item.start)} → {DAY.format(item.end)}
                                 </span>
                               </button>
                             ))}
-                            {i === 0 && b.tick !== null && (
+                            {rowIndex === 0 && block.tick !== null && (
                               <span
-                                className={`cal-vtick ${pct(b.tick) > 80 ? "is-left" : ""}`}
-                                style={{ left: `${pct(b.tick)}%` }}
+                                className={`cal-vtick ${percentAt(block.tick) > 80 ? "is-left" : ""}`}
+                                style={{ left: `${percentAt(block.tick)}%` }}
                               >
-                                update · {DAY.format(b.tick)}
+                                update · {DAY.format(block.tick)}
                               </span>
                             )}
                             {showNow && (
@@ -478,34 +478,34 @@ export function CalendarPage() {
             <section className="card cal-month" aria-label="Month">
               <h3>{MONTH.format(monthFirst)}</h3>
               <div className="cal-mgrid">
-                {WEEKDAYS.map((w) => (
-                  <span key={w} className="cal-mhead mn mu">
-                    {w}
+                {WEEKDAYS.map((weekday) => (
+                  <span key={weekday} className="cal-mhead mn mu">
+                    {weekday}
                   </span>
                 ))}
-                {Array.from({ length: WEEKS * 7 }, (_, i) => {
-                  const from = addDays(start, i);
-                  const to = addDays(start, i + 1);
-                  const d = new Date(from);
-                  const starts = visible.filter((it) => it.start >= from && it.start < to);
-                  const ends = visible.filter((it) => it.end >= from && it.end < to);
-                  const accent = (it: CalItem) => blocks.find((x) => x.g.gameKey === it.gameKey)?.g.accent;
+                {Array.from({ length: WEEKS * 7 }, (_, dayIndex) => {
+                  const from = addDays(start, dayIndex);
+                  const to = addDays(start, dayIndex + 1);
+                  const date = new Date(from);
+                  const starts = visible.filter((item) => item.start >= from && item.start < to);
+                  const ends = visible.filter((item) => item.end >= from && item.end < to);
+                  const accent = (item: CalItem) => blocks.find((block) => block.dashGame.gameKey === item.gameKey)?.dashGame.accent;
                   return (
-                    <div key={i} className={`cal-mday ${d.getMonth() === new Date(monthFirst).getMonth() ? "" : "is-other"} ${addDays(now, 0) === from ? "is-today" : ""}`}>
-                      <span className="cal-mnum mn">{d.getDate()}</span>
-                      {[...starts.map((it) => ["Starts", it] as const), ...ends.map((it) => ["Ends", it] as const)].map(([what, it]) => (
+                    <div key={dayIndex} className={`cal-mday ${date.getMonth() === new Date(monthFirst).getMonth() ? "" : "is-other"} ${addDays(now, 0) === from ? "is-today" : ""}`}>
+                      <span className="cal-mnum mn">{date.getDate()}</span>
+                      {[...starts.map((startingItem) => ["Starts", startingItem] as const), ...ends.map((endingItem) => ["Ends", endingItem] as const)].map(([what, item]) => (
                         <button
-                          key={`${what}:${it.id}`}
+                          key={`${what}:${item.id}`}
                           type="button"
-                          className={`cal-mitem is-${what.toLowerCase()} is-${it.kind}`}
-                          style={{ ["--c" as string]: accent(it) }}
-                          aria-label={`${what}: ${it.name}`}
-                          aria-pressed={current?.id === it.id}
-                          title={`${it.name}\n${WHEN.format(it.start)} → ${WHEN.format(it.end)}`}
-                          onClick={() => setSelected(it.id)}
+                          className={`cal-mitem is-${what.toLowerCase()} is-${item.kind}`}
+                          style={{ ["--c" as string]: accent(item) }}
+                          aria-label={`${what}: ${item.name}`}
+                          aria-pressed={current?.id === item.id}
+                          title={`${item.name}\n${WHEN.format(item.start)} → ${WHEN.format(item.end)}`}
+                          onClick={() => setSelected(item.id)}
                         >
-                          <span aria-hidden="true">{what === "Starts" ? "▶" : "■"}</span> {it.name}
-                          {what === "Ends" && <span className="mu"> · {TIME.format(it.end)}</span>}
+                          <span aria-hidden="true">{what === "Starts" ? "▶" : "■"}</span> {item.name}
+                          {what === "Ends" && <span className="mu"> · {TIME.format(item.end)}</span>}
                         </button>
                       ))}
                     </div>
@@ -531,19 +531,19 @@ export function CalendarPage() {
                   </thead>
                   <tbody>
                     {[...visible]
-                      .sort((a, z) => a.start - z.start)
-                      .map((it) => (
-                        <tr key={it.id}>
-                          <td className="mn">{getGame(it.gameKey)?.shortName ?? it.gameKey}</td>
+                      .sort((first, second) => first.start - second.start)
+                      .map((item) => (
+                        <tr key={item.id}>
+                          <td className="mn">{getGame(item.gameKey)?.shortName ?? item.gameKey}</td>
                           <td>
-                            {it.tag && <b className="cal-tag">{it.tag}</b>}{" "}
-                            <button type="button" onClick={() => setSelected(it.id)}>
-                              {it.name}
+                            {item.tag && <b className="cal-tag">{item.tag}</b>}{" "}
+                            <button type="button" onClick={() => setSelected(item.id)}>
+                              {item.name}
                             </button>
                           </td>
-                          <td className="mn mu">{it.kind}</td>
-                          <td className="mn">{DAY.format(it.start)}</td>
-                          <td className="mn">{DAY.format(it.end)}</td>
+                          <td className="mn mu">{item.kind}</td>
+                          <td className="mn">{DAY.format(item.start)}</td>
+                          <td className="mn">{DAY.format(item.end)}</td>
                         </tr>
                       ))}
                   </tbody>
@@ -556,7 +556,7 @@ export function CalendarPage() {
         <CalendarSelected
           key={current?.id ?? "none"}
           item={current}
-          reward={myRewards.find((r) => current?.id === `e:${r.eventId}`)}
+          reward={myRewards.find((reward) => current?.id === `e:${reward.eventId}`)}
           now={now}
           onClose={() => setSelected("none")}
         />

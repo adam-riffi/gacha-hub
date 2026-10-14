@@ -18,23 +18,23 @@ export function GiftsCard({ gameKey, entry }: { gameKey: string; entry: CatalogC
         <h3>Gifts</h3>
         {hobbies.length > 0 && (
           <span className="row gf-hobbies">
-            {hobbies.map((h) => (
-              <span key={h} className="tag">
-                {h}
+            {hobbies.map((hobby) => (
+              <span key={hobby} className="tag">
+                {hobby}
               </span>
             ))}
           </span>
         )}
       </div>
       <ul className="gf-list">
-        {gifts.map((g) => {
-          const item = index?.materials.get(g.itemId);
+        {gifts.map((gift) => {
+          const item = index?.materials.get(gift.itemId);
           return (
-            <li key={g.itemId} className={g.points && g.points >= 400 ? "is-top" : g.hobbies && g.hobbies.length > 1 ? "is-top" : ""}>
-              <CatalogIcon gameKey={gameKey} kind="material" icon={item?.icon} name={item?.name ?? g.itemId} className="gf-icon" />
-              <span className="gf-name">{item?.name ?? g.itemId}</span>
-              {g.points ? <span className="cd gf-points">+{g.points}</span> : null}
-              {g.hobbies?.length ? <span className="mn gf-match">{g.hobbies.join(" · ")}</span> : null}
+            <li key={gift.itemId} className={gift.points && gift.points >= 400 ? "is-top" : gift.hobbies && gift.hobbies.length > 1 ? "is-top" : ""}>
+              <CatalogIcon gameKey={gameKey} kind="material" icon={item?.icon} name={item?.name ?? gift.itemId} className="gf-icon" />
+              <span className="gf-name">{item?.name ?? gift.itemId}</span>
+              {gift.points ? <span className="cd gf-points">+{gift.points}</span> : null}
+              {gift.hobbies?.length ? <span className="mn gf-match">{gift.hobbies.join(" · ")}</span> : null}
             </li>
           );
         })}

@@ -16,7 +16,7 @@ export interface RosterEntry {
 export function homeRoster(games: DashGame[], banners: Banner[]): RosterEntry[] {
   const entries = games.map((game) => ({
     game,
-    banners: banners.filter((b) => b.status === "active" && b.gameKey === game.gameKey).sort((a, b) => a.endsAt.localeCompare(b.endsAt)),
+    banners: banners.filter((banner) => banner.status === "active" && banner.gameKey === game.gameKey).sort((first, second) => first.endsAt.localeCompare(second.endsAt)),
   }));
-  return byNearestDeadline(entries, (e) => e.banners.map((b) => Date.parse(b.endsAt)));
+  return byNearestDeadline(entries, (rosterEntry) => rosterEntry.banners.map((banner) => Date.parse(banner.endsAt)));
 }

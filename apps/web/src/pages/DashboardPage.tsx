@@ -16,7 +16,7 @@ import { EndgameNextCard, ExpiringSoonCard, homeGames } from "../components/home
 import type { DashboardData, InstanceListItem, TaskItem } from "../lib/types";
 
 // A game's dashboard loads when a game is picked: Home's first paint stays as light as it was.
-const GameDashboard = lazy(() => import("../components/home/GameDashboard").then((m) => ({ default: m.GameDashboard })));
+const GameDashboard = lazy(() => import("../components/home/GameDashboard").then((module) => ({ default: module.GameDashboard })));
 
 /**
  * Home is the dashboard (VISUAL-DESIGN.md §10): the gauges and charts, the
@@ -31,18 +31,18 @@ export function DashboardPage() {
   const { data, isLoading, isError, refetch } = useQuery({ queryKey: ["dashboard"], queryFn: () => api.get<DashboardData>("/api/dashboard") });
   const { data: tasks } = useQuery({ queryKey: ["tasks"], queryFn: () => api.get<TaskItem[]>("/api/tasks") });
   const { data: instances } = useQuery({ queryKey: ["instances"], queryFn: () => api.get<InstanceListItem[]>("/api/instances") });
-  const picked = game ? instances?.find((i) => i.gameKey === game) : undefined;
+  const picked = game ? instances?.find((instance) => instance.gameKey === game) : undefined;
 
   // Sleeping games stay out of Home entirely (their banners and events too); a scope keeps one game.
   const view = useMemo(() => {
     if (!data) return undefined;
-    const shown = new Set(data.games.filter((g) => !g.sleeping && (!game || g.gameKey === game)).map((g) => g.gameKey));
+    const shown = new Set(data.games.filter((dashGame) => !dashGame.sleeping && (!game || dashGame.gameKey === game)).map((dashGame) => dashGame.gameKey));
     return {
       ...data,
-      games: data.games.filter((g) => shown.has(g.gameKey)),
+      games: data.games.filter((dashGame) => shown.has(dashGame.gameKey)),
       timeline: {
-        banners: data.timeline.banners.filter((b) => shown.has(b.gameKey)),
-        events: data.timeline.events.filter((e) => shown.has(e.gameKey)),
+        banners: data.timeline.banners.filter((banner) => shown.has(banner.gameKey)),
+        events: data.timeline.events.filter((event) => shown.has(event.gameKey)),
       },
     };
   }, [data, game]);
@@ -83,36 +83,36 @@ export function DashboardPage() {
  */
 function Dashboard({ view, tasks, pinned, setParams }: { view: DashboardData; tasks: TaskItem[]; pinned: string | null; setParams: ReturnType<typeof useSearchParams>[1] }) {
   // The latest game day is "today": the hours before a reset belong to the day before.
-  const today = view.games.map((g) => g.gameDay ?? "").sort().at(-1) || new Date().toISOString().slice(0, 10);
+  const today = view.games.map((game) => game.gameDay ?? "").sort().at(-1) || new Date().toISOString().slice(0, 10);
   const day = pinned && pinned < today ? pinned : null;
   const onPin = (date: string | null) =>
-    setParams((p) => {
-      if (date && date < today) p.set("day", date);
-      else p.delete("day");
-      return p;
+    setParams((current) => {
+      if (date && date < today) current.set("day", date);
+      else current.delete("day");
+      return current;
     });
   const roster = useMemo(() => homeRoster(view.games, view.timeline.banners), [view]);
-  const counts = useMemo(() => roster.map((r) => r.banners.length), [roster]);
-  const hg = useMemo(() => homeGames(view.games, view.timeline.events), [view]);
-  const c = useCarousel(counts);
+  const counts = useMemo(() => roster.map((row) => row.banners.length), [roster]);
+  const homeGameList = useMemo(() => homeGames(view.games, view.timeline.events), [view]);
+  const carousel = useCarousel(counts);
   return (
     <div className="home">
       <div className="home-main">
         <HomeTop games={view.games} tasks={tasks} goalMaterials={view.goalMaterials} day={day} />
         {/* The banners first, beside the dailies (Georges, round 9: "I don't care that much about the battle pass"). */}
         <div className="home-carousels">
-          <BannersCarousel roster={roster} c={c} />
-          <DailiesCard roster={roster} c={c} day={day} />
+          <BannersCarousel roster={roster} carousel={carousel} />
+          <DailiesCard roster={roster} carousel={carousel} day={day} />
         </div>
         <HomeHeat games={view.games} today={today} pinned={day} onPin={onPin} />
         <div className="home-lists">
-          <EndgameNextCard games={hg} />
-          <ExpiringSoonCard games={hg} />
+          <EndgameNextCard games={homeGameList} />
+          <ExpiringSoonCard games={homeGameList} />
         </div>
       </div>
       <aside className="home-side">
         <PullsCard games={view.games} day={day} />
-        <PassCard roster={roster} c={c} />
+        <PassCard roster={roster} carousel={carousel} />
         <StaminaCard games={view.games} />
       </aside>
     </div>

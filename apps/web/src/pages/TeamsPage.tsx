@@ -23,7 +23,7 @@ import type { InstanceDetail } from "../lib/types";
  */
 export function TeamsPage() {
   const { id } = useParams<{ id: string }>();
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   const toast = useToast();
   const [name, setName] = useState("");
   const instance = useQuery({ queryKey: ["instance", id], queryFn: () => api.get<InstanceDetail>(`/api/instances/${id}`) });
@@ -31,7 +31,7 @@ export function TeamsPage() {
   const builds = useQuery({ queryKey: ["characters", id], queryFn: () => api.get<CharacterDto[]>(`/api/instances/${id}/characters`) });
   const ownership = useQuery({ queryKey: ["ownership", id], queryFn: () => api.get<OwnershipDto[]>(`/api/instances/${id}/ownership`) });
   const { catalog, index } = useCatalog(instance.data?.gameKey);
-  const refresh = () => qc.invalidateQueries({ queryKey: ["teams", id] });
+  const refresh = () => queryClient.invalidateQueries({ queryKey: ["teams", id] });
   const create = useMutation({
     mutationFn: () => api.post(`/api/instances/${id}/teams`, { name: name.trim(), members: [] }),
     onSuccess: () => {
@@ -41,8 +41,8 @@ export function TeamsPage() {
     onError: () => toast("Could not create the team", "err"),
   });
   const update = useMutation({
-    mutationFn: (v: { teamId: string; name?: string; members?: string[]; companion?: string | null }) =>
-      api.put(`/api/instances/${id}/teams/${v.teamId}`, { ...(v.name ? { name: v.name } : {}), ...(v.members ? { members: v.members } : {}), ...(v.companion !== undefined ? { companion: v.companion } : {}) }),
+    mutationFn: (change: { teamId: string; name?: string; members?: string[]; companion?: string | null }) =>
+      api.put(`/api/instances/${id}/teams/${change.teamId}`, { ...(change.name ? { name: change.name } : {}), ...(change.members ? { members: change.members } : {}), ...(change.companion !== undefined ? { companion: change.companion } : {}) }),
     onSuccess: refresh,
     onError: () => toast("Could not save the team", "err"),
   });
@@ -57,10 +57,10 @@ export function TeamsPage() {
 
   const size = game.teamSize ?? 4;
   const companion = game.manifest.companion;
-  const ownedIds = new Set((ownership.data ?? []).filter((o) => o.kind === "character").map((o) => o.catalogId));
-  for (const b of builds.data ?? []) if (b.catalogId) ownedIds.add(b.catalogId);
-  const units = [...(catalog?.characters ?? [])].sort((a, b) => Number(ownedIds.has(b.id)) - Number(ownedIds.has(a.id)) || a.name.localeCompare(b.name));
-  const buildOf = (cid: string) => (builds.data ?? []).find((b) => b.catalogId === cid);
+  const ownedIds = new Set((ownership.data ?? []).filter((ownedItem) => ownedItem.kind === "character").map((ownedItem) => ownedItem.catalogId));
+  for (const build of builds.data ?? []) if (build.catalogId) ownedIds.add(build.catalogId);
+  const units = [...(catalog?.characters ?? [])].sort((first, second) => Number(ownedIds.has(second.id)) - Number(ownedIds.has(first.id)) || first.name.localeCompare(second.name));
+  const buildOf = (catalogId: string) => (builds.data ?? []).find((build) => build.catalogId === catalogId);
 
   return (
     <>
@@ -69,56 +69,56 @@ export function TeamsPage() {
       </div>
       <form
         className="card tm-new"
-        onSubmit={(e) => {
-          e.preventDefault();
+        onSubmit={(event) => {
+          event.preventDefault();
           if (name.trim()) create.mutate();
         }}
       >
         <h3>Teams</h3>
         <span className="ch-sp" />
-        <input aria-label="New team name" placeholder="New team name" maxLength={80} value={name} onChange={(e) => setName(e.target.value)} />
+        <input aria-label="New team name" placeholder="New team name" maxLength={80} value={name} onChange={(event) => setName(event.target.value)} />
         <button className="btn primary" type="submit" disabled={!name.trim() || create.isPending}>
           Create team
         </button>
       </form>
       {!catalog && <p className="mu">{game.name} has no catalog yet, so its teams take units by hand once it does.</p>}
       <div className="tm-grid">
-        {teams.data.map((t) => (
-          <section key={t.id} className="card tm-team" aria-label={t.name}>
+        {teams.data.map((team) => (
+          <section key={team.id} className="card tm-team" aria-label={team.name}>
             <div className="spread">
-              <input className="tm-name" aria-label="Team name" defaultValue={t.name} key={t.name} maxLength={80} onBlur={(e) => e.target.value.trim() && e.target.value.trim() !== t.name && update.mutate({ teamId: t.id, name: e.target.value.trim() })} />
-              <button className="btn ghost" onClick={() => confirm(`Delete the team ${t.name}?`) && remove.mutate(t.id)}>
+              <input className="tm-name" aria-label="Team name" defaultValue={team.name} key={team.name} maxLength={80} onBlur={(event) => event.target.value.trim() && event.target.value.trim() !== team.name && update.mutate({ teamId: team.id, name: event.target.value.trim() })} />
+              <button className="btn ghost" onClick={() => confirm(`Delete the team ${team.name}?`) && remove.mutate(team.id)}>
                 Delete team
               </button>
             </div>
             {/* The game's party size, three or four (Georges, round 6), its companion beside it (ZZZ's Bangboo). */}
             <div className="tm-slots" style={{ gridTemplateColumns: `repeat(${size}, minmax(0, 1fr))` }}>
-              {t.members.map((m) => {
-                const unit = index?.characters.get(m);
-                const build = buildOf(m);
-                const el = elementColor(game.key, unit?.tag);
+              {team.members.map((member) => {
+                const unit = index?.characters.get(member);
+                const build = buildOf(member);
+                const elementTint = elementColor(game.key, unit?.tag);
                 return (
-                  <div key={m} className="tm-slot" style={el ? ({ "--el": el } as CSSProperties) : undefined}>
-                    <GameIcon src={assetUrl(game.key, "character", unit?.icon)} fallback={communityAssetUrl(game.key, "character", unit?.icon)} alt={unit?.name ?? m} glyph="character" />
-                    <Link to={build ? `/characters/${build.id}` : `/games/${id}/units/${m}`}>{unit?.name ?? m}</Link>
-                    <span className="mn mu">{build ? (build.buildStatus === "none" ? "unbuilt" : build.buildStatus) : ownedIds.has(m) ? "no build" : "not owned"}</span>
-                    <button className="btn ghost sm" aria-label={`Remove ${unit?.name ?? m} from ${t.name}`} onClick={() => update.mutate({ teamId: t.id, members: t.members.filter((x) => x !== m) })}>
+                  <div key={member} className="tm-slot" style={elementTint ? ({ "--el": elementTint } as CSSProperties) : undefined}>
+                    <GameIcon src={assetUrl(game.key, "character", unit?.icon)} fallback={communityAssetUrl(game.key, "character", unit?.icon)} alt={unit?.name ?? member} glyph="character" />
+                    <Link to={build ? `/characters/${build.id}` : `/games/${id}/units/${member}`}>{unit?.name ?? member}</Link>
+                    <span className="mn mu">{build ? (build.buildStatus === "none" ? "unbuilt" : build.buildStatus) : ownedIds.has(member) ? "no build" : "not owned"}</span>
+                    <button className="btn ghost sm" aria-label={`Remove ${unit?.name ?? member} from ${team.name}`} onClick={() => update.mutate({ teamId: team.id, members: team.members.filter((other) => other !== member) })}>
                       ×
                     </button>
                   </div>
                 );
               })}
-              {t.members.length < size && catalog && (
+              {team.members.length < size && catalog && (
                 <div className="tm-add">
                   <Picker
-                    label={`Add a member to ${t.name}`}
+                    label={`Add a member to ${team.name}`}
                     glyph="character"
                     placeholder="+ Add a member"
                     value=""
                     options={units
-                      .filter((u) => !t.members.includes(u.id))
-                      .map((u) => ({ id: u.id, name: u.name, src: assetUrl(game.key, "character", u.icon), fallback: communityAssetUrl(game.key, "character", u.icon), sub: ownedIds.has(u.id) ? undefined : "not owned" }))}
-                    onPick={(u) => u && update.mutate({ teamId: t.id, members: [...t.members, u.id] })}
+                      .filter((character) => !team.members.includes(character.id))
+                      .map((character) => ({ id: character.id, name: character.name, src: assetUrl(game.key, "character", character.icon), fallback: communityAssetUrl(game.key, "character", character.icon), sub: ownedIds.has(character.id) ? undefined : "not owned" }))}
+                    onPick={(picked) => picked && update.mutate({ teamId: team.id, members: [...team.members, picked.id] })}
                   />
                 </div>
               )}
@@ -126,22 +126,22 @@ export function TeamsPage() {
             {companion && (
               <div className="tm-companion">
                 <span className="kpi-label">{companion.label}</span>
-                {t.companion ? (
+                {team.companion ? (
                   <span className="tm-companion-pick">
-                    <CatalogIcon gameKey={game.key} kind="character" icon={index?.companions.get(t.companion)?.icon} name={index?.companions.get(t.companion)?.name ?? t.companion} />
-                    <span>{index?.companions.get(t.companion)?.name ?? t.companion}</span>
-                    <button className="btn ghost sm" aria-label={`Remove the ${companion.label} from ${t.name}`} onClick={() => update.mutate({ teamId: t.id, companion: null })}>
+                    <CatalogIcon gameKey={game.key} kind="character" icon={index?.companions.get(team.companion)?.icon} name={index?.companions.get(team.companion)?.name ?? team.companion} />
+                    <span>{index?.companions.get(team.companion)?.name ?? team.companion}</span>
+                    <button className="btn ghost sm" aria-label={`Remove the ${companion.label} from ${team.name}`} onClick={() => update.mutate({ teamId: team.id, companion: null })}>
                       ×
                     </button>
                   </span>
                 ) : (
                   <Picker
-                    label={`${companion.label} of ${t.name}`}
+                    label={`${companion.label} of ${team.name}`}
                     glyph="bangboo"
                     placeholder={`+ ${companion.label}`}
                     value=""
-                    options={(catalog?.companions ?? []).map((b) => ({ id: b.id, name: b.name, src: assetUrl(game.key, "character", b.icon), fallback: communityAssetUrl(game.key, "character", b.icon), sub: `★${b.rarity}` }))}
-                    onPick={(b) => b && update.mutate({ teamId: t.id, companion: b.id })}
+                    options={(catalog?.companions ?? []).map((companionOption) => ({ id: companionOption.id, name: companionOption.name, src: assetUrl(game.key, "character", companionOption.icon), fallback: communityAssetUrl(game.key, "character", companionOption.icon), sub: `★${companionOption.rarity}` }))}
+                    onPick={(picked) => picked && update.mutate({ teamId: team.id, companion: picked.id })}
                   />
                 )}
               </div>

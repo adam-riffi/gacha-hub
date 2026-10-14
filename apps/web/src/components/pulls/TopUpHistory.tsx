@@ -5,11 +5,11 @@ import { api } from "../../lib/api";
 import { useToast } from "../../lib/toast";
 import { CurrencyIcon } from "../CurrencyIcon";
 
-const USD = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
-const NUM = new Intl.NumberFormat("en-GB");
+const USD_FORMAT = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
+const NUMBER_FORMAT = new Intl.NumberFormat("en-GB");
 const DAY = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric" });
-const iso = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-const total = (rows: TopUpDto[]) => rows.reduce((s, r) => ({ price: s.price + r.price, amount: s.amount + r.amount }), { price: 0, amount: 0 });
+const isoDate = (date: Date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+const total = (rows: TopUpDto[]) => rows.reduce((sum, row) => ({ price: sum.price + row.price, amount: sum.amount + row.amount }), { price: 0, amount: 0 });
 
 /**
  * The top-up history (Georges, round 7: "add a top up history system too"): each
@@ -18,16 +18,16 @@ const total = (rows: TopUpDto[]) => rows.reduce((s, r) => ({ price: s.price + r.
  * its days.
  */
 export function TopUpHistory({ instanceId, game }: { instanceId: string; game: GameDefinition }) {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   const toast = useToast();
-  const [day, setDay] = useState(() => iso(new Date()));
+  const [day, setDay] = useState(() => isoDate(new Date()));
   const [all, setAll] = useState(false);
   const list = useQuery({ queryKey: ["topups", instanceId], queryFn: () => api.get<TopUpDto[]>(`/api/instances/${instanceId}/topups`) });
-  const refresh = () => Promise.all([["topups", instanceId], ["passes", instanceId], ["dashboard"]].map((queryKey) => qc.invalidateQueries({ queryKey })));
+  const refresh = () => Promise.all([["topups", instanceId], ["passes", instanceId], ["dashboard"]].map((queryKey) => queryClient.invalidateQueries({ queryKey })));
   const add = useMutation({
     mutationFn: (body: TopUpInput) => api.post<TopUpDto>(`/api/instances/${instanceId}/topups`, body),
-    onSuccess: (t) => {
-      toast(`${t.label} logged`);
+    onSuccess: (topUp) => {
+      toast(`${topUp.label} logged`);
       return refresh();
     },
     onError: () => toast("Not logged: the pass is at its stack", "err"),
@@ -38,70 +38,70 @@ export function TopUpHistory({ instanceId, game }: { instanceId: string; game: G
   const pass = game.manifest.monthlyPass;
   if (!store) return null;
   const buys = [
-    ...store.packs.map((p) => ({ label: p.bonus ? `${p.amount} + ${p.bonus}` : String(p.amount), amount: p.amount + p.bonus, price: p.price, pass: false })),
+    ...store.packs.map((pack) => ({ label: pack.bonus ? `${pack.amount} + ${pack.bonus}` : String(pack.amount), amount: pack.amount + pack.bonus, price: pack.price, pass: false })),
     ...(store.pass && pass ? [{ label: pass.name, amount: store.pass.amount, price: store.pass.price, pass: true }] : []),
   ];
   // Each pack in pulls (round 8: "a direct conversion of pack to pulls"): its premium currency, the pass's dailies over its days too.
-  const cost = game.currencies.find((c) => (c.pullCost ?? 0) > 1)?.pullCost ?? 0;
-  const pullsOf = (b: (typeof buys)[number]) => (cost ? Math.floor((b.amount + (b.pass && pass ? pass.days * (pass.daily ?? 0) : 0)) / cost) : 0);
+  const cost = game.currencies.find((currency) => (currency.pullCost ?? 0) > 1)?.pullCost ?? 0;
+  const pullsOf = (buy: (typeof buys)[number]) => (cost ? Math.floor((buy.amount + (buy.pass && pass ? pass.days * (pass.daily ?? 0) : 0)) / cost) : 0);
   const items = list.data ?? [];
   const now = new Date();
   const periods: [string, TopUpDto[]][] = [
-    ["This month", items.filter((t) => new Date(t.at).getFullYear() === now.getFullYear() && new Date(t.at).getMonth() === now.getMonth())],
-    ["This year", items.filter((t) => new Date(t.at).getFullYear() === now.getFullYear())],
+    ["This month", items.filter((item) => new Date(item.at).getFullYear() === now.getFullYear() && new Date(item.at).getMonth() === now.getMonth())],
+    ["This year", items.filter((item) => new Date(item.at).getFullYear() === now.getFullYear())],
     ["All time", items],
   ];
   // A past day logs at its noon; today, now.
-  const at = day === iso(now) ? undefined : new Date(`${day}T12:00:00`).toISOString();
+  const at = day === isoDate(now) ? undefined : new Date(`${day}T12:00:00`).toISOString();
 
   return (
     <section className="card pl-tops" aria-label="Top-ups">
       <div className="spread">
         <h3>Top-ups</h3>
-        <input type="date" aria-label="Day bought" value={day} max={iso(now)} onChange={(e) => setDay(e.target.value || iso(now))} />
+        <input type="date" aria-label="Day bought" value={day} max={isoDate(now)} onChange={(event) => setDay(event.target.value || isoDate(now))} />
       </div>
       <div className="pl-tops-buys">
-        {buys.map((b) => (
+        {buys.map((buy) => (
           <button
-            key={b.label}
+            key={buy.label}
             type="button"
-            className={`pl-tops-buy ${b.pass ? "is-pass" : ""}`}
-            aria-label={`Log ${b.label} for ${USD.format(b.price / 100)}`}
+            className={`pl-tops-buy ${buy.pass ? "is-pass" : ""}`}
+            aria-label={`Log ${buy.label} for ${USD_FORMAT.format(buy.price / 100)}`}
             disabled={add.isPending}
-            onClick={() => add.mutate({ label: b.label, amount: b.amount, price: b.price, ...(at ? { at } : {}), ...(b.pass ? { pass: true } : {}) })}
+            onClick={() => add.mutate({ label: buy.label, amount: buy.amount, price: buy.price, ...(at ? { at } : {}), ...(buy.pass ? { pass: true } : {}) })}
           >
             <span className="pl-tops-pulls cd">
               <CurrencyIcon kind="premium" />
-              {pullsOf(b)} pulls
+              {pullsOf(buy)} pulls
             </span>
-            <strong>{b.pass ? `${b.label} · ${pass?.days ?? 30} days` : b.label}</strong>
-            <span className="mn pl-tops-price">{USD.format(b.price / 100)}</span>
+            <strong>{buy.pass ? `${buy.label} · ${pass?.days ?? 30} days` : buy.label}</strong>
+            <span className="mn pl-tops-price">{USD_FORMAT.format(buy.price / 100)}</span>
           </button>
         ))}
       </div>
       <div className="pl-tops-totals">
         {periods.map(([name, rows]) => {
-          const t = total(rows);
+          const totals = total(rows);
           return (
             <div key={name} role="group" aria-label={name}>
               <span className="kpi-label">{name}</span>
-              <strong className="cd">{USD.format(t.price / 100)}</strong>
+              <strong className="cd">{USD_FORMAT.format(totals.price / 100)}</strong>
               <span className="mn mu">
-                ◆ {NUM.format(t.amount)}
-                {cost ? ` · ${Math.floor(t.amount / cost)} pulls` : ""}
+                ◆ {NUMBER_FORMAT.format(totals.amount)}
+                {cost ? ` · ${Math.floor(totals.amount / cost)} pulls` : ""}
               </span>
             </div>
           );
         })}
       </div>
       <ul className="pl-tops-list" aria-label="Top-up history">
-        {(all ? items : items.slice(0, 5)).map((t) => (
-          <li key={t.id} className={t.pass ? "is-pass" : ""}>
-            <span className="mn mu">{DAY.format(new Date(t.at))}</span>
-            <span>{t.label}</span>
-            <span className="mn">◆ {NUM.format(t.amount)}</span>
-            <span className="mn">{USD.format(t.price / 100)}</span>
-            <button type="button" className="btn ghost sm" aria-label="Delete" title={`Delete ${t.label}`} onClick={() => remove.mutate(t.id)}>
+        {(all ? items : items.slice(0, 5)).map((topUp) => (
+          <li key={topUp.id} className={topUp.pass ? "is-pass" : ""}>
+            <span className="mn mu">{DAY.format(new Date(topUp.at))}</span>
+            <span>{topUp.label}</span>
+            <span className="mn">◆ {NUMBER_FORMAT.format(topUp.amount)}</span>
+            <span className="mn">{USD_FORMAT.format(topUp.price / 100)}</span>
+            <button type="button" className="btn ghost sm" aria-label="Delete" title={`Delete ${topUp.label}`} onClick={() => remove.mutate(topUp.id)}>
               ✕
             </button>
           </li>

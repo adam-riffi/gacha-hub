@@ -10,58 +10,58 @@ import { Countdown } from "../ui";
  * reset chip, a gauge over every recurring item, and four KPI tiles: the
  * game's own dailies and weeklies, and the daily and weekly tasks you added.
  */
-export function DailiesCard({ roster, c, day = null }: { roster: RosterEntry[]; c: HomeCarousel; day?: string | null }) {
-  const entry = roster[c.pos.game];
-  const g = entry?.game;
-  const r = g?.recurring;
+export function DailiesCard({ roster, carousel, day = null }: { roster: RosterEntry[]; carousel: HomeCarousel; day?: string | null }) {
+  const entry = roster[carousel.pos.game];
+  const rosterGame = entry?.game;
+  const recurring = rosterGame?.recurring;
   // A pinned past day: its record has the daily items only; the reset chip reads DAY CLOSED.
-  const past = day && g ? dayOf(g.days, day) : null;
+  const past = day && rosterGame ? dayOf(rosterGame.days, day) : null;
   const tiles: (readonly [string, { done: number; total: number } | null])[] = past
     ? [["Dailies", { done: past.dailiesDone, total: past.dailiesTotal }], ["Daily tasks", null], ["Weeklies", null], ["Weekly tasks", null]]
-    : r
-      ? [["Dailies", r.daily], ["Daily tasks", r.dailyTasks], ["Weeklies", r.weekly], ["Weekly tasks", r.weeklyTasks]]
+    : recurring
+      ? [["Dailies", recurring.daily], ["Daily tasks", recurring.dailyTasks], ["Weeklies", recurring.weekly], ["Weekly tasks", recurring.weeklyTasks]]
       : [];
-  const done = tiles.reduce((s, [, t]) => s + (t?.done ?? 0), 0);
-  const total = tiles.reduce((s, [, t]) => s + (t?.total ?? 0), 0);
+  const done = tiles.reduce((total, [, tally]) => total + (tally?.done ?? 0), 0);
+  const total = tiles.reduce((sum, [, tally]) => sum + (tally?.total ?? 0), 0);
   return (
     <CarouselCard
       title="Dailies & weeklies"
       className="dailies-card"
-      index={c.pos.game}
+      index={carousel.pos.game}
       total={roster.length}
       itemLabel="game"
-      onPrev={c.prevGame}
-      onNext={c.nextGame}
-      durationMs={c.gameMs}
-      tick={c.gameTick}
-      rotating={c.rotating}
-      onHold={c.hold}
-      onRelease={c.release}
+      onPrev={carousel.prevGame}
+      onNext={carousel.nextGame}
+      durationMs={carousel.gameMs}
+      tick={carousel.gameTick}
+      rotating={carousel.rotating}
+      onHold={carousel.hold}
+      onRelease={carousel.release}
     >
-      {g && (
+      {rosterGame && (
         <div className="dailies-body">
           <div className="dailies-head">
-            <span className="cd dailies-game">{g.name}</span>
+            <span className="cd dailies-game">{rosterGame.name}</span>
             {past ? (
               <span className="chip">
                 <i aria-hidden="true" />
                 Day closed
               </span>
             ) : (
-              g.nextReset && <Countdown at={g.nextReset} kind="reset" prefix="resets in" />
+              rosterGame.nextReset && <Countdown at={rosterGame.nextReset} kind="reset" prefix="resets in" />
             )}
           </div>
           <div className="dailies-row">
-            <Ring done={done} total={total} label={`${g.name}: ${done} of ${total} recurring items done`} />
+            <Ring done={done} total={total} label={`${rosterGame.name}: ${done} of ${total} recurring items done`} />
             <div className="dailies-kpis">
-              {tiles.map(([label, t]) => (
+              {tiles.map(([label, tally]) => (
                 <div className="kpi" key={label}>
                   <div className="kpi-label">{label}</div>
                   <div className="kpi-value">
-                    {t ? (
+                    {tally ? (
                       <>
-                        {t.done}
-                        <small> / {t.total}</small>
+                        {tally.done}
+                        <small> / {tally.total}</small>
                       </>
                     ) : (
                       <span className="mu" aria-label="not recorded">

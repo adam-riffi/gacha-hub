@@ -13,16 +13,16 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);
   const show = useCallback((message: string, type: "ok" | "err" = "ok") => {
     const id = Date.now() + Math.random();
-    setToasts((t) => [...t, { id, message, type }]);
-    setTimeout(() => setToasts((t) => t.filter((x) => x.id !== id)), 3200);
+    setToasts((current) => [...current, { id, message, type }]);
+    setTimeout(() => setToasts((current) => current.filter((toast) => toast.id !== id)), 3200);
   }, []);
   return (
     <ToastContext.Provider value={show}>
       {children}
       <div>
-        {toasts.map((t) => (
-          <div key={t.id} className={`toast ${t.type === "err" ? "err" : ""}`}>
-            {t.message}
+        {toasts.map((toast) => (
+          <div key={toast.id} className={`toast ${toast.type === "err" ? "err" : ""}`}>
+            {toast.message}
           </div>
         ))}
       </div>

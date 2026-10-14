@@ -24,7 +24,7 @@ import {
   type CalibrateBody,
   type Unit,
 } from "../components/pulls/BannerCard";
-import { SavingsPlanner, pct, type PlannerTarget } from "../components/pulls/SavingsPlanner";
+import { SavingsPlanner, percentText, type PlannerTarget } from "../components/pulls/SavingsPlanner";
 import { TopUpCard } from "../components/pulls/TopUpCard";
 import { TopUpHistory } from "../components/pulls/TopUpHistory";
 import { CurrencyIcon } from "../components/CurrencyIcon";
@@ -33,7 +33,7 @@ import { Glyph, bannerGlyph } from "../components/Glyph";
 import { BannerHistory, PullHistory } from "../components/pulls/PullHistory";
 import type { InstanceDetail } from "../lib/types";
 
-const NUM = new Intl.NumberFormat("en-GB");
+const NUMBER_FORMAT = new Intl.NumberFormat("en-GB");
 const DAY = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" });
 
 /**
@@ -44,7 +44,7 @@ const DAY = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" })
  */
 export function PullsPage() {
   const { id } = useParams<{ id: string }>();
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   const toast = useToast();
   // A simulated top-up: an amount of one pull currency, added on top of what you have.
   const [topUp, setTopUp] = useState({ amount: 0, key: "" });
@@ -71,8 +71,8 @@ export function PullsPage() {
   });
   const refresh = () =>
     Promise.all(
-      ["pulls", "dashboard"].map((k) =>
-        qc.invalidateQueries({ queryKey: k === "pulls" ? ["pulls", id] : [k] }),
+      ["pulls", "dashboard"].map((key) =>
+        queryClient.invalidateQueries({ queryKey: key === "pulls" ? ["pulls", id] : [key] }),
       ),
     );
   const failed = () => toast("Couldn't save the pulls", "err");
@@ -92,7 +92,7 @@ export function PullsPage() {
   });
   const hide = useMutation({
     mutationFn: (hiddenBanners: string[]) => api.put(`/api/instances/${id}`, { hiddenBanners }),
-    onSuccess: () => Promise.all([qc.invalidateQueries({ queryKey: ["instance", id] }), qc.invalidateQueries({ queryKey: ["dashboard"] })]),
+    onSuccess: () => Promise.all([queryClient.invalidateQueries({ queryKey: ["instance", id] }), queryClient.invalidateQueries({ queryKey: ["dashboard"] })]),
     onError: () => toast("Couldn't save the hidden banners", "err"),
   });
 
@@ -100,99 +100,99 @@ export function PullsPage() {
   if (instance.isError || log.isError) return <LoadError what="Pulls" retry={() => Promise.all([instance.refetch(), log.refetch()])} />;
   if (!instance.data || !log.data || !game) return <div className="mu">Loading…</div>;
 
-  const values = new Map(instance.data.currencies.map((c) => [c.key, c.value]));
+  const values = new Map(instance.data.currencies.map((currency) => [currency.key, currency.value]));
   const pullCurrencies = game.currencies
-    .filter((c) => c.pullCost)
-    .map((c) => ({ ...c, value: values.get(c.key) ?? 0 }));
+    .filter((currency) => currency.pullCost)
+    .map((currency) => ({ ...currency, value: values.get(currency.key) ?? 0 }));
   const have = pullsFor(pullCurrencies);
-  const sim = pullCurrencies.find((c) => c.key === topUp.key) ?? pullCurrencies.find((c) => !c.standardOnly && !c.onlyFor);
-  const topped = pullsFor(pullCurrencies.map((c) => (c === sim ? { ...c, value: c.value + topUp.amount } : c)));
+  const topUpCurrency = pullCurrencies.find((pullCurrency) => pullCurrency.key === topUp.key) ?? pullCurrencies.find((pullCurrency) => !pullCurrency.standardOnly && !pullCurrency.onlyFor);
+  const topped = pullsFor(pullCurrencies.map((pullCurrency) => (pullCurrency === topUpCurrency ? { ...pullCurrency, value: pullCurrency.value + topUp.amount } : pullCurrency)));
   const star = topStar(game.key);
 
-  const region = game.regions.find((r) => r.key === instance.data.regionKey) ?? game.regions[0]!;
+  const region = game.regions.find((candidate) => candidate.key === instance.data.regionKey) ?? game.regions[0]!;
   const passEnds = passes.data?.monthly ? new Date(passes.data.monthly.endsAt) : null;
   const forecast = pullForecast(game, region, new Date(), passEnds);
   const units: Unit[] = [
     ...(catalog?.characters ?? [])
-      .filter((c) => c.rarity >= 5)
-      .map((c) => ({ id: c.id, name: c.name, icon: c.icon, kind: "character" as const })),
+      .filter((character) => character.rarity >= 5)
+      .map((character) => ({ id: character.id, name: character.name, icon: character.icon, kind: "character" as const })),
     ...(catalog?.weapons ?? [])
-      .filter((w) => w.rarity >= 5)
-      .map((w) => ({ id: w.id, name: w.name, icon: w.icon, kind: "weapon" as const })),
+      .filter((weapon) => weapon.rarity >= 5)
+      .map((weapon) => ({ id: weapon.id, name: weapon.name, icon: weapon.icon, kind: "weapon" as const })),
   ];
-  const byId = new Map(units.map((u) => [u.id, u]));
-  const unitOf = (cid: string | null) => (cid ? byId.get(cid) : undefined);
+  const byId = new Map(units.map((unit) => [unit.id, unit]));
+  const unitOf = (catalogId: string | null) => (catalogId ? byId.get(catalogId) : undefined);
   // Any unit of the catalog by id, for history rows and featured lists (4★ included).
-  const nameOf = (cid: string | null): Unit | undefined => {
-    if (!cid) return undefined;
-    const c = catalog?.characters.find((x) => x.id === cid);
-    const w = c ? undefined : catalog?.weapons.find((x) => x.id === cid);
-    return byId.get(cid) ?? (c ? { id: c.id, name: c.name, icon: c.icon, kind: "character" } : w ? { id: w.id, name: w.name, icon: w.icon, kind: "weapon" } : undefined);
+  const nameOf = (catalogId: string | null): Unit | undefined => {
+    if (!catalogId) return undefined;
+    const character = catalog?.characters.find((candidate) => candidate.id === catalogId);
+    const weapon = character ? undefined : catalog?.weapons.find((candidate) => candidate.id === catalogId);
+    return byId.get(catalogId) ?? (character ? { id: character.id, name: character.name, icon: character.icon, kind: "character" } : weapon ? { id: weapon.id, name: weapon.name, icon: weapon.icon, kind: "weapon" } : undefined);
   };
   const live = (dash.data?.timeline.banners ?? []).filter(
-    (b) => b.gameKey === game.key && b.status === "active",
+    (banner) => banner.gameKey === game.key && banner.status === "active",
   );
   const hidden = instance.data.hiddenBanners ?? [];
-  const shown = log.data.banners.filter((b) => !hidden.includes(b.key));
-  const event = shown.filter((b) => b.featuredRate < 1);
-  const rest = shown.filter((b) => b.featuredRate >= 1);
+  const shown = log.data.banners.filter((banner) => !hidden.includes(banner.key));
+  const eventBanners = shown.filter((banner) => banner.featuredRate < 1);
+  const standardBanners = shown.filter((banner) => banner.featuredRate >= 1);
   // A banner's pulls: the standard tickets, only its own tickets (Endfield's Arsenal, the Bangboo channel), or the limited ones plus any of its own.
-  const pullsOn = (p: typeof have, b: (typeof event)[number]) =>
-    b.fund === "standard" || b.key === "standard" ? p.standard : (b.fund === "own" ? 0 : p.limited) + (p.only[b.key] ?? 0);
-  const card = (b: (typeof event)[number]) => (
+  const pullsOn = (available: typeof have, banner: (typeof eventBanners)[number]) =>
+    banner.fund === "standard" || banner.key === "standard" ? available.standard : (banner.fund === "own" ? 0 : available.limited) + (available.only[banner.key] ?? 0);
+  const card = (banner: (typeof eventBanners)[number]) => (
     <BannerCard
-      key={b.key}
-      b={b}
+      key={banner.key}
+      banner={banner}
       gameKey={game.key}
       instanceId={instance.data.id}
-      running={live.filter((l) => l.kind === b.key)}
-      available={pullsOn(have, b)}
-      extra={pullsOn(topped, b) - pullsOn(have, b)}
-      live={live.find((l) => l.kind === b.key)}
+      running={live.filter((liveBanner) => liveBanner.kind === banner.key)}
+      available={pullsOn(have, banner)}
+      extra={pullsOn(topped, banner) - pullsOn(have, banner)}
+      live={live.find((liveBanner) => liveBanner.kind === banner.key)}
       units={units}
       unitOf={unitOf}
       onAdd={(body) => add.mutate(body)}
       onCalibrate={(body) => calibrate.mutate(body)}
       onUndo={(entryId) => undo.mutate(entryId)}
-      onHide={() => hide.mutate([...hidden, b.key])}
+      onHide={() => hide.mutate([...hidden, banner.key])}
     />
   );
   const drops = log.data.banners
-    .flatMap((b) => b.fiveStars.map((d) => ({ ...d, banner: b })))
-    .sort((a, z) => z.at.localeCompare(a.at));
+    .flatMap((banner) => banner.fiveStars.map((fiveStar) => ({ ...fiveStar, banner })))
+    .sort((first, second) => second.at.localeCompare(first.at));
   // The planner's targets: each event banner's featured 5★, character first, then the
   // wishlisted 5★ not already among them; all share the limited pulls.
   // The other event banners (collaborations, Chronicled…) join only while one is running.
-  const planned = event.filter((b) => b.fund !== "own" && (b.key === "character" || b.key === "weapon" || live.some((l) => l.kind === b.key)));
-  const running = planned.map((b) => {
-    const l = live.find((x) => x.kind === b.key);
-    const feat = l?.featured.find((f) => (f.rarity ?? 0) >= 5);
-    return { b, l, feat };
+  const planned = eventBanners.filter((banner) => banner.fund !== "own" && (banner.key === "character" || banner.key === "weapon" || live.some((liveBanner) => liveBanner.kind === banner.key)));
+  const running = planned.map((banner) => {
+    const liveBanner = live.find((candidate) => candidate.kind === banner.key);
+    const featured = liveBanner?.featured.find((featuredUnit) => (featuredUnit.rarity ?? 0) >= 5);
+    return { banner, liveBanner, featured };
   });
-  const runningIds = new Set(running.map((r) => r.feat?.catalogId));
-  const wished = (wishlist.data ?? []).flatMap((w) => {
-    const unit = w.kind === "character" ? catalog?.characters.find((c) => c.id === w.catalogId) : catalog?.weapons.find((x) => x.id === w.catalogId);
-    const b = planned.find((x) => x.key === w.kind);
-    return unit && b && unit.rarity >= 5 && !runningIds.has(w.catalogId) ? [{ b, name: unit.name, unit: { kind: w.kind as "character" | "weapon", catalogId: w.catalogId } }] : [];
+  const runningIds = new Set(running.map((entry) => entry.featured?.catalogId));
+  const wished = (wishlist.data ?? []).flatMap((wish) => {
+    const unit = wish.kind === "character" ? catalog?.characters.find((character) => character.id === wish.catalogId) : catalog?.weapons.find((weapon) => weapon.id === wish.catalogId);
+    const banner = planned.find((candidate) => candidate.key === wish.kind);
+    return unit && banner && unit.rarity >= 5 && !runningIds.has(wish.catalogId) ? [{ banner, name: unit.name, unit: { kind: wish.kind as "character" | "weapon", catalogId: wish.catalogId } }] : [];
   });
   const firstOn = new Set<string>();
   // Only a banner's first target starts from its pity and guarantee; the ones after start fresh.
-  const stateFor = (b: (typeof event)[number]) => {
-    const fresh = firstOn.has(b.key);
-    firstOn.add(b.key);
-    return fresh ? { pity: 0, guaranteed: false } : { pity: b.state.pity, guaranteed: b.state.guaranteed };
+  const stateFor = (banner: (typeof eventBanners)[number]) => {
+    const fresh = firstOn.has(banner.key);
+    firstOn.add(banner.key);
+    return fresh ? { pity: 0, guaranteed: false } : { pity: banner.state.pity, guaranteed: banner.state.guaranteed };
   };
   const targets: PlannerTarget[] = [
-    ...running.map(({ b, l, feat }) => ({
-      label: feat?.name ?? b.label,
-      sub: l?.name ?? b.label,
-      endsAt: l?.endsAt,
-      rules: b,
-      state: stateFor(b),
+    ...running.map(({ banner, liveBanner, featured }) => ({
+      label: featured?.name ?? banner.label,
+      sub: liveBanner?.name ?? banner.label,
+      endsAt: liveBanner?.endsAt,
+      rules: banner,
+      state: stateFor(banner),
       available: topped.limited,
-      unit: feat ? { kind: feat.kind, catalogId: feat.catalogId } : undefined,
+      unit: featured ? { kind: featured.kind, catalogId: featured.catalogId } : undefined,
     })),
-    ...wished.map(({ b, name, unit }) => ({ label: name, sub: `Wishlist · ${b.label}`, rules: b, state: stateFor(b), available: topped.limited, unit })),
+    ...wished.map(({ banner, name, unit }) => ({ label: name, sub: `Wishlist · ${banner.label}`, rules: banner, state: stateFor(banner), available: topped.limited, unit })),
   ];
 
   return (
@@ -211,24 +211,24 @@ export function PullsPage() {
             {have.limited}{" "}
             <small>
               limited{have.standard ? ` · +${have.standard} standard` : ""}
-              {Object.entries(have.only).map(([k, n]) => (n ? ` · +${n} ${log.data.banners.find((b) => b.key === k)?.label ?? k}` : ""))}
+              {Object.entries(have.only).map(([bannerKey, count]) => (count ? ` · +${count} ${log.data.banners.find((banner) => banner.key === bannerKey)?.label ?? bannerKey}` : ""))}
             </small>
           </div>
           <table>
             <tbody>
-              {pullCurrencies.map((c) => (
-                <tr key={c.key}>
+              {pullCurrencies.map((pullCurrency) => (
+                <tr key={pullCurrency.key}>
                   <td>
-                    <CurrencyIcon kind={currencyKind(game, c)} />
-                    {c.label}
+                    <CurrencyIcon kind={currencyKind(game, pullCurrency)} />
+                    {pullCurrency.label}
                   </td>
-                  <td className="num">{NUM.format(c.value)}</td>
-                  <td className="num mu">= {Math.floor(c.value / c.pullCost!)}</td>
+                  <td className="num">{NUMBER_FORMAT.format(pullCurrency.value)}</td>
+                  <td className="num mu">= {Math.floor(pullCurrency.value / pullCurrency.pullCost!)}</td>
                 </tr>
               ))}
             </tbody>
           </table>
-          {sim && (
+          {topUpCurrency && (
             <div className="pl-sim">
               <span className="kpi-value pl-plus" aria-hidden="true">+</span>
               <input
@@ -238,11 +238,11 @@ export function PullsPage() {
                 aria-label="Amount to add"
                 placeholder="0"
                 value={topUp.amount || ""}
-                onChange={(e) => setTopUp({ key: sim.key, amount: Math.max(0, Math.min(10_000_000, Number(e.target.value) || 0)) })}
+                onChange={(event) => setTopUp({ key: topUpCurrency.key, amount: Math.max(0, Math.min(10_000_000, Number(event.target.value) || 0)) })}
               />
-              <select aria-label="Currency to add" value={sim.key} onChange={(e) => setTopUp({ ...topUp, key: e.target.value })}>
-                {pullCurrencies.map((c) => (
-                  <option key={c.key} value={c.key}>{c.label}</option>
+              <select aria-label="Currency to add" value={topUpCurrency.key} onChange={(event) => setTopUp({ ...topUp, key: event.target.value })}>
+                {pullCurrencies.map((pullCurrency) => (
+                  <option key={pullCurrency.key} value={pullCurrency.key}>{pullCurrency.label}</option>
                 ))}
               </select>
               <span className="mn">{topUp.amount > 0 ? `+${topped.limited + topped.standard + topped.special - have.limited - have.standard - have.special} pulls` : ""}</span>
@@ -259,12 +259,12 @@ export function PullsPage() {
           </div>
           <table>
             <tbody>
-              {forecast.lines.map((l) => (
-                <tr key={l.key}>
+              {forecast.lines.map((line) => (
+                <tr key={line.key}>
                   <td>
-                    {l.label} · {l.days} days × {l.perDay}
+                    {line.label} · {line.days} days × {line.perDay}
                   </td>
-                  <td className="num">{NUM.format(l.total)}</td>
+                  <td className="num">{NUMBER_FORMAT.format(line.total)}</td>
                 </tr>
               ))}
               {forecast.lines.length === 0 && (
@@ -285,22 +285,22 @@ export function PullsPage() {
                 <span>now</span>
                 <span>by {DAY.format(forecast.until)}</span>
               </li>
-              {targets.map((t, i) => {
-                const now = featuredWithin(t.rules, t.state, t.available);
-                const then = featuredWithin(t.rules, t.state, t.available + forecast.pulls);
+              {targets.map((target, targetIndex) => {
+                const now = featuredWithin(target.rules, target.state, target.available);
+                const then = featuredWithin(target.rules, target.state, target.available + forecast.pulls);
                 return (
-                  <li key={t.label + i} className="pl-chances-row">
-                    {t.unit ? <UnitIcon gameKey={game.key} unit={t.unit} /> : <Glyph kind={bannerGlyph(t.rules.key)} label={t.label} />}
+                  <li key={target.label + targetIndex} className="pl-chances-row">
+                    {target.unit ? <UnitIcon gameKey={game.key} unit={target.unit} /> : <Glyph kind={bannerGlyph(target.rules.key)} label={target.label} />}
                     <span className="pl-chances-name">
-                      <strong>{t.label}</strong>
-                      <span className="mn mu">{t.sub}</span>
+                      <strong>{target.label}</strong>
+                      <span className="mn mu">{target.sub}</span>
                     </span>
-                    {[now, then].map((v, k) => (
-                      <span key={k} className="pl-chances-v" title={`${pct(v)} ${k ? `by ${DAY.format(forecast.until)}, with ${t.available + forecast.pulls} pulls` : `now, with ${t.available} pulls`}`}>
-                        <span className={`act-meter act-meter-thin ${k ? "" : "is-now"}`} aria-hidden="true">
-                          <span style={{ width: `${Math.round(v * 100)}%` }} />
+                    {[now, then].map((amount, amountIndex) => (
+                      <span key={amountIndex} className="pl-chances-v" title={`${percentText(amount)} ${amountIndex ? `by ${DAY.format(forecast.until)}, with ${target.available + forecast.pulls} pulls` : `now, with ${target.available} pulls`}`}>
+                        <span className={`act-meter act-meter-thin ${amountIndex ? "" : "is-now"}`} aria-hidden="true">
+                          <span style={{ width: `${Math.round(amount * 100)}%` }} />
                         </span>
-                        <span className="mn">{pct(v)}</span>
+                        <span className="mn">{percentText(amount)}</span>
                       </span>
                     ))}
                   </li>
@@ -316,16 +316,16 @@ export function PullsPage() {
         <span className="kpi-label">Banners</span>
       </div>
       {/* One grid, so hiding a banner keeps the rows even (Georges, round 6); an odd last one spans the row. */}
-      <div className="pl-banners">{[...event, ...rest].map(card)}</div>
+      <div className="pl-banners">{[...eventBanners, ...standardBanners].map(card)}</div>
       {/* Only banners the screen shows: a hidden beginner banner is gone for good (round 6). */}
-      {log.data.banners.some((b) => hidden.includes(b.key)) && (
+      {log.data.banners.some((banner) => hidden.includes(banner.key)) && (
         <p className="mn mu pl-hidden">
           Hidden:{" "}
           {log.data.banners
-            .filter((b) => hidden.includes(b.key))
-            .map((b) => (
-              <button key={b.key} className="btn ghost" aria-label={`Show ${b.label}`} onClick={() => hide.mutate(hidden.filter((k) => k !== b.key))}>
-                {b.label} · show
+            .filter((banner) => hidden.includes(banner.key))
+            .map((banner) => (
+              <button key={banner.key} className="btn ghost" aria-label={`Show ${banner.label}`} onClick={() => hide.mutate(hidden.filter((hiddenKey) => hiddenKey !== banner.key))}>
+                {banner.label} · show
               </button>
             ))}
         </p>
@@ -339,7 +339,7 @@ export function PullsPage() {
       {/* Top-ups at the very bottom (Georges, round 8: "it takes too much space"). */}
       <div className="pl-tops-row">
         <TopUpHistory instanceId={id!} game={game} />
-        {game.manifest.topUp && targets.some((t) => t.endsAt) && <TopUpCard game={game} region={region} passEnds={passEnds} targets={targets.filter((t) => t.endsAt)} />}
+        {game.manifest.topUp && targets.some((target) => target.endsAt) && <TopUpCard game={game} region={region} passEnds={passEnds} targets={targets.filter((target) => target.endsAt)} />}
       </div>
     </>
   );

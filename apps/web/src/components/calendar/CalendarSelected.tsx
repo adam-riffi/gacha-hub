@@ -13,12 +13,12 @@ const KIND = { banner: "Banner", event: "Event", cycle: "Endgame cycle", pass: "
 const EMPTY = { dupes: new Map<string, number>(), owned: new Set<string>(), names: new Map<string, string>() };
 
 /** "C2 → C3", or "new → C0" for a unit not owned yet. */
-export const stepText = (c: RosterChange) => `${c.from === null ? "new" : `${c.letter}${c.from}`} → ${c.letter}${c.to}`;
+export const stepText = (change: RosterChange) => `${change.from === null ? "new" : `${change.letter}${change.from}`} → ${change.letter}${change.to}`;
 
 /** An instant in server time ("Tue 3 Nov, 23:59 · UTC+1"). */
-function serverTime(t: number, offsetMinutes: number) {
-  const h = offsetMinutes / 60;
-  return `${UTC.format(t + offsetMinutes * 60_000)} · UTC${h >= 0 ? "+" : "−"}${Math.abs(h)}`;
+function serverTime(instantMs: number, offsetMinutes: number) {
+  const offsetHours = offsetMinutes / 60;
+  return `${UTC.format(instantMs + offsetMinutes * 60_000)} · UTC${offsetHours >= 0 ? "+" : "−"}${Math.abs(offsetHours)}`;
 }
 
 /**
@@ -27,9 +27,9 @@ function serverTime(t: number, offsetMinutes: number) {
  * choice and its effect, then Make goal and a reminder 48 h before it ends.
  */
 export function CalendarSelected({ item, reward, now, onClose }: { item: CalItem | null; reward?: RewardDto; now: number; onClose: () => void }) {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   const [pick, setPick] = useState<number | null>(reward?.goal?.choice ?? (reward?.options.length === 1 ? 0 : null));
-  const refresh = () => Promise.all([qc.invalidateQueries({ queryKey: ["rewards"] }), qc.invalidateQueries({ queryKey: ["tasks"] })]);
+  const refresh = () => Promise.all([queryClient.invalidateQueries({ queryKey: ["rewards"] }), queryClient.invalidateQueries({ queryKey: ["tasks"] })]);
   const makeGoal = useMutation({
     mutationFn: () => api.post(`/api/events/${reward!.eventId}/goal`, { instanceId: reward!.instanceId, ...(reward!.options.length > 1 ? { choice: pick } : {}) }),
     onSuccess: refresh,
@@ -39,10 +39,10 @@ export function CalendarSelected({ item, reward, now, onClose }: { item: CalItem
   const wishKind = item?.kind === "event" ? "event" : "banner";
   const wishKey = item?.kind === "event" ? item.event?.key : item?.kind === "banner" ? item.banners?.[0]?.key : undefined;
   const wishlist = useQuery({ queryKey: ["wishlist", item?.instanceId], queryFn: () => api.get<WishlistItemDto[]>(`/api/instances/${item!.instanceId}/wishlist`), enabled: Boolean(wishKey) });
-  const wished = (wishlist.data ?? []).some((w) => w.kind === wishKind && w.catalogId === wishKey);
+  const wished = (wishlist.data ?? []).some((wishedItem) => wishedItem.kind === wishKind && wishedItem.catalogId === wishKey);
   const wish = useMutation({
     mutationFn: (on: boolean) => api.put(`/api/instances/${item!.instanceId}/wishlist`, { kind: wishKind, catalogId: wishKey, wished: on }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["wishlist", item!.instanceId] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["wishlist", item!.instanceId] }),
   });
 
   if (!item) {
@@ -55,7 +55,7 @@ export function CalendarSelected({ item, reward, now, onClose }: { item: CalItem
   }
 
   const game = getGame(item.gameKey);
-  const featured = (item.banners ?? []).flatMap((b) => b.featured).filter((f) => (f.rarity ?? 0) >= 5 || f.kind === "character");
+  const featured = (item.banners ?? []).flatMap((banner) => banner.featured).filter((featuredUnit) => (featuredUnit.rarity ?? 0) >= 5 || featuredUnit.kind === "character");
   const art = featured[0];
   const option = pick === null ? undefined : reward?.options[pick];
   const others = reward ? [...reward.others, ...(option?.others ?? [])] : game && item.event ? rewardOptions(item.event.effects ?? [], game, EMPTY).others : [];
@@ -116,11 +116,11 @@ export function CalendarSelected({ item, reward, now, onClose }: { item: CalItem
             <dt>Featured</dt>
             <dd>
               {/* Each featured character opens its page (Georges, 2026-10-10: from the banners to the character in one click). */}
-              {featured.map((f, i) => (
-                <span key={`${f.kind}:${f.catalogId}`}>
-                  {i > 0 && ", "}
-                  {f.kind === "character" ? <Link to={`${hub}/units/${f.catalogId}`}>{f.name ?? f.catalogId}</Link> : (f.name ?? f.catalogId)}
-                  {f.owned ? " (owned)" : ""}
+              {featured.map((featuredUnit, featuredUnitIndex) => (
+                <span key={`${featuredUnit.kind}:${featuredUnit.catalogId}`}>
+                  {featuredUnitIndex > 0 && ", "}
+                  {featuredUnit.kind === "character" ? <Link to={`${hub}/units/${featuredUnit.catalogId}`}>{featuredUnit.name ?? featuredUnit.catalogId}</Link> : (featuredUnit.name ?? featuredUnit.catalogId)}
+                  {featuredUnit.owned ? " (owned)" : ""}
                 </span>
               ))}{" "}
               · <Link to={`${hub}/pulls`}>Pulls</Link>
@@ -144,11 +144,11 @@ export function CalendarSelected({ item, reward, now, onClose }: { item: CalItem
             {reward.options.length > 1 && <span className="badge">Choose 1</span>}
             {goal && <span className="badge done">{goal.claimed ? "Claimed" : "Goal set"}</span>}
           </div>
-          {reward.options.map((o, i) => (
-            <label key={i} className="cal-opt">
-              <input type="radio" name={`pick-${reward.eventId}`} checked={pick === i} disabled={goal?.claimed} onChange={() => setPick(i)} />
-              <span>{o.label ?? o.changes.map((c) => c.name).join(", ")}</span>
-              <span className="mn">{o.changes.map(stepText).join(" · ")}</span>
+          {reward.options.map((rewardOption, optionIndex) => (
+            <label key={optionIndex} className="cal-opt">
+              <input type="radio" name={`pick-${reward.eventId}`} checked={pick === optionIndex} disabled={goal?.claimed} onChange={() => setPick(optionIndex)} />
+              <span>{rewardOption.label ?? rewardOption.changes.map((change) => change.name).join(", ")}</span>
+              <span className="mn">{rewardOption.changes.map(stepText).join(" · ")}</span>
             </label>
           ))}
           <div className="cal-actions">

@@ -3,27 +3,27 @@ import { LIMITS, type StatKpi } from "@gacha/shared";
 import { useDismiss } from "../../lib/dismiss";
 import { StatIcon } from "../StatIcon";
 
-const same = (a: string | undefined, b: string) => a !== undefined && a.toLowerCase() === b.toLowerCase();
+const same = (first: string | undefined, second: string) => first !== undefined && first.toLowerCase() === second.toLowerCase();
 
 /**
  * A card's stat; where a set raises it, in its element's colour, the stat and
  * the set's bonus on hover, and written out on a click (Georges, round 5).
  */
-export function KpiValue({ k, baseNote = "Base: the level and the weapon" }: { k: StatKpi; baseNote?: string }) {
+export function KpiValue({ kpi, baseNote = "Base: the level and the weapon" }: { kpi: StatKpi; baseNote?: string }) {
   const [open, setOpen] = useState(false);
-  if (!k.bonus) return <span className={`cd ${k.auto ? "is-auto" : ""}`} title={k.auto ? baseNote : undefined}>{k.value}</span>;
-  const add = k.bonus.value.replace(/^\+/, "");
-  const why = `${k.base} + ${add} · ${k.bonus.from}`;
+  if (!kpi.bonus) return <span className={`cd ${kpi.auto ? "is-auto" : ""}`} title={kpi.auto ? baseNote : undefined}>{kpi.value}</span>;
+  const add = kpi.bonus.value.replace(/^\+/, "");
+  const why = `${kpi.base} + ${add} · ${kpi.bonus.from}`;
   return (
-    <button type="button" className="cd ch-boost" title={why} aria-label={`${k.label} ${k.value}: ${why}`} aria-expanded={open} onClick={() => setOpen(!open)}>
+    <button type="button" className="cd ch-boost" title={why} aria-label={`${kpi.label} ${kpi.value}: ${why}`} aria-expanded={open} onClick={() => setOpen(!open)}>
       {open ? (
         <>
-          {k.base} <small>+ {add}</small>
+          {kpi.base} <small>+ {add}</small>
         </>
       ) : (
         <>
-          {k.value}
-          {k.bonus.value.startsWith("+") && <small> {k.bonus.value}</small>}
+          {kpi.value}
+          {kpi.bonus.value.startsWith("+") && <small> {kpi.bonus.value}</small>}
         </>
       )}
     </button>
@@ -39,9 +39,9 @@ export function StatPicker({ name, options, own, label, onPick }: { name: string
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLSpanElement>(null);
   useDismiss(ref, () => setOpen(false), open);
-  const toggle = (s: string) => {
+  const toggle = (stat: string) => {
     const now = own ?? [];
-    const next = now.includes(s) ? now.filter((x) => x !== s) : [...now, s].slice(-LIMITS.cardStats);
+    const next = now.includes(stat) ? now.filter((chosen) => chosen !== stat) : [...now, stat].slice(-LIMITS.cardStats);
     onPick(next.length ? next : null);
   };
   return (
@@ -57,9 +57,9 @@ export function StatPicker({ name, options, own, label, onPick }: { name: string
           <button type="button" className="ch-chip" aria-pressed={!own} onClick={() => onPick(null)}>
             Game's
           </button>
-          {options.map((s) => (
-            <button key={s} type="button" className="ch-chip" aria-pressed={own?.includes(s) ?? false} onClick={() => toggle(s)}>
-              {s}
+          {options.map((option) => (
+            <button key={option} type="button" className="ch-chip" aria-pressed={own?.includes(option) ?? false} onClick={() => toggle(option)}>
+              {option}
             </button>
           ))}
         </div>
@@ -78,13 +78,13 @@ export function CardStats({ name, kpis, options, own, growth, baseNote, onPick }
   return (
     <div className="ch-kpis-wrap">
       <div className="ch-kpis" style={cols !== 3 ? { gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` } : undefined}>
-        {kpis.map((k) => (
-          <div key={k.label} className={same(growth, k.label) ? "is-growth" : undefined}>
-            <span className={`kpi-label ${same(growth, k.label) ? "is-bonus" : ""}`}>
-              <StatIcon stat={k.label} />
-              {k.label}
+        {kpis.map((kpi) => (
+          <div key={kpi.label} className={same(growth, kpi.label) ? "is-growth" : undefined}>
+            <span className={`kpi-label ${same(growth, kpi.label) ? "is-bonus" : ""}`}>
+              <StatIcon stat={kpi.label} />
+              {kpi.label}
             </span>
-            <KpiValue k={k} baseNote={baseNote} />
+            <KpiValue kpi={kpi} baseNote={baseNote} />
           </div>
         ))}
       </div>

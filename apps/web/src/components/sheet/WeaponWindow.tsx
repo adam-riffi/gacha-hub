@@ -29,12 +29,12 @@ export function WeaponWindow({
 }) {
   const box = useRef<HTMLDivElement>(null);
   useDismiss(box, onClose);
-  const byId = new Map(weapons.map((w) => [w.id, w]));
+  const byId = new Map(weapons.map((weapon) => [weapon.id, weapon]));
   const mine = copies
-    .flatMap((c) => (c.catalogId && byId.has(c.catalogId) ? [{ c, w: byId.get(c.catalogId)! }] : []))
-    .sort((a, b) => b.w.rarity - a.w.rarity || b.c.level - a.c.level);
-  const held = new Set(mine.map(({ w }) => w.id));
-  const rest = weapons.filter((w) => !held.has(w.id)).sort((a, b) => b.rarity - a.rarity || a.name.localeCompare(b.name));
+    .flatMap((copy) => (copy.catalogId && byId.has(copy.catalogId) ? [{ copy, weapon: byId.get(copy.catalogId)! }] : []))
+    .sort((first, second) => second.weapon.rarity - first.weapon.rarity || second.copy.level - first.copy.level);
+  const held = new Set(mine.map(({ weapon }) => weapon.id));
+  const rest = weapons.filter((weapon) => !held.has(weapon.id)).sort((first, second) => second.rarity - first.rarity || first.name.localeCompare(second.name));
   return (
     <div className="qb-veil">
       <div className="card wpw" role="dialog" aria-label="Choose weapon" ref={box}>
@@ -49,8 +49,8 @@ export function WeaponWindow({
           <section aria-label="Mine">
             <h4>Mine · {mine.length}</h4>
             <div className="wpw-grid">
-              {mine.map(({ c, w }) => (
-                <WeaponTile key={c.id} game={game} weapon={w} copy={c} holders={holders(c.id)} onPick={() => onCopy(c, w)} />
+              {mine.map(({ copy, weapon }) => (
+                <WeaponTile key={copy.id} game={game} weapon={weapon} copy={copy} holders={holders(copy.id)} onPick={() => onCopy(copy, weapon)} />
               ))}
             </div>
           </section>
@@ -58,8 +58,8 @@ export function WeaponWindow({
         <section aria-label="All">
           <h4>All · {rest.length}</h4>
           <div className="wpw-grid">
-            {rest.map((w) => (
-              <WeaponTile key={w.id} game={game} weapon={w} onPick={() => onWeapon(w)} />
+            {rest.map((weapon) => (
+              <WeaponTile key={weapon.id} game={game} weapon={weapon} onPick={() => onWeapon(weapon)} />
             ))}
           </div>
         </section>
@@ -117,8 +117,8 @@ function WeaponTile({ game, weapon, copy, holders = [], onPick }: { game: GameDe
       )}
       {holders.length > 0 && (
         <span className="wp-holders">
-          {holders.map((h) => (
-            <CatalogIcon key={h.key} gameKey={game.key} kind="character" icon={h.icon} name={h.name} tag={h.tag} className="wp-holder" />
+          {holders.map((holder) => (
+            <CatalogIcon key={holder.key} gameKey={game.key} kind="character" icon={holder.icon} name={holder.name} tag={holder.tag} className="wp-holder" />
           ))}
         </span>
       )}

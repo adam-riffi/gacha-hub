@@ -11,21 +11,21 @@ import { MetricIcon } from "../components/hub/MetricIcon";
 import { formatRemaining } from "../lib/time";
 import type { InstanceDetail } from "../lib/types";
 import { GameTabs } from "../components/GameTabs";
-import { EndgameHistory, TeamIcons, cycleSpan, mss, type UnitOf } from "../components/hub/EndgameHistory";
+import { EndgameHistory, TeamIcons, cycleSpan, minutesSeconds, type UnitOf } from "../components/hub/EndgameHistory";
 import { StageLines } from "../components/hub/StageLines";
 import { useReminderFlag } from "../lib/reminder";
 
-const NUM = new Intl.NumberFormat("en-GB");
+const NUMBER_FORMAT = new Intl.NumberFormat("en-GB");
 const DATE = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" });
-const AT = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+const SHORT_TIME = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
 const WHEN = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
-const ordinal = (n: number) => `${n}${n % 10 === 1 && n !== 11 ? "st" : n % 10 === 2 && n !== 12 ? "nd" : n % 10 === 3 && n !== 13 ? "rd" : "th"}`;
-const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+const ordinal = (value: number) => `${value}${value % 10 === 1 && value !== 11 ? "st" : value % 10 === 2 && value !== 12 ? "nd" : value % 10 === 3 && value !== 13 ? "rd" : "th"}`;
+const capitalize = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
 /** "1:35" or "95" as seconds; anything else (or out of range) as none. */
-const secs = (s: string) => {
-  const m = /^(?:(\d{1,2}):)?(\d{1,4})$/.exec(s.trim());
-  const v = m ? Number(m[1] ?? 0) * 60 + Number(m[2]) : 0;
-  return v >= 1 && v <= 3600 ? v : null;
+const toSeconds = (text: string) => {
+  const match = /^(?:(\d{1,2}):)?(\d{1,4})$/.exec(text.trim());
+  const seconds = match ? Number(match[1] ?? 0) * 60 + Number(match[2]) : 0;
+  return seconds >= 1 && seconds <= 3600 ? seconds : null;
 };
 /** What the stage pickers need: the units, the saved teams, the party size. */
 type Roster = { gameKey: string; units: PickerOption[]; teams: TeamDto[]; size: number; unitOf: UnitOf };
@@ -33,9 +33,9 @@ type Mode = GameDefinition["manifest"]["endgame"][number];
 type Now = ReturnType<typeof endgameNow>["modes"][number];
 
 /** How a mode repeats, as its card's chip says it. */
-function cadenceLabel(m: Mode) {
-  const a = m.anchor;
-  return a.cadence === "monthly" ? `monthly · ${ordinal(a.day)}` : a.cadence === "version" ? "once per version" : a.cadence === "cycle" ? `every ${a.days} days` : a.cadence;
+function cadenceLabel(mode: Mode) {
+  const anchor = mode.anchor;
+  return anchor.cadence === "monthly" ? `monthly · ${ordinal(anchor.day)}` : anchor.cadence === "version" ? "once per version" : anchor.cadence === "cycle" ? `every ${anchor.days} days` : anchor.cadence;
 }
 
 
@@ -58,15 +58,15 @@ export function EndgamePage() {
   const [picked, setPicked] = useState<Record<string, number | null>>({});
   if (!instance || !game) return <div className="muted">Loading…</div>;
 
-  const region = game.regions.find((r) => r.key === instance.regionKey) ?? game.regions[0]!;
+  const region = game.regions.find((candidate) => candidate.key === instance.regionKey) ?? game.regions[0]!;
   const now = new Date();
-  const results = (cycles?.results ?? []).map((r) => ({ ...r, cycleStart: new Date(r.cycleStart) }));
-  const eg = endgameNow(game, region, now, results);
+  const results = (cycles?.results ?? []).map((result) => ({ ...result, cycleStart: new Date(result.cycleStart) }));
+  const endgame = endgameNow(game, region, now, results);
   const premium = premiumCurrency(game);
-  const unitOf: UnitOf = (cid) => index?.characters.get(cid);
+  const unitOf: UnitOf = (catalogId) => index?.characters.get(catalogId);
   const roster: Roster = {
     gameKey: game.key,
-    units: [...(catalog?.characters ?? [])].sort((a, b) => a.name.localeCompare(b.name)).map((u) => ({ id: u.id, name: u.name, src: assetUrl(game.key, "character", u.icon), fallback: communityAssetUrl(game.key, "character", u.icon) })),
+    units: [...(catalog?.characters ?? [])].sort((first, second) => first.name.localeCompare(second.name)).map((character) => ({ id: character.id, name: character.name, src: assetUrl(game.key, "character", character.icon), fallback: communityAssetUrl(game.key, "character", character.icon) })),
     teams: teams.data ?? [],
     size: game.teamSize ?? 4,
     unitOf,
@@ -85,29 +85,29 @@ export function EndgamePage() {
           <div className="eg-this-body">
             <div className="eg-claimed">
               <div className="kpi-value">
-                {NUM.format(eg.claimed)}
+                {NUMBER_FORMAT.format(endgame.claimed)}
                 <small>
                   {" "}
-                  / {NUM.format(eg.max)} {premium} claimed
+                  / {NUMBER_FORMAT.format(endgame.max)} {premium} claimed
                 </small>
               </div>
-              <div className="act-meter" role="img" aria-label={`${eg.claimed} of ${eg.max} ${premium} claimed`}>
-                <span style={{ width: `${eg.max > 0 ? Math.min(100, (eg.claimed / eg.max) * 100) : 0}%` }} />
+              <div className="act-meter" role="img" aria-label={`${endgame.claimed} of ${endgame.max} ${premium} claimed`}>
+                <span style={{ width: `${endgame.max > 0 ? Math.min(100, (endgame.claimed / endgame.max) * 100) : 0}%` }} />
               </div>
             </div>
-            {eg.next && (
+            {endgame.next && (
               <div className="eg-next">
                 <label className="act-remind">
-                  <input type="checkbox" key={String(remind.on)} defaultChecked={remind.on} disabled={remind.pending} onChange={(e) => remind.set(e.target.checked)} />
+                  <input type="checkbox" key={String(remind.on)} defaultChecked={remind.on} disabled={remind.pending} onChange={(event) => remind.set(event.target.checked)} />
                   Remind 24 h before reset
                 </label>
                 <div className="kpi-label">Next reset</div>
                 <div className="eg-next-mode">
-                  {eg.next.mode.name} · {WHEN.format(eg.next.closes)}
+                  {endgame.next.mode.name} · {WHEN.format(endgame.next.closes)}
                 </div>
                 <div className="mn mu">
-                  in {formatRemaining(eg.next.closes.toISOString())}
-                  {eg.next.mode.maxPremium !== undefined && ` · ${NUM.format(eg.next.unclaimed)} ${premium} unclaimed`}
+                  in {formatRemaining(endgame.next.closes.toISOString())}
+                  {endgame.next.mode.maxPremium !== undefined && ` · ${NUMBER_FORMAT.format(endgame.next.unclaimed)} ${premium} unclaimed`}
                 </div>
               </div>
             )}
@@ -115,10 +115,10 @@ export function EndgamePage() {
         </section>
 
         <div className="eg-modes">
-          {eg.modes.map((m) => (
-            <ModeCard key={m.mode.key} instanceId={id!} game={game} m={m} region={region} now={now} premium={premium} roster={roster} rows={modeCycles(m.mode, region, now, results)} at={picked[m.mode.key] ?? null} onSelect={(at) => setPicked((p) => ({ ...p, [m.mode.key]: at }))} />
+          {endgame.modes.map((modeNow) => (
+            <ModeCard key={modeNow.mode.key} instanceId={id!} game={game} modeNow={modeNow} region={region} now={now} premium={premium} roster={roster} rows={modeCycles(modeNow.mode, region, now, results)} at={picked[modeNow.mode.key] ?? null} onSelect={(at) => setPicked((previous) => ({ ...previous, [modeNow.mode.key]: at }))} />
           ))}
-          {eg.modes.length === 0 && <p className="mu">No endgame mode on record for this game yet.</p>}
+          {endgame.modes.length === 0 && <p className="mu">No endgame mode on record for this game yet.</p>}
         </div>
 
         <EndgameHistory
@@ -130,7 +130,7 @@ export function EndgamePage() {
           premium={premium}
           unitOf={unitOf}
           onOpen={(modeKey, at) => {
-            setPicked((p) => ({ ...p, [modeKey]: at }));
+            setPicked((previous) => ({ ...previous, [modeKey]: at }));
             document.getElementById(`eg-${modeKey}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
           }}
         />
@@ -138,13 +138,13 @@ export function EndgamePage() {
         <section className="card eg-upcoming" aria-label="Upcoming resets">
           <h3>Upcoming resets</h3>
           <div className="act-rows">
-            {[...eg.modes]
-              .sort((a, b) => (a.open ? a.closes : a.end).getTime() - (b.open ? b.closes : b.end).getTime())
-              .map((m) => (
-                <div key={m.mode.key} className="act-row">
-                  <span className="act-title">{m.mode.name}</span>
-                  <span className="mn mu">{m.open ? (m.mode.openDays ? "closes" : "new cycle") : "opens"}</span>
-                  <span className="mn">{WHEN.format(m.open ? m.closes : m.end)}</span>
+            {[...endgame.modes]
+              .sort((first, second) => (first.open ? first.closes : first.end).getTime() - (second.open ? second.closes : second.end).getTime())
+              .map((modeNow) => (
+                <div key={modeNow.mode.key} className="act-row">
+                  <span className="act-title">{modeNow.mode.name}</span>
+                  <span className="mn mu">{modeNow.open ? (modeNow.mode.openDays ? "closes" : "new cycle") : "opens"}</span>
+                  <span className="mn">{WHEN.format(modeNow.open ? modeNow.closes : modeNow.end)}</span>
                 </div>
               ))}
           </div>
@@ -163,7 +163,7 @@ export function EndgamePage() {
 function ModeCard({
   instanceId,
   game,
-  m,
+  modeNow: modeNow,
   region,
   now,
   premium,
@@ -174,7 +174,7 @@ function ModeCard({
 }: {
   instanceId: string;
   game: GameDefinition;
-  m: Now;
+  modeNow: Now;
   region: GameRegion;
   now: Date;
   premium: string;
@@ -183,27 +183,27 @@ function ModeCard({
   at: number | null;
   onSelect: (at: number | null) => void;
 }) {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   const [editing, setEditing] = useState(false);
-  const { mode } = m;
-  const i = Math.max(0, at === null ? rows.findIndex((r) => r.current) : rows.findIndex((r) => r.cycleStart.getTime() === at));
-  const r = rows[i]!;
-  const day = gameDay(region, r.current ? now : r.cycleStart);
+  const { mode } = modeNow;
+  const shownIndex = Math.max(0, at === null ? rows.findIndex((row) => row.current) : rows.findIndex((row) => row.cycleStart.getTime() === at));
+  const shown = rows[shownIndex]!;
+  const day = gameDay(region, shown.current ? now : shown.cycleStart);
   const enemies = useQuery({ queryKey: ["endgame-enemies", game.key], queryFn: () => game.loadEndgame!(), enabled: Boolean(game.loadEndgame), staleTime: Infinity });
   // Only modes fought stage by stage (they have clears) list stages; the long runs have none.
   const stages = mode.clears ? modeStages(mode.clears.stages, enemies.data && enemiesFor(enemies.data, mode.key, day)) : [];
-  const version = versionAt(game, region, r.cycleStart);
-  const pick = (k: number) => {
+  const version = versionAt(game, region, shown.cycleStart);
+  const pick = (rowIndex: number) => {
     setEditing(false);
-    onSelect(rows[k]!.current ? null : rows[k]!.cycleStart.getTime());
+    onSelect(rows[rowIndex]!.current ? null : rows[rowIndex]!.cycleStart.getTime());
   };
   // Each stage's team, typed time and score while the form is open.
   const [draft, setDraft] = useState<Record<string, { members: string[]; time: string; score: string }>>({});
   const [choosing, setChoosing] = useState<string | null>(null);
   const open = () => {
-    setDraft(Object.fromEntries(stages.map((s) => {
-      const t = r.teams?.find((x) => x.stage === s.key);
-      return [s.key, { members: t?.members ?? [], time: t?.time ? mss(t.time) : "", score: t?.score != null ? String(t.score) : "" }];
+    setDraft(Object.fromEntries(stages.map((stage) => {
+      const savedTeam = shown.teams?.find((team) => team.stage === stage.key);
+      return [stage.key, { members: savedTeam?.members ?? [], time: savedTeam?.time ? minutesSeconds(savedTeam.time) : "", score: savedTeam?.score != null ? String(savedTeam.score) : "" }];
     })));
     setEditing(true);
   };
@@ -211,43 +211,43 @@ function ModeCard({
     mutationFn: (body: object) => api.put(`/api/instances/${instanceId}/cycles`, body),
     onSuccess: () => {
       setEditing(false);
-      qc.invalidateQueries({ queryKey: ["cycles", instanceId] });
+      queryClient.invalidateQueries({ queryKey: ["cycles", instanceId] });
     },
   });
-  const span = m.closes.getTime() - m.start.getTime();
-  const done = !r.current ? 1 : span > 0 ? Math.min(1, Math.max(0, (now.getTime() - m.start.getTime()) / span)) : 1;
-  const from = r.current ? m.start : r.cycleStart;
-  const to = r.current ? m.closes : r.end;
+  const span = modeNow.closes.getTime() - modeNow.start.getTime();
+  const done = !shown.current ? 1 : span > 0 ? Math.min(1, Math.max(0, (now.getTime() - modeNow.start.getTime()) / span)) : 1;
+  const from = shown.current ? modeNow.start : shown.cycleStart;
+  const to = shown.current ? modeNow.closes : shown.end;
   // The last six cycles, oldest first.
   const last = [...rows].reverse().slice(-6);
-  const submit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const f = new FormData(e.currentTarget);
-    const num = (k: string) => (String(f.get(k) ?? "") === "" ? null : Number(f.get(k)));
+  const submit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const numberField = (fieldName: string) => (String(formData.get(fieldName) ?? "") === "" ? null : Number(formData.get(fieldName)));
     const teams = stages
-      .map((s) => ({ stage: s.key, members: draft[s.key]?.members ?? [], time: secs(draft[s.key]?.time ?? ""), score: draft[s.key]?.score ? Number(draft[s.key]!.score) : null }))
-      .filter((t) => t.members.length > 0 || t.time !== null || t.score !== null);
-    save.mutate({ modeKey: mode.key, day, result: num("result"), premium: num("premium"), detail: String(f.get("detail") ?? "") || null, ...(stages.length ? { teams } : {}) });
+      .map((stage) => ({ stage: stage.key, members: draft[stage.key]?.members ?? [], time: toSeconds(draft[stage.key]?.time ?? ""), score: draft[stage.key]?.score ? Number(draft[stage.key]!.score) : null }))
+      .filter((team) => team.members.length > 0 || team.time !== null || team.score !== null);
+    save.mutate({ modeKey: mode.key, day, result: numberField("result"), premium: numberField("premium"), detail: String(formData.get("detail") ?? "") || null, ...(stages.length ? { teams } : {}) });
   };
   return (
-    <section className={`card eg-mode ${r.current ? "" : "is-past"}`} aria-label={mode.name} id={`eg-${mode.key}`}>
+    <section className={`card eg-mode ${shown.current ? "" : "is-past"}`} aria-label={mode.name} id={`eg-${mode.key}`}>
       <div className="spread">
         <h3>{mode.name}</h3>
         <span className="badge">{cadenceLabel(mode)}</span>
       </div>
       <div className="eg-cycle-nav">
-        <button type="button" className="btn ghost sm" aria-label="Older cycle" disabled={i === rows.length - 1} onClick={() => pick(i + 1)}>
+        <button type="button" className="btn ghost sm" aria-label="Older cycle" disabled={shownIndex === rows.length - 1} onClick={() => pick(shownIndex + 1)}>
           ‹
         </button>
         <span className="mn">
-          {cycleSpan(r.cycleStart, r.end)}
+          {cycleSpan(shown.cycleStart, shown.end)}
           {version && <span className="mu"> · version {version}</span>}
         </span>
-        {r.current ? <span className="tag eg-now">Now</span> : null}
-        <button type="button" className="btn ghost sm" aria-label="Newer cycle" disabled={i === 0} onClick={() => pick(i - 1)}>
+        {shown.current ? <span className="tag eg-now">Now</span> : null}
+        <button type="button" className="btn ghost sm" aria-label="Newer cycle" disabled={shownIndex === 0} onClick={() => pick(shownIndex - 1)}>
           ›
         </button>
-        {!r.current && (
+        {!shown.current && (
           <button type="button" className="btn sm" onClick={() => onSelect(null)}>
             Back to now
           </button>
@@ -256,16 +256,16 @@ function ModeCard({
       <div className="eg-window" role="img" aria-label={`Cycle ${DATE.format(from)} to ${DATE.format(to)}`}>
         <div className="eg-window-bar">
           <span style={{ width: `${done * 100}%` }} />
-          {r.current && <i style={{ left: `${done * 100}%` }} />}
+          {shown.current && <i style={{ left: `${done * 100}%` }} />}
         </div>
         <div className="eg-window-dates mn mu">
-          <span>{AT.format(from)}</span>
-          <span>{AT.format(to)}</span>
+          <span>{SHORT_TIME.format(from)}</span>
+          <span>{SHORT_TIME.format(to)}</span>
         </div>
       </div>
       <div className="kpi-value eg-result">
         <MetricIcon label={mode.metric.label} />
-        {r.result ?? "—"}
+        {shown.result ?? "—"}
         <small>
           {" "}
           / {mode.metric.max ?? "—"} {mode.metric.label}
@@ -273,9 +273,9 @@ function ModeCard({
       </div>
       {/* A small maximum as a row of its icons, filled up to the result (round 8). */}
       {mode.metric.max !== undefined && mode.metric.max <= 12 && (
-        <span className="eg-pips" role="img" aria-label={`${r.result ?? 0} of ${mode.metric.max} ${mode.metric.label}`}>
-          {Array.from({ length: mode.metric.max }, (_, k) => (
-            <MetricIcon key={k} label={mode.metric.label} on={k < (r.result ?? 0)} />
+        <span className="eg-pips" role="img" aria-label={`${shown.result ?? 0} of ${mode.metric.max} ${mode.metric.label}`}>
+          {Array.from({ length: mode.metric.max }, (_, markIndex) => (
+            <MetricIcon key={markIndex} label={mode.metric.label} on={markIndex < (shown.result ?? 0)} />
           ))}
         </span>
       )}
@@ -284,79 +284,79 @@ function ModeCard({
           <div className="act-xp">
             <span className="kpi-label">Rewards</span>
             <span className="mn">
-              {NUM.format(r.premium ?? 0)} / {NUM.format(mode.maxPremium)}
+              {NUMBER_FORMAT.format(shown.premium ?? 0)} / {NUMBER_FORMAT.format(mode.maxPremium)}
             </span>
           </div>
-          <div className="act-meter act-meter-thin" role="img" aria-label={`${r.premium ?? 0} of ${mode.maxPremium} ${premium}`}>
-            <span style={{ width: `${Math.min(100, ((r.premium ?? 0) / mode.maxPremium) * 100)}%` }} />
+          <div className="act-meter act-meter-thin" role="img" aria-label={`${shown.premium ?? 0} of ${mode.maxPremium} ${premium}`}>
+            <span style={{ width: `${Math.min(100, ((shown.premium ?? 0) / mode.maxPremium) * 100)}%` }} />
           </div>
         </div>
       )}
-      {r.detail && !editing && <p className="eg-detail">{r.detail}</p>}
+      {shown.detail && !editing && <p className="eg-detail">{shown.detail}</p>}
       <div className="kpi-label eg-last-label">Last {last.length || ""} cycles</div>
       <div className="eg-last">
-        {last.map((c) => (
+        {last.map((cycle) => (
           <button
             type="button"
-            key={c.cycleStart.toISOString()}
-            className={c === r ? "on" : ""}
-            aria-pressed={c === r}
-            style={{ height: `${mode.metric.max ? Math.max(4, ((c.result ?? 0) / mode.metric.max) * 100) : 50}%` }}
-            aria-label={`Cycle of ${DATE.format(c.cycleStart)}: ${c.result ?? "—"} ${mode.metric.label}`}
-            title={`${DATE.format(c.cycleStart)} · ${c.result ?? "—"} ${mode.metric.label}`}
-            onClick={() => pick(rows.indexOf(c))}
+            key={cycle.cycleStart.toISOString()}
+            className={cycle === shown ? "on" : ""}
+            aria-pressed={cycle === shown}
+            style={{ height: `${mode.metric.max ? Math.max(4, ((cycle.result ?? 0) / mode.metric.max) * 100) : 50}%` }}
+            aria-label={`Cycle of ${DATE.format(cycle.cycleStart)}: ${cycle.result ?? "—"} ${mode.metric.label}`}
+            title={`${DATE.format(cycle.cycleStart)} · ${cycle.result ?? "—"} ${mode.metric.label}`}
+            onClick={() => pick(rows.indexOf(cycle))}
           />
         ))}
       </div>
-      {!editing && <StageLines instanceId={instanceId} gameKey={roster.gameKey} stages={stages} teams={r.teams ?? []} unitOf={roster.unitOf} />}
+      {!editing && <StageLines instanceId={instanceId} gameKey={roster.gameKey} stages={stages} teams={shown.teams ?? []} unitOf={roster.unitOf} />}
       {editing ? (
         <form className="act-add" onSubmit={submit}>
           <label>
-            <span>{cap(mode.metric.label)}</span>
-            <input name="result" type="number" min={0} max={mode.metric.max} defaultValue={r.result ?? ""} autoFocus />
+            <span>{capitalize(mode.metric.label)}</span>
+            <input name="result" type="number" min={0} max={mode.metric.max} defaultValue={shown.result ?? ""} autoFocus />
           </label>
           {mode.maxPremium !== undefined && (
             <label>
               <span>{premium}</span>
-              <input name="premium" type="number" min={0} max={mode.maxPremium} defaultValue={r.premium ?? ""} />
+              <input name="premium" type="number" min={0} max={mode.maxPremium} defaultValue={shown.premium ?? ""} />
             </label>
           )}
           <label>
             <span>Detail</span>
-            <input name="detail" maxLength={80} placeholder="floor 12 · 6/9" defaultValue={r.detail ?? ""} />
+            <input name="detail" maxLength={80} placeholder="floor 12 · 6/9" defaultValue={shown.detail ?? ""} />
           </label>
-          {stages.map((st) => {
-            const s = st.key;
-            const d = draft[s] ?? { members: [], time: "", score: "" };
-            const set = (p: Partial<typeof d>) => setDraft((all) => ({ ...all, [s]: { ...d, ...p } }));
+          {stages.map((stage) => {
+            const stageKey = stage.key;
+            const stageDraft = draft[stageKey] ?? { members: [], time: "", score: "" };
+            const set = (patch: Partial<typeof stageDraft>) => setDraft((all) => ({ ...all, [stageKey]: { ...stageDraft, ...patch } }));
             return (
-              <fieldset key={s} className="eg-clear-edit" aria-label={s}>
+              <fieldset key={stageKey} className="eg-clear-edit" aria-label={stageKey}>
                 <legend className="kpi-label">
-                  {st.label}
-                  {st.level ? ` · Lv ${st.level}` : ""}
+                  {stage.label}
+                  {stage.level ? ` · Lv ${stage.level}` : ""}
                 </legend>
-                {d.members.length > 0 && (
-                  <button type="button" className="btn ghost sm" aria-label={`Clear ${s}`} onClick={() => set({ members: [] })}>
-                    <TeamIcons gameKey={roster.gameKey} members={d.members} unitOf={roster.unitOf} /> ×
+                {stageDraft.members.length > 0 && (
+                  <button type="button" className="btn ghost sm" aria-label={`Clear ${stageKey}`} onClick={() => set({ members: [] })}>
+                    <TeamIcons gameKey={roster.gameKey} members={stageDraft.members} unitOf={roster.unitOf} /> ×
                   </button>
                 )}
                 {roster.units.length > 0 && (
-                  <button type="button" className="btn sm" aria-label="Choose team" onClick={() => setChoosing(s)}>
+                  <button type="button" className="btn sm" aria-label="Choose team" onClick={() => setChoosing(stageKey)}>
                     + Team
                   </button>
                 )}
-                {choosing === s && (
-                  <TeamWindow stage={s} units={roster.units} teams={roster.teams} size={roster.size} members={d.members} onChange={(members) => set({ members })} onClose={() => setChoosing(null)} />
+                {choosing === stageKey && (
+                  <TeamWindow stage={stageKey} units={roster.units} teams={roster.teams} size={roster.size} members={stageDraft.members} onChange={(members) => set({ members })} onClose={() => setChoosing(null)} />
                 )}
                 {mode.clears?.timed && (
                   <label>
                     <span>Clear time</span>
-                    <input inputMode="numeric" placeholder="m:ss" maxLength={5} value={d.time} onChange={(e) => set({ time: e.target.value })} />
+                    <input inputMode="numeric" placeholder="m:ss" maxLength={5} value={stageDraft.time} onChange={(event) => set({ time: event.target.value })} />
                   </label>
                 )}
                 <label>
                   <span>Score</span>
-                  <input type="number" min={0} max={1_000_000} value={d.score} onChange={(e) => set({ score: e.target.value })} />
+                  <input type="number" min={0} max={1_000_000} value={stageDraft.score} onChange={(event) => set({ score: event.target.value })} />
                 </label>
               </fieldset>
             );

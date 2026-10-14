@@ -21,7 +21,7 @@ type Kind = "gameplay" | "checklist" | "character" | "weapon";
  * here and planned in place.
  */
 export function GoalMaker({ games, onDone }: { games: InstanceListItem[]; onDone: () => void }) {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   const toast = useToast();
   const [kind, setKind] = useState<Kind>("gameplay");
   const [refId, setRefId] = useState(games[0]?.id ?? "");
@@ -30,14 +30,14 @@ export function GoalMaker({ games, onDone }: { games: InstanceListItem[]; onDone
   const [items, setItems] = useState("");
   const [priority, setPriority] = useState<TaskPriority>("normal");
   const [unit, setUnit] = useState("");
-  const gi = games.find((g) => g.id === refId);
+  const gameInstance = games.find((candidate) => candidate.id === refId);
   const planning = kind === "character" || kind === "weapon";
-  const { catalog } = useCatalog(planning ? gi?.gameKey : undefined);
+  const { catalog } = useCatalog(planning ? gameInstance?.gameKey : undefined);
   const builds = useQuery({ queryKey: ["characters", refId], queryFn: () => api.get<CharacterDto[]>(`/api/instances/${refId}/characters`), enabled: kind === "character" && Boolean(refId) });
   const ownership = useQuery({ queryKey: ["ownership", refId], queryFn: () => api.get<OwnershipDto[]>(`/api/instances/${refId}/ownership`), enabled: planning && Boolean(refId) });
   const create = useMutation({
     mutationFn: () => {
-      const labels = items.split("\n").map((l) => l.trim()).filter(Boolean);
+      const labels = items.split("\n").map((line) => line.trim()).filter(Boolean);
       return api.post("/api/tasks", {
         scope: "game",
         refId,
@@ -48,24 +48,24 @@ export function GoalMaker({ games, onDone }: { games: InstanceListItem[]; onDone
       });
     },
     onSuccess: () => {
-      void qc.invalidateQueries({ queryKey: ["tasks"] });
+      void queryClient.invalidateQueries({ queryKey: ["tasks"] });
       onDone();
     },
     onError: () => toast("Could not add the goal: check the title and items", "err"),
   });
 
-  const ownedIds = new Set((ownership.data ?? []).map((o) => `${o.kind}:${o.catalogId}`));
+  const ownedIds = new Set((ownership.data ?? []).map((owned) => `${owned.kind}:${owned.catalogId}`));
   const pool = kind === "character" ? (catalog?.characters ?? []) : (catalog?.weapons ?? []);
-  const options = [...pool].sort((a, b) => Number(ownedIds.has(`${kind}:${b.id}`)) - Number(ownedIds.has(`${kind}:${a.id}`)) || b.rarity - a.rarity || a.name.localeCompare(b.name));
-  const weapon = kind === "weapon" ? catalog?.weapons.find((w) => w.id === unit) : undefined;
-  const doc = (builds.data ?? []).find((b) => b.catalogId === unit)?.doc as Record<string, unknown> | undefined;
+  const options = [...pool].sort((first, second) => Number(ownedIds.has(`${kind}:${second.id}`)) - Number(ownedIds.has(`${kind}:${first.id}`)) || second.rarity - first.rarity || first.name.localeCompare(second.name));
+  const weapon = kind === "weapon" ? catalog?.weapons.find((candidate) => candidate.id === unit) : undefined;
+  const doc = (builds.data ?? []).find((build) => build.catalogId === unit)?.doc as Record<string, unknown> | undefined;
 
   return (
     <form
       className="card tk-new"
       aria-label="New goal"
-      onSubmit={(e) => {
-        e.preventDefault();
+      onSubmit={(event) => {
+        event.preventDefault();
         if (!planning) create.mutate();
       }}
     >
@@ -79,8 +79,8 @@ export function GoalMaker({ games, onDone }: { games: InstanceListItem[]; onDone
             { value: "weapon", label: "Weapon" },
           ]}
           value={kind}
-          onChange={(k) => {
-            setKind(k);
+          onChange={(nextKind) => {
+            setKind(nextKind);
             setUnit("");
           }}
         />
@@ -90,14 +90,14 @@ export function GoalMaker({ games, onDone }: { games: InstanceListItem[]; onDone
         <select
           id="tk-game"
           value={refId}
-          onChange={(e) => {
-            setRefId(e.target.value);
+          onChange={(event) => {
+            setRefId(event.target.value);
             setUnit("");
           }}
         >
-          {games.map((g) => (
-            <option key={g.id} value={g.id}>
-              {g.name}
+          {games.map((game) => (
+            <option key={game.id} value={game.id}>
+              {game.name}
             </option>
           ))}
         </select>
@@ -106,22 +106,22 @@ export function GoalMaker({ games, onDone }: { games: InstanceListItem[]; onDone
         <>
           <div className="tk-new-title">
             <label htmlFor="tk-title">Title</label>
-            <input id="tk-title" value={title} maxLength={200} placeholder={kind === "checklist" ? "Finish the Penacony story" : "Finish the Archon Quest · Do 20 commissions · Clear the event"} onChange={(e) => setTitle(e.target.value)} />
+            <input id="tk-title" value={title} maxLength={200} placeholder={kind === "checklist" ? "Finish the Penacony story" : "Finish the Archon Quest · Do 20 commissions · Clear the event"} onChange={(event) => setTitle(event.target.value)} />
           </div>
           {kind === "gameplay" ? (
             <div>
               <label htmlFor="tk-times">How many times</label>
-              <input id="tk-times" type="number" min={1} max={1_000_000} value={times} onChange={(e) => setTimes(Number(e.target.value))} />
+              <input id="tk-times" type="number" min={1} max={1_000_000} value={times} onChange={(event) => setTimes(Number(event.target.value))} />
             </div>
           ) : (
             <div className="tk-new-items">
               <label htmlFor="tk-items">Items, one per line</label>
-              <textarea id="tk-items" rows={3} value={items} placeholder={"Act 1\nAct 2"} onChange={(e) => setItems(e.target.value)} />
+              <textarea id="tk-items" rows={3} value={items} placeholder={"Act 1\nAct 2"} onChange={(event) => setItems(event.target.value)} />
             </div>
           )}
           <div>
             <label htmlFor="tk-prio">Priority</label>
-            <select id="tk-prio" value={priority} onChange={(e) => setPriority(e.target.value as TaskPriority)}>
+            <select id="tk-prio" value={priority} onChange={(event) => setPriority(event.target.value as TaskPriority)}>
               <option value="high">high</option>
               <option value="normal">normal</option>
               <option value="low">low</option>
@@ -141,17 +141,17 @@ export function GoalMaker({ games, onDone }: { games: InstanceListItem[]; onDone
                 label={kind === "character" ? "Character" : "Weapon"}
                 glyph={kind}
                 placeholder="Name"
-                value={options.find((u) => u.id === unit)?.name ?? ""}
-                options={options.map((u) => ({ id: u.id, name: u.name, src: assetUrl(gi!.gameKey, kind, u.icon), fallback: communityAssetUrl(gi!.gameKey, kind, u.icon), sub: ownedIds.has(`${kind}:${u.id}`) ? undefined : "not owned" }))}
-                onPick={(u) => setUnit(u?.id ?? "")}
+                value={options.find((option) => option.id === unit)?.name ?? ""}
+                options={options.map((option) => ({ id: option.id, name: option.name, src: assetUrl(gameInstance!.gameKey, kind, option.icon), fallback: communityAssetUrl(gameInstance!.gameKey, kind, option.icon), sub: ownedIds.has(`${kind}:${option.id}`) ? undefined : "not owned" }))}
+                onPick={(option) => setUnit(option?.id ?? "")}
               />
             ) : (
               <p className="mu">No catalog</p>
             )}
           </div>
-          {unit && gi && (
+          {unit && gameInstance && (
             <div className="tk-new-plan">
-              {kind === "character" ? <TaskGeneratorPanel instanceId={gi.id} gameKey={gi.gameKey} catalogId={unit} doc={doc ?? {}} /> : weapon && <WeaponFarm instanceId={gi.id} weapon={weapon} onDone={onDone} />}
+              {kind === "character" ? <TaskGeneratorPanel instanceId={gameInstance.id} gameKey={gameInstance.gameKey} catalogId={unit} doc={doc ?? {}} /> : weapon && <WeaponFarm instanceId={gameInstance.id} weapon={weapon} onDone={onDone} />}
             </div>
           )}
         </>

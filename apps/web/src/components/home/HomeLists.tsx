@@ -3,24 +3,24 @@ import type { DashboardData } from "../../lib/types";
 
 type DashGame = DashboardData["games"][number];
 const WHEN = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
-const NUM = new Intl.NumberFormat("en-GB");
+const NUMBER_FORMAT = new Intl.NumberFormat("en-GB");
 
 /** Home's games as the shared helpers read them: definition, server, results, passes and running events. */
 export function homeGames(games: DashGame[], events: DashboardData["timeline"]["events"]): HomeGame[] {
-  return games.flatMap((g) => {
-    const game = getGame(g.gameKey);
+  return games.flatMap((dashGame) => {
+    const game = getGame(dashGame.gameKey);
     if (!game) return [];
-    const region = game.regions.find((r) => r.key === g.regionKey) ?? game.regions[0]!;
+    const region = game.regions.find((candidate) => candidate.key === dashGame.regionKey) ?? game.regions[0]!;
     return [
       {
         game,
         region,
-        results: g.cycles.map((r) => ({ ...r, cycleStart: new Date(r.cycleStart) })),
+        results: dashGame.cycles.map((cycle) => ({ ...cycle, cycleStart: new Date(cycle.cycleStart) })),
         passes: {
-          battle: g.passes.battle ? { ...g.passes.battle, updatedAt: new Date(g.passes.battle.updatedAt) } : null,
-          monthly: g.passes.monthly ? { endsAt: new Date(g.passes.monthly.endsAt) } : null,
+          battle: dashGame.passes.battle ? { ...dashGame.passes.battle, updatedAt: new Date(dashGame.passes.battle.updatedAt) } : null,
+          monthly: dashGame.passes.monthly ? { endsAt: new Date(dashGame.passes.monthly.endsAt) } : null,
         },
-        events: events.filter((e) => e.gameKey === g.gameKey).map((e) => ({ name: e.name, endsAt: new Date(e.endsAt) })),
+        events: events.filter((event) => event.gameKey === dashGame.gameKey).map((event) => ({ name: event.name, endsAt: new Date(event.endsAt) })),
       },
     ];
   });
@@ -42,15 +42,15 @@ export function EndgameNextCard({ games }: { games: HomeGame[] }) {
         <h3>Endgame · next resets</h3>
       </div>
       <div className="lst">
-        {rows.map((r) => (
-          <div className="rw" key={`${r.gameKey}:${r.mode}`}>
-            <span className="mn mu home-list-game">{r.game}</span>
-            <span className="home-list-name">{r.mode}</span>
+        {rows.map((row) => (
+          <div className="rw" key={`${row.gameKey}:${row.mode}`}>
+            <span className="mn mu home-list-game">{row.game}</span>
+            <span className="home-list-name">{row.mode}</span>
             <span className="mn home-list-what">
-              {r.result ?? "—"}/{r.max ?? "—"}
-              {r.unclaimed ? ` · ${NUM.format(r.unclaimed)} left` : ""}
+              {row.result ?? "—"}/{row.max ?? "—"}
+              {row.unclaimed ? ` · ${NUMBER_FORMAT.format(row.unclaimed)} left` : ""}
             </span>
-            <Due at={r.closes} />
+            <Due at={row.closes} />
           </div>
         ))}
         {rows.length === 0 && <p className="table-empty">Every open cycle is cleared. Nothing left to take.</p>}
@@ -68,11 +68,11 @@ export function ExpiringSoonCard({ games }: { games: HomeGame[] }) {
         <h3>Expiring soon</h3>
       </div>
       <div className="lst">
-        {rows.map((r) => (
-          <div className="rw" key={`${r.gameKey}:${r.label}`}>
-            <span className="mn mu home-list-game">{r.game}</span>
-            <span className="home-list-name">{r.label}</span>
-            <Due at={r.endsAt} />
+        {rows.map((row) => (
+          <div className="rw" key={`${row.gameKey}:${row.label}`}>
+            <span className="mn mu home-list-game">{row.game}</span>
+            <span className="home-list-name">{row.label}</span>
+            <Due at={row.endsAt} />
           </div>
         ))}
         {rows.length === 0 && <p className="table-empty">Nothing ends in the next 72 hours.</p>}

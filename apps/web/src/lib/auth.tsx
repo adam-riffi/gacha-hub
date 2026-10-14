@@ -4,7 +4,7 @@ import { api } from "./api";
 import type { Me } from "./types";
 
 interface AuthValue {
-  me: Me | null;
+  currentUser: Me | null;
   loading: boolean;
   devLogin: () => Promise<void>;
   logout: () => Promise<void>;
@@ -14,25 +14,25 @@ interface AuthValue {
 const AuthContext = createContext<AuthValue | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   const { data, isLoading } = useQuery({
     queryKey: ["me"],
     queryFn: () => api.get<Me>("/api/me"),
   });
 
   const value: AuthValue = {
-    me: data ?? null,
+    currentUser: data ?? null,
     loading: isLoading,
     devLogin: async () => {
       await api.post("/api/auth/dev-login");
-      await qc.invalidateQueries();
+      await queryClient.invalidateQueries();
     },
     logout: async () => {
       await api.post("/api/auth/logout");
-      await qc.invalidateQueries();
+      await queryClient.invalidateQueries();
     },
     refresh: () => {
-      qc.invalidateQueries({ queryKey: ["me"] });
+      queryClient.invalidateQueries({ queryKey: ["me"] });
     },
   };
 
@@ -40,7 +40,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 }
 
 export function useAuth(): AuthValue {
-  const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error("useAuth must be used within AuthProvider");
-  return ctx;
+  const context = useContext(AuthContext);
+  if (!context) throw new Error("useAuth must be used within AuthProvider");
+  return context;
 }

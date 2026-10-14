@@ -9,24 +9,24 @@ export function RosterRewards({ rewards, onPick }: { rewards: RewardDto[]; onPic
     <section className="card cal-rewards" aria-label="Rewards that update your roster">
       <h3>Rewards that update your roster</h3>
       {rewards.length === 0 && <p className="mu">No open event rewards a character or a weapon right now.</p>}
-      {rewards.map((r) => {
-        const chosen = r.goal?.choice ?? (r.options.length === 1 ? 0 : null);
-        const option = chosen === null ? undefined : r.options[chosen];
-        const effect = option ? option.changes.map((c) => `${c.name} ${stepText(c)}`).join(" · ") : `choose 1 of ${r.options.length}`;
+      {rewards.map((reward) => {
+        const chosen = reward.goal?.choice ?? (reward.options.length === 1 ? 0 : null);
+        const option = chosen === null ? undefined : reward.options[chosen];
+        const effect = option ? option.changes.map((change) => `${change.name} ${stepText(change)}`).join(" · ") : `choose 1 of ${reward.options.length}`;
         return (
-          <div className="cal-rw" key={r.eventId}>
+          <div className="cal-rw" key={reward.eventId}>
             <div>
-              <button type="button" className="cal-rw-name" onClick={() => onPick(r.eventId)}>
-                {r.name}
+              <button type="button" className="cal-rw-name" onClick={() => onPick(reward.eventId)}>
+                {reward.name}
               </button>
               <div className="mn mu">
-                {getGame(r.gameKey)?.shortName ?? r.gameKey} · {effect} · ends {DAY.format(new Date(r.endsAt))}
+                {getGame(reward.gameKey)?.shortName ?? reward.gameKey} · {effect} · ends {DAY.format(new Date(reward.endsAt))}
               </div>
             </div>
-            {r.goal ? (
-              <span className="badge done">{r.goal.claimed ? "Claimed" : "Goal set"}</span>
+            {reward.goal ? (
+              <span className="badge done">{reward.goal.claimed ? "Claimed" : "Goal set"}</span>
             ) : (
-              <button className="btn" onClick={() => onPick(r.eventId)}>
+              <button className="btn" onClick={() => onPick(reward.eventId)}>
                 Make goal
               </button>
             )}

@@ -28,7 +28,7 @@ export const REMINDER_DEFAULTS: ReminderConfig = {
 export type ReminderFlag = { [K in keyof ReminderConfig]: ReminderConfig[K] extends boolean ? K : never }[keyof ReminderConfig];
 
 export function useReminderFlag(instanceId: string, flag: ReminderFlag) {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   const { data } = useQuery({ queryKey: ["reminder", instanceId], queryFn: () => api.get<ReminderRule | null>(`/api/instances/${instanceId}/reminder`) });
   const on = Boolean(data?.enabled && data.config[flag]);
   const save = useMutation({
@@ -36,7 +36,7 @@ export function useReminderFlag(instanceId: string, flag: ReminderFlag) {
       const base = data?.enabled ? { ...REMINDER_DEFAULTS, ...data.config } : { ...REMINDER_DEFAULTS, ...data?.config, beforeReset: false, atTimes: [] };
       return api.put(`/api/instances/${instanceId}/reminder`, { ...base, enabled: true, [flag]: value, timezone: Intl.DateTimeFormat().resolvedOptions().timeZone });
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["reminder", instanceId] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["reminder", instanceId] }),
   });
   return { on, set: (value: boolean) => save.mutate(value), pending: save.isPending };
 }

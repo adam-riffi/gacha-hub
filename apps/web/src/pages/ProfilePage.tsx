@@ -18,11 +18,11 @@ type Props = { instance: InstanceDetail; game: GameDefinition };
 
 /** Saves profile fields and refreshes what shows them (the hub header, the strip, Home). */
 function useProfileSave(instanceId: string) {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   const toast = useToast();
   return useMutation({
     mutationFn: (body: object) => api.put(`/api/instances/${instanceId}`, body),
-    onSuccess: () => Promise.all([["instance", instanceId], ["instances"], ["dashboard"]].map((queryKey) => qc.invalidateQueries({ queryKey }))),
+    onSuccess: () => Promise.all([["instance", instanceId], ["instances"], ["dashboard"]].map((queryKey) => queryClient.invalidateQueries({ queryKey }))),
     onError: () => toast("Not saved: check the value", "err"),
   });
 }
@@ -60,16 +60,16 @@ export function ProfilePage() {
 function Account({ instance, game }: Props) {
   const save = useProfileSave(instance.id);
   const [show, setShow] = useState(false);
-  const region = game.regions.find((r) => r.key === instance.regionKey) ?? game.regions[0]!;
+  const region = game.regions.find((candidate) => candidate.key === instance.regionKey) ?? game.regions[0]!;
   const reset = hubResets(game, region, new Date()).daily;
   const level = game.manifest.accountLevel;
   const world = game.manifest.worldLevel;
-  const num = (v: string) => (v.trim() === "" ? null : Number(v));
+  const numberOrNull = (value: string) => (value.trim() === "" ? null : Number(value));
   const levelRow = (name: string, field: "accountLevel" | "worldLevel", value: number | null, min: number, max: number) => (
     <div>
       <span className="kpi-label">{name}</span>
       <span className="pf-val">
-        <input type="number" aria-label={name} min={min} max={max} key={value ?? ""} defaultValue={value ?? ""} onBlur={(e) => num(e.target.value) !== value && save.mutate({ [field]: num(e.target.value) })} />
+        <input type="number" aria-label={name} min={min} max={max} key={value ?? ""} defaultValue={value ?? ""} onBlur={(event) => numberOrNull(event.target.value) !== value && save.mutate({ [field]: numberOrNull(event.target.value) })} />
       </span>
     </div>
   );
@@ -85,9 +85,9 @@ function Account({ instance, game }: Props) {
             {region.label} · {utcLabel(region.utcOffsetMinutes)} · resets {String(region.dailyResetHour).padStart(2, "0")}:00 server time ({TIME.format(reset)} for you)
           </span>
           {game.regions.length > 1 && (
-            <select aria-label="Server" value={region.key} onChange={(e) => save.mutate({ regionKey: e.target.value })}>
-              {game.regions.map((r) => (
-                <option key={r.key} value={r.key}>{r.label}</option>
+            <select aria-label="Server" value={region.key} onChange={(event) => save.mutate({ regionKey: event.target.value })}>
+              {game.regions.map((regionOption) => (
+                <option key={regionOption.key} value={regionOption.key}>{regionOption.label}</option>
               ))}
             </select>
           )}
@@ -106,7 +106,7 @@ function Account({ instance, game }: Props) {
                 pattern="[A-Za-z0-9-]*"
                 autoComplete="off"
                 placeholder="Type your UID"
-                onBlur={(e) => (e.target.value.trim() || null) !== instance.uid && save.mutate({ uid: e.target.value.trim() || null })}
+                onBlur={(event) => (event.target.value.trim() || null) !== instance.uid && save.mutate({ uid: event.target.value.trim() || null })}
               />
             )}
           </span>
@@ -120,30 +120,30 @@ function Account({ instance, game }: Props) {
 }
 
 function Passes({ instance, game }: Props) {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   const [editing, setEditing] = useState<"monthly" | "battle" | null>(null);
   const { data } = useQuery({ queryKey: ["passes", instance.id], queryFn: () => api.get<PassesDto>(`/api/instances/${instance.id}/passes`) });
   const remindMonthly = useReminderFlag(instance.id, "beforePassEnds");
   const remindBattle = useReminderFlag(instance.id, "beforeBattlePassEnds");
   const save = useMutation({
-    mutationFn: (v: { path: "monthly" | "battle"; body: object }) => api.put(`/api/instances/${instance.id}/passes/${v.path}`, v.body),
+    mutationFn: (request: { path: "monthly" | "battle"; body: object }) => api.put(`/api/instances/${instance.id}/passes/${request.path}`, request.body),
     onSuccess: () => {
       setEditing(null);
-      return Promise.all([["passes", instance.id], ["dashboard"]].map((queryKey) => qc.invalidateQueries({ queryKey })));
+      return Promise.all([["passes", instance.id], ["dashboard"]].map((queryKey) => queryClient.invalidateQueries({ queryKey })));
     },
   });
   const monthly = game.manifest.monthlyPass;
   const battle = game.manifest.battlePass;
-  const region = game.regions.find((r) => r.key === instance.regionKey) ?? game.regions[0]!;
+  const region = game.regions.find((candidate) => candidate.key === instance.regionKey) ?? game.regions[0]!;
   const now = new Date();
-  const pv = passView(game, region, now, data?.battle ? { ...data.battle, updatedAt: new Date(data.battle.updatedAt) } : null, data?.monthly ? { endsAt: new Date(data.monthly.endsAt) } : null);
-  const submit = (path: "monthly" | "battle") => (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const v = Number(new FormData(e.currentTarget).get("v"));
-    save.mutate({ path, body: path === "monthly" ? { daysLeft: v } : { level: v, weeklyXp: pv.weeklyXp } });
+  const passState = passView(game, region, now, data?.battle ? { ...data.battle, updatedAt: new Date(data.battle.updatedAt) } : null, data?.monthly ? { endsAt: new Date(data.monthly.endsAt) } : null);
+  const submit = (path: "monthly" | "battle") => (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const value = Number(new FormData(event.currentTarget).get("v"));
+    save.mutate({ path, body: path === "monthly" ? { daysLeft: value } : { level: value, weeklyXp: passState.weeklyXp } });
   };
 
-  const pass = (key: "monthly" | "battle", name: string, line: string, share: number, field: { label: string; value: number | null; max: number }, remind: { on: boolean; set: (v: boolean) => void; pending: boolean } | null, remindLabel: string) => (
+  const pass = (key: "monthly" | "battle", name: string, line: string, share: number, field: { label: string; value: number | null; max: number }, remind: { on: boolean; set: (remindOn: boolean) => void; pending: boolean } | null, remindLabel: string) => (
     <div className="pf-pass">
       <div className="spread">
         <strong>{name}</strong>
@@ -166,7 +166,7 @@ function Passes({ instance, game }: Props) {
       <span className="pf-bar"><span style={{ width: `${Math.min(1, share) * 100}%` }} /></span>
       {remind && (
         <label className="pf-check">
-          <input type="checkbox" key={String(remind.on)} defaultChecked={remind.on} disabled={remind.pending} onChange={(e) => remind.set(e.target.checked)} />
+          <input type="checkbox" key={String(remind.on)} defaultChecked={remind.on} disabled={remind.pending} onChange={(event) => remind.set(event.target.checked)} />
           {remindLabel}
         </label>
       )}
@@ -183,9 +183,9 @@ function Passes({ instance, game }: Props) {
         pass(
           "monthly",
           monthly.name,
-          pv.monthlyDaysLeft === null ? "not tracked" : `${pv.monthlyDaysLeft} days left · ends ${DATE.format(new Date(data!.monthly!.endsAt))}`,
-          (pv.monthlyDaysLeft ?? 0) / monthly.days,
-          { label: "Days left", value: pv.monthlyDaysLeft, max: monthly.maxDays ?? monthly.days },
+          passState.monthlyDaysLeft === null ? "not tracked" : `${passState.monthlyDaysLeft} days left · ends ${DATE.format(new Date(data!.monthly!.endsAt))}`,
+          (passState.monthlyDaysLeft ?? 0) / monthly.days,
+          { label: "Days left", value: passState.monthlyDaysLeft, max: monthly.maxDays ?? monthly.days },
           remindMonthly,
           "Remind 3 days before",
         )}
@@ -193,9 +193,9 @@ function Passes({ instance, game }: Props) {
         pass(
           "battle",
           battle.name,
-          `Lv ${pv.level}${pv.maxLevel !== null ? ` / ${pv.maxLevel}` : ""} · ends ${DATE.format(hubResets(game, region, now).versionEnd)}`,
-          pv.maxLevel ? pv.level / pv.maxLevel : 0,
-          { label: "Level", value: pv.level, max: battle.maxLevel ?? 200 },
+          `Lv ${passState.level}${passState.maxLevel !== null ? ` / ${passState.maxLevel}` : ""} · ends ${DATE.format(hubResets(game, region, now).versionEnd)}`,
+          passState.maxLevel ? passState.level / passState.maxLevel : 0,
+          { label: "Level", value: passState.level, max: battle.maxLevel ?? 200 },
           battle.maxLevel ? remindBattle : null,
           "Remind 48 h before end",
         )}
@@ -208,7 +208,7 @@ function ReminderRow({ instanceId, flag, label }: { instanceId: string; flag: Re
   return (
     <li className="tk-rule">
       <label>
-        <input type="checkbox" key={String(remind.on)} defaultChecked={remind.on} disabled={remind.pending} onChange={(e) => remind.set(e.target.checked)} />
+        <input type="checkbox" key={String(remind.on)} defaultChecked={remind.on} disabled={remind.pending} onChange={(event) => remind.set(event.target.checked)} />
         {label}
       </label>
     </li>
@@ -217,12 +217,12 @@ function ReminderRow({ instanceId, flag, label }: { instanceId: string; flag: Re
 
 function GameReminders({ instance, game }: Props) {
   const { data } = useQuery({ queryKey: ["reminder", instance.id], queryFn: () => api.get<ReminderRule | null>(`/api/instances/${instance.id}/reminder`) });
-  const stamina = game.currencies.find((c) => c.key === game.manifest.stamina.currency);
+  const stamina = game.currencies.find((currency) => currency.key === game.manifest.stamina.currency);
   const lead = data?.config.leadMinutes ?? 60;
   const rows: { flag: ReminderFlag; label: string }[] = [
     ...(stamina?.cap && stamina.regenPerHour ? [{ flag: "whenStaminaFull" as const, label: `${stamina.label} full` }] : []),
     { flag: "beforeReset", label: `Dailies left, ${lead % 60 ? `${lead} min` : `${lead / 60} h`} before reset` },
-    ...(game.manifest.endgame.some((m) => m.maxPremium !== undefined) ? [{ flag: "beforeEndgameReset" as const, label: "Endgame rewards unclaimed, 24 h before its reset" }] : []),
+    ...(game.manifest.endgame.some((mode) => mode.maxPremium !== undefined) ? [{ flag: "beforeEndgameReset" as const, label: "Endgame rewards unclaimed, 24 h before its reset" }] : []),
     ...(game.key === "genshin" ? [{ flag: "includeDomains" as const, label: "Domains open today, in each DM" }] : []),
   ];
   return (
@@ -232,7 +232,7 @@ function GameReminders({ instance, game }: Props) {
         <Link to="/tasks">Global rules →</Link>
       </div>
       <ul className="tk-rules">
-        {rows.map((r) => <ReminderRow key={r.flag} instanceId={instance.id} flag={r.flag} label={r.label} />)}
+        {rows.map((row) => <ReminderRow key={row.flag} instanceId={instance.id} flag={row.flag} label={row.label} />)}
       </ul>
       <details className="pf-more">
         <summary>More reminder options</summary>
@@ -243,24 +243,24 @@ function GameReminders({ instance, game }: Props) {
 }
 
 function Status({ instance, game }: Props) {
-  const qc = useQueryClient();
-  const nav = useNavigate();
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const toast = useToast();
   const sleep = useProfileSave(instance.id);
   const remove = useMutation({
     mutationFn: () => api.del(`/api/instances/${instance.id}`),
     onSuccess: () => {
       toast("Game removed");
-      void qc.invalidateQueries();
-      nav("/library");
+      void queryClient.invalidateQueries();
+      navigate("/library");
     },
   });
   // The old overview's tools: recreate deleted default tasks; a hidden "to max" goal per owned, unbuilt character.
   const tools = useMutation({
     mutationFn: (path: "tasks/defaults" | "backlog/generate") => api.post<{ created: number }>(`/api/instances/${instance.id}/${path}`),
-    onSuccess: (r) => {
-      toast(`${r.created} task${r.created === 1 ? "" : "s"} created`);
-      return qc.invalidateQueries({ queryKey: ["tasks"] });
+    onSuccess: (result) => {
+      toast(`${result.created} task${result.created === 1 ? "" : "s"} created`);
+      return queryClient.invalidateQueries({ queryKey: ["tasks"] });
     },
     onError: () => toast("That did not work", "err"),
   });
@@ -268,14 +268,14 @@ function Status({ instance, game }: Props) {
   const exportJson = useMutation({
     mutationFn: () => api.get<UserExport>("/api/export"),
     onSuccess: (all) => {
-      const mine = all.games.filter((g) => g.id === instance.id);
-      const refs = new Set([instance.id, ...mine.flatMap((g) => g.characters.map((c) => c.id as string))]);
-      const blob = new Blob([JSON.stringify({ ...all, games: mine, tasks: all.tasks.filter((t) => refs.has(t.refId as string)) }, null, 2)], { type: "application/json" });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = `gacha-hub-${game.key}-${new Date().toISOString().slice(0, 10)}.json`;
-      a.click();
-      setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+      const mine = all.games.filter((exportGame) => exportGame.id === instance.id);
+      const refs = new Set([instance.id, ...mine.flatMap((exportGame) => exportGame.characters.map((character) => character.id as string))]);
+      const blob = new Blob([JSON.stringify({ ...all, games: mine, tasks: all.tasks.filter((task) => refs.has(task.refId as string)) }, null, 2)], { type: "application/json" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `gacha-hub-${game.key}-${new Date().toISOString().slice(0, 10)}.json`;
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(link.href), 1000);
     },
     onError: () => toast("Export failed", "err"),
   });
@@ -295,28 +295,28 @@ function Status({ instance, game }: Props) {
 
 /** Every currency of the game, typed in place (WIREFRAMES.md G8; it lived on the old overview). */
 function Wallet({ instance, game }: Props) {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   const toast = useToast();
   const save = useMutation({
-    mutationFn: (v: { key: string; value: number }) => api.put(`/api/instances/${instance.id}/currencies/${v.key}`, { value: v.value }),
-    onSuccess: () => Promise.all([["instance", instance.id], ["dashboard"]].map((queryKey) => qc.invalidateQueries({ queryKey }))),
+    mutationFn: (request: { key: string; value: number }) => api.put(`/api/instances/${instance.id}/currencies/${request.key}`, { value: request.value }),
+    onSuccess: () => Promise.all([["instance", instance.id], ["dashboard"]].map((queryKey) => queryClient.invalidateQueries({ queryKey }))),
     onError: () => toast("Not saved: over the cap?", "err"),
   });
   return (
     <section className="card pf-wallet" aria-label="Wallet">
       <h3>Wallet</h3>
       <div className="pf-rows">
-        {game.currencies.map((c) => {
-          const value = instance.currencies.find((x) => x.key === c.key)?.value ?? 0;
+        {game.currencies.map((currency) => {
+          const value = instance.currencies.find((held) => held.key === currency.key)?.value ?? 0;
           return (
-            <div key={c.key}>
+            <div key={currency.key}>
               <span className="kpi-label pf-currency">
-                <CurrencyIcon kind={currencyKind(game, c)} />
-                {c.label}
+                <CurrencyIcon kind={currencyKind(game, currency)} />
+                {currency.label}
               </span>
               <span className="pf-val">
-                <input type="number" min={0} max={c.cap} aria-label={c.label} key={value} defaultValue={value} onBlur={(e) => Number(e.target.value) !== value && save.mutate({ key: c.key, value: Number(e.target.value) })} />
-                {c.cap ? <span className="mu"> / {c.cap}</span> : null}
+                <input type="number" min={0} max={currency.cap} aria-label={currency.label} key={value} defaultValue={value} onBlur={(event) => Number(event.target.value) !== value && save.mutate({ key: currency.key, value: Number(event.target.value) })} />
+                {currency.cap ? <span className="mu"> / {currency.cap}</span> : null}
               </span>
             </div>
           );
@@ -333,15 +333,15 @@ function Wallet({ instance, game }: Props) {
  * goals on Home and Tasks.
  */
 function LongTerm({ instance }: Props) {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   const toast = useToast();
   const [title, setTitle] = useState("");
   const tasks = useQuery({ queryKey: ["tasks"], queryFn: () => api.get<TaskItem[]>("/api/tasks") });
   // Hand-typed: no plan, gear or event behind it, and not a plan's material step.
   const goals = (tasks.data ?? []).filter(
-    (t) => t.scope === "game" && t.refId === instance.id && t.type === "goal" && !t.origin && !t.eventId && !t.parentId && !t.materialId && !t.backlog,
+    (task) => task.scope === "game" && task.refId === instance.id && task.type === "goal" && !task.origin && !task.eventId && !task.parentId && !task.materialId && !task.backlog,
   );
-  const refresh = () => qc.invalidateQueries({ queryKey: ["tasks"] });
+  const refresh = () => queryClient.invalidateQueries({ queryKey: ["tasks"] });
   const add = useMutation({
     mutationFn: () => api.post("/api/tasks", { scope: "game", refId: instance.id, type: "goal", title: title.trim(), target: 1, progress: 0 }),
     onSuccess: () => {
@@ -353,7 +353,7 @@ function LongTerm({ instance }: Props) {
   // A tick shows at once; the list refetches after.
   const [ticked, setTicked] = useState<Record<string, boolean>>({});
   const tick = useMutation({
-    mutationFn: (t: { id: string; progress: number }) => api.post(`/api/tasks/${t.id}/progress`, { progress: t.progress }),
+    mutationFn: (update: { id: string; progress: number }) => api.post(`/api/tasks/${update.id}/progress`, { progress: update.progress }),
     onSettled: () => void refresh(),
   });
   const stats = instance.progress ?? [];
@@ -365,32 +365,32 @@ function LongTerm({ instance }: Props) {
       </div>
       {stats.length > 0 && (
         <div className="pf-rows">
-          {stats.map((s) => (
-            <div key={s.name}>
-              <span className="kpi-label">{s.name}</span>
-              <span className="mn">{s.value}</span>
+          {stats.map((stat) => (
+            <div key={stat.name}>
+              <span className="kpi-label">{stat.name}</span>
+              <span className="mn">{stat.value}</span>
             </div>
           ))}
         </div>
       )}
       {goals.length > 0 ? (
         <ul className="pf-goals">
-          {goals.map((t) => {
-            const target = t.target ?? 1;
+          {goals.map((goal) => {
+            const target = goal.target ?? 1;
             return (
-              <li key={t.id}>
+              <li key={goal.id}>
                 <label>
                   <input
                     type="checkbox"
-                    checked={ticked[t.id] ?? t.progress >= target}
-                    onChange={(e) => {
-                      setTicked({ ...ticked, [t.id]: e.target.checked });
-                      tick.mutate({ id: t.id, progress: e.target.checked ? target : 0 });
+                    checked={ticked[goal.id] ?? goal.progress >= target}
+                    onChange={(event) => {
+                      setTicked({ ...ticked, [goal.id]: event.target.checked });
+                      tick.mutate({ id: goal.id, progress: event.target.checked ? target : 0 });
                     }}
                   />{" "}
-                  {t.title}
+                  {goal.title}
                 </label>
-                {target > 1 && <span className="mn mu">{t.progress} / {target}</span>}
+                {target > 1 && <span className="mn mu">{goal.progress} / {target}</span>}
               </li>
             );
           })}
@@ -400,12 +400,12 @@ function LongTerm({ instance }: Props) {
       )}
       <form
         className="pf-add"
-        onSubmit={(e) => {
-          e.preventDefault();
+        onSubmit={(event) => {
+          event.preventDefault();
           if (title.trim()) add.mutate();
         }}
       >
-        <input aria-label="New long-term goal" placeholder="Finish exploring…" maxLength={200} value={title} onChange={(e) => setTitle(e.target.value)} />
+        <input aria-label="New long-term goal" placeholder="Finish exploring…" maxLength={200} value={title} onChange={(event) => setTitle(event.target.value)} />
         <button className="btn" type="submit" disabled={!title.trim() || add.isPending}>
           Add goal
         </button>

@@ -18,7 +18,7 @@ async function request<T>(
   body?: unknown,
 ): Promise<T> {
   const bodyText = body !== undefined ? JSON.stringify(body) : undefined;
-  const res = await fetch(BASE + path, {
+  const response = await fetch(BASE + path, {
     method,
     credentials: "include",
     headers: bodyText !== undefined ? { "content-type": "application/json" } : {},
@@ -26,13 +26,13 @@ async function request<T>(
     // A small write outlives the page, so leaving it at once keeps the save (browsers cap keepalive bodies at 64 KB).
     keepalive: method !== "GET" && (bodyText?.length ?? 0) < KEEPALIVE_MAX_BYTES,
   });
-  if (!res.ok) {
-    const errBody = await res.json().catch(() => ({}));
-    throw new ApiError(res.status, errBody);
+  if (!response.ok) {
+    const errBody = await response.json().catch(() => ({}));
+    throw new ApiError(response.status, errBody);
   }
-  const ct = res.headers.get("content-type") ?? "";
-  return ct.includes("application/json")
-    ? ((await res.json()) as T)
+  const contentType = response.headers.get("content-type") ?? "";
+  return contentType.includes("application/json")
+    ? ((await response.json()) as T)
     : (undefined as T);
 }
 
@@ -45,12 +45,12 @@ export const api = {
   async upload(file: File): Promise<{ url: string }> {
     const form = new FormData();
     form.append("file", file);
-    const res = await fetch(BASE + "/api/uploads", {
+    const response = await fetch(BASE + "/api/uploads", {
       method: "POST",
       credentials: "include",
       body: form,
     });
-    if (!res.ok) throw new ApiError(res.status, await res.json().catch(() => ({})));
-    return res.json();
+    if (!response.ok) throw new ApiError(response.status, await response.json().catch(() => ({})));
+    return response.json();
   },
 };

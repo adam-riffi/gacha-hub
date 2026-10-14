@@ -1,11 +1,11 @@
 import { cheapestTopUp, featuredWithin, pullForecast, worstCasePulls, type GameDefinition, type ServerClock } from "@gacha/shared";
 import { UnitIcon } from "../CatalogIcon";
 import { Glyph, bannerGlyph } from "../Glyph";
-import { pct, type PlannerTarget } from "./SavingsPlanner";
+import { percentText, type PlannerTarget } from "./SavingsPlanner";
 
 const DAY = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" });
 const MS_DAY = 86_400_000;
-const USD = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
+const USD_FORMAT = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
 
 /**
  * The top-up to a sure featured 5★ (Georges, round 6: "a top-up suggestion
@@ -17,7 +17,7 @@ const USD = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" 
  */
 export function TopUpCard({ game, region, passEnds, targets }: { game: GameDefinition; region: ServerClock; passEnds: Date | null; targets: PlannerTarget[] }) {
   const now = new Date();
-  const cost = game.currencies.find((c) => (c.pullCost ?? 0) > 1)?.pullCost ?? 0;
+  const cost = game.currencies.find((currency) => (currency.pullCost ?? 0) > 1)?.pullCost ?? 0;
   return (
     <section className="card pl-topup" aria-label="Top-up to 100%">
       <div className="spread">
@@ -25,20 +25,20 @@ export function TopUpCard({ game, region, passEnds, targets }: { game: GameDefin
         <span className="mn mu">by each banner's end · cheapest packs</span>
       </div>
       <ul className="pl-chances pl-topup-list">
-        {targets.map((t, i) => {
-          const end = new Date(t.endsAt!);
-          const pulls = t.available + pullForecast(game, region, now, passEnds, end).pulls;
-          const short = worstCasePulls(t.rules, t.state) - pulls;
+        {targets.map((target, targetIndex) => {
+          const end = new Date(target.endsAt!);
+          const pulls = target.available + pullForecast(game, region, now, passEnds, end).pulls;
+          const short = worstCasePulls(target.rules, target.state) - pulls;
           // A pass bought now pays its dailies until the banner ends, after the one running.
           const from = passEnds && passEnds > now ? passEnds : now;
           const buy = Number.isFinite(short) && short > 0 && cost > 0 ? cheapestTopUp(game, short * cost, Math.floor((end.getTime() - from.getTime()) / MS_DAY)) : null;
           return (
-            <li key={t.label + i} className="pl-topup-row">
-              {t.unit ? <UnitIcon gameKey={game.key} unit={t.unit} /> : <Glyph kind={bannerGlyph(t.rules.key)} label={t.label} />}
+            <li key={target.label + targetIndex} className="pl-topup-row">
+              {target.unit ? <UnitIcon gameKey={game.key} unit={target.unit} /> : <Glyph kind={bannerGlyph(target.rules.key)} label={target.label} />}
               <span className="pl-chances-name">
-                <strong>{t.label}</strong>
+                <strong>{target.label}</strong>
                 <span className="mn mu">
-                  by {DAY.format(end)} · {pct(featuredWithin(t.rules, t.state, pulls))}
+                  by {DAY.format(end)} · {percentText(featuredWithin(target.rules, target.state, pulls))}
                 </span>
               </span>
               <span className="pl-topup-buy">
@@ -47,9 +47,9 @@ export function TopUpCard({ game, region, passEnds, targets }: { game: GameDefin
                 ) : buy ? (
                   <>
                     <span className="mn" title={`${short} pulls short of a sure one`}>
-                      {buy.items.map((b) => `${b.label}${b.count > 1 ? ` ×${b.count}` : ""}`).join(" · ")}
+                      {buy.items.map((item) => `${item.label}${item.count > 1 ? ` ×${item.count}` : ""}`).join(" · ")}
                     </span>
-                    <strong>{USD.format(buy.price / 100)}</strong>
+                    <strong>{USD_FORMAT.format(buy.price / 100)}</strong>
                   </>
                 ) : (
                   <span className="mn mu">No sure way</span>

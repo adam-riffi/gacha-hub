@@ -25,22 +25,22 @@ const RAIL: { section: Section; label: string; name: string }[] = [
 ];
 
 const WEEKDAY = new Intl.DateTimeFormat("en", { weekday: "short" });
-const today = (d = new Date()) =>
-  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")} · ${WEEKDAY.format(d).toUpperCase()}`;
+const today = (date = new Date()) =>
+  `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")} · ${WEEKDAY.format(date).toUpperCase()}`;
 
 /** "MON 2026-09-14" for a YYYY-MM-DD day. */
 const dayLabel = (day: string) => `${["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"][new Date(+day.slice(0, 4), +day.slice(5, 7) - 1, +day.slice(8, 10)).getDay()]} ${day}`;
 
 /** The rail of sections, the scope strip and the date (and a pinned past day on Home); the scope's game sets --accent. */
 export function Layout({ children }: { children: ReactNode }) {
-  const { me } = useAuth();
+  const { currentUser } = useAuth();
   const { pathname } = useLocation();
   const [params, setParams] = useSearchParams();
   const section = sectionOf(pathname);
   const { data: instances = [] } = useQuery({
     queryKey: ["instances"],
     queryFn: () => api.get<InstanceListItem[]>("/api/instances"),
-    enabled: Boolean(me?.user),
+    enabled: Boolean(currentUser?.user),
   });
   const characterId = pathname.startsWith("/characters/") ? pathname.split("/")[2] : undefined;
   const { data: character } = useQuery({
@@ -50,15 +50,15 @@ export function Layout({ children }: { children: ReactNode }) {
   });
 
   const hubId = pathname.startsWith("/games/") ? pathname.split("/")[2] : undefined;
-  const scopeKey = section === "games" ? (instances.find((i) => i.id === hubId)?.gameKey ?? character?.gameKey) : params.get("game");
-  const current = instances.find((i) => i.gameKey === scopeKey);
+  const scopeKey = section === "games" ? (instances.find((instance) => instance.id === hubId)?.gameKey ?? character?.gameKey) : params.get("game");
+  const current = instances.find((instance) => instance.gameKey === scopeKey);
   const scope: ScopeGame | null = current ? { key: current.gameKey, instanceId: current.id } : null;
   // Settings has no scope: picking a game there opens its hub.
   const stripSection: Section = section === "settings" ? "games" : section;
 
-  const railItem = (s: Section, label: string, name: string) => (
-    <Link key={s} to={sectionHref(s, s === "settings" ? null : scope)} className="rail-item" aria-label={name} aria-current={section === s ? "page" : undefined}>
-      <svg width="24" height="24" viewBox="0 0 18 18" aria-hidden="true">{ICONS[s]}</svg>
+  const railItem = (railSection: Section, label: string, name: string) => (
+    <Link key={railSection} to={sectionHref(railSection, railSection === "settings" ? null : scope)} className="rail-item" aria-label={name} aria-current={section === railSection ? "page" : undefined}>
+      <svg width="24" height="24" viewBox="0 0 18 18" aria-hidden="true">{ICONS[railSection]}</svg>
       <span>{label}</span>
     </Link>
   );
@@ -67,7 +67,7 @@ export function Layout({ children }: { children: ReactNode }) {
     <div className="shell" style={current ? ({ "--accent": current.accent } as CSSProperties) : undefined}>
       <nav className="rail" aria-label="Sections">
         <span className="rail-logo" aria-hidden="true" />
-        {RAIL.map((r) => railItem(r.section, r.label, r.name))}
+        {RAIL.map((railEntry) => railItem(railEntry.section, railEntry.label, railEntry.name))}
         <span className="rail-gap" />
         {railItem("settings", "SETTINGS", "Settings")}
       </nav>
@@ -79,24 +79,24 @@ export function Layout({ children }: { children: ReactNode }) {
             </Link>
             <i className="strip-rule" aria-hidden="true" />
             <div className="strip-games">
-              {instances.map((gi) => {
-                const on = gi.gameKey === scope?.key;
+              {instances.map((gameInstance) => {
+                const on = gameInstance.gameKey === scope?.key;
                 return (
                   <Link
-                    key={gi.id}
+                    key={gameInstance.id}
                     to={
                       section === "games" && pathname !== "/library"
-                        ? hubPathFor(pathname, { key: gi.gameKey, instanceId: gi.id }, hubScreens(gi.gameKey, gi.id).map((t) => t.key))
-                        : sectionHref(stripSection, { key: gi.gameKey, instanceId: gi.id })
+                        ? hubPathFor(pathname, { key: gameInstance.gameKey, instanceId: gameInstance.id }, hubScreens(gameInstance.gameKey, gameInstance.id).map((screen) => screen.key))
+                        : sectionHref(stripSection, { key: gameInstance.gameKey, instanceId: gameInstance.id })
                     }
-                    className={`strip-game ${on ? "on" : ""} ${gi.sleeping ? "asleep" : ""}`}
-                    aria-label={gi.name}
+                    className={`strip-game ${on ? "on" : ""} ${gameInstance.sleeping ? "asleep" : ""}`}
+                    aria-label={gameInstance.name}
                     aria-current={on ? "page" : undefined}
-                    title={gi.sleeping ? `${gi.name} (asleep)` : gi.name}
+                    title={gameInstance.sleeping ? `${gameInstance.name} (asleep)` : gameInstance.name}
                   >
                     {/* Its icon, and its whole name once picked (Georges, round 7: "Genshin becomes Genshin Impact"). */}
-                    <GameIcon src={getGame(gi.gameKey)?.art?.icon ?? null} alt={gi.name} glyph="game" tint={gi.accent} className="strip-icon" />
-                    {on ? gi.name : (getGame(gi.gameKey)?.shortName ?? gi.name)}
+                    <GameIcon src={getGame(gameInstance.gameKey)?.art?.icon ?? null} alt={gameInstance.name} glyph="game" tint={gameInstance.accent} className="strip-icon" />
+                    {on ? gameInstance.name : (getGame(gameInstance.gameKey)?.shortName ?? gameInstance.name)}
                   </Link>
                 );
               })}
@@ -110,9 +110,9 @@ export function Layout({ children }: { children: ReactNode }) {
                 className="btn"
                 aria-label="Back to today"
                 onClick={() =>
-                  setParams((p) => {
-                    p.delete("day");
-                    return p;
+                  setParams((searchParams) => {
+                    searchParams.delete("day");
+                    return searchParams;
                   })
                 }
               >

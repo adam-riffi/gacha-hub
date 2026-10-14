@@ -2,10 +2,10 @@ import { useEffect, useState, useSyncExternalStore } from "react";
 import { perBannerMs, slotMs, stepBanner, stepGame, type CarouselPosition } from "@gacha/shared";
 
 const REDUCE = "(prefers-reduced-motion: reduce)";
-const subscribe = (cb: () => void) => {
-  const mq = window.matchMedia(REDUCE);
-  mq.addEventListener("change", cb);
-  return () => mq.removeEventListener("change", cb);
+const subscribe = (onChange: () => void) => {
+  const mediaQuery = window.matchMedia(REDUCE);
+  mediaQuery.addEventListener("change", onChange);
+  return () => mediaQuery.removeEventListener("change", onChange);
 };
 
 /** True when the viewer asked for reduced motion: no auto-rotation, no transitions. */
@@ -24,20 +24,20 @@ export type HomeCarousel = ReturnType<typeof useCarousel>;
  * bar can restart.
  */
 export function useCarousel(counts: readonly number[]) {
-  const [pos, setPos] = useState<CarouselPosition>({ game: 0, banner: 0 });
+  const [position, setPosition] = useState<CarouselPosition>({ game: 0, banner: 0 });
   const [tick, setTick] = useState(0);
   const [gameTick, setGameTick] = useState(0);
   const [holds, setHolds] = useState(0);
   const reduced = useReducedMotion();
   const gameCount = counts.length;
   // A shorter roster (a game uninstalled, a scope picked) must not leave the position past the end.
-  const game = Math.min(pos.game, Math.max(0, gameCount - 1));
-  const safe: CarouselPosition = game === pos.game ? pos : { game, banner: 0 };
+  const game = Math.min(position.game, Math.max(0, gameCount - 1));
+  const safe: CarouselPosition = game === position.game ? position : { game, banner: 0 };
 
   const move = (next: CarouselPosition) => {
-    if (next.game !== safe.game) setGameTick((t) => t + 1);
-    setPos(next);
-    setTick((t) => t + 1);
+    if (next.game !== safe.game) setGameTick((previous) => previous + 1);
+    setPosition(next);
+    setTick((previous) => previous + 1);
   };
   const rotating = !reduced && holds === 0 && gameCount > 0;
   const durationMs = perBannerMs(counts[safe.game] ?? 0);
@@ -62,7 +62,7 @@ export function useCarousel(counts: readonly number[]) {
     prev: () => move(stepBanner(safe, -1, counts)),
     nextGame: () => move(stepGame(safe, 1, gameCount)),
     prevGame: () => move(stepGame(safe, -1, gameCount)),
-    hold: () => setHolds((h) => h + 1),
-    release: () => setHolds((h) => Math.max(0, h - 1)),
+    hold: () => setHolds((previous) => previous + 1),
+    release: () => setHolds((previous) => Math.max(0, previous - 1)),
   };
 }

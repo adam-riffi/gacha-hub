@@ -10,12 +10,12 @@ export function useDismiss(ref: RefObject<HTMLElement | null>, onAway: () => voi
     if (!active) return;
     // A window's own opener (marked data-opens-panel) is left to toggle it (round 9: a second click on a weapon flickered,
     // closing here then reopening on its click).
-    const down = (e: PointerEvent) => {
-      if ((e.target as Element | null)?.closest?.("[data-opens-panel]")) return;
-      if (ref.current && !ref.current.contains(e.target as Node)) onAway();
+    const down = (event: PointerEvent) => {
+      if ((event.target as Element | null)?.closest?.("[data-opens-panel]")) return;
+      if (ref.current && !ref.current.contains(event.target as Node)) onAway();
     };
-    const key = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onAway();
+    const key = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onAway();
     };
     document.addEventListener("pointerdown", down);
     document.addEventListener("keydown", key);

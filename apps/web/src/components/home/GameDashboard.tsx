@@ -40,46 +40,46 @@ export function GameDashboard({ instanceId: id }: { instanceId: string }) {
   const cycles = useQuery({ queryKey: ["cycles", id], queryFn: () => api.get<CycleResultsDto>(`/api/instances/${id}/cycles`) });
   const game = instance.data && getGame(instance.data.gameKey);
   if (instance.isError || dash.isError) return <LoadError what="The dashboard" retry={() => Promise.all([instance.refetch(), dash.refetch()])} />;
-  const g = dash.data?.games.find((x) => x.instanceId === id);
-  if (!instance.data || !game || !dash.data || !g) return <div className="mu">Loading…</div>;
-  const banners = dash.data.timeline.banners.filter((b) => b.gameKey === game.key);
-  const recurring = (tasks.data ?? []).filter((t) => t.type === "recurring");
-  const region = game.regions.find((r) => r.key === instance.data.regionKey) ?? game.regions[0]!;
+  const dashGame = dash.data?.games.find((candidate) => candidate.instanceId === id);
+  if (!instance.data || !game || !dash.data || !dashGame) return <div className="mu">Loading…</div>;
+  const banners = dash.data.timeline.banners.filter((banner) => banner.gameKey === game.key);
+  const recurring = (tasks.data ?? []).filter((task) => task.type === "recurring");
+  const region = game.regions.find((candidate) => candidate.key === instance.data.regionKey) ?? game.regions[0]!;
   const battle = passes.data?.battle;
-  const pv = passView(game, region, new Date(), battle ? { ...battle, updatedAt: new Date(battle.updatedAt) } : null, passes.data?.monthly ? { endsAt: new Date(passes.data.monthly.endsAt) } : null);
+  const passState = passView(game, region, new Date(), battle ? { ...battle, updatedAt: new Date(battle.updatedAt) } : null, passes.data?.monthly ? { endsAt: new Date(passes.data.monthly.endsAt) } : null);
   // Cards with nothing to show stay out (round 5: no card of empty space).
-  const inProgress = (builds.data ?? []).filter((b) => b.buildStatus === "building" || b.buildStatus === "good");
+  const inProgress = (builds.data ?? []).filter((build) => build.buildStatus === "building" || build.buildStatus === "good");
   // A past heatmap day pins the gauges and charts to it, as on the Overview.
-  const today = g.gameDay ?? new Date().toISOString().slice(0, 10);
+  const today = dashGame.gameDay ?? new Date().toISOString().slice(0, 10);
   const pinned = params.get("day");
   const day = pinned && pinned < today ? pinned : null;
   const onPin = (date: string | null) =>
-    setParams((p) => {
-      if (date && date < today) p.set("day", date);
-      else p.delete("day");
-      return p;
+    setParams((current) => {
+      if (date && date < today) current.set("day", date);
+      else current.delete("day");
+      return current;
     });
 
   return (
     <div className="gd-home">
-      <HomeTop games={[g]} tasks={tasks.data ?? []} goalMaterials={dash.data.goalMaterials} day={day} />
+      <HomeTop games={[dashGame]} tasks={tasks.data ?? []} goalMaterials={dash.data.goalMaterials} day={day} />
       <div className="gd-row">
-        <TicksCard g={g} instanceId={id} game={game} region={region} recurring={recurring} />
-        <GameBanners g={g} banners={banners} />
+        <TicksCard dashGame={dashGame} instanceId={id} game={game} region={region} recurring={recurring} />
+        <GameBanners dashGame={dashGame} banners={banners} />
       </div>
       <div className="gd-grid">
         {game.pullBanners?.length ? (
           <>
-            <PullsCard g={g} game={game} instanceId={id} />
-            <PityCard g={g} game={game} instanceId={id} />
+            <PullsCard dashGame={dashGame} game={game} instanceId={id} />
+            <PityCard dashGame={dashGame} game={game} instanceId={id} />
           </>
         ) : null}
-        <StaminaCard g={g} game={game} instance={instance.data} />
-        <PassCard instanceId={id} game={game} pv={pv} />
-        <DailyPassCard instanceId={id} game={game} daysLeft={pv.monthlyDaysLeft} endsAt={passes.data?.monthly?.endsAt ?? null} />
+        <StaminaCard dashGame={dashGame} game={game} instance={instance.data} />
+        <PassCard instanceId={id} game={game} passState={passState} />
+        <DailyPassCard instanceId={id} game={game} daysLeft={passState.monthlyDaysLeft} endsAt={passes.data?.monthly?.endsAt ?? null} />
         <EndgameCard instanceId={id} game={game} region={region} cycles={cycles.data} />
       </div>
-      <HomeHeat games={[g]} today={today} pinned={day} onPin={onPin} />
+      <HomeHeat games={[dashGame]} today={today} pinned={day} onPin={onPin} />
       <div className="gd-grid">
         {inProgress.length > 0 && <BuildsCard instanceId={id} game={game} builds={inProgress} />}
         <GoalsCard gameKey={game.key} tasks={tasks.data ?? []} span={inProgress.length ? undefined : "full"} />
@@ -110,26 +110,26 @@ const Meter = ({ value, max }: { value: number; max: number }) => (
 );
 
 /** Limited pulls on hand, Home's big figure; then what makes them (each ticket, and the premium currency in pulls). */
-function PullsCard({ g, game, instanceId }: { g: DashGame; game: GameDefinition; instanceId: string }) {
-  const rows = g.currencies.filter((c) => c.pullCost && !c.standardOnly && !c.onlyFor);
+function PullsCard({ dashGame, game, instanceId }: { dashGame: DashGame; game: GameDefinition; instanceId: string }) {
+  const rows = dashGame.currencies.filter((currency) => currency.pullCost && !currency.standardOnly && !currency.onlyFor);
   return (
     <Card title="Pulls" to={`/games/${instanceId}/pulls`}>
       <div className="pulls-head">
         <div className="cd pulls-total" data-testid="pulls-total">
-          {pullsFor(g.currencies).limited}
+          {pullsFor(dashGame.currencies).limited}
         </div>
         <div className="mn pulls-split">
           <span className="mu">limited pulls</span>
         </div>
       </div>
       <div className="lst">
-        {rows.map((c) => (
-          <div className="rw" key={c.key}>
+        {rows.map((row) => (
+          <div className="rw" key={row.key}>
             <span>
-              <CurrencyIcon kind={currencyKind(game, c)} />
-              {c.pullCost! > 1 ? `From ${c.label}` : c.label}
+              <CurrencyIcon kind={currencyKind(game, row)} />
+              {row.pullCost! > 1 ? `From ${row.label}` : row.label}
             </span>
-            <span className="mn">{Math.floor(c.value / c.pullCost!)}</span>
+            <span className="mn">{Math.floor(row.value / row.pullCost!)}</span>
           </div>
         ))}
       </div>
@@ -138,34 +138,34 @@ function PullsCard({ g, game, instanceId }: { g: DashGame; game: GameDefinition;
 }
 
 /** Each banner type's pity toward its hard pity, and whether the next top pull is the featured one; a spark's count under its banner. */
-function PityCard({ g, game, instanceId }: { g: DashGame; game: GameDefinition; instanceId: string }) {
+function PityCard({ dashGame, game, instanceId }: { dashGame: DashGame; game: GameDefinition; instanceId: string }) {
   return (
     <Card title="Pity" to={`/games/${instanceId}/pulls`} span="wide">
       <div className="lst">
-        {g.pity.map((p) => {
+        {dashGame.pity.map((pity) => {
           // The featured unit's share, as the game says it: 50/50, 75/25.
-          const rate = game.pullBanners?.find((b) => b.key === p.key)?.featuredRate ?? 1;
+          const rate = game.pullBanners?.find((pullBanner) => pullBanner.key === pity.key)?.featuredRate ?? 1;
           const split = `${Math.round(rate * 100)}/${100 - Math.round(rate * 100)}`;
           return (
-            <Fragment key={p.key}>
+            <Fragment key={pity.key}>
               <div className="rw gd-pity">
-                <span className="gd-label">{p.label}</span>
-                <Meter value={p.pity} max={p.hardPity} />
+                <span className="gd-label">{pity.label}</span>
+                <Meter value={pity.pity} max={pity.hardPity} />
                 <span className="mn gd-fig">
-                  {p.pity}
-                  <span className="mu">/{p.hardPity}</span>
+                  {pity.pity}
+                  <span className="mu">/{pity.hardPity}</span>
                 </span>
-                <span className="gd-tag">{rate < 1 && (p.guaranteed ? <span className="chip hot">guaranteed</span> : <span className="mn mu">{split}</span>)}</span>
+                <span className="gd-tag">{rate < 1 && (pity.guaranteed ? <span className="chip hot">guaranteed</span> : <span className="mn mu">{split}</span>)}</span>
               </div>
-              {p.spark && (
+              {pity.spark && (
                 <div className="rw gd-pity">
                   <span className="gd-label">Featured guarantee</span>
-                  <Meter value={p.spark.at} max={p.spark.of} />
+                  <Meter value={pity.spark.at} max={pity.spark.of} />
                   <span className="mn gd-fig">
-                    {p.spark.at}
-                    <span className="mu">/{p.spark.of}</span>
+                    {pity.spark.at}
+                    <span className="mu">/{pity.spark.of}</span>
                   </span>
-                  <span className="gd-tag">{p.spark.at >= p.spark.of && <span className="chip hot">ready</span>}</span>
+                  <span className="gd-tag">{pity.spark.at >= pity.spark.of && <span className="chip hot">ready</span>}</span>
                 </div>
               )}
             </Fragment>
@@ -177,10 +177,10 @@ function PityCard({ g, game, instanceId }: { g: DashGame; game: GameDefinition; 
 }
 
 /** The game's running banners in Home's carousel: art, its deadline, the arrows. */
-function GameBanners({ g, banners }: { g: DashGame; banners: DashboardData["timeline"]["banners"] }) {
-  const roster = homeRoster([g], banners);
-  const c = useCarousel(roster.map((r) => r.banners.length));
-  return <BannersCarousel roster={roster} c={c} />;
+function GameBanners({ dashGame, banners }: { dashGame: DashGame; banners: DashboardData["timeline"]["banners"] }) {
+  const roster = homeRoster([dashGame], banners);
+  const carousel = useCarousel(roster.map((rosterEntry) => rosterEntry.banners.length));
+  return <BannersCarousel roster={roster} carousel={carousel} />;
 }
 
 /**
@@ -189,26 +189,26 @@ function GameBanners({ g, banners }: { g: DashGame; banners: DashboardData["time
  * each added with +.
  */
 function Ticks({ instanceId, items, game, cadence }: { instanceId: string; items: TaskDto[]; game: GameDefinition; cadence: "daily" | "weekly" }) {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   const restore = useMutation({
     mutationFn: () => api.post(`/api/instances/${instanceId}/tasks/defaults`, {}),
-    onSuccess: () => Promise.all([["tasks", "game", instanceId], ["tasks"]].map((queryKey) => qc.invalidateQueries({ queryKey }))),
+    onSuccess: () => Promise.all([["tasks", "game", instanceId], ["tasks"]].map((queryKey) => queryClient.invalidateQueries({ queryKey }))),
   });
-  const have = new Set(items.map((t) => t.title.toLowerCase()));
-  const missing = game.defaultTasks.filter((t) => t.cadence === cadence && !have.has(t.title.toLowerCase()));
+  const have = new Set(items.map((item) => item.title.toLowerCase()));
+  const missing = game.defaultTasks.filter((defaultTask) => defaultTask.cadence === cadence && !have.has(defaultTask.title.toLowerCase()));
   return (
     <div className="tick-list" style={tickColumn(items)}>
-      {items.map((t) => (
-        <TickRow key={t.id} instanceId={instanceId} task={t} />
+      {items.map((item) => (
+        <TickRow key={item.id} instanceId={instanceId} task={item} />
       ))}
-      {missing.map((t) => (
-        <div className="tick-row is-missing" key={t.key}>
+      {missing.map((defaultTask) => (
+        <div className="tick-row is-missing" key={defaultTask.key}>
           <span className="tick-boxes">
-            <button className="btn ghost sm" aria-label={`Add ${t.title}`} disabled={restore.isPending} onClick={() => restore.mutate()}>
+            <button className="btn ghost sm" aria-label={`Add ${defaultTask.title}`} disabled={restore.isPending} onClick={() => restore.mutate()}>
               +
             </button>
           </span>
-          <span className="tick-title mu">{t.title}</span>
+          <span className="tick-title mu">{defaultTask.title}</span>
         </div>
       ))}
       {items.length === 0 && missing.length === 0 && <p className="table-empty">None</p>}
@@ -220,7 +220,7 @@ function Ticks({ instanceId, items, game, cadence }: { instanceId: string; items
  * The dailies and weeklies, ticked in place, each column with its reset: the
  * Overview's Dailies & weeklies for this game, the gauge being on top.
  */
-function TicksCard({ g, instanceId, game, region, recurring }: { g: DashGame; instanceId: string; game: GameDefinition; region: GameDefinition["regions"][number]; recurring: TaskDto[] }) {
+function TicksCard({ dashGame, instanceId, game, region, recurring }: { dashGame: DashGame; instanceId: string; game: GameDefinition; region: GameDefinition["regions"][number]; recurring: TaskDto[] }) {
   const [weekly] = useState(() => hubResets(game, region, new Date()).weekly.toISOString());
   return (
     <Card title="Dailies & weeklies" to={`/games/${instanceId}`} className="gd-ticks-card">
@@ -228,16 +228,16 @@ function TicksCard({ g, instanceId, game, region, recurring }: { g: DashGame; in
         <div>
           <div className="gd-sub">
             <span className="kpi-label">Daily</span>
-            {g.nextReset && <Countdown at={g.nextReset} kind="reset" prefix="resets in" />}
+            {dashGame.nextReset && <Countdown at={dashGame.nextReset} kind="reset" prefix="resets in" />}
           </div>
-          <Ticks instanceId={instanceId} items={recurring.filter((t) => t.cadence === "daily")} game={game} cadence="daily" />
+          <Ticks instanceId={instanceId} items={recurring.filter((task) => task.cadence === "daily")} game={game} cadence="daily" />
         </div>
         <div>
           <div className="gd-sub">
             <span className="kpi-label">Weekly</span>
             <Countdown at={weekly} kind="reset" prefix="resets in" />
           </div>
-          <Ticks instanceId={instanceId} items={recurring.filter((t) => t.cadence === "weekly")} game={game} cadence="weekly" />
+          <Ticks instanceId={instanceId} items={recurring.filter((task) => task.cadence === "weekly")} game={game} cadence="weekly" />
         </div>
       </div>
     </Card>
@@ -245,30 +245,30 @@ function TicksCard({ g, instanceId, game, region, recurring }: { g: DashGame; in
 }
 
 /** The battle pass as Home's tiles: its level over the segmented bar, this week's EXP; beside the stamina (round 5). */
-function PassCard({ instanceId, game, pv }: { instanceId: string; game: GameDefinition; pv: ReturnType<typeof passView> }) {
+function PassCard({ instanceId, game, passState }: { instanceId: string; game: GameDefinition; passState: ReturnType<typeof passView> }) {
   const pass = game.manifest.battlePass;
-  const k = (n: number) => (n >= 1000 ? `${(n / 1000).toFixed(n % 1000 ? 1 : 0)}k` : String(n));
-  if (!pass && pv.weeklyXpCap === null) return null;
+  const compact = (value: number) => (value >= 1000 ? `${(value / 1000).toFixed(value % 1000 ? 1 : 0)}k` : String(value));
+  if (!pass && passState.weeklyXpCap === null) return null;
   return (
     <Card title={pass?.name ?? "Weekly EXP"} to={`/games/${instanceId}`}>
-      {(pass || pv.weeklyXpCap !== null) && (
+      {(pass || passState.weeklyXpCap !== null) && (
         <div className="gd-kpis">
           {pass && (
             <div className="kpi">
               <div className="kpi-label">Level</div>
               <div className="kpi-value">
-                {pv.level}
-                {pv.maxLevel !== null && <small> / {pv.maxLevel}</small>}
+                {passState.level}
+                {passState.maxLevel !== null && <small> / {passState.maxLevel}</small>}
               </div>
-              {pv.maxLevel !== null && <SegmentedBar level={pv.level} max={pv.maxLevel} label={pass.name} />}
+              {passState.maxLevel !== null && <SegmentedBar level={passState.level} max={passState.maxLevel} label={pass.name} />}
             </div>
           )}
-          {pv.weeklyXpCap !== null && (
+          {passState.weeklyXpCap !== null && (
             <div className="kpi">
               <div className="kpi-label">Weekly EXP</div>
               <div className="kpi-value">
-                {k(pv.weeklyXp)}
-                <small> / {k(pv.weeklyXpCap)}</small>
+                {compact(passState.weeklyXp)}
+                <small> / {compact(passState.weeklyXpCap)}</small>
               </div>
             </div>
           )}
@@ -279,7 +279,7 @@ function PassCard({ instanceId, game, pv }: { instanceId: string; game: GameDefi
 }
 
 const ENDS = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
-const NUM = new Intl.NumberFormat("en-GB");
+const NUMBER_FORMAT = new Intl.NumberFormat("en-GB");
 
 /**
  * The 30-day pass (Georges, round 7: "a daily login currency bonus like the Blessing of the Welkin Moon: if it's active,
@@ -287,16 +287,16 @@ const NUM = new Intl.NumberFormat("en-GB");
  * (as the Pulls forecast counts it), its end, and 30 more days in one click.
  */
 function DailyPassCard({ instanceId, game, daysLeft, endsAt }: { instanceId: string; game: GameDefinition; daysLeft: number | null; endsAt: string | null }) {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   const pass = game.manifest.monthlyPass;
   const add = useMutation({
     mutationFn: (days: number) => api.put(`/api/instances/${instanceId}/passes/monthly`, { daysLeft: days }),
-    onSuccess: () => Promise.all([["passes", instanceId], ["dashboard"]].map((queryKey) => qc.invalidateQueries({ queryKey }))),
+    onSuccess: () => Promise.all([["passes", instanceId], ["dashboard"]].map((queryKey) => queryClient.invalidateQueries({ queryKey }))),
   });
   if (!pass) return null;
   const days = daysLeft ?? 0;
   const stack = pass.maxDays ?? pass.days;
-  const premium = game.currencies.find((c) => (c.pullCost ?? 0) > 1);
+  const premium = game.currencies.find((currency) => (currency.pullCost ?? 0) > 1);
   const still = days * (pass.daily ?? 0);
   return (
     <Card title={pass.name} to={`/games/${instanceId}`} head={<span className={`chip ${days > 0 && days <= 3 ? "hot" : ""}`}>{days > 0 && endsAt ? `ends ${ENDS.format(new Date(endsAt))}` : "off"}</span>}>
@@ -312,7 +312,7 @@ function DailyPassCard({ instanceId, game, daysLeft, endsAt }: { instanceId: str
         {pass.daily ? (
           <div className="kpi" role="group" aria-label="Still to collect">
             <div className="kpi-label">Still to collect</div>
-            <div className="kpi-value">{NUM.format(still)}</div>
+            <div className="kpi-value">{NUMBER_FORMAT.format(still)}</div>
             <div className="mn mu">
               {pass.daily} {premium?.label ?? ""} a day{premium?.pullCost ? ` · ${Math.floor(still / premium.pullCost)} pulls` : ""}
             </div>
@@ -327,32 +327,32 @@ function DailyPassCard({ instanceId, game, daysLeft, endsAt }: { instanceId: str
 }
 
 /** The game's stamina projected to now, Home's big figure over its cap; when it is full, as Home's chip; its reserve. */
-function StaminaCard({ g, game, instance }: { g: DashGame; game: GameDefinition; instance: InstanceDetail }) {
-  const def = game.currencies.find((c) => c.key === game.manifest.stamina.currency);
-  const reserveDef = game.currencies.find((c) => c.key === game.manifest.stamina.reserve?.currency);
-  if (!def || !g.stamina) return null;
-  const reserve = reserveDef ? (instance.currencies.find((c) => c.key === reserveDef.key)?.value ?? 0) : null;
-  const full = g.stamina.full || !g.stamina.fullAt;
+function StaminaCard({ dashGame, game, instance }: { dashGame: DashGame; game: GameDefinition; instance: InstanceDetail }) {
+  const staminaCurrency = game.currencies.find((currency) => currency.key === game.manifest.stamina.currency);
+  const reserveDef = game.currencies.find((currency) => currency.key === game.manifest.stamina.reserve?.currency);
+  if (!staminaCurrency || !dashGame.stamina) return null;
+  const reserve = reserveDef ? (instance.currencies.find((held) => held.key === reserveDef.key)?.value ?? 0) : null;
+  const full = dashGame.stamina.full || !dashGame.stamina.fullAt;
   return (
     <Card
-      title={def.label}
+      title={staminaCurrency.label}
       to={`/games/${instance.id}`}
       head={
         <span className={`chip ${full ? "hot" : ""}`}>
           <i aria-hidden="true" />
-          {full ? "full" : `full in ${formatRemaining(g.stamina.fullAt!)}`}
+          {full ? "full" : `full in ${formatRemaining(dashGame.stamina.fullAt!)}`}
         </span>
       }
     >
       <div className="pulls-head">
         <CurrencyIcon kind="stamina" className="is-big" />
         <div className="cd pulls-total" data-testid="stamina">
-          {Math.floor(g.stamina.value)}
-          <small> / {g.stamina.cap}</small>
+          {Math.floor(dashGame.stamina.value)}
+          <small> / {dashGame.stamina.cap}</small>
         </div>
       </div>
       <div className="gd-bar">
-        <Meter value={g.stamina.value} max={g.stamina.cap} />
+        <Meter value={dashGame.stamina.value} max={dashGame.stamina.cap} />
       </div>
       {reserveDef && (
         <div className="lst">
@@ -374,7 +374,7 @@ function StaminaCard({ g, game, instance }: { g: DashGame; game: GameDefinition;
 
 const DAY = 86_400_000;
 type Doc = Record<string, unknown>;
-const num = (v: unknown) => (typeof v === "number" ? v : null);
+const numberOrNull = (value: unknown) => (typeof value === "number" ? value : null);
 
 /** Builds being worked on, in Home's table: level, skills, weapon level, and a square per gear slot filled. */
 function BuildsCard({ instanceId, game, builds }: { instanceId: string; game: GameDefinition; builds: CharacterDto[] }) {
@@ -399,27 +399,27 @@ function BuildsCard({ instanceId, game, builds }: { instanceId: string; game: Ga
               </tr>
             </thead>
             <tbody>
-              {builds.map((b) => {
-                const doc = (b.doc ?? {}) as Doc;
-                const unit = b.catalogId ? index?.characters.get(b.catalogId) : undefined;
-                const levels = Object.values((doc[skills] ?? {}) as Doc).filter((v): v is number => typeof v === "number");
+              {builds.map((build) => {
+                const doc = (build.doc ?? {}) as Doc;
+                const unit = build.catalogId ? index?.characters.get(build.catalogId) : undefined;
+                const levels = Object.values((doc[skills] ?? {}) as Doc).filter((level): level is number => typeof level === "number");
                 const pieces = (doc[gear.field] ?? {}) as Record<string, Doc | undefined>;
-                const filled = gear.slots.filter((s) => pieces[s.key]?.setName || pieces[s.key]?.mainStat).length;
+                const filled = gear.slots.filter((slot) => pieces[slot.key]?.setName || pieces[slot.key]?.mainStat).length;
                 return (
-                  <tr key={b.id}>
+                  <tr key={build.id}>
                     <td>
-                      <Link to={`/characters/${b.id}`} className="gd-unit">
-                        <CatalogIcon gameKey={game.key} kind="character" icon={unit?.icon} name={unit?.name ?? b.name} tag={unit?.tag} />
-                        {unit?.name ?? b.name}
+                      <Link to={`/characters/${build.id}`} className="gd-unit">
+                        <CatalogIcon gameKey={game.key} kind="character" icon={unit?.icon} name={unit?.name ?? build.name} tag={unit?.tag} />
+                        {unit?.name ?? build.name}
                       </Link>
                     </td>
-                    <td className="mn">{num(doc.level) ?? "—"}</td>
+                    <td className="mn">{numberOrNull(doc.level) ?? "—"}</td>
                     <td className="mn">{levels.length ? levels.join("·") : "—"}</td>
-                    <td className="mn">{holder ? (num((doc[holder] as Doc | undefined)?.level) ?? "—") : ""}</td>
+                    <td className="mn">{holder ? (numberOrNull((doc[holder] as Doc | undefined)?.level) ?? "—") : ""}</td>
                     <td>
                       <span className="gd-squares" role="img" aria-label={`${filled} of ${gear.slots.length} ${gear.name}`}>
-                        {gear.slots.map((s) => (
-                          <i key={s.key} className={pieces[s.key]?.setName || pieces[s.key]?.mainStat ? "on" : ""} />
+                        {gear.slots.map((slot) => (
+                          <i key={slot.key} className={pieces[slot.key]?.setName || pieces[slot.key]?.mainStat ? "on" : ""} />
                         ))}
                       </span>
                     </td>
@@ -438,8 +438,8 @@ function BuildsCard({ instanceId, game, builds }: { instanceId: string; game: Ga
 function EndgameCard({ instanceId, game, region, cycles }: { instanceId: string; game: GameDefinition; region: GameDefinition["regions"][number]; cycles?: CycleResultsDto }) {
   const [now] = useState(() => new Date());
   if (game.manifest.endgame.length === 0) return null;
-  const results = (cycles?.results ?? []).map((r) => ({ ...r, cycleStart: new Date(r.cycleStart) }));
-  const eg = endgameNow(game, region, now, results);
+  const results = (cycles?.results ?? []).map((result) => ({ ...result, cycleStart: new Date(result.cycleStart) }));
+  const endgameState = endgameNow(game, region, now, results);
   const unit = (label: string) => (label === "stars" ? "★" : ` ${label}`);
   return (
     <Card title="Endgame · cycle" to={`/games/${instanceId}/endgame`}>
@@ -452,13 +452,13 @@ function EndgameCard({ instanceId, game, region, cycles }: { instanceId: string;
           </tr>
         </thead>
         <tbody>
-          {eg.modes.map((m) => {
-            const at = m.open ? m.closes : m.end;
+          {endgameState.modes.map((mode) => {
+            const at = mode.open ? mode.closes : mode.end;
             const days = Math.ceil((at.getTime() - now.getTime()) / DAY);
             return (
-              <tr key={m.mode.key}>
-                <td>{m.mode.name}</td>
-                <td className="mn">{m.result === null ? "—" : `${m.result}${m.mode.metric.max !== undefined ? `/${m.mode.metric.max}` : ""}${unit(m.mode.metric.label)}`}</td>
+              <tr key={mode.mode.key}>
+                <td>{mode.mode.name}</td>
+                <td className="mn">{mode.result === null ? "—" : `${mode.result}${mode.mode.metric.max !== undefined ? `/${mode.mode.metric.max}` : ""}${unit(mode.mode.metric.label)}`}</td>
                 <td>
                   <span className={`chip ${days <= 1 ? "hot" : ""}`}>
                     <i aria-hidden="true" />
@@ -475,18 +475,18 @@ function EndgameCard({ instanceId, game, region, cycles }: { instanceId: string;
 }
 
 /** A goal's progress, 0 to 1: its steps (its linked goals' added), else done or not. */
-function progressOf(t: TaskDto, all: TaskDto[]) {
-  const [done, total] = goalSteps(t, all);
-  return total ? done / total : t.lastCompletedAt ? 1 : 0;
+function progressOf(goal: TaskDto, all: TaskDto[]) {
+  const [done, total] = goalSteps(goal, all);
+  return total ? done / total : goal.lastCompletedAt ? 1 : 0;
 }
-const topGoals = (tasks: TaskDto[]) => tasks.filter((t) => listedGoal(t) && t.type !== "recurring");
+const topGoals = (tasks: TaskDto[]) => tasks.filter((task) => listedGoal(task) && task.type !== "recurring");
 
 /** The game's active goals, each with its bar (the Overview's goals gauge sits on top). */
 function GoalsCard({ gameKey, tasks, span }: { gameKey: string; tasks: TaskDto[]; span?: "full" }) {
   const goals = topGoals(tasks)
-    .filter((t) => !t.backlog)
-    .map((t) => ({ t, p: progressOf(t, tasks) }))
-    .sort((a, b) => b.p - a.p);
+    .filter((task) => !task.backlog)
+    .map((task) => ({ task, progress: progressOf(task, tasks) }))
+    .sort((first, second) => second.progress - first.progress);
   if (goals.length === 0) return null;
   return (
     <Card title="Goal progress" to={`/tasks?game=${gameKey}`} span={span}>
@@ -494,15 +494,15 @@ function GoalsCard({ gameKey, tasks, span }: { gameKey: string; tasks: TaskDto[]
         <div className="lst gd-scroll">
           <table className="gd-table">
             <tbody>
-              {goals.map(({ t, p }) => (
-                <tr key={t.id}>
+              {goals.map(({ task: goal, progress }) => (
+                <tr key={goal.id}>
                   <td>
-                    <Link to={`/tasks?game=${gameKey}`}>{t.title}</Link>
+                    <Link to={`/tasks?game=${gameKey}`}>{goal.title}</Link>
                   </td>
                   <td className="gd-meter-cell">
-                    <Meter value={p} max={1} />
+                    <Meter value={progress} max={1} />
                   </td>
-                  <td className="mn gd-pct">{Math.round(p * 100)}%</td>
+                  <td className="mn gd-pct">{Math.round(progress * 100)}%</td>
                 </tr>
               ))}
             </tbody>
@@ -515,7 +515,7 @@ function GoalsCard({ gameKey, tasks, span }: { gameKey: string; tasks: TaskDto[]
 
 type OwnCardItem = NonNullable<GameDefinition["manifest"]["ownCard"]>["items"][number];
 /** A cap that follows another value by steps: the last step reached. */
-const capBy = (by: Extract<OwnCardItem, { currency: string }>["capBy"], v: number) => by?.steps.reduce((cap, [at, c]) => (v >= at ? c : cap), by.steps[0]![1]);
+const capFromSteps = (capRule: Extract<OwnCardItem, { currency: string }>["capBy"], value: number) => capRule?.steps.reduce((cap, [at, stepCap]) => (value >= at ? stepCap : cap), capRule.steps[0]![1]);
 
 /**
  * The game's own card (its manifest's `ownCard`; Georges's designs: NTE's
@@ -524,35 +524,35 @@ const capBy = (by: Extract<OwnCardItem, { currency: string }>["capBy"], v: numbe
  * from here.
  */
 function OwnCard({ game, instance, tasks }: { game: GameDefinition; instance: InstanceDetail; tasks: TaskDto[] }) {
-  const qc = useQueryClient();
-  const refresh = (keys: unknown[][]) => Promise.all(keys.map((queryKey) => qc.invalidateQueries({ queryKey })));
+  const queryClient = useQueryClient();
+  const refresh = (keys: unknown[][]) => Promise.all(keys.map((queryKey) => queryClient.invalidateQueries({ queryKey })));
   const set = useMutation({
-    mutationFn: (v: { key: string; value: number }) => api.put(`/api/instances/${instance.id}/currencies/${v.key}`, { value: v.value }),
+    mutationFn: (change: { key: string; value: number }) => api.put(`/api/instances/${instance.id}/currencies/${change.key}`, { value: change.value }),
     onSuccess: () => refresh([["instance", instance.id], ["dashboard"]]),
   });
   const restore = useMutation({ mutationFn: () => api.post(`/api/instances/${instance.id}/tasks/defaults`, {}), onSuccess: () => refresh([["tasks", "game", instance.id], ["tasks"]]) });
   const card = game.manifest.ownCard;
   if (!card) return null;
-  const value = (key: string) => instance.currencies.find((c) => c.key === key)?.value ?? 0;
+  const value = (key: string) => instance.currencies.find((currency) => currency.key === key)?.value ?? 0;
   return (
     <Card title={card.title} span="full">
       <div className="gd-kpis gd-own">
         {card.items.map((item) => {
           if ("currency" in item) {
-            const def = game.currencies.find((c) => c.key === item.currency);
-            if (!def) return null;
-            const cap = item.capBy ? capBy(item.capBy, value(item.capBy.currency)) : def.cap;
+            const itemCurrency = game.currencies.find((currency) => currency.key === item.currency);
+            if (!itemCurrency) return null;
+            const cap = item.capBy ? capFromSteps(item.capBy, value(item.capBy.currency)) : itemCurrency.cap;
             return (
               <label key={item.currency} className="kpi">
-                <span className="kpi-label">{def.label}</span>
+                <span className="kpi-label">{itemCurrency.label}</span>
                 <span className="gd-own-value mn">
                   <input
                     type="number"
                     min={0}
-                    aria-label={def.label}
+                    aria-label={itemCurrency.label}
                     key={value(item.currency)}
                     defaultValue={value(item.currency)}
-                    onBlur={(e) => e.target.value !== "" && Number(e.target.value) !== value(item.currency) && set.mutate({ key: item.currency, value: Number(e.target.value) })}
+                    onBlur={(event) => event.target.value !== "" && Number(event.target.value) !== value(item.currency) && set.mutate({ key: item.currency, value: Number(event.target.value) })}
                   />
                   {cap !== undefined && (
                     <span className="mu" data-testid={`${item.currency}-cap`}>
@@ -563,9 +563,9 @@ function OwnCard({ game, instance, tasks }: { game: GameDefinition; instance: In
               </label>
             );
           }
-          const seed = game.defaultTasks.find((t) => t.key === item.task);
+          const seed = game.defaultTasks.find((defaultTask) => defaultTask.key === item.task);
           if (!seed) return null;
-          const task = tasks.find((t) => t.type === "recurring" && t.title.toLowerCase() === seed.title.toLowerCase());
+          const task = tasks.find((candidate) => candidate.type === "recurring" && candidate.title.toLowerCase() === seed.title.toLowerCase());
           return (
             <div key={item.task} className="kpi">
               <span className="kpi-label">{seed.title}</span>

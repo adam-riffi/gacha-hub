@@ -46,7 +46,7 @@ export function SkillRow({ name, text, icon, gameKey, children }: { name: string
  * it changes.
  */
 export function MiscCard({ buildId, put, gameKey, misc: saved, passives }: { buildId: string; put: (body: { misc: CharacterMisc }) => Promise<unknown>; gameKey: string; misc: CharacterMisc | null; passives: { name: string; description?: string; icon?: string }[] }) {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   const toast = useToast();
   const [misc, setMisc] = useState<CharacterMisc>(saved ?? {});
   const [skin, setSkin] = useState("");
@@ -55,7 +55,7 @@ export function MiscCard({ buildId, put, gameKey, misc: saved, passives }: { bui
   const [edited, setEdited] = useState("");
   const save = useMutation({
     mutationFn: (next: CharacterMisc) => put({ misc: next }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["character", buildId] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["character", buildId] }),
     onError: () => toast("Could not save the misc", "err"),
   });
   const change = (next: CharacterMisc) => {
@@ -81,18 +81,18 @@ export function MiscCard({ buildId, put, gameKey, misc: saved, passives }: { bui
       {passives.length > 0 && (
         <div className="sh-misc-block">
           <span className="kpi-label">Passives</span>
-          {passives.map((p) => (
-            <SkillRow key={p.name} name={p.name} text={p.description} icon={p.icon} gameKey={gameKey} />
+          {passives.map((passive) => (
+            <SkillRow key={passive.name} name={passive.name} text={passive.description} icon={passive.icon} gameKey={gameKey} />
           ))}
         </div>
       )}
       <div className="sh-misc-block">
         <span className="kpi-label">Skins</span>
         <ul className="sh-skins" aria-label="Skins">
-          {skins.map((s) => (
-            <li key={s} className="badge">
-              {s}
-              <button type="button" className="btn ghost sm" aria-label={`Remove ${s}`} onClick={() => change({ ...misc, skins: skins.filter((x) => x !== s) })}>
+          {skins.map((savedSkin) => (
+            <li key={savedSkin} className="badge">
+              {savedSkin}
+              <button type="button" className="btn ghost sm" aria-label={`Remove ${savedSkin}`} onClick={() => change({ ...misc, skins: skins.filter((otherSkin) => otherSkin !== savedSkin) })}>
                 ×
               </button>
             </li>
@@ -100,13 +100,13 @@ export function MiscCard({ buildId, put, gameKey, misc: saved, passives }: { bui
         </ul>
         <form
           className="row"
-          onSubmit={(e) => {
-            e.preventDefault();
+          onSubmit={(event) => {
+            event.preventDefault();
             if (skin.trim() && !skins.includes(skin.trim())) change({ ...misc, skins: [...skins, skin.trim()] });
             setSkin("");
           }}
         >
-          <input aria-label="Add a skin" placeholder="Skin" maxLength={80} value={skin} onChange={(e) => setSkin(e.target.value)} />
+          <input aria-label="Add a skin" placeholder="Skin" maxLength={80} value={skin} onChange={(event) => setSkin(event.target.value)} />
           <button className="btn" type="submit">
             Add
           </button>
@@ -116,18 +116,18 @@ export function MiscCard({ buildId, put, gameKey, misc: saved, passives }: { bui
       <div className="sh-misc-block">
         <span className="kpi-label">Notes</span>
         <ul className="sh-notes" aria-label="Notes">
-          {notes.map((n, i) => (
-            <li key={i} className="sh-note">
-              {editing === i ? (
+          {notes.map((savedNote, noteIndex) => (
+            <li key={noteIndex} className="sh-note">
+              {editing === noteIndex ? (
                 <form
                   className="sh-note-edit"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    if (edited.trim()) change({ ...misc, notes: notes.map((x, j) => (j === i ? edited.trim() : x)) });
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    if (edited.trim()) change({ ...misc, notes: notes.map((otherNote, otherIndex) => (otherIndex === noteIndex ? edited.trim() : otherNote)) });
                     setEditing(null);
                   }}
                 >
-                  <textarea aria-label={`Note ${i + 1}`} rows={3} maxLength={2000} value={edited} onChange={(e) => setEdited(e.target.value)} autoFocus />
+                  <textarea aria-label={`Note ${noteIndex + 1}`} rows={3} maxLength={2000} value={edited} onChange={(event) => setEdited(event.target.value)} autoFocus />
                   <button className="btn primary sm" type="submit">
                     Save note
                   </button>
@@ -137,18 +137,18 @@ export function MiscCard({ buildId, put, gameKey, misc: saved, passives }: { bui
                 </form>
               ) : (
                 <>
-                  <p>{n}</p>
+                  <p>{savedNote}</p>
                   <button
                     className="btn ghost sm"
                     type="button"
                     onClick={() => {
-                      setEditing(i);
-                      setEdited(n);
+                      setEditing(noteIndex);
+                      setEdited(savedNote);
                     }}
                   >
                     Edit
                   </button>
-                  <button className="btn ghost sm" type="button" onClick={() => change({ ...misc, notes: notes.filter((_, j) => j !== i) })}>
+                  <button className="btn ghost sm" type="button" onClick={() => change({ ...misc, notes: notes.filter((_, otherIndex) => otherIndex !== noteIndex) })}>
                     Delete
                   </button>
                 </>
@@ -158,13 +158,13 @@ export function MiscCard({ buildId, put, gameKey, misc: saved, passives }: { bui
         </ul>
         <form
           className="sh-note-add"
-          onSubmit={(e) => {
-            e.preventDefault();
+          onSubmit={(event) => {
+            event.preventDefault();
             if (note.trim()) change({ ...misc, notes: [...notes, note.trim()] });
             setNote("");
           }}
         >
-          <textarea aria-label="Add a note" placeholder="A note" rows={2} maxLength={2000} value={note} onChange={(e) => setNote(e.target.value)} />
+          <textarea aria-label="Add a note" placeholder="A note" rows={2} maxLength={2000} value={note} onChange={(event) => setNote(event.target.value)} />
           <button className="btn" type="submit">
             Add note
           </button>
@@ -173,22 +173,22 @@ export function MiscCard({ buildId, put, gameKey, misc: saved, passives }: { bui
       <div className="sh-misc-block">
         <span className="kpi-label">Pictures</span>
         <div className="sh-pictures">
-          {pictures.map((p, i) => (
-            <figure key={p.url} className="sh-picture">
-              <a href={p.url} target="_blank" rel="noreferrer">
-                <img src={p.url} alt={`Picture ${i + 1}`} loading="lazy" />
+          {pictures.map((picture, pictureIndex) => (
+            <figure key={picture.url} className="sh-picture">
+              <a href={picture.url} target="_blank" rel="noreferrer">
+                <img src={picture.url} alt={`Picture ${pictureIndex + 1}`} loading="lazy" />
               </a>
-              <button type="button" className="btn ghost sm" aria-label={`Remove picture ${i + 1}`} onClick={() => change({ ...misc, pictures: pictures.filter((x) => x.url !== p.url) })}>
+              <button type="button" className="btn ghost sm" aria-label={`Remove picture ${pictureIndex + 1}`} onClick={() => change({ ...misc, pictures: pictures.filter((otherPicture) => otherPicture.url !== picture.url) })}>
                 ×
               </button>
               {/* A note under each picture (round 7). */}
               <figcaption>
                 <input
-                  aria-label={`Note for picture ${i + 1}`}
+                  aria-label={`Note for picture ${pictureIndex + 1}`}
                   placeholder="A note"
                   maxLength={500}
-                  defaultValue={p.note ?? ""}
-                  onBlur={(e) => e.target.value.trim() !== (p.note ?? "") && change({ ...misc, pictures: pictures.map((x, j) => (j === i ? { url: x.url, ...(e.target.value.trim() ? { note: e.target.value.trim() } : {}) } : x)) })}
+                  defaultValue={picture.note ?? ""}
+                  onBlur={(event) => event.target.value.trim() !== (picture.note ?? "") && change({ ...misc, pictures: pictures.map((otherPicture, otherIndex) => (otherIndex === pictureIndex ? { url: otherPicture.url, ...(event.target.value.trim() ? { note: event.target.value.trim() } : {}) } : otherPicture)) })}
                 />
               </figcaption>
             </figure>
@@ -196,7 +196,7 @@ export function MiscCard({ buildId, put, gameKey, misc: saved, passives }: { bui
           {pictures.length < 12 && (
             <label className="btn sh-picture-add">
               + Picture
-              <input type="file" accept="image/*" hidden aria-label="Add a picture" onChange={(e) => void addPicture(e.target.files?.[0])} />
+              <input type="file" accept="image/*" hidden aria-label="Add a picture" onChange={(event) => void addPicture(event.target.files?.[0])} />
             </label>
           )}
         </div>

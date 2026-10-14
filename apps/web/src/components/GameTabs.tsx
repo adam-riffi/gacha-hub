@@ -9,9 +9,9 @@ export function GameTabs({ instanceId, active, gameKey }: { instanceId: string; 
     <>
       <HubHeader instanceId={instanceId} />
       <nav className="hub-tabs" aria-label="Game screens">
-        {tabs.map((t) => (
-          <Link key={t.key} to={t.to} aria-current={active === t.key ? "page" : undefined}>
-            {t.label}
+        {tabs.map((tab) => (
+          <Link key={tab.key} to={tab.to} aria-current={active === tab.key ? "page" : undefined}>
+            {tab.label}
           </Link>
         ))}
       </nav>

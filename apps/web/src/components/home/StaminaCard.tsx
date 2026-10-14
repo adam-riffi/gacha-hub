@@ -6,13 +6,13 @@ const DAY = 86_400_000;
 
 /** When a stamina fills: the clock time if today, the time left otherwise. */
 function fullLabel(fullAt: string, now = Date.now()): string {
-  const t = Date.parse(fullAt);
-  return t - now < DAY ? new Date(t).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit", hourCycle: "h23" }) : formatRemaining(fullAt, now);
+  const fullTime = Date.parse(fullAt);
+  return fullTime - now < DAY ? new Date(fullTime).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit", hourCycle: "h23" }) : formatRemaining(fullAt, now);
 }
 
 /** Stamina per game (VISUAL-DESIGN.md §10, WIREFRAMES.md A1): now over the cap, the reserve (F8), and when it fills. */
 export function StaminaCard({ games }: { games: DashGame[] }) {
-  const rows = games.filter((g) => g.stamina);
+  const rows = games.filter((game) => game.stamina);
   return (
     <section className="card table-card stamina-card">
       <div className="ph">
@@ -25,21 +25,21 @@ export function StaminaCard({ games }: { games: DashGame[] }) {
         <span className="col-70">Full</span>
       </div>
       <div className="lst">
-        {rows.map((g) => {
-          const s = g.stamina!;
+        {rows.map((dashGame) => {
+          const stamina = dashGame.stamina!;
           // The reserve is a currency of its own (Condensed Resin, Reserved Trailblaze Power…); a full one is flagged.
-          const reserve = g.currencies.find((x) => x.key === getGame(g.gameKey)?.manifest.stamina.reserve?.currency);
+          const reserve = dashGame.currencies.find((currency) => currency.key === getGame(dashGame.gameKey)?.manifest.stamina.reserve?.currency);
           return (
-            <div className="rw" key={g.instanceId}>
-              <span>{g.name}</span>
+            <div className="rw" key={dashGame.instanceId}>
+              <span>{dashGame.name}</span>
               <span className="mn col-110">
-                {s.value}
-                <span className="mu"> / {s.cap}</span>
+                {stamina.value}
+                <span className="mu"> / {stamina.cap}</span>
               </span>
               <span className="mn mu col-70">
                 {reserve ? reserve.cap !== null && reserve.value >= reserve.cap ? <span className="chip hot" title={`${reserve.label} full`}>{reserve.value}</span> : reserve.value : "—"}
               </span>
-              <span className="mn col-70 stamina-full">{s.full || !s.fullAt ? <span className="chip hot">full</span> : fullLabel(s.fullAt)}</span>
+              <span className="mn col-70 stamina-full">{stamina.full || !stamina.fullAt ? <span className="chip hot">full</span> : fullLabel(stamina.fullAt)}</span>
             </div>
           );
         })}

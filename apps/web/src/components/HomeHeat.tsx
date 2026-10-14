@@ -12,11 +12,11 @@ type DashGame = DashboardData["games"][number];
  */
 export function HomeHeat({ games, today, pinned, onPin }: { games: DashGame[]; today: string; pinned: string | null; onPin: (date: string | null) => void }) {
   const byDate = new Map<string, HeatDay["games"]>();
-  const add = (date: string, g: HeatDay["games"][number]) => byDate.set(date, [...(byDate.get(date) ?? []), g]);
-  for (const g of games) {
-    for (const d of g.days) if (d.day !== g.gameDay && d.dailiesTotal > 0) add(d.day, { name: g.name, done: d.dailiesDone, total: d.dailiesTotal });
-    const live = g.dailies.filter((t) => (t.cadence ?? "daily") === "daily");
-    if (g.gameDay && live.length) add(g.gameDay, { name: g.name, done: live.filter((t) => t.doneThisCycle).length, total: live.length });
+  const add = (date: string, gameEntry: HeatDay["games"][number]) => byDate.set(date, [...(byDate.get(date) ?? []), gameEntry]);
+  for (const game of games) {
+    for (const day of game.days) if (day.day !== game.gameDay && day.dailiesTotal > 0) add(day.day, { name: game.name, done: day.dailiesDone, total: day.dailiesTotal });
+    const live = game.dailies.filter((daily) => (daily.cadence ?? "daily") === "daily");
+    if (game.gameDay && live.length) add(game.gameDay, { name: game.name, done: live.filter((daily) => daily.doneThisCycle).length, total: live.length });
   }
   return (
     <section className="graph home-heat" aria-label="Dailies, last 26 weeks">
@@ -24,7 +24,7 @@ export function HomeHeat({ games, today, pinned, onPin }: { games: DashGame[]; t
         <h3>Dailies, last 26 weeks</h3>
       </div>
       <Heatmap
-        days={[...byDate].map(([date, g]) => ({ date, games: g }))}
+        days={[...byDate].map(([date, gamesOfDay]) => ({ date, games: gamesOfDay }))}
         today={new Date(+today.slice(0, 4), +today.slice(5, 7) - 1, +today.slice(8, 10))}
         pinned={pinned}
         onPin={onPin}

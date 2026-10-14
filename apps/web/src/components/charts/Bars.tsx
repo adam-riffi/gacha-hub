@@ -7,8 +7,8 @@ export interface BarItem {
   total: number;
 }
 
-const W = 424;
-const H = 140;
+const CHART_WIDTH = 424;
+const CHART_HEIGHT = 140;
 const BAR = 50;
 const TRACK_H = 84;
 
@@ -19,49 +19,49 @@ const TRACK_H = 84;
  * and the label below in mono.
  */
 export function PercentBars({ items, label }: { items: BarItem[]; label: string }) {
-  const n = Math.max(1, items.length);
-  const slot = W / n;
-  const x = (i: number) => Math.round(slot * i + (slot - BAR) / 2);
-  const pcts = items.map((it) => percent(it.done, it.total));
+  const itemCount = Math.max(1, items.length);
+  const slot = CHART_WIDTH / itemCount;
+  const barX = (itemIndex: number) => Math.round(slot * itemIndex + (slot - BAR) / 2);
+  const percents = items.map((item) => percent(item.done, item.total));
   return (
     <>
-      <Layer depth="structure" size={[W, H]}>
-        <svg className="fill" viewBox={`0 0 ${W} ${H}`} aria-hidden="true">
-          {items.map((_, i) => (
-            <rect key={`g${i}`} x={x(i) + 5} y="20" width={BAR + 2} height={TRACK_H} className="gst" />
+      <Layer depth="structure" size={[CHART_WIDTH, CHART_HEIGHT]}>
+        <svg className="fill" viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`} aria-hidden="true">
+          {items.map((_, itemIndex) => (
+            <rect key={`g${itemIndex}`} x={barX(itemIndex) + 5} y="20" width={BAR + 2} height={TRACK_H} className="gst" />
           ))}
-          {items.map((_, i) => (
-            <rect key={`t${i}`} x={x(i) - 1} y="26" width={BAR + 2} height={TRACK_H} className="trk" />
+          {items.map((_, itemIndex) => (
+            <rect key={`t${itemIndex}`} x={barX(itemIndex) - 1} y="26" width={BAR + 2} height={TRACK_H} className="trk" />
           ))}
         </svg>
       </Layer>
-      <Layer depth="data" size={[W, H]}>
-        <svg className="fill" viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`${label}: ${items.map((it, i) => `${it.label} ${pcts[i]} percent`).join(", ")}`}>
-          {items.map((_, i) => {
-            const h = +((TRACK_H * pcts[i]!) / 100).toFixed(1);
-            const y = +(26 + TRACK_H - h).toFixed(1);
+      <Layer depth="data" size={[CHART_WIDTH, CHART_HEIGHT]}>
+        <svg className="fill" viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`} role="img" aria-label={`${label}: ${items.map((item, itemIndex) => `${item.label} ${percents[itemIndex]} percent`).join(", ")}`}>
+          {items.map((_, itemIndex) => {
+            const barHeight = +((TRACK_H * percents[itemIndex]!) / 100).toFixed(1);
+            const barY = +(26 + TRACK_H - barHeight).toFixed(1);
             return (
-              <g key={i}>
-                {h > 0 && <rect x={x(i)} y={y} width={BAR} height={h} className="acf" />}
-                {h > 0 && <rect x={x(i)} y={y} width={BAR} height="4" className="mk" />}
+              <g key={itemIndex}>
+                {barHeight > 0 && <rect x={barX(itemIndex)} y={barY} width={BAR} height={barHeight} className="acf" />}
+                {barHeight > 0 && <rect x={barX(itemIndex)} y={barY} width={BAR} height="4" className="mk" />}
               </g>
             );
           })}
-          <path d={items.map((_, i) => [89, 68, 47].map((yy) => `M${x(i) - 1} ${yy}H${x(i) + BAR + 1}`).join("")).join("")} className="seg" />
+          <path d={items.map((_, itemIndex) => [89, 68, 47].map((lineY) => `M${barX(itemIndex) - 1} ${lineY}H${barX(itemIndex) + BAR + 1}`).join("")).join("")} className="seg" />
         </svg>
       </Layer>
-      <Layer depth="figures" size={[W, H]}>
+      <Layer depth="figures" size={[CHART_WIDTH, CHART_HEIGHT]}>
         <div className="bars-row bars-pct">
-          {pcts.map((p, i) => (
-            <div key={i} className="pct">
-              {p}%
+          {percents.map((percentValue, itemIndex) => (
+            <div key={itemIndex} className="pct">
+              {percentValue}%
             </div>
           ))}
         </div>
         <div className="bars-row bars-labels">
-          {items.map((it, i) => (
-            <div key={i} className="mn mu">
-              {it.label}
+          {items.map((item, itemIndex) => (
+            <div key={itemIndex} className="mn mu">
+              {item.label}
             </div>
           ))}
         </div>

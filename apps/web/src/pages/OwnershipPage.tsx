@@ -14,13 +14,13 @@ import type { InstanceDetail } from "../lib/types";
 import { Segmented } from "../components/ui";
 
 type Kind = "character" | "weapon";
-const stars = (n: number) => "★".repeat(Math.max(0, Math.min(6, n)));
+const stars = (count: number) => "★".repeat(Math.max(0, Math.min(6, count)));
 
 /** Check/uncheck what you own for one game, then start builds from it. */
 export function OwnershipPage() {
   const { id } = useParams();
-  const nav = useNavigate();
-  const qc = useQueryClient();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const toast = useToast();
   const [kind, setKind] = useState<Kind>("character");
   const [search, setSearch] = useState("");
@@ -41,7 +41,7 @@ export function OwnershipPage() {
   });
 
   const ownedIds = useMemo(
-    () => new Set((owned ?? []).filter((o) => o.kind === kind).map((o) => o.catalogId)),
+    () => new Set((owned ?? []).filter((ownedItem) => ownedItem.kind === kind).map((ownedItem) => ownedItem.catalogId)),
     [owned, kind],
   );
   // catalogId → the existing build's character id, so owned characters with a
@@ -50,8 +50,8 @@ export function OwnershipPage() {
     () =>
       new Map(
         (instance?.characters ?? [])
-          .filter((c): c is typeof c & { catalogId: string } => Boolean(c.catalogId))
-          .map((c) => [c.catalogId, c.id]),
+          .filter((character): character is typeof character & { catalogId: string } => Boolean(character.catalogId))
+          .map((character) => [character.catalogId, character.id]),
       ),
     [instance],
   );
@@ -59,37 +59,37 @@ export function OwnershipPage() {
   const setOwnership = useMutation({
     mutationFn: (items: { kind: Kind; catalogId: string; owned: boolean }[]) =>
       api.put(`/api/instances/${id}/ownership`, { items }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["ownership", id] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["ownership", id] }),
     onError: () => toast("Could not save ownership", "err"),
   });
 
   const createBuild = useMutation({
     mutationFn: (catalogId: string) =>
       api.post<{ id: string }>(`/api/instances/${id}/characters`, { catalogId }),
-    onSuccess: (r) => {
-      qc.invalidateQueries({ queryKey: ["instance", id] });
-      qc.invalidateQueries({ queryKey: ["ownership", id] });
-      nav(`/characters/${r.id}`);
+    onSuccess: (_result) => {
+      queryClient.invalidateQueries({ queryKey: ["instance", id] });
+      queryClient.invalidateQueries({ queryKey: ["ownership", id] });
+      navigate(`/characters/${_result.id}`);
     },
     onError: () => toast("Could not create build", "err"),
   });
 
   const entries: (CatalogCharacter | CatalogWeapon)[] =
     kind === "character" ? (catalog?.characters ?? []) : (catalog?.weapons ?? []);
-  const tagOf = (e: CatalogCharacter | CatalogWeapon) =>
-    kind === "character" ? (e as CatalogCharacter).tag : (e as CatalogWeapon).type;
+  const tagOf = (entry: CatalogCharacter | CatalogWeapon) =>
+    kind === "character" ? (entry as CatalogCharacter).tag : (entry as CatalogWeapon).type;
 
   // Cheap enough to recompute per render (a few hundred entries); avoids
   // memo dependencies on values that change identity every render.
-  const tags = [...new Set(entries.map(tagOf).filter((t): t is string => Boolean(t)))].sort();
-  const rarities = [...new Set(entries.map((e) => e.rarity))].sort((a, b) => b - a);
+  const tags = [...new Set(entries.map(tagOf).filter((tagValue): tagValue is string => Boolean(tagValue)))].sort();
+  const rarities = [...new Set(entries.map((entry) => entry.rarity))].sort((first, second) => second - first);
 
   const shown = entries.filter(
-    (e) =>
-      (!search || e.name.toLowerCase().includes(search.toLowerCase())) &&
-      (rarity === null || e.rarity === rarity) &&
-      (tag === null || tagOf(e) === tag) &&
-      (ownState === "all" || (ownState === "owned") === ownedIds.has(e.id)),
+    (entry) =>
+      (!search || entry.name.toLowerCase().includes(search.toLowerCase())) &&
+      (rarity === null || entry.rarity === rarity) &&
+      (tag === null || tagOf(entry) === tag) &&
+      (ownState === "all" || (ownState === "owned") === ownedIds.has(entry.id)),
   );
 
   if (isError) return <LoadError what="Owned units" retry={refetch} />;
@@ -132,22 +132,22 @@ export function OwnershipPage() {
       </div>
 
       <div className="toolbar">
-        <input aria-label="Search" placeholder="Search…" value={search} onChange={(e) => setSearch(e.target.value)} style={{ width: 200 }} />
-        <select aria-label="Rarity" value={rarity ?? ""} onChange={(e) => setRarity(e.target.value ? Number(e.target.value) : null)}>
+        <input aria-label="Search" placeholder="Search…" value={search} onChange={(event) => setSearch(event.target.value)} style={{ width: 200 }} />
+        <select aria-label="Rarity" value={rarity ?? ""} onChange={(event) => setRarity(event.target.value ? Number(event.target.value) : null)}>
           <option value="">Any rarity</option>
-          {rarities.map((r) => (
-            <option key={r} value={r}>{stars(r)}</option>
+          {rarities.map((rarityOption) => (
+            <option key={rarityOption} value={rarityOption}>{stars(rarityOption)}</option>
           ))}
         </select>
         {tags.length > 0 && (
-          <select aria-label="Element" value={tag ?? ""} onChange={(e) => setTag(e.target.value || null)}>
+          <select aria-label="Element" value={tag ?? ""} onChange={(event) => setTag(event.target.value || null)}>
             <option value="">Any {kind === "character" ? "element" : "type"}</option>
-            {tags.map((t) => (
-              <option key={t} value={t}>{t}</option>
+            {tags.map((tagOption) => (
+              <option key={tagOption} value={tagOption}>{tagOption}</option>
             ))}
           </select>
         )}
-        <select aria-label="Owned or not" value={ownState} onChange={(e) => setOwnState(e.target.value as typeof ownState)}>
+        <select aria-label="Owned or not" value={ownState} onChange={(event) => setOwnState(event.target.value as typeof ownState)}>
           <option value="all">All</option>
           <option value="owned">Owned</option>
           <option value="unowned">Not owned</option>
@@ -157,49 +157,49 @@ export function OwnershipPage() {
         <button
           className="btn sm ghost"
           disabled={setOwnership.isPending || shown.length === 0}
-          onClick={() => setOwnership.mutate(shown.map((e) => ({ kind, catalogId: e.id, owned: true })))}
+          onClick={() => setOwnership.mutate(shown.map((entry) => ({ kind, catalogId: entry.id, owned: true })))}
         >
           Own all shown
         </button>
         <button
           className="btn sm ghost"
           disabled={setOwnership.isPending || shown.length === 0}
-          onClick={() => setOwnership.mutate(shown.map((e) => ({ kind, catalogId: e.id, owned: false })))}
+          onClick={() => setOwnership.mutate(shown.map((entry) => ({ kind, catalogId: entry.id, owned: false })))}
         >
           Clear shown
         </button>
       </div>
 
       <div className="roster">
-        {shown.map((e) => {
-          const isOwned = ownedIds.has(e.id);
-          const buildId = kind === "character" ? buildByCatalog.get(e.id) : undefined;
+        {shown.map((entry) => {
+          const isOwned = ownedIds.has(entry.id);
+          const buildId = kind === "character" ? buildByCatalog.get(entry.id) : undefined;
           return (
-            <div className={`rtile r${e.rarity} ${isOwned ? "" : "off"}`} key={e.id}>
+            <div className={`rtile r${entry.rarity} ${isOwned ? "" : "off"}`} key={entry.id}>
               <button
                 type="button"
                 className="rtile-art"
                 title={isOwned ? "Owned — click to unmark" : "Click to mark owned"}
-                onClick={() => setOwnership.mutate([{ kind, catalogId: e.id, owned: !isOwned }])}
+                onClick={() => setOwnership.mutate([{ kind, catalogId: entry.id, owned: !isOwned }])}
               >
                 <GameIcon
-                  src={assetUrl(instance.gameKey, kind, e.icon)}
-                  fallback={communityAssetUrl(instance.gameKey, kind, e.icon)}
-                  alt={e.name}
+                  src={assetUrl(instance.gameKey, kind, entry.icon)}
+                  fallback={communityAssetUrl(instance.gameKey, kind, entry.icon)}
+                  alt={entry.name}
                   glyph={artGlyph(kind)}
                 />
                 {isOwned && <span className="rtile-check">✓</span>}
               </button>
-              <div className="rtile-name" title={e.name}>{e.name}</div>
+              <div className="rtile-name" title={entry.name}>{entry.name}</div>
               <div className="rtile-meta">
-                {stars(e.rarity)}
-                {tagOf(e) ? ` · ${tagOf(e)}` : ""}
+                {stars(entry.rarity)}
+                {tagOf(entry) ? ` · ${tagOf(entry)}` : ""}
               </div>
               {kind === "character" && isOwned &&
                 (buildId ? (
                   <Link className="rtile-build" to={`/characters/${buildId}`}>Build →</Link>
                 ) : (
-                  <button className="rtile-build" disabled={createBuild.isPending} onClick={() => createBuild.mutate(e.id)}>
+                  <button className="rtile-build" disabled={createBuild.isPending} onClick={() => createBuild.mutate(entry.id)}>
                     + Build
                   </button>
                 ))}

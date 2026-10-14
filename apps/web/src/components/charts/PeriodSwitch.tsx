@@ -7,7 +7,7 @@ export type Period = "daily" | "weekly";
  * white with the accent underline, the other small and muted below it to the
  * left. A click swaps them counter-clockwise in 0.7 s.
  */
-export function PeriodSwitch({ value, onChange }: { value: Period; onChange: (p: Period) => void }) {
+export function PeriodSwitch({ value, onChange }: { value: Period; onChange: (period: Period) => void }) {
   const [flips, setFlips] = useState(0);
   const daily = value === "daily";
   const label = (big: boolean, second: boolean, text: string) => (
@@ -21,7 +21,7 @@ export function PeriodSwitch({ value, onChange }: { value: Period; onChange: (p:
       className="pw"
       aria-label={daily ? "Daily view, switch to weekly" : "Weekly view, switch to daily"}
       onClick={() => {
-        setFlips((f) => f + 1);
+        setFlips((previousFlips) => previousFlips + 1);
         onChange(daily ? "weekly" : "daily");
       }}
     >

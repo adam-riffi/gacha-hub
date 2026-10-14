@@ -40,8 +40,8 @@ import { UnitInfo, UnitToggles } from "../components/sheet/UnitInfo";
 import type { CharacterDetail, InstanceDetail, TaskItem } from "../lib/types";
 
 type Doc = Record<string, unknown>;
-const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
-const num = (v: unknown) => (typeof v === "number" ? v : undefined);
+const capitalize = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
+const numberOrUndefined = (value: unknown) => (typeof value === "number" ? value : undefined);
 const STATUSES: { value: BuildStatus; label: string }[] = [
   { value: "none", label: "Unbuilt" },
   { value: "building", label: "Building" },
@@ -68,8 +68,8 @@ export function CharacterPage({ buildId }: { buildId?: string }) {
  * combat stats; below, the gear block in the game's shape and plan farming.
  */
 export function CharacterEditor({ data }: { data: CharacterDetail }) {
-  const nav = useNavigate();
-  const qc = useQueryClient();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const toast = useToast();
   const [state, setState] = useState(() => ({ name: data.name, portraitUrl: data.portraitUrl, doc: (data.doc as Doc) ?? {}, buildStatus: data.buildStatus, role: data.role }));
   const [busy, setBusy] = useState(false);
@@ -79,7 +79,7 @@ export function CharacterEditor({ data }: { data: CharacterDetail }) {
   const tasks = useQuery({ queryKey: ["tasks"], queryFn: () => api.get<TaskItem[]>("/api/tasks") });
   const entry = data.catalogId ? index?.characters.get(data.catalogId) : undefined;
   const doc = state.doc;
-  const setDoc = (updater: (d: Doc) => Doc) => setState((s) => ({ ...s, doc: updater(s.doc) }));
+  const setDoc = (updater: (currentDoc: Doc) => Doc) => setState((current) => ({ ...current, doc: updater(current.doc) }));
   // A unit without a build opens this same sheet unsaved (Georges, round 10: "on the not owned characters there's almost
   // nothing"); what is first kept makes its build, a try that leaves the character unowned, and the sheet moves to it.
   const draft = data.id === "";
@@ -87,75 +87,75 @@ export function CharacterEditor({ data }: { data: CharacterDetail }) {
     if (!draft) return api.put(`/api/characters/${data.id}`, body);
     const made = await api.post<{ id: string }>(`/api/instances/${data.gameInstanceId}/characters`, { catalogId: data.catalogId, own: false, name: state.name, portraitUrl: state.portraitUrl, doc: state.doc, buildStatus: state.buildStatus });
     await api.put(`/api/characters/${made.id}`, { role: state.role, ...body });
-    void qc.invalidateQueries({ queryKey: ["characters", data.gameInstanceId] });
-    nav(`/characters/${made.id}`);
+    void queryClient.invalidateQueries({ queryKey: ["characters", data.gameInstanceId] });
+    navigate(`/characters/${made.id}`);
   };
 
   const save = useMutation({
     mutationFn: () => write({ name: state.name, portraitUrl: state.portraitUrl, doc: state.doc, buildStatus: state.buildStatus, role: state.role }),
     onSuccess: () => {
       toast("Saved");
-      void qc.invalidateQueries({ queryKey: ["character", data.id] });
-      void qc.invalidateQueries({ queryKey: ["characters", data.gameInstanceId] });
+      void queryClient.invalidateQueries({ queryKey: ["character", data.id] });
+      void queryClient.invalidateQueries({ queryKey: ["characters", data.gameInstanceId] });
     },
     onError: () => toast("Save failed — check the values (limits apply)", "err"),
   });
   // Targets save on their own, so a tile can be set without saving the whole sheet.
   const setTarget = useMutation({
     mutationFn: (targets: Record<string, number | undefined>) => {
-      const kept = Object.fromEntries(Object.entries(targets).filter((e): e is [string, number] => e[1] !== undefined));
+      const kept = Object.fromEntries(Object.entries(targets).filter((pair): pair is [string, number] => pair[1] !== undefined));
       return write({ targets: Object.keys(kept).length ? kept : null });
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["character", data.id] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["character", data.id] }),
     onError: () => toast("Target not saved", "err"),
   });
   // The unit's builds, oldest first; the default one is marked and opens first from Characters.
   const all = useQuery({ queryKey: ["characters", data.gameInstanceId], queryFn: () => api.get<CharacterDto[]>(`/api/instances/${data.gameInstanceId}/characters`) });
-  const siblings = (all.data ?? []).filter((b) => data.catalogId && b.catalogId === data.catalogId).sort((a, b) => a.createdAt.localeCompare(b.createdAt));
-  const defaultId = siblings.find((b) => b.isDefault)?.id ?? siblings[0]?.id;
+  const siblings = (all.data ?? []).filter((build) => data.catalogId && build.catalogId === data.catalogId).sort((first, second) => first.createdAt.localeCompare(second.createdAt));
+  const defaultId = siblings.find((sibling) => sibling.isDefault)?.id ?? siblings[0]?.id;
   const newBuild = useMutation({
     mutationFn: () => api.post<{ id: string }>(`/api/instances/${data.gameInstanceId}/characters`, { catalogId: data.catalogId }),
-    onSuccess: (r) => {
-      void qc.invalidateQueries({ queryKey: ["characters", data.gameInstanceId] });
-      nav(`/characters/${r.id}`);
+    onSuccess: (created) => {
+      void queryClient.invalidateQueries({ queryKey: ["characters", data.gameInstanceId] });
+      navigate(`/characters/${created.id}`);
     },
   });
   const makeDefault = useMutation({
     mutationFn: () => api.put(`/api/characters/${data.id}`, { isDefault: true }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["characters", data.gameInstanceId] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["characters", data.gameInstanceId] }),
     onError: () => toast("Not saved", "err"),
   });
   const teams = useQuery({ queryKey: ["teams", data.gameInstanceId], queryFn: () => api.get<TeamDto[]>(`/api/instances/${data.gameInstanceId}/teams`) });
   const joinTeam = useMutation({
-    mutationFn: (t: TeamDto) => api.put(`/api/instances/${data.gameInstanceId}/teams/${t.id}`, { members: [...t.members, data.catalogId!] }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["teams", data.gameInstanceId] }),
+    mutationFn: (team: TeamDto) => api.put(`/api/instances/${data.gameInstanceId}/teams/${team.id}`, { members: [...team.members, data.catalogId!] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["teams", data.gameInstanceId] }),
     onError: () => toast("Could not add to the team", "err"),
   });
   const newTeam = useMutation({
     mutationFn: () => api.post(`/api/instances/${data.gameInstanceId}/teams`, { name: `${data.name}'s team`, members: [data.catalogId!] }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["teams", data.gameInstanceId] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["teams", data.gameInstanceId] }),
     onError: () => toast("Could not make the team", "err"),
   });
   const del = useMutation({
     mutationFn: () => api.del(`/api/characters/${data.id}`),
     onSuccess: () => {
       toast("Build deleted");
-      void qc.invalidateQueries();
-      nav(`/games/${data.gameInstanceId}/characters`);
+      void queryClient.invalidateQueries();
+      navigate(`/games/${data.gameInstanceId}/characters`);
     },
   });
 
   const dupe = game.manifest.dupes.character;
-  const dupeValue = num(dupe.field.split(".").reduce<unknown>((o, k) => (o as Doc | undefined)?.[k], doc)) ?? 0;
-  const level = num(doc.level);
+  const dupeValue = numberOrUndefined(dupe.field.split(".").reduce<unknown>((value, key) => (value as Doc | undefined)?.[key], doc)) ?? 0;
+  const level = numberOrUndefined(doc.level);
   const maxLevel = entry?.maxLevel ?? 90;
   const skills = skillsField(game);
   const skillDoc = (doc[skills] ?? {}) as Record<string, number>;
   const skillKeys = entry?.talents.keys ?? Object.keys(skillDoc);
-  const skillName = (k: string) => entry?.talents.info?.find((i) => i.key === k)?.name ?? cap(k);
+  const skillName = (skillKey: string) => entry?.talents.info?.find((info) => info.key === skillKey)?.name ?? capitalize(skillKey);
   // What each skill does, from the catalog, opened from its name (Georges, 2026-10-11).
-  const skillText = (k: string) => entry?.talents.info?.find((i) => i.key === k)?.description;
-  const skillIcon = (k: string) => entry?.talents.info?.find((i) => i.key === k)?.icon;
+  const skillText = (skillKey: string) => entry?.talents.info?.find((info) => info.key === skillKey)?.description;
+  const skillIcon = (skillKey: string) => entry?.talents.info?.find((info) => info.key === skillKey)?.icon;
   // What the level and the weapon give before gear (round 6), shown where nothing is typed.
   const base = buildBase(game, index, data.catalogId, doc);
   // The card's stats on the sheet too (round 7), its growth stat first and in the character's colour.
@@ -164,54 +164,54 @@ export function CharacterEditor({ data }: { data: CharacterDetail }) {
   const isGrowth = (label: string) => growth !== undefined && growth.toLowerCase() === label.toLowerCase();
   // The character's card's stats, each ticked on its stat's card (round 8); a pair counts for both its halves.
   const onCard = cardStatLabels(game, entry, state.role, data.cardStats, instance.data?.cardStats);
-  const isOnCard = (s: string) => onCard.some((l) => l.split(" / ").some((p) => p.toLowerCase() === s.toLowerCase()));
-  const toggleCard = (s: string) => {
-    const next = isOnCard(s) ? onCard.filter((l) => !l.split(" / ").some((p) => p.toLowerCase() === s.toLowerCase())) : [...onCard, s].slice(-LIMITS.cardStats);
+  const isOnCard = (stat: string) => onCard.some((label) => label.split(" / ").some((part) => part.toLowerCase() === stat.toLowerCase()));
+  const toggleCard = (stat: string) => {
+    const next = isOnCard(stat) ? onCard.filter((label) => !label.split(" / ").some((part) => part.toLowerCase() === stat.toLowerCase())) : [...onCard, stat].slice(-LIMITS.cardStats);
     setCardStats.mutate(next.length ? next : null);
   };
   const critValue = statKpis(game, doc, ["Crit value"], catalog?.gear ?? [], base)[0]!.value;
   const setCardStats = useMutation({
     mutationFn: (cardStats: string[] | null) => write({ cardStats }),
     // The box flips at once (round 8); the server's answer follows.
-    onMutate: (cardStats) => qc.setQueryData<CharacterDetail>(["character", data.id], (old) => (old ? { ...old, cardStats } : old)),
-    onSettled: () => Promise.all([["character", data.id], ["characters", data.gameInstanceId]].map((queryKey) => qc.invalidateQueries({ queryKey }))),
+    onMutate: (cardStats) => queryClient.setQueryData<CharacterDetail>(["character", data.id], (old) => (old ? { ...old, cardStats } : old)),
+    onSettled: () => Promise.all([["character", data.id], ["characters", data.gameInstanceId]].map((queryKey) => queryClient.invalidateQueries({ queryKey }))),
   });
-  const plan = (tasks.data ?? []).find((t) => !t.materialId && (t.origin as TaskOrigin | null)?.catalogId === data.catalogId && (t.origin as TaskOrigin | null)?.kind === "character");
+  const plan = (tasks.data ?? []).find((task) => !task.materialId && (task.origin as TaskOrigin | null)?.catalogId === data.catalogId && (task.origin as TaskOrigin | null)?.kind === "character");
   const targets = ((plan?.origin as { goal?: { talents?: Record<string, { to: number }> } } | null)?.goal?.talents ?? {}) as Record<string, { to: number }>;
   const holder = weaponHolder(game);
-  const weapon = (holder ? doc[holder] : undefined) as { name?: string; catalogId?: string; level?: number; [k: string]: unknown } | undefined;
+  const weapon = (holder ? doc[holder] : undefined) as { name?: string; catalogId?: string; level?: number; [key: string]: unknown } | undefined;
   const weaponDupe = game.manifest.dupes.weapon;
   const weaponDupeKey = weaponDupe?.field.split(".").at(-1);
-  const weapons: CatalogWeapon[] = (catalog?.weapons ?? []).filter((w) => !entry?.weaponType || !w.type || w.type === entry.weaponType);
+  const weapons: CatalogWeapon[] = (catalog?.weapons ?? []).filter((catalogWeapon) => !entry?.weaponType || !catalogWeapon.type || catalogWeapon.type === entry.weaponType);
   // The weapons and the characters synced (Georges, round 5): a pick takes a free copy, or asks which.
   const copies = useQuery({ queryKey: ["weapons", data.gameInstanceId], queryFn: () => api.get<WeaponCopyDto[]>(`/api/instances/${data.gameInstanceId}/weapons`), enabled: Boolean(holder) });
   const [asking, setAsking] = useState<CatalogWeapon | null>(null);
   const [choosing, setChoosing] = useState(false);
-  const heldBy = (copyId: string) => (all.data ?? []).filter((b) => b.id !== data.id && ((b.doc as Doc)[holder ?? ""] as Doc | undefined)?.copyId === copyId);
-  const equip = (c: WeaponCopyDto) => {
+  const heldBy = (copyId: string) => (all.data ?? []).filter((build) => build.id !== data.id && ((build.doc as Doc)[holder ?? ""] as Doc | undefined)?.copyId === copyId);
+  const equip = (copy: WeaponCopyDto) => {
     setAsking(null);
-    setDoc((d) => ({ ...d, [holder!]: { ...((d[holder!] ?? {}) as Doc), name: c.name, catalogId: c.catalogId ?? undefined, copyId: c.id, level: c.level, ...(weaponDupeKey ? { [weaponDupeKey]: c.refinement } : {}) } }));
+    setDoc((currentDoc) => ({ ...currentDoc, [holder!]: { ...((currentDoc[holder!] ?? {}) as Doc), name: copy.name, catalogId: copy.catalogId ?? undefined, copyId: copy.id, level: copy.level, ...(weaponDupeKey ? { [weaponDupeKey]: copy.refinement } : {}) } }));
   };
-  const pickWeapon = (w: CatalogWeapon | null, text: string) => {
-    if (!w) return setDoc((d) => ({ ...d, [holder!]: { ...((d[holder!] ?? {}) as Doc), name: text || undefined, catalogId: undefined, copyId: undefined } }));
-    const free = (copies.data ?? []).find((c) => c.catalogId === w.id && heldBy(c.id).length === 0);
+  const pickWeapon = (catalogWeapon: CatalogWeapon | null, text: string) => {
+    if (!catalogWeapon) return setDoc((currentDoc) => ({ ...currentDoc, [holder!]: { ...((currentDoc[holder!] ?? {}) as Doc), name: text || undefined, catalogId: undefined, copyId: undefined } }));
+    const free = (copies.data ?? []).find((copy) => copy.catalogId === catalogWeapon.id && heldBy(copy.id).length === 0);
     if (free) equip(free);
-    else setAsking(w);
+    else setAsking(catalogWeapon);
   };
   const addCopy = useMutation({
     mutationFn: (catalogId: string) => api.post<WeaponCopyDto>(`/api/instances/${data.gameInstanceId}/weapons`, { catalogId }),
-    onSuccess: (c) => {
-      equip(c);
-      return Promise.all([["weapons", data.gameInstanceId], ["ownership", data.gameInstanceId]].map((queryKey) => qc.invalidateQueries({ queryKey })));
+    onSuccess: (copy) => {
+      equip(copy);
+      return Promise.all([["weapons", data.gameInstanceId], ["ownership", data.gameInstanceId]].map((queryKey) => queryClient.invalidateQueries({ queryKey })));
     },
     onError: () => toast("Not added", "err"),
   });
   const takeFrom = useMutation({
-    mutationFn: (v: { from: CharacterDto; copy: WeaponCopyDto }) => api.put(`/api/characters/${v.from.id}`, { doc: { ...(v.from.doc as Doc), [holder!]: {} } }),
-    onSuccess: (_r, v) => {
-      equip(v.copy);
-      toast(`Taken from ${index?.characters.get(v.from.catalogId ?? "")?.name ?? v.from.name}`);
-      return qc.invalidateQueries({ queryKey: ["characters", data.gameInstanceId] });
+    mutationFn: (change: { from: CharacterDto; copy: WeaponCopyDto }) => api.put(`/api/characters/${change.from.id}`, { doc: { ...(change.from.doc as Doc), [holder!]: {} } }),
+    onSuccess: (_response, change) => {
+      equip(change.copy);
+      toast(`Taken from ${index?.characters.get(change.from.catalogId ?? "")?.name ?? change.from.name}`);
+      return queryClient.invalidateQueries({ queryKey: ["characters", data.gameInstanceId] });
     },
     onError: () => toast("Not taken", "err"),
   });
@@ -222,7 +222,7 @@ export function CharacterEditor({ data }: { data: CharacterDetail }) {
     setBusy(true);
     try {
       const { url } = await api.upload(file);
-      setState((s) => ({ ...s, portraitUrl: url }));
+      setState((current) => ({ ...current, portraitUrl: url }));
     } catch {
       toast("Upload failed", "err");
     } finally {
@@ -238,10 +238,10 @@ export function CharacterEditor({ data }: { data: CharacterDetail }) {
       {data.catalogId && !draft && (
         <div className="sh-builds">
           <div className="sh-build-tabs" role="tablist" aria-label="Builds">
-            {siblings.map((b, i) => (
-              <Link key={b.id} role="tab" aria-selected={b.id === data.id} className="sh-build-tab" to={`/characters/${b.id}`}>
-                {b.name !== entry?.name && !/\(\d+\)/.test(b.name) ? b.name : `Build ${i + 1}`}
-                {b.id === defaultId ? " ★" : ""}
+            {siblings.map((sibling, siblingIndex) => (
+              <Link key={sibling.id} role="tab" aria-selected={sibling.id === data.id} className="sh-build-tab" to={`/characters/${sibling.id}`}>
+                {sibling.name !== entry?.name && !/\(\d+\)/.test(sibling.name) ? sibling.name : `Build ${siblingIndex + 1}`}
+                {sibling.id === defaultId ? " ★" : ""}
               </Link>
             ))}
           </div>
@@ -253,7 +253,7 @@ export function CharacterEditor({ data }: { data: CharacterDetail }) {
               Make default
             </button>
           )}
-          <input className="sh-build-name" aria-label="Build name" placeholder="Label" maxLength={120} value={state.name === entry?.name || /\(\d+\)/.test(state.name) ? "" : state.name} onChange={(e) => setState((s) => ({ ...s, name: e.target.value || (entry?.name ?? s.name) }))} />
+          <input className="sh-build-name" aria-label="Build name" placeholder="Label" maxLength={120} value={state.name === entry?.name || /\(\d+\)/.test(state.name) ? "" : state.name} onChange={(event) => setState((current) => ({ ...current, name: event.target.value || (entry?.name ?? current.name) }))} />
         </div>
       )}
       <div className="sh-top">
@@ -261,7 +261,7 @@ export function CharacterEditor({ data }: { data: CharacterDetail }) {
           <GameIcon src={state.portraitUrl ?? assetUrl(game.key, "splash", art)} fallback={[communityAssetUrl(game.key, "splash", art), communityAssetUrl(game.key, "character", entry?.icon)]} alt={state.name} glyph="character" />
           <label className="btn sh-upload">
             {busy ? "Uploading…" : "Change art"}
-            <input type="file" accept="image/*" hidden disabled={busy} onChange={(e) => void upload(e.target.files?.[0])} />
+            <input type="file" accept="image/*" hidden disabled={busy} onChange={(event) => void upload(event.target.files?.[0])} />
           </label>
         </div>
         <div className="sh-main">
@@ -283,9 +283,9 @@ export function CharacterEditor({ data }: { data: CharacterDetail }) {
                 {quick && data.catalogId && <QuickBuild instanceId={data.gameInstanceId} gameKey={data.gameKey} catalogIds={[data.catalogId]} onClose={() => setQuick(false)} />}
                 <label className="sh-inline">
                   Build status
-                  <select value={state.buildStatus} onChange={(e) => setState((s) => ({ ...s, buildStatus: e.target.value as BuildStatus }))}>
-                    {STATUSES.map((o) => (
-                      <option key={o.value} value={o.value}>{o.label}</option>
+                  <select value={state.buildStatus} onChange={(event) => setState((current) => ({ ...current, buildStatus: event.target.value as BuildStatus }))}>
+                    {STATUSES.map((statusOption) => (
+                      <option key={statusOption.value} value={statusOption.value}>{statusOption.label}</option>
                     ))}
                   </select>
                 </label>
@@ -309,34 +309,34 @@ export function CharacterEditor({ data }: { data: CharacterDetail }) {
               <div className="sh-row">
                 <label htmlFor="sh-level">Level</label>
                 <span>
-                  <input id="sh-level" type="number" min={1} max={maxLevel} value={level ?? ""} onChange={(e) => setDoc((d) => ({ ...d, level: e.target.value === "" ? undefined : Number(e.target.value) }))} /> <span className="mu">/ {maxLevel}</span>
+                  <input id="sh-level" type="number" min={1} max={maxLevel} value={level ?? ""} onChange={(event) => setDoc((currentDoc) => ({ ...currentDoc, level: event.target.value === "" ? undefined : Number(event.target.value) }))} /> <span className="mu">/ {maxLevel}</span>
                 </span>
               </div>
               <div className="sh-row">
                 <span className="kpi-label">Ascension</span>
                 <span className="sh-pips" role="img" aria-label={`Ascension ${ascensionPips(level ?? 1)} of 6`}>
-                  {Array.from({ length: 6 }, (_, i) => <i key={i} className={i < ascensionPips(level ?? 1) ? "on" : ""} />)}
+                  {Array.from({ length: 6 }, (_, pipIndex) => <i key={pipIndex} className={pipIndex < ascensionPips(level ?? 1) ? "on" : ""} />)}
                 </span>
               </div>
               <div className="sh-row">
                 <label htmlFor="sh-dupes">{dupe.label}</label>
                 <span>
-                  <input id="sh-dupes" type="number" min={0} max={dupe.max} value={dupeValue} onChange={(e) => setDoc((d) => ({ ...d, [dupe.field]: Number(e.target.value) }))} /> <span className="mn">{dupeBadge(game, doc)}</span>
+                  <input id="sh-dupes" type="number" min={0} max={dupe.max} value={dupeValue} onChange={(event) => setDoc((currentDoc) => ({ ...currentDoc, [dupe.field]: Number(event.target.value) }))} /> <span className="mn">{dupeBadge(game, doc)}</span>
                 </span>
               </div>
             </section>
 
-            <section className="card" aria-label={cap(skills)}>
+            <section className="card" aria-label={capitalize(skills)}>
               <div className="spread">
-                <h3>{cap(skills)}</h3>
+                <h3>{capitalize(skills)}</h3>
                 <span className="mn mu">now → target</span>
               </div>
               {skillKeys.length === 0 && <p className="mu">No skills on record for this unit.</p>}
-              {skillKeys.map((k) => (
-                <SkillRow key={k} name={skillName(k)} text={skillText(k)} icon={skillIcon(k)} gameKey={game.key}>
+              {skillKeys.map((skillKey) => (
+                <SkillRow key={skillKey} name={skillName(skillKey)} text={skillText(skillKey)} icon={skillIcon(skillKey)} gameKey={game.key}>
                   <span className="sh-ctl">
-                    <input type="number" aria-label={`${k} now`} min={1} max={15} value={skillDoc[k] ?? 1} onChange={(e) => setDoc((d) => ({ ...d, [skills]: { ...((d[skills] ?? {}) as Doc), [k]: Number(e.target.value) } }))} />
-                    <span className="mu"> → {targets[k]?.to ?? "—"}</span>
+                    <input type="number" aria-label={`${skillKey} now`} min={1} max={15} value={skillDoc[skillKey] ?? 1} onChange={(event) => setDoc((currentDoc) => ({ ...currentDoc, [skills]: { ...((currentDoc[skills] ?? {}) as Doc), [skillKey]: Number(event.target.value) } }))} />
+                    <span className="mu"> → {targets[skillKey]?.to ?? "—"}</span>
                   </span>
                 </SkillRow>
               ))}
@@ -358,19 +358,19 @@ export function CharacterEditor({ data }: { data: CharacterDetail }) {
                   weapons={weapons}
                   copies={copies.data ?? []}
                   holders={(copyId) =>
-                    heldBy(copyId).map((b) => {
-                      const unit = index?.characters.get(b.catalogId ?? "");
-                      return { key: b.id, name: unit?.name ?? b.name, icon: unit?.icon, tag: unit?.tag };
+                    heldBy(copyId).map((build) => {
+                      const unit = index?.characters.get(build.catalogId ?? "");
+                      return { key: build.id, name: unit?.name ?? build.name, icon: unit?.icon, tag: unit?.tag };
                     })
                   }
-                  onCopy={(c, w) => {
+                  onCopy={(copy, catalogWeapon) => {
                     setChoosing(false);
-                    if (heldBy(c.id).length === 0) equip(c);
-                    else setAsking(w);
+                    if (heldBy(copy.id).length === 0) equip(copy);
+                    else setAsking(catalogWeapon);
                   }}
-                  onWeapon={(w) => {
+                  onWeapon={(catalogWeapon) => {
                     setChoosing(false);
-                    pickWeapon(w, w.name);
+                    pickWeapon(catalogWeapon, catalogWeapon.name);
                   }}
                   onClose={() => setChoosing(false)}
                 />
@@ -383,28 +383,28 @@ export function CharacterEditor({ data }: { data: CharacterDetail }) {
                     placeholder="Name"
                     value={weapon?.name ?? ""}
                     free
-                    options={weapons.map((w) => ({ id: w.id, name: w.name, src: assetUrl(game.key, "weapon", w.icon), fallback: communityAssetUrl(game.key, "weapon", w.icon), sub: `★${w.rarity}` }))}
-                    onPick={(o, text) => pickWeapon(weapons.find((w) => w.id === o?.id) ?? null, text)}
+                    options={weapons.map((catalogWeapon) => ({ id: catalogWeapon.id, name: catalogWeapon.name, src: assetUrl(game.key, "weapon", catalogWeapon.icon), fallback: communityAssetUrl(game.key, "weapon", catalogWeapon.icon), sub: `★${catalogWeapon.rarity}` }))}
+                    onPick={(option, text) => pickWeapon(weapons.find((catalogWeapon) => catalogWeapon.id === option?.id) ?? null, text)}
                   />
                   {asking && (
                     <div className="sh-ask" role="group" aria-label={`Which ${asking.name}`}>
-                      <p className="mu">{(copies.data ?? []).some((c) => c.catalogId === asking.id) ? `Every ${asking.name} you have is held:` : `You have no ${asking.name} yet.`}</p>
+                      <p className="mu">{(copies.data ?? []).some((copy) => copy.catalogId === asking.id) ? `Every ${asking.name} you have is held:` : `You have no ${asking.name} yet.`}</p>
                       {(copies.data ?? [])
-                        .filter((c) => c.catalogId === asking.id)
-                        .flatMap((c) => heldBy(c.id).map((b) => ({ c, b, unit: index?.characters.get(b.catalogId ?? "") })))
-                        .map(({ c, b, unit }) => (
-                          <div key={c.id + b.id} className="sh-ask-row">
-                            <CatalogIcon gameKey={game.key} kind="character" icon={unit?.icon} name={unit?.name ?? b.name} tag={unit?.tag} />
+                        .filter((copy) => copy.catalogId === asking.id)
+                        .flatMap((copy) => heldBy(copy.id).map((build) => ({ copy, build, unit: index?.characters.get(build.catalogId ?? "") })))
+                        .map(({ copy, build, unit }) => (
+                          <div key={copy.id + build.id} className="sh-ask-row">
+                            <CatalogIcon gameKey={game.key} kind="character" icon={unit?.icon} name={unit?.name ?? build.name} tag={unit?.tag} />
                             <span className="mn">
-                              {unit?.name ?? b.name} · Lv {c.level}
-                              {weaponDupe && ` · ${weaponDupe.field.split(".").at(-1)!.charAt(0).toUpperCase()}${c.refinement}`}
+                              {unit?.name ?? build.name} · Lv {copy.level}
+                              {weaponDupe && ` · ${weaponDupe.field.split(".").at(-1)!.charAt(0).toUpperCase()}${copy.refinement}`}
                             </span>
                             <span className="row sh-ask-btns">
-                              <button type="button" className="btn sm" disabled={takeFrom.isPending} onClick={() => takeFrom.mutate({ from: b, copy: c })}>
-                                Take it from {unit?.name ?? b.name}
+                              <button type="button" className="btn sm" disabled={takeFrom.isPending} onClick={() => takeFrom.mutate({ from: build, copy })}>
+                                Take it from {unit?.name ?? build.name}
                               </button>
-                              <button type="button" className="btn sm" onClick={() => equip(c)}>
-                                Share {unit?.name ?? b.name}'s
+                              <button type="button" className="btn sm" onClick={() => equip(copy)}>
+                                Share {unit?.name ?? build.name}'s
                               </button>
                             </span>
                           </div>
@@ -421,14 +421,14 @@ export function CharacterEditor({ data }: { data: CharacterDetail }) {
                   )}
                   <div className="sh-row">
                     <label htmlFor="sh-wlevel">Level</label>
-                    <input id="sh-wlevel" type="number" min={1} max={90} value={weapon?.level ?? ""} onChange={(e) => setDoc((d) => ({ ...d, [holder]: { ...((d[holder] ?? {}) as Doc), level: e.target.value === "" ? undefined : Number(e.target.value) } }))} />
+                    <input id="sh-wlevel" type="number" min={1} max={90} value={weapon?.level ?? ""} onChange={(event) => setDoc((currentDoc) => ({ ...currentDoc, [holder]: { ...((currentDoc[holder] ?? {}) as Doc), level: event.target.value === "" ? undefined : Number(event.target.value) } }))} />
                   </div>
                   {weaponDupe && weaponDupeKey && (
                     <div className="sh-row">
                       <label htmlFor="sh-wdupes">{weaponDupe.label}</label>
                       <span>
-                        <input id="sh-wdupes" type="number" min={1} max={weaponDupe.max} value={num(weapon?.[weaponDupeKey]) ?? ""} onChange={(e) => setDoc((d) => ({ ...d, [holder]: { ...((d[holder] ?? {}) as Doc), [weaponDupeKey]: Number(e.target.value) } }))} />
-                        <span className="mn"> {weaponDupe.field.split(".").at(-1)!.charAt(0).toUpperCase()}{num(weapon?.[weaponDupeKey]) ?? "—"}</span>
+                        <input id="sh-wdupes" type="number" min={1} max={weaponDupe.max} value={numberOrUndefined(weapon?.[weaponDupeKey]) ?? ""} onChange={(event) => setDoc((currentDoc) => ({ ...currentDoc, [holder]: { ...((currentDoc[holder] ?? {}) as Doc), [weaponDupeKey]: Number(event.target.value) } }))} />
+                        <span className="mn"> {weaponDupe.field.split(".").at(-1)!.charAt(0).toUpperCase()}{numberOrUndefined(weapon?.[weaponDupeKey]) ?? "—"}</span>
                       </span>
                     </div>
                   )}
@@ -454,20 +454,20 @@ export function CharacterEditor({ data }: { data: CharacterDetail }) {
               </span>
             </div>
             <div className="sh-statcards">
-              {sheetStats(game, Object.keys((doc.stats ?? {}) as Doc)).map((s) => (
+              {sheetStats(game, Object.keys((doc.stats ?? {}) as Doc)).map((stat) => (
                 <StatCard
-                  key={s}
-                  label={s}
-                  typed={num(((doc.stats ?? {}) as Doc)[s]) ?? undefined}
-                  base={base[s]}
-                  derived={/^crit value$/i.test(s) ? critValue : undefined}
-                  growth={isGrowth(s)}
-                  onCard={isOnCard(s)}
-                  onToggle={() => toggleCard(s)}
-                  target={data.targets?.[s]}
-                  fallback={data.defaultTargets?.[s]}
-                  onTarget={(v) => setTarget.mutate({ ...(data.targets ?? {}), ...v })}
-                  onValue={(v) => setDoc((d) => ({ ...d, stats: { ...((d.stats ?? {}) as Doc), [s]: v } }))}
+                  key={stat}
+                  label={stat}
+                  typed={numberOrUndefined(((doc.stats ?? {}) as Doc)[stat]) ?? undefined}
+                  base={base[stat]}
+                  derived={/^crit value$/i.test(stat) ? critValue : undefined}
+                  growth={isGrowth(stat)}
+                  onCard={isOnCard(stat)}
+                  onToggle={() => toggleCard(stat)}
+                  target={data.targets?.[stat]}
+                  fallback={data.defaultTargets?.[stat]}
+                  onTarget={(changedTargets) => setTarget.mutate({ ...(data.targets ?? {}), ...changedTargets })}
+                  onValue={(value) => setDoc((currentDoc) => ({ ...currentDoc, stats: { ...((currentDoc.stats ?? {}) as Doc), [stat]: value } }))}
                 />
               ))}
             </div>
@@ -475,7 +475,7 @@ export function CharacterEditor({ data }: { data: CharacterDetail }) {
         </div>
       </div>
 
-      <GearBlock game={game} doc={doc} setDoc={setDoc} sets={(catalog?.gear ?? []).map((g) => ({ id: g.id, name: g.name, src: assetUrl(game.key, "gear", g.icon), fallback: communityAssetUrl(game.key, "gear", g.icon) }))} />
+      <GearBlock game={game} doc={doc} setDoc={setDoc} sets={(catalog?.gear ?? []).map((gearSet) => ({ id: gearSet.id, name: gearSet.name, src: assetUrl(game.key, "gear", gearSet.icon), fallback: communityAssetUrl(game.key, "gear", gearSet.icon) }))} />
 
       {entry && instance.data && <UnitInfo instance={instance.data} game={game} entry={entry} />}
 
@@ -497,29 +497,29 @@ export function CharacterEditor({ data }: { data: CharacterDetail }) {
           </div>
           {/* The teams with this character, their other members named; add it to one with room, or make one around it. */}
           {(teams.data ?? [])
-            .filter((t) => t.members.includes(data.catalogId!))
-            .map((t) => (
-              <div className="sh-row" key={t.id}>
-                <Link to={`/games/${data.gameInstanceId}/teams`}>{t.name}</Link>
+            .filter((team) => team.members.includes(data.catalogId!))
+            .map((team) => (
+              <div className="sh-row" key={team.id}>
+                <Link to={`/games/${data.gameInstanceId}/teams`}>{team.name}</Link>
                 <span className="mu">
-                  {t.members
-                    .filter((m) => m !== data.catalogId)
-                    .map((m) => index?.characters.get(m)?.name ?? m)
+                  {team.members
+                    .filter((member) => member !== data.catalogId)
+                    .map((member) => index?.characters.get(member)?.name ?? member)
                     .join(" · ") || "no one else yet"}
                 </span>
               </div>
             ))}
-          {!(teams.data ?? []).some((t) => t.members.includes(data.catalogId!)) && <p className="mu">No team uses {data.name} yet.</p>}
+          {!(teams.data ?? []).some((team) => team.members.includes(data.catalogId!)) && <p className="mu">No team uses {data.name} yet.</p>}
           <div className="row sh-used-add">
-            <select aria-label="Add to a team" value="" onChange={(e) => {
-              const t = (teams.data ?? []).find((x) => x.id === e.target.value);
-              if (t) joinTeam.mutate(t);
+            <select aria-label="Add to a team" value="" onChange={(event) => {
+              const team = (teams.data ?? []).find((candidate) => candidate.id === event.target.value);
+              if (team) joinTeam.mutate(team);
             }}>
               <option value="">Add to a team…</option>
               {(teams.data ?? [])
-                .filter((t) => !t.members.includes(data.catalogId!) && t.members.length < (game.teamSize ?? 4))
-                .map((t) => (
-                  <option key={t.id} value={t.id}>{t.name}</option>
+                .filter((team) => !team.members.includes(data.catalogId!) && team.members.length < (game.teamSize ?? 4))
+                .map((team) => (
+                  <option key={team.id} value={team.id}>{team.name}</option>
                 ))}
             </select>
             <button className="btn" disabled={newTeam.isPending} onClick={() => newTeam.mutate()}>
@@ -559,8 +559,8 @@ function StatCard({
   onToggle: () => void;
   target?: number;
   fallback?: number;
-  onTarget: (t: Record<string, number | undefined>) => void;
-  onValue: (v: number | undefined) => void;
+  onTarget: (targets: Record<string, number | undefined>) => void;
+  onValue: (value: number | undefined) => void;
 }) {
   const now = derived !== undefined ? Number.parseFloat(derived) : (typed ?? base);
   const auto = derived === undefined && typed === undefined && base !== undefined;
@@ -587,7 +587,7 @@ function StatCard({
           value={typed ?? ""}
           placeholder={base !== undefined ? `${Math.round(base)} base` : "—"}
           title={auto ? "Base: the level and the weapon, until a value is typed" : undefined}
-          onChange={(e) => onValue(e.target.value === "" ? undefined : Number(e.target.value))}
+          onChange={(event) => onValue(event.target.value === "" ? undefined : Number(event.target.value))}
         />
       )}
       <span className="sh-target">
@@ -599,9 +599,9 @@ function StatCard({
               aria-label={`${label} target`}
               key={shown ?? ""}
               defaultValue={shown ?? ""}
-              onBlur={(e) => {
-                const v = e.target.value === "" ? undefined : Number(e.target.value);
-                if (v !== shown) onTarget({ [label]: v });
+              onBlur={(event) => {
+                const value = event.target.value === "" ? undefined : Number(event.target.value);
+                if (value !== shown) onTarget({ [label]: value });
               }}
             />
           </label>

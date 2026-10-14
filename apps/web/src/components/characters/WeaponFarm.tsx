@@ -20,13 +20,13 @@ export function WeaponFarm({ instanceId, weapon, onDone }: { instanceId: string;
   // The materials follow the levels as they change (no Preview step).
   useEffect(() => {
     if (to <= from) return;
-    const t = setTimeout(() => runPreview(), 250);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => runPreview(), 250);
+    return () => clearTimeout(timer);
   }, [from, to, runPreview]);
   const generate = useMutation({
     mutationFn: () => api.post<PlanGenerateResultDto>(`/api/instances/${instanceId}/plans/generate`, body),
-    onSuccess: (r) => {
-      toast(`${r.created} task(s) created, ${r.updated} updated`);
+    onSuccess: (result) => {
+      toast(`${result.created} task(s) created, ${result.updated} updated`);
       onDone();
     },
     onError: () => toast("Could not generate tasks", "err"),
@@ -34,8 +34,8 @@ export function WeaponFarm({ instanceId, weapon, onDone }: { instanceId: string;
   return (
     <section aria-label={`Farm ${weapon.name}`} style={{ marginTop: 10 }}>
       <div className="row" style={{ alignItems: "flex-end" }}>
-        <div><label>From cap</label><select aria-label="From cap" value={from} onChange={(e) => setFrom(Number(e.target.value))}>{caps.map((c) => <option key={c} value={c}>{c}</option>)}</select></div>
-        <div><label>To</label><select aria-label="To" value={to} onChange={(e) => setTo(Number(e.target.value))}>{caps.map((c) => <option key={c} value={c}>{c}</option>)}</select></div>
+        <div><label>From cap</label><select aria-label="From cap" value={from} onChange={(event) => setFrom(Number(event.target.value))}>{caps.map((cap) => <option key={cap} value={cap}>{cap}</option>)}</select></div>
+        <div><label>To</label><select aria-label="To" value={to} onChange={(event) => setTo(Number(event.target.value))}>{caps.map((cap) => <option key={cap} value={cap}>{cap}</option>)}</select></div>
         <button type="button" className="btn sm primary" disabled={to <= from || generate.isPending} onClick={() => generate.mutate()}>Farm</button>
       </div>
       {preview && <div style={{ marginTop: 8 }}><PlanTable preview={preview} /></div>}

@@ -23,44 +23,44 @@ const offset = (minutes: number) => `UTC${minutes >= 0 ? "+" : "−"}${Math.abs(
  * and the reset; Open hub and Sleep. Beside: the games to add.
  */
 export function LibraryPage() {
-  const qc = useQueryClient();
-  const nav = useNavigate();
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const toast = useToast();
   const [dragging, setDragging] = useState<string | null>(null);
   const games = useQuery({ queryKey: ["games"], queryFn: () => api.get<GameCatalogItem[]>("/api/games") });
   const dash = useQuery({ queryKey: ["dashboard"], queryFn: () => api.get<DashboardData>("/api/dashboard") });
   const tasks = useQuery({ queryKey: ["tasks"], queryFn: () => api.get<TaskDto[]>("/api/tasks") });
-  const refresh = () => Promise.all(["instances", "dashboard"].map((k) => qc.invalidateQueries({ queryKey: [k] })));
+  const refresh = () => Promise.all(["instances", "dashboard"].map((key) => queryClient.invalidateQueries({ queryKey: [key] })));
 
   const install = useMutation({
     mutationFn: (gameKey: string) => api.post<{ id: string }>("/api/instances", { gameKey }),
-    onSuccess: (r) => {
+    onSuccess: (_created) => {
       toast("Game added");
-      void qc.invalidateQueries();
-      nav(`/games/${r.id}`);
+      void queryClient.invalidateQueries();
+      navigate(`/games/${_created.id}`);
     },
     onError: () => toast("Couldn't add the game", "err"),
   });
-  const sleep = useMutation({ mutationFn: (v: { id: string; sleeping: boolean }) => api.put(`/api/instances/${v.id}`, { sleeping: v.sleeping }), onSuccess: refresh });
+  const sleep = useMutation({ mutationFn: (request: { id: string; sleeping: boolean }) => api.put(`/api/instances/${request.id}`, { sleeping: request.sleeping }), onSuccess: refresh });
   const reorder = useMutation({ mutationFn: (ids: string[]) => api.put("/api/instances/order", { ids }), onSuccess: refresh, onError: () => toast("Couldn't reorder the games", "err") });
 
   if (dash.isError || games.isError) return <LoadError what="The games" retry={() => Promise.all([dash.refetch(), games.refetch()])} />;
   if (!dash.data || !games.data) return <div className="mu">Loading…</div>;
 
   const rows = dash.data.games;
-  const ids = rows.map((g) => g.instanceId);
+  const ids = rows.map((row) => row.instanceId);
   const move = (id: string, to: number) => {
-    const next = ids.filter((x) => x !== id);
+    const next = ids.filter((otherId) => otherId !== id);
     next.splice(Math.max(0, Math.min(to, next.length)), 0, id);
     if (next.join() !== ids.join()) reorder.mutate(next);
   };
   // Goals as Tasks counts them: a profile's top-level goals, active or in the backlog.
   const goalsOf = (instanceId: string) => {
-    const top = (tasks.data ?? []).filter((t) => t.scope === "game" && t.refId === instanceId && listedGoal(t) && t.type !== "recurring");
-    return { active: top.filter((t) => !t.backlog).length, backlog: top.filter((t) => t.backlog).length };
+    const top = (tasks.data ?? []).filter((task) => task.scope === "game" && task.refId === instanceId && listedGoal(task) && task.type !== "recurring");
+    return { active: top.filter((task) => !task.backlog).length, backlog: top.filter((task) => task.backlog).length };
   };
-  const installed = new Set(rows.map((g) => g.gameKey));
-  const toAdd = games.data.filter((g) => !installed.has(g.key));
+  const installed = new Set(rows.map((row) => row.gameKey));
+  const toAdd = games.data.filter((listedGame) => !installed.has(listedGame.key));
 
   return (
     <>
@@ -72,20 +72,20 @@ export function LibraryPage() {
       <div className="lib-page">
         <div className="lib-list">
           {rows.length === 0 && <p className="mu">No game yet: add one from the list beside.</p>}
-          {rows.map((g, i) => (
+          {rows.map((row, rowIndex) => (
             <GameRow
-              key={g.instanceId}
-              g={g}
-              goals={goalsOf(g.instanceId)}
-              first={i === 0}
-              last={i === rows.length - 1}
-              dragging={dragging === g.instanceId}
-              onUp={() => move(g.instanceId, i - 1)}
-              onDown={() => move(g.instanceId, i + 1)}
-              onDragStart={() => setDragging(g.instanceId)}
+              key={row.instanceId}
+              dashGame={row}
+              goals={goalsOf(row.instanceId)}
+              first={rowIndex === 0}
+              last={rowIndex === rows.length - 1}
+              dragging={dragging === row.instanceId}
+              onUp={() => move(row.instanceId, rowIndex - 1)}
+              onDown={() => move(row.instanceId, rowIndex + 1)}
+              onDragStart={() => setDragging(row.instanceId)}
               onDragEnd={() => setDragging(null)}
-              onDrop={() => dragging && move(dragging, i)}
-              onSleep={(sleeping) => sleep.mutate({ id: g.instanceId, sleeping })}
+              onDrop={() => dragging && move(dragging, rowIndex)}
+              onSleep={(sleeping) => sleep.mutate({ id: row.instanceId, sleeping })}
             />
           ))}
         </div>
@@ -94,9 +94,9 @@ export function LibraryPage() {
             <h3>Add a game</h3>
             {toAdd.length ? (
               <div className="lib-add">
-                {toAdd.map((g) => (
-                  <button key={g.key} className="btn" style={{ ["--c" as string]: g.accent }} disabled={install.isPending} onClick={() => install.mutate(g.key)}>
-                    + {g.name}
+                {toAdd.map((listedGame) => (
+                  <button key={listedGame.key} className="btn" style={{ ["--c" as string]: listedGame.accent }} disabled={install.isPending} onClick={() => install.mutate(listedGame.key)}>
+                    + {listedGame.name}
                   </button>
                 ))}
               </div>
@@ -111,7 +111,7 @@ export function LibraryPage() {
 }
 
 function GameRow(props: {
-  g: DashGame;
+  dashGame: DashGame;
   goals: { active: number; backlog: number };
   first: boolean;
   last: boolean;
@@ -123,73 +123,73 @@ function GameRow(props: {
   onDrop: () => void;
   onSleep: (sleeping: boolean) => void;
 }) {
-  const { g } = props;
+  const { dashGame } = props;
   const [over, setOver] = useState(false);
-  const game = getGame(g.gameKey);
-  const region = game?.regions.find((r) => r.key === g.regionKey) ?? game?.regions[0];
+  const game = getGame(dashGame.gameKey);
+  const region = game?.regions.find((candidate) => candidate.key === dashGame.regionKey) ?? game?.regions[0];
   // The game's daily plus the daily tasks you added, as on Home.
-  const done = g.recurring.daily.done + g.recurring.dailyTasks.done;
-  const total = g.recurring.daily.total + g.recurring.dailyTasks.total;
-  const pulls = pullsFor(g.currencies);
-  const today = total === 0 ? "No dailies" : `Dailies ${done}/${total}${done >= total ? " · done" : g.nextReset ? ` · reset ${formatRemaining(g.nextReset)}` : ""}`;
+  const done = dashGame.recurring.daily.done + dashGame.recurring.dailyTasks.done;
+  const total = dashGame.recurring.daily.total + dashGame.recurring.dailyTasks.total;
+  const pulls = pullsFor(dashGame.currencies);
+  const today = total === 0 ? "No dailies" : `Dailies ${done}/${total}${done >= total ? " · done" : dashGame.nextReset ? ` · reset ${formatRemaining(dashGame.nextReset)}` : ""}`;
   return (
     <article
-      className={`card lib-row ${g.sleeping ? "is-asleep" : ""} ${props.dragging ? "is-dragging" : ""} ${over ? "is-over" : ""}`}
-      aria-label={g.name}
+      className={`card lib-row ${dashGame.sleeping ? "is-asleep" : ""} ${props.dragging ? "is-dragging" : ""} ${over ? "is-over" : ""}`}
+      aria-label={dashGame.name}
       draggable
-      onDragStart={(e) => {
-        e.dataTransfer.effectAllowed = "move";
+      onDragStart={(event) => {
+        event.dataTransfer.effectAllowed = "move";
         props.onDragStart();
       }}
       onDragEnd={props.onDragEnd}
-      onDragOver={(e) => {
-        e.preventDefault();
+      onDragOver={(event) => {
+        event.preventDefault();
         setOver(true);
       }}
       onDragLeave={() => setOver(false)}
-      onDrop={(e) => {
-        e.preventDefault();
+      onDrop={(event) => {
+        event.preventDefault();
         setOver(false);
         props.onDrop();
       }}
     >
       <span className="lib-grip" aria-hidden="true">≡</span>
-      <GameIcon src={game?.art?.icon ?? null} alt={g.name} glyph="game" tint={game?.accent} className="lib-icon" />
+      <GameIcon src={game?.art?.icon ?? null} alt={dashGame.name} glyph="game" tint={game?.accent} className="lib-icon" />
       <div className="lib-name">
-        <h2 style={{ ["--c" as string]: g.accent }}>{g.name}</h2>
+        <h2 style={{ ["--c" as string]: dashGame.accent }}>{dashGame.name}</h2>
         <div className="mn mu">
-          {region ? `${region.label} · ${offset(region.utcOffsetMinutes)}` : g.regionKey} · version {game?.manifest.version.name}
+          {region ? `${region.label} · ${offset(region.utcOffsetMinutes)}` : dashGame.regionKey} · version {game?.manifest.version.name}
         </div>
-        {g.sleeping && <span className="badge">Asleep</span>}
+        {dashGame.sleeping && <span className="badge">Asleep</span>}
       </div>
       <div className="lib-cells">
-        <Link className="lib-cell" to={`/games/${g.instanceId}/characters`}>
+        <Link className="lib-cell" to={`/games/${dashGame.instanceId}/characters`}>
           <span className="kpi-label">Owned</span>
           <span>
-            {g.ownedCharacters}
-            {g.catalogCharacters !== null && <span className="mu"> / {g.catalogCharacters}</span>}
+            {dashGame.ownedCharacters}
+            {dashGame.catalogCharacters !== null && <span className="mu"> / {dashGame.catalogCharacters}</span>}
           </span>
         </Link>
         {game?.pullBanners?.length ? (
-          <Link className="lib-cell" to={`/games/${g.instanceId}/pulls`}>
+          <Link className="lib-cell" to={`/games/${dashGame.instanceId}/pulls`}>
             <span className="kpi-label">Pulls</span>
-            <Count n={pulls.limited} kind="limited" />
+            <Count count={pulls.limited} kind="limited" />
           </Link>
         ) : null}
-        {g.stamina && (
-          <Link className="lib-cell is-energy" to={`/games/${g.instanceId}`}>
-            <span className="kpi-label">{g.stamina.label}</span>
+        {dashGame.stamina && (
+          <Link className="lib-cell is-energy" to={`/games/${dashGame.instanceId}`}>
+            <span className="kpi-label">{dashGame.stamina.label}</span>
             <span>
-              {Math.floor(g.stamina.value)}
-              <span className="mu"> / {g.stamina.cap}</span>
+              {Math.floor(dashGame.stamina.value)}
+              <span className="mu"> / {dashGame.stamina.cap}</span>
             </span>
           </Link>
         )}
-        <Link className="lib-cell" to={`/tasks?game=${g.gameKey}`}>
+        <Link className="lib-cell" to={`/tasks?game=${dashGame.gameKey}`}>
           <span className="kpi-label">Goals</span>
           <span>{props.goals.active}</span>
         </Link>
-        <Link className="lib-cell" to={`/tasks?game=${g.gameKey}`}>
+        <Link className="lib-cell" to={`/tasks?game=${dashGame.gameKey}`}>
           <span className="kpi-label">Backlog</span>
           <span>{props.goals.backlog}</span>
         </Link>
@@ -199,14 +199,14 @@ function GameRow(props: {
         <span>{today}</span>
       </div>
       <div className="lib-actions">
-        <Link className="btn" to={`/games/${g.instanceId}`}>Open hub</Link>
+        <Link className="btn" to={`/games/${dashGame.instanceId}`}>Open hub</Link>
         <label className="lib-sleep">
-          <input type="checkbox" key={String(g.sleeping)} defaultChecked={g.sleeping} onChange={(e) => props.onSleep(e.target.checked)} />
+          <input type="checkbox" key={String(dashGame.sleeping)} defaultChecked={dashGame.sleeping} onChange={(event) => props.onSleep(event.target.checked)} />
           Sleep
         </label>
         <span className="lib-move">
-          <button className="btn icon" aria-label={`Move ${g.name} up`} disabled={props.first} onClick={props.onUp}>↑</button>
-          <button className="btn icon" aria-label={`Move ${g.name} down`} disabled={props.last} onClick={props.onDown}>↓</button>
+          <button className="btn icon" aria-label={`Move ${dashGame.name} up`} disabled={props.first} onClick={props.onUp}>↑</button>
+          <button className="btn icon" aria-label={`Move ${dashGame.name} down`} disabled={props.last} onClick={props.onDown}>↓</button>
         </span>
       </div>
     </article>
