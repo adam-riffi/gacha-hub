@@ -28,8 +28,8 @@ describe("the character cards' stats, per game", () => {
     expect((await put(null)).json.cardStats).toBeNull();
   });
 
-  it("refuses more than six, empty names, and doubles", async () => {
-    expect((await put(["HP", "ATK", "DEF", "Elemental Mastery", "Energy Recharge", "CRIT Rate", "CRIT DMG"])).status).toBe(400);
+  it("refuses more than three (round 8), empty names, and doubles", async () => {
+    expect((await put(["HP", "ATK", "DEF", "Elemental Mastery"])).status).toBe(400);
     expect((await put([""])).status).toBe(400);
     expect((await put(["HP", "HP"])).json).toEqual({ error: "duplicate_stat" });
   });
@@ -41,7 +41,7 @@ describe("the character cards' stats, per game", () => {
     expect((await put(["HP", "Elemental Mastery"])).json.cardStats).toEqual(["HP", "Elemental Mastery"]);
     expect((await c.req<{ cardStats: unknown }>("GET", `/api/characters/${build}`)).json.cardStats).toEqual(["HP", "Elemental Mastery"]);
     expect((await put(["HP", "HP"])).json).toEqual({ error: "duplicate_stat" });
-    expect((await put(["HP", "ATK", "DEF", "Elemental Mastery", "Energy Recharge", "CRIT Rate", "CRIT DMG"])).status).toBe(400);
+    expect((await put(["HP", "ATK", "DEF", "Elemental Mastery"])).status).toBe(400);
     expect((await put(null)).json.cardStats).toBeNull();
   });
 

@@ -73,6 +73,8 @@ export const LIMITS = {
   worldLevel: 20,
   kpiTarget: 1_000_000,
   uidLength: 32,
+  // A character card's stats (Georges, round 8: "character cards are too tall: a max of 3 displayed stats").
+  cardStats: 3,
   // A top-up's premium currency and its price in US cents ($10,000); top-ups kept per profile.
   topUpAmount: 1_000_000,
   topUpPrice: 1_000_000,

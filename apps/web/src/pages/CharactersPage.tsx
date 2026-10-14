@@ -2,6 +2,7 @@ import { useState, type CSSProperties } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  LIMITS,
   elementColor,
   buildBase,
   cardStatLabels,
@@ -227,7 +228,7 @@ export function CharactersPage() {
   const statOptions = cardStatOptions(game, builds.data.map((b) => b.doc as Record<string, unknown>));
   const toggleStat = (s: string) => {
     const now = cardStats ?? [];
-    const next = now.includes(s) ? now.filter((x) => x !== s) : [...now, s].slice(-6);
+    const next = now.includes(s) ? now.filter((x) => x !== s) : [...now, s].slice(-LIMITS.cardStats);
     setCardStats.mutate(next.length ? next : null);
   };
 
@@ -399,7 +400,7 @@ export function CharactersPage() {
                   own={null}
                   growth={c.entry.bonusStats?.[0]}
                   baseNote={`Base at Lv ${c.entry.maxLevel}`}
-                  kpis={statKpis(game, {}, [...new Set([...(c.entry.bonusStats?.slice(0, 1) ?? []), "HP", "ATK", "DEF"])], [], buildBase(game, index, c.entry.id, { level: c.entry.maxLevel }))}
+                  kpis={statKpis(game, {}, [...new Set([...(c.entry.bonusStats?.slice(0, 1) ?? []), "HP", "ATK", "DEF"])].slice(0, LIMITS.cardStats), [], buildBase(game, index, c.entry.id, { level: c.entry.maxLevel }))}
                 />
               ) : !c.owned && onBanner && characterBanner ? (
                 <div className="ch-kpis ch-chance">

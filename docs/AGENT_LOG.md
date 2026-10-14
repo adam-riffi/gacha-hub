@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-14 · claude · stack/r11/03-three-stats · #301
+- Done: shorter cards (Georges, round 8: "character cards are too tall: just put a max of 3 displayed stats"). `LIMITS.cardStats` is 3: a card's default stats (the growth stat, then the role's), a build's or the game's pick (an older pick of more shows its first three), the unbuilt cards' base stats, the pickers (a fourth pick drops the oldest) and the API (four refused). The stats sit in one row of three.
+- Tests: written first: the default and an older pick of four come to three; the API refuses four for the game and for a build; Serval's unbuilt card shows CRIT Rate, HP and ATK; on Qingque a fourth pick (ATK) drops HP. Two sheet journeys set SPD among their build's card stats, Kafka's first three being ATK and her crits.
+- Scope/decisions: the sheet's tiles follow the card's three until the next PR turns every stat into a card.
+- Next: every stat a card on the sheet.
+
 ## 2026-10-14 · claude · stack/r11/02-topups-bottom · #300
 - Done: the top-ups (Georges, round 8: "top up takes too much space: it should be at the very bottom, more visual, with a direct conversion of pack to pulls"). The Top-ups card and the Top-up to 100% card sit side by side at the very bottom of Pulls, under the savings planner and the history. Each pack's button leads with its pulls (its premium currency over a pull's cost, the gem icon beside: 980 + 110 is 6 pulls, 6480 + 1600 is 50), then the pack and its price; the pass counts its upfront part and its dailies over its days (18 for the Express Supply Pass). The totals add their pulls; the list shows the latest five, All n for the rest.
 - Tests: written first: on Star Rail, 980 + 110 shows 6 pulls, 6480 + 1600 50, the pass 18; the card sits below Pulls available and the planner and history.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: `statKpis` shows picked stats; adds Blizzard Strayer's 4-piece CRIT Rate (50% → 70%, the stat and bonus apart); leaves out a 2-piece bonus, an unfinished set and a bonus to one kind of attack (Charged Attack CRIT Rate); sets Musketeer's +6% SPD and Woodpecker's +9% ATK beside flat stats; reads WuWa's 5-piece Glacio DMG onto its DMG Bonus. The HSR catalog's Musketeer and Hunter texts have their numbers and no "#" is left. The route keeps up to six stats, refuses seven, empty and doubles, and clears with null. A journey picks HP, CRIT DMG and SPD for Qingque in four Hunter relics: CRIT DMG reads 125% with "100% + 25% · Hunter of Glacial Forest 4pc" on hover and written out on a click, kept after a reload, Role clearing it.
 - Scope/decisions: only the top tier counts (every game's character screen shows the 2-piece's static bonus already); a stat named as such only.
 - Next: weapons and characters synced (a build holds a copy).
-
-## 2026-10-12 · claude · stack/r8/04-character-cards · #259
-- Done: Characters' cards (Georges, round 5): in Select, a picked card lights up whole in its element's colour (border, glow, tint over the art), the checkbox unseen but still focusable (the card outlines on keyboard focus); the default build's weapon sits on the right of the name card, its level top-left and refinement bottom-right on the icon.
-- Tests: written first: Kafka's weapon icon is right of her name, the level badge at its top-left corner and the refinement at its bottom-right; a picked card has `is-picked` and its box has no opacity.
-- Scope/decisions: none.
-- Next: the stats each card shows, picked per game, and set bonuses on top.

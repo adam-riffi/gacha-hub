@@ -89,6 +89,8 @@ test("Character sheet: KPI targets on the tiles, and the teams the character is 
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
   const build = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1005", doc: { level: 80, stats: { SPD: 130 } } } })).json()) as { id: string };
   await page.request.post(`/api/instances/${id}/teams`, { data: { name: "E2E Kafka DoT", members: ["1005", "1006"] } });
+  // SPD among the build's card stats: three at most since round 8, and Kafka's first three are ATK and her crits.
+  await page.request.put(`/api/characters/${build.id}`, { data: { cardStats: ["SPD"] } });
 
   await page.goto(`/characters/${build.id}`);
   const spd = page.getByRole("region", { name: "KPIs" }).getByRole("group", { name: "SPD" });
@@ -185,6 +187,7 @@ test("Character sheet: the base stats of the level and the weapon fill what is n
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
   // A build of its own for Kafka at 80 with Arrows at 80: 1086.62 + 846.72 HP, 679.14 + 317.52 ATK, SPD 100, crit 5 / 50.
   const build = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1005", doc: { level: 80, lightCone: { catalogId: "20000", name: "Arrows", level: 80 }, traces: {}, relics: {}, stats: {} } } })).json()) as { id: string };
+  await page.request.put(`/api/characters/${build.id}`, { data: { cardStats: ["CRIT Rate / CRIT DMG", "SPD"] } });
   try {
     await page.goto(`/characters/${build.id}`);
     const stats = page.getByRole("region", { name: "Combat stats" });

@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import type { StatKpi } from "@gacha/shared";
+import { LIMITS, type StatKpi } from "@gacha/shared";
 import { useDismiss } from "../../lib/dismiss";
 import { StatIcon } from "../StatIcon";
 
@@ -32,7 +32,7 @@ export function KpiValue({ k, baseNote = "Base: the level and the weapon" }: { k
 
 /**
  * The picker of a build's card stats (Georges, round 6: per character; round
- * 7: on the sheet too): a pencil opening the stats to pick, up to six, Game's
+ * 7: on the sheet too): a pencil opening the stats to pick, up to three (round 8), Game's
  * going back; it closes on a click outside.
  */
 export function StatPicker({ name, options, own, label, onPick }: { name: string; options: string[]; own: string[] | null; label?: string; onPick: (stats: string[] | null) => void }) {
@@ -41,7 +41,7 @@ export function StatPicker({ name, options, own, label, onPick }: { name: string
   useDismiss(ref, () => setOpen(false), open);
   const toggle = (s: string) => {
     const now = own ?? [];
-    const next = now.includes(s) ? now.filter((x) => x !== s) : [...now, s].slice(-6);
+    const next = now.includes(s) ? now.filter((x) => x !== s) : [...now, s].slice(-LIMITS.cardStats);
     onPick(next.length ? next : null);
   };
   return (
@@ -71,10 +71,10 @@ export function StatPicker({ name, options, own, label, onPick }: { name: string
 /**
  * A card's stats (rounds 6 and 7): the build's own, else the game's, else its
  * growth stat first then its role's; the growth stat in the character's
- * colour; four in two rows of two.
+ * colour; three at most, in a row.
  */
 export function CardStats({ name, kpis, options, own, growth, baseNote, onPick }: { name: string; kpis: StatKpi[]; options: string[]; own: string[] | null; growth?: string; baseNote?: string; onPick?: (stats: string[] | null) => void }) {
-  const cols = kpis.length === 4 ? 2 : Math.max(1, Math.min(3, kpis.length));
+  const cols = Math.max(1, Math.min(3, kpis.length));
   return (
     <div className="ch-kpis-wrap">
       <div className="ch-kpis" style={cols !== 3 ? { gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` } : undefined}>
