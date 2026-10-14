@@ -106,6 +106,17 @@ export const wuwa: GameDefinition = {
     ],
     battlePass: { name: "Pioneer Podcast", maxLevel: 70 },
     monthlyPass: { name: "Lunite Subscription", days: 30, maxDays: 180, daily: 90 },
+    topUp: {
+      packs: [
+        { amount: 60, bonus: 0, price: 99 },
+        { amount: 300, bonus: 30, price: 499 },
+        { amount: 980, bonus: 110, price: 1499 },
+        { amount: 1980, bonus: 260, price: 2999 },
+        { amount: 3280, bonus: 600, price: 4999 },
+        { amount: 6480, bonus: 1600, price: 9999 },
+      ],
+      pass: { amount: 300, price: 499 },
+    },
     income: { label: "Daily activity", daily: 60 },
     // Slots are numbered; an echo's main stats depend on its cost (1, 3 or 4), listed here by cost.
     gear: {

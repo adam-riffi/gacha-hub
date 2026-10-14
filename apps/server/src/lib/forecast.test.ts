@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { expectedPulls, featuredWithin, getGame, pullForecast, rateAt, savingsPlan, type PullBannerRules } from "@gacha/shared";
+import { cheapestTopUp, expectedPulls, featuredWithin, getGame, pullForecast, rateAt, savingsPlan, worstCasePulls, type PullBannerRules } from "@gacha/shared";
 
 const genshin = getGame("genshin")!;
 const EU = genshin.regions.find((r) => r.key === "eu")!;
@@ -104,4 +104,58 @@ describe("odds against a seeded simulation (F10 acceptance: within 0.5 points)",
       expect(Math.abs(featuredWithin(rules, state, pulls) - simulate(rules, state, pulls, 200_000, 7))).toBeLessThan(0.005);
     });
   }
+});
+
+// Georges, round 6: "add a top-up suggestion taking into account upcoming rewards until the end of the banner, showing a % of
+// chance of getting the character by the end of the banner, and how many top-ups of what kind at the lowest price would get
+// the chances to 100%".
+describe("the top-up to a sure featured 5★", () => {
+  const top = genshin.manifest.topUp!;
+  const pass = genshin.manifest.monthlyPass!;
+  /** Every mix of up to eight of each pack, the pass once or not: the cheapest that reaches the need. */
+  function brute(need: number, passDays: number) {
+    let best = Infinity;
+    const packs = top.packs;
+    const go = (i: number, amount: number, price: number) => {
+      if (amount >= need) return void (best = Math.min(best, price));
+      if (i === packs.length) return;
+      for (let k = 0; k <= 8; k++) go(i + 1, amount + k * (packs[i]!.amount + packs[i]!.bonus), price + k * packs[i]!.price);
+    };
+    go(0, 0, 0);
+    go(0, top.pass!.amount + (pass.daily ?? 0) * passDays, top.pass!.price);
+    return best;
+  }
+
+  it("lists each game's packs and pass in its premium currency, in cents", () => {
+    for (const key of ["genshin", "hsr", "zzz", "wuwa"]) {
+      const t = getGame(key)!.manifest.topUp!;
+      expect(t.packs.length, key).toBeGreaterThanOrEqual(6);
+      expect(t.packs.every((p) => Number.isInteger(p.price) && p.amount > 0), key).toBe(true);
+      expect(t.pass?.price, key).toBe(499);
+    }
+  });
+
+  it("finds the cheapest mix: one pack, the pass when its days pay, and a big need as brute force does", () => {
+    expect(cheapestTopUp(genshin, 0, 0)).toEqual({ items: [], price: 0, amount: 0 });
+    const small = cheapestTopUp(genshin, 1000, 0);
+    expect(small.price).toBe(1499);
+    expect(small.items).toEqual([{ label: "980 + 110", count: 1 }]);
+    // Thirty days of the Welkin Moon: 300 + 30 × 90 for 4.99.
+    expect(cheapestTopUp(genshin, 1000, 30).items).toEqual([{ label: "Blessing of the Welkin Moon", count: 1 }]);
+    for (const [need, days] of [[28_800, 0], [28_800, 20], [4_560, 0], [12_345, 5]] as const) {
+      const got = cheapestTopUp(genshin, need, days);
+      expect(got.price, `${need} in ${days} days`).toBe(brute(need, days));
+      expect(got.amount).toBeGreaterThanOrEqual(need);
+    }
+  });
+
+  it("knows the pulls a sure featured 5★ takes: twice hard pity after a loss, hard pity when guaranteed", () => {
+    expect(worstCasePulls(character, { pity: 10, guaranteed: false })).toBe(170);
+    expect(worstCasePulls(character, { pity: 10, guaranteed: true })).toBe(80);
+  });
+
+  it("forecasts to a banner's end, not the version's", () => {
+    const now = new Date("2026-10-09T08:00:00Z");
+    expect(pullForecast(genshin, EU, now, null, new Date("2026-10-14T03:00:00Z")).lines).toEqual([{ key: "daily", label: "Daily Commissions", days: 5, perDay: 60, total: 300 }]);
+  });
 });

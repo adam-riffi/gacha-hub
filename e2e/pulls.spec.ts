@@ -33,7 +33,8 @@ test("Pulls: what you have and what is coming, an event banner's status, pity an
   await page.getByLabel("Amount to add").fill("1600");
   await expect(page.getByRole("region", { name: "Pulls available" })).toContainText("+10 pulls");
   await expect(banner.locator(".pl-legend")).toContainText("+10 ·");
-  await expect(page.locator("main")).not.toContainText(/top-up/i);
+  // The simulator is a plus sign; round 6's "Top-up to 100%" card is its own.
+  await expect(page.getByRole("region", { name: "Pulls available" })).not.toContainText(/top-up/i);
   await page.getByLabel("Amount to add").fill("");
 
   // Standard banners get the full card too.
@@ -193,4 +194,25 @@ test("Pulls: one grid of banners whose rows line up, their odds tables whole, no
   await expect(cards.first().locator("table.pl-odds")).toHaveCSS("display", "table");
   // A banner without a featured unit shows its kind as an icon, not letters.
   await expect(page.getByRole("region", { name: "Stellar warp" }).locator(".pl-banner-head svg.glyph")).toBeVisible();
+});
+
+// Georges, round 6: "a top-up suggestion … a % of chance of getting the character by the end of the banner, and how many top-ups
+// of what kind at the lowest price would get the chances to 100%".
+test("Pulls: each running banner's chance by its end, and the cheapest top-up to a sure featured 5★ @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  // A banner running for ten more days, in case no other journey's runs (the first running one of a kind is shown).
+  const iso = (days: number) => new Date(Date.now() + days * 86_400_000).toISOString();
+  expect((await page.request.post("/api/admin/payload", { data: { kind: "banners", gameKey: "hsr", items: [{ key: "e2e-topup", name: "E2E top-up warp", kind: "character", startsAt: iso(-1), endsAt: iso(10), featured: [{ catalogId: "1005", kind: "character" }] }] } })).ok()).toBe(true);
+  try {
+    await page.goto(`/games/${id}/pulls`);
+    const row = page.getByRole("region", { name: "Top-up to 100%" }).getByRole("listitem").first();
+    await expect(row.getByRole("img").first()).toBeVisible();
+    await expect(row).toContainText(/by \d+ \w+ · (>?\d+)%/);
+    await expect(row).toContainText(/\$\d+\.\d\d|Covered/);
+  } finally {
+    await page.request.delete("/api/admin/banners/hsr/e2e-topup");
+  }
 });

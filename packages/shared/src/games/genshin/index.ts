@@ -131,6 +131,17 @@ export const genshin: GameDefinition = {
     ],
     battlePass: { name: "Gnostic Hymn", maxLevel: 50, weeklyXpCap: 10_000 },
     monthlyPass: { name: "Blessing of the Welkin Moon", days: 30, maxDays: 180, daily: 90 },
+    topUp: {
+      packs: [
+        { amount: 60, bonus: 0, price: 99 },
+        { amount: 300, bonus: 30, price: 499 },
+        { amount: 980, bonus: 110, price: 1499 },
+        { amount: 1980, bonus: 260, price: 2999 },
+        { amount: 3280, bonus: 600, price: 4999 },
+        { amount: 6480, bonus: 1600, price: 9999 },
+      ],
+      pass: { amount: 300, price: 499 },
+    },
     income: { label: "Daily Commissions", daily: 60 },
     gear: {
       name: "Artifacts",
