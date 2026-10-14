@@ -204,3 +204,6 @@
 /* A unit's last banner on its card (round 11). */
 .last-seen-chip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 8px; border: 1px solid var(--hairline); color: var(--text); font-size: 12px; }
 .last-seen-icon { width: 16px; height: 16px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; }
+/* All, Owned, Not owned and Wishlist with their counts (round 11). */
+.ownership-filter { display: flex; flex-wrap: wrap; gap: 8px; }
+.wp-body .last-seen-chip { justify-self: start; margin-top: 4px; }

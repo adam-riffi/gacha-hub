@@ -13,6 +13,8 @@ import { StatIcon } from "../components/StatIcon";
 import { CatalogIcon } from "../components/CatalogIcon";
 import { WeaponFarm } from "../components/characters/WeaponFarm";
 import type { InstanceDetail } from "../lib/types";
+import { OwnershipFilter, type OwnershipView } from "../components/OwnershipFilter";
+import { LastSeenChip, lastSeenSortKey, useUnitAppearances } from "../components/LastSeen";
 
 type Holder = { buildId: string; catalogId: string | null; name: string; icon?: string; tag?: string };
 /** A weapon on the page: from the catalog, or named by hand where the game has none. */
@@ -33,7 +35,8 @@ export function WeaponsPage() {
   const [q, setQ] = useState("");
   const [type, setType] = useState("");
   const [rarity, setRarity] = useState("");
-  const [shown, setShown] = useState<"all" | "owned" | "wishlist">("all");
+  const [ownershipView, setOwnershipView] = useState<OwnershipView>("all");
+  const [sort, setSort] = useState<"rarity" | "name" | "lastSeen">("rarity");
   const [mainStat, setMainStat] = useState("");
   const [open, setOpen] = useState<string | null>(null);
   // Several at once (Georges, round 6): copies by id, weapons not owned by "w:<catalogId>".
@@ -51,6 +54,8 @@ export function WeaponsPage() {
   const copies = useQuery({ queryKey: ["weapons", id], queryFn: () => api.get<WeaponCopyDto[]>(`/api/instances/${id}/weapons`) });
   const wishlist = useQuery({ queryKey: ["wishlist", id], queryFn: () => api.get<WishlistItemDto[]>(`/api/instances/${id}/wishlist`) });
   const { catalog, index, isLoading } = useCatalog(instance.data?.gameKey);
+  // Each weapon's banners (round 11: "last seen"), by catalog id.
+  const appearances = useUnitAppearances(instance.data?.gameKey);
   const refresh = () => Promise.all([qc.invalidateQueries({ queryKey: ["weapons", id] }), qc.invalidateQueries({ queryKey: ["ownership", id] })]);
   const add = useMutation({
     mutationFn: (body: { catalogId?: string; name?: string; level?: number; refinement?: number }) => api.post(`/api/instances/${id}/weapons`, body),
@@ -113,7 +118,7 @@ export function WeaponsPage() {
     (!type || w.type === type) &&
     (!rarity || String(w.rarity) === rarity) &&
     (!mainStat || w.entry?.mainStat === mainStat) &&
-    (shown !== "wishlist" || (w.catalogId !== null && wished.has(w.catalogId)));
+    (ownershipView !== "wishlist" || (w.catalogId !== null && wished.has(w.catalogId)));
   const mine = copies.data.map((c, i) => ({ copy: c, weapon: weaponOf(c), nth: copies.data.slice(0, i).filter((x) => weaponOf(x).key === weaponOf(c).key).length }));
   const holdersOf = (c: WeaponCopyDto): Holder[] => {
     const named = byCopy.get(c.id);
@@ -124,10 +129,17 @@ export function WeaponsPage() {
     return h ? [h] : [];
   };
   const ownedKeys = new Set(mine.map((m) => m.weapon.key));
-  const cards = mine
-    .filter((m) => matches(m.weapon))
-    .sort((a, b) => (b.weapon.rarity ?? 0) - (a.weapon.rarity ?? 0) || a.weapon.name.localeCompare(b.weapon.name) || a.nth - b.nth);
-  const others = shown === "owned" ? [] : (catalog?.weapons ?? []).map((w) => weaponOf({ catalogId: w.id, name: w.name })).filter((w) => !ownedKeys.has(w.key) && matches(w)).sort((a, b) => (b.rarity ?? 0) - (a.rarity ?? 0) || a.name.localeCompare(b.name));
+  // Sorted as picked: rarity then name, name, or the longest unseen on a banner first.
+  const appearanceOf = (weapon: Weapon) => (weapon.catalogId ? appearances.data?.[weapon.catalogId] : undefined);
+  const bySort = (first: Weapon, second: Weapon) =>
+    sort === "name"
+      ? first.name.localeCompare(second.name)
+      : sort === "lastSeen"
+        ? lastSeenSortKey(appearanceOf(first)) - lastSeenSortKey(appearanceOf(second)) || first.name.localeCompare(second.name)
+        : (second.rarity ?? 0) - (first.rarity ?? 0) || first.name.localeCompare(second.name);
+  const cards = ownershipView === "notOwned" ? [] : mine.filter((m) => matches(m.weapon)).sort((a, b) => bySort(a.weapon, b.weapon) || a.nth - b.nth);
+  const unownedWeapons = (catalog?.weapons ?? []).map((w) => weaponOf({ catalogId: w.id, name: w.name })).filter((w) => !ownedKeys.has(w.key));
+  const others = ownershipView === "owned" ? [] : unownedWeapons.filter(matches).sort(bySort);
   const values = (pick: (w: CatalogWeapon) => string | undefined) => [...new Set((catalog?.weapons ?? []).map(pick).filter((v): v is string => Boolean(v)))].sort();
   const selected = open ? (mine.find((m) => m.weapon.key === open)?.weapon ?? others.find((w) => w.key === open) ?? null) : null;
   const tint = (h?: Holder) => elementColor(game.key, h?.tag);
@@ -155,19 +167,22 @@ export function WeaponsPage() {
             <Chips label="Type" value={type} onChange={setType} options={values((w) => w.type)} />
             <Chips label="Rarity" value={rarity} onChange={setRarity} options={values((w) => String(w.rarity)).reverse()} text={(r) => `★${r}`} />
             <Chips label="Main stat" value={mainStat} onChange={setMainStat} options={values((w) => w.mainStat)} />
+            <label>
+              Sort
+              <select value={sort} onChange={(e) => setSort(e.target.value as typeof sort)}>
+                <option value="rarity">Rarity</option>
+                <option value="name">Name</option>
+                <option value="lastSeen">Last seen</option>
+              </select>
+            </label>
           </section>
           <div className="ch-counts" role="group" aria-label="Filter by count">
-            {(
-              [
-                ["all", "All", (catalog?.weapons.length ?? 0) + copies.data.length - ownedKeys.size],
-                ["owned", "Owned", copies.data.length],
-                ["wishlist", "Wishlist", wished.size],
-              ] as const
-            ).map(([v, label, n]) => (
-              <button key={v} className="chip" aria-pressed={shown === v} onClick={() => setShown(shown === v ? "all" : v)}>
-                {label} {n}
-              </button>
-            ))}
+            {/* All, Owned, Not owned and Wishlist (round 11). */}
+            <OwnershipFilter
+              view={ownershipView}
+              counts={{ all: unownedWeapons.length + copies.data.length, owned: copies.data.length, notOwned: unownedWeapons.length, wishlist: wished.size }}
+              onChange={setOwnershipView}
+            />
             <span className="ch-sp" />
             <button
               className="btn"
@@ -226,6 +241,7 @@ export function WeaponsPage() {
                     {weapon.entry?.mainStat && <StatIcon stat={weapon.entry.mainStat} />}
                     {[weapon.type, weapon.entry?.mainStat].filter(Boolean).join(" · ")}
                   </span>
+                  <LastSeenChip appearance={appearanceOf(weapon)} />
                 </div>
                 {hs.length > 0 && (
                   <span className="wp-holders">
@@ -257,6 +273,7 @@ export function WeaponsPage() {
                   {weapon.entry?.mainStat && <StatIcon stat={weapon.entry.mainStat} />}
                   {[weapon.type, weapon.entry?.mainStat].filter(Boolean).join(" · ")}
                 </span>
+                <LastSeenChip appearance={appearanceOf(weapon)} />
               </div>
               {weapon.catalogId && wished.has(weapon.catalogId) && <span className="badge wp-wish">♥</span>}
             </article>
