@@ -18,6 +18,7 @@ Operating manual for coding agents in this repository. Codex and Copilot read th
 - **Repository layout:** `docs/DESIGN.md` §5.
 - **Screens and look:** `docs/WIREFRAMES.md` (what each screen holds), `docs/VISUAL-DESIGN.md` (how everything looks) and `docs/design/` (pictures, static pages and sources of the designs).
 - **Full picture:** `docs/PROJECT-GUIDE.md`: every screen with a screenshot, why each game has its own features, flows and diagrams, the whole to-do list.
+- **Assets:** `docs/ASSETS.md`: every icon and picture the app shows, where it comes from, and what is still missing.
 
 ## Commands
 

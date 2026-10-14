@@ -1,40 +1,21 @@
 # Handoff — 2026-10-14 · claude
 
 ## State
-- `main` at #292: feat(shell): the selected game spells its full name, each game with its icon; the rail's icons larger, the current section filled. CI green.
-- Open PRs, a stack on `main`: #293 (shop pulls as monthly tasks) ← #294 (top-up history) ← #295 (the 30-day pass on the dashboard) ← #296 (NTE's Console sets) ← #297 (Endfield's art) ← #298 (currency icons, round 7's audit marked done, and this handoff). Each merges on green CI, rebased onto `main` after its parent's squash. Dependabot's #278 (twelve dependency bumps) is green; merge it after the stack.
-- Production serves #186 (deployed 2026-10-10 18:52 UTC). Merges do not deploy (#189): `main` goes live only when Georges asks (`docs/DEPLOY.md`, Redeploys), then run the smoke check. The next deploy runs every migration since #186, `top_ups` (#294, a new table with row level security) the newest.
-- Every milestone in DESIGN.md §9 is built, V through F13, and seven feedback rounds (2026-10-10 to 2026-10-14) are done. What is left needs Georges's secrets, real data or a decision (below), a source for a few details (Next), or is in DESIGN.md §4 "Later".
+- `main` at #298 and Dependabot's #278 (twelve dependency bumps). CI green.
+- Open PRs, a stack on `main`: #299 (endgame team window, metric icons) ← #300 (top-ups at the bottom, packs in pulls) ← #301 (three stats on a card) ← #302 (every stat a card on the sheet) ← #303 (gear screen rebuilt) ← #304 (art framing: Endfield, Qiuyuan) ← #305 (one desktop layout) ← #306 (gifts for NTE and Endfield) ← #307 (the assets list, ADR 0010, round 8's audit and this handoff). Each merges on green CI, rebased onto `main` after its parent's squash.
+- Production serves #186 (deployed 2026-10-10 18:52 UTC). Merges do not deploy (#189). The next deploy runs every migration since #186 (`top_ups` the newest). **Georges wants to redo the hosting, database and sign-in first: ADR 0010 (proposed) lists the options and a recommendation to decide together.**
+- Every milestone in DESIGN.md §9 is built, V through F13, and eight feedback rounds (2026-10-10 to 2026-10-14) are done. What is left needs Georges's secrets, real data or a decision (below), a source for a few details (Next), or is in DESIGN.md §4 "Later".
 
 ## Done this session
-- Round 6 (#264–#279) merged.
-- Round 7 (2026-10-14, `docs/AUDIT-2026-10-14-round7.md`), one PR per area:
-  - #280, **one tick control** in the game's colour; the **heatmap shaded** by the share of dailies done;
-  - #281, **endgame stages as lines** (kind, team, score, main enemy), a click opening the stage and the builds used;
-  - #282, **card stats on the sheet**, the growth stat first in the character's colour;
-  - #283, **several notes** and a note per picture;
-  - #284, **stat icons**; each gear piece's **set as a large icon** on the sheet;
-  - #285, **Quick goal** first in the sheet's header; skills without costs past 1; **All shown** as soon as Select is on;
-  - #286, **unbuilt cards** with base stats;
-  - #287, **larger weapon cards** by rarity colour;
-  - #288, the **gear screen**: Add a piece, readable cards, panels over the page;
-  - #289, **weapon effects** in the catalogs and the sheet's **weapon window**;
-  - #290, **Tasks**: priority in one click, goals two by two, Farm today larger, the **week by day**;
-  - #291, the timeline's **colours** and **wishes in gold**, one box per layer;
-  - #292, the **navbar**: the picked game's full name, game icons, a clearer rail;
-  - #293, **shop pulls** as monthly tasks;
-  - #294, a **top-up history**;
-  - #295, the **30-day pass** on the dashboard;
-  - #296, **NTE's Console sets**;
-  - #297, **Endfield's art**;
-  - #298, **currency icons**.
-
+- Round 7 (#280–#298) merged, then Dependabot's #278.
+- Round 8 (2026-10-14, `docs/AUDIT-2026-10-14-round8.md`), one PR per area: #299 the **endgame team window** and **metric icons**; #300 **top-ups at the bottom**, each pack in pulls; #301 **three stats** on a card; #302 **every stat a card** on the sheet; #303 the **gear screen rebuilt** (several sets, Reset, grouped by set); #304 **art framing** (Endfield's portraits whole, Qiuyuan's card art); #305 **one desktop layout** from 1440 px; #306 **gifts** for NTE and Endfield; #307 **`docs/ASSETS.md`** and **ADR 0010**.
 ## Decisions taken (2026-10-14; Georges: "take every decision")
+- Round 8's are in its audit: difficulty icons as each mode's metric by its icon; three card stats; every stat a card with its target; the gear screen as one view; Endfield's portraits whole; one desktop layout at 1440 px; NTE's unnamed food gifts left out; Endfield's gifts by hobbies; ADR 0010 proposed, not built.
 - Earlier ones stand; round 7's are listed in its audit. In short: the heatmap's depth (yes, by share); endgame lines only for stage-by-stage modes; card stats: the build's, then the game's, then the growth stat first; skills without costs go to the game's usual level; panels open over the page; priority as three buttons; the timeline's colours (game, red, teal, gold); shop pulls counted only where a source counts them; top-ups do not touch the balance; no daily tick for the 30-day pass; NTE's sets are its cartridge series; Endfield's art linked from Endaxis at a pinned commit.
 
 ## Verified
-- `npm run check` before each PR and CI green on each merged one: 662 tests and 107 journeys at #298; initial JavaScript 148.9 KB of 200 KB.
-- Checked in the browser at 1440, art blocked for the PRs' screenshots: each round 7 screen. Endfield's portraits checked loading in the browser pane (not in a screenshot, art being blocked there).
+- `npm run check` before each PR and CI green on each merged one: 667 tests and 112 journeys at #307; initial JavaScript 151.6 KB of 200 KB.
+- Checked in the browser at 1440, art blocked for the PRs' screenshots: each round 7 and round 8 screen. Endfield's portraits checked loading in the browser pane (not in a screenshot, art being blocked there).
 - The stack merged by rebasing each PR onto `main` after its parent's squash; each rebased branch's tree was checked equal to the one CI passed before merging.
 
 ## Next
@@ -43,13 +24,14 @@
 3. Each game version: refresh the catalogs (`npm run catalog:<game>`, now with weapon effects; Endfield reads Endaxis's tree at its pinned commit, to move when its art changes) and the endgame enemies, then run mirror-art; re-check the `~` values in `docs/games/*.md`; bump each manifest's `version`.
 4. WuWa's Coral Shop and NTE's Lost Exchange: count their pulls once a source settles the limits.
 5. Sources still missing for some designs' details (the earlier list stands).
+6. The assets: `docs/ASSETS.md` lists every icon still missing (skill icons, Star Rail's splash art, game icons and backgrounds, currencies, passes, modes…); pick a source with Georges, then the R2 mirror.
 
 ## Needs from Georges
 - **Secrets:** `LINK_SECRET_KEY`; the R2 bucket and its four `R2_*` Actions secrets, then mirror-art and `VITE_ASSET_BASE` (DEPLOY.md §7); `CRON_SECRET`; `DISCORD_BOT_TOKEN` and the bot; `BLOB_READ_WRITE_TOKEN` in Vercel if it is not set, for pictures and portraits.
 - **Real data, with tokens removed** (PROJECT-GUIDE §14.1 step 8): an Endfield records page; a ZZZ UID; HoYoLAB answers; one gacha log page; one WuWa convene answer; in-game details pages for the `~` values.
 - The `main` ruleset, the `sample-*` banners, the README demo GIF, and the stale remote branches (§14.1 step 10).
-- A deploy, when he wants rounds 2–7 live (the migrations since #186 wait, `top_ups` among them).
-- **A decision:** limit sign-in to the owner's Discord id.
+- A deploy, once ADR 0010 is decided (rounds 2–8 wait, with the migrations since #186).
+- **A decision:** the hosting, database and sign-in in ADR 0010 (it replaces the old question of limiting Discord sign-in to his id).
 - Overrule any decision above by saying so.
 
 ## Notes
