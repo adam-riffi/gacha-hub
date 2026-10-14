@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-14 · claude · stack/r11/09-assets-hosting · #307
+- Done: two documents (Georges, round 8: "make a list as well of all the assets/icons you need to populate everything, like currency icons etc. … we'll redo the deployment and database to make sure to find relevant solutions for all of that; this project is one user only, so we'll need to find better sign in"). `docs/ASSETS.md`: per game, how many characters, splash arts, weapons, sets, materials and skills have art and from where (the gaps: skill icons for Star Rail, ZZZ, WuWa and NTE; Star Rail's splash art; Endfield's larger portraits and its 14 gifts; NTE's per-set icons); then the app's own lists drawn as glyphs today (game icons and backgrounds, every currency by name, top-up currencies, passes, battle passes, endgame modes, elements, weapon types, shops, tasks, banner kinds), and how to add them (the R2 mirror, a folder per game, the public folder). AGENTS.md points to it. `docs/adr/0010-hosting-database-signin.md`, proposed: the options for the database (keep Postgres; one SQLite everywhere on Turso; a file on Georges's machine), hosting (keep Vercel; one host) and sign-in for one user (Discord limited to his id; a passkey; an owner password; access in front), with a recommendation to discuss (Turso, Vercel, a passkey with a password as recovery) and what each choice changes.
+- Tests: none (documents).
+- Scope/decisions: nothing in ADR 0010 is built until Georges picks; the counts in ASSETS.md were taken from today's catalogs.
+- Next: the full check over PRs 6 to 9; round 8's audit and the handoff.
+
 ## 2026-10-14 · claude · stack/r11/08-gifts · #306
 - Done: gifts (Georges, round 8: "for relevant games I want a gift/intimacy item list, like for NTE or Endfield"). A catalog character gains `gifts`, the strongest first. NTE: each character's preferred gifts from Hakushin with their affinity points (A Handwritten Letter +2000, then +400, +200…); the gift items join the catalog's materials as Gifts with their names and icons; 18 of 23 characters have some. Endfield: an operator's two hobbies (CharacterTagTable) and the gifts whose text names one of them ("[Lifestyle] and/or [Culture]"), those matching both first; the 14 gifts join its materials (it had none); 26 of 29 operators (the Endministrators' hobbies are a secret). A Gifts card on the sheet and on the character's page: each gift's icon, name and points or matched hobbies, the strongest outlined; Endfield's operator's hobbies head it.
 - Tests: written first: Sakiri's first gift is the letter at 2000, her ticket, bunny box and flower among them, each a named Gift; Perlica's hobbies are Lifestyle and Creative, her gifts each match one, sorted by matches, Eureka Teabox for Lifestyle; no gifts for the Endministrator; Sakiri's page or sheet lists the letter first with 2000 and the ticket's icon.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: WuWa's first card's image is taller than its frame and raised above it; Qingque's card shows Hunter of Glacial Forest as an icon with 4; the library's art-less game tile is a centred tile with an icon and no letters.
 - Scope/decisions: framing is per game in CSS.
 - Next: the stats each card shows picked per character.
-
-## 2026-10-12 · claude · stack/r9/03-ownership · #266
-- Done: Characters' ownership (Georges, round 6: "I cannot change the status from owned to not owned right now; selecting multiple characters achieves nothing"): a card showed a character with a build as owned whatever its ownership row, and the selection's Not owned skipped built characters, so un-owning them did nothing. Ownership is now the owned list alone (creating a build still owns its character; a build stays when its character is marked not owned), and the selection gains a Build status menu for the picked builds.
-- Tests: written first: Natasha with a build is marked not owned from the selection (her Lv 60 build stays), her build set to Good from the selection, then owned again.
-- Scope/decisions: none.
-- Next: each game's art framed on the face; set icons on the cards.
