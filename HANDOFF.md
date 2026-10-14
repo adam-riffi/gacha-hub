@@ -1,8 +1,8 @@
 # Handoff — 2026-10-14 · claude
 
 ## State
-- `main` at #303 (round 8's first five merged). CI green.
-- Open PRs, a stack on `main`: round 8's #304 (art framing) ← #305 (one desktop layout) ← #306 (gifts) ← #307 (ASSETS.md, ADR 0010), then round 9's #308 (gear pieces, filtered like the characters) ← #309 (panels toggle, a large Close) ← #310 (one card for every character, builds to try) ← #311 (Overview banners first, round 9's audit, this handoff). Each merges on green CI, rebased onto `main` after its parent's squash.
+- `main` at #307: round 8 merged (#299–#307). CI green.
+- Open PRs, a stack on `main`: round 9's #308 (gear pieces, filtered like the characters) ← #309 (panels toggle, a large Close) ← #310 (one card for every character, builds to try) ← #311 (Overview banners first, round 9's audit, this handoff). Each merges on green CI, rebased onto `main` after its parent's squash.
 - Production serves #186 (deployed 2026-10-10 18:52 UTC). Merges do not deploy (#189). The next deploy runs every migration since #186 (`top_ups` the newest). **Georges wants to redo the hosting, database and sign-in first: ADR 0010 (proposed) lists the options and a recommendation to decide together.**
 - Every milestone in DESIGN.md §9 is built, V through F13, and eight feedback rounds (2026-10-10 to 2026-10-14) are done. What is left needs Georges's secrets, real data or a decision (below), a source for a few details (Next), or is in DESIGN.md §4 "Later".
 
