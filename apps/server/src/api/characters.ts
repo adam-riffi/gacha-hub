@@ -59,13 +59,16 @@ export async function registerCharacterRoutes(app: FastifyInstance) {
         if (!entry) return reply.code(404).send({ error: "unknown_catalog_id" });
         name = name ?? entry.name;
         seed = (game.seedDoc?.(entry) as object) ?? {};
-        await prisma.ownership.upsert({
-          where: {
-            gameInstanceId_kind_catalogId: { gameInstanceId: gi.id, kind: "character", catalogId: entry.id },
-          },
-          create: { gameInstanceId: gi.id, kind: "character", catalogId: entry.id, qty: 1 },
-          update: {},
-        });
+        // A build owns its character, unless it is only a try (round 9).
+        if (body.own !== false) {
+          await prisma.ownership.upsert({
+            where: {
+              gameInstanceId_kind_catalogId: { gameInstanceId: gi.id, kind: "character", catalogId: entry.id },
+            },
+            create: { gameInstanceId: gi.id, kind: "character", catalogId: entry.id, qty: 1 },
+            update: {},
+          });
+        }
       } else if (!name) {
         return reply.code(400).send({ error: "name_required" });
       }

@@ -26,8 +26,6 @@
 .ch-kpis-btn svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.8; }
 .sh-head .ch-kpis-pick { left: auto; right: 0; top: calc(100% + 6px); bottom: auto; width: 420px; border-color: var(--hairline-strong); }
 .ch-gap { width: 14px; }
-.ch-card.is-unowned { border-style: dashed; }
-.ch-card.is-unowned .ch-art .gicon { opacity: 0.35; filter: grayscale(0.6); }
 .ch-art { position: relative; height: 300px; overflow: hidden; background: linear-gradient(180deg, color-mix(in srgb, var(--el) 26%, var(--surface-2)), var(--surface-2) 75%); }
 .ch-art .gicon { width: 100%; height: var(--art-h, 100%); object-fit: cover; object-position: top; transform: translateY(var(--art-y, 0)); transition: transform 0.2s; }
 /* Each game's art framed on the face (round 6): WuWa's portraits keep their heads low, so they are drawn larger and raised. */

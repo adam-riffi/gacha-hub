@@ -75,7 +75,7 @@ export function CharactersPage() {
   const [element, setElement] = useState("");
   const [weapon, setWeapon] = useState("");
   const [rarity, setRarity] = useState("");
-  const [owned, setOwned] = useState<"all" | "owned" | "unowned" | "wishlist">("all");
+  const [owned, setOwned] = useState<"all" | "owned" | "wishlist">("all");
   const [status, setStatus] = useState<"" | BuildStatus>("");
   const [sort, setSort] = useState<"status" | "name" | "rarity" | "level">("status");
   const [kind, setKind] = useState<"characters" | "builds">("characters");
@@ -154,7 +154,7 @@ export function CharactersPage() {
     onSettled: () => qc.isMutating({ mutationKey: ["card-stats", id] }) === 1 && qc.invalidateQueries({ queryKey: ["instance", id] }),
   });
   const start = useMutation({
-    mutationFn: (v: string | { name: string }) => api.post<{ id: string }>(`/api/instances/${id}/characters`, typeof v === "string" ? { catalogId: v } : v),
+    mutationFn: (v: string | { name: string } | { catalogId: string; own: false }) => api.post<{ id: string }>(`/api/instances/${id}/characters`, typeof v === "string" ? { catalogId: v } : v),
     onSuccess: (r) => nav(`/characters/${r.id}`),
   });
 
@@ -187,7 +187,7 @@ export function CharactersPage() {
     .filter((c) => !element || c.tag === element)
     .filter((c) => !weapon || c.weaponType === weapon)
     .filter((c) => !rarity || String(c.rarity) === rarity)
-    .filter((c) => (owned === "owned" ? c.owned : owned === "unowned" ? !c.owned : owned === "wishlist" ? c.wished : true))
+    .filter((c) => (owned === "owned" ? c.owned : owned === "wishlist" ? c.wished : true))
     .filter((c) => !status || (c.build?.buildStatus ?? "none") === status)
     .sort((a, b) =>
       sort === "name"
@@ -287,15 +287,15 @@ export function CharactersPage() {
         <>
 
       <div className="ch-counts" role="group" aria-label="Filter by count">
-        {([
-          ["all", "All", cards.length],
-          ["owned", "Owned", cards.filter((c) => c.owned).length],
-          ...(catalog ? [["unowned", "Not owned", cards.filter((c) => !c.owned).length], ["wishlist", "Wishlist", cards.filter((c) => c.wished).length]] : []),
-        ] as [typeof owned, string, number][]).map(([v, label, n]) => (
-          <button key={v} className="chip" aria-pressed={owned === v} onClick={() => setOwned(owned === v ? "all" : v)}>
-            {label} {n}
+        {/* One screen for every character, owned or not, with a toggle for the ones you have (Georges, round 9). */}
+        <button className="chip" aria-pressed={owned === "owned"} onClick={() => setOwned(owned === "owned" ? "all" : "owned")}>
+          Owned only {cards.filter((c) => c.owned).length} / {cards.length}
+        </button>
+        {catalog && (
+          <button className="chip" aria-pressed={owned === "wishlist"} onClick={() => setOwned(owned === "wishlist" ? "all" : "wishlist")}>
+            Wishlist {cards.filter((c) => c.wished).length}
           </button>
-        ))}
+        )}
         <span className="ch-gap" />
         {(["perfect", "good", "building", "none"] as const).map((v) => (
           <button key={v} className="chip" aria-pressed={status === v} onClick={() => setStatus(status === v ? "" : v)}>
@@ -345,7 +345,7 @@ export function CharactersPage() {
           // The whole card opens the build, or the unit's page when there is none.
           const to = c.build ? `/characters/${c.build.id}` : c.entry ? `/games/${id}/units/${c.id}` : null;
           return (
-            <article key={c.id} className={`ch-card ${c.owned ? "" : "is-unowned"} ${selecting && picked.has(c.id) ? "is-picked" : ""}`} data-game={game.key} aria-label={c.name} style={el ? ({ "--el": el } as CSSProperties) : undefined}>
+            <article key={c.id} className={`ch-card ${selecting && picked.has(c.id) ? "is-picked" : ""}`} data-game={game.key} aria-label={c.name} style={el ? ({ "--el": el } as CSSProperties) : undefined}>
               {selecting && c.entry ? (
                 <label className="ch-open ch-picking">
                   <input type="checkbox" className="ch-pick" aria-label={`Select ${c.name}`} checked={picked.has(c.id)} onChange={() => togglePick(c.id)} />
@@ -429,11 +429,13 @@ export function CharactersPage() {
                 )}
                 {step && <span className="badge todo">→ {step.letter}{step.to} · event</span>}
                 <span className="ch-sp" />
-                {c.build ? null : c.owned ? (
-                  <button className="btn ghost" disabled={start.isPending} onClick={() => start.mutate(c.id)}>Start a build</button>
-                ) : onBanner ? (
-                  <Link to={`/games/${id}/pulls`}>Plan pulls →</Link>
-                ) : null}
+                {/* A build to try, owned or not (round 9). */}
+                {!c.build && !c.owned && onBanner && <Link to={`/games/${id}/pulls`}>Plan pulls →</Link>}
+                {!c.build && (c.owned || c.entry) && (
+                  <button className="btn ghost" disabled={start.isPending} onClick={() => start.mutate(c.owned ? c.id : { catalogId: c.id, own: false })}>
+                    Start a build
+                  </button>
+                )}
               </div>
               {!c.owned && c.entry && (
                 <div className="ch-own">
