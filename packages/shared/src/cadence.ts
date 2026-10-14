@@ -85,7 +85,7 @@ export function gameDay(clock: ServerClock, now: Date): string {
  */
 export function taskAnchor(manifest: GameManifest | undefined, cadence: Cadence, anchorKey?: string | null): CadenceAnchor {
   if (cadence === "daily" || cadence === "weekly") return { cadence };
-  const shop = manifest?.monthlyShops.find((shop) => shop.key === anchorKey);
+  const shop = manifest?.monthlyShops.find((candidate) => candidate.key === anchorKey);
   const mode = manifest?.endgame.find((endgameMode) => endgameMode.key === anchorKey);
   if (cadence === "monthly") return shop ? { cadence, day: shop.day } : mode?.anchor.cadence === "monthly" ? mode.anchor : { cadence, day: 1 };
   if (cadence === "cycle" && mode) return mode.anchor;

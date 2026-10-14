@@ -17,7 +17,7 @@ export function heatLevel(done: number, total: number): HeatLevel {
  */
 export function dayHeat(games: readonly { done: number; total: number }[]): { level: HeatLevel; full: boolean } {
   const done = games.reduce((total, gameTally) => total + Math.min(gameTally.done, gameTally.total), 0);
-  const total = games.reduce((total, gameTally) => total + gameTally.total, 0);
+  const total = games.reduce((sum, gameTally) => sum + gameTally.total, 0);
   return { level: heatLevel(done, total), full: games.length > 0 && games.every((gameTally) => gameTally.total > 0 && gameTally.done >= gameTally.total) };
 }
 

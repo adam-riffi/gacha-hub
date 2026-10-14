@@ -63,12 +63,12 @@ export function readEffects(raw: unknown, game: GameDefinition): Effect[] {
  */
 export function pickEffects(effects: Effect[], choice: number | undefined): { key: string; effect: BaseEffect }[] | null {
   const out: { key: string; effect: BaseEffect }[] = [];
-  for (const [effectIndex, effect] of effects.entries()) {
-    if (effect.kind !== "choose") {
-      out.push({ key: String(effectIndex), effect: effect });
+  for (const [effectIndex, listedEffect] of effects.entries()) {
+    if (listedEffect.kind !== "choose") {
+      out.push({ key: String(effectIndex), effect: listedEffect });
       continue;
     }
-    const option = choice === undefined ? undefined : effect.options[choice];
+    const option = choice === undefined ? undefined : listedEffect.options[choice];
     if (!option) return null;
     option.effects.forEach((effect, choiceEffectIndex) => out.push({ key: `${effectIndex}.${choice}.${choiceEffectIndex}`, effect }));
   }

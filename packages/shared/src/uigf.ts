@@ -46,10 +46,10 @@ function toServerTime(at: Date, timezone: number): string {
 export function parseUigf(raw: unknown, game: GameDefinition): { uid: string; timezone: number; records: PullRecord[] }[] {
   const doc = uigfSchema.parse(raw);
   const section = SECTION[game.key];
-  return (section ? (doc[section] ?? []) : []).map((account) => ({
-    uid: account.uid,
-    timezone: account.timezone,
-    records: account.list.map((record) => ({ id: record.id, gachaType: record.gacha_type, time: fromServerTime(record.time, account.timezone), rank: Number(record.rank_type), itemId: record.item_id })),
+  return (section ? (doc[section] ?? []) : []).map((rawAccount) => ({
+    uid: rawAccount.uid,
+    timezone: rawAccount.timezone,
+    records: rawAccount.list.map((rawRecord) => ({ id: rawRecord.id, gachaType: rawRecord.gacha_type, time: fromServerTime(rawRecord.time, rawAccount.timezone), rank: Number(rawRecord.rank_type), itemId: rawRecord.item_id })),
   }));
 }
 
