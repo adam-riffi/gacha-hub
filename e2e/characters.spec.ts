@@ -345,3 +345,18 @@ test("Characters and Weapons: Select shows All shown at once, before anything is
   }
 });
 
+// Georges, round 7: "unbuilt character cards shouldn't be empty; I should be able to see character data".
+test("Characters: a card without a build shows the character's base stats at its top level, its growth stat first @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  await page.goto(`/games/${id}/characters`);
+  await page.getByRole("searchbox", { name: "Search" }).fill("Serval");
+  // Serval, whom no journey builds: CRIT Rate grows; at 80, 917 HP, 653 ATK, 375 DEF (Yatta's promotion data).
+  const card = page.getByRole("article", { name: "Serval" });
+  await expect(card.locator(".ch-kpis .kpi-label")).toHaveText(["CRIT Rate", "HP", "ATK", "DEF"]);
+  await expect(card.locator(".ch-kpis > div").first()).toHaveClass(/is-growth/);
+  await expect(card.locator(".ch-kpis .cd")).toHaveText(["5%", "917", "653", "375"]);
+  await expect(card.locator(".ch-kpis .cd").nth(1)).toHaveAttribute("title", /Base at Lv 80/);
+});
