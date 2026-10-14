@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-14 · claude · stack/r10/11-tasks · #290
+- Done: the Tasks screen (Georges, round 7: "changing priority is annoying, it should be easier; Farm today should be more visible; the farm everyday screen should also be included; the task screen has too much negative space: extremely long cards that are half empty"). Priority is a group of three buttons (▲ High, ● Normal, ▼ Low), one click each, the current one filled. Goals sit two by two, each on two lines (its unit and title, then the progress, priority and notify); an open goal spans the row. Farm today's chips grow: icons at 44 px, materials at 40 px, each chip edged and tinted in its game's colour. Today | Week switches Farm today to the week: Monday to Sunday, each day's rotating materials for your goals, today outlined, then what any day farms. `/api/farm-today` gains `week`, each weekday's domain lines from `farmToday`.
+- Tests: written first: integration: Amber's three-day talent book is on its days of the week and on no other. Journey: Farm today's material icons at least 36 px; the first two goals side by side, each under 700 px; Low picked in one click and saved; Week shows Lisa on Wednesday and Saturday, not on Monday, and Slime Condensate under Any day. The Planner's priority check follows the group.
+- Scope/decisions: the week shows rotating materials only (any-day ones under Any), the weeklies staying on today's view.
+- Next: banners and events: a colour per kind, wishlisted events marked, the legend's crooked boxes.
+
 ## 2026-10-14 · claude · stack/r10/10-weapon-window · #289
 - Done: the weapon window (Georges, round 7: "adding a weapon to a character is a bit annoying; I'd rather have a window open with all of my weapons in big with their level, refinement, name, rarity and an info i that I can click on to read the effect"). Each catalog now keeps each weapon's effect, its name and its text at every refinement: Genshin from genshin-db's r1–r5, Star Rail's cone skill filled from each superimposition's params, ZZZ's five talents, WuWa's description filled from each rank's DescParams, NTE's effect filled from its values. On the sheet, Choose weapon (beside the Weapon title) opens a window: my copies of the character's type first (art on the rarity band, Lv, R/S/P, wielders' icons), then the type's others; each card's i opens its effect at that copy's refinement; a click on a card equips it (a held copy asks, as the picker does).
 - Tests: written first: Mistsplitter at R1 and R5, Patience Is All You Need at S1 and S5 without markup, Steel Cushion, Autumntrace and Good Boy's Grand Adventure at their first and fifth ranks; every 4★ and 5★ weapon of the five games has five ranks. Sampo's sheet: Patience (Lv 70, S3) in Mine with its art at least 80 px, its effect at S3 (32%), Before the Tutorial Mission Starts among the rest, and a click on its art equips it at Lv 70.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: Genshin's material URL is Yatta's; WuWa's material and Sonata URLs keep the folder; every WuWa material and set has such a key, each set its own icon. A follow-up test commit: Wrath of the Deep has no group row yet, so it keeps its fetter's icon. `npm run check` passes: 594 tests and 70 journeys.
 - Scope/decisions: Wuthery serves the folder `%2F`-encoded, so `communityArtUrl` keeps encoding keys whole (no path can be smuggled through a key). The art mirror will store such keys flat; it falls back to the community URL if R2 decodes them.
 - Next: endgame enemies as icons.
-
-## 2026-10-11 · claude · stack/r7/05-card-weapon · #248
-- Done: on the Characters cards, the default build's weapon sits on the left of the coloured name card, its level and refinement on its icon (Georges, round 4: "add the weapons on the name card not under it"); the footer no longer holds it, and the name card's line leaves the refinement to the icon (`buildLine` takes `withWeapon`). WIREFRAMES.md G4 follows.
-- Tests: written first: Kafka's card shows her light cone's icon in the name card with 80 and S2 on it, none in the footer, and no S2 in the line. `npm run check` passes: 592 tests and 70 journeys.
-- Scope/decisions: the level bottom-left and the refinement top-right of the 48 px icon, on dark tags, so they read over any art.
-- Next: icons where materials showed initials (Genshin's newest, WuWa's).

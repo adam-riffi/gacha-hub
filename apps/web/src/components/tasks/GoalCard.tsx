@@ -9,7 +9,12 @@ import { stepText } from "../calendar/CalendarSelected";
 import { Picker } from "../Picker";
 import { CatalogIcon, UnitIcon } from "../CatalogIcon";
 
-const NEXT: Record<TaskPriority, TaskPriority> = { high: "normal", normal: "low", low: "high" };
+// Priority in one click (Georges, round 7: "changing priority is annoying"): each level its own button.
+const PRIORITIES: { key: TaskPriority; label: string; icon: string }[] = [
+  { key: "high", label: "High", icon: "▲" },
+  { key: "normal", label: "Normal", icon: "●" },
+  { key: "low", label: "Low", icon: "▼" },
+];
 const ENDS = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
 
 const Meter = ({ done, total }: { done: number; total: number }) => (
@@ -97,9 +102,13 @@ export function GoalCard({ t, tasks, linkable = [], gi, reward, weekday, showGam
         {claimed ? (
           <span className="badge done">Claimed</span>
         ) : (
-          <button className={`badge prio-${t.priority}`} title="Priority: click to change" onClick={() => update.mutate({ priority: NEXT[t.priority] })}>
-            {t.priority}
-          </button>
+          <span className="tk-prio" role="group" aria-label="Priority">
+            {PRIORITIES.map((p) => (
+              <button key={p.key} type="button" className={`prio-${p.key}`} aria-label={p.label} title={p.label} aria-pressed={t.priority === p.key} onClick={() => t.priority !== p.key && update.mutate({ priority: p.key })}>
+                {p.icon}
+              </button>
+            ))}
+          </span>
         )}
         <label className="tk-notify">
           <input type="checkbox" key={String(t.notify)} defaultChecked={t.notify} onChange={(e) => update.mutate({ notify: e.target.checked })} />

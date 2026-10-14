@@ -201,3 +201,42 @@ test("Tasks: a goal shows its own unit as its icon and who it is for; the game a
   await expect(page.getByRole("region", { name: "Goals" }).getByRole("article", { name: "E2E farm a set" }).getByRole("img", { name: "Genshin Impact" })).toBeVisible();
   await page.request.delete(`/api/tasks/${goal.id}`);
 });
+
+// Georges, round 7: "changing priority is annoying, it should be easier; Farm today should be more visible; the farm
+// everyday screen should also be included; the task screen has too much negative space: extremely long cards, half empty".
+test("Tasks: priority in one click; goals two by two; Farm today large, and the week by day @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "genshin" } })).json()) as { id: string };
+  // Lisa's first talent level: Teachings of Ballad (Wednesday, Saturday) and Slime Condensate (any day).
+  expect((await page.request.post(`/api/instances/${id}/plans/generate`, { data: { kind: "character", catalogId: "10000006", talents: { normal: { from: 1, to: 2 } } } })).ok()).toBe(true);
+  const side = (await (await page.request.post("/api/tasks", { data: { scope: "game", refId: id, type: "goal", title: "E2E side goal", target: 3 } })).json()) as { id: string };
+
+  await page.goto("/tasks?game=genshin");
+  const farm = page.getByRole("region", { name: "Farm today" });
+  expect((await farm.getByRole("img", { name: "Slime Condensate" }).first().boundingBox())!.width).toBeGreaterThanOrEqual(36);
+
+  const goals = page.getByRole("region", { name: "Goals" });
+  await expect(goals.getByRole("article", { name: "Farm Lisa" }).first()).toBeVisible();
+  const other = goals.getByRole("article", { name: "E2E side goal" });
+  // The first two goals side by side, each half as wide.
+  const [a, b] = [(await goals.getByRole("article").nth(0).boundingBox())!, (await goals.getByRole("article").nth(1).boundingBox())!];
+  expect(Math.abs(a.y - b.y)).toBeLessThan(4);
+  expect(b.x - a.x).toBeGreaterThan(100);
+  expect(a.width).toBeLessThan(700);
+
+  // One click picks the priority.
+  await other.getByRole("group", { name: "Priority" }).getByRole("button", { name: "Low" }).click();
+  await expect(other.getByRole("group", { name: "Priority" }).getByRole("button", { name: "Low" })).toHaveAttribute("aria-pressed", "true");
+  await expect.poll(async () => ((await (await page.request.get(`/api/tasks?scope=game&refId=${id}`)).json()) as { id: string; priority: string }[]).find((t) => t.id === side.id)?.priority).toBe("low");
+
+  // The week: Lisa on Wednesday and Saturday, not on Monday; what any day farms beside them.
+  await farm.getByRole("button", { name: "Week" }).click();
+  const week = page.getByRole("region", { name: "Farm by weekday" });
+  await expect(week.getByRole("region", { name: "Wednesday" }).getByRole("img", { name: "Lisa" }).first()).toBeVisible();
+  await expect(week.getByRole("region", { name: "Saturday" }).getByRole("img", { name: "Lisa" }).first()).toBeVisible();
+  await expect(week.getByRole("region", { name: "Monday" }).getByRole("img", { name: "Lisa" })).toHaveCount(0);
+  await expect(week.getByRole("region", { name: "Any day" }).getByRole("img", { name: "Slime Condensate" }).first()).toBeVisible();
+  await page.request.delete(`/api/tasks/${side.id}`);
+});

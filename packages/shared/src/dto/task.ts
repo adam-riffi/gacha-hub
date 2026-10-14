@@ -101,6 +101,15 @@ export const taskChecklistInput = z.object({
   items: z.array(checklistItemSchema).max(LIMITS.checklistItems),
 });
 
+const farmLineDto = z.object({
+  kind: z.enum(["domain", "anyday", "weekly"]),
+  text: z.string(),
+  /** Who it is for, which materials and their days: what the card shows as icons. */
+  unit: z.object({ kind: z.enum(["character", "weapon", "gear"]), catalogId: z.string() }).nullable().default(null),
+  materials: z.array(z.string()).default([]),
+  days: z.array(z.number().int().min(1).max(7)).default([]),
+});
+
 /** Farm today (WIREFRAMES.md A3), per awake profile: what its game day opens for your goals, and the weeklies left. */
 export const farmTodayDto = z.array(
   z.object({
@@ -108,16 +117,9 @@ export const farmTodayDto = z.array(
     instanceId: idSchema,
     /** ISO weekday of the profile's game day (1 = Mon … 7 = Sun). */
     weekday: z.number().int().min(1).max(7),
-    lines: z.array(
-      z.object({
-        kind: z.enum(["domain", "anyday", "weekly"]),
-        text: z.string(),
-        /** Who it is for, which materials and their days: what the card shows as icons. */
-        unit: z.object({ kind: z.enum(["character", "weapon", "gear"]), catalogId: z.string() }).nullable().default(null),
-        materials: z.array(z.string()).default([]),
-        days: z.array(z.number().int().min(1).max(7)).default([]),
-      }),
-    ),
+    lines: z.array(farmLineDto),
+    /** Each weekday's rotating materials, Monday to Sunday (round 7: "the farm everyday screen"). */
+    week: z.array(z.object({ weekday: z.number().int().min(1).max(7), lines: z.array(farmLineDto) })).default([]),
   }),
 );
 export type FarmTodayDto = z.infer<typeof farmTodayDto>;

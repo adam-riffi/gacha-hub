@@ -43,7 +43,8 @@ export async function registerFarmTodayRoutes(app: FastifyInstance) {
         ...farmToday(goals, weekday),
         ...(weekly.length === 1 ? [{ kind: "weekly" as const, text: `${weekly[0]!.row.title} left` }] : weekly.length > 1 ? [{ kind: "weekly" as const, text: `${weekly.length} weekly tasks left` }] : []),
       ];
-      out.push({ gameKey: gi.gameKey, instanceId: gi.id, weekday, lines });
+      const week = [1, 2, 3, 4, 5, 6, 7].map((d) => ({ weekday: d, lines: farmToday(goals, d).filter((l) => l.kind === "domain") }));
+      out.push({ gameKey: gi.gameKey, instanceId: gi.id, weekday, lines, week });
     }
     return farmTodayDto.parse(out);
   });

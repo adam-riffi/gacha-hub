@@ -18,18 +18,20 @@
 .tk-note { margin: 0 0 8px; font-size: 13px; }
 .tk-new { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; margin-bottom: 24px; }
 .tk-new-title { flex: 2; min-width: 200px; }
-.tk-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-.tk-chip { display: inline-flex; align-items: center; gap: 8px; padding: 5px 10px; border: 1px solid var(--hairline); color: var(--text); font: 400 12px/1.2 var(--font-mono); }
-.tk-chip .gicon { width: 32px; height: 32px; font-size: 10px; flex: none; }
-.tk-chip .tk-chip-game { width: 20px; height: 20px; font-size: 8px; }
+.tk-chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.tk-chip { --gc: var(--accent); display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px 6px 8px; border: 1px solid var(--hairline); border-left: 4px solid var(--gc); background: color-mix(in srgb, var(--gc) 8%, transparent); color: var(--text); font: 400 14px/1.2 var(--font-mono); }
+.tk-chip .gicon { width: 44px; height: 44px; font-size: 11px; flex: none; }
+.tk-chip .tk-chip-game { width: 28px; height: 28px; font-size: 9px; }
 .mat-icons { display: inline-flex; align-items: center; gap: 3px; }
 .mat-icons .gicon { width: 26px; height: 26px; font-size: 8px; }
+.tk-chip .mat-icons { gap: 4px; }
+.tk-chip .mat-icons .gicon { width: 40px; height: 40px; font-size: 10px; }
 .tk-chip.is-weekly { color: var(--text-muted); }
-.tk-card { margin-top: 10px; padding: 12px 14px; border: 1px solid var(--edge); background: var(--surface-2); }
+.tk-card { min-width: 0; padding: 12px 14px; border: 1px solid var(--edge); background: var(--surface-2); }
 .tk-card.is-open { border-color: var(--hairline-strong); }
 .tk-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 .tk-thumb { width: 40px; height: 40px; flex: none; }
-.tk-title { flex: 1; min-width: 200px; }
+.tk-title { flex: 1; min-width: 160px; }
 .tk-title .mn { font-size: 12px; }
 .tk-prog { display: flex; align-items: center; gap: 8px; }
 .tk-meter { display: inline-block; width: 120px; height: 6px; background: var(--surface-3); }
@@ -77,3 +79,29 @@
 .tk-title-row .tk-game { width: 16px; height: 16px; font-size: 7px; }
 .tk-mat-name { display: inline-flex; align-items: center; gap: 8px; }
 .tk-mat-name .gicon { width: 24px; height: 24px; font-size: 8px; flex: none; }
+/* Round 7: goals two by two, an open one across; priority in one click; Farm today larger, and the week. */
+.tk-goal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 10px; margin-top: 10px; align-items: start; }
+.tk-card.is-open { grid-column: 1 / -1; }
+.tk-prio { display: inline-flex; border: 1px solid var(--hairline); }
+.tk-prio button { width: 32px; height: 30px; padding: 0; border: 0; background: transparent; color: var(--text-muted); font-size: 13px; cursor: pointer; }
+.tk-prio button + button { border-left: 1px solid var(--hairline); }
+.tk-prio button:hover { color: var(--text); }
+.tk-prio button[aria-pressed="true"].prio-high { background: var(--paper); color: var(--on-paper); }
+.tk-prio button[aria-pressed="true"].prio-normal { background: color-mix(in srgb, var(--paper) 40%, transparent); color: var(--paper); }
+.tk-prio button[aria-pressed="true"].prio-low { background: color-mix(in srgb, var(--paper) 18%, transparent); color: var(--paper); }
+.tk-farm-tools { align-items: center; gap: 12px; }
+.tk-week { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 8px; }
+.tk-day { display: flex; flex-direction: column; gap: 6px; min-width: 0; padding: 8px; border: 1px solid var(--hairline); }
+.tk-day.is-today { border-color: var(--accent); box-shadow: inset 0 3px 0 var(--accent); }
+.tk-day.is-any { background: var(--surface-2); }
+.tk-day h4 { margin: 0 0 2px; font: 600 14px/1 var(--font-mono); text-transform: uppercase; }
+.tk-day .tk-chip { flex-wrap: wrap; min-width: 0; padding: 4px; gap: 4px; }
+.tk-day .tk-chip .gicon, .tk-day .tk-chip .mat-icons .gicon { width: 30px; height: 30px; font-size: 9px; }
+.tk-day .mat-icons { flex-wrap: wrap; }
+/* A goal on two lines in its half: the unit and title, then the progress, priority and notify. */
+.tk-goal-grid .tk-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; grid-template-areas: "open open open" "prog prio notify"; row-gap: 10px; }
+.tk-goal-grid .tk-open { grid-area: open; }
+.tk-goal-grid .tk-prog { grid-area: prog; min-width: 0; }
+.tk-goal-grid .tk-prog .tk-meter { flex: 1; width: auto; }
+.tk-goal-grid .tk-prio, .tk-goal-grid .tk-row > .badge { grid-area: prio; justify-self: end; }
+.tk-goal-grid .tk-notify { grid-area: notify; }

@@ -65,7 +65,7 @@ test("Planner: each goal is the Tasks goal card: priority, notify, its plan, Lin
   const goals = page.getByRole("region", { name: "Goals" });
   const seele = goals.getByRole("article", { name: /Farm Seele/ }).first();
   await expect(seele.getByRole("checkbox", { name: "Notify" })).toBeVisible();
-  await expect(seele.getByRole("button", { name: /^(high|normal|low)$/ })).toBeVisible();
+  await expect(seele.getByRole("group", { name: "Priority" }).getByRole("button", { name: "Normal" })).toBeVisible();
   // A click opens the goal and picks it for the materials.
   await seele.getByRole("button", { name: /Farm Seele/ }).click();
   await expect(page.getByRole("region", { name: /^Materials/ })).toContainText("Farm Seele");

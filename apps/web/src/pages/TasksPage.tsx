@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -9,6 +9,7 @@ import {
   type RewardDto,
 } from "@gacha/shared";
 import { GameIcon } from "../components/GameIcon";
+import { Segmented } from "../components/ui";
 import { MaterialIcons, UnitIcon } from "../components/CatalogIcon";
 import { LoadError } from "../components/LoadError";
 import { api } from "../lib/api";
@@ -21,21 +22,22 @@ const WEEKDAY = ["", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Sa
 const DAY = ["", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 type FarmLineDto = FarmTodayDto[number]["lines"][number];
+type FarmEntry = { gameKey: string; key: string; line: FarmLineDto };
 
 /**
  * A Farm today line as icons (Georges, 2026-10-11: "I could just see the Lisa
  * icon and the talent book icon"): the game on the overview only, who it is
  * for, the materials, then their days; the words stay for hover.
  */
-function FarmChip({ gameKey, line, showGame }: { gameKey: string; line: FarmLineDto; showGame: boolean }) {
+function FarmChip({ gameKey, line, showGame, days = true }: { gameKey: string; line: FarmLineDto; showGame: boolean; days?: boolean }) {
   const game = getGame(gameKey);
   return (
-    <span className={`tk-chip is-${line.kind}`} title={line.text}>
+    <span className={`tk-chip is-${line.kind}`} title={line.text} style={game ? ({ "--gc": game.accent } as CSSProperties) : undefined}>
       {showGame && game && <GameIcon src={game.art?.icon ?? null} alt={game.name} glyph="game" tint={game.accent} className="tk-chip-game" />}
       {line.unit && <UnitIcon gameKey={gameKey} unit={line.unit} />}
       {line.materials.length > 0 && <MaterialIcons gameKey={gameKey} ids={line.materials} />}
-      {line.kind === "domain" && <span>{line.days.map((d) => DAY[d]).join(" ")}</span>}
-      {line.kind === "anyday" && <span className="mu">any day</span>}
+      {line.kind === "domain" && days && <span>{line.days.map((d) => DAY[d]).join(" ")}</span>}
+      {line.kind === "anyday" && days && <span className="mu">any day</span>}
       {line.kind === "weekly" && <span>{line.text}</span>}
     </span>
   );
@@ -51,6 +53,7 @@ export function TasksPage() {
   const scope = params.get("game");
   const [filter, setFilter] = useState("");
   const [showBacklog, setShowBacklog] = useState(false);
+  const [week, setWeek] = useState(false);
   // Home's "+ New goal" opens the maker (?new=1).
   const [creating, setCreating] = useState(params.has("new"));
   const instances = useQuery({
@@ -101,6 +104,8 @@ export function TasksPage() {
     );
   const lines = (farm.data ?? []).filter((f) => byId.has(f.instanceId));
   const weekdays = [...new Set(lines.map((f) => f.weekday))];
+  const onDay = (d: number): FarmEntry[] => lines.flatMap((f) => (f.week.find((w) => w.weekday === d)?.lines ?? []).map((line, i) => ({ gameKey: f.gameKey, key: `${f.instanceId}:${d}:${i}`, line })));
+  const anyDay: FarmEntry[] = lines.flatMap((f) => f.lines.flatMap((line, i) => (line.kind === "anyday" ? [{ gameKey: f.gameKey, key: `${f.instanceId}:any:${i}`, line }] : [])));
 
   return (
     <>
@@ -138,19 +143,40 @@ export function TasksPage() {
           <section className="card tk-farm" aria-label="Farm today">
             <div className="spread">
               <h3>Farm today</h3>
-              {weekdays.length === 1 && (
-                <span className="mn mu">game day: {WEEKDAY[weekdays[0]!]}</span>
-              )}
+              <span className="row tk-farm-tools">
+                {weekdays.length === 1 && <span className="mn mu">game day: {WEEKDAY[weekdays[0]!]}</span>}
+                <Segmented label="Farm view" value={week ? "week" : "today"} onChange={(v) => setWeek(v === "week")} options={[{ value: "today", label: "Today" }, { value: "week", label: "Week" }]} />
+              </span>
             </div>
-            <div className="tk-chips">
-              {lines.flatMap((f) => f.lines.map((l, i) => <FarmChip key={`${f.instanceId}:${i}`} gameKey={f.gameKey} line={l} showGame={!scope} />))}
-              {farm.data && lines.every((f) => f.lines.length === 0) && (
-                <p className="mu">
-                  Nothing to farm today. Plan a character from its sheet to see what its materials
-                  need.
-                </p>
-              )}
-            </div>
+            {week ? (
+              // Each weekday's rotating materials, then what any day farms (round 7: "the farm everyday screen").
+              <div className="tk-week" role="region" aria-label="Farm by weekday">
+                {[1, 2, 3, 4, 5, 6, 7].map((d) => (
+                  <section key={d} className={`tk-day ${weekdays.length === 1 && weekdays[0] === d ? "is-today" : ""}`} aria-label={WEEKDAY[d]}>
+                    <h4>{DAY[d]}</h4>
+                    {onDay(d).map((e) => (
+                      <FarmChip key={e.key} gameKey={e.gameKey} line={e.line} showGame={!scope} days={false} />
+                    ))}
+                  </section>
+                ))}
+                <section className="tk-day is-any" aria-label="Any day">
+                  <h4>Any</h4>
+                  {anyDay.map((e) => (
+                    <FarmChip key={e.key} gameKey={e.gameKey} line={e.line} showGame={!scope} days={false} />
+                  ))}
+                </section>
+              </div>
+            ) : (
+              <div className="tk-chips">
+                {lines.flatMap((f) => f.lines.map((l, i) => <FarmChip key={`${f.instanceId}:${i}`} gameKey={f.gameKey} line={l} showGame={!scope} />))}
+                {farm.data && lines.every((f) => f.lines.length === 0) && (
+                  <p className="mu">
+                    Nothing to farm today. Plan a character from its sheet to see what its materials
+                    need.
+                  </p>
+                )}
+              </div>
+            )}
           </section>
 
           <section className="card tk-goals" aria-label="Goals">
@@ -161,6 +187,7 @@ export function TasksPage() {
                 {top.filter((t) => t.backlog).length} in backlog
               </span>
             </div>
+            <div className="tk-goal-grid">
             {goals.map((t) => (
               <GoalCard
                 key={t.id}
@@ -173,6 +200,7 @@ export function TasksPage() {
                 showGame={!scope}
               />
             ))}
+            </div>
             {goals.length === 0 && (
               <p className="mu">
                 {q
