@@ -162,3 +162,21 @@ test("Planner: New goal opens the quick build, for any character @smoke", async 
     for (const t of tasks.filter((x) => x.title === "Farm Welt" && !x.materialId)) await page.request.delete(`/api/tasks/${t.id}`);
   }
 });
+
+// Round 11's review: the Materials screen listed 300 materials in words, the needed ones lost among them.
+test("Materials: each material with its icon; only the needed ones at first when goals need some @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  const plan = await page.request.post(`/api/instances/${id}/plans/generate`, { data: { kind: "character", catalogId: "1005", level: { from: 1, to: 50 } } });
+  expect(plan.ok()).toBe(true);
+  await page.goto(`/games/${id}/materials`);
+  await expect(page.getByRole("checkbox", { name: "Needed only" })).toBeChecked();
+  const credit = page.getByRole("row").filter({ hasText: /^Credit/ });
+  await expect(credit.getByRole("img", { name: "Credit" })).toBeVisible();
+  // Every row shown is needed, until Needed only is unticked.
+  for (const missing of await page.locator("tbody tr td:nth-child(3)").allTextContents()) expect(Number(missing)).toBeGreaterThan(0);
+  await page.getByRole("checkbox", { name: "Needed only" }).uncheck();
+  await expect(page.locator("tbody tr td:nth-child(3)").filter({ hasText: /^0$/ }).first()).toBeVisible();
+});

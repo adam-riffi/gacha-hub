@@ -7,6 +7,7 @@ import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
 import { useCatalog } from "../lib/catalog";
 import { GameTabs } from "../components/GameTabs";
+import { CatalogIcon } from "../components/CatalogIcon";
 import type { InstanceDetail } from "../lib/types";
 
 const DAYS = ["", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -17,7 +18,8 @@ export function MaterialsPage() {
   const qc = useQueryClient();
   const toast = useToast();
   const [search, setSearch] = useState("");
-  const [neededOnly, setNeededOnly] = useState(false);
+  // Unset until ticked: the needed ones alone while goals need some (round 11: the needed were lost among 300).
+  const [neededOnlyPicked, setNeededOnlyPicked] = useState<boolean | null>(null);
   const [category, setCategory] = useState("");
 
   const { data: instance, isError, refetch } = useQuery({
@@ -55,6 +57,7 @@ export function MaterialsPage() {
   if (isLoading) return <div className="muted">Loading catalog…</div>;
   if (!catalog) return <div className="card empty">This game has no materials catalog.</div>;
 
+  const neededOnly = neededOnlyPicked ?? (needed ?? []).some((materialNeed) => materialNeed.needed > 0);
   const q = search.toLowerCase();
   const categories = [...new Set(catalog.materials.map((m) => m.category))].sort();
   const rows = catalog.materials.filter(
@@ -92,7 +95,7 @@ export function MaterialsPage() {
             ))}
           </select>
           <label className="row small" style={{ margin: 0, gap: 6 }}>
-            <input type="checkbox" style={{ width: "auto" }} checked={neededOnly} onChange={(e) => setNeededOnly(e.target.checked)} />
+            <input type="checkbox" style={{ width: "auto" }} checked={neededOnly} onChange={(e) => setNeededOnlyPicked(e.target.checked)} />
             Needed only
           </label>
           <span className="small muted">Enter what you have; "missing" updates from your farming goals.</span>
@@ -115,7 +118,10 @@ export function MaterialsPage() {
                   return (
                     <tr key={m.id}>
                       <td>
-                        {m.name}
+                        <span className="materials-name">
+                          <CatalogIcon gameKey={instance.gameKey} kind="material" icon={m.icon} name={m.name} className="materials-icon" />
+                          {m.name}
+                        </span>
                         {m.source ? <div className="small muted">{m.source}</div> : null}
                       </td>
                       <td>

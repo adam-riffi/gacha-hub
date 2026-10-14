@@ -122,3 +122,5 @@
 .gd-graph { min-height: 300px; }
 /* The 30-day pass's 30 more days (round 7). */
 .gd-pass-add { justify-self: start; margin: 0 16px 16px; }
+/* The battle pass beside the pulls (round 9 moved it there; round 11): a carousel needs a height, or only its title shows. */
+.home-side > .pass-card { height: 300px; }

@@ -575,3 +575,27 @@ test("Characters and Weapons: All, Owned, Not owned and Wishlist as one filter w
     await page.request.delete("/api/admin/banners/hsr/e2e-seen-milky-way");
   }
 });
+
+// Round 11's review: no way to find the characters at a given dupe count.
+test("Characters: a dupes filter, E0 to E6 for Star Rail, on the owned characters' builds @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  // Saber at E2, Archer at E0, both owned with a build.
+  const saber = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1014", doc: { eidolon: 2 } } })).json()) as { id: string };
+  const archer = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1015", doc: { eidolon: 0 } } })).json()) as { id: string };
+  try {
+    await page.goto(`/games/${id}/characters`);
+    const dupes = page.getByRole("group", { name: "Eidolon" });
+    for (const level of [0, 1, 2, 3, 4, 5, 6]) await expect(dupes.getByRole("button", { name: `E${level}`, exact: true })).toBeVisible();
+    await dupes.getByRole("button", { name: "E2", exact: true }).click();
+    await expect(page.getByRole("article", { name: "Saber" })).toBeVisible();
+    await expect(page.getByRole("article", { name: "Archer" })).toHaveCount(0);
+    await dupes.getByRole("button", { name: "E2", exact: true }).click();
+    await expect(page.getByRole("article", { name: "Archer" })).toBeVisible();
+  } finally {
+    await page.request.delete(`/api/characters/${saber.id}`);
+    await page.request.delete(`/api/characters/${archer.id}`);
+  }
+});

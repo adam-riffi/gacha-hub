@@ -81,3 +81,16 @@ test("Profile: account, passes with their reminders, game reminders, status @smo
   await status.getByRole("button", { name: "Remove…" }).click();
   await expect(page).toHaveURL(/\/library$/);
 });
+
+// Round 11's review: the wallet listed its currencies in words only.
+test("Profile: each currency of the wallet with its icon @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  await page.goto(`/games/${id}/profile`);
+  const wallet = page.getByRole("region", { name: "Wallet" });
+  const rows = wallet.locator(".pf-rows > div");
+  await expect(rows.first()).toBeVisible();
+  for (const row of await rows.all()) await expect(row.locator("svg.cur-icon")).toBeVisible();
+});

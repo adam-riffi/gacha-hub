@@ -71,3 +71,18 @@ test("Home: the banners first, beside the dailies; the battle pass further down 
   expect(banners).toBeLessThan(await y("Battle pass"));
   expect(banners).toBeLessThan(await y("Dailies, last 26 weeks"));
 });
+
+// Round 11's review: since round 9 moved it beside the pulls, the battle pass card showed only its title.
+test("Home: the battle pass card beside the pulls shows its game and level, not only its title @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  await page.request.post("/api/instances", { data: { gameKey: "hsr" } });
+  await page.goto("/");
+  const passCard = page.locator(".home-side .pass-card");
+  await expect(passCard).toBeVisible();
+  await expect.poll(async () => (await passCard.boundingBox())?.height ?? 0).toBeGreaterThanOrEqual(220);
+  const band = (await passCard.locator(".pass-game").boundingBox())!;
+  const card = (await passCard.boundingBox())!;
+  expect(band.y + band.height).toBeLessThanOrEqual(card.y + card.height);
+});
