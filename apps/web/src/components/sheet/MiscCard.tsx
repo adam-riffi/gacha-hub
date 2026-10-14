@@ -50,6 +50,9 @@ export function MiscCard({ buildId, gameKey, misc: saved, passives }: { buildId:
   const toast = useToast();
   const [misc, setMisc] = useState<CharacterMisc>(saved ?? {});
   const [skin, setSkin] = useState("");
+  const [note, setNote] = useState("");
+  const [editing, setEditing] = useState<number | null>(null);
+  const [edited, setEdited] = useState("");
   const save = useMutation({
     mutationFn: (next: CharacterMisc) => api.put(`/api/characters/${buildId}`, { misc: next }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["character", buildId] }),
@@ -60,12 +63,13 @@ export function MiscCard({ buildId, gameKey, misc: saved, passives }: { buildId:
     save.mutate(next);
   };
   const skins = misc.skins ?? [];
+  const notes = misc.notes ?? [];
   const pictures = misc.pictures ?? [];
   async function addPicture(file: File | undefined) {
     if (!file) return;
     try {
       const { url } = await api.upload(file);
-      change({ ...misc, pictures: [...pictures, url] });
+      change({ ...misc, pictures: [...pictures, { url }] });
     } catch {
       toast("Upload failed", "err");
     }
@@ -108,23 +112,85 @@ export function MiscCard({ buildId, gameKey, misc: saved, passives }: { buildId:
           </button>
         </form>
       </div>
+      {/* Several notes, each edited or deleted (Georges, round 7). */}
       <div className="sh-misc-block">
-        <label className="kpi-label" htmlFor="sh-notes">
-          Notes
-        </label>
-        <textarea id="sh-notes" rows={3} maxLength={4000} defaultValue={misc.notes ?? ""} onBlur={(e) => e.target.value !== (misc.notes ?? "") && change({ ...misc, notes: e.target.value })} />
+        <span className="kpi-label">Notes</span>
+        <ul className="sh-notes" aria-label="Notes">
+          {notes.map((n, i) => (
+            <li key={i} className="sh-note">
+              {editing === i ? (
+                <form
+                  className="sh-note-edit"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    if (edited.trim()) change({ ...misc, notes: notes.map((x, j) => (j === i ? edited.trim() : x)) });
+                    setEditing(null);
+                  }}
+                >
+                  <textarea aria-label={`Note ${i + 1}`} rows={3} maxLength={2000} value={edited} onChange={(e) => setEdited(e.target.value)} autoFocus />
+                  <button className="btn primary sm" type="submit">
+                    Save note
+                  </button>
+                  <button className="btn ghost sm" type="button" onClick={() => setEditing(null)}>
+                    Cancel
+                  </button>
+                </form>
+              ) : (
+                <>
+                  <p>{n}</p>
+                  <button
+                    className="btn ghost sm"
+                    type="button"
+                    onClick={() => {
+                      setEditing(i);
+                      setEdited(n);
+                    }}
+                  >
+                    Edit
+                  </button>
+                  <button className="btn ghost sm" type="button" onClick={() => change({ ...misc, notes: notes.filter((_, j) => j !== i) })}>
+                    Delete
+                  </button>
+                </>
+              )}
+            </li>
+          ))}
+        </ul>
+        <form
+          className="sh-note-add"
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (note.trim()) change({ ...misc, notes: [...notes, note.trim()] });
+            setNote("");
+          }}
+        >
+          <textarea aria-label="Add a note" placeholder="A note" rows={2} maxLength={2000} value={note} onChange={(e) => setNote(e.target.value)} />
+          <button className="btn" type="submit">
+            Add note
+          </button>
+        </form>
       </div>
       <div className="sh-misc-block">
         <span className="kpi-label">Pictures</span>
         <div className="sh-pictures">
-          {pictures.map((url, i) => (
-            <figure key={url} className="sh-picture">
-              <a href={url} target="_blank" rel="noreferrer">
-                <img src={url} alt={`Picture ${i + 1}`} loading="lazy" />
+          {pictures.map((p, i) => (
+            <figure key={p.url} className="sh-picture">
+              <a href={p.url} target="_blank" rel="noreferrer">
+                <img src={p.url} alt={`Picture ${i + 1}`} loading="lazy" />
               </a>
-              <button type="button" className="btn ghost sm" aria-label={`Remove picture ${i + 1}`} onClick={() => change({ ...misc, pictures: pictures.filter((x) => x !== url) })}>
+              <button type="button" className="btn ghost sm" aria-label={`Remove picture ${i + 1}`} onClick={() => change({ ...misc, pictures: pictures.filter((x) => x.url !== p.url) })}>
                 ×
               </button>
+              {/* A note under each picture (round 7). */}
+              <figcaption>
+                <input
+                  aria-label={`Note for picture ${i + 1}`}
+                  placeholder="A note"
+                  maxLength={500}
+                  defaultValue={p.note ?? ""}
+                  onBlur={(e) => e.target.value.trim() !== (p.note ?? "") && change({ ...misc, pictures: pictures.map((x, j) => (j === i ? { url: x.url, ...(e.target.value.trim() ? { note: e.target.value.trim() } : {}) } : x)) })}
+                />
+              </figcaption>
             </figure>
           ))}
           {pictures.length < 12 && (

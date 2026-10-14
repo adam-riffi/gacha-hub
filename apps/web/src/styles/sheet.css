@@ -135,6 +135,13 @@
 .is-auto { color: var(--text-muted); font-style: italic; }
 .sh-misc-block { display: grid; gap: 6px; }
 .sh-misc textarea { width: 100%; }
+.sh-notes { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; }
+.sh-note { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 6px; padding: 10px 12px; background: var(--surface-2); border-left: 3px solid var(--accent); }
+.sh-note p { flex: 1 1 100%; margin: 0; white-space: pre-line; font-size: 15px; line-height: 1.45; }
+.sh-note-edit { display: grid; gap: 6px; flex: 1 1 100%; }
+.sh-note-add { display: flex; gap: 8px; align-items: flex-end; }
+.sh-note-add textarea { flex: 1; min-height: 56px; }
+.sh-picture figcaption input { width: 140px; margin-top: 4px; font-size: 13px; }
 .sh-misc .row { flex-wrap: nowrap; gap: 8px; }
 .sh-misc .row input { width: 280px; }
 .sh-skins { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
