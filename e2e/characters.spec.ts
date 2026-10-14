@@ -270,7 +270,8 @@ test("Characters: the growth stat first in a card's stats, in the character's co
     await expect(stats.getByRole("group", { name: "ATK" })).toHaveClass(/is-growth/);
     await expect(stats.getByRole("checkbox", { name: "ATK on the card" })).toBeChecked();
     await expect(stats.getByRole("checkbox", { name: "CRIT Rate on the card" })).toBeChecked();
-    await stats.getByRole("checkbox", { name: "HP on the card" }).check();
+    await stats.getByRole("checkbox", { name: "HP on the card" }).click();
+    await expect(stats.getByRole("checkbox", { name: "HP on the card" })).toBeChecked();
     await expect.poll(async () => ((await (await page.request.get(`/api/characters/${build.id}`)).json()) as { cardStats: string[] | null }).cardStats).toEqual(["Crit value", "CRIT Rate / CRIT DMG", "HP"]);
     await expect(stats.getByRole("checkbox", { name: "ATK on the card" })).not.toBeChecked();
   } finally {

@@ -1,5 +1,5 @@
 import type { GameInstance, Prisma } from "../generated/prisma/client.js";
-import { getGame, indexCatalog, type Catalog, type GameDefinition } from "@gacha/shared";
+import { getGame, indexCatalog, sheetStats, type Catalog, type GameDefinition } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
 import { toRegionReset, type RegionReset } from "../lib/resets.js";
 
@@ -60,4 +60,5 @@ export function loadCharacter(userId: string, id: string) {
 export type PrismaJson = Prisma.InputJsonValue;
 
 /** The game's single-number KPIs, the ones a target can be set for ("CRIT Rate / CRIT DMG" takes none). */
-export const numericKpis = (game: GameDefinition) => new Set(Object.values(game.manifest.kpis).flat().filter((l) => !l.includes(" / ")));
+// The stats a target can be set for: every stat the sheet shows as a card (round 8), pairs excluded.
+export const numericKpis = (game: GameDefinition) => new Set(sheetStats(game));

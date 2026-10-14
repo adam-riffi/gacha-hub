@@ -5,9 +5,10 @@ import {
   ascensionPips,
   buildBase,
   cardStatLabels,
-  cardStatOptions,
   elementColor,
   statKpis,
+  sheetStats,
+  LIMITS,
   dupeBadge,
   getGame,
   skillsField,
@@ -34,7 +35,6 @@ import { TaskGeneratorPanel } from "../components/TaskGeneratorPanel";
 import { QuickBuild } from "../components/tasks/QuickBuild";
 import { MiscCard, SkillRow } from "../components/sheet/MiscCard";
 import { WeaponWindow } from "../components/sheet/WeaponWindow";
-import { StatPicker } from "../components/characters/CardStats";
 import { StatIcon } from "../components/StatIcon";
 import type { CharacterDetail, InstanceDetail, TaskItem } from "../lib/types";
 
@@ -55,12 +55,6 @@ export function CharacterPage() {
   if (isLoading || !data) return <div className="mu">Loading…</div>;
   // Keyed by id so the editor re-initializes when navigating between characters.
   return <CharacterEditor key={data.id} data={data} />;
-}
-
-/** The stats a sheet lists: the ones its KPIs read, the base three, and any already typed. */
-function statNames(game: GameDefinition, doc: Doc) {
-  const kpi = Object.values(game.manifest.kpis).flat().flatMap((k) => k.split(" / ")).filter((k) => !/^crit value$/i.test(k));
-  return [...new Set(["HP", "ATK", "DEF", ...kpi, ...Object.keys((doc.stats ?? {}) as Doc)])];
 }
 
 /**
@@ -155,10 +149,19 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
   const instance = useQuery({ queryKey: ["instance", data.gameInstanceId], queryFn: () => api.get<InstanceDetail>(`/api/instances/${data.gameInstanceId}`) });
   const growth = entry?.bonusStats?.[0];
   const isGrowth = (label: string) => growth !== undefined && growth.toLowerCase() === label.toLowerCase();
-  const kpis = statKpis(game, doc, cardStatLabels(game, entry, state.role, data.cardStats, instance.data?.cardStats), catalog?.gear ?? [], base);
+  // The character's card's stats, each ticked on its stat's card (round 8); a pair counts for both its halves.
+  const onCard = cardStatLabels(game, entry, state.role, data.cardStats, instance.data?.cardStats);
+  const isOnCard = (s: string) => onCard.some((l) => l.split(" / ").some((p) => p.toLowerCase() === s.toLowerCase()));
+  const toggleCard = (s: string) => {
+    const next = isOnCard(s) ? onCard.filter((l) => !l.split(" / ").some((p) => p.toLowerCase() === s.toLowerCase())) : [...onCard, s].slice(-LIMITS.cardStats);
+    setCardStats.mutate(next.length ? next : null);
+  };
+  const critValue = statKpis(game, doc, ["Crit value"], catalog?.gear ?? [], base)[0]!.value;
   const setCardStats = useMutation({
     mutationFn: (cardStats: string[] | null) => api.put(`/api/characters/${data.id}`, { cardStats }),
-    onSuccess: () => Promise.all([["character", data.id], ["characters", data.gameInstanceId]].map((queryKey) => qc.invalidateQueries({ queryKey }))),
+    // The box flips at once (round 8); the server's answer follows.
+    onMutate: (cardStats) => qc.setQueryData<CharacterDetail>(["character", data.id], (old) => (old ? { ...old, cardStats } : old)),
+    onSettled: () => Promise.all([["character", data.id], ["characters", data.gameInstanceId]].map((queryKey) => qc.invalidateQueries({ queryKey }))),
   });
   const plan = (tasks.data ?? []).find((t) => !t.materialId && (t.origin as TaskOrigin | null)?.catalogId === data.catalogId && (t.origin as TaskOrigin | null)?.kind === "character");
   const targets = ((plan?.origin as { goal?: { talents?: Record<string, { to: number }> } } | null)?.goal?.talents ?? {}) as Record<string, { to: number }>;
@@ -264,7 +267,6 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
                   </button>
                 )}
                 {quick && data.catalogId && <QuickBuild instanceId={data.gameInstanceId} gameKey={data.gameKey} catalogIds={[data.catalogId]} onClose={() => setQuick(false)} />}
-                <StatPicker name={data.name} label="Card stats" options={cardStatOptions(game, (all.data ?? []).map((b) => b.doc as Doc))} own={data.cardStats} onPick={(stats) => setCardStats.mutate(stats)} />
                 <label className="sh-inline">
                   Build status
                   <select value={state.buildStatus} onChange={(e) => setState((s) => ({ ...s, buildStatus: e.target.value as BuildStatus }))}>
@@ -285,12 +287,6 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
               <span className="badge">{dupeBadge(game, doc)}</span>
               <span className="badge">Lv {level ?? "—"} / {maxLevel}</span>
             </div>
-          </section>
-
-          <section className="sh-kpis" aria-label="KPIs" style={elementColor(game.key, entry?.tag) ? ({ "--el": elementColor(game.key, entry?.tag) } as CSSProperties) : undefined}>
-            {kpis.map((k) => (
-              <KpiTile key={k.label} label={k.label} value={k.value} auto={k.auto} growth={isGrowth(k.label)} target={data.targets?.[k.label]} fallback={data.defaultTargets?.[k.label]} onTarget={(v) => setTarget.mutate({ ...(data.targets ?? {}), ...v })} />
-            ))}
           </section>
 
           <div className="sh-cards">
@@ -429,23 +425,36 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
             </section>
           </div>
 
-          <section className="card" aria-label="Combat stats">
-            <h3>Combat stats</h3>
-            <div className="sh-stats">
-              {statNames(game, doc).map((s) => (
-                <label key={s} className={`sh-stat ${isGrowth(s) ? "is-growth" : ""}`}>
-                  <span>
-                    <StatIcon stat={s} />
-                    {s}
-                  </span>
-                  <input
-                    type="number"
-                    step="0.1"
-                    value={num(((doc.stats ?? {}) as Doc)[s]) ?? ""}
-                    placeholder={base[s] !== undefined ? `${Math.round(base[s])} base` : undefined}
-                    onChange={(e) => setDoc((d) => ({ ...d, stats: { ...((d.stats ?? {}) as Doc), [s]: e.target.value === "" ? undefined : Number(e.target.value) } }))}
-                  />
-                </label>
+          <section className="card sh-statsec" aria-label="Combat stats" style={elementColor(game.key, entry?.tag) ? ({ "--el": elementColor(game.key, entry?.tag) } as CSSProperties) : undefined}>
+            <div className="spread">
+              <h3>Combat stats</h3>
+              <span className="row sh-oncard-note">
+                <span className="mn mu">
+                  on the card {onCard.length} / {LIMITS.cardStats}
+                </span>
+                {data.cardStats && (
+                  <button type="button" className="btn ghost sm" onClick={() => setCardStats.mutate(null)}>
+                    Default
+                  </button>
+                )}
+              </span>
+            </div>
+            <div className="sh-statcards">
+              {sheetStats(game, Object.keys((doc.stats ?? {}) as Doc)).map((s) => (
+                <StatCard
+                  key={s}
+                  label={s}
+                  typed={num(((doc.stats ?? {}) as Doc)[s]) ?? undefined}
+                  base={base[s]}
+                  derived={/^crit value$/i.test(s) ? critValue : undefined}
+                  growth={isGrowth(s)}
+                  onCard={isOnCard(s)}
+                  onToggle={() => toggleCard(s)}
+                  target={data.targets?.[s]}
+                  fallback={data.defaultTargets?.[s]}
+                  onTarget={(v) => setTarget.mutate({ ...(data.targets ?? {}), ...v })}
+                  onValue={(v) => setDoc((d) => ({ ...d, stats: { ...((d.stats ?? {}) as Doc), [s]: v } }))}
+                />
               ))}
             </div>
           </section>
@@ -506,24 +515,64 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
   );
 }
 
-/** A KPI tile with its target (WIREFRAMES.md G5): how far off, typed in place; pairs take no target. */
-function KpiTile({ label, value, auto, growth, target, fallback, onTarget }: { label: string; value: string; auto?: boolean; growth?: boolean; target?: number; fallback?: number; onTarget: (t: Record<string, number | undefined>) => void }) {
-  const now = Number.parseFloat(value);
-  const numeric = !label.includes(" / ");
+/**
+ * A stat as a card (Georges, round 8: "make all the stats into such cards, colour the ascension stat and have a box to
+ * highlight them on the cards"): its value typed over the base, its target and how far off, and a box for the character's card.
+ */
+function StatCard({
+  label,
+  typed,
+  base,
+  derived,
+  growth,
+  onCard,
+  onToggle,
+  target,
+  fallback,
+  onTarget,
+  onValue,
+}: {
+  label: string;
+  typed?: number;
+  base?: number;
+  derived?: string;
+  growth?: boolean;
+  onCard: boolean;
+  onToggle: () => void;
+  target?: number;
+  fallback?: number;
+  onTarget: (t: Record<string, number | undefined>) => void;
+  onValue: (v: number | undefined) => void;
+}) {
+  const now = derived !== undefined ? Number.parseFloat(derived) : (typed ?? base);
+  const auto = derived === undefined && typed === undefined && base !== undefined;
   // The build's own target, else the game's default.
   const shown = target ?? fallback;
-  const gap = shown !== undefined && Number.isFinite(now) ? shown - now : null;
+  const gap = shown !== undefined && now !== undefined && Number.isFinite(now) ? shown - now : null;
   return (
-    <div className={`card sh-kpi ${growth ? "is-growth" : ""}`} role="group" aria-label={label}>
-      <span className={`kpi-label ${growth ? "is-bonus" : ""}`}>
-        <StatIcon stat={label} />
-        {label}
-      </span>
-      <span className={`kpi-value ${auto ? "is-auto" : ""}`} title={auto ? "Base: the level and the weapon, until a value is typed" : undefined}>
-        {value}
-      </span>
-      {numeric && (
-        <span className="sh-target">
+    <div className={`card sh-statcard ${growth ? "is-growth" : ""} ${auto ? "is-auto" : ""} ${onCard ? "is-on-card" : ""}`} role="group" aria-label={label}>
+      <div className="sh-statcard-head">
+        <span className={`kpi-label ${growth ? "is-bonus" : ""}`}>
+          <StatIcon stat={label} />
+          {label}
+        </span>
+        <input type="checkbox" aria-label={`${label} on the card`} title="On the character's card" checked={onCard} onChange={onToggle} />
+      </div>
+      {derived !== undefined ? (
+        <span className="kpi-value">{derived}</span>
+      ) : (
+        <input
+          className="sh-statcard-value"
+          type="number"
+          step="0.1"
+          aria-label={label}
+          value={typed ?? ""}
+          placeholder={base !== undefined ? `${Math.round(base)} base` : "—"}
+          title={auto ? "Base: the level and the weapon, until a value is typed" : undefined}
+          onChange={(e) => onValue(e.target.value === "" ? undefined : Number(e.target.value))}
+        />
+      )}
+      <span className="sh-target">
           <label className="mu">
             {target === undefined && fallback !== undefined ? "target (default)" : "target"}
             <input
@@ -539,8 +588,7 @@ function KpiTile({ label, value, auto, growth, target, fallback, onTarget }: { l
             />
           </label>
           {gap !== null && <span className={`mn ${gap <= 0 ? "" : "mu"}`}>{gap <= 0 ? "✓ on target" : `${Math.round(gap * 10) / 10} short`}</span>}
-        </span>
-      )}
+      </span>
     </div>
   );
 }

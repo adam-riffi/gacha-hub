@@ -209,6 +209,16 @@ export function cardStatLabels(game: GameDefinition, entry: { bonusStats?: strin
   return [...(growth ? [growth] : []), ...roleStats.filter((k) => !growth || k.toLowerCase() !== growth.toLowerCase())].slice(0, LIMITS.cardStats);
 }
 
+/**
+ * The stats a sheet shows, each as a card with its target (Georges, round 8: "make all the stats into such cards"): Crit
+ * value where a role reads it, the base three, then each KPI's stats once, then any typed.
+ */
+export function sheetStats(game: GameDefinition, typed: readonly string[] = []): string[] {
+  const parts = Object.values(game.manifest.kpis).flat().flatMap((k) => k.split(" / "));
+  const cv = parts.filter((p) => /^crit value$/i.test(p));
+  return [...new Set([...cv, "HP", "ATK", "DEF", ...parts.filter((p) => !/^crit value$/i.test(p)), ...typed])];
+}
+
 /** The stats a card can show: the usual ones, every role's, and the ones the builds have typed. */
 export const cardStatOptions = (game: GameDefinition, docs: readonly Doc[]) => [
   ...new Set(["Crit value", "HP", "ATK", "DEF", ...Object.values(game.manifest.kpis).flat().flatMap((k) => k.split(" / ")), ...docs.flatMap((d) => Object.keys((d.stats ?? {}) as object))]),
