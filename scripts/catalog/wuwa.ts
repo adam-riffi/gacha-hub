@@ -157,6 +157,16 @@ const characters: CatalogCharacter[] = playable.map((r) => {
   };
 });
 
+// The art host's names (round 8): a resonator's card art can carry a capital where the game's path has none (Qiuyuan), so the
+// name the host answers to is kept; the game's otherwise, and when the host cannot be reached.
+const PILE = "https://files.wuthery.com/p/GameData/UIResources/Common/Image/IconRolePile/";
+const answers = async (key: string) => (await fetch(`${PILE}${key}.png`, { method: "HEAD" }).catch(() => null))?.ok ?? false;
+for (const c of characters) {
+  if (!c.splash || (await answers(c.splash))) continue;
+  const capital = c.splash.replace(/_Pile_([a-z])/, (_, ch: string) => `_Pile_${ch.toUpperCase()}`);
+  if (capital !== c.splash && (await answers(capital))) c.splash = capital;
+}
+
 const chixia = characters.find((c) => c.id === "1202");
 console.log("[catalog:wuwa] Chixia skill mapping:", JSON.stringify(chixia?.extra?.skillNames));
 

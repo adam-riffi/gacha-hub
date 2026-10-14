@@ -44744,7 +44744,7 @@
       "weaponType": "Sword",
       "maxLevel": 90,
       "icon": "T_IconRoleHead256_56_UI",
-      "splash": "T_IconRole_Pile_qiuyuan_UI",
+      "splash": "T_IconRole_Pile_Qiuyuan_UI",
       "ascension": [
         {
           "atLevel": 40,
