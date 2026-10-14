@@ -7,6 +7,7 @@ import { api } from "../lib/api";
 import { hubPathFor, sectionHref, sectionOf, type ScopeGame, type Section } from "../lib/scope";
 import { hubScreens } from "../lib/hubScreens";
 import type { CharacterDetail, InstanceListItem } from "../lib/types";
+import { GameIcon } from "./GameIcon";
 
 /** 18 px line icons, 1.5 px stroke (VISUAL-DESIGN.md §7). */
 const ICONS: Record<Section, ReactNode> = {
@@ -57,7 +58,7 @@ export function Layout({ children }: { children: ReactNode }) {
 
   const railItem = (s: Section, label: string, name: string) => (
     <Link key={s} to={sectionHref(s, s === "settings" ? null : scope)} className="rail-item" aria-label={name} aria-current={section === s ? "page" : undefined}>
-      <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">{ICONS[s]}</svg>
+      <svg width="24" height="24" viewBox="0 0 18 18" aria-hidden="true">{ICONS[s]}</svg>
       <span>{label}</span>
     </Link>
   );
@@ -93,8 +94,9 @@ export function Layout({ children }: { children: ReactNode }) {
                     aria-current={on ? "page" : undefined}
                     title={gi.sleeping ? `${gi.name} (asleep)` : gi.name}
                   >
-                    <i className="kq" style={{ background: gi.accent }} aria-hidden="true" />
-                    {getGame(gi.gameKey)?.shortName ?? gi.name}
+                    {/* Its icon, and its whole name once picked (Georges, round 7: "Genshin becomes Genshin Impact"). */}
+                    <GameIcon src={getGame(gi.gameKey)?.art?.icon ?? null} alt={gi.name} glyph="game" tint={gi.accent} className="strip-icon" />
+                    {on ? gi.name : (getGame(gi.gameKey)?.shortName ?? gi.name)}
                   </Link>
                 );
               })}

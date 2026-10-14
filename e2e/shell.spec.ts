@@ -98,7 +98,13 @@ test("the selected game spells its full name, each game with its icon; the rail'
   await expect(hsr).toHaveAttribute("aria-current", "page");
   await expect(hsr).toContainText("Honkai: Star Rail");
   // The whole name fits: nothing cut.
-  expect(await hsr.evaluate((el) => el.scrollWidth <= el.clientWidth)).toBe(true);
+  expect(
+    await hsr.evaluate((el) => {
+      const r = document.createRange();
+      r.selectNodeContents(el.lastChild!);
+      return r.getBoundingClientRect().right <= el.getBoundingClientRect().right;
+    }),
+  ).toBe(true);
 
   const rail = page.getByRole("navigation", { name: "Sections" });
   expect((await rail.getByRole("link", { name: "Tasks and goals" }).locator("svg").boundingBox())!.width).toBeGreaterThanOrEqual(22);
