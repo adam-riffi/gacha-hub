@@ -9,7 +9,7 @@
  */
 import AdmZip from "adm-zip";
 import type { Catalog, CatalogCharacter, CatalogGearSet, CatalogWeapon } from "../../packages/shared/src/catalog/types.js";
-import { byId, fetchBuffer, parseInt64Safe, slugify, uniqueKeys, writeCatalog } from "./common.js";
+import { byId, fetchBuffer, fetchJson, parseInt64Safe, slugify, uniqueKeys, writeCatalog } from "./common.js";
 
 const RELEASE = "v0.3.0";
 const URL = `https://github.com/3aKHP/EndFieldGameData/releases/download/${RELEASE}/endfield-tables.zip`;
@@ -51,6 +51,14 @@ const WEAPON_KIND: Record<number, string> = { 1: "Sword", 2: "Arts Unit", 3: "Gr
 /** A weapon item's kind, from its id ("wpn_claym_0004"). */
 const KIND_OF_ID: Record<string, string> = { sword: "Sword", funnel: "Arts Unit", claym: "Greatsword", lance: "Polearm", pistol: "Handcannon" };
 
+// ---- Art (round 7): the Endaxis timeline tool's public folders, pinned to a commit; a key only where the file is there ----
+// operators/<name>/avatar|portrait, weapons/<kind>/<weapon id>, equipment/<suit>/<piece>. The manifest's art sources add the host and ".webp".
+const ART_REPO = "Lieyuan621/Endaxis";
+const ART_COMMIT = "1cd67de1e45099f6676396012e134d97ff035d8b";
+const tree = await fetchJson<{ tree: { path: string }[] }>(`https://api.github.com/repos/${ART_REPO}/git/trees/${ART_COMMIT}?recursive=1`, { cacheKey: "endfield" });
+const art = [...new Set(tree.tree.map((n) => n.path).filter((p) => p.startsWith("public/") && p.endsWith(".webp")).map((p) => p.slice("public/".length, -".webp".length)))].sort();
+const have = (key: string) => (art.includes(key) ? key : undefined);
+
 const table = parseInt64Safe<Record<string, Character>>(read("tables/CharacterTable.json"));
 const characters: CatalogCharacter[] = Object.values(table)
   .filter((c) => c.charId && (c.engName || t(c.name)))
@@ -65,6 +73,9 @@ const characters: CatalogCharacter[] = Object.values(table)
       // The weapon kind, which the sheet's weapon picker filters by; the profession seeds the build's class.
       weaponType: c.weaponType !== undefined ? WEAPON_KIND[c.weaponType] : undefined,
       maxLevel: 80,
+      // Endaxis names each operator's folder by its English name ("Last Rite" → last-rite; both Endministrators share one).
+      icon: have(`operators/${slugify(name)}/avatar`),
+      splash: have(`operators/${slugify(name)}/portrait`),
       ascension: [],
       talents: { keys: [], costs: [] },
       extra: {
@@ -84,7 +95,7 @@ const weapons: CatalogWeapon[] = Object.values(items)
   .filter((i) => i.type === 5 && i.id.startsWith("wpn_") && t(i.name))
   .map((i) => {
     const name = t(i.name);
-    return { id: i.id, key: slugify(name), name, rarity: Math.min(6, Math.max(1, i.rarity)), type: KIND_OF_ID[i.id.split("_")[1] ?? ""], maxLevel: 80, ascension: [] };
+    return { id: i.id, key: slugify(name), name, rarity: Math.min(6, Math.max(1, i.rarity)), type: KIND_OF_ID[i.id.split("_")[1] ?? ""], maxLevel: 80, icon: have(`weapons/${i.id.split("_")[1]}/${i.id}`), ascension: [] };
   });
 
 // ---- Gear sets: pieces sharing a suit; body, hands, then two kits in the four slots ----
@@ -102,7 +113,10 @@ const gear: CatalogGearSet[] = [...suits.entries()].flatMap(([suit, pieces]): Ca
   const name = setName(pieces);
   if (!name) return [];
   const rarities = [...new Set(pieces.map((p) => items[p.itemId]?.rarity).filter((r): r is number => typeof r === "number"))].sort();
-  return [{ id: suit, key: slugify(name), name, slots: ["slot1", "slot2", "slot3", "slot4"], bonuses: [], extra: { rarityList: rarities, pieces: pieces.map((p) => p.itemId) } }];
+  // Its icon: a body piece of its folder, else any of its pieces.
+  const own = art.filter((k) => k.startsWith(`equipment/${suit.replace(/^suit_/, "")}/`));
+  const icon = own.find((k) => k.includes("_body_")) ?? own[0];
+  return [{ id: suit, key: slugify(name), name, slots: ["slot1", "slot2", "slot3", "slot4"], bonuses: [], ...(icon ? { icon } : {}), extra: { rarityList: rarities, pieces: pieces.map((p) => p.itemId) } }];
 });
 
 const catalog: Catalog = {

@@ -39,7 +39,8 @@ describe("communityArtUrl", () => {
   it("has nothing for missing keys, other kinds or games without a source", () => {
     expect(communityArtUrl("hsr", "character", undefined)).toBeNull();
     expect(communityArtUrl("hsr", "talent", "1503")).toBeNull();
-    expect(communityArtUrl("endfield", "character", "chr_0002_endminm")).toBeNull();
+    // Endfield has character art since round 7 (Endaxis), but no material art.
+    expect(communityArtUrl("endfield", "material", "item_gold")).toBeNull();
   });
 
   it("encodes keys so a catalog value cannot change the path", () => {

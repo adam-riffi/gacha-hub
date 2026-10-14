@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-14 · claude · stack/r10/18-endfield-art · #297
+- Done: Endfield's art (Georges, round 7: "add the weapons tracking and character art and everything else related to Endfield"). The importer reads the file tree of the Endaxis timeline tool (github.com/Lieyuan621/Endaxis, pinned to commit 1cd67de) and keys each catalog entry to a file that is there: each operator's avatar and portrait (operators/<English name>/…, both Endministrators sharing one), each weapon's icon (weapons/<kind>/<weapon id>), each gear set's (a body piece of its suit's folder). All 29 operators, 71 weapons and 22 sets have art. The manifest's art sources point at raw.githubusercontent.com at that commit, which the CSP now allows (server headers and vercel.json alike). Weapons were already tracked (Weapons screen and the sheet's window).
+- Tests: written first: Perlica's avatar and portrait keys, the Endministrator's shared folder, at least 28 operators, Greatsword 0003's icon and 60 weapons, a set's icon from its suit folder, the art URL at the pinned commit; the CSP allows raw.githubusercontent.com.
+- Scope/decisions: Endaxis has no licence, so its files are linked, never copied, as with the other community sources until the R2 mirror (ADR 0006) holds them; the commit is pinned so a renamed file cannot break a key. In-browser check: the 20 portraits on Endfield's Characters screen load. PR screenshots keep outside art blocked, so this PR has none.
+- Next: the full check over PRs 17 and 18; then the icon pass.
+
 ## 2026-10-14 · claude · stack/r10/17-nte-gear · #296
 - Done: NTE's gear (Georges, round 7: "you haven't added the gear system for NTE"). The importer reads the Console's sets from Hakushin's items: each series' Chameleon Package names its three cartridge sets ("… from Lost Radiance, Fireflies and the Forest, or Street Boxer series."), the series' Legendary Cartridge gives the icon; nine sets over Series I–III, in the four cartridge slots, without bonuses (the dataset gives none). NTE's hub gains its Console tab (the gear screen, named as the game names it); the "no gear sets" exception is gone.
 - Tests: written first: NTE's catalog has the nine series, Lost Radiance in Series I with its icon and four slots, Shadow Creed in Series III; the Console tab opens the gear screen whose Sets view shows Lost Radiance, Diabolos and Shadow Creed and opens a set's panel.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the Settings journey walks the tabs (each its address and `aria-current`; Pull history absent from Games); Data sources is a tab with Settings' heading over it, and Games is one click back; export and HoYoLAB open their tabs; the a11y sweep covers the new tabs.
 - Scope/decisions: a tab's queries load with it (links, imports). Also fixed: the calendar journey failed on Mondays, as a banner that began before the window drew a short bar whose dates squeezed its name to nothing; the dates now give way first, and the test hits that case on any weekday.
 - Next: the Endgame's cycles, each one opening.
-
-## 2026-10-11 · claude · stack/r7/12-endfield-data · #255
-- Done: Endfield's weapons and gear sets (Georges, round 4: "try to populate Endfield and NTE for data on them"), from the same EndFieldGameData tables: 71 weapons with their kinds (Sword, Greatsword, Polearm, Handcannon, Arts Unit, the game's own words) and 22 gear sets in four slots (body, hands, two kits), each named from its body piece as the suits have no names ("Roving MSGR"). A character's `weaponType` is now its weapon kind, so the sheet's weapon picker filters by it; its profession (in `extra`) seeds the build's class. Endfield gets its Gear tab; still no Planner (no costs published). Round 4's audit is marked done and HANDOFF.md rewritten for it.
-- Tests: written first: the catalog has 60+ weapons across the five kinds and 15+ uniquely named four-slot sets, Roving MSGR among them; the Endministrator's kind is Sword, its profession Guard, which seeds the class; Endfield's hub tabs include Gear; the weapons journey finds Exemplar in Endfield's catalog. `npm run check` passes: 603 tests and 71 journeys.
-- Scope/decisions: set names are derived (the body piece without its last word and tier); no set bonuses, costs or art exist in the tables. With every game holding a weapon catalog, adding weapons by name stays for games scaffolded by `game:new`, covered by the server test.
-- Next: Georges's secrets, data, and the sign-in decision; the designs' details without a source.

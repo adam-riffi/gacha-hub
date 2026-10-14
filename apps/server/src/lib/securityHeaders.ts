@@ -22,6 +22,8 @@ const CSP: Record<string, string[]> = {
     "https://*.public.blob.vercel-storage.com",
     // Our own copy of the game art, in a public R2 bucket (ADR 0006).
     "https://*.r2.dev",
+    // Endfield's art, from the Endaxis repository until the bucket holds it (round 7).
+    "https://raw.githubusercontent.com",
   ],
   "connect-src": ["'self'"],
   "object-src": ["'none'"],
