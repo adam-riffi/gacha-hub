@@ -38,6 +38,7 @@ import { BuildsTable } from "../components/characters/BuildsTable";
 import { CardStats } from "../components/characters/CardStats";
 import { QuickBuild } from "../components/tasks/QuickBuild";
 import type { InstanceDetail } from "../lib/types";
+import { useLatestWriteQueue } from "../lib/latestWrite";
 
 const ENDS = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
 const STATUS_RANK: Record<BuildStatus, number> = { perfect: 0, good: 1, building: 2, none: 3 };
@@ -127,32 +128,28 @@ export function CharactersPage() {
     mutationFn: (v: { catalogId: string; wished: boolean; kind?: "character" | "weapon" }) => api.put(`/api/instances/${id}/wishlist`, { kind: "character", ...v }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["wishlist", id] }),
   });
-  // A card's own stats (Georges, round 6: "I can choose for each one character what I want to show").
-  const setBuildStats = useMutation({
-    // One save at a time, a read in flight cancelled, read back after the last: as the game's card stats.
-    scope: { id: `build-stats-${id}` },
-    mutationKey: ["build-stats", id],
-    mutationFn: (v: { id: string; cardStats: string[] | null }) => api.put(`/api/characters/${v.id}`, { cardStats: v.cardStats }),
-    onMutate: async (v) => {
-      await qc.cancelQueries({ queryKey: ["characters", id] });
-      qc.setQueryData<CharacterDto[]>(["characters", id], (old) => old?.map((b) => (b.id === v.id ? { ...b, cardStats: v.cardStats } : b)));
-    },
-    onSettled: () => qc.isMutating({ mutationKey: ["build-stats", id] }) === 1 && qc.invalidateQueries({ queryKey: ["characters", id] }),
-  });
-  // The stats the cards show, picked for the game (Georges, round 5); none picked shows each build's role's.
-  const setCardStats = useMutation({
-    // One save at a time: quick picks sent together could land out of order and keep an older pick.
-    scope: { id: `card-stats-${id}` },
-    mutationKey: ["card-stats", id],
-    mutationFn: (cardStats: string[] | null) => api.put(`/api/instances/${id}`, { cardStats }),
-    // A read in flight would put back the stats from before the picks, and the next pick would build on them.
-    onMutate: async (cardStats) => {
-      await qc.cancelQueries({ queryKey: ["instance", id] });
-      qc.setQueryData<InstanceDetail>(["instance", id], (old) => (old ? { ...old, cardStats } : old));
-    },
-    // Read back once the last pick is saved.
-    onSettled: () => qc.isMutating({ mutationKey: ["card-stats", id] }) === 1 && qc.invalidateQueries({ queryKey: ["instance", id] }),
-  });
+  // A card's own stats (Georges, round 6: "I can choose for each one character what I want to show"), saved per build, the latest pick
+  // waiting while one is in flight, read back after the last.
+  const buildStatsWrites = useLatestWriteQueue<string[] | null>(
+    (buildId, cardStats) => api.put(`/api/characters/${buildId}`, { cardStats }),
+    () => qc.invalidateQueries({ queryKey: ["characters"] }),
+  );
+  const saveBuildStats = (buildId: string, cardStats: string[] | null) => {
+    void qc.cancelQueries({ queryKey: ["characters", id] });
+    qc.setQueryData<CharacterDto[]>(["characters", id], (old) => old?.map((build) => (build.id === buildId ? { ...build, cardStats } : build)));
+    buildStatsWrites.push(buildId, cardStats);
+  };
+  // The stats the cards show, picked for the game (Georges, round 5); none picked shows each build's role's. A read in flight would put
+  // back the stats from before the picks, so it is cancelled; the game's stats are read back once the last pick is saved.
+  const gameStatsWrites = useLatestWriteQueue<string[] | null>(
+    (instanceId, cardStats) => api.put(`/api/instances/${instanceId}`, { cardStats }),
+    (instanceId) => qc.invalidateQueries({ queryKey: ["instance", instanceId] }),
+  );
+  const saveGameStats = (cardStats: string[] | null) => {
+    void qc.cancelQueries({ queryKey: ["instance", id] });
+    qc.setQueryData<InstanceDetail>(["instance", id], (old) => (old ? { ...old, cardStats } : old));
+    gameStatsWrites.push(id!, cardStats);
+  };
   const start = useMutation({
     mutationFn: (v: string | { name: string } | { catalogId: string; own: false }) => api.post<{ id: string }>(`/api/instances/${id}/characters`, typeof v === "string" ? { catalogId: v } : v),
     onSuccess: (r) => nav(`/characters/${r.id}`),
@@ -229,7 +226,7 @@ export function CharactersPage() {
   const toggleStat = (s: string) => {
     const now = cardStats ?? [];
     const next = now.includes(s) ? now.filter((x) => x !== s) : [...now, s].slice(-LIMITS.cardStats);
-    setCardStats.mutate(next.length ? next : null);
+    saveGameStats(next.length ? next : null);
   };
 
   return (
@@ -269,7 +266,7 @@ export function CharactersPage() {
         <div className="ch-chipset ch-stats">
           <span className="kpi-label">Card stats</span>
           <div role="group" aria-label="Card stats">
-            <button type="button" className="ch-chip" aria-pressed={!cardStats} onClick={() => setCardStats.mutate(null)}>
+            <button type="button" className="ch-chip" aria-pressed={!cardStats} onClick={() => saveGameStats(null)}>
               Role
             </button>
             {statOptions.map((s) => (
@@ -390,7 +387,7 @@ export function CharactersPage() {
                   kpis={statKpis(game, doc, cardStatLabels(game, c.entry, c.build.role, c.build.cardStats, cardStats), catalog?.gear ?? [], buildBase(game, index, c.build.catalogId, doc))}
                   own={c.build.cardStats}
                   growth={c.entry?.bonusStats?.[0]}
-                  onPick={(stats) => setBuildStats.mutate({ id: c.build!.id, cardStats: stats })}
+                  onPick={(stats) => saveBuildStats(c.build!.id, stats)}
                 />
               ) : c.entry && !(!c.owned && onBanner && characterBanner) ? (
                 // No build yet: the character's own data, its base stats at its top level, its growth stat first (Georges, round 7).
