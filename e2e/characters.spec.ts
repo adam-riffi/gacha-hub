@@ -480,6 +480,8 @@ test("Characters: card-stat picks made quickly are all kept, even when the page 
   } finally {
     await page.unroute(`**/api/instances/${id}`);
     await page.request.put(`/api/instances/${id}`, { data: { cardStats: null } });
+  }
+});
 
 // Georges, round 11: "I'd like to have a 'last seen' info on characters to see their last banners"; and "there's a wild banner card on the character screen".
 test("Characters: each character's last banner on its card, sorted by it; the sheet's banners in full, across the sheet @smoke", async ({ page }) => {
