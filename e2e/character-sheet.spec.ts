@@ -218,7 +218,7 @@ test("Character sheet: each gear piece's set as a large icon; stat icons beside 
     const head = page.getByRole("region", { name: "Relics" }).getByRole("group", { name: "Head" });
     const icon = head.getByRole("img", { name: "Prisoner in Deep Confinement" });
     await expect(icon).toBeVisible();
-    expect((await icon.boundingBox())!.width).toBeGreaterThanOrEqual(56);
+    await expect.poll(async () => (await icon.boundingBox())?.width ?? 0).toBeGreaterThanOrEqual(56);
     await expect(head.locator("svg.stat-icon[data-stat=hp]")).toBeVisible();
     await expect(head.locator("svg.stat-icon[data-stat=critRate]")).toBeVisible();
   } finally {

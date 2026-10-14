@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-14 · claude · stack/r10/14-shop-pulls · #293
+- Done: free pulls as monthly tasks (Georges, round 7: "make sure to include the buying of free pulls as a monthly/cycle goal"). Each game's monthly shop is now one of its default tasks, monthly and resetting with the shop (`GameTaskSeed.anchorKey`): Paimon's Bargains, Embers Exchange and the Signal Shop count their ten pulls (5 + 5) as steps; WuWa's Coral Shop and NTE's Lost Exchange are one tick. Profiles made before get them from Restore defaults. A monthly task named after its shop no longer shows the shop's name twice. The E2E size checks now poll the box until the picture settles (CI read a null box on #287).
+- Tests: written first: each game's seeded tasks include its shop's, monthly, with ten steps where counted; Genshin's Paimon's Bargains resets with "bargains" and comes back from Restore defaults.
+- Scope/decisions: the amounts are in docs/games/*.md with sources; WuWa's coral limits differ between guides (6 Forging Tides a month, or every 40 days), so it stays one tick; NTE's stock is not on record; Endfield has no monthly shop.
+- Next: the top-up history.
+
 ## 2026-10-14 · claude · stack/r10/13-navbar · #292
 - Done: the navbar (Georges, round 7: "the game cards should extend a bit more when selected: Genshin becomes Genshin Impact etc. … work on the navbar as well, try some things to make it better"). Each game in the strip has its icon (the game's art, else its tile in its colour) before its short name; the selected one grows to fit its full name ("Genshin Impact", "Honkai: Star Rail") with a larger icon. The rail's icons grow from 18 to 24 px and its labels to 11 px; the current section is filled in the scope's colour with a thicker bar; a hovered one lights up.
 - Tests: written first: Star Rail's tab shows its icon and no "Honkai" until picked, then its full name, not cut; the rail's Tasks icon at least 22 px; Home's item, current, filled.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: Shiyu's list shows "Weak to …" element icons; Deadly Assault's first stage reads "Lv N" and its enemy names itself on hover; ZZZ's element URL is Hakushin's. `npm run check` passes: 597 tests and 70 journeys.
 - Scope/decisions: Genshin's Stygian bosses have no weaknesses in the data; Star Rail's Apocalyptic Shadow still has no dated source.
 - Next: the Planner's goals with the Tasks features.
-
-## 2026-10-11 · claude · stack/r7/08-gear-screen · #251
-- Done: one gear screen for every game (Georges, round 4: "each set of gear shown, I can click on them to see what piece I have currently, or click on farming to generate a task and choose what pieces I need"). Each set is a card with how many of its slots you hold; a click opens it beside the cards: its pieces by slot, on whom (Unequip) or in the bag (Equip on a build), and Add a piece; Farm ticks the pieces you need (the empty slots first) and makes a checklist goal, a step per piece, with the set as its origin. Bonus labels come from each bonus's own "2pc:" prefix (WuWa showed "2-pc 2pc:"), one-piece sets say 1pc. Genshin's inventory and farm-targets views, and their components, go: the set panel does their work the same way everywhere. WIREFRAMES.md G6, the guide and its screenshot follow.
-- Tests: written first: Star Rail's Musketeer set opens with an empty Head, a piece added to the bag shows there, equipped on Seele it shows her and the card counts 1 / 4; WuWa's and ZZZ's first sets farm two picked pieces into a checklist goal. The a11y walk opens a Genshin set and its Farm picker. A follow-up test commit: the set journey checks its own piece, as other journeys' builds may wear the set. `npm run check` passes: 596 tests and 70 journeys.
-- Scope/decisions: Genshin loses its crit-value inventory and storage meter, and the per-domain farm targets: Georges asked for one system; a set's pieces and Farm cover what they did.
-- Next: endgame enemies as icons.

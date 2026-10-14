@@ -168,6 +168,8 @@ export const hsr: GameDefinition = {
     // From Georges's design (2026-10-11): the check-in, and Echo of War's three weekly claims.
     { key: "checkIn", title: "Check-in", cadence: "daily" },
     { key: "echo", title: "Echo of War", cadence: "weekly", target: 3 },
+    // Embers Exchange: 5 Star Rail Special Passes and 5 Star Rail Passes for Undying Embers each month (docs/games/hsr.md).
+    { key: "embers", title: "Embers Exchange", cadence: "monthly", target: 10, anchorKey: "embers" },
   ],
   docSchema: hsrDocSchema,
   emptyDoc: (): HsrDoc => ({ relics: {}, traces: {}, lightCone: {}, stats: {} }),

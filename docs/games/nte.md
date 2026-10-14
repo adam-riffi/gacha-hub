@@ -7,7 +7,7 @@
 | Servers | Asia and SEA UTC+8, America UTC−5, Europe UTC+1 ~ | research notes |
 | Daily and weekly reset | 05:00 server time; weekly on Monday | [official news](https://nte.perfectworld.com/en/article/news/) |
 | Stamina | Character Pixels, cap 240, 1 every 6 minutes, no reserve | [official news](https://nte.perfectworld.com/en/article/news/) |
-| Monthly shop | Lost Exchange, on the 1st ~ | research notes |
+| Monthly shop | Lost Exchange, on the 1st ~; one monthly tick, its stock not on record | research notes |
 | Endgame | Beyond the Rails: the Special Route resets every 14 days (anchored on 30 Sep 2026 ~), 36 seals, 800 Annulith a cycle ~ | research notes; [Beyond the Rails](https://neverness-to-everness.fandom.com/wiki/Beyond_the_Rails) |
 | Battle pass | Circle Bounty, 80 levels (since 1.4); weekly cap 12,000 EXP ~ | [official news](https://nte.perfectworld.com/en/article/news/); the cap: research notes |
 | 30-day pass | Riftcrystal Mining Permit, 30 days, stacks to 180 ~ | research notes |

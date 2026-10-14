@@ -215,7 +215,7 @@ test("Tasks: priority in one click; goals two by two; Farm today large, and the 
 
   await page.goto("/tasks?game=genshin");
   const farm = page.getByRole("region", { name: "Farm today" });
-  expect((await farm.getByRole("img", { name: "Slime Condensate" }).first().boundingBox())!.width).toBeGreaterThanOrEqual(36);
+  await expect.poll(async () => (await farm.getByRole("img", { name: "Slime Condensate" }).first().boundingBox())?.width ?? 0).toBeGreaterThanOrEqual(36);
 
   const goals = page.getByRole("region", { name: "Goals" });
   await expect(goals.getByRole("article", { name: "Farm Lisa" }).first()).toBeVisible();

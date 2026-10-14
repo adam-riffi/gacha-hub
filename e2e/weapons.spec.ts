@@ -41,10 +41,10 @@ test("Weapons: every copy its own card with its level and refinement and who wie
   await expect(cards.first().getByRole("img", { name: "Kafka" })).toBeVisible();
   // Larger cards (Georges, round 7: "very small cards that are hard to identify their rarity and see the character icons"):
   // the art at least 88 px, the rarity as a band in its colour, the wielder at least 36 px.
-  expect((await cards.first().getByRole("img", { name: "Patience Is All You Need" }).boundingBox())!.width).toBeGreaterThanOrEqual(88);
+  await expect.poll(async () => (await cards.first().getByRole("img", { name: "Patience Is All You Need" }).boundingBox())?.width ?? 0).toBeGreaterThanOrEqual(88);
   await expect(cards.first().locator(".wp-rarity")).toHaveAttribute("data-rarity", "5");
   expect(await cards.first().locator(".wp-rarity").evaluate((el) => getComputedStyle(el).backgroundColor)).not.toBe("rgba(0, 0, 0, 0)");
-  expect((await cards.first().getByRole("img", { name: "Kafka" }).boundingBox())!.width).toBeGreaterThanOrEqual(36);
+  await expect.poll(async () => (await cards.first().getByRole("img", { name: "Kafka" }).boundingBox())?.width ?? 0).toBeGreaterThanOrEqual(36);
 
   await panel.getByRole("button", { name: "Wishlist" }).click();
   await expect(panel.getByRole("button", { name: "Wishlist" })).toHaveAttribute("aria-pressed", "true");
@@ -201,7 +201,7 @@ test("Weapons on the sheet: a window of my copies first, then the rest; each wit
   const mine = box.getByRole("region", { name: "Mine" }).getByRole("article", { name: "Eyes of the Prey" });
   await expect(mine).toContainText("Lv 70");
   await expect(mine).toContainText("S3");
-  expect((await mine.getByRole("img").first().boundingBox())!.width).toBeGreaterThanOrEqual(80);
+  await expect.poll(async () => (await mine.getByRole("img").first().boundingBox())?.width ?? 0).toBeGreaterThanOrEqual(80);
   // Its effect at its superimposition: S3's 36% DoT.
   await mine.getByRole("button", { name: "Eyes of the Prey: effect" }).click();
   await expect(mine.getByRole("note")).toContainText("Self-Confidence");

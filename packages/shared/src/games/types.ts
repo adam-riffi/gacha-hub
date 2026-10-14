@@ -45,6 +45,8 @@ export interface GameTaskSeed {
   cadence: TaskCadence;
   /** Its steps per cycle, as boxes (four commissions, three weekly bosses); one when absent. */
   target?: number;
+  /** The monthly shop or endgame mode it resets with (`monthlyShops`, `endgame` keys). */
+  anchorKey?: string;
 }
 
 /**

@@ -107,7 +107,7 @@ test("the selected game spells its full name, each game with its icon; the rail'
   ).toBe(true);
 
   const rail = page.getByRole("navigation", { name: "Sections" });
-  expect((await rail.getByRole("link", { name: "Tasks and goals" }).locator("svg").boundingBox())!.width).toBeGreaterThanOrEqual(22);
+  await expect.poll(async () => (await rail.getByRole("link", { name: "Tasks and goals" }).locator("svg").boundingBox())?.width ?? 0).toBeGreaterThanOrEqual(22);
   const home = rail.getByRole("link", { name: "Home, all games" });
   await expect(home).toHaveAttribute("aria-current", "page");
   expect(await home.evaluate((el) => getComputedStyle(el).backgroundColor)).not.toBe("rgba(0, 0, 0, 0)");

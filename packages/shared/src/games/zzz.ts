@@ -149,6 +149,8 @@ export const zzz: GameDefinition = {
     { key: "coffee", title: "Coffee", cadence: "daily" },
     { key: "videoStore", title: "Video store", cadence: "daily" },
     { key: "hunt", title: "Notorious Hunt", cadence: "weekly", target: 3 },
+    // Signal Shop: 5 Encrypted Master Tapes and 5 Master Tapes for Fading Signal each month (docs/games/zzz.md).
+    { key: "signal", title: "Signal Shop", cadence: "monthly", target: 10, anchorKey: "signal" },
   ],
   docSchema: zzzDocSchema,
   emptyDoc: (): ZzzDoc => ({ discs: {}, skills: {}, wEngine: {}, stats: {} }),

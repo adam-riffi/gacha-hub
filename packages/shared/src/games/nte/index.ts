@@ -99,6 +99,8 @@ export const nte: GameDefinition = {
     { key: "gifts", title: "Gifts", cadence: "daily" },
     { key: "auction", title: "Auction House", cadence: "weekly" },
     { key: "mailbox", title: "Old Mailbox commission", cadence: "weekly" },
+    // The Lost Exchange each month; one tick, its stock not on record (docs/games/nte.md).
+    { key: "lost", title: "Lost Exchange", cadence: "monthly", anchorKey: "lost" },
   ],
   docSchema: nteDocSchema,
   emptyDoc: (): NteDoc => ({ arc: {}, console: {}, skills: {}, stats: {} }),

@@ -147,6 +147,8 @@ export const wuwa: GameDefinition = {
     // From Georges's design (2026-10-11): up to 36 Tacet Discords a day in the Nightmare Nests (Prydwen's game modes guide).
     { key: "nests", title: "Nightmare Nests", cadence: "daily", target: 36 },
     { key: "weeklyBosses", title: "Weekly Bosses", cadence: "weekly", target: 3 },
+    // The Coral Shop's tides each month; one tick, the sources disagreeing on its limits (docs/games/wuwa.md).
+    { key: "coral", title: "Coral Shop", cadence: "monthly", anchorKey: "coral" },
   ],
   docSchema: wuwaDocSchema,
   emptyDoc: (): WuwaDoc => ({ echoes: {}, skills: {}, weapon: {}, stats: {} }),

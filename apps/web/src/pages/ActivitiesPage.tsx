@@ -183,7 +183,7 @@ function CadenceList({
         {/* One tick control everywhere (round 7): a counted daily by its steps. */}
         {items.map((t) => (
           <TickRow key={t.id} instanceId={instanceId} task={t}>
-            {cadence === "monthly" && t.anchorKey && <span className="mn mu">{anchors.find((a) => a.key === t.anchorKey)?.name}</span>}
+            {cadence === "monthly" && t.anchorKey && anchors.find((a) => a.key === t.anchorKey)?.name !== t.title && <span className="mn mu">{anchors.find((a) => a.key === t.anchorKey)?.name}</span>}
           </TickRow>
         ))}
         {items.length === 0 && <p className="mu act-empty">Nothing {title.toLowerCase()} yet.</p>}
