@@ -3,7 +3,7 @@ import { statRowSchema } from "../../common.js";
 import { bannerHistorySchema, type Catalog } from "../../catalog/types.js";
 import type { GameDefinition } from "../types.js";
 import { hoyoRegions } from "../regions.js";
-import { HSR_LIMITS as L } from "./limits.js";
+import { HSR_LIMITS } from "./limits.js";
 
 export { HSR_LIMITS } from "./limits.js";
 
@@ -23,7 +23,7 @@ const HSR_MAIN_STATS: Record<(typeof HSR_RELIC_SLOTS)[number]["key"], string[]> 
   hands: ["ATK"],
   body: [...HSR_PCT, "Effect Hit Rate", "Outgoing Healing Boost", "CRIT Rate", "CRIT DMG"],
   feet: [...HSR_PCT, "SPD"],
-  sphere: [...HSR_PCT, ...["Physical", "Fire", "Ice", "Wind", "Lightning", "Quantum", "Imaginary"].map((e) => `${e} DMG Boost`)],
+  sphere: [...HSR_PCT, ...["Physical", "Fire", "Ice", "Wind", "Lightning", "Quantum", "Imaginary"].map((element) => `${element} DMG Boost`)],
   rope: [...HSR_PCT, "Break Effect", "Energy Regeneration Rate"],
 };
 
@@ -43,25 +43,25 @@ const relicSchema = z
   .object({
     setName: z.string(),
     mainStat: z.string(),
-    level: z.number().int().min(0).max(L.maxRelicLevel),
+    level: z.number().int().min(0).max(HSR_LIMITS.maxRelicLevel),
     substats: z.array(statRowSchema),
   })
   .partial();
 
 export const hsrDocSchema = z
   .object({
-    level: z.number().int().min(1).max(L.maxLevel),
+    level: z.number().int().min(1).max(HSR_LIMITS.maxLevel),
     path: z.enum(HSR_PATHS),
     element: z.enum(HSR_ELEMENTS),
-    eidolon: z.number().int().min(0).max(L.maxEidolon),
+    eidolon: z.number().int().min(0).max(HSR_LIMITS.maxEidolon),
     lightCone: z
       .object({
         catalogId: z.string(),
         /** The copy on Weapons this build holds (round 5). */
         copyId: z.string().max(40),
         name: z.string(),
-        level: z.number().int().min(1).max(L.maxLightConeLevel),
-        superimposition: z.number().int().min(1).max(L.maxSuperimposition),
+        level: z.number().int().min(1).max(HSR_LIMITS.maxLightConeLevel),
+        superimposition: z.number().int().min(1).max(HSR_LIMITS.maxSuperimposition),
       })
       .partial(),
     relics: z
@@ -76,10 +76,10 @@ export const hsrDocSchema = z
       .partial(),
     traces: z
       .object({
-        basic: z.number().int().min(1).max(L.maxBasic),
-        skill: z.number().int().min(1).max(L.maxTrace),
-        ultimate: z.number().int().min(1).max(L.maxTrace),
-        talent: z.number().int().min(1).max(L.maxTrace),
+        basic: z.number().int().min(1).max(HSR_LIMITS.maxBasic),
+        skill: z.number().int().min(1).max(HSR_LIMITS.maxTrace),
+        ultimate: z.number().int().min(1).max(HSR_LIMITS.maxTrace),
+        talent: z.number().int().min(1).max(HSR_LIMITS.maxTrace),
       })
       .partial(),
     stats: z.record(z.string(), z.union([z.number(), z.string()])),
@@ -143,12 +143,12 @@ export const hsr: GameDefinition = {
     gear: {
       name: "Relics",
       field: "relics",
-      slots: HSR_RELIC_SLOTS.map((s) => ({ ...s, mainStats: HSR_MAIN_STATS[s.key] })),
+      slots: HSR_RELIC_SLOTS.map((slot) => ({ ...slot, mainStats: HSR_MAIN_STATS[slot.key] })),
       sets: [2, 4],
-      maxLevel: L.maxRelicLevel,
+      maxLevel: HSR_LIMITS.maxRelicLevel,
     },
     kpis: { damage: ["Crit value", "CRIT Rate / CRIT DMG", "SPD"], support: ["SPD", "Energy Regeneration Rate", "Effect Hit Rate"], sustain: ["Outgoing Healing Boost", "HP", "SPD"] },
-    dupes: { character: { field: "eidolon", label: "Eidolon", max: L.maxEidolon }, weapon: { field: "lightCone.superimposition", label: "Superimposition", max: L.maxSuperimposition } },
+    dupes: { character: { field: "eidolon", label: "Eidolon", max: HSR_LIMITS.maxEidolon }, weapon: { field: "lightCone.superimposition", label: "Superimposition", max: HSR_LIMITS.maxSuperimposition } },
     art: {
       character: "https://sr.yatta.moe/hsr/assets/UI/avatar/medium/{key}.png",
       portrait: "https://sr.yatta.moe/hsr/assets/UI/avatar/large/{key}.png",
@@ -174,9 +174,9 @@ export const hsr: GameDefinition = {
   docSchema: hsrDocSchema,
   emptyDoc: (): HsrDoc => ({ relics: {}, traces: {}, lightCone: {}, stats: {} }),
   docVersion: 1,
-  seedDoc: (c) => ({
-    ...((HSR_PATHS as readonly string[]).includes(c.weaponType ?? "") ? { path: c.weaponType } : {}),
-    ...((HSR_ELEMENTS as readonly string[]).includes(c.tag ?? "") ? { element: c.tag } : {}),
+  seedDoc: (character) => ({
+    ...((HSR_PATHS as readonly string[]).includes(character.weaponType ?? "") ? { path: character.weaponType } : {}),
+    ...((HSR_ELEMENTS as readonly string[]).includes(character.tag ?? "") ? { element: character.tag } : {}),
   }),
   loadCatalog: async () =>
     (await import("./catalog.js")).default as Catalog,

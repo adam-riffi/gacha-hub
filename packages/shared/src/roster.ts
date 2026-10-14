@@ -18,7 +18,7 @@ export function rosterRequest(gameKey: string, regionKey: string, uid: string): 
 function setPath(doc: Record<string, unknown>, path: string, value: unknown) {
   const keys = path.split(".");
   let at = doc;
-  for (const k of keys.slice(0, -1)) at = (at[k] ??= {}) as Record<string, unknown>;
+  for (const key of keys.slice(0, -1)) at = (at[key] ??= {}) as Record<string, unknown>;
   at[keys.at(-1)!] = value;
 }
 
@@ -36,18 +36,18 @@ export function readRoster(game: GameDefinition, json: unknown): { units: { cata
   const data = (json as { data: { list?: Unit[]; avatar_list?: Unit[] } }).data;
   const dupes = game.manifest.dupes;
   return {
-    units: (data.list ?? data.avatar_list ?? []).map((u) => {
+    units: (data.list ?? data.avatar_list ?? []).map((unit) => {
       const doc: Record<string, unknown> = {};
-      if (u.level) doc.level = u.level;
-      setPath(doc, dupes.character.field, u.actived_constellation_num ?? u.rank ?? 0);
-      const held = u.weapon ?? u.equip;
+      if (unit.level) doc.level = unit.level;
+      setPath(doc, dupes.character.field, unit.actived_constellation_num ?? unit.rank ?? 0);
+      const held = unit.weapon ?? unit.equip;
       if (held && dupes.weapon) {
         const holder = dupes.weapon.field.split(".")[0]!;
         setPath(doc, `${holder}.catalogId`, String(held.id));
         if (held.level) setPath(doc, `${holder}.level`, held.level);
-        setPath(doc, dupes.weapon.field, (u.weapon ? u.weapon.affix_level : u.equip?.rank) ?? 1);
+        setPath(doc, dupes.weapon.field, (unit.weapon ? unit.weapon.affix_level : unit.equip?.rank) ?? 1);
       }
-      return { catalogId: String(u.id), ...(held ? { weaponId: String(held.id) } : {}), doc };
+      return { catalogId: String(unit.id), ...(held ? { weaponId: String(held.id) } : {}), doc };
     }),
   };
 }

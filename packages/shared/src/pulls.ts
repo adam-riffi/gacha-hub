@@ -6,12 +6,12 @@ export type CurrencyKind = "stamina" | "reserve" | "premium" | "ticket" | "stand
  * What a currency is, for its icon (Georges, round 7: "I need icons to understand quickly"): the stamina and its
  * reserve, the premium currency, a limited, standard or one-banner ticket, else a coin.
  */
-export function currencyKind(game: GameDefinition, c: { key: string; pullCost?: number | null; standardOnly?: boolean | null; onlyFor?: string | null }): CurrencyKind {
+export function currencyKind(game: GameDefinition, currency: { key: string; pullCost?: number | null; standardOnly?: boolean | null; onlyFor?: string | null }): CurrencyKind {
   const stamina = game.manifest.stamina;
-  if (c.key === stamina.currency) return "stamina";
-  if (c.key === stamina.reserve?.currency) return "reserve";
-  if ((c.pullCost ?? 0) > 1) return "premium";
-  if (c.pullCost === 1) return c.standardOnly ? "standard" : c.onlyFor ? "special" : "ticket";
+  if (currency.key === stamina.currency) return "stamina";
+  if (currency.key === stamina.reserve?.currency) return "reserve";
+  if ((currency.pullCost ?? 0) > 1) return "premium";
+  if (currency.pullCost === 1) return currency.standardOnly ? "standard" : currency.onlyFor ? "special" : "ticket";
   return "coin";
 }
 
@@ -25,13 +25,13 @@ export function pullsFor(currencies: { value: number; pullCost?: number | null; 
   let standard = 0;
   const only: Record<string, number> = {};
   let label: string | null = null;
-  for (const c of currencies) {
-    if (!c.pullCost) continue;
-    const n = Math.floor(c.value / c.pullCost);
-    if (c.standardOnly) standard += n;
-    else if (c.onlyFor) only[c.onlyFor] = (only[c.onlyFor] ?? 0) + n;
-    else limited += n;
-    label ??= c.pullLabel ?? null;
+  for (const currency of currencies) {
+    if (!currency.pullCost) continue;
+    const pullCount = Math.floor(currency.value / currency.pullCost);
+    if (currency.standardOnly) standard += pullCount;
+    else if (currency.onlyFor) only[currency.onlyFor] = (only[currency.onlyFor] ?? 0) + pullCount;
+    else limited += pullCount;
+    label ??= currency.pullLabel ?? null;
   }
-  return { limited, standard, special: Object.values(only).reduce((s, n) => s + n, 0), only, label };
+  return { limited, standard, special: Object.values(only).reduce((total, pullCount) => total + pullCount, 0), only, label };
 }

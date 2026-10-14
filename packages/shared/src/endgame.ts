@@ -58,17 +58,17 @@ export interface CycleResultLike {
  */
 export function endgameNow(game: GameDefinition, region: ServerClock, now: Date, results: readonly CycleResultLike[]) {
   const modes = game.manifest.endgame.map((mode) => {
-    const w = cadenceWindow(mode.anchor, region, now);
-    const closes = mode.openDays ? new Date(w.start.getTime() + mode.openDays * DAY) : w.end;
-    const r = results.find((x) => x.modeKey === mode.key && x.cycleStart.getTime() === w.start.getTime());
-    return { mode, start: w.start, end: w.end, closes, open: closes > now, result: r?.result ?? null, premium: r?.premium ?? 0 };
+    const cycleWindow = cadenceWindow(mode.anchor, region, now);
+    const closes = mode.openDays ? new Date(cycleWindow.start.getTime() + mode.openDays * DAY) : cycleWindow.end;
+    const result = results.find((candidate) => candidate.modeKey === mode.key && candidate.cycleStart.getTime() === cycleWindow.start.getTime());
+    return { mode, start: cycleWindow.start, end: cycleWindow.end, closes, open: closes > now, result: result?.result ?? null, premium: result?.premium ?? 0 };
   });
-  const open = modes.filter((m) => m.open);
-  const next = [...open].sort((a, b) => a.closes.getTime() - b.closes.getTime())[0];
+  const open = modes.filter((modeView) => modeView.open);
+  const next = [...open].sort((first, second) => first.closes.getTime() - second.closes.getTime())[0];
   return {
     modes,
-    claimed: open.reduce((s, m) => s + m.premium, 0),
-    max: open.reduce((s, m) => s + (m.mode.maxPremium ?? 0), 0),
+    claimed: open.reduce((total, modeView) => total + modeView.premium, 0),
+    max: open.reduce((total, modeView) => total + (modeView.mode.maxPremium ?? 0), 0),
     next: next ? { ...next, unclaimed: Math.max(0, (next.mode.maxPremium ?? 0) - next.premium) } : null,
   };
 }
@@ -81,7 +81,7 @@ export interface CycleRow extends CycleResultLike {
 }
 
 /** A server-local date of an instant (YYYY-MM-DD). */
-const localDate = (t: Date, region: ServerClock) => new Date(t.getTime() + region.utcOffsetMinutes * 60_000).toISOString().slice(0, 10);
+const localDate = (instant: Date, region: ServerClock) => new Date(instant.getTime() + region.utcOffsetMinutes * 60_000).toISOString().slice(0, 10);
 
 /**
  * One mode's history (WIREFRAMES.md G2): its cycles newest first, each with
@@ -92,26 +92,26 @@ const localDate = (t: Date, region: ServerClock) => new Date(t.getTime() + regio
 export function cycleHistory(mode: Mode, region: ServerClock, now: Date, results: readonly CycleRow[]) {
   const current = cadenceWindow(mode.anchor, region, now).start.getTime();
   const rows = results
-    .filter((r) => r.modeKey === mode.key)
-    .sort((a, b) => b.cycleStart.getTime() - a.cycleStart.getTime())
-    .map((r) => ({
-      ...r,
-      end: cadenceWindow(mode.anchor, region, r.cycleStart).end,
-      current: r.cycleStart.getTime() === current,
-      full: mode.metric.max !== undefined && r.result === mode.metric.max,
+    .filter((result) => result.modeKey === mode.key)
+    .sort((first, second) => second.cycleStart.getTime() - first.cycleStart.getTime())
+    .map((result) => ({
+      ...result,
+      end: cadenceWindow(mode.anchor, region, result.cycleStart).end,
+      current: result.cycleStart.getTime() === current,
+      full: mode.metric.max !== undefined && result.result === mode.metric.max,
     }));
-  const scored = rows.filter((r) => r.result !== null);
-  const completed = scored.filter((r) => !r.current);
-  const best = scored.length ? Math.max(...scored.map((r) => r.result!)) : null;
-  const bests = scored.filter((r) => r.result === best);
+  const scored = rows.filter((row) => row.result !== null);
+  const completed = scored.filter((row) => !row.current);
+  const best = scored.length ? Math.max(...scored.map((row) => row.result!)) : null;
+  const bests = scored.filter((row) => row.result === best);
   return {
     rows,
     best,
     bestTimes: bests.length,
     bestLast: bests[0]?.cycleStart ?? null,
-    average: completed.length ? completed.reduce((s, r) => s + r.result!, 0) / completed.length : null,
+    average: completed.length ? completed.reduce((total, row) => total + row.result!, 0) / completed.length : null,
     completed: completed.length,
-    earned: rows.reduce((s, r) => s + (r.premium ?? 0), 0),
+    earned: rows.reduce((total, row) => total + (row.premium ?? 0), 0),
     offered: (mode.maxPremium ?? 0) * rows.length,
   };
 }
@@ -119,19 +119,19 @@ export function cycleHistory(mode: Mode, region: ServerClock, now: Date, results
 /** A mode's cycles newest first: the ones on record, and the current one, empty, before anything is typed in it. */
 export function modeCycles(mode: Mode, region: ServerClock, now: Date, results: readonly CycleRow[]) {
   const rows = cycleHistory(mode, region, now, results).rows;
-  if (rows.some((r) => r.current)) return rows;
-  const w = cadenceWindow(mode.anchor, region, now);
-  return [{ modeKey: mode.key, cycleStart: w.start, end: w.end, current: true, full: false, result: null, premium: null, detail: null, source: "manual", teams: [] as Clear[] }, ...rows];
+  if (rows.some((row) => row.current)) return rows;
+  const cycleWindow = cadenceWindow(mode.anchor, region, now);
+  return [{ modeKey: mode.key, cycleStart: cycleWindow.start, end: cycleWindow.end, current: true, full: false, result: null, premium: null, detail: null, source: "manual", teams: [] as Clear[] }, ...rows];
 }
 
 /** The history as CSV: first and last server-local day of each cycle, its result, detail, premium and source. */
 export function cycleCsv(mode: Mode, region: ServerClock, rows: ReturnType<typeof cycleHistory>["rows"], premium: string): string {
-  const cell = (v: string | number | null) => {
-    const s = v === null ? "" : String(v);
-    return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+  const cell = (value: string | number | null) => {
+    const text = value === null ? "" : String(value);
+    return /[",\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
   };
-  const lines = rows.map((r) =>
-    [localDate(r.cycleStart, region), localDate(new Date(r.end.getTime() - 86_400_000), region), r.result, r.detail, r.premium, r.source].map(cell).join(","),
+  const lines = rows.map((row) =>
+    [localDate(row.cycleStart, region), localDate(new Date(row.end.getTime() - 86_400_000), region), row.result, row.detail, row.premium, row.source].map(cell).join(","),
   );
   return [["first day", "last day", mode.metric.label, "detail", premium, "source"].map(cell).join(","), ...lines].join("\n");
 }

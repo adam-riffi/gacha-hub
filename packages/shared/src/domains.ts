@@ -40,7 +40,7 @@ export interface OpenDomain {
   units: DomainUnit[];
 }
 
-const builtCount = (d: OpenDomain) => d.units.filter((u) => u.built).length;
+const builtCount = (domain: OpenDomain) => domain.units.filter((unit) => unit.built).length;
 
 /**
  * Rotating domains open on `weekday` that at least one owned unit levels from:
@@ -53,42 +53,42 @@ export function domainsToday(
   builtIds: ReadonlySet<string>,
   weekday: number,
 ): OpenDomain[] {
-  const ownedKeys = new Set(owned.map((o) => `${o.kind}:${o.catalogId}`));
+  const ownedKeys = new Set(owned.map((ownedUnit) => `${ownedUnit.kind}:${ownedUnit.catalogId}`));
   const usedBy = new Map<string, DomainUnit[]>();
   const add = (materialIds: string[], unit: DomainUnit) => {
     for (const id of new Set(materialIds)) usedBy.set(id, [...(usedBy.get(id) ?? []), unit]);
   };
-  for (const c of catalog.characters) {
-    if (!ownedKeys.has(`character:${c.id}`)) continue;
-    const steps = [...c.talents.costs, ...Object.values(c.talents.costsByKey ?? {}).flat()];
+  for (const character of catalog.characters) {
+    if (!ownedKeys.has(`character:${character.id}`)) continue;
+    const steps = [...character.talents.costs, ...Object.values(character.talents.costsByKey ?? {}).flat()];
     add(
-      steps.flatMap((s) => s.materials.map((m) => m.materialId)),
-      { kind: "character", id: c.id, name: c.name, icon: c.icon, built: builtIds.has(c.id) },
+      steps.flatMap((step) => step.materials.map((material) => material.materialId)),
+      { kind: "character", id: character.id, name: character.name, icon: character.icon, built: builtIds.has(character.id) },
     );
   }
-  for (const w of catalog.weapons) {
-    if (!ownedKeys.has(`weapon:${w.id}`)) continue;
+  for (const weapon of catalog.weapons) {
+    if (!ownedKeys.has(`weapon:${weapon.id}`)) continue;
     add(
-      w.ascension.flatMap((s) => s.materials.map((m) => m.materialId)),
-      { kind: "weapon", id: w.id, name: w.name, icon: w.icon, built: false },
+      weapon.ascension.flatMap((step) => step.materials.map((material) => material.materialId)),
+      { kind: "weapon", id: weapon.id, name: weapon.name, icon: weapon.icon, built: false },
     );
   }
 
   const domains = new Map<string, { top: CatalogMaterial; units: Map<string, DomainUnit> }>();
-  for (const m of catalog.materials) {
-    if (!m.source || !m.availability?.includes(weekday) || m.availability.length >= 7) continue;
-    const d = domains.get(m.source) ?? { top: m, units: new Map<string, DomainUnit>() };
-    if ((m.rarity ?? 0) > (d.top.rarity ?? 0)) d.top = m;
-    for (const u of usedBy.get(m.id) ?? []) d.units.set(`${u.kind}:${u.id}`, u);
-    domains.set(m.source, d);
+  for (const material of catalog.materials) {
+    if (!material.source || !material.availability?.includes(weekday) || material.availability.length >= 7) continue;
+    const domainEntry = domains.get(material.source) ?? { top: material, units: new Map<string, DomainUnit>() };
+    if ((material.rarity ?? 0) > (domainEntry.top.rarity ?? 0)) domainEntry.top = material;
+    for (const unit of usedBy.get(material.id) ?? []) domainEntry.units.set(`${unit.kind}:${unit.id}`, unit);
+    domains.set(material.source, domainEntry);
   }
 
   return [...domains.entries()]
-    .map(([source, d]) => ({
+    .map(([source, domainEntry]) => ({
       source,
-      top: d.top,
-      units: [...d.units.values()].sort((a, b) => Number(b.built) - Number(a.built) || a.name.localeCompare(b.name)),
+      top: domainEntry.top,
+      units: [...domainEntry.units.values()].sort((first, second) => Number(second.built) - Number(first.built) || first.name.localeCompare(second.name)),
     }))
-    .filter((d) => d.units.length > 0)
-    .sort((a, b) => builtCount(b) - builtCount(a) || b.units.length - a.units.length || a.source.localeCompare(b.source));
+    .filter((domainEntry) => domainEntry.units.length > 0)
+    .sort((first, second) => builtCount(second) - builtCount(first) || second.units.length - first.units.length || first.source.localeCompare(second.source));
 }

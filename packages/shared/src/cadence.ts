@@ -32,13 +32,13 @@ export interface CadenceWindow {
   end: Date;
 }
 
-const MIN = 60_000;
-const H = 60 * MIN;
-const DAY = 24 * H;
+const MINUTE_MS = 60_000;
+const HOUR_MS = 60 * MINUTE_MS;
+const DAY = 24 * HOUR_MS;
 
 export function cadenceWindow(anchor: CadenceAnchor, clock: ServerClock, now: Date): CadenceWindow {
-  const shift = clock.utcOffsetMinutes * MIN;
-  const reset = clock.dailyResetHour * H;
+  const shift = clock.utcOffsetMinutes * MINUTE_MS;
+  const reset = clock.dailyResetHour * HOUR_MS;
   // Days since the epoch on the server's "game day", which turns at the reset hour.
   const gameDay = Math.floor((now.getTime() + shift - reset) / DAY);
   const at = (day: number) => new Date(day * DAY + reset - shift);
@@ -53,21 +53,21 @@ export function cadenceWindow(anchor: CadenceAnchor, clock: ServerClock, now: Da
     }
     case "monthly": {
       const today = new Date(gameDay * DAY);
-      const startOf = (y: number, m: number) => {
-        const last = new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
-        return Date.UTC(y, m, Math.min(anchor.day, last)) / DAY;
+      const startOf = (year: number, month: number) => {
+        const last = new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
+        return Date.UTC(year, month, Math.min(anchor.day, last)) / DAY;
       };
-      let y = today.getUTCFullYear();
-      let m = today.getUTCMonth();
-      if (gameDay < startOf(y, m)) [y, m] = m === 0 ? [y - 1, 11] : [y, m - 1];
-      const [ny, nm] = m === 11 ? [y + 1, 0] : [y, m + 1];
-      return { start: at(startOf(y, m)), end: at(startOf(ny, nm)) };
+      let year = today.getUTCFullYear();
+      let month = today.getUTCMonth();
+      if (gameDay < startOf(year, month)) [year, month] = month === 0 ? [year - 1, 11] : [year, month - 1];
+      const [nextYear, nextMonth] = month === 11 ? [year + 1, 0] : [year, month + 1];
+      return { start: at(startOf(year, month)), end: at(startOf(nextYear, nextMonth)) };
     }
     case "cycle":
     case "version": {
       const first = Date.parse(`${anchor.start}T00:00:00Z`) / DAY;
-      const k = Math.floor((gameDay - first) / anchor.days);
-      return { start: at(first + k * anchor.days), end: at(first + (k + 1) * anchor.days) };
+      const cycleIndex = Math.floor((gameDay - first) / anchor.days);
+      return { start: at(first + cycleIndex * anchor.days), end: at(first + (cycleIndex + 1) * anchor.days) };
     }
   }
 }
@@ -75,7 +75,7 @@ export function cadenceWindow(anchor: CadenceAnchor, clock: ServerClock, now: Da
 /** The server's game day (YYYY-MM-DD): the date its current daily window started on, in server time. */
 export function gameDay(clock: ServerClock, now: Date): string {
   const start = cadenceWindow({ cadence: "daily" }, clock, now).start;
-  return new Date(start.getTime() + clock.utcOffsetMinutes * MIN).toISOString().slice(0, 10);
+  return new Date(start.getTime() + clock.utcOffsetMinutes * MINUTE_MS).toISOString().slice(0, 10);
 }
 
 /**
@@ -83,12 +83,12 @@ export function gameDay(clock: ServerClock, now: Date): string {
  * region's resets; monthly on its shop or monthly endgame mode, else the 1st;
  * cycle on its endgame mode; version on the game's current version.
  */
-export function taskAnchor(m: GameManifest | undefined, cadence: Cadence, anchorKey?: string | null): CadenceAnchor {
+export function taskAnchor(manifest: GameManifest | undefined, cadence: Cadence, anchorKey?: string | null): CadenceAnchor {
   if (cadence === "daily" || cadence === "weekly") return { cadence };
-  const shop = m?.monthlyShops.find((s) => s.key === anchorKey);
-  const mode = m?.endgame.find((e) => e.key === anchorKey);
+  const shop = manifest?.monthlyShops.find((shop) => shop.key === anchorKey);
+  const mode = manifest?.endgame.find((endgameMode) => endgameMode.key === anchorKey);
   if (cadence === "monthly") return shop ? { cadence, day: shop.day } : mode?.anchor.cadence === "monthly" ? mode.anchor : { cadence, day: 1 };
   if (cadence === "cycle" && mode) return mode.anchor;
   // ponytail: a cycle task whose mode left the manifest follows the version until edited.
-  return m ? { cadence: "version", start: m.version.start, days: m.version.days } : { cadence: "daily" };
+  return manifest ? { cadence: "version", start: manifest.version.start, days: manifest.version.days } : { cadence: "daily" };
 }

@@ -7,7 +7,7 @@ export const levelRangeSchema = z
     from: z.number().int().min(0).max(200),
     to: z.number().int().min(0).max(200),
   })
-  .refine((r) => r.to > r.from, { message: "to must be greater than from", path: ["to"] });
+  .refine((range) => range.to > range.from, { message: "to must be greater than from", path: ["to"] });
 
 /** What to plan: a character (level + talents) or a weapon (level). */
 export const planRequestInput = z.discriminatedUnion("kind", [

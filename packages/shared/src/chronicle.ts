@@ -33,7 +33,7 @@ const MODES: Record<string, { modeKey: string; path: string; query: (server: str
 export function chronicleRequests(gameKey: string, regionKey: string, uid: string): { modeKey: string; url: string }[] {
   const server = SERVERS[gameKey]?.[regionKey];
   if (!server) return [];
-  return (MODES[gameKey] ?? []).map((m) => ({ modeKey: m.modeKey, url: `${BASE[gameKey]}/${m.path}?${new URLSearchParams(m.query(server, uid))}` }));
+  return (MODES[gameKey] ?? []).map((mode) => ({ modeKey: mode.modeKey, url: `${BASE[gameKey]}/${mode.path}?${new URLSearchParams(mode.query(server, uid))}` }));
 }
 
 type Data = {
@@ -64,31 +64,31 @@ type Data = {
 export function readChronicle(modeKey: string, json: unknown, now: Date): { result: number; detail?: string } | { error: HoyolabError } | null {
   const error = hoyolabFailure(json);
   if (error) return { error };
-  const d = (json as { data: Data }).data;
+  const answerData = (json as { data: Data }).data;
   switch (modeKey) {
     case "abyss":
-      return d.is_unlock && d.total_battle_times ? { result: d.total_star ?? 0, detail: `floor ${d.max_floor}` } : null;
+      return answerData.is_unlock && answerData.total_battle_times ? { result: answerData.total_star ?? 0, detail: `floor ${answerData.max_floor}` } : null;
     case "theater": {
       const at = now.getTime() / 1000;
-      const run = (d.data ?? []).find((x) => x.has_data && Number(x.schedule?.start_time) <= at && at < Number(x.schedule?.end_time));
+      const run = (answerData.data ?? []).find((candidate) => candidate.has_data && Number(candidate.schedule?.start_time) <= at && at < Number(candidate.schedule?.end_time));
       return run?.stat?.max_round_id !== undefined ? { result: run.stat.max_round_id } : null;
     }
     case "stygian": {
       const at = now.getTime() / 1000;
-      const run = (d.data ?? []).find((x) => Number(x.schedule?.start_time) <= at && at < Number(x.schedule?.end_time));
+      const run = (answerData.data ?? []).find((candidate) => Number(candidate.schedule?.start_time) <= at && at < Number(candidate.schedule?.end_time));
       const best = run?.single?.has_data ? run.single.best : null;
       return best?.difficulty ? { result: best.difficulty, detail: best.second !== undefined ? `${best.second} s` : undefined } : null;
     }
     case "moc":
     case "pf":
     case "as":
-      return d.has_data ? { result: d.star_num ?? 0, detail: d.max_floor || undefined } : null;
+      return answerData.has_data ? { result: answerData.star_num ?? 0, detail: answerData.max_floor || undefined } : null;
     case "shiyu": {
-      const v1 = d.hadal_info_v1;
-      return v1?.has_data ? { result: v1.rating_list?.find((r) => r.rating === "S")?.times ?? 0 } : null;
+      const hadalInfo = answerData.hadal_info_v1;
+      return hadalInfo?.has_data ? { result: hadalInfo.rating_list?.find((rating) => rating.rating === "S")?.times ?? 0 } : null;
     }
     case "assault":
-      return d.has_data ? { result: d.total_star ?? 0, detail: d.total_score !== undefined ? `${d.total_score} points` : undefined } : null;
+      return answerData.has_data ? { result: answerData.total_star ?? 0, detail: answerData.total_score !== undefined ? `${answerData.total_score} points` : undefined } : null;
     default:
       return null;
   }

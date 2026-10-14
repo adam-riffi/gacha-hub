@@ -21,9 +21,9 @@ export function readRecordsLink(pasted: string): RecordsLink | null {
     return null;
   }
   const hash = url.hash.includes("?") ? url.hash.slice(url.hash.indexOf("?") + 1) : "";
-  const q = new URLSearchParams([url.search.slice(1), hash].filter(Boolean).join("&"));
-  const token = q.get("token") ?? q.get("u8_token");
-  const serverId = q.get("server_id") ?? q.get("server");
+  const query = new URLSearchParams([url.search.slice(1), hash].filter(Boolean).join("&"));
+  const token = query.get("token") ?? query.get("u8_token");
+  const serverId = query.get("server_id") ?? query.get("server");
   if (
     !token ||
     !/^[A-Za-z0-9+/=_.-]{8,1024}$/.test(token) ||
@@ -31,17 +31,17 @@ export function readRecordsLink(pasted: string): RecordsLink | null {
     !/^\d{1,4}$/.test(serverId)
   )
     return null;
-  const lang = q.get("lang") ?? "en-us";
+  const lang = query.get("lang") ?? "en-us";
   return { token, serverId, lang: /^[A-Za-z-]{2,10}$/.test(lang) ? lang : "en-us" };
 }
 
 /** One page of a pool's records from the game's own API: character pools by type, every weapon banner in one list. */
 export function recordsUrl(link: RecordsLink, gachaType: string, seqId: string | null): string {
   const weapon = gachaType === "weapon";
-  const q = new URLSearchParams({ lang: link.lang, token: link.token, server_id: link.serverId });
-  if (!weapon) q.set("pool_type", gachaType);
-  if (seqId) q.set("seq_id", seqId);
-  return `https://ef-webview.gryphline.com/api/record/${weapon ? "weapon" : "char"}?${q}`;
+  const query = new URLSearchParams({ lang: link.lang, token: link.token, server_id: link.serverId });
+  if (!weapon) query.set("pool_type", gachaType);
+  if (seqId) query.set("seq_id", seqId);
+  return `https://ef-webview.gryphline.com/api/record/${weapon ? "weapon" : "char"}?${query}`;
 }
 
 type Rec = {
@@ -76,15 +76,15 @@ export function readRecordsPage(
       ? "weapon"
       : gachaType.replace("E_CharacterGachaPoolType_", "").toLowerCase();
   const records = list
-    .filter((r) => !r.kind && /^\d+$/.test(r.seqId ?? "") && /^\d+$/.test(r.gachaTs ?? ""))
-    .map((r) => ({
-      id: `${prefix}-${r.seqId}`,
+    .filter((record) => !record.kind && /^\d+$/.test(record.seqId ?? "") && /^\d+$/.test(record.gachaTs ?? ""))
+    .map((record) => ({
+      id: `${prefix}-${record.seqId}`,
       gachaType,
-      time: new Date(Number(r.gachaTs)),
-      rank: r.rarity ?? 0,
-      itemId: r.charId ?? r.weaponId,
-      name: r.charName ?? r.weaponName,
-      ...(r.poolId ? { pool: r.poolId.slice(0, 64) } : {}),
+      time: new Date(Number(record.gachaTs)),
+      rank: record.rarity ?? 0,
+      itemId: record.charId ?? record.weaponId,
+      name: record.charName ?? record.weaponName,
+      ...(record.poolId ? { pool: record.poolId.slice(0, 64) } : {}),
     }));
   const last = list.at(-1)?.seqId;
   return { records, next: page.data.hasMore && last ? last : null };

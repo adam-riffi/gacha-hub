@@ -10,7 +10,7 @@ import type { Catalog } from "../../catalog/types.js";
  * Hakushin's public dataset (Georges, round 4; ADR 0005 amended); progress is
  * still typed by hand: no account link, no game client touched.
  */
-export const NTE_CARTRIDGE_SLOTS = [1, 2, 3, 4].map((n) => ({ key: `cartridge${n}`, label: `Cartridge ${n}` }));
+export const NTE_CARTRIDGE_SLOTS = [1, 2, 3, 4].map((slotNumber) => ({ key: `cartridge${slotNumber}`, label: `Cartridge ${slotNumber}` }));
 export const NTE_SKILLS = ["basic", "skill", "ultimate", "support"] as const;
 
 /** Independent servers; the day turns at 05:00 server time, the week on Monday. */
@@ -65,7 +65,7 @@ export const nte: GameDefinition = {
     endgame: [{ key: "rails", name: "Beyond the Rails", anchor: { cadence: "cycle", start: "2026-09-30", days: 14 }, metric: { label: "seals", max: 36 }, maxPremium: 800 }],
     battlePass: { name: "Circle Bounty", maxLevel: 80, weeklyXpCap: 12_000 },
     monthlyPass: { name: "Riftcrystal Mining Permit", days: 30, maxDays: 180 },
-    gear: { name: "Console", field: "console", slots: NTE_CARTRIDGE_SLOTS.map((s) => ({ ...s, mainStats: [] })), sets: [2, 4], maxLevel: 20 },
+    gear: { name: "Console", field: "console", slots: NTE_CARTRIDGE_SLOTS.map((slot) => ({ ...slot, mainStats: [] })), sets: [2, 4], maxLevel: 20 },
     kpis: { damage: ["Crit value", "CRIT Rate / CRIT DMG", "ATK"], support: ["ATK", "HP", "Crit value"] },
     dupes: { character: { field: "awakening", label: "Awakening", max: 6 }, weapon: { field: "arc.mixing", label: "Mixing", max: 5 } },
     // Hakushin's assets by the game's own paths (Game/UI/…), as the catalog keeps them.

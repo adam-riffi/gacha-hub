@@ -4,7 +4,7 @@ import { statRowSchema } from "../../common.js";
 import { bannerHistorySchema, type Catalog } from "../../catalog/types.js";
 import type { GameDefinition } from "../types.js";
 import { hoyoRegions } from "../regions.js";
-import { GENSHIN_LIMITS as L } from "./limits.js";
+import { GENSHIN_LIMITS } from "./limits.js";
 
 export { GENSHIN_LIMITS } from "./limits.js";
 
@@ -26,7 +26,7 @@ const GENSHIN_MAIN_STATS: Record<(typeof GENSHIN_ARTIFACT_SLOTS)[number]["key"],
   flower: ["HP"],
   plume: ["ATK"],
   sands: [...PCT, "Energy Recharge%", "Elemental Mastery"],
-  goblet: [...PCT, "Elemental Mastery", ...["Pyro", "Electro", "Cryo", "Hydro", "Dendro", "Anemo", "Geo", "Physical"].map((e) => `${e} DMG Bonus%`)],
+  goblet: [...PCT, "Elemental Mastery", ...["Pyro", "Electro", "Cryo", "Hydro", "Dendro", "Anemo", "Geo", "Physical"].map((element) => `${element} DMG Bonus%`)],
   circlet: [...PCT, "Elemental Mastery", "CRIT Rate%", "CRIT DMG%", "Healing Bonus%"],
 };
 
@@ -37,24 +37,24 @@ const artifactSchema = z
   .object({
     setName: z.string(),
     mainStat: z.string(),
-    level: z.number().int().min(0).max(L.maxArtifactLevel),
+    level: z.number().int().min(0).max(GENSHIN_LIMITS.maxArtifactLevel),
     substats: z.array(statRowSchema),
   })
   .partial();
 
 export const genshinDocSchema = z
   .object({
-    level: z.number().int().min(1).max(L.maxLevel),
+    level: z.number().int().min(1).max(GENSHIN_LIMITS.maxLevel),
     element: z.enum(GENSHIN_ELEMENTS),
-    constellation: z.number().int().min(0).max(L.maxConstellation),
+    constellation: z.number().int().min(0).max(GENSHIN_LIMITS.maxConstellation),
     weapon: z
       .object({
         catalogId: z.string(),
         /** The copy on Weapons this build holds (round 5). */
         copyId: z.string().max(40),
         name: z.string(),
-        level: z.number().int().min(1).max(L.maxWeaponLevel),
-        refinement: z.number().int().min(1).max(L.maxRefinement),
+        level: z.number().int().min(1).max(GENSHIN_LIMITS.maxWeaponLevel),
+        refinement: z.number().int().min(1).max(GENSHIN_LIMITS.maxRefinement),
       })
       .partial(),
     artifacts: z
@@ -68,9 +68,9 @@ export const genshinDocSchema = z
       .partial(),
     talents: z
       .object({
-        normal: z.number().int().min(1).max(L.maxTalent),
-        skill: z.number().int().min(1).max(L.maxTalent),
-        burst: z.number().int().min(1).max(L.maxTalent),
+        normal: z.number().int().min(1).max(GENSHIN_LIMITS.maxTalent),
+        skill: z.number().int().min(1).max(GENSHIN_LIMITS.maxTalent),
+        burst: z.number().int().min(1).max(GENSHIN_LIMITS.maxTalent),
       })
       .partial(),
     stats: z.record(z.string(), z.union([z.number(), z.string()])),
@@ -146,12 +146,12 @@ export const genshin: GameDefinition = {
     gear: {
       name: "Artifacts",
       field: "artifacts",
-      slots: GENSHIN_ARTIFACT_SLOTS.map((s) => ({ ...s, mainStats: GENSHIN_MAIN_STATS[s.key] })),
+      slots: GENSHIN_ARTIFACT_SLOTS.map((slot) => ({ ...slot, mainStats: GENSHIN_MAIN_STATS[slot.key] })),
       sets: [2, 4],
-      maxLevel: L.maxArtifactLevel,
+      maxLevel: GENSHIN_LIMITS.maxArtifactLevel,
     },
     kpis: { damage: ["Crit value", "CRIT Rate / CRIT DMG", "Energy Recharge"], support: ["Energy Recharge", "Elemental Mastery", "HP"], healer: ["Healing Bonus", "HP", "Energy Recharge"] },
-    dupes: { character: { field: "constellation", label: "Constellation", max: L.maxConstellation }, weapon: { field: "weapon.refinement", label: "Refinement", max: L.maxRefinement } },
+    dupes: { character: { field: "constellation", label: "Constellation", max: GENSHIN_LIMITS.maxConstellation }, weapon: { field: "weapon.refinement", label: "Refinement", max: GENSHIN_LIMITS.maxRefinement } },
     art: { character: "https://enka.network/ui/{key}.png", portrait: "https://enka.network/ui/{key}.png", splash: "https://enka.network/ui/{key}.png", weapon: "https://enka.network/ui/{key}.png", gear: "https://enka.network/ui/{key}.png", material: "https://gi.yatta.moe/assets/UI/{key}.png", talent: "https://enka.network/ui/{key}.png" },
     accountLevel: { label: "AR", name: "Adventure Rank" },
     worldLevel: { label: "WL", name: "World Level", max: 9 },
@@ -172,8 +172,8 @@ export const genshin: GameDefinition = {
   emptyDoc: (): GenshinDoc => ({ artifacts: {}, talents: {}, weapon: {}, stats: {} }),
   docVersion: 1,
   // Guarded: the catalog's tag isn't always a playable element (e.g. Traveler).
-  seedDoc: (c) =>
-    (GENSHIN_ELEMENTS as readonly string[]).includes(c.tag ?? "") ? { element: c.tag } : {},
+  seedDoc: (character) =>
+    (GENSHIN_ELEMENTS as readonly string[]).includes(character.tag ?? "") ? { element: character.tag } : {},
   // Lazy: the catalog is a separate chunk, loaded only when a screen needs it.
   loadCatalog: async () =>
     (await import("./catalog.js")).default as Catalog,

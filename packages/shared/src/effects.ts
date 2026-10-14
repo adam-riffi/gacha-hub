@@ -34,10 +34,10 @@ const kindOf = (raw: unknown) => String((raw as { kind?: unknown } | null)?.kind
 function readBase(raw: unknown, game: GameDefinition): BaseEffect {
   const parsed = baseEffectSchema.safeParse(raw);
   if (!parsed.success) return note(`Unknown reward: ${kindOf(raw)}`);
-  const e = parsed.data;
-  if (e.kind === "currency.add" && !game.currencies.some((c) => c.key === e.currency)) return note(`Unknown reward: currency.add ${e.currency}`);
-  if (e.kind === "unit.copy" && !game.manifest.dupes[e.unit]) return note(`Unknown reward: unit.copy ${e.unit}`);
-  return e;
+  const effect = parsed.data;
+  if (effect.kind === "currency.add" && !game.currencies.some((currency) => currency.key === effect.currency)) return note(`Unknown reward: currency.add ${effect.currency}`);
+  if (effect.kind === "unit.copy" && !game.manifest.dupes[effect.unit]) return note(`Unknown reward: unit.copy ${effect.unit}`);
+  return effect;
 }
 
 /** A choice's shape, its options' effects read one by one. */
@@ -48,11 +48,11 @@ const looseChoice = chooseEffectSchema.extend({
 /** Read stored or uploaded effects for a game; anything else in the list becomes a note. */
 export function readEffects(raw: unknown, game: GameDefinition): Effect[] {
   if (!Array.isArray(raw)) return [];
-  return raw.slice(0, 50).map((r): Effect => {
-    if (kindOf(r) !== "choose") return readBase(r, game);
-    const shaped = looseChoice.safeParse(r);
+  return raw.slice(0, 50).map((rawEffect): Effect => {
+    if (kindOf(rawEffect) !== "choose") return readBase(rawEffect, game);
+    const shaped = looseChoice.safeParse(rawEffect);
     if (!shaped.success) return note("Unknown reward: choose");
-    return { kind: "choose", options: shaped.data.options.map((o) => ({ label: o.label, effects: o.effects.map((e) => readBase(e, game)) })) };
+    return { kind: "choose", options: shaped.data.options.map((option) => ({ label: option.label, effects: option.effects.map((choiceEffect) => readBase(choiceEffect, game)) })) };
   });
 }
 
@@ -63,14 +63,14 @@ export function readEffects(raw: unknown, game: GameDefinition): Effect[] {
  */
 export function pickEffects(effects: Effect[], choice: number | undefined): { key: string; effect: BaseEffect }[] | null {
   const out: { key: string; effect: BaseEffect }[] = [];
-  for (const [i, e] of effects.entries()) {
-    if (e.kind !== "choose") {
-      out.push({ key: String(i), effect: e });
+  for (const [effectIndex, effect] of effects.entries()) {
+    if (effect.kind !== "choose") {
+      out.push({ key: String(effectIndex), effect: effect });
       continue;
     }
-    const option = choice === undefined ? undefined : e.options[choice];
+    const option = choice === undefined ? undefined : effect.options[choice];
     if (!option) return null;
-    option.effects.forEach((effect, j) => out.push({ key: `${i}.${choice}.${j}`, effect }));
+    option.effects.forEach((effect, choiceEffectIndex) => out.push({ key: `${effectIndex}.${choice}.${choiceEffectIndex}`, effect }));
   }
   return out;
 }

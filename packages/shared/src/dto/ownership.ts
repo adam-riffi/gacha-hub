@@ -40,7 +40,7 @@ const copyFields = {
 export const createWeaponCopyInput = z
   .object({ catalogId: catalogIdSchema.optional(), name: z.string().trim().min(1).max(80).optional(), ...copyFields })
   .strict()
-  .refine((v) => v.catalogId || v.name, { message: "a catalog id or a name" });
+  .refine((ownershipItem) => ownershipItem.catalogId || ownershipItem.name, { message: "a catalog id or a name" });
 export const updateWeaponCopyInput = z.object({ name: z.string().trim().min(1).max(80).optional(), ...copyFields }).strict();
 
 /** Bulk toggle: `owned: false` removes the row. */

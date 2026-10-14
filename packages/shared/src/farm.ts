@@ -19,21 +19,21 @@ const family = (category: string) => (/talent/i.test(category) ? "talent books" 
  */
 export function farmToday(goals: FarmGoal[], weekday: number): FarmLine[] {
   const out: FarmLine[] = [];
-  for (const g of goals) {
-    const open = g.materials.filter((m) => m.missing > 0);
-    const unit = g.unit ?? null;
+  for (const goal of goals) {
+    const open = goal.materials.filter((material) => material.missing > 0);
+    const unit = goal.unit ?? null;
     const rotating = new Map<string, { days: number[]; materials: string[] }>();
-    for (const m of open) {
-      const days = m.material.availability ?? [];
+    for (const material of open) {
+      const days = material.material.availability ?? [];
       if (!days.length || !days.includes(weekday)) continue;
       // Sunday opens every domain, so it is left out beside a material's own days.
-      const line = rotating.get(family(m.material.category)) ?? { days: days.length > 1 ? days.filter((d) => d !== 7) : days, materials: [] };
-      line.materials.push(m.material.id);
-      rotating.set(family(m.material.category), line);
+      const line = rotating.get(family(material.material.category)) ?? { days: days.length > 1 ? days.filter((day) => day !== 7) : days, materials: [] };
+      line.materials.push(material.material.id);
+      rotating.set(family(material.material.category), line);
     }
-    for (const [name, { days, materials }] of rotating) out.push({ kind: "domain", text: `${name} (${days.map((d) => DAY[d]).join("/")}) for ${g.owner}`, unit, materials, days });
-    const any = open.filter((m) => !m.material.availability?.length);
-    if (any.length) out.push({ kind: "anyday", text: `materials for ${g.owner} (any day)`, unit, materials: any.map((m) => m.material.id), days: [] });
+    for (const [name, { days, materials }] of rotating) out.push({ kind: "domain", text: `${name} (${days.map((day) => DAY[day]).join("/")}) for ${goal.owner}`, unit, materials, days });
+    const any = open.filter((material) => !material.material.availability?.length);
+    if (any.length) out.push({ kind: "anyday", text: `materials for ${goal.owner} (any day)`, unit, materials: any.map((material) => material.material.id), days: [] });
   }
   return out;
 }

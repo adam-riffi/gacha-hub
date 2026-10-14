@@ -144,11 +144,11 @@ export type Catalog = z.infer<typeof catalogSchema>;
 /** Index a catalog for O(1) lookups. */
 export function indexCatalog(catalog: Catalog) {
   return {
-    characters: new Map(catalog.characters.map((c) => [c.id, c])),
-    weapons: new Map(catalog.weapons.map((w) => [w.id, w])),
-    gear: new Map(catalog.gear.map((g) => [g.id, g])),
-    materials: new Map(catalog.materials.map((m) => [m.id, m])),
-    companions: new Map((catalog.companions ?? []).map((b) => [b.id, b])),
+    characters: new Map(catalog.characters.map((character) => [character.id, character])),
+    weapons: new Map(catalog.weapons.map((weapon) => [weapon.id, weapon])),
+    gear: new Map(catalog.gear.map((gearSet) => [gearSet.id, gearSet])),
+    materials: new Map(catalog.materials.map((material) => [material.id, material])),
+    companions: new Map((catalog.companions ?? []).map((companion) => [companion.id, companion])),
   };
 }
 

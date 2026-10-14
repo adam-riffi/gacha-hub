@@ -13,7 +13,7 @@ export const addPullsInput = z
     featured: z.boolean().optional(),
     catalogId: catalogIdSchema.optional(),
   })
-  .refine((v) => v.fiveStarAt === null || v.fiveStarAt <= v.count, { message: "fiveStarAt must be within the batch", path: ["fiveStarAt"] });
+  .refine((batch) => batch.fiveStarAt === null || batch.fiveStarAt <= batch.count, { message: "fiveStarAt must be within the batch", path: ["fiveStarAt"] });
 export type AddPullsInput = z.infer<typeof addPullsInput>;
 
 /** Start from a known pity and guarantee. */
@@ -70,7 +70,7 @@ export const correctPullInput = z
     featured: z.boolean().nullable().optional(),
     catalogId: catalogIdSchema.nullable().optional(),
   })
-  .refine((v) => v.pity !== undefined || v.featured !== undefined || v.catalogId !== undefined, { message: "nothing to change" });
+  .refine((change) => change.pity !== undefined || change.featured !== undefined || change.catalogId !== undefined, { message: "nothing to change" });
 export type CorrectPullInput = z.infer<typeof correctPullInput>;
 
 /** The game's banners, newest first, with your pulls on each and the 5★ you got there. */

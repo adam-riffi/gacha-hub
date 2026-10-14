@@ -26,24 +26,24 @@ export function readRecordCards(json: unknown): { games: { gameKey: string; uid:
   };
   if (page.retcode !== 0 || !Array.isArray(page.data?.list)) return { games: [], error: failure(page.retcode) };
   return {
-    games: page.data!.list!.flatMap((c) => {
-      const gameKey = GAME_IDS[c.game_id];
+    games: page.data!.list!.flatMap((gameCard) => {
+      const gameKey = GAME_IDS[gameCard.game_id];
       if (!gameKey) return [];
-      const regionKey = Object.entries(NOTES[gameKey]!.servers).find(([, s]) => s === c.region)?.[0] ?? null;
-      const stats = (c.data ?? [])
-        .filter((s) => typeof s.name === "string" && s.name.trim() && (typeof s.value === "string" || typeof s.value === "number"))
+      const regionKey = Object.entries(NOTES[gameKey]!.servers).find(([, server]) => server === gameCard.region)?.[0] ?? null;
+      const stats = (gameCard.data ?? [])
+        .filter((stat) => typeof stat.name === "string" && stat.name.trim() && (typeof stat.value === "string" || typeof stat.value === "number"))
         .slice(0, 12)
-        .map((s) => ({ name: String(s.name).trim().slice(0, 40), value: String(s.value).trim().slice(0, 40) }));
-      return [{ gameKey, uid: String(c.game_role_id), level: c.level, regionKey, ...(stats.length ? { stats } : {}) }];
+        .map((stat) => ({ name: String(stat.name).trim().slice(0, 40), value: String(stat.value).trim().slice(0, 40) }));
+      return [{ gameKey, uid: String(gameCard.game_role_id), level: gameCard.level, regionKey, ...(stats.length ? { stats } : {}) }];
     }),
   };
 }
 
 /** A role's real-time notes; null for a game HoYoLAB does not cover. */
 export function hoyolabNotesUrl(gameKey: string, regionKey: string, uid: string): string | null {
-  const n = NOTES[gameKey];
-  const server = n?.servers[regionKey];
-  return n && server ? `${n.url}?${new URLSearchParams({ server, role_id: uid })}` : null;
+  const notesConfig = NOTES[gameKey];
+  const server = notesConfig?.servers[regionKey];
+  return notesConfig && server ? `${notesConfig.url}?${new URLSearchParams({ server, role_id: uid })}` : null;
 }
 
 /** A HoYoLAB answer that failed, named; null when it carries data. */
@@ -73,15 +73,15 @@ type Notes = {
 export function readNotes(gameKey: string, json: unknown): { currencies: Record<string, number>; dailyDone: boolean } | { error: HoyolabError } {
   const error = hoyolabFailure(json);
   if (error) return { error };
-  const n = (json as { data: Notes }).data;
+  const notes = (json as { data: Notes }).data;
   if (gameKey === "genshin") {
-    return { currencies: { resin: n.current_resin ?? 0 }, dailyDone: Boolean(n.total_task_num && n.finished_task_num === n.total_task_num && n.is_extra_task_reward_received) };
+    return { currencies: { resin: notes.current_resin ?? 0 }, dailyDone: Boolean(notes.total_task_num && notes.finished_task_num === notes.total_task_num && notes.is_extra_task_reward_received) };
   }
   if (gameKey === "hsr") {
     return {
-      currencies: { trailblazePower: n.current_stamina ?? 0, reservedTrailblazePower: n.current_reserve_stamina ?? 0 },
-      dailyDone: Boolean(n.max_train_score && (n.current_train_score ?? 0) >= n.max_train_score),
+      currencies: { trailblazePower: notes.current_stamina ?? 0, reservedTrailblazePower: notes.current_reserve_stamina ?? 0 },
+      dailyDone: Boolean(notes.max_train_score && (notes.current_train_score ?? 0) >= notes.max_train_score),
     };
   }
-  return { currencies: { battery: n.energy?.progress?.current ?? 0 }, dailyDone: Boolean(n.vitality?.max && (n.vitality.current ?? 0) >= n.vitality.max) };
+  return { currencies: { battery: notes.energy?.progress?.current ?? 0 }, dailyDone: Boolean(notes.vitality?.max && (notes.vitality.current ?? 0) >= notes.vitality.max) };
 }

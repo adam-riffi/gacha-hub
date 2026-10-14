@@ -3,7 +3,7 @@ import { statRowSchema } from "../../common.js";
 import type { Catalog } from "../../catalog/types.js";
 import type { GameDefinition } from "../types.js";
 import { hoyoRegions } from "../regions.js";
-import { WUWA_LIMITS as L } from "./limits.js";
+import { WUWA_LIMITS } from "./limits.js";
 
 export { WUWA_LIMITS } from "./limits.js";
 
@@ -13,12 +13,12 @@ export const WUWA_WEAPON_TYPES = ["Broadblade", "Sword", "Pistols", "Gauntlets",
 /** Main stats an echo can roll by its cost (Echo Stats on the wiki). */
 export const WUWA_MAIN_STATS_BY_COST: Record<1 | 3 | 4, string[]> = {
   1: ["HP%", "ATK%", "DEF%"],
-  3: ["HP%", "ATK%", "DEF%", "Energy Regen", ...["Glacio", "Fusion", "Electro", "Aero", "Spectro", "Havoc"].map((e) => `${e} DMG Bonus`)],
+  3: ["HP%", "ATK%", "DEF%", "Energy Regen", ...["Glacio", "Fusion", "Electro", "Aero", "Spectro", "Havoc"].map((element) => `${element} DMG Bonus`)],
   4: ["HP%", "ATK%", "DEF%", "Crit. Rate", "Crit. DMG", "Healing Bonus"],
 };
 
 /** Five echo slots; costs 4 / 3 / 1 are tracked per echo. */
-export const WUWA_ECHO_SLOTS = [1, 2, 3, 4, 5].map((n) => ({ key: `slot${n}`, label: `Echo ${n}` }));
+export const WUWA_ECHO_SLOTS = [1, 2, 3, 4, 5].map((slotNumber) => ({ key: `slot${slotNumber}`, label: `Echo ${slotNumber}` }));
 export const WUWA_ECHO_COSTS = [1, 3, 4] as const;
 
 /** Forte skill keys — match the catalog's `talents.keys`. */
@@ -29,7 +29,7 @@ const echoSchema = z
     name: z.string(),
     setName: z.string(),
     cost: z.union([z.literal(1), z.literal(3), z.literal(4)]),
-    level: z.number().int().min(0).max(L.maxEchoLevel),
+    level: z.number().int().min(0).max(WUWA_LIMITS.maxEchoLevel),
     mainStat: z.string(),
     substats: z.array(statRowSchema),
   })
@@ -37,17 +37,17 @@ const echoSchema = z
 
 export const wuwaDocSchema = z
   .object({
-    level: z.number().int().min(1).max(L.maxLevel),
+    level: z.number().int().min(1).max(WUWA_LIMITS.maxLevel),
     element: z.enum(WUWA_ELEMENTS),
-    sequence: z.number().int().min(0).max(L.maxSequence),
+    sequence: z.number().int().min(0).max(WUWA_LIMITS.maxSequence),
     weapon: z
       .object({
         catalogId: z.string(),
         /** The copy on Weapons this build holds (round 5). */
         copyId: z.string().max(40),
         name: z.string(),
-        level: z.number().int().min(1).max(L.maxWeaponLevel),
-        syntonize: z.number().int().min(1).max(L.maxSyntonize),
+        level: z.number().int().min(1).max(WUWA_LIMITS.maxWeaponLevel),
+        syntonize: z.number().int().min(1).max(WUWA_LIMITS.maxSyntonize),
       })
       .partial(),
     echoes: z
@@ -55,11 +55,11 @@ export const wuwaDocSchema = z
       .partial(),
     skills: z
       .object({
-        basic: z.number().int().min(1).max(L.maxSkill),
-        skill: z.number().int().min(1).max(L.maxSkill),
-        forte: z.number().int().min(1).max(L.maxSkill),
-        liberation: z.number().int().min(1).max(L.maxSkill),
-        intro: z.number().int().min(1).max(L.maxSkill),
+        basic: z.number().int().min(1).max(WUWA_LIMITS.maxSkill),
+        skill: z.number().int().min(1).max(WUWA_LIMITS.maxSkill),
+        forte: z.number().int().min(1).max(WUWA_LIMITS.maxSkill),
+        liberation: z.number().int().min(1).max(WUWA_LIMITS.maxSkill),
+        intro: z.number().int().min(1).max(WUWA_LIMITS.maxSkill),
       })
       .partial(),
     stats: z.record(z.string(), z.union([z.number(), z.string()])),
@@ -122,13 +122,13 @@ export const wuwa: GameDefinition = {
     gear: {
       name: "Echoes",
       field: "echoes",
-      slots: WUWA_ECHO_SLOTS.map((s) => ({ ...s, mainStats: [] })),
+      slots: WUWA_ECHO_SLOTS.map((slot) => ({ ...slot, mainStats: [] })),
       sets: [2, 5],
-      maxLevel: L.maxEchoLevel,
+      maxLevel: WUWA_LIMITS.maxEchoLevel,
       costCap: 12,
     },
     kpis: { damage: ["Crit value", "Crit. Rate / Crit. DMG", "Energy Regen"], support: ["Energy Regen", "ATK%", "Healing Bonus"], healer: ["Healing Bonus", "HP%", "Energy Regen"] },
-    dupes: { character: { field: "sequence", label: "Resonance Chain", max: L.maxSequence }, weapon: { field: "weapon.syntonize", label: "Syntonize", max: L.maxSyntonize } },
+    dupes: { character: { field: "sequence", label: "Resonance Chain", max: WUWA_LIMITS.maxSequence }, weapon: { field: "weapon.syntonize", label: "Syntonize", max: WUWA_LIMITS.maxSyntonize } },
     art: {
       character: "https://files.wuthery.com/p/GameData/UIResources/Common/Image/IconRoleHead256/{key}.png",
       portrait: "https://files.wuthery.com/p/GameData/UIResources/Common/Image/IconRoleHead256/{key}.png",
@@ -153,8 +153,8 @@ export const wuwa: GameDefinition = {
   docSchema: wuwaDocSchema,
   emptyDoc: (): WuwaDoc => ({ echoes: {}, skills: {}, weapon: {}, stats: {} }),
   docVersion: 1,
-  seedDoc: (c) =>
-    (WUWA_ELEMENTS as readonly string[]).includes(c.tag ?? "") ? { element: c.tag } : {},
+  seedDoc: (character) =>
+    (WUWA_ELEMENTS as readonly string[]).includes(character.tag ?? "") ? { element: character.tag } : {},
   loadCatalog: async () =>
     (await import("./catalog.js")).default as Catalog,
 };

@@ -29,17 +29,17 @@ export function readHistoryLink(pasted: string): HistoryLink | null {
   }
   const authkey = params.get("authkey");
   if (!authkey || authkey.length > 4096 || !/^[A-Za-z0-9+/=_-]+$/.test(authkey)) return null;
-  const plain = (v: string | null, max: number) => (v && v.length <= max && /^[A-Za-z0-9_]+$/.test(v) ? v : null);
+  const plain = (value: string | null, max: number) => (value && value.length <= max && /^[A-Za-z0-9_]+$/.test(value) ? value : null);
   return { authkey, authkeyVer: plain(params.get("authkey_ver"), 4) ?? "1", region: plain(params.get("region"), 32) };
 }
 
 /** One page (20 records, older than `endId`) of one banner type from the game's official log; null for a game without one. */
 export function gachaLogUrl(game: GameDefinition, link: HistoryLink, gachaType: string, endId: string): string | null {
-  const o = OFFICIAL[game.key];
-  if (!o) return null;
-  const q = new URLSearchParams({ authkey_ver: link.authkeyVer, sign_type: "2", auth_appid: "webview_gacha", lang: "en", authkey: link.authkey, game_biz: o.biz, [o.typeParam]: gachaType, page: "1", size: "20", end_id: endId });
-  if (link.region) q.set("region", link.region);
-  return `${o.url}?${q}`;
+  const official = OFFICIAL[game.key];
+  if (!official) return null;
+  const query = new URLSearchParams({ authkey_ver: link.authkeyVer, sign_type: "2", auth_appid: "webview_gacha", lang: "en", authkey: link.authkey, game_biz: official.biz, [official.typeParam]: gachaType, page: "1", size: "20", end_id: endId });
+  if (link.region) query.set("region", link.region);
+  return `${official.url}?${query}`;
 }
 
 /** What stopped an import: the official answers, or no answer at all. */
@@ -55,13 +55,13 @@ export function readGachaLogPage(json: unknown, timezone: number): { records: Pu
     return { records: [], error };
   }
   return {
-    records: page.data!.list!.map((r) => ({
-      id: r.id,
-      gachaType: r.gacha_type,
-      time: new Date(Date.parse(`${r.time.replace(" ", "T")}Z`) - timezone * 3_600_000),
-      rank: Number(r.rank_type),
-      itemId: r.item_id || undefined,
-      name: r.name || undefined,
+    records: page.data!.list!.map((record) => ({
+      id: record.id,
+      gachaType: record.gacha_type,
+      time: new Date(Date.parse(`${record.time.replace(" ", "T")}Z`) - timezone * 3_600_000),
+      rank: Number(record.rank_type),
+      itemId: record.item_id || undefined,
+      name: record.name || undefined,
     })),
   };
 }
