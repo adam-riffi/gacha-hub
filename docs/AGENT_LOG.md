@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-14 · claude · stack/r10/12-banner-colours · #291
+- Done: the timeline's visual language (Georges, round 7: "on the banners/events screen there should be a visual language: banners of the colour of the game, BPs a certain colour/tint, the same for endgames and another for wishlist … wishlisted events should be more visible … fix the crooked icons: there are two buttons, one always on and crooked"). Banners keep their game's colour; events are tinted and edged in it; endgame cycles are red (outlined, faintly filled), passes teal and striped; anything wished (a banner featuring a unit you wish for, an event you wished or whose rewards name one) is outlined in gold with a ★ before its name. The legend has one box per layer, the checkbox itself, in the layer's colour (banners and events in the games' colours), filled when on and centred on its words; the separate swatch beside each checkbox is gone.
+- Tests: written first: on Star Rail's timeline no swatch is left and the Banners box is centred on its words; a wished event carries a "Wishlisted" star and a plain one none; events, wishes, endgames and passes have four different edge colours, an event's edge being its game's banner colour.
+- Scope/decisions: the colours (red, teal, gold) are the app's; they stand apart from the six games' accents.
+- Next: the navbar and the game tabs.
+
 ## 2026-10-14 · claude · stack/r10/11-tasks · #290
 - Done: the Tasks screen (Georges, round 7: "changing priority is annoying, it should be easier; Farm today should be more visible; the farm everyday screen should also be included; the task screen has too much negative space: extremely long cards that are half empty"). Priority is a group of three buttons (▲ High, ● Normal, ▼ Low), one click each, the current one filled. Goals sit two by two, each on two lines (its unit and title, then the progress, priority and notify); an open goal spans the row. Farm today's chips grow: icons at 44 px, materials at 40 px, each chip edged and tinted in its game's colour. Today | Week switches Farm today to the week: Monday to Sunday, each day's rotating materials for your goals, today outlined, then what any day farms. `/api/farm-today` gains `week`, each weekday's domain lines from `farmToday`.
 - Tests: written first: integration: Amber's three-day talent book is on its days of the week and on no other. Journey: Farm today's material icons at least 36 px; the first two goals side by side, each under 700 px; Low picked in one click and saved; Week shows Lisa on Wednesday and Saturday, not on Monday, and Slime Condensate under Any day. The Planner's priority check follows the group.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: Star Rail's bag refuses Genshin's "flower", keeps a Musketeer head and equips it onto Seele's relics; WuWa's echoes and ZZZ's discs go in theirs. `npm run check` passes: 596 tests and 70 journeys.
 - Scope/decisions: server only; the next PR draws one gear screen for every game on it.
 - Next: the gear screen.
-
-## 2026-10-11 · claude · stack/r7/06-art-sources · #249
-- Done: icons where materials and sets showed initials (Georges, round 4: his screenshot's "SG UD OO AR" were Genshin's Far-North Scions materials, missing on Enka). Genshin's materials now come from Yatta (529 of 536 icons, to Enka's 410). WuWa's materials and Sonata sets get a source at last (its game files on wuthery), their keys keeping the folder ("IconMout/T_IconMout_L_014_UI"); each Sonata set takes its own icon from `PhantomFetterGroup` (every `PhantomFetter` row carried the same placeholder). The guide's "decided against" line for WuWa art goes.
-- Tests: written first: Genshin's material URL is Yatta's; WuWa's material and Sonata URLs keep the folder; every WuWa material and set has such a key, each set its own icon. A follow-up test commit: Wrath of the Deep has no group row yet, so it keeps its fetter's icon. `npm run check` passes: 594 tests and 70 journeys.
-- Scope/decisions: Wuthery serves the folder `%2F`-encoded, so `communityArtUrl` keeps encoding keys whole (no path can be smuggled through a key). The art mirror will store such keys flat; it falls back to the community URL if R2 decodes them.
-- Next: endgame enemies as icons.
