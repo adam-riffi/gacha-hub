@@ -11,15 +11,29 @@ import { catalogIdSchema, idSchema, isoDate, jsonValue, kpiTargetsInput } from "
  * A build's misc (Georges, round 6: "where I could write notes or add
  * pictures"): its notes, its skins by name, its pictures (uploads only).
  */
-export const characterMiscSchema = z.object({
-  notes: z.string().max(4000).optional(),
+const pictureUrl = z.string().max(2048).regex(/^(\/uploads\/[\w.-]+|https:\/\/[\w.-]+\/[^\s"'<>]+)$/);
+const miscShape = z.object({
+  /** Several notes, each its own (round 7). */
+  notes: z.array(z.string().trim().min(1).max(2000)).max(50).optional(),
   skins: z.array(z.string().trim().min(1).max(80)).max(30).optional(),
+  /** Each picture with a note of its own (round 7). */
   pictures: z
-    .array(z.string().max(2048).regex(/^(\/uploads\/[\w.-]+|https:\/\/[\w.-]+\/[^\s"'<>]+)$/))
+    .array(z.object({ url: pictureUrl, note: z.string().trim().max(500).optional() }))
     .max(12)
     .optional(),
 });
-export type CharacterMisc = z.infer<typeof characterMiscSchema>;
+/** Round 6 kept one block of notes and bare picture links: read them as one note and pictures without notes. */
+const fromRound6 = (v: unknown) => {
+  if (!v || typeof v !== "object") return v;
+  const m = v as { notes?: unknown; pictures?: unknown };
+  return {
+    ...m,
+    ...(typeof m.notes === "string" ? { notes: m.notes.trim() ? [m.notes] : [] } : {}),
+    ...(Array.isArray(m.pictures) ? { pictures: m.pictures.map((p) => (typeof p === "string" ? { url: p } : p)) } : {}),
+  };
+};
+export const characterMiscSchema = z.preprocess(fromRound6, miscShape);
+export type CharacterMisc = z.infer<typeof miscShape>;
 
 export const characterDto = z.object({
   id: idSchema,
