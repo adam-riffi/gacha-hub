@@ -218,10 +218,12 @@ test("Tasks: priority in one click; goals two by two; Farm today large, and the 
   expect((await farm.getByRole("img", { name: "Slime Condensate" }).first().boundingBox())!.width).toBeGreaterThanOrEqual(36);
 
   const goals = page.getByRole("region", { name: "Goals" });
-  const lisa = goals.getByRole("article", { name: "Farm Lisa" }).first();
+  await expect(goals.getByRole("article", { name: "Farm Lisa" }).first()).toBeVisible();
   const other = goals.getByRole("article", { name: "E2E side goal" });
-  const [a, b] = [(await lisa.boundingBox())!, (await other.boundingBox())!];
-  expect(Math.abs(a.y - b.y) < 4 || Math.abs(a.x - b.x) > 100).toBe(true);
+  // The first two goals side by side, each half as wide.
+  const [a, b] = [(await goals.getByRole("article").nth(0).boundingBox())!, (await goals.getByRole("article").nth(1).boundingBox())!];
+  expect(Math.abs(a.y - b.y)).toBeLessThan(4);
+  expect(b.x - a.x).toBeGreaterThan(100);
   expect(a.width).toBeLessThan(700);
 
   // One click picks the priority.
