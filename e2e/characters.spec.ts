@@ -366,3 +366,19 @@ test("Characters: a card without a build shows the character's base stats at its
   await expect(card.locator(".ch-kpis .cd")).toHaveText(["5%", "917", "653"]);
   await expect(card.locator(".ch-kpis .cd").nth(1)).toHaveAttribute("title", /Base at Lv 80/);
 });
+
+// Georges, round 8: "Endfield character arts are way too zoomed in": its portraits are small, so its cards show them whole.
+test("Characters: Endfield's portraits shown whole on their cards, not enlarged to fill them @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "endfield" } })).json()) as { id: string };
+  await page.goto(`/games/${id}/characters`);
+  const art = page.locator(".ch-card .ch-art .gicon").first();
+  await expect(art).toBeVisible();
+  expect(await art.evaluate((el) => getComputedStyle(el).objectFit)).toBe("contain");
+  // Other games keep filling their cards.
+  const hsr = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  await page.goto(`/games/${hsr.id}/characters`);
+  expect(await page.locator(".ch-card .ch-art .gicon").first().evaluate((el) => getComputedStyle(el).objectFit)).toBe("cover");
+});

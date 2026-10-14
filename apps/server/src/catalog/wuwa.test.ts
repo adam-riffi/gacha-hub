@@ -57,4 +57,12 @@ describe("wuwa catalog", () => {
     const chixia = catalog.characters.find((c) => c.id === "1202")!;
     expect(chixia.talents.info?.map((i) => [i.key, i.name])).toEqual([["basic", "POW POW"], ["skill", "Whizzing Fight Spirit"], ["forte", "Heroic Bullets"], ["liberation", "Blazing Flames"], ["intro", "Grand Entrance"]]);
   });
+
+  // Georges, round 8: "Qiuyuan from WuWa is way too zoomed in": the art host names her card art with a capital (Qiuyuan) where the
+  // game's path has none, so the icon stood in, enlarged; the importer keeps the name the host answers to.
+  it("keeps each resonator's card art under the name the art host has: Qiuyuan's capitalised", async () => {
+    const catalog = catalogSchema.parse(await wuwa.loadCatalog!());
+    expect(catalog.characters.find((c) => c.name === "Qiuyuan")!.splash).toBe("T_IconRole_Pile_Qiuyuan_UI");
+    expect(catalog.characters.find((c) => c.name === "Jiyan")!.splash).toBe("T_IconRole_Pile_jiyan_UI");
+  });
 });
