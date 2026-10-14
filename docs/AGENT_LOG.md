@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-14 · claude · stack/r10/05-stat-icons · #284
+- Done: icons on the sheet (Georges, round 7: "artifact/gear's icons are too small, and even the artifact section has a very small place for the icons, which convey a lot of info by themselves … stat icons should also be used when possible"). `statKind` (shared) names any game's stat by its kind (HP, ATK, DEF, CRIT Rate, CRIT DMG, energy, mastery, SPD, healing, effect, break, PEN, DMG bonus) and `StatIcon` draws it beside the name: on the sheet's KPI tiles and Combat stats, the cards' stat strip, and the gear block's main stats and substats. Each gear piece on the sheet opens with its set as a 64 px icon beside the slot and its crit value, the piece being a named group.
+- Tests: written first: `statKind` maps seventeen stat names of the four games to their kinds; Kafka's sheet shows the SPD tile's and HP row's icons, her Head relic's set as an icon at least 56 px wide, and its main stat's and substat's icons.
+- Scope/decisions: the icons are drawn here (line icons in the app's style); a game's own stat art can replace them once the bucket holds it.
+- Next: Quick goal at the top of the sheet; skills without costs; Select all at once.
+
 ## 2026-10-14 · claude · stack/r10/04-notes · #283
 - Done: notes and pictures (Georges, round 7: "notes shouldn't be just a block of text: you can add, delete and modify them and have multiple of them; you can add notes to pictures as well"). A build's misc keeps `notes` as a list (up to 50, each up to 2000 characters) and each picture as `{ url, note }`; round 6's single block and bare links are read in the new shape (`characterMiscSchema` pre-processes them), so nothing stored is lost. The Misc card lists the notes as cards, each with Edit (in place, Save note) and Delete, under them Add a note; each picture has a note field under it, saved on leaving it.
 - Tests: written first: the route keeps two notes and a picture's note, and reads round 6's shape as one note and a picture without a note; Barbara's sheet adds three notes, edits the second, deletes the third, adds a picture and its note, and all of it is saved. Round 6's misc test follows the new shape.
@@ -246,10 +252,4 @@ Entry format:
 - Done: the project guide caught up with round 3. §8.6 now covers the Overview (G0) with a screenshot, §8.9 the Weapons cards (G4c) with another, §8.10 the skill descriptions; §7's screen map opens a game on its Overview and lists Activities, Teams and Weapons; §13 leaves the current state to HANDOFF.md and keeps the history through #242; §14.2 moves the per-game Overview, the enemies and the descriptions to "Done". HANDOFF.md says `main` is at #241.
 - Tests: docs only. `npm run check` passes: 592 tests and 69 journeys.
 - Scope/decisions: the two screenshots block every image from `/assets/` as well as from other hosts, so no game art is committed (ADR 0006); the guide's own script blocked only other hosts, and the Weapons page showed mirrored art before the fix.
-- Next: Georges's secrets, data and the NTE decision.
-
-## 2026-10-11 · claude · stack/r6/05-wuwa-nests · #242
-- Done: WuWa's Nightmare Nests, from the design's Today card ("24/36"): a daily counted to 36 Tacet Discords (Prydwen's game modes guide), entered as a number on the Overview. Profiles made before it add it with + there. HANDOFF.md records what a search for the designs' other details found, and why each stays out.
-- Tests: written first: a new WuWa profile seeds Nightmare Nests, daily, target 36. `npm run check` passes: 592 tests and 69 journeys.
-- Scope/decisions: the 36 is marked `~` in `docs/games/wuwa.md` (one source). Left out after searching: the Endstate Matrix (ex Doubled Pawns; its cycles span versions, no phase dates published), Umbral Monument (permanent, mostly one-time rewards), Etchspace Salvage (permanent, no reset found), Contingency Contract (one weak source), Pink Paws Heist (its cap now shared, its cadence disputed).
 - Next: Georges's secrets, data and the NTE decision.
