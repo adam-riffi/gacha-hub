@@ -126,7 +126,7 @@ test("Gear: every piece you have, on a build or in the bag, filtered by set, slo
 
     // Its substats in the chosen piece's column (round 10).
     await body.getByRole("button", { name: "Show Hunter of Glacial Forest · Body" }).click();
-    await expect(page.getByRole("region", { name: "Piece" })).toContainText("SPD");
+    await expect(page.getByRole("region", { name: "Chosen piece" })).toContainText("SPD");
 
     // The search reads sets, stats and wearers.
     await filters.getByRole("searchbox", { name: "Search" }).fill("Pela");
@@ -167,7 +167,7 @@ test("Gear: a piece added from the pieces, its card readable with its set's and 
     const first = page.getByRole("region", { name: "Pieces" }).getByRole("article").first();
     const before = (await first.boundingBox())!;
     await piece.getByRole("button", { name: "Show Musketeer of Wild Wheat · Body" }).click();
-    await page.getByRole("region", { name: "Piece" }).getByRole("button", { name: "Open the set" }).click();
+    await page.getByRole("region", { name: "Chosen piece" }).getByRole("button", { name: "Open the set" }).click();
     const panel = page.getByRole("complementary", { name: "Musketeer of Wild Wheat" });
     await expect(panel).toBeVisible();
     expect(await panel.evaluate((el) => getComputedStyle(el).position)).toBe("fixed");
@@ -201,7 +201,7 @@ test("Gear: every piece a tile with its art; the chosen piece in full beside the
     // The filters on the left, the tiles, the chosen piece on the right.
     const filters = (await page.getByRole("region", { name: "Filters" }).boundingBox())!;
     const grid = (await pieces.boundingBox())!;
-    const column = page.getByRole("region", { name: "Piece" });
+    const column = page.getByRole("region", { name: "Chosen piece" });
     expect(filters.x + filters.width).toBeLessThanOrEqual(grid.x);
     expect(grid.x + grid.width).toBeLessThanOrEqual((await column.boundingBox())!.x);
 
