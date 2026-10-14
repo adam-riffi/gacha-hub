@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-14 · claude · stack/r12/03-characters-one-card · #310
+- Done: one card for every character (Georges, round 9: "for the characters, not owning them shouldn't prevent me from having the full card or setting trying builds; don't make a different screen for owned/not owned, same screen, just a toggle for all characters to see which ones I have already"). An unowned character's card is no longer dashed and dimmed: the same art, stats and chips as an owned one, its badge saying Not owned. Every card without a build offers Start a build; from an unowned card it is a build to try (`own: false` on the create route), the character staying unowned; a build still owns its character otherwise (imports, owned cards). The count chips All / Owned / Not owned become one toggle, Owned only n / total; Wishlist stays.
+- Tests: written first: integration: a build with own false leaves Amber unowned. Journey: Lynx unowned has a bright card with its stats, no Not owned chip, Owned only hides her and shows her again, Start a build opens her sheet and she stays unowned.
+- Scope/decisions: own false only from an unowned card's Start a build; everything else keeps owning on build, as before.
+- Next: the Overview with the banners first.
+
 ## 2026-10-14 · claude · stack/r12/02-panel-toggle · #309
 - Done: panels (Georges, round 9: "when I click on a weapon I have the bar appearing on the side, and when I click again on the same weapon the screen flickers instead of closing; I am visually impaired: the small x to close is barely visible"). The flicker: a press outside a window closed it (`useDismiss`), then the card's click opened it again. A window's opener now carries `data-opens-panel`, which the dismiss leaves alone, and the weapon's card toggles its panel (a gear piece's card already did). Every window's Close (a weapon's and a set's panel, the weapon window, Quick build, the timeline's Selected) is a 40 px button with a heavy border reading ✕ CLOSE.
 - Tests: written first: Arrows's card opens its panel, a second click closes it and it stays closed; its Close says Close, at least 36 px high, and closes it.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: a sheet naming Favonius at Lv 70 R3 gets a new copy at them and owns it; another sheet takes a free copy, which moves to the sheet's Lv 40; on ZZZ, the CRIT Rate filter, two Steel Cushions set to Lv 50 at once, then removed. The copies journey now starts from Kafka's sheet's copy (Lv 80 S2), which is what linking means.
 - Scope/decisions: when a free copy and the sheet disagree, the sheet wins (it is the newer word).
 - Next: the gear screen as an inventory of pieces.
-
-## 2026-10-13 · claude · stack/r9/06-catalog-stats · #269
-- Done: catalogs and the cards' growth stat (Georges, round 6: "character's ascension stat should be highlighted; filter by main stat; add the talent icon; a misc part for non-upgradable talents"). The catalog schema gains `bonusStats` (characters), `mainStat` (weapons), `passives` and talent `icon`s. Importers fill them: Genshin (genshin-db's ascension stat, weapon main stat, combat talent icons, passives; talent art from Enka), Star Rail (its minor traces' stats, most first), ZZZ (the core skill's own stat, a W-Engine's advanced stat), WuWa (its forte tree's bonuses, its own before ATK/HP/DEF; a weapon's secondary stat through PropertyIndex's ids). The four catalogs are regenerated (only the new fields change; Genshin's `extra.subStat` became `mainStat`). A card's chips gain the stat the character grows, filled in its element's colour, its label lit in the stat strip.
-- Tests: written first: Ayaka grows CRIT DMG with three talent icons and her passives, Mistsplitter's main stat is CRIT DMG, 100+ characters have one; Kafka's trace stats are ATK, Effect Hit Rate, HP; Ellen's core stat is CRIT Rate, Steel Cushion's CRIT Rate, every W-Engine has one; Chixia grows Fusion DMG Bonus then ATK, WuWa's weapon stats are the six; Kafka's card shows ATK, all three on hover.
-- Scope/decisions: Endfield and NTE publish no growth or weapon stats; light cones have no second stat.
-- Next: weapons synced with every sheet, many at once, filtered by main stat.
