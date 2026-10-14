@@ -403,13 +403,12 @@ test("Characters: an unowned character has the full card and a build to try; Own
   // The full card: its art as bright as an owned one's, its stats.
   expect(await lynx.locator(".ch-art .gicon").evaluate((el) => [getComputedStyle(el).opacity, getComputedStyle(el).filter])).toEqual(["1", "none"]);
   await expect(lynx.locator(".ch-kpis")).toBeVisible();
-  // One toggle for the owned ones; no screen of its own for the others.
-  await expect(page.getByRole("group", { name: "Filter by count" }).getByRole("button", { name: /^Not owned/ })).toHaveCount(0);
-  const ownedOnly = page.getByRole("button", { name: /^Owned only/ });
-  await ownedOnly.click();
-  await expect(ownedOnly).toHaveAttribute("aria-pressed", "true");
+  // No screen of its own for the others: the same cards, filtered by ownership (round 11 adds Not owned to the filter).
+  const ownedView = page.getByRole("group", { name: "Ownership" }).getByRole("button", { name: /^Owned \d+/ });
+  await ownedView.click();
+  await expect(ownedView).toHaveAttribute("aria-pressed", "true");
   await expect(lynx).toHaveCount(0);
-  await ownedOnly.click();
+  await ownedView.click();
   await expect(lynx).toBeVisible();
 
   // A build to try, without owning her.
@@ -528,5 +527,50 @@ test("Characters: each character's last banner on its card, sorted by it; the sh
     expect(misc.y - (box.y + box.height)).toBeGreaterThanOrEqual(12);
   } finally {
     for (const key of ["e2e-seen-saber", "e2e-next-saber", "e2e-seen-archer"]) await page.request.delete(`/api/admin/banners/hsr/${key}`);
+  }
+});
+
+// Georges, round 11: "there should be some common sense features like filtering characters or anything on ownership/non ownership".
+test("Characters and Weapons: All, Owned, Not owned and Wishlist as one filter with their counts; a weapon's last banner on its card @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  // Jing Yuan owned, Luocha not; neither built by any journey.
+  await page.request.put(`/api/instances/${id}/ownership`, { data: { items: [{ kind: "character", catalogId: "1204", owned: true }, { kind: "character", catalogId: "1203", owned: false }] } });
+  const copy = (await (await page.request.post(`/api/instances/${id}/weapons`, { data: { catalogId: "23000" } })).json()) as { id: string };
+  const iso = (days: number) => new Date(Date.now() + days * 86_400_000).toISOString();
+  await page.request.post("/api/admin/payload", { data: { kind: "banners", gameKey: "hsr", items: [{ key: "e2e-seen-milky-way", name: "E2E light cone warp", kind: "weapon", startsAt: iso(-50), endsAt: iso(-30), featured: [{ catalogId: "23001", kind: "weapon" }] }] } });
+  try {
+    await page.goto(`/games/${id}/characters`);
+    const ownership = page.getByRole("group", { name: "Ownership" });
+    for (const view of ["All", "Owned", "Not owned", "Wishlist"]) await expect(ownership.getByRole("button", { name: new RegExp(`^${view} \\d+`) })).toBeVisible();
+    const jingYuan = page.getByRole("article", { name: "Jing Yuan" });
+    const luocha = page.getByRole("article", { name: "Luocha" });
+    await ownership.getByRole("button", { name: /^Not owned \d+/ }).click();
+    await expect(luocha).toBeVisible();
+    await expect(jingYuan).toHaveCount(0);
+    await ownership.getByRole("button", { name: /^Owned \d+/ }).click();
+    await expect(jingYuan).toBeVisible();
+    await expect(luocha).toHaveCount(0);
+    await ownership.getByRole("button", { name: /^All \d+/ }).click();
+    await expect(jingYuan).toBeVisible();
+    await expect(luocha).toBeVisible();
+
+    // Weapons: the same filter; a light cone's last banner on its card.
+    await page.goto(`/games/${id}/weapons`);
+    const milkyWay = page.getByRole("article", { name: "Night on the Milky Way" });
+    const inTheNight = page.getByRole("article", { name: "In the Night" });
+    await page.getByRole("group", { name: "Ownership" }).getByRole("button", { name: /^Not owned \d+/ }).click();
+    await expect(inTheNight).toBeVisible();
+    await expect(milkyWay).toHaveCount(0);
+    await expect(inTheNight.getByRole("img", { name: "Last banner" })).toBeVisible();
+    await expect(inTheNight).toContainText("1 mo ago");
+    await page.getByRole("group", { name: "Ownership" }).getByRole("button", { name: /^Owned \d+/ }).click();
+    await expect(milkyWay).toBeVisible();
+    await expect(inTheNight).toHaveCount(0);
+  } finally {
+    await page.request.delete(`/api/instances/${id}/weapons/${copy.id}`);
+    await page.request.delete("/api/admin/banners/hsr/e2e-seen-milky-way");
   }
 });
