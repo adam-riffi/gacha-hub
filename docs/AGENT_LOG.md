@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-14 · claude · stack/r11/01-team-window · #299
+- Done: endgame teams and icons (Georges, round 8: "adding characters to an endgame team is a pain: I have to click on the box, then click out for it to refresh, and click again; I'd rather have a window with all the characters open and choose them; it also lacks difficulty icons"). Each stage's + Team opens `TeamWindow`: every character of the game as a large card with its icon, a click adding or removing one up to the party size (the slot's number on the card), the window staying open; saved teams fill it in one click; a search narrows the list; Done or a click outside closes it. Each mode's result has its metric's icon (`MetricIcon`: stars, difficulty, seals, crests, acts, rank, points, each its colour), and a mode whose maximum is 12 or less shows the full row of icons filled to the result (Stygian's six skulls, Pure Fiction's twelve stars). Round 8's audit opens (`docs/AUDIT-2026-10-14-round8.md`).
+- Tests: written first: Memory of Chaos's First half gets Kafka and Silver Wolf in one window, the count 2 / 4 then 1 / 4 after a second click, Kafka on the saved stage; its result shows the star icon; Pure Fiction at 9 shows nine of twelve stars filled. The Abyss and Shiyu journeys pick their teams in the window.
+- Scope/decisions: "difficulty icons" read as each mode's metric by its icon, the game's word beside it.
+- Next: the top-up card at the bottom, each pack in pulls.
+
 ## 2026-10-14 · claude · stack/r10/19-currency-icons · #298
 - Done: currencies as icons (Georges, round 7: "add icons wherever there can be; I have an eye condition and it's hard to read small text … I need icons to understand quickly; work on icons, make this as visual as you can"). `currencyKind` (shared) names a currency by what it is: the stamina and its reserve, the premium currency, a limited, standard or one-banner ticket, else a coin; `CurrencyIcon` draws each in the stat icons' line style, in its own colour (green stamina, blue gem, gold ticket, blue standard ticket, violet special ticket, gold coin). On a game's dashboard: the Pulls card's rows, the stamina card (a large bolt beside the figure) and its reserve; on Pulls: the Pulls available table.
 - Tests: written first: ZZZ's seven currencies and Genshin's six by kind; ZZZ's dashboard shows the premium and ticket icons in Pulls and the stamina icon in Battery Charge; its Pulls page shows premium, ticket and standard icons.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: with Seele wishlisted on Star Rail, her row in the card has her icon and a chance by the version's end at least her chance now; the first row is an icon too.
 - Scope/decisions: each chance is the target's own (as if every pull went to it); the savings planner below still spends the pulls in order.
 - Next: the Characters cards: the whole card lit when picked, the weapon on the right.
-
-## 2026-10-12 · claude · stack/r8/02-endgame-cycles · #257
-- Done: every endgame cycle opens (Georges, round 5: "click on something and get the data from that version on endgame or have the opportunity to open a small version history"): a bar of a mode card's last cycles, a point of the history chart or a row of its table opens that cycle in a dialog (native `<dialog>`): its dates and version, result, rewards, detail, teams and the enemies of that cycle, typed in place; the older and newer cycles a step away; every cycle of the mode listed with its result as a bar. A card's History opens its current cycle. `modeCycles` lists a mode's cycles with the current one even before it is typed; `versionAt` names the version an instant falls in. Enemies moved with the dialog (`CycleDialog.tsx`).
-- Tests: written first: `modeCycles` adds the current cycle, empty, and leaves typed histories as they are; `versionAt` counts back and forth by the version's length and gives none before the major's first. A journey opens Shiyu Defense's cycle of 18 Sept from its bar (version, rewards, detail, clear time), steps to the older one, finds it marked in the list, edits its detail in place, closes with Escape, opens the current cycle from History and another from the table.
-- Scope/decisions: the version is left out before the major version's first (the last minor of the one before is not known).
-- Next: the Pulls tab's By the end of the version, filled with each target's chances.
