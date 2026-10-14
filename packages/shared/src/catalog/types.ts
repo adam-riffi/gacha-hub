@@ -151,3 +151,23 @@ export function indexCatalog(catalog: Catalog) {
     companions: new Map((catalog.companions ?? []).map((b) => [b.id, b])),
   };
 }
+
+/**
+ * Every past banner of a game, from the banner-history importer (round 11: "last seen"): one per phase and kind, its featured
+ * units by catalog id. Dates without hours, read as midnight UTC.
+ */
+export const bannerHistorySchema = z.object({
+  /** Upstream dataset, e.g. "samsara-web@4c1089c (MIT)". */
+  source: z.string(),
+  banners: z.array(
+    z.object({
+      key: z.string(),
+      name: z.string(),
+      kind: z.enum(["character", "weapon"]),
+      startsAt: z.string().datetime({ offset: true }),
+      endsAt: z.string().datetime({ offset: true }),
+      featured: z.array(z.object({ catalogId: z.string(), kind: z.enum(["character", "weapon"]), rarity: z.number().int().min(1).max(6) })),
+    }),
+  ),
+});
+export type BannerHistory = z.infer<typeof bannerHistorySchema>;

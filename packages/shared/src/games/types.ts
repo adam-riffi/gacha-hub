@@ -1,7 +1,7 @@
 import type { EndgameEnemies } from "../enemies.js";
 import type { z } from "zod";
 import type { TaskCadence } from "../common.js";
-import type { Catalog, CatalogCharacter } from "../catalog/types.js";
+import type { BannerHistory, Catalog, CatalogCharacter } from "../catalog/types.js";
 import type { PullBannerRules } from "../pity.js";
 import type { CadenceAnchor } from "../cadence.js";
 import type { ArtKind } from "../art.js";
@@ -178,4 +178,6 @@ export interface GameDefinition {
   loadCatalog?: () => Promise<Catalog>;
   /** Who each cycle of the rotating endgame modes sends at you, from the importer (lazy, like the catalog). */
   loadEndgame?: () => Promise<EndgameEnemies>;
+  /** Every past banner, from the banner-history importer (round 11: "last seen"); absent where no dated source exists. */
+  loadBannerHistory?: () => Promise<BannerHistory>;
 }

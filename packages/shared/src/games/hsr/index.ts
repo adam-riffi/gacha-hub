@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { statRowSchema } from "../../common.js";
-import type { Catalog } from "../../catalog/types.js";
+import { bannerHistorySchema, type Catalog } from "../../catalog/types.js";
 import type { GameDefinition } from "../types.js";
 import { hoyoRegions } from "../regions.js";
 import { HSR_LIMITS as L } from "./limits.js";
@@ -180,4 +180,6 @@ export const hsr: GameDefinition = {
   }),
   loadCatalog: async () =>
     (await import("./catalog.js")).default as Catalog,
+  // Every past banner since 1.0 (`npm run catalog:banners`; round 11).
+  loadBannerHistory: async () => bannerHistorySchema.parse((await import("./banner-history.js")).default),
 };

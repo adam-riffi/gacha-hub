@@ -37,8 +37,9 @@ export async function registerTimelineRoutes(app: FastifyInstance) {
     const game = getGame(req.params.key);
     if (!game) return reply.code(404).send({ error: "unknown_game" });
     const banners = await prisma.banner.findMany({ where: { gameKey: game.key }, select: { key: true, name: true, startsAt: true, endsAt: true, featured: true } });
-    const featuringBanners = banners.map((banner) => ({ ...banner, featured: Array.isArray(banner.featured) ? (banner.featured as { catalogId: string }[]) : [] }));
-    return unitAppearancesDto.parse(new UnitBannerAppearances(featuringBanners).toRecord());
+    const storedBanners = banners.map((banner) => ({ ...banner, featured: Array.isArray(banner.featured) ? (banner.featured as { catalogId: string }[]) : [] }));
+    const historyBanners = (await game.loadBannerHistory?.())?.banners ?? [];
+    return unitAppearancesDto.parse(new UnitBannerAppearances(UnitBannerAppearances.withHistory(storedBanners, historyBanners)).toRecord());
   });
 
   app.get<{ Params: { key: string }; Querystring: { status?: string } }>(

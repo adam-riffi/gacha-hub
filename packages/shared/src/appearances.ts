@@ -28,6 +28,18 @@ export class UnitBannerAppearances {
     }
   }
 
+  /**
+   * The banners the app stores (uploads, the official feeds) with the game's history (round 11): a history run is left out
+   * where a stored banner featuring one of its units overlaps it, the stored one being exact to the hour.
+   */
+  static withHistory(storedBanners: readonly FeaturingBanner[], historyBanners: readonly FeaturingBanner[]): FeaturingBanner[] {
+    const overlaps = (first: FeaturingBanner, second: FeaturingBanner) =>
+      new Date(first.startsAt).getTime() < new Date(second.endsAt).getTime() && new Date(second.startsAt).getTime() < new Date(first.endsAt).getTime();
+    const sharesUnit = (first: FeaturingBanner, second: FeaturingBanner) => first.featured.some((unit) => second.featured.some((other) => other.catalogId === unit.catalogId));
+    const uncovered = historyBanners.filter((pastBanner) => !storedBanners.some((storedBanner) => overlaps(storedBanner, pastBanner) && sharesUnit(storedBanner, pastBanner)));
+    return [...storedBanners, ...uncovered];
+  }
+
   /** One unit's appearances, or null when no banner featured it. */
   summaryFor(catalogId: string): UnitAppearanceDto | null {
     const banners = this.bannersByCatalogId.get(catalogId);
