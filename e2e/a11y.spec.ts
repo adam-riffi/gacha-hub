@@ -60,10 +60,8 @@ test("every screen has no serious accessibility violations @smoke", async ({ pag
     await page.goto(`/games/${genshin.id}/gear`);
     // The filters and the pieces (round 8), then a set picked and opened.
     found.push(...(await violations(page, "genshin gear pieces")));
-    const first = page.getByRole("region", { name: "Filters" }).getByRole("group", { name: "Sets" }).getByRole("button").first();
-    const name = (await first.getAttribute("aria-label"))!;
-    await first.click();
-    await page.getByRole("region", { name }).getByRole("button", { name: `Open ${name}` }).click();
+    await page.getByRole("combobox", { name: "Open a set" }).click();
+    await page.getByRole("listbox", { name: "Open a set" }).getByRole("option").first().click();
     await page.getByRole("complementary").getByRole("button", { name: "Farm" }).click();
     found.push(...(await violations(page, "genshin gear set")));
   } finally {
