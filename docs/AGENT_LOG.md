@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-14 · claude · stack/r10/19-currency-icons · #298
+- Done: currencies as icons (Georges, round 7: "add icons wherever there can be; I have an eye condition and it's hard to read small text … I need icons to understand quickly; work on icons, make this as visual as you can"). `currencyKind` (shared) names a currency by what it is: the stamina and its reserve, the premium currency, a limited, standard or one-banner ticket, else a coin; `CurrencyIcon` draws each in the stat icons' line style, in its own colour (green stamina, blue gem, gold ticket, blue standard ticket, violet special ticket, gold coin). On a game's dashboard: the Pulls card's rows, the stamina card (a large bolt beside the figure) and its reserve; on Pulls: the Pulls available table.
+- Tests: written first: ZZZ's seven currencies and Genshin's six by kind; ZZZ's dashboard shows the premium and ticket icons in Pulls and the stamina icon in Battery Charge; its Pulls page shows premium, ticket and standard icons.
+- Scope/decisions: round 7 already added icons for stats (#284), gear sets (#284, #288), weapons (#287, #289), games in the strip (#292), priority (#290) and wishes (#291); currencies were the remaining text-only rows.
+- Next: round 7's audit, the hand-off.
+
 ## 2026-10-14 · claude · stack/r10/18-endfield-art · #297
 - Done: Endfield's art (Georges, round 7: "add the weapons tracking and character art and everything else related to Endfield"). The importer reads the file tree of the Endaxis timeline tool (github.com/Lieyuan621/Endaxis, pinned to commit 1cd67de) and keys each catalog entry to a file that is there: each operator's avatar and portrait (operators/<English name>/…, both Endministrators sharing one), each weapon's icon (weapons/<kind>/<weapon id>), each gear set's (a body piece of its suit's folder). All 29 operators, 71 weapons and 22 sets have art. The manifest's art sources point at raw.githubusercontent.com at that commit, which the CSP now allows (server headers and vercel.json alike). Weapons were already tracked (Weapons screen and the sheet's window).
 - Tests: written first: Perlica's avatar and portrait keys, the Endministrator's shared folder, at least 28 operators, Greatsword 0003's icon and 60 weapons, a set's icon from its suit folder, the art URL at the pinned commit; the CSP allows raw.githubusercontent.com.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: `modeCycles` adds the current cycle, empty, and leaves typed histories as they are; `versionAt` counts back and forth by the version's length and gives none before the major's first. A journey opens Shiyu Defense's cycle of 18 Sept from its bar (version, rewards, detail, clear time), steps to the older one, finds it marked in the list, edits its detail in place, closes with Escape, opens the current cycle from History and another from the table.
 - Scope/decisions: the version is left out before the major version's first (the last minor of the one before is not known).
 - Next: the Pulls tab's By the end of the version, filled with each target's chances.
-
-## 2026-10-12 · claude · stack/r8/01-settings-tabs · #256
-- Done: Settings as tabs (Georges, round 5: Data sources opened "a whole new window" with no way back; "it's ok to have multiple tabs instead of one big one"): Games (the default), Linked accounts, Pull history, Notifications, Account and data, and Data sources for the owner, each at `/settings/<tab>`, the tabs on the left of every one. Notifications also holds the reminder rules and their preview (Tasks' panel). Data sources' payload and current items sit side by side in the narrower column. Round 5's list is in `docs/AUDIT-2026-10-12-round5.md`.
-- Tests: written first: the Settings journey walks the tabs (each its address and `aria-current`; Pull history absent from Games); Data sources is a tab with Settings' heading over it, and Games is one click back; export and HoYoLAB open their tabs; the a11y sweep covers the new tabs.
-- Scope/decisions: a tab's queries load with it (links, imports). Also fixed: the calendar journey failed on Mondays, as a banner that began before the window drew a short bar whose dates squeezed its name to nothing; the dates now give way first, and the test hits that case on any weekday.
-- Next: the Endgame's cycles, each one opening.
