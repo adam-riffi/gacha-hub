@@ -42,4 +42,15 @@ describe("nte catalog", () => {
   it("keeps a build's Arc by its catalog id", () => {
     expect(nteDocSchema.parse({ arc: { catalogId: "fork_Arachne", level: 50 } }).arc?.catalogId).toBe("fork_Arachne");
   });
+
+  // Georges, round 7: "you haven't added the gear system for NTE": the Console's sets are the cartridge series.
+  it("has the Console's gear sets: the nine cartridge series the Chameleon Packages name, three per series, in its four slots", async () => {
+    const catalog = catalogSchema.parse(await nte.loadCatalog!());
+    expect(catalog.gear.map((g) => g.name)).toEqual(expect.arrayContaining(["Lost Radiance", "Fireflies and the Forest", "Street Boxer", "Diabolos", "Crimson: Twin Butterflies", "Devil's Blood: Curse", "Speedy Hedgehog", "Kingdom's Guard", "Shadow Creed"]));
+    expect(catalog.gear).toHaveLength(9);
+    const lost = catalog.gear.find((g) => g.name === "Lost Radiance")!;
+    expect(lost).toMatchObject({ slots: ["cartridge1", "cartridge2", "cartridge3", "cartridge4"], extra: { series: 1 } });
+    expect(lost.icon).toBeTruthy();
+    expect(catalog.gear.find((g) => g.name === "Shadow Creed")!.extra).toMatchObject({ series: 3 });
+  });
 });
