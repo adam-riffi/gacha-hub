@@ -46,4 +46,20 @@ describe("farm today (WIREFRAMES.md A3)", () => {
     await c.req("PUT", `/api/instances/${gid}`, { sleeping: true });
     expect((await c.req<FarmTodayDto>("GET", "/api/farm-today")).json).toEqual([]);
   });
+
+  // Georges, round 7: "the farm everyday screen should also be included": what each weekday farms, Monday to Sunday.
+  it("lists each weekday's domain lines beside today's", async () => {
+    const cat = await getGame("genshin")!.loadCatalog!();
+    const book = cat.materials.find((m) => m.category === "Character Talent Material" && m.availability?.length === 3)!;
+    const parent = (await c.req<{ id: string }>("POST", "/api/tasks", { scope: "game", refId: gid, type: "goal", title: "Farm Amber", origin: { kind: "character", catalogId: "10000021" } })).json;
+    await c.req("POST", "/api/tasks", { scope: "game", refId: gid, type: "goal", title: `Farm ${book.name}`, target: 9, materialId: book.id, parentId: parent.id });
+
+    const [g] = (await c.req<FarmTodayDto>("GET", "/api/farm-today")).json;
+    expect(g!.week.map((d) => d.weekday)).toEqual([1, 2, 3, 4, 5, 6, 7]);
+    for (const d of g!.week) {
+      const open = book.availability!.includes(d.weekday);
+      expect(d.lines.some((l) => l.kind === "domain" && l.materials.includes(book.id)), `day ${d.weekday}`).toBe(open);
+      expect(d.lines.every((l) => l.kind === "domain")).toBe(true);
+    }
+  });
 });
