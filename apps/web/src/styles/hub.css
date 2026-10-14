@@ -228,3 +228,14 @@ input.tick-check:checked { background: var(--accent); border-color: var(--accent
 .eg-pips { display: flex; flex-wrap: wrap; gap: 4px; margin: -4px 0 10px; font-size: 30px; }
 .eg-pips .metric-icon { margin: 0; opacity: 0.45; }
 .eg-pips .metric-icon.is-on { opacity: 1; }
+
+/* A game's redeem codes (round 11): the code large, its rewards, Copy, Redeem on the official page, a tick. */
+.codes-card { margin-top: 24px; display: grid; gap: 8px; }
+.codes-row { display: grid; grid-template-columns: 220px minmax(0, 1fr) auto; align-items: center; gap: 16px; padding: 10px 0; border-top: 1px solid var(--surface-3); }
+.codes-code { font-size: 18px; letter-spacing: 0.06em; }
+.codes-rewards { color: var(--text-muted); }
+.codes-actions { gap: 8px; }
+.codes-tick { display: inline-flex; align-items: center; gap: 6px; margin: 0; }
+.codes-tick input { width: auto; }
+.codes-row.is-redeemed { opacity: 0.6; }
+.codes-redeemed summary { cursor: pointer; padding: 8px 0; }

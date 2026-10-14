@@ -26,6 +26,7 @@ import { registerGearRoutes } from "./gear.js";
 import { registerPullRoutes } from "./pulls.js";
 import { registerPassRoutes } from "./passes.js";
 import { registerTopUpRoutes } from "./topUps.js";
+import { registerCodeRoutes } from "./codes.js";
 import { registerCycleRoutes } from "./cycles.js";
 import { registerExportRoutes } from "./export.js";
 import { registerCronRoutes } from "./cron.js";
@@ -59,6 +60,7 @@ export async function registerApi(app: FastifyInstance) {
   await registerPullRoutes(app);
   await registerPassRoutes(app);
   await registerTopUpRoutes(app);
+  await registerCodeRoutes(app);
   await registerCycleRoutes(app);
   await registerExportRoutes(app);
   await registerCronRoutes(app);
