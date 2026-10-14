@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-14 · claude · stack/r10/06-quick-goal · #285
+- Done: the sheet's first actions and the selection (Georges, round 7: "quick goal is too small and hidden at the bottom; it should be one of the first things I can do, and it forces me to only have skills at level 1 for some reason … there's no select all button until I select one"). Quick goal is the first button of the sheet's header, beside Card stats and Build status. The skills stuck at 1 were the Traveler's: genshin-db has no talent costs for them, so their cost table's top was 1; `talentCap` falls back to the game's usual level (the quick build's defaults, else 10), in the quick build and in Plan farming. On Characters and Weapons, Select opens the selection bar at once with All shown (Weapons' bar gains All shown).
+- Tests: written first: the Traveler's sheet opens Quick goal from its header, with skills at 10 and 6 and a maximum of at least 10; Characters and Weapons show "0 selected" and All shown as soon as Select is on, and All shown picks.
+- Scope/decisions: the Traveler's plans have no materials for skills (the dataset has none); the levels are still planned.
+- Next: unbuilt cards with the character's data.
+
 ## 2026-10-14 · claude · stack/r10/05-stat-icons · #284
 - Done: icons on the sheet (Georges, round 7: "artifact/gear's icons are too small, and even the artifact section has a very small place for the icons, which convey a lot of info by themselves … stat icons should also be used when possible"). `statKind` (shared) names any game's stat by its kind (HP, ATK, DEF, CRIT Rate, CRIT DMG, energy, mastery, SPD, healing, effect, break, PEN, DMG bonus) and `StatIcon` draws it beside the name: on the sheet's KPI tiles and Combat stats, the cards' stat strip, and the gear block's main stats and substats. Each gear piece on the sheet opens with its set as a 64 px icon beside the slot and its crit value, the piece being a named group.
 - Tests: written first: `statKind` maps seventeen stat names of the four games to their kinds; Kafka's sheet shows the SPD tile's and HP row's icons, her Head relic's set as an icon at least 56 px wide, and its main stat's and substat's icons.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the dashboard specs open `/?game=<key>`; the hub's tabs start with Activities; the all-games Home specs (panels, heatmap, pinned day) run on Home itself, each game found by its own row. A follow-up test commit: the carousel rotates through every Star Rail banner other journeys made, so the dashboard test checks the game, not one banner. `npm run check` passes: 592 tests and 69 journeys; initial JavaScript 146.5 KB.
 - Scope/decisions: the design's "next phase" line gives way to Home's carousel for now; the next PR draws the cards in Home's style. Bundled with Home, the dashboard added 6.6 KB to the initial JavaScript, so it loads on demand.
 - Next: the dashboard in Home's style, then the rest of round 4.
-
-## 2026-10-11 · claude · stack/r6/06-guide · #243
-- Done: the project guide caught up with round 3. §8.6 now covers the Overview (G0) with a screenshot, §8.9 the Weapons cards (G4c) with another, §8.10 the skill descriptions; §7's screen map opens a game on its Overview and lists Activities, Teams and Weapons; §13 leaves the current state to HANDOFF.md and keeps the history through #242; §14.2 moves the per-game Overview, the enemies and the descriptions to "Done". HANDOFF.md says `main` is at #241.
-- Tests: docs only. `npm run check` passes: 592 tests and 69 journeys.
-- Scope/decisions: the two screenshots block every image from `/assets/` as well as from other hosts, so no game art is committed (ADR 0006); the guide's own script blocked only other hosts, and the Weapons page showed mirrored art before the fix.
-- Next: Georges's secrets, data and the NTE decision.

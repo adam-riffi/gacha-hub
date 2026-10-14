@@ -251,6 +251,17 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
             <div className="spread">
               <Link to={`/games/${data.gameInstanceId}/characters`}>← Characters</Link>
               <div className="row">
+                {/* Quick goal first (Georges, round 7: "it should be one of the first things I can do"). */}
+                {data.catalogId && (
+                  <button type="button" className="btn primary sh-quick" onClick={() => setQuick(true)}>
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M12 3v4M12 17v4M3 12h4M17 12h4" />
+                      <circle cx="12" cy="12" r="5" />
+                    </svg>
+                    Quick goal
+                  </button>
+                )}
+                {quick && data.catalogId && <QuickBuild instanceId={data.gameInstanceId} gameKey={data.gameKey} catalogIds={[data.catalogId]} onClose={() => setQuick(false)} />}
                 <StatPicker name={data.name} label="Card stats" options={cardStatOptions(game, (all.data ?? []).map((b) => b.doc as Doc))} own={data.cardStats} onPick={(stats) => setCardStats.mutate(stats)} />
                 <label className="sh-inline">
                   Build status
@@ -414,10 +425,6 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
 
       {data.catalogId && (
         <section className="card sh-plan" aria-label="Plan farming">
-          <button type="button" className="btn" onClick={() => setQuick(true)}>
-            Quick goal
-          </button>
-          {quick && <QuickBuild instanceId={data.gameInstanceId} gameKey={data.gameKey} catalogIds={[data.catalogId]} onClose={() => setQuick(false)} />}
           <TaskGeneratorPanel instanceId={data.gameInstanceId} gameKey={data.gameKey} catalogId={data.catalogId} doc={state.doc} />
         </section>
       )}

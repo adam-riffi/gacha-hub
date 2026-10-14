@@ -93,3 +93,14 @@ export function baseStatsAt(unit: { baseStats?: BaseStats }, level: number, asce
   return Object.fromEntries(b.stats.map((name, i) => [name, lo[i + 2]! + (hi[i + 2]! - lo[i + 2]!) * t]));
 }
 
+
+/**
+ * A skill's cap: its cost table's top level, else (no costs on record, as the
+ * Traveler's in genshin-db) the level given, so it is not stuck at 1 (Georges,
+ * round 7: "it forces me to only have skills at level 1 for some reason").
+ */
+export function talentCap(entry: CatalogCharacter, key: string, fallback: number): number {
+  const max = talentMax(talentTable(entry, key));
+  return max > 1 ? max : fallback;
+}
+

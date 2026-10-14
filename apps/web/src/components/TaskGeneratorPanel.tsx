@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   levelCaps,
-  talentMax,
+  talentCap,
   talentTable,
   type PlanGenerateResultDto,
   type PlanPreviewDto,
@@ -93,7 +93,7 @@ export function TaskGeneratorPanel({
     talents: Object.fromEntries(
       (entry?.talents.keys ?? [])
         .map((k) => {
-          const max = talentMax(talentTable(entry!, k));
+          const max = talentCap(entry!, k, 10);
           const t = talents[k] ?? { from: docTalents[k] ?? 1, to: max };
           return [k, t] as const;
         })
@@ -145,7 +145,7 @@ export function TaskGeneratorPanel({
           </select>
         </div>
         {entry.talents.keys.map((k) => {
-          const max = talentMax(talentTable(entry, k));
+          const max = talentCap(entry, k, 10);
           const t = talents[k] ?? { from: docTalents[k] ?? 1, to: max };
           return (
             <div key={k} className="row" style={{ gap: 4 }}>

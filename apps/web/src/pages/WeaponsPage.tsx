@@ -249,9 +249,10 @@ export function WeaponsPage() {
           {cards.length === 0 && others.length === 0 && <p className="mu">{fromCatalog ? "No weapon matches." : "No weapon yet."}</p>}
         </section>
 
-        {picked.size > 0 && (
+        {(selecting || picked.size > 0) && (
           <BulkBar
             count={picked.size}
+            onAll={() => setPicked(new Set([...cards.map(({ copy }) => copy.id), ...others.filter((w) => w.catalogId).map((w) => `w:${w.catalogId}`)]))}
             dupe={dupe}
             pending={many.isPending}
             onLevel={(level) => many.mutate({ update: { level } })}
@@ -380,8 +381,10 @@ function BulkBar({
   onOwn,
   onRemove,
   onClear,
+  onAll,
 }: {
   count: number;
+  onAll: () => void;
   dupe?: { field: string; label: string; max: number };
   pending: boolean;
   onLevel: (level: number) => void;
@@ -416,7 +419,10 @@ function BulkBar({
       <button className="btn" disabled={pending} onClick={onOwn}>
         Own
       </button>
-      <button className="btn danger" disabled={pending} onClick={onRemove}>
+      <button className="btn ghost" onClick={onAll}>
+        All shown
+      </button>
+      <button className="btn danger" disabled={pending || count === 0} onClick={onRemove}>
         Remove
       </button>
       <span className="ch-sp" />
