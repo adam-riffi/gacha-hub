@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-14 · claude · stack/r10/10-weapon-window · #289
+- Done: the weapon window (Georges, round 7: "adding a weapon to a character is a bit annoying; I'd rather have a window open with all of my weapons in big with their level, refinement, name, rarity and an info i that I can click on to read the effect"). Each catalog now keeps each weapon's effect, its name and its text at every refinement: Genshin from genshin-db's r1–r5, Star Rail's cone skill filled from each superimposition's params, ZZZ's five talents, WuWa's description filled from each rank's DescParams, NTE's effect filled from its values. On the sheet, Choose weapon (beside the Weapon title) opens a window: my copies of the character's type first (art on the rarity band, Lv, R/S/P, wielders' icons), then the type's others; each card's i opens its effect at that copy's refinement; a click on a card equips it (a held copy asks, as the picker does).
+- Tests: written first: Mistsplitter at R1 and R5, Patience Is All You Need at S1 and S5 without markup, Steel Cushion, Autumntrace and Good Boy's Grand Adventure at their first and fifth ranks; every 4★ and 5★ weapon of the five games has five ranks. Sampo's sheet: Patience (Lv 70, S3) in Mine with its art at least 80 px, its effect at S3 (32%), Before the Tutorial Mission Starts among the rest, and a click on its art equips it at Lv 70.
+- Scope/decisions: Genshin's event weapons that are never refined (Sword of Descension, the Isshin blades, Predator) keep one rank; the rank test was wrong to want five and now allows one. Endfield's dataset has no weapon skills, so its weapons have no effect yet.
+- Next: Tasks: priority in one click, denser cards, Farm today and Farm by weekday.
+
 ## 2026-10-14 · claude · stack/r10/09-gear-screen · #288
 - Done: the gear screen (Georges, round 7: "where can I create gear pieces that I have in a vacuum? … the artifact screen is a mess, I can barely read it; the sets part (the same for every other gear system) is even worse, not user friendly, the window opening and moving everything"). Add a piece sits in the pieces view: a set (combobox with the sets' icons), the slot, its main stat (the slot's choices) and the level make a bag piece without opening a set (`NewPiece`). Piece cards grow: the set's icon at 56 px, the wearer's at 40 px, the main stat by its icon with the level large, the substats by their icons, every card with room for four. A set's panel, and a weapon's, now opens over the page from the right (fixed, shadowed), the cards staying where they were, still closed by a click outside or Escape.
 - Tests: written first: a Musketeer body (CRIT Rate, +9) added from the pieces shows in the bag with its set's icon at least 48 px and its main stat's icon; the first set card keeps its place and width when Musketeer's panel opens, the panel being fixed.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: Kafka's card shows her light cone's icon in the name card with 80 and S2 on it, none in the footer, and no S2 in the line. `npm run check` passes: 592 tests and 70 journeys.
 - Scope/decisions: the level bottom-left and the refinement top-right of the 48 px icon, on dark tags, so they read over any art.
 - Next: icons where materials showed initials (Genshin's newest, WuWa's).
-
-## 2026-10-11 · claude · stack/r7/04-one-user · #247
-- Done: one user, self-hosted (Georges, round 4: "a one user project that people can host themselves, so you can remove dev user admin mentions"). The local sign-in reads "Continue" and names its account Player; Settings says "Signed in as". The rail has no Admin: its tools (the official feed, sample data, uploads, current banners and events, the log) are Settings' **Data sources** at `/settings/data`, for the owner; `/admin` leads there. With one user, the Users tile and table and the log's actor go. README, DESIGN.md, AGENTS.md, CLAUDE.md and the guide say one user, self-hosted.
-- Tests: written first: every journey signs in with "Continue"; Data sources is reached from Settings, without Users, and `/admin` lands there; the rail has no Admin; the audit's actor is Player. `npm run check` passes: 592 tests and 70 journeys; initial JavaScript 146.8 KB.
-- Scope/decisions: the server keeps its owner check (`ADMIN_DISCORD_IDS`), which a deployment on the internet still needs; only the words go. Sign-in still accepts any Discord account: limiting it to the owner is Georges's call.
-- Next: the weapon on the character cards' name card.
