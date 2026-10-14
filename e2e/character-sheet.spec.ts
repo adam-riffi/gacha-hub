@@ -201,3 +201,27 @@ test("Character sheet: the base stats of the level and the weapon fill what is n
     await page.request.delete(`/api/characters/${build.id}`);
   }
 });
+
+// Georges, round 7: "artifact/gear's icons are too small, and even the artifact section has a very small place for the icons, which convey
+// a lot of info by themselves … stat icons should also be used when possible".
+test("Character sheet: each gear piece's set as a large icon; stat icons beside the KPIs, the stats and the gear's stats @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  const doc = { level: 80, stats: { SPD: 130 }, relics: { head: { setName: "Prisoner in Deep Confinement", mainStat: "HP", level: 15, substats: [{ stat: "CRIT Rate", value: 6.5 }] } }, traces: {}, lightCone: {} };
+  const build = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1005", doc } })).json()) as { id: string };
+  try {
+    await page.goto(`/characters/${build.id}`);
+    await expect(page.getByRole("region", { name: "KPIs" }).getByRole("group", { name: "SPD" }).locator("svg.stat-icon[data-stat=spd]")).toBeVisible();
+    await expect(page.getByRole("region", { name: "Combat stats" }).locator("label", { hasText: "HP" }).first().locator("svg.stat-icon[data-stat=hp]")).toBeVisible();
+    const head = page.getByRole("region", { name: "Relics" }).getByRole("group", { name: "Head" });
+    const icon = head.getByRole("img", { name: "Prisoner in Deep Confinement" });
+    await expect(icon).toBeVisible();
+    expect((await icon.boundingBox())!.width).toBeGreaterThanOrEqual(56);
+    await expect(head.locator("svg.stat-icon[data-stat=hp]")).toBeVisible();
+    await expect(head.locator("svg.stat-icon[data-stat=critRate]")).toBeVisible();
+  } finally {
+    await page.request.delete(`/api/characters/${build.id}`);
+  }
+});

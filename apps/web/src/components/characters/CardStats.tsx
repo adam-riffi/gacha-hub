@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import type { StatKpi } from "@gacha/shared";
 import { useDismiss } from "../../lib/dismiss";
+import { StatIcon } from "../StatIcon";
 
 const same = (a: string | undefined, b: string) => a !== undefined && a.toLowerCase() === b.toLowerCase();
 
@@ -79,7 +80,10 @@ export function CardStats({ name, kpis, options, own, growth, onPick }: { name: 
       <div className="ch-kpis" style={cols !== 3 ? { gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` } : undefined}>
         {kpis.map((k) => (
           <div key={k.label} className={same(growth, k.label) ? "is-growth" : undefined}>
-            <span className={`kpi-label ${same(growth, k.label) ? "is-bonus" : ""}`}>{k.label}</span>
+            <span className={`kpi-label ${same(growth, k.label) ? "is-bonus" : ""}`}>
+              <StatIcon stat={k.label} />
+              {k.label}
+            </span>
             <KpiValue k={k} />
           </div>
         ))}

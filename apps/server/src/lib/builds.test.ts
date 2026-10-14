@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildKpis, buildLine, cardStatLabels, dupeBadge, gearSetLabel, getGame, statKpis } from "@gacha/shared";
+import { buildKpis, buildLine, cardStatLabels, dupeBadge, gearSetLabel, getGame, statKind, statKpis } from "@gacha/shared";
 
 const genshin = getGame("genshin")!;
 const wuwa = getGame("wuwa")!;
@@ -120,3 +120,32 @@ describe("cardStatLabels", () => {
     expect(cardStatLabels(hsr, kafka, null, null, ["DEF"])).toEqual(["DEF"]);
   });
 });
+
+// Georges, round 7: "stat icons should also be used when possible".
+describe("statKind", () => {
+  it("names each game's stats by their kind, for their icon", () => {
+    const kinds = Object.fromEntries(
+      ["HP%", "Base ATK", "DEF", "CRIT Rate", "CRIT DMG", "Crit value", "Energy Regeneration Rate", "Elemental Mastery", "Anomaly Proficiency", "SPD", "Outgoing Healing Boost", "Effect Hit Rate", "Break Effect", "Impact", "PEN Ratio", "Ice DMG Boost", "Physical DMG Bonus"].map((n) => [n, statKind(n)]),
+    );
+    expect(kinds).toEqual({
+      "HP%": "hp",
+      "Base ATK": "atk",
+      DEF: "def",
+      "CRIT Rate": "critRate",
+      "CRIT DMG": "critDmg",
+      "Crit value": "critDmg",
+      "Energy Regeneration Rate": "energy",
+      "Elemental Mastery": "mastery",
+      "Anomaly Proficiency": "mastery",
+      SPD: "spd",
+      "Outgoing Healing Boost": "heal",
+      "Effect Hit Rate": "effect",
+      "Break Effect": "break",
+      Impact: "break",
+      "PEN Ratio": "pen",
+      "Ice DMG Boost": "dmg",
+      "Physical DMG Bonus": "dmg",
+    });
+  });
+});
+

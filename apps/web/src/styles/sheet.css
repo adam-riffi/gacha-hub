@@ -34,8 +34,13 @@
 .sh-pieces { display: grid; gap: 12px; margin-top: 16px; }
 .sh-piece { display: grid; gap: 6px; align-content: start; padding: 12px; border: 1px solid var(--hairline); }
 .sh-piece.is-farm { border-style: dashed; }
-.sh-piece input, .sh-piece select { min-height: 28px; padding: 3px 8px; font-size: 13px; }
-.sh-sub { display: grid; grid-template-columns: minmax(0, 1fr) 64px; gap: 6px; }
+.sh-piece input, .sh-piece select { min-height: 30px; padding: 3px 8px; font-size: 14px; }
+.sh-sub { display: grid; grid-template-columns: 18px minmax(0, 1fr) 64px; align-items: center; gap: 6px; }
+/* Each piece's set as a large icon at its head, stat icons by its stats (round 7). */
+.sh-piece-head { display: grid; grid-template-columns: 64px minmax(0, 1fr); align-items: center; gap: 10px; }
+.sh-piece-icon { width: 64px; height: 64px; }
+.sh-piece-name { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.sh-stat-row { display: grid; grid-template-columns: 18px minmax(0, 1fr); align-items: center; gap: 6px; }
 .sh-fixed { font-size: 12px; }
 .sh-plan { margin-bottom: 24px; }
 .sh-more summary { cursor: pointer; color: var(--text-muted); font: 400 12px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }

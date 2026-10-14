@@ -163,6 +163,9 @@ tbody tr:hover { background: var(--surface-2); }
 .ad-overview { display: grid; gap: 16px; margin-bottom: 24px; }
 /* A thing without art, as its kind's icon (round 6). */
 .glyph-box { display: inline-grid; place-items: center; background: var(--surface-2); color: var(--text-muted); }
+/* A stat's icon beside its name (round 7). */
+.stat-icon { display: inline-block; flex: none; width: 1.1em; height: 1.1em; margin-right: 0.35em; vertical-align: -0.2em; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.sh-sub .stat-icon, .sh-stat-row .stat-icon { width: 18px; height: 18px; margin: 0; color: var(--text-muted); }
 .gicon-ph .glyph, .glyph { width: 60%; height: 60%; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 .ad-tiles { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 12px; }
 .ad-tile { display: flex; flex-direction: column; gap: 6px; }
