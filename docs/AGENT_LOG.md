@@ -16,13 +16,13 @@ Entry format:
 
 ## 2026-10-14 · claude · stack/r10/16-daily-pass · #295
 - Done: the 30-day pass on a game's dashboard (Georges, round 7: "add a daily login currency bonus thing, like the Blessing of the Welkin Moon: if it's active, how many days, and count it towards pull predictions"). Beside the battle pass, a card named after the game's pass: its days left over its stack (20 / 180, on a segmented bar), what it still pays (days × the daily amount, 1,800 Primogems) and in pulls (11), its end as a chip ("off" when it is not running, hot in its last three days), and Add 30 days. The Pulls forecast already counts the pass's days until each banner's or version's end (`pullForecast`); logging the pass as a top-up adds its days too (#294).
-- Tests: written first: Genshin's dashboard with 10 days on the Welkin shows 10 days left, 900 still to collect and 5 pulls; Add 30 days makes it 40, as the server keeps it.
+- Tests: written first: Star Rail's dashboard with 10 days on the Express Supply Pass shows 10 days left, 900 still to collect and 5 pulls; Add 30 days makes it 40, as the server keeps it.
 - Scope/decisions: no daily "collected" tick: the pass pays at each login, so its days counting down are the check.
 - Next: the full check over PRs 14 to 16; then NTE's gear sets and Endfield's art.
 
 ## 2026-10-14 · claude · stack/r10/15-topups · #294
 - Done: the top-up history (Georges, round 7: "add a top up history system too"). A `TopUp` table (label, premium currency, price in US cents, when, pass; row level security on; in the export) with `GET/POST /api/instances/:id/topups` and `DELETE …/topups/:topUpId`. Logging the 30-day pass adds its days after the ones left, at a daily reset, refused past its stack (180 for the Welkin). On Pulls, a Top-ups card: each store pack and the pass as a button that logs it (today, or the day picked), the month's, year's and all spending in dollars and currency, and the purchases newest first, each deletable.
-- Tests: written first: integration: two packs listed newest first and one deleted; six Welkins make 180 days and a seventh is refused and not logged; a negative price, an empty label and an amount past the limit refused; a foreign profile 404. Journey: 980 + 110 and the Welkin logged in two clicks, $19.98 and 1,390 this month, the pass at 30 days, and $4.99 all time once the pack is deleted.
+- Tests: written first: integration: two packs listed newest first and one deleted; six Welkins make 180 days and a seventh is refused and not logged; a negative price, an empty label and an amount past the limit refused; a foreign profile 404. Journey (on Star Rail, the smoke journey adding Genshin): 980 + 110 and the Express Supply Pass logged in two clicks, $19.98 and 1,390 this month, the pass at 30 days, and $4.99 all time once the pack is deleted.
 - Scope/decisions: a top-up does not add to the balance (the balance is typed or synced, and would count it twice); deleting a pass top-up leaves the pass's days, typed on Activities. Limits: 1,000,000 currency and $10,000 a top-up, 5,000 top-ups a profile.
 - Next: the 30-day pass on the game's dashboard.
 
