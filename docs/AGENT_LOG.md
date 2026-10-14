@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-14 · claude · stack/r10/13-navbar · #292
+- Done: the navbar (Georges, round 7: "the game cards should extend a bit more when selected: Genshin becomes Genshin Impact etc. … work on the navbar as well, try some things to make it better"). Each game in the strip has its icon (the game's art, else its tile in its colour) before its short name; the selected one grows to fit its full name ("Genshin Impact", "Honkai: Star Rail") with a larger icon. The rail's icons grow from 18 to 24 px and its labels to 11 px; the current section is filled in the scope's colour with a thicker bar; a hovered one lights up.
+- Tests: written first: Star Rail's tab shows its icon and no "Honkai" until picked, then its full name, not cut; the rail's Tasks icon at least 22 px; Home's item, current, filled.
+- Scope/decisions: no counts on the rail: they would ask the server on every page.
+- Next: the full check over PRs 10 to 13, then free pulls as monthly goals, top-up history, the daily login pass.
+
 ## 2026-10-14 · claude · stack/r10/12-banner-colours · #291
 - Done: the timeline's visual language (Georges, round 7: "on the banners/events screen there should be a visual language: banners of the colour of the game, BPs a certain colour/tint, the same for endgames and another for wishlist … wishlisted events should be more visible … fix the crooked icons: there are two buttons, one always on and crooked"). Banners keep their game's colour; events are tinted and edged in it; endgame cycles are red (outlined, faintly filled), passes teal and striped; anything wished (a banner featuring a unit you wish for, an event you wished or whose rewards name one) is outlined in gold with a ★ before its name. The legend has one box per layer, the checkbox itself, in the layer's colour (banners and events in the games' colours), filled when on and centred on its words; the separate swatch beside each checkbox is gone.
 - Tests: written first: on Star Rail's timeline no swatch is left and the Banners box is centred on its words; a wished event carries a "Wishlisted" star and a plain one none; events, wishes, endgames and passes have four different edge colours, an event's edge being its game's banner colour.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: Star Rail's Musketeer set opens with an empty Head, a piece added to the bag shows there, equipped on Seele it shows her and the card counts 1 / 4; WuWa's and ZZZ's first sets farm two picked pieces into a checklist goal. The a11y walk opens a Genshin set and its Farm picker. A follow-up test commit: the set journey checks its own piece, as other journeys' builds may wear the set. `npm run check` passes: 596 tests and 70 journeys.
 - Scope/decisions: Genshin loses its crit-value inventory and storage meter, and the per-domain farm targets: Georges asked for one system; a set's pieces and Farm cover what they did.
 - Next: endgame enemies as icons.
-
-## 2026-10-11 · claude · stack/r7/07-gear-bag · #250
-- Done: every game has a gear bag (round 4's gear screens, first half). The bag ↔ build swap (add, edit, equip, unequip) was Genshin's alone; its doc field and slots now come from each game's manifest, so a set's pieces live on a build or in the bag the same way in every game.
-- Tests: written first: Star Rail's bag refuses Genshin's "flower", keeps a Musketeer head and equips it onto Seele's relics; WuWa's echoes and ZZZ's discs go in theirs. `npm run check` passes: 596 tests and 70 journeys.
-- Scope/decisions: server only; the next PR draws one gear screen for every game on it.
-- Next: the gear screen.
