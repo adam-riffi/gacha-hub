@@ -292,3 +292,23 @@ p a { text-decoration: underline; text-underline-offset: 2px; }
 .gb-col-who .gicon { width: 44px; height: 44px; border-radius: 50%; font-size: 10px; }
 .gb-col-acts { flex-wrap: wrap; gap: 8px; }
 .gb-col-acts select { width: auto; }
+/* Sets picked from a window (round 10): the field, the picked sets, the window. */
+.gb-setfield { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 44px; padding: 0 12px; border: 2px solid var(--text); background: transparent; color: var(--text); font: 500 15px/1 var(--font-body); cursor: pointer; }
+.gb-setfield .mu { margin-left: auto; font: 400 12px/1 var(--font-mono); }
+.gb-pk { display: inline-flex; align-items: center; gap: 6px; max-width: 100%; min-height: 36px; padding: 2px 8px 2px 4px; border: 0; background: var(--paper); color: var(--on-paper); font: 400 12px/1.2 var(--font-mono); text-align: left; cursor: pointer; }
+.gb-pk b { margin-left: 4px; font: 600 15px/1 var(--font-display); }
+.gb-win-back { position: fixed; inset: 0; z-index: 50; display: grid; justify-items: center; align-items: start; padding-top: 72px; background: rgba(0, 0, 0, 0.6); }
+.card.gb-win { display: grid; gap: 12px; width: min(1120px, 92vw); max-height: calc(100vh - 110px); overflow: auto; border: 2px solid var(--hairline-strong); }
+.gb-win-head { display: flex; align-items: center; gap: 10px; }
+.gb-win-head h3 { margin: 0 12px 0 0; }
+.gb-win-head input { width: 320px; }
+.gb-win-kind { margin: 6px 0 8px; }
+.gb-win-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+.gb-win-set { display: flex; align-items: center; gap: 10px; min-height: 80px; padding: 8px; border: 2px solid transparent; background: var(--surface-2); color: var(--text); text-align: left; cursor: pointer; }
+.gb-win-set:hover { border-color: var(--hairline-strong); }
+.gb-win-set[aria-pressed="true"] { border-color: var(--accent); }
+.gb-win-set.is-none { opacity: 0.6; }
+.gb-win-set > span { display: grid; gap: 4px; min-width: 0; }
+.gb-win-name { font-size: 15px; line-height: 1.2; }
+.gb-win-icon { width: 56px; height: 56px; flex: none; font-size: 12px; }
+.gb-win-foot { display: flex; align-items: center; gap: 10px; }

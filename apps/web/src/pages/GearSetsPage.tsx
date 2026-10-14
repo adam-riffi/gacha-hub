@@ -82,6 +82,7 @@ export function GearSetsPage() {
   const [where, setWhere] = useState<"" | "equipped" | "bag">("");
   const [sort, setSort] = useState<"set" | "slot" | "level" | "cv">("set");
   const [chosen, setChosen] = useState<string | null>(null);
+  const [picking, setPicking] = useState(false);
   const [openId, setOpenId] = useState<string | null>(null);
   const [adding, setAdding] = useState(false);
 
@@ -111,6 +112,13 @@ export function GearSetsPage() {
       return next;
     });
   const query = q.trim().toLowerCase();
+  // Filters in the game's own terms (round 10: "filters might not be suited for all of the different sets"): slots only where
+  // they are types (their main stats differ), and the main stats your pieces have, of the picked slots only.
+  const typedSlots = gear.slots.some((s) => (s.mainStats?.length ?? 0) > 0);
+  const order = gear.slots.flatMap((s) => s.mainStats ?? []);
+  const rank = (m: string) => (order.includes(m) ? order.indexOf(m) : order.length);
+  const mainStats = [...new Set(pieces.filter((p) => !slotsPicked.size || slotsPicked.has(p.slot)).flatMap((p) => p.mainStat || []))].sort((a, b) => rank(a) - rank(b) || a.localeCompare(b));
+  const mains = new Set([...mainsPicked].filter((m) => mainStats.includes(m)));
   const filtering = Boolean(query || setsPicked.size || slotsPicked.size || mainsPicked.size || where);
   const reset = () => {
     setQ("");
@@ -125,7 +133,7 @@ export function GearSetsPage() {
       (!query || [p.set, slotLabel(p.slot), p.mainStat ?? "", wearerName(p), ...(p.substats ?? []).map((s) => s.stat)].some((t) => t.toLowerCase().includes(query))) &&
       (!setsPicked.size || setsPicked.has(p.set)) &&
       (!slotsPicked.size || slotsPicked.has(p.slot)) &&
-      (!mainsPicked.size || mainsPicked.has(p.mainStat ?? "")),
+      (!mains.size || mains.has(p.mainStat ?? "")),
   );
   const shown = matching
     .filter((p) => !where || (where === "bag") === Boolean(p.bagId))
@@ -140,8 +148,9 @@ export function GearSetsPage() {
     );
   // The chosen piece, else the first shown: the column always holds one.
   const picked = shown.find((p) => p.key === chosen) ?? shown[0];
-  const heldSets = [...owned.keys()].sort((a, b) => (owned.get(b)?.length ?? 0) - (owned.get(a)?.length ?? 0) || a.localeCompare(b));
-  const mainStats = [...new Set([...gear.slots.flatMap((s) => s.mainStats ?? []), ...pieces.flatMap((p) => p.mainStat ?? [])])];
+  const held = new Map([...owned].map(([name, list]) => [name, list.length]));
+  // A slot's art from the set you hold most of, where the catalog has art per slot (Genshin).
+  const artSet = setsByName.get([...held].sort((a, b) => b[1] - a[1])[0]?.[0] ?? "") ?? sets[0];
   const open = sets.find((g) => g.id === openId);
   const counts: ["" | "equipped" | "bag", string, number][] = [
     ["", "All", matching.length],
@@ -161,14 +170,31 @@ export function GearSetsPage() {
           <section className="card gb-filters" aria-label="Filters">
             <h3>Filters</h3>
             <input type="search" aria-label="Search" placeholder="Set, stat or wearer" value={q} onChange={(e) => setQ(e.target.value)} />
-            <MultiChips
-              label="Set"
-              options={heldSets.map((name) => ({ value: name, text: name, icon: <CatalogIcon gameKey={game.key} kind="gear" icon={setsByName.get(name)?.icon} name={name} className="gp-chip-icon" /> }))}
-              picked={setsPicked}
-              onToggle={toggle(setSetsPicked)}
-            />
-            <MultiChips label="Slot" options={gear.slots.map((s) => ({ value: s.key, text: s.label }))} picked={slotsPicked} onToggle={toggle(setSlotsPicked)} />
-            <MultiChips label="Main stat" options={mainStats.map((m) => ({ value: m, text: m, icon: <StatIcon stat={m} /> }))} picked={mainsPicked} onToggle={toggle(setMainsPicked)} />
+            {/* Any number of sets, from a window (round 10); the picked ones stay here, each with its remove. */}
+            <div className="ch-chipset" role="group" aria-label="Sets">
+              <span className="kpi-label">Sets</span>
+              <button type="button" className="gb-setfield" data-opens-panel aria-label={`Pick sets, any of ${sets.length}`} onClick={() => setPicking(!picking)}>
+                ▦ Pick sets<span className="mu">{setsPicked.size ? `${setsPicked.size} picked` : `any of ${sets.length}`}</span>
+              </button>
+              <div>
+                {[...setsPicked].map((name) => (
+                  <button key={name} type="button" className="gb-pk" aria-label={`Remove ${name}`} onClick={() => toggle(setSetsPicked)(name)}>
+                    <CatalogIcon gameKey={game.key} kind="gear" icon={setsByName.get(name)?.icon} name={name} className="gp-chip-icon" />
+                    {name}
+                    <b aria-hidden="true">✕</b>
+                  </button>
+                ))}
+              </div>
+            </div>
+            {typedSlots && (
+              <MultiChips
+                label="Slot"
+                options={gear.slots.map((s) => ({ value: s.key, text: s.label, icon: (artSet?.extra?.pieceIcons as Record<string, string> | undefined)?.[s.key] ? <CatalogIcon gameKey={game.key} kind="gear" icon={pieceIcon(artSet, s.key)} name={s.label} className="gp-chip-icon" /> : undefined }))}
+                picked={slotsPicked}
+                onToggle={toggle(setSlotsPicked)}
+              />
+            )}
+            <MultiChips label="Main stat" options={mainStats.map((m) => ({ value: m, text: m, icon: <StatIcon stat={m} /> }))} picked={mains} onToggle={toggle(setMainsPicked)} />
             <div className="ch-chipset" role="group" aria-label="Where">
               <span className="kpi-label">Where</span>
               <div>
@@ -243,10 +269,82 @@ export function GearSetsPage() {
           ) : (
             <section className="card gb-col" aria-label="Chosen piece" />
           )}
+          {picking && <SetsWindow game={game} sets={sets} held={held} picked={setsPicked} onToggle={toggle(setSetsPicked)} onClear={() => setSetsPicked(new Set())} count={shown.length} onClose={() => setPicking(false)} />}
           {open && <SetPanel key={open.id} instanceId={id!} game={game} set={open} pieces={owned.get(open.name) ?? []} builds={builds} onClose={() => setOpenId(null)} />}
         </div>
       )}
     </>
+  );
+}
+
+/**
+ * Sets picked from a window (Georges, round 10, of version A: "filters might not be suited for all of the different sets"): from
+ * nine to sixty sets a game, the ones you hold first with their counts, every other one a click away, a search, and the game's
+ * kinds of sets apart (Star Rail's relics and planar ornaments fit different slots).
+ */
+function SetsWindow({ game, sets, held, picked, onToggle, onClear, count, onClose }: { game: GameDefinition; sets: CatalogGearSet[]; held: ReadonlyMap<string, number>; picked: ReadonlySet<string>; onToggle: (name: string) => void; onClear: () => void; count: number; onClose: () => void }) {
+  const [q, setQ] = useState("");
+  // The catalog's sets you hold (a piece may carry a set name typed by hand).
+  const heldN = sets.filter((s) => held.has(s.name)).length;
+  const [all, setAll] = useState(heldN === 0);
+  const ref = useRef<HTMLDivElement>(null);
+  useDismiss(ref, onClose);
+  const query = q.trim().toLowerCase();
+  const list = sets
+    .filter((s) => (all || held.has(s.name)) && (!query || s.name.toLowerCase().includes(query)))
+    .sort((a, b) => (held.get(b.name) ?? 0) - (held.get(a.name) ?? 0) || a.name.localeCompare(b.name));
+  const kinds = [...new Set(sets.map((s) => s.slots.join("/")))];
+  const label = (kind: string) => kind.split("/").map((k) => game.manifest.gear.slots.find((s) => s.key === k)?.label ?? k).join(" · ");
+  const groups = kinds.length > 1 ? kinds.map((k) => ({ kind: k, name: label(k), sets: list.filter((s) => s.slots.join("/") === k) })).filter((g) => g.sets.length) : [{ kind: "", name: "", sets: list }];
+  return (
+    <div className="gb-win-back">
+      <div ref={ref} className="card gb-win" role="dialog" aria-modal="true" aria-label="Pick sets">
+        <div className="gb-win-head">
+          <h3>Pick sets</h3>
+          <input type="search" aria-label="Search a set" placeholder="Search a set" value={q} onChange={(e) => setQ(e.target.value)} />
+          <button type="button" className="ch-chip" aria-pressed={!all} onClick={() => setAll(false)}>
+            Held {heldN}
+          </button>
+          <button type="button" className="ch-chip" aria-pressed={all} onClick={() => setAll(true)}>
+            All {sets.length}
+          </button>
+          <span className="ch-sp" />
+          <button type="button" className="btn panel-close" aria-label="Close" onClick={onClose}>
+            ✕ Close
+          </button>
+        </div>
+        {groups.map((g) => (
+          <div key={g.kind} role={g.name ? "group" : undefined} aria-label={g.name || undefined}>
+            {g.name && <p className="kpi-label gb-win-kind">{g.name}</p>}
+            <div className="gb-win-grid">
+              {g.sets.map((s) => {
+                const n = held.get(s.name) ?? 0;
+                return (
+                  <button key={s.id} type="button" className={`gb-win-set ${n ? "" : "is-none"}`} aria-label={s.name} aria-pressed={picked.has(s.name)} onClick={() => onToggle(s.name)}>
+                    <CatalogIcon gameKey={game.key} kind="gear" icon={s.icon} name={s.name} className="gb-win-icon" />
+                    <span>
+                      <span className="gb-win-name">{s.name}</span>
+                      <span className="mn mu">{n ? `${n} piece${n > 1 ? "s" : ""}` : "none yet"}</span>
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+        {list.length === 0 && <p className="mu">No set matches.</p>}
+        <div className="gb-win-foot">
+          <span className="kpi-label">{picked.size} picked</span>
+          <button type="button" className="btn" disabled={picked.size === 0} onClick={onClear}>
+            Clear
+          </button>
+          <span className="ch-sp" />
+          <button type="button" className="btn primary" onClick={onClose}>
+            Show {count} piece{count === 1 ? "" : "s"}
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
 
