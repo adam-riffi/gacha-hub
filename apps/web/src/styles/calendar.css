@@ -3,12 +3,6 @@
 .cal-head h1 { margin: 0; }
 .cal-layers { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; margin-bottom: 22px; }
 .cal-layers label { display: inline-flex; align-items: center; margin: 0; color: var(--text); cursor: pointer; }
-.cal-key { display: inline-block; width: 14px; height: 10px; margin-right: 6px; }
-.cal-key.is-banners { background: var(--accent); }
-.cal-key.is-events { background: var(--surface-3); }
-.cal-key.is-versions { width: 2px; background: var(--accent); }
-.cal-key.is-cycles { border: 1px solid var(--hairline-strong); }
-.cal-key.is-passes { border: 1px dashed var(--hairline); }
 .cal-range { margin-left: auto; font-size: 12px; }
 
 .cal-page { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 24px; align-items: start; }
@@ -47,9 +41,12 @@
   font: 400 12px/1 var(--font-mono);
 }
 .cal-bar.is-banner { background: var(--c, var(--accent)); color: #000; }
-.cal-bar.is-event { background: var(--surface-3); color: var(--text); }
-.cal-bar.is-cycle { background: transparent; border: 1px solid var(--hairline-strong); color: var(--text-muted); }
-.cal-bar.is-pass { background: var(--surface-2); border: 1px dashed var(--hairline); color: var(--text-muted); }
+.cal-bar.is-event { background: color-mix(in srgb, var(--c, var(--accent)) 16%, var(--surface-2)); border-left: 4px solid var(--c, var(--accent)); color: var(--text); }
+.cal-bar.is-cycle { background: color-mix(in srgb, var(--k-cycle) 14%, transparent); border: 1px solid var(--k-cycle); border-left-width: 4px; color: var(--text); }
+.cal-bar.is-pass { background: repeating-linear-gradient(135deg, color-mix(in srgb, var(--k-pass) 24%, transparent) 0 6px, transparent 6px 12px); border: 1px solid var(--k-pass); border-left-width: 4px; color: var(--text); }
+/* A wish in gold, whatever its kind (round 7: "wishlisted events should be more visible"). */
+.cal-bar.is-wished { border-left: 4px solid var(--k-wish); box-shadow: inset 0 0 0 2px var(--k-wish); }
+.cal-star { flex: none; padding: 1px 4px; background: #000; color: var(--k-wish); font-size: 13px; line-height: 1; }
 .cal-bar.is-ended { opacity: 0.45; }
 .cal-bar:hover { filter: brightness(1.15); }
 .cal-bar[aria-pressed="true"] { z-index: 1; outline: 2px solid var(--text); outline-offset: 1px; }
@@ -115,3 +112,15 @@
 .cal-mitem[aria-pressed="true"] { outline: 1px solid var(--text); }
 .cal-wish { margin: 4px 0 10px; }
 .cal-wish[aria-pressed="true"] { background: var(--paper); border-color: var(--paper); color: var(--on-paper); }
+/* Round 7's visual language: a colour per kind beside each game's own. */
+:root { --k-cycle: #e5484d; --k-pass: #2ec4b6; --k-wish: #f5c542; }
+input.cal-check { --k: var(--hairline-strong); width: 18px; height: 18px; flex-basis: 18px; vertical-align: middle; border-color: var(--k); }
+input.cal-check:checked { background: var(--k); border-color: var(--k); }
+input.cal-check.is-banners { --k: var(--paper); }
+input.cal-check.is-banners:checked { background: var(--games, var(--accent)); }
+input.cal-check.is-events { --k: var(--paper); }
+input.cal-check.is-events:checked { background: var(--games, var(--accent)); box-shadow: inset 0 0 0 3px var(--bg); }
+input.cal-check.is-versions { --k: var(--accent); }
+input.cal-check.is-cycles { --k: var(--k-cycle); }
+input.cal-check.is-passes { --k: var(--k-pass); }
+input.cal-check.is-wished { --k: var(--k-wish); }
