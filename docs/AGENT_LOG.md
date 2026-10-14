@@ -16,7 +16,7 @@ Entry format:
 
 ## 2026-10-15 · claude · stack/r15/01-shared-names · #321
 - Done: ADR 0011's first area, the shared package. 449 one- and two-letter declarations named for what they hold (`(b) =>` became `build`, `(a, b)` comparators `first, second`, `cx, cy, r` `centerX, centerY, radius`, `gi`-style abbreviations spelled out), plus the abbreviations `num` (`numberOrNull`), `pct`, `deg`, `tau`, `hBase`, `hMax` and the four `L` imports (the games' `*_LIMITS`). Every rename went through TypeScript's language service (a small script in the scratchpad: list the short declarations, name each by its code, apply), so every reference followed; two collisions it allowed (`amount`, `version`) were named apart by hand. ESLint's `id-length` (3 at least; `id`, `to`, `x`, `y` and a few words allowed) now holds the shared package.
-- Tests: no behaviour changes: type check clean, `@typescript-eslint/no-shadow` finds no shadowed name before or after (so no reference moved to another variable), and the full suite passes.
+- Tests: no behaviour changes: type check clean, the shadowed names (`@typescript-eslint/no-shadow`, read from a JSON report) are the same as before ADR 0011, once five harmless new ones were given distinct names (so no reference moved to another variable), and the full suite passes.
 - Scope/decisions: `x` and `y` stay where they are coordinates (charts, series); words of three letters (`doc`, `key`, `now`, `row`) stay. Objects for the shared domain come next with the server's services, area by area.
 - Next: the server's names (`gi`, `qc`-style), then the web's lib and CSS utilities, then each page.
 
