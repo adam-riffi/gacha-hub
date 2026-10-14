@@ -213,3 +213,24 @@ export const cardStatOptions = (game: GameDefinition, docs: readonly Doc[]) => [
   ...new Set(["Crit value", "HP", "ATK", "DEF", ...Object.values(game.manifest.kpis).flat().flatMap((k) => k.split(" / ")), ...docs.flatMap((d) => Object.keys((d.stats ?? {}) as object))]),
 ];
 
+/** The kinds of stat an icon stands for (Georges, round 7: "stat icons should also be used when possible"). */
+export type StatKind = "hp" | "atk" | "def" | "critRate" | "critDmg" | "energy" | "mastery" | "spd" | "heal" | "effect" | "dmg" | "break" | "pen" | "other";
+
+/** A stat's kind by its name, in any game's words. */
+export function statKind(name: string): StatKind {
+  const s = name.toLowerCase();
+  if (/crit(\.|ical)? ?rate/.test(s)) return "critRate";
+  if (/crit(\.|ical)? ?(dmg|damage)|crit value/.test(s)) return "critDmg";
+  if (/heal/.test(s)) return "heal";
+  if (/energy|recharge|regen/.test(s)) return "energy";
+  if (/mastery|proficiency|anomaly/.test(s)) return "mastery";
+  if (/spd|speed/.test(s)) return "spd";
+  if (/break|impact|stun/.test(s)) return "break";
+  if (/hit rate|effect|res\b|resist/.test(s)) return "effect";
+  if (/pen/.test(s)) return "pen";
+  if (/dmg|damage|bonus|boost/.test(s)) return "dmg";
+  if (/^hp|\bhp\b|life/.test(s)) return "hp";
+  if (/atk|attack/.test(s)) return "atk";
+  if (/^def|defen/.test(s)) return "def";
+  return "other";
+}

@@ -1,4 +1,6 @@
 import { Picker, type PickerOption } from "../Picker";
+import { GameIcon } from "../GameIcon";
+import { StatIcon } from "../StatIcon";
 import { gearPieceCv, gearSetLabel, offSetSlots, type GameDefinition } from "@gacha/shared";
 
 type Doc = Record<string, unknown>;
@@ -42,25 +44,36 @@ export function GearBlock({ game, doc, setDoc, sets: setOptions }: { game: GameD
           const subs = [...(p.substats ?? [])];
           while (subs.length < SUBSTATS) subs.push({ stat: "", value: "" });
           return (
-            <div key={slot.key} className={`sh-piece ${farm.has(slot.key) ? "is-farm" : ""}`}>
-              <div className="spread">
-                <span className="kpi-label">{slot.label}</span>
-                <span className="mn">CV {fmt(gearPieceCv(p))}</span>
+            <div key={slot.key} className={`sh-piece ${farm.has(slot.key) ? "is-farm" : ""}`} role="group" aria-label={slot.label}>
+              {/* The set as a large icon (Georges, round 7: the icons convey a lot by themselves). */}
+              <div className="sh-piece-head">
+                {(() => {
+                  const set = setOptions.find((o) => o.name === p.setName);
+                  return <GameIcon src={set?.src ?? null} fallback={set?.fallback} alt={p.setName ?? slot.label} glyph="gear" className="sh-piece-icon" />;
+                })()}
+                <span className="sh-piece-name">
+                  <span className="kpi-label">{slot.label}</span>
+                  <span className="mn">CV {fmt(gearPieceCv(p))}</span>
+                </span>
               </div>
               <Picker label={`${slot.label} set`} glyph="gear" placeholder="Set" value={p.setName ?? ""} free options={setOptions} onPick={(_, text) => setPiece(slot.key, { setName: text || undefined })} />
               {slot.mainStats.length > 0 ? (
-                <select aria-label={`${slot.label} main stat`} value={p.mainStat ?? ""} onChange={(e) => setPiece(slot.key, { mainStat: e.target.value || undefined })}>
-                  <option value="">Main stat</option>
-                  {slot.mainStats.map((m) => (
-                    <option key={m} value={m}>{m}</option>
-                  ))}
-                </select>
+                <span className="sh-stat-row">
+                  <StatIcon stat={p.mainStat ?? ""} />
+                  <select aria-label={`${slot.label} main stat`} value={p.mainStat ?? ""} onChange={(e) => setPiece(slot.key, { mainStat: e.target.value || undefined })}>
+                    <option value="">Main stat</option>
+                    {slot.mainStats.map((m) => (
+                      <option key={m} value={m}>{m}</option>
+                    ))}
+                  </select>
+                </span>
               ) : (
                 <span className="mu sh-fixed">no main stat to choose</span>
               )}
               <input aria-label={`${slot.label} level`} type="number" min={0} max={g.maxLevel} placeholder={`Level / ${g.maxLevel}`} value={p.level ?? ""} onChange={(e) => setPiece(slot.key, { level: e.target.value === "" ? undefined : Number(e.target.value) })} />
               {subs.slice(0, SUBSTATS).map((r, i) => (
                 <div key={i} className="sh-sub">
+                  <StatIcon stat={r.stat} />
                   <Picker
                     label={`${slot.label} substat ${i + 1}`}
                     placeholder="Substat"

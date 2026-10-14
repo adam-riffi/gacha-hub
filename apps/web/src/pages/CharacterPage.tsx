@@ -34,6 +34,7 @@ import { TaskGeneratorPanel } from "../components/TaskGeneratorPanel";
 import { QuickBuild } from "../components/tasks/QuickBuild";
 import { MiscCard, SkillRow } from "../components/sheet/MiscCard";
 import { StatPicker } from "../components/characters/CardStats";
+import { StatIcon } from "../components/StatIcon";
 import type { CharacterDetail, InstanceDetail, TaskItem } from "../lib/types";
 
 type Doc = Record<string, unknown>;
@@ -389,7 +390,10 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
             <div className="sh-stats">
               {statNames(game, doc).map((s) => (
                 <label key={s} className={`sh-stat ${isGrowth(s) ? "is-growth" : ""}`}>
-                  <span>{s}</span>
+                  <span>
+                    <StatIcon stat={s} />
+                    {s}
+                  </span>
                   <input
                     type="number"
                     step="0.1"
@@ -471,7 +475,10 @@ function KpiTile({ label, value, auto, growth, target, fallback, onTarget }: { l
   const gap = shown !== undefined && Number.isFinite(now) ? shown - now : null;
   return (
     <div className={`card sh-kpi ${growth ? "is-growth" : ""}`} role="group" aria-label={label}>
-      <span className={`kpi-label ${growth ? "is-bonus" : ""}`}>{label}</span>
+      <span className={`kpi-label ${growth ? "is-bonus" : ""}`}>
+        <StatIcon stat={label} />
+        {label}
+      </span>
       <span className={`kpi-value ${auto ? "is-auto" : ""}`} title={auto ? "Base: the level and the weapon, until a value is typed" : undefined}>
         {value}
       </span>
