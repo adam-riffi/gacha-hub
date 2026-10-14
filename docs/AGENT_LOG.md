@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-14 · claude · stack/r10/15-topups · #294
+- Done: the top-up history (Georges, round 7: "add a top up history system too"). A `TopUp` table (label, premium currency, price in US cents, when, pass; row level security on; in the export) with `GET/POST /api/instances/:id/topups` and `DELETE …/topups/:topUpId`. Logging the 30-day pass adds its days after the ones left, at a daily reset, refused past its stack (180 for the Welkin). On Pulls, a Top-ups card: each store pack and the pass as a button that logs it (today, or the day picked), the month's, year's and all spending in dollars and currency, and the purchases newest first, each deletable.
+- Tests: written first: integration: two packs listed newest first and one deleted; six Welkins make 180 days and a seventh is refused and not logged; a negative price, an empty label and an amount past the limit refused; a foreign profile 404. Journey: 980 + 110 and the Welkin logged in two clicks, $19.98 and 1,390 this month, the pass at 30 days, and $4.99 all time once the pack is deleted.
+- Scope/decisions: a top-up does not add to the balance (the balance is typed or synced, and would count it twice); deleting a pass top-up leaves the pass's days, typed on Activities. Limits: 1,000,000 currency and $10,000 a top-up, 5,000 top-ups a profile.
+- Next: the 30-day pass on the game's dashboard.
+
 ## 2026-10-14 · claude · stack/r10/14-shop-pulls · #293
 - Done: free pulls as monthly tasks (Georges, round 7: "make sure to include the buying of free pulls as a monthly/cycle goal"). Each game's monthly shop is now one of its default tasks, monthly and resetting with the shop (`GameTaskSeed.anchorKey`): Paimon's Bargains, Embers Exchange and the Signal Shop count their ten pulls (5 + 5) as steps; WuWa's Coral Shop and NTE's Lost Exchange are one tick. Profiles made before get them from Restore defaults. A monthly task named after its shop no longer shows the shop's name twice. The E2E size checks now poll the box until the picture settles (CI read a null box on #287).
 - Tests: written first: each game's seeded tasks include its shop's, monthly, with ten steps where counted; Genshin's Paimon's Bargains resets with "bargains" and comes back from Restore defaults.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: a Star Rail goal on the Planner shows Notify and its priority, opens on a click to its plan (and picks its materials), and links under another goal, leaving the list. `npm run check` passes: 597 tests and 71 journeys.
 - Scope/decisions: the card is the same component as on Tasks, wrapped so a click anywhere also picks it; the Planner keeps listing the plans (goals with a unit), any of the game's goals can be linked.
 - Next: NTE's catalog.
-
-## 2026-10-11 · claude · stack/r7/09-enemy-icons · #252
-- Done: endgame enemies as icons (Georges, round 4: "use icons when possible, that goes for enemies too"). What a stage's enemies are weak to shows as element icons where the game has a source (ZZZ's, from Hakushin, through a new art kind, `element`), the coloured dots elsewhere. A stage that is one boss of the same name (Deadly Assault, Stygian Onslaught) shows only its level beside the boss's icon, named on hover. WIREFRAMES.md G2 follows. Also a fix the check surfaced: owning or un-owning characters on the Characters cards now updates the cache from what was saved, as the journey that owns two selected characters failed twice in four full runs with both the save and the refetch answering right.
-- Tests: written first: Shiyu's list shows "Weak to …" element icons; Deadly Assault's first stage reads "Lv N" and its enemy names itself on hover; ZZZ's element URL is Hakushin's. `npm run check` passes: 597 tests and 70 journeys.
-- Scope/decisions: Genshin's Stygian bosses have no weaknesses in the data; Star Rail's Apocalyptic Shadow still has no dated source.
-- Next: the Planner's goals with the Tasks features.
