@@ -14,6 +14,13 @@ Entry format:
 
 ---
 
+## 2026-10-14 · claude · stack/r13/01-unit-sheet · #312
+- Done: the same sheet for every character (Georges, round 10: "my issue with characters is still the same: on the not owned characters, if I get on their screen there's almost nothing; I want to have the same thing as owned characters"). A unit's page now opens its default build's sheet, or, with no build, the very same sheet unsaved, seeded from the catalog the way the server seeds a new build: level, ascension and dupes, skills, the weapon window, the stat cards with their base values, the gear block, the misc, the gifts, plan farming and the teams. Its first save (or a target, a card stat, a note) makes the build, a try that leaves the character unowned (`own: false`), and moves to that build's sheet. Owning, the wishlist, the banners with your chance and what each dupe does, which only the unit page had, are on every sheet now. The build tabs and Delete build show once there is a build.
+- Fixed in passing: a default target left as it was (focused, then left) was saved as the build's own target; it now saves only when changed.
+- Tests: written first: Gepard, unowned and unbuilt, opens his unit page with the Character, Traces, Weapon, Combat stats, Relics, Banners and Plan farming cards, ATK's stat card, Own (not pressed) and Wishlist; Level 50 then Save makes a build at level 50 and he stays unowned; his unit page then shows that build, with the Builds tabs. Welt's journey saves from his unit page instead of Start a build.
+- Scope/decisions: the unit URL stays (links from banners, the timeline and the pull history keep working) and shows the default build in place, rather than redirecting. Owned now reads the ownership alone on the sheet, so a try reads Not owned.
+- Next: the gear screen, redesigned with Georges from the proposals.
+
 ## 2026-10-14 · claude · stack/r12/04-overview-banners · #311
 - Done: the Overview's order (Georges, round 9: "for the all games overview I don't care that much about the battle pass, I want to see the banners first"). The banners carousel takes the battle pass's place in the top row, beside the dailies and as tall; the battle pass moves below, with the pulls and stamina. Round 9's audit (`docs/AUDIT-2026-10-14-round9.md`) and the handoff.
 - Tests: written first: on Home the Banners heading sits level with Dailies & weeklies, above the battle pass and the heatmap.
@@ -247,9 +254,3 @@ Entry format:
 - Tests: written first: ZZZ's catalog lists 40+ Bangboos, Penguinboo (53001) with its art, ranks A and S; a ZZZ team keeps a Bangboo, clears it, refuses an unknown one, and Genshin refuses one; a ZZZ team card has three columns and picks Penguinboo.
 - Scope/decisions: Bangboos are a team's companion only (no ownership list yet).
 - Next: linked goals adding up, and the Planner's layout, filters and sort.
-
-## 2026-10-14 · claude · stack/r9/08-gear-pieces · #271
-- Done: Gear (Georges, round 6: "the artifact/gear screen needs work, I can't even look at my pieces; make it show all the pieces I have and then filter by set, main stat and type for each game depending on their system"): a Pieces view, the default, lists every piece on a build or in the bag (`allPieces`) as a card: the set's icon and name, the slot in the game's words, main stat and level, substats, and the wearer's icon or Bag. Filters: Set (a combobox with the sets' icons), Slot and Main stat chips from the game's gear slots (and the stats the pieces carry), Where (Equipped, Bag). A piece opens its set's panel. The set cards with Farm are the Sets view.
-- Tests: written first: Pela's Hunter body (CRIT Rate +12, SPD) shows with her icon, a Musketeer head (+15) in the bag; Slot Body, Where Bag, Main stat CRIT Rate and Set Musketeer each keep the right one. The set and Farm journeys and the a11y sweep switch to Sets first.
-- Scope/decisions: the pieces sort by set, then slot order, then level.
-- Next: Teams in each game's party size, and ZZZ's Bangboos.

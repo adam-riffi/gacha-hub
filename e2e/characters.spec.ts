@@ -83,8 +83,9 @@ test("Characters: splash cards with their KPIs, counts, search, wishlist and own
   await page.getByRole("article", { name: "Welt" }).click();
   await expect(page).toHaveURL(new RegExp(`/games/${id}/units/1004$`));
   await expect(page.getByRole("heading", { name: "Welt", level: 1 })).toBeVisible();
-  await page.getByRole("button", { name: "Own" }).click();
-  await page.getByRole("button", { name: "Start a build" }).click();
+  await page.getByRole("button", { name: "Own", exact: true }).click();
+  // The unit's page is its sheet (round 10): saved, it is a build.
+  await page.getByRole("button", { name: "Save", exact: true }).click();
   await expect(page).toHaveURL(/\/characters\/[a-z0-9]+$/);
 });
 
@@ -419,4 +420,41 @@ test("Characters: an unowned character has the full card and a build to try; Own
   const owned = (await (await page.request.get(`/api/instances/${id}/ownership`)).json()) as { catalogId: string }[];
   expect(owned.some((o) => o.catalogId === "1110")).toBe(false);
   await page.request.delete(`/api/characters/${build.id}`);
+});
+
+// Georges, round 10: "on the not owned characters if I get on their screen there's almost nothing; I want the same thing as owned characters".
+test("Characters: an unowned character without a build opens the same sheet as a built one; its first save is a try @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  const builds = async () => ((await (await page.request.get(`/api/instances/${id}/characters`)).json()) as { id: string; catalogId: string; doc: { level?: number } }[]).filter((b) => b.catalogId === "1104");
+  for (const b of await builds()) await page.request.delete(`/api/characters/${b.id}`);
+  await page.request.put(`/api/instances/${id}/ownership`, { data: { items: [{ kind: "character", catalogId: "1104", owned: false }] } });
+
+  await page.goto(`/games/${id}/characters`);
+  await page.getByRole("searchbox", { name: "Search" }).fill("Gepard");
+  await page.getByRole("article", { name: "Gepard" }).click();
+  await expect(page).toHaveURL(new RegExp(`/games/${id}/units/1104$`));
+  // The sheet a build has: its level, skills, weapon, stat cards and gear; and the unit's own: owning, the wishlist, its banners.
+  await expect(page.getByRole("heading", { name: "Gepard", level: 1 })).toBeVisible();
+  for (const name of ["Character", "Traces", "Weapon", "Combat stats", "Relics", "Banners", "Plan farming"]) await expect(page.getByRole("region", { name, exact: true })).toBeVisible();
+  await expect(page.getByRole("group", { name: "ATK" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Own", exact: true })).toHaveAttribute("aria-pressed", "false");
+  await expect(page.getByRole("button", { name: "Wishlist", exact: true })).toBeVisible();
+
+  // Saved, it is a build to try: Gepard stays unowned.
+  await page.getByRole("region", { name: "Character", exact: true }).getByLabel("Level", { exact: true }).fill("50");
+  await page.getByRole("button", { name: "Save", exact: true }).click();
+  await expect(page).toHaveURL(/\/characters\/[a-z0-9]+$/);
+  const [build] = await builds();
+  expect(build?.doc.level).toBe(50);
+  const owned = (await (await page.request.get(`/api/instances/${id}/ownership`)).json()) as { catalogId: string }[];
+  expect(owned.some((o) => o.catalogId === "1104")).toBe(false);
+
+  // Opened again as a unit, it is that build's sheet.
+  await page.goto(`/games/${id}/units/1104`);
+  await expect(page.getByRole("tablist", { name: "Builds" })).toBeVisible();
+  await expect(page.getByRole("region", { name: "Character", exact: true }).getByLabel("Level", { exact: true })).toHaveValue("50");
+  await page.request.delete(`/api/characters/${build!.id}`);
 });
