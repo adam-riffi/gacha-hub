@@ -76,3 +76,20 @@ export const bannerDto = z.object({
   updatedAt: isoDate,
 });
 export type BannerDto = z.infer<typeof bannerDto>;
+
+/** A banner as a unit's appearance on it: which, and when. */
+export const bannerSeenDto = z.object({ key: z.string(), name: z.string(), startsAt: isoDate, endsAt: isoDate });
+export type BannerSeenDto = z.infer<typeof bannerSeenDto>;
+
+/** A unit's banners (round 11, "last seen"): every one newest first, the last ended, the one on now, the next, its runs so far. */
+export const unitAppearanceDto = z.object({
+  runs: z.number().int(),
+  lastEnded: bannerSeenDto.nullable(),
+  current: bannerSeenDto.nullable(),
+  next: bannerSeenDto.nullable(),
+  history: z.array(bannerSeenDto),
+});
+export type UnitAppearanceDto = z.infer<typeof unitAppearanceDto>;
+/** Every featured unit of a game by its catalog id. */
+export const unitAppearancesDto = z.record(z.string(), unitAppearanceDto);
+export type UnitAppearancesDto = z.infer<typeof unitAppearancesDto>;

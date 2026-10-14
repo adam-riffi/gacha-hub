@@ -1,6 +1,6 @@
 import type { FastifyInstance } from "fastify";
 import { z } from "zod";
-import { getGame, timelineDto } from "@gacha/shared";
+import { getGame, timelineDto, UnitBannerAppearances, unitAppearancesDto } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
 import { requireUser } from "../auth/plugin.js";
 import { listBanners, listEvents, listWindow, parseTimelineFilter, withFeaturedDetails } from "../lib/timeline.js";
@@ -31,6 +31,15 @@ export async function registerTimelineRoutes(app: FastifyInstance) {
       return listBanners([game.key], parseTimelineFilter(req.query.status));
     },
   );
+
+  // Each unit's banners, every one the game has on record (round 11: "last seen").
+  app.get<{ Params: { key: string } }>("/api/games/:key/appearances", { preHandler: requireUser }, async (req, reply) => {
+    const game = getGame(req.params.key);
+    if (!game) return reply.code(404).send({ error: "unknown_game" });
+    const banners = await prisma.banner.findMany({ where: { gameKey: game.key }, select: { key: true, name: true, startsAt: true, endsAt: true, featured: true } });
+    const featuringBanners = banners.map((banner) => ({ ...banner, featured: Array.isArray(banner.featured) ? (banner.featured as { catalogId: string }[]) : [] }));
+    return unitAppearancesDto.parse(new UnitBannerAppearances(featuringBanners).toRecord());
+  });
 
   app.get<{ Params: { key: string }; Querystring: { status?: string } }>(
     "/api/games/:key/events",

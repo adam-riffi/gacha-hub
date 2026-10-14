@@ -81,7 +81,6 @@
 .ch-actions { justify-content: flex-end; gap: 6px; }
 
 /* A unit's page (Georges, 2026-10-10): every character opens, owned or not. */
-.sh-cards.un-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .un-dupes { margin: 0; padding-left: 20px; display: grid; gap: 8px; font-size: 13px; }
 .un-toggles .btn[aria-pressed="true"] { background: var(--paper); border-color: var(--paper); color: var(--on-paper); }
 /* The counts are filters (Georges, 2026-10-10): pressed shows only those. */
@@ -194,3 +193,14 @@
 .wp-add { display: flex; align-items: flex-end; gap: 14px; margin-bottom: 16px; }
 .wp-add label { margin: 0; }
 .wp-add input { margin-top: 6px; }
+/* The unit's banners across the sheet (round 11): four facts, then every banner it was on. */
+.un-banners, .un-dupes-card { margin-bottom: 24px; }
+.un-banner-facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-bottom: 16px; }
+.un-banner-fact { display: grid; gap: 4px; align-content: start; padding: 12px; background: var(--surface-2); }
+.un-banner-fact-value { font-size: 24px; line-height: 1.1; }
+.un-banner-history { width: 100%; border-collapse: collapse; font-size: 15px; }
+.un-banner-history th { padding: 8px; border-bottom: 1px solid var(--hairline); color: var(--text-muted); font: 400 12px/1 var(--font-mono); letter-spacing: 0.06em; text-align: left; text-transform: uppercase; }
+.un-banner-history td { padding: 8px; border-bottom: 1px solid var(--surface-3); }
+/* A unit's last banner on its card (round 11). */
+.last-seen-chip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 8px; border: 1px solid var(--hairline); color: var(--text); font-size: 12px; }
+.last-seen-icon { width: 16px; height: 16px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; }
