@@ -7,7 +7,7 @@
  * and no game client touched. Only the live version is read.
  * Run from scripts/catalog: `npm run nte`.
  */
-import type { Catalog, CatalogCharacter, CatalogMaterial, CatalogWeapon, CostStep } from "../../packages/shared/src/catalog/types.js";
+import type { Catalog, CatalogCharacter, CatalogGearSet, CatalogMaterial, CatalogWeapon, CostStep } from "../../packages/shared/src/catalog/types.js";
 import { byId, fetchJson, mapLimit, slugify, stripTags, uniqueKeys, writeCatalog } from "./common.js";
 
 const BASE = "https://static.nanoka.cc";
@@ -32,7 +32,7 @@ type WeaponDetail = {
   materials?: (Cost & { cost_gold?: number })[];
   effect?: { name?: string; description?: string; values?: { id_value: number; values: string[] }[] };
 };
-type Item = { id: string; name: string | null; icon: string; rarity?: number; type_name?: string };
+type Item = { id: string; name: string | null; icon: string; rarity?: number; type_name?: string; context?: string | null };
 
 /** "/Game/UI/UI_Icon/AvatarImage/256/player_003_256" → "Game/UI/…/player_003_256": the manifest's art sources add the host and ".webp". */
 const artKey = (path?: string) => path?.replace(/^\//, "") || undefined;
@@ -108,6 +108,23 @@ const weapons: CatalogWeapon[] = await mapLimit(Object.keys(weaponIndex), 4, asy
   };
 });
 
+// ---- Cartridge series (the Console's gear sets) ----
+// The dataset has no set table: each series' Chameleon Package names its three sets ("Grants 1 random Orange Cartridge from
+// Lost Radiance, Fireflies and the Forest, or Street Boxer series."), and the series' Legendary Cartridge gives the icon.
+const ROMAN: Record<string, number> = { I: 1, II: 2, III: 3 };
+const gearBySet = new Map<string, CatalogGearSet>();
+for (const i of Object.values(items)) {
+  const pack = /\(Cartridge (I{1,3})\)/.exec(i.name ?? "");
+  const named = /Cartridge from (.+) series\./.exec(i.context ?? "");
+  if (!pack || !named) continue;
+  const series = ROMAN[pack[1]!]!;
+  const icon = itemById.get(`Equipment_core_0${series}_ssr_show`)?.icon;
+  for (const name of named[1]!.split(/,? or |, /).map((s) => s.trim()).filter(Boolean)) {
+    if (!gearBySet.has(name)) gearBySet.set(name, { id: slugify(name), key: slugify(name), name, slots: ["cartridge1", "cartridge2", "cartridge3", "cartridge4"], bonuses: [], icon: artKey(icon), extra: { series } });
+  }
+}
+const gear = [...gearBySet.values()].sort((a, b) => Number(a.extra!.series) - Number(b.extra!.series) || a.name.localeCompare(b.name));
+
 // ---- Materials: everything a cost table references ----
 const coin = itemById.get("gold_1000");
 const materials: CatalogMaterial[] = [...referenced].flatMap((id): CatalogMaterial[] => {
@@ -125,7 +142,7 @@ const catalog: Catalog = {
   source: `hakushin@static.nanoka.cc/nte/${version}`,
   characters: uniqueKeys(characters.sort(byId)),
   weapons: uniqueKeys(weapons.sort(byId)),
-  gear: [],
+  gear: uniqueKeys(gear),
   materials: uniqueKeys(materials.sort(byId)),
 };
 writeCatalog(catalog, "nte");

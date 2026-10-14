@@ -43,3 +43,18 @@ test("Neverness to Everness works by hand on every screen @smoke", async ({ page
   await page.goto("/?game=nte");
   await expect(page.getByRole("region", { name: "Pulls" })).toBeVisible();
 });
+
+// Georges, round 7: "you haven't added the gear system for NTE": the Console's tab, its sets the cartridge series.
+test("Neverness to Everness: the Console tab lists the cartridge series as its sets @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "nte" } })).json()) as { id: string };
+  await page.goto(`/games/${id}`);
+  await page.getByRole("navigation", { name: "Game screens" }).getByRole("link", { name: "Console" }).click();
+  await expect(page).toHaveURL(new RegExp(`/games/${id}/gear$`));
+  await page.getByRole("group", { name: "Show" }).getByRole("button", { name: "Sets" }).click();
+  for (const name of ["Lost Radiance", "Diabolos", "Shadow Creed"]) await expect(page.getByRole("article", { name })).toBeVisible();
+  await page.getByRole("article", { name: "Lost Radiance" }).getByRole("button", { name: "Open Lost Radiance" }).click();
+  await expect(page.getByRole("complementary", { name: "Lost Radiance" })).toBeVisible();
+});
