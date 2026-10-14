@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-14 · claude · stack/r11/02-topups-bottom · #300
+- Done: the top-ups (Georges, round 8: "top up takes too much space: it should be at the very bottom, more visual, with a direct conversion of pack to pulls"). The Top-ups card and the Top-up to 100% card sit side by side at the very bottom of Pulls, under the savings planner and the history. Each pack's button leads with its pulls (its premium currency over a pull's cost, the gem icon beside: 980 + 110 is 6 pulls, 6480 + 1600 is 50), then the pack and its price; the pass counts its upfront part and its dailies over its days (18 for the Express Supply Pass). The totals add their pulls; the list shows the latest five, All n for the rest.
+- Tests: written first: on Star Rail, 980 + 110 shows 6 pulls, 6480 + 1600 50, the pass 18; the card sits below Pulls available and the planner and history.
+- Scope/decisions: a pack under one pull shows 0; the pass's pulls assume its full 30 days.
+- Next: three stats on a character's card.
+
 ## 2026-10-14 · claude · stack/r11/01-team-window · #299
 - Done: endgame teams and icons (Georges, round 8: "adding characters to an endgame team is a pain: I have to click on the box, then click out for it to refresh, and click again; I'd rather have a window with all the characters open and choose them; it also lacks difficulty icons"). Each stage's + Team opens `TeamWindow`: every character of the game as a large card with its icon, a click adding or removing one up to the party size (the slot's number on the card), the window staying open; saved teams fill it in one click; a search narrows the list; Done or a click outside closes it. Each mode's result has its metric's icon (`MetricIcon`: stars, difficulty, seals, crests, acts, rank, points, each its colour), and a mode whose maximum is 12 or less shows the full row of icons filled to the result (Stygian's six skulls, Pure Fiction's twelve stars). Round 8's audit opens (`docs/AUDIT-2026-10-14-round8.md`).
 - Tests: written first: Memory of Chaos's First half gets Kafka and Silver Wolf in one window, the count 2 / 4 then 1 / 4 after a second click, Kafka on the saved stage; its result shows the star icon; Pure Fiction at 9 shows nine of twelve stars filled. The Abyss and Shiyu journeys pick their teams in the window.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: Kafka's weapon icon is right of her name, the level badge at its top-left corner and the refinement at its bottom-right; a picked card has `is-picked` and its box has no opacity.
 - Scope/decisions: none.
 - Next: the stats each card shows, picked per game, and set bonuses on top.
-
-## 2026-10-12 · claude · stack/r8/03-pulls-odds · #258
-- Done: the Pulls tab's By the end of the version is filled (Georges, round 5: "a large amount of nothing … fill it up by data like X% chance to get X limited (use icons)"): under the forecast, each target of the savings planner (the running banners' featured units, then the wishlist) by its icon, with its chance alone now and by the version's end as two bars and percentages. A target's unit rides along (`PlannerTarget.unit`); a banner without a featured unit on record shows its initials.
-- Tests: written first: with Seele wishlisted on Star Rail, her row in the card has her icon and a chance by the version's end at least her chance now; the first row is an icon too.
-- Scope/decisions: each chance is the target's own (as if every pull went to it); the savings planner below still spends the pulls in order.
-- Next: the Characters cards: the whole card lit when picked, the weapon on the right.

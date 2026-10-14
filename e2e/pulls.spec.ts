@@ -247,3 +247,22 @@ test("Pulls: a top-up logged in one click, the month's, year's and all spending;
   await expect(history.getByRole("listitem")).toHaveCount(1);
   await expect(card.getByRole("group", { name: "All time" })).toContainText("$4.99");
 });
+
+// Georges, round 8: "top up takes too much space: it should be at the very bottom, more visual, with a direct conversion of pack to pulls".
+test("Pulls: the top-ups at the very bottom, each pack and the pass in pulls @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  await page.goto(`/games/${id}/pulls`);
+  const card = page.getByRole("region", { name: "Top-ups" });
+  // 980 + 110 Oneiric Shards: 1,090 Stellar Jade, 6 warps at 160; 6,480 + 1,600: 50; the pass: 300 now and 90 a day for 30 days, 18.
+  await expect(card.getByRole("button", { name: "Log 980 + 110 for $14.99" })).toContainText("6 pulls");
+  await expect(card.getByRole("button", { name: "Log 6480 + 1600 for $99.99" })).toContainText("50 pulls");
+  await expect(card.getByRole("button", { name: "Log Express Supply Pass for $4.99" })).toContainText("18 pulls");
+  // Below everything else on the page.
+  const bottom = (await card.boundingBox())!.y;
+  expect((await page.getByRole("region", { name: "Pulls available" }).boundingBox())!.y).toBeLessThan(bottom);
+  // The savings planner and the pull history sit above it too.
+  expect((await page.locator(".pl-bottom").boundingBox())!.y).toBeLessThan(bottom);
+});

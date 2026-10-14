@@ -311,8 +311,6 @@ export function PullsPage() {
         </section>
       </div>
 
-      {game.manifest.topUp && targets.some((t) => t.endsAt) && <TopUpCard game={game} region={region} passEnds={passEnds} targets={targets.filter((t) => t.endsAt)} />}
-      <TopUpHistory instanceId={id!} game={game} />
 
       <div className="pl-label">
         <span className="kpi-label">Banners</span>
@@ -337,6 +335,11 @@ export function PullsPage() {
       <div className="pl-bottom">
         <SavingsPlanner targets={targets} forecast={forecast.pulls} star={star} />
         <PullHistory instanceId={instance.data.id} drops={drops} star={star} unitOf={nameOf} units={units} />
+      </div>
+      {/* Top-ups at the very bottom (Georges, round 8: "it takes too much space"). */}
+      <div className="pl-tops-row">
+        <TopUpHistory instanceId={id!} game={game} />
+        {game.manifest.topUp && targets.some((t) => t.endsAt) && <TopUpCard game={game} region={region} passEnds={passEnds} targets={targets.filter((t) => t.endsAt)} />}
       </div>
     </>
   );
