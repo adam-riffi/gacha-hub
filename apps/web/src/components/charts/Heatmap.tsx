@@ -1,10 +1,11 @@
 import { useMemo, useState, type KeyboardEvent, type MouseEvent } from "react";
-import { heatLevel, rectPath, streaks } from "@gacha/shared";
+import { dayHeat, rectPath, streaks } from "@gacha/shared";
 
 export interface HeatDay {
   /** Local calendar day, YYYY-MM-DD. */
   date: string;
-  games: { name: string; done: boolean }[];
+  /** Each game's dailies done that day, out of its dailies (round 7: the map shows depth). */
+  games: { name: string; done: number; total: number }[];
 }
 
 const COLS = 26;
@@ -32,7 +33,7 @@ interface Cell {
 
 /**
  * Dailies over the last 26 weeks (VISUAL-DESIGN.md §8): 26 week columns by 7
- * weekday rows, each day's heat by the share of games with every daily done.
+ * weekday rows, each day's heat by its share of dailies done (round 7).
  * Days with a record answer the pointer (a tooltip) and a click (pinned, with
  * its games listed beside the map); the arrow keys move between recorded
  * days and Enter pins. The map never tilts.
@@ -90,10 +91,12 @@ export function Heatmap({
   };
 
   const recorded = cells.filter((c) => c.day);
-  const doneOf = (d: HeatDay) => d.games.filter((g) => g.done).length;
+  const full = (g: HeatDay["games"][number]) => g.total > 0 && g.done >= g.total;
+  const doneOf = (d: HeatDay) => d.games.filter(full).length;
+  const dailiesOf = (d: HeatDay) => [d.games.reduce((s, g) => s + Math.min(g.done, g.total), 0), d.games.reduce((s, g) => s + g.total, 0)] as const;
   const levels = ["", "", "", "", ""];
-  for (const c of cells) levels[c.day ? heatLevel(doneOf(c.day), c.day.games.length) : 0] += rectPath(HX + c.c * SX, HY + c.r * SY, CW, CH);
-  const s = streaks(recorded.map((c) => doneOf(c.day!) === c.day!.games.length && c.day!.games.length > 0));
+  for (const c of cells) levels[c.day ? dayHeat(c.day.games).level : 0] += rectPath(HX + c.c * SX, HY + c.r * SY, CW, CH);
+  const s = streaks(recorded.map((c) => dayHeat(c.day!.games).full));
 
   const hc = cells[hover];
   const sc = cells[sel];
@@ -186,6 +189,9 @@ export function Heatmap({
               {doneOf(hc.day)}
               <span> / {hc.day.games.length} GAMES DONE</span>
             </div>
+            <div className="mn heat-tip-date">
+              {dailiesOf(hc.day)[0]} / {dailiesOf(hc.day)[1]} DAILIES
+            </div>
           </div>
         )}
       </div>
@@ -207,9 +213,16 @@ export function Heatmap({
               </span>
               <span className="mn mu">GAMES DONE</span>
             </div>
+            <div className="heat-sel-n">
+              <span className="cd">
+                {dailiesOf(sc.day)[0]}
+                <span className="mu"> / {dailiesOf(sc.day)[1]}</span>
+              </span>
+              <span className="mn mu">DAILIES</span>
+            </div>
             <div className="dgs" aria-hidden="true">
               {sc.day.games.map((g) => (
-                <div key={g.name} className={`dg ${g.done ? "on" : ""}`}>
+                <div key={g.name} className={`dg ${full(g) ? "on" : ""}`}>
                   <i />
                   <span>{g.name}</span>
                 </div>

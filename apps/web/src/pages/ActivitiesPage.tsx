@@ -9,6 +9,7 @@ import { GameTabs } from "../components/GameTabs";
 import { Countdown } from "../components/ui";
 import { SegmentedBar } from "../components/charts/SegmentedBar";
 import { useReminderFlag } from "../lib/reminder";
+import { TickRow, tickColumn } from "../components/TickControl";
 
 const DATE = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
 const CLOCK = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit" });
@@ -153,7 +154,6 @@ function CadenceList({
     qc.invalidateQueries({ queryKey: ["tasks"] });
     qc.invalidateQueries({ queryKey: ["dashboard"] });
   };
-  const tick = useMutation({ mutationFn: ({ task, done }: { task: TaskDto; done: boolean }) => api.post(`/api/tasks/${task.id}/complete`, { done }), onSuccess: refresh });
   const add = useMutation({
     mutationFn: (body: { title: string; anchorKey?: string }) => api.post("/api/tasks", { scope: "game", refId: instanceId, type: "recurring", cadence, ...body }),
     onSuccess: () => {
@@ -179,14 +179,12 @@ function CadenceList({
         </h3>
         <Countdown at={soonest ?? resetsAt.toISOString()} kind={cadence === "daily" ? "reset" : "deadline"} prefix="resets in" />
       </div>
-      <div className="act-rows">
+      <div className="act-rows" style={tickColumn(items)}>
+        {/* One tick control everywhere (round 7): a counted daily by its steps. */}
         {items.map((t) => (
-          // Uncontrolled, re-keyed on the server's state: the tick shows at once.
-          <label key={`${t.id}:${String(t.doneThisCycle)}`} className={`act-row ${t.doneThisCycle ? "done" : ""}`}>
-            <input type="checkbox" aria-label={t.title} defaultChecked={Boolean(t.doneThisCycle)} onChange={(e) => tick.mutate({ task: t, done: e.target.checked })} />
-            <span className="act-title">{t.title}</span>
+          <TickRow key={t.id} instanceId={instanceId} task={t}>
             {cadence === "monthly" && t.anchorKey && <span className="mn mu">{anchors.find((a) => a.key === t.anchorKey)?.name}</span>}
-          </label>
+          </TickRow>
         ))}
         {items.length === 0 && <p className="mu act-empty">Nothing {title.toLowerCase()} yet.</p>}
       </div>
