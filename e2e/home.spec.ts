@@ -57,3 +57,17 @@ test("Home is the dashboard: its panels, the dailies card per game, the pulls an
   await expect(row).toContainText("/ 300");
   await expect(row.locator(".stamina-full")).not.toBeEmpty();
 });
+
+// Georges, round 9: "for the all games overview I don't care that much about the battle pass, I want to see the banners first".
+test("Home: the banners first, beside the dailies; the battle pass further down @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  await page.request.post("/api/instances", { data: { gameKey: "hsr" } });
+  await page.goto("/");
+  const y = async (name: string) => (await page.getByRole("heading", { name, exact: true }).boundingBox())!.y;
+  const banners = await y("Banners");
+  expect(Math.abs(banners - (await y("Dailies & weeklies")))).toBeLessThan(4);
+  expect(banners).toBeLessThan(await y("Battle pass"));
+  expect(banners).toBeLessThan(await y("Dailies, last 26 weeks"));
+});
