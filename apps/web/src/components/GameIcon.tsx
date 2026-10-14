@@ -25,12 +25,12 @@ export function GameIcon({
   glyph?: GlyphKind;
   className?: string;
 }) {
-  const sources = [src, ...(Array.isArray(fallback) ? fallback : [fallback])].filter((s): s is string => Boolean(s));
+  const sources = [src, ...(Array.isArray(fallback) ? fallback : [fallback])].filter((source): source is string => Boolean(source));
   // Reset to the first source whenever the sources change (e.g. a new upload),
   // without an effect: the failure index is only valid for the same sources.
-  const sig = sources.join("|");
-  const [failed, setFailed] = useState({ sig, count: 0 });
-  const tried = failed.sig === sig ? failed.count : 0;
+  const sourcesKey = sources.join("|");
+  const [failed, setFailed] = useState({ sig: sourcesKey, count: 0 });
+  const tried = failed.sig === sourcesKey ? failed.count : 0;
   const current = sources[tried];
 
   if (current) {
@@ -40,7 +40,7 @@ export function GameIcon({
         src={current}
         alt={alt}
         loading="lazy"
-        onError={() => setFailed({ sig, count: tried + 1 })}
+        onError={() => setFailed({ sig: sourcesKey, count: tried + 1 })}
       />
     );
   }

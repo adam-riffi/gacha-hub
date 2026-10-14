@@ -5,7 +5,7 @@ import { Layout } from "./components/Layout";
 import { LoginPage } from "./pages/LoginPage";
 import { DashboardPage } from "./pages/DashboardPage";
 // Every screen but Home loads on first visit, so the shell stays inside the JavaScript budget (DESIGN.md §13).
-const page = <K extends string>(load: () => Promise<Record<K, ComponentType>>, name: K) => lazy(() => load().then((m) => ({ default: m[name] })));
+const page = <K extends string>(load: () => Promise<Record<K, ComponentType>>, name: K) => lazy(() => load().then((module) => ({ default: module[name] })));
 const LibraryPage = page(() => import("./pages/LibraryPage"), "LibraryPage");
 const ActivitiesPage = page(() => import("./pages/ActivitiesPage"), "ActivitiesPage");
 const EndgamePage = page(() => import("./pages/EndgamePage"), "EndgamePage");
@@ -25,12 +25,12 @@ const TeamsPage = page(() => import("./pages/TeamsPage"), "TeamsPage");
 const WeaponsPage = page(() => import("./pages/WeaponsPage"), "WeaponsPage");
 
 export function App() {
-  const { me, loading } = useAuth();
+  const { currentUser, loading } = useAuth();
 
   if (loading) {
     return <div className="center muted">Loading…</div>;
   }
-  if (!me?.user) {
+  if (!currentUser?.user) {
     return <LoginPage />;
   }
 

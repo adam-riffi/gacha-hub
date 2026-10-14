@@ -12,40 +12,40 @@ const LOCAL_ZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
 /** A game's reminder options (lead time, check-in times, what each DM includes). */
 export function ReminderControl({ instanceId, hasDomains }: { instanceId: string; hasDomains: boolean }) {
   const toast = useToast();
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   const [newTime, setNewTime] = useState("21:00");
   const { data } = useQuery({
     queryKey: ["reminder", instanceId],
     queryFn: () => api.get<ReminderRule | null>(`/api/instances/${instanceId}/reminder`),
   });
   const save = useMutation({
-    mutationFn: (v: ReminderConfig) => api.put(`/api/instances/${instanceId}/reminder`, v),
+    mutationFn: (config: ReminderConfig) => api.put(`/api/instances/${instanceId}/reminder`, config),
     onSuccess: () => {
       toast("Reminder saved");
-      qc.invalidateQueries({ queryKey: ["reminder", instanceId] });
+      queryClient.invalidateQueries({ queryKey: ["reminder", instanceId] });
     },
   });
   // Always send the full config: a partial body resets unsent fields to defaults.
-  const cfg: ReminderConfig = { ...REMINDER_DEFAULTS, ...data?.config, enabled: data?.enabled ?? false };
-  const update = (patch: Partial<ReminderConfig>) => save.mutate({ ...cfg, ...patch, timezone: LOCAL_ZONE });
+  const config: ReminderConfig = { ...REMINDER_DEFAULTS, ...data?.config, enabled: data?.enabled ?? false };
+  const update = (patch: Partial<ReminderConfig>) => save.mutate({ ...config, ...patch, timezone: LOCAL_ZONE });
   const addTime = () => {
-    if (newTime && !cfg.atTimes.includes(newTime)) update({ atTimes: [...cfg.atTimes, newTime].sort() });
+    if (newTime && !config.atTimes.includes(newTime)) update({ atTimes: [...config.atTimes, newTime].sort() });
   };
 
   return (
     <div className="stack small" style={{ gap: 10 }}>
       <label className="row" style={{ margin: 0, gap: 6 }}>
-        <input type="checkbox" style={{ width: "auto" }} checked={cfg.enabled} onChange={(e) => update({ enabled: e.target.checked })} />
+        <input type="checkbox" style={{ width: "auto" }} checked={config.enabled} onChange={(event) => update({ enabled: event.target.checked })} />
         <strong>Discord reminders</strong>
       </label>
-      {cfg.enabled && (
+      {config.enabled && (
         <>
           <div className="row">
             <label className="row" style={{ margin: 0, gap: 6 }}>
-              <input type="checkbox" style={{ width: "auto" }} checked={cfg.beforeReset} onChange={(e) => update({ beforeReset: e.target.checked })} />
+              <input type="checkbox" style={{ width: "auto" }} checked={config.beforeReset} onChange={(event) => update({ beforeReset: event.target.checked })} />
               Before daily reset
             </label>
-            {cfg.beforeReset && (
+            {config.beforeReset && (
               <>
                 <input
                   type="number"
@@ -53,8 +53,8 @@ export function ReminderControl({ instanceId, hasDomains }: { instanceId: string
                   style={{ width: 70 }}
                   min={0}
                   max={1440}
-                  defaultValue={cfg.leadMinutes}
-                  onBlur={(e) => update({ leadMinutes: Number(e.target.value) })}
+                  defaultValue={config.leadMinutes}
+                  onBlur={(event) => update({ leadMinutes: Number(event.target.value) })}
                 />
                 <span className="muted">min before</span>
               </>
@@ -62,15 +62,15 @@ export function ReminderControl({ instanceId, hasDomains }: { instanceId: string
           </div>
           <div className="row">
             <span>Every day at</span>
-            {cfg.atTimes.map((t) => (
-              <span className="badge" key={t}>
-                {t}
-                <button className="chip-x" title="Remove" onClick={() => update({ atTimes: cfg.atTimes.filter((x) => x !== t) })}>×</button>
+            {config.atTimes.map((atTime) => (
+              <span className="badge" key={atTime}>
+                {atTime}
+                <button className="chip-x" title="Remove" onClick={() => update({ atTimes: config.atTimes.filter((other) => other !== atTime) })}>×</button>
               </span>
             ))}
-            {cfg.atTimes.length < 6 && (
+            {config.atTimes.length < 6 && (
               <>
-                <input type="time" aria-label="Reminder time" style={{ width: "auto" }} value={newTime} onChange={(e) => setNewTime(e.target.value)} />
+                <input type="time" aria-label="Reminder time" style={{ width: "auto" }} value={newTime} onChange={(event) => setNewTime(event.target.value)} />
                 <button className="btn sm" onClick={addTime}>Add</button>
               </>
             )}
@@ -85,7 +85,7 @@ export function ReminderControl({ instanceId, hasDomains }: { instanceId: string
             ] as const).map(([key, label, shown]) =>
               shown ? (
                 <label key={key} className="row" style={{ margin: 0, gap: 6 }}>
-                  <input type="checkbox" style={{ width: "auto" }} checked={cfg[key]} onChange={(e) => update({ [key]: e.target.checked })} />
+                  <input type="checkbox" style={{ width: "auto" }} checked={config[key]} onChange={(event) => update({ [key]: event.target.checked })} />
                   {label}
                 </label>
               ) : null,

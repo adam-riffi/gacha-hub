@@ -23,16 +23,16 @@ export function GraphPanel({
   style?: CSSProperties;
   children: ReactNode;
 }) {
-  const move = (e: MouseEvent<HTMLDivElement>) => {
-    const r = e.currentTarget.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width - 0.5;
-    const y = (e.clientY - r.top) / r.height - 0.5;
-    e.currentTarget.style.setProperty("--ry", `${(x * 16).toFixed(2)}deg`);
-    e.currentTarget.style.setProperty("--rx", `${(-y * 14).toFixed(2)}deg`);
+  const move = (event: MouseEvent<HTMLDivElement>) => {
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const offsetX = (event.clientX - bounds.left) / bounds.width - 0.5;
+    const offsetY = (event.clientY - bounds.top) / bounds.height - 0.5;
+    event.currentTarget.style.setProperty("--ry", `${(offsetX * 16).toFixed(2)}deg`);
+    event.currentTarget.style.setProperty("--rx", `${(-offsetY * 14).toFixed(2)}deg`);
   };
-  const leave = (e: MouseEvent<HTMLDivElement>) => {
-    e.currentTarget.style.setProperty("--ry", "0deg");
-    e.currentTarget.style.setProperty("--rx", "0deg");
+  const leave = (event: MouseEvent<HTMLDivElement>) => {
+    event.currentTarget.style.setProperty("--ry", "0deg");
+    event.currentTarget.style.setProperty("--rx", "0deg");
   };
   return (
     <section className={`graph ${className}`} style={style} aria-label={label ?? title}>
@@ -48,16 +48,16 @@ export function GraphPanel({
 }
 
 export type Depth = "rings" | "structure" | "data" | "figures" | "ticks";
-const Z: Record<Depth, string> = { rings: "zR", structure: "zB", data: "zC", figures: "zD", ticks: "zE" };
+const DEPTH_CLASS: Record<Depth, string> = { rings: "zR", structure: "zB", data: "zC", figures: "zD", ticks: "zE" };
 
 /** One depth layer of a stage; with a size, its content is a centred box of that size. */
 export function Layer({ depth, size, children }: { depth: Depth; size?: number | [number, number]; children: ReactNode }) {
-  if (size === undefined) return <div className={`lay ${Z[depth]}`}>{children}</div>;
-  const [w, h] = Array.isArray(size) ? size : [size, size];
+  if (size === undefined) return <div className={`lay ${DEPTH_CLASS[depth]}`}>{children}</div>;
+  const [width, height] = Array.isArray(size) ? size : [size, size];
   return (
-    <div className={`lay ${Z[depth]}`}>
+    <div className={`lay ${DEPTH_CLASS[depth]}`}>
       <div className="frm">
-        <div className="cb" style={{ width: w, height: h }}>
+        <div className="cb" style={{ width, height }}>
           {children}
         </div>
       </div>

@@ -39,9 +39,9 @@ export default tseslint.config(
     rules: { ...reactHooks.configs.recommended.rules },
   },
   {
-    // Explicit names (ADR 0011): no one- or two-letter names, area by area as each is renamed; x and y stay for
-    // coordinates, `id` and `to` are words.
-    files: ["packages/shared/src/**/*.ts", "apps/server/src/**/*.ts"],
+    // Explicit names (ADR 0011): no one- or two-letter names in any package; x and y stay for coordinates,
+    // `id` and `to` are words.
+    files: ["packages/shared/src/**/*.ts", "apps/server/src/**/*.ts", "apps/web/src/**/*.{ts,tsx}"],
     ignores: ["**/*.test.ts", "**/generated/**"],
     rules: {
       "id-length": ["error", { min: 3, exceptions: ["id", "to", "x", "y", "_", "ok", "at", "on", "up", "of"], properties: "never" }],

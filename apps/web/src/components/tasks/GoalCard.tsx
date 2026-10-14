@@ -29,7 +29,7 @@ function planned(origin: unknown): string | null {
   const goal = (origin as { goal?: { level?: Range; talents?: Record<string, Range> } } | null)?.goal;
   if (!goal) return null;
   const talents = Object.values(goal.talents ?? {});
-  return [goal.level && `level ${goal.level.from}→${goal.level.to}`, talents.length > 0 && `talents ${talents.map((r) => r.from).join("/")}→${talents.map((r) => r.to).join("/")}`].filter(Boolean).join(", ") || null;
+  return [goal.level && `level ${goal.level.from}→${goal.level.to}`, talents.length > 0 && `talents ${talents.map((talent) => talent.from).join("/")}→${talents.map((talent) => talent.to).join("/")}`].filter(Boolean).join(", ") || null;
 }
 
 /**
@@ -42,53 +42,53 @@ function planned(origin: unknown): string | null {
  * its effect and is claimed here, which applies it (ADR 0008). The Planner
  * leaves the materials to its table (`materials={false}`).
  */
-export function GoalCard({ t, tasks, linkable = [], gi, reward, weekday, showGame = true, materials = true }: { t: TaskItem; tasks: TaskItem[]; linkable?: TaskItem[]; gi: InstanceListItem; reward?: RewardDto; weekday?: number; showGame?: boolean; materials?: boolean }) {
-  const qc = useQueryClient();
+export function GoalCard({ goal, tasks, linkable = [], gameInstance, reward, weekday, showGame = true, materials = true }: { goal: TaskItem; tasks: TaskItem[]; linkable?: TaskItem[]; gameInstance: InstanceListItem; reward?: RewardDto; weekday?: number; showGame?: boolean; materials?: boolean }) {
+  const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
-  const refresh = () => Promise.all(["tasks", "rewards", "farm-today", "dashboard"].map((k) => qc.invalidateQueries({ queryKey: [k] })));
-  const update = useMutation({ mutationFn: (body: { priority?: TaskPriority; notify?: boolean }) => api.put(`/api/tasks/${t.id}`, body), onSuccess: refresh });
-  const setItems = useMutation({ mutationFn: (items: ChecklistItem[]) => api.put(`/api/tasks/${t.id}/checklist`, { items }), onSuccess: refresh });
-  const claim = useMutation({ mutationFn: (done: boolean) => api.post(`/api/tasks/${t.id}/complete`, { done }), onSuccess: refresh });
-  const progress = useMutation({ mutationFn: (v: { id: string; progress: number }) => api.post(`/api/tasks/${v.id}/progress`, { progress: v.progress }), onSuccess: refresh });
-  const remove = useMutation({ mutationFn: () => api.del(`/api/tasks/${t.id}`), onSuccess: refresh });
-  const link = useMutation({ mutationFn: (v: { id: string; parentId: string | null }) => api.put(`/api/tasks/${v.id}`, { parentId: v.parentId }), onSuccess: refresh });
+  const refresh = () => Promise.all(["tasks", "rewards", "farm-today", "dashboard"].map((queryKey) => queryClient.invalidateQueries({ queryKey: [queryKey] })));
+  const update = useMutation({ mutationFn: (body: { priority?: TaskPriority; notify?: boolean }) => api.put(`/api/tasks/${goal.id}`, body), onSuccess: refresh });
+  const setItems = useMutation({ mutationFn: (items: ChecklistItem[]) => api.put(`/api/tasks/${goal.id}/checklist`, { items }), onSuccess: refresh });
+  const claim = useMutation({ mutationFn: (done: boolean) => api.post(`/api/tasks/${goal.id}/complete`, { done }), onSuccess: refresh });
+  const progress = useMutation({ mutationFn: (change: { id: string; progress: number }) => api.post(`/api/tasks/${change.id}/progress`, { progress: change.progress }), onSuccess: refresh });
+  const remove = useMutation({ mutationFn: () => api.del(`/api/tasks/${goal.id}`), onSuccess: refresh });
+  const link = useMutation({ mutationFn: (change: { id: string; parentId: string | null }) => api.put(`/api/tasks/${change.id}`, { parentId: change.parentId }), onSuccess: refresh });
   // Material steps and linked goals both hang under a goal; linked ones are goals of their own.
-  const allKids = tasks.filter((k) => k.parentId === t.id);
-  const kids = allKids.filter((k) => k.materialId);
-  const linked = allKids.filter((k) => !k.materialId);
-  const parent = t.parentId ? tasks.find((p) => p.id === t.parentId) : undefined;
+  const allKids = tasks.filter((child) => child.parentId === goal.id);
+  const kids = allKids.filter((kid) => kid.materialId);
+  const linked = allKids.filter((kid) => !kid.materialId);
+  const parent = goal.parentId ? tasks.find((candidate) => candidate.id === goal.parentId) : undefined;
 
-  const game = getGame(gi.gameKey);
+  const game = getGame(gameInstance.gameKey);
   // Its own unit as its thumb (Georges, 2026-10-11): the character, weapon or set it farms; who it is for beside the title.
-  const origin = t.origin as TaskOrigin | null;
-  const change = reward?.options[t.choice ?? 0]?.changes[0];
+  const origin = goal.origin as TaskOrigin | null;
+  const change = reward?.options[goal.choice ?? 0]?.changes[0];
   // An event goal shows the unit its reward raises.
   const unit: FarmUnit | null = origin?.catalogId ? { kind: origin.kind, catalogId: origin.catalogId } : change ? { kind: change.unit, catalogId: change.catalogId } : null;
-  const forWhom = (origin?.sources ?? []).filter((s) => s.kind === "character" && s.catalogId !== origin?.catalogId);
-  const items = t.items ?? [];
-  const claimed = Boolean(t.eventId) && t.lastCompletedAt !== null;
-  const [done, total] = goalSteps(t, tasks);
-  const option = reward?.options[t.choice ?? 0];
-  const effect = option?.changes.map((c) => `${c.name} ${stepText(c)}`).join(", ");
-  const sub = [planned(t.origin), reward && `ends ${ENDS.format(new Date(reward.endsAt))}`, !claimed && effect && `→ ${effect}`].filter(Boolean).join(" · ");
+  const forWhom = (origin?.sources ?? []).filter((source) => source.kind === "character" && source.catalogId !== origin?.catalogId);
+  const items = goal.items ?? [];
+  const claimed = Boolean(goal.eventId) && goal.lastCompletedAt !== null;
+  const [done, total] = goalSteps(goal, tasks);
+  const option = reward?.options[goal.choice ?? 0];
+  const effect = option?.changes.map((optionChange) => `${optionChange.name} ${stepText(optionChange)}`).join(", ");
+  const subtitle = [planned(goal.origin), reward && `ends ${ENDS.format(new Date(reward.endsAt))}`, !claimed && effect && `→ ${effect}`].filter(Boolean).join(" · ");
 
   return (
-    <article className={`tk-card ${open ? "is-open" : ""}`} aria-label={t.title}>
+    <article className={`tk-card ${open ? "is-open" : ""}`} aria-label={goal.title}>
       <div className="tk-row">
         <button type="button" className="tk-open" aria-expanded={open} onClick={() => setOpen(!open)}>
-          {unit ? <UnitIcon gameKey={gi.gameKey} unit={unit} className="tk-thumb" /> : <GameIcon src={game?.art?.icon ?? null} alt={gi.name} glyph="game" tint={game?.accent} className="tk-thumb" />}
+          {unit ? <UnitIcon gameKey={gameInstance.gameKey} unit={unit} className="tk-thumb" /> : <GameIcon src={game?.art?.icon ?? null} alt={gameInstance.name} glyph="game" tint={game?.accent} className="tk-thumb" />}
           <span className="tk-title">
             <span className="tk-title-row">
-              <strong>{t.title}</strong>
-              {forWhom.map((s) => <UnitIcon key={s.catalogId} gameKey={gi.gameKey} unit={{ kind: "character", catalogId: s.catalogId }} className="tk-for" />)}
-              {showGame && unit && <GameIcon src={game?.art?.icon ?? null} alt={gi.name} glyph="game" tint={game?.accent} className="tk-game" />}
+              <strong>{goal.title}</strong>
+              {forWhom.map((source) => <UnitIcon key={source.catalogId} gameKey={gameInstance.gameKey} unit={{ kind: "character", catalogId: source.catalogId }} className="tk-for" />)}
+              {showGame && unit && <GameIcon src={game?.art?.icon ?? null} alt={gameInstance.name} glyph="game" tint={game?.accent} className="tk-game" />}
               {parent && (
                 <span className="tag tk-parent" title={`Its steps count in ${parent.title}`}>
                   ↳ {parent.title}
                 </span>
               )}
             </span>
-            <span className="mn mu">{sub}</span>
+            <span className="mn mu">{subtitle}</span>
           </span>
         </button>
         {total > 0 && (
@@ -103,40 +103,40 @@ export function GoalCard({ t, tasks, linkable = [], gi, reward, weekday, showGam
           <span className="badge done">Claimed</span>
         ) : (
           <span className="tk-prio" role="group" aria-label="Priority">
-            {PRIORITIES.map((p) => (
-              <button key={p.key} type="button" className={`prio-${p.key}`} aria-label={p.label} title={p.label} aria-pressed={t.priority === p.key} onClick={() => t.priority !== p.key && update.mutate({ priority: p.key })}>
-                {p.icon}
+            {PRIORITIES.map((priorityOption) => (
+              <button key={priorityOption.key} type="button" className={`prio-${priorityOption.key}`} aria-label={priorityOption.label} title={priorityOption.label} aria-pressed={goal.priority === priorityOption.key} onClick={() => goal.priority !== priorityOption.key && update.mutate({ priority: priorityOption.key })}>
+                {priorityOption.icon}
               </button>
             ))}
           </span>
         )}
         <label className="tk-notify">
-          <input type="checkbox" key={String(t.notify)} defaultChecked={t.notify} onChange={(e) => update.mutate({ notify: e.target.checked })} />
+          <input type="checkbox" key={String(goal.notify)} defaultChecked={goal.notify} onChange={(event) => update.mutate({ notify: event.target.checked })} />
           Notify
         </label>
       </div>
       {open && (
         <div className="tk-steps">
-          <PlanSteps origin={t.origin} gameKey={gi.gameKey} />
-          {materials && kids.length > 0 && <MaterialSteps kids={kids} gameKey={gi.gameKey} weekday={weekday} onProgress={(id, v) => progress.mutate({ id, progress: v })} />}
-          {items.map((it, i) => (
-            <label key={i} className="tk-step tk-check">
+          <PlanSteps origin={goal.origin} gameKey={gameInstance.gameKey} />
+          {materials && kids.length > 0 && <MaterialSteps kids={kids} gameKey={gameInstance.gameKey} weekday={weekday} onProgress={(id, progressValue) => progress.mutate({ id, progress: progressValue })} />}
+          {items.map((item, itemIndex) => (
+            <label key={itemIndex} className="tk-step tk-check">
               <input
                 type="checkbox"
-                key={`${i}:${it.done}`}
-                defaultChecked={it.done}
+                key={`${itemIndex}:${item.done}`}
+                defaultChecked={item.done}
                 disabled={claimed}
-                onChange={() => setItems.mutate(items.map((x, j) => (j === i ? { ...x, done: !x.done } : x)))}
+                onChange={() => setItems.mutate(items.map((otherItem, otherIndex) => (otherIndex === itemIndex ? { ...otherItem, done: !otherItem.done } : otherItem)))}
               />
-              {it.label}
+              {item.label}
             </label>
           ))}
-          {t.type === "checklist" && (
+          {goal.type === "checklist" && (
             <form
               className="tk-step tk-add"
-              onSubmit={(e) => {
-                e.preventDefault();
-                const input = e.currentTarget.elements.namedItem("step") as HTMLInputElement;
+              onSubmit={(event) => {
+                event.preventDefault();
+                const input = event.currentTarget.elements.namedItem("step") as HTMLInputElement;
                 if (input.value.trim()) setItems.mutate([...items, { label: input.value.trim(), done: false }]);
                 input.value = "";
               }}
@@ -145,27 +145,27 @@ export function GoalCard({ t, tasks, linkable = [], gi, reward, weekday, showGam
               <button className="btn" type="submit">Add</button>
             </form>
           )}
-          {!kids.length && t.type === "goal" && !t.eventId && (
+          {!kids.length && goal.type === "goal" && !goal.eventId && (
             <label className="tk-step tk-check">
               Progress
-              <input type="number" min={0} key={t.progress} defaultValue={t.progress} onBlur={(e) => Number(e.target.value) !== t.progress && progress.mutate({ id: t.id, progress: Number(e.target.value) })} />
-              <span className="mn mu">/ {t.target ?? "∞"}</span>
+              <input type="number" min={0} key={goal.progress} defaultValue={goal.progress} onBlur={(event) => Number(event.target.value) !== goal.progress && progress.mutate({ id: goal.id, progress: Number(event.target.value) })} />
+              <span className="mn mu">/ {goal.target ?? "∞"}</span>
             </label>
           )}
           {linked.length > 0 && (
             <ul className="tk-linked" aria-label="Linked goals">
-              {linked.map((k) => {
-                const [d, n] = goalSteps(k, tasks);
+              {linked.map((linkedGoal) => {
+                const [kidDone, kidTotal] = goalSteps(linkedGoal, tasks);
                 return (
-                  <li key={k.id} className="tk-step">
-                    <span className="tk-step-name">{k.title}</span>
-                    {n > 0 && (
+                  <li key={linkedGoal.id} className="tk-step">
+                    <span className="tk-step-name">{linkedGoal.title}</span>
+                    {kidTotal > 0 && (
                       <span className="mn">
-                        {d} / {n}
+                        {kidDone} / {kidTotal}
                       </span>
                     )}
-                    <Meter done={d} total={n} />
-                    <button className="btn ghost sm" onClick={() => link.mutate({ id: k.id, parentId: null })}>
+                    <Meter done={kidDone} total={kidTotal} />
+                    <button className="btn ghost sm" onClick={() => link.mutate({ id: linkedGoal.id, parentId: null })}>
                       Unlink
                     </button>
                   </li>
@@ -174,17 +174,17 @@ export function GoalCard({ t, tasks, linkable = [], gi, reward, weekday, showGam
             </ul>
           )}
           <div className="tk-actions">
-            {t.parentId && (
-              <button className="btn ghost" onClick={() => link.mutate({ id: t.id, parentId: null })}>
+            {goal.parentId && (
+              <button className="btn ghost" onClick={() => link.mutate({ id: goal.id, parentId: null })}>
                 Unlink
               </button>
             )}
-            {!t.parentId && !t.eventId && linkable.length > 0 && (
+            {!goal.parentId && !goal.eventId && linkable.length > 0 && (
               <div className="tk-link">
-                <Picker label="Link to" placeholder="Link to…" value="" icons={false} options={linkable.map((g) => ({ id: g.id, name: g.title }))} onPick={(g) => g && link.mutate({ id: t.id, parentId: g.id })} />
+                <Picker label="Link to" placeholder="Link to…" value="" icons={false} options={linkable.map((linkableGoal) => ({ id: linkableGoal.id, name: linkableGoal.title }))} onPick={(linkableGoal) => linkableGoal && link.mutate({ id: goal.id, parentId: linkableGoal.id })} />
               </div>
             )}
-            {t.eventId &&
+            {goal.eventId &&
               (claimed ? (
                 <button className="btn" disabled={claim.isPending} onClick={() => claim.mutate(false)}>
                   Unclaim
@@ -212,14 +212,14 @@ const stepOf = (category = "") => (/talent|trace/i.test(category) ? "Talents" : 
  * its materials done and a TODAY tag where its domain is open on the game
  * day; under each, the materials with what you have and need.
  */
-function MaterialSteps({ kids, gameKey, weekday, onProgress }: { kids: TaskItem[]; gameKey: string; weekday?: number; onProgress: (id: string, v: number) => void }) {
+function MaterialSteps({ kids, gameKey, weekday, onProgress }: { kids: TaskItem[]; gameKey: string; weekday?: number; onProgress: (id: string, change: number) => void }) {
   const { index } = useCatalog(gameKey);
-  const rows = kids.map((k) => ({ k, material: k.materialId ? index?.materials.get(k.materialId) : undefined }));
+  const rows = kids.map((kid) => ({ kid, material: kid.materialId ? index?.materials.get(kid.materialId) : undefined }));
   return STEPS.map((step) => {
-    const mine = rows.filter((r) => stepOf(r.material?.category) === step);
+    const mine = rows.filter((row) => stepOf(row.material?.category) === step);
     if (!mine.length) return null;
-    const done = mine.filter((r) => r.k.progress >= (r.k.target ?? 0)).length;
-    const today = weekday !== undefined && mine.some((r) => r.k.progress < (r.k.target ?? 0) && Boolean(r.material?.availability?.length) && farmableToday(r.material!.availability, weekday));
+    const done = mine.filter((row) => row.kid.progress >= (row.kid.target ?? 0)).length;
+    const today = weekday !== undefined && mine.some((row) => row.kid.progress < (row.kid.target ?? 0) && Boolean(row.material?.availability?.length) && farmableToday(row.material!.availability, weekday));
     return (
       <div key={step} className="tk-group">
         <div className="tk-step">
@@ -232,17 +232,17 @@ function MaterialSteps({ kids, gameKey, weekday, onProgress }: { kids: TaskItem[
           </span>
           <Meter done={done} total={mine.length} />
         </div>
-        {mine.map(({ k, material }) => {
-          const name = k.title.replace(/^Farm /, "");
+        {mine.map(({ kid, material }) => {
+          const name = kid.title.replace(/^Farm /, "");
           return (
-            <div key={k.id} className="tk-mat">
+            <div key={kid.id} className="tk-mat">
               <span className="tk-mat-name">
                 <CatalogIcon gameKey={gameKey} kind="material" icon={material?.icon} name={material?.name ?? name} />
                 {name}
               </span>
-              <input type="number" min={0} aria-label={`${name} on hand`} key={k.progress} defaultValue={k.progress} onBlur={(e) => Number(e.target.value) !== k.progress && onProgress(k.id, Number(e.target.value))} />
+              <input type="number" min={0} aria-label={`${name} on hand`} key={kid.progress} defaultValue={kid.progress} onBlur={(event) => Number(event.target.value) !== kid.progress && onProgress(kid.id, Number(event.target.value))} />
               <span className="mn mu">
-                {k.progress} / {k.target ?? 0}
+                {kid.progress} / {kid.target ?? 0}
               </span>
             </div>
           );
@@ -254,13 +254,13 @@ function MaterialSteps({ kids, gameKey, weekday, onProgress }: { kids: TaskItem[
 
 /** A plan's depth (Georges, 2026-10-11): its level range with each ascension it crosses, then each talent's range, by name. */
 function PlanSteps({ origin, gameKey }: { origin: unknown; gameKey: string }) {
-  const o = origin as { catalogId?: string; kind?: string; goal?: { level?: Range; talents?: Record<string, Range> } } | null;
-  const { index } = useCatalog(o?.goal ? gameKey : undefined);
-  if (!o?.goal || !o.catalogId) return null;
-  const entry = o.kind === "weapon" ? index?.weapons.get(o.catalogId) : index?.characters.get(o.catalogId);
-  const level = o.goal.level;
-  const caps = level && entry ? levelCaps(entry.ascension, 20).filter((c) => c > level.from && c <= level.to) : [];
-  const talentName = (k: string) => (entry && "talents" in entry ? entry.talents.info?.find((i) => i.key === k)?.name : undefined) ?? k.charAt(0).toUpperCase() + k.slice(1);
+  const goalOrigin = origin as { catalogId?: string; kind?: string; goal?: { level?: Range; talents?: Record<string, Range> } } | null;
+  const { index } = useCatalog(goalOrigin?.goal ? gameKey : undefined);
+  if (!goalOrigin?.goal || !goalOrigin.catalogId) return null;
+  const entry = goalOrigin.kind === "weapon" ? index?.weapons.get(goalOrigin.catalogId) : index?.characters.get(goalOrigin.catalogId);
+  const level = goalOrigin.goal.level;
+  const caps = level && entry ? levelCaps(entry.ascension, 20).filter((cap) => cap > level.from && cap <= level.to) : [];
+  const talentName = (talentKey: string) => (entry && "talents" in entry ? entry.talents.info?.find((info) => info.key === talentKey)?.name : undefined) ?? talentKey.charAt(0).toUpperCase() + talentKey.slice(1);
   return (
     <ul className="tk-plan" aria-label="Plan">
       {level && (
@@ -268,14 +268,14 @@ function PlanSteps({ origin, gameKey }: { origin: unknown; gameKey: string }) {
           <span className="tk-step-name">
             Lv {level.from} → {level.to}
           </span>
-          <span className="tk-caps mn mu">{caps.map((c) => `▸ ${c}`).join("  ")}</span>
+          <span className="tk-caps mn mu">{caps.map((cap) => `▸ ${cap}`).join("  ")}</span>
         </li>
       )}
-      {Object.entries(o.goal.talents ?? {}).map(([k, r]) => (
-        <li key={k}>
-          <span className="tk-step-name">{talentName(k)}</span>
+      {Object.entries(goalOrigin.goal.talents ?? {}).map(([talentKey, range]) => (
+        <li key={talentKey}>
+          <span className="tk-step-name">{talentName(talentKey)}</span>
           <span className="mn">
-            {r.from} → {r.to}
+            {range.from} → {range.to}
           </span>
         </li>
       ))}

@@ -14,7 +14,7 @@ import { RedeemCodesCard } from "../components/hub/RedeemCodesCard";
 
 const DATE = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
 const CLOCK = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit" });
-const ordinal = (n: number) => `${n}${n % 10 === 1 && n !== 11 ? "st" : n % 10 === 2 && n !== 12 ? "nd" : n % 10 === 3 && n !== 13 ? "rd" : "th"}`;
+const ordinal = (value: number) => `${value}${value % 10 === 1 && value !== 11 ? "st" : value % 10 === 2 && value !== 12 ? "nd" : value % 10 === 3 && value !== 13 ? "rd" : "th"}`;
 
 /** A date that matters, as a chip: paper within 48 hours (VISUAL-DESIGN.md §7). */
 function DateChip({ at, prefix = "" }: { at: Date; prefix?: string }) {
@@ -43,13 +43,13 @@ export function ActivitiesPage() {
   const game = instance && getGame(instance.gameKey);
   if (!instance || !game) return <div className="muted">Loading…</div>;
 
-  const region = game.regions.find((r) => r.key === instance.regionKey) ?? game.regions[0]!;
-  const dg = dash?.games.find((g) => g.instanceId === id);
-  const recurring = tasks.filter((t) => t.type === "recurring");
+  const region = game.regions.find((candidate) => candidate.key === instance.regionKey) ?? game.regions[0]!;
+  const dashGame = dash?.games.find((candidate) => candidate.instanceId === id);
+  const recurring = tasks.filter((task) => task.type === "recurring");
   const now = new Date();
   const resets = hubResets(game, region, now);
   const monthlyEnd = cadenceWindow({ cadence: "monthly", day: 1 }, region, now).end;
-  const pv = passView(
+  const passState = passView(
     game,
     region,
     now,
@@ -63,17 +63,17 @@ export function ActivitiesPage() {
         <GameTabs instanceId={id!} active="activities" gameKey={instance.gameKey} />
       </div>
       <div className="activities">
-        <Stamina game={game} instance={instance} projection={dg?.stamina ?? null} />
+        <Stamina game={game} instance={instance} projection={dashGame?.stamina ?? null} />
         <div className="act-cadences">
-          <CadenceList instanceId={id!} game={game} cadence="daily" title="Daily" items={recurring.filter((t) => (t.cadence ?? "daily") === "daily")} resetsAt={resets.daily} />
-          <CadenceList instanceId={id!} game={game} cadence="weekly" title="Weekly" items={recurring.filter((t) => t.cadence === "weekly")} resetsAt={resets.weekly} />
-          <CadenceList instanceId={id!} game={game} cadence="monthly" title="Monthly" items={recurring.filter((t) => t.cadence === "monthly")} resetsAt={monthlyEnd}>
-            {game.manifest.monthlyPass && <MonthlyPass instanceId={id!} name={game.manifest.monthlyPass.name} daysLeft={pv.monthlyDaysLeft} />}
+          <CadenceList instanceId={id!} game={game} cadence="daily" title="Daily" items={recurring.filter((task) => (task.cadence ?? "daily") === "daily")} resetsAt={resets.daily} />
+          <CadenceList instanceId={id!} game={game} cadence="weekly" title="Weekly" items={recurring.filter((task) => task.cadence === "weekly")} resetsAt={resets.weekly} />
+          <CadenceList instanceId={id!} game={game} cadence="monthly" title="Monthly" items={recurring.filter((task) => task.cadence === "monthly")} resetsAt={monthlyEnd}>
+            {game.manifest.monthlyPass && <MonthlyPass instanceId={id!} name={game.manifest.monthlyPass.name} daysLeft={passState.monthlyDaysLeft} />}
           </CadenceList>
         </div>
         <div className="act-bottom">
-          <Cycles game={game} modes={endgameNow(game, region, now, (cycles?.results ?? []).map((r) => ({ ...r, cycleStart: new Date(r.cycleStart) }))).modes} instanceId={id!} />
-          <Version instanceId={id!} game={game} pv={pv} endsAt={resets.versionEnd} events={(dash?.timeline.events ?? []).filter((e) => e.gameKey === game.key && Date.parse(e.startsAt) <= now.getTime())} />
+          <Cycles game={game} modes={endgameNow(game, region, now, (cycles?.results ?? []).map((result) => ({ ...result, cycleStart: new Date(result.cycleStart) }))).modes} instanceId={id!} />
+          <Version instanceId={id!} game={game} passState={passState} endsAt={resets.versionEnd} events={(dash?.timeline.events ?? []).filter((event) => event.gameKey === game.key && Date.parse(event.startsAt) <= now.getTime())} />
         </div>
         <RedeemCodesCard instanceId={id!} gameKey={game.key} />
       </div>
@@ -83,16 +83,16 @@ export function ActivitiesPage() {
 
 function Stamina({ game, instance, projection }: { game: GameDefinition; instance: InstanceDetail; projection: DashboardData["games"][number]["stamina"] }) {
   const remind = useReminderFlag(instance.id, "whenStaminaFull");
-  const def = game.currencies.find((c) => c.key === game.manifest.stamina.currency);
-  const reserveDef = game.currencies.find((c) => c.key === game.manifest.stamina.reserve?.currency);
-  if (!def) return null;
-  const value = projection?.value ?? instance.currencies.find((c) => c.key === def.key)?.value ?? 0;
-  const cap = projection?.cap ?? def.cap ?? 0;
-  const reserve = reserveDef ? (instance.currencies.find((c) => c.key === reserveDef.key)?.value ?? 0) : null;
+  const staminaCurrency = game.currencies.find((currency) => currency.key === game.manifest.stamina.currency);
+  const reserveDef = game.currencies.find((currency) => currency.key === game.manifest.stamina.reserve?.currency);
+  if (!staminaCurrency) return null;
+  const value = projection?.value ?? instance.currencies.find((held) => held.key === staminaCurrency.key)?.value ?? 0;
+  const cap = projection?.cap ?? staminaCurrency.cap ?? 0;
+  const reserve = reserveDef ? (instance.currencies.find((held) => held.key === reserveDef.key)?.value ?? 0) : null;
   return (
-    <section className="graph act-stamina" aria-label={def.label}>
+    <section className="graph act-stamina" aria-label={staminaCurrency.label}>
       <div className="ph">
-        <h3>{def.label}</h3>
+        <h3>{staminaCurrency.label}</h3>
         <span className="sp" />
         {projection?.full ? (
           <span className="chip hot">
@@ -108,7 +108,7 @@ function Stamina({ game, instance, projection }: { game: GameDefinition; instanc
         )}
       </div>
       <label className="act-remind">
-        <input type="checkbox" key={String(remind.on)} defaultChecked={remind.on} disabled={remind.pending} onChange={(e) => remind.set(e.target.checked)} />
+        <input type="checkbox" key={String(remind.on)} defaultChecked={remind.on} disabled={remind.pending} onChange={(event) => remind.set(event.target.checked)} />
         Remind when full
       </label>
       <div className="act-stamina-body">
@@ -150,11 +150,11 @@ function CadenceList({
   resetsAt: Date;
   children?: ReactNode;
 }) {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   const [adding, setAdding] = useState(false);
   const refresh = () => {
-    qc.invalidateQueries({ queryKey: ["tasks"] });
-    qc.invalidateQueries({ queryKey: ["dashboard"] });
+    queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    queryClient.invalidateQueries({ queryKey: ["dashboard"] });
   };
   const add = useMutation({
     mutationFn: (body: { title: string; anchorKey?: string }) => api.post("/api/tasks", { scope: "game", refId: instanceId, type: "recurring", cadence, ...body }),
@@ -163,16 +163,16 @@ function CadenceList({
       refresh();
     },
   });
-  const anchors = cadence === "monthly" ? [...game.manifest.monthlyShops, ...game.manifest.endgame.flatMap((e) => (e.anchor.cadence === "monthly" ? [{ key: e.key, name: e.name, day: e.anchor.day }] : []))] : [];
+  const anchors = cadence === "monthly" ? [...game.manifest.monthlyShops, ...game.manifest.endgame.flatMap((endgameMode) => (endgameMode.anchor.cadence === "monthly" ? [{ key: endgameMode.key, name: endgameMode.name, day: endgameMode.anchor.day }] : []))] : [];
   // A monthly item resets on its own day; the list's chip shows the soonest.
-  const soonest = items.map((t) => t.nextReset).filter((x): x is string => Boolean(x)).sort()[0];
-  const submit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const f = new FormData(e.currentTarget);
-    const anchorKey = String(f.get("anchor") ?? "");
-    add.mutate({ title: String(f.get("title") ?? "").trim(), ...(anchorKey ? { anchorKey } : {}) });
+  const soonest = items.map((item) => item.nextReset).filter((resetAt): resetAt is string => Boolean(resetAt)).sort()[0];
+  const submit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const anchorKey = String(formData.get("anchor") ?? "");
+    add.mutate({ title: String(formData.get("title") ?? "").trim(), ...(anchorKey ? { anchorKey } : {}) });
   };
-  const done = items.filter((t) => t.doneThisCycle).length;
+  const done = items.filter((item) => item.doneThisCycle).length;
   return (
     <section className="card act-list" aria-label={title}>
       <div className="spread">
@@ -183,9 +183,9 @@ function CadenceList({
       </div>
       <div className="act-rows" style={tickColumn(items)}>
         {/* One tick control everywhere (round 7): a counted daily by its steps. */}
-        {items.map((t) => (
-          <TickRow key={t.id} instanceId={instanceId} task={t}>
-            {cadence === "monthly" && t.anchorKey && anchors.find((a) => a.key === t.anchorKey)?.name !== t.title && <span className="mn mu">{anchors.find((a) => a.key === t.anchorKey)?.name}</span>}
+        {items.map((item) => (
+          <TickRow key={item.id} instanceId={instanceId} task={item}>
+            {cadence === "monthly" && item.anchorKey && anchors.find((anchor) => anchor.key === item.anchorKey)?.name !== item.title && <span className="mn mu">{anchors.find((anchor) => anchor.key === item.anchorKey)?.name}</span>}
           </TickRow>
         ))}
         {items.length === 0 && <p className="mu act-empty">Nothing {title.toLowerCase()} yet.</p>}
@@ -201,9 +201,9 @@ function CadenceList({
             <label>
               <span>Resets with</span>
               <select name="anchor" defaultValue={anchors[0]?.key ?? ""}>
-                {anchors.map((a) => (
-                  <option key={a.key} value={a.key}>
-                    {a.name} · {ordinal(a.day)}
+                {anchors.map((anchor) => (
+                  <option key={anchor.key} value={anchor.key}>
+                    {anchor.name} · {ordinal(anchor.day)}
                   </option>
                 ))}
                 <option value="">The 1st of the month</option>
@@ -236,14 +236,14 @@ function Cycles({ game, modes, instanceId }: { game: GameDefinition; modes: Retu
         </Link>
       </div>
       <div className="act-rows">
-        {modes.map(({ mode: e, result, closes, open, end }) => (
+        {modes.map(({ mode: endgameMode, result, closes, open, end }) => (
           // A mode that closes before its next cycle (Stygian Onslaught) counts down to its close.
-          <div key={e.key} className="act-row">
-            <span className="act-title">{e.name}</span>
+          <div key={endgameMode.key} className="act-row">
+            <span className="act-title">{endgameMode.name}</span>
             <span className="mn mu">
-              {result ?? "—"} / {e.metric.max ?? "—"} {e.metric.label}
+              {result ?? "—"} / {endgameMode.metric.max ?? "—"} {endgameMode.metric.label}
             </span>
-            {open ? <DateChip at={closes} prefix={e.openDays ? "closes " : "resets "} /> : <DateChip at={end} prefix="opens " />}
+            {open ? <DateChip at={closes} prefix={endgameMode.openDays ? "closes " : "resets "} /> : <DateChip at={end} prefix="opens " />}
           </div>
         ))}
         {game.manifest.endgame.length === 0 && <p className="mu act-empty">No endgame mode on record yet.</p>}
@@ -253,17 +253,17 @@ function Cycles({ game, modes, instanceId }: { game: GameDefinition; modes: Retu
 }
 
 type PassView = ReturnType<typeof passView>;
-const NUM = new Intl.NumberFormat("en-GB");
+const NUMBER_FORMAT = new Intl.NumberFormat("en-GB");
 
 /** Invalidate what a pass change touches. */
 function usePassSave(instanceId: string, path: string, close: () => void) {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (body: object) => api.put(`/api/instances/${instanceId}/passes/${path}`, body),
     onSuccess: () => {
       close();
-      qc.invalidateQueries({ queryKey: ["passes", instanceId] });
-      qc.invalidateQueries({ queryKey: ["dashboard"] });
+      queryClient.invalidateQueries({ queryKey: ["passes", instanceId] });
+      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
     },
   });
 }
@@ -272,9 +272,9 @@ function usePassSave(instanceId: string, path: string, close: () => void) {
 function MonthlyPass({ instanceId, name, daysLeft }: { instanceId: string; name: string; daysLeft: number | null }) {
   const [editing, setEditing] = useState(false);
   const save = usePassSave(instanceId, "monthly", () => setEditing(false));
-  const submit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    save.mutate({ daysLeft: Number(new FormData(e.currentTarget).get("days")) });
+  const submit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    save.mutate({ daysLeft: Number(new FormData(event.currentTarget).get("days")) });
   };
   return editing ? (
     <form className="act-add" onSubmit={submit}>
@@ -301,14 +301,14 @@ function MonthlyPass({ instanceId, name, daysLeft }: { instanceId: string; name:
   );
 }
 
-function Version({ instanceId, game, pv, endsAt, events }: { instanceId: string; game: GameDefinition; pv: PassView; endsAt: Date; events: DashboardData["timeline"]["events"] }) {
+function Version({ instanceId, game, passState, endsAt, events }: { instanceId: string; game: GameDefinition; passState: PassView; endsAt: Date; events: DashboardData["timeline"]["events"] }) {
   const pass = game.manifest.battlePass;
   const [editing, setEditing] = useState(false);
   const save = usePassSave(instanceId, "battle", () => setEditing(false));
-  const submit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const f = new FormData(e.currentTarget);
-    save.mutate({ level: Number(f.get("level")), weeklyXp: Number(f.get("xp") || 0) });
+  const submit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    save.mutate({ level: Number(formData.get("level")), weeklyXp: Number(formData.get("xp") || 0) });
   };
   return (
     <section className="card act-version" aria-label={`Version ${game.manifest.version.name}`}>
@@ -332,11 +332,11 @@ function Version({ instanceId, game, pv, endsAt, events }: { instanceId: string;
               <form className="act-add" onSubmit={submit}>
                 <label>
                   <span>Level</span>
-                  <input name="level" type="number" min={0} max={pass.maxLevel ?? 200} required defaultValue={pv.level} autoFocus />
+                  <input name="level" type="number" min={0} max={pass.maxLevel ?? 200} required defaultValue={passState.level} autoFocus />
                 </label>
                 <label>
                   <span>Weekly XP</span>
-                  <input name="xp" type="number" min={0} max={pass.weeklyXpCap ?? 1_000_000} defaultValue={pv.weeklyXp} />
+                  <input name="xp" type="number" min={0} max={pass.weeklyXpCap ?? 1_000_000} defaultValue={passState.weeklyXp} />
                 </label>
                 <button type="submit" className="btn primary" disabled={save.isPending}>
                   Save
@@ -350,26 +350,26 @@ function Version({ instanceId, game, pv, endsAt, events }: { instanceId: string;
               <>
                 <div className="act-pass-level">
                   <div className="kpi-value">
-                    {pv.level}
-                    {pv.maxLevel !== null && <small> / {pv.maxLevel}</small>}
+                    {passState.level}
+                    {passState.maxLevel !== null && <small> / {passState.maxLevel}</small>}
                   </div>
-                  {pv.levelsPerDay !== null && (
+                  {passState.levelsPerDay !== null && (
                     <span className="mn mu">
-                      {pv.levelsPerDay.toFixed(1)} {pv.levelsPerDay === 1 ? "level" : "levels"} a day to finish
+                      {passState.levelsPerDay.toFixed(1)} {passState.levelsPerDay === 1 ? "level" : "levels"} a day to finish
                     </span>
                   )}
                 </div>
-                {pv.maxLevel !== null && <SegmentedBar level={pv.level} max={pv.maxLevel} label={pass.name} />}
+                {passState.maxLevel !== null && <SegmentedBar level={passState.level} max={passState.maxLevel} label={pass.name} />}
                 <div className="act-xp">
                   <span className="kpi-label">Weekly XP</span>
                   <span className="mn">
-                    {NUM.format(pv.weeklyXp)}
-                    {pv.weeklyXpCap !== null && ` / ${NUM.format(pv.weeklyXpCap)}`}
+                    {NUMBER_FORMAT.format(passState.weeklyXp)}
+                    {passState.weeklyXpCap !== null && ` / ${NUMBER_FORMAT.format(passState.weeklyXpCap)}`}
                   </span>
                 </div>
-                {pv.weeklyXpCap !== null && (
-                  <div className="act-meter act-meter-thin" role="img" aria-label={`Weekly XP ${pv.weeklyXp} of ${pv.weeklyXpCap}`}>
-                    <span style={{ width: `${Math.min(100, (pv.weeklyXp / pv.weeklyXpCap) * 100)}%` }} />
+                {passState.weeklyXpCap !== null && (
+                  <div className="act-meter act-meter-thin" role="img" aria-label={`Weekly XP ${passState.weeklyXp} of ${passState.weeklyXpCap}`}>
+                    <span style={{ width: `${Math.min(100, (passState.weeklyXp / passState.weeklyXpCap) * 100)}%` }} />
                   </div>
                 )}
                 <button type="button" className="btn act-add-btn" aria-label="Update the battle pass" onClick={() => setEditing(true)}>
@@ -381,10 +381,10 @@ function Version({ instanceId, game, pv, endsAt, events }: { instanceId: string;
         <div>
           <div className="kpi-label">Events</div>
           <div className="act-rows">
-            {events.map((e) => (
-              <div key={e.id} className="act-row">
-                <span className="act-title">{e.name}</span>
-                <DateChip at={new Date(e.endsAt)} />
+            {events.map((event) => (
+              <div key={event.id} className="act-row">
+                <span className="act-title">{event.name}</span>
+                <DateChip at={new Date(event.endsAt)} />
               </div>
             ))}
             {events.length === 0 && <p className="mu act-empty">No event running.</p>}

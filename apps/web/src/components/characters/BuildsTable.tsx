@@ -29,42 +29,42 @@ export function BuildsTable({
   builds: CharacterDto[];
   entryOf: (catalogId: string | null) => CatalogCharacter | undefined;
 }) {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   const toast = useToast();
   const [picked, setPicked] = useState<Set<string>>(new Set());
   const teams = useQuery({ queryKey: ["teams", instanceId], queryFn: () => api.get<TeamDto[]>(`/api/instances/${instanceId}/teams`) });
-  const refresh = () => qc.invalidateQueries({ queryKey: ["characters", instanceId] });
+  const refresh = () => queryClient.invalidateQueries({ queryKey: ["characters", instanceId] });
   const setStatus = useMutation({
-    mutationFn: ({ ids, status }: { ids: string[]; status: BuildStatus }) => Promise.all(ids.map((b) => api.put(`/api/characters/${b}`, { buildStatus: status }))),
+    mutationFn: ({ ids, status }: { ids: string[]; status: BuildStatus }) => Promise.all(ids.map((buildId) => api.put(`/api/characters/${buildId}`, { buildStatus: status }))),
     onSuccess: refresh,
     onError: () => toast("Status not saved", "err"),
   });
   const remove = useMutation({
-    mutationFn: (ids: string[]) => Promise.all(ids.map((b) => api.del(`/api/characters/${b}`))),
+    mutationFn: (ids: string[]) => Promise.all(ids.map((buildId) => api.del(`/api/characters/${buildId}`))),
     onSuccess: () => {
       setPicked(new Set());
       void refresh();
     },
     onError: () => toast("Could not delete the builds", "err"),
   });
-  const toggle = (b: string) =>
-    setPicked((p) => {
-      const n = new Set(p);
-      if (n.has(b)) n.delete(b);
-      else n.add(b);
-      return n;
+  const toggle = (buildId: string) =>
+    setPicked((previous) => {
+      const nextPicked = new Set(previous);
+      if (nextPicked.has(buildId)) nextPicked.delete(buildId);
+      else nextPicked.add(buildId);
+      return nextPicked;
     });
-  const rows = [...builds].sort((a, z) => a.name.localeCompare(z.name));
+  const rows = [...builds].sort((first, second) => first.name.localeCompare(second.name));
 
   return (
     <section className="card">
       {picked.size > 0 && (
         <div className="ch-bulk" role="region" aria-label="Selected builds">
           <span className="mn">{picked.size} selected</span>
-          <select aria-label="Set the status of the selected builds" value="" onChange={(e) => e.target.value && setStatus.mutate({ ids: [...picked], status: e.target.value as BuildStatus })}>
+          <select aria-label="Set the status of the selected builds" value="" onChange={(event) => event.target.value && setStatus.mutate({ ids: [...picked], status: event.target.value as BuildStatus })}>
             <option value="">Set status…</option>
-            {STATUSES.map((o) => (
-              <option key={o.value} value={o.value}>{o.label}</option>
+            {STATUSES.map((statusOption) => (
+              <option key={statusOption.value} value={statusOption.value}>{statusOption.label}</option>
             ))}
           </select>
           <button className="btn" disabled={remove.isPending} onClick={() => confirm(`Delete ${picked.size} build${picked.size === 1 ? "" : "s"}?`) && remove.mutate([...picked])}>
@@ -77,7 +77,7 @@ export function BuildsTable({
         <thead>
           <tr>
             <th>
-              <input type="checkbox" aria-label="Select every build" checked={rows.length > 0 && picked.size === rows.length} onChange={(e) => setPicked(e.target.checked ? new Set(rows.map((r) => r.id)) : new Set())} />
+              <input type="checkbox" aria-label="Select every build" checked={rows.length > 0 && picked.size === rows.length} onChange={(event) => setPicked(event.target.checked ? new Set(rows.map((row) => row.id)) : new Set())} />
             </th>
             <th>Build</th>
             <th>Status</th>
@@ -88,37 +88,37 @@ export function BuildsTable({
           </tr>
         </thead>
         <tbody>
-          {rows.map((b) => {
-            const doc = (b.doc ?? {}) as Record<string, unknown>;
-            const entry = entryOf(b.catalogId);
-            const inTeams = (teams.data ?? []).filter((t) => b.catalogId && t.members.includes(b.catalogId));
+          {rows.map((row) => {
+            const doc = (row.doc ?? {}) as Record<string, unknown>;
+            const entry = entryOf(row.catalogId);
+            const inTeams = (teams.data ?? []).filter((team) => row.catalogId && team.members.includes(row.catalogId));
             return (
-              <tr key={b.id}>
+              <tr key={row.id}>
                 <td>
-                  <input type="checkbox" aria-label={`Select ${b.name}`} checked={picked.has(b.id)} onChange={() => toggle(b.id)} />
+                  <input type="checkbox" aria-label={`Select ${row.name}`} checked={picked.has(row.id)} onChange={() => toggle(row.id)} />
                 </td>
                 <td>
-                  <Link to={`/characters/${b.id}`}>{b.name}</Link>
-                  {entry && entry.name !== b.name && <span className="mu"> · {entry.name}</span>}
+                  <Link to={`/characters/${row.id}`}>{row.name}</Link>
+                  {entry && entry.name !== row.name && <span className="mu"> · {entry.name}</span>}
                   <div className="mn mu">{buildLine(game, doc, entry?.talents.keys ?? [])}</div>
                 </td>
                 <td>
-                  <select aria-label={`${b.name} status`} value={b.buildStatus} onChange={(e) => setStatus.mutate({ ids: [b.id], status: e.target.value as BuildStatus })}>
-                    {STATUSES.map((o) => (
-                      <option key={o.value} value={o.value}>{o.label}</option>
+                  <select aria-label={`${row.name} status`} value={row.buildStatus} onChange={(event) => setStatus.mutate({ ids: [row.id], status: event.target.value as BuildStatus })}>
+                    {STATUSES.map((statusOption) => (
+                      <option key={statusOption.value} value={statusOption.value}>{statusOption.label}</option>
                     ))}
                   </select>
                 </td>
-                <td>{buildRole(game, b.role)}</td>
+                <td>{buildRole(game, row.role)}</td>
                 <td>
-                  {buildKpis(game, doc, b.role).map((k) => (
-                    <span key={k.label} className="ch-tkpi">
-                      <span className="kpi-label">{k.label}</span> <span className="mn">{k.value}</span>
+                  {buildKpis(game, doc, row.role).map((kpi) => (
+                    <span key={kpi.label} className="ch-tkpi">
+                      <span className="kpi-label">{kpi.label}</span> <span className="mn">{kpi.value}</span>
                     </span>
                   ))}
                 </td>
                 <td className="mu">{gearSetLabel(game, doc) ?? ""}</td>
-                <td>{inTeams.length ? inTeams.map((t) => t.name).join(", ") : <span className="mu">—</span>}</td>
+                <td>{inTeams.length ? inTeams.map((team) => team.name).join(", ") : <span className="mu">—</span>}</td>
               </tr>
             );
           })}

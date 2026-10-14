@@ -20,10 +20,10 @@ function PullIcon({ kind }: { kind: Kind }) {
   );
 }
 
-export function Count({ n, kind }: { n: number | null; kind: Kind }) {
+export function Count({ count, kind }: { count: number | null; kind: Kind }) {
   return (
     <span className={`pull-n is-${kind}`} title={`${kind} pulls`}>
-      {n ?? "—"}
+      {count ?? "—"}
       <PullIcon kind={kind} />
     </span>
   );
@@ -40,15 +40,15 @@ export function Count({ n, kind }: { n: number | null; kind: Kind }) {
 export function PullsCard({ games, day = null }: { games: DashGame[]; day?: string | null }) {
   // A pinned past day: limited pulls on hand from its records; tickets and pity have no history.
   const rows = games
-    .map((g) => {
-      const now = pullsFor(g.currencies);
-      const hasSpecial = g.currencies.some((c) => c.onlyFor && c.pullCost);
-      return { g, ...now, hasSpecial, limited: day ? dayOf(g.days, day).pulls : now.limited, standard: day ? null : now.standard, special: day ? null : now.special };
+    .map((dashGame) => {
+      const now = pullsFor(dashGame.currencies);
+      const hasSpecial = dashGame.currencies.some((currency) => currency.onlyFor && currency.pullCost);
+      return { dashGame, ...now, hasSpecial, limited: day ? dayOf(dashGame.days, day).pulls : now.limited, standard: day ? null : now.standard, special: day ? null : now.special };
     })
-    .filter((r) => r.label)
-    .sort((a, b) => b.limited - a.limited);
-  const limited = rows.reduce((n, r) => n + r.limited, 0);
-  const anySpecial = rows.some((r) => r.hasSpecial);
+    .filter((row) => row.label)
+    .sort((first, second) => second.limited - first.limited);
+  const limited = rows.reduce((total, row) => total + row.limited, 0);
+  const anySpecial = rows.some((row) => row.hasSpecial);
   return (
     <section className="card table-card pulls-card">
       <div className="ph">
@@ -61,19 +61,19 @@ export function PullsCard({ games, day = null }: { games: DashGame[]; day?: stri
         </div>
       </div>
       <div className="lst">
-        {rows.map(({ g, limited: lim, standard, special, hasSpecial }) => (
-          <div key={g.instanceId}>
+        {rows.map(({ dashGame, limited: lim, standard, special, hasSpecial }) => (
+          <div key={dashGame.instanceId}>
             <div className="rw">
-              <span>{g.name}</span>
+              <span>{dashGame.name}</span>
               <span className="mn pull-counts">
-                <Count n={lim} kind="limited" />
-                <Count n={standard} kind="permanent" />
-                {hasSpecial ? <Count n={special} kind="special" /> : anySpecial && <span className="pull-n" aria-hidden="true" />}
+                <Count count={lim} kind="limited" />
+                <Count count={standard} kind="permanent" />
+                {hasSpecial ? <Count count={special} kind="special" /> : anySpecial && <span className="pull-n" aria-hidden="true" />}
               </span>
             </div>
-            {!day && g.pity.length > 0 && (
-              <Link to={`/games/${g.instanceId}/pulls`} className="pull-row-pity mn">
-                {g.pity.map((p) => `${p.key.charAt(0).toUpperCase()}${p.key.slice(1).replace("-", " ")} ${p.pity}/${p.hardPity}${p.guaranteed ? " · guaranteed" : ""}`).join("  ·  ")}
+            {!day && dashGame.pity.length > 0 && (
+              <Link to={`/games/${dashGame.instanceId}/pulls`} className="pull-row-pity mn">
+                {dashGame.pity.map((pity) => `${pity.key.charAt(0).toUpperCase()}${pity.key.slice(1).replace("-", " ")} ${pity.pity}/${pity.hardPity}${pity.guaranteed ? " · guaranteed" : ""}`).join("  ·  ")}
               </Link>
             )}
           </div>

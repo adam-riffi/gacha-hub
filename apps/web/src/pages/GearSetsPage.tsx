@@ -22,41 +22,41 @@ type Owned = { slot: string; mainStat?: string; level?: number; substats?: Sub[]
 type Piece = Owned & { set: string; key: string };
 
 /** A bonus as label and text: its own "2pc:" prefix where it has one, else the game's piece count for its place (one-piece sets say 1pc). */
-function bonusParts(b: string, i: number, set: CatalogGearSet, counts: readonly number[]): [string, string] {
-  const m = b.match(/^(\d+)\s*-?pc:\s*/i);
-  if (m) return [`${m[1]}pc`, b.slice(m[0].length)];
-  return [`${Math.min(counts[i] ?? i + 1, set.slots.length)}pc`, b];
+function bonusParts(bonus: string, bonusIndex: number, set: CatalogGearSet, counts: readonly number[]): [string, string] {
+  const match = bonus.match(/^(\d+)\s*-?pc:\s*/i);
+  if (match) return [`${match[1]}pc`, bonus.slice(match[0].length)];
+  return [`${Math.min(counts[bonusIndex] ?? bonusIndex + 1, set.slots.length)}pc`, bonus];
 }
 
 /** Every piece you have: each build's gear by slot, then the bag. */
 function allPieces(field: string, builds: CharacterDto[], bag: GearPieceDto[]): Piece[] {
   const out: Piece[] = [];
-  for (const b of builds) {
-    const gear = ((b.doc as Record<string, unknown> | null)?.[field] ?? {}) as Record<string, DocPiece | undefined>;
-    for (const [slot, p] of Object.entries(gear)) if (p?.setName) out.push({ key: `${b.id}:${slot}`, set: p.setName, slot, mainStat: p.mainStat, level: p.level, substats: p.substats, wearer: b });
+  for (const build of builds) {
+    const gear = ((build.doc as Record<string, unknown> | null)?.[field] ?? {}) as Record<string, DocPiece | undefined>;
+    for (const [slot, piece] of Object.entries(gear)) if (piece?.setName) out.push({ key: `${build.id}:${slot}`, set: piece.setName, slot, mainStat: piece.mainStat, level: piece.level, substats: piece.substats, wearer: build });
   }
-  for (const p of bag) if (p.setName) out.push({ key: p.id, set: p.setName, slot: p.slot, mainStat: p.mainStat, level: p.level, substats: p.substats as Sub[] | undefined, bagId: p.id });
+  for (const bagPiece of bag) if (bagPiece.setName) out.push({ key: bagPiece.id, set: bagPiece.setName, slot: bagPiece.slot, mainStat: bagPiece.mainStat, level: bagPiece.level, substats: bagPiece.substats as Sub[] | undefined, bagId: bagPiece.id });
   return out;
 }
 
 /** The same pieces by set. */
 function ownedBySet(pieces: Piece[]): Map<string, Owned[]> {
   const out = new Map<string, Owned[]>();
-  for (const p of pieces) out.set(p.set, [...(out.get(p.set) ?? []), p]);
+  for (const piece of pieces) out.set(piece.set, [...(out.get(piece.set) ?? []), piece]);
   return out;
 }
 
 /** Several values picked at once (round 8), each its own chip with its icon, pressed again to drop it. */
-function MultiChips({ label, options, picked, onToggle }: { label: string; options: { value: string; text: string; icon?: ReactNode }[]; picked: ReadonlySet<string>; onToggle: (v: string) => void }) {
+function MultiChips({ label, options, picked, onToggle }: { label: string; options: { value: string; text: string; icon?: ReactNode }[]; picked: ReadonlySet<string>; onToggle: (value: string) => void }) {
   if (options.length === 0) return null;
   return (
     <div className="ch-chipset" role="group" aria-label={label}>
       <span className="kpi-label">{label}</span>
       <div>
-        {options.map((o) => (
-          <button key={o.value} type="button" className="ch-chip gp-chip" aria-label={o.text} aria-pressed={picked.has(o.value)} onClick={() => onToggle(o.value)}>
-            {o.icon}
-            {o.text}
+        {options.map((option) => (
+          <button key={option.value} type="button" className="ch-chip gp-chip" aria-label={option.text} aria-pressed={picked.has(option.value)} onClick={() => onToggle(option.value)}>
+            {option.icon}
+            {option.text}
           </button>
         ))}
       </div>
@@ -75,7 +75,7 @@ const pieceIcon = (set: CatalogGearSet | undefined, slot: string) => ((set?.extr
  */
 export function GearSetsPage() {
   const { id } = useParams();
-  const [q, setQ] = useState("");
+  const [search, setSearch] = useState("");
   const [setsPicked, setSetsPicked] = useState<ReadonlySet<string>>(new Set());
   const [slotsPicked, setSlotsPicked] = useState<ReadonlySet<string>>(new Set());
   const [mainsPicked, setMainsPicked] = useState<ReadonlySet<string>>(new Set());
@@ -100,28 +100,28 @@ export function GearSetsPage() {
   const label = gearLabel(instance.gameKey);
   const gear = game.manifest.gear;
   const sets = catalog?.gear ?? [];
-  const setsByName = new Map(sets.map((g) => [g.name, g]));
-  const slotIndex = (key: string) => gear.slots.findIndex((s) => s.key === key);
-  const slotLabel = (key: string) => gear.slots.find((s) => s.key === key)?.label ?? key;
-  const wearerName = (p: Piece) => (p.wearer ? (index?.characters.get(p.wearer.catalogId ?? "")?.name ?? p.wearer.name) : "");
-  const toggle = (set: (f: (s: ReadonlySet<string>) => ReadonlySet<string>) => void) => (v: string) =>
-    set((s) => {
-      const next = new Set(s);
-      if (next.has(v)) next.delete(v);
-      else next.add(v);
+  const setsByName = new Map(sets.map((gearSet) => [gearSet.name, gearSet]));
+  const slotIndex = (key: string) => gear.slots.findIndex((slot) => slot.key === key);
+  const slotLabel = (key: string) => gear.slots.find((slot) => slot.key === key)?.label ?? key;
+  const wearerName = (piece: Piece) => (piece.wearer ? (index?.characters.get(piece.wearer.catalogId ?? "")?.name ?? piece.wearer.name) : "");
+  const toggle = (set: (update: (current: ReadonlySet<string>) => ReadonlySet<string>) => void) => (value: string) =>
+    set((current) => {
+      const next = new Set(current);
+      if (next.has(value)) next.delete(value);
+      else next.add(value);
       return next;
     });
-  const query = q.trim().toLowerCase();
+  const query = search.trim().toLowerCase();
   // Filters in the game's own terms (round 10: "filters might not be suited for all of the different sets"): slots only where
   // they are types (their main stats differ), and the main stats your pieces have, of the picked slots only.
-  const typedSlots = gear.slots.some((s) => (s.mainStats?.length ?? 0) > 0);
-  const order = gear.slots.flatMap((s) => s.mainStats ?? []);
-  const rank = (m: string) => (order.includes(m) ? order.indexOf(m) : order.length);
-  const mainStats = [...new Set(pieces.filter((p) => !slotsPicked.size || slotsPicked.has(p.slot)).flatMap((p) => p.mainStat || []))].sort((a, b) => rank(a) - rank(b) || a.localeCompare(b));
-  const mains = new Set([...mainsPicked].filter((m) => mainStats.includes(m)));
+  const typedSlots = gear.slots.some((slot) => (slot.mainStats?.length ?? 0) > 0);
+  const order = gear.slots.flatMap((slot) => slot.mainStats ?? []);
+  const rank = (stat: string) => (order.includes(stat) ? order.indexOf(stat) : order.length);
+  const mainStats = [...new Set(pieces.filter((piece) => !slotsPicked.size || slotsPicked.has(piece.slot)).flatMap((piece) => piece.mainStat || []))].sort((first, second) => rank(first) - rank(second) || first.localeCompare(second));
+  const mains = new Set([...mainsPicked].filter((stat) => mainStats.includes(stat)));
   const filtering = Boolean(query || setsPicked.size || slotsPicked.size || mainsPicked.size || where);
   const reset = () => {
-    setQ("");
+    setSearch("");
     setSetsPicked(new Set());
     setSlotsPicked(new Set());
     setMainsPicked(new Set());
@@ -129,33 +129,33 @@ export function GearSetsPage() {
   };
   // Every filter but where, so its counts read what the others leave.
   const matching = pieces.filter(
-    (p) =>
-      (!query || [p.set, slotLabel(p.slot), p.mainStat ?? "", wearerName(p), ...(p.substats ?? []).map((s) => s.stat)].some((t) => t.toLowerCase().includes(query))) &&
-      (!setsPicked.size || setsPicked.has(p.set)) &&
-      (!slotsPicked.size || slotsPicked.has(p.slot)) &&
-      (!mains.size || mains.has(p.mainStat ?? "")),
+    (piece) =>
+      (!query || [piece.set, slotLabel(piece.slot), piece.mainStat ?? "", wearerName(piece), ...(piece.substats ?? []).map((substat) => substat.stat)].some((text) => text.toLowerCase().includes(query))) &&
+      (!setsPicked.size || setsPicked.has(piece.set)) &&
+      (!slotsPicked.size || slotsPicked.has(piece.slot)) &&
+      (!mains.size || mains.has(piece.mainStat ?? "")),
   );
   const shown = matching
-    .filter((p) => !where || (where === "bag") === Boolean(p.bagId))
-    .sort((a, b) =>
+    .filter((piece) => !where || (where === "bag") === Boolean(piece.bagId))
+    .sort((first, second) =>
       sort === "cv"
-        ? gearPieceCv(b) - gearPieceCv(a) || a.set.localeCompare(b.set)
+        ? gearPieceCv(second) - gearPieceCv(first) || first.set.localeCompare(second.set)
         : sort === "level"
-          ? (b.level ?? 0) - (a.level ?? 0) || a.set.localeCompare(b.set)
+          ? (second.level ?? 0) - (first.level ?? 0) || first.set.localeCompare(second.set)
           : sort === "slot"
-            ? slotIndex(a.slot) - slotIndex(b.slot) || a.set.localeCompare(b.set)
-            : a.set.localeCompare(b.set) || slotIndex(a.slot) - slotIndex(b.slot) || (b.level ?? 0) - (a.level ?? 0),
+            ? slotIndex(first.slot) - slotIndex(second.slot) || first.set.localeCompare(second.set)
+            : first.set.localeCompare(second.set) || slotIndex(first.slot) - slotIndex(second.slot) || (second.level ?? 0) - (first.level ?? 0),
     );
   // The chosen piece, else the first shown: the column always holds one.
-  const picked = shown.find((p) => p.key === chosen) ?? shown[0];
+  const picked = shown.find((piece) => piece.key === chosen) ?? shown[0];
   const held = new Map([...owned].map(([name, list]) => [name, list.length]));
   // A slot's art from the set you hold most of, where the catalog has art per slot (Genshin).
-  const artSet = setsByName.get([...held].sort((a, b) => b[1] - a[1])[0]?.[0] ?? "") ?? sets[0];
-  const open = sets.find((g) => g.id === openId);
+  const artSet = setsByName.get([...held].sort((first, second) => second[1] - first[1])[0]?.[0] ?? "") ?? sets[0];
+  const open = sets.find((gearSet) => gearSet.id === openId);
   const counts: ["" | "equipped" | "bag", string, number][] = [
     ["", "All", matching.length],
-    ["equipped", "Equipped", matching.filter((p) => p.wearer).length],
-    ["bag", "Bag", matching.filter((p) => p.bagId).length],
+    ["equipped", "Equipped", matching.filter((piece) => piece.wearer).length],
+    ["bag", "Bag", matching.filter((piece) => piece.bagId).length],
   ];
 
   return (
@@ -169,7 +169,7 @@ export function GearSetsPage() {
         <div className="gb">
           <section className="card gb-filters" aria-label="Filters">
             <h3>Filters</h3>
-            <input type="search" aria-label="Search" placeholder="Set, stat or wearer" value={q} onChange={(e) => setQ(e.target.value)} />
+            <input type="search" aria-label="Search" placeholder="Set, stat or wearer" value={search} onChange={(event) => setSearch(event.target.value)} />
             {/* Any number of sets, from a window (round 10); the picked ones stay here, each with its remove. */}
             <div className="ch-chipset" role="group" aria-label="Sets">
               <span className="kpi-label">Sets</span>
@@ -189,18 +189,18 @@ export function GearSetsPage() {
             {typedSlots && (
               <MultiChips
                 label="Slot"
-                options={gear.slots.map((s) => ({ value: s.key, text: s.label, icon: (artSet?.extra?.pieceIcons as Record<string, string> | undefined)?.[s.key] ? <CatalogIcon gameKey={game.key} kind="gear" icon={pieceIcon(artSet, s.key)} name={s.label} className="gp-chip-icon" /> : undefined }))}
+                options={gear.slots.map((slot) => ({ value: slot.key, text: slot.label, icon: (artSet?.extra?.pieceIcons as Record<string, string> | undefined)?.[slot.key] ? <CatalogIcon gameKey={game.key} kind="gear" icon={pieceIcon(artSet, slot.key)} name={slot.label} className="gp-chip-icon" /> : undefined }))}
                 picked={slotsPicked}
                 onToggle={toggle(setSlotsPicked)}
               />
             )}
-            <MultiChips label="Main stat" options={mainStats.map((m) => ({ value: m, text: m, icon: <StatIcon stat={m} /> }))} picked={mains} onToggle={toggle(setMainsPicked)} />
+            <MultiChips label="Main stat" options={mainStats.map((stat) => ({ value: stat, text: stat, icon: <StatIcon stat={stat} /> }))} picked={mains} onToggle={toggle(setMainsPicked)} />
             <div className="ch-chipset" role="group" aria-label="Where">
               <span className="kpi-label">Where</span>
               <div>
-                {counts.map(([v, text, n]) => (
-                  <button key={text} type="button" className="ch-chip" aria-pressed={where === v && (v !== "" || !where)} onClick={() => setWhere(where === v ? "" : v)}>
-                    {text} {n}
+                {counts.map(([value, text, count]) => (
+                  <button key={text} type="button" className="ch-chip" aria-pressed={where === value && (value !== "" || !where)} onClick={() => setWhere(where === value ? "" : value)}>
+                    {text} {count}
                   </button>
                 ))}
               </div>
@@ -209,7 +209,7 @@ export function GearSetsPage() {
               <button type="button" className="btn" disabled={!filtering} onClick={reset}>
                 Reset filters
               </button>
-              <select aria-label="Sort" value={sort} onChange={(e) => setSort(e.target.value as typeof sort)}>
+              <select aria-label="Sort" value={sort} onChange={(event) => setSort(event.target.value as typeof sort)}>
                 <option value="set">Sort: set</option>
                 <option value="slot">Sort: slot</option>
                 <option value="level">Sort: level</option>
@@ -228,8 +228,8 @@ export function GearSetsPage() {
                   glyph="gear"
                   placeholder="Open a set"
                   value=""
-                  options={sets.map((g) => ({ id: g.id, name: g.name, src: assetUrl(game.key, "gear", g.icon), fallback: communityAssetUrl(game.key, "gear", g.icon) }))}
-                  onPick={(o) => o && setOpenId(o.id)}
+                  options={sets.map((gearSet) => ({ id: gearSet.id, name: gearSet.name, src: assetUrl(game.key, "gear", gearSet.icon), fallback: communityAssetUrl(game.key, "gear", gearSet.icon) }))}
+                  onPick={(option) => option && setOpenId(option.id)}
                 />
               </div>
               {/* A piece you have, made here without opening a set (round 7). */}
@@ -239,23 +239,23 @@ export function GearSetsPage() {
             </div>
             {adding && <NewPiece instanceId={id!} game={game} sets={sets} onDone={() => setAdding(false)} />}
             <section className="gb-grid" aria-label="Pieces">
-              {shown.map((p) => {
-                const set = setsByName.get(p.set);
-                const cv = gearPieceCv(p);
-                const name = `${p.set} · ${slotLabel(p.slot)}`;
+              {shown.map((piece) => {
+                const set = setsByName.get(piece.set);
+                const critValue = gearPieceCv(piece);
+                const name = `${piece.set} · ${slotLabel(piece.slot)}`;
                 return (
-                  <article key={p.key} className="card gb-tile" aria-label={name} aria-current={p === picked ? true : undefined}>
-                    <button type="button" className="gb-show" aria-label={`Show ${name}`} onClick={() => setChosen(p.key)} />
-                    <CatalogIcon gameKey={game.key} kind="gear" icon={pieceIcon(set, p.slot)} name={p.set} className="gb-art" />
-                    <span className="gb-lv mn">+{p.level ?? 0}</span>
-                    {p.wearer?.catalogId ? <UnitIcon gameKey={game.key} unit={{ kind: "character", catalogId: p.wearer.catalogId }} className="gb-who" /> : <span className="gb-bag mn">{p.wearer ? p.wearer.name : "Bag"}</span>}
+                  <article key={piece.key} className="card gb-tile" aria-label={name} aria-current={piece === picked ? true : undefined}>
+                    <button type="button" className="gb-show" aria-label={`Show ${name}`} onClick={() => setChosen(piece.key)} />
+                    <CatalogIcon gameKey={game.key} kind="gear" icon={pieceIcon(set, piece.slot)} name={piece.set} className="gb-art" />
+                    <span className="gb-lv mn">+{piece.level ?? 0}</span>
+                    {piece.wearer?.catalogId ? <UnitIcon gameKey={game.key} unit={{ kind: "character", catalogId: piece.wearer.catalogId }} className="gb-who" /> : <span className="gb-bag mn">{piece.wearer ? piece.wearer.name : "Bag"}</span>}
                     <span className="gb-main cd">
-                      {p.mainStat && <StatIcon stat={p.mainStat} />}
-                      {p.mainStat || "—"}
+                      {piece.mainStat && <StatIcon stat={piece.mainStat} />}
+                      {piece.mainStat || "—"}
                     </span>
                     <span className="gb-type mn">
-                      {slotLabel(p.slot)}
-                      {cv > 0 && ` · CV ${Math.round(cv * 10) / 10}`}
+                      {slotLabel(piece.slot)}
+                      {critValue > 0 && ` · CV ${Math.round(critValue * 10) / 10}`}
                     </span>
                   </article>
                 );
@@ -283,27 +283,27 @@ export function GearSetsPage() {
  * kinds of sets apart (Star Rail's relics and planar ornaments fit different slots).
  */
 function SetsWindow({ game, sets, held, picked, onToggle, onClear, count, onClose }: { game: GameDefinition; sets: CatalogGearSet[]; held: ReadonlyMap<string, number>; picked: ReadonlySet<string>; onToggle: (name: string) => void; onClear: () => void; count: number; onClose: () => void }) {
-  const [q, setQ] = useState("");
+  const [search, setSearch] = useState("");
   // The catalog's sets you hold (a piece may carry a set name typed by hand).
-  const heldN = sets.filter((s) => held.has(s.name)).length;
-  const [all, setAll] = useState(heldN === 0);
+  const heldCount = sets.filter((gearSet) => held.has(gearSet.name)).length;
+  const [all, setAll] = useState(heldCount === 0);
   const ref = useRef<HTMLDivElement>(null);
   useDismiss(ref, onClose);
-  const query = q.trim().toLowerCase();
+  const query = search.trim().toLowerCase();
   const list = sets
-    .filter((s) => (all || held.has(s.name)) && (!query || s.name.toLowerCase().includes(query)))
-    .sort((a, b) => (held.get(b.name) ?? 0) - (held.get(a.name) ?? 0) || a.name.localeCompare(b.name));
-  const kinds = [...new Set(sets.map((s) => s.slots.join("/")))];
-  const label = (kind: string) => kind.split("/").map((k) => game.manifest.gear.slots.find((s) => s.key === k)?.label ?? k).join(" · ");
-  const groups = kinds.length > 1 ? kinds.map((k) => ({ kind: k, name: label(k), sets: list.filter((s) => s.slots.join("/") === k) })).filter((g) => g.sets.length) : [{ kind: "", name: "", sets: list }];
+    .filter((gearSet) => (all || held.has(gearSet.name)) && (!query || gearSet.name.toLowerCase().includes(query)))
+    .sort((first, second) => (held.get(second.name) ?? 0) - (held.get(first.name) ?? 0) || first.name.localeCompare(second.name));
+  const kinds = [...new Set(sets.map((gearSet) => gearSet.slots.join("/")))];
+  const label = (kind: string) => kind.split("/").map((slotKey) => game.manifest.gear.slots.find((slot) => slot.key === slotKey)?.label ?? slotKey).join(" · ");
+  const groups = kinds.length > 1 ? kinds.map((kind) => ({ kind, name: label(kind), sets: list.filter((gearSet) => gearSet.slots.join("/") === kind) })).filter((group) => group.sets.length) : [{ kind: "", name: "", sets: list }];
   return (
     <div className="gb-win-back">
       <div ref={ref} className="card gb-win" role="dialog" aria-modal="true" aria-label="Pick sets">
         <div className="gb-win-head">
           <h3>Pick sets</h3>
-          <input type="search" aria-label="Search a set" placeholder="Search a set" value={q} onChange={(e) => setQ(e.target.value)} />
+          <input type="search" aria-label="Search a set" placeholder="Search a set" value={search} onChange={(event) => setSearch(event.target.value)} />
           <button type="button" className="ch-chip" aria-pressed={!all} onClick={() => setAll(false)}>
-            Held {heldN}
+            Held {heldCount}
           </button>
           <button type="button" className="ch-chip" aria-pressed={all} onClick={() => setAll(true)}>
             All {sets.length}
@@ -313,18 +313,18 @@ function SetsWindow({ game, sets, held, picked, onToggle, onClear, count, onClos
             ✕ Close
           </button>
         </div>
-        {groups.map((g) => (
-          <div key={g.kind} role={g.name ? "group" : undefined} aria-label={g.name || undefined}>
-            {g.name && <p className="kpi-label gb-win-kind">{g.name}</p>}
+        {groups.map((group) => (
+          <div key={group.kind} role={group.name ? "group" : undefined} aria-label={group.name || undefined}>
+            {group.name && <p className="kpi-label gb-win-kind">{group.name}</p>}
             <div className="gb-win-grid">
-              {g.sets.map((s) => {
-                const n = held.get(s.name) ?? 0;
+              {group.sets.map((gearSet) => {
+                const piecesHeld = held.get(gearSet.name) ?? 0;
                 return (
-                  <button key={s.id} type="button" className={`gb-win-set ${n ? "" : "is-none"}`} aria-label={s.name} aria-pressed={picked.has(s.name)} onClick={() => onToggle(s.name)}>
-                    <CatalogIcon gameKey={game.key} kind="gear" icon={s.icon} name={s.name} className="gb-win-icon" />
+                  <button key={gearSet.id} type="button" className={`gb-win-set ${piecesHeld ? "" : "is-none"}`} aria-label={gearSet.name} aria-pressed={picked.has(gearSet.name)} onClick={() => onToggle(gearSet.name)}>
+                    <CatalogIcon gameKey={game.key} kind="gear" icon={gearSet.icon} name={gearSet.name} className="gb-win-icon" />
                     <span>
-                      <span className="gb-win-name">{s.name}</span>
-                      <span className="mn mu">{n ? `${n} piece${n > 1 ? "s" : ""}` : "none yet"}</span>
+                      <span className="gb-win-name">{gearSet.name}</span>
+                      <span className="mn mu">{piecesHeld ? `${piecesHeld} piece${piecesHeld > 1 ? "s" : ""}` : "none yet"}</span>
                     </span>
                   </button>
                 );
@@ -350,17 +350,17 @@ function SetsWindow({ game, sets, held, picked, onToggle, onClear, count, onClos
 
 /** The chosen piece in full (round 10): its art, set and type, main stat and substats, crit value, its set's bonuses (lit as its wearer has them), its wearer; To bag or Equip on, Delete, Open the set. */
 function PieceColumn({ instanceId, game, piece, set, slotLabel, builds, onOpenSet }: { instanceId: string; game: GameDefinition; piece: Piece; set?: CatalogGearSet; slotLabel: string; builds: CharacterDto[]; onOpenSet: (id: string) => void }) {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   const toast = useToast();
   const { index } = useCatalog(game.key);
-  const refresh = () => Promise.all([["gear", instanceId], ["builds", instanceId], ["characters", instanceId]].map((queryKey) => qc.invalidateQueries({ queryKey })));
+  const refresh = () => Promise.all([["gear", instanceId], ["builds", instanceId], ["characters", instanceId]].map((queryKey) => queryClient.invalidateQueries({ queryKey })));
   const equip = useMutation({ mutationFn: (characterId: string) => api.post(`/api/gear/${piece.bagId}/equip`, { characterId }), onSuccess: refresh, onError: () => toast("Could not equip it", "err") });
   const unequip = useMutation({ mutationFn: () => api.post(`/api/characters/${piece.wearer!.id}/unequip`, { slot: piece.slot }), onSuccess: refresh, onError: () => toast("Could not unequip it", "err") });
   const remove = useMutation({ mutationFn: () => api.del(`/api/gear/${piece.bagId}`), onSuccess: refresh, onError: () => toast("Could not delete it", "err") });
   const field = game.manifest.gear.field;
   // How many of this set its wearer has on, for the bonuses it lights.
-  const worn = piece.wearer ? Object.values(((piece.wearer.doc as Record<string, unknown> | null)?.[field] ?? {}) as Record<string, DocPiece | undefined>).filter((d) => d?.setName === piece.set).length : 0;
-  const cv = gearPieceCv(piece);
+  const worn = piece.wearer ? Object.values(((piece.wearer.doc as Record<string, unknown> | null)?.[field] ?? {}) as Record<string, DocPiece | undefined>).filter((wornPiece) => wornPiece?.setName === piece.set).length : 0;
+  const critValue = gearPieceCv(piece);
   const unit = piece.wearer?.catalogId ? index?.characters.get(piece.wearer.catalogId) : undefined;
   const pieceName = (set?.extra?.pieceNames as Record<string, string> | undefined)?.[piece.slot];
   return (
@@ -376,29 +376,29 @@ function PieceColumn({ instanceId, game, piece, set, slotLabel, builds, onOpenSe
         {piece.mainStat || "—"}
       </div>
       <ul className="gb-col-subs">
-        {(piece.substats ?? []).map((s, i) => (
-          <li key={i}>
+        {(piece.substats ?? []).map((substat, substatIndex) => (
+          <li key={substatIndex}>
             <span>
-              <StatIcon stat={s.stat} />
-              {s.stat}
+              <StatIcon stat={substat.stat} />
+              {substat.stat}
             </span>
-            <span className="cd">{s.value}</span>
+            <span className="cd">{substat.value}</span>
           </li>
         ))}
-        {cv > 0 && (
+        {critValue > 0 && (
           <li className="gb-col-cv">
             <span>Crit value</span>
-            <span className="cd">{Math.round(cv * 10) / 10}</span>
+            <span className="cd">{Math.round(critValue * 10) / 10}</span>
           </li>
         )}
       </ul>
       {set && set.bonuses.length > 0 && (
         <div className="gb-bonuses">
-          {set.bonuses.map((b, i) => {
-            const [k, text] = bonusParts(b, i, set, game.manifest.gear.sets);
+          {set.bonuses.map((bonus, bonusIndex) => {
+            const [countLabel, text] = bonusParts(bonus, bonusIndex, set, game.manifest.gear.sets);
             return (
-              <p key={i} className={`gb-bonus ${piece.wearer && worn >= Number.parseInt(k, 10) ? "is-on" : ""}`}>
-                <b>{k}</b> {text}
+              <p key={bonusIndex} className={`gb-bonus ${piece.wearer && worn >= Number.parseInt(countLabel, 10) ? "is-on" : ""}`}>
+                <b>{countLabel}</b> {text}
               </p>
             );
           })}
@@ -418,11 +418,11 @@ function PieceColumn({ instanceId, game, piece, set, slotLabel, builds, onOpenSe
           </button>
         ) : (
           <>
-            <select aria-label="Equip on" value="" disabled={equip.isPending || builds.length === 0} onChange={(e) => e.target.value && equip.mutate(e.target.value)}>
+            <select aria-label="Equip on" value="" disabled={equip.isPending || builds.length === 0} onChange={(event) => event.target.value && equip.mutate(event.target.value)}>
               <option value="">Equip on…</option>
-              {builds.map((b) => (
-                <option key={b.id} value={b.id}>
-                  {b.name}
+              {builds.map((build) => (
+                <option key={build.id} value={build.id}>
+                  {build.name}
                 </option>
               ))}
             </select>
@@ -447,19 +447,19 @@ function PieceColumn({ instanceId, game, piece, set, slotLabel, builds, onOpenSe
  * the empty ones first, and makes a goal with a step per piece.
  */
 function SetPanel({ instanceId, game, set, pieces, builds, onClose }: { instanceId: string; game: GameDefinition; set: CatalogGearSet; pieces: Owned[]; builds: CharacterDto[]; onClose: () => void }) {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   const toast = useToast();
   const gear = game.manifest.gear;
-  const slots = set.slots.map((key) => ({ key, label: gear.slots.find((s) => s.key === key)?.label ?? key, mainStats: gear.slots.find((s) => s.key === key)?.mainStats ?? [] }));
+  const slots = set.slots.map((key) => ({ key, label: gear.slots.find((slot) => slot.key === key)?.label ?? key, mainStats: gear.slots.find((slot) => slot.key === key)?.mainStats ?? [] }));
   const [farming, setFarming] = useState(false);
-  const [want, setWant] = useState(() => new Set(slots.filter((s) => !pieces.some((p) => p.slot === s.key)).map((s) => s.key)));
+  const [want, setWant] = useState(() => new Set(slots.filter((slot) => !pieces.some((piece) => piece.slot === slot.key)).map((slot) => slot.key)));
   const [slot, setSlot] = useState(slots[0]?.key ?? "");
   const ref = useRef<HTMLElement>(null);
   useDismiss(ref, onClose);
-  const refresh = () => Promise.all([["gear", instanceId], ["builds", instanceId], ["characters", instanceId], ["tasks"]].map((queryKey) => qc.invalidateQueries({ queryKey })));
+  const refresh = () => Promise.all([["gear", instanceId], ["builds", instanceId], ["characters", instanceId], ["tasks"]].map((queryKey) => queryClient.invalidateQueries({ queryKey })));
   const add = useMutation({ mutationFn: (body: { slot: string; mainStat: string; level: number }) => api.post(`/api/instances/${instanceId}/gear`, { setName: set.name, ...body }), onSuccess: refresh, onError: () => toast("Could not add the piece", "err") });
-  const equip = useMutation({ mutationFn: (v: { pieceId: string; characterId: string }) => api.post(`/api/gear/${v.pieceId}/equip`, { characterId: v.characterId }), onSuccess: refresh, onError: () => toast("Could not equip it", "err") });
-  const unequip = useMutation({ mutationFn: (v: { characterId: string; slot: string }) => api.post(`/api/characters/${v.characterId}/unequip`, { slot: v.slot }), onSuccess: refresh, onError: () => toast("Could not unequip it", "err") });
+  const equip = useMutation({ mutationFn: (request: { pieceId: string; characterId: string }) => api.post(`/api/gear/${request.pieceId}/equip`, { characterId: request.characterId }), onSuccess: refresh, onError: () => toast("Could not equip it", "err") });
+  const unequip = useMutation({ mutationFn: (request: { characterId: string; slot: string }) => api.post(`/api/characters/${request.characterId}/unequip`, { slot: request.slot }), onSuccess: refresh, onError: () => toast("Could not unequip it", "err") });
   const farm = useMutation({
     mutationFn: () =>
       api.post("/api/tasks", {
@@ -467,7 +467,7 @@ function SetPanel({ instanceId, game, set, pieces, builds, onClose }: { instance
         refId: instanceId,
         type: "checklist",
         title: `Farm ${set.name}`,
-        items: slots.filter((s) => want.has(s.key)).map((s) => ({ label: s.label, done: false })),
+        items: slots.filter((slotOption) => want.has(slotOption.key)).map((slotOption) => ({ label: slotOption.label, done: false })),
         origin: { kind: "gear", catalogId: set.id },
       }),
     onSuccess: () => {
@@ -477,11 +477,11 @@ function SetPanel({ instanceId, game, set, pieces, builds, onClose }: { instance
     },
     onError: () => toast("Could not make the goal", "err"),
   });
-  const mainStats = slots.find((s) => s.key === slot)?.mainStats ?? [];
-  const submit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const f = new FormData(e.currentTarget);
-    add.mutate({ slot, mainStat: String(f.get("mainStat") ?? ""), level: Math.min(25, Math.max(0, Number(f.get("level") ?? 0))) });
+  const mainStats = slots.find((slotOption) => slotOption.key === slot)?.mainStats ?? [];
+  const submit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    add.mutate({ slot, mainStat: String(formData.get("mainStat") ?? ""), level: Math.min(25, Math.max(0, Number(formData.get("level") ?? 0))) });
   };
 
   return (
@@ -497,46 +497,46 @@ function SetPanel({ instanceId, game, set, pieces, builds, onClose }: { instance
       </div>
       {/* Its bonuses, as the game counts them (round 9). */}
       <div className="gs-bonuses">
-        {set.bonuses.map((b, i) => {
-          const [k, text] = bonusParts(b, i, set, gear.sets);
+        {set.bonuses.map((bonus, bonusIndex) => {
+          const [countLabel, text] = bonusParts(bonus, bonusIndex, set, gear.sets);
           return (
-            <p key={i} className="gs-bonus">
-              <b>{k}</b> {text}
+            <p key={bonusIndex} className="gs-bonus">
+              <b>{countLabel}</b> {text}
             </p>
           );
         })}
       </div>
       <ul className="gs-slots" aria-label="Pieces">
-        {slots.map((s) => {
-          const here = pieces.filter((p) => p.slot === s.key);
+        {slots.map((slotOption) => {
+          const here = pieces.filter((piece) => piece.slot === slotOption.key);
           return (
-            <li key={s.key} aria-label={s.label}>
-              <span className="kpi-label">{s.label}</span>
+            <li key={slotOption.key} aria-label={slotOption.label}>
+              <span className="kpi-label">{slotOption.label}</span>
               {here.length === 0 && <span className="mu">—</span>}
-              {here.map((p, i) => (
-                <span key={p.bagId ?? `${p.wearer?.id}:${i}`} className="gs-piece">
+              {here.map((piece, pieceIndex) => (
+                <span key={piece.bagId ?? `${piece.wearer?.id}:${pieceIndex}`} className="gs-piece">
                   <span className="mn">
-                    {p.mainStat || "—"}
-                    {p.level ? ` +${p.level}` : ""}
+                    {piece.mainStat || "—"}
+                    {piece.level ? ` +${piece.level}` : ""}
                   </span>
-                  {p.wearer ? (
+                  {piece.wearer ? (
                     <>
-                      <Link to={`/characters/${p.wearer.id}`} className="gs-wearer">
-                        {p.wearer.catalogId && <UnitIcon gameKey={game.key} unit={{ kind: "character", catalogId: p.wearer.catalogId }} />}
-                        {p.wearer.name}
+                      <Link to={`/characters/${piece.wearer.id}`} className="gs-wearer">
+                        {piece.wearer.catalogId && <UnitIcon gameKey={game.key} unit={{ kind: "character", catalogId: piece.wearer.catalogId }} />}
+                        {piece.wearer.name}
                       </Link>
-                      <button type="button" className="btn ghost sm" disabled={unequip.isPending} onClick={() => unequip.mutate({ characterId: p.wearer!.id, slot: s.key })}>
+                      <button type="button" className="btn ghost sm" disabled={unequip.isPending} onClick={() => unequip.mutate({ characterId: piece.wearer!.id, slot: slotOption.key })}>
                         Unequip
                       </button>
                     </>
                   ) : (
                     <>
                       <span className="badge">bag</span>
-                      <select aria-label="Equip on" value="" disabled={equip.isPending || builds.length === 0} onChange={(e) => e.target.value && equip.mutate({ pieceId: p.bagId!, characterId: e.target.value })} style={{ width: "auto" }}>
+                      <select aria-label="Equip on" value="" disabled={equip.isPending || builds.length === 0} onChange={(event) => event.target.value && equip.mutate({ pieceId: piece.bagId!, characterId: event.target.value })} style={{ width: "auto" }}>
                         <option value="">Equip on…</option>
-                        {builds.map((b) => (
-                          <option key={b.id} value={b.id}>
-                            {b.name}
+                        {builds.map((build) => (
+                          <option key={build.id} value={build.id}>
+                            {build.name}
                           </option>
                         ))}
                       </select>
@@ -552,10 +552,10 @@ function SetPanel({ instanceId, game, set, pieces, builds, onClose }: { instance
       <form className="gs-add" aria-label="Add a piece" onSubmit={submit}>
         <label>
           Slot
-          <select value={slot} onChange={(e) => setSlot(e.target.value)}>
-            {slots.map((s) => (
-              <option key={s.key} value={s.key}>
-                {s.label}
+          <select value={slot} onChange={(event) => setSlot(event.target.value)}>
+            {slots.map((slotOption) => (
+              <option key={slotOption.key} value={slotOption.key}>
+                {slotOption.label}
               </option>
             ))}
           </select>
@@ -564,8 +564,8 @@ function SetPanel({ instanceId, game, set, pieces, builds, onClose }: { instance
           Main stat
           {mainStats.length > 0 ? (
             <select name="mainStat" key={slot}>
-              {mainStats.map((m) => (
-                <option key={m}>{m}</option>
+              {mainStats.map((mainStat) => (
+                <option key={mainStat}>{mainStat}</option>
               ))}
             </select>
           ) : (
@@ -584,22 +584,22 @@ function SetPanel({ instanceId, game, set, pieces, builds, onClose }: { instance
       {farming ? (
         <fieldset className="gs-farm" aria-label="Pieces to farm">
           <legend className="kpi-label">Pieces to farm</legend>
-          {slots.map((s) => (
-            <label key={s.key} className="row small">
+          {slots.map((slotOption) => (
+            <label key={slotOption.key} className="row small">
               <input
                 type="checkbox"
                 style={{ width: "auto" }}
-                checked={want.has(s.key)}
+                checked={want.has(slotOption.key)}
                 onChange={() =>
-                  setWant((w) => {
-                    const next = new Set(w);
-                    if (next.has(s.key)) next.delete(s.key);
-                    else next.add(s.key);
+                  setWant((current) => {
+                    const next = new Set(current);
+                    if (next.has(slotOption.key)) next.delete(slotOption.key);
+                    else next.add(slotOption.key);
                     return next;
                   })
                 }
               />
-              {s.label}
+              {slotOption.label}
             </label>
           ))}
           <button type="button" className="btn primary" disabled={want.size === 0 || farm.isPending} onClick={() => farm.mutate()}>
@@ -617,26 +617,26 @@ function SetPanel({ instanceId, game, set, pieces, builds, onClose }: { instance
 
 /** A new piece in the bag, from the pieces: its set, slot, main stat (the slot's choices) and level. */
 function NewPiece({ instanceId, game, sets, onDone }: { instanceId: string; game: GameDefinition; sets: CatalogGearSet[]; onDone: () => void }) {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   const toast = useToast();
   const slots = game.manifest.gear.slots;
   const [setName, setSetName] = useState("");
   const [slot, setSlot] = useState(slots[0]?.key ?? "");
-  const mainStats = slots.find((s) => s.key === slot)?.mainStats ?? [];
+  const mainStats = slots.find((slotOption) => slotOption.key === slot)?.mainStats ?? [];
   const add = useMutation({
     mutationFn: (body: { setName: string; slot: string; mainStat: string; level: number }) => api.post(`/api/instances/${instanceId}/gear`, body),
     onSuccess: () => {
       toast("Piece added");
       onDone();
-      return qc.invalidateQueries({ queryKey: ["gear", instanceId] });
+      return queryClient.invalidateQueries({ queryKey: ["gear", instanceId] });
     },
     onError: () => toast("Could not add the piece", "err"),
   });
-  const submit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const f = new FormData(e.currentTarget);
+  const submit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
     if (!setName) return;
-    add.mutate({ setName, slot, mainStat: String(f.get("mainStat") ?? ""), level: Math.min(game.manifest.gear.maxLevel ?? 25, Math.max(0, Number(f.get("level") ?? 0))) });
+    add.mutate({ setName, slot, mainStat: String(formData.get("mainStat") ?? ""), level: Math.min(game.manifest.gear.maxLevel ?? 25, Math.max(0, Number(formData.get("level") ?? 0))) });
   };
   return (
     <form className="card gs-new" aria-label="New piece" onSubmit={submit}>
@@ -646,15 +646,15 @@ function NewPiece({ instanceId, game, sets, onDone }: { instanceId: string; game
         placeholder="Set"
         value={setName}
         free
-        options={sets.map((g) => ({ id: g.id, name: g.name, src: assetUrl(game.key, "gear", g.icon), fallback: communityAssetUrl(game.key, "gear", g.icon) }))}
-        onPick={(o, text) => setSetName(o?.name ?? text)}
+        options={sets.map((gearSet) => ({ id: gearSet.id, name: gearSet.name, src: assetUrl(game.key, "gear", gearSet.icon), fallback: communityAssetUrl(game.key, "gear", gearSet.icon) }))}
+        onPick={(option, text) => setSetName(option?.name ?? text)}
       />
       <label>
         Slot
-        <select value={slot} onChange={(e) => setSlot(e.target.value)}>
-          {slots.map((s) => (
-            <option key={s.key} value={s.key}>
-              {s.label}
+        <select value={slot} onChange={(event) => setSlot(event.target.value)}>
+          {slots.map((slotOption) => (
+            <option key={slotOption.key} value={slotOption.key}>
+              {slotOption.label}
             </option>
           ))}
         </select>
@@ -663,8 +663,8 @@ function NewPiece({ instanceId, game, sets, onDone }: { instanceId: string; game
         Main stat
         {mainStats.length > 0 ? (
           <select name="mainStat" key={slot}>
-            {mainStats.map((m) => (
-              <option key={m}>{m}</option>
+            {mainStats.map((mainStat) => (
+              <option key={mainStat}>{mainStat}</option>
             ))}
           </select>
         ) : (

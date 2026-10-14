@@ -15,7 +15,7 @@ const DAYS = ["", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 /** Your material stock for a game, and what your farming goals still need. */
 export function MaterialsPage() {
   const { id } = useParams();
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   const toast = useToast();
   const [search, setSearch] = useState("");
   // Unset until ticked: the needed ones alone while goals need some (round 11: the needed were lost among 300).
@@ -39,15 +39,15 @@ export function MaterialsPage() {
     enabled: Boolean(id),
   });
 
-  const have = useMemo(() => new Map((stock ?? []).map((s) => [s.materialId, s.qty])), [stock]);
-  const need = useMemo(() => new Map((needed ?? []).map((n) => [n.materialId, n])), [needed]);
+  const have = useMemo(() => new Map((stock ?? []).map((stockItem) => [stockItem.materialId, stockItem.qty])), [stock]);
+  const need = useMemo(() => new Map((needed ?? []).map((neededItem) => [neededItem.materialId, neededItem])), [needed]);
 
   const setQty = useMutation({
-    mutationFn: (v: { materialId: string; qty: number }) =>
-      api.put(`/api/instances/${id}/materials`, { items: [v] }),
+    mutationFn: (request: { materialId: string; qty: number }) =>
+      api.put(`/api/instances/${id}/materials`, { items: [request] }),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["stock", id] });
-      qc.invalidateQueries({ queryKey: ["needed", id] });
+      queryClient.invalidateQueries({ queryKey: ["stock", id] });
+      queryClient.invalidateQueries({ queryKey: ["needed", id] });
     },
     onError: () => toast("Could not save stock", "err"),
   });
@@ -58,19 +58,19 @@ export function MaterialsPage() {
   if (!catalog) return <div className="card empty">This game has no materials catalog.</div>;
 
   const neededOnly = neededOnlyPicked ?? (needed ?? []).some((materialNeed) => materialNeed.needed > 0);
-  const q = search.toLowerCase();
-  const categories = [...new Set(catalog.materials.map((m) => m.category))].sort();
+  const searchText = search.toLowerCase();
+  const categories = [...new Set(catalog.materials.map((material) => material.category))].sort();
   const rows = catalog.materials.filter(
-    (m) =>
-      (!q || m.name.toLowerCase().includes(q)) &&
-      (!neededOnly || (need.get(m.id)?.needed ?? 0) > 0) &&
-      (!category || m.category === category),
+    (material) =>
+      (!searchText || material.name.toLowerCase().includes(searchText)) &&
+      (!neededOnly || (need.get(material.id)?.needed ?? 0) > 0) &&
+      (!category || material.category === category),
   );
   const byCategory = new Map<string, typeof rows>();
-  for (const m of rows) {
-    const list = byCategory.get(m.category) ?? [];
-    list.push(m);
-    byCategory.set(m.category, list);
+  for (const material of rows) {
+    const list = byCategory.get(material.category) ?? [];
+    list.push(material);
+    byCategory.set(material.category, list);
   }
 
   return (
@@ -87,15 +87,15 @@ export function MaterialsPage() {
 
       <div className="card" style={{ marginBottom: 16 }}>
         <div className="row">
-          <input aria-label="Search" placeholder="Search…" value={search} onChange={(e) => setSearch(e.target.value)} style={{ maxWidth: 240 }} />
-          <select aria-label="Category" value={category} onChange={(e) => setCategory(e.target.value)} style={{ maxWidth: 200 }}>
+          <input aria-label="Search" placeholder="Search…" value={search} onChange={(event) => setSearch(event.target.value)} style={{ maxWidth: 240 }} />
+          <select aria-label="Category" value={category} onChange={(event) => setCategory(event.target.value)} style={{ maxWidth: 200 }}>
             <option value="">All categories</option>
             {categories.map((cat) => (
               <option key={cat} value={cat}>{cat}</option>
             ))}
           </select>
           <label className="row small" style={{ margin: 0, gap: 6 }}>
-            <input type="checkbox" style={{ width: "auto" }} checked={neededOnly} onChange={(e) => setNeededOnlyPicked(e.target.checked)} />
+            <input type="checkbox" style={{ width: "auto" }} checked={neededOnly} onChange={(event) => setNeededOnlyPicked(event.target.checked)} />
             Needed only
           </label>
           <span className="small muted">Enter what you have; "missing" updates from your farming goals.</span>
@@ -111,30 +111,30 @@ export function MaterialsPage() {
                 <tr><th>Material</th><th>Have</th><th>Needed</th><th>Missing</th><th>Days</th></tr>
               </thead>
               <tbody>
-                {list.map((m) => {
-                  const n = need.get(m.id);
-                  const h = have.get(m.id) ?? 0;
-                  const missing = Math.max(0, (n?.needed ?? 0) - h);
+                {list.map((material) => {
+                  const neededRow = need.get(material.id);
+                  const held = have.get(material.id) ?? 0;
+                  const missing = Math.max(0, (neededRow?.needed ?? 0) - held);
                   return (
-                    <tr key={m.id}>
+                    <tr key={material.id}>
                       <td>
                         <span className="materials-name">
-                          <CatalogIcon gameKey={instance.gameKey} kind="material" icon={m.icon} name={m.name} className="materials-icon" />
-                          {m.name}
+                          <CatalogIcon gameKey={instance.gameKey} kind="material" icon={material.icon} name={material.name} className="materials-icon" />
+                          {material.name}
                         </span>
-                        {m.source ? <div className="small muted">{m.source}</div> : null}
+                        {material.source ? <div className="small muted">{material.source}</div> : null}
                       </td>
                       <td>
-                        <input type="number" aria-label={`${m.name} in stock`} min={0} style={{ width: 90 }} defaultValue={h}
-                          onBlur={(e) => { const qty = Math.max(0, Number(e.target.value)); if (qty !== h) setQty.mutate({ materialId: m.id, qty }); }} />
+                        <input type="number" aria-label={`${material.name} in stock`} min={0} style={{ width: 90 }} defaultValue={held}
+                          onBlur={(event) => { const qty = Math.max(0, Number(event.target.value)); if (qty !== held) setQty.mutate({ materialId: material.id, qty }); }} />
                       </td>
-                      <td>{n?.needed ?? 0}</td>
+                      <td>{neededRow?.needed ?? 0}</td>
                       <td style={{ color: missing ? "var(--accent)" : "var(--muted)" }}>{missing || "—"}</td>
                       <td className="small">
-                        {m.availability?.length ? (
+                        {material.availability?.length ? (
                           <>
-                            {m.availability.map((d) => DAYS[d]).join(" ")}{" "}
-                            {n?.material?.farmableToday ? <span className="badge done">today</span> : null}
+                            {material.availability.map((day) => DAYS[day]).join(" ")}{" "}
+                            {neededRow?.material?.farmableToday ? <span className="badge done">today</span> : null}
                           </>
                         ) : <span className="muted">any</span>}
                       </td>

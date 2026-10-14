@@ -8,29 +8,29 @@ import { GameIcon } from "./GameIcon";
 import { Countdown } from "./ui";
 
 /** The Banners card on Home: one running banner at a time, its featured unit's art under a dark layer; it steps per banner on the shared clock. */
-export function BannersCarousel({ roster, c }: { roster: RosterEntry[]; c: HomeCarousel }) {
-  const counts = roster.map((r) => Math.max(1, r.banners.length));
-  const total = counts.reduce((s, n) => s + n, 0);
-  const before = counts.slice(0, c.pos.game).reduce((s, n) => s + n, 0);
-  const entry = roster[c.pos.game];
-  const banner = entry?.banners[c.pos.banner];
+export function BannersCarousel({ roster, carousel }: { roster: RosterEntry[]; carousel: HomeCarousel }) {
+  const counts = roster.map((rosterEntry) => Math.max(1, rosterEntry.banners.length));
+  const total = counts.reduce((sum, count) => sum + count, 0);
+  const before = counts.slice(0, carousel.pos.game).reduce((sum, count) => sum + count, 0);
+  const entry = roster[carousel.pos.game];
+  const banner = entry?.banners[carousel.pos.banner];
   const game = banner && getGame(banner.gameKey);
-  const lead = banner && [...banner.featured].sort((x, y) => (y.rarity ?? 0) - (x.rarity ?? 0))[0];
+  const lead = banner && [...banner.featured].sort((first, second) => (second.rarity ?? 0) - (first.rarity ?? 0))[0];
 
   return (
     <CarouselCard
       title="Banners"
       className="banner-card"
-      index={before + c.pos.banner}
+      index={before + carousel.pos.banner}
       total={total}
       itemLabel="banner"
-      onPrev={c.prev}
-      onNext={c.next}
-      durationMs={c.durationMs}
-      tick={c.tick}
-      rotating={c.rotating}
-      onHold={c.hold}
-      onRelease={c.release}
+      onPrev={carousel.prev}
+      onNext={carousel.next}
+      durationMs={carousel.durationMs}
+      tick={carousel.tick}
+      rotating={carousel.rotating}
+      onHold={carousel.hold}
+      onRelease={carousel.release}
     >
       {banner ? (
         <>

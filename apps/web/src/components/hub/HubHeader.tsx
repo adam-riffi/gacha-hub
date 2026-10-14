@@ -17,7 +17,7 @@ export const masked = (uid: string) => (uid.length > 2 ? `${uid[0]}${"•".repea
  * the server, UID and account level.
  */
 export function HubHeader({ instanceId }: { instanceId: string }) {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   const { data } = useQuery({ queryKey: ["instance", instanceId], queryFn: () => api.get<InstanceDetail>(`/api/instances/${instanceId}`) });
   const [editing, setEditing] = useState(false);
   const [iconOk, setIconOk] = useState(true);
@@ -25,22 +25,22 @@ export function HubHeader({ instanceId }: { instanceId: string }) {
     mutationFn: (body: { regionKey?: string; uid: string | null; accountLevel: number | null }) => api.put(`/api/instances/${instanceId}`, body),
     onSuccess: () => {
       setEditing(false);
-      for (const k of [["instance", instanceId], ["instances"], ["dashboard"]]) qc.invalidateQueries({ queryKey: k });
+      for (const queryKey of [["instance", instanceId], ["instances"], ["dashboard"]]) queryClient.invalidateQueries({ queryKey });
     },
   });
   const game = data && getGame(data.gameKey);
   if (!data || !game) return null;
 
-  const region = game.regions.find((r) => r.key === data.regionKey) ?? game.regions[0]!;
+  const region = game.regions.find((candidate) => candidate.key === data.regionKey) ?? game.regions[0]!;
   const level = game.manifest.accountLevel;
   const world = game.manifest.worldLevel;
   const resets = hubResets(game, region, new Date());
-  const submit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const f = new FormData(e.currentTarget);
-    const uid = String(f.get("uid") ?? "").trim();
-    const lv = String(f.get("level") ?? "").trim();
-    save.mutate({ regionKey: f.get("region") ? String(f.get("region")) : undefined, uid: uid || null, accountLevel: lv ? Number(lv) : null });
+  const submit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const uid = String(formData.get("uid") ?? "").trim();
+    const levelText = String(formData.get("level") ?? "").trim();
+    save.mutate({ regionKey: formData.get("region") ? String(formData.get("region")) : undefined, uid: uid || null, accountLevel: levelText ? Number(levelText) : null });
   };
 
   return (
@@ -59,9 +59,9 @@ export function HubHeader({ instanceId }: { instanceId: string }) {
               <label>
                 <span>Server</span>
                 <select name="region" defaultValue={region.key}>
-                  {game.regions.map((r) => (
-                    <option key={r.key} value={r.key}>
-                      {r.label} · {utcLabel(r.utcOffsetMinutes)}
+                  {game.regions.map((regionOption) => (
+                    <option key={regionOption.key} value={regionOption.key}>
+                      {regionOption.label} · {utcLabel(regionOption.utcOffsetMinutes)}
                     </option>
                   ))}
                 </select>

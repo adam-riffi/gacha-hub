@@ -12,7 +12,7 @@ export type AddBody = { bannerKey: string; count: number; fiveStarAt?: number; f
 export type CalibrateBody = { bannerKey: string; pity: number; guaranteed: boolean };
 
 const ENDS = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
-const pct = (v: number) => `${v >= 0.995 && v < 1 ? ">99" : (v * 100).toFixed(v < 0.1 ? 1 : 0)}%`;
+const percentText = (value: number) => `${value >= 0.995 && value < 1 ? ">99" : (value * 100).toFixed(value < 0.1 ? 1 : 0)}%`;
 const split = (rate: number) => `${Math.round(rate * 100)}/${100 - Math.round(rate * 100)}`;
 
 /**
@@ -22,7 +22,7 @@ const split = (rate: number) => `${Math.round(rate * 100)}/${100 - Math.round(ra
  * with your pulls (and with a simulated top-up), and the actions.
  */
 export function BannerCard(props: {
-  b: PullBannerLogDto;
+  banner: PullBannerLogDto;
   gameKey: string;
   /** The game profile, so a featured character links to its page. */
   instanceId?: string;
@@ -39,69 +39,69 @@ export function BannerCard(props: {
   onUndo: (entryId: string) => void;
   onHide: () => void;
 }) {
-  const { b, live, available, extra = 0 } = props;
+  const { banner, live, available, extra = 0 } = props;
   const [mode, setMode] = useState<"five" | "set" | null>(null);
-  const s = b.state;
-  const state = { pity: s.pity, guaranteed: s.guaranteed };
-  const dist = fiveStarDistribution(b, s.pity);
-  const within = (n: number) => dist.slice(0, n).reduce((t, p) => t + p, 0);
-  const hasFeatured = b.featuredRate < 1;
-  const feat = live?.featured.find((f) => (f.rarity ?? 0) >= 5);
+  const savedState = banner.state;
+  const state = { pity: savedState.pity, guaranteed: savedState.guaranteed };
+  const distribution = fiveStarDistribution(banner, savedState.pity);
+  const within = (pulls: number) => distribution.slice(0, pulls).reduce((total, probability) => total + probability, 0);
+  const hasFeatured = banner.featuredRate < 1;
+  const featured = live?.featured.find((featuredUnit) => (featuredUnit.rarity ?? 0) >= 5);
   const running = props.running ?? (live ? [live] : []);
-  const stars = running.flatMap((l) => l.featured.filter((f) => (f.rarity ?? 0) >= 5));
+  const stars = running.flatMap((liveBanner) => liveBanner.featured.filter((featuredUnit) => (featuredUnit.rarity ?? 0) >= 5));
   const star = topStar(props.gameKey);
-  const target = feat?.name ?? `the featured ${star}`;
+  const target = featured?.name ?? `the featured ${star}`;
 
   const actions = (
     <div className="pl-actions">
-      <button className="btn" onClick={() => props.onAdd({ bannerKey: b.key, count: 1 })}>+1</button>
-      <button className="btn" onClick={() => props.onAdd({ bannerKey: b.key, count: 10 })}>+10</button>
+      <button className="btn" onClick={() => props.onAdd({ bannerKey: banner.key, count: 1 })}>+1</button>
+      <button className="btn" onClick={() => props.onAdd({ bannerKey: banner.key, count: 10 })}>+10</button>
       <button className="btn" aria-pressed={mode === "five"} onClick={() => setMode(mode === "five" ? null : "five")}>Log a {star}</button>
       <button className="btn" aria-pressed={mode === "set"} onClick={() => setMode(mode === "set" ? null : "set")}>Set pity</button>
-      {b.recent[0] && (
-        <button className="btn ghost" title="Delete the latest entry" onClick={() => props.onUndo(b.recent[0]!.id)}>Undo</button>
+      {banner.recent[0] && (
+        <button className="btn ghost" title="Delete the latest entry" onClick={() => props.onUndo(banner.recent[0]!.id)}>Undo</button>
       )}
       <button className="btn ghost" title="Hide this banner type from Pulls and Home" onClick={props.onHide}>Hide</button>
     </div>
   );
   const forms = (
     <>
-      {mode === "five" && <FiveStarForm b={b} star={star} units={props.units} onSave={(body) => { props.onAdd(body); setMode(null); }} />}
-      {mode === "set" && <SetPityForm b={b} onSave={(body) => { props.onCalibrate(body); setMode(null); }} />}
+      {mode === "five" && <FiveStarForm banner={banner} star={star} units={props.units} onSave={(body) => { props.onAdd(body); setMode(null); }} />}
+      {mode === "set" && <SetPityForm banner={banner} onSave={(body) => { props.onCalibrate(body); setMode(null); }} />}
     </>
   );
   const pity = (
     <span className="pl-pity mn">
-      <span data-testid="pity">{s.pity}</span> / {b.hardPity}
+      <span data-testid="pity">{savedState.pity}</span> / {banner.hardPity}
     </span>
   );
 
-  const [worst] = savingsPlan([{ label: target, rules: b, state }], available, 0, "worst");
-  const [average] = savingsPlan([{ label: target, rules: b, state }], available, 0, "average");
-  const soft = b.softPity !== undefined && s.pity < b.softPity;
+  const [worst] = savingsPlan([{ label: target, rules: banner, state }], available, 0, "worst");
+  const [average] = savingsPlan([{ label: target, rules: banner, state }], available, 0, "average");
+  const soft = banner.softPity !== undefined && savedState.pity < banner.softPity;
 
   return (
-    <section className="card pl-banner" aria-label={b.label}>
+    <section className="card pl-banner" aria-label={banner.label}>
       <div className="pl-banner-main">
       <div className="pl-banner-head">
-        {feat ? (
-          <GameIcon src={assetUrl(props.gameKey, feat.kind, feat.icon)} fallback={communityAssetUrl(props.gameKey, feat.kind, feat.icon)} alt={feat.name ?? feat.catalogId} glyph={artGlyph(feat.kind)} className="pl-art" />
+        {featured ? (
+          <GameIcon src={assetUrl(props.gameKey, featured.kind, featured.icon)} fallback={communityAssetUrl(props.gameKey, featured.kind, featured.icon)} alt={featured.name ?? featured.catalogId} glyph={artGlyph(featured.kind)} className="pl-art" />
         ) : (
-          <Glyph kind={bannerGlyph(b.key)} label={b.label} className="pl-art" />
+          <Glyph kind={bannerGlyph(banner.key)} label={banner.label} className="pl-art" />
         )}
         <div>
-          <h3>{b.label}</h3>
+          <h3>{banner.label}</h3>
           <div className="mn mu">
             {running.length ? (
               <>
-                {running.map((l) => l.name).join(" · ")}
-                {stars.map((f) => (
-                  <span key={f.catalogId}>
+                {running.map((liveBanner) => liveBanner.name).join(" · ")}
+                {stars.map((featuredUnit) => (
+                  <span key={featuredUnit.catalogId}>
                     {" · "}
-                    {f.kind === "character" && props.instanceId ? <Link to={`/games/${props.instanceId}/units/${f.catalogId}`}>{f.name ?? f.catalogId}</Link> : (f.name ?? f.catalogId)}
+                    {featuredUnit.kind === "character" && props.instanceId ? <Link to={`/games/${props.instanceId}/units/${featuredUnit.catalogId}`}>{featuredUnit.name ?? featuredUnit.catalogId}</Link> : (featuredUnit.name ?? featuredUnit.catalogId)}
                   </span>
                 ))}
-                {` · ends ${ENDS.format(new Date(Math.min(...running.map((l) => Date.parse(l.endsAt)))))}`}
+                {` · ends ${ENDS.format(new Date(Math.min(...running.map((liveBanner) => Date.parse(liveBanner.endsAt)))))}`}
               </>
             ) : (
               "not running"
@@ -115,9 +115,9 @@ export function BannerCard(props: {
           <span className="kpi-label">Status</span>
           <Segmented
             label="Status"
-            options={[{ value: "open", label: split(b.featuredRate) }, { value: "guaranteed", label: "Guaranteed" }]}
-            value={s.guaranteed ? "guaranteed" : "open"}
-            onChange={(v) => props.onCalibrate({ bannerKey: b.key, pity: s.pity, guaranteed: v === "guaranteed" })}
+            options={[{ value: "open", label: split(banner.featuredRate) }, { value: "guaranteed", label: "Guaranteed" }]}
+            value={savedState.guaranteed ? "guaranteed" : "open"}
+            onChange={(choice) => props.onCalibrate({ bannerKey: banner.key, pity: savedState.pity, guaranteed: choice === "guaranteed" })}
           />
         </div>
       )}
@@ -125,8 +125,8 @@ export function BannerCard(props: {
       <div className="pl-meter-row">
         <span className="kpi-label">{star} pity</span>
         <span className="pl-meter" aria-hidden="true">
-          <span style={{ width: `${Math.min(100, (s.pity / b.hardPity) * 100)}%` }} />
-          {b.softPity !== undefined && <i style={{ left: `${(b.softPity / b.hardPity) * 100}%` }} />}
+          <span style={{ width: `${Math.min(100, (savedState.pity / banner.hardPity) * 100)}%` }} />
+          {banner.softPity !== undefined && <i style={{ left: `${(banner.softPity / banner.hardPity) * 100}%` }} />}
         </span>
         {pity}
       </div>
@@ -136,23 +136,23 @@ export function BannerCard(props: {
           <tr><th>Odds · estimates</th><th className="num">{star}</th></tr>
         </thead>
         <tbody>
-          <tr><td>Next pull</td><td className="num">{pct(rateAt(b, s.pity + 1))}</td></tr>
-          <tr><td>Next 10 pulls</td><td className="num">{pct(within(10))}</td></tr>
-          {soft && <tr><td>By {b.softPity}</td><td className="num">{pct(within(b.softPity! - s.pity))}</td></tr>}
-          <tr><td>With {available}</td><td className="num">{pct(featuredWithin(b, state, available))}</td></tr>
-          {extra > 0 && <tr><td>+{extra}</td><td className="num">{pct(featuredWithin(b, state, available + extra))}</td></tr>}
+          <tr><td>Next pull</td><td className="num">{percentText(rateAt(banner, savedState.pity + 1))}</td></tr>
+          <tr><td>Next 10 pulls</td><td className="num">{percentText(within(10))}</td></tr>
+          {soft && <tr><td>By {banner.softPity}</td><td className="num">{percentText(within(banner.softPity! - savedState.pity))}</td></tr>}
+          <tr><td>With {available}</td><td className="num">{percentText(featuredWithin(banner, state, available))}</td></tr>
+          {extra > 0 && <tr><td>+{extra}</td><td className="num">{percentText(featuredWithin(banner, state, available + extra))}</td></tr>}
         </tbody>
       </table>
       </div>
 
       <div className="pl-banner-side">
-      <PullCurve rules={b} state={state} available={available} extra={extra} star={star} />
+      <PullCurve rules={banner} state={state} available={available} extra={extra} star={star} />
 
       <div className="pl-headline">
-        <span className="kpi-value">{pct(worst!.chance)}</span>
+        <span className="kpi-value">{percentText(worst!.chance)}</span>
         <span>
           with {available}
-          {extra > 0 && <strong> · +{extra} {pct(featuredWithin(b, state, available + extra))}</strong>}
+          {extra > 0 && <strong> · +{extra} {percentText(featuredWithin(banner, state, available + extra))}</strong>}
           <span className="mn mu"> · avg {average!.needs} · max {Number.isFinite(worst!.needs) ? worst!.needs : "—"}</span>
         </span>
       </div>
@@ -163,52 +163,52 @@ export function BannerCard(props: {
   );
 }
 
-function FiveStarForm({ b, star, units, onSave }: { b: PullBannerLogDto; star: string; units: Unit[]; onSave: (body: AddBody) => void }) {
+function FiveStarForm({ banner, star, units, onSave }: { banner: PullBannerLogDto; star: string; units: Unit[]; onSave: (body: AddBody) => void }) {
   const [count, setCount] = useState(10);
   const [at, setAt] = useState(10);
   const [featured, setFeatured] = useState(true);
   const [unit, setUnit] = useState("");
-  const hasFeatured = b.featuredRate < 1;
+  const hasFeatured = banner.featuredRate < 1;
   return (
     <form
       className="pl-form"
-      onSubmit={(e) => {
-        e.preventDefault();
-        onSave({ bannerKey: b.key, count, fiveStarAt: Math.min(at, count), ...(hasFeatured ? { featured } : {}), ...(unit ? { catalogId: unit } : {}) });
+      onSubmit={(event) => {
+        event.preventDefault();
+        onSave({ bannerKey: banner.key, count, fiveStarAt: Math.min(at, count), ...(hasFeatured ? { featured } : {}), ...(unit ? { catalogId: unit } : {}) });
       }}
     >
-      <label>Pulls in the batch <input type="number" min={1} max={200} value={count} onChange={(e) => setCount(Number(e.target.value))} /></label>
-      <label>{star} at pull <input type="number" min={1} max={count} value={at} onChange={(e) => setAt(Number(e.target.value))} /></label>
+      <label>Pulls in the batch <input type="number" min={1} max={200} value={count} onChange={(event) => setCount(Number(event.target.value))} /></label>
+      <label>{star} at pull <input type="number" min={1} max={count} value={at} onChange={(event) => setAt(Number(event.target.value))} /></label>
       {hasFeatured && (
         <label className="pl-check">
-          <input type="checkbox" checked={featured} onChange={(e) => setFeatured(e.target.checked)} /> Featured
+          <input type="checkbox" checked={featured} onChange={(event) => setFeatured(event.target.checked)} /> Featured
         </label>
       )}
-      <select value={unit} onChange={(e) => setUnit(e.target.value)} aria-label={`Which ${star}`}>
+      <select value={unit} onChange={(event) => setUnit(event.target.value)} aria-label={`Which ${star}`}>
         <option value="">Which {star} (optional)</option>
-        {units.map((u) => <option key={u.id} value={u.id}>{u.name}</option>)}
+        {units.map((unitOption) => <option key={unitOption.id} value={unitOption.id}>{unitOption.name}</option>)}
       </select>
       <button className="btn primary" type="submit">Save {star}</button>
     </form>
   );
 }
 
-function SetPityForm({ b, onSave }: { b: PullBannerLogDto; onSave: (body: CalibrateBody) => void }) {
-  const [pity, setPity] = useState(b.state.pity);
-  const [guaranteed, setGuaranteed] = useState(b.state.guaranteed);
-  const hasFeatured = b.featuredRate < 1;
+function SetPityForm({ banner, onSave }: { banner: PullBannerLogDto; onSave: (body: CalibrateBody) => void }) {
+  const [pity, setPity] = useState(banner.state.pity);
+  const [guaranteed, setGuaranteed] = useState(banner.state.guaranteed);
+  const hasFeatured = banner.featuredRate < 1;
   return (
     <form
       className="pl-form"
-      onSubmit={(e) => {
-        e.preventDefault();
-        onSave({ bannerKey: b.key, pity, guaranteed: hasFeatured && guaranteed });
+      onSubmit={(event) => {
+        event.preventDefault();
+        onSave({ bannerKey: banner.key, pity, guaranteed: hasFeatured && guaranteed });
       }}
     >
-      <label>Current pity <input type="number" min={0} max={b.hardPity - 1} value={pity} onChange={(e) => setPity(Number(e.target.value))} /></label>
+      <label>Current pity <input type="number" min={0} max={banner.hardPity - 1} value={pity} onChange={(event) => setPity(Number(event.target.value))} /></label>
       {hasFeatured && (
         <label className="pl-check">
-          <input type="checkbox" checked={guaranteed} onChange={(e) => setGuaranteed(e.target.checked)} /> Guaranteed
+          <input type="checkbox" checked={guaranteed} onChange={(event) => setGuaranteed(event.target.checked)} /> Guaranteed
         </label>
       )}
       <button className="btn primary" type="submit">Save pity</button>

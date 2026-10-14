@@ -73,9 +73,9 @@ type Card = {
  */
 export function CharactersPage() {
   const { id } = useParams<{ id: string }>();
-  const qc = useQueryClient();
-  const nav = useNavigate();
-  const [q, setQ] = useState("");
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const [query, setQuery] = useState("");
   const [element, setElement] = useState("");
   const [weapon, setWeapon] = useState("");
   const [rarity, setRarity] = useState("");
@@ -103,62 +103,62 @@ export function CharactersPage() {
 
   // The cache takes what was saved at once, then refetches: the cards flip on the answer, not on a refetch that can lag.
   const markOwned = (ids: string[], owned: boolean) => {
-    qc.setQueryData<OwnershipDto[]>(["ownership", id], (old = []) => [
-      ...old.filter((o) => !(o.kind === "character" && ids.includes(o.catalogId))),
+    queryClient.setQueryData<OwnershipDto[]>(["ownership", id], (old = []) => [
+      ...old.filter((ownedItem) => !(ownedItem.kind === "character" && ids.includes(ownedItem.catalogId))),
       ...(owned ? ids.map((catalogId) => ({ kind: "character" as const, catalogId, qty: 1, meta: null })) : []),
     ]);
-    return qc.invalidateQueries({ queryKey: ["ownership", id] });
+    return queryClient.invalidateQueries({ queryKey: ["ownership", id] });
   };
   const own = useMutation({
     mutationFn: (ids: string[]) => api.put(`/api/instances/${id}/ownership`, { items: ids.map((catalogId) => ({ kind: "character", catalogId, owned: true })) }),
-    onSuccess: (_r, ids) => markOwned(ids, true),
+    onSuccess: (_response, ids) => markOwned(ids, true),
   });
   const unown = useMutation({
     mutationFn: (ids: string[]) => api.put(`/api/instances/${id}/ownership`, { items: ids.map((catalogId) => ({ kind: "character", catalogId, owned: false })) }),
-    onSuccess: (_r, ids) => markOwned(ids, false),
+    onSuccess: (_response, ids) => markOwned(ids, false),
   });
   const wishMany = useMutation({
-    mutationFn: (v: { ids: string[]; wished: boolean }) => Promise.all(v.ids.map((catalogId) => api.put(`/api/instances/${id}/wishlist`, { kind: "character", catalogId, wished: v.wished }))),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["wishlist", id] }),
+    mutationFn: (change: { ids: string[]; wished: boolean }) => Promise.all(change.ids.map((catalogId) => api.put(`/api/instances/${id}/wishlist`, { kind: "character", catalogId, wished: change.wished }))),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["wishlist", id] }),
   });
   // Ownership is the owned list alone: a build stays when its character is marked not owned (Georges, round 6).
   const setBuildStatus = useMutation({
-    mutationFn: (v: { ids: string[]; buildStatus: BuildStatus }) => Promise.all(v.ids.map((b) => api.put(`/api/characters/${b}`, { buildStatus: v.buildStatus }))),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["characters", id] }),
+    mutationFn: (change: { ids: string[]; buildStatus: BuildStatus }) => Promise.all(change.ids.map((buildId) => api.put(`/api/characters/${buildId}`, { buildStatus: change.buildStatus }))),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["characters", id] }),
   });
   const startMany = useMutation({
     mutationFn: (ids: string[]) => Promise.all(ids.map((catalogId) => api.post(`/api/instances/${id}/characters`, { catalogId }))),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["characters", id] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["characters", id] }),
   });
   const wish = useMutation({
-    mutationFn: (v: { catalogId: string; wished: boolean; kind?: "character" | "weapon" }) => api.put(`/api/instances/${id}/wishlist`, { kind: "character", ...v }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["wishlist", id] }),
+    mutationFn: (change: { catalogId: string; wished: boolean; kind?: "character" | "weapon" }) => api.put(`/api/instances/${id}/wishlist`, { kind: "character", ...change }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["wishlist", id] }),
   });
   // A card's own stats (Georges, round 6: "I can choose for each one character what I want to show"), saved per build, the latest pick
   // waiting while one is in flight, read back after the last.
   const buildStatsWrites = useLatestWriteQueue<string[] | null>(
     (buildId, cardStats) => api.put(`/api/characters/${buildId}`, { cardStats }),
-    () => qc.invalidateQueries({ queryKey: ["characters"] }),
+    () => queryClient.invalidateQueries({ queryKey: ["characters"] }),
   );
   const saveBuildStats = (buildId: string, cardStats: string[] | null) => {
-    void qc.cancelQueries({ queryKey: ["characters", id] });
-    qc.setQueryData<CharacterDto[]>(["characters", id], (old) => old?.map((build) => (build.id === buildId ? { ...build, cardStats } : build)));
+    void queryClient.cancelQueries({ queryKey: ["characters", id] });
+    queryClient.setQueryData<CharacterDto[]>(["characters", id], (old) => old?.map((build) => (build.id === buildId ? { ...build, cardStats } : build)));
     buildStatsWrites.push(buildId, cardStats);
   };
   // The stats the cards show, picked for the game (Georges, round 5); none picked shows each build's role's. A read in flight would put
   // back the stats from before the picks, so it is cancelled; the game's stats are read back once the last pick is saved.
   const gameStatsWrites = useLatestWriteQueue<string[] | null>(
     (instanceId, cardStats) => api.put(`/api/instances/${instanceId}`, { cardStats }),
-    (instanceId) => qc.invalidateQueries({ queryKey: ["instance", instanceId] }),
+    (instanceId) => queryClient.invalidateQueries({ queryKey: ["instance", instanceId] }),
   );
   const saveGameStats = (cardStats: string[] | null) => {
-    void qc.cancelQueries({ queryKey: ["instance", id] });
-    qc.setQueryData<InstanceDetail>(["instance", id], (old) => (old ? { ...old, cardStats } : old));
+    void queryClient.cancelQueries({ queryKey: ["instance", id] });
+    queryClient.setQueryData<InstanceDetail>(["instance", id], (old) => (old ? { ...old, cardStats } : old));
     gameStatsWrites.push(id!, cardStats);
   };
   const start = useMutation({
-    mutationFn: (v: string | { name: string } | { catalogId: string; own: false }) => api.post<{ id: string }>(`/api/instances/${id}/characters`, typeof v === "string" ? { catalogId: v } : v),
-    onSuccess: (r) => nav(`/characters/${r.id}`),
+    mutationFn: (request: string | { name: string } | { catalogId: string; own: false }) => api.post<{ id: string }>(`/api/instances/${id}/characters`, typeof request === "string" ? { catalogId: request } : request),
+    onSuccess: (created) => navigate(`/characters/${created.id}`),
   });
 
   const game = instance.data && getGame(instance.data.gameKey);
@@ -168,76 +168,76 @@ export function CharactersPage() {
 
   // Each unit's card shows its default build (the flagged one, else its first).
   const byCatalog = new Map<string, CharacterDto>();
-  for (const b of builds.data) if (b.catalogId && (b.isDefault || !byCatalog.has(b.catalogId))) byCatalog.set(b.catalogId, b);
-  const ownedIds = new Set((ownership.data ?? []).filter((o) => o.kind === "character").map((o) => o.catalogId));
-  const wishedIds = new Set((wishlist.data ?? []).filter((w) => w.kind === "character").map((w) => w.catalogId));
+  for (const build of builds.data) if (build.catalogId && (build.isDefault || !byCatalog.has(build.catalogId))) byCatalog.set(build.catalogId, build);
+  const ownedIds = new Set((ownership.data ?? []).filter((ownedItem) => ownedItem.kind === "character").map((ownedItem) => ownedItem.catalogId));
+  const wishedIds = new Set((wishlist.data ?? []).filter((wishedItem) => wishedItem.kind === "character").map((wishedItem) => wishedItem.catalogId));
   const cards: Card[] = catalog
-    ? catalog.characters.map((c) => ({ id: c.id, name: c.name, rarity: c.rarity, tag: c.tag ?? null, weaponType: c.weaponType ?? null, icon: c.icon, splash: c.splash, entry: c, build: byCatalog.get(c.id), owned: ownedIds.has(c.id), wished: wishedIds.has(c.id) }))
-    : builds.data.map((b) => ({ id: b.id, name: b.name, rarity: null, tag: null, weaponType: null, icon: undefined, entry: undefined, build: b, owned: true, wished: false }));
+    ? catalog.characters.map((character) => ({ id: character.id, name: character.name, rarity: character.rarity, tag: character.tag ?? null, weaponType: character.weaponType ?? null, icon: character.icon, splash: character.splash, entry: character, build: byCatalog.get(character.id), owned: ownedIds.has(character.id), wished: wishedIds.has(character.id) }))
+    : builds.data.map((build) => ({ id: build.id, name: build.name, rarity: null, tag: null, weaponType: null, icon: undefined, entry: undefined, build, owned: true, wished: false }));
 
-  const live = (dash.data?.timeline.banners ?? []).filter((b) => b.gameKey === game.key && b.status === "active" && b.kind === "character");
-  const characterBanner = pulls.data?.banners.find((b) => b.key === "character");
-  const available = pullsFor(game.currencies.filter((c) => c.pullCost).map((c) => ({ ...c, value: instance.data.currencies.find((x) => x.key === c.key)?.value ?? 0 }))).limited;
+  const live = (dash.data?.timeline.banners ?? []).filter((banner) => banner.gameKey === game.key && banner.status === "active" && banner.kind === "character");
+  const characterBanner = pulls.data?.banners.find((banner) => banner.key === "character");
+  const available = pullsFor(game.currencies.filter((currency) => currency.pullCost).map((currency) => ({ ...currency, value: instance.data.currencies.find((held) => held.key === currency.key)?.value ?? 0 }))).limited;
   const eventStep = (catalogId: string) =>
     (rewards.data ?? [])
-      .filter((r) => r.instanceId === id && r.goal && !r.goal.claimed)
-      .flatMap((r) => r.options[r.goal!.choice ?? 0]?.changes ?? [])
-      .find((c) => c.catalogId === catalogId);
+      .filter((reward) => reward.instanceId === id && reward.goal && !reward.goal.claimed)
+      .flatMap((reward) => reward.options[reward.goal!.choice ?? 0]?.changes ?? [])
+      .find((change) => change.catalogId === catalogId);
 
-  const level = (c: Card) => Number((c.build?.doc as { level?: number } | undefined)?.level ?? 0);
+  const level = (card: Card) => Number((card.build?.doc as { level?: number } | undefined)?.level ?? 0);
   // A card's dupes from its build's sheet (none typed reads 0), by the game's own field (Star Rail's eidolon).
   const characterDupes = game.manifest.dupes.character;
   const dupesOf = (card: Card) => Number((card.build?.doc as Record<string, unknown> | undefined)?.[characterDupes.field] ?? 0);
   const filtered = cards
-    .filter((c) => !q || c.name.toLowerCase().includes(q.toLowerCase()))
-    .filter((c) => !element || c.tag === element)
-    .filter((c) => !weapon || c.weaponType === weapon)
-    .filter((c) => !rarity || String(c.rarity) === rarity)
+    .filter((card) => !query || card.name.toLowerCase().includes(query.toLowerCase()))
+    .filter((card) => !element || card.tag === element)
+    .filter((card) => !weapon || card.weaponType === weapon)
+    .filter((card) => !rarity || String(card.rarity) === rarity)
     .filter((card) => fitsOwnershipView(ownershipView, card))
     .filter((card) => !dupeCount || (card.owned && dupesOf(card) === Number(dupeCount)))
-    .filter((c) => !status || (c.build?.buildStatus ?? "none") === status)
-    .sort((a, b) =>
+    .filter((card) => !status || (card.build?.buildStatus ?? "none") === status)
+    .sort((first, second) =>
       sort === "name"
-        ? a.name.localeCompare(b.name)
+        ? first.name.localeCompare(second.name)
         : sort === "rarity"
-          ? (b.rarity ?? 0) - (a.rarity ?? 0) || a.name.localeCompare(b.name)
+          ? (second.rarity ?? 0) - (first.rarity ?? 0) || first.name.localeCompare(second.name)
           : sort === "level"
-            ? level(b) - level(a) || a.name.localeCompare(b.name)
+            ? level(second) - level(first) || first.name.localeCompare(second.name)
             : sort === "lastSeen"
-              ? lastSeenSortKey(appearances.data?.[a.id]) - lastSeenSortKey(appearances.data?.[b.id]) || a.name.localeCompare(b.name)
+              ? lastSeenSortKey(appearances.data?.[first.id]) - lastSeenSortKey(appearances.data?.[second.id]) || first.name.localeCompare(second.name)
               : // Built characters first: owned, then with a build, then by status; wishlisted before the rest.
-              Number(b.owned) - Number(a.owned) || Number(Boolean(b.build)) - Number(Boolean(a.build)) || STATUS_RANK[a.build?.buildStatus ?? "none"] - STATUS_RANK[b.build?.buildStatus ?? "none"] || Number(b.wished) - Number(a.wished) || a.name.localeCompare(b.name),
+              Number(second.owned) - Number(first.owned) || Number(Boolean(second.build)) - Number(Boolean(first.build)) || STATUS_RANK[first.build?.buildStatus ?? "none"] - STATUS_RANK[second.build?.buildStatus ?? "none"] || Number(second.wished) - Number(first.wished) || first.name.localeCompare(second.name),
     );
-  const count = (s: BuildStatus) => cards.filter((c) => c.owned && (c.build?.buildStatus ?? "none") === s).length;
-  const options = (pick: (c: Card) => string | null) => [...new Set(cards.map(pick).filter((v): v is string => Boolean(v)))].sort();
-  const unownedShown = filtered.filter((c) => !c.owned && c.entry).map((c) => c.id);
+  const count = (countedStatus: BuildStatus) => cards.filter((card) => card.owned && (card.build?.buildStatus ?? "none") === countedStatus).length;
+  const options = (pick: (card: Card) => string | null) => [...new Set(cards.map(pick).filter((value): value is string => Boolean(value)))].sort();
+  const unownedShown = filtered.filter((card) => !card.owned && card.entry).map((card) => card.id);
 
-  const togglePick = (cid: string) =>
-    setPicked((p) => {
-      const n = new Set(p);
-      if (n.has(cid)) n.delete(cid);
-      else n.add(cid);
-      return n;
+  const togglePick = (catalogId: string) =>
+    setPicked((previous) => {
+      const next = new Set(previous);
+      if (next.has(catalogId)) next.delete(catalogId);
+      else next.add(catalogId);
+      return next;
     });
-  const pickedCards = cards.filter((c) => picked.has(c.id));
+  const pickedCards = cards.filter((card) => picked.has(card.id));
   // A build's weapon as the card shows it: the catalog's name and icon, its level and refinement.
-  const heldOf = (b: CharacterDto | undefined) => {
-    const held = b && holder ? ((b.doc as Record<string, unknown>)[holder] as Record<string, unknown> | undefined) : undefined;
-    const w = held?.catalogId ? catalog?.weapons.find((x) => x.id === held.catalogId) : undefined;
-    if (!held || (!w && !held.name)) return null;
+  const heldOf = (build: CharacterDto | undefined) => {
+    const held = build && holder ? ((build.doc as Record<string, unknown>)[holder] as Record<string, unknown> | undefined) : undefined;
+    const heldWeapon = held?.catalogId ? catalog?.weapons.find((candidate) => candidate.id === held.catalogId) : undefined;
+    if (!held || (!heldWeapon && !held.name)) return null;
     const dupe = dupeField ? held[dupeField.split(".").at(-1)!] : undefined;
     const level = typeof held.level === "number" ? held.level : null;
     const rank = `${dupeLetter(dupeField ?? "")}${typeof dupe === "number" ? dupe : 1}`;
-    return { name: w?.name ?? String(held.name), icon: w?.icon, level, rank };
+    return { name: heldWeapon?.name ?? String(held.name), icon: heldWeapon?.icon, level, rank };
   };
   const holder = weaponHolder(game);
   const dupeField = game.manifest.dupes.weapon?.field;
-  const gearSets = new Map((catalog?.gear ?? []).map((g) => [g.name, g]));
+  const gearSets = new Map((catalog?.gear ?? []).map((gearSet) => [gearSet.name, gearSet]));
   const cardStats = instance.data.cardStats ?? null;
-  const statOptions = cardStatOptions(game, builds.data.map((b) => b.doc as Record<string, unknown>));
-  const toggleStat = (s: string) => {
+  const statOptions = cardStatOptions(game, builds.data.map((build) => build.doc as Record<string, unknown>));
+  const toggleStat = (stat: string) => {
     const now = cardStats ?? [];
-    const next = now.includes(s) ? now.filter((x) => x !== s) : [...now, s].slice(-LIMITS.cardStats);
+    const next = now.includes(stat) ? now.filter((chosen) => chosen !== stat) : [...now, stat].slice(-LIMITS.cardStats);
     saveGameStats(next.length ? next : null);
   };
 
@@ -249,19 +249,19 @@ export function CharactersPage() {
       <section className="card ch-filters" aria-label="Filters">
         <label>
           Search
-          <input type="search" aria-label="Search" placeholder="Name" value={q} onChange={(e) => setQ(e.target.value)} />
+          <input type="search" aria-label="Search" placeholder="Name" value={query} onChange={(event) => setQuery(event.target.value)} />
         </label>
         {catalog && (
           <>
-            <Chips label="Element" value={element} onChange={setElement} options={options((c) => (c.tag === "None" ? null : c.tag))} color={(t) => elementColor(game.key, t)} />
-            <Chips label="Weapon" value={weapon} onChange={setWeapon} options={options((c) => c.weaponType)} />
-            <Chips label="Rarity" value={rarity} onChange={setRarity} options={options((c) => (c.rarity ? String(c.rarity) : null)).reverse()} text={(r) => `★${r}`} />
+            <Chips label="Element" value={element} onChange={setElement} options={options((card) => (card.tag === "None" ? null : card.tag))} color={(tag) => elementColor(game.key, tag)} />
+            <Chips label="Weapon" value={weapon} onChange={setWeapon} options={options((card) => card.weaponType)} />
+            <Chips label="Rarity" value={rarity} onChange={setRarity} options={options((card) => (card.rarity ? String(card.rarity) : null)).reverse()} text={(rarityValue) => `★${rarityValue}`} />
             <Chips label={characterDupes.label} value={dupeCount} onChange={setDupeCount} options={Array.from({ length: characterDupes.max + 1 }, (_, count) => String(count))} text={(count) => `${dupeLetter(characterDupes.field)}${count}`} />
           </>
         )}
         <label>
           Sort
-          <select value={sort} onChange={(e) => setSort(e.target.value as typeof sort)}>
+          <select value={sort} onChange={(event) => setSort(event.target.value as typeof sort)}>
             <option value="status">Build status</option>
             <option value="name">Name</option>
             <option value="rarity">Rarity</option>
@@ -283,9 +283,9 @@ export function CharactersPage() {
             <button type="button" className="ch-chip" aria-pressed={!cardStats} onClick={() => saveGameStats(null)}>
               Role
             </button>
-            {statOptions.map((s) => (
-              <button key={s} type="button" className="ch-chip" aria-pressed={cardStats?.includes(s) ?? false} onClick={() => toggleStat(s)}>
-                {s}
+            {statOptions.map((statOption) => (
+              <button key={statOption} type="button" className="ch-chip" aria-pressed={cardStats?.includes(statOption) ?? false} onClick={() => toggleStat(statOption)}>
+                {statOption}
               </button>
             ))}
           </div>
@@ -293,7 +293,7 @@ export function CharactersPage() {
       </section>
 
       {kind === "builds" ? (
-        <BuildsTable instanceId={id!} game={game} builds={builds.data.filter((b) => !q || b.name.toLowerCase().includes(q.toLowerCase()))} entryOf={(cid) => (cid ? catalog?.characters.find((c) => c.id === cid) : undefined)} />
+        <BuildsTable instanceId={id!} game={game} builds={builds.data.filter((build) => !query || build.name.toLowerCase().includes(query.toLowerCase()))} entryOf={(catalogId) => (catalogId ? catalog?.characters.find((character) => character.id === catalogId) : undefined)} />
       ) : (
         <>
 
@@ -310,20 +310,20 @@ export function CharactersPage() {
           onChange={setOwnershipView}
         />
         <span className="ch-gap" />
-        {(["perfect", "good", "building", "none"] as const).map((v) => (
-          <button key={v} className="chip" aria-pressed={status === v} onClick={() => setStatus(status === v ? "" : v)}>
-            {v === "none" ? "Unbuilt" : v.charAt(0).toUpperCase() + v.slice(1)} {count(v)}
+        {(["perfect", "good", "building", "none"] as const).map((statusOption) => (
+          <button key={statusOption} className="chip" aria-pressed={status === statusOption} onClick={() => setStatus(status === statusOption ? "" : statusOption)}>
+            {statusOption === "none" ? "Unbuilt" : statusOption.charAt(0).toUpperCase() + statusOption.slice(1)} {count(statusOption)}
           </button>
         ))}
         {!catalog && (
           <form
             className="row"
-            onSubmit={(e) => {
-              e.preventDefault();
+            onSubmit={(event) => {
+              event.preventDefault();
               if (newName.trim()) start.mutate({ name: newName.trim() });
             }}
           >
-            <input aria-label="Character name" placeholder="Character name" value={newName} onChange={(e) => setNewName(e.target.value)} />
+            <input aria-label="Character name" placeholder="Character name" value={newName} onChange={(event) => setNewName(event.target.value)} />
             <button className="btn" type="submit" disabled={!newName.trim() || start.isPending}>+ Add</button>
           </form>
         )}
@@ -348,42 +348,42 @@ export function CharactersPage() {
       </div>
 
       <div className="ch-grid">
-        {filtered.map((c) => {
-          const doc = (c.build?.doc ?? {}) as Record<string, unknown>;
-          const onBanner = live.find((b) => b.featured.some((f) => f.catalogId === c.id));
-          const step = eventStep(c.id);
-          const art = splashKey(game.key, c.icon, c.splash);
-          const el = elementColor(game.key, c.tag);
-          const held = heldOf(c.build);
+        {filtered.map((card) => {
+          const doc = (card.build?.doc ?? {}) as Record<string, unknown>;
+          const onBanner = live.find((banner) => banner.featured.some((featuredUnit) => featuredUnit.catalogId === card.id));
+          const step = eventStep(card.id);
+          const art = splashKey(game.key, card.icon, card.splash);
+          const elementTint = elementColor(game.key, card.tag);
+          const held = heldOf(card.build);
           // The whole card opens the build, or the unit's page when there is none.
-          const to = c.build ? `/characters/${c.build.id}` : c.entry ? `/games/${id}/units/${c.id}` : null;
+          const to = card.build ? `/characters/${card.build.id}` : card.entry ? `/games/${id}/units/${card.id}` : null;
           return (
-            <article key={c.id} className={`ch-card ${selecting && picked.has(c.id) ? "is-picked" : ""}`} data-game={game.key} aria-label={c.name} style={el ? ({ "--el": el } as CSSProperties) : undefined}>
-              {selecting && c.entry ? (
+            <article key={card.id} className={`ch-card ${selecting && picked.has(card.id) ? "is-picked" : ""}`} data-game={game.key} aria-label={card.name} style={elementTint ? ({ "--el": elementTint } as CSSProperties) : undefined}>
+              {selecting && card.entry ? (
                 <label className="ch-open ch-picking">
-                  <input type="checkbox" className="ch-pick" aria-label={`Select ${c.name}`} checked={picked.has(c.id)} onChange={() => togglePick(c.id)} />
+                  <input type="checkbox" className="ch-pick" aria-label={`Select ${card.name}`} checked={picked.has(card.id)} onChange={() => togglePick(card.id)} />
                 </label>
               ) : (
-                to && <Link to={to} className="ch-open" aria-label={`Open ${c.name}`} />
+                to && <Link to={to} className="ch-open" aria-label={`Open ${card.name}`} />
               )}
               <div className="ch-art">
                 <GameIcon
-                  src={c.build?.portraitUrl ?? assetUrl(game.key, "splash", art)}
-                  fallback={[communityAssetUrl(game.key, "splash", art), communityAssetUrl(game.key, "character", c.icon)]}
-                  alt={c.name}
+                  src={card.build?.portraitUrl ?? assetUrl(game.key, "splash", art)}
+                  fallback={[communityAssetUrl(game.key, "splash", art), communityAssetUrl(game.key, "character", card.icon)]}
+                  alt={card.name}
                   glyph="character"
                 />
                 <div className="ch-chips">
-                  {c.rarity && <span className="badge">★{c.rarity}</span>}
-                  {c.tag && c.tag !== "None" && <span className="badge ch-el">{c.tag}</span>}
-                  {c.weaponType && <span className="badge">{c.weaponType}</span>}
+                  {card.rarity && <span className="badge">★{card.rarity}</span>}
+                  {card.tag && card.tag !== "None" && <span className="badge ch-el">{card.tag}</span>}
+                  {card.weaponType && <span className="badge">{card.weaponType}</span>}
                 </div>
-                <span className={`ch-dupes ${c.owned ? "" : "is-off"}`}>{c.owned ? dupeBadge(game, doc) : "Not owned"}</span>
+                <span className={`ch-dupes ${card.owned ? "" : "is-off"}`}>{card.owned ? dupeBadge(game, doc) : "Not owned"}</span>
                 <div className="ch-namebox">
                   <div className="ch-namebox-text">
-                    <h3>{c.name}</h3>
+                    <h3>{card.name}</h3>
                     <div className="mn ch-namebox-line">
-                      {c.build ? buildLine(game, doc, c.entry?.talents.keys ?? [], !held) : onBanner ? `on the banner until ${ENDS.format(new Date(onBanner.endsAt))}` : c.owned ? "no build yet" : "not owned"}
+                      {card.build ? buildLine(game, doc, card.entry?.talents.keys ?? [], !held) : onBanner ? `on the banner until ${ENDS.format(new Date(onBanner.endsAt))}` : card.owned ? "no build yet" : "not owned"}
                     </div>
                   </div>
                   {/* Its weapon on the name card (Georges, round 4), on the right, its level top-left and refinement bottom-right (round 5). */}
@@ -396,26 +396,26 @@ export function CharactersPage() {
                   )}
                 </div>
               </div>
-              {c.build ? (
+              {card.build ? (
                 <CardStats
-                  name={c.name}
+                  name={card.name}
                   options={statOptions}
-                  kpis={statKpis(game, doc, cardStatLabels(game, c.entry, c.build.role, c.build.cardStats, cardStats), catalog?.gear ?? [], buildBase(game, index, c.build.catalogId, doc))}
-                  own={c.build.cardStats}
-                  growth={c.entry?.bonusStats?.[0]}
-                  onPick={(stats) => saveBuildStats(c.build!.id, stats)}
+                  kpis={statKpis(game, doc, cardStatLabels(game, card.entry, card.build.role, card.build.cardStats, cardStats), catalog?.gear ?? [], buildBase(game, index, card.build.catalogId, doc))}
+                  own={card.build.cardStats}
+                  growth={card.entry?.bonusStats?.[0]}
+                  onPick={(stats) => saveBuildStats(card.build!.id, stats)}
                 />
-              ) : c.entry && !(!c.owned && onBanner && characterBanner) ? (
+              ) : card.entry && !(!card.owned && onBanner && characterBanner) ? (
                 // No build yet: the character's own data, its base stats at its top level, its growth stat first (Georges, round 7).
                 <CardStats
-                  name={c.name}
+                  name={card.name}
                   options={[]}
                   own={null}
-                  growth={c.entry.bonusStats?.[0]}
-                  baseNote={`Base at Lv ${c.entry.maxLevel}`}
-                  kpis={statKpis(game, {}, [...new Set([...(c.entry.bonusStats?.slice(0, 1) ?? []), "HP", "ATK", "DEF"])].slice(0, LIMITS.cardStats), [], buildBase(game, index, c.entry.id, { level: c.entry.maxLevel }))}
+                  growth={card.entry.bonusStats?.[0]}
+                  baseNote={`Base at Lv ${card.entry.maxLevel}`}
+                  kpis={statKpis(game, {}, [...new Set([...(card.entry.bonusStats?.slice(0, 1) ?? []), "HP", "ATK", "DEF"])].slice(0, LIMITS.cardStats), [], buildBase(game, index, card.entry.id, { level: card.entry.maxLevel }))}
                 />
-              ) : !c.owned && onBanner && characterBanner ? (
+              ) : !card.owned && onBanner && characterBanner ? (
                 <div className="ch-kpis ch-chance">
                   <div>
                     <span className="kpi-label">Chance with your {available} pulls</span>
@@ -424,37 +424,37 @@ export function CharactersPage() {
                 </div>
               ) : null}
               <div className="ch-foot">
-                {c.build && <span className={`badge ${c.build.buildStatus === "perfect" ? "done" : ""}`}>{c.build.buildStatus === "none" ? "Unbuilt" : c.build.buildStatus}</span>}
-                {c.build && (
+                {card.build && <span className={`badge ${card.build.buildStatus === "perfect" ? "done" : ""}`}>{card.build.buildStatus === "none" ? "Unbuilt" : card.build.buildStatus}</span>}
+                {card.build && (
                   <span className="mu ch-set">
                     {/* The completed sets as their icons with their counts (Georges, round 6), the role where none is. */}
-                    {completedSets(game, doc).map((s) => {
-                      const set = gearSets.get(s.name);
+                    {completedSets(game, doc).map((completedSet) => {
+                      const set = gearSets.get(completedSet.name);
                       return (
-                        <span key={s.name} className="ch-set-icon" title={`${s.name} ${s.size}pc`}>
-                          <CatalogIcon gameKey={game.key} kind="gear" icon={set?.icon} name={s.name} />
-                          <b className="mn">{s.size}</b>
+                        <span key={completedSet.name} className="ch-set-icon" title={`${completedSet.name} ${completedSet.size}pc`}>
+                          <CatalogIcon gameKey={game.key} kind="gear" icon={set?.icon} name={completedSet.name} />
+                          <b className="mn">{completedSet.size}</b>
                         </span>
                       );
                     })}
-                    {completedSets(game, doc).length === 0 && (c.build.role ?? "")}
+                    {completedSets(game, doc).length === 0 && (card.build.role ?? "")}
                   </span>
                 )}
                 {step && <span className="badge todo">→ {step.letter}{step.to} · event</span>}
-                <LastSeenChip appearance={appearances.data?.[c.id]} />
+                <LastSeenChip appearance={appearances.data?.[card.id]} />
                 <span className="ch-sp" />
                 {/* A build to try, owned or not (round 9). */}
-                {!c.build && !c.owned && onBanner && <Link to={`/games/${id}/pulls`}>Plan pulls →</Link>}
-                {!c.build && (c.owned || c.entry) && (
-                  <button className="btn ghost" disabled={start.isPending} onClick={() => start.mutate(c.owned ? c.id : { catalogId: c.id, own: false })}>
+                {!card.build && !card.owned && onBanner && <Link to={`/games/${id}/pulls`}>Plan pulls →</Link>}
+                {!card.build && (card.owned || card.entry) && (
+                  <button className="btn ghost" disabled={start.isPending} onClick={() => start.mutate(card.owned ? card.id : { catalogId: card.id, own: false })}>
                     Start a build
                   </button>
                 )}
               </div>
-              {!c.owned && c.entry && (
+              {!card.owned && card.entry && (
                 <div className="ch-own">
-                  <button className="btn" onClick={() => own.mutate([c.id])}>Own</button>
-                  <button className="btn" aria-pressed={c.wished} onClick={() => wish.mutate({ catalogId: c.id, wished: !c.wished })}>Wishlist</button>
+                  <button className="btn" onClick={() => own.mutate([card.id])}>Own</button>
+                  <button className="btn" aria-pressed={card.wished} onClick={() => wish.mutate({ catalogId: card.id, wished: !card.wished })}>Wishlist</button>
                 </div>
               )}
             </article>
@@ -470,15 +470,15 @@ export function CharactersPage() {
           <button className="btn" onClick={() => unown.mutate([...picked])}>Not owned</button>
           <button className="btn" onClick={() => wishMany.mutate({ ids: [...picked], wished: true })}>Wishlist</button>
           <button className="btn" onClick={() => wishMany.mutate({ ids: [...picked], wished: false })}>Off the wishlist</button>
-          <button className="btn" onClick={() => setQuick(pickedCards.flatMap((c) => (c.entry ? [c.entry.id] : [])))}>Make goals</button>
-          <button className="btn" disabled={startMany.isPending} onClick={() => startMany.mutate(pickedCards.filter((c) => c.owned && !c.build).map((c) => c.id))}>
+          <button className="btn" onClick={() => setQuick(pickedCards.flatMap((pickedCard) => (pickedCard.entry ? [pickedCard.entry.id] : [])))}>Make goals</button>
+          <button className="btn" disabled={startMany.isPending} onClick={() => startMany.mutate(pickedCards.filter((pickedCard) => pickedCard.owned && !pickedCard.build).map((pickedCard) => pickedCard.id))}>
             Start builds
           </button>
           <select
             aria-label="Build status"
             value=""
-            disabled={setBuildStatus.isPending || !pickedCards.some((c) => c.build)}
-            onChange={(e) => e.target.value && setBuildStatus.mutate({ ids: pickedCards.flatMap((c) => (c.build ? [c.build.id] : [])), buildStatus: e.target.value as BuildStatus })}
+            disabled={setBuildStatus.isPending || !pickedCards.some((pickedCard) => pickedCard.build)}
+            onChange={(event) => event.target.value && setBuildStatus.mutate({ ids: pickedCards.flatMap((pickedCard) => (pickedCard.build ? [pickedCard.build.id] : [])), buildStatus: event.target.value as BuildStatus })}
           >
             <option value="">Build status…</option>
             <option value="none">Unbuilt</option>
@@ -487,7 +487,7 @@ export function CharactersPage() {
             <option value="perfect">Perfect</option>
           </select>
           <span className="ch-sp" />
-          <button className="btn ghost" onClick={() => setPicked(new Set(filtered.filter((c) => c.entry).map((c) => c.id)))}>All shown</button>
+          <button className="btn ghost" onClick={() => setPicked(new Set(filtered.filter((card) => card.entry).map((card) => card.id)))}>All shown</button>
           <button className="btn ghost" onClick={() => setPicked(new Set())}>Clear</button>
         </div>
       )}

@@ -9,24 +9,24 @@ export interface HeatDay {
 }
 
 const COLS = 26;
-const CW = 28;
-const CH = 20;
-const SX = 32;
-const SY = 24;
-const HX = 36;
-const HY = 20;
-const W = 868;
-const H = 188;
+const CELL_WIDTH = 28;
+const CELL_HEIGHT = 20;
+const COLUMN_STEP = 32;
+const ROW_STEP = 24;
+const LEFT_GUTTER = 36;
+const TOP_GUTTER = 20;
+const CHART_WIDTH = 868;
+const CHART_HEIGHT = 188;
 const DAY = 86_400_000;
-const WD = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
-const MON = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-const iso = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-const clamp = (v: number, a: number, b: number) => Math.max(a, Math.min(b, v));
+const WEEKDAY_LABELS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+const MONTH_LABELS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+const isoDate = (date: Date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+const clamp = (value: number, lower: number, upper: number) => Math.max(lower, Math.min(upper, value));
 
 interface Cell {
-  i: number;
-  c: number;
-  r: number;
+  index: number;
+  column: number;
+  row: number;
   date: string;
   day?: HeatDay;
 }
@@ -51,28 +51,28 @@ export function Heatmap({
   onPin?: (date: string | null) => void;
 }) {
   const [hover, setHover] = useState(-1);
-  const [sel, setSel] = useState(-1);
+  const [selected, setSelected] = useState(-1);
 
   const { cells, months, todayIdx } = useMemo(() => {
-    const byDate = new Map(days.map((d) => [d.date, d]));
-    const t0 = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-    const dow = (t0.getDay() + 6) % 7; // Monday = 0
-    const start = new Date(t0.getTime() - (25 * 7 + dow) * DAY);
-    const todayIdx = 25 * 7 + dow;
+    const byDate = new Map(days.map((day) => [day.date, day]));
+    const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const weekdayIndex = (todayStart.getDay() + 6) % 7; // Monday = 0
+    const start = new Date(todayStart.getTime() - (25 * 7 + weekdayIndex) * DAY);
+    const todayIdx = 25 * 7 + weekdayIndex;
     const cells: Cell[] = [];
-    const months: { c: number; label: string }[] = [];
+    const months: { column: number; label: string }[] = [];
     let lastMonth = -1;
-    for (let c = 0; c < COLS; c++) {
-      const mo = new Date(start.getTime() + c * 7 * DAY).getMonth();
-      if (mo !== lastMonth) {
-        months.push({ c, label: MON[mo]! });
-        lastMonth = mo;
+    for (let column = 0; column < COLS; column++) {
+      const month = new Date(start.getTime() + column * 7 * DAY).getMonth();
+      if (month !== lastMonth) {
+        months.push({ column, label: MONTH_LABELS[month]! });
+        lastMonth = month;
       }
-      for (let r = 0; r < 7; r++) {
-        const i = c * 7 + r;
-        if (i > todayIdx) continue;
-        const date = iso(new Date(start.getTime() + i * DAY));
-        cells.push({ i, c, r, date, day: byDate.get(date) });
+      for (let row = 0; row < 7; row++) {
+        const cellIndex = column * 7 + row;
+        if (cellIndex > todayIdx) continue;
+        const date = isoDate(new Date(start.getTime() + cellIndex * DAY));
+        cells.push({ index: cellIndex, column, row, date, day: byDate.get(date) });
       }
     }
     return { cells, months, todayIdx };
@@ -83,57 +83,57 @@ export function Heatmap({
   const [followed, setFollowed] = useState<string | null>(null);
   if (pinned !== followed) {
     setFollowed(pinned);
-    setSel(pinned ? cells.findIndex((c) => c.date === pinned) : (cells[sel]?.i ?? todayIdx) < todayIdx ? -1 : sel);
+    setSelected(pinned ? cells.findIndex((cell) => cell.date === pinned) : (cells[selected]?.index ?? todayIdx) < todayIdx ? -1 : selected);
   }
   const pin = (idx: number) => {
-    setSel(idx);
+    setSelected(idx);
     onPin?.(idx >= 0 ? cells[idx]!.date : null);
   };
 
-  const recorded = cells.filter((c) => c.day);
-  const full = (g: HeatDay["games"][number]) => g.total > 0 && g.done >= g.total;
-  const doneOf = (d: HeatDay) => d.games.filter(full).length;
-  const dailiesOf = (d: HeatDay) => [d.games.reduce((s, g) => s + Math.min(g.done, g.total), 0), d.games.reduce((s, g) => s + g.total, 0)] as const;
+  const recorded = cells.filter((cell) => cell.day);
+  const full = (gameEntry: HeatDay["games"][number]) => gameEntry.total > 0 && gameEntry.done >= gameEntry.total;
+  const doneOf = (day: HeatDay) => day.games.filter(full).length;
+  const dailiesOf = (day: HeatDay) => [day.games.reduce((total, game) => total + Math.min(game.done, game.total), 0), day.games.reduce((total, game) => total + game.total, 0)] as const;
   const levels = ["", "", "", "", ""];
-  for (const c of cells) levels[c.day ? dayHeat(c.day.games).level : 0] += rectPath(HX + c.c * SX, HY + c.r * SY, CW, CH);
-  const s = streaks(recorded.map((c) => dayHeat(c.day!.games).full));
+  for (const cell of cells) levels[cell.day ? dayHeat(cell.day.games).level : 0] += rectPath(LEFT_GUTTER + cell.column * COLUMN_STEP, TOP_GUTTER + cell.row * ROW_STEP, CELL_WIDTH, CELL_HEIGHT);
+  const streakSummary = streaks(recorded.map((cell) => dayHeat(cell.day!.games).full));
 
-  const hc = cells[hover];
-  const sc = cells[sel];
-  const dayLabel = (c: Cell) => `${WD[c.r]} ${c.date}${c.i === todayIdx ? " · TODAY" : ""}`;
-  const tipAbove = hc ? hc.r >= 3 : false;
+  const hoveredCell = cells[hover];
+  const selectedCell = cells[selected];
+  const dayLabel = (cell: Cell) => `${WEEKDAY_LABELS[cell.row]} ${cell.date}${cell.index === todayIdx ? " · TODAY" : ""}`;
+  const tipAbove = hoveredCell ? hoveredCell.row >= 3 : false;
 
   // The recorded cell under the pointer, or -1: the gaps between cells do not count.
-  const pick = (e: MouseEvent<SVGSVGElement>) => {
-    const r = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - r.left) * W) / r.width;
-    const y = ((e.clientY - r.top) * H) / r.height;
-    const c = Math.floor((x - HX) / SX);
-    const rr = Math.floor((y - HY) / SY);
-    if (c >= 0 && c < COLS && rr >= 0 && rr < 7 && (x - HX) % SX <= CW && (y - HY) % SY <= CH) {
-      const idx = cells.findIndex((k) => k.c === c && k.r === rr);
-      if (idx >= 0 && cells[idx]!.day) return idx;
+  const pick = (event: MouseEvent<SVGSVGElement>) => {
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const pointerX = ((event.clientX - bounds.left) * CHART_WIDTH) / bounds.width;
+    const pointerY = ((event.clientY - bounds.top) * CHART_HEIGHT) / bounds.height;
+    const column = Math.floor((pointerX - LEFT_GUTTER) / COLUMN_STEP);
+    const row = Math.floor((pointerY - TOP_GUTTER) / ROW_STEP);
+    if (column >= 0 && column < COLS && row >= 0 && row < 7 && (pointerX - LEFT_GUTTER) % COLUMN_STEP <= CELL_WIDTH && (pointerY - TOP_GUTTER) % ROW_STEP <= CELL_HEIGHT) {
+      const cellIndex = cells.findIndex((cell) => cell.column === column && cell.row === row);
+      if (cellIndex >= 0 && cells[cellIndex]!.day) return cellIndex;
     }
     return -1;
   };
-  const key = (e: KeyboardEvent<SVGSVGElement>) => {
-    if (e.key === "Enter" || e.key === " ") {
+  const key = (event: KeyboardEvent<SVGSVGElement>) => {
+    if (event.key === "Enter" || event.key === " ") {
       if (hover >= 0) {
-        e.preventDefault();
-        pin(hover === sel ? -1 : hover);
+        event.preventDefault();
+        pin(hover === selected ? -1 : hover);
       }
       return;
     }
-    if (e.key === "Escape") {
+    if (event.key === "Escape") {
       pin(-1);
       setHover(-1);
       return;
     }
-    const d = { ArrowLeft: -1, ArrowUp: -1, ArrowRight: 1, ArrowDown: 1 }[e.key];
-    if (d === undefined || recorded.length === 0) return;
-    e.preventDefault();
-    const pos = recorded.findIndex((c) => c.i === hc?.i);
-    const next = recorded[pos < 0 ? recorded.length - 1 : clamp(pos + d, 0, recorded.length - 1)]!;
+    const direction = { ArrowLeft: -1, ArrowUp: -1, ArrowRight: 1, ArrowDown: 1 }[event.key];
+    if (direction === undefined || recorded.length === 0) return;
+    event.preventDefault();
+    const position = recorded.findIndex((cell) => cell.index === hoveredCell?.index);
+    const next = recorded[position < 0 ? recorded.length - 1 : clamp(position + direction, 0, recorded.length - 1)]!;
     setHover(cells.indexOf(next));
   };
 
@@ -142,64 +142,64 @@ export function Heatmap({
       <div className="cb heat-map">
         <svg
           className="fill hg"
-          viewBox={`0 0 ${W} ${H}`}
+          viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`}
           role="group"
           tabIndex={0}
-          aria-label={`Dailies over the last 26 weeks. ${s.full} days with everything done, out of ${recorded.length} recorded. Current streak ${s.current} days. Click a day to see its games; with the keyboard, use the arrow keys and Enter.`}
-          style={{ cursor: hc ? "pointer" : "default" }}
-          onMouseMove={(e) => {
-            const idx = pick(e);
-            if (idx !== hover) setHover(idx);
+          aria-label={`Dailies over the last 26 weeks. ${streakSummary.full} days with everything done, out of ${recorded.length} recorded. Current streak ${streakSummary.current} days. Click a day to see its games; with the keyboard, use the arrow keys and Enter.`}
+          style={{ cursor: hoveredCell ? "pointer" : "default" }}
+          onMouseMove={(event) => {
+            const cellIndex = pick(event);
+            if (cellIndex !== hover) setHover(cellIndex);
           }}
           onMouseLeave={() => setHover(-1)}
-          onClick={(e) => {
-            const idx = pick(e);
-            if (idx >= 0) pin(idx === sel ? -1 : idx);
+          onClick={(event) => {
+            const cellIndex = pick(event);
+            if (cellIndex >= 0) pin(cellIndex === selected ? -1 : cellIndex);
           }}
           onKeyDown={key}
         >
-          {levels.map((d, l) => (
-            <path key={l} d={d} className={`l${l}`} />
+          {levels.map((levelPath, level) => (
+            <path key={level} d={levelPath} className={`l${level}`} />
           ))}
-          {recorded.map((c) => (
-            <rect key={c.i} data-day={c.date} x={HX + c.c * SX} y={HY + c.r * SY} width={CW} height={CH} style={{ fill: "transparent" }} />
+          {recorded.map((cell) => (
+            <rect key={cell.index} data-day={cell.date} x={LEFT_GUTTER + cell.column * COLUMN_STEP} y={TOP_GUTTER + cell.row * ROW_STEP} width={CELL_WIDTH} height={CELL_HEIGHT} style={{ fill: "transparent" }} />
           ))}
-          {sc && <path d={rectPath(HX + sc.c * SX - 3, HY + sc.r * SY - 3, CW + 6, CH + 6)} className="sl" />}
-          {hc && (
+          {selectedCell && <path d={rectPath(LEFT_GUTTER + selectedCell.column * COLUMN_STEP - 3, TOP_GUTTER + selectedCell.row * ROW_STEP - 3, CELL_WIDTH + 6, CELL_HEIGHT + 6)} className="sl" />}
+          {hoveredCell && (
             <>
-              <path d={rectPath(HX + hc.c * SX + 1, HY + hc.r * SY + 1, CW - 2, CH - 2)} className="hv" />
-              <path d={rectPath(HX + hc.c * SX + 1, HY + hc.r * SY + 1, CW - 2, CH - 2)} className="hv2" />
+              <path d={rectPath(LEFT_GUTTER + hoveredCell.column * COLUMN_STEP + 1, TOP_GUTTER + hoveredCell.row * ROW_STEP + 1, CELL_WIDTH - 2, CELL_HEIGHT - 2)} className="hv" />
+              <path d={rectPath(LEFT_GUTTER + hoveredCell.column * COLUMN_STEP + 1, TOP_GUTTER + hoveredCell.row * ROW_STEP + 1, CELL_WIDTH - 2, CELL_HEIGHT - 2)} className="hv2" />
             </>
           )}
         </svg>
-        {months.map((m) => (
-          <span key={m.c} className="lb t-s" style={{ left: HX + m.c * SX, top: 8 }}>
-            {m.label}
+        {months.map((month) => (
+          <span key={month.column} className="lb t-s" style={{ left: LEFT_GUTTER + month.column * COLUMN_STEP, top: 8 }}>
+            {month.label}
           </span>
         ))}
-        {WD.map((d, r) => (
-          <span key={d} className="lb t-s wd" style={{ left: 0, top: 30 + r * SY }}>
-            {d}
+        {WEEKDAY_LABELS.map((weekdayLabel, row) => (
+          <span key={weekdayLabel} className="lb t-s wd" style={{ left: 0, top: 30 + row * ROW_STEP }}>
+            {weekdayLabel}
           </span>
         ))}
-        {hc?.day && (
-          <div className={`tip heat-tip ${tipAbove ? "t-a" : "t-b"}`} style={{ left: clamp(HX + hc.c * SX + CW / 2, 90, 778), top: tipAbove ? HY + hc.r * SY - 8 : HY + hc.r * SY + CH + 8 }}>
-            <div className="mn heat-tip-date">{dayLabel(hc)}</div>
+        {hoveredCell?.day && (
+          <div className={`tip heat-tip ${tipAbove ? "t-a" : "t-b"}`} style={{ left: clamp(LEFT_GUTTER + hoveredCell.column * COLUMN_STEP + CELL_WIDTH / 2, 90, 778), top: tipAbove ? TOP_GUTTER + hoveredCell.row * ROW_STEP - 8 : TOP_GUTTER + hoveredCell.row * ROW_STEP + CELL_HEIGHT + 8 }}>
+            <div className="mn heat-tip-date">{dayLabel(hoveredCell)}</div>
             <div className="cd heat-tip-n">
-              {doneOf(hc.day)}
-              <span> / {hc.day.games.length} GAMES DONE</span>
+              {doneOf(hoveredCell.day)}
+              <span> / {hoveredCell.day.games.length} GAMES DONE</span>
             </div>
             <div className="mn heat-tip-date">
-              {dailiesOf(hc.day)[0]} / {dailiesOf(hc.day)[1]} DAILIES
+              {dailiesOf(hoveredCell.day)[0]} / {dailiesOf(hoveredCell.day)[1]} DAILIES
             </div>
           </div>
         )}
       </div>
       <div className="heat-readout">
-        {sc?.day ? (
-          <div role="group" aria-label={`${dayLabel(sc)}: ${doneOf(sc.day)} of ${sc.day.games.length} games done.`} className="heat-sel">
+        {selectedCell?.day ? (
+          <div role="group" aria-label={`${dayLabel(selectedCell)}: ${doneOf(selectedCell.day)} of ${selectedCell.day.games.length} games done.`} className="heat-sel">
             <div className="heat-sel-head">
-              <span className="mn">{dayLabel(sc)}</span>
+              <span className="mn">{dayLabel(selectedCell)}</span>
               <button type="button" className="xb" aria-label="Clear the selected day" onClick={() => pin(-1)}>
                 <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
                   <path d="M1 1L9 9M9 1L1 9" style={{ fill: "none", stroke: "currentColor", strokeWidth: 1.5 }} />
@@ -208,23 +208,23 @@ export function Heatmap({
             </div>
             <div className="heat-sel-n">
               <span className="cd">
-                {doneOf(sc.day)}
-                <span className="mu"> / {sc.day.games.length}</span>
+                {doneOf(selectedCell.day)}
+                <span className="mu"> / {selectedCell.day.games.length}</span>
               </span>
               <span className="mn mu">GAMES DONE</span>
             </div>
             <div className="heat-sel-n">
               <span className="cd">
-                {dailiesOf(sc.day)[0]}
-                <span className="mu"> / {dailiesOf(sc.day)[1]}</span>
+                {dailiesOf(selectedCell.day)[0]}
+                <span className="mu"> / {dailiesOf(selectedCell.day)[1]}</span>
               </span>
               <span className="mn mu">DAILIES</span>
             </div>
             <div className="dgs" aria-hidden="true">
-              {sc.day.games.map((g) => (
-                <div key={g.name} className={`dg ${full(g) ? "on" : ""}`}>
+              {selectedCell.day.games.map((game) => (
+                <div key={game.name} className={`dg ${full(game) ? "on" : ""}`}>
                   <i />
-                  <span>{g.name}</span>
+                  <span>{game.name}</span>
                 </div>
               ))}
             </div>
@@ -232,14 +232,14 @@ export function Heatmap({
         ) : (
           <div className="heat-stats">
             {[
-              ["DAYS ALL DONE", s.full, `/ ${recorded.length}`],
-              ["CURRENT STREAK", s.current, "DAYS"],
-              ["BEST STREAK", s.best, "DAYS"],
-            ].map(([k, v, unit]) => (
-              <div key={k} className="heat-stat">
-                <span className="mn mu">{k}</span>
+              ["DAYS ALL DONE", streakSummary.full, `/ ${recorded.length}`],
+              ["CURRENT STREAK", streakSummary.current, "DAYS"],
+              ["BEST STREAK", streakSummary.best, "DAYS"],
+            ].map(([statLabel, statValue, unit]) => (
+              <div key={statLabel} className="heat-stat">
+                <span className="mn mu">{statLabel}</span>
                 <span className="cd">
-                  {v}
+                  {statValue}
                   <span className="mu"> {unit}</span>
                 </span>
               </div>

@@ -28,10 +28,10 @@ export function TeamWindow({
 }) {
   const box = useRef<HTMLDivElement>(null);
   useDismiss(box, onClose);
-  const [q, setQ] = useState("");
-  const shown = units.filter((u) => u.name.toLowerCase().includes(q.trim().toLowerCase()));
-  const saved = teams.filter((t) => t.members.length > 0);
-  const toggle = (id: string) => onChange(members.includes(id) ? members.filter((m) => m !== id) : members.length < size ? [...members, id] : members);
+  const [query, setQuery] = useState("");
+  const shown = units.filter((unit) => unit.name.toLowerCase().includes(query.trim().toLowerCase()));
+  const saved = teams.filter((team) => team.members.length > 0);
+  const toggle = (id: string) => onChange(members.includes(id) ? members.filter((member) => member !== id) : members.length < size ? [...members, id] : members);
   return (
     <div className="qb-veil">
       <div className="card tw" role="dialog" aria-label={`Team · ${stage}`} ref={box}>
@@ -41,35 +41,35 @@ export function TeamWindow({
             {members.length} / {size}
           </span>
           <span className="ch-sp" />
-          <input type="search" aria-label="Search" placeholder="Name" value={q} onChange={(e) => setQ(e.target.value)} />
+          <input type="search" aria-label="Search" placeholder="Name" value={query} onChange={(event) => setQuery(event.target.value)} />
           <button type="button" className="btn primary" onClick={onClose}>
             Done
           </button>
         </header>
         {saved.length > 0 && (
           <div className="tw-teams" role="group" aria-label="Saved teams">
-            {saved.map((t) => (
-              <button key={t.id} type="button" className="btn sm" onClick={() => onChange(t.members.slice(0, size))}>
-                {t.name}
+            {saved.map((team) => (
+              <button key={team.id} type="button" className="btn sm" onClick={() => onChange(team.members.slice(0, size))}>
+                {team.name}
               </button>
             ))}
           </div>
         )}
         <div className="tw-grid">
-          {shown.map((u) => {
-            const at = members.indexOf(u.id);
+          {shown.map((unit) => {
+            const at = members.indexOf(unit.id);
             return (
               <button
-                key={u.id}
+                key={unit.id}
                 type="button"
                 className={`tw-unit ${at >= 0 ? "is-on" : ""}`}
-                aria-label={u.name}
+                aria-label={unit.name}
                 aria-pressed={at >= 0}
                 disabled={at < 0 && members.length >= size}
-                onClick={() => toggle(u.id)}
+                onClick={() => toggle(unit.id)}
               >
-                <GameIcon src={u.src ?? null} fallback={u.fallback} alt="" glyph="character" className="tw-icon" />
-                <span>{u.name}</span>
+                <GameIcon src={unit.src ?? null} fallback={unit.fallback} alt="" glyph="character" className="tw-icon" />
+                <span>{unit.name}</span>
                 {at >= 0 && <b className="tw-slot">{at + 1}</b>}
               </button>
             );

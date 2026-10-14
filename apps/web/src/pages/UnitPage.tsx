@@ -43,8 +43,8 @@ export function UnitPage() {
     );
   }
 
-  const mine = builds.data.filter((b) => b.catalogId === entry.id);
-  const shown = mine.find((b) => b.isDefault) ?? mine[0];
+  const mine = builds.data.filter((build) => build.catalogId === entry.id);
+  const shown = mine.find((build) => build.isDefault) ?? mine[0];
   if (shown) return <CharacterPage buildId={shown.id} />;
   return (
     <CharacterEditor

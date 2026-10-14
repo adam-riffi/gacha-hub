@@ -37,16 +37,16 @@ export function Picker({
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
   const [active, setActive] = useState(0);
-  const current = options.find((o) => o.name === value);
+  const current = options.find((option) => option.name === value);
   const shown = useMemo(() => {
-    const q = text.trim().toLowerCase();
-    return (q ? options.filter((o) => o.name.toLowerCase().includes(q)) : options).slice(0, 150);
+    const query = text.trim().toLowerCase();
+    return (query ? options.filter((option) => option.name.toLowerCase().includes(query)) : options).slice(0, 150);
   }, [options, text]);
 
   useEffect(() => {
     if (!open) return;
-    const away = (e: MouseEvent) => {
-      if (!wrap.current?.contains(e.target as Node)) close();
+    const away = (event: MouseEvent) => {
+      if (!wrap.current?.contains(event.target as Node)) close();
     };
     document.addEventListener("mousedown", away);
     return () => document.removeEventListener("mousedown", away);
@@ -55,8 +55,8 @@ export function Picker({
     setOpen(false);
     setText("");
   }
-  function pick(o: PickerOption | null, typed = "") {
-    onPick(o, o?.name ?? typed);
+  function pick(option: PickerOption | null, typed = "") {
+    onPick(option, option?.name ?? typed);
     close();
   }
 
@@ -76,55 +76,55 @@ export function Picker({
           setOpen(true);
           setActive(0);
         }}
-        onChange={(e) => {
-          setText(e.target.value);
+        onChange={(event) => {
+          setText(event.target.value);
           setOpen(true);
           setActive(0);
         }}
-        onKeyDown={(e) => {
-          if (e.key === "ArrowDown") {
-            e.preventDefault();
+        onKeyDown={(event) => {
+          if (event.key === "ArrowDown") {
+            event.preventDefault();
             setOpen(true);
-            setActive((a) => Math.min(a + 1, shown.length - 1));
-          } else if (e.key === "ArrowUp") {
-            e.preventDefault();
-            setActive((a) => Math.max(a - 1, 0));
-          } else if (e.key === "Enter") {
-            e.preventDefault();
+            setActive((activeIndex) => Math.min(activeIndex + 1, shown.length - 1));
+          } else if (event.key === "ArrowUp") {
+            event.preventDefault();
+            setActive((activeIndex) => Math.max(activeIndex - 1, 0));
+          } else if (event.key === "Enter") {
+            event.preventDefault();
             if (shown[active]) pick(shown[active]!);
             else if (free) pick(null, text.trim());
-          } else if (e.key === "Escape") {
+          } else if (event.key === "Escape") {
             close();
           }
         }}
         onBlur={() => {
           // Typed text without a match stays where free text is allowed.
-          if (free && text.trim() && !shown.some((o) => o.name === text.trim())) pick(null, text.trim());
+          if (free && text.trim() && !shown.some((option) => option.name === text.trim())) pick(null, text.trim());
         }}
       />
       {open && (
         <ul className="pk-list" role="listbox" id={listId} aria-label={label}>
           {value && (
-            <li role="option" aria-label="None" aria-selected={false} className="pk-clear mu" onMouseDown={(e) => (e.preventDefault(), pick(null, ""))}>
+            <li role="option" aria-label="None" aria-selected={false} className="pk-clear mu" onMouseDown={(event) => (event.preventDefault(), pick(null, ""))}>
               —
             </li>
           )}
-          {shown.map((o, i) => (
+          {shown.map((option, index) => (
             <li
-              key={o.id}
+              key={option.id}
               role="option"
-              aria-label={o.name}
-              aria-selected={o.name === value}
-              className={i === active ? "is-active" : ""}
-              onMouseEnter={() => setActive(i)}
-              onMouseDown={(e) => {
-                e.preventDefault();
-                pick(o);
+              aria-label={option.name}
+              aria-selected={option.name === value}
+              className={index === active ? "is-active" : ""}
+              onMouseEnter={() => setActive(index)}
+              onMouseDown={(event) => {
+                event.preventDefault();
+                pick(option);
               }}
             >
-              {icons && <GameIcon src={o.src ?? null} fallback={o.fallback} alt={o.name} glyph={glyph} />}
-              <span className="pk-name">{o.name}</span>
-              {o.sub && <span className="mn mu">{o.sub}</span>}
+              {icons && <GameIcon src={option.src ?? null} fallback={option.fallback} alt={option.name} glyph={glyph} />}
+              <span className="pk-name">{option.name}</span>
+              {option.sub && <span className="mn mu">{option.sub}</span>}
             </li>
           ))}
           {shown.length === 0 && <li className="pk-none mu">None</li>}

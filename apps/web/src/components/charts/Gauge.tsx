@@ -2,12 +2,12 @@ import { arcPath, percent, polar, ringStrips } from "@gacha/shared";
 import { Layer } from "./GraphPanel";
 
 /** Compass ticks across the inner ring, as one path. */
-const compass = (cx: number, cy: number, r0: number, r1: number) =>
+const compass = (centerX: number, centerY: number, innerRadius: number, outerRadius: number) =>
   [0, 90, 180, 270]
     .map((deg) => {
-      const a = polar(cx, cy, deg, r0);
-      const b = polar(cx, cy, deg, r1);
-      return `M${a.x} ${a.y}L${b.x} ${b.y}`;
+      const innerPoint = polar(centerX, centerY, deg, innerRadius);
+      const outerPoint = polar(centerX, centerY, deg, outerRadius);
+      return `M${innerPoint.x} ${innerPoint.y}L${outerPoint.x} ${outerPoint.y}`;
     })
     .join("");
 
@@ -18,9 +18,9 @@ const compass = (cx: number, cy: number, r0: number, r1: number) =>
  */
 export function HeroGauge({ done, total, label }: { done: number; total: number; label: string }) {
   const raw = total > 0 ? (done / total) * 100 : 0;
-  const pct = percent(done, total);
-  const ang = (Math.min(raw, 99.99) / 100) * 2 * Math.PI;
-  const strip = (r: number) => `${(200 - r * Math.sin(ang)).toFixed(1)} ${(200 - r * Math.cos(ang)).toFixed(1)}`;
+  const percentDone = percent(done, total);
+  const angle = (Math.min(raw, 99.99) / 100) * 2 * Math.PI;
+  const strip = (radius: number) => `${(200 - radius * Math.sin(angle)).toFixed(1)} ${(200 - radius * Math.cos(angle)).toFixed(1)}`;
   const bars = ringStrips(200, 200, 167, 144, raw, 8, 22, 2.2);
   const arc = arcPath(200, 200, 140, raw);
   return (
@@ -42,7 +42,7 @@ export function HeroGauge({ done, total, label }: { done: number; total: number;
         </svg>
       </Layer>
       <Layer depth="data" size={340}>
-        <svg className="fill" viewBox="0 0 400 400" role="img" aria-label={`${label} done: ${done} of ${total}, ${pct} percent`}>
+        <svg className="fill" viewBox="0 0 400 400" role="img" aria-label={`${label} done: ${done} of ${total}, ${percentDone} percent`}>
           <path d={arc} style={{ fill: "none", stroke: "var(--accent)", strokeWidth: 26 }} />
           <path d={bars.off} style={{ fill: "none", stroke: "var(--hairline)", strokeWidth: 2 }} />
           <path d={bars.lit} style={{ fill: "none", stroke: "var(--accent)", strokeWidth: 2 }} />
@@ -59,7 +59,7 @@ export function HeroGauge({ done, total, label }: { done: number; total: number;
       <Layer depth="figures" size={340}>
         <div className="gauge-figure">
           <div className="cd gauge-hero">
-            {pct}
+            {percentDone}
             <span className="mu">%</span>
           </div>
           <div className="mn gauge-sub">
@@ -79,7 +79,7 @@ export function HeroGauge({ done, total, label }: { done: number; total: number;
 /** The small gauge (goals): a 12 px arc with its face, a thin outer ring, the figure at 38 px. */
 export function SmallGauge({ done, total, label }: { done: number; total: number; label: string }) {
   const raw = total > 0 ? (done / total) * 100 : 0;
-  const pct = percent(done, total);
+  const percentDone = percent(done, total);
   return (
     <>
       <Layer depth="rings">
@@ -97,7 +97,7 @@ export function SmallGauge({ done, total, label }: { done: number; total: number
         </svg>
       </Layer>
       <Layer depth="data" size={128}>
-        <svg className="fill" viewBox="0 0 128 128" role="img" aria-label={`${label} ${pct} percent, ${done} of ${total}`}>
+        <svg className="fill" viewBox="0 0 128 128" role="img" aria-label={`${label} ${percentDone} percent, ${done} of ${total}`}>
           <path d={arcPath(64, 64, 48, raw)} style={{ fill: "none", stroke: "var(--accent)", strokeWidth: 12 }} />
           <path d={arcPath(64, 64, 62, raw)} style={{ fill: "none", stroke: "var(--hairline-strong)", strokeWidth: 2 }} />
         </svg>
@@ -105,7 +105,7 @@ export function SmallGauge({ done, total, label }: { done: number; total: number
       <Layer depth="figures" size={128}>
         <div className="gauge-figure">
           <div className="cd gauge-small">
-            {pct}
+            {percentDone}
             <span className="mu">%</span>
           </div>
           <div className="mn gauge-sub-small">

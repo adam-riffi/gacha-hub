@@ -13,7 +13,7 @@ import { TALENT_LABELS } from "../TaskGeneratorPanel";
 type Doc = Record<string, unknown>;
 const BASE_CAP = 20;
 /** The cap a level has reached: the last one at or under it. */
-const capOf = (caps: number[], level: unknown) => caps.filter((c) => c <= (typeof level === "number" ? level : BASE_CAP)).at(-1) ?? BASE_CAP;
+const capOf = (caps: number[], level: unknown) => caps.filter((cap) => cap <= (typeof level === "number" ? level : BASE_CAP)).at(-1) ?? BASE_CAP;
 
 /**
  * A quick build goal (Georges, round 6: "a window where I choose an ascension
@@ -27,7 +27,7 @@ const capOf = (caps: number[], level: unknown) => caps.filter((c) => c <= (typeo
  * apply to each. Without a character, it asks for one (the Planner's New goal).
  */
 export function QuickBuild({ instanceId, gameKey, catalogIds, onClose }: { instanceId: string; gameKey: string; catalogIds: string[]; onClose: () => void }) {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   const toast = useToast();
   const box = useRef<HTMLDivElement>(null);
   useDismiss(box, onClose);
@@ -37,13 +37,13 @@ export function QuickBuild({ instanceId, gameKey, catalogIds, onClose }: { insta
   const [unit, setUnit] = useState("");
   const ids = catalogIds.length ? catalogIds : unit ? [unit] : [];
   const entry = ids[0] ? index?.characters.get(ids[0]) : undefined;
-  const docOf = (id: string) => (builds.data?.find((b) => b.catalogId === id)?.doc ?? {}) as Doc;
+  const docOf = (id: string) => (builds.data?.find((build) => build.catalogId === id)?.doc ?? {}) as Doc;
   const caps = entry ? levelCaps(entry.ascension, BASE_CAP) : [BASE_CAP];
   const [capPicked, setCap] = useState<number | null>(null);
   const cap = capPicked ?? caps.at(-1)!;
   const [levels, setLevels] = useState<Record<string, number>>({});
-  const skillCap = (e: NonNullable<typeof entry>, k: string) => talentCap(e, k, game.quickBuild?.talents[k] ?? 10);
-  const levelOf = (k: string) => levels[k] ?? Math.min(game.quickBuild?.talents[k] ?? 99, entry ? skillCap(entry, k) : 1);
+  const skillCap = (unitEntry: NonNullable<typeof entry>, skillKey: string) => talentCap(unitEntry, skillKey, game.quickBuild?.talents[skillKey] ?? 10);
+  const levelOf = (skillKey: string) => levels[skillKey] ?? Math.min(game.quickBuild?.talents[skillKey] ?? 99, entry ? skillCap(entry, skillKey) : 1);
 
   // One character: a weapon of its type and a set to farm.
   const single = ids.length === 1 && entry;
@@ -55,29 +55,29 @@ export function QuickBuild({ instanceId, gameKey, catalogIds, onClose }: { insta
   const [weaponCapPicked, setWeaponCap] = useState<number | null>(null);
   const weaponCap = weaponCapPicked ?? weaponCaps.at(-1) ?? BASE_CAP;
   const [setName, setSetName] = useState("");
-  const set = catalog?.gear.find((g) => g.name === setName);
+  const set = catalog?.gear.find((gearSet) => gearSet.name === setName);
 
   const make = useMutation({
     mutationFn: async () => {
       for (const id of ids) {
-        const e = index?.characters.get(id);
-        if (!e) continue;
+        const unitEntry = index?.characters.get(id);
+        if (!unitEntry) continue;
         const doc = docOf(id);
-        const own = levelCaps(e.ascension, BASE_CAP);
+        const own = levelCaps(unitEntry.ascension, BASE_CAP);
         const from = capOf(own, doc.level);
         // The cap picked, or the character's last where it has fewer.
         const to = Math.min(cap, own.at(-1)!);
         const have = (doc[skillsField(game)] ?? {}) as Record<string, number | undefined>;
         const talents = Object.fromEntries(
-          e.talents.keys.map((k) => [k, { from: have[k] ?? 1, to: Math.min(levelOf(k), skillCap(e, k)) }] as const).filter(([, r]) => r.to > r.from),
+          unitEntry.talents.keys.map((skillKey) => [skillKey, { from: have[skillKey] ?? 1, to: Math.min(levelOf(skillKey), skillCap(unitEntry, skillKey)) }] as const).filter(([, range]) => range.to > range.from),
         );
         const made = await api.post<PlanGenerateResultDto>(`/api/instances/${instanceId}/plans/generate`, { kind: "character", catalogId: id, ...(to > from ? { level: { from, to } } : {}), talents });
-        const goal = made.tasks.find((t) => !t.materialId && (t.origin as TaskOrigin | null)?.catalogId === id);
+        const goal = made.tasks.find((task) => !task.materialId && (task.origin as TaskOrigin | null)?.catalogId === id);
         if (!goal || !single) continue;
         if (weapon) {
           const level = weapon.id === held.catalogId ? held.level : undefined;
           const farm = await api.post<PlanGenerateResultDto>(`/api/instances/${instanceId}/plans/generate`, { kind: "weapon", catalogId: weapon.id, level: { from: capOf(weaponCaps, level), to: weaponCap } });
-          const linked = farm.tasks.find((t) => !t.materialId && (t.origin as TaskOrigin | null)?.catalogId === weapon.id);
+          const linked = farm.tasks.find((task) => !task.materialId && (task.origin as TaskOrigin | null)?.catalogId === weapon.id);
           if (linked) await api.put(`/api/tasks/${linked.id}`, { parentId: goal.id });
         }
         if (set) {
@@ -86,7 +86,7 @@ export function QuickBuild({ instanceId, gameKey, catalogIds, onClose }: { insta
             refId: instanceId,
             type: "checklist",
             title: `Farm ${set.name}`,
-            items: game.manifest.gear.slots.map((s) => ({ label: s.label, done: false })),
+            items: game.manifest.gear.slots.map((slot) => ({ label: slot.label, done: false })),
             origin: { kind: "gear", catalogId: set.id },
             parentId: goal.id,
           });
@@ -95,14 +95,14 @@ export function QuickBuild({ instanceId, gameKey, catalogIds, onClose }: { insta
     },
     onSuccess: () => {
       toast(ids.length > 1 ? `${ids.length} goals made` : "Goal made");
-      for (const key of ["tasks", "dashboard", "farm-today"]) void qc.invalidateQueries({ queryKey: [key] });
+      for (const key of ["tasks", "dashboard", "farm-today"]) void queryClient.invalidateQueries({ queryKey: [key] });
       onClose();
     },
     onError: () => toast("Could not make the goal", "err"),
   });
 
   // One character's skills by name; several characters' by kind.
-  const talentName = (k: string) => (ids.length === 1 ? entry?.talents.info?.find((i) => i.key === k)?.name : undefined) ?? TALENT_LABELS[k] ?? k.charAt(0).toUpperCase() + k.slice(1);
+  const talentName = (skillKey: string) => (ids.length === 1 ? entry?.talents.info?.find((info) => info.key === skillKey)?.name : undefined) ?? TALENT_LABELS[skillKey] ?? skillKey.charAt(0).toUpperCase() + skillKey.slice(1);
   return (
     <div className="qb-veil">
       <div className="card qb" role="dialog" aria-label="Quick build goal" ref={box}>
@@ -124,25 +124,25 @@ export function QuickBuild({ instanceId, gameKey, catalogIds, onClose }: { insta
             glyph="character"
             placeholder="Character"
             value={entry?.name ?? ""}
-            options={(catalog?.characters ?? []).map((c) => ({ id: c.id, name: c.name, src: assetUrl(gameKey, "character", c.icon), fallback: communityAssetUrl(gameKey, "character", c.icon) }))}
-            onPick={(o) => setUnit(o?.id ?? "")}
+            options={(catalog?.characters ?? []).map((character) => ({ id: character.id, name: character.name, src: assetUrl(gameKey, "character", character.icon), fallback: communityAssetUrl(gameKey, "character", character.icon) }))}
+            onPick={(option) => setUnit(option?.id ?? "")}
           />
         )}
         {entry && (
           <form
             className="qb-form"
-            onSubmit={(e) => {
-              e.preventDefault();
+            onSubmit={(event) => {
+              event.preventDefault();
               make.mutate();
             }}
           >
             <label className="qb-field">
               <span className="kpi-label">Ascension</span>
-              <select aria-label="Ascension" value={cap} onChange={(e) => setCap(Number(e.target.value))}>
-                {caps.slice(1).map((c, i) => (
-                  <option key={c} value={c}>
-                    {caps[i]}/{c}
-                    {c === caps.at(-1) ? " · last" : ""}
+              <select aria-label="Ascension" value={cap} onChange={(event) => setCap(Number(event.target.value))}>
+                {caps.slice(1).map((capOption, capIndex) => (
+                  <option key={capOption} value={capOption}>
+                    {caps[capIndex]}/{capOption}
+                    {capOption === caps.at(-1) ? " · last" : ""}
                   </option>
                 ))}
               </select>
@@ -150,10 +150,10 @@ export function QuickBuild({ instanceId, gameKey, catalogIds, onClose }: { insta
             {entry.talents.keys.length > 0 && (
               <fieldset className="qb-skills" aria-label="Skill levels">
                 <legend className="kpi-label">Skill levels</legend>
-                {entry.talents.keys.map((k) => (
-                  <label key={k} className="qb-skill">
-                    <span>{talentName(k)}</span>
-                    <input type="number" aria-label={talentName(k)} min={1} max={skillCap(entry, k)} value={levelOf(k)} onChange={(e) => setLevels({ ...levels, [k]: Number(e.target.value) })} />
+                {entry.talents.keys.map((skillKey) => (
+                  <label key={skillKey} className="qb-skill">
+                    <span>{talentName(skillKey)}</span>
+                    <input type="number" aria-label={talentName(skillKey)} min={1} max={skillCap(entry, skillKey)} value={levelOf(skillKey)} onChange={(event) => setLevels({ ...levels, [skillKey]: Number(event.target.value) })} />
                   </label>
                 ))}
               </fieldset>
@@ -168,19 +168,19 @@ export function QuickBuild({ instanceId, gameKey, catalogIds, onClose }: { insta
                     placeholder="None"
                     value={weapon?.name ?? ""}
                     options={(catalog?.weapons ?? [])
-                      .filter((w) => !entry.weaponType || !w.type || w.type === entry.weaponType)
-                      .sort((a, b) => b.rarity - a.rarity || a.name.localeCompare(b.name))
-                      .map((w) => ({ id: w.id, name: w.name, src: assetUrl(gameKey, "weapon", w.icon), fallback: communityAssetUrl(gameKey, "weapon", w.icon), sub: `★${w.rarity}` }))}
-                    onPick={(o) => {
-                      setWeaponId(o?.id ?? "");
+                      .filter((weaponOption) => !entry.weaponType || !weaponOption.type || weaponOption.type === entry.weaponType)
+                      .sort((first, second) => second.rarity - first.rarity || first.name.localeCompare(second.name))
+                      .map((weaponOption) => ({ id: weaponOption.id, name: weaponOption.name, src: assetUrl(gameKey, "weapon", weaponOption.icon), fallback: communityAssetUrl(gameKey, "weapon", weaponOption.icon), sub: `★${weaponOption.rarity}` }))}
+                    onPick={(option) => {
+                      setWeaponId(option?.id ?? "");
                       setWeaponCap(null);
                     }}
                   />
                   {weapon && (
-                    <select aria-label="Weapon ascension" value={weaponCap} onChange={(e) => setWeaponCap(Number(e.target.value))}>
-                      {weaponCaps.slice(1).map((c, i) => (
-                        <option key={c} value={c}>
-                          {weaponCaps[i]}/{c}
+                    <select aria-label="Weapon ascension" value={weaponCap} onChange={(event) => setWeaponCap(Number(event.target.value))}>
+                      {weaponCaps.slice(1).map((capOption, capIndex) => (
+                        <option key={capOption} value={capOption}>
+                          {weaponCaps[capIndex]}/{capOption}
                         </option>
                       ))}
                     </select>
@@ -194,8 +194,8 @@ export function QuickBuild({ instanceId, gameKey, catalogIds, onClose }: { insta
                       glyph="gear"
                       placeholder="None"
                       value={setName}
-                      options={catalog!.gear.map((g) => ({ id: g.id, name: g.name, src: assetUrl(gameKey, "gear", g.icon), fallback: communityAssetUrl(gameKey, "gear", g.icon) }))}
-                      onPick={(o) => setSetName(o?.name ?? "")}
+                      options={catalog!.gear.map((gearSet) => ({ id: gearSet.id, name: gearSet.name, src: assetUrl(gameKey, "gear", gearSet.icon), fallback: communityAssetUrl(gameKey, "gear", gearSet.icon) }))}
+                      onPick={(option) => setSetName(option?.name ?? "")}
                     />
                   </div>
                 )}

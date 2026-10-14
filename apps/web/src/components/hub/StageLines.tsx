@@ -6,20 +6,20 @@ import { communityAssetUrl } from "../../lib/assets";
 import { useCatalog } from "../../lib/catalog";
 import { CatalogIcon, UnitIcon } from "../CatalogIcon";
 import { GameIcon } from "../GameIcon";
-import { TeamIcons, mss, type UnitOf } from "./EndgameHistory";
+import { TeamIcons, minutesSeconds, type UnitOf } from "./EndgameHistory";
 
 /** What a stage's enemies are weak to: the element's icon where the game has one, else its colour. */
 function Weak({ gameKey, weak }: { gameKey: string; weak: string[] }) {
   return (
     <span className="eg-weak">
-      {weak.map((w) => {
-        const icon = communityAssetUrl(gameKey, "element", w);
+      {weak.map((weakness) => {
+        const icon = communityAssetUrl(gameKey, "element", weakness);
         return icon ? (
-          <span key={w} title={`Weak to ${w}`}>
-            <GameIcon src={icon} alt={`Weak to ${w}`} tint={elementColor(gameKey, w) ?? undefined} />
+          <span key={weakness} title={`Weak to ${weakness}`}>
+            <GameIcon src={icon} alt={`Weak to ${weakness}`} tint={elementColor(gameKey, weakness) ?? undefined} />
           </span>
         ) : (
-          <i key={w} role="img" aria-label={`Weak to ${w}`} title={`Weak to ${w}`} style={{ background: elementColor(gameKey, w) ?? "var(--text-muted)" }} />
+          <i key={weakness} role="img" aria-label={`Weak to ${weakness}`} title={`Weak to ${weakness}`} style={{ background: elementColor(gameKey, weakness) ?? "var(--text-muted)" }} />
         );
       })}
     </span>
@@ -38,38 +38,38 @@ function Weak({ gameKey, weak }: { gameKey: string; weak: string[] }) {
 export function StageLines({ instanceId, gameKey, stages, teams, unitOf }: { instanceId: string; gameKey: string; stages: ModeStage[]; teams: Clear[]; unitOf: UnitOf }) {
   const [open, setOpen] = useState<string | null>(null);
   // A team saved under a stage the data no longer names still shows, as its own line.
-  const rows: ModeStage[] = [...stages, ...teams.filter((t) => !stages.some((s) => s.key === t.stage)).map((t) => ({ key: t.stage, label: t.stage, groups: [], weak: [], main: null, boss: false }))];
+  const rows: ModeStage[] = [...stages, ...teams.filter((team) => !stages.some((stage) => stage.key === team.stage)).map((team) => ({ key: team.stage, label: team.stage, groups: [], weak: [], main: null, boss: false }))];
   if (!rows.length) return null;
   return (
     <ul className="eg-lines" aria-label="Stages">
-      {rows.map((s) => {
-        const t = teams.find((x) => x.stage === s.key);
-        const isOpen = open === s.key;
+      {rows.map((stageRow) => {
+        const team = teams.find((candidate) => candidate.stage === stageRow.key);
+        const isOpen = open === stageRow.key;
         return (
-          <li key={s.key} className={`eg-line ${isOpen ? "is-open" : ""}`}>
+          <li key={stageRow.key} className={`eg-line ${isOpen ? "is-open" : ""}`}>
             <div className="eg-line-row">
-              {s.boss ? (
-                <span className="mn mu eg-stage">{s.level ? `Lv ${s.level}` : s.key}</span>
+              {stageRow.boss ? (
+                <span className="mn mu eg-stage">{stageRow.level ? `Lv ${stageRow.level}` : stageRow.key}</span>
               ) : (
                 <span className="eg-stage-name">
-                  <b>{s.label}</b>
-                  {s.level ? <small className="mn mu">Lv {s.level}</small> : null}
+                  <b>{stageRow.label}</b>
+                  {stageRow.level ? <small className="mn mu">Lv {stageRow.level}</small> : null}
                 </span>
               )}
-              {t?.members.length ? <TeamIcons gameKey={gameKey} members={t.members} unitOf={unitOf} /> : <span className="mu eg-noteam">—</span>}
-              <span className="cd eg-score">{t?.score ?? ""}</span>
-              <span className="mn eg-time">{t?.time ? mss(t.time) : ""}</span>
+              {team?.members.length ? <TeamIcons gameKey={gameKey} members={team.members} unitOf={unitOf} /> : <span className="mu eg-noteam">—</span>}
+              <span className="cd eg-score">{team?.score ?? ""}</span>
+              <span className="mn eg-time">{team?.time ? minutesSeconds(team.time) : ""}</span>
               <span className="eg-main">
-                {s.main && (
-                  <span title={s.main.name}>
-                    <GameIcon src={s.main.image ?? null} alt={s.main.name} glyph="standard" />
+                {stageRow.main && (
+                  <span title={stageRow.main.name}>
+                    <GameIcon src={stageRow.main.image ?? null} alt={stageRow.main.name} glyph="standard" />
                   </span>
                 )}
               </span>
-              <Weak gameKey={gameKey} weak={s.weak} />
-              <button type="button" className="eg-line-open" aria-label={`${s.key}: details`} aria-expanded={isOpen} onClick={() => setOpen(isOpen ? null : s.key)} />
+              <Weak gameKey={gameKey} weak={stageRow.weak} />
+              <button type="button" className="eg-line-open" aria-label={`${stageRow.key}: details`} aria-expanded={isOpen} onClick={() => setOpen(isOpen ? null : stageRow.key)} />
             </div>
-            {isOpen && <StageDetail instanceId={instanceId} gameKey={gameKey} stage={s} members={t?.members ?? []} />}
+            {isOpen && <StageDetail instanceId={instanceId} gameKey={gameKey} stage={stageRow} members={team?.members ?? []} />}
           </li>
         );
       })}
@@ -82,18 +82,18 @@ function StageDetail({ instanceId, gameKey, stage, members }: { instanceId: stri
   const game = getGame(gameKey)!;
   const { index } = useCatalog(gameKey);
   const builds = useQuery({ queryKey: ["characters", instanceId], queryFn: () => api.get<CharacterDto[]>(`/api/instances/${instanceId}/characters`) });
-  const buildOf = (cid: string) => (builds.data ?? []).filter((b) => b.catalogId === cid).sort((a, b) => Number(b.isDefault) - Number(a.isDefault))[0];
+  const buildOf = (catalogId: string) => (builds.data ?? []).filter((build) => build.catalogId === catalogId).sort((first, second) => Number(second.isDefault) - Number(first.isDefault))[0];
   const holder = weaponHolder(game);
   return (
     <section className="eg-line-detail" aria-label={`${stage.key} · detail`}>
-      {stage.groups.some((g) => g.length) && (
+      {stage.groups.some((group) => group.length) && (
         <ul className="eg-detail-enemies" aria-label="Enemies">
-          {stage.groups.map((g, i) => (
-            <li key={i}>
-              {g.map((e) => (
-                <span key={e.name} className="eg-enemy" title={e.name}>
-                  <GameIcon src={e.image ?? null} alt={e.name} glyph="standard" />
-                  <span className="mn">{e.name}</span>
+          {stage.groups.map((group, groupIndex) => (
+            <li key={groupIndex}>
+              {group.map((enemy) => (
+                <span key={enemy.name} className="eg-enemy" title={enemy.name}>
+                  <GameIcon src={enemy.image ?? null} alt={enemy.name} glyph="standard" />
+                  <span className="mn">{enemy.name}</span>
                 </span>
               ))}
             </li>
@@ -102,22 +102,22 @@ function StageDetail({ instanceId, gameKey, stage, members }: { instanceId: stri
       )}
       {members.length > 0 && (
         <ul className="eg-detail-builds" aria-label="Builds used">
-          {members.map((m) => {
-            const b = buildOf(m);
-            const doc = (b?.doc ?? {}) as Record<string, unknown>;
+          {members.map((member) => {
+            const build = buildOf(member);
+            const doc = (build?.doc ?? {}) as Record<string, unknown>;
             const weapon = (holder ? doc[holder] : undefined) as { catalogId?: string; level?: number } | undefined;
             const level = typeof doc.level === "number" ? doc.level : null;
             return (
-              <li key={m}>
-                <UnitIcon gameKey={gameKey} unit={{ kind: "character", catalogId: m }} />
-                <span className="eg-build-name">{index?.characters.get(m)?.name ?? m}</span>
-                <span className="mn">{b ? `Lv ${level ?? "—"}` : "no build"}</span>
+              <li key={member}>
+                <UnitIcon gameKey={gameKey} unit={{ kind: "character", catalogId: member }} />
+                <span className="eg-build-name">{index?.characters.get(member)?.name ?? member}</span>
+                <span className="mn">{build ? `Lv ${level ?? "—"}` : "no build"}</span>
                 {weapon?.catalogId && <CatalogIcon gameKey={gameKey} kind="weapon" icon={index?.weapons.get(weapon.catalogId)?.icon} name={index?.weapons.get(weapon.catalogId)?.name ?? weapon.catalogId} />}
                 {weapon?.level ? <span className="mn mu">Lv {weapon.level}</span> : null}
-                {b &&
+                {build &&
                   completedSets(game, doc).map((set) => (
                     <span key={set.name} className="eg-build-set" title={`${set.name} ${set.size}`}>
-                      <CatalogIcon gameKey={gameKey} kind="gear" icon={index?.gear.get([...(index?.gear.values() ?? [])].find((g) => g.name === set.name)?.id ?? "")?.icon} name={set.name} />
+                      <CatalogIcon gameKey={gameKey} kind="gear" icon={index?.gear.get([...(index?.gear.values() ?? [])].find((gearSet) => gearSet.name === set.name)?.id ?? "")?.icon} name={set.name} />
                       <span className="mn">{set.size}</span>
                     </span>
                   ))}

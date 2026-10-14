@@ -22,7 +22,7 @@ export const TALENT_LABELS: Record<string, string> = {
 export function PlanTable({ preview }: { preview: PlanPreviewDto }) {
   const rows = preview.requirements;
   if (rows.length === 0) return <p className="small muted">Nothing needed for that range.</p>;
-  const deficit = new Map(preview.deficit.map((d) => [d.materialId, d.qty]));
+  const deficit = new Map(preview.deficit.map((deficitRow) => [deficitRow.materialId, deficitRow.qty]));
   return (
     <div style={{ overflowX: "auto" }}>
       <table className="table">
@@ -30,19 +30,19 @@ export function PlanTable({ preview }: { preview: PlanPreviewDto }) {
           <tr><th>Material</th><th>Need</th><th>Have</th><th>Missing</th><th>Today</th></tr>
         </thead>
         <tbody>
-          {rows.map((r) => {
-            const m = preview.materials[r.materialId];
-            const missing = deficit.get(r.materialId) ?? 0;
+          {rows.map((row) => {
+            const material = preview.materials[row.materialId];
+            const missing = deficit.get(row.materialId) ?? 0;
             return (
-              <tr key={r.materialId}>
+              <tr key={row.materialId}>
                 <td>
-                  {m?.name ?? r.materialId}
-                  {m?.source ? <div className="small muted">{m.source}</div> : null}
+                  {material?.name ?? row.materialId}
+                  {material?.source ? <div className="small muted">{material.source}</div> : null}
                 </td>
-                <td>{r.qty}</td>
-                <td>{preview.stock[r.materialId] ?? 0}</td>
+                <td>{row.qty}</td>
+                <td>{preview.stock[row.materialId] ?? 0}</td>
                 <td className={missing ? "" : "muted"}>{missing || "✓"}</td>
-                <td>{m?.availability ? (m.farmableToday ? <span className="badge done">farmable</span> : <span className="badge">not today</span>) : <span className="muted small">—</span>}</td>
+                <td>{material?.availability ? (material.farmableToday ? <span className="badge done">farmable</span> : <span className="badge">not today</span>) : <span className="muted small">—</span>}</td>
               </tr>
             );
           })}
@@ -68,13 +68,13 @@ export function TaskGeneratorPanel({
   doc: Record<string, unknown>;
 }) {
   const toast = useToast();
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   const { index } = useCatalog(gameKey);
   const entry = index?.characters.get(catalogId);
 
   const caps = useMemo(() => (entry ? levelCaps(entry.ascension, BASE_CAP) : [BASE_CAP]), [entry]);
   const currentLevel = typeof doc.level === "number" ? (doc.level as number) : BASE_CAP;
-  const defaultFrom = caps.filter((c) => c <= currentLevel).at(-1) ?? BASE_CAP;
+  const defaultFrom = caps.filter((cap) => cap <= currentLevel).at(-1) ?? BASE_CAP;
 
   // Unset until changed, so the defaults follow the catalog once it has loaded.
   const [fromPicked, setLevelFrom] = useState<number | null>(null);
@@ -92,12 +92,12 @@ export function TaskGeneratorPanel({
     ...(levelTo > levelFrom ? { level: { from: levelFrom, to: levelTo } } : {}),
     talents: Object.fromEntries(
       (entry?.talents.keys ?? [])
-        .map((k) => {
-          const max = talentCap(entry!, k, 10);
-          const t = talents[k] ?? { from: docTalents[k] ?? 1, to: max };
-          return [k, t] as const;
+        .map((talentKey) => {
+          const max = talentCap(entry!, talentKey, 10);
+          const talentRange = talents[talentKey] ?? { from: docTalents[talentKey] ?? 1, to: max };
+          return [talentKey, talentRange] as const;
         })
-        .filter(([, t]) => t.to > t.from),
+        .filter(([, talentRange]) => talentRange.to > talentRange.from),
     ),
   });
 
@@ -109,16 +109,16 @@ export function TaskGeneratorPanel({
   const asked = JSON.stringify([levelFrom, levelTo, talents]);
   useEffect(() => {
     if (!entry) return;
-    const t = setTimeout(() => runPreview(), 250);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => runPreview(), 250);
+    return () => clearTimeout(timer);
   }, [entry, asked, runPreview]);
   const generate = useMutation({
     mutationFn: () => api.post<PlanGenerateResultDto>(`/api/instances/${instanceId}/plans/generate`, request()),
-    onSuccess: (r) => {
-      toast(`${r.created} task(s) created, ${r.updated} updated`);
-      qc.invalidateQueries({ queryKey: ["tasks"] });
-      qc.invalidateQueries({ queryKey: ["dashboard"] });
-      qc.invalidateQueries({ queryKey: ["needed", instanceId] });
+    onSuccess: (result) => {
+      toast(`${result.created} task(s) created, ${result.updated} updated`);
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+      queryClient.invalidateQueries({ queryKey: ["needed", instanceId] });
     },
     onError: () => toast("Could not generate tasks", "err"),
   });
@@ -134,31 +134,31 @@ export function TaskGeneratorPanel({
       <div className="row" style={{ marginTop: 10, alignItems: "flex-end" }}>
         <div>
           <label>Level from (cap)</label>
-          <select aria-label="Level from (cap)" value={levelFrom} onChange={(e) => setLevelFrom(Number(e.target.value))}>
-            {caps.map((c) => <option key={c} value={c}>{c}</option>)}
+          <select aria-label="Level from (cap)" value={levelFrom} onChange={(event) => setLevelFrom(Number(event.target.value))}>
+            {caps.map((cap) => <option key={cap} value={cap}>{cap}</option>)}
           </select>
         </div>
         <div>
           <label>to</label>
-          <select aria-label="Level to (cap)" value={levelTo} onChange={(e) => setLevelTo(Number(e.target.value))}>
-            {caps.map((c) => <option key={c} value={c}>{c}</option>)}
+          <select aria-label="Level to (cap)" value={levelTo} onChange={(event) => setLevelTo(Number(event.target.value))}>
+            {caps.map((cap) => <option key={cap} value={cap}>{cap}</option>)}
           </select>
         </div>
-        {entry.talents.keys.map((k) => {
-          const max = talentCap(entry, k, 10);
-          const t = talents[k] ?? { from: docTalents[k] ?? 1, to: max };
+        {entry.talents.keys.map((key) => {
+          const max = talentCap(entry, key, 10);
+          const talentRange = talents[key] ?? { from: docTalents[key] ?? 1, to: max };
           return (
-            <div key={k} className="row" style={{ gap: 4 }}>
+            <div key={key} className="row" style={{ gap: 4 }}>
               <div>
-                <label>{TALENT_LABELS[k] ?? k}</label>
-                <input type="number" aria-label={`${TALENT_LABELS[k] ?? k} from`} min={1} max={max} value={t.from} style={{ width: 64 }}
-                  onChange={(e) => setTalents((s) => ({ ...s, [k]: { ...t, from: Number(e.target.value) } }))} />
+                <label>{TALENT_LABELS[key] ?? key}</label>
+                <input type="number" aria-label={`${TALENT_LABELS[key] ?? key} from`} min={1} max={max} value={talentRange.from} style={{ width: 64 }}
+                  onChange={(event) => setTalents((talentsBefore) => ({ ...talentsBefore, [key]: { ...talentRange, from: Number(event.target.value) } }))} />
               </div>
               <span className="muted" style={{ paddingBottom: 8 }}>→</span>
               <div>
                 <label>&nbsp;</label>
-                <input type="number" aria-label={`${TALENT_LABELS[k] ?? k} to`} min={1} max={max} value={t.to} style={{ width: 64 }}
-                  onChange={(e) => setTalents((s) => ({ ...s, [k]: { ...t, to: Number(e.target.value) } }))} />
+                <input type="number" aria-label={`${TALENT_LABELS[key] ?? key} to`} min={1} max={max} value={talentRange.to} style={{ width: 64 }}
+                  onChange={(event) => setTalents((talentsBefore) => ({ ...talentsBefore, [key]: { ...talentRange, to: Number(event.target.value) } }))} />
               </div>
             </div>
           );

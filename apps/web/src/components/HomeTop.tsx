@@ -19,48 +19,48 @@ const GOAL_TYPES: { key: GoalType; label: string }[] = [
 ];
 
 /** Character and weapon plans by their origin, artifact checklists as gear, hand-typed goals as gameplay. */
-function goalType(t: TaskItem): GoalType {
-  if (t.type === "checklist") return "gear";
-  const kind = (t.origin as { kind?: string } | null)?.kind;
+function goalType(task: TaskItem): GoalType {
+  if (task.type === "checklist") return "gear";
+  const kind = (task.origin as { kind?: string } | null)?.kind;
   return kind === "character" ? "character" : kind === "weapon" ? "weapons" : "gameplay";
 }
 
 const DAY = 86_400_000;
-const MD = (d: Date) => `${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-const isoWeek = (d: Date) => {
-  const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-  t.setUTCDate(t.getUTCDate() + 4 - (t.getUTCDay() || 7));
-  return Math.ceil(((t.getTime() - Date.UTC(t.getUTCFullYear(), 0, 1)) / DAY + 1) / 7);
+const monthDay = (date: Date) => `${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+const isoWeek = (date: Date) => {
+  const utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  utcDate.setUTCDate(utcDate.getUTCDate() + 4 - (utcDate.getUTCDay() || 7));
+  return Math.ceil(((utcDate.getTime() - Date.UTC(utcDate.getUTCFullYear(), 0, 1)) / DAY + 1) / 7);
 };
 
-const ISO = (d: Date) => `${d.getFullYear()}-${MD(d)}`;
+const ISO = (date: Date) => `${date.getFullYear()}-${monthDay(date)}`;
 /** The day `k` days before `d`, in the viewer's calendar (daylight-saving safe). */
-const daysBefore = (d: Date, k: number) => new Date(d.getFullYear(), d.getMonth(), d.getDate() - k);
+const daysBefore = (date: Date, daysBack: number) => new Date(date.getFullYear(), date.getMonth(), date.getDate() - daysBack);
 
 /**
  * The pull history's buckets in the viewer's calendar, oldest first: each of
  * the last 7 days, or the last 6 weeks with the last one ending today.
  */
 function buckets(period: Period, now = new Date()) {
-  const [n, len] = period === "daily" ? [7, 1] : [6, 7];
-  return Array.from({ length: n }, (_, k) => Array.from({ length: len }, (_, j) => daysBefore(now, (n - 1 - k) * len + (len - 1 - j))));
+  const [bucketCount, len] = period === "daily" ? [7, 1] : [6, 7];
+  return Array.from({ length: bucketCount }, (_, bucketIndex) => Array.from({ length: len }, (_, dayIndex) => daysBefore(now, (bucketCount - 1 - bucketIndex) * len + (len - 1 - dayIndex))));
 }
 
 /** Pulls spent (logged) and gained (pulls on hand going up, from the day records) per bucket ending on `now`, with the period's labels. */
 function pullSeries(games: DashGame[], period: Period, now: Date) {
-  const bs = buckets(period, now);
-  const dates = bs.flat().map(ISO);
+  const periodBuckets = buckets(period, now);
+  const dates = periodBuckets.flat().map(ISO);
   const gains = dates.map(() => 0);
-  for (const g of games) dailyGains(g.days.map((d) => ({ day: d.day, value: d.pulls })), dates).forEach((v, k) => (gains[k]! += v));
+  for (const game of games) dailyGains(game.days.map((day) => ({ day: day.day, value: day.pulls })), dates).forEach((date, dateIndex) => (gains[dateIndex]! += date));
   const spentOn = new Map<string, number>();
-  for (const e of games.flatMap((g) => g.pullLog)) {
-    const day = ISO(new Date(e.at));
-    spentOn.set(day, (spentOn.get(day) ?? 0) + e.count);
+  for (const logEntry of games.flatMap((game) => game.pullLog)) {
+    const day = ISO(new Date(logEntry.at));
+    spentOn.set(day, (spentOn.get(day) ?? 0) + logEntry.count);
   }
-  let k = 0;
-  const gained = bs.map((b) => b.reduce((sum) => sum + gains[k++]!, 0));
-  const spent = bs.map((b) => b.reduce((sum, d) => sum + (spentOn.get(ISO(d)) ?? 0), 0));
-  const labels = bs.map((b) => (period === "daily" ? MD(b[0]!) : `W${isoWeek(b.at(-1)!)}`));
+  let gainIndex = 0;
+  const gained = periodBuckets.map((bucket) => bucket.reduce((sum) => sum + gains[gainIndex++]!, 0));
+  const spent = periodBuckets.map((bucket) => bucket.reduce((sum, date) => sum + (spentOn.get(ISO(date)) ?? 0), 0));
+  const labels = periodBuckets.map((bucket) => (period === "daily" ? monthDay(bucket[0]!) : `W${isoWeek(bucket.at(-1)!)}`));
   return { gained, spent, labels };
 }
 
@@ -69,12 +69,12 @@ function pullSeries(games: DashGame[], period: Period, now: Date) {
  * or the last 8 weeks at their end. The last point is live unless `openNow` is null (a past day).
  */
 export function backlogSeries(games: DashGame[], period: Period, openNow: number | null, now: Date) {
-  const [n, step] = period === "daily" ? [10, 1] : [8, 7];
-  const days = Array.from({ length: n }, (_, k) => daysBefore(now, (n - 1 - k) * step));
+  const [pointCount, step] = period === "daily" ? [10, 1] : [8, 7];
+  const days = Array.from({ length: pointCount }, (_, pointIndex) => daysBefore(now, (pointCount - 1 - pointIndex) * step));
   const values = days.map(() => 0);
-  for (const g of games) carryForward(g.days.map((d) => ({ day: d.day, value: d.goalsOpen })), days.map(ISO)).forEach((v, k) => (values[k]! += v));
-  if (openNow !== null) values[n - 1] = openNow;
-  return { values, labels: days.map((d) => (period === "daily" ? MD(d) : `W${isoWeek(d)}`)) };
+  for (const game of games) carryForward(game.days.map((day) => ({ day: day.day, value: day.goalsOpen })), days.map(ISO)).forEach((value, index) => (values[index]! += value));
+  if (openNow !== null) values[pointCount - 1] = openNow;
+  return { values, labels: days.map((day) => (period === "daily" ? monthDay(day) : `W${isoWeek(day)}`)) };
 }
 
 /**
@@ -95,29 +95,29 @@ export function HomeTop({
   day?: string | null;
 }) {
   const [period, setPeriod] = useState<Period>("daily");
-  const recurring = games.flatMap((g) => g.dailies).filter((t) => (t.cadence ?? "daily") === period);
-  const recDone = recurring.filter((t) => t.doneThisCycle).length;
+  const recurring = games.flatMap((game) => game.dailies).filter((daily) => (daily.cadence ?? "daily") === period);
+  const recDone = recurring.filter((daily) => daily.doneThisCycle).length;
 
   // Goals on their own (linked ones too), not backlog. A farming goal is done when its steps are; a checklist when every item is ticked.
-  const goals = tasks.filter((t) => listedGoal(t) && !t.backlog && t.type !== "recurring");
-  const finished = (t: TaskItem) => {
-    const mat = goalMaterials[t.id];
-    if (mat) return mat.total > 0 && mat.done >= mat.total;
-    if (t.type === "checklist") return Boolean(t.items?.length) && t.items!.every((i) => i.done);
-    return (t.target ?? 0) > 0 && t.progress >= (t.target ?? 0);
+  const goals = tasks.filter((task) => listedGoal(task) && !task.backlog && task.type !== "recurring");
+  const finished = (task: TaskItem) => {
+    const goalMaterial = goalMaterials[task.id];
+    if (goalMaterial) return goalMaterial.total > 0 && goalMaterial.done >= goalMaterial.total;
+    if (task.type === "checklist") return Boolean(task.items?.length) && task.items!.every((item) => item.done);
+    return (task.target ?? 0) > 0 && task.progress >= (task.target ?? 0);
   };
   const byType = GOAL_TYPES.map(({ key, label }) => {
-    const mine = goals.filter((t) => goalType(t) === key);
+    const mine = goals.filter((goal) => goalType(goal) === key);
     return { label, done: mine.filter(finished).length, total: mine.length };
   });
-  const goalsDone = byType.reduce((s, b) => s + b.done, 0);
+  const goalsDone = byType.reduce((total, typeTally) => total + typeTally.done, 0);
   const at = day ? new Date(+day.slice(0, 4), +day.slice(5, 7) - 1, +day.slice(8, 10)) : new Date();
   const pulls = pullSeries(games, period, at);
   const backlog = backlogSeries(games, period, day ? null : goals.length - goalsDone, at);
   // Weeklies have no day record: a past day shows its dailies in either period.
-  const past = day ? games.map((g) => dayOf(g.days, day)) : null;
+  const past = day ? games.map((game) => dayOf(game.days, day)) : null;
   const hero = past
-    ? { done: past.reduce((s, t) => s + t.dailiesDone, 0), total: past.reduce((s, t) => s + t.dailiesTotal, 0), label: "Dailies" }
+    ? { done: past.reduce((total, pastDay) => total + pastDay.dailiesDone, 0), total: past.reduce((total, pastDay) => total + pastDay.dailiesTotal, 0), label: "Dailies" }
     : { done: recDone, total: recurring.length, label: period === "daily" ? "Dailies" : "Weeklies" };
 
   return (
@@ -151,7 +151,7 @@ export function HomeTop({
               </>
             }
           >
-            <PairedBars a={pulls.gained} b={pulls.spent} labels={pulls.labels} label="Pulls" names={["gained", "spent"]} />
+            <PairedBars firstSeries={pulls.gained} secondSeries={pulls.spent} labels={pulls.labels} label="Pulls" names={["gained", "spent"]} />
           </GraphPanel>
         </div>
       </div>

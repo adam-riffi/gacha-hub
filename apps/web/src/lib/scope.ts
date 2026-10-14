@@ -24,23 +24,23 @@ export interface ScopeGame {
  * Characters; a tab the other game lacks to its first, Activities.
  */
 export function hubPathFor(pathname: string, game: ScopeGame, screens: string[]): string {
-  const seg = pathname.startsWith("/characters/") ? "characters" : pathname.split("/")[3];
-  const tab = seg === "units" ? "characters" : seg;
+  const section = pathname.startsWith("/characters/") ? "characters" : pathname.split("/")[3];
+  const tab = section === "units" ? "characters" : section;
   return tab && screens.includes(tab) ? `/games/${game.instanceId}/${tab}` : `/games/${game.instanceId}`;
 }
 
 /** Where a section opens for a scope (null is the Overview). Settings has no scope. */
 export function sectionHref(section: Section, game: ScopeGame | null): string {
-  const q = game ? `?game=${game.key}` : "";
+  const query = game ? `?game=${game.key}` : "";
   switch (section) {
     case "all":
-      return `/${q}`;
+      return `/${query}`;
     case "games":
       return game ? `/games/${game.instanceId}` : "/library";
     case "tasks":
-      return `/tasks${q}`;
+      return `/tasks${query}`;
     case "banners":
-      return `/timeline${q}`;
+      return `/timeline${query}`;
     case "settings":
       return "/settings";
   }

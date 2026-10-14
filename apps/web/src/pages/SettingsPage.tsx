@@ -27,8 +27,8 @@ const IMPORT_ERROR: Record<string, string> = {
   no_account_for_game: "This file holds no account for this game.",
 };
 
-const errorText = (e: unknown) => {
-  const body = e instanceof ApiError ? (e.body as { error?: string; uids?: string[] }) : {};
+const errorText = (caught: unknown) => {
+  const body = caught instanceof ApiError ? (caught.body as { error?: string; uids?: string[] }) : {};
   if (body.error === "pick_uid") return `This file holds several accounts (${body.uids?.join(", ")}): set this game's UID on its Profile to pick one.`;
   if (body.error === "uid_mismatch") return `This file is for UID ${body.uids?.join(", ")}, not this profile's.`;
   return IMPORT_ERROR[body.error ?? ""] ?? "The import failed.";
@@ -52,22 +52,22 @@ const TABS = [
  * account and data (download, delete); the data sources.
  */
 export function SettingsPage() {
-  const { me } = useAuth();
+  const { currentUser } = useAuth();
   const { tab = "" } = useParams<{ tab?: string }>();
   const games = useQuery({ queryKey: ["instances"], queryFn: () => api.get<InstanceListItem[]>("/api/instances") });
   const links = useQuery({ queryKey: ["links"], queryFn: () => api.get<LinkedAccountDto[]>("/api/links"), enabled: tab === "accounts" });
   const imports = useQuery({ queryKey: ["imports"], queryFn: () => api.get<ImportRunDto[]>("/api/imports"), enabled: tab === "pulls" });
   const mine = games.data ?? [];
-  const tabs = TABS.filter((t) => !t.owner || me?.isAdmin);
-  if (!tabs.some((t) => t.path === tab)) return <Navigate to="/settings" replace />;
+  const tabs = TABS.filter((candidate) => !candidate.owner || currentUser?.isAdmin);
+  if (!tabs.some((candidate) => candidate.path === tab)) return <Navigate to="/settings" replace />;
 
   return (
     <div className="st-page">
       <h1>Settings</h1>
       <nav className="st-nav" aria-label="Settings sections">
-        {tabs.map((t) => (
-          <NavLink key={t.path} to={t.path ? `/settings/${t.path}` : "/settings"} end>
-            {t.label}
+        {tabs.map((listedTab) => (
+          <NavLink key={listedTab.path} to={listedTab.path ? `/settings/${listedTab.path}` : "/settings"} end>
+            {listedTab.label}
           </NavLink>
         ))}
       </nav>
@@ -82,7 +82,7 @@ export function SettingsPage() {
                 <tr><th>Game</th><th>Method</th><th>Last import</th><th className="num">Action</th></tr>
               </thead>
               <tbody>
-                {mine.map((gi) => <PullRow key={gi.id} gi={gi} last={(imports.data ?? []).find((r) => r.gameInstanceId === gi.id && r.kind === "pulls")} />)}
+                {mine.map((gameInstance) => <PullRow key={gameInstance.id} gameInstance={gameInstance} last={(imports.data ?? []).find((importRun) => importRun.gameInstanceId === gameInstance.id && importRun.kind === "pulls")} />)}
               </tbody>
             </table>
             {!mine.length && <p className="mu">Add a game first.</p>}
@@ -102,8 +102,8 @@ export function SettingsPage() {
 }
 
 function LinkedAccounts({ links, games }: { links: LinkedAccountDto[]; games: InstanceListItem[] }) {
-  const hoyolab = links.find((l) => l.provider === "hoyolab");
-  const hoyo = games.filter((g) => HOYO.includes(g.gameKey));
+  const hoyolab = links.find((link) => link.provider === "hoyolab");
+  const hoyoGames = games.filter((game) => HOYO.includes(game.gameKey));
   return (
     <section className="card st-linked" id="linked" aria-label="Linked accounts">
       <h3>Linked accounts</h3>
@@ -112,14 +112,14 @@ function LinkedAccounts({ links, games }: { links: LinkedAccountDto[]; games: In
         <span className="row"><strong>Enka showcase</strong><span className="tag is-off">No login</span></span>
         <p className="mu">Builds from your showcase</p>
         <div className="st-uids">
-          {hoyo.map((g) => (
-            <span key={g.id}>
-              <span className="kpi-label">{getGame(g.gameKey)?.shortName} UID</span>
-              <span className="mn">{g.uid ? masked(g.uid) : "not set"}</span>
-              {["genshin", "hsr", "zzz"].includes(g.gameKey) && g.uid && <EnkaSync instanceId={g.id} />}
+          {hoyoGames.map((game) => (
+            <span key={game.id}>
+              <span className="kpi-label">{getGame(game.gameKey)?.shortName} UID</span>
+              <span className="mn">{game.uid ? masked(game.uid) : "not set"}</span>
+              {["genshin", "hsr", "zzz"].includes(game.gameKey) && game.uid && <EnkaSync instanceId={game.id} />}
             </span>
           ))}
-          {!hoyo.length && <span className="mu">No HoYoverse game added.</span>}
+          {!hoyoGames.length && <span className="mu">No HoYoverse game added.</span>}
         </div>
       </article>
       <div className="st-trio">
@@ -155,15 +155,15 @@ const ENKA_ERROR: Record<string, string> = {
 
 /** Builds from the Enka showcase (Genshin, Star Rail, ZZZ), on demand (ADR 0005). */
 function EnkaSync({ instanceId }: { instanceId: string }) {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   const [note, setNote] = useState<string | null>(null);
   const sync = useMutation({
     mutationFn: () => api.post<{ created: number; updated: number }>(`/api/instances/${instanceId}/enka`),
-    onSuccess: (r) => {
-      setNote(`${r.created} builds added, ${r.updated} refreshed.`);
-      return Promise.all([["characters", instanceId], ["imports"], ["ownership", instanceId]].map((queryKey) => qc.invalidateQueries({ queryKey })));
+    onSuccess: (result) => {
+      setNote(`${result.created} builds added, ${result.updated} refreshed.`);
+      return Promise.all([["characters", instanceId], ["imports"], ["ownership", instanceId]].map((queryKey) => queryClient.invalidateQueries({ queryKey })));
     },
-    onError: (e) => setNote(ENKA_ERROR[(e instanceof ApiError ? (e.body as { error?: string }).error : "") ?? ""] ?? "Enka could not be reached."),
+    onError: (caught) => setNote(ENKA_ERROR[(caught instanceof ApiError ? (caught.body as { error?: string }).error : "") ?? ""] ?? "Enka could not be reached."),
   });
   return (
     <>
@@ -173,7 +173,7 @@ function EnkaSync({ instanceId }: { instanceId: string }) {
   );
 }
 
-const linkError = (e: unknown) => LINK_ERROR[(e instanceof ApiError ? (e.body as { error?: string }).error : "") ?? ""] ?? "Something went wrong.";
+const linkError = (caught: unknown) => LINK_ERROR[(caught instanceof ApiError ? (caught.body as { error?: string }).error : "") ?? ""] ?? "Something went wrong.";
 const TIME = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
 
 /**
@@ -181,33 +181,33 @@ const TIME = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", 
  * Revoke. Gacha Hub only reads: no check-in, no code redemption.
  */
 function HoyolabCard({ link }: { link?: LinkedAccountDto }) {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   const [note, setNote] = useState<string | null>(null);
-  const refresh = () => Promise.all([["links"], ["imports"], ["instances"], ["dashboard"]].map((queryKey) => qc.invalidateQueries({ queryKey })));
+  const refresh = () => Promise.all([["links"], ["imports"], ["instances"], ["dashboard"]].map((queryKey) => queryClient.invalidateQueries({ queryKey })));
   const connect = useMutation({
-    mutationFn: (v: { ltuid: string; ltoken: string }) => api.post<{ games: { gameKey: string }[] }>("/api/links/hoyolab", v),
-    onSuccess: (r) => {
-      setNote(`Linked: ${r.games.map((g) => getGame(g.gameKey)?.shortName ?? g.gameKey).join(", ") || "no game of ours on this account"}.`);
+    mutationFn: (credentials: { ltuid: string; ltoken: string }) => api.post<{ games: { gameKey: string }[] }>("/api/links/hoyolab", credentials),
+    onSuccess: (result) => {
+      setNote(`Linked: ${result.games.map((game) => getGame(game.gameKey)?.shortName ?? game.gameKey).join(", ") || "no game of ours on this account"}.`);
       return refresh();
     },
-    onError: (e) => setNote(linkError(e)),
+    onError: (caught) => setNote(linkError(caught)),
   });
   const sync = useMutation({
     mutationFn: () => api.post<{ synced: string[] }>(`/api/links/${link!.id}/sync`),
-    onSuccess: (r) => {
-      setNote(`Synced ${r.synced.map((k) => getGame(k)?.shortName ?? k).join(", ") || "nothing: set your UIDs on each game's Profile"}.`);
+    onSuccess: (result) => {
+      setNote(`Synced ${result.synced.map((gameKey) => getGame(gameKey)?.shortName ?? gameKey).join(", ") || "nothing: set your UIDs on each game's Profile"}.`);
       return refresh();
     },
-    onError: (e) => {
-      setNote(linkError(e));
+    onError: (caught) => {
+      setNote(linkError(caught));
       void refresh();
     },
   });
   const revoke = useMutation({ mutationFn: () => api.del(`/api/links/${link!.id}`), onSuccess: () => { setNote("Revoked: the cookie is deleted."); return refresh(); } });
-  const submit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const f = new FormData(e.currentTarget);
-    connect.mutate({ ltuid: String(f.get("ltuid") ?? "").trim(), ltoken: String(f.get("ltoken") ?? "").trim() });
+  const submit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    connect.mutate({ ltuid: String(formData.get("ltuid") ?? "").trim(), ltoken: String(formData.get("ltoken") ?? "").trim() });
   };
   return (
     <article className="st-provider is-main" aria-label="HoYoLAB">
@@ -238,17 +238,17 @@ function HoyolabCard({ link }: { link?: LinkedAccountDto }) {
   );
 }
 
-function PullRow({ gi, last }: { gi: InstanceListItem; last?: ImportRunDto }) {
-  const qc = useQueryClient();
+function PullRow({ gameInstance, last }: { gameInstance: InstanceListItem; last?: ImportRunDto }) {
+  const queryClient = useQueryClient();
   const [pasting, setPasting] = useState(false);
   const [note, setNote] = useState<{ text: string; bad?: boolean } | null>(null);
   const done = (added: number, skipped: number) => {
     setNote({ text: `${added} added, ${skipped} already there` });
-    return Promise.all([["imports"], ["pulls", gi.id], ["instances"], ["instance", gi.id], ["dashboard"]].map((queryKey) => qc.invalidateQueries({ queryKey })));
+    return Promise.all([["imports"], ["pulls", gameInstance.id], ["instances"], ["instance", gameInstance.id], ["dashboard"]].map((queryKey) => queryClient.invalidateQueries({ queryKey })));
   };
-  const fail = (e: unknown) => {
-    setNote({ text: errorText(e), bad: true });
-    void qc.invalidateQueries({ queryKey: ["imports"] });
+  const fail = (caught: unknown) => {
+    setNote({ text: errorText(caught), bad: true });
+    void queryClient.invalidateQueries({ queryKey: ["imports"] });
   };
   // A long history takes several calls: each returns where to pick up.
   const viaLink = useMutation({
@@ -257,17 +257,17 @@ function PullRow({ gi, last }: { gi: InstanceListItem; last?: ImportRunDto }) {
       let skipped = 0;
       let next: unknown = null;
       do {
-        const r = await api.post<{ added: number; skipped: number; next: unknown }>(`/api/instances/${gi.id}/pulls/history-link`, { url, next });
-        added += r.added;
-        skipped += r.skipped;
-        next = r.next;
+        const result = await api.post<{ added: number; skipped: number; next: unknown }>(`/api/instances/${gameInstance.id}/pulls/history-link`, { url, next });
+        added += result.added;
+        skipped += result.skipped;
+        next = result.next;
         setNote({ text: `Importing… ${added} added so far` });
       } while (next);
       return { added, skipped };
     },
-    onSuccess: (r) => {
+    onSuccess: (result) => {
       setPasting(false);
-      return done(r.added, r.skipped);
+      return done(result.added, result.skipped);
     },
     onError: fail,
   });
@@ -279,26 +279,26 @@ function PullRow({ gi, last }: { gi: InstanceListItem; last?: ImportRunDto }) {
       } catch {
         throw new ApiError(400, { error: "not_uigf" });
       }
-      return api.post<{ added: number; skipped: number }>(`/api/instances/${gi.id}/pulls/uigf`, doc);
+      return api.post<{ added: number; skipped: number }>(`/api/instances/${gameInstance.id}/pulls/uigf`, doc);
     },
-    onSuccess: (r) => done(r.added, r.skipped),
+    onSuccess: (result) => done(result.added, result.skipped),
     onError: fail,
   });
-  const submit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    viaLink.mutate(String(new FormData(e.currentTarget).get("url") ?? ""));
+  const submit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    viaLink.mutate(String(new FormData(event.currentTarget).get("url") ?? ""));
   };
   const busy = viaLink.isPending || viaFile.isPending;
-  const link = hasHistoryLink(gi.gameKey);
-  const uigf = hasUigf(gi.gameKey);
+  const link = hasHistoryLink(gameInstance.gameKey);
+  const uigf = hasUigf(gameInstance.gameKey);
   const method =
-    gi.gameKey === "wuwa" ? "History link from the game log (PC)" : gi.gameKey === "endfield" ? "Headhunting records link (PC)" : link ? "History link (PC) or UIGF file" : "Log pulls by hand";
-  const placeholder = gi.gameKey === "wuwa" ? "https://…record_id=…" : gi.gameKey === "endfield" ? "https://…token=…&server_id=…" : "https://…authkey=…";
+    gameInstance.gameKey === "wuwa" ? "History link from the game log (PC)" : gameInstance.gameKey === "endfield" ? "Headhunting records link (PC)" : link ? "History link (PC) or UIGF file" : "Log pulls by hand";
+  const placeholder = gameInstance.gameKey === "wuwa" ? "https://…record_id=…" : gameInstance.gameKey === "endfield" ? "https://…token=…&server_id=…" : "https://…authkey=…";
 
   return (
     <>
       <tr>
-        <td>{gi.name}</td>
+        <td>{gameInstance.name}</td>
         <td>{method}</td>
         <td className={`mn ${last?.error ? "st-bad" : ""}`}>{last ? `${DAY.format(new Date(last.createdAt))}${last.error ? ` · ${last.error.replace("_", " ")}` : ""}` : link || uigf ? "never" : "—"}</td>
         <td className="num">
@@ -307,11 +307,11 @@ function PullRow({ gi, last }: { gi: InstanceListItem; last?: ImportRunDto }) {
             {uigf && (
               <label className={`btn ${busy ? "is-disabled" : ""}`}>
                 UIGF file
-                <input type="file" accept="application/json,.json" hidden disabled={busy} aria-label={`UIGF file for ${gi.name}`} onChange={(e) => e.target.files?.[0] && viaFile.mutate(e.target.files[0])} />
+                <input type="file" accept="application/json,.json" hidden disabled={busy} aria-label={`UIGF file for ${gameInstance.name}`} onChange={(event) => event.target.files?.[0] && viaFile.mutate(event.target.files[0])} />
               </label>
             )}
-            {uigf && gi.uid && <a className="btn" href={`/api/instances/${gi.id}/pulls/uigf`} download>Export UIGF</a>}
-            {!link && !uigf && <Link className="btn" to={`/games/${gi.id}/pulls`}>Open pull log</Link>}
+            {uigf && gameInstance.uid && <a className="btn" href={`/api/instances/${gameInstance.id}/pulls/uigf`} download>Export UIGF</a>}
+            {!link && !uigf && <Link className="btn" to={`/games/${gameInstance.id}/pulls`}>Open pull log</Link>}
           </span>
         </td>
       </tr>
@@ -320,7 +320,7 @@ function PullRow({ gi, last }: { gi: InstanceListItem; last?: ImportRunDto }) {
           <td colSpan={4}>
             {pasting && (
               <form className="st-paste" onSubmit={submit}>
-                <input name="url" required autoComplete="off" placeholder={placeholder} aria-label={`History link for ${gi.name}`} />
+                <input name="url" required autoComplete="off" placeholder={placeholder} aria-label={`History link for ${gameInstance.name}`} />
                 <button className="btn primary" type="submit" disabled={busy}>Import</button>
                 <span className="mu">Used once on the server and never stored.</span>
               </form>
@@ -334,10 +334,10 @@ function PullRow({ gi, last }: { gi: InstanceListItem; last?: ImportRunDto }) {
 }
 
 function Notifications({ games }: { games: InstanceListItem[] }) {
-  const rules = useQueries({ queries: games.map((gi) => ({ queryKey: ["reminder", gi.id], queryFn: () => api.get<ReminderRule | null>(`/api/instances/${gi.id}/reminder`) })) });
-  const on = rules.map((r) => r.data).filter((r): r is ReminderRule => Boolean(r?.enabled));
-  const quiet = on.find((r) => r.config.quietHours)?.config.quietHours;
-  const digest = on.find((r) => r.config.atTimes.length)?.config.atTimes[0];
+  const rules = useQueries({ queries: games.map((gameInstance) => ({ queryKey: ["reminder", gameInstance.id], queryFn: () => api.get<ReminderRule | null>(`/api/instances/${gameInstance.id}/reminder`) })) });
+  const on = rules.map((query) => query.data).filter((rule): rule is ReminderRule => Boolean(rule?.enabled));
+  const quiet = on.find((rule) => rule.config.quietHours)?.config.quietHours;
+  const digest = on.find((rule) => rule.config.atTimes.length)?.config.atTimes[0];
   return (
     <section className="card" id="notifications" aria-label="Notifications">
       <h3>Notifications</h3>
@@ -352,7 +352,7 @@ function Notifications({ games }: { games: InstanceListItem[] }) {
 }
 
 function AccountData() {
-  const { me, logout } = useAuth();
+  const { currentUser, logout } = useAuth();
   const [deleting, setDeleting] = useState(false);
   const remove = useMutation({
     mutationFn: (confirm: string) => api.del(`/api/me`, { confirm }),
@@ -362,7 +362,7 @@ function AccountData() {
     <section className="card" id="account" aria-label="Account and data">
       <h3>Account and data</h3>
       <div className="st-rows">
-        <div><span className="st-k">Signed in as</span><span className="mn">{me?.user?.username}</span></div>
+        <div><span className="st-k">Signed in as</span><span className="mn">{currentUser?.user?.username}</span></div>
         <div><span className="st-k">Download my data</span><span><a className="btn" href="/api/export" download aria-label="Download my data">JSON</a></span></div>
         <div>
           <span className="st-k">Delete my account and data</span>
@@ -371,13 +371,13 @@ function AccountData() {
         {deleting && (
           <form
             className="st-confirm"
-            onSubmit={(e) => {
-              e.preventDefault();
-              remove.mutate(String(new FormData(e.currentTarget).get("confirm") ?? ""));
+            onSubmit={(event) => {
+              event.preventDefault();
+              remove.mutate(String(new FormData(event.currentTarget).get("confirm") ?? ""));
             }}
           >
             <label>
-              Type your username, {me?.user?.username}, to delete everything for good
+              Type your username, {currentUser?.user?.username}, to delete everything for good
               <input name="confirm" required autoComplete="off" />
             </label>
             <button className="btn danger" type="submit" disabled={remove.isPending}>Delete for good</button>
@@ -396,13 +396,13 @@ function AccountData() {
  * remove games in the library.
  */
 function GamesSettings({ games }: { games: InstanceListItem[] }) {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   // Awake changes at once; the server catches up.
   const [awake, setAwake] = useState<Record<string, boolean>>({});
   const toast = useToast();
   const save = useMutation({
-    mutationFn: (v: { id: string; regionKey?: string; sleeping?: boolean }) => api.put(`/api/instances/${v.id}`, { ...(v.regionKey ? { regionKey: v.regionKey } : {}), ...(v.sleeping !== undefined ? { sleeping: v.sleeping } : {}) }),
-    onSuccess: () => Promise.all(["instances", "instance", "dashboard"].map((k) => qc.invalidateQueries({ queryKey: [k] }))),
+    mutationFn: (change: { id: string; regionKey?: string; sleeping?: boolean }) => api.put(`/api/instances/${change.id}`, { ...(change.regionKey ? { regionKey: change.regionKey } : {}), ...(change.sleeping !== undefined ? { sleeping: change.sleeping } : {}) }),
+    onSuccess: () => Promise.all(["instances", "instance", "dashboard"].map((key) => queryClient.invalidateQueries({ queryKey: [key] }))),
     onError: () => toast("Could not save the game", "err"),
   });
   return (
@@ -416,30 +416,30 @@ function GamesSettings({ games }: { games: InstanceListItem[] }) {
           <tr><th>Game</th><th>Server</th><th>Awake</th><th>Hidden banners</th></tr>
         </thead>
         <tbody>
-          {games.map((gi) => {
-            const game = getGame(gi.gameKey);
+          {games.map((gameInstance) => {
+            const game = getGame(gameInstance.gameKey);
             return (
-              <tr key={gi.id}>
-                <td><Link to={`/games/${gi.id}`}>{gi.name}</Link></td>
+              <tr key={gameInstance.id}>
+                <td><Link to={`/games/${gameInstance.id}`}>{gameInstance.name}</Link></td>
                 <td>
-                  <select aria-label={`Server for ${gi.name}`} value={gi.regionKey} onChange={(e) => save.mutate({ id: gi.id, regionKey: e.target.value })} style={{ width: "auto" }}>
-                    {(game?.regions ?? []).map((r) => (
-                      <option key={r.key} value={r.key}>{r.label}</option>
+                  <select aria-label={`Server for ${gameInstance.name}`} value={gameInstance.regionKey} onChange={(event) => save.mutate({ id: gameInstance.id, regionKey: event.target.value })} style={{ width: "auto" }}>
+                    {(game?.regions ?? []).map((region) => (
+                      <option key={region.key} value={region.key}>{region.label}</option>
                     ))}
                   </select>
                 </td>
                 <td>
                   <input
                     type="checkbox"
-                    aria-label={`${gi.name} awake`}
-                    checked={awake[gi.id] ?? !gi.sleeping}
-                    onChange={(e) => {
-                      setAwake((a) => ({ ...a, [gi.id]: e.target.checked }));
-                      save.mutate({ id: gi.id, sleeping: !e.target.checked });
+                    aria-label={`${gameInstance.name} awake`}
+                    checked={awake[gameInstance.id] ?? !gameInstance.sleeping}
+                    onChange={(event) => {
+                      setAwake((current) => ({ ...current, [gameInstance.id]: event.target.checked }));
+                      save.mutate({ id: gameInstance.id, sleeping: !event.target.checked });
                     }}
                   />
                 </td>
-                <td>{gi.hiddenBanners?.length ? <Link to={`/games/${gi.id}/pulls`}>{gi.hiddenBanners.length} hidden</Link> : <span className="mu">none</span>}</td>
+                <td>{gameInstance.hiddenBanners?.length ? <Link to={`/games/${gameInstance.id}/pulls`}>{gameInstance.hiddenBanners.length} hidden</Link> : <span className="mu">none</span>}</td>
               </tr>
             );
           })}
