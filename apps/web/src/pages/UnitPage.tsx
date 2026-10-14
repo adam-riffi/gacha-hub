@@ -75,7 +75,7 @@ export function UnitPage() {
         <GameTabs instanceId={id!} active="characters" gameKey={game.key} />
       </div>
       <div className="sh-top">
-        <div className="sh-art un-art">
+        <div className="sh-art un-art" data-game={game.key}>
           <GameIcon src={assetUrl(game.key, "splash", art)} fallback={[communityAssetUrl(game.key, "splash", art), communityAssetUrl(game.key, "character", entry.icon)]} alt={entry.name} glyph="character" />
         </div>
         <div className="sh-main">

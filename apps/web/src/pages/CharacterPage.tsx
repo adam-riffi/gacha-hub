@@ -243,7 +243,7 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
         </div>
       )}
       <div className="sh-top">
-        <div className="sh-art">
+        <div className="sh-art" data-game={game.key}>
           <GameIcon src={state.portraitUrl ?? assetUrl(game.key, "splash", art)} fallback={[communityAssetUrl(game.key, "splash", art), communityAssetUrl(game.key, "character", entry?.icon)]} alt={state.name} glyph="character" />
           <label className="btn sh-upload">
             {busy ? "Uploading…" : "Change art"}
