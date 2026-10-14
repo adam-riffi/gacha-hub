@@ -153,13 +153,6 @@ label.act-row { margin: 0; cursor: pointer; color: var(--text); font: 400 15px/1
 .eg-dot { display: inline-block; width: 8px; height: 8px; margin-right: 8px; border-radius: 50%; background: var(--accent); }
 .act-cycles .spread { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
 
-@media (max-width: 900px) {
-  .eg-this-body { flex-wrap: wrap; }
-  .hub-head { flex-wrap: wrap; }
-  .hub-resets { margin-left: 0; gap: 24px; }
-  .act-cadences, .act-bottom, .act-version-body { grid-template-columns: minmax(0, 1fr); }
-  .act-stamina-body { flex-wrap: wrap; }
-}
 
 /* A game's Overview (WIREFRAMES.md G0; Georges's designs, 2026-10-11): small cards, three to a row. */
 /* A recurring task's box, ticked in place (the designs' squares), in the game's colour, its boxes in one column (round 7). */

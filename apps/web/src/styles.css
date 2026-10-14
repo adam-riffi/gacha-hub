@@ -118,7 +118,6 @@ select.prio.build-none { color: var(--muted); }
 .chip-x:hover { opacity: 1; }
 
 /* ---- Dashboard: main column + right rail ---- */
-@media (max-width: 1100px) { .dash { grid-template-columns: 1fr; } }
 .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
 .chip-toggle { padding: 4px 10px; border-radius: 0; border: 1px solid var(--border); background: var(--surface-2); color: var(--text); font-size: 0.8rem; cursor: pointer; }
@@ -222,7 +221,6 @@ select.prio.build-none { color: var(--muted); }
 
 /* ---- Per-game overview ---- */
 .ov-grid { display: grid; grid-template-columns: 1.15fr 1fr 1fr; gap: 16px; margin-bottom: 18px; align-items: start; }
-@media (max-width: 1100px) { .ov-grid { grid-template-columns: 1fr 1fr; } }
 .ov-title { font-family: var(--font-display); font-weight: 600; font-size: 0.92rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ov-ellipsis { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ov-banner { display: flex; gap: 10px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); }

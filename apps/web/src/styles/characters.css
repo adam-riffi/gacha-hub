@@ -6,7 +6,6 @@
 .ch-counts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 16px; }
 .ch-sp { flex: 1; }
 .ch-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
-@media (max-width: 1280px) { .ch-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .ch-card { --el: var(--paper); position: relative; display: flex; flex-direction: column; background: var(--card); border: 1px solid var(--edge); transition: border-color 0.15s, box-shadow 0.15s; }
 /* The card tints to its element (Georges, 2026-10-10; the design canvas): the art fades in from it, and hovering lights the border. */
 .ch-card:hover, .ch-card:focus-within { border-color: var(--el); box-shadow: 0 0 0 1px var(--el), 0 12px 32px -14px color-mix(in srgb, var(--el) 70%, transparent); }

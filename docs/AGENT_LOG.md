@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-14 · claude · stack/r11/07-fixed-layout · #305
+- Done: one desktop layout (Georges, round 8: "the responsivity of the app is pretty mediocre overall; I'd rather have it not responsive or find a way to fix it"). The shell has a minimum width of 1440 px, the width every screen is designed and checked at: a narrower window scrolls sideways instead of rearranging the screens. The width breakpoints are gone (Home's side column at 1500 px, the Characters grid's three columns under 1280 px, the timeline, Overview and dashboard collapses under 1100 px, the hub's under 900 px); Home keeps the one-column layout it had at 1440 px. Wider windows still give the grids more room. Reduced-motion preferences stay.
+- Tests: written first: Star Rail's Characters grid has as many columns at 1100 px as at 1440 px, and the page is at least 1440 px wide.
+- Scope/decisions: "not responsive" taken over a fix, Georges using the app on a desktop (round 5: "forget about phone"); 1440 px is the size of every screenshot and check since round 1.
+- Next: gift items for NTE and Endfield.
+
 ## 2026-10-14 · claude · stack/r11/06-art-framing · #304
 - Done: art framing (Georges, round 8: "Endfield character arts are way too zoomed in; also Qiuyuan from WuWa too"). Qiuyuan: the game's path names her card art `T_IconRole_Pile_qiuyuan_UI`, the art host has it as `…_Qiuyuan_UI`, so it answered with an error and her small head icon stood in, enlarged by WuWa's raised framing. The WuWa importer now checks each card art's name with the host and keeps the one it answers to (the game's otherwise, and when the host is unreachable); only Qiuyuan differed of the 50. Endfield: its portraits are 152 × 212, so filling a card enlarged and cropped them; cards, sheets and unit pages now show them whole, at the foot of the frame (`object-fit: contain`); the other games keep filling theirs.
 - Tests: written first: WuWa's catalog keeps Qiuyuan's capitalised card art and Jiyan's as it was; an Endfield card's art is contained, a Star Rail card's still covers.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: Shiyu's 18 Sept bar becomes the card's cycle (pressed; no dialog; dates, version, rewards, detail, clear time), the older one a step away and edited in place (saved on that cycle), Back to now, a table row picking its cycle; Stygian lists its three bosses before anything is typed; a weapon's panel closes on a click on the search box.
 - Scope/decisions: none.
 - Next: ownership apart from builds, and the selection's actions.
-
-## 2026-10-12 · claude · stack/r9/01-pulls-layout · #264
-- Done: Pulls (Georges, round 6: "make the pull layout adaptable, if I hide something it all becomes crooked; remove any beginner banner; you're still using squares with letters, use icons instead"): every shown banner in one grid whose cards stretch to their row, actions at the foot, an odd last card spanning the row with its curve beside its odds (the card has two blocks now); the chances list has its own class (`pl-chances`: sharing `pl-odds` had broken every banner's odds table); the Hidden line only for banners the screen shows. Beginner banners (Genshin's Beginners' wish, Star Rail's Departure warp, WuWa's Novice and Beginner's Choice convenes, Endfield's Beginner headhunting) are flagged `beginner`: imports still map their history, `shownBanners` leaves them off Pulls, Home and the dashboard. A banner or target without art is drawn as its kind (`Glyph`: character, weapon, Bangboo, standard). Round 6's list is in `docs/AUDIT-2026-10-12-round6.md`.
-- Tests: written first: `shownBanners` per game and the five beginner banners; the pulls route and the dashboard's pity lists without them; hiding works on the shown ones; a journey on Star Rail finds no Departure warp, one grid whose first two cards share their top and height, whole odds tables, and the Stellar warp's glyph.
-- Scope/decisions: beginner banners are kept in the modules for imports rather than deleted.
-- Next: the endgame cards' cycles, dialogs closed by a click outside.
