@@ -155,6 +155,9 @@ test("Characters: the stats the cards show, picked for the game; a set's bonus a
   await page.reload();
   await page.getByRole("searchbox", { name: "Search" }).fill("Qingque");
   await expect(page.getByRole("article", { name: "Qingque" }).locator(".ch-kpis .kpi-label")).toHaveText(["HP", "CRIT DMG", "SPD"]);
+  // Three at most (round 8): a fourth pick drops the oldest.
+  await page.getByRole("group", { name: "Card stats" }).getByRole("button", { name: "ATK", exact: true }).click();
+  await expect(page.getByRole("article", { name: "Qingque" }).locator(".ch-kpis .kpi-label")).toHaveText(["CRIT DMG", "SPD", "ATK"]);
   // Back to the role's stats, for the journeys after this one.
   await page.getByRole("group", { name: "Card stats" }).getByRole("button", { name: "Role" }).click();
   await expect.poll(async () => ((await (await page.request.get(`/api/instances/${id}`)).json()) as { cardStats: unknown }).cardStats).toBeNull();
@@ -355,8 +358,9 @@ test("Characters: a card without a build shows the character's base stats at its
   await page.getByRole("searchbox", { name: "Search" }).fill("Serval");
   // Serval, whom no journey builds: CRIT Rate grows; at 80, 917 HP, 653 ATK, 375 DEF (Yatta's promotion data).
   const card = page.getByRole("article", { name: "Serval" });
-  await expect(card.locator(".ch-kpis .kpi-label")).toHaveText(["CRIT Rate", "HP", "ATK", "DEF"]);
+  // Three stats at most (round 8): the growth stat, HP and ATK.
+  await expect(card.locator(".ch-kpis .kpi-label")).toHaveText(["CRIT Rate", "HP", "ATK"]);
   await expect(card.locator(".ch-kpis > div").first()).toHaveClass(/is-growth/);
-  await expect(card.locator(".ch-kpis .cd")).toHaveText(["5%", "917", "653", "375"]);
+  await expect(card.locator(".ch-kpis .cd")).toHaveText(["5%", "917", "653"]);
   await expect(card.locator(".ch-kpis .cd").nth(1)).toHaveAttribute("title", /Base at Lv 80/);
 });

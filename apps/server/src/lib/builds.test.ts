@@ -110,14 +110,17 @@ describe("statKpis and set bonuses", () => {
 describe("cardStatLabels", () => {
   const hsr = getGame("hsr")!;
   const kafka = { bonusStats: ["ATK", "Effect Hit Rate", "HP"] };
-  it("puts the growth stat first, then the role's stats, up to four", () => {
-    expect(cardStatLabels(hsr, kafka, null)).toEqual(["ATK", "Crit value", "CRIT Rate / CRIT DMG", "SPD"]);
+  // Georges, round 8: "character cards are too tall: just put a max of 3 displayed stats".
+  it("puts the growth stat first, then the role's stats, up to three", () => {
+    expect(cardStatLabels(hsr, kafka, null)).toEqual(["ATK", "Crit value", "CRIT Rate / CRIT DMG"]);
     expect(cardStatLabels(hsr, { bonusStats: ["SPD"] }, null)).toEqual(["SPD", "Crit value", "CRIT Rate / CRIT DMG"]);
     expect(cardStatLabels(hsr, undefined, "support")).toEqual(["SPD", "Energy Regeneration Rate", "Effect Hit Rate"]);
   });
   it("keeps the build's pick, else the game's", () => {
     expect(cardStatLabels(hsr, kafka, null, ["HP"], ["DEF"])).toEqual(["HP"]);
     expect(cardStatLabels(hsr, kafka, null, null, ["DEF"])).toEqual(["DEF"]);
+    // A pick of more, saved before round 8, shows its first three.
+    expect(cardStatLabels(hsr, kafka, null, ["HP", "ATK", "DEF", "SPD"])).toEqual(["HP", "ATK", "DEF"]);
   });
 });
 
