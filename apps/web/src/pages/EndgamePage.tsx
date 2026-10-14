@@ -5,7 +5,9 @@ import { endgameNow, enemiesFor, gameDay, getGame, modeCycles, modeStages, premi
 import { api } from "../lib/api";
 import { assetUrl, communityAssetUrl } from "../lib/assets";
 import { useCatalog } from "../lib/catalog";
-import { Picker, type PickerOption } from "../components/Picker";
+import type { PickerOption } from "../components/Picker";
+import { TeamWindow } from "../components/hub/TeamWindow";
+import { MetricIcon } from "../components/hub/MetricIcon";
 import { formatRemaining } from "../lib/time";
 import type { InstanceDetail } from "../lib/types";
 import { GameTabs } from "../components/GameTabs";
@@ -197,6 +199,7 @@ function ModeCard({
   };
   // Each stage's team, typed time and score while the form is open.
   const [draft, setDraft] = useState<Record<string, { members: string[]; time: string; score: string }>>({});
+  const [choosing, setChoosing] = useState<string | null>(null);
   const open = () => {
     setDraft(Object.fromEntries(stages.map((s) => {
       const t = r.teams?.find((x) => x.stage === s.key);
@@ -261,12 +264,21 @@ function ModeCard({
         </div>
       </div>
       <div className="kpi-value eg-result">
+        <MetricIcon label={mode.metric.label} />
         {r.result ?? "—"}
         <small>
           {" "}
           / {mode.metric.max ?? "—"} {mode.metric.label}
         </small>
       </div>
+      {/* A small maximum as a row of its icons, filled up to the result (round 8). */}
+      {mode.metric.max !== undefined && mode.metric.max <= 12 && (
+        <span className="eg-pips" role="img" aria-label={`${r.result ?? 0} of ${mode.metric.max} ${mode.metric.label}`}>
+          {Array.from({ length: mode.metric.max }, (_, k) => (
+            <MetricIcon key={k} label={mode.metric.label} on={k < (r.result ?? 0)} />
+          ))}
+        </span>
+      )}
       {mode.maxPremium !== undefined && (
         <div className="eg-rewards">
           <div className="act-xp">
@@ -328,22 +340,13 @@ function ModeCard({
                     <TeamIcons gameKey={roster.gameKey} members={d.members} unitOf={roster.unitOf} /> ×
                   </button>
                 )}
-                {d.members.length < roster.size && roster.units.length > 0 && (
-                  <Picker
-                    label={`Add to ${s}`}
-                    glyph="character"
-                    placeholder="+ Unit or team"
-                    value=""
-                    options={[
-                      ...roster.teams.filter((t) => t.members.length > 0).map((t) => ({ id: `team:${t.id}`, name: t.name, sub: "team" })),
-                      ...roster.units.filter((u) => !d.members.includes(u.id)),
-                    ]}
-                    onPick={(o) => {
-                      if (!o) return;
-                      const team = roster.teams.find((t) => `team:${t.id}` === o.id);
-                      set({ members: team ? team.members.slice(0, roster.size) : [...d.members, o.id] });
-                    }}
-                  />
+                {roster.units.length > 0 && (
+                  <button type="button" className="btn sm" aria-label="Choose team" onClick={() => setChoosing(s)}>
+                    + Team
+                  </button>
+                )}
+                {choosing === s && (
+                  <TeamWindow stage={s} units={roster.units} teams={roster.teams} size={roster.size} members={d.members} onChange={(members) => set({ members })} onClose={() => setChoosing(null)} />
                 )}
                 {mode.clears?.timed && (
                   <label>
