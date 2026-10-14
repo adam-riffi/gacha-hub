@@ -458,3 +458,27 @@ test("Characters: an unowned character without a build opens the same sheet as a
   await expect(page.getByRole("region", { name: "Character", exact: true }).getByLabel("Level", { exact: true })).toHaveValue("50");
   await page.request.delete(`/api/characters/${build!.id}`);
 });
+
+// Main's CI after #313: three quick card-stat picks, then a reload, kept only two; the queued last save left with the page.
+test("Characters: card-stat picks made quickly are all kept, even when the page is left at once @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "zzz" } })).json()) as { id: string };
+  await page.request.put(`/api/instances/${id}`, { data: { cardStats: null } });
+  // A slow server: every save of the game takes 400 ms to reach it.
+  await page.route(`**/api/instances/${id}`, async (route) => {
+    if (route.request().method() === "PUT") await new Promise((resolve) => setTimeout(resolve, 400));
+    await route.continue();
+  });
+  try {
+    await page.goto(`/games/${id}/characters`);
+    const pick = page.getByRole("group", { name: "Card stats" });
+    for (const stat of ["HP", "ATK", "DEF"]) await pick.getByRole("button", { name: stat, exact: true }).click();
+    await page.goto("/");
+    await expect.poll(async () => ((await (await page.request.get(`/api/instances/${id}`)).json()) as { cardStats: string[] | null }).cardStats, { timeout: 5000 }).toEqual(["HP", "ATK", "DEF"]);
+  } finally {
+    await page.unroute(`**/api/instances/${id}`);
+    await page.request.put(`/api/instances/${id}`, { data: { cardStats: null } });
+  }
+});
