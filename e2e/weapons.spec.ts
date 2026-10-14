@@ -39,6 +39,12 @@ test("Weapons: every copy its own card with its level and refinement and who wie
   await expect(cards.first()).toContainText("Lv 80 · S3");
   // Kafka wields one: her icon on the first copy's card.
   await expect(cards.first().getByRole("img", { name: "Kafka" })).toBeVisible();
+  // Larger cards (Georges, round 7: "very small cards that are hard to identify their rarity and see the character icons"):
+  // the art at least 88 px, the rarity as a band in its colour, the wielder at least 36 px.
+  expect((await cards.first().getByRole("img", { name: "Patience Is All You Need" }).boundingBox())!.width).toBeGreaterThanOrEqual(88);
+  await expect(cards.first().locator(".wp-rarity")).toHaveAttribute("data-rarity", "5");
+  expect(await cards.first().locator(".wp-rarity").evaluate((el) => getComputedStyle(el).backgroundColor)).not.toBe("rgba(0, 0, 0, 0)");
+  expect((await cards.first().getByRole("img", { name: "Kafka" }).boundingBox())!.width).toBeGreaterThanOrEqual(36);
 
   await panel.getByRole("button", { name: "Wishlist" }).click();
   await expect(panel.getByRole("button", { name: "Wishlist" })).toHaveAttribute("aria-pressed", "true");
