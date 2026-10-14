@@ -47,10 +47,10 @@ test("an endgame cycle keeps each half's team and clear time, on its card and in
   await abyss.getByRole("button", { name: "Update Spiral Abyss" }).click();
   await abyss.getByLabel("Stars", { exact: true }).fill("36");
   const first = abyss.getByRole("group", { name: "First half" });
-  for (const unit of ["Raiden Shogun", "Bennett"]) {
-    await first.getByRole("combobox", { name: "Add to First half" }).fill(unit);
-    await first.getByRole("option", { name: unit }).click();
-  }
+  await first.getByRole("button", { name: "Choose team" }).click();
+  const pick = page.getByRole("dialog", { name: "Team · First half" });
+  for (const unit of ["Raiden Shogun", "Bennett"]) await pick.getByRole("button", { name: unit, exact: true }).click();
+  await pick.getByRole("button", { name: "Done" }).click();
   await first.getByLabel("Clear time").fill("1:35");
   await abyss.getByRole("button", { name: "Save" }).click();
 
@@ -122,8 +122,11 @@ test("Endgame: each stage one line (its kind, team, score, main enemy); a click 
     await card.getByRole("button", { name: "Update Shiyu Defense" }).click();
     const first = card.locator("form").getByRole("group").first();
     const stage = (await first.getAttribute("aria-label"))!;
-    await first.getByRole("combobox", { name: `Add to ${stage}` }).fill("Miyabi");
-    await first.getByRole("option", { name: /^Miyabi/ }).click();
+    await first.getByRole("button", { name: "Choose team" }).click();
+    const pick = page.getByRole("dialog", { name: `Team · ${stage}` });
+    await pick.getByRole("searchbox", { name: "Search" }).fill("Miyabi");
+    await pick.getByRole("button", { name: "Miyabi", exact: true }).click();
+    await pick.getByRole("button", { name: "Done" }).click();
     await first.getByLabel("Score").fill("3");
     await card.getByRole("button", { name: "Save" }).click();
 
@@ -138,4 +141,44 @@ test("Endgame: each stage one line (its kind, team, score, main enemy); a click 
   } finally {
     await page.request.delete(`/api/characters/${build.id}`);
   }
+});
+
+// Georges, round 8: "adding characters to an endgame team is a pain: I have to click on the box, then click out for it to refresh,
+// and click again; I'd rather have a window with all the characters open and choose them; it also lacks difficulty icons".
+test("Endgame: a stage's team picked in a window of every character, several in a row; each mode's result by its icon @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  await page.goto(`/games/${id}/endgame`);
+
+  const moc = page.getByRole("region", { name: "Memory of Chaos" });
+  await moc.getByRole("button", { name: "Update Memory of Chaos" }).click();
+  await moc.getByLabel("Stars", { exact: true }).fill("30");
+  const first = moc.getByRole("group", { name: "First half" });
+  await first.getByRole("button", { name: "Choose team" }).click();
+  const pick = page.getByRole("dialog", { name: "Team · First half" });
+  // Every character at once, picked one after another without reopening anything.
+  await expect(pick.getByRole("button", { name: "Kafka", exact: true })).toBeVisible();
+  await pick.getByRole("button", { name: "Kafka", exact: true }).click();
+  await pick.getByRole("button", { name: "Silver Wolf", exact: true }).click();
+  await expect(pick.getByRole("button", { name: "Kafka", exact: true })).toHaveAttribute("aria-pressed", "true");
+  await expect(pick).toContainText("2 / 4");
+  await pick.getByRole("button", { name: "Silver Wolf", exact: true }).click();
+  await expect(pick).toContainText("1 / 4");
+  await pick.getByRole("button", { name: "Done" }).click();
+  await expect(pick).toHaveCount(0);
+  await expect(first.getByRole("img", { name: "Kafka" })).toBeVisible();
+  await moc.getByRole("button", { name: "Save" }).click();
+  await expect(moc.getByRole("list", { name: "Stages" }).getByRole("img", { name: "Kafka" })).toBeVisible();
+
+  // The result by its icon; a small maximum as a row of them, filled up to the result.
+  await expect(moc.locator(".eg-result svg.metric-icon[data-metric=stars]")).toBeVisible();
+  const pf = page.getByRole("region", { name: "Pure Fiction" });
+  await pf.getByRole("button", { name: "Update Pure Fiction" }).click();
+  await pf.getByLabel("Stars", { exact: true }).fill("9");
+  await pf.getByRole("button", { name: "Save" }).click();
+  const pips = pf.getByRole("img", { name: "9 of 12 stars" });
+  await expect(pips.locator("svg.metric-icon.is-on")).toHaveCount(9);
+  await expect(pips.locator("svg.metric-icon")).toHaveCount(12);
 });
