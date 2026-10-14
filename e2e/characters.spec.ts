@@ -263,15 +263,17 @@ test("Characters: the growth stat first in a card's stats, in the character's co
     });
     expect(colour).toBe(el);
 
-    // The sheet's stats are the card's, the growth first and highlighted; picked there for the card.
+    // On the sheet every stat is a card (round 8), the growth stat in the character's colour; a box on each shows it on the card,
+    // three at most, a fourth dropping the oldest.
     await page.goto(`/characters/${build.id}`);
-    const kpis = page.getByRole("region", { name: "KPIs" });
-    await expect(kpis.getByRole("group").first()).toHaveAttribute("aria-label", "ATK");
-    await expect(kpis.getByRole("group", { name: "ATK" })).toHaveClass(/is-growth/);
-    await page.getByRole("button", { name: "Stats shown on Kafka" }).click();
-    await page.getByRole("group", { name: "Kafka's card stats" }).getByRole("button", { name: "HP", exact: true }).click();
-    await expect.poll(async () => ((await (await page.request.get(`/api/characters/${build.id}`)).json()) as { cardStats: string[] | null }).cardStats).toEqual(["HP"]);
-    await expect(kpis.getByRole("group", { name: "HP" })).toBeVisible();
+    const stats = page.getByRole("region", { name: "Combat stats" });
+    await expect(stats.getByRole("group", { name: "ATK" })).toHaveClass(/is-growth/);
+    await expect(stats.getByRole("checkbox", { name: "ATK on the card" })).toBeChecked();
+    await expect(stats.getByRole("checkbox", { name: "CRIT Rate on the card" })).toBeChecked();
+    await stats.getByRole("checkbox", { name: "HP on the card" }).click();
+    await expect(stats.getByRole("checkbox", { name: "HP on the card" })).toBeChecked();
+    await expect.poll(async () => ((await (await page.request.get(`/api/characters/${build.id}`)).json()) as { cardStats: string[] | null }).cardStats).toEqual(["Crit value", "CRIT Rate / CRIT DMG", "HP"]);
+    await expect(stats.getByRole("checkbox", { name: "ATK on the card" })).not.toBeChecked();
   } finally {
     await page.request.delete(`/api/characters/${build.id}`);
   }

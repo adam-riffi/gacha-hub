@@ -20,9 +20,7 @@
 /* The growth stat in the stat strip, in the character's colour (round 7), on the cards and the sheet. */
 .ch-kpis .kpi-label.is-bonus, .sh-kpi .kpi-label.is-bonus { color: var(--el); }
 .ch-kpis > div.is-growth { background: color-mix(in srgb, var(--el) 16%, transparent); box-shadow: inset 3px 0 0 var(--el); }
-.ch-kpis > div.is-growth .cd, .sh-kpi.is-growth .kpi-value { color: var(--el); }
-.sh-kpi.is-growth { border-color: var(--el); background: color-mix(in srgb, var(--el) 12%, var(--card)); }
-.sh-stat.is-growth > span { color: var(--el); font-weight: 600; }
+.ch-kpis > div.is-growth .cd { color: var(--el); }
 .ch-kpis-pickwrap { position: relative; display: contents; }
 .sh-head .ch-kpis-pickwrap { position: relative; display: inline-block; }
 .ch-kpis-btn { display: inline-flex; align-items: center; gap: 6px; }

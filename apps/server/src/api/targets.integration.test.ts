@@ -29,6 +29,11 @@ describe("KPI targets on a build (WIREFRAMES.md G5)", () => {
     expect((await put(null)).json.targets).toBeNull();
   });
 
+  // Round 8: every stat of the sheet is a card with its target.
+  it("keeps a target for any stat the sheet shows: the base three and a pair's halves", async () => {
+    expect((await put({ ATK: 2100, "CRIT Rate": 70 })).json.targets).toEqual({ ATK: 2100, "CRIT Rate": 70 });
+  });
+
   it("refuses targets for what is not one of the game's KPIs, a pair, or out of range", async () => {
     expect((await put({ Charisma: 3 })).json).toEqual({ error: "unknown_kpi" });
     expect((await put({ "CRIT Rate / CRIT DMG": 70 })).json).toEqual({ error: "unknown_kpi" });
