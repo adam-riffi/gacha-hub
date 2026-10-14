@@ -5,6 +5,7 @@ import { login, makeApp, resetDb, type Client } from "../test/helpers.js";
 
 const AMBER = "10000021";
 const KAEYA = "10000015";
+const VENTI = "10000022";
 const DAY = 86_400_000;
 const at = (days: number) => new Date(Date.now() + days * DAY);
 
@@ -50,6 +51,19 @@ describe("each unit's banners: last seen, on now, next (route)", () => {
     // A unit no banner features has no entry; other games' banners stay out.
     expect(response.json[KAEYA]).toBeUndefined();
     expect(amber.history.some((b) => b.key === "other-game")).toBe(false);
+  });
+
+  // Round 11's banner history: Venti's runs since 2020 from the importer, a stored banner taking the place of the run it overlaps.
+  it("adds the game's past banners from its history, a stored banner standing in for the run it overlaps", async () => {
+    const before = (await client.req<Appearances>("GET", "/api/games/genshin/appearances")).json[VENTI]!;
+    expect(before.history.at(-1)?.startsAt.slice(0, 10)).toBe("2020-09-28");
+    expect(before.runs).toBeGreaterThanOrEqual(6);
+    await prisma.banner.create({
+      data: { gameKey: "genshin", key: "stored-ballad", name: "Ballad in Goblets", kind: "character", startsAt: new Date("2020-09-28T10:00:00Z"), endsAt: new Date("2020-10-18T17:59:00Z"), featured: [{ catalogId: VENTI, kind: "character" }] },
+    });
+    const after = (await client.req<Appearances>("GET", "/api/games/genshin/appearances")).json[VENTI]!;
+    expect(after.history).toHaveLength(before.history.length);
+    expect(after.history.at(-1)?.name).toBe("Ballad in Goblets");
   });
 
   it("answers 404 for a game it does not know", async () => {
