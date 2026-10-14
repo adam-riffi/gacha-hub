@@ -54,4 +54,20 @@ describe("endfield catalog", () => {
     expect(catalog.gear.find((g) => g.id === "suit_agi01")!.icon).toMatch(/^equipment\/agi01\//);
     expect(communityArtUrl("endfield", "character", perlica.icon)).toMatch(/^https:\/\/raw\.githubusercontent\.com\/Lieyuan621\/Endaxis\/[0-9a-f]{40}\/public\/operators%2Fperlica%2Favatar\.webp$/);
   });
+
+  // Georges, round 8: "for relevant games I want a gift/intimacy item list". Endfield's gifts suit operators by their hobbies.
+  it("keeps each operator's hobbies and the gifts matching them, those matching both first", async () => {
+    const catalog = catalogSchema.parse(await endfield.loadCatalog!());
+    const perlica = catalog.characters.find((c) => c.key === "perlica")!;
+    expect(perlica.extra?.hobbies).toEqual(["Lifestyle", "Creative"]);
+    const gifts = perlica.gifts ?? [];
+    expect(gifts.length).toBeGreaterThan(0);
+    for (const g of gifts) expect(g.hobbies!.every((h) => ["Lifestyle", "Creative"].includes(h))).toBe(true);
+    expect(gifts.map((g) => g.hobbies!.length)).toEqual([...gifts.map((g) => g.hobbies!.length)].sort((a, b) => b - a));
+    const names = new Map(catalog.materials.map((m) => [m.id, m]));
+    expect(names.get("item_gift_jinlong_1")).toMatchObject({ name: "Eureka Teabox", category: "Gift" });
+    expect(gifts.find((g) => g.itemId === "item_gift_jinlong_1")?.hobbies).toEqual(["Lifestyle"]);
+    // The Endministrator's hobbies are a secret: no gifts.
+    expect(catalog.characters.find((c) => c.id === "chr_0002_endminm")!.gifts ?? []).toEqual([]);
+  });
 });

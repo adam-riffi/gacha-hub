@@ -59,3 +59,19 @@ test("Neverness to Everness: the Console tab lists the cartridge series as its s
   await page.getByRole("region", { name: "Lost Radiance" }).getByRole("button", { name: "Open Lost Radiance" }).click();
   await expect(page.getByRole("complementary", { name: "Lost Radiance" })).toBeVisible();
 });
+
+// Georges, round 8: "for relevant games I want a gift/intimacy item list, like for NTE or Endfield".
+test("Gifts: a character's preferred gifts on its page, the strongest first, with their points @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "nte" } })).json()) as { id: string };
+  await page.goto(`/games/${id}/characters`);
+  await page.getByRole("searchbox", { name: "Search" }).fill("Sakiri");
+  // Her page, or her sheet where a journey built her: both list her gifts.
+  await page.getByRole("article", { name: "Sakiri" }).getByRole("link").first().click();
+  const gifts = page.getByRole("region", { name: "Gifts" });
+  await expect(gifts.getByRole("listitem").first()).toContainText("A Handwritten Letter");
+  await expect(gifts.getByRole("listitem").first()).toContainText("2000");
+  await expect(gifts.getByRole("img", { name: "Floe Cinema Ticket" })).toBeVisible();
+});
