@@ -218,11 +218,12 @@ test("Pulls: each running banner's chance by its end, and the cheapest top-up to
 });
 
 // Georges, round 7: "add a top up history system too".
+// Star Rail, not Genshin: the smoke journey adds Genshin through the library.
 test("Pulls: a top-up logged in one click, the month's, year's and all spending; the pass adds its days @smoke", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
-  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "genshin" } })).json()) as { id: string };
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
   for (const t of (await (await page.request.get(`/api/instances/${id}/topups`)).json()) as { id: string }[]) await page.request.delete(`/api/instances/${id}/topups/${t.id}`);
   await page.request.put(`/api/instances/${id}/passes/monthly`, { data: { daysLeft: 0 } });
 
@@ -231,7 +232,7 @@ test("Pulls: a top-up logged in one click, the month's, year's and all spending;
   await card.getByRole("button", { name: "Log 980 + 110 for $14.99" }).click();
   const history = card.getByRole("list", { name: "Top-up history" });
   await expect(history.getByRole("listitem")).toHaveCount(1);
-  await card.getByRole("button", { name: "Log Blessing of the Welkin Moon for $4.99" }).click();
+  await card.getByRole("button", { name: "Log Express Supply Pass for $4.99" }).click();
   await expect(history.getByRole("listitem")).toHaveCount(2);
   await expect(card.getByRole("group", { name: "This month" })).toContainText("$19.98");
   await expect(card.getByRole("group", { name: "This month" })).toContainText("1,390");
