@@ -1,22 +1,23 @@
 # Handoff — 2026-10-14 · claude
 
 ## State
-- `main` at #307: round 8 merged (#299–#307). CI green.
-- Open PRs, a stack on `main`: round 9's #308 (gear pieces, filtered like the characters) ← #309 (panels toggle, a large Close) ← #310 (one card for every character, builds to try) ← #311 (Overview banners first, round 9's audit, this handoff). Each merges on green CI, rebased onto `main` after its parent's squash.
+- `main` at #312: round 9 (#308–#311) and round 10's characters (#312) merged. CI green.
+- Open PRs, a stack on `main`: round 10's #313 (the gear as the games' bags, version A) ← #314 (filters fitted to each game's sets, round 10's audit, this handoff). Each merges on green CI, rebased onto `main` after its parent's squash.
 - Production serves #186 (deployed 2026-10-10 18:52 UTC). Merges do not deploy (#189). The next deploy runs every migration since #186 (`top_ups` the newest). **Georges wants to redo the hosting, database and sign-in first: ADR 0010 (proposed) lists the options and a recommendation to decide together.**
-- Every milestone in DESIGN.md §9 is built, V through F13, and eight feedback rounds (2026-10-10 to 2026-10-14) are done. What is left needs Georges's secrets, real data or a decision (below), a source for a few details (Next), or is in DESIGN.md §4 "Later".
+- Every milestone in DESIGN.md §9 is built, V through F13, and ten feedback rounds (2026-10-10 to 2026-10-14) are done. What is left needs Georges's secrets, real data or a decision (below), a source for a few details (Next), or is in DESIGN.md §4 "Later".
 
 ## Done this session
-- Round 7 (#280–#298) merged, then Dependabot's #278.
-- Round 9 (2026-10-14, `docs/AUDIT-2026-10-14-round9.md`): #308 the gear screen again (every piece with its set's icon, filtered like the characters); #309 a weapon's card closes its panel, every Close large and labelled; #310 one full card for every character and builds to try; #311 the Overview's banners first.
-- Round 8 (2026-10-14, `docs/AUDIT-2026-10-14-round8.md`), one PR per area: #299 the **endgame team window** and **metric icons**; #300 **top-ups at the bottom**, each pack in pulls; #301 **three stats** on a card; #302 **every stat a card** on the sheet; #303 the **gear screen rebuilt** (several sets, Reset, grouped by set); #304 **art framing** (Endfield's portraits whole, Qiuyuan's card art); #305 **one desktop layout** from 1440 px; #306 **gifts** for NTE and Endfield; #307 **`docs/ASSETS.md`** and **ADR 0010**.
+- Round 10 (2026-10-14, `docs/AUDIT-2026-10-14-round10.md`): #312 an unbuilt character's page is the **full sheet**, owned or not, its first save a build to try; four **gear versions** shown to Georges as full-size pictures, **A** picked: #313 every piece a **tile** with its art, the **chosen piece in full** beside them; #314 **filters fitted to each game** (sets from a window, slots where they are types, the main stats you have).
+- Round 9 (#308–#311) merged: the gear pieces with their set icons, panels that toggle and a large Close, one full card for every character, the Overview's banners first.
+- Round 8 (#299–#307) and round 7 (#280–#298) merged earlier this session, with Dependabot's #278.
+
 ## Decisions taken (2026-10-14; Georges: "take every decision")
-- Round 8's are in its audit: difficulty icons as each mode's metric by its icon; three card stats; every stat a card with its target; the gear screen as one view; Endfield's portraits whole; one desktop layout at 1440 px; NTE's unnamed food gifts left out; Endfield's gifts by hobbies; ADR 0010 proposed, not built.
-- Earlier ones stand; round 7's are listed in its audit. In short: the heatmap's depth (yes, by share); endgame lines only for stage-by-stage modes; card stats: the build's, then the game's, then the growth stat first; skills without costs go to the game's usual level; panels open over the page; priority as three buttons; the timeline's colours (game, red, teal, gold); shop pulls counted only where a source counts them; top-ups do not touch the balance; no daily tick for the 30-day pass; NTE's sets are its cartridge series; Endfield's art linked from Endaxis at a pinned commit.
+- Round 10's are in its audit: the unit URL shows the default build in place; a try reads Not owned; the gear's chosen-piece column always holds a piece (no Close); sets grouped only when a game's come in kinds; Slot only where slots are types; Main stat only what your pieces have.
+- Round 8's and round 9's are in their audits. Earlier ones stand; round 7's are listed in its audit.
 
 ## Verified
-- `npm run check` before each PR and CI green on each merged one: 668 tests and 115 journeys at #311; initial JavaScript 151.7 KB of 200 KB.
-- Checked in the browser at 1440, art blocked for the PRs' screenshots: each round 7 and round 8 screen. Endfield's portraits checked loading in the browser pane (not in a screenshot, art being blocked there).
+- `npm run check` before each PR and CI green on each merged one: 668 tests and 118 journeys at #314; initial JavaScript 151.6 KB of 200 KB.
+- Checked in the browser at 1440, art blocked for the PRs' screenshots: each round 7 to round 10 screen; round 10's gear also with art, sent to Georges. Endfield's portraits checked loading in the browser pane (not in a screenshot, art being blocked there).
 - The stack merged by rebasing each PR onto `main` after its parent's squash; each rebased branch's tree was checked equal to the one CI passed before merging.
 
 ## Next
@@ -31,7 +32,7 @@
 - **Secrets:** `LINK_SECRET_KEY`; the R2 bucket and its four `R2_*` Actions secrets, then mirror-art and `VITE_ASSET_BASE` (DEPLOY.md §7); `CRON_SECRET`; `DISCORD_BOT_TOKEN` and the bot; `BLOB_READ_WRITE_TOKEN` in Vercel if it is not set, for pictures and portraits.
 - **Real data, with tokens removed** (PROJECT-GUIDE §14.1 step 8): an Endfield records page; a ZZZ UID; HoYoLAB answers; one gacha log page; one WuWa convene answer; in-game details pages for the `~` values.
 - The `main` ruleset, the `sample-*` banners, the README demo GIF, and the stale remote branches (§14.1 step 10).
-- A deploy, once ADR 0010 is decided (rounds 2–8 wait, with the migrations since #186).
+- A deploy, once ADR 0010 is decided (rounds 2–10 wait, with the migrations since #186).
 - **A decision:** the hosting, database and sign-in in ADR 0010 (it replaces the old question of limiting Discord sign-in to his id).
 - Overrule any decision above by saying so.
 
