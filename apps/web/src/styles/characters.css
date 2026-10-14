@@ -207,3 +207,8 @@
 /* All, Owned, Not owned and Wishlist with their counts (round 11). */
 .ownership-filter { display: flex; flex-wrap: wrap; gap: 8px; }
 .wp-body .last-seen-chip { justify-self: start; margin-top: 4px; }
+/* A material with its icon (round 11). */
+.materials-name { display: inline-flex; align-items: center; gap: 10px; }
+.materials-icon { width: 36px; height: 36px; flex: none; font-size: 9px; }
+/* The wallet's currencies with their icons (round 11). */
+.pf-currency { display: inline-flex; align-items: center; gap: 8px; }

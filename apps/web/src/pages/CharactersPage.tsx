@@ -80,6 +80,8 @@ export function CharactersPage() {
   const [weapon, setWeapon] = useState("");
   const [rarity, setRarity] = useState("");
   const [ownershipView, setOwnershipView] = useState<OwnershipView>("all");
+  // A dupe count picked (round 11), as text for the chips; empty for any.
+  const [dupeCount, setDupeCount] = useState("");
   const [status, setStatus] = useState<"" | BuildStatus>("");
   const [sort, setSort] = useState<"status" | "name" | "rarity" | "level" | "lastSeen">("status");
   const [kind, setKind] = useState<"characters" | "builds">("characters");
@@ -183,12 +185,16 @@ export function CharactersPage() {
       .find((c) => c.catalogId === catalogId);
 
   const level = (c: Card) => Number((c.build?.doc as { level?: number } | undefined)?.level ?? 0);
+  // A card's dupes from its build's sheet (none typed reads 0), by the game's own field (Star Rail's eidolon).
+  const characterDupes = game.manifest.dupes.character;
+  const dupesOf = (card: Card) => Number((card.build?.doc as Record<string, unknown> | undefined)?.[characterDupes.field] ?? 0);
   const filtered = cards
     .filter((c) => !q || c.name.toLowerCase().includes(q.toLowerCase()))
     .filter((c) => !element || c.tag === element)
     .filter((c) => !weapon || c.weaponType === weapon)
     .filter((c) => !rarity || String(c.rarity) === rarity)
     .filter((card) => fitsOwnershipView(ownershipView, card))
+    .filter((card) => !dupeCount || (card.owned && dupesOf(card) === Number(dupeCount)))
     .filter((c) => !status || (c.build?.buildStatus ?? "none") === status)
     .sort((a, b) =>
       sort === "name"
@@ -250,6 +256,7 @@ export function CharactersPage() {
             <Chips label="Element" value={element} onChange={setElement} options={options((c) => (c.tag === "None" ? null : c.tag))} color={(t) => elementColor(game.key, t)} />
             <Chips label="Weapon" value={weapon} onChange={setWeapon} options={options((c) => c.weaponType)} />
             <Chips label="Rarity" value={rarity} onChange={setRarity} options={options((c) => (c.rarity ? String(c.rarity) : null)).reverse()} text={(r) => `★${r}`} />
+            <Chips label={characterDupes.label} value={dupeCount} onChange={setDupeCount} options={Array.from({ length: characterDupes.max + 1 }, (_, count) => String(count))} text={(count) => `${dupeLetter(characterDupes.field)}${count}`} />
           </>
         )}
         <label>

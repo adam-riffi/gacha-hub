@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getGame, hubResets, passView, utcLabel, type GameDefinition, type PassesDto, type UserExport } from "@gacha/shared";
+import { currencyKind, getGame, hubResets, passView, utcLabel, type GameDefinition, type PassesDto, type UserExport } from "@gacha/shared";
 import { LoadError } from "../components/LoadError";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
@@ -9,6 +9,7 @@ import { useReminderFlag, type ReminderFlag } from "../lib/reminder";
 import { GameTabs } from "../components/GameTabs";
 import { masked } from "../components/hub/HubHeader";
 import { ReminderControl } from "../components/ReminderControl";
+import { CurrencyIcon } from "../components/CurrencyIcon";
 import type { InstanceDetail, ReminderRule, TaskItem } from "../lib/types";
 
 const DATE = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
@@ -309,7 +310,10 @@ function Wallet({ instance, game }: Props) {
           const value = instance.currencies.find((x) => x.key === c.key)?.value ?? 0;
           return (
             <div key={c.key}>
-              <span className="kpi-label">{c.label}</span>
+              <span className="kpi-label pf-currency">
+                <CurrencyIcon kind={currencyKind(game, c)} />
+                {c.label}
+              </span>
               <span className="pf-val">
                 <input type="number" min={0} max={c.cap} aria-label={c.label} key={value} defaultValue={value} onBlur={(e) => Number(e.target.value) !== value && save.mutate({ key: c.key, value: Number(e.target.value) })} />
                 {c.cap ? <span className="mu"> / {c.cap}</span> : null}
