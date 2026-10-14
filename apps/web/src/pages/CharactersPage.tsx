@@ -391,6 +391,16 @@ export function CharactersPage() {
                   growth={c.entry?.bonusStats?.[0]}
                   onPick={(stats) => setBuildStats.mutate({ id: c.build!.id, cardStats: stats })}
                 />
+              ) : c.entry && !(!c.owned && onBanner && characterBanner) ? (
+                // No build yet: the character's own data, its base stats at its top level, its growth stat first (Georges, round 7).
+                <CardStats
+                  name={c.name}
+                  options={[]}
+                  own={null}
+                  growth={c.entry.bonusStats?.[0]}
+                  baseNote={`Base at Lv ${c.entry.maxLevel}`}
+                  kpis={statKpis(game, {}, [...new Set([...(c.entry.bonusStats?.slice(0, 1) ?? []), "HP", "ATK", "DEF"])], [], buildBase(game, index, c.entry.id, { level: c.entry.maxLevel }))}
+                />
               ) : !c.owned && onBanner && characterBanner ? (
                 <div className="ch-kpis ch-chance">
                   <div>

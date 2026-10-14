@@ -9,9 +9,9 @@ const same = (a: string | undefined, b: string) => a !== undefined && a.toLowerC
  * A card's stat; where a set raises it, in its element's colour, the stat and
  * the set's bonus on hover, and written out on a click (Georges, round 5).
  */
-export function KpiValue({ k }: { k: StatKpi }) {
+export function KpiValue({ k, baseNote = "Base: the level and the weapon" }: { k: StatKpi; baseNote?: string }) {
   const [open, setOpen] = useState(false);
-  if (!k.bonus) return <span className={`cd ${k.auto ? "is-auto" : ""}`} title={k.auto ? "Base: the level and the weapon" : undefined}>{k.value}</span>;
+  if (!k.bonus) return <span className={`cd ${k.auto ? "is-auto" : ""}`} title={k.auto ? baseNote : undefined}>{k.value}</span>;
   const add = k.bonus.value.replace(/^\+/, "");
   const why = `${k.base} + ${add} · ${k.bonus.from}`;
   return (
@@ -73,7 +73,7 @@ export function StatPicker({ name, options, own, label, onPick }: { name: string
  * growth stat first then its role's; the growth stat in the character's
  * colour; four in two rows of two.
  */
-export function CardStats({ name, kpis, options, own, growth, onPick }: { name: string; kpis: StatKpi[]; options: string[]; own: string[] | null; growth?: string; onPick: (stats: string[] | null) => void }) {
+export function CardStats({ name, kpis, options, own, growth, baseNote, onPick }: { name: string; kpis: StatKpi[]; options: string[]; own: string[] | null; growth?: string; baseNote?: string; onPick?: (stats: string[] | null) => void }) {
   const cols = kpis.length === 4 ? 2 : Math.max(1, Math.min(3, kpis.length));
   return (
     <div className="ch-kpis-wrap">
@@ -84,11 +84,11 @@ export function CardStats({ name, kpis, options, own, growth, onPick }: { name: 
               <StatIcon stat={k.label} />
               {k.label}
             </span>
-            <KpiValue k={k} />
+            <KpiValue k={k} baseNote={baseNote} />
           </div>
         ))}
       </div>
-      <StatPicker name={name} options={options} own={own} onPick={onPick} />
+      {onPick && <StatPicker name={name} options={options} own={own} onPick={onPick} />}
     </div>
   );
 }
