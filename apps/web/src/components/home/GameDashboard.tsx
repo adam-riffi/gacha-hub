@@ -1,7 +1,7 @@
 import { Fragment, useState, type ReactNode } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { endgameNow, getGame, goalSteps, hubResets, listedGoal, passView, pullsFor, skillsField, weaponHolder, type CharacterDto, type CycleResultsDto, type GameDefinition, type PassesDto, type TaskDto } from "@gacha/shared";
+import { currencyKind, endgameNow, getGame, goalSteps, hubResets, listedGoal, passView, pullsFor, skillsField, weaponHolder, type CharacterDto, type CycleResultsDto, type GameDefinition, type PassesDto, type TaskDto } from "@gacha/shared";
 import { LoadError } from "../LoadError";
 import { api } from "../../lib/api";
 import { formatRemaining } from "../../lib/time";
@@ -13,6 +13,7 @@ import { CatalogIcon } from "../CatalogIcon";
 import { Countdown } from "../ui";
 import { HomeTop } from "../HomeTop";
 import { HomeHeat } from "../HomeHeat";
+import { CurrencyIcon } from "../CurrencyIcon";
 import { SegmentedBar } from "../charts/SegmentedBar";
 import { TickBox, TickRow, tickColumn } from "../TickControl";
 import type { DashboardData, InstanceDetail } from "../../lib/types";
@@ -69,7 +70,7 @@ export function GameDashboard({ instanceId: id }: { instanceId: string }) {
       <div className="gd-grid">
         {game.pullBanners?.length ? (
           <>
-            <PullsCard g={g} instanceId={id} />
+            <PullsCard g={g} game={game} instanceId={id} />
             <PityCard g={g} game={game} instanceId={id} />
           </>
         ) : null}
@@ -109,7 +110,7 @@ const Meter = ({ value, max }: { value: number; max: number }) => (
 );
 
 /** Limited pulls on hand, Home's big figure; then what makes them (each ticket, and the premium currency in pulls). */
-function PullsCard({ g, instanceId }: { g: DashGame; instanceId: string }) {
+function PullsCard({ g, game, instanceId }: { g: DashGame; game: GameDefinition; instanceId: string }) {
   const rows = g.currencies.filter((c) => c.pullCost && !c.standardOnly && !c.onlyFor);
   return (
     <Card title="Pulls" to={`/games/${instanceId}/pulls`}>
@@ -124,7 +125,10 @@ function PullsCard({ g, instanceId }: { g: DashGame; instanceId: string }) {
       <div className="lst">
         {rows.map((c) => (
           <div className="rw" key={c.key}>
-            <span>{c.pullCost! > 1 ? `From ${c.label}` : c.label}</span>
+            <span>
+              <CurrencyIcon kind={currencyKind(game, c)} />
+              {c.pullCost! > 1 ? `From ${c.label}` : c.label}
+            </span>
             <span className="mn">{Math.floor(c.value / c.pullCost!)}</span>
           </div>
         ))}
@@ -341,6 +345,7 @@ function StaminaCard({ g, game, instance }: { g: DashGame; game: GameDefinition;
       }
     >
       <div className="pulls-head">
+        <CurrencyIcon kind="stamina" className="is-big" />
         <div className="cd pulls-total" data-testid="stamina">
           {Math.floor(g.stamina.value)}
           <small> / {g.stamina.cap}</small>
@@ -352,7 +357,10 @@ function StaminaCard({ g, game, instance }: { g: DashGame; game: GameDefinition;
       {reserveDef && (
         <div className="lst">
           <div className="rw">
-            <span>{reserveDef.label}</span>
+            <span>
+              <CurrencyIcon kind="reserve" />
+              {reserveDef.label}
+            </span>
             <span className="mn">
               {reserve}
               {reserveDef.cap && <span className="mu"> / {reserveDef.cap}</span>}

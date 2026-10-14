@@ -165,6 +165,16 @@ tbody tr:hover { background: var(--surface-2); }
 .glyph-box { display: inline-grid; place-items: center; background: var(--surface-2); color: var(--text-muted); }
 /* A stat's icon beside its name (round 7). */
 .stat-icon { display: inline-block; flex: none; width: 1.1em; height: 1.1em; margin-right: 0.35em; vertical-align: -0.2em; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+/* Currencies by kind (round 7), coloured so a glance tells them apart. */
+.cur-icon { display: inline-block; flex: none; width: 1.2em; height: 1.2em; margin-right: 0.4em; vertical-align: -0.25em; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.cur-icon.is-big { width: 40px; height: 40px; margin-right: 10px; }
+.cur-icon[data-kind="stamina"] { color: #5bd17a; }
+.cur-icon[data-kind="reserve"] { color: #3fa55e; }
+.cur-icon[data-kind="premium"] { color: #7cc4ff; }
+.cur-icon[data-kind="ticket"] { color: #e0a33a; }
+.cur-icon[data-kind="standard"] { color: #4f8fd6; }
+.cur-icon[data-kind="special"] { color: #a06fe0; }
+.cur-icon[data-kind="coin"] { color: #d8b45a; }
 .sh-sub .stat-icon, .sh-stat-row .stat-icon { width: 18px; height: 18px; margin: 0; color: var(--text-muted); }
 .gicon-ph .glyph, .glyph { width: 60%; height: 60%; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 .ad-tiles { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 12px; }
