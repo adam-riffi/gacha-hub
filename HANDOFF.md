@@ -33,7 +33,7 @@
 - Earlier ones stand; round 7's are listed in its audit. In short: the heatmap's depth (yes, by share); endgame lines only for stage-by-stage modes; card stats: the build's, then the game's, then the growth stat first; skills without costs go to the game's usual level; panels open over the page; priority as three buttons; the timeline's colours (game, red, teal, gold); shop pulls counted only where a source counts them; top-ups do not touch the balance; no daily tick for the 30-day pass; NTE's sets are its cartridge series; Endfield's art linked from Endaxis at a pinned commit.
 
 ## Verified
-- `npm run check` before each PR and CI green on each merged one: 663 tests and 107 journeys at #298; initial JavaScript within its 200 KB budget.
+- `npm run check` before each PR and CI green on each merged one: 662 tests and 107 journeys at #298; initial JavaScript 148.9 KB of 200 KB.
 - Checked in the browser at 1440, art blocked for the PRs' screenshots: each round 7 screen. Endfield's portraits checked loading in the browser pane (not in a screenshot, art being blocked there).
 - The stack merged by rebasing each PR onto `main` after its parent's squash; each rebased branch's tree was checked equal to the one CI passed before merging.
 
