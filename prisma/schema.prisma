@@ -86,6 +86,7 @@ model GameInstance {
   cycleResults  CycleResult[]
   passStates    PassState[]
   topUps        TopUp[]
+  redeemedCodes RedeemedCode[]
   dayRecords    DayRecord[]
   wishlist      WishlistItem[]
   importRuns    ImportRun[]
@@ -158,6 +159,17 @@ model PassState {
 }
 
 /// A top-up bought (round 7): what it was, the premium currency it gave, its price in US cents, when; `pass` for the 30-day pass.
+/// A redeem code the profile has redeemed (round 11), so the codes card lists the others first.
+model RedeemedCode {
+  id             String       @id @default(cuid())
+  gameInstanceId String
+  gameInstance   GameInstance @relation(fields: [gameInstanceId], references: [id], onDelete: Cascade)
+  code           String
+  redeemedAt     DateTime     @default(now())
+
+  @@unique([gameInstanceId, code])
+}
+
 model TopUp {
   id             String       @id @default(cuid())
   gameInstanceId String

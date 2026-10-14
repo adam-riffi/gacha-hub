@@ -72,3 +72,39 @@ test("the hub carries no leftover labels: no Manual tags, no By cadence @smoke",
     await expect(page.getByText("By cadence", { exact: true })).toHaveCount(0);
   }
 });
+
+// Georges, round 11: "the philosophy for this whole project is so that I don't need to go around X websites to check my data".
+test("Activities: the game's redeem codes, each with its rewards, Copy and the official page; ticked redeemed, it moves below @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  // The codes as the server gives them, without asking the outside source from the journey.
+  let redeemed = false;
+  await page.route(`**/api/instances/${id}/codes`, (route) =>
+    route.fulfill({
+      json: {
+        available: true,
+        codes: [
+          { code: "STARRAILGIFT", rewards: "50 stellar jade", redeemed, redeemUrl: "https://hsr.hoyoverse.com/gift?code=STARRAILGIFT" },
+          { code: "E2ENEWCODE", rewards: "Stellar Jade ×60", redeemed: false, redeemUrl: "https://hsr.hoyoverse.com/gift?code=E2ENEWCODE" },
+        ],
+      },
+    }),
+  );
+  await page.route(`**/api/instances/${id}/codes/STARRAILGIFT`, async (route) => {
+    redeemed = Boolean((route.request().postDataJSON() as { redeemed: boolean }).redeemed);
+    await route.fulfill({ json: { code: "STARRAILGIFT", redeemed } });
+  });
+  await page.goto(`/games/${id}`);
+  const card = page.getByRole("region", { name: "Codes" });
+  await expect(card).toContainText("2 to redeem");
+  const gift = card.getByRole("group", { name: "STARRAILGIFT" });
+  await expect(gift).toContainText("50 stellar jade");
+  await expect(gift.getByRole("button", { name: "Copy" })).toBeVisible();
+  await expect(gift.getByRole("link", { name: /Redeem/ })).toHaveAttribute("href", "https://hsr.hoyoverse.com/gift?code=STARRAILGIFT");
+  // Ticked, it leaves the list for Redeemed below (so click, then look for it there).
+  await gift.getByRole("checkbox", { name: "Redeemed" }).click();
+  await expect(card).toContainText("1 to redeem");
+  await expect(card.getByText("Redeemed 1")).toBeVisible();
+});

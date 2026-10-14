@@ -10,6 +10,7 @@ import { Countdown } from "../components/ui";
 import { SegmentedBar } from "../components/charts/SegmentedBar";
 import { useReminderFlag } from "../lib/reminder";
 import { TickRow, tickColumn } from "../components/TickControl";
+import { RedeemCodesCard } from "../components/hub/RedeemCodesCard";
 
 const DATE = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
 const CLOCK = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit" });
@@ -74,6 +75,7 @@ export function ActivitiesPage() {
           <Cycles game={game} modes={endgameNow(game, region, now, (cycles?.results ?? []).map((r) => ({ ...r, cycleStart: new Date(r.cycleStart) }))).modes} instanceId={id!} />
           <Version instanceId={id!} game={game} pv={pv} endsAt={resets.versionEnd} events={(dash?.timeline.events ?? []).filter((e) => e.gameKey === game.key && Date.parse(e.startsAt) <= now.getTime())} />
         </div>
+        <RedeemCodesCard instanceId={id!} gameKey={game.key} />
       </div>
     </>
   );
