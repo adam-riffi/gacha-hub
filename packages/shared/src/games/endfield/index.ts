@@ -110,7 +110,14 @@ export const endfield: GameDefinition = {
     },
     kpis: { damage: ["ATK", "Crit value", "Attribute"], support: ["Ultimate gain", "HP", "Attribute"], defense: ["HP", "DEF", "Attribute"] },
     dupes: { character: { field: "potential", label: "Potential", max: L.maxPotential } },
-    art: {},
+    // The Endaxis timeline tool's public folders, pinned to the commit the importer read (scripts/catalog/endfield.ts, round 7).
+    art: {
+      character: "https://raw.githubusercontent.com/Lieyuan621/Endaxis/1cd67de1e45099f6676396012e134d97ff035d8b/public/{key}.webp",
+      portrait: "https://raw.githubusercontent.com/Lieyuan621/Endaxis/1cd67de1e45099f6676396012e134d97ff035d8b/public/{key}.webp",
+      splash: "https://raw.githubusercontent.com/Lieyuan621/Endaxis/1cd67de1e45099f6676396012e134d97ff035d8b/public/{key}.webp",
+      weapon: "https://raw.githubusercontent.com/Lieyuan621/Endaxis/1cd67de1e45099f6676396012e134d97ff035d8b/public/{key}.webp",
+      gear: "https://raw.githubusercontent.com/Lieyuan621/Endaxis/1cd67de1e45099f6676396012e134d97ff035d8b/public/{key}.webp",
+    },
     accountLevel: { label: "AL", name: "Authority Level" },
     version: { name: "Dreamscape of Wind and Snow", start: "2026-09-02", days: 43 },
   },
