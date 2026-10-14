@@ -152,7 +152,7 @@
 
 /* Weapons (Georges, 2026-10-11): a card per copy you hold, the catalog's others dimmed; a panel per weapon. */
 .wp-page { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; align-items: start; }
-.wp-page.has-panel { grid-template-columns: minmax(0, 1fr) 380px; }
+/* A weapon's panel over the page, as a gear set's (round 7). */
 /* Larger weapon cards (round 7): the art on a band in its rarity's colour, the level big, the wielders' icons large. */
 .wp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 14px; }
 .wp-card { --el: var(--paper); position: relative; display: grid; grid-template-rows: auto 1fr auto; gap: 10px; padding: 0 0 12px; background: var(--card); border: 1px solid var(--edge); }
@@ -181,7 +181,7 @@
 .wp-bulk label { display: inline-flex; align-items: center; gap: 6px; margin: 0; }
 .wp-bulk input { width: 72px; }
 .wp-page > .wp-bulk { grid-column: 1 / -1; }
-.wp-panel { position: sticky; top: 16px; display: grid; gap: 12px; }
+.card.wp-panel, .wp-panel { position: fixed; top: 0; right: 0; bottom: 0; z-index: 40; display: grid; align-content: start; gap: 12px; width: min(420px, 92vw); overflow: auto; border-left: 1px solid var(--hairline-strong); box-shadow: -16px 0 40px rgba(0, 0, 0, 0.6); }
 .wp-panel-title { display: flex; align-items: center; gap: 12px; }
 .wp-panel-title .gicon { width: 56px; height: 56px; font-size: 12px; }
 .wp-panel-title h3 { margin: 0 0 4px; }

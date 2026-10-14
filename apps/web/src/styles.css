@@ -35,17 +35,17 @@ p { color: var(--muted); }
 .grid { display: grid; gap: 16px; }
 .grid.cols-2 { grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); }
 /* Gear's pieces (round 6): every piece you have as a card, its set, slot, main stat, level, substats and wearer. */
-.gs-pieces { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; align-content: start; }
+.gs-pieces { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; align-content: start; }
 .card.gs-piece { position: relative; display: grid; align-content: start; gap: 8px; padding: 12px; }
 .gs-piece.is-open { border-color: var(--accent); }
-.gs-piece-head { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; align-items: center; gap: 10px; }
-.gs-piece-icon { width: 40px; height: 40px; font-size: 10px; }
+.gs-piece-head { display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; align-items: center; gap: 12px; }
+.gs-piece-icon { width: 56px; height: 56px; font-size: 12px; }
 .gs-piece-title { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .gs-piece-title strong { display: -webkit-box; overflow: hidden; -webkit-line-clamp: 2; -webkit-box-orient: vertical; font-size: 14px; line-height: 1.2; }
 .gs-piece-title .mn { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; }
-.gs-piece-who { width: 32px; height: 32px; font-size: 10px; }
-.gs-piece-main { display: flex; justify-content: space-between; padding: 6px 8px; background: var(--surface-2); font-weight: 600; }
-.gs-piece-subs { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; font-size: 12px; }
+.gs-piece-who { width: 40px; height: 40px; font-size: 11px; }
+.gs-piece-main { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 10px; background: var(--surface-2); font-size: 15px; font-weight: 600; }
+.gs-piece-subs { list-style: none; margin: 0; padding: 0; display: grid; align-content: start; gap: 4px; min-height: 92px; font-size: 13px; }
 .gs-piece-subs li { display: flex; justify-content: space-between; color: var(--text-muted); }
 .grid.cols-3 { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
 .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
@@ -170,9 +170,8 @@ select.prio.build-none { color: var(--muted); }
 .set-held { margin-left: auto; white-space: nowrap; }
 .set-held.is-off { opacity: 0.5; }
 .gs-page { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; align-items: start; }
-.gs-page.has-panel { grid-template-columns: minmax(0, 1fr) 420px; }
-.gs-page.has-panel .set-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
-.gs-panel { position: sticky; top: 16px; display: grid; gap: 14px; }
+/* A set's panel over the page, from the right, the page staying where it was (round 7). */
+.card.gs-panel, .gs-panel { position: fixed; top: 0; right: 0; bottom: 0; z-index: 40; display: grid; align-content: start; gap: 14px; width: min(460px, 92vw); overflow: auto; border-left: 1px solid var(--hairline-strong); box-shadow: -16px 0 40px rgba(0, 0, 0, 0.6); }
 .gs-title { display: inline-flex; align-items: center; gap: 10px; min-width: 0; }
 .gs-title h3 { margin: 0; }
 .gs-slots { list-style: none; margin: 0; padding: 0; display: grid; }
@@ -266,3 +265,8 @@ select.prio.build-none { color: var(--muted); }
 
 /* Links inside running text are underlined, not told apart by colour alone. */
 p a { text-decoration: underline; text-underline-offset: 2px; }
+
+/* A piece made from the pieces (round 7). */
+.gs-new { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; margin-bottom: 14px; }
+.gs-new .pk { width: 260px; }
+.gs-new label { display: grid; gap: 4px; margin: 0; }
