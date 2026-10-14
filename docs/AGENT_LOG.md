@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-14 · claude · stack/r10/09-gear-screen · #288
+- Done: the gear screen (Georges, round 7: "where can I create gear pieces that I have in a vacuum? … the artifact screen is a mess, I can barely read it; the sets part (the same for every other gear system) is even worse, not user friendly, the window opening and moving everything"). Add a piece sits in the pieces view: a set (combobox with the sets' icons), the slot, its main stat (the slot's choices) and the level make a bag piece without opening a set (`NewPiece`). Piece cards grow: the set's icon at 56 px, the wearer's at 40 px, the main stat by its icon with the level large, the substats by their icons, every card with room for four. A set's panel, and a weapon's, now opens over the page from the right (fixed, shadowed), the cards staying where they were, still closed by a click outside or Escape.
+- Tests: written first: a Musketeer body (CRIT Rate, +9) added from the pieces shows in the bag with its set's icon at least 48 px and its main stat's icon; the first set card keeps its place and width when Musketeer's panel opens, the panel being fixed.
+- Scope/decisions: the weapons' panel follows the gear's for one behaviour across screens.
+- Next: the weapon window on the sheet.
+
 ## 2026-10-14 · claude · stack/r10/08-weapon-cards · #287
 - Done: weapon cards (Georges, round 7: "the weapon screen has very small cards that are hard to identify their rarity and see the character icons"). Each card stands upright: the weapon's art at 100 px on a band in its rarity's colour (3★ blue, 4★ violet, 5★ gold, 6★ orange) with its stars, the name, the level large with the refinement beside it, the type and main stat by its icon, the wielders' icons at 40 px in a row. Weapons not held keep the dashed, dimmed look.
 - Tests: written first: Kafka's Patience Is All You Need card shows its art at least 88 px wide, a 5★ band with a colour, and Kafka's icon at least 36 px wide.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: every journey signs in with "Continue"; Data sources is reached from Settings, without Users, and `/admin` lands there; the rail has no Admin; the audit's actor is Player. `npm run check` passes: 592 tests and 70 journeys; initial JavaScript 146.8 KB.
 - Scope/decisions: the server keeps its owner check (`ADMIN_DISCORD_IDS`), which a deployment on the internet still needs; only the words go. Sign-in still accepts any Discord account: limiting it to the owner is Georges's call.
 - Next: the weapon on the character cards' name card.
-
-## 2026-10-11 · claude · stack/r7/03-strip-tab · #246
-- Done: in a game's hub, the strip switches game at the same tab (Georges, round 4: "if I am on the pulls screen of Genshin and I go to HSR I wanna end up on the HSR pull screen"): Pulls stays Pulls, a character's sheet or unit page leads to Characters, and a tab the other game lacks to its Activities. The tabs each game has come from one place, `lib/hubScreens.ts`, so `GameTabs` no longer takes a catalog flag from each page.
-- Tests: written first: Star Rail's Pulls → ZZZ's Pulls, ZZZ's Planner → Endfield's Activities (it has no Planner), a Star Rail sheet → ZZZ's Characters. `npm run check` passes: 592 tests and 70 journeys; initial JavaScript 146.9 KB.
-- Scope/decisions: the tab list sits in `lib`, not in `GameTabs`: importing it from there pulled the hub header into Home's first load (+2.6 KB).
-- Next: one user, self-hosted: no Dev User, no Admin section.
