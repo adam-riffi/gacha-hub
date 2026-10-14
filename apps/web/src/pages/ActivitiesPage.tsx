@@ -236,14 +236,14 @@ function Cycles({ game, modes, instanceId }: { game: GameDefinition; modes: Retu
         </Link>
       </div>
       <div className="act-rows">
-        {modes.map(({ mode: e, result, closes, open, end }) => (
+        {modes.map(({ mode: endgameMode, result, closes, open, end }) => (
           // A mode that closes before its next cycle (Stygian Onslaught) counts down to its close.
-          <div key={e.key} className="act-row">
-            <span className="act-title">{e.name}</span>
+          <div key={endgameMode.key} className="act-row">
+            <span className="act-title">{endgameMode.name}</span>
             <span className="mn mu">
-              {result ?? "—"} / {e.metric.max ?? "—"} {e.metric.label}
+              {result ?? "—"} / {endgameMode.metric.max ?? "—"} {endgameMode.metric.label}
             </span>
-            {open ? <DateChip at={closes} prefix={e.openDays ? "closes " : "resets "} /> : <DateChip at={end} prefix="opens " />}
+            {open ? <DateChip at={closes} prefix={endgameMode.openDays ? "closes " : "resets "} /> : <DateChip at={end} prefix="opens " />}
           </div>
         ))}
         {game.manifest.endgame.length === 0 && <p className="mu act-empty">No endgame mode on record yet.</p>}
