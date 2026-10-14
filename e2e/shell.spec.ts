@@ -82,3 +82,27 @@ test("another game in the strip opens the same tab, or its first where it has no
     await page.request.delete(`/api/characters/${build.id}`);
   }
 });
+
+// Georges, round 7: "the game cards should extend a bit more when selected: Genshin becomes Genshin Impact … work on the navbar".
+test("the selected game spells its full name, each game with its icon; the rail's icons larger, the current one filled @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  await page.request.post("/api/instances", { data: { gameKey: "hsr" } });
+  await page.goto("/");
+  const strip = page.getByRole("navigation", { name: "Scope" });
+  const hsr = strip.getByRole("link", { name: "Honkai: Star Rail" });
+  await expect(hsr).not.toContainText("Honkai");
+  await expect(hsr.getByRole("img")).toHaveCount(1);
+  await hsr.click();
+  await expect(hsr).toHaveAttribute("aria-current", "page");
+  await expect(hsr).toContainText("Honkai: Star Rail");
+  // The whole name fits: nothing cut.
+  expect(await hsr.evaluate((el) => el.scrollWidth <= el.clientWidth)).toBe(true);
+
+  const rail = page.getByRole("navigation", { name: "Sections" });
+  expect((await rail.getByRole("link", { name: "Tasks and goals" }).locator("svg").boundingBox())!.width).toBeGreaterThanOrEqual(22);
+  const home = rail.getByRole("link", { name: "Home, all games" });
+  await expect(home).toHaveAttribute("aria-current", "page");
+  expect(await home.evaluate((el) => getComputedStyle(el).backgroundColor)).not.toBe("rgba(0, 0, 0, 0)");
+});
