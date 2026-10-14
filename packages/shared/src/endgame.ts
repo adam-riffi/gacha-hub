@@ -10,6 +10,8 @@ export const clearSchema = z.object({
   stage: z.string().trim().min(1).max(40),
   members: z.array(catalogIdSchema).max(8),
   time: z.number().int().min(1).max(3600).nullable(),
+  /** The stage's score where the mode scores each (Deadly Assault's points, a frontier's rank), round 7. */
+  score: z.number().int().min(0).max(1_000_000).nullable().optional(),
 });
 export type Clear = z.infer<typeof clearSchema>;
 
@@ -34,7 +36,7 @@ export const cycleResultInput = z.object({
   premium: z.number().int().min(0).max(100_000).nullable().optional(),
   detail: z.string().trim().max(80).nullable().optional(),
   /** Each stage's team and clear time; left out, the stored ones stay. */
-  teams: z.array(clearSchema).max(6).optional(),
+  teams: z.array(clearSchema).max(12).optional(),
 });
 
 /** An instant inside a server-local game day (an hour after its reset). */

@@ -99,7 +99,7 @@ test("Stygian Onslaught shows its three bosses; Spiral Abyss and Imaginarium The
     await expect(stages.locator(".eg-main").first().getByRole("img")).toBeVisible();
     await expect(page.getByRole("region", { name: "Stygian Onslaught" })).toContainText("difficulty");
     // Spiral Abyss's halves are lines too, without enemies; Imaginarium Theater has no stages.
-    await expect(page.getByRole("region", { name: "Spiral Abyss" }).locator(".eg-main")).toHaveCount(0);
+    await expect(page.getByRole("region", { name: "Spiral Abyss" }).locator(".eg-main").getByRole("img")).toHaveCount(0);
     await expect(page.getByRole("region", { name: "Imaginarium Theater" }).getByRole("list", { name: "Stages" })).toHaveCount(0);
   } finally {
     await page.request.delete(`/api/instances/${id}`);

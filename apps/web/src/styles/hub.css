@@ -178,15 +178,32 @@ input.tick-check:checked { background: var(--accent); border-color: var(--accent
 .tick-step { width: 14px; height: 20px; padding: 0; background: transparent; border: 2px solid color-mix(in srgb, var(--accent) 75%, transparent); cursor: pointer; }
 .tick-step[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); }
 .tick-count-in input { width: 72px; }
-/* A rotating mode's enemies (Georges, 2026-10-11): each stage, each half, its weaknesses as element dots. */
-.eg-enemies { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--surface-3); }
-.eg-enemies ul { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 8px; }
-.eg-enemies li { display: grid; grid-template-columns: minmax(110px, 1fr) auto auto; align-items: center; gap: 10px; }
-.eg-stage { font-size: 12px; }
-.eg-groups { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; min-width: 0; }
-.eg-group { display: inline-flex; flex-wrap: wrap; gap: 3px; }
-.eg-group + .eg-group { padding-left: 10px; border-left: 1px solid var(--surface-3); }
-.eg-group .gicon { width: 30px; height: 30px; font-size: 9px; }
+/* A mode's stages, one line each (round 7): the stage, team, score, time, main enemy and weaknesses; a click opens the stage. */
+.eg-lines { list-style: none; margin: 16px 0 0; padding: 0; border-top: 1px solid var(--surface-3); }
+.eg-line { border-bottom: 1px solid var(--surface-3); }
+.eg-line-row { position: relative; display: grid; grid-template-columns: minmax(96px, 1.2fr) minmax(0, 1.4fr) 44px 48px 40px auto; align-items: center; gap: 10px; min-height: 52px; padding: 4px 6px; }
+.eg-line-row:hover, .eg-line.is-open .eg-line-row { background: var(--surface-2); }
+.eg-line-open { position: absolute; inset: 0; z-index: 1; background: transparent; border: 0; cursor: pointer; }
+.eg-line-open:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.eg-stage { font-size: 12px; line-height: 1.3; }
+.eg-stage-name { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.eg-stage-name b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; font-weight: 600; }
+.eg-stage-name small { font-size: 11px; }
+.eg-score { font-size: 20px; text-align: right; }
+.eg-time { font-size: 13px; text-align: right; }
+.eg-main .gicon { width: 40px; height: 40px; }
+.eg-noteam { font-size: 13px; }
+.eg-line-detail { display: grid; gap: 12px; padding: 12px 6px 16px; }
+.eg-detail-enemies, .eg-detail-builds { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.eg-detail-enemies li { display: flex; flex-wrap: wrap; gap: 10px; padding-left: 10px; border-left: 2px solid var(--surface-3); }
+.eg-detail-enemies .eg-enemy { display: inline-flex; align-items: center; gap: 6px; }
+.eg-detail-enemies .gicon { width: 32px; height: 32px; }
+.eg-detail-enemies .mn { font-size: 12px; }
+.eg-detail-builds li { display: flex; align-items: center; gap: 10px; }
+.eg-detail-builds .gicon { width: 32px; height: 32px; }
+.eg-build-name { min-width: 120px; font-weight: 600; }
+.eg-build-set { display: inline-flex; align-items: center; gap: 2px; }
+.eg-build-set .gicon { width: 26px; height: 26px; }
 .eg-weak { display: inline-flex; gap: 4px; }
 .eg-weak { align-items: center; }
 .eg-weak > i { width: 10px; height: 10px; border-radius: 50%; }

@@ -30,10 +30,12 @@ export async function registerCycleRoutes(app: FastifyInstance) {
     if ((mode.metric.max !== undefined && (body.result ?? 0) > mode.metric.max) || (mode.maxPremium !== undefined && (body.premium ?? 0) > mode.maxPremium)) {
       return reply.code(400).send({ error: "over_the_cap" });
     }
-    // Each team clears a stage the mode has, within the party size, with units of the catalog.
+    // Each team clears a stage the mode has (its manifest's, or one its enemy data names, round 7), within the party size, with units of the catalog.
     if (body.teams) {
       const cat = await getCatalog(game);
-      const bad = body.teams.some((t) => !mode.clears?.stages.includes(t.stage) || t.members.length > (game.teamSize ?? 4) || (cat && t.members.some((m) => !cat.index.characters.has(m))));
+      const named = (await game.loadEndgame?.())?.cycles.filter((c) => c.modeKey === mode.key).flatMap((c) => c.stages.map((s) => s.name)) ?? [];
+      const stages = new Set([...(mode.clears?.stages ?? []), ...(mode.clears ? named : [])]);
+      const bad = body.teams.some((t) => !stages.has(t.stage) || t.members.length > (game.teamSize ?? 4) || (cat && t.members.some((m) => !cat.index.characters.has(m))));
       if (bad) return reply.code(400).send({ error: "bad_clear" });
     }
     const region = regionForInstance(game, gi);
