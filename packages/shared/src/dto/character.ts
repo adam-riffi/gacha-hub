@@ -79,6 +79,8 @@ export type CharacterSummaryDto = z.infer<typeof characterSummaryDto>;
  */
 export const createCharacterInput = z.object({
   catalogId: catalogIdSchema.optional(),
+  /** False for a build to try (round 9): the character stays unowned. A build owns its character otherwise. */
+  own: z.boolean().optional(),
   name: z.string().min(1).max(120).optional(),
   portraitUrl: z.string().max(2048).nullable().optional(),
   doc: jsonValue.optional(),

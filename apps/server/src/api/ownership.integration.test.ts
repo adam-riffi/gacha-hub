@@ -80,6 +80,14 @@ describe("ownership + catalog-backed builds (routes)", () => {
     expect(owned2.json.filter((o) => o.catalogId === AMBER).length).toBe(1);
   });
 
+  // Georges, round 9: "not owning them shouldn't prevent me from setting trying builds": a build to try leaves the character unowned.
+  it("keeps a character unowned when its build is only a try (own: false)", async () => {
+    const build = await c.req<{ id: string }>("POST", `/api/instances/${gid}/characters`, { catalogId: AMBER, own: false });
+    expect(build.status).toBe(201);
+    const owned = await c.req<OwnershipDto[]>("GET", `/api/instances/${gid}/ownership`);
+    expect(owned.json.some((o) => o.catalogId === AMBER)).toBe(false);
+  });
+
   it("requires a valid catalog id to build", async () => {
     const missing = await c.req<{ error: string }>("POST", `/api/instances/${gid}/characters`, {});
     expect(missing.status).toBe(400);
