@@ -81,13 +81,9 @@
 .ch-actions { justify-content: flex-end; gap: 6px; }
 
 /* A unit's page (Georges, 2026-10-10): every character opens, owned or not. */
-.un-page { --el: var(--paper); }
-.un-art { border-color: var(--el); background: linear-gradient(180deg, color-mix(in srgb, var(--el) 26%, var(--surface-2)), var(--surface-2) 70%); }
-.un-title h1 { box-shadow: inset 0 -4px 0 var(--el); }
-.un-el { border-color: var(--el); color: var(--el); }
 .sh-cards.un-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .un-dupes { margin: 0; padding-left: 20px; display: grid; gap: 8px; font-size: 13px; }
-.un-page .btn[aria-pressed="true"] { background: var(--paper); border-color: var(--paper); color: var(--on-paper); }
+.un-toggles .btn[aria-pressed="true"] { background: var(--paper); border-color: var(--paper); color: var(--on-paper); }
 /* The counts are filters (Georges, 2026-10-10): pressed shows only those. */
 .ch-counts .chip { padding: 7px 11px; border: 1px solid var(--hairline); background: transparent; cursor: pointer; }
 .ch-counts .chip:hover { color: var(--text); border-color: var(--hairline-strong); }

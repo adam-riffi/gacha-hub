@@ -444,7 +444,7 @@ test("Characters: an unowned character without a build opens the same sheet as a
   await expect(page.getByRole("button", { name: "Wishlist", exact: true })).toBeVisible();
 
   // Saved, it is a build to try: Gepard stays unowned.
-  await page.getByLabel("Level", { exact: true }).fill("50");
+  await page.getByRole("region", { name: "Character", exact: true }).getByLabel("Level", { exact: true }).fill("50");
   await page.getByRole("button", { name: "Save", exact: true }).click();
   await expect(page).toHaveURL(/\/characters\/[a-z0-9]+$/);
   const [build] = await builds();
@@ -455,6 +455,6 @@ test("Characters: an unowned character without a build opens the same sheet as a
   // Opened again as a unit, it is that build's sheet.
   await page.goto(`/games/${id}/units/1104`);
   await expect(page.getByRole("tablist", { name: "Builds" })).toBeVisible();
-  await expect(page.getByLabel("Level", { exact: true })).toHaveValue("50");
+  await expect(page.getByRole("region", { name: "Character", exact: true }).getByLabel("Level", { exact: true })).toHaveValue("50");
   await page.request.delete(`/api/characters/${build!.id}`);
 });

@@ -45,7 +45,7 @@ export function SkillRow({ name, text, icon, gameKey, children }: { name: string
  * (from the catalog), the skins, notes and pictures (uploads), each saved as
  * it changes.
  */
-export function MiscCard({ buildId, gameKey, misc: saved, passives }: { buildId: string; gameKey: string; misc: CharacterMisc | null; passives: { name: string; description?: string; icon?: string }[] }) {
+export function MiscCard({ buildId, put, gameKey, misc: saved, passives }: { buildId: string; put: (body: { misc: CharacterMisc }) => Promise<unknown>; gameKey: string; misc: CharacterMisc | null; passives: { name: string; description?: string; icon?: string }[] }) {
   const qc = useQueryClient();
   const toast = useToast();
   const [misc, setMisc] = useState<CharacterMisc>(saved ?? {});
@@ -54,7 +54,7 @@ export function MiscCard({ buildId, gameKey, misc: saved, passives }: { buildId:
   const [editing, setEditing] = useState<number | null>(null);
   const [edited, setEdited] = useState("");
   const save = useMutation({
-    mutationFn: (next: CharacterMisc) => api.put(`/api/characters/${buildId}`, { misc: next }),
+    mutationFn: (next: CharacterMisc) => put({ misc: next }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["character", buildId] }),
     onError: () => toast("Could not save the misc", "err"),
   });

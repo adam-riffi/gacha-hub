@@ -36,6 +36,7 @@ import { MiscCard, SkillRow } from "../components/sheet/MiscCard";
 import { GiftsCard } from "../components/sheet/GiftsCard";
 import { WeaponWindow } from "../components/sheet/WeaponWindow";
 import { StatIcon } from "../components/StatIcon";
+import { UnitInfo, UnitToggles } from "../components/sheet/UnitInfo";
 import type { CharacterDetail, InstanceDetail, TaskItem } from "../lib/types";
 
 type Doc = Record<string, unknown>;
@@ -48,8 +49,10 @@ const STATUSES: { value: BuildStatus; label: string }[] = [
   { value: "perfect", label: "Perfect" },
 ];
 
-export function CharacterPage() {
-  const { id } = useParams();
+/** A build's sheet; a unit's page shows its default build's here (round 10). */
+export function CharacterPage({ buildId }: { buildId?: string }) {
+  const params = useParams();
+  const id = buildId ?? params.id;
   const { data, isLoading, isError, refetch } = useQuery({ queryKey: ["character", id], queryFn: () => api.get<CharacterDetail>(`/api/characters/${id}`), enabled: Boolean(id) });
   if (isError) return <LoadError what="This build" retry={() => refetch()} />;
   if (isLoading || !data) return <div className="mu">Loading…</div>;
@@ -64,7 +67,7 @@ export function CharacterPage() {
  * level), the KPI tiles, the Character, skills and Weapon cards and the
  * combat stats; below, the gear block in the game's shape and plan farming.
  */
-function CharacterEditor({ data }: { data: CharacterDetail }) {
+export function CharacterEditor({ data }: { data: CharacterDetail }) {
   const nav = useNavigate();
   const qc = useQueryClient();
   const toast = useToast();
@@ -77,9 +80,19 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
   const entry = data.catalogId ? index?.characters.get(data.catalogId) : undefined;
   const doc = state.doc;
   const setDoc = (updater: (d: Doc) => Doc) => setState((s) => ({ ...s, doc: updater(s.doc) }));
+  // A unit without a build opens this same sheet unsaved (Georges, round 10: "on the not owned characters there's almost
+  // nothing"); what is first kept makes its build, a try that leaves the character unowned, and the sheet moves to it.
+  const draft = data.id === "";
+  const write = async (body: Record<string, unknown>) => {
+    if (!draft) return api.put(`/api/characters/${data.id}`, body);
+    const made = await api.post<{ id: string }>(`/api/instances/${data.gameInstanceId}/characters`, { catalogId: data.catalogId, own: false, name: state.name, portraitUrl: state.portraitUrl, doc: state.doc, buildStatus: state.buildStatus });
+    await api.put(`/api/characters/${made.id}`, { role: state.role, ...body });
+    void qc.invalidateQueries({ queryKey: ["characters", data.gameInstanceId] });
+    nav(`/characters/${made.id}`);
+  };
 
   const save = useMutation({
-    mutationFn: () => api.put(`/api/characters/${data.id}`, { name: state.name, portraitUrl: state.portraitUrl, doc: state.doc, buildStatus: state.buildStatus, role: state.role }),
+    mutationFn: () => write({ name: state.name, portraitUrl: state.portraitUrl, doc: state.doc, buildStatus: state.buildStatus, role: state.role }),
     onSuccess: () => {
       toast("Saved");
       void qc.invalidateQueries({ queryKey: ["character", data.id] });
@@ -91,7 +104,7 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
   const setTarget = useMutation({
     mutationFn: (targets: Record<string, number | undefined>) => {
       const kept = Object.fromEntries(Object.entries(targets).filter((e): e is [string, number] => e[1] !== undefined));
-      return api.put(`/api/characters/${data.id}`, { targets: Object.keys(kept).length ? kept : null });
+      return write({ targets: Object.keys(kept).length ? kept : null });
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["character", data.id] }),
     onError: () => toast("Target not saved", "err"),
@@ -158,7 +171,7 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
   };
   const critValue = statKpis(game, doc, ["Crit value"], catalog?.gear ?? [], base)[0]!.value;
   const setCardStats = useMutation({
-    mutationFn: (cardStats: string[] | null) => api.put(`/api/characters/${data.id}`, { cardStats }),
+    mutationFn: (cardStats: string[] | null) => write({ cardStats }),
     // The box flips at once (round 8); the server's answer follows.
     onMutate: (cardStats) => qc.setQueryData<CharacterDetail>(["character", data.id], (old) => (old ? { ...old, cardStats } : old)),
     onSettled: () => Promise.all([["character", data.id], ["characters", data.gameInstanceId]].map((queryKey) => qc.invalidateQueries({ queryKey }))),
@@ -222,7 +235,7 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
       <div style={{ marginBottom: 14 }}>
         <GameTabs instanceId={data.gameInstanceId} active="characters" gameKey={game.key} />
       </div>
-      {data.catalogId && (
+      {data.catalogId && !draft && (
         <div className="sh-builds">
           <div className="sh-build-tabs" role="tablist" aria-label="Builds">
             {siblings.map((b, i) => (
@@ -256,6 +269,7 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
             <div className="spread">
               <Link to={`/games/${data.gameInstanceId}/characters`}>← Characters</Link>
               <div className="row">
+                {data.catalogId && <UnitToggles instanceId={data.gameInstanceId} catalogId={data.catalogId} />}
                 {/* Quick goal first (Georges, round 7: "it should be one of the first things I can do"). */}
                 {data.catalogId && (
                   <button type="button" className="btn primary sh-quick" onClick={() => setQuick(true)}>
@@ -276,7 +290,7 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
                   </select>
                 </label>
                 <button className="btn primary" onClick={() => save.mutate()} disabled={save.isPending || addCopy.isPending || takeFrom.isPending}>Save</button>
-              <button className="btn" onClick={() => confirm("Delete this build?") && del.mutate()}>Delete build</button>
+              {!draft && <button className="btn" onClick={() => confirm("Delete this build?") && del.mutate()}>Delete build</button>}
               </div>
             </div>
             <div className="sh-title">
@@ -463,7 +477,9 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
 
       <GearBlock game={game} doc={doc} setDoc={setDoc} sets={(catalog?.gear ?? []).map((g) => ({ id: g.id, name: g.name, src: assetUrl(game.key, "gear", g.icon), fallback: communityAssetUrl(game.key, "gear", g.icon) }))} />
 
-      <MiscCard buildId={data.id} gameKey={game.key} misc={data.misc} passives={entry?.passives ?? []} />
+      {entry && instance.data && <UnitInfo instance={instance.data} game={game} entry={entry} />}
+
+      <MiscCard buildId={data.id} put={write} gameKey={game.key} misc={data.misc} passives={entry?.passives ?? []} />
 
       {entry && <GiftsCard gameKey={game.key} entry={entry} />}
 
@@ -585,7 +601,7 @@ function StatCard({
               defaultValue={shown ?? ""}
               onBlur={(e) => {
                 const v = e.target.value === "" ? undefined : Number(e.target.value);
-                if (v !== target) onTarget({ [label]: v });
+                if (v !== shown) onTarget({ [label]: v });
               }}
             />
           </label>
