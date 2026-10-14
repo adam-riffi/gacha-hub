@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { endgameNow, gameDay, getGame, modeCycles, premiumCurrency, versionAt, type CycleResultsDto, type GameDefinition, type GameRegion, type TeamDto } from "@gacha/shared";
+import { endgameNow, enemiesFor, gameDay, getGame, modeCycles, modeStages, premiumCurrency, versionAt, type CycleResultsDto, type GameDefinition, type GameRegion, type TeamDto } from "@gacha/shared";
 import { api } from "../lib/api";
 import { assetUrl, communityAssetUrl } from "../lib/assets";
 import { useCatalog } from "../lib/catalog";
@@ -9,8 +9,8 @@ import { Picker, type PickerOption } from "../components/Picker";
 import { formatRemaining } from "../lib/time";
 import type { InstanceDetail } from "../lib/types";
 import { GameTabs } from "../components/GameTabs";
-import { ClearList, EndgameHistory, TeamIcons, cycleSpan, mss, type UnitOf } from "../components/hub/EndgameHistory";
-import { Enemies } from "../components/hub/Enemies";
+import { EndgameHistory, TeamIcons, cycleSpan, mss, type UnitOf } from "../components/hub/EndgameHistory";
+import { StageLines } from "../components/hub/StageLines";
 import { useReminderFlag } from "../lib/reminder";
 
 const NUM = new Intl.NumberFormat("en-GB");
@@ -155,8 +155,8 @@ export function EndgamePage() {
 /**
  * A mode's card: the cycle picked (the current one by default; a bar, the
  * arrows, a point or a row of the history pick another, round 6) with its
- * dates and version, result, rewards, detail, each stage's team and time,
- * the enemies, typed in place; the last six cycles as bars.
+ * dates and version, result, rewards, detail, its stages one line each (team,
+ * score, time, main enemy; round 7), typed in place; the last six cycles as bars.
  */
 function ModeCard({
   instanceId,
@@ -184,21 +184,23 @@ function ModeCard({
   const qc = useQueryClient();
   const [editing, setEditing] = useState(false);
   const { mode } = m;
-  const stages = mode.clears?.stages ?? [];
   const i = Math.max(0, at === null ? rows.findIndex((r) => r.current) : rows.findIndex((r) => r.cycleStart.getTime() === at));
   const r = rows[i]!;
   const day = gameDay(region, r.current ? now : r.cycleStart);
+  const enemies = useQuery({ queryKey: ["endgame-enemies", game.key], queryFn: () => game.loadEndgame!(), enabled: Boolean(game.loadEndgame), staleTime: Infinity });
+  // Only modes fought stage by stage (they have clears) list stages; the long runs have none.
+  const stages = mode.clears ? modeStages(mode.clears.stages, enemies.data && enemiesFor(enemies.data, mode.key, day)) : [];
   const version = versionAt(game, region, r.cycleStart);
   const pick = (k: number) => {
     setEditing(false);
     onSelect(rows[k]!.current ? null : rows[k]!.cycleStart.getTime());
   };
-  // Each stage's team and typed time while the form is open.
-  const [draft, setDraft] = useState<Record<string, { members: string[]; time: string }>>({});
+  // Each stage's team, typed time and score while the form is open.
+  const [draft, setDraft] = useState<Record<string, { members: string[]; time: string; score: string }>>({});
   const open = () => {
     setDraft(Object.fromEntries(stages.map((s) => {
-      const t = r.teams?.find((x) => x.stage === s);
-      return [s, { members: t?.members ?? [], time: t?.time ? mss(t.time) : "" }];
+      const t = r.teams?.find((x) => x.stage === s.key);
+      return [s.key, { members: t?.members ?? [], time: t?.time ? mss(t.time) : "", score: t?.score != null ? String(t.score) : "" }];
     })));
     setEditing(true);
   };
@@ -219,7 +221,9 @@ function ModeCard({
     e.preventDefault();
     const f = new FormData(e.currentTarget);
     const num = (k: string) => (String(f.get(k) ?? "") === "" ? null : Number(f.get(k)));
-    const teams = stages.map((s) => ({ stage: s, members: draft[s]?.members ?? [], time: secs(draft[s]?.time ?? "") })).filter((t) => t.members.length > 0 || t.time !== null);
+    const teams = stages
+      .map((s) => ({ stage: s.key, members: draft[s.key]?.members ?? [], time: secs(draft[s.key]?.time ?? ""), score: draft[s.key]?.score ? Number(draft[s.key]!.score) : null }))
+      .filter((t) => t.members.length > 0 || t.time !== null || t.score !== null);
     save.mutate({ modeKey: mode.key, day, result: num("result"), premium: num("premium"), detail: String(f.get("detail") ?? "") || null, ...(stages.length ? { teams } : {}) });
   };
   return (
@@ -292,8 +296,7 @@ function ModeCard({
           />
         ))}
       </div>
-      {!editing && <ClearList gameKey={roster.gameKey} teams={r.teams ?? []} unitOf={roster.unitOf} stages={stages.length ? stages : undefined} />}
-      <Enemies game={game} modeKey={mode.key} today={day} />
+      {!editing && <StageLines instanceId={instanceId} gameKey={roster.gameKey} stages={stages} teams={r.teams ?? []} unitOf={roster.unitOf} />}
       {editing ? (
         <form className="act-add" onSubmit={submit}>
           <label>
@@ -310,12 +313,16 @@ function ModeCard({
             <span>Detail</span>
             <input name="detail" maxLength={80} placeholder="floor 12 · 6/9" defaultValue={r.detail ?? ""} />
           </label>
-          {stages.map((s) => {
-            const d = draft[s] ?? { members: [], time: "" };
+          {stages.map((st) => {
+            const s = st.key;
+            const d = draft[s] ?? { members: [], time: "", score: "" };
             const set = (p: Partial<typeof d>) => setDraft((all) => ({ ...all, [s]: { ...d, ...p } }));
             return (
-              <fieldset key={s} className="eg-clear-edit">
-                <legend className="kpi-label">{s}</legend>
+              <fieldset key={s} className="eg-clear-edit" aria-label={s}>
+                <legend className="kpi-label">
+                  {st.label}
+                  {st.level ? ` · Lv ${st.level}` : ""}
+                </legend>
                 {d.members.length > 0 && (
                   <button type="button" className="btn ghost sm" aria-label={`Clear ${s}`} onClick={() => set({ members: [] })}>
                     <TeamIcons gameKey={roster.gameKey} members={d.members} unitOf={roster.unitOf} /> ×
@@ -344,6 +351,10 @@ function ModeCard({
                     <input inputMode="numeric" placeholder="m:ss" maxLength={5} value={d.time} onChange={(e) => set({ time: e.target.value })} />
                   </label>
                 )}
+                <label>
+                  <span>Score</span>
+                  <input type="number" min={0} max={1_000_000} value={d.score} onChange={(e) => set({ score: e.target.value })} />
+                </label>
               </fieldset>
             );
           })}

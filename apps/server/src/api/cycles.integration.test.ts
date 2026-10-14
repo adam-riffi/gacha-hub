@@ -1,6 +1,6 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import type { FastifyInstance } from "fastify";
-import type { CycleResultsDto } from "@gacha/shared";
+import { getGame, type CycleResultsDto } from "@gacha/shared";
 import { installGame, login, makeApp, resetDb, type Client } from "../test/helpers.js";
 
 describe("endgame results (routes)", () => {
@@ -39,5 +39,18 @@ describe("endgame results (routes)", () => {
     expect((await put({ result: 37 })).status).toBe(400);
     expect((await put({ premium: 801 })).status).toBe(400);
     expect((await put({ day: "2099-01-01" })).status).toBe(400);
+  });
+
+  // Round 7: a mode's stages are its enemy data's (Shiyu's frontiers and rooms) where it has them, each with its team and score.
+  it("keeps a team and a score for each of a rotating mode's stages, and refuses a stage the mode has not", async () => {
+    const zzz = await installGame(c, "zzz");
+    const data = await getGame("zzz")!.loadEndgame!();
+    const names = [...new Set(data.cycles.filter((x) => x.modeKey === "shiyu").flatMap((x) => x.stages.map((s) => s.name)))];
+    expect(names.length).toBeGreaterThanOrEqual(7);
+    const teams = names.slice(0, 7).map((stage, i) => ({ stage, members: [], time: null, score: i }));
+    const put = await c.req<CycleResultsDto>("PUT", `/api/instances/${zzz}/cycles`, { modeKey: "shiyu", day: "2026-10-03", result: 4, teams });
+    expect(put.status).toBe(200);
+    expect(put.json.results[0]!.teams?.map((t) => [t.stage, t.score])).toEqual(teams.map((t) => [t.stage, t.score]));
+    expect((await c.req("PUT", `/api/instances/${zzz}/cycles`, { modeKey: "shiyu", day: "2026-10-03", result: 4, teams: [{ stage: "Nowhere", members: [], time: null }] })).status).toBe(400);
   });
 });
