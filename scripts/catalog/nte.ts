@@ -20,7 +20,7 @@ console.log(`[catalog:nte] Hakushin data, live version ${version}`);
 type Cost = { level: string; items_id: string[]; amount: number[] };
 type CharIndex = Record<string, { rarity: number; icon: string; en: string }>;
 type Ability = { type: string; name: string; materials?: Cost[] };
-type CharDetail = { id: string; name: string; element: string; rarity: number; icon: string; icon_gacha?: string; breakthrough?: Cost[]; abilities?: Ability[]; stats?: { values: number[] }[] };
+type CharDetail = { id: string; name: string; element: string; rarity: number; icon: string; icon_gacha?: string; breakthrough?: Cost[]; abilities?: Ability[]; stats?: { values: number[] }[]; preferrable_gifts?: { item_id: string; amount: number }[] };
 type WeaponIndex = Record<string, { rarity: number; en: string }>;
 type WeaponDetail = {
   id: string;
@@ -61,8 +61,10 @@ const breakthroughs = (rows: (Cost & { cost_gold?: number })[] = []): CostStep[]
 
 // ---- Characters ----
 const charIndex = await get<CharIndex>(`/nte/${version}/character.json`);
+const details = new Map<string, CharDetail>();
 const characters: CatalogCharacter[] = await mapLimit(Object.keys(charIndex), 4, async (id) => {
   const d = await get<CharDetail>(`/nte/${version}/en/character/${id}.json`);
+  details.set(String(d.id), d);
   const costsByKey: Record<string, CostStep[]> = {};
   const names: Record<string, string> = {};
   for (const a of d.abilities ?? []) {
@@ -127,6 +129,20 @@ const gear = [...gearBySet.values()].sort((a, b) => Number(a.extra!.series) - Nu
 
 // ---- Materials: everything a cost table references ----
 const coin = itemById.get("gold_1000");
+// Each character's preferred gifts (round 8), the strongest first; the ones the dataset names (its foods it does not).
+const giftIds = new Set<string>();
+for (const c of characters) {
+  const d = details.get(c.id);
+  const gifts = (d?.preferrable_gifts ?? []).filter((g) => itemById.get(g.item_id)?.name).sort((a, b) => b.amount - a.amount || a.item_id.localeCompare(b.item_id));
+  if (gifts.length) c.gifts = gifts.map((g) => ({ itemId: g.item_id, points: g.amount }));
+  for (const g of gifts) giftIds.add(g.item_id);
+}
+const giftItems: CatalogMaterial[] = [...giftIds].map((id) => {
+  const i = itemById.get(id)!;
+  const rarity = i.rarity && i.rarity >= 1 && i.rarity <= 6 ? i.rarity : undefined;
+  return { id, key: slugify(stripTags(i.name)), name: stripTags(i.name), category: "Gift", ...(rarity ? { rarity } : {}), icon: artKey(i.icon) };
+});
+
 const materials: CatalogMaterial[] = [...referenced].flatMap((id): CatalogMaterial[] => {
   if (id === GOLD) return [{ id: GOLD, key: "beetle-coin", name: (coin?.name ?? "Beetle Coin").replace(/\s*×.*$/, ""), category: "Currency", icon: artKey(coin?.icon) }];
   const i = itemById.get(id);
@@ -143,6 +159,6 @@ const catalog: Catalog = {
   characters: uniqueKeys(characters.sort(byId)),
   weapons: uniqueKeys(weapons.sort(byId)),
   gear: uniqueKeys(gear),
-  materials: uniqueKeys(materials.sort(byId)),
+  materials: uniqueKeys([...materials, ...giftItems.filter((g) => !referenced.has(g.id))].sort(byId)),
 };
 writeCatalog(catalog, "nte");

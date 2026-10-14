@@ -14,7 +14,8 @@ describe("endfield catalog", () => {
     expect(catalog.gear.length).toBeGreaterThanOrEqual(15);
     expect(catalog.gear.every((g) => g.slots.join() === "slot1,slot2,slot3,slot4" && g.name.length > 1)).toBe(true);
     expect(new Set(catalog.gear.map((g) => g.name)).size).toBe(catalog.gear.length);
-    expect(catalog.materials).toEqual([]);
+    // No cost data: its only items are its gifts (round 8).
+    expect(catalog.materials.every((m) => m.category === "Gift")).toBe(true);
   });
 
   it("names a gear set from its body piece: Roving MSGR", async () => {

@@ -976,7 +976,29 @@
             "name": "Squash!"
           }
         ]
-      }
+      },
+      "gifts": [
+        {
+          "itemId": "SpecialGift_letter",
+          "points": 2000
+        },
+        {
+          "itemId": "Furniture_Ornament_001",
+          "points": 400
+        },
+        {
+          "itemId": "SpecialGift_ticket",
+          "points": 400
+        },
+        {
+          "itemId": "Flower0002",
+          "points": 200
+        },
+        {
+          "itemId": "Furniture_draw_002",
+          "points": 200
+        }
+      ]
     },
     {
       "id": "1004",
@@ -1952,7 +1974,33 @@
             "name": "Microwake"
           }
         ]
-      }
+      },
+      "gifts": [
+        {
+          "itemId": "SpecialGift_letter",
+          "points": 2000
+        },
+        {
+          "itemId": "SpecialGift_1004",
+          "points": 1200
+        },
+        {
+          "itemId": "Furniture_Ornament_001",
+          "points": 400
+        },
+        {
+          "itemId": "SpecialGift_ticket",
+          "points": 400
+        },
+        {
+          "itemId": "Flower0003",
+          "points": 200
+        },
+        {
+          "itemId": "SmallPoster005",
+          "points": 200
+        }
+      ]
     },
     {
       "id": "1008",
@@ -2928,7 +2976,33 @@
             "name": "Arrest Warrant"
           }
         ]
-      }
+      },
+      "gifts": [
+        {
+          "itemId": "SpecialGift_letter",
+          "points": 2000
+        },
+        {
+          "itemId": "Furniture_Light_007",
+          "points": 400
+        },
+        {
+          "itemId": "SpecialGift_ticket",
+          "points": 400
+        },
+        {
+          "itemId": "SmallPoster002",
+          "points": 200
+        },
+        {
+          "itemId": "SmallPoster005",
+          "points": 200
+        },
+        {
+          "itemId": "SmallPoster006",
+          "points": 200
+        }
+      ]
     },
     {
       "id": "1010",
@@ -3904,7 +3978,49 @@
             "name": "Justice from Above"
           }
         ]
-      }
+      },
+      "gifts": [
+        {
+          "itemId": "SpecialGift_letter",
+          "points": 2000
+        },
+        {
+          "itemId": "SpecialGift_1010",
+          "points": 1200
+        },
+        {
+          "itemId": "Figure_maskerrider_01_001",
+          "points": 400
+        },
+        {
+          "itemId": "Figure_maskerrider_01_002",
+          "points": 400
+        },
+        {
+          "itemId": "Furniture_Gacha_Blue_001",
+          "points": 400
+        },
+        {
+          "itemId": "SpecialGift_ticket",
+          "points": 400
+        },
+        {
+          "itemId": "BigPoster001",
+          "points": 200
+        },
+        {
+          "itemId": "BigPoster003",
+          "points": 200
+        },
+        {
+          "itemId": "Flower0007",
+          "points": 200
+        },
+        {
+          "itemId": "Furniture_Gacha_Blue_002",
+          "points": 200
+        }
+      ]
     },
     {
       "id": "1019",
@@ -4880,7 +4996,37 @@
             "name": "Ultimate: Invincible Tornado Slash"
           }
         ]
-      }
+      },
+      "gifts": [
+        {
+          "itemId": "SpecialGift_letter",
+          "points": 2000
+        },
+        {
+          "itemId": "Figure_eri_01_001",
+          "points": 400
+        },
+        {
+          "itemId": "Figure_eri_01_002",
+          "points": 400
+        },
+        {
+          "itemId": "Furniture_Gacha_eri_001",
+          "points": 400
+        },
+        {
+          "itemId": "SpecialGift_ticket",
+          "points": 400
+        },
+        {
+          "itemId": "Flower0010",
+          "points": 200
+        },
+        {
+          "itemId": "SmallPoster006",
+          "points": 200
+        }
+      ]
     },
     {
       "id": "1020",
@@ -5856,7 +6002,45 @@
             "name": "Easter Egg Time"
           }
         ]
-      }
+      },
+      "gifts": [
+        {
+          "itemId": "SpecialGift_letter",
+          "points": 2000
+        },
+        {
+          "itemId": "Figure_eri_01_001",
+          "points": 400
+        },
+        {
+          "itemId": "Figure_eri_01_002",
+          "points": 400
+        },
+        {
+          "itemId": "Furniture_Gacha_eri_001",
+          "points": 400
+        },
+        {
+          "itemId": "SpecialGift_ticket",
+          "points": 400
+        },
+        {
+          "itemId": "BigPoster001",
+          "points": 200
+        },
+        {
+          "itemId": "BigPoster003",
+          "points": 200
+        },
+        {
+          "itemId": "Flower0009",
+          "points": 200
+        },
+        {
+          "itemId": "Furniture_Gacha_eri_002",
+          "points": 200
+        }
+      ]
     },
     {
       "id": "1021",
@@ -6832,7 +7016,41 @@
             "name": "Weight of Knowledge"
           }
         ]
-      }
+      },
+      "gifts": [
+        {
+          "itemId": "SpecialGift_letter",
+          "points": 2000
+        },
+        {
+          "itemId": "Furniture_draw_001",
+          "points": 400
+        },
+        {
+          "itemId": "SpecialGift_CD",
+          "points": 400
+        },
+        {
+          "itemId": "SpecialGift_ticket",
+          "points": 400
+        },
+        {
+          "itemId": "Flower0002",
+          "points": 200
+        },
+        {
+          "itemId": "SmallPoster001",
+          "points": 200
+        },
+        {
+          "itemId": "SmallPoster003",
+          "points": 200
+        },
+        {
+          "itemId": "SmallPoster004",
+          "points": 200
+        }
+      ]
     },
     {
       "id": "1023",
@@ -7808,7 +8026,41 @@
             "name": "Break Time Over"
           }
         ]
-      }
+      },
+      "gifts": [
+        {
+          "itemId": "SpecialGift_letter",
+          "points": 2000
+        },
+        {
+          "itemId": "Figure_miniblack_01_001",
+          "points": 400
+        },
+        {
+          "itemId": "Figure_miniblack_01_002",
+          "points": 400
+        },
+        {
+          "itemId": "Furniture_Gacha_MiniBlack_001",
+          "points": 400
+        },
+        {
+          "itemId": "SpecialGift_ticket",
+          "points": 400
+        },
+        {
+          "itemId": "Flower0004",
+          "points": 200
+        },
+        {
+          "itemId": "Furniture_draw_004",
+          "points": 200
+        },
+        {
+          "itemId": "Furniture_Gacha_MiniBlack_002",
+          "points": 200
+        }
+      ]
     },
     {
       "id": "1025",
@@ -8784,7 +9036,29 @@
             "name": "Impact Point Designation"
           }
         ]
-      }
+      },
+      "gifts": [
+        {
+          "itemId": "SpecialGift_letter",
+          "points": 2000
+        },
+        {
+          "itemId": "Furniture_Ornament_003",
+          "points": 400
+        },
+        {
+          "itemId": "SpecialGift_ticket",
+          "points": 400
+        },
+        {
+          "itemId": "Flower0001",
+          "points": 200
+        },
+        {
+          "itemId": "Furniture_draw_002",
+          "points": 200
+        }
+      ]
     },
     {
       "id": "1033",
@@ -9760,7 +10034,29 @@
             "name": "Pristine Reflection"
           }
         ]
-      }
+      },
+      "gifts": [
+        {
+          "itemId": "SpecialGift_letter",
+          "points": 2000
+        },
+        {
+          "itemId": "Furniture_draw_006",
+          "points": 400
+        },
+        {
+          "itemId": "SpecialGift_ticket",
+          "points": 400
+        },
+        {
+          "itemId": "Flower0003",
+          "points": 200
+        },
+        {
+          "itemId": "Furniture_FlowerPot_004",
+          "points": 200
+        }
+      ]
     },
     {
       "id": "1036",
@@ -10736,7 +11032,37 @@
             "name": "Stoked Flame"
           }
         ]
-      }
+      },
+      "gifts": [
+        {
+          "itemId": "SpecialGift_letter",
+          "points": 2000
+        },
+        {
+          "itemId": "SpecialGift_1036",
+          "points": 1200
+        },
+        {
+          "itemId": "Furniture_Ornament_026",
+          "points": 400
+        },
+        {
+          "itemId": "SpecialGift_ticket",
+          "points": 400
+        },
+        {
+          "itemId": "Flower0001",
+          "points": 200
+        },
+        {
+          "itemId": "Flower0007",
+          "points": 200
+        },
+        {
+          "itemId": "Flower0008",
+          "points": 200
+        }
+      ]
     },
     {
       "id": "1039",
@@ -11712,7 +12038,29 @@
             "name": "Outsider"
           }
         ]
-      }
+      },
+      "gifts": [
+        {
+          "itemId": "SpecialGift_letter",
+          "points": 2000
+        },
+        {
+          "itemId": "Furniture_FlowerPot_005",
+          "points": 400
+        },
+        {
+          "itemId": "SpecialGift_ticket",
+          "points": 400
+        },
+        {
+          "itemId": "Flower0000",
+          "points": 200
+        },
+        {
+          "itemId": "Furniture_draw_005",
+          "points": 200
+        }
+      ]
     },
     {
       "id": "1046",
@@ -17568,7 +17916,37 @@
             "name": "Dissonance"
           }
         ]
-      }
+      },
+      "gifts": [
+        {
+          "itemId": "SpecialGift_letter",
+          "points": 2000
+        },
+        {
+          "itemId": "Furniture_draw_006",
+          "points": 400
+        },
+        {
+          "itemId": "Furniture_Light_002",
+          "points": 400
+        },
+        {
+          "itemId": "SpecialGift_ticket",
+          "points": 400
+        },
+        {
+          "itemId": "BigPoster004",
+          "points": 200
+        },
+        {
+          "itemId": "Flower0002",
+          "points": 200
+        },
+        {
+          "itemId": "Flower0009",
+          "points": 200
+        }
+      ]
     },
     {
       "id": "1071",
@@ -18544,7 +18922,49 @@
             "name": "Onslaught"
           }
         ]
-      }
+      },
+      "gifts": [
+        {
+          "itemId": "SpecialGift_letter",
+          "points": 2000
+        },
+        {
+          "itemId": "SpecialGift_1071",
+          "points": 1200
+        },
+        {
+          "itemId": "Figure_maskerrider_01_001",
+          "points": 400
+        },
+        {
+          "itemId": "Figure_maskerrider_01_002",
+          "points": 400
+        },
+        {
+          "itemId": "Furniture_Ornament_003",
+          "points": 400
+        },
+        {
+          "itemId": "SpecialGift_ticket",
+          "points": 400
+        },
+        {
+          "itemId": "BigPoster003",
+          "points": 200
+        },
+        {
+          "itemId": "Furniture_draw_004",
+          "points": 200
+        },
+        {
+          "itemId": "Furniture_Gacha_Blue_002",
+          "points": 200
+        },
+        {
+          "itemId": "Furniture_Gacha_Blue_004",
+          "points": 100
+        }
+      ]
     },
     {
       "id": "1072",
@@ -19520,7 +19940,41 @@
             "name": "Spectral Cross"
           }
         ]
-      }
+      },
+      "gifts": [
+        {
+          "itemId": "SpecialGift_letter",
+          "points": 2000
+        },
+        {
+          "itemId": "SpecialGift_1072",
+          "points": 1200
+        },
+        {
+          "itemId": "Furniture_Ornament_002",
+          "points": 400
+        },
+        {
+          "itemId": "SpecialGift_ticket",
+          "points": 400
+        },
+        {
+          "itemId": "BigPoster004",
+          "points": 200
+        },
+        {
+          "itemId": "Flower0009",
+          "points": 200
+        },
+        {
+          "itemId": "Furniture_Gacha_Pink_002",
+          "points": 200
+        },
+        {
+          "itemId": "Furniture_Gacha_Pink_005",
+          "points": 100
+        }
+      ]
     },
     {
       "id": "1073",
@@ -20496,7 +20950,33 @@
             "name": "Temporary Entry"
           }
         ]
-      }
+      },
+      "gifts": [
+        {
+          "itemId": "SpecialGift_letter",
+          "points": 2000
+        },
+        {
+          "itemId": "Furniture_Ornament_001",
+          "points": 400
+        },
+        {
+          "itemId": "SpecialGift_ticket",
+          "points": 400
+        },
+        {
+          "itemId": "Flower0003",
+          "points": 200
+        },
+        {
+          "itemId": "Flower0006",
+          "points": 200
+        },
+        {
+          "itemId": "Flower0009",
+          "points": 200
+        }
+      ]
     },
     {
       "id": "1075",
@@ -21472,7 +21952,61 @@
             "name": "Bang!"
           }
         ]
-      }
+      },
+      "gifts": [
+        {
+          "itemId": "SpecialGift_letter",
+          "points": 2000
+        },
+        {
+          "itemId": "SpecialGift_1075",
+          "points": 1200
+        },
+        {
+          "itemId": "Furniture_draw_001",
+          "points": 400
+        },
+        {
+          "itemId": "Furniture_draw_008",
+          "points": 400
+        },
+        {
+          "itemId": "Furniture_Ornament_002",
+          "points": 400
+        },
+        {
+          "itemId": "Furniture_Ornament_038",
+          "points": 400
+        },
+        {
+          "itemId": "SpecialGift_ticket",
+          "points": 400
+        },
+        {
+          "itemId": "Flower0004",
+          "points": 200
+        },
+        {
+          "itemId": "Furniture_draw_002",
+          "points": 200
+        },
+        {
+          "itemId": "Furniture_Gacha_eri_002",
+          "points": 200
+        },
+        {
+          "itemId": "Furniture_Gacha_eri_003",
+          "points": 100
+        },
+        {
+          "itemId": "Furniture_Gacha_eri_004",
+          "points": 100
+        },
+        {
+          "itemId": "Furniture_Gacha_eri_005",
+          "points": 100
+        }
+      ]
     },
     {
       "id": "1076",
@@ -22448,7 +22982,57 @@
             "name": "Breaching Tactics"
           }
         ]
-      }
+      },
+      "gifts": [
+        {
+          "itemId": "SpecialGift_letter",
+          "points": 2000
+        },
+        {
+          "itemId": "SpecialGift_1076",
+          "points": 1200
+        },
+        {
+          "itemId": "Figure_maskerrider_02_001",
+          "points": 400
+        },
+        {
+          "itemId": "Figure_miniblack_01_002",
+          "points": 400
+        },
+        {
+          "itemId": "Furniture_Ornament_002",
+          "points": 400
+        },
+        {
+          "itemId": "Furniture_Ornament_038",
+          "points": 400
+        },
+        {
+          "itemId": "SpecialGift_ticket",
+          "points": 400
+        },
+        {
+          "itemId": "Flower0000",
+          "points": 200
+        },
+        {
+          "itemId": "Furniture_Gacha_eri_002",
+          "points": 200
+        },
+        {
+          "itemId": "Furniture_Gacha_MiniBlack_002",
+          "points": 200
+        },
+        {
+          "itemId": "Furniture_Gacha_eri_004",
+          "points": 100
+        },
+        {
+          "itemId": "Furniture_Gacha_MiniBlack_005",
+          "points": 100
+        }
+      ]
     }
   ],
   "weapons": [
@@ -27795,6 +28379,390 @@
   ],
   "materials": [
     {
+      "id": "BigPoster001",
+      "key": "we-are-one",
+      "name": "We Are One",
+      "category": "Gift",
+      "rarity": 3,
+      "icon": "Game/UI/UI_Icon/Item/BigPoster001_256"
+    },
+    {
+      "id": "BigPoster003",
+      "key": "sin-vice-crime",
+      "name": "Sin, Vice, Crime",
+      "category": "Gift",
+      "rarity": 3,
+      "icon": "Game/UI/UI_Icon/Item/BigPoster003_256"
+    },
+    {
+      "id": "BigPoster004",
+      "key": "mousou-puzzle",
+      "name": "Mousou Puzzle",
+      "category": "Gift",
+      "rarity": 3,
+      "icon": "Game/UI/UI_Icon/Item/BigPoster004_256"
+    },
+    {
+      "id": "Figure_eri_01_001",
+      "key": "asahi-inori-moonlight",
+      "name": "Asahi Inori - Moonlight",
+      "category": "Gift",
+      "rarity": 3,
+      "icon": "Game/UI/UI_Icon/Item/Figure_eri_01_001_256"
+    },
+    {
+      "id": "Figure_eri_01_002",
+      "key": "asahi-inori-crimson",
+      "name": "Asahi Inori - Crimson",
+      "category": "Gift",
+      "rarity": 3,
+      "icon": "Game/UI/UI_Icon/Item/Figure_eri_01_002_256"
+    },
+    {
+      "id": "Figure_maskerrider_01_001",
+      "key": "kokoro-rider-l1-metal-strategist",
+      "name": "Kokoro Rider L1 - Metal Strategist",
+      "category": "Gift",
+      "rarity": 3,
+      "icon": "Game/UI/UI_Icon/Item/Figure_maskerrider_01_001_256"
+    },
+    {
+      "id": "Figure_maskerrider_01_002",
+      "key": "kokoro-rider-l1-eradicator",
+      "name": "Kokoro Rider L1 - Eradicator",
+      "category": "Gift",
+      "rarity": 3,
+      "icon": "Game/UI/UI_Icon/Item/Figure_maskerrider_01_002_256"
+    },
+    {
+      "id": "Figure_maskerrider_02_001",
+      "key": "kokoro-rider-l3-heros-arrival",
+      "name": "Kokoro Rider L3 - Hero's Arrival",
+      "category": "Gift",
+      "rarity": 3,
+      "icon": "Game/UI/UI_Icon/Item/Figure_maskerrider_02_001_256"
+    },
+    {
+      "id": "Figure_miniblack_01_001",
+      "key": "gigafluff-musclology",
+      "name": "Gigafluff - Musclology",
+      "category": "Gift",
+      "rarity": 3,
+      "icon": "Game/UI/UI_Icon/Item/Figure_miniblack_01_001_256"
+    },
+    {
+      "id": "Figure_miniblack_01_002",
+      "key": "gigafluff-the-strong",
+      "name": "Gigafluff - The Strong",
+      "category": "Gift",
+      "rarity": 3,
+      "icon": "Game/UI/UI_Icon/Item/Figure_miniblack_01_002_256"
+    },
+    {
+      "id": "Flower0000",
+      "key": "golden-spring",
+      "name": "Golden Spring",
+      "category": "Gift",
+      "rarity": 4,
+      "icon": "Game/UI/UI_Icon/Item/Flower0000_256"
+    },
+    {
+      "id": "Flower0001",
+      "key": "nightingales-sonata",
+      "name": "Nightingale's Sonata",
+      "category": "Gift",
+      "rarity": 4,
+      "icon": "Game/UI/UI_Icon/Item/Flower0001_256"
+    },
+    {
+      "id": "Flower0002",
+      "key": "blue-fable",
+      "name": "Blue Fable",
+      "category": "Gift",
+      "rarity": 4,
+      "icon": "Game/UI/UI_Icon/Item/Flower0002_256"
+    },
+    {
+      "id": "Flower0003",
+      "key": "holy-worship-month",
+      "name": "Holy Worship Month",
+      "category": "Gift",
+      "rarity": 4,
+      "icon": "Game/UI/UI_Icon/Item/Flower0003_256"
+    },
+    {
+      "id": "Flower0004",
+      "key": "refulgent-agreement",
+      "name": "Refulgent Agreement",
+      "category": "Gift",
+      "rarity": 3,
+      "icon": "Game/UI/UI_Icon/Item/Flower0004_256"
+    },
+    {
+      "id": "Flower0006",
+      "key": "sweet-pink",
+      "name": "Sweet Pink",
+      "category": "Gift",
+      "rarity": 3,
+      "icon": "Game/UI/UI_Icon/Item/Flower0006_256"
+    },
+    {
+      "id": "Flower0007",
+      "key": "blazing-crimson",
+      "name": "Blazing Crimson",
+      "category": "Gift",
+      "rarity": 3,
+      "icon": "Game/UI/UI_Icon/Item/Flower0007_256"
+    },
+    {
+      "id": "Flower0008",
+      "key": "serenade",
+      "name": "Serenade",
+      "category": "Gift",
+      "rarity": 3,
+      "icon": "Game/UI/UI_Icon/Item/Flower0008_256"
+    },
+    {
+      "id": "Flower0009",
+      "key": "fantasia",
+      "name": "Fantasia",
+      "category": "Gift",
+      "rarity": 3,
+      "icon": "Game/UI/UI_Icon/Item/Flower0009_256"
+    },
+    {
+      "id": "Flower0010",
+      "key": "waltz",
+      "name": "Waltz",
+      "category": "Gift",
+      "rarity": 3,
+      "icon": "Game/UI/UI_Icon/Item/Flower00010_256"
+    },
+    {
+      "id": "Furniture_draw_001",
+      "key": "bear-o-metry",
+      "name": "Bear-o-metry",
+      "category": "Gift",
+      "rarity": 3,
+      "icon": "Game/UI/UI_Icon/Item/Furniture_draw_001_256"
+    },
+    {
+      "id": "Furniture_draw_002",
+      "key": "fever-dream",
+      "name": "Fever Dream",
+      "category": "Gift",
+      "rarity": 3,
+      "icon": "Game/UI/UI_Icon/Item/Furniture_draw_002_256"
+    },
+    {
+      "id": "Furniture_draw_004",
+      "key": "9331",
+      "name": "9331",
+      "category": "Gift",
+      "rarity": 3,
+      "icon": "Game/UI/UI_Icon/Item/Furniture_draw_004_256"
+    },
+    {
+      "id": "Furniture_draw_005",
+      "key": "balance",
+      "name": "Balance",
+      "category": "Gift",
+      "rarity": 3,
+      "icon": "Game/UI/UI_Icon/Item/Furniture_draw_005_256"
+    },
+    {
+      "id": "Furniture_draw_006",
+      "key": "promise",
+      "name": "Promise",
+      "category": "Gift",
+      "rarity": 3,
+      "icon": "Game/UI/UI_Icon/Item/Furniture_draw_006_256"
+    },
+    {
+      "id": "Furniture_draw_008",
+      "key": "solitude",
+      "name": "Solitude",
+      "category": "Gift",
+      "rarity": 3,
+      "icon": "Game/UI/UI_Icon/Item/Furniture_draw_008_256"
+    },
+    {
+      "id": "Furniture_FlowerPot_004",
+      "key": "golden-dawn",
+      "name": "Golden Dawn",
+      "category": "Gift",
+      "rarity": 3,
+      "icon": "Game/UI/UI_Icon/Item/Furniture_FlowerPot_004_256"
+    },
+    {
+      "id": "Furniture_FlowerPot_005",
+      "key": "glimmering-ice",
+      "name": "Glimmering Ice",
+      "category": "Gift",
+      "rarity": 4,
+      "icon": "Game/UI/UI_Icon/Item/Furniture_FlowerPot_005_256"
+    },
+    {
+      "id": "Furniture_Gacha_Blue_001",
+      "key": "kokoro-rider-l1-ultimate-skill",
+      "name": "Kokoro Rider L1 - Ultimate Skill",
+      "category": "Gift",
+      "rarity": 5,
+      "icon": "Game/UI/UI_Icon/Item/Furniture_Gacha_Blue_001_256"
+    },
+    {
+      "id": "Furniture_Gacha_Blue_002",
+      "key": "kokoro-rider-l1-silent-vow",
+      "name": "Kokoro Rider L1 - Silent Vow",
+      "category": "Gift",
+      "rarity": 4,
+      "icon": "Game/UI/UI_Icon/Item/Furniture_Gacha_Blue_002_256"
+    },
+    {
+      "id": "Furniture_Gacha_Blue_004",
+      "key": "kokoro-rider-l1-splendor",
+      "name": "Kokoro Rider L1 - Splendor",
+      "category": "Gift",
+      "rarity": 3,
+      "icon": "Game/UI/UI_Icon/Item/Furniture_Gacha_Blue_004_256"
+    },
+    {
+      "id": "Furniture_Gacha_eri_001",
+      "key": "asahi-inori-moonsilver",
+      "name": "Asahi Inori - Moonsilver",
+      "category": "Gift",
+      "rarity": 5,
+      "icon": "Game/UI/UI_Icon/Item/Furniture_Gacha_eri_001_256"
+    },
+    {
+      "id": "Furniture_Gacha_eri_002",
+      "key": "asahi-inori-flowing-delusion",
+      "name": "Asahi Inori - Flowing Delusion",
+      "category": "Gift",
+      "rarity": 4,
+      "icon": "Game/UI/UI_Icon/Item/Furniture_Gacha_eri_002_256"
+    },
+    {
+      "id": "Furniture_Gacha_eri_003",
+      "key": "asahi-inori-argentum-persona",
+      "name": "Asahi Inori - Argentum Persona",
+      "category": "Gift",
+      "rarity": 3,
+      "icon": "Game/UI/UI_Icon/Item/Furniture_Gacha_eri_003_256"
+    },
+    {
+      "id": "Furniture_Gacha_eri_004",
+      "key": "asahi-inori-moon-in-the-mirror",
+      "name": "Asahi Inori - Moon in the Mirror",
+      "category": "Gift",
+      "rarity": 3,
+      "icon": "Game/UI/UI_Icon/Item/Furniture_Gacha_eri_004_256"
+    },
+    {
+      "id": "Furniture_Gacha_eri_005",
+      "key": "asahi-inori-galactic-fabrication",
+      "name": "Asahi Inori - Galactic Fabrication",
+      "category": "Gift",
+      "rarity": 3,
+      "icon": "Game/UI/UI_Icon/Item/Furniture_Gacha_eri_005_256"
+    },
+    {
+      "id": "Furniture_Gacha_MiniBlack_001",
+      "key": "gigafluff-reign-of-darkness",
+      "name": "Gigafluff - Reign of Darkness",
+      "category": "Gift",
+      "rarity": 5,
+      "icon": "Game/UI/UI_Icon/Item/Furniture_Gacha_MiniBlack_001_256"
+    },
+    {
+      "id": "Furniture_Gacha_MiniBlack_002",
+      "key": "gigafluff-absolute-power",
+      "name": "Gigafluff - Absolute Power",
+      "category": "Gift",
+      "rarity": 4,
+      "icon": "Game/UI/UI_Icon/Item/Furniture_Gacha_MiniBlack_002_256"
+    },
+    {
+      "id": "Furniture_Gacha_MiniBlack_005",
+      "key": "gigafluff-ever-victorious",
+      "name": "Gigafluff - Ever Victorious",
+      "category": "Gift",
+      "rarity": 3,
+      "icon": "Game/UI/UI_Icon/Item/Furniture_Gacha_MiniBlack_005_256"
+    },
+    {
+      "id": "Furniture_Gacha_Pink_002",
+      "key": "kokoro-rider-l3-unyielding-titan",
+      "name": "Kokoro Rider L3 - Unyielding Titan",
+      "category": "Gift",
+      "rarity": 4,
+      "icon": "Game/UI/UI_Icon/Item/Furniture_Gacha_Pink_002_256"
+    },
+    {
+      "id": "Furniture_Gacha_Pink_005",
+      "key": "kokoro-rider-l3-soaring-knight",
+      "name": "Kokoro Rider L3 - Soaring Knight",
+      "category": "Gift",
+      "rarity": 3,
+      "icon": "Game/UI/UI_Icon/Item/Furniture_Gacha_Pink_005_256"
+    },
+    {
+      "id": "Furniture_Light_002",
+      "key": "ambient-night-light",
+      "name": "Ambient Night Light",
+      "category": "Gift",
+      "rarity": 4,
+      "icon": "Game/UI/UI_Icon/Item/Furniture_Light_002_256"
+    },
+    {
+      "id": "Furniture_Light_007",
+      "key": "white-jade-lamp",
+      "name": "White Jade Lamp",
+      "category": "Gift",
+      "rarity": 4,
+      "icon": "Game/UI/UI_Icon/Furniture/Arrange_furniture/256/000_256__101_"
+    },
+    {
+      "id": "Furniture_Ornament_001",
+      "key": "bunny-box",
+      "name": "Bunny Box",
+      "category": "Gift",
+      "rarity": 4,
+      "icon": "Game/UI/UI_Icon/Item/Furniture_Ornament_001_256"
+    },
+    {
+      "id": "Furniture_Ornament_002",
+      "key": "golden-moon",
+      "name": "Golden Moon",
+      "category": "Gift",
+      "rarity": 3,
+      "icon": "Game/UI/UI_Icon/Item/Furniture_Ornament_002_256"
+    },
+    {
+      "id": "Furniture_Ornament_003",
+      "key": "on-track",
+      "name": "On Track",
+      "category": "Gift",
+      "rarity": 4,
+      "icon": "Game/UI/UI_Icon/Item/Furniture_Ornament_003_256"
+    },
+    {
+      "id": "Furniture_Ornament_026",
+      "key": "moonmelt-tea-set",
+      "name": "Moonmelt Tea Set",
+      "category": "Gift",
+      "rarity": 3,
+      "icon": "Game/UI/UI_Icon/Furniture/Arrange_furniture/256/000_256__45_"
+    },
+    {
+      "id": "Furniture_Ornament_038",
+      "key": "999-nights",
+      "name": "999 Nights",
+      "category": "Gift",
+      "rarity": 5,
+      "icon": "Game/UI/UI_Icon/Furniture/Arrange_furniture/256/Furniture_Ornament_038"
+    },
+    {
       "id": "gold",
       "key": "beetle-coin",
       "name": "Beetle Coin",
@@ -28016,6 +28984,134 @@
       "category": "Item",
       "rarity": 4,
       "icon": "Game/UI/UI_Icon/Item/SkillUpMaterial_05_lv3"
+    },
+    {
+      "id": "SmallPoster001",
+      "key": "bosss-approval",
+      "name": "Boss's Approval",
+      "category": "Gift",
+      "rarity": 2,
+      "icon": "Game/UI/UI_Icon/Item/SmallPoster001_256"
+    },
+    {
+      "id": "SmallPoster002",
+      "key": "shout",
+      "name": "Shout!",
+      "category": "Gift",
+      "rarity": 2,
+      "icon": "Game/UI/UI_Icon/Item/SmallPoster002_256"
+    },
+    {
+      "id": "SmallPoster003",
+      "key": "day-off",
+      "name": "Day Off",
+      "category": "Gift",
+      "rarity": 2,
+      "icon": "Game/UI/UI_Icon/Item/SmallPoster003_256"
+    },
+    {
+      "id": "SmallPoster004",
+      "key": "haha",
+      "name": "HAHA",
+      "category": "Gift",
+      "rarity": 2,
+      "icon": "Game/UI/UI_Icon/Item/SmallPoster004_256"
+    },
+    {
+      "id": "SmallPoster005",
+      "key": "chill-out",
+      "name": "Chill Out",
+      "category": "Gift",
+      "rarity": 2,
+      "icon": "Game/UI/UI_Icon/Item/SmallPoster005_256"
+    },
+    {
+      "id": "SmallPoster006",
+      "key": "secrets-of-the-bag",
+      "name": "Secrets of the Bag…",
+      "category": "Gift",
+      "rarity": 2,
+      "icon": "Game/UI/UI_Icon/Item/SmallPoster006_256"
+    },
+    {
+      "id": "SpecialGift_1004",
+      "key": "tomato-family-bucket",
+      "name": "Tomato Family Bucket",
+      "category": "Gift",
+      "rarity": 5,
+      "icon": "Game/UI/UI_Icon/Item/YH_UI_Item_SpecialGift1004"
+    },
+    {
+      "id": "SpecialGift_1010",
+      "key": "family-wax-seal",
+      "name": "Family Wax Seal",
+      "category": "Gift",
+      "rarity": 5,
+      "icon": "Game/UI/UI_Icon/Item/YH_UI_Item_SpecialGift1010"
+    },
+    {
+      "id": "SpecialGift_1036",
+      "key": "vintage-gilded-hairpin",
+      "name": "Vintage Gilded Hairpin",
+      "category": "Gift",
+      "rarity": 5,
+      "icon": "Game/UI/UI_Icon/Item/YH_UI_Item_SpecialGift1036"
+    },
+    {
+      "id": "SpecialGift_1071",
+      "key": "deluxe-ship-model-kit",
+      "name": "Deluxe Ship Model Kit",
+      "category": "Gift",
+      "rarity": 5,
+      "icon": "Game/UI/UI_Icon/Item/YH_UI_Item_SpecialGift1071"
+    },
+    {
+      "id": "SpecialGift_1072",
+      "key": "ghost-nightlight",
+      "name": "Ghost Nightlight",
+      "category": "Gift",
+      "rarity": 5,
+      "icon": "Game/UI/UI_Icon/Item/YH_UI_Item_SpecialGift1072"
+    },
+    {
+      "id": "SpecialGift_1075",
+      "key": "unknown-mystery-box",
+      "name": "Unknown Mystery Box",
+      "category": "Gift",
+      "rarity": 5,
+      "icon": "Game/UI/UI_Icon/Item/YH_UI_Item_SpecialGift1075"
+    },
+    {
+      "id": "SpecialGift_1076",
+      "key": "exclusively-colored-gk",
+      "name": "Exclusively Colored GK",
+      "category": "Gift",
+      "rarity": 5,
+      "icon": "Game/UI/UI_Icon/Item/YH_UI_Item_SpecialGift1076"
+    },
+    {
+      "id": "SpecialGift_CD",
+      "key": "unrecorded-sound",
+      "name": "Unrecorded Sound",
+      "category": "Gift",
+      "rarity": 4,
+      "icon": "Game/UI/UI_Icon/Item/YH_UI_Item_Likeability_Gift_01"
+    },
+    {
+      "id": "SpecialGift_letter",
+      "key": "a-handwritten-letter",
+      "name": "A Handwritten Letter",
+      "category": "Gift",
+      "rarity": 5,
+      "icon": "Game/UI/UI_Icon/Item/YH_UI_Item_01_YiFengShouXieXin"
+    },
+    {
+      "id": "SpecialGift_ticket",
+      "key": "floe-cinema-ticket",
+      "name": "Floe Cinema Ticket",
+      "category": "Gift",
+      "rarity": 4,
+      "icon": "Game/UI/UI_Icon/Item/YH_UI_Item_Likeability_Gift_02"
     },
     {
       "id": "WeaponBreakMaterial_01_lv1",
