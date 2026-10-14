@@ -55,6 +55,7 @@ type WeaponDetail = {
   rand_property?: { name?: string; format?: string; value?: number };
   level?: Record<string, { rate: number }>;
   stars?: Record<string, { star_rate: number; rand_rate: number }>;
+  talents?: Record<string, { name?: string; desc?: string }>;
 };
 type DiscIndex = Record<
   string,
@@ -251,6 +252,7 @@ const weapons: CatalogWeapon[] = await mapLimit(Object.keys(weaponIndex), 4, asy
     ascension,
     ...(d.rand_property?.name ? { mainStat: d.rand_property.name } : {}),
     ...enginePoints(d),
+    ...(d.talents?.["1"]?.desc ? { effect: { name: stripTags(d.talents["1"].name), ranks: ["1", "2", "3", "4", "5"].flatMap((r) => (d.talents?.[r]?.desc ? [stripTags(d.talents[r].desc)] : [])) } } : {}),
   };
 });
 

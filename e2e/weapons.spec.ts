@@ -210,7 +210,8 @@ test("Weapons on the sheet: a window of my copies first, then the rest; each wit
   await expect(box.getByRole("region", { name: "All" }).getByRole("article", { name: "Before the Tutorial Mission Starts" })).toBeVisible();
   await expect(box.getByRole("region", { name: "All" }).getByRole("article", { name: "Patience Is All You Need" })).toHaveCount(0);
 
-  await mine.getByRole("button", { name: "Equip Patience Is All You Need" }).click();
+  // A click on its art equips it, the effect still open below.
+  await mine.getByRole("button", { name: "Equip Patience Is All You Need" }).click({ position: { x: 60, y: 60 } });
   await expect(box).toHaveCount(0);
   const card = page.getByRole("region", { name: "Weapon" });
   await expect(card.getByRole("combobox", { name: "Weapon name" })).toHaveValue("Patience Is All You Need");

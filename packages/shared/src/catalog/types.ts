@@ -77,6 +77,8 @@ export const catalogWeaponSchema = z.object({
   /** The weapon's second stat (CRIT DMG, Energy Regen…), the game's words; none where the game has none (light cones). */
   mainStat: z.string().optional(),
   baseStats: baseStatsSchema.optional(),
+  /** Its passive: the name and the text at each refinement (R1…R5, S1…S5), filled by importers. */
+  effect: z.object({ name: z.string().optional(), ranks: z.array(z.string()).max(5) }).optional(),
   extra: z.record(z.string(), z.unknown()).optional(),
 });
 export type CatalogWeapon = z.infer<typeof catalogWeaponSchema>;

@@ -42,10 +42,12 @@ describe("weapon effects", () => {
     expect(w.effect?.ranks[4]).toMatch(/^Increases Charge Efficiency by 30%\./);
   });
 
-  it("every 4★ and 5★ weapon of those games has its effect at five ranks", async () => {
+  it("every 4★ and 5★ weapon of those games has its effect at five ranks, or one for those never refined", async () => {
     for (const game of [genshin, hsr, zzz, wuwa, nte]) {
-      const missing = (await load(game)).weapons.filter((w) => w.rarity >= 4 && w.effect?.ranks.length !== 5).map((w) => w.name);
-      expect(missing, game.key).toEqual([]);
+      const missing = (await load(game)).weapons.filter((w) => w.rarity >= 4 && w.effect?.ranks.length !== 5).map((w) => `${w.name}:${w.effect?.ranks.length ?? 0}`);
+      // Genshin's event and promotional weapons (Sword of Descension, the Isshin blades, Predator) stay at R1.
+      expect(missing.filter((m) => !m.endsWith(":1")), game.key).toEqual([]);
+      expect(missing.length, game.key).toBeLessThanOrEqual(6);
     }
   });
 });

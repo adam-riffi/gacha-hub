@@ -33,6 +33,7 @@ import { Picker } from "../components/Picker";
 import { TaskGeneratorPanel } from "../components/TaskGeneratorPanel";
 import { QuickBuild } from "../components/tasks/QuickBuild";
 import { MiscCard, SkillRow } from "../components/sheet/MiscCard";
+import { WeaponWindow } from "../components/sheet/WeaponWindow";
 import { StatPicker } from "../components/characters/CardStats";
 import { StatIcon } from "../components/StatIcon";
 import type { CharacterDetail, InstanceDetail, TaskItem } from "../lib/types";
@@ -169,6 +170,7 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
   // The weapons and the characters synced (Georges, round 5): a pick takes a free copy, or asks which.
   const copies = useQuery({ queryKey: ["weapons", data.gameInstanceId], queryFn: () => api.get<WeaponCopyDto[]>(`/api/instances/${data.gameInstanceId}/weapons`), enabled: Boolean(holder) });
   const [asking, setAsking] = useState<CatalogWeapon | null>(null);
+  const [choosing, setChoosing] = useState(false);
   const heldBy = (copyId: string) => (all.data ?? []).filter((b) => b.id !== data.id && ((b.doc as Doc)[holder ?? ""] as Doc | undefined)?.copyId === copyId);
   const equip = (c: WeaponCopyDto) => {
     setAsking(null);
@@ -331,7 +333,38 @@ function CharacterEditor({ data }: { data: CharacterDetail }) {
             </section>
 
             <section className="card" aria-label="Weapon">
-              <h3>Weapon</h3>
+              <div className="row sh-weapon-head">
+                <h3>Weapon</h3>
+                <span className="ch-sp" />
+                {holder && (
+                  <button type="button" className="btn primary sm" onClick={() => setChoosing(true)}>
+                    Choose weapon
+                  </button>
+                )}
+              </div>
+              {holder && choosing && (
+                <WeaponWindow
+                  game={game}
+                  weapons={weapons}
+                  copies={copies.data ?? []}
+                  holders={(copyId) =>
+                    heldBy(copyId).map((b) => {
+                      const unit = index?.characters.get(b.catalogId ?? "");
+                      return { key: b.id, name: unit?.name ?? b.name, icon: unit?.icon, tag: unit?.tag };
+                    })
+                  }
+                  onCopy={(c, w) => {
+                    setChoosing(false);
+                    if (heldBy(c.id).length === 0) equip(c);
+                    else setAsking(w);
+                  }}
+                  onWeapon={(w) => {
+                    setChoosing(false);
+                    pickWeapon(w, w.name);
+                  }}
+                  onClose={() => setChoosing(false)}
+                />
+              )}
               {holder ? (
                 <>
                   <Picker

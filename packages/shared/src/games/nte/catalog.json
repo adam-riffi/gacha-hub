@@ -22546,7 +22546,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Haunted Record",
+        "ranks": [
+          "Grants the wearer a 12% Redirect Skill DMG bonus.",
+          "Grants the wearer a 13% Redirect Skill DMG bonus.",
+          "Grants the wearer a 14% Redirect Skill DMG bonus.",
+          "Grants the wearer a 15% Redirect Skill DMG bonus.",
+          "Grants the wearer a 16% Redirect Skill DMG bonus."
+        ]
+      }
     },
     {
       "id": "fork_Arachne",
@@ -22642,7 +22652,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Arachne",
+        "ranks": [
+          "Increases Max HP by 20%. Increases Mental DMG dealt by 10% for 10s after the wearer casts an Ultimate.",
+          "Increases Max HP by 23%. Increases Mental DMG dealt by 12% for 10s after the wearer casts an Ultimate.",
+          "Increases Max HP by 26%. Increases Mental DMG dealt by 14% for 10s after the wearer casts an Ultimate.",
+          "Increases Max HP by 29%. Increases Mental DMG dealt by 16% for 10s after the wearer casts an Ultimate.",
+          "Increases Max HP by 32%. Increases Mental DMG dealt by 18% for 10s after the wearer casts an Ultimate."
+        ]
+      }
     },
     {
       "id": "fork_BitGame",
@@ -22738,7 +22758,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Beat King",
+        "ranks": [
+          "Increases the active character's ATK by 10% while the wearer is off-field, and increases the active character's ATK by 2% when the wearer deals damage, up to 4 stacks and triggering at most once every 2s. Resets the effect when the wearer becomes the active character. Increases Psyche DMG by 12% while the wearer is the active character, and increases Psyche DMG by 2% when dealing Psyche DMG with a Basic Attack, up to 10 stacks. Triggers at most once every 0.3s. Resets the effect when switching characters.",
+          "Increases the active character's ATK by 11% while the wearer is off-field, and increases the active character's ATK by 2.3% when the wearer deals damage, up to 4 stacks and triggering at most once every 2s. Resets the effect when the wearer becomes the active character. Increases Psyche DMG by 14% while the wearer is the active character, and increases Psyche DMG by 2.3% when dealing Psyche DMG with a Basic Attack, up to 10 stacks. Triggers at most once every 0.3s. Resets the effect when switching characters.",
+          "Increases the active character's ATK by 12% while the wearer is off-field, and increases the active character's ATK by 2.6% when the wearer deals damage, up to 4 stacks and triggering at most once every 2s. Resets the effect when the wearer becomes the active character. Increases Psyche DMG by 16% while the wearer is the active character, and increases Psyche DMG by 2.6% when dealing Psyche DMG with a Basic Attack, up to 10 stacks. Triggers at most once every 0.3s. Resets the effect when switching characters.",
+          "Increases the active character's ATK by 13% while the wearer is off-field, and increases the active character's ATK by 2.9% when the wearer deals damage, up to 4 stacks and triggering at most once every 2s. Resets the effect when the wearer becomes the active character. Increases Psyche DMG by 18% while the wearer is the active character, and increases Psyche DMG by 2.9% when dealing Psyche DMG with a Basic Attack, up to 10 stacks. Triggers at most once every 0.3s. Resets the effect when switching characters.",
+          "Increases the active character's ATK by 14% while the wearer is off-field, and increases the active character's ATK by 3.2% when the wearer deals damage, up to 4 stacks and triggering at most once every 2s. Resets the effect when the wearer becomes the active character. Increases Psyche DMG by 20% while the wearer is the active character, and increases Psyche DMG by 3.2% when dealing Psyche DMG with a Basic Attack, up to 10 stacks. Triggers at most once every 0.3s. Resets the effect when switching characters."
+        ]
+      }
     },
     {
       "id": "fork_BitterCake",
@@ -22834,7 +22864,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "\"Bittercake\"",
+        "ranks": [
+          "Increases wearer's DEF by 26% for 10s when taking damage. Triggers at most once every 20s.",
+          "Increases wearer's DEF by 31% for 10s when taking damage. Triggers at most once every 20s.",
+          "Increases wearer's DEF by 36% for 10s when taking damage. Triggers at most once every 20s.",
+          "Increases wearer's DEF by 41% for 10s when taking damage. Triggers at most once every 20s.",
+          "Increases wearer's DEF by 46% for 10s when taking damage. Triggers at most once every 20s."
+        ]
+      }
     },
     {
       "id": "fork_BlackBook",
@@ -22930,7 +22970,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "\"Black Tome\"",
+        "ranks": [
+          "Increases Break Intensity by 60. Seals Arc: Black Tome with two chains by default. Unleashes 1 chain each time any character on the team casts a Support Skill. Makes Arc: Black Tome available when all two chains are unleashed. Arc: Black Tome — Summons the Black Tome for 20s. Designates an enemy every 5s. Increases the wearer's Chaos DMG dealt to designated enemies by 20%. Deals Chaos DMG equal to 200% of the wearer's ATK to designated enemies when they take Break Damage.",
+          "Increases Break Intensity by 67. Seals Arc: Black Tome with two chains by default. Unleashes 1 chain each time any character on the team casts a Support Skill. Makes Arc: Black Tome available when all two chains are unleashed. Arc: Black Tome — Summons the Black Tome for 20s. Designates an enemy every 5s. Increases the wearer's Chaos DMG dealt to designated enemies by 24%. Deals Chaos DMG equal to 230% of the wearer's ATK to designated enemies when they take Break Damage.",
+          "Increases Break Intensity by 74. Seals Arc: Black Tome with two chains by default. Unleashes 1 chain each time any character on the team casts a Support Skill. Makes Arc: Black Tome available when all two chains are unleashed. Arc: Black Tome — Summons the Black Tome for 20s. Designates an enemy every 5s. Increases the wearer's Chaos DMG dealt to designated enemies by 28%. Deals Chaos DMG equal to 260% of the wearer's ATK to designated enemies when they take Break Damage.",
+          "Increases Break Intensity by 81. Seals Arc: Black Tome with two chains by default. Unleashes 1 chain each time any character on the team casts a Support Skill. Makes Arc: Black Tome available when all two chains are unleashed. Arc: Black Tome — Summons the Black Tome for 20s. Designates an enemy every 5s. Increases the wearer's Chaos DMG dealt to designated enemies by 32%. Deals Chaos DMG equal to 290% of the wearer's ATK to designated enemies when they take Break Damage.",
+          "Increases Break Intensity by 88. Seals Arc: Black Tome with two chains by default. Unleashes 1 chain each time any character on the team casts a Support Skill. Makes Arc: Black Tome available when all two chains are unleashed. Arc: Black Tome — Summons the Black Tome for 20s. Designates an enemy every 5s. Increases the wearer's Chaos DMG dealt to designated enemies by 36%. Deals Chaos DMG equal to 320% of the wearer's ATK to designated enemies when they take Break Damage."
+        ]
+      }
     },
     {
       "id": "fork_BlastCandy",
@@ -23026,7 +23076,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Popping Candy",
+        "ranks": [
+          "Increases ATK by 25% for 10s after the wearer casts an Ultimate. Effect does not stack.",
+          "Increases ATK by 30% for 10s after the wearer casts an Ultimate. Effect does not stack.",
+          "Increases ATK by 35% for 10s after the wearer casts an Ultimate. Effect does not stack.",
+          "Increases ATK by 40% for 10s after the wearer casts an Ultimate. Effect does not stack.",
+          "Increases ATK by 45% for 10s after the wearer casts an Ultimate. Effect does not stack."
+        ]
+      }
     },
     {
       "id": "fork_bopu",
@@ -23122,7 +23182,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "\"Bopp\"",
+        "ranks": [
+          "Increases wearer's damage dealt by 18% for 10s after casting Support Skill. Triggers at most once every 20s.",
+          "Increases wearer's damage dealt by 21% for 10s after casting Support Skill. Triggers at most once every 20s.",
+          "Increases wearer's damage dealt by 24% for 10s after casting Support Skill. Triggers at most once every 20s.",
+          "Increases wearer's damage dealt by 27% for 10s after casting Support Skill. Triggers at most once every 20s.",
+          "Increases wearer's damage dealt by 30% for 10s after casting Support Skill. Triggers at most once every 20s."
+        ]
+      }
     },
     {
       "id": "fork_BoxingCandy",
@@ -23218,7 +23288,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Jawbreaker's Candy",
+        "ranks": [
+          "Increases the wearer's DMG by 22%. Increases this effect to 28% against enemies with HP below 50%.",
+          "Increases the wearer's DMG by 26%. Increases this effect to 34% against enemies with HP below 50%.",
+          "Increases the wearer's DMG by 30%. Increases this effect to 40% against enemies with HP below 50%.",
+          "Increases the wearer's DMG by 34%. Increases this effect to 46% against enemies with HP below 50%.",
+          "Increases the wearer's DMG by 38%. Increases this effect to 52% against enemies with HP below 50%."
+        ]
+      }
     },
     {
       "id": "fork_Butterfly",
@@ -23314,7 +23394,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Swallowtail",
+        "ranks": [
+          "Increases Anima DMG by 15%. Increases the wearer's Attachment DMG by 10%. Increases the Attachment DMG bonus to 20% for 6s when the wearer casts an Ultimate. Effect does not stack.",
+          "Increases Anima DMG by 17.5%. Increases the wearer's Attachment DMG by 11.25%. Increases the Attachment DMG bonus to 22.5% for 6s when the wearer casts an Ultimate. Effect does not stack.",
+          "Increases Anima DMG by 20%. Increases the wearer's Attachment DMG by 12.5%. Increases the Attachment DMG bonus to 25% for 6s when the wearer casts an Ultimate. Effect does not stack.",
+          "Increases Anima DMG by 22.5%. Increases the wearer's Attachment DMG by 13.75%. Increases the Attachment DMG bonus to 27.5% for 6s when the wearer casts an Ultimate. Effect does not stack.",
+          "Increases Anima DMG by 25%. Increases the wearer's Attachment DMG by 15%. Increases the Attachment DMG bonus to 30% for 6s when the wearer casts an Ultimate. Effect does not stack."
+        ]
+      }
     },
     {
       "id": "fork_Castle",
@@ -23410,7 +23500,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Cardboard Castle",
+        "ranks": [
+          "Increases Healing Bonus by 12% for 10s after the wearer casts a Redirect Skill. Effect does not stack.",
+          "Increases Healing Bonus by 14% for 10s after the wearer casts a Redirect Skill. Effect does not stack.",
+          "Increases Healing Bonus by 16% for 10s after the wearer casts a Redirect Skill. Effect does not stack.",
+          "Increases Healing Bonus by 18% for 10s after the wearer casts a Redirect Skill. Effect does not stack.",
+          "Increases Healing Bonus by 20% for 10s after the wearer casts a Redirect Skill. Effect does not stack."
+        ]
+      }
     },
     {
       "id": "fork_Crowbar",
@@ -23506,7 +23606,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Picky",
+        "ranks": [
+          "Increases Break Intensity by 90 for 50s after the wearer uses a Redirect Skill. Effect does not stack. Allows use of Arc - Picky. (Cooldown: 50s). Arc - Picky: Summons Picky to pry open all nearby lockable objects.",
+          "Increases Break Intensity by 108 for 50s after the wearer uses a Redirect Skill. Effect does not stack. Allows use of Arc - Picky. (Cooldown: 50s). Arc - Picky: Summons Picky to pry open all nearby lockable objects.",
+          "Increases Break Intensity by 126 for 50s after the wearer uses a Redirect Skill. Effect does not stack. Allows use of Arc - Picky. (Cooldown: 50s). Arc - Picky: Summons Picky to pry open all nearby lockable objects.",
+          "Increases Break Intensity by 144 for 50s after the wearer uses a Redirect Skill. Effect does not stack. Allows use of Arc - Picky. (Cooldown: 50s). Arc - Picky: Summons Picky to pry open all nearby lockable objects.",
+          "Increases Break Intensity by 162 for 50s after the wearer uses a Redirect Skill. Effect does not stack. Allows use of Arc - Picky. (Cooldown: 50s). Arc - Picky: Summons Picky to pry open all nearby lockable objects."
+        ]
+      }
     },
     {
       "id": "fork_DemonBlade",
@@ -23602,7 +23712,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Cursed Blade - Soulbound",
+        "ranks": [
+          "Increases Crit Rate by 16%. Grants the wearer a 9% Crit DMG bonus for 15s when they deal Incantation DMG. Stacks up to 7 times, with no more than 1 stack gained every 0.3s. Resets the duration when triggered again.",
+          "Increases Crit Rate by 20%. Grants the wearer a 11.25% Crit DMG bonus for 15s when they deal Incantation DMG. Stacks up to 7 times, with no more than 1 stack gained every 0.3s. Resets the duration when triggered again.",
+          "Increases Crit Rate by 24%. Grants the wearer a 13.5% Crit DMG bonus for 15s when they deal Incantation DMG. Stacks up to 7 times, with no more than 1 stack gained every 0.3s. Resets the duration when triggered again.",
+          "Increases Crit Rate by 28%. Grants the wearer a 15.75% Crit DMG bonus for 15s when they deal Incantation DMG. Stacks up to 7 times, with no more than 1 stack gained every 0.3s. Resets the duration when triggered again.",
+          "Increases Crit Rate by 32%. Grants the wearer a 18% Crit DMG bonus for 15s when they deal Incantation DMG. Stacks up to 7 times, with no more than 1 stack gained every 0.3s. Resets the duration when triggered again."
+        ]
+      }
     },
     {
       "id": "fork_Door",
@@ -23698,7 +23818,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Reverie Gate",
+        "ranks": [
+          "Increases ATK by 16%. When the wearer performs healing, increases the wearer's Anima DMG dealt by 30% and all allies' DMG dealt by 15% for 20s. Resets the duration when triggered again. Effects with the same name do not stack.",
+          "Increases ATK by 20%. When the wearer performs healing, increases the wearer's Anima DMG dealt by 37.5% and all allies' DMG dealt by 18.75% for 20s. Resets the duration when triggered again. Effects with the same name do not stack.",
+          "Increases ATK by 24%. When the wearer performs healing, increases the wearer's Anima DMG dealt by 45% and all allies' DMG dealt by 22.5% for 20s. Resets the duration when triggered again. Effects with the same name do not stack.",
+          "Increases ATK by 28%. When the wearer performs healing, increases the wearer's Anima DMG dealt by 52.5% and all allies' DMG dealt by 26.25% for 20s. Resets the duration when triggered again. Effects with the same name do not stack.",
+          "Increases ATK by 32%. When the wearer performs healing, increases the wearer's Anima DMG dealt by 60% and all allies' DMG dealt by 30% for 20s. Resets the duration when triggered again. Effects with the same name do not stack."
+        ]
+      }
     },
     {
       "id": "fork_dustbin",
@@ -23794,7 +23924,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "\"Decomposer\"",
+        "ranks": [
+          "Increases wearer's Break Intensity by 60 for 10s when reducing Break. Triggers at most once every 20s.",
+          "Increases wearer's Break Intensity by 66 for 10s when reducing Break. Triggers at most once every 20s.",
+          "Increases wearer's Break Intensity by 72 for 10s when reducing Break. Triggers at most once every 20s.",
+          "Increases wearer's Break Intensity by 78 for 10s when reducing Break. Triggers at most once every 20s.",
+          "Increases wearer's Break Intensity by 84 for 10s when reducing Break. Triggers at most once every 20s."
+        ]
+      }
     },
     {
       "id": "fork_GoldRecord",
@@ -23890,7 +24030,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Golden Record",
+        "ranks": [
+          "Increases ATK by 24%. Increases the wearer's Support Skill Crit DMG by 66%. Dealing DMG with a Support Skill increases their Ultimate Crit DMG by 22% for 3s, up to 3 stacks. Resets the duration when triggered again.",
+          "Increases ATK by 30%. Increases the wearer's Support Skill Crit DMG by 82.5%. Dealing DMG with a Support Skill increases their Ultimate Crit DMG by 27.5% for 3s, up to 3 stacks. Resets the duration when triggered again.",
+          "Increases ATK by 36%. Increases the wearer's Support Skill Crit DMG by 99%. Dealing DMG with a Support Skill increases their Ultimate Crit DMG by 33% for 3s, up to 3 stacks. Resets the duration when triggered again.",
+          "Increases ATK by 42%. Increases the wearer's Support Skill Crit DMG by 115.5%. Dealing DMG with a Support Skill increases their Ultimate Crit DMG by 38.5% for 3s, up to 3 stacks. Resets the duration when triggered again.",
+          "Increases ATK by 48%. Increases the wearer's Support Skill Crit DMG by 132%. Dealing DMG with a Support Skill increases their Ultimate Crit DMG by 44% for 3s, up to 3 stacks. Resets the duration when triggered again."
+        ]
+      }
     },
     {
       "id": "fork_GoldWool",
@@ -23986,7 +24136,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Golden Fleece",
+        "ranks": [
+          "Increases the wearer's Lakshana DMG by 20%. Increases the wearer's CRIT DMG by 40% for 20s when they cast a Redirect Skill or Ultimate. Resets the duration when triggered again.",
+          "Increases the wearer's Lakshana DMG by 25%. Increases the wearer's CRIT DMG by 50% for 20s when they cast a Redirect Skill or Ultimate. Resets the duration when triggered again.",
+          "Increases the wearer's Lakshana DMG by 30%. Increases the wearer's CRIT DMG by 60% for 20s when they cast a Redirect Skill or Ultimate. Resets the duration when triggered again.",
+          "Increases the wearer's Lakshana DMG by 35%. Increases the wearer's CRIT DMG by 70% for 20s when they cast a Redirect Skill or Ultimate. Resets the duration when triggered again.",
+          "Increases the wearer's Lakshana DMG by 40%. Increases the wearer's CRIT DMG by 80% for 20s when they cast a Redirect Skill or Ultimate. Resets the duration when triggered again."
+        ]
+      }
     },
     {
       "id": "fork_jiaojuan",
@@ -24082,7 +24242,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Film - MANISH",
+        "ranks": [
+          "Increases Break Intensity by 48. Increases DMG by 10% against Broken units.",
+          "Increases Break Intensity by 57. Increases DMG by 12% against Broken units.",
+          "Increases Break Intensity by 66. Increases DMG by 14% against Broken units.",
+          "Increases Break Intensity by 75. Increases DMG by 16% against Broken units.",
+          "Increases Break Intensity by 84. Increases DMG by 18% against Broken units."
+        ]
+      }
     },
     {
       "id": "fork_jingmotingyuan",
@@ -24178,7 +24348,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Silent Garden",
+        "ranks": [
+          "Increases CRIT DMG by 12% for 5s when the wearer's HP is reduced without taking damage, up to 4 stacks. Unlocks Arc: Silent Garden. Consumes 5% of current HP and randomly performs one of the following attacks (CD 25s) in Arc: Silent Garden: Harsh Rebuke: Rains merciless rebukes like leaves in a storm, dealing 5 instances of Incantation DMG of 24% ATK. Incessant Nagging: Pierces targets with sharp, cutting words like thorns, dealing 6 instances of Incantation DMG of 18% ATK; the final instance deals double damage.",
+          "Increases CRIT DMG by 14% for 5s when the wearer's HP is reduced without taking damage, up to 4 stacks. Unlocks Arc: Silent Garden. Consumes 5% of current HP and randomly performs one of the following attacks (CD 25s) in Arc: Silent Garden: Harsh Rebuke: Rains merciless rebukes like leaves in a storm, dealing 5 instances of Incantation DMG of 28% ATK. Incessant Nagging: Pierces targets with sharp, cutting words like thorns, dealing 6 instances of Incantation DMG of 21% ATK; the final instance deals double damage.",
+          "Increases CRIT DMG by 16% for 5s when the wearer's HP is reduced without taking damage, up to 4 stacks. Unlocks Arc: Silent Garden. Consumes 5% of current HP and randomly performs one of the following attacks (CD 25s) in Arc: Silent Garden: Harsh Rebuke: Rains merciless rebukes like leaves in a storm, dealing 5 instances of Incantation DMG of 32% ATK. Incessant Nagging: Pierces targets with sharp, cutting words like thorns, dealing 6 instances of Incantation DMG of 24% ATK; the final instance deals double damage.",
+          "Increases CRIT DMG by 18% for 5s when the wearer's HP is reduced without taking damage, up to 4 stacks. Unlocks Arc: Silent Garden. Consumes 5% of current HP and randomly performs one of the following attacks (CD 25s) in Arc: Silent Garden: Harsh Rebuke: Rains merciless rebukes like leaves in a storm, dealing 5 instances of Incantation DMG of 36% ATK. Incessant Nagging: Pierces targets with sharp, cutting words like thorns, dealing 6 instances of Incantation DMG of 27% ATK; the final instance deals double damage.",
+          "Increases CRIT DMG by 20% for 5s when the wearer's HP is reduced without taking damage, up to 4 stacks. Unlocks Arc: Silent Garden. Consumes 5% of current HP and randomly performs one of the following attacks (CD 25s) in Arc: Silent Garden: Harsh Rebuke: Rains merciless rebukes like leaves in a storm, dealing 5 instances of Incantation DMG of 40% ATK. Incessant Nagging: Pierces targets with sharp, cutting words like thorns, dealing 6 instances of Incantation DMG of 30% ATK; the final instance deals double damage."
+        ]
+      }
     },
     {
       "id": "fork_Kite",
@@ -24274,7 +24454,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Ghostly Kite",
+        "ranks": [
+          "Increases ATK by 10% and Lakshana DMG to targets affected by Remora and Stain by 10% for 15s after the wearer casts a Redirect Skill. Effect does not stack.",
+          "Increases ATK by 12% and Lakshana DMG to targets affected by Remora and Stain by 12% for 15s after the wearer casts a Redirect Skill. Effect does not stack.",
+          "Increases ATK by 14% and Lakshana DMG to targets affected by Remora and Stain by 14% for 15s after the wearer casts a Redirect Skill. Effect does not stack.",
+          "Increases ATK by 16% and Lakshana DMG to targets affected by Remora and Stain by 16% for 15s after the wearer casts a Redirect Skill. Effect does not stack.",
+          "Increases ATK by 18% and Lakshana DMG to targets affected by Remora and Stain by 18% for 15s after the wearer casts a Redirect Skill. Effect does not stack."
+        ]
+      }
     },
     {
       "id": "fork_KnightCandy",
@@ -24370,7 +24560,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Knight's Candy",
+        "ranks": [
+          "Increases wearer's CRIT DMG by 4% for 10s after landing a critical hit, up to 10 stacks. Resets the duration when triggered again.",
+          "Increases wearer's CRIT DMG by 4.8% for 10s after landing a critical hit, up to 10 stacks. Resets the duration when triggered again.",
+          "Increases wearer's CRIT DMG by 5.6% for 10s after landing a critical hit, up to 10 stacks. Resets the duration when triggered again.",
+          "Increases wearer's CRIT DMG by 6.4% for 10s after landing a critical hit, up to 10 stacks. Resets the duration when triggered again.",
+          "Increases wearer's CRIT DMG by 7.2% for 10s after landing a critical hit, up to 10 stacks. Resets the duration when triggered again."
+        ]
+      }
     },
     {
       "id": "fork_koinobori",
@@ -24466,7 +24666,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Tidal Ascension",
+        "ranks": [
+          "Grants the wearer 10% ATK, 10% DEF, and 10% HP when the team has at least 3 different Esper Types.",
+          "Grants the wearer 12% ATK, 12% DEF, and 12% HP when the team has at least 3 different Esper Types.",
+          "Grants the wearer 14% ATK, 14% DEF, and 14% HP when the team has at least 3 different Esper Types.",
+          "Grants the wearer 16% ATK, 16% DEF, and 16% HP when the team has at least 3 different Esper Types.",
+          "Grants the wearer 18% ATK, 18% DEF, and 18% HP when the team has at least 3 different Esper Types."
+        ]
+      }
     },
     {
       "id": "fork_lingganzhongjiezhe",
@@ -24562,7 +24772,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Inspiration Terminator",
+        "ranks": [
+          "Grants the wearer 10 Ultimate Energy when casting a Redirect Skill. Triggers up to once every 20s.",
+          "Grants the wearer 12 Ultimate Energy when casting a Redirect Skill. Triggers up to once every 20s.",
+          "Grants the wearer 14 Ultimate Energy when casting a Redirect Skill. Triggers up to once every 20s.",
+          "Grants the wearer 16 Ultimate Energy when casting a Redirect Skill. Triggers up to once every 20s.",
+          "Grants the wearer 18 Ultimate Energy when casting a Redirect Skill. Triggers up to once every 20s."
+        ]
+      }
     },
     {
       "id": "fork_LunarPhase",
@@ -24658,7 +24878,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Moonphase Shift",
+        "ranks": [
+          "Increases ATK by 20%. After casting Ultimate, increases the wearer's Cosmos DMG dealt by 32% and allows the wearer to ignore 12% of enemy DEF for 20s. Resets the duration when triggered again.",
+          "Increases ATK by 23%. After casting Ultimate, increases the wearer's Cosmos DMG dealt by 36.8% and allows the wearer to ignore 13.8% of enemy DEF for 20s. Resets the duration when triggered again.",
+          "Increases ATK by 26%. After casting Ultimate, increases the wearer's Cosmos DMG dealt by 41.6% and allows the wearer to ignore 15.6% of enemy DEF for 20s. Resets the duration when triggered again.",
+          "Increases ATK by 29%. After casting Ultimate, increases the wearer's Cosmos DMG dealt by 46.4% and allows the wearer to ignore 17.4% of enemy DEF for 20s. Resets the duration when triggered again.",
+          "Increases ATK by 32%. After casting Ultimate, increases the wearer's Cosmos DMG dealt by 51.2% and allows the wearer to ignore 19.2% of enemy DEF for 20s. Resets the duration when triggered again."
+        ]
+      }
     },
     {
       "id": "fork_mamen",
@@ -24754,7 +24984,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Mammon",
+        "ranks": [
+          "Increases Cosmos DMG by 2.5% for every 100000 Fons the wearer holds, up to 10 stacks.",
+          "Increases Cosmos DMG by 3% for every 100000 Fons the wearer holds, up to 10 stacks.",
+          "Increases Cosmos DMG by 3.5% for every 100000 Fons the wearer holds, up to 10 stacks.",
+          "Increases Cosmos DMG by 4% for every 100000 Fons the wearer holds, up to 10 stacks.",
+          "Increases Cosmos DMG by 4.5% for every 100000 Fons the wearer holds, up to 10 stacks."
+        ]
+      }
     },
     {
       "id": "fork_mofeikesi",
@@ -24850,7 +25090,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Morphix",
+        "ranks": [
+          "Increases Charge Efficiency by 18%. Increases Team ATK by 10% for 20s after the wearer casts an Ultimate. Increases Team ATK by an additional 6% if enemies are controlled by the Ultimate. Effects with the same name do not stack.",
+          "Increases Charge Efficiency by 21%. Increases Team ATK by 11.5% for 20s after the wearer casts an Ultimate. Increases Team ATK by an additional 7% if enemies are controlled by the Ultimate. Effects with the same name do not stack.",
+          "Increases Charge Efficiency by 24%. Increases Team ATK by 13% for 20s after the wearer casts an Ultimate. Increases Team ATK by an additional 8% if enemies are controlled by the Ultimate. Effects with the same name do not stack.",
+          "Increases Charge Efficiency by 27%. Increases Team ATK by 14.5% for 20s after the wearer casts an Ultimate. Increases Team ATK by an additional 9% if enemies are controlled by the Ultimate. Effects with the same name do not stack.",
+          "Increases Charge Efficiency by 30%. Increases Team ATK by 16% for 20s after the wearer casts an Ultimate. Increases Team ATK by an additional 10% if enemies are controlled by the Ultimate. Effects with the same name do not stack."
+        ]
+      }
     },
     {
       "id": "fork_moon",
@@ -24946,7 +25196,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Aqua Astra",
+        "ranks": [
+          "Increases the wearer's Psyche DMG by 12%. Increases Crit DMG dealt by 2% for 5s when dealing Psyche DMG, up to 10 stacks. Triggers at most once every 0.1s.",
+          "Increases the wearer's Psyche DMG by 14.5%. Increases Crit DMG dealt by 2.4% for 5s when dealing Psyche DMG, up to 10 stacks. Triggers at most once every 0.1s.",
+          "Increases the wearer's Psyche DMG by 17%. Increases Crit DMG dealt by 2.8% for 5s when dealing Psyche DMG, up to 10 stacks. Triggers at most once every 0.1s.",
+          "Increases the wearer's Psyche DMG by 19.5%. Increases Crit DMG dealt by 3.2% for 5s when dealing Psyche DMG, up to 10 stacks. Triggers at most once every 0.1s.",
+          "Increases the wearer's Psyche DMG by 21%. Increases Crit DMG dealt by 3.6% for 5s when dealing Psyche DMG, up to 10 stacks. Triggers at most once every 0.1s."
+        ]
+      }
     },
     {
       "id": "fork_MotorCandy",
@@ -25042,7 +25302,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Motor Candy",
+        "ranks": [
+          "Increases 5% ATK every 1s while the wearer is the active character, up to 5 stacks. Resets when the wearer leaves the field.",
+          "Increases 6% ATK every 1s while the wearer is the active character, up to 5 stacks. Resets when the wearer leaves the field.",
+          "Increases 7% ATK every 1s while the wearer is the active character, up to 5 stacks. Resets when the wearer leaves the field.",
+          "Increases 8% ATK every 1s while the wearer is the active character, up to 5 stacks. Resets when the wearer leaves the field.",
+          "Increases 9% ATK every 1s while the wearer is the active character, up to 5 stacks. Resets when the wearer leaves the field."
+        ]
+      }
     },
     {
       "id": "fork_Nakupeda",
@@ -25138,7 +25408,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Nacupeda",
+        "ranks": [
+          "Increases HP by 24%. Grants one of the following random effects when the wearer casts an Ultimate: 1. Recovers 20% of Max HP for the team member with the lowest HP percentage. 2. Grants a Shield equal to 20% of the wearer's Max HP for 15s. 3. Recovers 10% HP for all team members. Triggers once every 30s.",
+          "Increases HP by 28%. Grants one of the following random effects when the wearer casts an Ultimate: 1. Recovers 25% of Max HP for the team member with the lowest HP percentage. 2. Grants a Shield equal to 25% of the wearer's Max HP for 15s. 3. Recovers 12.5% HP for all team members. Triggers once every 30s.",
+          "Increases HP by 32%. Grants one of the following random effects when the wearer casts an Ultimate: 1. Recovers 30% of Max HP for the team member with the lowest HP percentage. 2. Grants a Shield equal to 30% of the wearer's Max HP for 15s. 3. Recovers 15% HP for all team members. Triggers once every 30s.",
+          "Increases HP by 36%. Grants one of the following random effects when the wearer casts an Ultimate: 1. Recovers 35% of Max HP for the team member with the lowest HP percentage. 2. Grants a Shield equal to 35% of the wearer's Max HP for 15s. 3. Recovers 17.5% HP for all team members. Triggers once every 30s.",
+          "Increases HP by 40%. Grants one of the following random effects when the wearer casts an Ultimate: 1. Recovers 40% of Max HP for the team member with the lowest HP percentage. 2. Grants a Shield equal to 40% of the wearer's Max HP for 15s. 3. Recovers 20% HP for all team members. Triggers once every 30s."
+        ]
+      }
     },
     {
       "id": "fork_NestBird",
@@ -25234,7 +25514,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Nestbound Bird",
+        "ranks": [
+          "Applies Warning Gaze on enemies hit by the wearer's Ultimate. Marked enemies deal 18% reduced damage for 20s. Effect does not stack.",
+          "Applies Warning Gaze on enemies hit by the wearer's Ultimate. Marked enemies deal 18% reduced damage for 20s. Effect does not stack.",
+          "Applies Warning Gaze on enemies hit by the wearer's Ultimate. Marked enemies deal 18% reduced damage for 20s. Effect does not stack.",
+          "Applies Warning Gaze on enemies hit by the wearer's Ultimate. Marked enemies deal 18% reduced damage for 20s. Effect does not stack.",
+          "Applies Warning Gaze on enemies hit by the wearer's Ultimate. Marked enemies deal 18% reduced damage for 20s. Effect does not stack."
+        ]
+      }
     },
     {
       "id": "fork_nonos",
@@ -25330,7 +25620,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Noros",
+        "ranks": [
+          "Increases wearer's ATK by 12% for 10s when casting a Redirect Skill. Triggers up to once every 20s.",
+          "Increases wearer's ATK by 13% for 10s when casting a Redirect Skill. Triggers up to once every 20s.",
+          "Increases wearer's ATK by 14% for 10s when casting a Redirect Skill. Triggers up to once every 20s.",
+          "Increases wearer's ATK by 15% for 10s when casting a Redirect Skill. Triggers up to once every 20s.",
+          "Increases wearer's ATK by 16% for 10s when casting a Redirect Skill. Triggers up to once every 20s."
+        ]
+      }
     },
     {
       "id": "fork_oulaquantao",
@@ -25426,7 +25726,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Ora Puncher",
+        "ranks": [
+          "Increases the wearer's Basic Attack DMG by 2% for 10s after each Basic Attack, up to 10 stacks. Each stack's duration is calculated independently, and is not reset when new stacks are gained.",
+          "Increases the wearer's Basic Attack DMG by 2.4% for 10s after each Basic Attack, up to 10 stacks. Each stack's duration is calculated independently, and is not reset when new stacks are gained.",
+          "Increases the wearer's Basic Attack DMG by 2.8% for 10s after each Basic Attack, up to 10 stacks. Each stack's duration is calculated independently, and is not reset when new stacks are gained.",
+          "Increases the wearer's Basic Attack DMG by 3.2% for 10s after each Basic Attack, up to 10 stacks. Each stack's duration is calculated independently, and is not reset when new stacks are gained.",
+          "Increases the wearer's Basic Attack DMG by 3.6% for 10s after each Basic Attack, up to 10 stacks. Each stack's duration is calculated independently, and is not reset when new stacks are gained."
+        ]
+      }
     },
     {
       "id": "fork_PaperPlane",
@@ -25522,7 +25832,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Paper Squadron",
+        "ranks": [
+          "Increases Anima DMG dealt by the wearer's Redirect Skill and Ultimate by 20%.",
+          "Increases Anima DMG dealt by the wearer's Redirect Skill and Ultimate by 23.75%.",
+          "Increases Anima DMG dealt by the wearer's Redirect Skill and Ultimate by 27.5%.",
+          "Increases Anima DMG dealt by the wearer's Redirect Skill and Ultimate by 31.25%.",
+          "Increases Anima DMG dealt by the wearer's Redirect Skill and Ultimate by 35%."
+        ]
+      }
     },
     {
       "id": "fork_PoliceRat",
@@ -25618,7 +25938,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Justice Executioner",
+        "ranks": [
+          "Increases ATK by 15%. Increases damage dealt to Bosses by 15%. Unlocks Arc: Officer Whisker. Arc: Officer Whisker — Summons Officer Whisker to assist in combat. Officer Whisker continuously attacks enemies, dealing 100% of the wearer's ATK as damage per hit. Lasts 30s. Cooldown: 60s.",
+          "Increases ATK by 17.5%. Increases damage dealt to Bosses by 17.5%. Unlocks Arc: Officer Whisker. Arc: Officer Whisker — Summons Officer Whisker to assist in combat. Officer Whisker continuously attacks enemies, dealing 125% of the wearer's ATK as damage per hit. Lasts 30s. Cooldown: 60s.",
+          "Increases ATK by 20%. Increases damage dealt to Bosses by 20%. Unlocks Arc: Officer Whisker. Arc: Officer Whisker — Summons Officer Whisker to assist in combat. Officer Whisker continuously attacks enemies, dealing 150% of the wearer's ATK as damage per hit. Lasts 30s. Cooldown: 60s.",
+          "Increases ATK by 22.5%. Increases damage dealt to Bosses by 22.5%. Unlocks Arc: Officer Whisker. Arc: Officer Whisker — Summons Officer Whisker to assist in combat. Officer Whisker continuously attacks enemies, dealing 175% of the wearer's ATK as damage per hit. Lasts 30s. Cooldown: 60s.",
+          "Increases ATK by 25%. Increases damage dealt to Bosses by 25%. Unlocks Arc: Officer Whisker. Arc: Officer Whisker — Summons Officer Whisker to assist in combat. Officer Whisker continuously attacks enemies, dealing 200% of the wearer's ATK as damage per hit. Lasts 30s. Cooldown: 60s."
+        ]
+      }
     },
     {
       "id": "fork_Prokaryon",
@@ -25714,7 +26044,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Protocore",
+        "ranks": [
+          "Increases the wearer's Basic Attack damage by 12%.",
+          "Increases the wearer's Basic Attack damage by 13%.",
+          "Increases the wearer's Basic Attack damage by 14%.",
+          "Increases the wearer's Basic Attack damage by 15%.",
+          "Increases the wearer's Basic Attack damage by 16%."
+        ]
+      }
     },
     {
       "id": "fork_rishi",
@@ -25810,7 +26150,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Eclipse",
+        "ranks": [
+          "Increases wearer's ATK by 30%. Unlocks Arc: Eclipse. Arc: Eclipse — The wearer creates a 40s Eclipse. During the Eclipse, each enemy defeated restores 6 Ultimate Energy, up to 5 times. (cooldown: 300s).",
+          "Increases wearer's ATK by 35%. Unlocks Arc: Eclipse. Arc: Eclipse — The wearer creates a 40s Eclipse. During the Eclipse, each enemy defeated restores 7 Ultimate Energy, up to 5 times. (cooldown: 300s).",
+          "Increases wearer's ATK by 40%. Unlocks Arc: Eclipse. Arc: Eclipse — The wearer creates a 40s Eclipse. During the Eclipse, each enemy defeated restores 8 Ultimate Energy, up to 5 times. (cooldown: 300s).",
+          "Increases wearer's ATK by 45%. Unlocks Arc: Eclipse. Arc: Eclipse — The wearer creates a 40s Eclipse. During the Eclipse, each enemy defeated restores 9 Ultimate Energy, up to 5 times. (cooldown: 300s).",
+          "Increases wearer's ATK by 50%. Unlocks Arc: Eclipse. Arc: Eclipse — The wearer creates a 40s Eclipse. During the Eclipse, each enemy defeated restores 10 Ultimate Energy, up to 5 times. (cooldown: 300s)."
+        ]
+      }
     },
     {
       "id": "fork_Rose",
@@ -25906,7 +26256,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Bohemian Rose",
+        "ranks": [
+          "Increases ATK by 14%. Grants 1 stack of Chaos Thorn each time the wearer deals DoT. Increases CRIT DMG by 6% per stack for 3s. Triggers at most once every 0.3s, up to 10 stacks, and refreshes the duration when retriggered. Grants 10 stacks of Chaos Thorn immediately when the wearer casts a Redirect Skill. Extends the Broken state of a Broken enemy by 3s when the wearer deals damage to them (triggers at most once per Break Effect).",
+          "Increases ATK by 17.5%. Grants 1 stack of Chaos Thorn each time the wearer deals DoT. Increases CRIT DMG by 7.5% per stack for 3s. Triggers at most once every 0.3s, up to 10 stacks, and refreshes the duration when retriggered. Grants 10 stacks of Chaos Thorn immediately when the wearer casts a Redirect Skill. Extends the Broken state of a Broken enemy by 3s when the wearer deals damage to them (triggers at most once per Break Effect).",
+          "Increases ATK by 21%. Grants 1 stack of Chaos Thorn each time the wearer deals DoT. Increases CRIT DMG by 9% per stack for 3s. Triggers at most once every 0.3s, up to 10 stacks, and refreshes the duration when retriggered. Grants 10 stacks of Chaos Thorn immediately when the wearer casts a Redirect Skill. Extends the Broken state of a Broken enemy by 3s when the wearer deals damage to them (triggers at most once per Break Effect).",
+          "Increases ATK by 24.5%. Grants 1 stack of Chaos Thorn each time the wearer deals DoT. Increases CRIT DMG by 10.5% per stack for 3s. Triggers at most once every 0.3s, up to 10 stacks, and refreshes the duration when retriggered. Grants 10 stacks of Chaos Thorn immediately when the wearer casts a Redirect Skill. Extends the Broken state of a Broken enemy by 3s when the wearer deals damage to them (triggers at most once per Break Effect).",
+          "Increases ATK by 28%. Grants 1 stack of Chaos Thorn each time the wearer deals DoT. Increases CRIT DMG by 12% per stack for 3s. Triggers at most once every 0.3s, up to 10 stacks, and refreshes the duration when retriggered. Grants 10 stacks of Chaos Thorn immediately when the wearer casts a Redirect Skill. Extends the Broken state of a Broken enemy by 3s when the wearer deals damage to them (triggers at most once per Break Effect)."
+        ]
+      }
     },
     {
       "id": "fork_snowman",
@@ -26002,7 +26362,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Solifugae Vita",
+        "ranks": [
+          "Increases ATK by 18% while the wearer has a Shield.",
+          "Increases ATK by 21% while the wearer has a Shield.",
+          "Increases ATK by 24% while the wearer has a Shield.",
+          "Increases ATK by 27% while the wearer has a Shield.",
+          "Increases ATK by 30% while the wearer has a Shield."
+        ]
+      }
     },
     {
       "id": "fork_spider",
@@ -26098,7 +26468,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Spider Knowledge Collector",
+        "ranks": [
+          "Grants the wearer 1 stack of Spider Knowledge when dealing damage with Basic Attacks, up to 8 stacks (up to 1 stack every 0.5s). All stacks are consumed when casting Ultimate. Increases the entire team's ATK by 1% for 10s per stack consumed. Increases ATK by an additional 2% when 8 stacks are consumed.",
+          "Grants the wearer 1 stack of Spider Knowledge when dealing damage with Basic Attacks, up to 8 stacks (up to 1 stack every 0.5s). All stacks are consumed when casting Ultimate. Increases the entire team's ATK by 1.15% for 10s per stack consumed. Increases ATK by an additional 2.3% when 8 stacks are consumed.",
+          "Grants the wearer 1 stack of Spider Knowledge when dealing damage with Basic Attacks, up to 8 stacks (up to 1 stack every 0.5s). All stacks are consumed when casting Ultimate. Increases the entire team's ATK by 1.3% for 10s per stack consumed. Increases ATK by an additional 2.6% when 8 stacks are consumed.",
+          "Grants the wearer 1 stack of Spider Knowledge when dealing damage with Basic Attacks, up to 8 stacks (up to 1 stack every 0.5s). All stacks are consumed when casting Ultimate. Increases the entire team's ATK by 1.45% for 10s per stack consumed. Increases ATK by an additional 2.9% when 8 stacks are consumed.",
+          "Grants the wearer 1 stack of Spider Knowledge when dealing damage with Basic Attacks, up to 8 stacks (up to 1 stack every 0.5s). All stacks are consumed when casting Ultimate. Increases the entire team's ATK by 1.6% for 10s per stack consumed. Increases ATK by an additional 3.2% when 8 stacks are consumed."
+        ]
+      }
     },
     {
       "id": "fork_ThiefCandy",
@@ -26194,7 +26574,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Thief's Candy",
+        "ranks": [
+          "Increases wearer's damage by 8% for 10s after performing a Critical Dodge, up to 3 stacks. Resets the duration when triggered again.",
+          "Increases wearer's damage by 9.6% for 10s after performing a Critical Dodge, up to 3 stacks. Resets the duration when triggered again.",
+          "Increases wearer's damage by 11.2% for 10s after performing a Critical Dodge, up to 3 stacks. Resets the duration when triggered again.",
+          "Increases wearer's damage by 12.8% for 10s after performing a Critical Dodge, up to 3 stacks. Resets the duration when triggered again.",
+          "Increases wearer's damage by 14.4% for 10s after performing a Critical Dodge, up to 3 stacks. Resets the duration when triggered again."
+        ]
+      }
     },
     {
       "id": "fork_TigerTally",
@@ -26290,7 +26680,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Commander Tiger Talisman",
+        "ranks": [
+          "Increases ATK by 15%. Increases Basic Attack and Critical Riposte damage by 15% for 15s when casting a Redirect Skill or Ultimate, up to 2 stacks. Grants a Left Tiger Talisman when casting Redirect Skill and a Right Tiger Talisman when casting Ultimate. Unlocks Commander Tiger Talisman if the wearer obtains the other type of talisman within 15s of gaining one. Arc: Commander Tiger Talisman — Increases the wearer's damage to Bosses by 10% for 10s.",
+          "Increases ATK by 18.75%. Increases Basic Attack and Critical Riposte damage by 18.75% for 15s when casting a Redirect Skill or Ultimate, up to 2 stacks. Grants a Left Tiger Talisman when casting Redirect Skill and a Right Tiger Talisman when casting Ultimate. Unlocks Commander Tiger Talisman if the wearer obtains the other type of talisman within 15s of gaining one. Arc: Commander Tiger Talisman — Increases the wearer's damage to Bosses by 12.5% for 10s.",
+          "Increases ATK by 22.5%. Increases Basic Attack and Critical Riposte damage by 22.5% for 15s when casting a Redirect Skill or Ultimate, up to 2 stacks. Grants a Left Tiger Talisman when casting Redirect Skill and a Right Tiger Talisman when casting Ultimate. Unlocks Commander Tiger Talisman if the wearer obtains the other type of talisman within 15s of gaining one. Arc: Commander Tiger Talisman — Increases the wearer's damage to Bosses by 15% for 10s.",
+          "Increases ATK by 26.25%. Increases Basic Attack and Critical Riposte damage by 26.25% for 15s when casting a Redirect Skill or Ultimate, up to 2 stacks. Grants a Left Tiger Talisman when casting Redirect Skill and a Right Tiger Talisman when casting Ultimate. Unlocks Commander Tiger Talisman if the wearer obtains the other type of talisman within 15s of gaining one. Arc: Commander Tiger Talisman — Increases the wearer's damage to Bosses by 17.5% for 10s.",
+          "Increases ATK by 30%. Increases Basic Attack and Critical Riposte damage by 30% for 15s when casting a Redirect Skill or Ultimate, up to 2 stacks. Grants a Left Tiger Talisman when casting Redirect Skill and a Right Tiger Talisman when casting Ultimate. Unlocks Commander Tiger Talisman if the wearer obtains the other type of talisman within 15s of gaining one. Arc: Commander Tiger Talisman — Increases the wearer's damage to Bosses by 20% for 10s."
+        ]
+      }
     },
     {
       "id": "fork_Time",
@@ -26386,7 +26786,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Time Beyond Time",
+        "ranks": [
+          "Increases ATK by 16%. Enters Wastelab and clears current Wastetime when the wearer casts a Redirect Skill. While in Wastelab, allies gain 1 stack of Wastetime each time they use a Redirect or Support Skill, up to 3 stacks. When the wearer uses their Ultimate in Wastelab, they exit Wastelab and consume all Wastetime, increasing Ultimate Crit DMG by 24%, plus an additional 8% per Wastetime consumed. Consuming 3 Wastetime stacks at once grants an extra 12% DEF Ignore for 70s.",
+          "Increases ATK by 20%. Enters Wastelab and clears current Wastetime when the wearer casts a Redirect Skill. While in Wastelab, allies gain 1 stack of Wastetime each time they use a Redirect or Support Skill, up to 3 stacks. When the wearer uses their Ultimate in Wastelab, they exit Wastelab and consume all Wastetime, increasing Ultimate Crit DMG by 30%, plus an additional 10% per Wastetime consumed. Consuming 3 Wastetime stacks at once grants an extra 15% DEF Ignore for 70s.",
+          "Increases ATK by 24%. Enters Wastelab and clears current Wastetime when the wearer casts a Redirect Skill. While in Wastelab, allies gain 1 stack of Wastetime each time they use a Redirect or Support Skill, up to 3 stacks. When the wearer uses their Ultimate in Wastelab, they exit Wastelab and consume all Wastetime, increasing Ultimate Crit DMG by 36%, plus an additional 12% per Wastetime consumed. Consuming 3 Wastetime stacks at once grants an extra 18% DEF Ignore for 70s.",
+          "Increases ATK by 28%. Enters Wastelab and clears current Wastetime when the wearer casts a Redirect Skill. While in Wastelab, allies gain 1 stack of Wastetime each time they use a Redirect or Support Skill, up to 3 stacks. When the wearer uses their Ultimate in Wastelab, they exit Wastelab and consume all Wastetime, increasing Ultimate Crit DMG by 42%, plus an additional 14% per Wastetime consumed. Consuming 3 Wastetime stacks at once grants an extra 21% DEF Ignore for 70s.",
+          "Increases ATK by 32%. Enters Wastelab and clears current Wastetime when the wearer casts a Redirect Skill. While in Wastelab, allies gain 1 stack of Wastetime each time they use a Redirect or Support Skill, up to 3 stacks. When the wearer uses their Ultimate in Wastelab, they exit Wastelab and consume all Wastetime, increasing Ultimate Crit DMG by 48%, plus an additional 16% per Wastetime consumed. Consuming 3 Wastetime stacks at once grants an extra 24% DEF Ignore for 70s."
+        ]
+      }
     },
     {
       "id": "fork_tuansanlang",
@@ -26482,7 +26892,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Danzaburou",
+        "ranks": [
+          "Increases Break Intensity by 70 for all characters of the same Esper Type as the wearer (including the wearer) when the team has 3 or more such characters. This effect does not stack.",
+          "Increases Break Intensity by 84 for all characters of the same Esper Type as the wearer (including the wearer) when the team has 3 or more such characters. This effect does not stack.",
+          "Increases Break Intensity by 98 for all characters of the same Esper Type as the wearer (including the wearer) when the team has 3 or more such characters. This effect does not stack.",
+          "Increases Break Intensity by 112 for all characters of the same Esper Type as the wearer (including the wearer) when the team has 3 or more such characters. This effect does not stack.",
+          "Increases Break Intensity by 126 for all characters of the same Esper Type as the wearer (including the wearer) when the team has 3 or more such characters. This effect does not stack."
+        ]
+      }
     },
     {
       "id": "fork_vine",
@@ -26578,7 +26998,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Huggy Vines",
+        "ranks": [
+          "Restores wearer's HP by 12% upon defeating an enemy. Triggers at most once every 20s.",
+          "Restores wearer's HP by 14% upon defeating an enemy. Triggers at most once every 20s.",
+          "Restores wearer's HP by 16% upon defeating an enemy. Triggers at most once every 20s.",
+          "Restores wearer's HP by 18% upon defeating an enemy. Triggers at most once every 20s.",
+          "Restores wearer's HP by 20% upon defeating an enemy. Triggers at most once every 20s."
+        ]
+      }
     },
     {
       "id": "fork_Whale",
@@ -26674,7 +27104,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Deep Blue Sorrow",
+        "ranks": [
+          "Increases ATK by 12%. Increases the wearer's damage to Broken enemies by 12%. Restores 30% HP to the wearer if a Broken enemy is defeated. Triggers at most once every 30s.",
+          "Increases ATK by 14%. Increases the wearer's damage to Broken enemies by 14%. Restores 30% HP to the wearer if a Broken enemy is defeated. Triggers at most once every 30s.",
+          "Increases ATK by 16%. Increases the wearer's damage to Broken enemies by 16%. Restores 30% HP to the wearer if a Broken enemy is defeated. Triggers at most once every 30s.",
+          "Increases ATK by 18%. Increases the wearer's damage to Broken enemies by 18%. Restores 30% HP to the wearer if a Broken enemy is defeated. Triggers at most once every 30s.",
+          "Increases ATK by 20%. Increases the wearer's damage to Broken enemies by 20%. Restores 30% HP to the wearer if a Broken enemy is defeated. Triggers at most once every 30s."
+        ]
+      }
     },
     {
       "id": "fork_worldrain",
@@ -26770,7 +27210,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Hypervortex",
+        "ranks": [
+          "Deals 30% increased Cosmos DMG with the wearer's Redirect Skill and Ultimate. Increases the wearer's Cycle Intensity by 36 for 15s after casting a Redirect Skill. Resets the duration when triggered again.",
+          "Deals 33% increased Cosmos DMG with the wearer's Redirect Skill and Ultimate. Increases the wearer's Cycle Intensity by 45 for 15s after casting a Redirect Skill. Resets the duration when triggered again.",
+          "Deals 36% increased Cosmos DMG with the wearer's Redirect Skill and Ultimate. Increases the wearer's Cycle Intensity by 54 for 15s after casting a Redirect Skill. Resets the duration when triggered again.",
+          "Deals 39% increased Cosmos DMG with the wearer's Redirect Skill and Ultimate. Increases the wearer's Cycle Intensity by 63 for 15s after casting a Redirect Skill. Resets the duration when triggered again.",
+          "Deals 42% increased Cosmos DMG with the wearer's Redirect Skill and Ultimate. Increases the wearer's Cycle Intensity by 72 for 15s after casting a Redirect Skill. Resets the duration when triggered again."
+        ]
+      }
     },
     {
       "id": "fork_wuhuakuang",
@@ -26866,7 +27316,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Picture Frame",
+        "ranks": [
+          "Increases ATK by 20% when the wearer’s HP is above 50%; increases DEF by 20% when HP is below 50%.",
+          "Increases ATK by 24% when the wearer’s HP is above 50%; increases DEF by 24% when HP is below 50%.",
+          "Increases ATK by 28% when the wearer’s HP is above 50%; increases DEF by 28% when HP is below 50%.",
+          "Increases ATK by 32% when the wearer’s HP is above 50%; increases DEF by 32% when HP is below 50%.",
+          "Increases ATK by 36% when the wearer’s HP is above 50%; increases DEF by 36% when HP is below 50%."
+        ]
+      }
     },
     {
       "id": "fork_wushoutieyu",
@@ -26962,7 +27422,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Headless Rider",
+        "ranks": [
+          "Increases Lakshana DMG by 15%. Increases the wearer's Redirect Skill and Ultimate DMG by 10% for 10s after casting Ultimate. Increases the wearer’s Redirect Skill DMG by 5% per cast while active, up to 2 stacks.",
+          "Increases Lakshana DMG by 17.5%. Increases the wearer's Redirect Skill and Ultimate DMG by 12.5% for 10s after casting Ultimate. Increases the wearer’s Redirect Skill DMG by 6% per cast while active, up to 2 stacks.",
+          "Increases Lakshana DMG by 20%. Increases the wearer's Redirect Skill and Ultimate DMG by 15% for 10s after casting Ultimate. Increases the wearer’s Redirect Skill DMG by 7% per cast while active, up to 2 stacks.",
+          "Increases Lakshana DMG by 22.5%. Increases the wearer's Redirect Skill and Ultimate DMG by 17.5% for 10s after casting Ultimate. Increases the wearer’s Redirect Skill DMG by 8% per cast while active, up to 2 stacks.",
+          "Increases Lakshana DMG by 25%. Increases the wearer's Redirect Skill and Ultimate DMG by 20% for 10s after casting Ultimate. Increases the wearer’s Redirect Skill DMG by 9% per cast while active, up to 2 stacks."
+        ]
+      }
     },
     {
       "id": "fork_yaodao",
@@ -27058,7 +27528,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "Crimson Hexblade",
+        "ranks": [
+          "Deals additional Incantation DMG equal to 200% of ATK when the wearer triggers a Parry Attack.",
+          "Deals additional Incantation DMG equal to 230% of ATK when the wearer triggers a Parry Attack.",
+          "Deals additional Incantation DMG equal to 260% of ATK when the wearer triggers a Parry Attack.",
+          "Deals additional Incantation DMG equal to 290% of ATK when the wearer triggers a Parry Attack.",
+          "Deals additional Incantation DMG equal to 320% of ATK when the wearer triggers a Parry Attack."
+        ]
+      }
     },
     {
       "id": "fork_yuren",
@@ -27154,7 +27634,17 @@
             }
           ]
         }
-      ]
+      ],
+      "effect": {
+        "name": "\"Rainman\"",
+        "ranks": [
+          "Increases HP by 10%. Strengthens shields by 10% while the wearer's HP is above 50%.",
+          "Increases HP by 12%. Strengthens shields by 12% while the wearer's HP is above 50%.",
+          "Increases HP by 14%. Strengthens shields by 14% while the wearer's HP is above 50%.",
+          "Increases HP by 16%. Strengthens shields by 16% while the wearer's HP is above 50%.",
+          "Increases HP by 18%. Strengthens shields by 18% while the wearer's HP is above 50%."
+        ]
+      }
     }
   ],
   "gear": [],

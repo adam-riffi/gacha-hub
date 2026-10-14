@@ -12,7 +12,7 @@ import type {
   CatalogWeapon,
   CostStep,
 } from "../../packages/shared/src/catalog/types.js";
-import { byId, fetchJson, slugify, uniqueKeys, weekdays, writeCatalog } from "./common.js";
+import { byId, fetchJson, slugify, stripTags, uniqueKeys, weekdays, writeCatalog } from "./common.js";
 
 const require = createRequire(import.meta.url);
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -171,6 +171,7 @@ const weapons: CatalogWeapon[] = all("weapons")
     ascension,
     ...(w.mainStatText ? { mainStat: w.mainStatText as string } : {}),
     ...basePoints(gdb.weapons(w.name), ascension, [["ATK", "attack"]], w.mainStatText),
+    ...(w.effectName ? { effect: { name: w.effectName as string, ranks: [w.r1, w.r2, w.r3, w.r4, w.r5].filter((r) => r?.description).map((r) => stripTags(r.description)) } } : {}),
     extra: { baseAtk: w.baseAtkValue, version: w.version },
   };
 });
