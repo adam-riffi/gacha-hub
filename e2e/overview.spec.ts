@@ -229,13 +229,13 @@ test("A game's dashboard: the 30-day pass's days left, what it still pays and in
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
-  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "genshin" } })).json()) as { id: string };
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
   await page.request.put(`/api/instances/${id}/passes/monthly`, { data: { daysLeft: 10 } });
 
-  await page.goto("/?game=genshin");
-  const card = page.getByRole("region", { name: "Blessing of the Welkin Moon" });
+  await page.goto("/?game=hsr");
+  const card = page.getByRole("region", { name: "Express Supply Pass" });
   await expect(card.getByRole("group", { name: "Days left" })).toContainText("10");
-  // Ten days at 90 Primogems: 900, five wishes at 160.
+  // Ten days at 90 Stellar Jade: 900, five warps at 160 (Star Rail: the smoke journey adds Genshin).
   await expect(card.getByRole("group", { name: "Still to collect" })).toContainText("900");
   await expect(card.getByRole("group", { name: "Still to collect" })).toContainText("5 pulls");
   await card.getByRole("button", { name: "Add 30 days" }).click();
