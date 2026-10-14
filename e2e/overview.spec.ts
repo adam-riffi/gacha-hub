@@ -222,3 +222,24 @@ test("Dailies and weeklies: one tick control in the game's colour, its boxes in 
   await expect(page.locator(".heat-readout")).toContainText(/\d+ \/ \d+\s*DAILIES/i);
   await page.request.post(`/api/tasks/${daily.id}/progress`, { data: { progress: 0 } });
 });
+
+// Georges, round 7: "add a daily login currency bonus thing, like the Blessing of the Welkin Moon: if it's active, how many days,
+// and count it towards pull predictions".
+test("A game's dashboard: the 30-day pass's days left, what it still pays and in pulls; 30 more days in one click @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  await page.request.put(`/api/instances/${id}/passes/monthly`, { data: { daysLeft: 10 } });
+
+  await page.goto("/?game=hsr");
+  const card = page.getByRole("region", { name: "Express Supply Pass" });
+  await expect(card.getByRole("group", { name: "Days left" })).toContainText("10");
+  // Ten days at 90 Stellar Jade: 900, five warps at 160 (Star Rail: the smoke journey adds Genshin).
+  await expect(card.getByRole("group", { name: "Still to collect" })).toContainText("900");
+  await expect(card.getByRole("group", { name: "Still to collect" })).toContainText("5 pulls");
+  await card.getByRole("button", { name: "Add 30 days" }).click();
+  await expect(card.getByRole("group", { name: "Days left" })).toContainText("40");
+  const { monthly } = (await (await page.request.get(`/api/instances/${id}/passes`)).json()) as { monthly: { endsAt: string } };
+  expect(Math.ceil((Date.parse(monthly.endsAt) - Date.now()) / 86_400_000)).toBe(40);
+});

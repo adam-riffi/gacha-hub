@@ -45,7 +45,7 @@ export function GameDashboard({ instanceId: id }: { instanceId: string }) {
   const recurring = (tasks.data ?? []).filter((t) => t.type === "recurring");
   const region = game.regions.find((r) => r.key === instance.data.regionKey) ?? game.regions[0]!;
   const battle = passes.data?.battle;
-  const pv = passView(game, region, new Date(), battle ? { ...battle, updatedAt: new Date(battle.updatedAt) } : null, null);
+  const pv = passView(game, region, new Date(), battle ? { ...battle, updatedAt: new Date(battle.updatedAt) } : null, passes.data?.monthly ? { endsAt: new Date(passes.data.monthly.endsAt) } : null);
   // Cards with nothing to show stay out (round 5: no card of empty space).
   const inProgress = (builds.data ?? []).filter((b) => b.buildStatus === "building" || b.buildStatus === "good");
   // A past heatmap day pins the gauges and charts to it, as on the Overview.
@@ -75,6 +75,7 @@ export function GameDashboard({ instanceId: id }: { instanceId: string }) {
         ) : null}
         <StaminaCard g={g} game={game} instance={instance.data} />
         <PassCard instanceId={id} game={game} pv={pv} />
+        <DailyPassCard instanceId={id} game={game} daysLeft={pv.monthlyDaysLeft} endsAt={passes.data?.monthly?.endsAt ?? null} />
         <EndgameCard instanceId={id} game={game} region={region} cycles={cycles.data} />
       </div>
       <HomeHeat games={[g]} today={today} pinned={day} onPin={onPin} />
@@ -269,6 +270,54 @@ function PassCard({ instanceId, game, pv }: { instanceId: string; game: GameDefi
           )}
         </div>
       )}
+    </Card>
+  );
+}
+
+const ENDS = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
+const NUM = new Intl.NumberFormat("en-GB");
+
+/**
+ * The 30-day pass (Georges, round 7: "a daily login currency bonus like the Blessing of the Welkin Moon: if it's active,
+ * how many days, and count it towards pull predictions"): its days left over its stack, what it still pays and in pulls
+ * (as the Pulls forecast counts it), its end, and 30 more days in one click.
+ */
+function DailyPassCard({ instanceId, game, daysLeft, endsAt }: { instanceId: string; game: GameDefinition; daysLeft: number | null; endsAt: string | null }) {
+  const qc = useQueryClient();
+  const pass = game.manifest.monthlyPass;
+  const add = useMutation({
+    mutationFn: (days: number) => api.put(`/api/instances/${instanceId}/passes/monthly`, { daysLeft: days }),
+    onSuccess: () => Promise.all([["passes", instanceId], ["dashboard"]].map((queryKey) => qc.invalidateQueries({ queryKey }))),
+  });
+  if (!pass) return null;
+  const days = daysLeft ?? 0;
+  const stack = pass.maxDays ?? pass.days;
+  const premium = game.currencies.find((c) => (c.pullCost ?? 0) > 1);
+  const still = days * (pass.daily ?? 0);
+  return (
+    <Card title={pass.name} to={`/games/${instanceId}`} head={<span className={`chip ${days > 0 && days <= 3 ? "hot" : ""}`}>{days > 0 && endsAt ? `ends ${ENDS.format(new Date(endsAt))}` : "off"}</span>}>
+      <div className="gd-kpis">
+        <div className="kpi" role="group" aria-label="Days left">
+          <div className="kpi-label">Days left</div>
+          <div className="kpi-value">
+            {days}
+            <small> / {stack}</small>
+          </div>
+          <SegmentedBar level={days} max={stack} label={pass.name} />
+        </div>
+        {pass.daily ? (
+          <div className="kpi" role="group" aria-label="Still to collect">
+            <div className="kpi-label">Still to collect</div>
+            <div className="kpi-value">{NUM.format(still)}</div>
+            <div className="mn mu">
+              {pass.daily} {premium?.label ?? ""} a day{premium?.pullCost ? ` · ${Math.floor(still / premium.pullCost)} pulls` : ""}
+            </div>
+          </div>
+        ) : null}
+      </div>
+      <button type="button" className="btn gd-pass-add" disabled={add.isPending || days + pass.days > stack} onClick={() => add.mutate(days + pass.days)}>
+        Add {pass.days} days
+      </button>
     </Card>
   );
 }
