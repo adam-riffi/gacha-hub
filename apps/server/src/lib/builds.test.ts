@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildKpis, buildLine, dupeBadge, gearSetLabel, getGame, statKpis } from "@gacha/shared";
+import { buildKpis, buildLine, cardStatLabels, dupeBadge, gearSetLabel, getGame, statKpis } from "@gacha/shared";
 
 const genshin = getGame("genshin")!;
 const wuwa = getGame("wuwa")!;
@@ -103,5 +103,20 @@ describe("statKpis and set bonuses", () => {
     const frost = { name: "Freezing Frost", bonuses: ["2pc: Glacio DMG + 10%.", "5pc: Glacio DMG + 10% after releasing Basic Attack or Heavy Attack. This effect stacks up to 3 times, each stack lasts 15s."] };
     const doc = { stats: { "Glacio DMG Bonus": 30 }, echoes: four("Freezing Frost", ["slot1", "slot2", "slot3", "slot4", "slot5"]) };
     expect(statKpis(wuwa, doc, ["Glacio DMG Bonus"], [frost])).toEqual([{ label: "Glacio DMG Bonus", value: "40%", base: "30%", bonus: { value: "10%", from: "Freezing Frost 5pc" } }]);
+  });
+});
+
+// Georges, round 7: "by default each character has its main stat showcased first".
+describe("cardStatLabels", () => {
+  const hsr = getGame("hsr")!;
+  const kafka = { bonusStats: ["ATK", "Effect Hit Rate", "HP"] };
+  it("puts the growth stat first, then the role's stats, up to four", () => {
+    expect(cardStatLabels(hsr, kafka, null)).toEqual(["ATK", "Crit value", "CRIT Rate / CRIT DMG", "SPD"]);
+    expect(cardStatLabels(hsr, { bonusStats: ["SPD"] }, null)).toEqual(["SPD", "Crit value", "CRIT Rate / CRIT DMG"]);
+    expect(cardStatLabels(hsr, undefined, "support")).toEqual(["SPD", "Energy Regeneration Rate", "Effect Hit Rate"]);
+  });
+  it("keeps the build's pick, else the game's", () => {
+    expect(cardStatLabels(hsr, kafka, null, ["HP"], ["DEF"])).toEqual(["HP"]);
+    expect(cardStatLabels(hsr, kafka, null, null, ["DEF"])).toEqual(["DEF"]);
   });
 });
