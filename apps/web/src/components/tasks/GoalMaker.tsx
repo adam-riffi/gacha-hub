@@ -146,7 +146,7 @@ export function GoalMaker({ games, onDone }: { games: InstanceListItem[]; onDone
                 onPick={(option) => setUnit(option?.id ?? "")}
               />
             ) : (
-              <p className="mu">No catalog</p>
+              <p className="text-muted">No catalog</p>
             )}
           </div>
           {unit && gameInstance && (

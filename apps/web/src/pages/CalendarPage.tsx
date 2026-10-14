@@ -128,7 +128,7 @@ export function CalendarPage() {
   });
 
   if (dash.isError || win.isError) return <LoadError what="The calendar" retry={() => Promise.all([dash.refetch(), win.refetch()])} />;
-  if (!dash.data || !win.data) return <div className="mu">Loading…</div>;
+  if (!dash.data || !win.data) return <div className="text-muted">Loading…</div>;
   if (dash.data.games.length === 0) {
     return (
       <div className="card">
@@ -364,7 +364,7 @@ export function CalendarPage() {
           <input type="checkbox" className="cal-check is-wished" checked={onlyWished} onChange={(event) => setOnlyWished(event.target.checked)} />
           Only what I wishlisted
         </label>
-        <span className="cal-range mn mu">
+        <span className="cal-range font-mono text-muted">
           {DAY.format(start)} · {DAY.format(addDays(end, -1))} · your time ({ZONE})
         </span>
       </div>
@@ -376,7 +376,7 @@ export function CalendarPage() {
               <div className="cal-scroll">
                 <div className="cal-grid">
                   <div className="cal-r cal-wk">
-                    <div className="cal-label mn mu">Week of</div>
+                    <div className="cal-label font-mono text-muted">Week of</div>
                     <div className="cal-track">
                       {Array.from({ length: WEEKS }, (_, weekIndex) => (
                         <span key={weekIndex} style={{ left: `${(weekIndex / WEEKS) * 100}%` }}>
@@ -392,7 +392,7 @@ export function CalendarPage() {
                   </div>
                   {/* A tick for every day, weekends shaded, so a bar's first and last days read at a glance. */}
                   <div className="cal-r cal-days">
-                    <div className="cal-label mn mu">Day</div>
+                    <div className="cal-label font-mono text-muted">Day</div>
                     <div className="cal-track">
                       {Array.from({ length: WEEKS * 7 }, (_, dayIndex) => {
                         const date = new Date(addDays(start, dayIndex));
@@ -418,7 +418,7 @@ export function CalendarPage() {
                                 >
                                   {block.dashGame.name}
                                 </Link>
-                                <span className="mn mu cal-src">{/^\d/.test(block.versionName) ? `v${block.versionName}` : block.versionName}</span>
+                                <span className="font-mono text-muted cal-src">{/^\d/.test(block.versionName) ? `v${block.versionName}` : block.versionName}</span>
                               </>
                             )}
                             {row.name && <span className="cal-lane-name">{row.name}</span>}
@@ -479,7 +479,7 @@ export function CalendarPage() {
               <h3>{MONTH.format(monthFirst)}</h3>
               <div className="cal-mgrid">
                 {WEEKDAYS.map((weekday) => (
-                  <span key={weekday} className="cal-mhead mn mu">
+                  <span key={weekday} className="cal-mhead font-mono text-muted">
                     {weekday}
                   </span>
                 ))}
@@ -492,7 +492,7 @@ export function CalendarPage() {
                   const accent = (item: CalItem) => blocks.find((block) => block.dashGame.gameKey === item.gameKey)?.dashGame.accent;
                   return (
                     <div key={dayIndex} className={`cal-mday ${date.getMonth() === new Date(monthFirst).getMonth() ? "" : "is-other"} ${addDays(now, 0) === from ? "is-today" : ""}`}>
-                      <span className="cal-mnum mn">{date.getDate()}</span>
+                      <span className="cal-mnum font-mono">{date.getDate()}</span>
                       {[...starts.map((startingItem) => ["Starts", startingItem] as const), ...ends.map((endingItem) => ["Ends", endingItem] as const)].map(([what, item]) => (
                         <button
                           key={`${what}:${item.id}`}
@@ -505,19 +505,19 @@ export function CalendarPage() {
                           onClick={() => setSelected(item.id)}
                         >
                           <span aria-hidden="true">{what === "Starts" ? "▶" : "■"}</span> {item.name}
-                          {what === "Ends" && <span className="mu"> · {TIME.format(item.end)}</span>}
+                          {what === "Ends" && <span className="text-muted"> · {TIME.format(item.end)}</span>}
                         </button>
                       ))}
                     </div>
                   );
                 })}
               </div>
-              <p className="cal-foot mu">▶ starts · ■ ends</p>
+              <p className="cal-foot text-muted">▶ starts · ■ ends</p>
             </section>
           ) : (
             <section className="card cal-list" aria-label="List">
               {visible.length === 0 ? (
-                <p className="mu">Nothing in these six weeks.</p>
+                <p className="text-muted">Nothing in these six weeks.</p>
               ) : (
                 <table>
                   <thead>
@@ -534,16 +534,16 @@ export function CalendarPage() {
                       .sort((first, second) => first.start - second.start)
                       .map((item) => (
                         <tr key={item.id}>
-                          <td className="mn">{getGame(item.gameKey)?.shortName ?? item.gameKey}</td>
+                          <td className="font-mono">{getGame(item.gameKey)?.shortName ?? item.gameKey}</td>
                           <td>
                             {item.tag && <b className="cal-tag">{item.tag}</b>}{" "}
                             <button type="button" onClick={() => setSelected(item.id)}>
                               {item.name}
                             </button>
                           </td>
-                          <td className="mn mu">{item.kind}</td>
-                          <td className="mn">{DAY.format(item.start)}</td>
-                          <td className="mn">{DAY.format(item.end)}</td>
+                          <td className="font-mono text-muted">{item.kind}</td>
+                          <td className="font-mono">{DAY.format(item.start)}</td>
+                          <td className="font-mono">{DAY.format(item.end)}</td>
                         </tr>
                       ))}
                   </tbody>

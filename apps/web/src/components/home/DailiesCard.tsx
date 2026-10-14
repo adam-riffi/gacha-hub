@@ -41,7 +41,7 @@ export function DailiesCard({ roster, carousel, day = null }: { roster: RosterEn
       {rosterGame && (
         <div className="dailies-body">
           <div className="dailies-head">
-            <span className="cd dailies-game">{rosterGame.name}</span>
+            <span className="font-display dailies-game">{rosterGame.name}</span>
             {past ? (
               <span className="chip">
                 <i aria-hidden="true" />
@@ -64,7 +64,7 @@ export function DailiesCard({ roster, carousel, day = null }: { roster: RosterEn
                         <small> / {tally.total}</small>
                       </>
                     ) : (
-                      <span className="mu" aria-label="not recorded">
+                      <span className="text-muted" aria-label="not recorded">
                         —
                       </span>
                     )}

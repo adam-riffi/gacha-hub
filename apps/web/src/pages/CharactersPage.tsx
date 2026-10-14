@@ -164,7 +164,7 @@ export function CharactersPage() {
   const game = instance.data && getGame(instance.data.gameKey);
   if (instance.isError || builds.isError) return <LoadError what="Characters" retry={() => Promise.all([instance.refetch(), builds.refetch()])} />;
   // A game with a catalog waits for it: without it the page would fall back to one card per build.
-  if (!instance.data || !builds.data || !game || catalogLoading) return <div className="mu">Loading…</div>;
+  if (!instance.data || !builds.data || !game || catalogLoading) return <div className="text-muted">Loading…</div>;
 
   // Each unit's card shows its default build (the flagged one, else its first).
   const byCatalog = new Map<string, CharacterDto>();
@@ -382,7 +382,7 @@ export function CharactersPage() {
                 <div className="ch-namebox">
                   <div className="ch-namebox-text">
                     <h3>{card.name}</h3>
-                    <div className="mn ch-namebox-line">
+                    <div className="font-mono ch-namebox-line">
                       {card.build ? buildLine(game, doc, card.entry?.talents.keys ?? [], !held) : onBanner ? `on the banner until ${ENDS.format(new Date(onBanner.endsAt))}` : card.owned ? "no build yet" : "not owned"}
                     </div>
                   </div>
@@ -390,8 +390,8 @@ export function CharactersPage() {
                   {held && (
                     <span className="ch-weapon" title={[held.name, held.level !== null && `Lv ${held.level}`, held.rank].filter(Boolean).join(" · ")}>
                       <GameIcon src={assetUrl(game.key, "weapon", held.icon)} fallback={communityAssetUrl(game.key, "weapon", held.icon)} alt={held.name} glyph="weapon" />
-                      {held.level !== null && <span className="mn ch-weapon-lv">{held.level}</span>}
-                      <span className="mn ch-weapon-r">{held.rank}</span>
+                      {held.level !== null && <span className="font-mono ch-weapon-lv">{held.level}</span>}
+                      <span className="font-mono ch-weapon-r">{held.rank}</span>
                     </span>
                   )}
                 </div>
@@ -419,21 +419,21 @@ export function CharactersPage() {
                 <div className="ch-kpis ch-chance">
                   <div>
                     <span className="kpi-label">Chance with your {available} pulls</span>
-                    <span className="cd">{Math.round(featuredWithin(characterBanner, characterBanner.state, available) * 100)}%{characterBanner.state.guaranteed ? " · guaranteed" : ""}</span>
+                    <span className="font-display">{Math.round(featuredWithin(characterBanner, characterBanner.state, available) * 100)}%{characterBanner.state.guaranteed ? " · guaranteed" : ""}</span>
                   </div>
                 </div>
               ) : null}
               <div className="ch-foot">
                 {card.build && <span className={`badge ${card.build.buildStatus === "perfect" ? "done" : ""}`}>{card.build.buildStatus === "none" ? "Unbuilt" : card.build.buildStatus}</span>}
                 {card.build && (
-                  <span className="mu ch-set">
+                  <span className="text-muted ch-set">
                     {/* The completed sets as their icons with their counts (Georges, round 6), the role where none is. */}
                     {completedSets(game, doc).map((completedSet) => {
                       const set = gearSets.get(completedSet.name);
                       return (
                         <span key={completedSet.name} className="ch-set-icon" title={`${completedSet.name} ${completedSet.size}pc`}>
                           <CatalogIcon gameKey={game.key} kind="gear" icon={set?.icon} name={completedSet.name} />
-                          <b className="mn">{completedSet.size}</b>
+                          <b className="font-mono">{completedSet.size}</b>
                         </span>
                       );
                     })}
@@ -465,7 +465,7 @@ export function CharactersPage() {
       {/* The bar from the moment Select is on, All shown in it (round 7: no select all until one was picked). */}
       {(selecting || picked.size > 0) && (
         <div className="ch-bulk ch-bulk-bar" role="region" aria-label="Selection">
-          <span className="mn">{picked.size} selected</span>
+          <span className="font-mono">{picked.size} selected</span>
           <button className="btn" onClick={() => own.mutate([...picked])}>Own</button>
           <button className="btn" onClick={() => unown.mutate([...picked])}>Not owned</button>
           <button className="btn" onClick={() => wishMany.mutate({ ids: [...picked], wished: true })}>Wishlist</button>
@@ -492,7 +492,7 @@ export function CharactersPage() {
         </div>
       )}
       <div className="ch-more">
-        <span className="mu">
+        <span className="text-muted">
           {filtered.length}
         </span>
       </div>

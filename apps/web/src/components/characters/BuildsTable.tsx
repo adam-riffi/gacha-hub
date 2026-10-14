@@ -60,7 +60,7 @@ export function BuildsTable({
     <section className="card">
       {picked.size > 0 && (
         <div className="ch-bulk" role="region" aria-label="Selected builds">
-          <span className="mn">{picked.size} selected</span>
+          <span className="font-mono">{picked.size} selected</span>
           <select aria-label="Set the status of the selected builds" value="" onChange={(event) => event.target.value && setStatus.mutate({ ids: [...picked], status: event.target.value as BuildStatus })}>
             <option value="">Set status…</option>
             {STATUSES.map((statusOption) => (
@@ -99,8 +99,8 @@ export function BuildsTable({
                 </td>
                 <td>
                   <Link to={`/characters/${row.id}`}>{row.name}</Link>
-                  {entry && entry.name !== row.name && <span className="mu"> · {entry.name}</span>}
-                  <div className="mn mu">{buildLine(game, doc, entry?.talents.keys ?? [])}</div>
+                  {entry && entry.name !== row.name && <span className="text-muted"> · {entry.name}</span>}
+                  <div className="font-mono text-muted">{buildLine(game, doc, entry?.talents.keys ?? [])}</div>
                 </td>
                 <td>
                   <select aria-label={`${row.name} status`} value={row.buildStatus} onChange={(event) => setStatus.mutate({ ids: [row.id], status: event.target.value as BuildStatus })}>
@@ -113,18 +113,18 @@ export function BuildsTable({
                 <td>
                   {buildKpis(game, doc, row.role).map((kpi) => (
                     <span key={kpi.label} className="ch-tkpi">
-                      <span className="kpi-label">{kpi.label}</span> <span className="mn">{kpi.value}</span>
+                      <span className="kpi-label">{kpi.label}</span> <span className="font-mono">{kpi.value}</span>
                     </span>
                   ))}
                 </td>
-                <td className="mu">{gearSetLabel(game, doc) ?? ""}</td>
-                <td>{inTeams.length ? inTeams.map((team) => team.name).join(", ") : <span className="mu">—</span>}</td>
+                <td className="text-muted">{gearSetLabel(game, doc) ?? ""}</td>
+                <td>{inTeams.length ? inTeams.map((team) => team.name).join(", ") : <span className="text-muted">—</span>}</td>
               </tr>
             );
           })}
         </tbody>
       </table>
-      {rows.length === 0 && <p className="mu">No builds yet: open a character you own and Start a build.</p>}
+      {rows.length === 0 && <p className="text-muted">No builds yet: open a character you own and Start a build.</p>}
     </section>
   );
 }

@@ -73,7 +73,7 @@ test("Planner: each goal is the Tasks goal card: priority, notify, its plan, Lin
 
   // Link Seele's goal under Kafka's (round 6): Seele's keeps its card, and its steps add to Kafka's.
   const kafka = goals.getByRole("article", { name: /Farm Kafka/ }).first();
-  const steps = async (card: typeof kafka) => (await card.locator(".tk-prog .mn").first().textContent())!.split("/").map((s) => Number(s.trim()));
+  const steps = async (card: typeof kafka) => (await card.locator(".tk-prog .font-mono").first().textContent())!.split("/").map((s) => Number(s.trim()));
   const [, kafkaTotal] = await steps(kafka);
   const [, seeleTotal] = await steps(seele);
   await kafka.getByRole("button", { name: /Farm Kafka/ }).click();

@@ -19,7 +19,7 @@
 /* The growth stat in the stat strip, in the character's colour (round 7), on the cards and the sheet. */
 .ch-kpis .kpi-label.is-bonus, .sh-kpi .kpi-label.is-bonus { color: var(--el); }
 .ch-kpis > div.is-growth { background: color-mix(in srgb, var(--el) 16%, transparent); box-shadow: inset 3px 0 0 var(--el); }
-.ch-kpis > div.is-growth .cd { color: var(--el); }
+.ch-kpis > div.is-growth .font-display { color: var(--el); }
 .ch-kpis-pickwrap { position: relative; display: contents; }
 .sh-head .ch-kpis-pickwrap { position: relative; display: inline-block; }
 .ch-kpis-btn { display: inline-flex; align-items: center; gap: 6px; }
@@ -40,12 +40,12 @@
 .ch-dupes.is-off { background: var(--bg); border: 1px solid var(--hairline); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
 .ch-namebox { position: absolute; left: 10px; right: 10px; bottom: 10px; padding: 10px 12px; background: var(--el); color: var(--on-paper); clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%); }
 .ch-namebox h3 { margin: 0 0 4px; font-size: 22px; letter-spacing: 0.02em; text-transform: none; }
-.ch-namebox .mn { font-size: 12px; }
+.ch-namebox .font-mono { font-size: 12px; }
 .ch-kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-bottom: 1px solid var(--surface-3); }
 .ch-kpis > div { display: flex; flex-direction: column; gap: 6px; padding: 10px 12px; }
 .ch-kpis > div + div { border-left: 1px solid var(--surface-3); }
 .ch-kpis .kpi-label { font-size: 10px; }
-.ch-kpis .cd { font-size: 20px; }
+.ch-kpis .font-display { font-size: 20px; }
 .ch-chance { grid-template-columns: 1fr; }
 /* A stat a set raises (round 5): in the element's colour, a button that writes the stat and the bonus out. */
 .ch-boost { position: relative; z-index: 2; padding: 0; border: 0; background: transparent; color: var(--el); font: inherit; text-align: left; cursor: help; }
@@ -157,7 +157,7 @@
 .wp-art { width: 100px; height: 100px; font-size: 16px; border: 0; background: transparent; }
 .wp-body { display: flex; flex-direction: column; gap: 6px; min-width: 0; padding: 0 12px; }
 .wp-body strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 16px; }
-.wp-body .mn { font-size: 13px; }
+.wp-body .font-mono { font-size: 13px; }
 .wp-level { font-size: 26px; line-height: 1; }
 .wp-level small { font-size: 18px; color: var(--text-muted); }
 .wp-holder { width: 40px; height: 40px; font-size: 11px; border-color: var(--el); }

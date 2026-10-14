@@ -254,7 +254,7 @@ test("Characters: the growth stat first in a card's stats, in the character's co
     const first = card.locator(".ch-kpis > div").first();
     await expect(first.locator(".kpi-label")).toHaveText("ATK");
     await expect(first).toHaveClass(/is-growth/);
-    const [colour, el] = await first.locator(".cd").evaluate((v) => {
+    const [colour, el] = await first.locator(".font-display").evaluate((v) => {
       const probe = document.createElement("i");
       probe.style.color = "var(--el)";
       v.parentElement!.append(probe);
@@ -364,8 +364,8 @@ test("Characters: a card without a build shows the character's base stats at its
   // Three stats at most (round 8): the growth stat, HP and ATK.
   await expect(card.locator(".ch-kpis .kpi-label")).toHaveText(["CRIT Rate", "HP", "ATK"]);
   await expect(card.locator(".ch-kpis > div").first()).toHaveClass(/is-growth/);
-  await expect(card.locator(".ch-kpis .cd")).toHaveText(["5%", "917", "653"]);
-  await expect(card.locator(".ch-kpis .cd").nth(1)).toHaveAttribute("title", /Base at Lv 80/);
+  await expect(card.locator(".ch-kpis .font-display")).toHaveText(["5%", "917", "653"]);
+  await expect(card.locator(".ch-kpis .font-display").nth(1)).toHaveAttribute("title", /Base at Lv 80/);
 });
 
 // Georges, round 8: "Endfield character arts are way too zoomed in": its portraits are small, so its cards show them whole.

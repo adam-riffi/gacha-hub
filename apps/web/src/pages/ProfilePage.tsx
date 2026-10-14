@@ -39,7 +39,7 @@ export function ProfilePage() {
   const instance = useQuery({ queryKey: ["instance", id], queryFn: () => api.get<InstanceDetail>(`/api/instances/${id}`) });
   const game = instance.data && getGame(instance.data.gameKey);
   if (instance.isError) return <LoadError what="The profile" retry={() => instance.refetch()} />;
-  if (!instance.data || !game) return <div className="mu">Loading…</div>;
+  if (!instance.data || !game) return <div className="text-muted">Loading…</div>;
   return (
     <>
       <div style={{ marginBottom: 14 }}>
@@ -96,7 +96,7 @@ function Account({ instance, game }: Props) {
           <span className="kpi-label">UID</span>
           <span className="pf-val">
             {instance.uid && !show ? (
-              <span className="mn">{masked(instance.uid)}</span>
+              <span className="font-mono">{masked(instance.uid)}</span>
             ) : (
               <input
                 aria-label="UID"
@@ -158,7 +158,7 @@ function Passes({ instance, game }: Props) {
           </form>
         ) : (
           <span className="row">
-            <span className="mn">{line}</span>
+            <span className="font-mono">{line}</span>
             <button className="btn" aria-label={`Update ${name}`} onClick={() => setEditing(key)}>Update</button>
           </span>
         )}
@@ -178,7 +178,7 @@ function Passes({ instance, game }: Props) {
       <div className="spread">
         <h3>Passes</h3>
       </div>
-      {!monthly && !battle && <p className="mu">No pass on record for this game.</p>}
+      {!monthly && !battle && <p className="text-muted">No pass on record for this game.</p>}
       {monthly &&
         pass(
           "monthly",
@@ -316,7 +316,7 @@ function Wallet({ instance, game }: Props) {
               </span>
               <span className="pf-val">
                 <input type="number" min={0} max={currency.cap} aria-label={currency.label} key={value} defaultValue={value} onBlur={(event) => Number(event.target.value) !== value && save.mutate({ key: currency.key, value: Number(event.target.value) })} />
-                {currency.cap ? <span className="mu"> / {currency.cap}</span> : null}
+                {currency.cap ? <span className="text-muted"> / {currency.cap}</span> : null}
               </span>
             </div>
           );
@@ -368,7 +368,7 @@ function LongTerm({ instance }: Props) {
           {stats.map((stat) => (
             <div key={stat.name}>
               <span className="kpi-label">{stat.name}</span>
-              <span className="mn">{stat.value}</span>
+              <span className="font-mono">{stat.value}</span>
             </div>
           ))}
         </div>
@@ -390,13 +390,13 @@ function LongTerm({ instance }: Props) {
                   />{" "}
                   {goal.title}
                 </label>
-                {target > 1 && <span className="mn mu">{goal.progress} / {target}</span>}
+                {target > 1 && <span className="font-mono text-muted">{goal.progress} / {target}</span>}
               </li>
             );
           })}
         </ul>
       ) : (
-        <p className="mu">No goals</p>
+        <p className="text-muted">No goals</p>
       )}
       <form
         className="pf-add"

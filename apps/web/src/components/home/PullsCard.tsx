@@ -55,9 +55,9 @@ export function PullsCard({ games, day = null }: { games: DashGame[]; day?: stri
         <h3>Pulls</h3>
       </div>
       <div className="pulls-head">
-        <div className="cd pulls-total">{limited}</div>
-        <div className="mn pulls-split">
-          <span className="mu">limited pulls across games</span>
+        <div className="font-display pulls-total">{limited}</div>
+        <div className="font-mono pulls-split">
+          <span className="text-muted">limited pulls across games</span>
         </div>
       </div>
       <div className="lst">
@@ -65,14 +65,14 @@ export function PullsCard({ games, day = null }: { games: DashGame[]; day?: stri
           <div key={dashGame.instanceId}>
             <div className="rw">
               <span>{dashGame.name}</span>
-              <span className="mn pull-counts">
+              <span className="font-mono pull-counts">
                 <Count count={lim} kind="limited" />
                 <Count count={standard} kind="permanent" />
                 {hasSpecial ? <Count count={special} kind="special" /> : anySpecial && <span className="pull-n" aria-hidden="true" />}
               </span>
             </div>
             {!day && dashGame.pity.length > 0 && (
-              <Link to={`/games/${dashGame.instanceId}/pulls`} className="pull-row-pity mn">
+              <Link to={`/games/${dashGame.instanceId}/pulls`} className="pull-row-pity font-mono">
                 {dashGame.pity.map((pity) => `${pity.key.charAt(0).toUpperCase()}${pity.key.slice(1).replace("-", " ")} ${pity.pity}/${pity.hardPity}${pity.guaranteed ? " · guaranteed" : ""}`).join("  ·  ")}
               </Link>
             )}

@@ -60,7 +60,7 @@ export function PercentBars({ items, label }: { items: BarItem[]; label: string 
         </div>
         <div className="bars-row bars-labels">
           {items.map((item, itemIndex) => (
-            <div key={itemIndex} className="mn mu">
+            <div key={itemIndex} className="font-mono text-muted">
               {item.label}
             </div>
           ))}

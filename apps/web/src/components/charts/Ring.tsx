@@ -13,9 +13,9 @@ export function Ring({ done, total, label, size = 176 }: { done: number; total: 
         <circle cx="70" cy="70" r="44" className="gl" />
       </svg>
       <div className="gauge-figure">
-        <div className="cd gauge-small" style={size < 176 ? { fontSize: Math.round((38 * size) / 176) } : undefined}>
+        <div className="font-display gauge-small" style={size < 176 ? { fontSize: Math.round((38 * size) / 176) } : undefined}>
           {percent(done, total)}
-          <span className="mu">%</span>
+          <span className="text-muted">%</span>
         </div>
       </div>
     </div>

@@ -88,7 +88,7 @@ export function WeaponsPage() {
 
   const game = instance.data && getGame(instance.data.gameKey);
   if (instance.isError || copies.isError) return <LoadError what="Weapons" retry={() => Promise.all([instance.refetch(), copies.refetch()])} />;
-  if (!instance.data || !game || !copies.data || isLoading) return <div className="mu">Loading…</div>;
+  if (!instance.data || !game || !copies.data || isLoading) return <div className="text-muted">Loading…</div>;
 
   const holderField = weaponHolder(game);
   const dupe = game.manifest.dupes.weapon;
@@ -229,15 +229,15 @@ export function WeaponsPage() {
                 {/* Larger cards (Georges, round 7): the art on a band in its rarity's colour, the level big, the main stat by its icon. */}
                 <span className="wp-rarity" data-rarity={weapon.rarity ?? ""}>
                   <CatalogIcon gameKey={game.key} kind="weapon" icon={weapon.icon} name={weapon.name} className="wp-art" />
-                  {weapon.rarity ? <span className="mn wp-stars">★{weapon.rarity}</span> : null}
+                  {weapon.rarity ? <span className="font-mono wp-stars">★{weapon.rarity}</span> : null}
                 </span>
                 <div className="wp-body">
                   <strong>{weapon.name}</strong>
-                  <span className="cd wp-level">
+                  <span className="font-display wp-level">
                     Lv {copy.level}
                     {dupe && <small> · {dupeLetter(dupe.field)}{copy.refinement}</small>}
                   </span>
-                  <span className="mn mu">
+                  <span className="font-mono text-muted">
                     {weapon.entry?.mainStat && <StatIcon stat={weapon.entry.mainStat} />}
                     {[weapon.type, weapon.entry?.mainStat].filter(Boolean).join(" · ")}
                   </span>
@@ -265,11 +265,11 @@ export function WeaponsPage() {
               />
               <span className="wp-rarity" data-rarity={weapon.rarity ?? ""}>
                 <CatalogIcon gameKey={game.key} kind="weapon" icon={weapon.icon} name={weapon.name} className="wp-art" />
-                {weapon.rarity ? <span className="mn wp-stars">★{weapon.rarity}</span> : null}
+                {weapon.rarity ? <span className="font-mono wp-stars">★{weapon.rarity}</span> : null}
               </span>
               <div className="wp-body">
                 <strong>{weapon.name}</strong>
-                <span className="mn mu">
+                <span className="font-mono text-muted">
                   {weapon.entry?.mainStat && <StatIcon stat={weapon.entry.mainStat} />}
                   {[weapon.type, weapon.entry?.mainStat].filter(Boolean).join(" · ")}
                 </span>
@@ -278,7 +278,7 @@ export function WeaponsPage() {
               {weapon.catalogId && wished.has(weapon.catalogId) && <span className="badge wp-wish">♥</span>}
             </article>
           ))}
-          {cards.length === 0 && others.length === 0 && <p className="mu">{fromCatalog ? "No weapon matches." : "No weapon yet."}</p>}
+          {cards.length === 0 && others.length === 0 && <p className="text-muted">{fromCatalog ? "No weapon matches." : "No weapon yet."}</p>}
         </section>
 
         {(selecting || picked.size > 0) && (
@@ -353,7 +353,7 @@ function WeaponPanel({
           <CatalogIcon gameKey={gameKey} kind="weapon" icon={weapon.icon} name={weapon.name} />
           <span>
             <h3>{weapon.name}</h3>
-            <span className="mn mu">{[weapon.rarity && `★${weapon.rarity}`, weapon.type].filter(Boolean).join(" · ")}</span>
+            <span className="font-mono text-muted">{[weapon.rarity && `★${weapon.rarity}`, weapon.type].filter(Boolean).join(" · ")}</span>
           </span>
         </span>
         <button type="button" className="btn panel-close" aria-label="Close" onClick={onClose}>
@@ -429,7 +429,7 @@ function BulkBar({
   const [refinement, setRefinement] = useState("");
   return (
     <div className="ch-bulk ch-bulk-bar wp-bulk" role="region" aria-label="Selection">
-      <span className="mn">{count} selected</span>
+      <span className="font-mono">{count} selected</span>
       <label>
         Level
         <input type="number" min={1} max={100} value={level} onChange={(event) => setLevel(event.target.value)} />

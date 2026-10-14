@@ -37,7 +37,7 @@ function FarmChip({ gameKey, line, showGame, days = true }: { gameKey: string; l
       {line.unit && <UnitIcon gameKey={gameKey} unit={line.unit} />}
       {line.materials.length > 0 && <MaterialIcons gameKey={gameKey} ids={line.materials} />}
       {line.kind === "domain" && days && <span>{line.days.map((day) => DAY[day]).join(" ")}</span>}
-      {line.kind === "anyday" && days && <span className="mu">any day</span>}
+      {line.kind === "anyday" && days && <span className="text-muted">any day</span>}
       {line.kind === "weekly" && <span>{line.text}</span>}
     </span>
   );
@@ -71,7 +71,7 @@ export function TasksPage() {
   });
 
   if (instances.isError || tasks.isError) return <LoadError what="Tasks" retry={() => Promise.all([instances.refetch(), tasks.refetch()])} />;
-  if (!instances.data || !tasks.data) return <div className="mu">Loading…</div>;
+  if (!instances.data || !tasks.data) return <div className="text-muted">Loading…</div>;
 
   const games = instances.data.filter((gameInstance) => !gameInstance.sleeping && (!scope || gameInstance.gameKey === scope));
   const byId = new Map(games.map((gameInstance) => [gameInstance.id, gameInstance]));
@@ -144,7 +144,7 @@ export function TasksPage() {
             <div className="spread">
               <h3>Farm today</h3>
               <span className="row tk-farm-tools">
-                {weekdays.length === 1 && <span className="mn mu">game day: {WEEKDAY[weekdays[0]!]}</span>}
+                {weekdays.length === 1 && <span className="font-mono text-muted">game day: {WEEKDAY[weekdays[0]!]}</span>}
                 <Segmented label="Farm view" value={week ? "week" : "today"} onChange={(value) => setWeek(value === "week")} options={[{ value: "today", label: "Today" }, { value: "week", label: "Week" }]} />
               </span>
             </div>
@@ -170,7 +170,7 @@ export function TasksPage() {
               <div className="tk-chips">
                 {lines.flatMap((gameFarm) => gameFarm.lines.map((line, lineIndex) => <FarmChip key={`${gameFarm.instanceId}:${lineIndex}`} gameKey={gameFarm.gameKey} line={line} showGame={!scope} />))}
                 {farm.data && lines.every((gameFarm) => gameFarm.lines.length === 0) && (
-                  <p className="mu">
+                  <p className="text-muted">
                     Nothing to farm today. Plan a character from its sheet to see what its materials
                     need.
                   </p>
@@ -182,7 +182,7 @@ export function TasksPage() {
           <section className="card tk-goals" aria-label="Goals">
             <div className="spread">
               <h3>Goals</h3>
-              <span className="mn mu">
+              <span className="font-mono text-muted">
                 {top.filter((task) => !task.backlog).length} active ·{" "}
                 {top.filter((task) => task.backlog).length} in backlog
               </span>
@@ -202,7 +202,7 @@ export function TasksPage() {
             ))}
             </div>
             {goals.length === 0 && (
-              <p className="mu">
+              <p className="text-muted">
                 {needle
                   ? "No goal matches the filter."
                   : "No goals yet. Plan a character from its sheet, make one from an event on the calendar, or add one with New goal."}

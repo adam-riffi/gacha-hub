@@ -24,7 +24,7 @@ export function PullHistory({ instanceId, drops, star, unitOf, units }: { instan
     <section className="card pl-history" aria-label="History">
       <h3>History</h3>
       {drops.length === 0 ? (
-        <p className="mu">None</p>
+        <p className="text-muted">None</p>
       ) : (
         <>
           <table>
@@ -44,7 +44,7 @@ export function PullHistory({ instanceId, drops, star, unitOf, units }: { instan
                   <EditRow key={drop.id} instanceId={instanceId} drop={drop} star={star} units={units} unitOf={unitOf} onDone={() => setEditing(null)} />
                 ) : (
                   <tr key={drop.id}>
-                    <td className="mn">{DATE.format(new Date(drop.at))}</td>
+                    <td className="font-mono">{DATE.format(new Date(drop.at))}</td>
                     <td>{drop.banner.label}</td>
                     <td>{unitOf(drop.catalogId)?.name ?? star}</td>
                     <td className="num">{drop.pity}</td>
@@ -61,7 +61,7 @@ export function PullHistory({ instanceId, drops, star, unitOf, units }: { instan
               )}
             </tbody>
           </table>
-          <p className="mn mu pl-note">
+          <p className="font-mono text-muted pl-note">
             avg {Math.round(drops.reduce((total, drop) => total + drop.pity, 0) / drops.length)}
             {contested.length > 0 && ` · won ${contested.filter((drop) => drop.featured).length}/${contested.length}`}
           </p>
@@ -90,7 +90,7 @@ function EditRow({ instanceId, drop, star, units, unitOf, onDone }: { instanceId
   const hasFeatured = drop.banner.featuredRate < 1;
   return (
     <tr className="pl-edit">
-      <td className="mn">{DATE.format(new Date(drop.at))}</td>
+      <td className="font-mono">{DATE.format(new Date(drop.at))}</td>
       <td>{drop.banner.label}</td>
       <td>
         <Picker label={`Which ${star}`} value={unitOf(unit)?.name ?? ""} options={units.map((unitOption) => ({ id: unitOption.id, name: unitOption.name }))} icons={false} onPick={(unitOption) => setUnit(unitOption?.id ?? null)} />
@@ -145,7 +145,7 @@ export function BannerHistory({ instanceId, unitOf }: { instanceId: string; unit
           {historyQuery.data.map((bannerRow) => (
             <tr key={bannerRow.key}>
               <td>{bannerRow.name}</td>
-              <td className="mn mu">
+              <td className="font-mono text-muted">
                 {DAY.format(new Date(bannerRow.startsAt))} → {DAY.format(new Date(bannerRow.endsAt))}
               </td>
               <td>
@@ -157,7 +157,7 @@ export function BannerHistory({ instanceId, unitOf }: { instanceId: string; unit
                 ))}
               </td>
               <td className="num bh-pulls">{bannerRow.pulls}</td>
-              <td>{bannerRow.fiveStars.map((fiveStar) => unitOf(fiveStar.catalogId)?.name ?? "?").join(", ") || <span className="mu">—</span>}</td>
+              <td>{bannerRow.fiveStars.map((fiveStar) => unitOf(fiveStar.catalogId)?.name ?? "?").join(", ") || <span className="text-muted">—</span>}</td>
             </tr>
           ))}
         </tbody>

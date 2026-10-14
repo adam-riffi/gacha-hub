@@ -184,12 +184,12 @@ export function Heatmap({
         ))}
         {hoveredCell?.day && (
           <div className={`tip heat-tip ${tipAbove ? "t-a" : "t-b"}`} style={{ left: clamp(LEFT_GUTTER + hoveredCell.column * COLUMN_STEP + CELL_WIDTH / 2, 90, 778), top: tipAbove ? TOP_GUTTER + hoveredCell.row * ROW_STEP - 8 : TOP_GUTTER + hoveredCell.row * ROW_STEP + CELL_HEIGHT + 8 }}>
-            <div className="mn heat-tip-date">{dayLabel(hoveredCell)}</div>
-            <div className="cd heat-tip-n">
+            <div className="font-mono heat-tip-date">{dayLabel(hoveredCell)}</div>
+            <div className="font-display heat-tip-n">
               {doneOf(hoveredCell.day)}
               <span> / {hoveredCell.day.games.length} GAMES DONE</span>
             </div>
-            <div className="mn heat-tip-date">
+            <div className="font-mono heat-tip-date">
               {dailiesOf(hoveredCell.day)[0]} / {dailiesOf(hoveredCell.day)[1]} DAILIES
             </div>
           </div>
@@ -199,7 +199,7 @@ export function Heatmap({
         {selectedCell?.day ? (
           <div role="group" aria-label={`${dayLabel(selectedCell)}: ${doneOf(selectedCell.day)} of ${selectedCell.day.games.length} games done.`} className="heat-sel">
             <div className="heat-sel-head">
-              <span className="mn">{dayLabel(selectedCell)}</span>
+              <span className="font-mono">{dayLabel(selectedCell)}</span>
               <button type="button" className="xb" aria-label="Clear the selected day" onClick={() => pin(-1)}>
                 <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
                   <path d="M1 1L9 9M9 1L1 9" style={{ fill: "none", stroke: "currentColor", strokeWidth: 1.5 }} />
@@ -207,18 +207,18 @@ export function Heatmap({
               </button>
             </div>
             <div className="heat-sel-n">
-              <span className="cd">
+              <span className="font-display">
                 {doneOf(selectedCell.day)}
-                <span className="mu"> / {selectedCell.day.games.length}</span>
+                <span className="text-muted"> / {selectedCell.day.games.length}</span>
               </span>
-              <span className="mn mu">GAMES DONE</span>
+              <span className="font-mono text-muted">GAMES DONE</span>
             </div>
             <div className="heat-sel-n">
-              <span className="cd">
+              <span className="font-display">
                 {dailiesOf(selectedCell.day)[0]}
-                <span className="mu"> / {dailiesOf(selectedCell.day)[1]}</span>
+                <span className="text-muted"> / {dailiesOf(selectedCell.day)[1]}</span>
               </span>
-              <span className="mn mu">DAILIES</span>
+              <span className="font-mono text-muted">DAILIES</span>
             </div>
             <div className="dgs" aria-hidden="true">
               {selectedCell.day.games.map((game) => (
@@ -237,10 +237,10 @@ export function Heatmap({
               ["BEST STREAK", streakSummary.best, "DAYS"],
             ].map(([statLabel, statValue, unit]) => (
               <div key={statLabel} className="heat-stat">
-                <span className="mn mu">{statLabel}</span>
-                <span className="cd">
+                <span className="font-mono text-muted">{statLabel}</span>
+                <span className="font-display">
                   {statValue}
-                  <span className="mu"> {unit}</span>
+                  <span className="text-muted"> {unit}</span>
                 </span>
               </div>
             ))}

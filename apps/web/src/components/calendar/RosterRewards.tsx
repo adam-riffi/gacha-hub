@@ -8,7 +8,7 @@ export function RosterRewards({ rewards, onPick }: { rewards: RewardDto[]; onPic
   return (
     <section className="card cal-rewards" aria-label="Rewards that update your roster">
       <h3>Rewards that update your roster</h3>
-      {rewards.length === 0 && <p className="mu">No open event rewards a character or a weapon right now.</p>}
+      {rewards.length === 0 && <p className="text-muted">No open event rewards a character or a weapon right now.</p>}
       {rewards.map((reward) => {
         const chosen = reward.goal?.choice ?? (reward.options.length === 1 ? 0 : null);
         const option = chosen === null ? undefined : reward.options[chosen];
@@ -19,7 +19,7 @@ export function RosterRewards({ rewards, onPick }: { rewards: RewardDto[]; onPic
               <button type="button" className="cal-rw-name" onClick={() => onPick(reward.eventId)}>
                 {reward.name}
               </button>
-              <div className="mn mu">
+              <div className="font-mono text-muted">
                 {getGame(reward.gameKey)?.shortName ?? reward.gameKey} · {effect} · ends {DAY.format(new Date(reward.endsAt))}
               </div>
             </div>

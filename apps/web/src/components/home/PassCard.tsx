@@ -46,15 +46,15 @@ export function PassCard({ roster, carousel }: { roster: RosterEntry[]; carousel
             </div>
           )}
           <div className="band carousel-band">
-            <div className="cd pass-game">{rosterGame.name}</div>
-            <div className="mn carousel-sub">{pass ? `${pass.name} · version ${game.manifest.version.name}` : "No battle pass on record"}</div>
+            <div className="font-display pass-game">{rosterGame.name}</div>
+            <div className="font-mono carousel-sub">{pass ? `${pass.name} · version ${game.manifest.version.name}` : "No battle pass on record"}</div>
           </div>
           {pass && passState && (
             <div className="pass-level">
               <div className="pass-level-figure">
-                <span className="mn">Level</span>
-                <span className="cd">{passState.level}</span>
-                {passState.maxLevel !== null && <span className="cd mu">/ {passState.maxLevel}</span>}
+                <span className="font-mono">Level</span>
+                <span className="font-display">{passState.level}</span>
+                {passState.maxLevel !== null && <span className="font-display text-muted">/ {passState.maxLevel}</span>}
               </div>
               {passState.maxLevel !== null && <SegmentedBar level={passState.level} max={passState.maxLevel} label={pass.name} />}
             </div>

@@ -50,7 +50,7 @@ label.act-remind { display: flex; align-items: center; gap: 10px; margin: 12px 0
 .act-cadences { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: start; }
 .act-bottom { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 24px; align-items: start; }
 .act-list .spread, .act-version .spread { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
-.act-list h3 .mu, .act-cycles h3 .mu { font-size: 16px; }
+.act-list h3 .text-muted, .act-cycles h3 .text-muted { font-size: 16px; }
 .act-rows { display: flex; flex-direction: column; }
 .act-row { display: flex; align-items: center; gap: 12px; min-height: 40px; border-bottom: 1px solid var(--surface-3); cursor: default; }
 label.act-row { margin: 0; cursor: pointer; color: var(--text); font: 400 15px/1.3 var(--font-body); letter-spacing: 0; text-transform: none; }
@@ -58,7 +58,7 @@ label.act-row { margin: 0; cursor: pointer; color: var(--text); font: 400 15px/1
 .act-title { flex: 1; min-width: 0; font: 400 15px/1.3 var(--font-body); }
 .act-row.done .act-title { color: var(--text-muted); text-decoration: line-through; }
 .act-row .tag { font-size: 10px; }
-.act-row .mn { font-size: 12px; white-space: nowrap; }
+.act-row .font-mono { font-size: 12px; white-space: nowrap; }
 .act-empty { margin: 10px 0; font-size: 14px; }
 .act-add-btn { margin-top: 16px; }
 .act-add { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px; margin-top: 16px; }
@@ -69,11 +69,11 @@ label.act-row { margin: 0; cursor: pointer; color: var(--text); font: 400 15px/1
 .act-pass-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .act-pass-head .tag { margin-left: 8px; font-size: 10px; }
 .act-pass-level { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 8px 0 10px; }
-.act-pass-level .mn { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+.act-pass-level .font-mono { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
 .act-xp { display: flex; align-items: center; justify-content: space-between; margin: 18px 0 8px; }
 .act-meter-thin { flex: none; height: 6px; }
 .act-pass-row { margin-top: 12px; border-top: 1px solid var(--hairline); border-bottom: 0; }
-.act-pass-row .mn { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+.act-pass-row .font-mono { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
 
 /* ---- Endgame (G2): this cycle across the top, a card per mode, upcoming resets. ---- */
 .endgame { display: flex; flex-direction: column; gap: 24px; }
@@ -85,7 +85,7 @@ label.act-row { margin: 0; cursor: pointer; color: var(--text); font: 400 15px/1
 .eg-claimed .act-meter { flex: none; }
 .eg-next { min-width: 320px; }
 .eg-next-mode { margin: 8px 0 4px; font: 600 24px/1.1 var(--font-display); letter-spacing: 0.04em; text-transform: uppercase; }
-.eg-next .mn { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+.eg-next .font-mono { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
 .eg-modes { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; align-items: start; }
 .eg-mode .spread { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
 .eg-window-bar { position: relative; height: 6px; background: var(--surface-3); }
@@ -110,15 +110,15 @@ label.act-row { margin: 0; cursor: pointer; color: var(--text); font: 400 15px/1
 .eg-detail { margin: 12px 0 0; color: var(--text-muted); }
 /* A card's cycle: older and newer a step away, back to now (round 6). */
 .eg-cycle-nav { display: flex; align-items: center; gap: 8px; margin: -6px 0 12px; }
-.eg-cycle-nav .mn { font-size: 12px; }
+.eg-cycle-nav .font-mono { font-size: 12px; }
 .eg-cycle-nav > .btn:last-child { margin-left: auto; }
 .eg-mode.is-past { border-color: var(--hairline-strong); }
 .eg-last > button[aria-pressed="true"] { background: var(--accent); }
-.eg-clears li > .mu { font-size: 13px; }
+.eg-clears li > .text-muted { font-size: 13px; }
 .eg-none { font-size: 14px; align-self: center; }
 .eg-clears { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 8px; }
 .eg-clears li { display: grid; grid-template-columns: 96px 1fr auto; align-items: center; gap: 12px; }
-.eg-clears .mu { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+.eg-clears .text-muted { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
 .eg-team { display: inline-flex; gap: 4px; }
 .eg-team .gicon { width: 32px; height: 32px; font-size: 10px; }
 .eg-table .eg-clears { margin: 0; gap: 4px; }
@@ -127,7 +127,7 @@ label.act-row { margin: 0; cursor: pointer; color: var(--text); font: 400 15px/1
 .eg-clear-edit legend { float: left; width: 96px; padding: 0; }
 .eg-clear-edit .pk { flex: 1; min-width: 160px; }
 .eg-clear-edit label input { width: 72px; }
-.eg-upcoming .act-row .mn { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+.eg-upcoming .act-row .font-mono { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
 .eg-history-head { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
 .eg-history-head h3 { margin-bottom: 0; }
 .eg-history-head .sp { flex: 1; }
@@ -163,7 +163,7 @@ label.act-row { margin: 0; cursor: pointer; color: var(--text); font: 400 15px/1
 .tick-title { min-width: 0; font: 400 15px/1.3 var(--font-body); color: var(--text); }
 .tick-row.is-done .tick-title { color: var(--text-muted); text-decoration: line-through; }
 .tick-count { font-size: 13px; color: var(--text-muted); }
-.tick-row .mn { white-space: nowrap; }
+.tick-row .font-mono { white-space: nowrap; }
 input.tick-check { appearance: none; display: block; flex: none; width: 20px; height: 20px; margin: 0; border: 2px solid color-mix(in srgb, var(--accent) 75%, transparent); background: transparent; cursor: pointer; }
 input.tick-check:checked { background: var(--accent); border-color: var(--accent); }
 .tick-check:focus-visible, .tick-step:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
@@ -191,7 +191,7 @@ input.tick-check:checked { background: var(--accent); border-color: var(--accent
 .eg-detail-enemies li { display: flex; flex-wrap: wrap; gap: 10px; padding-left: 10px; border-left: 2px solid var(--surface-3); }
 .eg-detail-enemies .eg-enemy { display: inline-flex; align-items: center; gap: 6px; }
 .eg-detail-enemies .gicon { width: 32px; height: 32px; }
-.eg-detail-enemies .mn { font-size: 12px; }
+.eg-detail-enemies .font-mono { font-size: 12px; }
 .eg-detail-builds li { display: flex; align-items: center; gap: 10px; }
 .eg-detail-builds .gicon { width: 32px; height: 32px; }
 .eg-build-name { min-width: 120px; font-weight: 600; }

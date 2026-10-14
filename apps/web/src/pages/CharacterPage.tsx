@@ -55,7 +55,7 @@ export function CharacterPage({ buildId }: { buildId?: string }) {
   const id = buildId ?? params.id;
   const { data, isLoading, isError, refetch } = useQuery({ queryKey: ["character", id], queryFn: () => api.get<CharacterDetail>(`/api/characters/${id}`), enabled: Boolean(id) });
   if (isError) return <LoadError what="This build" retry={() => refetch()} />;
-  if (isLoading || !data) return <div className="mu">Loading…</div>;
+  if (isLoading || !data) return <div className="text-muted">Loading…</div>;
   // Keyed by id so the editor re-initializes when navigating between characters.
   return <CharacterEditor key={data.id} data={data} />;
 }
@@ -309,7 +309,7 @@ export function CharacterEditor({ data }: { data: CharacterDetail }) {
               <div className="sh-row">
                 <label htmlFor="sh-level">Level</label>
                 <span>
-                  <input id="sh-level" type="number" min={1} max={maxLevel} value={level ?? ""} onChange={(event) => setDoc((currentDoc) => ({ ...currentDoc, level: event.target.value === "" ? undefined : Number(event.target.value) }))} /> <span className="mu">/ {maxLevel}</span>
+                  <input id="sh-level" type="number" min={1} max={maxLevel} value={level ?? ""} onChange={(event) => setDoc((currentDoc) => ({ ...currentDoc, level: event.target.value === "" ? undefined : Number(event.target.value) }))} /> <span className="text-muted">/ {maxLevel}</span>
                 </span>
               </div>
               <div className="sh-row">
@@ -321,7 +321,7 @@ export function CharacterEditor({ data }: { data: CharacterDetail }) {
               <div className="sh-row">
                 <label htmlFor="sh-dupes">{dupe.label}</label>
                 <span>
-                  <input id="sh-dupes" type="number" min={0} max={dupe.max} value={dupeValue} onChange={(event) => setDoc((currentDoc) => ({ ...currentDoc, [dupe.field]: Number(event.target.value) }))} /> <span className="mn">{dupeBadge(game, doc)}</span>
+                  <input id="sh-dupes" type="number" min={0} max={dupe.max} value={dupeValue} onChange={(event) => setDoc((currentDoc) => ({ ...currentDoc, [dupe.field]: Number(event.target.value) }))} /> <span className="font-mono">{dupeBadge(game, doc)}</span>
                 </span>
               </div>
             </section>
@@ -329,14 +329,14 @@ export function CharacterEditor({ data }: { data: CharacterDetail }) {
             <section className="card" aria-label={capitalize(skills)}>
               <div className="spread">
                 <h3>{capitalize(skills)}</h3>
-                <span className="mn mu">now → target</span>
+                <span className="font-mono text-muted">now → target</span>
               </div>
-              {skillKeys.length === 0 && <p className="mu">No skills on record for this unit.</p>}
+              {skillKeys.length === 0 && <p className="text-muted">No skills on record for this unit.</p>}
               {skillKeys.map((skillKey) => (
                 <SkillRow key={skillKey} name={skillName(skillKey)} text={skillText(skillKey)} icon={skillIcon(skillKey)} gameKey={game.key}>
                   <span className="sh-ctl">
                     <input type="number" aria-label={`${skillKey} now`} min={1} max={15} value={skillDoc[skillKey] ?? 1} onChange={(event) => setDoc((currentDoc) => ({ ...currentDoc, [skills]: { ...((currentDoc[skills] ?? {}) as Doc), [skillKey]: Number(event.target.value) } }))} />
-                    <span className="mu"> → {targets[skillKey]?.to ?? "—"}</span>
+                    <span className="text-muted"> → {targets[skillKey]?.to ?? "—"}</span>
                   </span>
                 </SkillRow>
               ))}
@@ -388,14 +388,14 @@ export function CharacterEditor({ data }: { data: CharacterDetail }) {
                   />
                   {asking && (
                     <div className="sh-ask" role="group" aria-label={`Which ${asking.name}`}>
-                      <p className="mu">{(copies.data ?? []).some((copy) => copy.catalogId === asking.id) ? `Every ${asking.name} you have is held:` : `You have no ${asking.name} yet.`}</p>
+                      <p className="text-muted">{(copies.data ?? []).some((copy) => copy.catalogId === asking.id) ? `Every ${asking.name} you have is held:` : `You have no ${asking.name} yet.`}</p>
                       {(copies.data ?? [])
                         .filter((copy) => copy.catalogId === asking.id)
                         .flatMap((copy) => heldBy(copy.id).map((build) => ({ copy, build, unit: index?.characters.get(build.catalogId ?? "") })))
                         .map(({ copy, build, unit }) => (
                           <div key={copy.id + build.id} className="sh-ask-row">
                             <CatalogIcon gameKey={game.key} kind="character" icon={unit?.icon} name={unit?.name ?? build.name} tag={unit?.tag} />
-                            <span className="mn">
+                            <span className="font-mono">
                               {unit?.name ?? build.name} · Lv {copy.level}
                               {weaponDupe && ` · ${weaponDupe.field.split(".").at(-1)!.charAt(0).toUpperCase()}${copy.refinement}`}
                             </span>
@@ -428,13 +428,13 @@ export function CharacterEditor({ data }: { data: CharacterDetail }) {
                       <label htmlFor="sh-wdupes">{weaponDupe.label}</label>
                       <span>
                         <input id="sh-wdupes" type="number" min={1} max={weaponDupe.max} value={numberOrUndefined(weapon?.[weaponDupeKey]) ?? ""} onChange={(event) => setDoc((currentDoc) => ({ ...currentDoc, [holder]: { ...((currentDoc[holder] ?? {}) as Doc), [weaponDupeKey]: Number(event.target.value) } }))} />
-                        <span className="mn"> {weaponDupe.field.split(".").at(-1)!.charAt(0).toUpperCase()}{numberOrUndefined(weapon?.[weaponDupeKey]) ?? "—"}</span>
+                        <span className="font-mono"> {weaponDupe.field.split(".").at(-1)!.charAt(0).toUpperCase()}{numberOrUndefined(weapon?.[weaponDupeKey]) ?? "—"}</span>
                       </span>
                     </div>
                   )}
                 </>
               ) : (
-                <p className="mu">{game.name} weapons are not tracked on the sheet yet.</p>
+                <p className="text-muted">{game.name} weapons are not tracked on the sheet yet.</p>
               )}
             </section>
           </div>
@@ -443,7 +443,7 @@ export function CharacterEditor({ data }: { data: CharacterDetail }) {
             <div className="spread">
               <h3>Combat stats</h3>
               <span className="row sh-oncard-note">
-                <span className="mn mu">
+                <span className="font-mono text-muted">
                   on the card {onCard.length} / {LIMITS.cardStats}
                 </span>
                 {data.cardStats && (
@@ -501,7 +501,7 @@ export function CharacterEditor({ data }: { data: CharacterDetail }) {
             .map((team) => (
               <div className="sh-row" key={team.id}>
                 <Link to={`/games/${data.gameInstanceId}/teams`}>{team.name}</Link>
-                <span className="mu">
+                <span className="text-muted">
                   {team.members
                     .filter((member) => member !== data.catalogId)
                     .map((member) => index?.characters.get(member)?.name ?? member)
@@ -509,7 +509,7 @@ export function CharacterEditor({ data }: { data: CharacterDetail }) {
                 </span>
               </div>
             ))}
-          {!(teams.data ?? []).some((team) => team.members.includes(data.catalogId!)) && <p className="mu">No team uses {data.name} yet.</p>}
+          {!(teams.data ?? []).some((team) => team.members.includes(data.catalogId!)) && <p className="text-muted">No team uses {data.name} yet.</p>}
           <div className="row sh-used-add">
             <select aria-label="Add to a team" value="" onChange={(event) => {
               const team = (teams.data ?? []).find((candidate) => candidate.id === event.target.value);
@@ -591,7 +591,7 @@ function StatCard({
         />
       )}
       <span className="sh-target">
-          <label className="mu">
+          <label className="text-muted">
             {target === undefined && fallback !== undefined ? "target (default)" : "target"}
             <input
               type="number"
@@ -605,7 +605,7 @@ function StatCard({
               }}
             />
           </label>
-          {gap !== null && <span className={`mn ${gap <= 0 ? "" : "mu"}`}>{gap <= 0 ? "✓ on target" : `${Math.round(gap * 10) / 10} short`}</span>}
+          {gap !== null && <span className={`font-mono ${gap <= 0 ? "" : "text-muted"}`}>{gap <= 0 ? "✓ on target" : `${Math.round(gap * 10) / 10} short`}</span>}
       </span>
     </div>
   );

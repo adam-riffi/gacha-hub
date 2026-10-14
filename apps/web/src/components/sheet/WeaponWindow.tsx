@@ -80,7 +80,7 @@ function WeaponTile({ game, weapon, copy, holders = [], onPick }: { game: GameDe
       <button type="button" className="wp-open" aria-label={`Equip ${weapon.name}`} onClick={onPick} />
       <span className="wp-rarity" data-rarity={weapon.rarity}>
         <CatalogIcon gameKey={game.key} kind="weapon" icon={weapon.icon} name={weapon.name} className="wp-art" />
-        <span className="mn wp-stars">★{weapon.rarity}</span>
+        <span className="font-mono wp-stars">★{weapon.rarity}</span>
         {ranks.length > 0 && (
           <button type="button" className="wpw-info" aria-label={`${weapon.name}: effect`} aria-expanded={info} onClick={() => setInfo(!info)}>
             i
@@ -90,7 +90,7 @@ function WeaponTile({ game, weapon, copy, holders = [], onPick }: { game: GameDe
       <div className="wp-body">
         <strong>{weapon.name}</strong>
         {copy && (
-          <span className="cd wp-level">
+          <span className="font-display wp-level">
             Lv {copy.level}
             {dupe && (
               <small>
@@ -101,7 +101,7 @@ function WeaponTile({ game, weapon, copy, holders = [], onPick }: { game: GameDe
             )}
           </span>
         )}
-        <span className="mn mu">
+        <span className="font-mono text-muted">
           {weapon.mainStat && <StatIcon stat={weapon.mainStat} />}
           {[weapon.type, weapon.mainStat].filter(Boolean).join(" · ")}
         </span>

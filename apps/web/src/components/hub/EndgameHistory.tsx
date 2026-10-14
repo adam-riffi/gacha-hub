@@ -33,9 +33,9 @@ export function ClearList({ gameKey, teams, unitOf, stages }: { gameKey: string;
     <ul className="eg-clears" aria-label="Clears">
       {rows.map((row) => (
         <li key={row.stage}>
-          <span className="mn mu">{row.stage}</span>
-          {row.members.length ? <TeamIcons gameKey={gameKey} members={row.members} unitOf={unitOf} /> : <span className="mu">—</span>}
-          <span className="mn">{row.time !== null ? minutesSeconds(row.time) : ""}</span>
+          <span className="font-mono text-muted">{row.stage}</span>
+          {row.members.length ? <TeamIcons gameKey={gameKey} members={row.members} unitOf={unitOf} /> : <span className="text-muted">—</span>}
+          <span className="font-mono">{row.time !== null ? minutesSeconds(row.time) : ""}</span>
         </li>
       ))}
     </ul>
@@ -194,7 +194,7 @@ export function EndgameHistory({
                 {row.full && <i className="eg-dot" aria-label="full clear" />}
                 {row.result ?? "—"}
               </td>
-              <td className="mu">{row.detail ?? ""}</td>
+              <td className="text-muted">{row.detail ?? ""}</td>
               {mode.clears && (
                 <td>
                   <ClearList gameKey={game.key} teams={row.teams ?? []} unitOf={unitOf} />
@@ -209,7 +209,7 @@ export function EndgameHistory({
           ))}
         </tbody>
       </table>
-      {history.rows.length === 0 && <p className="mu act-empty">No cycle recorded for {mode.name} yet. Type the current one on its card, or add a past cycle.</p>}
+      {history.rows.length === 0 && <p className="text-muted act-empty">No cycle recorded for {mode.name} yet. Type the current one on its card, or add a past cycle.</p>}
       {history.rows.length > shown && (
         <button type="button" className="btn act-add-btn" onClick={() => setShown((shownCount) => shownCount + 6)}>
           Show {Math.min(6, history.rows.length - shown)} older cycles
@@ -227,7 +227,7 @@ function Tile({ label, value, unit, note }: { label: string; value: string | num
         {value}
         {unit && <small> {unit}</small>}
       </div>
-      <div className="mu eg-tile-note">{note}</div>
+      <div className="text-muted eg-tile-note">{note}</div>
     </div>
   );
 }
@@ -269,7 +269,7 @@ function ResultsChart({ rows, max, label, premium, offer, onOpen }: { rows: Rows
           </g>
         ))}
       </svg>
-      <figcaption className="mn mu eg-legend">
+      <figcaption className="font-mono text-muted eg-legend">
         <span>
           <i className="eg-key full" /> {max !== undefined ? `${max} ${label}, full clear` : "full clear"}
         </span>

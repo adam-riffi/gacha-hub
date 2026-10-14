@@ -174,7 +174,7 @@ export function GearSetsPage() {
             <div className="ch-chipset" role="group" aria-label="Sets">
               <span className="kpi-label">Sets</span>
               <button type="button" className="gb-setfield" data-opens-panel aria-label={`Pick sets, any of ${sets.length}`} onClick={() => setPicking(!picking)}>
-                ▦ Pick sets<span className="mu">{setsPicked.size ? `${setsPicked.size} picked` : `any of ${sets.length}`}</span>
+                ▦ Pick sets<span className="text-muted">{setsPicked.size ? `${setsPicked.size} picked` : `any of ${sets.length}`}</span>
               </button>
               <div>
                 {[...setsPicked].map((name) => (
@@ -247,13 +247,13 @@ export function GearSetsPage() {
                   <article key={piece.key} className="card gb-tile" aria-label={name} aria-current={piece === picked ? true : undefined}>
                     <button type="button" className="gb-show" aria-label={`Show ${name}`} onClick={() => setChosen(piece.key)} />
                     <CatalogIcon gameKey={game.key} kind="gear" icon={pieceIcon(set, piece.slot)} name={piece.set} className="gb-art" />
-                    <span className="gb-lv mn">+{piece.level ?? 0}</span>
-                    {piece.wearer?.catalogId ? <UnitIcon gameKey={game.key} unit={{ kind: "character", catalogId: piece.wearer.catalogId }} className="gb-who" /> : <span className="gb-bag mn">{piece.wearer ? piece.wearer.name : "Bag"}</span>}
-                    <span className="gb-main cd">
+                    <span className="gb-lv font-mono">+{piece.level ?? 0}</span>
+                    {piece.wearer?.catalogId ? <UnitIcon gameKey={game.key} unit={{ kind: "character", catalogId: piece.wearer.catalogId }} className="gb-who" /> : <span className="gb-bag font-mono">{piece.wearer ? piece.wearer.name : "Bag"}</span>}
+                    <span className="gb-main font-display">
                       {piece.mainStat && <StatIcon stat={piece.mainStat} />}
                       {piece.mainStat || "—"}
                     </span>
-                    <span className="gb-type mn">
+                    <span className="gb-type font-mono">
                       {slotLabel(piece.slot)}
                       {critValue > 0 && ` · CV ${Math.round(critValue * 10) / 10}`}
                     </span>
@@ -324,7 +324,7 @@ function SetsWindow({ game, sets, held, picked, onToggle, onClear, count, onClos
                     <CatalogIcon gameKey={game.key} kind="gear" icon={gearSet.icon} name={gearSet.name} className="gb-win-icon" />
                     <span>
                       <span className="gb-win-name">{gearSet.name}</span>
-                      <span className="mn mu">{piecesHeld ? `${piecesHeld} piece${piecesHeld > 1 ? "s" : ""}` : "none yet"}</span>
+                      <span className="font-mono text-muted">{piecesHeld ? `${piecesHeld} piece${piecesHeld > 1 ? "s" : ""}` : "none yet"}</span>
                     </span>
                   </button>
                 );
@@ -332,7 +332,7 @@ function SetsWindow({ game, sets, held, picked, onToggle, onClear, count, onClos
             </div>
           </div>
         ))}
-        {list.length === 0 && <p className="mu">No set matches.</p>}
+        {list.length === 0 && <p className="text-muted">No set matches.</p>}
         <div className="gb-win-foot">
           <span className="kpi-label">{picked.size} picked</span>
           <button type="button" className="btn" disabled={picked.size === 0} onClick={onClear}>
@@ -369,9 +369,9 @@ function PieceColumn({ instanceId, game, piece, set, slotLabel, builds, onOpenSe
       <h3>{piece.set}</h3>
       <p className="gb-col-type">
         {slotLabel} · +{piece.level ?? 0}
-        {pieceName && <span className="mu"> · {pieceName}</span>}
+        {pieceName && <span className="text-muted"> · {pieceName}</span>}
       </p>
-      <div className="gb-col-main cd">
+      <div className="gb-col-main font-display">
         {piece.mainStat && <StatIcon stat={piece.mainStat} />}
         {piece.mainStat || "—"}
       </div>
@@ -382,13 +382,13 @@ function PieceColumn({ instanceId, game, piece, set, slotLabel, builds, onOpenSe
               <StatIcon stat={substat.stat} />
               {substat.stat}
             </span>
-            <span className="cd">{substat.value}</span>
+            <span className="font-display">{substat.value}</span>
           </li>
         ))}
         {critValue > 0 && (
           <li className="gb-col-cv">
             <span>Crit value</span>
-            <span className="cd">{Math.round(critValue * 10) / 10}</span>
+            <span className="font-display">{Math.round(critValue * 10) / 10}</span>
           </li>
         )}
       </ul>
@@ -408,7 +408,7 @@ function PieceColumn({ instanceId, game, piece, set, slotLabel, builds, onOpenSe
         <Link to={`/characters/${piece.wearer.id}`} className="gb-col-who">
           {piece.wearer.catalogId && <UnitIcon gameKey={game.key} unit={{ kind: "character", catalogId: piece.wearer.catalogId }} />}
           {unit?.name ?? piece.wearer.name}
-          <span className="mu"> · {worn} of this set</span>
+          <span className="text-muted"> · {worn} of this set</span>
         </Link>
       )}
       <div className="row gb-col-acts">
@@ -512,10 +512,10 @@ function SetPanel({ instanceId, game, set, pieces, builds, onClose }: { instance
           return (
             <li key={slotOption.key} aria-label={slotOption.label}>
               <span className="kpi-label">{slotOption.label}</span>
-              {here.length === 0 && <span className="mu">—</span>}
+              {here.length === 0 && <span className="text-muted">—</span>}
               {here.map((piece, pieceIndex) => (
                 <span key={piece.bagId ?? `${piece.wearer?.id}:${pieceIndex}`} className="gs-piece">
-                  <span className="mn">
+                  <span className="font-mono">
                     {piece.mainStat || "—"}
                     {piece.level ? ` +${piece.level}` : ""}
                   </span>

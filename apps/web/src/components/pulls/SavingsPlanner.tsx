@@ -24,19 +24,19 @@ export function SavingsPlanner({ targets, forecast, star = "5★" }: { targets: 
           <label><input type="radio" name="plan-mode" checked={mode === "average"} onChange={() => setMode("average")} /> Average</label>
         </div>
       </div>
-      {targets.length === 0 && <p className="mu">No event banner with a featured {star} is running.</p>}
+      {targets.length === 0 && <p className="text-muted">No event banner with a featured {star} is running.</p>}
       {plan.map((planItem, index) => {
         const target = targets[index]!;
         return (
           <div className="pl-target" key={target.label + index}>
-            <span className="mn mu">{index + 1}</span>
+            <span className="font-mono text-muted">{index + 1}</span>
             <div>
               <strong>{target.label}</strong>
-              <div className="mn mu">{target.sub}{target.endsAt ? ` · ends ${ENDS.format(new Date(target.endsAt))}` : ""}</div>
+              <div className="font-mono text-muted">{target.sub}{target.endsAt ? ` · ends ${ENDS.format(new Date(target.endsAt))}` : ""}</div>
             </div>
-            <span className="mn pl-needs">needs ≤ {Number.isFinite(planItem.needs) ? planItem.needs : "∞"}</span>
+            <span className="font-mono pl-needs">needs ≤ {Number.isFinite(planItem.needs) ? planItem.needs : "∞"}</span>
             {planItem.covered ? <span className="badge done">Covered · {percentText(planItem.chance)}</span> : <span className="badge todo">{percentText(planItem.chance)} · short by {Number.isFinite(planItem.short) ? planItem.short : "∞"}</span>}
-            {!planItem.covered && <span className="mn mu">{percentText(planItem.withForecast)} with forecast</span>}
+            {!planItem.covered && <span className="font-mono text-muted">{percentText(planItem.withForecast)} with forecast</span>}
           </div>
         );
       })}

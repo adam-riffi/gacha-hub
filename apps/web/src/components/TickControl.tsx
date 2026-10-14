@@ -18,7 +18,7 @@ export function TickBox({ instanceId, task }: { instanceId: string; task: TaskDt
   const targetCount = task.target ?? 1;
   if (targetCount > 8) {
     return (
-      <span className="tick-count-in mn">
+      <span className="tick-count-in font-mono">
         <input type="number" min={0} max={targetCount} aria-label={task.title} key={task.progress} defaultValue={task.progress} onBlur={(event) => Number(event.target.value) !== task.progress && step.mutate(Math.min(targetCount, Math.max(0, Number(event.target.value))))} />
       </span>
     );
@@ -49,7 +49,7 @@ export function TickRow({ instanceId, task, children }: { instanceId: string; ta
       </span>
       <span className="tick-title">{task.title}</span>
       {targetCount > 1 && (
-        <span className="mn tick-count">
+        <span className="font-mono tick-count">
           {Math.min(task.progress, targetCount)}/{targetCount}
         </span>
       )}

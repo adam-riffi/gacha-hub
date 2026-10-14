@@ -44,8 +44,8 @@ function BannerFact({ label, value, detail }: { label: string; value: ReactNode;
   return (
     <div className="un-banner-fact">
       <span className="kpi-label">{label}</span>
-      <span className="cd un-banner-fact-value">{value}</span>
-      {detail && <span className="mu">{detail}</span>}
+      <span className="font-display un-banner-fact-value">{value}</span>
+      {detail && <span className="text-muted">{detail}</span>}
     </div>
   );
 }
@@ -108,9 +108,9 @@ export function UnitInfo({ instance, game, entry }: { instance: InstanceDetail; 
                 return (
                   <tr key={banner.key}>
                     <td>{banner.name}</td>
-                    <td className="mn">{BANNER_DATE.format(new Date(banner.startsAt))}</td>
-                    <td className="mn">{BANNER_DATE.format(new Date(banner.endsAt))}</td>
-                    <td className="mn">{ended ? timeAgo(banner.endsAt, nowTime) : started ? "now" : "next"}</td>
+                    <td className="font-mono">{BANNER_DATE.format(new Date(banner.startsAt))}</td>
+                    <td className="font-mono">{BANNER_DATE.format(new Date(banner.endsAt))}</td>
+                    <td className="font-mono">{ended ? timeAgo(banner.endsAt, nowTime) : started ? "now" : "next"}</td>
                   </tr>
                 );
               })}
@@ -124,7 +124,7 @@ export function UnitInfo({ instance, game, entry }: { instance: InstanceDetail; 
           <ol className="un-dupes">
             {entry.constellations!.map((constellation, index) => (
               <li key={index}>
-                <strong>{constellation.name ?? `${dupe.label} ${index + 1}`}</strong> <span className="mu">{constellation.description}</span>
+                <strong>{constellation.name ?? `${dupe.label} ${index + 1}`}</strong> <span className="text-muted">{constellation.description}</span>
               </li>
             ))}
           </ol>

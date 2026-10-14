@@ -52,7 +52,7 @@ export function PlannerPage() {
   const game = instance.data && getGame(instance.data.gameKey);
   if (instance.isError || tasks.isError) return <LoadError what="The planner" retry={() => Promise.all([instance.refetch(), tasks.refetch()])} />;
   const gameInstance = instances.data?.find((listed) => listed.id === id);
-  if (!instance.data || !tasks.data || !game || !gameInstance) return <div className="mu">Loading…</div>;
+  if (!instance.data || !tasks.data || !game || !gameInstance) return <div className="text-muted">Loading…</div>;
 
   const region = game.regions.find((candidate) => candidate.key === instance.data.regionKey) ?? game.regions[0]!;
   const weekday = gameWeekday(region, new Date());
@@ -113,8 +113,8 @@ export function PlannerPage() {
               New goal
             </button>
           </div>
-          {goals.length === 0 && <p className="mu">No farming goal yet: plan one from a character's sheet.</p>}
-          {goals.length > 0 && listed.length === 0 && <p className="mu">No goal matches.</p>}
+          {goals.length === 0 && <p className="text-muted">No farming goal yet: plan one from a character's sheet.</p>}
+          {goals.length > 0 && listed.length === 0 && <p className="text-muted">No goal matches.</p>}
           {/* The Tasks goal card (Georges, round 4): priority, notify, its plan, Link to; a click also picks it for the materials. */}
           <div className="pn-goal-grid">
             {shown.map((goal) => (
@@ -139,7 +139,7 @@ export function PlannerPage() {
               <Segmented label="Materials for" options={[{ value: "goal", label: "This goal" }, { value: "all", label: "All goals" }]} value={scope} onChange={setScope} />
             </div>
             {rows.length === 0 ? (
-              <p className="mu">Nothing to farm here.</p>
+              <p className="text-muted">Nothing to farm here.</p>
             ) : (
               <div className="pn-table">
               <table>
@@ -155,7 +155,7 @@ export function PlannerPage() {
                           {row.name}
                         </span>
                       </td>
-                      <td className="mu">{row.source}</td>
+                      <td className="text-muted">{row.source}</td>
                       <td>
                         {row.availability.length ? (
                           // The open days written out (Georges, 2026-10-11): "Wed Sat"; Sunday opens every domain, so it is left out beside others.
@@ -168,7 +168,7 @@ export function PlannerPage() {
                             ))}
                           </span>
                         ) : (
-                          <span className="mu">any day</span>
+                          <span className="text-muted">any day</span>
                         )}
                       </td>
                       <td className="num">
@@ -187,7 +187,7 @@ export function PlannerPage() {
           <section className="card pn-today" aria-label={`Farm today · ${WEEKDAY[weekday]}`}>
             <div className="spread">
               <h3>Farm today · {WEEKDAY[weekday]}</h3>
-              <span className="mn mu">{scope === "goal" ? "this goal" : "all goals"}</span>
+              <span className="font-mono text-muted">{scope === "goal" ? "this goal" : "all goals"}</span>
             </div>
             {/* One line per domain and day: today's first, then each one's next open day. */}
             {[...today.map((row) => ({ ...row, when: "Today" })), ...later.map((row) => ({ ...row, when: next(row.availability) }))]
@@ -210,7 +210,7 @@ export function PlannerPage() {
                 <MaterialIcons gameKey={game.key} ids={open.filter((row) => !row.availability.length).map((row) => row.materialId)} max={10} />
               </div>
             )}
-            {open.length === 0 && <p className="mu">Nothing left to farm.</p>}
+            {open.length === 0 && <p className="text-muted">Nothing left to farm.</p>}
             <Link className="btn" to={`/tasks?game=${game.key}`}>Open Tasks →</Link>
           </section>
         </div>

@@ -96,7 +96,7 @@ export function RemindersPanel({ games }: { games: InstanceListItem[] }) {
             </form>
           ) : (
             <>
-              <span className="mn">{quietNow ? `${quietNow.from}–${quietNow.to} · ${ZONE}` : "none"}</span>
+              <span className="font-mono">{quietNow ? `${quietNow.from}–${quietNow.to} · ${ZONE}` : "none"}</span>
               <button
                 className="btn"
                 aria-label="Edit quiet hours"
@@ -124,11 +124,11 @@ export function RemindersPanel({ games }: { games: InstanceListItem[] }) {
             Send a test DM
           </button>
         </div>
-        {test && <p className="mu tk-note">{test}</p>}
-        {(preview.data ?? []).length === 0 && <p className="mu">Turn a reminder on to see the DM it sends.</p>}
+        {test && <p className="text-muted tk-note">{test}</p>}
+        {(preview.data ?? []).length === 0 && <p className="text-muted">Turn a reminder on to see the DM it sends.</p>}
         {(preview.data ?? []).map((previewItem) => (
           <div key={previewItem.instanceId} className="tk-dm">
-            <div className="mn mu">Gacha Hub · now · {getGame(previewItem.gameKey)?.shortName}</div>
+            <div className="font-mono text-muted">Gacha Hub · now · {getGame(previewItem.gameKey)?.shortName}</div>
             {previewItem.text.split("\n").map((line, lineIndex) => (
               <p key={lineIndex} className={lineIndex === 0 ? "tk-dm-head" : undefined}>
                 {line.replace(/\*\*/g, "")}

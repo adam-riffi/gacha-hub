@@ -36,7 +36,7 @@ export function GearBlock({ game, doc, setDoc, sets: setOptions }: { game: GameD
           {sets && <span className="badge">{sets}</span>}
           {gearManifest.costCap && <span className="badge">cost cap {gearManifest.costCap}</span>}
         </div>
-        <span className="mn mu">crit value {formatValue(total)}</span>
+        <span className="font-mono text-muted">crit value {formatValue(total)}</span>
       </div>
       <div className="sh-pieces" style={{ gridTemplateColumns: `repeat(${Math.min(gearManifest.slots.length, 6)}, minmax(0, 1fr))` }}>
         {gearManifest.slots.map((slot) => {
@@ -53,7 +53,7 @@ export function GearBlock({ game, doc, setDoc, sets: setOptions }: { game: GameD
                 })()}
                 <span className="sh-piece-name">
                   <span className="kpi-label">{slot.label}</span>
-                  <span className="mn">CV {formatValue(gearPieceCv(piece))}</span>
+                  <span className="font-mono">CV {formatValue(gearPieceCv(piece))}</span>
                 </span>
               </div>
               <Picker label={`${slot.label} set`} glyph="gear" placeholder="Set" value={piece.setName ?? ""} free options={setOptions} onPick={(_, text) => setPiece(slot.key, { setName: text || undefined })} />
@@ -68,7 +68,7 @@ export function GearBlock({ game, doc, setDoc, sets: setOptions }: { game: GameD
                   </select>
                 </span>
               ) : (
-                <span className="mu sh-fixed">no main stat to choose</span>
+                <span className="text-muted sh-fixed">no main stat to choose</span>
               )}
               <input aria-label={`${slot.label} level`} type="number" min={0} max={gearManifest.maxLevel} placeholder={`Level / ${gearManifest.maxLevel}`} value={piece.level ?? ""} onChange={(event) => setPiece(slot.key, { level: event.target.value === "" ? undefined : Number(event.target.value) })} />
               {substats.slice(0, SUBSTATS).map((substat, substatIndex) => (

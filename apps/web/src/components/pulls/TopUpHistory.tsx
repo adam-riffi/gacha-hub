@@ -70,12 +70,12 @@ export function TopUpHistory({ instanceId, game }: { instanceId: string; game: G
             disabled={add.isPending}
             onClick={() => add.mutate({ label: buy.label, amount: buy.amount, price: buy.price, ...(at ? { at } : {}), ...(buy.pass ? { pass: true } : {}) })}
           >
-            <span className="pl-tops-pulls cd">
+            <span className="pl-tops-pulls font-display">
               <CurrencyIcon kind="premium" />
               {pullsOf(buy)} pulls
             </span>
             <strong>{buy.pass ? `${buy.label} · ${pass?.days ?? 30} days` : buy.label}</strong>
-            <span className="mn pl-tops-price">{USD_FORMAT.format(buy.price / 100)}</span>
+            <span className="font-mono pl-tops-price">{USD_FORMAT.format(buy.price / 100)}</span>
           </button>
         ))}
       </div>
@@ -85,8 +85,8 @@ export function TopUpHistory({ instanceId, game }: { instanceId: string; game: G
           return (
             <div key={name} role="group" aria-label={name}>
               <span className="kpi-label">{name}</span>
-              <strong className="cd">{USD_FORMAT.format(totals.price / 100)}</strong>
-              <span className="mn mu">
+              <strong className="font-display">{USD_FORMAT.format(totals.price / 100)}</strong>
+              <span className="font-mono text-muted">
                 ◆ {NUMBER_FORMAT.format(totals.amount)}
                 {cost ? ` · ${Math.floor(totals.amount / cost)} pulls` : ""}
               </span>
@@ -97,10 +97,10 @@ export function TopUpHistory({ instanceId, game }: { instanceId: string; game: G
       <ul className="pl-tops-list" aria-label="Top-up history">
         {(all ? items : items.slice(0, 5)).map((topUp) => (
           <li key={topUp.id} className={topUp.pass ? "is-pass" : ""}>
-            <span className="mn mu">{DAY.format(new Date(topUp.at))}</span>
+            <span className="font-mono text-muted">{DAY.format(new Date(topUp.at))}</span>
             <span>{topUp.label}</span>
-            <span className="mn">◆ {NUMBER_FORMAT.format(topUp.amount)}</span>
-            <span className="mn">{USD_FORMAT.format(topUp.price / 100)}</span>
+            <span className="font-mono">◆ {NUMBER_FORMAT.format(topUp.amount)}</span>
+            <span className="font-mono">{USD_FORMAT.format(topUp.price / 100)}</span>
             <button type="button" className="btn ghost sm" aria-label="Delete" title={`Delete ${topUp.label}`} onClick={() => remove.mutate(topUp.id)}>
               ✕
             </button>

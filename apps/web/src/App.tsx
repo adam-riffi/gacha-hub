@@ -36,7 +36,7 @@ export function App() {
 
   return (
     <Layout>
-      <Suspense fallback={<div className="mu">Loading…</div>}>
+      <Suspense fallback={<div className="text-muted">Loading…</div>}>
       <Routes>
         <Route path="/" element={<DashboardPage />} />
         <Route path="/library" element={<LibraryPage />} />

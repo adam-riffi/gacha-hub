@@ -14,7 +14,7 @@
 .lib-grip { color: var(--text-muted); font-size: 18px; text-align: center; }
 .lib-icon { width: 48px; height: 48px; }
 .lib-name h2 { margin: 0 0 4px; font-size: 22px; }
-.lib-name .mn { font-size: 12px; }
+.lib-name .font-mono { font-size: 12px; }
 .lib-name .badge { margin-top: 6px; }
 .lib-cells { display: flex; gap: 8px; }
 .lib-cell { display: flex; flex-direction: column; gap: 6px; width: 88px; padding: 8px 10px; border: 1px solid var(--hairline); color: var(--text); font: 600 18px/1 var(--font-display); text-decoration: none; }

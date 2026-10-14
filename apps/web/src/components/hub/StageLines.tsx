@@ -49,16 +49,16 @@ export function StageLines({ instanceId, gameKey, stages, teams, unitOf }: { ins
           <li key={stageRow.key} className={`eg-line ${isOpen ? "is-open" : ""}`}>
             <div className="eg-line-row">
               {stageRow.boss ? (
-                <span className="mn mu eg-stage">{stageRow.level ? `Lv ${stageRow.level}` : stageRow.key}</span>
+                <span className="font-mono text-muted eg-stage">{stageRow.level ? `Lv ${stageRow.level}` : stageRow.key}</span>
               ) : (
                 <span className="eg-stage-name">
                   <b>{stageRow.label}</b>
-                  {stageRow.level ? <small className="mn mu">Lv {stageRow.level}</small> : null}
+                  {stageRow.level ? <small className="font-mono text-muted">Lv {stageRow.level}</small> : null}
                 </span>
               )}
-              {team?.members.length ? <TeamIcons gameKey={gameKey} members={team.members} unitOf={unitOf} /> : <span className="mu eg-noteam">—</span>}
-              <span className="cd eg-score">{team?.score ?? ""}</span>
-              <span className="mn eg-time">{team?.time ? minutesSeconds(team.time) : ""}</span>
+              {team?.members.length ? <TeamIcons gameKey={gameKey} members={team.members} unitOf={unitOf} /> : <span className="text-muted eg-noteam">—</span>}
+              <span className="font-display eg-score">{team?.score ?? ""}</span>
+              <span className="font-mono eg-time">{team?.time ? minutesSeconds(team.time) : ""}</span>
               <span className="eg-main">
                 {stageRow.main && (
                   <span title={stageRow.main.name}>
@@ -93,7 +93,7 @@ function StageDetail({ instanceId, gameKey, stage, members }: { instanceId: stri
               {group.map((enemy) => (
                 <span key={enemy.name} className="eg-enemy" title={enemy.name}>
                   <GameIcon src={enemy.image ?? null} alt={enemy.name} glyph="standard" />
-                  <span className="mn">{enemy.name}</span>
+                  <span className="font-mono">{enemy.name}</span>
                 </span>
               ))}
             </li>
@@ -111,14 +111,14 @@ function StageDetail({ instanceId, gameKey, stage, members }: { instanceId: stri
               <li key={member}>
                 <UnitIcon gameKey={gameKey} unit={{ kind: "character", catalogId: member }} />
                 <span className="eg-build-name">{index?.characters.get(member)?.name ?? member}</span>
-                <span className="mn">{build ? `Lv ${level ?? "—"}` : "no build"}</span>
+                <span className="font-mono">{build ? `Lv ${level ?? "—"}` : "no build"}</span>
                 {weapon?.catalogId && <CatalogIcon gameKey={gameKey} kind="weapon" icon={index?.weapons.get(weapon.catalogId)?.icon} name={index?.weapons.get(weapon.catalogId)?.name ?? weapon.catalogId} />}
-                {weapon?.level ? <span className="mn mu">Lv {weapon.level}</span> : null}
+                {weapon?.level ? <span className="font-mono text-muted">Lv {weapon.level}</span> : null}
                 {build &&
                   completedSets(game, doc).map((set) => (
                     <span key={set.name} className="eg-build-set" title={`${set.name} ${set.size}`}>
                       <CatalogIcon gameKey={gameKey} kind="gear" icon={index?.gear.get([...(index?.gear.values() ?? [])].find((gearSet) => gearSet.name === set.name)?.id ?? "")?.icon} name={set.name} />
-                      <span className="mn">{set.size}</span>
+                      <span className="font-mono">{set.size}</span>
                     </span>
                   ))}
               </li>

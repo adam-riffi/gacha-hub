@@ -51,10 +51,10 @@
 /* Figures in the centre of a gauge. */
 .gauge-figure { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
 .gauge-hero { font-size: 80px; font-weight: 600; line-height: 1; }
-.gauge-hero .mu { font-size: 32px; font-weight: 500; }
+.gauge-hero .text-muted { font-size: 32px; font-weight: 500; }
 .gauge-sub { font-size: 16px; margin-top: 6px; }
 .gauge-small { font-size: 38px; font-weight: 600; line-height: 1; }
-.gauge-small .mu { font-size: 16px; font-weight: 500; }
+.gauge-small .text-muted { font-size: 16px; font-weight: 500; }
 .gauge-sub-small { font-size: 13px; margin-top: 3px; }
 
 /* Percentage bars: the figures above, the labels below. */
@@ -113,15 +113,15 @@
 .heat-readout { margin-left: 56px; width: 268px; height: 168px; position: relative; }
 .heat-stats { height: 168px; display: flex; flex-direction: column; justify-content: space-between; }
 .heat-stat { display: flex; align-items: baseline; justify-content: space-between; border-bottom: 1px solid var(--hairline); padding-bottom: 6px; }
-.heat-stat .mn { font-size: 12px; }
-.heat-stat .cd { font-size: 26px; font-weight: 600; line-height: 1; }
-.heat-stat .cd .mu { font-size: 14px; font-weight: 500; }
+.heat-stat .font-mono { font-size: 12px; }
+.heat-stat .font-display { font-size: 26px; font-weight: 600; line-height: 1; }
+.heat-stat .font-display .text-muted { font-size: 14px; font-weight: 500; }
 .heat-sel { height: 168px; display: flex; flex-direction: column; }
 .heat-sel-head { display: flex; align-items: center; justify-content: space-between; height: 24px; flex: 0 0 24px; font-size: 12px; letter-spacing: 0.06em; }
 .heat-sel-n { display: flex; align-items: baseline; gap: 8px; margin-top: 6px; padding-bottom: 6px; border-bottom: 1px solid var(--hairline); }
-.heat-sel-n .cd { font-size: 36px; font-weight: 600; line-height: 1; }
-.heat-sel-n .cd .mu { font-size: 18px; font-weight: 500; }
-.heat-sel-n .mn { font-size: 12px; }
+.heat-sel-n .font-display { font-size: 36px; font-weight: 600; line-height: 1; }
+.heat-sel-n .font-display .text-muted { font-size: 18px; font-weight: 500; }
+.heat-sel-n .font-mono { font-size: 12px; }
 .xb { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; padding: 0; color: var(--text-muted); background: transparent; border: 1px solid var(--hairline); cursor: pointer; }
 .xb:hover { background: var(--surface-2); color: var(--text); border-color: var(--text); }
 .dgs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(5, 17px); grid-auto-flow: column; column-gap: 12px; margin-top: 8px; }

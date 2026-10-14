@@ -7,18 +7,18 @@
 .pl-chances .gicon { width: 40px; height: 40px; font-size: 11px; }
 .pl-chances-head { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; }
 .pl-chances-name { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.pl-chances-name strong, .pl-chances-name .mn { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.pl-chances-name .mn { font-size: 11px; }
+.pl-chances-name strong, .pl-chances-name .font-mono { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pl-chances-name .font-mono { font-size: 11px; }
 .pl-chances-v { display: grid; grid-template-columns: minmax(0, 1fr) 40px; align-items: center; gap: 8px; }
 /* The top-up to a sure featured 5★ (round 6): each running target, its chance by its banner's end, the cheapest packs. */
 .pl-topup { margin-bottom: 28px; }
 .pl-topup-list { grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); }
 .pl-chances li.pl-topup-row { grid-template-columns: 40px minmax(0, 1fr) auto; }
 .pl-topup-buy { display: flex; align-items: center; gap: 12px; justify-content: flex-end; text-align: right; }
-.pl-topup-buy .mn { font-size: 12px; }
+.pl-topup-buy .font-mono { font-size: 12px; }
 .pl-chances-v .act-meter { flex: none; }
 .pl-chances-v .act-meter.is-now > span { background: var(--text-muted); }
-.pl-chances-v .mn { text-align: right; font-size: 13px; }
+.pl-chances-v .font-mono { text-align: right; font-size: 13px; }
 .pl-label { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
 /* One grid whose rows line up (round 6): cards stretch, their actions at the foot; an odd last card spans the row, its curve beside its odds. */
 .pl-banners { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; align-items: stretch; margin-bottom: 24px; }
@@ -28,7 +28,7 @@
 .pl-banners > .pl-banner:last-child:nth-child(odd) { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 40px; align-items: start; }
 .pl-banner-head { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
 .pl-banner-head h3 { margin-bottom: 10px; }
-.pl-banner-head .mn { font-size: 12px; }
+.pl-banner-head .font-mono { font-size: 12px; }
 .pl-art { width: 52px; height: 52px; flex: none; }
 .pl-status { display: flex; align-items: center; gap: 14px; }
 .pl-reason { margin: 10px 0 14px; font-size: 14px; }
@@ -85,7 +85,7 @@
 .pl-note { margin: 10px 0 0; font-size: 12px; }
 /* History corrections and Banner history (Georges, 2026-10-11). */
 .pl-bhistory { margin-bottom: 24px; }
-.pl-bhistory td.mn { white-space: nowrap; }
+.pl-bhistory td.font-mono { white-space: nowrap; }
 .pl-edit select { width: auto; min-width: 84px; }
 .pl-edit input[type="number"] { width: 64px; }
 .pl-edit .pk { min-width: 120px; }
