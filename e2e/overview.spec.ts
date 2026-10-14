@@ -183,3 +183,42 @@ test("the Overview's pity shows Endfield's featured guarantee toward its spark @
   await page.goto("/?game=endfield");
   await expect(page.getByRole("region", { name: "Pity" })).toContainText(/Featured guarantee\s*\d+\/120/);
 });
+
+// Georges, round 7: "daily/weekly data entry needs to be reworked: the centering is crooked and the colour should be on theme
+// with the rest instead of basic white … heatmap for individual games doesn't show depth of completion".
+test("Dailies and weeklies: one tick control in the game's colour, its boxes in one column; the game's heatmap by depth @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "zzz" } })).json()) as { id: string };
+  const tasks = (await (await page.request.get(`/api/tasks?scope=game&refId=${id}`)).json()) as { id: string; title: string }[];
+  const daily = tasks.find((t) => t.title === "Daily Missions")!;
+  await page.request.post(`/api/tasks/${daily.id}/progress`, { data: { progress: 2 } });
+
+  await page.goto("/?game=zzz");
+  const card = page.getByRole("region", { name: "Dailies & weeklies" });
+  const on = card.getByRole("group", { name: "Daily Missions" }).getByRole("button", { name: "2 of 4" });
+  await expect(on).toHaveAttribute("aria-pressed", "true");
+  // The game's colour, not white.
+  const [fill, accent] = await on.evaluate((el) => {
+    const probe = document.createElement("i");
+    probe.style.color = "var(--accent)";
+    el.parentElement!.append(probe);
+    const out = [getComputedStyle(el).backgroundColor, getComputedStyle(probe).color];
+    probe.remove();
+    return out;
+  });
+  expect(fill).toBe(accent);
+  // Every row's boxes start in one column.
+  const lefts = await card.locator(".tick-boxes").evaluateAll((els) => els.map((e) => Math.round(e.getBoundingClientRect().left)));
+  expect(lefts.length).toBeGreaterThan(2);
+  expect(new Set(lefts.slice(0, 4)).size).toBe(1);
+
+  // Today pinned on the game's heatmap: its dailies done out of all, not only whether the game is done.
+  const heat = page.getByRole("group", { name: /Dailies over the last 26 weeks/ });
+  await heat.focus();
+  await page.keyboard.press("ArrowLeft");
+  await page.keyboard.press("Enter");
+  await expect(page.locator(".heat-readout")).toContainText(/\d+ \/ \d+\s*DAILIES/i);
+  await page.request.post(`/api/tasks/${daily.id}/progress`, { data: { progress: 0 } });
+});
