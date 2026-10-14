@@ -2,13 +2,10 @@
 
 .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 
-.home { display: grid; grid-template-columns: minmax(0, 1fr) 528px; gap: 24px; align-items: start; padding-top: 8px; }
+.home { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; align-items: start; padding-top: 8px; }
 .home-main, .home-side { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
 .home-carousels { display: flex; gap: 36px; height: 352px; }
 .home-carousels > .carousel { flex: 1; min-width: 0; }
-@media (max-width: 1500px) {
-  .home { grid-template-columns: minmax(0, 1fr); }
-}
 
 /* Dailies and weeklies: a text card, the gauge beside four KPI tiles. */
 .dailies-card .carousel-stage { background: transparent; }
@@ -36,9 +33,6 @@
 .table-card.home-list .rw > span.home-list-game { flex: 0 0 104px; text-align: left; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
 .table-card.home-list .rw > span.home-list-name { flex: 1; min-width: 0; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .home-list-what { font-size: 13px; white-space: nowrap; }
-@media (max-width: 900px) {
-  .home-lists { grid-template-columns: minmax(0, 1fr); }
-}
 
 /* Pulls and stamina: cards holding a table, rows edge to edge. */
 .table-card { display: flex; flex-direction: column; padding: 0; }
