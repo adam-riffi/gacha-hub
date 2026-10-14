@@ -192,29 +192,29 @@ test("Weapons on the sheet: a window of my copies first, then the rest; each wit
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
   await clearCopies(page, id);
-  await page.request.post(`/api/instances/${id}/weapons`, { data: { catalogId: "23006", level: 70, refinement: 3 } });
+  await page.request.post(`/api/instances/${id}/weapons`, { data: { catalogId: "21008", level: 70, refinement: 3 } });
   const sampo = ((await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1108" } })).json()) as { id: string }).id;
 
   await page.goto(`/characters/${sampo}`);
   await page.getByRole("region", { name: "Weapon" }).getByRole("button", { name: "Choose weapon" }).click();
   const box = page.getByRole("dialog", { name: "Choose weapon" });
-  const mine = box.getByRole("region", { name: "Mine" }).getByRole("article", { name: "Patience Is All You Need" });
+  const mine = box.getByRole("region", { name: "Mine" }).getByRole("article", { name: "Eyes of the Prey" });
   await expect(mine).toContainText("Lv 70");
   await expect(mine).toContainText("S3");
   expect((await mine.getByRole("img").first().boundingBox())!.width).toBeGreaterThanOrEqual(80);
-  // Its effect at its superimposition: S3's 32%.
-  await mine.getByRole("button", { name: "Patience Is All You Need: effect" }).click();
-  await expect(mine.getByRole("note")).toContainText("Spider Web");
-  await expect(mine.getByRole("note")).toContainText("by 32%");
+  // Its effect at its superimposition: S3's 36% DoT.
+  await mine.getByRole("button", { name: "Eyes of the Prey: effect" }).click();
+  await expect(mine.getByRole("note")).toContainText("Self-Confidence");
+  await expect(mine.getByRole("note")).toContainText("increases DoT by 36%");
   // The path's other cones follow, those not held.
   await expect(box.getByRole("region", { name: "All" }).getByRole("article", { name: "Before the Tutorial Mission Starts" })).toBeVisible();
-  await expect(box.getByRole("region", { name: "All" }).getByRole("article", { name: "Patience Is All You Need" })).toHaveCount(0);
+  await expect(box.getByRole("region", { name: "All" }).getByRole("article", { name: "Eyes of the Prey" })).toHaveCount(0);
 
   // A click on its art equips it, the effect still open below.
-  await mine.getByRole("button", { name: "Equip Patience Is All You Need" }).click({ position: { x: 60, y: 60 } });
+  await mine.getByRole("button", { name: "Equip Eyes of the Prey" }).click({ position: { x: 60, y: 60 } });
   await expect(box).toHaveCount(0);
   const card = page.getByRole("region", { name: "Weapon" });
-  await expect(card.getByRole("combobox", { name: "Weapon name" })).toHaveValue("Patience Is All You Need");
+  await expect(card.getByRole("combobox", { name: "Weapon name" })).toHaveValue("Eyes of the Prey");
   await expect(card.getByLabel("Level")).toHaveValue("70");
   await clearCopies(page, id);
 });
