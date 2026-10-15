@@ -28,7 +28,7 @@ export function RedeemCodesCard({ instanceId, gameKey }: { instanceId: string; g
     );
   const row = (code: RedeemCodeDto) => (
     <div key={code.code} className={`codes-row ${code.redeemed ? "is-redeemed" : ""}`} role="group" aria-label={code.code}>
-      <span className="codes-code mn">{code.code}</span>
+      <span className="codes-code font-mono">{code.code}</span>
       <span className="codes-rewards">{code.rewards || "—"}</span>
       <span className="row codes-actions">
         <button type="button" className="btn" onClick={() => void copy(code.code)}>

@@ -41,7 +41,7 @@ export function GameDashboard({ instanceId: id }: { instanceId: string }) {
   const game = instance.data && getGame(instance.data.gameKey);
   if (instance.isError || dash.isError) return <LoadError what="The dashboard" retry={() => Promise.all([instance.refetch(), dash.refetch()])} />;
   const dashGame = dash.data?.games.find((candidate) => candidate.instanceId === id);
-  if (!instance.data || !game || !dash.data || !dashGame) return <div className="mu">Loading…</div>;
+  if (!instance.data || !game || !dash.data || !dashGame) return <div className="text-muted">Loading…</div>;
   const banners = dash.data.timeline.banners.filter((banner) => banner.gameKey === game.key);
   const recurring = (tasks.data ?? []).filter((task) => task.type === "recurring");
   const region = game.regions.find((candidate) => candidate.key === instance.data.regionKey) ?? game.regions[0]!;
@@ -115,11 +115,11 @@ function PullsCard({ dashGame, game, instanceId }: { dashGame: DashGame; game: G
   return (
     <Card title="Pulls" to={`/games/${instanceId}/pulls`}>
       <div className="pulls-head">
-        <div className="cd pulls-total" data-testid="pulls-total">
+        <div className="font-display pulls-total" data-testid="pulls-total">
           {pullsFor(dashGame.currencies).limited}
         </div>
-        <div className="mn pulls-split">
-          <span className="mu">limited pulls</span>
+        <div className="font-mono pulls-split">
+          <span className="text-muted">limited pulls</span>
         </div>
       </div>
       <div className="lst">
@@ -129,7 +129,7 @@ function PullsCard({ dashGame, game, instanceId }: { dashGame: DashGame; game: G
               <CurrencyIcon kind={currencyKind(game, row)} />
               {row.pullCost! > 1 ? `From ${row.label}` : row.label}
             </span>
-            <span className="mn">{Math.floor(row.value / row.pullCost!)}</span>
+            <span className="font-mono">{Math.floor(row.value / row.pullCost!)}</span>
           </div>
         ))}
       </div>
@@ -151,19 +151,19 @@ function PityCard({ dashGame, game, instanceId }: { dashGame: DashGame; game: Ga
               <div className="rw gd-pity">
                 <span className="gd-label">{pity.label}</span>
                 <Meter value={pity.pity} max={pity.hardPity} />
-                <span className="mn gd-fig">
+                <span className="font-mono gd-fig">
                   {pity.pity}
-                  <span className="mu">/{pity.hardPity}</span>
+                  <span className="text-muted">/{pity.hardPity}</span>
                 </span>
-                <span className="gd-tag">{rate < 1 && (pity.guaranteed ? <span className="chip hot">guaranteed</span> : <span className="mn mu">{split}</span>)}</span>
+                <span className="gd-tag">{rate < 1 && (pity.guaranteed ? <span className="chip hot">guaranteed</span> : <span className="font-mono text-muted">{split}</span>)}</span>
               </div>
               {pity.spark && (
                 <div className="rw gd-pity">
                   <span className="gd-label">Featured guarantee</span>
                   <Meter value={pity.spark.at} max={pity.spark.of} />
-                  <span className="mn gd-fig">
+                  <span className="font-mono gd-fig">
                     {pity.spark.at}
-                    <span className="mu">/{pity.spark.of}</span>
+                    <span className="text-muted">/{pity.spark.of}</span>
                   </span>
                   <span className="gd-tag">{pity.spark.at >= pity.spark.of && <span className="chip hot">ready</span>}</span>
                 </div>
@@ -208,7 +208,7 @@ function Ticks({ instanceId, items, game, cadence }: { instanceId: string; items
               +
             </button>
           </span>
-          <span className="tick-title mu">{defaultTask.title}</span>
+          <span className="tick-title text-muted">{defaultTask.title}</span>
         </div>
       ))}
       {items.length === 0 && missing.length === 0 && <p className="table-empty">None</p>}
@@ -313,7 +313,7 @@ function DailyPassCard({ instanceId, game, daysLeft, endsAt }: { instanceId: str
           <div className="kpi" role="group" aria-label="Still to collect">
             <div className="kpi-label">Still to collect</div>
             <div className="kpi-value">{NUMBER_FORMAT.format(still)}</div>
-            <div className="mn mu">
+            <div className="font-mono text-muted">
               {pass.daily} {premium?.label ?? ""} a day{premium?.pullCost ? ` · ${Math.floor(still / premium.pullCost)} pulls` : ""}
             </div>
           </div>
@@ -346,7 +346,7 @@ function StaminaCard({ dashGame, game, instance }: { dashGame: DashGame; game: G
     >
       <div className="pulls-head">
         <CurrencyIcon kind="stamina" className="is-big" />
-        <div className="cd pulls-total" data-testid="stamina">
+        <div className="font-display pulls-total" data-testid="stamina">
           {Math.floor(dashGame.stamina.value)}
           <small> / {dashGame.stamina.cap}</small>
         </div>
@@ -361,9 +361,9 @@ function StaminaCard({ dashGame, game, instance }: { dashGame: DashGame; game: G
               <CurrencyIcon kind="reserve" />
               {reserveDef.label}
             </span>
-            <span className="mn">
+            <span className="font-mono">
               {reserve}
-              {reserveDef.cap && <span className="mu"> / {reserveDef.cap}</span>}
+              {reserveDef.cap && <span className="text-muted"> / {reserveDef.cap}</span>}
             </span>
           </div>
         </div>
@@ -413,9 +413,9 @@ function BuildsCard({ instanceId, game, builds }: { instanceId: string; game: Ga
                         {unit?.name ?? build.name}
                       </Link>
                     </td>
-                    <td className="mn">{numberOrNull(doc.level) ?? "—"}</td>
-                    <td className="mn">{levels.length ? levels.join("·") : "—"}</td>
-                    <td className="mn">{holder ? (numberOrNull((doc[holder] as Doc | undefined)?.level) ?? "—") : ""}</td>
+                    <td className="font-mono">{numberOrNull(doc.level) ?? "—"}</td>
+                    <td className="font-mono">{levels.length ? levels.join("·") : "—"}</td>
+                    <td className="font-mono">{holder ? (numberOrNull((doc[holder] as Doc | undefined)?.level) ?? "—") : ""}</td>
                     <td>
                       <span className="gd-squares" role="img" aria-label={`${filled} of ${gear.slots.length} ${gear.name}`}>
                         {gear.slots.map((slot) => (
@@ -458,7 +458,7 @@ function EndgameCard({ instanceId, game, region, cycles }: { instanceId: string;
             return (
               <tr key={mode.mode.key}>
                 <td>{mode.mode.name}</td>
-                <td className="mn">{mode.result === null ? "—" : `${mode.result}${mode.mode.metric.max !== undefined ? `/${mode.mode.metric.max}` : ""}${unit(mode.mode.metric.label)}`}</td>
+                <td className="font-mono">{mode.result === null ? "—" : `${mode.result}${mode.mode.metric.max !== undefined ? `/${mode.mode.metric.max}` : ""}${unit(mode.mode.metric.label)}`}</td>
                 <td>
                   <span className={`chip ${days <= 1 ? "hot" : ""}`}>
                     <i aria-hidden="true" />
@@ -502,7 +502,7 @@ function GoalsCard({ gameKey, tasks, span }: { gameKey: string; tasks: TaskDto[]
                   <td className="gd-meter-cell">
                     <Meter value={progress} max={1} />
                   </td>
-                  <td className="mn gd-pct">{Math.round(progress * 100)}%</td>
+                  <td className="font-mono gd-pct">{Math.round(progress * 100)}%</td>
                 </tr>
               ))}
             </tbody>
@@ -545,7 +545,7 @@ function OwnCard({ game, instance, tasks }: { game: GameDefinition; instance: In
             return (
               <label key={item.currency} className="kpi">
                 <span className="kpi-label">{itemCurrency.label}</span>
-                <span className="gd-own-value mn">
+                <span className="gd-own-value font-mono">
                   <input
                     type="number"
                     min={0}
@@ -555,7 +555,7 @@ function OwnCard({ game, instance, tasks }: { game: GameDefinition; instance: In
                     onBlur={(event) => event.target.value !== "" && Number(event.target.value) !== value(item.currency) && set.mutate({ key: item.currency, value: Number(event.target.value) })}
                   />
                   {cap !== undefined && (
-                    <span className="mu" data-testid={`${item.currency}-cap`}>
+                    <span className="text-muted" data-testid={`${item.currency}-cap`}>
                       / {cap}
                     </span>
                   )}

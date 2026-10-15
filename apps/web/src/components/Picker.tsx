@@ -105,7 +105,7 @@ export function Picker({
       {open && (
         <ul className="pk-list" role="listbox" id={listId} aria-label={label}>
           {value && (
-            <li role="option" aria-label="None" aria-selected={false} className="pk-clear mu" onMouseDown={(event) => (event.preventDefault(), pick(null, ""))}>
+            <li role="option" aria-label="None" aria-selected={false} className="pk-clear text-muted" onMouseDown={(event) => (event.preventDefault(), pick(null, ""))}>
               —
             </li>
           )}
@@ -124,10 +124,10 @@ export function Picker({
             >
               {icons && <GameIcon src={option.src ?? null} fallback={option.fallback} alt={option.name} glyph={glyph} />}
               <span className="pk-name">{option.name}</span>
-              {option.sub && <span className="mn mu">{option.sub}</span>}
+              {option.sub && <span className="font-mono text-muted">{option.sub}</span>}
             </li>
           ))}
-          {shown.length === 0 && <li className="pk-none mu">None</li>}
+          {shown.length === 0 && <li className="pk-none text-muted">None</li>}
         </ul>
       )}
     </div>

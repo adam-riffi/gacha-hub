@@ -98,7 +98,7 @@ export function PullsPage() {
 
   const game = instance.data && getGame(instance.data.gameKey);
   if (instance.isError || log.isError) return <LoadError what="Pulls" retry={() => Promise.all([instance.refetch(), log.refetch()])} />;
-  if (!instance.data || !log.data || !game) return <div className="mu">Loading…</div>;
+  if (!instance.data || !log.data || !game) return <div className="text-muted">Loading…</div>;
 
   const values = new Map(instance.data.currencies.map((currency) => [currency.key, currency.value]));
   const pullCurrencies = game.currencies
@@ -223,7 +223,7 @@ export function PullsPage() {
                     {pullCurrency.label}
                   </td>
                   <td className="num">{NUMBER_FORMAT.format(pullCurrency.value)}</td>
-                  <td className="num mu">= {Math.floor(pullCurrency.value / pullCurrency.pullCost!)}</td>
+                  <td className="num text-muted">= {Math.floor(pullCurrency.value / pullCurrency.pullCost!)}</td>
                 </tr>
               ))}
             </tbody>
@@ -245,7 +245,7 @@ export function PullsPage() {
                   <option key={pullCurrency.key} value={pullCurrency.key}>{pullCurrency.label}</option>
                 ))}
               </select>
-              <span className="mn">{topUp.amount > 0 ? `+${topped.limited + topped.standard + topped.special - have.limited - have.standard - have.special} pulls` : ""}</span>
+              <span className="font-mono">{topUp.amount > 0 ? `+${topped.limited + topped.standard + topped.special - have.limited - have.standard - have.special} pulls` : ""}</span>
             </div>
           )}
         </section>
@@ -269,7 +269,7 @@ export function PullsPage() {
               ))}
               {forecast.lines.length === 0 && (
                 <tr>
-                  <td colSpan={2} className="mu">
+                  <td colSpan={2} className="text-muted">
                     No daily income on record for this game yet.
                   </td>
                 </tr>
@@ -279,7 +279,7 @@ export function PullsPage() {
           {/* Each target alone (Georges, round 5: "X% chance to get X limited … use icons"): its chance with the pulls you have, and with the forecast added. */}
           {targets.length > 0 && (
             <ul className="pl-chances" aria-label="Chances">
-              <li className="pl-chances-head mn mu" aria-hidden="true">
+              <li className="pl-chances-head font-mono text-muted" aria-hidden="true">
                 <span />
                 <span />
                 <span>now</span>
@@ -293,14 +293,14 @@ export function PullsPage() {
                     {target.unit ? <UnitIcon gameKey={game.key} unit={target.unit} /> : <Glyph kind={bannerGlyph(target.rules.key)} label={target.label} />}
                     <span className="pl-chances-name">
                       <strong>{target.label}</strong>
-                      <span className="mn mu">{target.sub}</span>
+                      <span className="font-mono text-muted">{target.sub}</span>
                     </span>
                     {[now, then].map((amount, amountIndex) => (
                       <span key={amountIndex} className="pl-chances-v" title={`${percentText(amount)} ${amountIndex ? `by ${DAY.format(forecast.until)}, with ${target.available + forecast.pulls} pulls` : `now, with ${target.available} pulls`}`}>
                         <span className={`act-meter act-meter-thin ${amountIndex ? "" : "is-now"}`} aria-hidden="true">
                           <span style={{ width: `${Math.round(amount * 100)}%` }} />
                         </span>
-                        <span className="mn">{percentText(amount)}</span>
+                        <span className="font-mono">{percentText(amount)}</span>
                       </span>
                     ))}
                   </li>
@@ -319,7 +319,7 @@ export function PullsPage() {
       <div className="pl-banners">{[...eventBanners, ...standardBanners].map(card)}</div>
       {/* Only banners the screen shows: a hidden beginner banner is gone for good (round 6). */}
       {log.data.banners.some((banner) => hidden.includes(banner.key)) && (
-        <p className="mn mu pl-hidden">
+        <p className="font-mono text-muted pl-hidden">
           Hidden:{" "}
           {log.data.banners
             .filter((banner) => hidden.includes(banner.key))

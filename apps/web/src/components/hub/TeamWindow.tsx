@@ -37,7 +37,7 @@ export function TeamWindow({
       <div className="card tw" role="dialog" aria-label={`Team · ${stage}`} ref={box}>
         <header className="row tw-head">
           <h3>Team · {stage}</h3>
-          <span className="cd tw-count">
+          <span className="font-display tw-count">
             {members.length} / {size}
           </span>
           <span className="ch-sp" />

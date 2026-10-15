@@ -280,9 +280,9 @@ p a { text-decoration: underline; text-underline-offset: 2px; }
 .gb-col-subs { list-style: none; margin: 0; padding: 0; display: grid; }
 .gb-col-subs li { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--surface-3); font-size: 17px; }
 .gb-col-subs li > span:first-child { display: inline-flex; align-items: center; gap: 6px; }
-.gb-col-subs .cd { font-size: 22px; }
+.gb-col-subs .font-display { font-size: 22px; }
 .gb-col-cv { border-bottom: 0; color: var(--text-muted); }
-.gb-col-cv .cd { color: var(--accent); }
+.gb-col-cv .font-display { color: var(--accent); }
 .gb-bonuses { display: grid; gap: 6px; }
 .gb-bonus { margin: 0; font-size: 15px; line-height: 1.4; color: var(--text-muted); }
 .gb-bonus b { display: inline-block; min-width: 40px; padding: 2px 4px; margin-right: 6px; border: 1px solid var(--hairline); color: var(--text); font: 500 13px/1.3 var(--font-mono); text-align: center; }
@@ -294,7 +294,7 @@ p a { text-decoration: underline; text-underline-offset: 2px; }
 .gb-col-acts select { width: auto; }
 /* Sets picked from a window (round 10): the field, the picked sets, the window. */
 .gb-setfield { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 44px; padding: 0 12px; border: 2px solid var(--text); background: transparent; color: var(--text); font: 500 15px/1 var(--font-body); cursor: pointer; }
-.gb-setfield .mu { margin-left: auto; font: 400 12px/1 var(--font-mono); }
+.gb-setfield .text-muted { margin-left: auto; font: 400 12px/1 var(--font-mono); }
 .gb-pk { display: inline-flex; align-items: center; gap: 6px; max-width: 100%; min-height: 36px; padding: 2px 8px 2px 4px; border: 0; background: var(--paper); color: var(--on-paper); font: 400 12px/1.2 var(--font-mono); text-align: left; cursor: pointer; }
 .gb-pk b { margin-left: 4px; font: 600 15px/1 var(--font-display); }
 .gb-win-back { position: fixed; inset: 0; z-index: 50; display: grid; justify-items: center; align-items: start; padding-top: 72px; background: rgba(0, 0, 0, 0.6); }

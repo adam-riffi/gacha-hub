@@ -32,14 +32,14 @@ export function StaminaCard({ games }: { games: DashGame[] }) {
           return (
             <div className="rw" key={dashGame.instanceId}>
               <span>{dashGame.name}</span>
-              <span className="mn col-110">
+              <span className="font-mono col-110">
                 {stamina.value}
-                <span className="mu"> / {stamina.cap}</span>
+                <span className="text-muted"> / {stamina.cap}</span>
               </span>
-              <span className="mn mu col-70">
+              <span className="font-mono text-muted col-70">
                 {reserve ? reserve.cap !== null && reserve.value >= reserve.cap ? <span className="chip hot" title={`${reserve.label} full`}>{reserve.value}</span> : reserve.value : "—"}
               </span>
-              <span className="mn col-70 stamina-full">{stamina.full || !stamina.fullAt ? <span className="chip hot">full</span> : fullLabel(stamina.fullAt)}</span>
+              <span className="font-mono col-70 stamina-full">{stamina.full || !stamina.fullAt ? <span className="chip hot">full</span> : fullLabel(stamina.fullAt)}</span>
             </div>
           );
         })}

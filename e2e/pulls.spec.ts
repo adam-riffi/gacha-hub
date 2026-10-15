@@ -170,7 +170,7 @@ test("Pulls: by the end of the version, each target by its icon with its chance 
   const end = page.getByRole("region", { name: /^By the end of/ });
   const seele = end.getByRole("list", { name: "Chances" }).getByRole("listitem").filter({ hasText: "Seele" });
   await expect(seele.getByRole("img", { name: "Seele" })).toBeVisible();
-  const [now, then] = (await seele.locator(".pl-chances-v .mn").allTextContents()).map((t) => Number(t.replace(/\D/g, "")));
+  const [now, then] = (await seele.locator(".pl-chances-v .font-mono").allTextContents()).map((t) => Number(t.replace(/\D/g, "")));
   expect(then).toBeGreaterThanOrEqual(now!);
   // The running banners' featured units come first, each by its icon.
   await expect(end.getByRole("list", { name: "Chances" }).getByRole("listitem").first().getByRole("img")).toBeVisible();

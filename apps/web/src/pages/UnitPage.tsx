@@ -32,11 +32,11 @@ export function UnitPage() {
         retry={() => void instance.refetch().then(() => builds.refetch())}
       />
     );
-  if (!instance.data || !game || !index || !builds.data) return <div className="mu">Loading…</div>;
+  if (!instance.data || !game || !index || !builds.data) return <div className="text-muted">Loading…</div>;
   const entry = index.characters.get(catalogId ?? "");
   if (!entry) {
     return (
-      <p className="mu">
+      <p className="text-muted">
         No unit {catalogId} in {game.name}&apos;s catalog.{" "}
         <Link to={`/games/${id}/characters`}>← Characters</Link>
       </p>

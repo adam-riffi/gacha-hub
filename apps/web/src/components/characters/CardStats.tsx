@@ -11,11 +11,11 @@ const same = (first: string | undefined, second: string) => first !== undefined 
  */
 export function KpiValue({ kpi, baseNote = "Base: the level and the weapon" }: { kpi: StatKpi; baseNote?: string }) {
   const [open, setOpen] = useState(false);
-  if (!kpi.bonus) return <span className={`cd ${kpi.auto ? "is-auto" : ""}`} title={kpi.auto ? baseNote : undefined}>{kpi.value}</span>;
+  if (!kpi.bonus) return <span className={`font-display ${kpi.auto ? "is-auto" : ""}`} title={kpi.auto ? baseNote : undefined}>{kpi.value}</span>;
   const add = kpi.bonus.value.replace(/^\+/, "");
   const why = `${kpi.base} + ${add} · ${kpi.bonus.from}`;
   return (
-    <button type="button" className="cd ch-boost" title={why} aria-label={`${kpi.label} ${kpi.value}: ${why}`} aria-expanded={open} onClick={() => setOpen(!open)}>
+    <button type="button" className="font-display ch-boost" title={why} aria-label={`${kpi.label} ${kpi.value}: ${why}`} aria-expanded={open} onClick={() => setOpen(!open)}>
       {open ? (
         <>
           {kpi.base} <small>+ {add}</small>

@@ -25,7 +25,7 @@ export function MaterialIcons({ gameKey, ids, max = 4 }: { gameKey: string; ids:
         const material = index?.materials.get(id);
         return <CatalogIcon key={id} gameKey={gameKey} kind="material" icon={material?.icon} name={material?.name ?? id} />;
       })}
-      {ids.length > max && <span className="mn mu">+{ids.length - max}</span>}
+      {ids.length > max && <span className="font-mono text-muted">+{ids.length - max}</span>}
     </span>
   );
 }

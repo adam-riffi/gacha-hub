@@ -76,7 +76,7 @@
 .cal-reward-head .kpi-label { flex: 1; }
 .cal-opt { display: flex; align-items: center; gap: 10px; min-height: 40px; margin: 0; border-top: 1px solid var(--surface-3); color: var(--text); font: 400 15px/1.3 var(--font-body); letter-spacing: 0; text-transform: none; cursor: pointer; }
 .cal-opt input[type="radio"] { width: 14px; height: 14px; min-height: 0; margin: 0; padding: 0; accent-color: var(--accent); }
-.cal-opt .mn { margin-left: auto; font-size: 13px; }
+.cal-opt .font-mono { margin-left: auto; font-size: 13px; }
 .cal-note { margin: 10px 0 0; font-size: 13px; }
 .cal-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
 .cal-actions .btn[aria-pressed="true"] { background: var(--paper); border-color: var(--paper); color: var(--on-paper); }
@@ -87,7 +87,7 @@
 .cal-rw-name { all: unset; cursor: pointer; font: 500 16px/1.3 var(--font-body); }
 .cal-rw-name:hover { color: var(--accent); }
 .cal-rw-name:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.cal-rw .mn { font-size: 12px; }
+.cal-rw .font-mono { font-size: 12px; }
 /* Readability (Georges, 2026-10-10): a tick per day, each bar's dates, and the month view. */
 .cal-days { border-bottom: 1px solid var(--hairline); }
 .cal-days .cal-track { height: 20px; }

@@ -88,12 +88,12 @@ export function GoalCard({ goal, tasks, linkable = [], gameInstance, reward, wee
                 </span>
               )}
             </span>
-            <span className="mn mu">{subtitle}</span>
+            <span className="font-mono text-muted">{subtitle}</span>
           </span>
         </button>
         {total > 0 && (
           <div className="tk-prog">
-            <span className="mn">
+            <span className="font-mono">
               {done} / {total}
             </span>
             <Meter done={done} total={total} />
@@ -149,7 +149,7 @@ export function GoalCard({ goal, tasks, linkable = [], gameInstance, reward, wee
             <label className="tk-step tk-check">
               Progress
               <input type="number" min={0} key={goal.progress} defaultValue={goal.progress} onBlur={(event) => Number(event.target.value) !== goal.progress && progress.mutate({ id: goal.id, progress: Number(event.target.value) })} />
-              <span className="mn mu">/ {goal.target ?? "∞"}</span>
+              <span className="font-mono text-muted">/ {goal.target ?? "∞"}</span>
             </label>
           )}
           {linked.length > 0 && (
@@ -160,7 +160,7 @@ export function GoalCard({ goal, tasks, linkable = [], gameInstance, reward, wee
                   <li key={linkedGoal.id} className="tk-step">
                     <span className="tk-step-name">{linkedGoal.title}</span>
                     {kidTotal > 0 && (
-                      <span className="mn">
+                      <span className="font-mono">
                         {kidDone} / {kidTotal}
                       </span>
                     )}
@@ -227,7 +227,7 @@ function MaterialSteps({ kids, gameKey, weekday, onProgress }: { kids: TaskItem[
             {step}
             {today && <b className="tk-today">Today</b>}
           </span>
-          <span className="mn">
+          <span className="font-mono">
             {done} / {mine.length}
           </span>
           <Meter done={done} total={mine.length} />
@@ -241,7 +241,7 @@ function MaterialSteps({ kids, gameKey, weekday, onProgress }: { kids: TaskItem[
                 {name}
               </span>
               <input type="number" min={0} aria-label={`${name} on hand`} key={kid.progress} defaultValue={kid.progress} onBlur={(event) => Number(event.target.value) !== kid.progress && onProgress(kid.id, Number(event.target.value))} />
-              <span className="mn mu">
+              <span className="font-mono text-muted">
                 {kid.progress} / {kid.target ?? 0}
               </span>
             </div>
@@ -268,13 +268,13 @@ function PlanSteps({ origin, gameKey }: { origin: unknown; gameKey: string }) {
           <span className="tk-step-name">
             Lv {level.from} → {level.to}
           </span>
-          <span className="tk-caps mn mu">{caps.map((cap) => `▸ ${cap}`).join("  ")}</span>
+          <span className="tk-caps font-mono text-muted">{caps.map((cap) => `▸ ${cap}`).join("  ")}</span>
         </li>
       )}
       {Object.entries(goalOrigin.goal.talents ?? {}).map(([talentKey, range]) => (
         <li key={talentKey}>
           <span className="tk-step-name">{talentName(talentKey)}</span>
-          <span className="mn">
+          <span className="font-mono">
             {range.from} → {range.to}
           </span>
         </li>

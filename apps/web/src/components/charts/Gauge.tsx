@@ -58,11 +58,11 @@ export function HeroGauge({ done, total, label }: { done: number; total: number;
       </Layer>
       <Layer depth="figures" size={340}>
         <div className="gauge-figure">
-          <div className="cd gauge-hero">
+          <div className="font-display gauge-hero">
             {percentDone}
-            <span className="mu">%</span>
+            <span className="text-muted">%</span>
           </div>
-          <div className="mn gauge-sub">
+          <div className="font-mono gauge-sub">
             {done} / {total}
           </div>
         </div>
@@ -104,11 +104,11 @@ export function SmallGauge({ done, total, label }: { done: number; total: number
       </Layer>
       <Layer depth="figures" size={128}>
         <div className="gauge-figure">
-          <div className="cd gauge-small">
+          <div className="font-display gauge-small">
             {percentDone}
-            <span className="mu">%</span>
+            <span className="text-muted">%</span>
           </div>
-          <div className="mn gauge-sub-small">
+          <div className="font-mono gauge-sub-small">
             {done} / {total}
           </div>
         </div>

@@ -71,7 +71,7 @@ export function BannerCard(props: {
     </>
   );
   const pity = (
-    <span className="pl-pity mn">
+    <span className="pl-pity font-mono">
       <span data-testid="pity">{savedState.pity}</span> / {banner.hardPity}
     </span>
   );
@@ -91,7 +91,7 @@ export function BannerCard(props: {
         )}
         <div>
           <h3>{banner.label}</h3>
-          <div className="mn mu">
+          <div className="font-mono text-muted">
             {running.length ? (
               <>
                 {running.map((liveBanner) => liveBanner.name).join(" · ")}
@@ -153,7 +153,7 @@ export function BannerCard(props: {
         <span>
           with {available}
           {extra > 0 && <strong> · +{extra} {percentText(featuredWithin(banner, state, available + extra))}</strong>}
-          <span className="mn mu"> · avg {average!.needs} · max {Number.isFinite(worst!.needs) ? worst!.needs : "—"}</span>
+          <span className="font-mono text-muted"> · avg {average!.needs} · max {Number.isFinite(worst!.needs) ? worst!.needs : "—"}</span>
         </span>
       </div>
       {actions}

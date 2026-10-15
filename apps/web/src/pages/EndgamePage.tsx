@@ -105,7 +105,7 @@ export function EndgamePage() {
                 <div className="eg-next-mode">
                   {endgame.next.mode.name} · {WHEN.format(endgame.next.closes)}
                 </div>
-                <div className="mn mu">
+                <div className="font-mono text-muted">
                   in {formatRemaining(endgame.next.closes.toISOString())}
                   {endgame.next.mode.maxPremium !== undefined && ` · ${NUMBER_FORMAT.format(endgame.next.unclaimed)} ${premium} unclaimed`}
                 </div>
@@ -118,7 +118,7 @@ export function EndgamePage() {
           {endgame.modes.map((modeNow) => (
             <ModeCard key={modeNow.mode.key} instanceId={id!} game={game} modeNow={modeNow} region={region} now={now} premium={premium} roster={roster} rows={modeCycles(modeNow.mode, region, now, results)} at={picked[modeNow.mode.key] ?? null} onSelect={(at) => setPicked((previous) => ({ ...previous, [modeNow.mode.key]: at }))} />
           ))}
-          {endgame.modes.length === 0 && <p className="mu">No endgame mode on record for this game yet.</p>}
+          {endgame.modes.length === 0 && <p className="text-muted">No endgame mode on record for this game yet.</p>}
         </div>
 
         <EndgameHistory
@@ -143,8 +143,8 @@ export function EndgamePage() {
               .map((modeNow) => (
                 <div key={modeNow.mode.key} className="act-row">
                   <span className="act-title">{modeNow.mode.name}</span>
-                  <span className="mn mu">{modeNow.open ? (modeNow.mode.openDays ? "closes" : "new cycle") : "opens"}</span>
-                  <span className="mn">{WHEN.format(modeNow.open ? modeNow.closes : modeNow.end)}</span>
+                  <span className="font-mono text-muted">{modeNow.open ? (modeNow.mode.openDays ? "closes" : "new cycle") : "opens"}</span>
+                  <span className="font-mono">{WHEN.format(modeNow.open ? modeNow.closes : modeNow.end)}</span>
                 </div>
               ))}
           </div>
@@ -239,9 +239,9 @@ function ModeCard({
         <button type="button" className="btn ghost sm" aria-label="Older cycle" disabled={shownIndex === rows.length - 1} onClick={() => pick(shownIndex + 1)}>
           ‹
         </button>
-        <span className="mn">
+        <span className="font-mono">
           {cycleSpan(shown.cycleStart, shown.end)}
-          {version && <span className="mu"> · version {version}</span>}
+          {version && <span className="text-muted"> · version {version}</span>}
         </span>
         {shown.current ? <span className="tag eg-now">Now</span> : null}
         <button type="button" className="btn ghost sm" aria-label="Newer cycle" disabled={shownIndex === 0} onClick={() => pick(shownIndex - 1)}>
@@ -258,7 +258,7 @@ function ModeCard({
           <span style={{ width: `${done * 100}%` }} />
           {shown.current && <i style={{ left: `${done * 100}%` }} />}
         </div>
-        <div className="eg-window-dates mn mu">
+        <div className="eg-window-dates font-mono text-muted">
           <span>{SHORT_TIME.format(from)}</span>
           <span>{SHORT_TIME.format(to)}</span>
         </div>
@@ -283,7 +283,7 @@ function ModeCard({
         <div className="eg-rewards">
           <div className="act-xp">
             <span className="kpi-label">Rewards</span>
-            <span className="mn">
+            <span className="font-mono">
               {NUMBER_FORMAT.format(shown.premium ?? 0)} / {NUMBER_FORMAT.format(mode.maxPremium)}
             </span>
           </div>

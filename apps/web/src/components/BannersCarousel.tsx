@@ -48,8 +48,8 @@ export function BannersCarousel({ roster, carousel }: { roster: RosterEntry[]; c
             <Countdown at={banner.endsAt} variant="tag" />
           </div>
           <div className="band carousel-band">
-            <div className="sf carousel-title">{banner.name}</div>
-            <div className="mn carousel-sub">{game?.name ?? banner.gameKey}</div>
+            <div className="font-serif carousel-title">{banner.name}</div>
+            <div className="font-mono carousel-sub">{game?.name ?? banner.gameKey}</div>
           </div>
         </>
       ) : (

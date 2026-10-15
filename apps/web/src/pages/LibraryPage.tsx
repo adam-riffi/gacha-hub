@@ -45,7 +45,7 @@ export function LibraryPage() {
   const reorder = useMutation({ mutationFn: (ids: string[]) => api.put("/api/instances/order", { ids }), onSuccess: refresh, onError: () => toast("Couldn't reorder the games", "err") });
 
   if (dash.isError || games.isError) return <LoadError what="The games" retry={() => Promise.all([dash.refetch(), games.refetch()])} />;
-  if (!dash.data || !games.data) return <div className="mu">Loading…</div>;
+  if (!dash.data || !games.data) return <div className="text-muted">Loading…</div>;
 
   const rows = dash.data.games;
   const ids = rows.map((row) => row.instanceId);
@@ -67,11 +67,11 @@ export function LibraryPage() {
       <div className="lib-head">
         <h1>Games</h1>
         <span className="badge">{rows.length} installed</span>
-        <span className="mn mu lib-hint">Drag to reorder</span>
+        <span className="font-mono text-muted lib-hint">Drag to reorder</span>
       </div>
       <div className="lib-page">
         <div className="lib-list">
-          {rows.length === 0 && <p className="mu">No game yet: add one from the list beside.</p>}
+          {rows.length === 0 && <p className="text-muted">No game yet: add one from the list beside.</p>}
           {rows.map((row, rowIndex) => (
             <GameRow
               key={row.instanceId}
@@ -157,7 +157,7 @@ function GameRow(props: {
       <GameIcon src={game?.art?.icon ?? null} alt={dashGame.name} glyph="game" tint={game?.accent} className="lib-icon" />
       <div className="lib-name">
         <h2 style={{ ["--c" as string]: dashGame.accent }}>{dashGame.name}</h2>
-        <div className="mn mu">
+        <div className="font-mono text-muted">
           {region ? `${region.label} · ${offset(region.utcOffsetMinutes)}` : dashGame.regionKey} · version {game?.manifest.version.name}
         </div>
         {dashGame.sleeping && <span className="badge">Asleep</span>}
@@ -167,7 +167,7 @@ function GameRow(props: {
           <span className="kpi-label">Owned</span>
           <span>
             {dashGame.ownedCharacters}
-            {dashGame.catalogCharacters !== null && <span className="mu"> / {dashGame.catalogCharacters}</span>}
+            {dashGame.catalogCharacters !== null && <span className="text-muted"> / {dashGame.catalogCharacters}</span>}
           </span>
         </Link>
         {game?.pullBanners?.length ? (
@@ -181,7 +181,7 @@ function GameRow(props: {
             <span className="kpi-label">{dashGame.stamina.label}</span>
             <span>
               {Math.floor(dashGame.stamina.value)}
-              <span className="mu"> / {dashGame.stamina.cap}</span>
+              <span className="text-muted"> / {dashGame.stamina.cap}</span>
             </span>
           </Link>
         )}

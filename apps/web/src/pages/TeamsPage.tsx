@@ -53,7 +53,7 @@ export function TeamsPage() {
 
   const game = instance.data && getGame(instance.data.gameKey);
   if (instance.isError || teams.isError) return <LoadError what="Teams" retry={() => Promise.all([instance.refetch(), teams.refetch()])} />;
-  if (!instance.data || !game || !teams.data) return <div className="mu">Loading…</div>;
+  if (!instance.data || !game || !teams.data) return <div className="text-muted">Loading…</div>;
 
   const size = game.teamSize ?? 4;
   const companion = game.manifest.companion;
@@ -81,7 +81,7 @@ export function TeamsPage() {
           Create team
         </button>
       </form>
-      {!catalog && <p className="mu">{game.name} has no catalog yet, so its teams take units by hand once it does.</p>}
+      {!catalog && <p className="text-muted">{game.name} has no catalog yet, so its teams take units by hand once it does.</p>}
       <div className="tm-grid">
         {teams.data.map((team) => (
           <section key={team.id} className="card tm-team" aria-label={team.name}>
@@ -101,7 +101,7 @@ export function TeamsPage() {
                   <div key={member} className="tm-slot" style={elementTint ? ({ "--el": elementTint } as CSSProperties) : undefined}>
                     <GameIcon src={assetUrl(game.key, "character", unit?.icon)} fallback={communityAssetUrl(game.key, "character", unit?.icon)} alt={unit?.name ?? member} glyph="character" />
                     <Link to={build ? `/characters/${build.id}` : `/games/${id}/units/${member}`}>{unit?.name ?? member}</Link>
-                    <span className="mn mu">{build ? (build.buildStatus === "none" ? "unbuilt" : build.buildStatus) : ownedIds.has(member) ? "no build" : "not owned"}</span>
+                    <span className="font-mono text-muted">{build ? (build.buildStatus === "none" ? "unbuilt" : build.buildStatus) : ownedIds.has(member) ? "no build" : "not owned"}</span>
                     <button className="btn ghost sm" aria-label={`Remove ${unit?.name ?? member} from ${team.name}`} onClick={() => update.mutate({ teamId: team.id, members: team.members.filter((other) => other !== member) })}>
                       ×
                     </button>
@@ -149,7 +149,7 @@ export function TeamsPage() {
           </section>
         ))}
       </div>
-      {teams.data.length === 0 && <p className="mu">No teams yet: name one above, then add its members.</p>}
+      {teams.data.length === 0 && <p className="text-muted">No teams yet: name one above, then add its members.</p>}
     </>
   );
 }

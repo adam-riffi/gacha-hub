@@ -22,7 +22,7 @@ export function TopUpCard({ game, region, passEnds, targets }: { game: GameDefin
     <section className="card pl-topup" aria-label="Top-up to 100%">
       <div className="spread">
         <h3>Top-up to 100%</h3>
-        <span className="mn mu">by each banner's end · cheapest packs</span>
+        <span className="font-mono text-muted">by each banner's end · cheapest packs</span>
       </div>
       <ul className="pl-chances pl-topup-list">
         {targets.map((target, targetIndex) => {
@@ -37,7 +37,7 @@ export function TopUpCard({ game, region, passEnds, targets }: { game: GameDefin
               {target.unit ? <UnitIcon gameKey={game.key} unit={target.unit} /> : <Glyph kind={bannerGlyph(target.rules.key)} label={target.label} />}
               <span className="pl-chances-name">
                 <strong>{target.label}</strong>
-                <span className="mn mu">
+                <span className="font-mono text-muted">
                   by {DAY.format(end)} · {percentText(featuredWithin(target.rules, target.state, pulls))}
                 </span>
               </span>
@@ -46,13 +46,13 @@ export function TopUpCard({ game, region, passEnds, targets }: { game: GameDefin
                   <span className="badge done">Covered</span>
                 ) : buy ? (
                   <>
-                    <span className="mn" title={`${short} pulls short of a sure one`}>
+                    <span className="font-mono" title={`${short} pulls short of a sure one`}>
                       {buy.items.map((item) => `${item.label}${item.count > 1 ? ` ×${item.count}` : ""}`).join(" · ")}
                     </span>
                     <strong>{USD_FORMAT.format(buy.price / 100)}</strong>
                   </>
                 ) : (
-                  <span className="mn mu">No sure way</span>
+                  <span className="font-mono text-muted">No sure way</span>
                 )}
               </span>
             </li>

@@ -25,9 +25,9 @@
 /* Battle pass level: a dark box at the bottom right, Barlow over the segmented bar. */
 .pass-level { position: absolute; right: 16px; bottom: 28px; padding: 12px 16px 14px; background: #000; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 9px), calc(100% - 9px) 100%, 0 100%); }
 .pass-level-figure { display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px; }
-.pass-level-figure .mn { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); }
-.pass-level-figure .cd { font-size: 32px; font-weight: 600; line-height: 1; }
-.pass-level-figure .cd.mu { font-size: 18px; }
+.pass-level-figure .font-mono { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); }
+.pass-level-figure .font-display { font-size: 32px; font-weight: 600; line-height: 1; }
+.pass-level-figure .font-display.text-muted { font-size: 18px; }
 
 /* Endgame · next resets and Expiring soon (WIREFRAMES.md A1): two list cards under the heatmap. */
 .home-lists { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 36px; }
@@ -45,13 +45,13 @@
 .pulls-head { display: flex; align-items: flex-end; justify-content: space-between; padding: 8px 16px 14px; }
 .pulls-total { font-size: 56px; font-weight: 600; line-height: 1; }
 .pulls-split { font-size: 13px; line-height: 1.7; text-align: right; text-transform: uppercase; letter-spacing: 0.04em; }
-.pulls-split .mu { margin-right: 12px; }
+.pulls-split .text-muted { margin-right: 12px; }
 .thead { display: flex; align-items: center; height: 28px; flex: 0 0 28px; padding: 0 26px 0 16px; border-top: 1px solid var(--hairline); color: var(--text-muted); font: 400 11px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
 .thead > span, .table-card .rw > span { flex: 0 0 auto; text-align: right; }
 .thead > span:first-child, .table-card .rw > span:first-child { flex: 1; text-align: left; }
 .table-card .rw { padding-right: 26px; font-size: 15px; }
-.table-card .rw .mn { font-size: 15px; }
-.table-card .rw .mn .mu { font-size: 13px; }
+.table-card .rw .font-mono { font-size: 15px; }
+.table-card .rw .font-mono .text-muted { font-size: 13px; }
 .col-100 { width: 100px; }
 .col-110 { width: 110px; }
 .col-70 { width: 70px; }

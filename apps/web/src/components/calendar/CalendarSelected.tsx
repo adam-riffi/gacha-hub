@@ -49,7 +49,7 @@ export function CalendarSelected({ item, reward, now, onClose }: { item: CalItem
     return (
       <aside className="card cal-sel" aria-label="Selected">
         <h3>Selected</h3>
-        <p className="mu">Pick a bar</p>
+        <p className="text-muted">Pick a bar</p>
       </aside>
     );
   }
@@ -82,7 +82,7 @@ export function CalendarSelected({ item, reward, now, onClose }: { item: CalItem
           <GameIcon src={game?.art?.background ?? null} alt={`${game?.name ?? item.gameKey} art`} glyph="game" />
         )}
       </div>
-      <h2 className={item.kind === "banner" ? "sf" : undefined}>{item.name}</h2>
+      <h2 className={item.kind === "banner" ? "font-serif" : undefined}>{item.name}</h2>
       {wishKey && (
         <button className="btn sm cal-wish" aria-pressed={wished} disabled={wish.isPending} onClick={() => wish.mutate(!wished)}>
           Wishlist
@@ -100,8 +100,8 @@ export function CalendarSelected({ item, reward, now, onClose }: { item: CalItem
         )}
         <dt>Ends</dt>
         <dd>
-          {LOCAL.format(item.end)} <span className="mu">your time</span>
-          <div className="mn mu">{serverTime(item.end, item.region.utcOffsetMinutes)} server</div>
+          {LOCAL.format(item.end)} <span className="text-muted">your time</span>
+          <div className="font-mono text-muted">{serverTime(item.end, item.region.utcOffsetMinutes)} server</div>
         </dd>
         {reward && reward.stages > 0 && (
           <>
@@ -148,7 +148,7 @@ export function CalendarSelected({ item, reward, now, onClose }: { item: CalItem
             <label key={optionIndex} className="cal-opt">
               <input type="radio" name={`pick-${reward.eventId}`} checked={pick === optionIndex} disabled={goal?.claimed} onChange={() => setPick(optionIndex)} />
               <span>{rewardOption.label ?? rewardOption.changes.map((change) => change.name).join(", ")}</span>
-              <span className="mn">{rewardOption.changes.map(stepText).join(" · ")}</span>
+              <span className="font-mono">{rewardOption.changes.map(stepText).join(" · ")}</span>
             </label>
           ))}
           <div className="cal-actions">
@@ -161,7 +161,7 @@ export function CalendarSelected({ item, reward, now, onClose }: { item: CalItem
           </div>
         </div>
       )}
-      {others.length > 0 && <p className="cal-note mu">Also in this event: {others.join(", ")}.</p>}
+      {others.length > 0 && <p className="cal-note text-muted">Also in this event: {others.join(", ")}.</p>}
     </aside>
   );
 }

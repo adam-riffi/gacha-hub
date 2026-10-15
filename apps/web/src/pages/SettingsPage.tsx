@@ -85,7 +85,7 @@ export function SettingsPage() {
                 {mine.map((gameInstance) => <PullRow key={gameInstance.id} gameInstance={gameInstance} last={(imports.data ?? []).find((importRun) => importRun.gameInstanceId === gameInstance.id && importRun.kind === "pulls")} />)}
               </tbody>
             </table>
-            {!mine.length && <p className="mu">Add a game first.</p>}
+            {!mine.length && <p className="text-muted">Add a game first.</p>}
           </section>
         )}
         {tab === "notifications" && (
@@ -110,30 +110,30 @@ function LinkedAccounts({ links, games }: { links: LinkedAccountDto[]; games: In
       <HoyolabCard link={hoyolab} />
       <article className="st-provider" aria-label="Enka showcase">
         <span className="row"><strong>Enka showcase</strong><span className="tag is-off">No login</span></span>
-        <p className="mu">Builds from your showcase</p>
+        <p className="text-muted">Builds from your showcase</p>
         <div className="st-uids">
           {hoyoGames.map((game) => (
             <span key={game.id}>
               <span className="kpi-label">{getGame(game.gameKey)?.shortName} UID</span>
-              <span className="mn">{game.uid ? masked(game.uid) : "not set"}</span>
+              <span className="font-mono">{game.uid ? masked(game.uid) : "not set"}</span>
               {["genshin", "hsr", "zzz"].includes(game.gameKey) && game.uid && <EnkaSync instanceId={game.id} />}
             </span>
           ))}
-          {!hoyoGames.length && <span className="mu">No HoYoverse game added.</span>}
+          {!hoyoGames.length && <span className="text-muted">No HoYoverse game added.</span>}
         </div>
       </article>
       <div className="st-trio">
         <article className="st-provider" aria-label="Arknights: Endfield">
           <span className="row"><strong>Arknights: Endfield</strong><span className="tag is-off">Link only</span></span>
-          <p className="mu">Records link</p>
+          <p className="text-muted">Records link</p>
         </article>
         <article className="st-provider" aria-label="Wuthering Waves">
           <span className="row"><strong>Wuthering Waves</strong><span className="tag is-off">Link only</span></span>
-          <p className="mu">History link</p>
+          <p className="text-muted">History link</p>
         </article>
         <article className="st-provider is-manual" aria-label="Neverness to Everness">
           <span className="row"><strong>Neverness to Everness</strong><span className="tag is-off">No link</span></span>
-          <p className="mu">Typed by hand</p>
+          <p className="text-muted">Typed by hand</p>
         </article>
       </div>
     </section>
@@ -168,7 +168,7 @@ function EnkaSync({ instanceId }: { instanceId: string }) {
   return (
     <>
       <button className="btn" disabled={sync.isPending} onClick={() => sync.mutate()}>Sync builds</button>
-      {note && <span role="status" className="mu">{note}</span>}
+      {note && <span role="status" className="text-muted">{note}</span>}
     </>
   );
 }
@@ -213,9 +213,9 @@ function HoyolabCard({ link }: { link?: LinkedAccountDto }) {
     <article className="st-provider is-main" aria-label="HoYoLAB">
       <div className="spread">
         <span className="row"><strong>HoYoLAB</strong><span className={`tag ${link?.status === "ok" ? "" : "is-off"}`}>{link ? (link.status === "ok" ? "Connected" : "Needs attention") : "Not linked"}</span></span>
-        {link && <span className="mn mu">{link.lastSyncAt ? `last sync ${TIME.format(new Date(link.lastSyncAt))}` : "not synced yet"} · every 30 min</span>}
+        {link && <span className="font-mono text-muted">{link.lastSyncAt ? `last sync ${TIME.format(new Date(link.lastSyncAt))}` : "not synced yet"} · every 30 min</span>}
       </div>
-      <p className="mu">Stamina and dailies · read-only</p>
+      <p className="text-muted">Stamina and dailies · read-only</p>
       {link ? (
         <>
           {link.status !== "ok" && <p className="st-bad">HoYoLAB refused the last sync ({link.lastError?.replace(/_/g, " ")}): link again with fresh cookies.</p>}
@@ -227,13 +227,13 @@ function HoyolabCard({ link }: { link?: LinkedAccountDto }) {
       ) : null}
       {(!link || link.status !== "ok") && (
         <form className="st-link" onSubmit={submit}>
-          <p className="mu">On hoyolab.com, signed in, open the browser's developer tools → Application → Cookies, and copy <code>ltuid_v2</code> and <code>ltoken_v2</code>. Only these two are kept.</p>
+          <p className="text-muted">On hoyolab.com, signed in, open the browser's developer tools → Application → Cookies, and copy <code>ltuid_v2</code> and <code>ltoken_v2</code>. Only these two are kept.</p>
           <label>Account ID (ltuid_v2)<input name="ltuid" required inputMode="numeric" pattern="\d{1,20}" autoComplete="off" /></label>
           <label>Token (ltoken_v2)<input name="ltoken" type="password" required autoComplete="off" /></label>
           <button className="btn primary" type="submit" disabled={connect.isPending}>Link HoYoLAB</button>
         </form>
       )}
-      {note && <p role="status" className="mu">{note}</p>}
+      {note && <p role="status" className="text-muted">{note}</p>}
     </article>
   );
 }
@@ -300,7 +300,7 @@ function PullRow({ gameInstance, last }: { gameInstance: InstanceListItem; last?
       <tr>
         <td>{gameInstance.name}</td>
         <td>{method}</td>
-        <td className={`mn ${last?.error ? "st-bad" : ""}`}>{last ? `${DAY.format(new Date(last.createdAt))}${last.error ? ` · ${last.error.replace("_", " ")}` : ""}` : link || uigf ? "never" : "—"}</td>
+        <td className={`font-mono ${last?.error ? "st-bad" : ""}`}>{last ? `${DAY.format(new Date(last.createdAt))}${last.error ? ` · ${last.error.replace("_", " ")}` : ""}` : link || uigf ? "never" : "—"}</td>
         <td className="num">
           <span className="st-actions">
             {link && <button className="btn" disabled={busy} aria-expanded={pasting} onClick={() => setPasting(!pasting)}>Paste link</button>}
@@ -322,10 +322,10 @@ function PullRow({ gameInstance, last }: { gameInstance: InstanceListItem; last?
               <form className="st-paste" onSubmit={submit}>
                 <input name="url" required autoComplete="off" placeholder={placeholder} aria-label={`History link for ${gameInstance.name}`} />
                 <button className="btn primary" type="submit" disabled={busy}>Import</button>
-                <span className="mu">Used once on the server and never stored.</span>
+                <span className="text-muted">Used once on the server and never stored.</span>
               </form>
             )}
-            {note && <p role="status" className={note.bad ? "st-bad" : "mu"}>{note.text}</p>}
+            {note && <p role="status" className={note.bad ? "st-bad" : "text-muted"}>{note.text}</p>}
           </td>
         </tr>
       )}
@@ -343,9 +343,9 @@ function Notifications({ games }: { games: InstanceListItem[] }) {
       <h3>Notifications</h3>
       <div className="st-rows">
         <div><span className="st-k">Discord DMs</span><span><span className={`tag ${on.length ? "" : "is-off"}`}>{on.length ? "On" : "Off"}</span></span></div>
-        <div><span className="st-k">Quiet hours</span><span className="mn">{quiet ? `${quiet.from}–${quiet.to}` : "off"}</span></div>
-        <div><span className="st-k">Daily digest</span><span className="mn">{digest ?? "off"}</span></div>
-        <div><span className="st-k">Time zone</span><span className="mn">{ZONE}</span></div>
+        <div><span className="st-k">Quiet hours</span><span className="font-mono">{quiet ? `${quiet.from}–${quiet.to}` : "off"}</span></div>
+        <div><span className="st-k">Daily digest</span><span className="font-mono">{digest ?? "off"}</span></div>
+        <div><span className="st-k">Time zone</span><span className="font-mono">{ZONE}</span></div>
       </div>
     </section>
   );
@@ -362,7 +362,7 @@ function AccountData() {
     <section className="card" id="account" aria-label="Account and data">
       <h3>Account and data</h3>
       <div className="st-rows">
-        <div><span className="st-k">Signed in as</span><span className="mn">{currentUser?.user?.username}</span></div>
+        <div><span className="st-k">Signed in as</span><span className="font-mono">{currentUser?.user?.username}</span></div>
         <div><span className="st-k">Download my data</span><span><a className="btn" href="/api/export" download aria-label="Download my data">JSON</a></span></div>
         <div>
           <span className="st-k">Delete my account and data</span>
@@ -439,7 +439,7 @@ function GamesSettings({ games }: { games: InstanceListItem[] }) {
                     }}
                   />
                 </td>
-                <td>{gameInstance.hiddenBanners?.length ? <Link to={`/games/${gameInstance.id}/pulls`}>{gameInstance.hiddenBanners.length} hidden</Link> : <span className="mu">none</span>}</td>
+                <td>{gameInstance.hiddenBanners?.length ? <Link to={`/games/${gameInstance.id}/pulls`}>{gameInstance.hiddenBanners.length} hidden</Link> : <span className="text-muted">none</span>}</td>
               </tr>
             );
           })}

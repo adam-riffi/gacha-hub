@@ -63,7 +63,7 @@
 .pn-goal .tk-prog { flex: 1; }
 .pn-goal .tk-prog .tk-meter { flex: 1; width: auto; }
 .pn-goal .spread { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-.pn-goal .mn { font-size: 12px; }
+.pn-goal .font-mono { font-size: 12px; }
 .pn-bar { display: flex; align-items: center; gap: 8px; }
 .pn-bar .tk-meter { flex: 1; width: auto; }
 .pn-main { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 24px; align-items: start; min-width: 0; }
@@ -75,7 +75,7 @@
 .pn-goal-name, .pn-mat { display: inline-flex; align-items: center; gap: 8px; }
 .pn-goal-name .gicon, .pn-mat .gicon { width: 28px; height: 28px; font-size: 9px; flex: none; }
 .pn-line { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-top: 1px solid var(--surface-3); }
-.pn-line .mu { margin-left: auto; font-size: 13px; }
+.pn-line .text-muted { margin-left: auto; font-size: 13px; }
 .pn-today .btn { margin-top: 12px; }
 
 /* Profile (WIREFRAMES.md G8) */

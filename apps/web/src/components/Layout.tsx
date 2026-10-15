@@ -120,7 +120,7 @@ export function Layout({ children }: { children: ReactNode }) {
               </button>
             </div>
           )}
-          <span className="topbar-date mn mu">{today()}</span>
+          <span className="topbar-date font-mono text-muted">{today()}</span>
         </header>
         <main className="content">{children}</main>
       </div>

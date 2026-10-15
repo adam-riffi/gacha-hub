@@ -91,7 +91,7 @@ export function PullCurve({
           </g>
         ))}
       </svg>
-      <figcaption className="pl-legend mn">
+      <figcaption className="pl-legend font-mono">
         {markers.map((marker) => (
           <span key={marker.key} className={`is-${marker.key}`}>
             <i aria-hidden="true" />

@@ -143,7 +143,7 @@ test("Tasks: a character goal shows its plan (each ascension, each talent), and 
   await expect(steps.getByRole("listitem")).not.toHaveCount(0);
 
   // Link the light cone's goal under Clara's (round 6): it keeps its card, tagged with hers, and its progress adds to hers.
-  const total = async () => Number((await clara.locator(".tk-prog .mn").first().textContent())!.split("/")[1]);
+  const total = async () => Number((await clara.locator(".tk-prog .font-mono").first().textContent())!.split("/")[1]);
   const before = await total();
   const cone = goals.getByRole("article", { name: "E2E farm a light cone" });
   await cone.getByRole("button", { name: /E2E farm a light cone/ }).click();

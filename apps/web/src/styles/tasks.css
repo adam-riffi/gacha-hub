@@ -32,7 +32,7 @@
 .tk-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 .tk-thumb { width: 40px; height: 40px; flex: none; }
 .tk-title { flex: 1; min-width: 160px; }
-.tk-title .mn { font-size: 12px; }
+.tk-title .font-mono { font-size: 12px; }
 .tk-prog { display: flex; align-items: center; gap: 8px; }
 .tk-meter { display: inline-block; width: 120px; height: 6px; background: var(--surface-3); }
 .tk-meter > span { display: block; height: 100%; background: var(--accent); }

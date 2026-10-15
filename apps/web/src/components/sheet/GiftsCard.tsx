@@ -33,8 +33,8 @@ export function GiftsCard({ gameKey, entry }: { gameKey: string; entry: CatalogC
             <li key={gift.itemId} className={gift.points && gift.points >= 400 ? "is-top" : gift.hobbies && gift.hobbies.length > 1 ? "is-top" : ""}>
               <CatalogIcon gameKey={gameKey} kind="material" icon={item?.icon} name={item?.name ?? gift.itemId} className="gf-icon" />
               <span className="gf-name">{item?.name ?? gift.itemId}</span>
-              {gift.points ? <span className="cd gf-points">+{gift.points}</span> : null}
-              {gift.hobbies?.length ? <span className="mn gf-match">{gift.hobbies.join(" · ")}</span> : null}
+              {gift.points ? <span className="font-display gf-points">+{gift.points}</span> : null}
+              {gift.hobbies?.length ? <span className="font-mono gf-match">{gift.hobbies.join(" · ")}</span> : null}
             </li>
           );
         })}

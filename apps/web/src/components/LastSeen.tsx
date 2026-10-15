@@ -48,7 +48,7 @@ export function LastSeenChip({ appearance }: { appearance: UnitAppearanceDto | u
   if (!text) return null;
   const banner = appearance.current ?? appearance.lastEnded ?? appearance.next;
   return (
-    <span className="last-seen-chip mn" title={banner ? `${banner.name} · ${appearance.runs} run${appearance.runs === 1 ? "" : "s"}` : undefined}>
+    <span className="last-seen-chip font-mono" title={banner ? `${banner.name} · ${appearance.runs} run${appearance.runs === 1 ? "" : "s"}` : undefined}>
       <BannerFlagIcon label="Last banner" />
       {text}
     </span>

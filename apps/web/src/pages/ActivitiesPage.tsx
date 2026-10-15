@@ -101,7 +101,7 @@ function Stamina({ game, instance, projection }: { game: GameDefinition; instanc
           </span>
         ) : (
           projection?.fullAt && (
-            <span className="mn mu act-full">
+            <span className="font-mono text-muted act-full">
               full at {CLOCK.format(new Date(projection.fullAt))} · in {formatRemaining(projection.fullAt)}
             </span>
           )
@@ -177,7 +177,7 @@ function CadenceList({
     <section className="card act-list" aria-label={title}>
       <div className="spread">
         <h3>
-          {title} <span className="mu">{done} / {items.length}</span>
+          {title} <span className="text-muted">{done} / {items.length}</span>
         </h3>
         <Countdown at={soonest ?? resetsAt.toISOString()} kind={cadence === "daily" ? "reset" : "deadline"} prefix="resets in" />
       </div>
@@ -185,10 +185,10 @@ function CadenceList({
         {/* One tick control everywhere (round 7): a counted daily by its steps. */}
         {items.map((item) => (
           <TickRow key={item.id} instanceId={instanceId} task={item}>
-            {cadence === "monthly" && item.anchorKey && anchors.find((anchor) => anchor.key === item.anchorKey)?.name !== item.title && <span className="mn mu">{anchors.find((anchor) => anchor.key === item.anchorKey)?.name}</span>}
+            {cadence === "monthly" && item.anchorKey && anchors.find((anchor) => anchor.key === item.anchorKey)?.name !== item.title && <span className="font-mono text-muted">{anchors.find((anchor) => anchor.key === item.anchorKey)?.name}</span>}
           </TickRow>
         ))}
-        {items.length === 0 && <p className="mu act-empty">Nothing {title.toLowerCase()} yet.</p>}
+        {items.length === 0 && <p className="text-muted act-empty">Nothing {title.toLowerCase()} yet.</p>}
       </div>
       {children}
       {adding ? (
@@ -240,13 +240,13 @@ function Cycles({ game, modes, instanceId }: { game: GameDefinition; modes: Retu
           // A mode that closes before its next cycle (Stygian Onslaught) counts down to its close.
           <div key={endgameMode.key} className="act-row">
             <span className="act-title">{endgameMode.name}</span>
-            <span className="mn mu">
+            <span className="font-mono text-muted">
               {result ?? "—"} / {endgameMode.metric.max ?? "—"} {endgameMode.metric.label}
             </span>
             {open ? <DateChip at={closes} prefix={endgameMode.openDays ? "closes " : "resets "} /> : <DateChip at={end} prefix="opens " />}
           </div>
         ))}
-        {game.manifest.endgame.length === 0 && <p className="mu act-empty">No endgame mode on record yet.</p>}
+        {game.manifest.endgame.length === 0 && <p className="text-muted act-empty">No endgame mode on record yet.</p>}
       </div>
     </section>
   );
@@ -293,7 +293,7 @@ function MonthlyPass({ instanceId, name, daysLeft }: { instanceId: string; name:
   ) : (
     <div className="act-row act-pass-row">
       <span className="act-title">{name}</span>
-      <span className="mn">{daysLeft === null ? "not tracked" : `${daysLeft} days left`}</span>
+      <span className="font-mono">{daysLeft === null ? "not tracked" : `${daysLeft} days left`}</span>
       <button type="button" className="btn" aria-label={`Update ${name}`} onClick={() => setEditing(true)}>
         Update
       </button>
@@ -321,12 +321,12 @@ function Version({ instanceId, game, passState, endsAt, events }: { instanceId: 
           <div className="spread act-pass-head">
             <div className="kpi-label">Battle pass</div>
             {pass && (
-              <span className="mn mu">
+              <span className="font-mono text-muted">
                 {pass.name}
               </span>
             )}
           </div>
-          {!pass && <p className="mu act-empty">No battle pass on record.</p>}
+          {!pass && <p className="text-muted act-empty">No battle pass on record.</p>}
           {pass &&
             (editing ? (
               <form className="act-add" onSubmit={submit}>
@@ -354,7 +354,7 @@ function Version({ instanceId, game, passState, endsAt, events }: { instanceId: 
                     {passState.maxLevel !== null && <small> / {passState.maxLevel}</small>}
                   </div>
                   {passState.levelsPerDay !== null && (
-                    <span className="mn mu">
+                    <span className="font-mono text-muted">
                       {passState.levelsPerDay.toFixed(1)} {passState.levelsPerDay === 1 ? "level" : "levels"} a day to finish
                     </span>
                   )}
@@ -362,7 +362,7 @@ function Version({ instanceId, game, passState, endsAt, events }: { instanceId: 
                 {passState.maxLevel !== null && <SegmentedBar level={passState.level} max={passState.maxLevel} label={pass.name} />}
                 <div className="act-xp">
                   <span className="kpi-label">Weekly XP</span>
-                  <span className="mn">
+                  <span className="font-mono">
                     {NUMBER_FORMAT.format(passState.weeklyXp)}
                     {passState.weeklyXpCap !== null && ` / ${NUMBER_FORMAT.format(passState.weeklyXpCap)}`}
                   </span>
@@ -387,7 +387,7 @@ function Version({ instanceId, game, passState, endsAt, events }: { instanceId: 
                 <DateChip at={new Date(event.endsAt)} />
               </div>
             ))}
-            {events.length === 0 && <p className="mu act-empty">No event running.</p>}
+            {events.length === 0 && <p className="text-muted act-empty">No event running.</p>}
           </div>
         </div>
       </div>
