@@ -1,4 +1,6 @@
 import type { GameDefinition } from "./games/types.js";
+import { featuredWithin } from "./odds.js";
+import type { PullBannerRules } from "./pity.js";
 
 export type CurrencyKind = "stamina" | "reserve" | "premium" | "ticket" | "standard" | "special" | "coin";
 
@@ -34,4 +36,34 @@ export function pullsFor(currencies: { value: number; pullCost?: number | null; 
     label ??= currency.pullLabel ?? null;
   }
   return { limited, standard, special: Object.values(only).reduce((total, pullCount) => total + pullCount, 0), only, label };
+}
+
+type PullCurrency = Parameters<typeof pullsFor>[0][number];
+
+/**
+ * A game's pulls on hand and its pity on each banner type (ADR 0011): what
+ * each banner's top unit is within reach of (round 11: "which banner matters
+ * to you").
+ */
+export class PullBudget {
+  constructor(
+    private readonly rules: readonly PullBannerRules[],
+    private readonly currencies: readonly PullCurrency[],
+    private readonly pity: readonly { key: string; pity: number; guaranteed: boolean }[],
+  ) {}
+
+  /** The pulls a banner type can take: its own tickets where the game has some (Endfield's Arsenal, ZZZ's Bangboo), else the limited pulls. */
+  pullsOn(kind: string): number {
+    const pulls = pullsFor([...this.currencies]);
+    const ownTickets = this.currencies.some((currency) => currency.pullCost && currency.onlyFor === kind);
+    return ownTickets ? (pulls.only[kind] ?? 0) : pulls.limited;
+  }
+
+  /** The chance of a banner type's featured 5★ with the pulls it can take, from its pity; null where the game has no such banner. */
+  chanceOn(kind: string): number | null {
+    const rules = this.rules.find((banner) => banner.key === kind);
+    if (!rules) return null;
+    const state = this.pity.find((entry) => entry.key === kind);
+    return featuredWithin(rules, { pity: state?.pity ?? 0, guaranteed: state?.guaranteed ?? false }, this.pullsOn(kind));
+  }
 }

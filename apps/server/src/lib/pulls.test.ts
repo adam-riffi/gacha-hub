@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { currencyKind, getGame, pullsFor } from "@gacha/shared";
+import { PullBudget, currencyKind, featuredWithin, getGame, pullsFor } from "@gacha/shared";
 
 describe("pullsFor", () => {
   it("counts limited pulls, and keeps standard tickets and each banner's own tickets (special: Endfield's Arsenal Tickets, ZZZ's Boopons) apart", () => {
@@ -34,5 +34,31 @@ describe("currencyKind", () => {
       ["acquaintFate", "standard"],
       ["mora", "coin"],
     ]);
+  });
+});
+
+// Round 11's review: Home's banners say which banner matters to you, with your chance at its top unit.
+describe("PullBudget", () => {
+  const hsr = getGame("hsr")!;
+  const currencies = [
+    { value: 1600, pullCost: 160, pullLabel: "warp" },
+    { value: 3, pullCost: 1, pullLabel: "warp" },
+  ];
+  const characterRules = hsr.pullBanners!.find((banner) => banner.key === "character")!;
+  it("gives a banner kind's chance at its featured 5★ with the limited pulls on hand, from its pity", () => {
+    const budget = new PullBudget(hsr.pullBanners!, currencies, [{ key: "character", pity: 40, guaranteed: false }]);
+    expect(budget.pullsOn("character")).toBe(13);
+    expect(budget.chanceOn("character")).toBeCloseTo(featuredWithin(characterRules, { pity: 40, guaranteed: false }, 13));
+    // A lost 50/50 makes the next 5★ the featured one: a better chance with the same pulls.
+    const guaranteed = new PullBudget(hsr.pullBanners!, currencies, [{ key: "character", pity: 40, guaranteed: true }]);
+    expect(guaranteed.chanceOn("character")!).toBeGreaterThan(budget.chanceOn("character")!);
+  });
+  it("counts a banner's own tickets on it, reads no pity as zero, and has no chance where the game has no such banner", () => {
+    const endfield = getGame("endfield")!;
+    const arsenal = new PullBudget(endfield.pullBanners!, [{ value: 3960, pullCost: 198, pullLabel: "pull", onlyFor: "weapon" }], []);
+    expect(arsenal.pullsOn("weapon")).toBe(20);
+    expect(arsenal.pullsOn("character")).toBe(0);
+    expect(new PullBudget(hsr.pullBanners!, currencies, []).chanceOn("character")).toBeCloseTo(featuredWithin(characterRules, { pity: 0, guaranteed: false }, 13));
+    expect(new PullBudget(hsr.pullBanners!, currencies, []).chanceOn("other")).toBeNull();
   });
 });

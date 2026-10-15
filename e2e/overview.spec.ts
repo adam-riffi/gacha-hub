@@ -27,6 +27,39 @@ test("Home with a game picked shows its dashboard: pulls, pity and banners at a 
   await expect(page).toHaveURL(new RegExp(`/games/${id}/pulls$`));
 });
 
+// Round 11's review: Home's banners said nothing of what is on them. Each banner shows its featured units as icons, the
+// ones you own marked, and your chance at its top unit with the pulls you hold. Blade: a 5★ no other journey owns (the
+// journeys share one database).
+test("Home's banners show each banner's featured units, the ones you own marked, and your chance with your pulls @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const created = await page.request.post("/api/instances", { data: { gameKey: "hsr" } });
+  const id = created.ok()
+    ? ((await created.json()) as { id: string }).id
+    : ((await (await page.request.get("/api/instances")).json()) as { id: string; gameKey: string }[]).find((instance) => instance.gameKey === "hsr")!.id;
+  await page.request.put(`/api/instances/${id}/currencies/stellarJade`, { data: { value: 1600 } });
+  await page.request.put(`/api/instances/${id}/currencies/specialPass`, { data: { value: 3 } });
+  await page.request.put(`/api/instances/${id}/ownership`, { data: { items: [{ kind: "character", catalogId: "1001", owned: true }] } });
+  const featuring = (...catalogIds: string[]) => catalogIds.map((catalogId) => ({ catalogId, kind: "character", rateUp: true }));
+  await page.request.post("/api/admin/payload", {
+    data: { kind: "banners", gameKey: "hsr", items: [{ key: "e2e-featured", name: "E2E featured warp", kind: "character", startsAt: iso(-1), endsAt: iso(0.2), featured: featuring("1009", "1205", "1001") }] },
+  });
+
+  await page.goto("/?game=hsr");
+  const card = page.locator(".banner-card");
+  // The pointer on the card holds it on this banner (the carousel steps on its own otherwise); it ends first, so it shows first.
+  await card.hover();
+  await expect(card).toContainText("E2E featured warp");
+  const featured = card.getByRole("list", { name: "Featured units" });
+  await expect(featured.getByRole("listitem")).toHaveCount(3);
+  // The 5★ first, then the 4★; the one you own says so.
+  await expect(featured.getByRole("listitem").first()).toHaveAccessibleName("Blade, not owned");
+  await expect(featured.getByRole("listitem", { name: "March 7th, owned" })).toBeVisible();
+  // 1,600 Stellar Jade and 3 passes: 13 warps toward Blade.
+  await expect(card.getByTestId("banner-chance")).toHaveText(/^\d+% with 13 pulls$/);
+});
+
 // A hybrid of the Overview and the designs, in the Overview's language (Georges, round 5): its gauges and charts on top,
 // the banners where the Overview has the battle pass, the battle pass beside the stamina, the dailies' heatmap.
 test("a game's dashboard: the Overview's gauges and charts for the game, its banners up top, the pass beside the stamina @smoke", async ({ page }) => {
