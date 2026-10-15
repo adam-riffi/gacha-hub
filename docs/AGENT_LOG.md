@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-15 · claude · stack/r15/09-handoff · #329
+- Done: the handoff after round 11 and the round's audit status: Georges's list done (#316–#318, ADR 0011 through #321–#327), every page's gap closed or waiting for a source (the Planner's stamina days needs drops per run; codes and banner history for the games without a source), Teams' "who you lack" left (low).
+- Tests: docs only; the full check passes.
+- Scope/decisions: none new; the round's decisions are in the handoff.
+- Next: ADR 0011's next services (characters, weapons), then pulls, tasks and planning; a game's reset clock and the planner's costs as objects.
+
 ## 2026-10-15 · claude · stack/r15/08-timeline-featured · #328
 - Done: round 11's review, Timeline: a banner phase's featured units are icons, each once however many of its banners feature it (Genshin's phase listed Candace, Mika and Dahlia twice in words): its top-rarity units small at the start of its bar, and all of them in Selected, the top rarity larger, the ones you own ticked, a top one you lack ringed, a character opening its page, then "+n" and the link to Pulls. One `FeaturedUnits` component now serves Home's banner card (#326) and the Timeline.
 - Tests: written first: a journey with two banners sharing a phase (Fu Xuan with Asta, Jingliu with Asta, Asta owned): the bar shows the two 5★s, Selected lists three units, Fu Xuan "not owned", Asta "owned". The journey where a featured unit opens its page passes unchanged.
@@ -248,9 +254,3 @@ Entry format:
 - Tests: written first: integration: Amber's three-day talent book is on its days of the week and on no other. Journey: Farm today's material icons at least 36 px; the first two goals side by side, each under 700 px; Low picked in one click and saved; Week shows Lisa on Wednesday and Saturday, not on Monday, and Slime Condensate under Any day. The Planner's priority check follows the group.
 - Scope/decisions: the week shows rotating materials only (any-day ones under Any), the weeklies staying on today's view.
 - Next: banners and events: a colour per kind, wishlisted events marked, the legend's crooked boxes.
-
-## 2026-10-14 · claude · stack/r10/10-weapon-window · #289
-- Done: the weapon window (Georges, round 7: "adding a weapon to a character is a bit annoying; I'd rather have a window open with all of my weapons in big with their level, refinement, name, rarity and an info i that I can click on to read the effect"). Each catalog now keeps each weapon's effect, its name and its text at every refinement: Genshin from genshin-db's r1–r5, Star Rail's cone skill filled from each superimposition's params, ZZZ's five talents, WuWa's description filled from each rank's DescParams, NTE's effect filled from its values. On the sheet, Choose weapon (beside the Weapon title) opens a window: my copies of the character's type first (art on the rarity band, Lv, R/S/P, wielders' icons), then the type's others; each card's i opens its effect at that copy's refinement; a click on a card equips it (a held copy asks, as the picker does).
-- Tests: written first: Mistsplitter at R1 and R5, Patience Is All You Need at S1 and S5 without markup, Steel Cushion, Autumntrace and Good Boy's Grand Adventure at their first and fifth ranks; every 4★ and 5★ weapon of the five games has five ranks. Sampo's sheet: Patience (Lv 70, S3) in Mine with its art at least 80 px, its effect at S3 (32%), Before the Tutorial Mission Starts among the rest, and a click on its art equips it at Lv 70.
-- Scope/decisions: Genshin's event weapons that are never refined (Sword of Descension, the Isshin blades, Predator) keep one rank; the rank test was wrong to want five and now allows one. Endfield's dataset has no weapon skills, so its weapons have no effect yet.
-- Next: Tasks: priority in one click, denser cards, Farm today and Farm by weekday.
