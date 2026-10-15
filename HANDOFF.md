@@ -1,9 +1,9 @@
 # Handoff — 2026-10-15 · claude (deployed)
 
 ## State
-- `main` at #333: round 11 (#315–#329), ADR 0010 (#330–#333) and a gear fix (#331) merged. CI green.
-- Open PR: #335 (ADR 0010 amended: Discord sign-in stays; this handoff). #334 (Discord sign-in removed) was closed unmerged at Georges's word.
-- **Production serves #333** (deployed 2026-10-15 at Georges's word; every migration since #186 ran, `passkeys` the newest; the smoke checks pass). Sign-in there: Discord, a passkey once added in Settings, and the owner password once `OWNER_PASSWORD_HASH` is set. Merges do not deploy (#189).
+- `main` at #336: round 11 (#315–#329), ADR 0010 (#330–#333, amended in #335) and the gear fixes (#331, #336) merged. CI green.
+- Open PR: #337 (this handoff). #334 (Discord sign-in removed) was closed unmerged at Georges's word.
+- **Production serves #336** (deployed 2026-10-15 at Georges's word, after #333 the same day; every migration since #186 ran, `passkeys` the newest; the smoke checks pass). Sign-in there: Discord, a passkey once added in Settings, and the owner password once `OWNER_PASSWORD_HASH` is set. Merges do not deploy (#189).
 - Every milestone in DESIGN.md §9 is built, V through F13, and eleven feedback rounds (2026-10-10 to 2026-10-15) are done or under way. What is left needs Georges's secrets, real data or a decision (below), a source for a few details (Next), or is in DESIGN.md §4 "Later".
 
 ## Done this session (round 11, `docs/AUDIT-2026-10-15-round11.md`)
@@ -12,6 +12,7 @@
 - **ADR 0011** (accepted by Georges): explicit names in the shared package (#321), the server (#322) and the web app (#323), `id-length` in every package; CSS utilities named for what they do (#324); the first **objects**: `GearPiece`, `CharacterBuild` (#325), `PullBudget` (#326); the first **services**: `TeamService`, `OwnershipService`, `DomainError`, `instanceOrThrow` (#327).
 - Found on the way: a card-stat save lost on reload (#315); two references a rename would have rebound (a reminder time's Remove filter, the gear form's slot), caught by comparing the shadowed names before and after each pass.
 - **ADR 0010** (decided with Georges): Supabase and Vercel stay; sign-in is Discord, a **passkey** (#333, `@simplewebauthn` v14, a `Passkey` table) or the **owner password** (#332, `npm run password:hash`); Discord sign-in stays (#334 closed). A gear piece moved to the bag no longer shows twice (#331). Deployed.
+- **Gear page** (Georges, 2026-10-15): a piece's substats are typed in place, in the bag or on a build; Equip on is typed or picked from every character you own, a build made where none is (#336). The card-stat journey's fake slow server now lives at the browser context (it flaked about 1 run in 15).
 
 ## Decisions taken (2026-10-15; Georges: "take every decision")
 - Banner history from samsara-web (MIT) at a pinned commit; ZZZ, WuWa, Endfield and NTE have no dated source yet.

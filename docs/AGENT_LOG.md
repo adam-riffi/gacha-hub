@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-15 · claude · stack/r17/02-handoff · #337
+- Done: production deployed at #336 at Georges's word ("deploy this version"), the gear page's typed substats and Equip on included; the handoff says so.
+- Tests: docs only; the deploy's smoke checks pass.
+- Scope/decisions: none.
+- Next: Georges adds a passkey after signing in with Discord, and sets `OWNER_PASSWORD_HASH` (optional) and `CRON_SECRET`; ADR 0011's next services.
+
 ## 2026-10-15 · claude · stack/r17/01-gear-substats-equip · #336
 - Done: Georges, 2026-10-15: "cant type substats in my gear" and "the quick equip thing ... only propose me 2 random characters ... i should be able to choose or type the name". The gear page's chosen piece now has four substat rows, each a stat picked or typed and its value, saved as each is set (a bag piece through `PUT /api/gear/:id`, a worn one through its wearer's build), its crit value following as you type. Equip on (the chosen piece's and the set panel's) is a field to type in with a list of every character you own and every build, with their icons, "no build yet" beside the ones without; picking one of those makes its build first. The old list held only the characters with a build.
 - Tests: written first: a journey (Musketeer hands in the bag: CRIT Rate 10.5 and CRIT DMG 21 typed, crit value 42, kept after a reload; Equip on lists Bailu and Fu Xuan, Fu Xuan without a build picked and wearing it; a third substat typed on the worn piece, kept). The two journeys that picked from the old list type the name now; two that read substats as text read their fields.
@@ -248,9 +254,3 @@ Entry format:
 - Tests: written first: Perlica's avatar and portrait keys, the Endministrator's shared folder, at least 28 operators, Greatsword 0003's icon and 60 weapons, a set's icon from its suit folder, the art URL at the pinned commit; the CSP allows raw.githubusercontent.com.
 - Scope/decisions: Endaxis has no licence, so its files are linked, never copied, as with the other community sources until the R2 mirror (ADR 0006) holds them; the commit is pinned so a renamed file cannot break a key. In-browser check: the 20 portraits on Endfield's Characters screen load. PR screenshots keep outside art blocked, so this PR has none.
 - Next: the full check over PRs 17 and 18; then the icon pass.
-
-## 2026-10-14 · claude · stack/r10/17-nte-gear · #296
-- Done: NTE's gear (Georges, round 7: "you haven't added the gear system for NTE"). The importer reads the Console's sets from Hakushin's items: each series' Chameleon Package names its three cartridge sets ("… from Lost Radiance, Fireflies and the Forest, or Street Boxer series."), the series' Legendary Cartridge gives the icon; nine sets over Series I–III, in the four cartridge slots, without bonuses (the dataset gives none). NTE's hub gains its Console tab (the gear screen, named as the game names it); the "no gear sets" exception is gone.
-- Tests: written first: NTE's catalog has the nine series, Lost Radiance in Series I with its icon and four slots, Shadow Creed in Series III; the Console tab opens the gear screen whose Sets view shows Lost Radiance, Diabolos and Shadow Creed and opens a set's panel.
-- Scope/decisions: the four "Console Set" bundles (Echoes of Time and the others) are a cartridge with its module, not series, so they stay out; docs/games/nte.md's round 4 line ("the Console's modules are not sets") is corrected.
-- Next: Endfield's art.
