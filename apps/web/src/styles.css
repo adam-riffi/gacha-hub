@@ -286,7 +286,14 @@ p a { text-decoration: underline; text-underline-offset: 2px; }
 .gb-col-subs li { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--surface-3); font-size: 17px; }
 .gb-col-subs li > span:first-child { display: inline-flex; align-items: center; gap: 6px; }
 .gb-col-subs .font-display { font-size: 22px; }
-.gb-col-cv { border-bottom: 0; color: var(--text-muted); }
+.gb-col-cv { display: flex; justify-content: space-between; align-items: center; margin: 6px 0 0; border-bottom: 0; color: var(--text-muted); font-size: 17px; }
+/* Substats typed in place (2026-10-15): the stat picked or typed, then its value. */
+.gb-subs-edit li { justify-content: flex-start; }
+.gb-subs-edit .pk { flex: 1; min-width: 0; }
+.gb-subs-edit input[type="number"] { flex: 0 0 96px; width: 96px; font-size: 17px; }
+/* Equip on: a character typed or picked, across the actions' row; in a set's panel, a fixed width. */
+.gb-equip { flex: 1 1 100%; }
+.gs-piece .gb-equip { flex: 0 0 240px; }
 .gb-col-cv .font-display { color: var(--accent); }
 .gb-bonuses { display: grid; gap: 6px; }
 .gb-bonus { margin: 0; font-size: 15px; line-height: 1.4; color: var(--text-muted); }

@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient, type QueryClient, type QueryKey } from "@tanstack/react-query";
-import { GearPiece, getGame, type CatalogGearSet, type CharacterDto, type GameDefinition, type GearPieceDto } from "@gacha/shared";
+import { GearPiece, getGame, type CatalogGearSet, type CharacterDto, type GameDefinition, type GearPieceDto, type OwnershipDto } from "@gacha/shared";
 import { LoadError } from "../components/LoadError";
 import { useToast } from "../lib/toast";
 import { useDismiss } from "../lib/dismiss";
@@ -9,7 +9,7 @@ import { api } from "../lib/api";
 import { useCatalog } from "../lib/catalog";
 import { CatalogIcon, UnitIcon } from "../components/CatalogIcon";
 import { GameTabs, gearLabel } from "../components/GameTabs";
-import { Picker } from "../components/Picker";
+import { Picker, type PickerOption } from "../components/Picker";
 import { assetUrl, communityAssetUrl } from "../lib/assets";
 import { StatIcon } from "../components/StatIcon";
 import type { InstanceDetail } from "../lib/types";
@@ -360,6 +360,123 @@ function SetsWindow({ game, sets, held, picked, onToggle, onClear, count, onClos
   );
 }
 
+/** The stats a substat can be picked from: the ones the game's slots name (as on the sheet); any other can be typed. */
+const statNames = (game: GameDefinition) => [...new Set(game.manifest.gear.slots.flatMap((slot) => slot.mainStats ?? []))];
+const SUBSTAT_ROWS = 4;
+
+/**
+ * A piece's substats typed in place (Georges, 2026-10-15: "cant type substats in my gear"): four rows, each a stat
+ * picked or typed and its value, saved as each is set, to the bag piece or to its wearer's build; its crit value follows.
+ */
+function SubstatRows({ instanceId, game, piece }: { instanceId: string; game: GameDefinition; piece: Piece }) {
+  const queryClient = useQueryClient();
+  const toast = useToast();
+  const field = game.manifest.gear.field;
+  const filled = (rows: Sub[]) => rows.filter((row) => row.stat || row.value !== "");
+  const [rows, setRows] = useState<Sub[]>(() => {
+    const start = [...(piece.substats ?? [])].slice(0, SUBSTAT_ROWS);
+    while (start.length < SUBSTAT_ROWS) start.push({ stat: "", value: "" });
+    return start;
+  });
+  const saved = useRef(JSON.stringify(filled(rows)));
+  const save = useMutation({
+    mutationFn: (substats: Sub[]) => {
+      if (piece.bagId) return api.put(`/api/gear/${piece.bagId}`, { setName: piece.set, slot: piece.slot, mainStat: piece.mainStat ?? "", level: piece.level ?? 0, substats });
+      const doc = (piece.wearer!.doc ?? {}) as Record<string, unknown>;
+      const gear = (doc[field] ?? {}) as Record<string, DocPiece | undefined>;
+      return api.put(`/api/characters/${piece.wearer!.id}`, { doc: { ...doc, [field]: { ...gear, [piece.slot]: { ...gear[piece.slot], substats } } } });
+    },
+    onSuccess: () => refreshPieces(queryClient, instanceId, [["characters", instanceId]]),
+    onError: () => toast("Could not save the substats", "err"),
+  });
+  // Saved only when they changed: a stat picked, a value left.
+  const commit = (next: Sub[]) => {
+    const substats = filled(next);
+    const key = JSON.stringify(substats);
+    if (key === saved.current) return;
+    saved.current = key;
+    save.mutate(substats);
+  };
+  const change = (rowIndex: number, patch: Partial<Sub>) => rows.map((row, otherIndex) => (otherIndex === rowIndex ? { ...row, ...patch } : row));
+  const options = statNames(game).map((statName) => ({ id: statName, name: statName }));
+  const critValue = new GearPiece({ substats: filled(rows) }).critValue;
+  return (
+    <>
+      <ul className="gb-col-subs gb-subs-edit" aria-label="Substats">
+        {rows.map((row, rowIndex) => (
+          <li key={rowIndex}>
+            <StatIcon stat={row.stat} />
+            <Picker
+              label={`Substat ${rowIndex + 1}`}
+              placeholder="Substat"
+              value={row.stat}
+              icons={false}
+              free
+              options={options}
+              onPick={(_, text) => {
+                const next = change(rowIndex, { stat: text });
+                setRows(next);
+                commit(next);
+              }}
+            />
+            <input
+              aria-label={`Substat ${rowIndex + 1} value`}
+              type="number"
+              step="0.1"
+              min={0}
+              value={row.value}
+              onChange={(event) => setRows(change(rowIndex, { value: event.target.value === "" ? "" : Number(event.target.value) }))}
+              onBlur={() => commit(rows)}
+            />
+          </li>
+        ))}
+      </ul>
+      {critValue > 0 && (
+        <p className="gb-col-cv">
+          <span>Crit value</span>
+          <span className="font-display">{Math.round(critValue * 10) / 10}</span>
+        </p>
+      )}
+    </>
+  );
+}
+
+/**
+ * Equip on any character you own (Georges, 2026-10-15: "i should be able to choose or type the name"): every owned
+ * character and every build, with their icons, typed or picked; one without a build gets one first.
+ */
+function EquipOn({ instanceId, game, builds, onEquip }: { instanceId: string; game: GameDefinition; builds: CharacterDto[]; onEquip: (buildId: string) => void }) {
+  const toast = useToast();
+  const { index } = useCatalog(game.key);
+  const { data: ownership = [] } = useQuery({ queryKey: ["ownership", instanceId], queryFn: () => api.get<OwnershipDto[]>(`/api/instances/${instanceId}/ownership`) });
+  const options = useMemo(() => {
+    const buildOf = (catalogId: string) => builds.find((build) => build.catalogId === catalogId && build.isDefault) ?? builds.find((build) => build.catalogId === catalogId);
+    const catalogIds = new Set([...ownership.filter((owned) => owned.kind === "character").map((owned) => owned.catalogId), ...builds.flatMap((build) => (build.catalogId ? [build.catalogId] : []))]);
+    const characters: PickerOption[] = [...catalogIds].map((catalogId) => {
+      const entry = index?.characters.get(catalogId);
+      const build = buildOf(catalogId);
+      return { id: build ? build.id : `new:${catalogId}`, name: entry?.name ?? build?.name ?? catalogId, src: assetUrl(game.key, "character", entry?.icon), fallback: communityAssetUrl(game.key, "character", entry?.icon), sub: build ? undefined : "no build yet" };
+    });
+    const loose = builds.filter((build) => !build.catalogId).map((build) => ({ id: build.id, name: build.name }));
+    return [...characters, ...loose].sort((first, second) => first.name.localeCompare(second.name));
+  }, [builds, ownership, index, game.key]);
+  const pick = async (option: PickerOption | null) => {
+    if (!option) return;
+    if (!option.id.startsWith("new:")) return onEquip(option.id);
+    try {
+      const created = await api.post<CharacterDto>(`/api/instances/${instanceId}/characters`, { catalogId: option.id.slice("new:".length) });
+      onEquip(created.id);
+    } catch {
+      toast("Could not make a build", "err");
+    }
+  };
+  return (
+    <div className="gb-equip">
+      <Picker label="Equip on" placeholder="Equip on: a character" glyph="character" value="" options={options} onPick={(option) => void pick(option)} />
+    </div>
+  );
+}
+
 /** The chosen piece in full (round 10): its art, set and type, main stat and substats, crit value, its set's bonuses (lit as its wearer has them), its wearer; To bag or Equip on, Delete, Open the set. */
 function PieceColumn({ instanceId, game, piece, set, slotLabel, builds, onOpenSet }: { instanceId: string; game: GameDefinition; piece: Piece; set?: CatalogGearSet; slotLabel: string; builds: CharacterDto[]; onOpenSet: (id: string) => void }) {
   const queryClient = useQueryClient();
@@ -372,7 +489,6 @@ function PieceColumn({ instanceId, game, piece, set, slotLabel, builds, onOpenSe
   const field = game.manifest.gear.field;
   // How many of this set its wearer has on, for the bonuses it lights.
   const worn = piece.wearer ? Object.values(((piece.wearer.doc as Record<string, unknown> | null)?.[field] ?? {}) as Record<string, DocPiece | undefined>).filter((wornPiece) => wornPiece?.setName === piece.set).length : 0;
-  const critValue = new GearPiece(piece).critValue;
   const unit = piece.wearer?.catalogId ? index?.characters.get(piece.wearer.catalogId) : undefined;
   const pieceName = (set?.extra?.pieceNames as Record<string, string> | undefined)?.[piece.slot];
   return (
@@ -387,23 +503,7 @@ function PieceColumn({ instanceId, game, piece, set, slotLabel, builds, onOpenSe
         {piece.mainStat && <StatIcon stat={piece.mainStat} />}
         {piece.mainStat || "—"}
       </div>
-      <ul className="gb-col-subs">
-        {(piece.substats ?? []).map((substat, substatIndex) => (
-          <li key={substatIndex}>
-            <span>
-              <StatIcon stat={substat.stat} />
-              {substat.stat}
-            </span>
-            <span className="font-display">{substat.value}</span>
-          </li>
-        ))}
-        {critValue > 0 && (
-          <li className="gb-col-cv">
-            <span>Crit value</span>
-            <span className="font-display">{Math.round(critValue * 10) / 10}</span>
-          </li>
-        )}
-      </ul>
+      <SubstatRows instanceId={instanceId} game={game} piece={piece} />
       {set && set.bonuses.length > 0 && (
         <div className="gb-bonuses">
           {set.bonuses.map((bonus, bonusIndex) => {
@@ -430,14 +530,7 @@ function PieceColumn({ instanceId, game, piece, set, slotLabel, builds, onOpenSe
           </button>
         ) : (
           <>
-            <select aria-label="Equip on" value="" disabled={equip.isPending || builds.length === 0} onChange={(event) => event.target.value && equip.mutate(event.target.value)}>
-              <option value="">Equip on…</option>
-              {builds.map((build) => (
-                <option key={build.id} value={build.id}>
-                  {build.name}
-                </option>
-              ))}
-            </select>
+            <EquipOn instanceId={instanceId} game={game} builds={builds} onEquip={(buildId) => equip.mutate(buildId)} />
             <button type="button" className="btn ghost" disabled={remove.isPending} onClick={() => confirm("Delete this piece?") && remove.mutate()}>
               Delete
             </button>
@@ -544,14 +637,7 @@ function SetPanel({ instanceId, game, set, pieces, builds, onClose }: { instance
                   ) : (
                     <>
                       <span className="badge">bag</span>
-                      <select aria-label="Equip on" value="" disabled={equip.isPending || builds.length === 0} onChange={(event) => event.target.value && equip.mutate({ pieceId: piece.bagId!, characterId: event.target.value })} style={{ width: "auto" }}>
-                        <option value="">Equip on…</option>
-                        {builds.map((build) => (
-                          <option key={build.id} value={build.id}>
-                            {build.name}
-                          </option>
-                        ))}
-                      </select>
+                      <EquipOn instanceId={instanceId} game={game} builds={builds} onEquip={(buildId) => equip.mutate({ pieceId: piece.bagId!, characterId: buildId })} />
                     </>
                   )}
                 </span>
