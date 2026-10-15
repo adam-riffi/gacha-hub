@@ -47,7 +47,8 @@ The pains: many services and secrets for one person; the free Postgres tiers can
 
 - **Database: keep Supabase (A).** Its free plan pauses a project after a week without activity; the hourly cron (GitHub Actions, once `CRON_SECRET` is set) touches the database every hour, which keeps it awake.
 - **Hosting: keep Vercel (1).**
-- **Sign-in: a passkey (ii) with an owner password (iii) as the way back in**; Discord sign-in removed. The first sign-in is the password; passkeys are added from Settings once signed in, so no one-time setup code is needed. The reminders' Discord bot stays (it only sends DMs to the owner's Discord id).
+- **Sign-in: a passkey (ii) and an owner password (iii), beside Discord.** Passkeys are added from Settings once signed in (with Discord or the password), so no one-time setup code is needed. The reminders' Discord bot stays.
+- **Amended the same day (Georges: "Let's get back the discord sign in actually"): Discord sign-in stays.** The removal (#334) was closed unmerged; sign-in is Discord, a passkey or the owner password, and admins are still those in `ADMIN_DISCORD_IDS`.
 - **Data:** the sample data stays until v1; Georges's own data comes after.
 
 ## Recommendation (as proposed, 2026-10-14)
@@ -59,5 +60,5 @@ The pains: many services and secrets for one person; the free Postgres tiers can
 ## Consequences
 
 - The database and hosting stay as they are; `CRON_SECRET` matters more now (it also keeps Supabase awake).
-- DESIGN.md §6's "Discord-only sign-in" is superseded: one owner signs in with a passkey (`@simplewebauthn/server` and `/browser`, the only new dependencies) or the owner password (Node's `crypto.scrypt`, rate-limited). `OWNER_PASSWORD_HASH` joins the secrets Georges sets (made with `npm run password:hash`); the Discord OAuth secrets leave; the owner's Discord id stays on the account for the reminder DMs.
-- Built as a stack: the password, then passkeys (a `Passkey` table with row level security), then Discord sign-in removed with admin meaning the owner. The dev-login shortcut stays for development and the journeys only.
+- DESIGN.md §6's "Discord-only sign-in" becomes Discord, a passkey (`@simplewebauthn/server` and `/browser`, the only new dependencies) or the owner password (Node's `crypto.scrypt`, rate-limited). `OWNER_PASSWORD_HASH` joins the secrets Georges may set (made with `npm run password:hash`); the Discord OAuth secrets stay.
+- Built as a stack: the password (#332), then passkeys (#333, a `Passkey` table with row level security); deployed with them on 2026-10-15. The dev-login shortcut stays for development and the journeys only.

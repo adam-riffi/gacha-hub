@@ -1,9 +1,9 @@
-# Handoff — 2026-10-15 · claude
+# Handoff — 2026-10-15 · claude (deployed)
 
 ## State
-- `main` at #327: round 10 (#312–#314) and round 11's PRs through #327 merged. CI green.
-- Open PRs, a stack on `main`: #328 (the Timeline's featured units as icons) ← #329 (this handoff, round 11's audit status). Each merges on green CI, rebased onto `main` after its parent's squash.
-- Production serves #186 (deployed 2026-10-10 18:52 UTC). Merges do not deploy (#189). The next deploy runs every migration since #186 (`redeemed_codes` the newest). **Georges wants to redo the hosting, database and sign-in first: ADR 0010 (proposed) lists the options and a recommendation to decide together.**
+- `main` at #333: round 11 (#315–#329), ADR 0010 (#330–#333) and a gear fix (#331) merged. CI green.
+- Open PR: #335 (ADR 0010 amended: Discord sign-in stays; this handoff). #334 (Discord sign-in removed) was closed unmerged at Georges's word.
+- **Production serves #333** (deployed 2026-10-15 at Georges's word; every migration since #186 ran, `passkeys` the newest; the smoke checks pass). Sign-in there: Discord, a passkey once added in Settings, and the owner password once `OWNER_PASSWORD_HASH` is set. Merges do not deploy (#189).
 - Every milestone in DESIGN.md §9 is built, V through F13, and eleven feedback rounds (2026-10-10 to 2026-10-15) are done or under way. What is left needs Georges's secrets, real data or a decision (below), a source for a few details (Next), or is in DESIGN.md §4 "Later".
 
 ## Done this session (round 11, `docs/AUDIT-2026-10-15-round11.md`)
@@ -11,6 +11,7 @@
 - The review of every page ("I don't need to go around X websites"): the battle pass card's height, **materials with icons and the needed ones first**, the wallet's icons, a **dupes filter** (#319); each game's **redeem codes** with rewards, Copy, the official page and a Redeemed tick (#320); Home's banners with their **featured units, yours ticked, and your chance** with your pulls (#326); the Timeline's units as **icons**, each once, on the bars and in Selected (#328, one `FeaturedUnits` component with Home).
 - **ADR 0011** (accepted by Georges): explicit names in the shared package (#321), the server (#322) and the web app (#323), `id-length` in every package; CSS utilities named for what they do (#324); the first **objects**: `GearPiece`, `CharacterBuild` (#325), `PullBudget` (#326); the first **services**: `TeamService`, `OwnershipService`, `DomainError`, `instanceOrThrow` (#327).
 - Found on the way: a card-stat save lost on reload (#315); two references a rename would have rebound (a reminder time's Remove filter, the gear form's slot), caught by comparing the shadowed names before and after each pass.
+- **ADR 0010** (decided with Georges): Supabase and Vercel stay; sign-in is Discord, a **passkey** (#333, `@simplewebauthn` v14, a `Passkey` table) or the **owner password** (#332, `npm run password:hash`); Discord sign-in stays (#334 closed). A gear piece moved to the bag no longer shows twice (#331). Deployed.
 
 ## Decisions taken (2026-10-15; Georges: "take every decision")
 - Banner history from samsara-web (MIT) at a pinned commit; ZZZ, WuWa, Endfield and NTE have no dated source yet.
@@ -33,7 +34,7 @@
 6. The assets: `docs/ASSETS.md` lists every icon still missing; pick a source with Georges, then the R2 mirror.
 
 ## Needs from Georges
-- **A decision:** the hosting, database and sign-in in ADR 0010; then a deploy (rounds 2–11 wait, with the migrations since #186).
+- **Sign-in (ADR 0010):** sign in with Discord, then add a passkey in Settings → Account and data. For the password way in, run `npm run password:hash` on your computer and set the printed `OWNER_PASSWORD_HASH` in Vercel (optional). Set `CRON_SECRET`: the hourly cron also keeps Supabase's free plan from pausing after a week idle.
 - **Secrets:** `LINK_SECRET_KEY`; the R2 bucket and its four `R2_*` Actions secrets, then mirror-art and `VITE_ASSET_BASE` (DEPLOY.md §7); `CRON_SECRET`; `DISCORD_BOT_TOKEN` and the bot; `BLOB_READ_WRITE_TOKEN` in Vercel if it is not set.
 - **Real data, with tokens removed** (PROJECT-GUIDE §14.1 step 8): an Endfield records page; a ZZZ UID; HoYoLAB answers; one gacha log page; one WuWa convene answer; in-game details pages for the `~` values.
 - The `main` ruleset, the `sample-*` banners (they have no featured units; the feed's do), the README demo GIF, and the stale remote branches (§14.1 step 10).
