@@ -94,13 +94,13 @@ export const zzz: GameDefinition = {
   art: { icon: "/games/zzz/icon.png", background: "/games/zzz/background.jpg" },
   regions: hoyoRegions,
   currencies: [
-    { key: "battery", label: "Battery Charge", cap: 240, regenPerHour: 10 },
-    { key: "backupBattery", label: "Backup Battery Charge", cap: 2400 },
-    { key: "polychrome", label: "Polychrome", pullCost: 160, pullLabel: "signal" },
-    { key: "encryptedTape", label: "Encrypted Master Tape", pullCost: 1, pullLabel: "signal" },
-    { key: "masterTape", label: "Master Tape", pullCost: 1, pullLabel: "signal", standardOnly: true },
-    { key: "boopon", label: "Boopon", pullCost: 1, pullLabel: "signal", onlyFor: "bangboo" },
-    { key: "denny", label: "Denny" },
+    { key: "battery", label: "Battery Charge", cap: 240, regenPerHour: 10, icon: "IconStamina" },
+    { key: "backupBattery", label: "Backup Battery Charge", cap: 2400, icon: "BackUp_Energy" },
+    { key: "polychrome", label: "Polychrome", pullCost: 160, pullLabel: "signal", icon: "IconCurrency" },
+    { key: "encryptedTape", label: "Encrypted Master Tape", pullCost: 1, pullLabel: "signal", icon: "GachaTicket2" },
+    { key: "masterTape", label: "Master Tape", pullCost: 1, pullLabel: "signal", standardOnly: true, icon: "GachaTicket1" },
+    { key: "boopon", label: "Boopon", pullCost: 1, pullLabel: "signal", onlyFor: "bangboo", icon: "GachaTicket3" },
+    { key: "denny", label: "Denny", icon: "IconCoin" },
   ],
   // Sources per value: docs/games/zzz.md.
   manifest: {

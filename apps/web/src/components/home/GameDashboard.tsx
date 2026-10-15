@@ -126,7 +126,7 @@ function PullsCard({ dashGame, game, instanceId }: { dashGame: DashGame; game: G
         {rows.map((row) => (
           <div className="rw" key={row.key}>
             <span>
-              <CurrencyIcon kind={currencyKind(game, row)} />
+              <CurrencyIcon kind={currencyKind(game, row)} gameKey={game.key} icon={game.currencies.find((currency) => currency.key === row.key)?.icon} />
               {row.pullCost! > 1 ? `From ${row.label}` : row.label}
             </span>
             <span className="font-mono">{Math.floor(row.value / row.pullCost!)}</span>
@@ -345,7 +345,7 @@ function StaminaCard({ dashGame, game, instance }: { dashGame: DashGame; game: G
       }
     >
       <div className="pulls-head">
-        <CurrencyIcon kind="stamina" className="is-big" />
+        <CurrencyIcon kind="stamina" className="is-big" gameKey={game.key} icon={staminaCurrency?.icon} />
         <div className="font-display pulls-total" data-testid="stamina">
           {Math.floor(dashGame.stamina.value)}
           <small> / {dashGame.stamina.cap}</small>
@@ -358,7 +358,7 @@ function StaminaCard({ dashGame, game, instance }: { dashGame: DashGame; game: G
         <div className="lst">
           <div className="rw">
             <span>
-              <CurrencyIcon kind="reserve" />
+              <CurrencyIcon kind="reserve" gameKey={game.key} icon={reserveDef?.icon} />
               {reserveDef.label}
             </span>
             <span className="font-mono">

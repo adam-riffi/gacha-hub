@@ -107,12 +107,12 @@ export const hsr: GameDefinition = {
   art: { icon: "/games/hsr/icon.png", background: "/games/hsr/background.jpg" },
   regions: hoyoRegions,
   currencies: [
-    { key: "trailblazePower", label: "Trailblaze Power", cap: 300, regenPerHour: 10 },
-    { key: "reservedTrailblazePower", label: "Reserved Trailblaze Power", cap: 2400 },
-    { key: "stellarJade", label: "Stellar Jade", pullCost: 160, pullLabel: "warp" },
-    { key: "specialPass", label: "Star Rail Special Pass", pullCost: 1, pullLabel: "warp" },
-    { key: "railPass", label: "Star Rail Pass", pullCost: 1, pullLabel: "warp", standardOnly: true },
-    { key: "credits", label: "Credits" },
+    { key: "trailblazePower", label: "Trailblaze Power", cap: 300, regenPerHour: 10, icon: "11" },
+    { key: "reservedTrailblazePower", label: "Reserved Trailblaze Power", cap: 2400, icon: "12" },
+    { key: "stellarJade", label: "Stellar Jade", pullCost: 160, pullLabel: "warp", icon: "900001" },
+    { key: "specialPass", label: "Star Rail Special Pass", pullCost: 1, pullLabel: "warp", icon: "102" },
+    { key: "railPass", label: "Star Rail Pass", pullCost: 1, pullLabel: "warp", standardOnly: true, icon: "101" },
+    { key: "credits", label: "Credits", icon: "2" },
   ],
   // Sources per value: docs/games/hsr.md.
   manifest: {

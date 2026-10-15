@@ -181,6 +181,9 @@ tbody tr:hover { background: var(--surface-2); }
 /* Currencies by kind (round 7), coloured so a glance tells them apart. */
 .cur-icon { display: inline-block; flex: none; width: 1.2em; height: 1.2em; margin-right: 0.4em; vertical-align: -0.25em; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .cur-icon.is-big { width: 40px; height: 40px; margin-right: 10px; }
+/* The game's own currency art (round 12): slightly larger than the line icons, as pictures carry more detail. */
+img.cur-art { width: 1.5em; height: 1.5em; object-fit: contain; vertical-align: -0.38em; }
+img.cur-art.is-big { width: 44px; height: 44px; }
 .cur-icon[data-kind="stamina"] { color: #5bd17a; }
 .cur-icon[data-kind="reserve"] { color: #3fa55e; }
 .cur-icon[data-kind="premium"] { color: #7cc4ff; }

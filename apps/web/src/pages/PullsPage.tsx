@@ -219,7 +219,7 @@ export function PullsPage() {
               {pullCurrencies.map((pullCurrency) => (
                 <tr key={pullCurrency.key}>
                   <td>
-                    <CurrencyIcon kind={currencyKind(game, pullCurrency)} />
+                    <CurrencyIcon kind={currencyKind(game, pullCurrency)} gameKey={game.key} icon={pullCurrency.icon} />
                     {pullCurrency.label}
                   </td>
                   <td className="num">{NUMBER_FORMAT.format(pullCurrency.value)}</td>
