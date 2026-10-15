@@ -131,9 +131,9 @@ test("Gear: every piece you have, on a build or in the bag, filtered by set, slo
     await expect(body).toBeVisible();
     await expect(page.getByRole("button", { name: "Reset filters" })).toBeDisabled();
 
-    // Its substats in the chosen piece's column (round 10).
+    // Its substats in the chosen piece's column (round 10), in their fields (2026-10-15).
     await body.getByRole("button", { name: "Show Hunter of Glacial Forest · Body" }).click();
-    await expect(page.getByRole("region", { name: "Chosen piece" })).toContainText("SPD");
+    await expect(page.getByRole("region", { name: "Chosen piece" }).getByRole("combobox", { name: "Substat 1" })).toHaveValue("SPD");
 
     // The search reads sets, stats and wearers.
     await filters.getByRole("searchbox", { name: "Search" }).fill("Pela");
@@ -218,7 +218,8 @@ test("Gear: every piece a tile with its art; the chosen piece in full beside the
     await expect(column.getByRole("heading", { name: "Hunter of Glacial Forest" })).toBeVisible();
     await expect(column).toContainText("Body · +14");
     await expect(column).toContainText("CRIT DMG");
-    await expect(column).toContainText("SPD");
+    // Its substats in their fields, to type in place (2026-10-15).
+    await expect(column.getByRole("combobox", { name: "Substat 1" })).toHaveValue("SPD");
     await expect(column).toContainText("2pc");
     await expect(column.getByRole("link", { name: /Luka/ })).toBeVisible();
 
