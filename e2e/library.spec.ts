@@ -38,3 +38,14 @@ test("Games library: owned characters, pulls, energy, goals and backlog per game
   await hsr.getByRole("checkbox", { name: "Sleep" }).uncheck();
   await expect(hsr).not.toContainText("Asleep");
 });
+
+// Round 12 (Georges: "add game art to everything you can"): each game's card carries its hero art, from the community source.
+test("a game's card in the library carries its hero art @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  await page.request.post("/api/instances", { data: { gameKey: "hsr" } });
+  await page.goto("/library");
+  const card = page.getByRole("article", { name: "Honkai: Star Rail" });
+  await expect(card.locator("img.hero-art[src*='1005']")).toHaveCount(1);
+});
