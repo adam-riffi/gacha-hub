@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-15 · claude · stack/r17/01-gear-substats-equip · #336
+- Done: Georges, 2026-10-15: "cant type substats in my gear" and "the quick equip thing ... only propose me 2 random characters ... i should be able to choose or type the name". The gear page's chosen piece now has four substat rows, each a stat picked or typed and its value, saved as each is set (a bag piece through `PUT /api/gear/:id`, a worn one through its wearer's build), its crit value following as you type. Equip on (the chosen piece's and the set panel's) is a field to type in with a list of every character you own and every build, with their icons, "no build yet" beside the ones without; picking one of those makes its build first. The old list held only the characters with a build.
+- Tests: written first: a journey (Musketeer hands in the bag: CRIT Rate 10.5 and CRIT DMG 21 typed, crit value 42, kept after a reload; Equip on lists Bailu and Fu Xuan, Fu Xuan without a build picked and wearing it; a third substat typed on the worn piece, kept). The two journeys that picked from the old list type the name now; two that read substats as text read their fields.
+- Scope/decisions: substat names offered are the game's main-stat names (as on the sheet), any other typed. Owned characters come from the ownership list and the builds.
+- Next: merge #335 and this on green CI; deploy at Georges's word.
+
 ## 2026-10-15 · claude · stack/r16/06-adr-discord-kept · #335
 - Done: ADR 0010 amended at Georges's word ("Let's get back the discord sign in actually"): Discord sign-in stays beside the passkey and the owner password; #334, which removed it, was closed unmerged. DESIGN.md §6, AGENTS.md and PROJECT-GUIDE.md say "Discord, a passkey or the owner password"; DEPLOY.md adds the passkey step and its troubleshooting row. Production deployed at #333 at Georges's word (every migration since #186 ran; the smoke checks pass; `/api/me` reports Discord on, the password off until its hash is set, no passkey yet). The handoff says so.
 - Tests: docs only.
@@ -248,9 +254,3 @@ Entry format:
 - Tests: written first: NTE's catalog has the nine series, Lost Radiance in Series I with its icon and four slots, Shadow Creed in Series III; the Console tab opens the gear screen whose Sets view shows Lost Radiance, Diabolos and Shadow Creed and opens a set's panel.
 - Scope/decisions: the four "Console Set" bundles (Echoes of Time and the others) are a cartridge with its module, not series, so they stay out; docs/games/nte.md's round 4 line ("the Console's modules are not sets") is corrected.
 - Next: Endfield's art.
-
-## 2026-10-14 · claude · stack/r10/16-daily-pass · #295
-- Done: the 30-day pass on a game's dashboard (Georges, round 7: "add a daily login currency bonus thing, like the Blessing of the Welkin Moon: if it's active, how many days, and count it towards pull predictions"). Beside the battle pass, a card named after the game's pass: its days left over its stack (20 / 180, on a segmented bar), what it still pays (days × the daily amount, 1,800 Primogems) and in pulls (11), its end as a chip ("off" when it is not running, hot in its last three days), and Add 30 days. The Pulls forecast already counts the pass's days until each banner's or version's end (`pullForecast`); logging the pass as a top-up adds its days too (#294).
-- Tests: written first: Star Rail's dashboard with 10 days on the Express Supply Pass shows 10 days left, 900 still to collect and 5 pulls; Add 30 days makes it 40, as the server keeps it.
-- Scope/decisions: no daily "collected" tick: the pass pays at each login, so its days counting down are the check.
-- Next: the full check over PRs 14 to 16; then NTE's gear sets and Endfield's art.

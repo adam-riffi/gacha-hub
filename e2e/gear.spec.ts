@@ -24,7 +24,9 @@ test("Gear: a set's pieces by slot, on a build or in the bag; one added and equi
     await expect(head).toContainText("bag");
     await expect(head).toContainText("+15");
 
-    await head.getByRole("combobox", { name: "Equip on" }).selectOption({ label: "Seele" });
+    // Equip on: a name typed, then picked (2026-10-15).
+    await head.getByRole("combobox", { name: "Equip on" }).fill("Seele");
+    await page.getByRole("option", { name: /^Seele/ }).click();
     await expect(head.getByRole("link", { name: /Seele/ })).toBeVisible();
     await expect(head).not.toContainText("bag");
     // Its card among the pieces: the set's icon, Head, and Seele wearing it.
@@ -129,9 +131,9 @@ test("Gear: every piece you have, on a build or in the bag, filtered by set, slo
     await expect(body).toBeVisible();
     await expect(page.getByRole("button", { name: "Reset filters" })).toBeDisabled();
 
-    // Its substats in the chosen piece's column (round 10).
+    // Its substats in the chosen piece's column (round 10), in their fields (2026-10-15).
     await body.getByRole("button", { name: "Show Hunter of Glacial Forest · Body" }).click();
-    await expect(page.getByRole("region", { name: "Chosen piece" })).toContainText("SPD");
+    await expect(page.getByRole("region", { name: "Chosen piece" }).getByRole("combobox", { name: "Substat 1" })).toHaveValue("SPD");
 
     // The search reads sets, stats and wearers.
     await filters.getByRole("searchbox", { name: "Search" }).fill("Pela");
@@ -216,7 +218,8 @@ test("Gear: every piece a tile with its art; the chosen piece in full beside the
     await expect(column.getByRole("heading", { name: "Hunter of Glacial Forest" })).toBeVisible();
     await expect(column).toContainText("Body · +14");
     await expect(column).toContainText("CRIT DMG");
-    await expect(column).toContainText("SPD");
+    // Its substats in their fields, to type in place (2026-10-15).
+    await expect(column.getByRole("combobox", { name: "Substat 1" })).toHaveValue("SPD");
     await expect(column).toContainText("2pc");
     await expect(column.getByRole("link", { name: /Luka/ })).toBeVisible();
 
@@ -224,7 +227,8 @@ test("Gear: every piece a tile with its art; the chosen piece in full beside the
     await column.getByRole("button", { name: "To bag" }).click();
     await expect(tile()).toContainText("Bag");
     await tile().getByRole("button", { name: "Show Hunter of Glacial Forest · Body" }).click();
-    await column.getByRole("combobox", { name: "Equip on" }).selectOption({ label: "Luka" });
+    await column.getByRole("combobox", { name: "Equip on" }).fill("Luka");
+    await page.getByRole("option", { name: /^Luka/ }).click();
     await expect(tile().getByRole("img", { name: "Luka" })).toBeVisible();
   } finally {
     await page.request.delete(`/api/characters/${build.id}`);
@@ -292,3 +296,62 @@ test("Gear: the filters fit each game's gear: sets from a window in the game's k
   }
 });
 
+// Georges, 2026-10-15: "cant type substats in my gear" and "the quick equip thing ... only propose me 2 random characters
+// ... and doesn't even list all of my own characters. i should be able to choose or type the name". Fu Xuan and Bailu:
+// characters no other journey owns or builds.
+test("Gear: a piece's substats typed in place, in the bag and on a build; Equip on lists every character you own, a build made where none is @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const created = await page.request.post("/api/instances", { data: { gameKey: "hsr" } });
+  const id = created.ok()
+    ? ((await created.json()) as { id: string }).id
+    : ((await (await page.request.get("/api/instances")).json()) as { id: string; gameKey: string }[]).find((instance) => instance.gameKey === "hsr")!.id;
+  await page.request.put(`/api/instances/${id}/ownership`, { data: { items: [{ kind: "character", catalogId: "1208", owned: true }] } });
+  const bailu = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1211" } })).json()) as { id: string };
+  const piece = (await (await page.request.post(`/api/instances/${id}/gear`, { data: { setName: "Musketeer of Wild Wheat", slot: "hands", mainStat: "ATK", level: 9 } })).json()) as { id: string };
+  try {
+    await page.goto(`/games/${id}/gear`);
+    const pieces = page.getByRole("region", { name: "Pieces" });
+    const column = page.getByRole("region", { name: "Chosen piece" });
+    const tile = () => pieces.getByRole("article", { name: "Musketeer of Wild Wheat · Hands" }).filter({ hasText: "+9" });
+    const typeSubstat = async (row: number, stat: string, value: string) => {
+      await column.getByRole("combobox", { name: `Substat ${row}` }).fill(stat);
+      await page.getByRole("option", { name: stat, exact: true }).click();
+      const field = column.getByLabel(`Substat ${row} value`);
+      await field.fill(value);
+      await field.press("Tab");
+    };
+
+    // In the bag: two substats typed, the crit value follows, and they stay after a reload.
+    await tile().getByRole("button", { name: "Show Musketeer of Wild Wheat · Hands" }).click();
+    await typeSubstat(1, "CRIT Rate", "10.5");
+    await typeSubstat(2, "CRIT DMG", "21");
+    await expect(column.locator(".gb-col-cv")).toContainText("42");
+    await page.reload();
+    await tile().getByRole("button", { name: "Show Musketeer of Wild Wheat · Hands" }).click();
+    await expect(column.getByLabel("Substat 1 value")).toHaveValue("10.5");
+    await expect(column.getByRole("combobox", { name: "Substat 2" })).toHaveValue("CRIT DMG");
+
+    // Equip on: every character you own, typed or picked; Fu Xuan has no build yet, so one is made.
+    const equipOn = column.getByRole("combobox", { name: "Equip on" });
+    await equipOn.fill("Bai");
+    await expect(page.getByRole("option", { name: /^Bailu/ })).toBeVisible();
+    await equipOn.fill("Fu Xu");
+    await page.getByRole("option", { name: /^Fu Xuan/ }).click();
+    await expect(tile().getByRole("img", { name: "Fu Xuan" })).toBeVisible();
+
+    // On Fu Xuan's build now: a third substat typed there stays too.
+    await tile().getByRole("button", { name: "Show Musketeer of Wild Wheat · Hands" }).click();
+    await typeSubstat(3, "SPD", "4");
+    await page.reload();
+    await tile().getByRole("button", { name: "Show Musketeer of Wild Wheat · Hands" }).click();
+    await expect(column.getByLabel("Substat 3 value")).toHaveValue("4");
+    await expect(column.getByLabel("Substat 1 value")).toHaveValue("10.5");
+  } finally {
+    const builds = (await (await page.request.get(`/api/instances/${id}/characters`)).json()) as { id: string; catalogId: string | null }[];
+    for (const build of builds.filter((candidate) => candidate.catalogId === "1208" || candidate.id === bailu.id)) await page.request.delete(`/api/characters/${build.id}`);
+    await page.request.delete(`/api/gear/${piece.id}`);
+    await page.request.put(`/api/instances/${id}/ownership`, { data: { items: [{ kind: "character", catalogId: "1208", owned: false }, { kind: "character", catalogId: "1211", owned: false }] } });
+  }
+});

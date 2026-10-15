@@ -465,8 +465,9 @@ test("Characters: card-stat picks made quickly are all kept, even when the page 
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "zzz" } })).json()) as { id: string };
   await page.request.put(`/api/instances/${id}`, { data: { cardStats: null } });
-  // A slow server: every save of the game takes 400 ms to reach it.
-  await page.route(`**/api/instances/${id}`, async (route) => {
+  // A slow server: every save of the game takes 400 ms to reach it. Held by the browser context, not the page: the
+  // last save is a keepalive request that outlives the page's navigation, which cancels a page's held requests.
+  await page.context().route(`**/api/instances/${id}`, async (route) => {
     if (route.request().method() === "PUT") await new Promise((resolve) => setTimeout(resolve, 400));
     await route.continue();
   });
@@ -477,7 +478,7 @@ test("Characters: card-stat picks made quickly are all kept, even when the page 
     await page.goto("/");
     await expect.poll(async () => ((await (await page.request.get(`/api/instances/${id}`)).json()) as { cardStats: string[] | null }).cardStats, { timeout: 5000 }).toEqual(["HP", "ATK", "DEF"]);
   } finally {
-    await page.unroute(`**/api/instances/${id}`);
+    await page.context().unroute(`**/api/instances/${id}`);
     await page.request.put(`/api/instances/${id}`, { data: { cardStats: null } });
   }
 });
