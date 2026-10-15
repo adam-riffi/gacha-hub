@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-15 · claude · stack/r15/06-banner-featured · #326
+- Done: round 11's review, Home: each banner on the Banners card shows its featured units as icons (the top rarity larger, a top unit you lack ringed in the accent, the ones you own ticked; a character opens its page) and your chance at its top unit with the pulls you hold ("67% with 90 pulls"). The chance comes from a new `PullBudget` object (ADR 0011: a game's pulls on hand and pity per banner type; `pullsOn(kind)` counts a banner's own tickets where the game has some, `chanceOn(kind)` reads the pity and the 50/50 guarantee). A weapon banner's art is its weapon, whole on the right (weapons have no splash; the broken picture showed its name). A long title's band leaves the next arrow visible.
+- Tests: written first: a journey (a banner featuring Seele, March 7th owned and Asta: three icons, the 5★ first and "not owned", March 7th "owned", "N% with 13 pulls") and unit tests for `PullBudget` (13 warps from 1,600 Jade and 3 passes, the pity read, a guarantee raising the chance, Endfield's Arsenal tickets only on its weapon banner).
+- Scope/decisions: the local sample banners have no featured units; the official feed's do (imported locally to check: Genshin, Star Rail and Zenless banners all list theirs). Five units at most, then "+n".
+- Next: the Pulls page's banner cards and history with the featured units as icons; the Timeline's featured icons.
+
 ## 2026-10-15 · claude · stack/r15/05-build-objects · #325
 - Done: ADR 0011's first domain objects after the renames. `GearPiece` holds a piece's set and substats and answers its crit value; `CharacterBuild` holds a build's document with its game and answers what the cards and the sheet show: its stats with their set bonuses (`statKpis`), its role's `kpis`, `completedSets` and `gearSetLabel`, the `offSetSlots` to farm, its name-box `line`, its `dupeBadge` and its `baseStats`. They replace eleven `(game, doc)` helpers in `builds.ts`; the web's twenty callers build one object per build and ask it. DESIGN.md §6's code structure lists the objects so far.
 - Tests: written first: the build tests ask the objects (they failed with "CharacterBuild is not a constructor"), plus two new ones: completed sets with their sizes, and base stats (character plus weapon, the weapon's ATK% applied, level 1 when none is typed). 684 tests; shadowed names unchanged.
@@ -248,9 +254,3 @@ Entry format:
 - Tests: written first: Kafka's Patience Is All You Need card shows its art at least 88 px wide, a 5★ band with a colour, and Kafka's icon at least 36 px wide.
 - Scope/decisions: rarity colours are the app's (the games use their own shades of the same hues).
 - Next: the gear screen.
-
-## 2026-10-14 · claude · stack/r10/07-unbuilt-cards · #286
-- Done: cards without a build (Georges, round 7: "unbuilt character cards shouldn't be empty; I should be able to see character data"). A catalog character with no build shows its stat strip: its growth stat first, then HP, ATK and DEF, at its top level from the catalog's base stats (#277), in italics titled "Base at Lv 80" (or the game's top); no picker, there being no build to save it on. A character on a running banner and not owned keeps its chance instead.
-- Tests: written first: Serval, unbuilt, shows CRIT Rate, HP, ATK and DEF, the growth stat highlighted, 5%, 917, 653 and 375 at 80, titled as her base at Lv 80.
-- Scope/decisions: games without base stats (WuWa, Endfield, NTE) show dashes until their data has them.
-- Next: larger weapon cards.
