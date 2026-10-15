@@ -199,11 +199,15 @@ test("Gear: every piece a tile with its art; the chosen piece in full beside the
     await page.goto(`/games/${id}/gear`);
     const pieces = page.getByRole("region", { name: "Pieces" });
     const tile = () => pieces.getByRole("article", { name: "Hunter of Glacial Forest · Body" }).filter({ hasText: "+14" });
-    // The tile: the piece's art, large; its level, its wearer, its main stat and its type.
-    await expect.poll(async () => (await tile().getByRole("img", { name: "Hunter of Glacial Forest" }).boundingBox())?.width ?? 0).toBeGreaterThanOrEqual(80);
+    // The tile: the piece's art, large; its level, its wearer, its set in words (round 12: readable without the art),
+    // its main stat and its type, the crit value spelled out.
+    await expect.poll(async () => (await tile().getByRole("img", { name: "Hunter of Glacial Forest" }).boundingBox())?.width ?? 0).toBeGreaterThanOrEqual(100);
     await expect(tile().getByRole("img", { name: "Luka" })).toBeVisible();
+    await expect(tile().locator(".gb-set")).toHaveText("Hunter of Glacial Forest");
     await expect(tile()).toContainText("CRIT DMG");
     await expect(tile()).toContainText("Body");
+    await expect(tile()).toContainText("Crit value");
+    await expect(tile()).not.toContainText(/CV \d/);
 
     // The filters on the left, the tiles, the chosen piece on the right.
     const filters = (await page.getByRole("region", { name: "Filters" }).boundingBox())!;
