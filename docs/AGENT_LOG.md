@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-16 · claude · stack/r18/07-docs · #344
+- Done: round 12's docs. The audit (`docs/AUDIT-2026-10-16-round12.md`): Georges's ten asks against what shipped (#338–#343), the sources found (currency icons for five games) and not found (no dated banner history for ZZZ / WuWa / Endfield / NTE; no Endfield item icons; no stable official logo URLs), and the storage answer: Cloudflare R2 (free 10 GB, no egress fees; the mirror is ready, the owner sets the bucket and secrets). ASSETS.md says what is sourced now; the handoff is rewritten for the deploy.
+- Tests: docs only.
+- Scope/decisions: in the audit.
+- Next: deploy at Georges's word (given: "deploy into production your work for me to see in the morning").
+
 ## 2026-10-16 · claude · stack/r18/06-last-seen · #343
 - Done: round 12 ("fix all of the ui features you feel are lacking ... such as the 'last seen feature'"). The chip reads at a glance now: ON A BANNER NOW in the accent with a filled flag; a dated rerun says "back in 7 d" on a paper chip — when a unit returns beats how long it has been gone; how long ago otherwise; and it grew a step (13 px, more padding). Its state rides in `data-state` for the colours.
 - Tests: written first: Saber (rerun dated in 7 days) reads "back in 7 d" with `data-state="returning"`; Archer keeps "1 wk ago" with `data-state="seen"`.
@@ -248,9 +254,3 @@ Entry format:
 - Tests: written first: WuWa's catalog keeps Qiuyuan's capitalised card art and Jiyan's as it was; an Endfield card's art is contained, a Star Rail card's still covers.
 - Scope/decisions: checked in the browser with the art loaded (Qiuyuan's 696 × 960 card art, Endfield's busts whole); no PR screenshot, PR screenshots blocking outside art.
 - Next: one fixed desktop layout.
-
-## 2026-10-14 · claude · stack/r11/05-gear-rebuild · #303
-- Done: the gear screen rebuilt (Georges, round 8: "the artifact/gear screen is a mess; I can't even reset my searches nor search for multiple sets; this part should be rebuilt from the ground up to be readable"). One view instead of Pieces | Sets. On the left, sticky, the filters: Reset filters (on whenever one is set), a search over the sets' names and bonuses, the sets as a list (icon, name, slots held), several pickable at once, then the slots and main stats (several each, the main stats with their icons) and where. On the right, the pieces grouped by set: each group headed by its set's icon (64 px), name, bonuses (2pc / 4pc) and slots held, with Open for its panel (add, equip, farm); its pieces in slot order, each with its slot, level, main stat and substats by their icons, and its wearer's icon or Bag. A set picked without pieces shows its group with a word to open it. Add a piece stays in the results' header.
-- Tests: written first: Musketeer picked from the list opens its group and panel (add, equip); Farm from the first set of the list; filters by slot, where and main stat; two sets at once after searching the list, then Reset clears the search, the sets and where, and disables itself; a piece added with its set's icon heading its group; the panel opens over the page without moving the groups; NTE's Console sets from the list; the accessibility sweep picks and opens a set.
-- Scope/decisions: the old Pieces | Sets switch and the set cards are gone (the list and the groups do both jobs); a piece no longer opens its set (its group's Open does).
-- Next: art framing for Endfield and Qiuyuan.
