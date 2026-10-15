@@ -1,7 +1,7 @@
 import { Picker, type PickerOption } from "../Picker";
 import { GameIcon } from "../GameIcon";
 import { StatIcon } from "../StatIcon";
-import { gearPieceCv, gearSetLabel, offSetSlots, type GameDefinition } from "@gacha/shared";
+import { CharacterBuild, GearPiece, type GameDefinition } from "@gacha/shared";
 
 type Doc = Record<string, unknown>;
 type Row = { stat: string; value: number | string };
@@ -18,9 +18,10 @@ const formatValue = (value: number) => (Number.isInteger(value) ? String(value) 
 export function GearBlock({ game, doc, setDoc, sets: setOptions }: { game: GameDefinition; doc: Doc; setDoc: (updater: (currentDoc: Doc) => Doc) => void; sets: PickerOption[] }) {
   const gearManifest = game.manifest.gear;
   const gear = (doc[gearManifest.field] ?? {}) as Record<string, Piece | undefined>;
-  const farm = new Set(offSetSlots(game, doc));
-  const total = Object.values(gear).reduce((sum, piece) => sum + (piece ? gearPieceCv(piece) : 0), 0);
-  const sets = gearSetLabel(game, doc);
+  const build = new CharacterBuild(game, doc);
+  const farm = new Set(build.offSetSlots);
+  const total = build.critValue ?? 0;
+  const sets = build.gearSetLabel;
   const statOptions = [...new Set(gearManifest.slots.flatMap((slot) => slot.mainStats))];
   const setPiece = (slot: string, patch: Partial<Piece>) =>
     setDoc((currentDoc) => {
@@ -53,7 +54,7 @@ export function GearBlock({ game, doc, setDoc, sets: setOptions }: { game: GameD
                 })()}
                 <span className="sh-piece-name">
                   <span className="kpi-label">{slot.label}</span>
-                  <span className="font-mono">CV {formatValue(gearPieceCv(piece))}</span>
+                  <span className="font-mono">CV {formatValue(new GearPiece(piece).critValue)}</span>
                 </span>
               </div>
               <Picker label={`${slot.label} set`} glyph="gear" placeholder="Set" value={piece.setName ?? ""} free options={setOptions} onPick={(_, text) => setPiece(slot.key, { setName: text || undefined })} />

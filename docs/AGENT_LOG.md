@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-15 · claude · stack/r15/05-build-objects · #325
+- Done: ADR 0011's first domain objects after the renames. `GearPiece` holds a piece's set and substats and answers its crit value; `CharacterBuild` holds a build's document with its game and answers what the cards and the sheet show: its stats with their set bonuses (`statKpis`), its role's `kpis`, `completedSets` and `gearSetLabel`, the `offSetSlots` to farm, its name-box `line`, its `dupeBadge` and its `baseStats`. They replace eleven `(game, doc)` helpers in `builds.ts`; the web's twenty callers build one object per build and ask it. DESIGN.md §6's code structure lists the objects so far.
+- Tests: written first: the build tests ask the objects (they failed with "CharacterBuild is not a constructor"), plus two new ones: completed sets with their sizes, and base stats (character plus weapon, the weapon's ATK% applied, level 1 when none is typed). 684 tests; shadowed names unchanged.
+- Scope/decisions: the game-level rules (`buildRole`, `skillsField`, `weaponHolder`, `cardStatLabels`, `sheetStats`, `cardStatOptions`, `statKind`) stay functions: they read a game, not a build.
+- Next: the pull budget and pity, a game's reset clock, the planner's costs as objects; the server's routes thin over services.
+
 ## 2026-10-15 · claude · stack/r15/04-css-utilities · #324
 - Done: ADR 0011's CSS utilities named for what they do: `.mu` → `.text-muted`, `.mn` → `.font-mono`, `.cd` → `.font-display`, `.sf` → `.font-serif`. 436 uses in the styles, the components and four journeys' selectors, renamed as whole class words only (a script over the CSS selectors and the class strings).
 - Tests: no behaviour change: same rules in the same order; the full suite passes; Home's screenshot shows the mono labels, condensed figures, serif banner title and muted text as before.
@@ -248,9 +254,3 @@ Entry format:
 - Tests: written first: Serval, unbuilt, shows CRIT Rate, HP, ATK and DEF, the growth stat highlighted, 5%, 917, 653 and 375 at 80, titled as her base at Lv 80.
 - Scope/decisions: games without base stats (WuWa, Endfield, NTE) show dashes until their data has them.
 - Next: larger weapon cards.
-
-## 2026-10-14 · claude · stack/r10/06-quick-goal · #285
-- Done: the sheet's first actions and the selection (Georges, round 7: "quick goal is too small and hidden at the bottom; it should be one of the first things I can do, and it forces me to only have skills at level 1 for some reason … there's no select all button until I select one"). Quick goal is the first button of the sheet's header, beside Card stats and Build status. The skills stuck at 1 were the Traveler's: genshin-db has no talent costs for them, so their cost table's top was 1; `talentCap` falls back to the game's usual level (the quick build's defaults, else 10), in the quick build and in Plan farming. On Characters and Weapons, Select opens the selection bar at once with All shown (Weapons' bar gains All shown).
-- Tests: written first: the Traveler's sheet opens Quick goal from its header, with skills at 10 and 6 and a maximum of at least 10; Characters and Weapons show "0 selected" and All shown as soon as Select is on, and All shown picks.
-- Scope/decisions: the Traveler's plans have no materials for skills (the dataset has none); the levels are still planned.
-- Next: unbuilt cards with the character's data.
