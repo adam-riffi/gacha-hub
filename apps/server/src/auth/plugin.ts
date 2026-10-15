@@ -5,17 +5,20 @@ import type {
   FastifyReply,
   FastifyRequest,
 } from "fastify";
+import { z } from "zod";
 import { config, hasDiscordOAuth } from "../config.js";
 import {
+  DEV_LOGIN_DISCORD_ID,
   SESSION_COOKIE,
   createSession,
   deleteSession,
   getSessionUser,
+  ownerAccount,
   upsertDiscordUser,
 } from "./sessions.js";
+import { OwnerPassword } from "./ownerPassword.js";
 
-/** Discord id of the dev-login shortcut user (dev builds only). */
-export const DEV_LOGIN_DISCORD_ID = "dev-local-user";
+const passwordSignInInput = z.object({ password: z.string().max(200) });
 
 function setSessionCookie(reply: FastifyReply, id: string, expiresAt: Date) {
   reply.setCookie(SESSION_COOKIE, id, {
@@ -130,8 +133,21 @@ export async function registerAuth(app: FastifyInstance) {
       user: req.user,
       isAdmin: req.isAdmin,
       oauth: hasDiscordOAuth(),
+      passwordSignIn: Boolean(config.ownerPasswordHash),
       devLogin: config.devLoginEnabled,
     };
+  });
+
+  // ---- The owner password (ADR 0010): five tries a minute from one address ----
+  app.post("/api/auth/password", { config: { rateLimit: { max: 5, timeWindow: "1 minute" } } }, async (req, reply) => {
+    const stored = config.ownerPasswordHash;
+    if (!stored) return reply.code(404).send({ error: "password_sign_in_off" });
+    const { password } = passwordSignInInput.parse(req.body);
+    if (!(await OwnerPassword.matches(password, stored))) return reply.code(401).send({ error: "wrong_password" });
+    const user = await ownerAccount();
+    const session = await createSession(user.id);
+    setSessionCookie(reply, session.id, session.expiresAt);
+    return { user };
   });
 
   // ---- Logout ----

@@ -41,6 +41,7 @@ Operating manual for coding agents in this repository. Codex and Copilot read th
 | New migration (offline) | `npx prisma migrate diff --from-schema <before> --to-schema prisma/schema.prisma --script` |
 | E2E smoke (Playwright; `npx playwright install chromium` once) | `npm run build -w @gacha/web && npm run e2e` |
 | Bundle harnesses (throwaway SQLite database) | `npm run harness` |
+| Make the owner password's hash for `OWNER_PASSWORD_HASH` (ADR 0010; only the hash is printed) | `npm run password:hash` |
 | Smoke-check a deployment (no sign-in) | `npm run smoke -- https://gacha-hub-two.vercel.app` |
 | Lint workflows (actionlint 1.7+ on PATH) | `actionlint` |
 | Check all | `npm run check` |

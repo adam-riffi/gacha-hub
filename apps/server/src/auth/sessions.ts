@@ -1,8 +1,11 @@
 import { randomBytes } from "node:crypto";
 import type { User } from "../generated/prisma/client.js";
+import { config } from "../config.js";
 import { prisma } from "../lib/prisma.js";
 
 export const SESSION_COOKIE = "gacha_session";
+/** Discord id of the dev-login shortcut user (dev builds only). */
+export const DEV_LOGIN_DISCORD_ID = "dev-local-user";
 const SESSION_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
 
 export async function createSession(userId: string): Promise<{
@@ -47,4 +50,14 @@ export async function upsertDiscordUser(profile: {
     },
     update: { username: profile.username, avatarUrl: profile.avatarUrl },
   });
+}
+
+/**
+ * The one owner's account (ADR 0010): the admin's (`ADMIN_DISCORD_IDS`) where it exists, else the oldest account that
+ * is not the dev shortcut's, else a new one on the first sign-in.
+ */
+export async function ownerAccount(): Promise<User> {
+  const admin = config.adminDiscordIds.length ? await prisma.user.findFirst({ where: { discordId: { in: [...config.adminDiscordIds] } }, orderBy: { createdAt: "asc" } }) : null;
+  const oldest = admin ?? (await prisma.user.findFirst({ where: { NOT: { discordId: DEV_LOGIN_DISCORD_ID } }, orderBy: { createdAt: "asc" } }));
+  return oldest ?? prisma.user.create({ data: { discordId: "owner", username: "Owner" } });
 }

@@ -7,6 +7,8 @@ interface AuthValue {
   currentUser: Me | null;
   loading: boolean;
   devLogin: () => Promise<void>;
+  /** Signs the owner in with the owner password (ADR 0010); throws the API's error (401 wrong, 429 too many tries). */
+  passwordLogin: (password: string) => Promise<void>;
   logout: () => Promise<void>;
   refresh: () => void;
 }
@@ -25,6 +27,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     loading: isLoading,
     devLogin: async () => {
       await api.post("/api/auth/dev-login");
+      await queryClient.invalidateQueries();
+    },
+    passwordLogin: async (password) => {
+      await api.post("/api/auth/password", { password });
       await queryClient.invalidateQueries();
     },
     logout: async () => {
