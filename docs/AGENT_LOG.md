@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-15 · claude · stack/r16/01-adr-0010 · #330
+- Done: ADR 0010 accepted with Georges: Supabase stays (the hourly cron, once `CRON_SECRET` is set, keeps its free plan from pausing), Vercel stays, and one owner signs in with a passkey or the owner password, Discord sign-in removed (the reminder bot stays). The sample data stays until v1. DESIGN.md §6, AGENTS.md and PROJECT-GUIDE.md no longer say "Discord-only sign-in".
+- Tests: docs only; the full check passes.
+- Scope/decisions: the first sign-in is the password and passkeys are added from Settings, so the ADR's one-time setup code is not needed (one secret fewer). Free-tier terms checked on 2026-10-15: Supabase pauses after a week idle; Neon sleeps after 5 minutes; Turso reported at 5 GB free.
+- Next: the owner password sign-in, then passkeys, then Discord sign-in removed.
+
 ## 2026-10-15 · claude · stack/r15/09-handoff · #329
 - Done: the handoff after round 11 and the round's audit status: Georges's list done (#316–#318, ADR 0011 through #321–#327), every page's gap closed or waiting for a source (the Planner's stamina days needs drops per run; codes and banner history for the games without a source), Teams' "who you lack" left (low).
 - Tests: docs only; the full check passes.
@@ -248,9 +254,3 @@ Entry format:
 - Tests: written first: on Star Rail's timeline no swatch is left and the Banners box is centred on its words; a wished event carries a "Wishlisted" star and a plain one none; events, wishes, endgames and passes have four different edge colours, an event's edge being its game's banner colour.
 - Scope/decisions: the colours (red, teal, gold) are the app's; they stand apart from the six games' accents.
 - Next: the navbar and the game tabs.
-
-## 2026-10-14 · claude · stack/r10/11-tasks · #290
-- Done: the Tasks screen (Georges, round 7: "changing priority is annoying, it should be easier; Farm today should be more visible; the farm everyday screen should also be included; the task screen has too much negative space: extremely long cards that are half empty"). Priority is a group of three buttons (▲ High, ● Normal, ▼ Low), one click each, the current one filled. Goals sit two by two, each on two lines (its unit and title, then the progress, priority and notify); an open goal spans the row. Farm today's chips grow: icons at 44 px, materials at 40 px, each chip edged and tinted in its game's colour. Today | Week switches Farm today to the week: Monday to Sunday, each day's rotating materials for your goals, today outlined, then what any day farms. `/api/farm-today` gains `week`, each weekday's domain lines from `farmToday`.
-- Tests: written first: integration: Amber's three-day talent book is on its days of the week and on no other. Journey: Farm today's material icons at least 36 px; the first two goals side by side, each under 700 px; Low picked in one click and saved; Week shows Lisa on Wednesday and Saturday, not on Monday, and Slime Condensate under Any day. The Planner's priority check follows the group.
-- Scope/decisions: the week shows rotating materials only (any-day ones under Any), the weeklies staying on today's view.
-- Next: banners and events: a colour per kind, wishlisted events marked, the legend's crooked boxes.

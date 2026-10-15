@@ -57,7 +57,7 @@ Someone playing four or five gacha games juggles separate daily resets, separate
 
 ### Locked product decisions (do not relitigate)
 
-Every game is a bespoke module and sheet · Discord-only sign-in, admins listed in `ADMIN_DISCORD_IDS` · one profile per user per game, region defaults to EU · free hosting only · catalog data comes from the importer pipeline, never typed by hand · hard limits on every number (`LIMITS` in `packages/shared/src/common.ts`).
+Every game is a bespoke module and sheet · one owner signing in with a passkey or the owner password (ADR 0010) · one profile per user per game, region defaults to EU · free hosting only · catalog data comes from the importer pipeline, never typed by hand · hard limits on every number (`LIMITS` in `packages/shared/src/common.ts`).
 
 ### Shipped scope (v1)
 

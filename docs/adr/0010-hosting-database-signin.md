@@ -1,6 +1,6 @@
 # 0010 — Hosting, database and sign-in for one user
 
-- Status: Proposed (to decide with Georges; nothing changes until he does)
+- Status: Accepted (2026-10-15, Georges)
 - Date: 2026-10-14
 - Proposed by: claude; decided by: Georges
 
@@ -43,7 +43,14 @@ The pains: many services and secrets for one person; the free Postgres tiers can
 | **iii. An owner password**, its scrypt hash in an environment variable (Node's own `crypto`), rate-limited | no dependency, no third party | a password to keep strong; phishable |
 | **iv. Access in front of the app** (Cloudflare Access, e-mail one-time codes) | no sign-in code in the app at all | ties the app to Cloudflare; the API must trust its header |
 
-## Recommendation (to discuss)
+## Decision (Georges, 2026-10-15)
+
+- **Database: keep Supabase (A).** Its free plan pauses a project after a week without activity; the hourly cron (GitHub Actions, once `CRON_SECRET` is set) touches the database every hour, which keeps it awake.
+- **Hosting: keep Vercel (1).**
+- **Sign-in: a passkey (ii) with an owner password (iii) as the way back in**; Discord sign-in removed. The first sign-in is the password; passkeys are added from Settings once signed in, so no one-time setup code is needed. The reminders' Discord bot stays (it only sends DMs to the owner's Discord id).
+- **Data:** the sample data stays until v1; Georges's own data comes after.
+
+## Recommendation (as proposed, 2026-10-14)
 
 - **Database: B, one SQLite everywhere (Turso)**, unless Georges prefers to keep the data on his own machine (C). It removes the second engine and the idle-database problem; row level security, there for a multi-user Postgres, is not needed when the server is the only client of one user's database.
 - **Hosting: keep Vercel (1)** with B; move to one host (2) only with C.
@@ -51,6 +58,6 @@ The pains: many services and secrets for one person; the free Postgres tiers can
 
 ## Consequences
 
-- If B: a migration plan (export, the new adapter, import), the Postgres-only steps of DEPLOY.md rewritten, `schema.sqlite.prisma` becomes the only schema; the export route (`/api/export`) already gives a full copy to move.
-- If ii/iii: DESIGN.md §6's "Discord-only sign-in" is superseded (this ADR, once accepted); `OWNER_PASSWORD_HASH` and a one-time `PASSKEY_SETUP_CODE` join the secrets Georges sets; Discord OAuth secrets leave.
-- Nothing above is built until Georges picks; the secrets stay his.
+- The database and hosting stay as they are; `CRON_SECRET` matters more now (it also keeps Supabase awake).
+- DESIGN.md §6's "Discord-only sign-in" is superseded: one owner signs in with a passkey (`@simplewebauthn/server` and `/browser`, the only new dependencies) or the owner password (Node's `crypto.scrypt`, rate-limited). `OWNER_PASSWORD_HASH` joins the secrets Georges sets (made with `npm run password:hash`); the Discord OAuth secrets leave; the owner's Discord id stays on the account for the reminder DMs.
+- Built as a stack: the password, then passkeys (a `Passkey` table with row level security), then Discord sign-in removed with admin meaning the owner. The dev-login shortcut stays for development and the journeys only.
