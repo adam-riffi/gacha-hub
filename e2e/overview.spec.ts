@@ -47,6 +47,8 @@ test("Home's banners show each banner's featured units, the ones you own marked,
 
   await page.goto("/?game=hsr");
   const card = page.locator(".banner-card");
+  // The pointer on the card holds it on this banner (the carousel steps on its own otherwise); it ends first, so it shows first.
+  await card.hover();
   await expect(card).toContainText("E2E featured warp");
   const featured = card.getByRole("list", { name: "Featured units" });
   await expect(featured.getByRole("listitem")).toHaveCount(3);
