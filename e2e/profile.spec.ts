@@ -61,6 +61,8 @@ test("Profile: account, passes with their reminders, game reminders, status @smo
 
   // Wallet: every currency, typed in place.
   const wallet = page.getByRole("region", { name: "Wallet" });
+  // Round 12: each currency shows the game's own icon (Stellar Jade's from the community source), the glyph only as its fallback.
+  await expect(wallet.locator("img.cur-art[src*='900001']")).toHaveCount(1);
   await wallet.getByRole("spinbutton", { name: "Stellar Jade" }).fill("1600");
   await wallet.getByRole("spinbutton", { name: "Stellar Jade" }).blur();
   await expect
