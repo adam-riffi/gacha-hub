@@ -21,10 +21,9 @@ test("the owner adds a passkey in Settings and signs in with it; it can be remov
   await expect(passkeys.getByRole("listitem").first()).toContainText("added");
 
   await page.getByRole("region", { name: "Account and data" }).getByRole("button", { name: "Sign out" }).click();
+  // Signed in again with the passkey, back on the page left: Settings, the passkey just used.
   await page.getByRole("button", { name: "Sign in with a passkey" }).click();
-  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
-
-  await page.goto("/settings/account");
+  await expect(page.getByRole("heading", { name: "Settings" })).toBeVisible();
   await expect(passkeys.getByRole("listitem").first()).toContainText("last used");
   await passkeys.getByRole("button", { name: /^Remove / }).click();
   await expect(passkeys.getByRole("listitem")).toHaveCount(0);
