@@ -70,7 +70,7 @@ Every game is a bespoke module and sheet · one owner signing in with a passkey 
 | Planning | Material requirements from catalog costs, goal tasks with material subtasks, inventory as source of truth |
 | Home | KPI strip, banners now, Today, task board, pulls with pity, coming up, wallet |
 | Banners and events | JSON uploads in Settings' Data sources, with a log; Genshin and HSR official-feed import; calendar with paging back into history |
-| Discord | OAuth sign-in, 10 slash commands, DM reminders before reset and at chosen times, optional "domains open today" line |
+| Discord | 10 slash commands, DM reminders before reset and at chosen times, optional "domains open today" line |
 | Pull log | Per banner type with pity and the 50/50 guarantee (ADR 0002) |
 | Export | Everything a user entered as one JSON file |
 
@@ -92,7 +92,7 @@ Every game is a bespoke module and sheet · one owner signing in with a passkey 
 | --- | --- | --- |
 | `DATABASE_URL`, `DIRECT_DATABASE_URL` | pooled and direct Postgres | set |
 | `SESSION_SECRET`, `COOKIE_SECURE=true`, `APP_BASE_URL` | sessions | set |
-| `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET`, `DISCORD_OAUTH_REDIRECT` | web sign-in | set (`/api/me` reports `oauth: true`) |
+| `OWNER_PASSWORD_HASH` | the owner password (ADR 0010; passkeys are added in Settings) | **to set** (`npm run password:hash`) |
 | `DISCORD_APP_ID`, `DISCORD_PUBLIC_KEY` | bot interactions | check |
 | `DISCORD_BOT_TOKEN` | sending DMs, registering commands | **not set** |
 | `ADMIN_DISCORD_IDS` | the owner's Discord id: who sees Data sources | set |
@@ -119,7 +119,7 @@ flowchart LR
   S["packages/shared<br/>zod DTOs · game modules · catalogs<br/>planning · pity · domains · art"]
   DB[("Supabase Postgres<br/>eu-west-1, RLS on")]
   GH["GitHub Actions<br/>cron-tick every 10 min"]
-  DC["Discord<br/>OAuth · REST · interactions"]
+  DC["Discord<br/>REST · interactions"]
   HOYO["HoYoverse announcement API<br/>(Genshin, HSR)"]
   ART["Enka (Genshin) · Yatta (HSR)<br/>hotlinked art"]
   BLOB["Vercel Blob<br/>uploaded portraits"]
@@ -283,7 +283,7 @@ The screenshots come from the local dev build (dev user, SQLite) on 2026-10-10, 
 
 ![Sign-in](screens/01-sign-in.jpg)
 
-**For:** getting in. In production the button is "Sign in with Discord" (OAuth). Locally, "Continue" appears when `DEV_LOGIN_ENABLED=true`. There is no sign-up.
+**For:** getting in, for the one owner (ADR 0010): "Sign in with a passkey" once one is added in Settings, and the owner password (its hash in `OWNER_PASSWORD_HASH`). Locally, "Continue" appears when `DEV_LOGIN_ENABLED=true`. There is no sign-up.
 
 ### 8.2 Home
 
@@ -567,7 +567,7 @@ So the host app stays generic over what all games share (profiles, currencies, r
 - **Export.** `GET /api/export`, round-trips every user-owned table.
 - **Limits.** Every number has a hard limit (`LIMITS`), enforced by the zod DTOs.
 - **Art.** Our own copy first (`VITE_ASSET_BASE`: the R2 bucket the `mirror-art` workflow fills, ADR 0006; unset until Georges creates it), then the community fallback (`communityArtUrl` in `packages/shared/src/art.ts`: Enka for Genshin, Yatta for HSR), then initials. Source-internal paths (WuWa Unreal paths) are skipped instead of requested.
-- **Security.** Discord-only auth, signed session cookie, admin routes rate-limited and audited, cron endpoint behind `CRON_SECRET`, CSP and hardening headers, RLS on every table.
+- **Security.** One owner signing in with a passkey or the owner password (ADR 0010), signed session cookie, admin routes rate-limited and audited, cron endpoint behind `CRON_SECRET`, CSP and hardening headers, RLS on every table.
 
 ## 11. API map
 

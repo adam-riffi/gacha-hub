@@ -54,19 +54,13 @@ export const config = {
   cronSecret: envString("CRON_SECRET"),
   /** Run node-cron in-process (only for always-on hosts like Docker). */
   inProcessCron: bool("ENABLE_INPROCESS_CRON", false),
-  /** Discord user ids granted the admin role (comma-separated). */
+  /** The owner's Discord id (ADR 0010): it finds the owner's account (the one the Discord sign-in made); comma-separated. */
   adminDiscordIds: envString("ADMIN_DISCORD_IDS")
     .split(",")
     .map((part) => part.trim())
     .filter(Boolean),
 
   discord: {
-    clientId: envString("DISCORD_CLIENT_ID"),
-    clientSecret: envString("DISCORD_CLIENT_SECRET"),
-    oauthRedirect: envString(
-      "DISCORD_OAUTH_REDIRECT",
-      "http://localhost:3000/api/auth/discord/callback",
-    ),
     botToken: envString("DISCORD_BOT_TOKEN"),
     appId: envString("DISCORD_APP_ID"),
     /** Application public key — verifies HTTP Interactions signatures. */
@@ -83,8 +77,6 @@ export const config = {
   devLoginEnabled: !isProd && bool("DEV_LOGIN_ENABLED", true),
 } as const;
 
-export const hasDiscordOAuth = () =>
-  Boolean(config.discord.clientId && config.discord.clientSecret);
 /** Bot token + app id: needed for REST (DMs) and slash-command registration. */
 export const hasDiscordBot = () =>
   Boolean(config.discord.botToken && config.discord.appId);

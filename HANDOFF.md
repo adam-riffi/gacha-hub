@@ -1,9 +1,9 @@
-# Handoff — 2026-10-15 · claude
+# Handoff — 2026-10-15 · claude (ADR 0010 built)
 
 ## State
-- `main` at #327: round 10 (#312–#314) and round 11's PRs through #327 merged. CI green.
-- Open PRs, a stack on `main`: #328 (the Timeline's featured units as icons) ← #329 (this handoff, round 11's audit status). Each merges on green CI, rebased onto `main` after its parent's squash.
-- Production serves #186 (deployed 2026-10-10 18:52 UTC). Merges do not deploy (#189). The next deploy runs every migration since #186 (`redeemed_codes` the newest). **Georges wants to redo the hosting, database and sign-in first: ADR 0010 (proposed) lists the options and a recommendation to decide together.**
+- `main` at #330: round 11 (#315–#329) and ADR 0010's decision (#330) merged. CI green.
+- Open PRs, a stack on `main`: #331 (a moved gear piece never shows twice) ← #332 (the owner password) ← #333 (passkeys) ← #334 (Discord sign-in removed, this handoff). Each merges on green CI, rebased onto `main` after its parent's squash.
+- Production serves #186 (deployed 2026-10-10 18:52 UTC). Merges do not deploy (#189). The next deploy runs every migration since #186 (`passkeys` the newest). **ADR 0010 is decided (2026-10-15) and built: Supabase and Vercel stay; one owner signs in with a passkey or the owner password; Discord sign-in is gone (the reminder bot stays).**
 - Every milestone in DESIGN.md §9 is built, V through F13, and eleven feedback rounds (2026-10-10 to 2026-10-15) are done or under way. What is left needs Georges's secrets, real data or a decision (below), a source for a few details (Next), or is in DESIGN.md §4 "Later".
 
 ## Done this session (round 11, `docs/AUDIT-2026-10-15-round11.md`)
@@ -33,7 +33,7 @@
 6. The assets: `docs/ASSETS.md` lists every icon still missing; pick a source with Georges, then the R2 mirror.
 
 ## Needs from Georges
-- **A decision:** the hosting, database and sign-in in ADR 0010; then a deploy (rounds 2–11 wait, with the migrations since #186).
+- **Before the next deploy (ADR 0010):** run `npm run password:hash` on your computer and set the printed `OWNER_PASSWORD_HASH` in Vercel; delete `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET` and `DISCORD_OAUTH_REDIRECT` there; set `CRON_SECRET` (the hourly cron also keeps Supabase's free plan from pausing). Then say deploy: sign in with the password and add a passkey in Settings → Account and data.
 - **Secrets:** `LINK_SECRET_KEY`; the R2 bucket and its four `R2_*` Actions secrets, then mirror-art and `VITE_ASSET_BASE` (DEPLOY.md §7); `CRON_SECRET`; `DISCORD_BOT_TOKEN` and the bot; `BLOB_READ_WRITE_TOKEN` in Vercel if it is not set.
 - **Real data, with tokens removed** (PROJECT-GUIDE §14.1 step 8): an Endfield records page; a ZZZ UID; HoYoLAB answers; one gacha log page; one WuWa convene answer; in-game details pages for the `~` values.
 - The `main` ruleset, the `sample-*` banners (they have no featured units; the feed's do), the README demo GIF, and the stale remote branches (§14.1 step 10).

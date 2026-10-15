@@ -33,14 +33,13 @@ At <https://discord.com/developers/applications> → **New Application**.
 
 - **General Information**: copy the **Application ID** **→ save as `DISCORD_APP_ID`**
   and the **Public Key** **→ save as `DISCORD_PUBLIC_KEY`**.
-- **OAuth2**: copy the **Client ID** **→ save as `DISCORD_CLIENT_ID`** and reset
-  the **Client Secret** **→ save as `DISCORD_CLIENT_SECRET`**.
 - **Bot**: add a bot, reset the token **→ save as `DISCORD_BOT_TOKEN`**.
 
-Leave the redirect URL and Interactions Endpoint URL for step 5 (they need the
-deployed URL). To find your own Discord user id (for admin), enable Developer
-Mode in Discord (Settings → Advanced), right-click your name → Copy User ID
-**→ save for `ADMIN_DISCORD_IDS`**.
+Leave the Interactions Endpoint URL for step 5 (it needs the deployed URL). To
+find your own Discord user id (it finds your account and gets the reminders),
+enable Developer Mode in Discord (Settings → Advanced), right-click your name →
+Copy User ID **→ save for `ADMIN_DISCORD_IDS`**. Discord no longer signs you in
+(ADR 0010): the owner password and your passkeys do.
 
 ## 3. Deploy to Vercel
 
@@ -59,9 +58,7 @@ Mode in Discord (Settings → Advanced), right-click your name → Copy User ID
    | `COOKIE_SECURE` | `true` |
    | `CRON_SECRET` | another random string (step 6); the hourly cron also keeps Supabase's free plan from pausing (ADR 0010) |
    | `OWNER_PASSWORD_HASH` | the line `npm run password:hash` prints, run on your own computer (ADR 0010: the owner password; only its hash goes to Vercel) |
-   | `ADMIN_DISCORD_IDS` | your Discord user id (comma-separated for more) |
-   | `DISCORD_CLIENT_ID` / `DISCORD_CLIENT_SECRET` | step 2 |
-   | `DISCORD_OAUTH_REDIRECT` | `${APP_BASE_URL}/api/auth/discord/callback` |
+   | `ADMIN_DISCORD_IDS` | your Discord user id (it finds your account; ADR 0010) |
    | `DISCORD_APP_ID` / `DISCORD_BOT_TOKEN` / `DISCORD_PUBLIC_KEY` | step 2 |
 
    **Never set `NODE_ENV`**: Vercel's `npm ci` would then skip dev dependencies the
@@ -92,8 +89,6 @@ Mode in Discord (Settings → Advanced), right-click your name → Copy User ID
 
 Back in the Discord application:
 
-- **OAuth2 → Redirects**: add exactly `${APP_BASE_URL}/api/auth/discord/callback`
-  (must match `DISCORD_OAUTH_REDIRECT`).
 - **General Information → Interactions Endpoint URL**: set
   `${APP_BASE_URL}/api/discord/interactions` and save. Discord sends a signed
   PING; it must save green (proves `DISCORD_PUBLIC_KEY` is right).
@@ -105,8 +100,8 @@ Back in the Discord application:
 
   Set `DISCORD_DEV_GUILD_ID` to a test server id for instant registration;
   without it, global commands take up to an hour.
-- Sign in on the site with Discord. Because your id is in `ADMIN_DISCORD_IDS`,
-  the **Admin** page appears.
+- Sign in on the site with the owner password, then add a passkey in Settings →
+  Account and data (ADR 0010). You are the owner, so the **Admin** page appears.
 
 > Bot DMs (reminders) require the user to share a server with the bot — a
 > Discord limitation. Invite the bot to a server with the `bot` scope.
@@ -173,6 +168,6 @@ normal (non-pooled) `DATABASE_URL`.
 | 500s mentioning the Prisma engine | `DATABASE_URL` must be the **pooled** URL for the serverless function. |
 | Migrations don't run | `DIRECT_DATABASE_URL` (non-pooled) must be set at build time. |
 | Discord "interactions endpoint invalid" | `DISCORD_PUBLIC_KEY` wrong, or the function isn't reachable at `/api/discord/interactions`. |
-| OAuth redirect mismatch | `DISCORD_OAUTH_REDIRECT` must exactly equal the redirect registered in Discord and use `APP_BASE_URL`. |
+| A passkey is refused | `APP_BASE_URL` must be the address the site is opened at: a passkey belongs to that host. |
 | Cookies don't stick | In production set `COOKIE_SECURE=true` and serve over HTTPS (Vercel does). |
 | Uploads fail | Connect a Vercel Blob store so `BLOB_READ_WRITE_TOKEN` is set; serverless has no writable disk. |

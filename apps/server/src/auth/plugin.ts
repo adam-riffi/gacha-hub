@@ -1,18 +1,18 @@
 import cookie from "@fastify/cookie";
-import oauth2, { type OAuth2Namespace } from "@fastify/oauth2";
 import type {
   FastifyInstance,
   FastifyReply,
   FastifyRequest,
 } from "fastify";
 import { z } from "zod";
-import { config, hasDiscordOAuth } from "../config.js";
+import { config } from "../config.js";
 import {
   DEV_LOGIN_DISCORD_ID,
   SESSION_COOKIE,
   createSession,
   deleteSession,
   getSessionUser,
+  mayBeSignedIn,
   ownerAccount,
   setSessionCookie,
   upsertDiscordUser,
@@ -35,7 +35,7 @@ export async function requireUser(req: FastifyRequest, reply: FastifyReply) {
   if (!req.user) return reply.code(401).send({ error: "unauthorized" });
 }
 
-/** preHandler that 403s non-admins (admins = ADMIN_DISCORD_IDS). */
+/** preHandler that 403s non-admins (the owner is the admin; ADR 0010). */
 export async function requireAdmin(req: FastifyRequest, reply: FastifyReply) {
   if (!req.user) return reply.code(401).send({ error: "unauthorized" });
   if (!req.isAdmin) return reply.code(403).send({ error: "forbidden" });
@@ -55,76 +55,18 @@ export async function registerAuth(app: FastifyInstance) {
     if (!raw) return;
     const unsigned = req.unsignCookie(raw);
     if (!unsigned.valid || !unsigned.value) return;
-    req.user = await getSessionUser(unsigned.value);
-    // Admins come from ADMIN_DISCORD_IDS. As a dev convenience (never in
-    // production), the dev-login user is treated as admin so the Admin page —
-    // and banner/event uploads — are reachable without configuring ids.
-    req.isAdmin =
-      req.user !== null &&
-      (config.adminDiscordIds.includes(req.user.discordId) ||
-        (config.devLoginEnabled && req.user.discordId === DEV_LOGIN_DISCORD_ID));
+    const sessionUser = await getSessionUser(unsigned.value);
+    // One owner (ADR 0010): another account's session (one left from the Discord sign-in) counts for nothing.
+    req.user = sessionUser && (await mayBeSignedIn(sessionUser)) ? sessionUser : null;
+    // Only the owner (or, in development, the dev shortcut) can be signed in, and the owner runs the app.
+    req.isAdmin = req.user !== null;
   });
-
-  // ---- Discord OAuth (only if credentials are configured) ----
-  if (hasDiscordOAuth()) {
-    await app.register(oauth2, {
-      name: "discordOAuth2",
-      scope: ["identify"],
-      credentials: {
-        client: {
-          id: config.discord.clientId,
-          secret: config.discord.clientSecret,
-        },
-        auth: {
-          authorizeHost: "https://discord.com",
-          authorizePath: "/api/oauth2/authorize",
-          tokenHost: "https://discord.com",
-          tokenPath: "/api/oauth2/token",
-        },
-      },
-      startRedirectPath: "/api/auth/discord",
-      callbackUri: config.discord.oauthRedirect,
-    });
-
-    app.get("/api/auth/discord/callback", async (req, reply) => {
-      const namespace = (app as unknown as { discordOAuth2: OAuth2Namespace })
-        .discordOAuth2;
-      const { token } =
-        await namespace.getAccessTokenFromAuthorizationCodeFlow(req);
-
-      const response = await fetch("https://discord.com/api/users/@me", {
-        headers: { Authorization: `Bearer ${token.access_token}` },
-      });
-      if (!response.ok) {
-        reply.code(502).send({ error: "discord_profile_failed" });
-        return;
-      }
-      const discordUser = (await response.json()) as {
-        id: string;
-        username: string;
-        global_name?: string | null;
-        avatar?: string | null;
-      };
-      const avatarUrl = discordUser.avatar
-        ? `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.png`
-        : null;
-      const user = await upsertDiscordUser({
-        id: discordUser.id,
-        username: discordUser.global_name || discordUser.username,
-        avatarUrl,
-      });
-      const session = await createSession(user.id);
-      setSessionCookie(reply, session.id, session.expiresAt);
-      reply.redirect(`${config.appBaseUrl}/`);
-    });
-  }
 
   // ---- Current user ----
   app.get("/api/me", async (req) => {
     return {
       user: req.user,
       isAdmin: req.isAdmin,
-      oauth: hasDiscordOAuth(),
       passwordSignIn: Boolean(config.ownerPasswordHash),
       passkeySignIn: (await prisma.passkey.count()) > 0,
       devLogin: config.devLoginEnabled,

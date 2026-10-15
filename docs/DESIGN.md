@@ -34,7 +34,7 @@ The player signs in with Discord, adds Genshin and HSR, sets currencies and tick
 - Planning: material requirements, goal tasks with material subtasks, inventory as source of truth.
 - Home: KPI strip, banners now, today, task board, pulls, coming up, wallet.
 - Banners and events: admin uploads with audit log; Genshin and HSR official-feed import; calendar view.
-- Discord: OAuth sign-in, slash commands, DM reminders before reset and at custom times (optionally listing today's domains).
+- Discord: slash commands, DM reminders before reset and at custom times (optionally listing today's domains).
 - Pull log per banner type with pity and the 50/50 guarantee (ADR 0002); pity next to pulls on Home.
 - Data export: everything a user entered as one JSON file (Settings → Download my data).
 
@@ -105,7 +105,7 @@ gacha/
 
 **Code structure** (ADR 0011, accepted 2026-10-15): the domain as objects (a class with its data and behaviour in `packages/shared`, or a service in `apps/server/src/services` when it needs the database), routes thin over them, React as function components; explicit names everywhere (no one-letter or abbreviated names; CSS utilities named for what they do), held by ESLint's `id-length` in every package. The objects so far: `UnitBannerAppearances` (a unit's banners), `LatestWriteQueue` (the last write of a field), `GearPiece` and `CharacterBuild` (a build read through its game's rules), `PullBudget` (a game's pulls on hand and pity, each banner's chance); the services so far: `TeamService`, `OwnershipService`, their refusals thrown as `DomainError` and answered by the error handler, the routes finding the profile with `instanceOrThrow`.
 
-**Allowed libraries**: React, React Router, TanStack Query, Vite; Fastify and its first-party plugins (cookie, oauth2, rate-limit, multipart, static); Prisma, with its driver adapters from milestone D (ADR 0003); zod; luxon; discord-interactions; `@vercel/blob`; node-cron (always-on hosts only); Vitest, fast-check, Playwright, ESLint, Prettier, esbuild, tsx. Importers may use their dataset packages (`genshin-db`, `adm-zip`) inside `scripts/catalog` only. Token encryption uses `node:crypto` (built in). The art mirror may use `sharp` and an S3 client inside `scripts/assets` only (ADR 0006).
+**Allowed libraries**: React, React Router, TanStack Query, Vite; Fastify and its first-party plugins (cookie, rate-limit, multipart, static); `@simplewebauthn/server` and `/browser` for the owner's passkeys (ADR 0010); Prisma, with its driver adapters from milestone D (ADR 0003); zod; luxon; discord-interactions; `@vercel/blob`; node-cron (always-on hosts only); Vitest, fast-check, Playwright, ESLint, Prettier, esbuild, tsx. Importers may use their dataset packages (`genshin-db`, `adm-zip`) inside `scripts/catalog` only. Token encryption uses `node:crypto` (built in). The art mirror may use `sharp` and an S3 client inside `scripts/assets` only (ADR 0006).
 
 ## 7. Visual identity
 
@@ -167,7 +167,7 @@ Required checks: `lint`, `typecheck`, `test`, `build`, `e2e`. Vercel builds each
 
 Vercel project `gacha-hub` (framework preset "Other", functions in `dub1` next to the database). Preview deployments are off for `stack/**`, `spike/**` and `dependabot/**` branches (`vercel.json`): the Hobby plan allows 100 deployments a day, and restacking a stack redeploys every branch; CI and the E2E suite cover those PRs. Environment variables are set by the owner in Vercel (`.env.example` lists them): `DATABASE_URL` (transaction pooler), `DIRECT_DATABASE_URL`, `SESSION_SECRET`, `COOKIE_SECURE=true`, `APP_BASE_URL`, `DISCORD_*`, `ADMIN_DISCORD_IDS`, `CRON_SECRET`, `BLOB_READ_WRITE_TOKEN`, `DEV_LOGIN_ENABLED=false`; from F11 `LINK_SECRET_KEY` (ADR 0005); from F12 `VITE_ASSET_BASE` (ADR 0006). Never set `NODE_ENV`. GitHub secrets: `CRON_URL`, `CRON_SECRET`. Full steps: `docs/DEPLOY.md`.
 
-**Smoke checks** (`npm run smoke -- <url>`, run by `smoke.yml` after every production deploy): the app shell loads; `/api/health` reads through the database; `/api/me` answers anonymously with `oauth: true, devLogin: false`; `/api/instances` refuses anonymous reads; the security headers are sent. Manually: sign-in reaches Home; a `cron-tick` run returns `ok: true`.
+**Smoke checks** (`npm run smoke -- <url>`, run by `smoke.yml` after every production deploy): the app shell loads; `/api/health` reads through the database; `/api/me` answers anonymously with `passwordSignIn: true, devLogin: false` (ADR 0010); `/api/instances` refuses anonymous reads; the security headers are sent. Manually: sign-in reaches Home; a `cron-tick` run returns `ok: true`.
 
 ## 13. Performance, security and observability
 

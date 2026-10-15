@@ -69,16 +69,6 @@ export function LoginPage() {
             {problem}
           </p>
         )}
-        {currentUser?.oauth && (
-          <button
-            className="btn primary"
-            onClick={() => {
-              window.location.href = "/api/auth/discord";
-            }}
-          >
-            Sign in with Discord
-          </button>
-        )}
         {currentUser?.devLogin && (
           <button
             className="btn"
@@ -93,7 +83,7 @@ export function LoginPage() {
             Continue
           </button>
         )}
-        {!currentUser?.oauth && !currentUser?.devLogin && !currentUser?.passwordSignIn && (
+        {!currentUser?.devLogin && !currentUser?.passwordSignIn && (
           <p className="small">No sign-in set up: set OWNER_PASSWORD_HASH (DEPLOY.md).</p>
         )}
       </div>

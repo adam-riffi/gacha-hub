@@ -74,3 +74,14 @@ export async function ownerAccount(): Promise<User> {
   const oldest = admin ?? (await prisma.user.findFirst({ where: { NOT: { discordId: DEV_LOGIN_DISCORD_ID } }, orderBy: { createdAt: "asc" } }));
   return oldest ?? prisma.user.create({ data: { discordId: "owner", username: "Owner" } });
 }
+
+// ponytail: the owner's id is kept per process and looked up again on a miss (one query); fine for one owner.
+let knownOwnerId: string | null = null;
+
+/** Whether an account may be signed in (ADR 0010): the owner's, or in development the dev shortcut's. */
+export async function mayBeSignedIn(user: User): Promise<boolean> {
+  if (config.devLoginEnabled && user.discordId === DEV_LOGIN_DISCORD_ID) return true;
+  if (user.id === knownOwnerId) return true;
+  knownOwnerId = (await ownerAccount()).id;
+  return user.id === knownOwnerId;
+}

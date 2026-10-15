@@ -25,7 +25,7 @@ check(health.status === 200 && (await health.json()).database === "ok", "GET /ap
 const me = await get("/api/me");
 const meBody = me.status === 200 ? await me.json() : null;
 check(meBody?.user === null, "GET /api/me answers anonymously");
-check(meBody?.oauth === true, "Discord sign-in is configured");
+check(meBody?.passwordSignIn === true, "the owner password is set (ADR 0010)");
 check(meBody?.devLogin === false, "the dev login is off");
 
 const instances = await get("/api/instances");

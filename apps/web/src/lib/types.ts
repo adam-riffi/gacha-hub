@@ -20,7 +20,6 @@ export interface Me {
     avatarUrl: string | null;
   } | null;
   isAdmin: boolean;
-  oauth: boolean;
   /** The owner password is set (ADR 0010). */
   passwordSignIn: boolean;
   /** A passkey exists to sign in with (ADR 0010). */
