@@ -117,3 +117,17 @@ test("no tile without its image shows letters: teams, pickers, a unit's page, ow
     await page.request.delete(`/api/instances/${id}/teams/${team.id}`);
   }
 });
+
+// Round 12 (Georges: a 24-inch and a 32-inch screen, "some things are hard for me to read"): wider scales the whole UI up.
+test("a wider window scales the whole UI up, never smaller type @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const zoomAt = async (width: number) => {
+    await page.setViewportSize({ width, height: 900 });
+    return page.locator(".shell").evaluate((el) => getComputedStyle(el).zoom);
+  };
+  expect(await zoomAt(1440)).toBe("1");
+  expect(await zoomAt(1920)).toBe("1.22");
+  expect(await zoomAt(2560)).toBe("1.55");
+});

@@ -23,7 +23,7 @@
   --ext: #5c5c5c;             /* extruded back faces of chart marks */
   --hairline-strong: #8f8f8f; /* corner marks, braces, axes */
   --text: #fafafa;
-  --text-muted: #bebebe;
+  --text-muted: #c9c9c9;
   --paper: #ededed;           /* chips, tooltips, title bands, second data series */
   --on-paper: #080808;
   --wave: #303030;            /* page pattern */
@@ -44,7 +44,7 @@ body {
   min-height: 100vh;
   background: var(--bg) var(--pattern);
   color: var(--text);
-  font: 400 15px/1.45 var(--font-body);
+  font: 400 16px/1.45 var(--font-body);
   font-variant-numeric: tabular-nums;
 }
 
@@ -59,4 +59,17 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+}
+
+/*
+ * The screens (round 12; Georges: a 24-inch and a 32-inch, and "some things are hard for me to read"): the whole UI
+ * scales up with the window, so wider never means smaller type. The rail divides its height back (zoom stretches vh).
+ */
+@media (min-width: 1800px) {
+  .shell { zoom: 1.22; }
+  .rail { height: calc(100vh / 1.22); }
+}
+@media (min-width: 2400px) {
+  .shell { zoom: 1.55; }
+  .rail { height: calc(100vh / 1.55); }
 }
