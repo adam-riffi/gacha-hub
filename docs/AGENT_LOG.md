@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-16 · claude · stack/r18/05-card-art · #342
+- Done: round 12 ("add game art to everything you can"; "add assets to banner cards, BP cards, game cards"). Each game's manifest names a hero — a splash key of its own catalog, the URL checked by hand (Furina, Kafka, Miyabi, Jinhsi, Laevatain, Sakiri's gacha art) — and `HeroArt` draws it from our store first, then the community source, and nothing at all when both are missing, so a card never shows a placeholder. The library card fades it in from the right under its figures; Home's battle pass card carries it under the band; the banners card shows it dimmed when no banner runs.
+- Tests: written first: a library card carries its hero art (`img.hero-art[src*='1005']` on Star Rail's).
+- Scope/decisions: the game dashboard's pass card stays plain figures (art behind KPIs hurts reading); the strip keeps emblems (a 26 px splash reads as noise).
+- Next: the last-seen chip.
+
 ## 2026-10-16 · claude · stack/r18/04-currency-icons · #341
 - Done: round 12 ("find some game sources/data to populate static informations such as icons"). Every currency of five games shows its game's own icon: each names a key of its manifest's material art source, every URL checked 200 by hand on 2026-10-16 — Genshin from Enka's item icons (resin 210, condensed 211, primogems 201, the fates 223/224, mora 202), Star Rail from Yatta's (ids read from StarRailRes: power 11/12, jade 900001, passes 101/102, credits 2), Zenless and NTE from Hakushin (IconStamina, IconCurrency, the GachaTickets, the dice, Annulith, Fons), Wuthering Waves from wuthery (keys from WutheringData's item table: Waveplate, Astrite, the Tides, Shell Credits). `CurrencyIcon` shows the picture and keeps its drawn line icon as the fallback when a source is down; the wallet, the dashboards, the Pulls table and the top-up packs pick it up.
 - Tests: written first: the wallet journey finds Stellar Jade's own icon (`img.cur-art[src*='900001']`); the older icon journeys accept art or glyph.
@@ -248,9 +254,3 @@ Entry format:
 - Tests: written first: `sheetStats` for Star Rail; targets for ATK and CRIT Rate kept; the sheet has no KPIs row, CRIT Rate typed 50 in its card; SPD's target 134 shows 4 short and stays after a reload; SPD's card is marked base until typed; Kafka's ATK card is the growth stat, ATK and CRIT Rate ticked, HP ticked drops ATK.
 - Scope/decisions: the box flips at once (an optimistic update) and the server's answer follows.
 - Next: the gear screen rebuilt.
-
-## 2026-10-14 · claude · stack/r11/03-three-stats · #301
-- Done: shorter cards (Georges, round 8: "character cards are too tall: just put a max of 3 displayed stats"). `LIMITS.cardStats` is 3: a card's default stats (the growth stat, then the role's), a build's or the game's pick (an older pick of more shows its first three), the unbuilt cards' base stats, the pickers (a fourth pick drops the oldest) and the API (four refused). The stats sit in one row of three.
-- Tests: written first: the default and an older pick of four come to three; the API refuses four for the game and for a build; Serval's unbuilt card shows CRIT Rate, HP and ATK; on Qingque a fourth pick (ATK) drops HP. Two sheet journeys set SPD among their build's card stats, Kafka's first three being ATK and her crits.
-- Scope/decisions: the sheet's tiles follow the card's three until the next PR turns every stat into a card.
-- Next: every stat a card on the sheet.
