@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-15 · claude · stack/r15/08-timeline-featured · #328
+- Done: round 11's review, Timeline: a banner phase's featured units are icons, each once however many of its banners feature it (Genshin's phase listed Candace, Mika and Dahlia twice in words): its top-rarity units small at the start of its bar, and all of them in Selected, the top rarity larger, the ones you own ticked, a top one you lack ringed, a character opening its page, then "+n" and the link to Pulls. One `FeaturedUnits` component now serves Home's banner card (#326) and the Timeline.
+- Tests: written first: a journey with two banners sharing a phase (Fu Xuan with Asta, Jingliu with Asta, Asta owned): the bar shows the two 5★s, Selected lists three units, Fu Xuan "not owned", Asta "owned". The journey where a featured unit opens its page passes unchanged.
+- Scope/decisions: the bar's icons are hidden from screen readers (Selected names the units; the bar keeps its name and dates). The audit's "placeholder picture" was the sample banners, which have no units; the feed's show their art.
+- Next: the handoff and round 11's audit status; then ADR 0011's next services (characters, weapons).
+
 ## 2026-10-15 · claude · stack/r15/07-services · #327
 - Done: ADR 0011's thin routes, first two areas. `TeamService` and `OwnershipService` (in `apps/server/src/services`) hold a profile's Prisma calls and their checks (members and companion of the game's, catalog ids, a weapon's meta). A refusal is a `DomainError` (status, code, details) that the error handler answers as the routes did inline, `{ error: code, ...details }`; `instanceOrThrow` finds the user's profile or answers not found. The team and ownership routes are a line each. DESIGN.md §6 lists the objects and services so far.
 - Tests: written first: each service on the test database (teams created, listed in order, edited, removed; members, companions and another profile's team refused as domain errors; ownership owned and dropped in bulk, unknown ids and an out-of-bounds weapon meta refused with nothing saved). The routes' own integration tests pass unchanged.
@@ -248,9 +254,3 @@ Entry format:
 - Tests: written first: Mistsplitter at R1 and R5, Patience Is All You Need at S1 and S5 without markup, Steel Cushion, Autumntrace and Good Boy's Grand Adventure at their first and fifth ranks; every 4★ and 5★ weapon of the five games has five ranks. Sampo's sheet: Patience (Lv 70, S3) in Mine with its art at least 80 px, its effect at S3 (32%), Before the Tutorial Mission Starts among the rest, and a click on its art equips it at Lv 70.
 - Scope/decisions: Genshin's event weapons that are never refined (Sword of Descension, the Isshin blades, Predator) keep one rank; the rank test was wrong to want five and now allows one. Endfield's dataset has no weapon skills, so its weapons have no effect yet.
 - Next: Tasks: priority in one click, denser cards, Farm today and Farm by weekday.
-
-## 2026-10-14 · claude · stack/r10/09-gear-screen · #288
-- Done: the gear screen (Georges, round 7: "where can I create gear pieces that I have in a vacuum? … the artifact screen is a mess, I can barely read it; the sets part (the same for every other gear system) is even worse, not user friendly, the window opening and moving everything"). Add a piece sits in the pieces view: a set (combobox with the sets' icons), the slot, its main stat (the slot's choices) and the level make a bag piece without opening a set (`NewPiece`). Piece cards grow: the set's icon at 56 px, the wearer's at 40 px, the main stat by its icon with the level large, the substats by their icons, every card with room for four. A set's panel, and a weapon's, now opens over the page from the right (fixed, shadowed), the cards staying where they were, still closed by a click outside or Escape.
-- Tests: written first: a Musketeer body (CRIT Rate, +9) added from the pieces shows in the bag with its set's icon at least 48 px and its main stat's icon; the first set card keeps its place and width when Musketeer's panel opens, the panel being fixed.
-- Scope/decisions: the weapons' panel follows the gear's for one behaviour across screens.
-- Next: the weapon window on the sheet.

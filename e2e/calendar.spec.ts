@@ -131,6 +131,43 @@ test("Banners: a tick for every day and each bar's dates, a month view of what s
   await expect(page).toHaveURL(new RegExp(`/games/${id}/units/1005$`));
 });
 
+// Round 11's review: the Timeline named a banner's featured units in words, the same 4★ twice when two banners shared a
+// phase. Each unit is an icon once, the top ones on the bar too, the ones you own ticked (Fu Xuan and Jingliu: 5★s no
+// other journey owns).
+test("a banner phase's featured units are icons on its bar and in Selected, each once, the ones you own ticked @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const created = await page.request.post("/api/instances", { data: { gameKey: "hsr" } });
+  const id = created.ok()
+    ? ((await created.json()) as { id: string }).id
+    : ((await (await page.request.get("/api/instances")).json()) as { id: string; gameKey: string }[]).find((instance) => instance.gameKey === "hsr")!.id;
+  await page.request.put(`/api/instances/${id}/ownership`, { data: { items: [{ kind: "character", catalogId: "1009", owned: true }] } });
+  const featuring = (...catalogIds: string[]) => catalogIds.map((catalogId) => ({ catalogId, kind: "character", rateUp: true }));
+  const [startsAt, endsAt] = [iso(2), iso(9)];
+  const upload = await page.request.post("/api/admin/payload", {
+    data: {
+      kind: "banners",
+      gameKey: "hsr",
+      items: [
+        { key: "e2e-phase-a", name: "E2E phase warp", kind: "character", startsAt, endsAt, featured: featuring("1208", "1009") },
+        { key: "e2e-phase-b", name: "E2E phase rerun", kind: "character", startsAt, endsAt, featured: featuring("1212", "1009") },
+      ],
+    },
+  });
+  expect(upload.ok()).toBe(true);
+
+  await page.goto("/timeline?game=hsr");
+  const bar = page.getByRole("region", { name: "Timeline" }).getByRole("button", { name: /E2E phase warp \+1/ });
+  // The phase's two 5★s on its bar.
+  await expect(bar.locator(".cal-units .gicon")).toHaveCount(2);
+  await bar.click();
+  const featured = page.getByRole("complementary", { name: "Selected" }).getByRole("list", { name: "Featured units" });
+  await expect(featured.getByRole("listitem")).toHaveCount(3);
+  await expect(featured.getByRole("listitem", { name: "Fu Xuan, not owned" })).toBeVisible();
+  await expect(featured.getByRole("listitem", { name: "Asta, owned" })).toBeVisible();
+});
+
 test("an event is wishlisted from its Selected panel, and Only what I wishlisted keeps it @smoke", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();

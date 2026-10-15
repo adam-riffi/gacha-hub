@@ -18,6 +18,8 @@ import type { DashboardData } from "../lib/types";
 import { Segmented } from "../components/ui";
 import { CalendarSelected } from "../components/calendar/CalendarSelected";
 import { RosterRewards } from "../components/calendar/RosterRewards";
+import { CatalogIcon } from "../components/CatalogIcon";
+import { distinctFeatured } from "../components/FeaturedUnits";
 
 const DAY = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" });
 const MONTH = new Intl.DateTimeFormat("en-GB", { month: "long", year: "numeric" });
@@ -90,6 +92,21 @@ function lanes(items: CalItem[]): CalItem[][] {
  * characters; the rewards that update your roster. Timeline, Month (what
  * starts and ends each day; Georges, 2026-10-10) or List.
  */
+/** A banner phase's top-rarity featured units as small icons on its bar (round 11); hidden from screen readers, Selected names them. */
+function BarUnits({ gameKey, banners }: { gameKey: string; banners: BannerDto[] }) {
+  const units = distinctFeatured(banners.flatMap((banner) => banner.featured));
+  const topRarity = units[0]?.rarity;
+  const top = topRarity === undefined ? [] : units.filter((unit) => unit.rarity === topRarity);
+  if (!top.length) return null;
+  return (
+    <span className="cal-units" aria-hidden="true">
+      {top.slice(0, 3).map((unit) => (
+        <CatalogIcon key={`${unit.kind}:${unit.catalogId}`} gameKey={gameKey} kind={unit.kind} icon={unit.icon} name={unit.name ?? unit.catalogId} />
+      ))}
+    </span>
+  );
+}
+
 export function CalendarPage() {
   const scope = useSearchParams()[0].get("game");
   const [now] = useState(() => Date.now());
@@ -445,6 +462,8 @@ export function CalendarPage() {
                                   </b>
                                 )}
                                 {item.tag && <b className="cal-tag">{item.tag}</b>}
+                                {/* A banner phase's top units on its bar (round 11); Selected names them. */}
+                                {item.kind === "banner" && <BarUnits gameKey={item.gameKey} banners={item.banners ?? []} />}
                                 <span className="cal-name">{item.name}</span>
                                 <span className="cal-dates">
                                   {DAY.format(item.start)} → {DAY.format(item.end)}

@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getGame, rewardOptions, type RewardDto, type RosterChange, type WishlistItemDto } from "@gacha/shared";
 import { api } from "../../lib/api";
 import { assetUrl, communityAssetUrl, splashKey } from "../../lib/assets";
+import { FeaturedUnits } from "../FeaturedUnits";
 import { GameIcon } from "../GameIcon";
 import type { CalItem } from "../../pages/CalendarPage";
 
@@ -114,16 +115,10 @@ export function CalendarSelected({ item, reward, now, onClose }: { item: CalItem
         {item.kind === "banner" && featured.length > 0 && (
           <>
             <dt>Featured</dt>
-            <dd>
-              {/* Each featured character opens its page (Georges, 2026-10-10: from the banners to the character in one click). */}
-              {featured.map((featuredUnit, featuredUnitIndex) => (
-                <span key={`${featuredUnit.kind}:${featuredUnit.catalogId}`}>
-                  {featuredUnitIndex > 0 && ", "}
-                  {featuredUnit.kind === "character" ? <Link to={`${hub}/units/${featuredUnit.catalogId}`}>{featuredUnit.name ?? featuredUnit.catalogId}</Link> : (featuredUnit.name ?? featuredUnit.catalogId)}
-                  {featuredUnit.owned ? " (owned)" : ""}
-                </span>
-              ))}{" "}
-              · <Link to={`${hub}/pulls`}>Pulls</Link>
+            <dd className="cal-sel-featured">
+              {/* Each unit once as its icon, yours ticked; a character opens its page (Georges, 2026-10-10: from the banners to the character in one click). */}
+              <FeaturedUnits gameKey={item.gameKey} instanceId={item.instanceId} units={(item.banners ?? []).flatMap((banner) => banner.featured)} shown={8} />
+              <Link to={`${hub}/pulls`}>Pulls</Link>
             </dd>
           </>
         )}
