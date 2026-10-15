@@ -28,7 +28,8 @@ test("Home with a game picked shows its dashboard: pulls, pity and banners at a 
 });
 
 // Round 11's review: Home's banners said nothing of what is on them. Each banner shows its featured units as icons, the
-// ones you own marked, and your chance at its top unit with the pulls you hold.
+// ones you own marked, and your chance at its top unit with the pulls you hold. Blade: a 5★ no other journey owns (the
+// journeys share one database).
 test("Home's banners show each banner's featured units, the ones you own marked, and your chance with your pulls @smoke", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
@@ -42,7 +43,7 @@ test("Home's banners show each banner's featured units, the ones you own marked,
   await page.request.put(`/api/instances/${id}/ownership`, { data: { items: [{ kind: "character", catalogId: "1001", owned: true }] } });
   const featuring = (...catalogIds: string[]) => catalogIds.map((catalogId) => ({ catalogId, kind: "character", rateUp: true }));
   await page.request.post("/api/admin/payload", {
-    data: { kind: "banners", gameKey: "hsr", items: [{ key: "e2e-featured", name: "E2E featured warp", kind: "character", startsAt: iso(-1), endsAt: iso(0.2), featured: featuring("1009", "1102", "1001") }] },
+    data: { kind: "banners", gameKey: "hsr", items: [{ key: "e2e-featured", name: "E2E featured warp", kind: "character", startsAt: iso(-1), endsAt: iso(0.2), featured: featuring("1009", "1205", "1001") }] },
   });
 
   await page.goto("/?game=hsr");
@@ -53,9 +54,9 @@ test("Home's banners show each banner's featured units, the ones you own marked,
   const featured = card.getByRole("list", { name: "Featured units" });
   await expect(featured.getByRole("listitem")).toHaveCount(3);
   // The 5★ first, then the 4★; the one you own says so.
-  await expect(featured.getByRole("listitem").first()).toHaveAccessibleName("Seele, not owned");
+  await expect(featured.getByRole("listitem").first()).toHaveAccessibleName("Blade, not owned");
   await expect(featured.getByRole("listitem", { name: "March 7th, owned" })).toBeVisible();
-  // 1,600 Stellar Jade and 3 passes: 13 warps toward Seele.
+  // 1,600 Stellar Jade and 3 passes: 13 warps toward Blade.
   await expect(card.getByTestId("banner-chance")).toHaveText(/^\d+% with 13 pulls$/);
 });
 
