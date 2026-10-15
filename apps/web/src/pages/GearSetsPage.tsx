@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient, type QueryClient, type QueryKey } from "@tanstack/react-query";
 import { GearPiece, getGame, type CatalogGearSet, type CharacterDto, type GameDefinition, type GearPieceDto } from "@gacha/shared";
 import { LoadError } from "../components/LoadError";
 import { useToast } from "../lib/toast";
@@ -13,6 +13,18 @@ import { Picker } from "../components/Picker";
 import { assetUrl, communityAssetUrl } from "../lib/assets";
 import { StatIcon } from "../components/StatIcon";
 import type { InstanceDetail } from "../lib/types";
+
+/**
+ * Refetches the bag and the builds together and stores both at once, so a piece moved between them (To bag, Equip on)
+ * never shows twice in between: their answers used to land a moment apart, the piece in the bag and still on its wearer.
+ * Then the other queries that read them.
+ */
+async function refreshPieces(queryClient: QueryClient, instanceId: string, others: QueryKey[]) {
+  const [bag, builds] = await Promise.all([api.get<GearPieceDto[]>(`/api/instances/${instanceId}/gear`), api.get<CharacterDto[]>(`/api/instances/${instanceId}/characters`)]);
+  queryClient.setQueryData(["gear", instanceId], bag);
+  queryClient.setQueryData(["builds", instanceId], builds);
+  await Promise.all(others.map((queryKey) => queryClient.invalidateQueries({ queryKey })));
+}
 
 type Sub = { stat: string; value: number | string };
 type DocPiece = { setName?: string; mainStat?: string; level?: number; substats?: Sub[] };
@@ -353,7 +365,7 @@ function PieceColumn({ instanceId, game, piece, set, slotLabel, builds, onOpenSe
   const queryClient = useQueryClient();
   const toast = useToast();
   const { index } = useCatalog(game.key);
-  const refresh = () => Promise.all([["gear", instanceId], ["builds", instanceId], ["characters", instanceId]].map((queryKey) => queryClient.invalidateQueries({ queryKey })));
+  const refresh = () => refreshPieces(queryClient, instanceId, [["characters", instanceId]]);
   const equip = useMutation({ mutationFn: (characterId: string) => api.post(`/api/gear/${piece.bagId}/equip`, { characterId }), onSuccess: refresh, onError: () => toast("Could not equip it", "err") });
   const unequip = useMutation({ mutationFn: () => api.post(`/api/characters/${piece.wearer!.id}/unequip`, { slot: piece.slot }), onSuccess: refresh, onError: () => toast("Could not unequip it", "err") });
   const remove = useMutation({ mutationFn: () => api.del(`/api/gear/${piece.bagId}`), onSuccess: refresh, onError: () => toast("Could not delete it", "err") });
@@ -456,7 +468,7 @@ function SetPanel({ instanceId, game, set, pieces, builds, onClose }: { instance
   const [slot, setSlot] = useState(slots[0]?.key ?? "");
   const ref = useRef<HTMLElement>(null);
   useDismiss(ref, onClose);
-  const refresh = () => Promise.all([["gear", instanceId], ["builds", instanceId], ["characters", instanceId], ["tasks"]].map((queryKey) => queryClient.invalidateQueries({ queryKey })));
+  const refresh = () => refreshPieces(queryClient, instanceId, [["characters", instanceId], ["tasks"]]);
   const add = useMutation({ mutationFn: (body: { slot: string; mainStat: string; level: number }) => api.post(`/api/instances/${instanceId}/gear`, { setName: set.name, ...body }), onSuccess: refresh, onError: () => toast("Could not add the piece", "err") });
   const equip = useMutation({ mutationFn: (request: { pieceId: string; characterId: string }) => api.post(`/api/gear/${request.pieceId}/equip`, { characterId: request.characterId }), onSuccess: refresh, onError: () => toast("Could not equip it", "err") });
   const unequip = useMutation({ mutationFn: (request: { characterId: string; slot: string }) => api.post(`/api/characters/${request.characterId}/unequip`, { slot: request.slot }), onSuccess: refresh, onError: () => toast("Could not unequip it", "err") });
