@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-16 · claude · stack/r18/01-nav · #338
+- Done: round 12 (Georges: "i need icons and visuals first"; "make the navbar better"; "find me some assets artifacts to fill some icons like the nav bar ones"). Every game gets a drawn emblem (`GameMark`: a primogem, a warp star in orbit, a bolt on a screen, a sound wave, a hexagon core, a die), tinted by its accent and named for screen readers where it stands alone; it replaces the boxed gamepad placeholder in the scope strip, the Library, the goal cards, the task chips and the hub header. The rail's icons are plain pictures now (grid, gamepad, ticked box, flag, sliders) at 28 px over 12 px labels; the strip and its chips grow to 44–50 px.
+- Tests: written first: the Library journey expects the named emblem (never a letter); the strip journey reads the emblem as each game's icon.
+- Scope/decisions: the emblems are ours (drawn SVG, committable; ADR 0006 keeps game art out of the repo); a real logo the owner drops into the store later still wins in the hub header.
+- Next: the whole UI scaled to Georges's screens.
+
 ## 2026-10-15 · claude · stack/r17/02-handoff · #337
 - Done: production deployed at #336 at Georges's word ("deploy this version"), the gear page's typed substats and Equip on included; the handoff says so.
 - Tests: docs only; the deploy's smoke checks pass.
@@ -248,9 +254,3 @@ Entry format:
 - Tests: written first: ZZZ's seven currencies and Genshin's six by kind; ZZZ's dashboard shows the premium and ticket icons in Pulls and the stamina icon in Battery Charge; its Pulls page shows premium, ticket and standard icons.
 - Scope/decisions: round 7 already added icons for stats (#284), gear sets (#284, #288), weapons (#287, #289), games in the strip (#292), priority (#290) and wishes (#291); currencies were the remaining text-only rows.
 - Next: round 7's audit, the hand-off.
-
-## 2026-10-14 · claude · stack/r10/18-endfield-art · #297
-- Done: Endfield's art (Georges, round 7: "add the weapons tracking and character art and everything else related to Endfield"). The importer reads the file tree of the Endaxis timeline tool (github.com/Lieyuan621/Endaxis, pinned to commit 1cd67de) and keys each catalog entry to a file that is there: each operator's avatar and portrait (operators/<English name>/…, both Endministrators sharing one), each weapon's icon (weapons/<kind>/<weapon id>), each gear set's (a body piece of its suit's folder). All 29 operators, 71 weapons and 22 sets have art. The manifest's art sources point at raw.githubusercontent.com at that commit, which the CSP now allows (server headers and vercel.json alike). Weapons were already tracked (Weapons screen and the sheet's window).
-- Tests: written first: Perlica's avatar and portrait keys, the Endministrator's shared folder, at least 28 operators, Greatsword 0003's icon and 60 weapons, a set's icon from its suit folder, the art URL at the pinned commit; the CSP allows raw.githubusercontent.com.
-- Scope/decisions: Endaxis has no licence, so its files are linked, never copied, as with the other community sources until the R2 mirror (ADR 0006) holds them; the commit is pinned so a renamed file cannot break a key. In-browser check: the 20 portraits on Endfield's Characters screen load. PR screenshots keep outside art blocked, so this PR has none.
-- Next: the full check over PRs 17 and 18; then the icon pass.
