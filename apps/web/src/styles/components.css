@@ -144,15 +144,17 @@ tbody tr:hover { background: var(--surface-2); }
 .carousel-band { position: absolute; left: 0; bottom: 28px; min-width: 210px; max-width: calc(100% - 72px); }
 .carousel-title { font-size: 26px; line-height: 1.1; }
 .carousel-sub { margin-top: 4px; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
-/* A banner's featured units (round 11): top left, the top ones larger, the ones you own ticked, a top one you lack ringed. */
-.carousel-featured { position: absolute; left: 16px; top: 16px; display: flex; align-items: flex-end; gap: 8px; margin: 0; padding: 0; list-style: none; }
-.carousel-unit { position: relative; width: 48px; height: 48px; }
-.carousel-unit.is-top { width: 72px; height: 72px; }
-.carousel-unit a { display: block; width: 100%; height: 100%; }
-.carousel-unit .gicon { width: 100%; height: 100%; background: var(--surface-2); border: 1px solid var(--hairline-strong); }
-.carousel-unit.is-top:not(.is-owned) .gicon { border: 2px solid var(--accent); }
-.carousel-unit.is-owned::after { content: "✓"; position: absolute; right: -5px; top: -5px; width: 20px; height: 20px; display: grid; place-items: center; background: var(--paper); color: var(--on-paper); font: 600 13px/1 var(--font-mono); pointer-events: none; }
-.carousel-more { align-self: center; padding: 4px 8px; background: var(--surface-2); font-size: 13px; }
+/* A banner's featured units (round 11): the top ones larger, the ones you own ticked, a top one you lack ringed. */
+.featured-units { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.featured-unit { position: relative; width: 48px; height: 48px; }
+.featured-unit.is-top { width: 72px; height: 72px; }
+.featured-unit a { display: block; width: 100%; height: 100%; }
+.featured-unit .gicon { width: 100%; height: 100%; background: var(--surface-2); border: 1px solid var(--hairline-strong); }
+.featured-unit.is-top:not(.is-owned) .gicon { border: 2px solid var(--accent); }
+.featured-unit.is-owned::after { content: "✓"; position: absolute; right: -5px; top: -5px; width: 20px; height: 20px; display: grid; place-items: center; background: var(--paper); color: var(--on-paper); font: 600 13px/1 var(--font-mono); pointer-events: none; }
+.featured-more { align-self: center; padding: 4px 8px; background: var(--surface-2); font-size: 13px; }
+/* On Home's banner card: top left, over the art. */
+.carousel-featured { position: absolute; left: 16px; top: 16px; flex-wrap: nowrap; }
 .carousel-chance { margin-top: 6px; font-size: 13px; }
 .carousel-empty { position: absolute; inset: 0; display: grid; place-items: center; margin: 0; color: var(--text-muted); }
 .carousel-bar { position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: var(--hairline); }

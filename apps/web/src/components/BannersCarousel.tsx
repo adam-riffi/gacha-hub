@@ -4,12 +4,9 @@ import type { HomeCarousel } from "../lib/carousel";
 import type { RosterEntry } from "../lib/roster";
 import { assetUrl, communityAssetUrl, splashKey } from "../lib/assets";
 import { CarouselCard } from "./Carousel";
-import { CatalogIcon } from "./CatalogIcon";
+import { FeaturedUnits, distinctFeatured } from "./FeaturedUnits";
 import { GameIcon } from "./GameIcon";
 import { Countdown } from "./ui";
-
-/** How many featured units a banner shows on Home; the rest are counted. */
-const SHOWN_UNITS = 5;
 
 /**
  * The Banners card on Home: one running banner at a time, its featured unit's art under a dark layer; it steps per banner
@@ -23,7 +20,7 @@ export function BannersCarousel({ roster, carousel }: { roster: RosterEntry[]; c
   const entry = roster[carousel.pos.game];
   const banner = entry?.banners[carousel.pos.banner];
   const game = banner && getGame(banner.gameKey);
-  const featured = banner ? [...banner.featured].sort((first, second) => (second.rarity ?? 0) - (first.rarity ?? 0)) : [];
+  const featured = banner ? distinctFeatured(banner.featured) : [];
   const lead = featured[0];
   const budget = entry && game ? new PullBudget(game.pullBanners ?? [], entry.game.currencies, entry.game.pity) : null;
   const chance = banner && lead && budget ? budget.chanceOn(banner.kind) : null;
@@ -77,32 +74,7 @@ export function BannersCarousel({ roster, carousel }: { roster: RosterEntry[]; c
               </div>
             )}
           </div>
-          {featured.length > 0 && entry && (
-            <ul className="carousel-featured" aria-label="Featured units">
-              {featured.slice(0, SHOWN_UNITS).map((unit) => {
-                const name = unit.name ?? unit.catalogId;
-                const label = `${name}, ${unit.owned ? "owned" : "not owned"}`;
-                const icon = <CatalogIcon gameKey={banner.gameKey} kind={unit.kind} icon={unit.icon} name={name} />;
-                return (
-                  <li key={`${unit.kind}:${unit.catalogId}`} aria-label={label} title={label} className={`carousel-unit${unit.rarity === lead?.rarity ? " is-top" : ""}${unit.owned ? " is-owned" : ""}`}>
-                    {/* A featured character opens its page, as on the Timeline. */}
-                    {unit.kind === "character" ? (
-                      <Link to={`/games/${entry.game.instanceId}/units/${unit.catalogId}`} aria-label={`Open ${name}`}>
-                        {icon}
-                      </Link>
-                    ) : (
-                      icon
-                    )}
-                  </li>
-                );
-              })}
-              {featured.length > SHOWN_UNITS && (
-                <li className="font-mono carousel-more" aria-label={`${featured.length - SHOWN_UNITS} more`}>
-                  +{featured.length - SHOWN_UNITS}
-                </li>
-              )}
-            </ul>
-          )}
+          {featured.length > 0 && entry && <FeaturedUnits gameKey={banner.gameKey} instanceId={entry.game.instanceId} units={featured} className="carousel-featured" />}
         </>
       ) : (
         <p className="carousel-empty">
