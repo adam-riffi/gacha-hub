@@ -11,6 +11,12 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 // Absolute: Prisma's CLI and client resolve relative SQLite paths differently.
 const env = { ...process.env, DATABASE_URL: `file:${resolve(root, "prisma/e2e.db").replace(/\\/g, "/")}`, DEV_LOGIN_ENABLED: "true", ADMIN_DISCORD_IDS: "dev-local-user", PORT: process.env.PORT ?? "3100" };
 
+// The owner password of the sign-in journey (ADR 0010), hashed as `npm run password:hash` does.
+env.OWNER_PASSWORD_HASH = execFileSync(process.execPath, [resolve(root, "node_modules/tsx/dist/cli.mjs"), "apps/server/src/auth/hashPassword.ts"], { cwd: root, input: "e2e-owner-password\n" })
+  .toString()
+  .trim()
+  .replace(/^OWNER_PASSWORD_HASH=/, "");
+
 for (const suffix of ["", "-journal"]) rmSync(resolve(root, `prisma/e2e.db${suffix}`), { force: true });
 execFileSync(process.execPath, [resolve(root, "scripts/gen-sqlite-schema.mjs")], { stdio: "inherit" });
 // CLIs run through node directly: no shell, the same on every OS.

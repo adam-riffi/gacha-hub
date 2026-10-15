@@ -57,7 +57,8 @@ Mode in Discord (Settings → Advanced), right-click your name → Copy User ID
    | `APP_BASE_URL` | your Vercel URL, e.g. `https://gacha-hub.vercel.app` (no trailing slash) |
    | `SESSION_SECRET` | a long random string (`openssl rand -hex 32`) |
    | `COOKIE_SECURE` | `true` |
-   | `CRON_SECRET` | another random string (step 6) |
+   | `CRON_SECRET` | another random string (step 6); the hourly cron also keeps Supabase's free plan from pausing (ADR 0010) |
+   | `OWNER_PASSWORD_HASH` | the line `npm run password:hash` prints, run on your own computer (ADR 0010: the owner password; only its hash goes to Vercel) |
    | `ADMIN_DISCORD_IDS` | your Discord user id (comma-separated for more) |
    | `DISCORD_CLIENT_ID` / `DISCORD_CLIENT_SECRET` | step 2 |
    | `DISCORD_OAUTH_REDIRECT` | `${APP_BASE_URL}/api/auth/discord/callback` |
