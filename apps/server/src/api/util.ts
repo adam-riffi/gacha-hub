@@ -2,6 +2,7 @@ import type { GameInstance, Prisma } from "../generated/prisma/client.js";
 import { getGame, indexCatalog, sheetStats, type Catalog, type GameDefinition } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
 import { toRegionReset, type RegionReset } from "../lib/resets.js";
+import { DomainError } from "../services/domainError.js";
 
 /** Look up a hardcoded game module by key, or throw a 404. */
 export function gameOrThrow(gameKey: string): GameDefinition {
@@ -48,6 +49,13 @@ export function getCatalog(game: GameDefinition): Promise<LoadedCatalog | null> 
 
 export function loadInstance(userId: string, id: string) {
   return prisma.gameInstance.findFirst({ where: { id, userId } });
+}
+
+/** The user's profile by id; another user's, or none, is not found (ADR 0011: a domain error the error handler answers). */
+export async function instanceOrThrow(userId: string, id: string) {
+  const gameInstance = await loadInstance(userId, id);
+  if (!gameInstance) throw DomainError.notFound();
+  return gameInstance;
 }
 
 export function loadCharacter(userId: string, id: string) {
