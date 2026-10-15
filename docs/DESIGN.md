@@ -88,7 +88,7 @@ gacha/
 
 ## 6. Core design decisions
 
-**Locked product decisions** (owner, 2026-09; not relitigated): every game is a bespoke module and sheet; one owner, signing in with a passkey or the owner password (ADR 0010, superseding Discord-only sign-in); one profile per user per game, region defaults to EU; free hosting only; catalogs come from open datasets through `scripts/catalog`; hard limits on every number (`LIMITS`). ADR 0004 keeps the first one: each module declares a typed manifest in code.
+**Locked product decisions** (owner, 2026-09; not relitigated): every game is a bespoke module and sheet; sign-in with Discord, a passkey or the owner password (ADR 0010), admins listed in `ADMIN_DISCORD_IDS`; one profile per user per game, region defaults to EU; free hosting only; catalogs come from open datasets through `scripts/catalog`; hard limits on every number (`LIMITS`). ADR 0004 keeps the first one: each module declares a typed manifest in code.
 
 **Semantics that must not break**
 - Inventory is the source of truth: a "Farm X" task stores the raw total; its progress is derived from `MaterialStock` at read time.

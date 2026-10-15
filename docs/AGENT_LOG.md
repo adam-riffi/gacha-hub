@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-15 · claude · stack/r16/06-adr-discord-kept · #335
+- Done: ADR 0010 amended at Georges's word ("Let's get back the discord sign in actually"): Discord sign-in stays beside the passkey and the owner password; #334, which removed it, was closed unmerged. DESIGN.md §6, AGENTS.md and PROJECT-GUIDE.md say "Discord, a passkey or the owner password"; DEPLOY.md adds the passkey step and its troubleshooting row. Production deployed at #333 at Georges's word (every migration since #186 ran; the smoke checks pass; `/api/me` reports Discord on, the password off until its hash is set, no passkey yet). The handoff says so.
+- Tests: docs only.
+- Scope/decisions: Discord sign-in stays as it was (anyone with Discord can sign in to their own account; admins in `ADMIN_DISCORD_IDS`); limiting it to Georges's account stays an option.
+- Next: Georges adds a passkey after signing in with Discord, and sets `OWNER_PASSWORD_HASH` and `CRON_SECRET`; ADR 0011's next services.
+
 ## 2026-10-15 · claude · stack/r16/04-passkeys · #333
 - Done: ADR 0010's passkeys. `OwnerPasskeys` (in `apps/server/src/auth/passkeys.ts`, with `@simplewebauthn/server` v14) offers a resident passkey for the app's host (excluding the ones already made), keeps the one the browser proves (its public key, counter and transports in a new `Passkey` table, row level security on), signs its owner in (the authenticator's counter kept), and removes the owner's own. The challenge rides in a signed five-minute cookie scoped to the passkey routes; sign-in takes ten tries a minute. Settings' Account tab lists the passkeys (device and day, added, last used, Remove) with Add a passkey; the login page shows "Sign in with a passkey" once one exists. `@simplewebauthn/browser` loads only when a passkey is used.
 - Tests: written first: the service on the test database with the signature checks stubbed (the offer, the passkey kept and named, an unproven one refused, the sign-in with the counter, an unknown passkey refused, another account's not removable, the sign-in page told, no challenge refused) and a journey with Chrome's test authenticator (added in Settings, signed out, signed in with it, removed). The journey first expected Home after the passkey sign-in; the app keeps you on the page you left (Settings), so it expects that.
@@ -248,9 +254,3 @@ Entry format:
 - Tests: written first: Star Rail's dashboard with 10 days on the Express Supply Pass shows 10 days left, 900 still to collect and 5 pulls; Add 30 days makes it 40, as the server keeps it.
 - Scope/decisions: no daily "collected" tick: the pass pays at each login, so its days counting down are the check.
 - Next: the full check over PRs 14 to 16; then NTE's gear sets and Endfield's art.
-
-## 2026-10-14 · claude · stack/r10/15-topups · #294
-- Done: the top-up history (Georges, round 7: "add a top up history system too"). A `TopUp` table (label, premium currency, price in US cents, when, pass; row level security on; in the export) with `GET/POST /api/instances/:id/topups` and `DELETE …/topups/:topUpId`. Logging the 30-day pass adds its days after the ones left, at a daily reset, refused past its stack (180 for the Welkin). On Pulls, a Top-ups card: each store pack and the pass as a button that logs it (today, or the day picked), the month's, year's and all spending in dollars and currency, and the purchases newest first, each deletable.
-- Tests: written first: integration: two packs listed newest first and one deleted; six Welkins make 180 days and a seventh is refused and not logged; a negative price, an empty label and an amount past the limit refused; a foreign profile 404. Journey (on Star Rail, the smoke journey adding Genshin): 980 + 110 and the Express Supply Pass logged in two clicks, $19.98 and 1,390 this month, the pass at 30 days, and $4.99 all time once the pack is deleted.
-- Scope/decisions: a top-up does not add to the balance (the balance is typed or synced, and would count it twice); deleting a pass top-up leaves the pass's days, typed on Activities. Limits: 1,000,000 currency and $10,000 a top-up, 5,000 top-ups a profile.
-- Next: the 30-day pass on the game's dashboard.

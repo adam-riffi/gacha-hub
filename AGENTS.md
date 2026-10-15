@@ -61,7 +61,7 @@ Keep this table accurate: when you add or change a script, update the table in t
 9. **Log and hand off.** End every PR with a new entry at the top of `docs/AGENT_LOG.md`, and every session by rewriting `HANDOFF.md`, both in the formats of `docs/ENGINEERING.md` §5.
 10. **Reviewing another agent's PR.** Check correctness, that tests came first and test behavior, scope against DESIGN.md, security, and the budgets in DESIGN.md §13; post findings as a PR review.
 
-**Locked product decisions** (DESIGN.md §6; do not relitigate): every game is hardcoded (no generic game builder); one owner signing in with a passkey or the owner password (ADR 0010); one profile per user per game; free hosting only; catalog data comes from the importer pipeline, never typed by hand; hard limits on every number (`LIMITS`).
+**Locked product decisions** (DESIGN.md §6; do not relitigate): every game is hardcoded (no generic game builder); sign-in with Discord, a passkey or the owner password (ADR 0010); one profile per user per game; free hosting only; catalog data comes from the importer pipeline, never typed by hand; hard limits on every number (`LIMITS`).
 
 **Deploys only at Georges's command or a milestone:** `vercel.json` turns Git deployments off (`git.deploymentEnabled: false`), so merging deploys nothing; deploy `main` when he asks (`docs/DEPLOY.md`, Redeploys).
 

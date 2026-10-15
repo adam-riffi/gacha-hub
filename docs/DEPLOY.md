@@ -106,7 +106,9 @@ Back in the Discord application:
   Set `DISCORD_DEV_GUILD_ID` to a test server id for instant registration;
   without it, global commands take up to an hour.
 - Sign in on the site with Discord. Because your id is in `ADMIN_DISCORD_IDS`,
-  the **Admin** page appears.
+  the **Admin** page appears. Then add a passkey in Settings → Account and data
+  (ADR 0010): the login page offers it from then on, beside Discord and the
+  owner password.
 
 > Bot DMs (reminders) require the user to share a server with the bot — a
 > Discord limitation. Invite the bot to a server with the `bot` scope.
@@ -174,5 +176,6 @@ normal (non-pooled) `DATABASE_URL`.
 | Migrations don't run | `DIRECT_DATABASE_URL` (non-pooled) must be set at build time. |
 | Discord "interactions endpoint invalid" | `DISCORD_PUBLIC_KEY` wrong, or the function isn't reachable at `/api/discord/interactions`. |
 | OAuth redirect mismatch | `DISCORD_OAUTH_REDIRECT` must exactly equal the redirect registered in Discord and use `APP_BASE_URL`. |
+| A passkey is refused | `APP_BASE_URL` must be the address the site is opened at: a passkey belongs to that host. |
 | Cookies don't stick | In production set `COOKIE_SECURE=true` and serve over HTTPS (Vercel does). |
 | Uploads fail | Connect a Vercel Blob store so `BLOB_READ_WRITE_TOKEN` is set; serverless has no writable disk. |
