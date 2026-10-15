@@ -21,6 +21,8 @@ export interface Me {
   } | null;
   isAdmin: boolean;
   oauth: boolean;
+  /** The owner password is set (ADR 0010). */
+  passwordSignIn: boolean;
   devLogin: boolean;
 }
 

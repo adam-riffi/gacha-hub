@@ -74,6 +74,11 @@ export const config = {
     devGuildId: envString("DISCORD_DEV_GUILD_ID"),
   },
 
+  /** The owner password's scrypt hash (ADR 0010; made by `npm run password:hash`), read on each use; empty: no password sign-in. */
+  get ownerPasswordHash(): string {
+    return envString("OWNER_PASSWORD_HASH");
+  },
+
   /** Dev-only shortcut login (no Discord app needed). Never on in production. */
   devLoginEnabled: !isProd && bool("DEV_LOGIN_ENABLED", true),
 } as const;
