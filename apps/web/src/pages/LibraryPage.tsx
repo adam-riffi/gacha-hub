@@ -7,9 +7,9 @@ import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
 import { formatRemaining } from "../lib/time";
 import { pullsFor } from "../lib/format";
-import { GameIcon } from "../components/GameIcon";
 import { Count } from "../components/home/PullsCard";
 import type { DashboardData, GameCatalogItem } from "../lib/types";
+import { GameMark } from "../components/GameMark";
 
 type DashGame = DashboardData["games"][number];
 
@@ -154,7 +154,7 @@ function GameRow(props: {
       }}
     >
       <span className="lib-grip" aria-hidden="true">≡</span>
-      <GameIcon src={game?.art?.icon ?? null} alt={dashGame.name} glyph="game" tint={game?.accent} className="lib-icon" />
+      <GameMark gameKey={dashGame.gameKey} named className="lib-icon" />
       <div className="lib-name">
         <h2 style={{ ["--c" as string]: dashGame.accent }}>{dashGame.name}</h2>
         <div className="font-mono text-muted">

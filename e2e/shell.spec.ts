@@ -93,7 +93,8 @@ test("the selected game spells its full name, each game with its icon; the rail'
   const strip = page.getByRole("navigation", { name: "Scope" });
   const hsr = strip.getByRole("link", { name: "Honkai: Star Rail" });
   await expect(hsr).not.toContainText("Honkai");
-  await expect(hsr.getByRole("img")).toHaveCount(1);
+  // Round 12: the icon is the game's drawn emblem.
+  await expect(hsr.locator("svg.game-mark")).toHaveCount(1);
   await hsr.click();
   await expect(hsr).toHaveAttribute("aria-current", "page");
   await expect(hsr).toContainText("Honkai: Star Rail");
