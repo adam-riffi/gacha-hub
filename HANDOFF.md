@@ -1,8 +1,8 @@
 # Handoff — 2026-10-15 · claude
 
 ## State
-- `main` at #325: round 10 (#312–#314) and round 11's first fifteen PRs (#315–#325) merged. CI green.
-- Open PRs, a stack on `main`: #326 (Home's banners: featured units, yours ticked, your chance) ← #327 (teams and ownership behind services) ← #328 (the Timeline's featured units as icons) ← #329 (this handoff, round 11's audit status). Each merges on green CI, rebased onto `main` after its parent's squash.
+- `main` at #327: round 10 (#312–#314) and round 11's PRs through #327 merged. CI green.
+- Open PRs, a stack on `main`: #328 (the Timeline's featured units as icons) ← #329 (this handoff, round 11's audit status). Each merges on green CI, rebased onto `main` after its parent's squash.
 - Production serves #186 (deployed 2026-10-10 18:52 UTC). Merges do not deploy (#189). The next deploy runs every migration since #186 (`redeemed_codes` the newest). **Georges wants to redo the hosting, database and sign-in first: ADR 0010 (proposed) lists the options and a recommendation to decide together.**
 - Every milestone in DESIGN.md §9 is built, V through F13, and eleven feedback rounds (2026-10-10 to 2026-10-15) are done or under way. What is left needs Georges's secrets, real data or a decision (below), a source for a few details (Next), or is in DESIGN.md §4 "Later".
 
