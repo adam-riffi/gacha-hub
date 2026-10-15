@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-16 · claude · stack/r18/02-readability · #339
+- Done: round 12 ("i am visually impaired and some things are hard for me to read"; a 24-inch and a 32-inch screen). The whole shell zooms with the window: ×1.22 from 1800 px, ×1.55 from 2400 px, so wider never means smaller type (the rail divides its height back, zoom stretching vh). Body text goes 15 → 16 px, the kpi labels 12 → 13 px, muted text brightens a step (#bebebe → #c9c9c9).
+- Tests: a journey reads the computed zoom at 1440, 1920 and 2560.
+- Scope/decisions: `zoom` over a rem rework: one property scales a px-built system cleanly (Chrome and Firefox 126+ both carry it); the journeys keep running at 1440 where zoom is 1.
+- Next: the gear screen.
+
 ## 2026-10-16 · claude · stack/r18/01-nav · #338
 - Done: round 12 (Georges: "i need icons and visuals first"; "make the navbar better"; "find me some assets artifacts to fill some icons like the nav bar ones"). Every game gets a drawn emblem (`GameMark`: a primogem, a warp star in orbit, a bolt on a screen, a sound wave, a hexagon core, a die), tinted by its accent and named for screen readers where it stands alone; it replaces the boxed gamepad placeholder in the scope strip, the Library, the goal cards, the task chips and the hub header. The rail's icons are plain pictures now (grid, gamepad, ticked box, flag, sliders) at 28 px over 12 px labels; the strip and its chips grow to 44–50 px.
 - Tests: written first: the Library journey expects the named emblem (never a letter); the strip journey reads the emblem as each game's icon.
@@ -248,9 +254,3 @@ Entry format:
 - Tests: written first: Memory of Chaos's First half gets Kafka and Silver Wolf in one window, the count 2 / 4 then 1 / 4 after a second click, Kafka on the saved stage; its result shows the star icon; Pure Fiction at 9 shows nine of twelve stars filled. The Abyss and Shiyu journeys pick their teams in the window.
 - Scope/decisions: "difficulty icons" read as each mode's metric by its icon, the game's word beside it.
 - Next: the top-up card at the bottom, each pack in pulls.
-
-## 2026-10-14 · claude · stack/r10/19-currency-icons · #298
-- Done: currencies as icons (Georges, round 7: "add icons wherever there can be; I have an eye condition and it's hard to read small text … I need icons to understand quickly; work on icons, make this as visual as you can"). `currencyKind` (shared) names a currency by what it is: the stamina and its reserve, the premium currency, a limited, standard or one-banner ticket, else a coin; `CurrencyIcon` draws each in the stat icons' line style, in its own colour (green stamina, blue gem, gold ticket, blue standard ticket, violet special ticket, gold coin). On a game's dashboard: the Pulls card's rows, the stamina card (a large bolt beside the figure) and its reserve; on Pulls: the Pulls available table.
-- Tests: written first: ZZZ's seven currencies and Genshin's six by kind; ZZZ's dashboard shows the premium and ticket icons in Pulls and the stamina icon in Battery Charge; its Pulls page shows premium, ticket and standard icons.
-- Scope/decisions: round 7 already added icons for stats (#284), gear sets (#284, #288), weapons (#287, #289), games in the strip (#292), priority (#290) and wishes (#291); currencies were the remaining text-only rows.
-- Next: round 7's audit, the hand-off.
