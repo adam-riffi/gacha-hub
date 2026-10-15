@@ -9,6 +9,7 @@ import { masked } from "../components/hub/HubHeader";
 import { RemindersPanel } from "../components/tasks/RemindersPanel";
 import { AdminPage } from "./AdminPage";
 import type { InstanceListItem, ReminderRule } from "../lib/types";
+import type { PublicKeyCredentialCreationOptionsJSON } from "@simplewebauthn/browser";
 
 const ZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
 const DAY = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" });
@@ -94,7 +95,12 @@ export function SettingsPage() {
             <RemindersPanel games={mine} />
           </div>
         )}
-        {tab === "account" && <AccountData />}
+        {tab === "account" && (
+          <>
+            <Passkeys />
+            <AccountData />
+          </>
+        )}
         {tab === "data" && <AdminPage />}
       </div>
     </div>
@@ -347,6 +353,55 @@ function Notifications({ games }: { games: InstanceListItem[] }) {
         <div><span className="st-k">Daily digest</span><span className="font-mono">{digest ?? "off"}</span></div>
         <div><span className="st-k">Time zone</span><span className="font-mono">{ZONE}</span></div>
       </div>
+    </section>
+  );
+}
+
+type PasskeyItem = { id: string; name: string; createdAt: string; lastUsedAt: string | null };
+const PASSKEY_DAY = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" });
+/** The device a passkey is made on, as its name says (the user agent's platform). */
+const deviceName = () => ["Windows", "Android", "iPhone", "iPad", "Mac", "Linux"].find((platform) => navigator.userAgent.includes(platform)) ?? "This device";
+
+/** The owner's passkeys (ADR 0010): each with when it was added and last used, and Remove; Add a passkey makes one here. */
+function Passkeys() {
+  const queryClient = useQueryClient();
+  const toast = useToast();
+  const { data: passkeys = [] } = useQuery({ queryKey: ["passkeys"], queryFn: () => api.get<PasskeyItem[]>("/api/auth/passkeys") });
+  const show = (list: PasskeyItem[]) => {
+    queryClient.setQueryData(["passkeys"], list);
+    void queryClient.invalidateQueries({ queryKey: ["me"] });
+  };
+  const add = useMutation({
+    mutationFn: async () => {
+      const options = await api.post<PublicKeyCredentialCreationOptionsJSON>("/api/auth/passkeys/options");
+      const { startRegistration } = await import("@simplewebauthn/browser");
+      const response = await startRegistration({ optionsJSON: options });
+      return api.post<PasskeyItem[]>("/api/auth/passkeys", { response, name: `${deviceName()} · ${PASSKEY_DAY.format(new Date())}` });
+    },
+    onSuccess: show,
+    onError: (caught) => toast(caught instanceof DOMException && caught.name === "NotAllowedError" ? "Passkey cancelled" : "Could not add the passkey", "err"),
+  });
+  const remove = useMutation({ mutationFn: (passkeyId: string) => api.del<PasskeyItem[]>(`/api/auth/passkeys/${encodeURIComponent(passkeyId)}`), onSuccess: show, onError: () => toast("Could not remove it", "err") });
+  return (
+    <section className="card" aria-label="Passkeys">
+      <h3>Passkeys</h3>
+      <ul className="st-passkeys">
+        {passkeys.map((passkey) => (
+          <li key={passkey.id}>
+            <span>{passkey.name}</span>
+            <span className="font-mono text-muted">
+              added {PASSKEY_DAY.format(new Date(passkey.createdAt))}
+              {passkey.lastUsedAt ? ` · last used ${PASSKEY_DAY.format(new Date(passkey.lastUsedAt))}` : ""}
+            </span>
+            <button type="button" className="btn ghost" aria-label={`Remove ${passkey.name}`} disabled={remove.isPending} onClick={() => remove.mutate(passkey.id)}>
+              Remove
+            </button>
+          </li>
+        ))}
+      </ul>
+      <button type="button" className="btn primary" disabled={add.isPending} onClick={() => add.mutate()}>
+        Add a passkey
+      </button>
     </section>
   );
 }

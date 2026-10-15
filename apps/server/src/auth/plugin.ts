@@ -14,22 +14,14 @@ import {
   deleteSession,
   getSessionUser,
   ownerAccount,
+  setSessionCookie,
   upsertDiscordUser,
 } from "./sessions.js";
+import { registerPasskeyRoutes } from "./passkeys.js";
+import { prisma } from "../lib/prisma.js";
 import { OwnerPassword } from "./ownerPassword.js";
 
 const passwordSignInInput = z.object({ password: z.string().max(200) });
-
-function setSessionCookie(reply: FastifyReply, id: string, expiresAt: Date) {
-  reply.setCookie(SESSION_COOKIE, id, {
-    path: "/",
-    httpOnly: true,
-    sameSite: "lax",
-    secure: config.cookieSecure,
-    signed: true,
-    expires: expiresAt,
-  });
-}
 
 export function clearSessionCookie(reply: FastifyReply) {
   reply.clearCookie(SESSION_COOKIE, { path: "/" });
@@ -134,6 +126,7 @@ export async function registerAuth(app: FastifyInstance) {
       isAdmin: req.isAdmin,
       oauth: hasDiscordOAuth(),
       passwordSignIn: Boolean(config.ownerPasswordHash),
+      passkeySignIn: (await prisma.passkey.count()) > 0,
       devLogin: config.devLoginEnabled,
     };
   });
@@ -149,6 +142,9 @@ export async function registerAuth(app: FastifyInstance) {
     setSessionCookie(reply, session.id, session.expiresAt);
     return { user };
   });
+
+  // ---- Passkeys (ADR 0010) ----
+  await registerPasskeyRoutes(app, requireUser);
 
   // ---- Logout ----
   app.post("/api/auth/logout", async (req, reply) => {

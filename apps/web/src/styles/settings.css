@@ -27,6 +27,10 @@
 .st-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
 .st-rows > div { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 48px; border-top: 1px solid var(--surface-3); }
 .st-k { color: var(--text); }
+/* The owner's passkeys (ADR 0010): one row each, Remove at its end. */
+.st-passkeys { margin: 0 0 14px; padding: 0; list-style: none; }
+.st-passkeys li { display: flex; align-items: center; gap: 16px; min-height: 48px; border-top: 1px solid var(--surface-3); }
+.st-passkeys li > span:first-child { flex: 1; font-size: 16px; }
 .st-confirm { display: grid; gap: 8px; padding: 12px 0; border-top: 1px solid var(--surface-3); }
 .st-confirm label { display: grid; gap: 6px; margin: 0; }
 .st-wide { display: flex; align-items: center; justify-content: center; margin-top: 12px; }

@@ -1,9 +1,22 @@
 import { randomBytes } from "node:crypto";
+import type { FastifyReply } from "fastify";
 import type { User } from "../generated/prisma/client.js";
 import { config } from "../config.js";
 import { prisma } from "../lib/prisma.js";
 
 export const SESSION_COOKIE = "gacha_session";
+/** The signed session cookie, for every way in (password, passkey, the dev shortcut). */
+export function setSessionCookie(reply: FastifyReply, id: string, expiresAt: Date) {
+  reply.setCookie(SESSION_COOKIE, id, {
+    path: "/",
+    httpOnly: true,
+    sameSite: "lax",
+    secure: config.cookieSecure,
+    signed: true,
+    expires: expiresAt,
+  });
+}
+
 /** Discord id of the dev-login shortcut user (dev builds only). */
 export const DEV_LOGIN_DISCORD_ID = "dev-local-user";
 const SESSION_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days

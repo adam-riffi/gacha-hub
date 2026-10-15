@@ -33,6 +33,25 @@ model User {
   effects       EffectApplication[]
   links         LinkedAccount[]
   importRuns    ImportRun[]
+  passkeys      Passkey[]
+}
+
+/// A passkey of the owner (ADR 0010): a WebAuthn credential, its public key and the authenticator's signature counter.
+model Passkey {
+  /// The credential's id (base64url), as the authenticator names it.
+  id         String    @id
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  publicKey  Bytes
+  counter    Int       @default(0)
+  /// The transports the authenticator offers, comma-separated, to hint the browser next time.
+  transports String    @default("")
+  /// What tells it apart in Settings: the device it was made on and the day.
+  name       String
+  createdAt  DateTime  @default(now())
+  lastUsedAt DateTime?
+
+  @@index([userId])
 }
 
 /// Server-side session backing the signed cookie.
