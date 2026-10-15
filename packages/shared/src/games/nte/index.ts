@@ -44,7 +44,7 @@ export const nte: GameDefinition = {
   name: "Neverness to Everness",
   shortName: "NTE",
   accent: "#1F9BFF",
-  art: { icon: "/games/nte/icon.png", background: "/games/nte/background.jpg" },
+  art: { icon: "/games/nte/icon.png", background: "/games/nte/background.jpg", hero: "Game/UI/UI/Gacha/YH_lihui_character_zaowu" },
   regions: nteRegions,
   currencies: [
     { key: "pixels", label: "Character Pixels", cap: 240, regenPerHour: 10, icon: "Game/UI/UI_Icon/Item/energy" },

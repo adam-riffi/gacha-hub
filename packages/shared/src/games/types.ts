@@ -131,6 +131,8 @@ export interface GameArt {
   /** Served from apps/web/public — e.g. "/games/genshin/icon.png". */
   icon?: string;
   background?: string;
+  /** The game's card art: a `splash`-kind key of a character in its catalog, chosen by hand (round 12). */
+  hero?: string;
 }
 
 export interface GameDefinition {

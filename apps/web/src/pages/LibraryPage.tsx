@@ -10,6 +10,7 @@ import { pullsFor } from "../lib/format";
 import { Count } from "../components/home/PullsCard";
 import type { DashboardData, GameCatalogItem } from "../lib/types";
 import { GameMark } from "../components/GameMark";
+import { HeroArt } from "../components/HeroArt";
 
 type DashGame = DashboardData["games"][number];
 
@@ -153,6 +154,7 @@ function GameRow(props: {
         props.onDrop();
       }}
     >
+      <HeroArt gameKey={dashGame.gameKey} className="lib-hero" />
       <span className="lib-grip" aria-hidden="true">≡</span>
       <GameMark gameKey={dashGame.gameKey} named className="lib-icon" />
       <div className="lib-name">

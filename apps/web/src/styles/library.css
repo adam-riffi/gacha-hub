@@ -12,7 +12,11 @@
 .lib-row.is-dragging { opacity: 0.4; }
 .lib-row.is-over { border-color: var(--accent); }
 .lib-grip { color: var(--text-muted); font-size: 18px; text-align: center; }
-.lib-icon { width: 48px; height: 48px; }
+.lib-icon { width: 48px; height: 48px; flex: none; z-index: 1; }
+/* The game's hero across the card's right, fading into the card (round 12). */
+.lib-hero { position: absolute; right: 0; top: 0; bottom: 0; width: 46%; mask-image: linear-gradient(90deg, transparent, #000 55%); opacity: 0.6; pointer-events: none; }
+.lib-row { position: relative; overflow: hidden; }
+.lib-row > :not(.lib-hero) { position: relative; z-index: 1; }
 .lib-name h2 { margin: 0 0 4px; font-size: 22px; }
 .lib-name .font-mono { font-size: 12px; }
 .lib-name .badge { margin-top: 6px; }

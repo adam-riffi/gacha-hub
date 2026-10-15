@@ -4,6 +4,7 @@ import type { RosterEntry } from "../../lib/roster";
 import { CarouselCard } from "../Carousel";
 import { Countdown } from "../ui";
 import { SegmentedBar } from "../charts/SegmentedBar";
+import { HeroArt } from "../HeroArt";
 
 /**
  * The battle pass per game (VISUAL-DESIGN.md §10): the pass's name and
@@ -39,7 +40,8 @@ export function PassCard({ roster, carousel }: { roster: RosterEntry[]; carousel
     >
       {rosterGame && game && (
         <>
-          <div className="carousel-hatch" aria-hidden="true" />
+          <HeroArt gameKey={rosterGame.gameKey} className="carousel-hero" />
+          <div className="carousel-hatch is-overlay" aria-hidden="true" />
           {pass && ends && (
             <div className="carousel-tag">
               <Countdown at={ends.toISOString()} prefix="ends in" variant="tag" />
