@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-15 · claude · stack/r16/02-gear-refresh · #331
+- Done: a gear piece moved to the bag (or equipped from it) showed twice for a moment, in the bag and still on its wearer: the page refetched the bag and the builds separately and their answers landed apart. Both are now refetched together and stored at once (`refreshPieces`), then the other queries that read them.
+- Tests: the gear journey caught it (strict mode: two tiles for one piece, in one full run of #330's check); it passes three runs in a row and in the full check.
+- Scope/decisions: no optimistic update; one render with both answers is enough.
+- Next: the owner password sign-in (ADR 0010).
+
 ## 2026-10-15 · claude · stack/r16/01-adr-0010 · #330
 - Done: ADR 0010 accepted with Georges: Supabase stays (the hourly cron, once `CRON_SECRET` is set, keeps its free plan from pausing), Vercel stays, and one owner signs in with a passkey or the owner password, Discord sign-in removed (the reminder bot stays). The sample data stays until v1. DESIGN.md §6, AGENTS.md and PROJECT-GUIDE.md no longer say "Discord-only sign-in".
 - Tests: docs only; the full check passes.
@@ -248,9 +254,3 @@ Entry format:
 - Tests: written first: Star Rail's tab shows its icon and no "Honkai" until picked, then its full name, not cut; the rail's Tasks icon at least 22 px; Home's item, current, filled.
 - Scope/decisions: no counts on the rail: they would ask the server on every page.
 - Next: the full check over PRs 10 to 13, then free pulls as monthly goals, top-up history, the daily login pass.
-
-## 2026-10-14 · claude · stack/r10/12-banner-colours · #291
-- Done: the timeline's visual language (Georges, round 7: "on the banners/events screen there should be a visual language: banners of the colour of the game, BPs a certain colour/tint, the same for endgames and another for wishlist … wishlisted events should be more visible … fix the crooked icons: there are two buttons, one always on and crooked"). Banners keep their game's colour; events are tinted and edged in it; endgame cycles are red (outlined, faintly filled), passes teal and striped; anything wished (a banner featuring a unit you wish for, an event you wished or whose rewards name one) is outlined in gold with a ★ before its name. The legend has one box per layer, the checkbox itself, in the layer's colour (banners and events in the games' colours), filled when on and centred on its words; the separate swatch beside each checkbox is gone.
-- Tests: written first: on Star Rail's timeline no swatch is left and the Banners box is centred on its words; a wished event carries a "Wishlisted" star and a plain one none; events, wishes, endgames and passes have four different edge colours, an event's edge being its game's banner colour.
-- Scope/decisions: the colours (red, teal, gold) are the app's; they stand apart from the six games' accents.
-- Next: the navbar and the game tabs.
