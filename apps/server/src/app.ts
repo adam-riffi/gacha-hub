@@ -8,6 +8,7 @@ import { registerAuth } from "./auth/plugin.js";
 import { registerApi } from "./api/index.js";
 import { SECURITY_HEADERS } from "./lib/securityHeaders.js";
 import { recordDays } from "./lib/dayRecord.js";
+import { DomainError } from "./services/domainError.js";
 
 /**
  * Builds the Fastify app (routes, auth, parsers) without binding a port.
@@ -42,6 +43,10 @@ export async function buildApp(): Promise<FastifyInstance> {
   app.setErrorHandler((err: FastifyError, _req, reply) => {
     if (err instanceof ZodError) {
       return reply.code(400).send({ error: "validation_error", issues: err.issues });
+    }
+    // A request the domain refuses (ADR 0011's services): its status, its code and what it names.
+    if (err instanceof DomainError) {
+      return reply.code(err.statusCode).send({ error: err.code, ...err.details });
     }
     const status = err.statusCode ?? 500;
     // Expected client errors (e.g. lookup 404s) aren't worth an error-level log.

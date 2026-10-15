@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-15 · claude · stack/r15/07-services · #327
+- Done: ADR 0011's thin routes, first two areas. `TeamService` and `OwnershipService` (in `apps/server/src/services`) hold a profile's Prisma calls and their checks (members and companion of the game's, catalog ids, a weapon's meta). A refusal is a `DomainError` (status, code, details) that the error handler answers as the routes did inline, `{ error: code, ...details }`; `instanceOrThrow` finds the user's profile or answers not found. The team and ownership routes are a line each. DESIGN.md §6 lists the objects and services so far.
+- Tests: written first: each service on the test database (teams created, listed in order, edited, removed; members, companions and another profile's team refused as domain errors; ownership owned and dropped in bulk, unknown ids and an out-of-bounds weapon meta refused with nothing saved). The routes' own integration tests pass unchanged.
+- Scope/decisions: the other route files keep their inline Prisma calls for now; each moves behind a service as its area is next touched (`instanceOrThrow` replaces their 52 `loadInstance` + 404 pairs as they move).
+- Next: the characters and weapons routes behind services; then the pulls.
+
 ## 2026-10-15 · claude · stack/r15/06-banner-featured · #326
 - Done: round 11's review, Home: each banner on the Banners card shows its featured units as icons (the top rarity larger, a top unit you lack ringed in the accent, the ones you own ticked; a character opens its page) and your chance at its top unit with the pulls you hold ("67% with 90 pulls"). The chance comes from a new `PullBudget` object (ADR 0011: a game's pulls on hand and pity per banner type; `pullsOn(kind)` counts a banner's own tickets where the game has some, `chanceOn(kind)` reads the pity and the 50/50 guarantee). A weapon banner's art is its weapon, whole on the right (weapons have no splash; the broken picture showed its name). A long title's band leaves the next arrow visible.
 - Tests: written first: a journey (a banner featuring Blade, March 7th owned and Asta: three icons, Blade (the 5★) first and "not owned", March 7th "owned", "N% with 13 pulls") and unit tests for `PullBudget` (13 warps from 1,600 Jade and 3 passes, the pity read, a guarantee raising the chance, Endfield's Arsenal tickets only on its weapon banner).
@@ -248,9 +254,3 @@ Entry format:
 - Tests: written first: a Musketeer body (CRIT Rate, +9) added from the pieces shows in the bag with its set's icon at least 48 px and its main stat's icon; the first set card keeps its place and width when Musketeer's panel opens, the panel being fixed.
 - Scope/decisions: the weapons' panel follows the gear's for one behaviour across screens.
 - Next: the weapon window on the sheet.
-
-## 2026-10-14 · claude · stack/r10/08-weapon-cards · #287
-- Done: weapon cards (Georges, round 7: "the weapon screen has very small cards that are hard to identify their rarity and see the character icons"). Each card stands upright: the weapon's art at 100 px on a band in its rarity's colour (3★ blue, 4★ violet, 5★ gold, 6★ orange) with its stars, the name, the level large with the refinement beside it, the type and main stat by its icon, the wielders' icons at 40 px in a row. Weapons not held keep the dashed, dimmed look.
-- Tests: written first: Kafka's Patience Is All You Need card shows its art at least 88 px wide, a 5★ band with a colour, and Kafka's icon at least 36 px wide.
-- Scope/decisions: rarity colours are the app's (the games use their own shades of the same hues).
-- Next: the gear screen.
