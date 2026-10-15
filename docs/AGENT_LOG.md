@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-16 · claude · stack/r18/04-currency-icons · #341
+- Done: round 12 ("find some game sources/data to populate static informations such as icons"). Every currency of five games shows its game's own icon: each names a key of its manifest's material art source, every URL checked 200 by hand on 2026-10-16 — Genshin from Enka's item icons (resin 210, condensed 211, primogems 201, the fates 223/224, mora 202), Star Rail from Yatta's (ids read from StarRailRes: power 11/12, jade 900001, passes 101/102, credits 2), Zenless and NTE from Hakushin (IconStamina, IconCurrency, the GachaTickets, the dice, Annulith, Fons), Wuthering Waves from wuthery (keys from WutheringData's item table: Waveplate, Astrite, the Tides, Shell Credits). `CurrencyIcon` shows the picture and keeps its drawn line icon as the fallback when a source is down; the wallet, the dashboards, the Pulls table and the top-up packs pick it up.
+- Tests: written first: the wallet journey finds Stellar Jade's own icon (`img.cur-art[src*='900001']`); the older icon journeys accept art or glyph.
+- Scope/decisions: Endfield has no item-icon source (Endaxis's tree holds none), so its glyphs stay; the research is in ASSETS.md.
+- Next: hero art on the cards.
+
 ## 2026-10-16 · claude · stack/r18/03-gear-remake · #340
 - Done: round 12 ("fix the gear screen once and for all. it needs to be readable understandable and easy to use"). Every tile names its set in words (up to two lines) — it was only knowable from the art — with the art up from 92 to 118 px, the main stat large (or the slot where none is typed, never a bare dash), the slot and "Crit value n" spelled out (no more "CV 42"), a paper Bag chip and a larger wearer portrait. The chosen-piece column widens to 420 px.
 - Tests: written first: the tile journey reads the set from `.gb-set`, the art at 100 px and up, "Crit value" in words and no "CV n" anywhere on it.
@@ -248,9 +254,3 @@ Entry format:
 - Tests: written first: the default and an older pick of four come to three; the API refuses four for the game and for a build; Serval's unbuilt card shows CRIT Rate, HP and ATK; on Qingque a fourth pick (ATK) drops HP. Two sheet journeys set SPD among their build's card stats, Kafka's first three being ATK and her crits.
 - Scope/decisions: the sheet's tiles follow the card's three until the next PR turns every stat into a card.
 - Next: every stat a card on the sheet.
-
-## 2026-10-14 · claude · stack/r11/02-topups-bottom · #300
-- Done: the top-ups (Georges, round 8: "top up takes too much space: it should be at the very bottom, more visual, with a direct conversion of pack to pulls"). The Top-ups card and the Top-up to 100% card sit side by side at the very bottom of Pulls, under the savings planner and the history. Each pack's button leads with its pulls (its premium currency over a pull's cost, the gem icon beside: 980 + 110 is 6 pulls, 6480 + 1600 is 50), then the pack and its price; the pass counts its upfront part and its dailies over its days (18 for the Express Supply Pass). The totals add their pulls; the list shows the latest five, All n for the rest.
-- Tests: written first: on Star Rail, 980 + 110 shows 6 pulls, 6480 + 1600 50, the pass 18; the card sits below Pulls available and the planner and history.
-- Scope/decisions: a pack under one pull shows 0; the pass's pulls assume its full 30 days.
-- Next: three stats on a character's card.
