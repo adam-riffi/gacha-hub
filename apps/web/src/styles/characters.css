@@ -202,8 +202,12 @@
 .un-banner-history th { padding: 8px; border-bottom: 1px solid var(--hairline); color: var(--text-muted); font: 400 12px/1 var(--font-mono); letter-spacing: 0.06em; text-align: left; text-transform: uppercase; }
 .un-banner-history td { padding: 8px; border-bottom: 1px solid var(--surface-3); }
 /* A unit's last banner on its card (round 11). */
-.last-seen-chip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 8px; border: 1px solid var(--hairline); color: var(--text); font-size: 12px; }
-.last-seen-icon { width: 16px; height: 16px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; }
+.last-seen-chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 9px; border: 1px solid var(--hairline); color: var(--text); font-size: 13px; }
+.last-seen-icon { width: 17px; height: 17px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; }
+/* Its state in colour (round 12): on a banner now in the accent, a dated return in the paper, long gone muted. */
+.last-seen-chip[data-state="now"] { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+.last-seen-chip[data-state="now"] .last-seen-icon { fill: currentColor; }
+.last-seen-chip[data-state="returning"] { background: var(--paper); border-color: var(--paper); color: var(--on-paper); font-weight: 600; }
 /* All, Owned, Not owned and Wishlist with their counts (round 11). */
 .ownership-filter { display: flex; flex-wrap: wrap; gap: 8px; }
 .wp-body .last-seen-chip { justify-self: start; margin-top: 4px; }
