@@ -32,11 +32,13 @@ describe("route guards stop the request", () => {
     return r;
   };
 
-  it("an admin route writes nothing for a signed-in user who is not an admin", async () => {
+  // ADR 0010: one owner; another account's session (one left from the Discord sign-in) counts for nothing.
+  it("an admin route writes nothing for an account that is not the owner's", async () => {
+    await prisma.user.create({ data: { discordId: "owner", username: "Owner", createdAt: new Date(Date.now() - 60_000) } });
     const friend = await prisma.user.create({ data: { discordId: "friend", username: "Friend" } });
     const { id } = await createSession(friend.id);
     const r = await post("/api/admin/payload", banners, `${SESSION_COOKIE}=${app.signCookie(id)}`);
-    expect(r.statusCode).toBe(403);
+    expect(r.statusCode).toBe(401);
     expect(await prisma.banner.count()).toBe(0);
     expect(await prisma.auditLog.count()).toBe(0);
   });
