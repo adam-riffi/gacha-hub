@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-15 · claude · stack/r16/03-owner-password · #332
+- Done: ADR 0010's first sign-in, the owner password. `OwnerPassword` hashes with Node's own scrypt (cost 2^15, a 16-byte salt, `scrypt$<cost>$<salt>$<key>`) and compares in constant time; `npm run password:hash` prints the `OWNER_PASSWORD_HASH` line to set in Vercel (12 characters at least; only the hash leaves the terminal). `POST /api/auth/password` signs the owner in, five tries a minute from one address; the owner's account is the admin's (`ADMIN_DISCORD_IDS`), else the oldest that is not the dev shortcut's, else a new one. The login page has a large Owner password field with "Wrong password" and "Too many tries" in words. DEPLOY.md, `.env.example` and AGENTS.md list the hash and the command.
+- Tests: written first: unit (the hash matches only its password, is salted, a malformed hash matches nothing), integration (right and wrong passwords, one account each time, the sixth try in a minute refused, no hash set: sign-in off), a journey (a wrong password refused, the right one opens Home; the journeys' server hashes its own).
+- Scope/decisions: the hash is read on each use (a getter), so it can change without a redeploy of the code. Discord sign-in stays until the stack's last PR.
+- Next: passkeys (`@simplewebauthn/server` and `/browser` v14), added from Settings once signed in.
+
 ## 2026-10-15 · claude · stack/r16/02-gear-refresh · #331
 - Done: a gear piece moved to the bag (or equipped from it) showed twice for a moment, in the bag and still on its wearer: the page refetched the bag and the builds separately and their answers landed apart. Both are now refetched together and stored at once (`refreshPieces`), then the other queries that read them.
 - Tests: the gear journey caught it (strict mode: two tiles for one piece, in one full run of #330's check); it passes three runs in a row and in the full check.
@@ -248,9 +254,3 @@ Entry format:
 - Tests: written first: each game's seeded tasks include its shop's, monthly, with ten steps where counted; Genshin's Paimon's Bargains resets with "bargains" and comes back from Restore defaults.
 - Scope/decisions: the amounts are in docs/games/*.md with sources; WuWa's coral limits differ between guides (6 Forging Tides a month, or every 40 days), so it stays one tick; NTE's stock is not on record; Endfield has no monthly shop.
 - Next: the top-up history.
-
-## 2026-10-14 · claude · stack/r10/13-navbar · #292
-- Done: the navbar (Georges, round 7: "the game cards should extend a bit more when selected: Genshin becomes Genshin Impact etc. … work on the navbar as well, try some things to make it better"). Each game in the strip has its icon (the game's art, else its tile in its colour) before its short name; the selected one grows to fit its full name ("Genshin Impact", "Honkai: Star Rail") with a larger icon. The rail's icons grow from 18 to 24 px and its labels to 11 px; the current section is filled in the scope's colour with a thicker bar; a hovered one lights up.
-- Tests: written first: Star Rail's tab shows its icon and no "Honkai" until picked, then its full name, not cut; the rail's Tasks icon at least 22 px; Home's item, current, filled.
-- Scope/decisions: no counts on the rail: they would ask the server on every page.
-- Next: the full check over PRs 10 to 13, then free pulls as monthly goals, top-up history, the daily login pass.
