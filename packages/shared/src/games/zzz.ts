@@ -91,7 +91,7 @@ export const zzz: GameDefinition = {
   name: "Zenless Zone Zero",
   shortName: "Zenless",
   accent: "#8CFF3A",
-  art: { icon: "/games/zzz/icon.png", background: "/games/zzz/background.jpg" },
+  art: { icon: "/games/zzz/icon.png", background: "/games/zzz/background.jpg", hero: "IconRole13" },
   regions: hoyoRegions,
   currencies: [
     { key: "battery", label: "Battery Charge", cap: 240, regenPerHour: 10, icon: "IconStamina" },

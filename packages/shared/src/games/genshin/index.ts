@@ -102,7 +102,7 @@ export const genshin: GameDefinition = {
   name: "Genshin Impact",
   shortName: "Genshin",
   accent: "#FFAA33",
-  art: { icon: "/games/genshin/icon.png", background: "/games/genshin/background.jpg" },
+  art: { icon: "/games/genshin/icon.png", background: "/games/genshin/background.jpg", hero: "UI_Gacha_AvatarImg_Furina" },
   regions: hoyoRegions,
   currencies: [
     { key: "resin", label: "Original Resin", cap: 200, regenPerHour: 7.5, icon: "UI_ItemIcon_210" },

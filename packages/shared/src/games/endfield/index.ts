@@ -80,7 +80,7 @@ export const endfield: GameDefinition = {
   name: "Arknights: Endfield",
   shortName: "Endfield",
   accent: "#FFE600",
-  art: { icon: "/games/endfield/icon.png", background: "/games/endfield/background.jpg" },
+  art: { hero: "operators/laevatain/portrait", icon: "/games/endfield/icon.png", background: "/games/endfield/background.jpg" },
   regions: endfieldRegions,
   currencies: [
     // 1 every 7 min 12 s; the cap shown is Authority Level 60's.

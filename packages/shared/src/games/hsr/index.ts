@@ -104,7 +104,7 @@ export const hsr: GameDefinition = {
   name: "Honkai: Star Rail",
   shortName: "Star Rail",
   accent: "#FF8FD1",
-  art: { icon: "/games/hsr/icon.png", background: "/games/hsr/background.jpg" },
+  art: { icon: "/games/hsr/icon.png", background: "/games/hsr/background.jpg", hero: "1005" },
   regions: hoyoRegions,
   currencies: [
     { key: "trailblazePower", label: "Trailblaze Power", cap: 300, regenPerHour: 10, icon: "11" },

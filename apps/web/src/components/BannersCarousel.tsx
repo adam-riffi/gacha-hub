@@ -7,6 +7,7 @@ import { CarouselCard } from "./Carousel";
 import { FeaturedUnits, distinctFeatured } from "./FeaturedUnits";
 import { GameIcon } from "./GameIcon";
 import { Countdown } from "./ui";
+import { HeroArt } from "./HeroArt";
 
 /**
  * The Banners card on Home: one running banner at a time, its featured unit's art under a dark layer; it steps per banner
@@ -77,9 +78,16 @@ export function BannersCarousel({ roster, carousel }: { roster: RosterEntry[]; c
           {featured.length > 0 && entry && <FeaturedUnits gameKey={banner.gameKey} instanceId={entry.game.instanceId} units={featured} className="carousel-featured" />}
         </>
       ) : (
-        <p className="carousel-empty">
-          {entry ? `No banner running for ${entry.game.name}.` : "No banners running."} <Link to="/timeline">Banners &amp; events →</Link>
-        </p>
+        <>
+          {entry && (
+            <div className="carousel-art is-idle" aria-hidden="true">
+              <HeroArt gameKey={entry.game.gameKey} className="carousel-hero" />
+            </div>
+          )}
+          <p className="carousel-empty">
+            {entry ? `No banner running for ${entry.game.name}.` : "No banners running."} <Link to="/timeline">Banners &amp; events →</Link>
+          </p>
+        </>
       )}
     </CarouselCard>
   );
