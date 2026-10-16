@@ -8,7 +8,6 @@ import {
   type FarmTodayDto,
   type RewardDto,
 } from "@gacha/shared";
-import { GameIcon } from "../components/GameIcon";
 import { Segmented } from "../components/ui";
 import { MaterialIcons, UnitIcon } from "../components/CatalogIcon";
 import { LoadError } from "../components/LoadError";
@@ -17,6 +16,7 @@ import type { InstanceListItem, TaskItem } from "../lib/types";
 import { GoalCard } from "../components/tasks/GoalCard";
 import { RemindersPanel } from "../components/tasks/RemindersPanel";
 import { GoalMaker } from "../components/tasks/GoalMaker";
+import { GameMark } from "../components/GameMark";
 
 const WEEKDAY = ["", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 const DAY = ["", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -33,7 +33,7 @@ function FarmChip({ gameKey, line, showGame, days = true }: { gameKey: string; l
   const game = getGame(gameKey);
   return (
     <span className={`tk-chip is-${line.kind}`} title={line.text} style={game ? ({ "--gc": game.accent } as CSSProperties) : undefined}>
-      {showGame && game && <GameIcon src={game.art?.icon ?? null} alt={game.name} glyph="game" tint={game.accent} className="tk-chip-game" />}
+      {showGame && game && <GameMark gameKey={gameKey} named className="tk-chip-game" />}
       {line.unit && <UnitIcon gameKey={gameKey} unit={line.unit} />}
       {line.materials.length > 0 && <MaterialIcons gameKey={gameKey} ids={line.materials} />}
       {line.kind === "domain" && days && <span>{line.days.map((day) => DAY[day]).join(" ")}</span>}

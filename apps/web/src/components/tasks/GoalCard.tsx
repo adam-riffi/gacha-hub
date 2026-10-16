@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { farmableToday, getGame, goalSteps, levelCaps, type ChecklistItem, type FarmUnit, type RewardDto, type TaskOrigin, type TaskPriority } from "@gacha/shared";
+import { farmableToday, goalSteps, levelCaps, type ChecklistItem, type FarmUnit, type RewardDto, type TaskOrigin, type TaskPriority } from "@gacha/shared";
 import { api } from "../../lib/api";
 import { useCatalog } from "../../lib/catalog";
 import type { InstanceListItem, TaskItem } from "../../lib/types";
-import { GameIcon } from "../GameIcon";
 import { stepText } from "../calendar/CalendarSelected";
 import { Picker } from "../Picker";
 import { CatalogIcon, UnitIcon } from "../CatalogIcon";
+import { GameMark } from "../GameMark";
 
 // Priority in one click (Georges, round 7: "changing priority is annoying"): each level its own button.
 const PRIORITIES: { key: TaskPriority; label: string; icon: string }[] = [
@@ -58,7 +58,6 @@ export function GoalCard({ goal, tasks, linkable = [], gameInstance, reward, wee
   const linked = allKids.filter((kid) => !kid.materialId);
   const parent = goal.parentId ? tasks.find((candidate) => candidate.id === goal.parentId) : undefined;
 
-  const game = getGame(gameInstance.gameKey);
   // Its own unit as its thumb (Georges, 2026-10-11): the character, weapon or set it farms; who it is for beside the title.
   const origin = goal.origin as TaskOrigin | null;
   const change = reward?.options[goal.choice ?? 0]?.changes[0];
@@ -76,12 +75,12 @@ export function GoalCard({ goal, tasks, linkable = [], gameInstance, reward, wee
     <article className={`tk-card ${open ? "is-open" : ""}`} aria-label={goal.title}>
       <div className="tk-row">
         <button type="button" className="tk-open" aria-expanded={open} onClick={() => setOpen(!open)}>
-          {unit ? <UnitIcon gameKey={gameInstance.gameKey} unit={unit} className="tk-thumb" /> : <GameIcon src={game?.art?.icon ?? null} alt={gameInstance.name} glyph="game" tint={game?.accent} className="tk-thumb" />}
+          {unit ? <UnitIcon gameKey={gameInstance.gameKey} unit={unit} className="tk-thumb" /> : <GameMark gameKey={gameInstance.gameKey} named className="tk-thumb tk-thumb-mark" />}
           <span className="tk-title">
             <span className="tk-title-row">
               <strong>{goal.title}</strong>
               {forWhom.map((source) => <UnitIcon key={source.catalogId} gameKey={gameInstance.gameKey} unit={{ kind: "character", catalogId: source.catalogId }} className="tk-for" />)}
-              {showGame && unit && <GameIcon src={game?.art?.icon ?? null} alt={gameInstance.name} glyph="game" tint={game?.accent} className="tk-game" />}
+              {showGame && unit && <GameMark gameKey={gameInstance.gameKey} named className="tk-game" />}
               {parent && (
                 <span className="tag tk-parent" title={`Its steps count in ${parent.title}`}>
                   ↳ {parent.title}

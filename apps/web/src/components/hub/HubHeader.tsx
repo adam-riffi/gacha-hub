@@ -4,6 +4,7 @@ import { getGame, hubResets, utcLabel } from "@gacha/shared";
 import { api } from "../../lib/api";
 import type { InstanceDetail } from "../../lib/types";
 import { Countdown } from "../ui";
+import { GameMark } from "../GameMark";
 
 const DATE = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
 const SHORT = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" });
@@ -48,8 +49,10 @@ export function HubHeader({ instanceId }: { instanceId: string }) {
       {game.art?.icon && iconOk ? (
         <img className="hub-icon" src={game.art.icon} alt="" onError={() => setIconOk(false)} />
       ) : (
-        // No art yet (F12's art store): the accent tile, as the rail's logo.
-        <span className="hub-icon hub-icon-ph" aria-hidden="true" />
+        // No owner art yet (ASSETS.md): the game's drawn emblem on its accent tile (round 12).
+        <span className="hub-icon hub-icon-ph" aria-hidden="true">
+          <GameMark gameKey={game.key} tint="#080808" />
+        </span>
       )}
       <div className="hub-id">
         <h1 className="hub-name">{data.name}</h1>

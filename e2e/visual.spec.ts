@@ -81,11 +81,11 @@ test("an icon without its image is a tile with its kind's icon, centred @smoke",
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   await page.request.post("/api/instances", { data: { gameKey: "hsr" } });
   await page.goto("/library");
-  const tile = page.locator(".lib-icon.gicon-ph").first();
-  await expect(tile).toBeVisible();
-  expect(await tile.evaluate((el) => [getComputedStyle(el).display, getComputedStyle(el).alignItems, getComputedStyle(el).borderTopStyle])).toEqual(["grid", "center", "solid"]);
-  await expect(tile.locator("svg.glyph")).toBeVisible();
-  await expect(tile).not.toHaveText(/\w/);
+  // Round 12: a game without owner art shows its drawn emblem (GameMark), named for screen readers, never a letter.
+  const mark = page.getByRole("img", { name: "Honkai: Star Rail emblem" }).first();
+  await expect(mark).toBeVisible();
+  expect(await mark.evaluate((el) => el.matches("svg.game-mark") && getComputedStyle(el).strokeWidth !== "")).toBe(true);
+  await expect(mark).not.toHaveText(/\w/);
 });
 
 // No tile without its image shows letters anywhere (Georges, round 6: "you're still using squares with letters on it, use icons instead"):

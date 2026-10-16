@@ -7,15 +7,31 @@ import { api } from "../lib/api";
 import { hubPathFor, sectionHref, sectionOf, type ScopeGame, type Section } from "../lib/scope";
 import { hubScreens } from "../lib/hubScreens";
 import type { CharacterDetail, InstanceListItem } from "../lib/types";
-import { GameIcon } from "./GameIcon";
+import { GameMark } from "./GameMark";
 
-/** 18 px line icons, 1.5 px stroke (VISUAL-DESIGN.md §7). */
+/** Line icons, each a plain picture of its section (round 12: Georges is visually impaired; abstract shapes read badly). */
 const ICONS: Record<Section, ReactNode> = {
-  all: <path d="M2 2h6v6H2zM10 2h6v6h-6zM2 10h6v6H2zM10 10h6v6h-6z" />,
-  games: <path d="M9 1.5L16.5 9L9 16.5L1.5 9z" />,
-  tasks: <path d="M9 2L16.5 16H1.5z" />,
-  banners: <path d="M2 3h14v12H2zM2 7h14" />,
-  settings: <path d="M2 5h14M2 13h14M5 3v4M12 11v4" />,
+  all: <path d="M3.5 3.5h7v7h-7zM13.5 3.5h7v7h-7zM3.5 13.5h7v7h-7zM13.5 13.5h7v7h-7z" />,
+  games: (
+    <>
+      <rect x="2.5" y="7" width="19" height="11.5" rx="5" />
+      <path d="M7 11v4M5 13h4M15.5 11.5h.01M18 14h.01" />
+    </>
+  ),
+  tasks: (
+    <>
+      <rect x="3.5" y="3.5" width="17" height="17" rx="3" />
+      <path d="m8 12.5 3 3 5.5-6" />
+    </>
+  ),
+  banners: <path d="M5 21V3.5h14l-3.5 5 3.5 5H5" />,
+  settings: (
+    <>
+      <path d="M4 7.5h16M4 16.5h16" />
+      <circle cx="9.5" cy="7.5" r="2.4" />
+      <circle cx="14.5" cy="16.5" r="2.4" />
+    </>
+  ),
 };
 const RAIL: { section: Section; label: string; name: string }[] = [
   { section: "all", label: "ALL", name: "Home, all games" },
@@ -58,7 +74,7 @@ export function Layout({ children }: { children: ReactNode }) {
 
   const railItem = (railSection: Section, label: string, name: string) => (
     <Link key={railSection} to={sectionHref(railSection, railSection === "settings" ? null : scope)} className="rail-item" aria-label={name} aria-current={section === railSection ? "page" : undefined}>
-      <svg width="24" height="24" viewBox="0 0 18 18" aria-hidden="true">{ICONS[railSection]}</svg>
+      <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true">{ICONS[railSection]}</svg>
       <span>{label}</span>
     </Link>
   );
@@ -94,8 +110,8 @@ export function Layout({ children }: { children: ReactNode }) {
                     aria-current={on ? "page" : undefined}
                     title={gameInstance.sleeping ? `${gameInstance.name} (asleep)` : gameInstance.name}
                   >
-                    {/* Its icon, and its whole name once picked (Georges, round 7: "Genshin becomes Genshin Impact"). */}
-                    <GameIcon src={getGame(gameInstance.gameKey)?.art?.icon ?? null} alt={gameInstance.name} glyph="game" tint={gameInstance.accent} className="strip-icon" />
+                    {/* Its emblem, and its whole name once picked (Georges, round 7). */}
+                    <GameMark gameKey={gameInstance.gameKey} tint={gameInstance.accent} className="strip-icon" />
                     {on ? gameInstance.name : (getGame(gameInstance.gameKey)?.shortName ?? gameInstance.name)}
                   </Link>
                 );
