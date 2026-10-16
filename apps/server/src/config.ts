@@ -50,6 +50,8 @@ export const config = {
   /** Vercel Blob token; when set, uploads go to Blob instead of local disk. */
   blobToken: envString("BLOB_READ_WRITE_TOKEN"),
 
+  /** The repository whose workflows may call the cron routes with GitHub's OIDC proof (ADR 0012). */
+  githubRepository: envString("GITHUB_REPOSITORY", "adam-riffi/gacha-hub"),
   /** Run node-cron in-process (only for always-on hosts like Docker). */
   inProcessCron: bool("ENABLE_INPROCESS_CRON", false),
   /** Discord user ids granted the admin role (comma-separated). */
