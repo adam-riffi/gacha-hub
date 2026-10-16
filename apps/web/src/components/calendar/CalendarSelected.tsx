@@ -6,6 +6,7 @@ import { api } from "../../lib/api";
 import { assetUrl, communityAssetUrl, splashKey } from "../../lib/assets";
 import { FeaturedUnits } from "../FeaturedUnits";
 import { GameIcon } from "../GameIcon";
+import { HeroArt } from "../HeroArt";
 import type { CalItem } from "../../pages/CalendarPage";
 
 const LOCAL = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
@@ -80,7 +81,7 @@ export function CalendarSelected({ item, reward, now, onClose }: { item: CalItem
             glyph="character"
           />
         ) : (
-          <GameIcon src={game?.art?.background ?? null} alt={`${game?.name ?? item.gameKey} art`} glyph="game" />
+          <HeroArt gameKey={item.gameKey} />
         )}
       </div>
       <h2 className={item.kind === "banner" ? "font-serif" : undefined}>{item.name}</h2>
