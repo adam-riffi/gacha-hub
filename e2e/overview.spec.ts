@@ -286,11 +286,11 @@ test("Currencies by their icons: a game's pulls and stamina on its dashboard, th
 
   await page.goto("/?game=zzz");
   const pulls = page.getByRole("region", { name: "Pulls", exact: true });
-  await expect(pulls.locator("svg.cur-icon[data-kind=premium]")).toBeVisible();
-  await expect(pulls.locator("svg.cur-icon[data-kind=ticket]")).toBeVisible();
-  await expect(page.getByRole("region", { name: "Battery Charge" }).locator("svg.cur-icon[data-kind=stamina]").first()).toBeVisible();
+  await expect(pulls.locator(".cur-icon[data-kind=premium]")).toBeVisible();
+  await expect(pulls.locator(".cur-icon[data-kind=ticket]")).toBeVisible();
+  await expect(page.getByRole("region", { name: "Battery Charge" }).locator(".cur-icon[data-kind=stamina]").first()).toBeVisible();
 
   await page.goto(`/games/${id}/pulls`);
   const table = page.getByRole("region", { name: "Pulls available" });
-  for (const kind of ["premium", "ticket", "standard"]) await expect(table.locator(`svg.cur-icon[data-kind=${kind}]`).first()).toBeVisible();
+  for (const kind of ["premium", "ticket", "standard"]) await expect(table.locator(`.cur-icon[data-kind=${kind}]`).first()).toBeVisible();
 });

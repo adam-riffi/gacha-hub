@@ -105,12 +105,12 @@ export const genshin: GameDefinition = {
   art: { icon: "/games/genshin/icon.png", background: "/games/genshin/background.jpg" },
   regions: hoyoRegions,
   currencies: [
-    { key: "resin", label: "Original Resin", cap: 200, regenPerHour: 7.5 },
-    { key: "condensedResin", label: "Condensed Resin", cap: 5 },
-    { key: "primogems", label: "Primogems", pullCost: 160, pullLabel: "wish" },
-    { key: "intertwinedFate", label: "Intertwined Fate", pullCost: 1, pullLabel: "wish" },
-    { key: "acquaintFate", label: "Acquaint Fate", pullCost: 1, pullLabel: "wish", standardOnly: true },
-    { key: "mora", label: "Mora" },
+    { key: "resin", label: "Original Resin", cap: 200, regenPerHour: 7.5, icon: "UI_ItemIcon_210" },
+    { key: "condensedResin", label: "Condensed Resin", cap: 5, icon: "UI_ItemIcon_211" },
+    { key: "primogems", label: "Primogems", pullCost: 160, pullLabel: "wish", icon: "UI_ItemIcon_201" },
+    { key: "intertwinedFate", label: "Intertwined Fate", pullCost: 1, pullLabel: "wish", icon: "UI_ItemIcon_223" },
+    { key: "acquaintFate", label: "Acquaint Fate", pullCost: 1, pullLabel: "wish", standardOnly: true, icon: "UI_ItemIcon_224" },
+    { key: "mora", label: "Mora", icon: "UI_ItemIcon_202" },
   ],
   // Sources per value: docs/games/genshin.md.
   manifest: {

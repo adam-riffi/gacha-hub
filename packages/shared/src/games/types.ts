@@ -27,6 +27,8 @@ export interface GameRegion {
 export interface GameCurrency {
   key: string;
   label: string;
+  /** The game's own icon for it: a key of the manifest's `material` art source, verified by hand (round 12; ASSETS.md). */
+  icon?: string;
   cap?: number;
   regenPerHour?: number;
   /** Premium currency: units per single pull (e.g. 160), for a wish count. */

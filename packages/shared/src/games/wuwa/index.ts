@@ -88,13 +88,13 @@ export const wuwa: GameDefinition = {
   // Kuro servers reset 04:00 local like HoYo's; same na/eu/asia keys.
   regions: hoyoRegions,
   currencies: [
-    { key: "waveplate", label: "Waveplate", cap: 240, regenPerHour: 10 },
-    { key: "waveplateCrystals", label: "Waveplate Crystals", cap: 480 },
-    { key: "astrite", label: "Astrite", pullCost: 160, pullLabel: "convene" },
-    { key: "radiantTide", label: "Radiant Tide", pullCost: 1, pullLabel: "convene" },
-    { key: "lustrousTide", label: "Lustrous Tide", pullCost: 1, pullLabel: "convene", standardOnly: true },
-    { key: "forgingTide", label: "Forging Tide", pullCost: 1, pullLabel: "convene", onlyFor: "weapon" },
-    { key: "shellCredits", label: "Shell Credits" },
+    { key: "waveplate", label: "Waveplate", cap: 240, regenPerHour: 10, icon: "IconA/T_IconA_yml_UI" },
+    { key: "waveplateCrystals", label: "Waveplate Crystals", cap: 480, icon: "IconA/T_IconA_yml_02_UI" },
+    { key: "astrite", label: "Astrite", pullCost: 160, pullLabel: "convene", icon: "IconA/T_IconA_zcpq_UI" },
+    { key: "radiantTide", label: "Radiant Tide", pullCost: 1, pullLabel: "convene", icon: "IconA/T_IconA_jzmy_UI" },
+    { key: "lustrousTide", label: "Lustrous Tide", pullCost: 1, pullLabel: "convene", standardOnly: true, icon: "IconA/T_IconA_qpmy_UI" },
+    { key: "forgingTide", label: "Forging Tide", pullCost: 1, pullLabel: "convene", onlyFor: "weapon", icon: "IconA/T_IconA_jzmy_01_UI" },
+    { key: "shellCredits", label: "Shell Credits", icon: "IconA/T_IconA_hsb_UI" },
   ],
   // Sources per value: docs/games/wuwa.md.
   manifest: {
