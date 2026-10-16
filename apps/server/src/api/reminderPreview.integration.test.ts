@@ -3,10 +3,10 @@ import type { FastifyInstance } from "fastify";
 import type { ReminderPreviewDto } from "@gacha/shared";
 import { installGame, login, makeApp, resetDb, type Client } from "../test/helpers.js";
 import { sendDirectMessage } from "../discord/rest.js";
-import { hasDiscordBot } from "../config.js";
+import { hasDiscordBot } from "../lib/appKeys.js";
 
 vi.mock("../discord/rest.js", () => ({ sendDirectMessage: vi.fn(async () => true) }));
-vi.mock("../config.js", async (original) => ({ ...(await original<typeof import("../config.js")>()), hasDiscordBot: vi.fn(() => false) }));
+vi.mock("../lib/appKeys.js", async (original) => ({ ...(await original<typeof import("../lib/appKeys.js")>()), hasDiscordBot: vi.fn(async () => false) }));
 
 const rule = { enabled: true, beforeReset: true, leadMinutes: 60, atTimes: ["21:00"], timezone: "UTC", includeCurrencies: true, includeDailies: true };
 
@@ -58,9 +58,9 @@ describe("reminder preview and test DM (WIREFRAMES.md A3)", () => {
     await c.req("PUT", `/api/instances/${gid}/reminder`, rule);
     expect((await c.req("POST", "/api/reminders/test")).json).toEqual({ sent: false, reason: "no_bot" });
     expect(sendDirectMessage).not.toHaveBeenCalled();
-    vi.mocked(hasDiscordBot).mockReturnValue(true);
+    vi.mocked(hasDiscordBot).mockResolvedValue(true);
     expect((await c.req("POST", "/api/reminders/test")).json).toEqual({ sent: true });
     expect(sendDirectMessage).toHaveBeenCalledWith("dev-local-user", expect.stringContaining("Genshin Impact"));
-    vi.mocked(hasDiscordBot).mockReturnValue(false);
+    vi.mocked(hasDiscordBot).mockResolvedValue(false);
   });
 });

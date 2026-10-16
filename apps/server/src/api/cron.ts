@@ -1,5 +1,5 @@
 import type { FastifyInstance } from "fastify";
-import { config } from "../config.js";
+import { readKey } from "../lib/appKeys.js";
 import { runReminderTick } from "../scheduler/reminders.js";
 import { importFeedsIfStale } from "../lib/officialFeed.js";
 import { syncDueLinks } from "../lib/hoyolabSync.js";
@@ -16,7 +16,8 @@ export async function registerCronRoutes(app: FastifyInstance) {
     const header = req.headers["x-cron-secret"];
     const bearer = req.headers.authorization?.replace(/^Bearer\s+/i, "");
     const provided = typeof header === "string" ? header : bearer;
-    if (!config.cronSecret || provided !== config.cronSecret) {
+    const cronSecret = await readKey("CRON_SECRET");
+    if (!cronSecret || provided !== cronSecret) {
       return reply.code(401).send({ error: "unauthorized" });
     }
     const started = Date.now();

@@ -1,5 +1,6 @@
 import { pathToFileURL } from "node:url";
-import { config, hasDiscordBot } from "../config.js";
+import { config } from "../config.js";
+import { hasDiscordBot, readKey } from "../lib/appKeys.js";
 import { commands as coreCommands } from "./commands.js";
 import { allGameBotCommands } from "../games/index.js";
 import { discordFetch } from "./rest.js";
@@ -8,11 +9,12 @@ const commands = [...coreCommands, ...allGameBotCommands()];
 
 /** Register slash commands with Discord (guild-scoped in dev, else global). */
 export async function registerCommands(): Promise<void> {
-  if (!hasDiscordBot()) {
+  if (!(await hasDiscordBot())) {
     console.warn("[discord] cannot register commands — token/app id missing.");
     return;
   }
-  const { appId, devGuildId } = config.discord;
+  const appId = await readKey("DISCORD_APP_ID");
+  const { devGuildId } = config.discord;
   const path = devGuildId
     ? `/applications/${appId}/guilds/${devGuildId}/commands`
     : `/applications/${appId}/commands`;
