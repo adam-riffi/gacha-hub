@@ -7,6 +7,18 @@
 .st-nav a[aria-current="page"] { color: var(--text); border-left-color: var(--accent); background: var(--surface-2); }
 .st-main { display: grid; gap: 24px; min-width: 0; }
 .st-linked { display: grid; gap: 12px; }
+/* Settings → Keys (ADR 0012): one row per key, its state as a chip, large enough to read at a glance. */
+.st-keys { display: grid; gap: 4px; }
+.st-keys > p, .st-keys-intro p { margin: 0 0 8px; font-size: 15px; }
+.st-key { display: grid; grid-template-columns: 200px 130px minmax(0, 1fr); align-items: center; gap: 8px 16px; padding: 12px 0; border-top: 1px solid var(--hairline); }
+.st-key-name { font-size: 16px; font-weight: 600; }
+.st-key-state { justify-self: start; font-size: 13px; }
+.st-key-state.is-app { background: var(--accent); border-color: var(--accent); color: var(--on-accent, #080808); }
+.st-key-state.is-host { background: var(--paper); border-color: var(--paper); color: var(--on-paper); }
+.st-key-value { grid-column: 3; font-size: 15px; overflow-wrap: anywhere; }
+.st-key-edit { grid-column: 3; gap: 8px; }
+.st-key-edit input { flex: 1; min-width: 0; font-size: 16px; }
+.st-key .st-bad { grid-column: 3; }
 .st-provider { padding: 14px 16px; border: 1px solid var(--edge); background: var(--surface-2); }
 .st-provider.is-main { border-color: var(--text); }
 .st-provider.is-manual { border-style: dashed; }

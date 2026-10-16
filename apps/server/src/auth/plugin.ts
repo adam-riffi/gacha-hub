@@ -127,6 +127,8 @@ export async function registerAuth(app: FastifyInstance) {
       isAdmin: req.isAdmin,
       oauth: hasDiscordOAuth(),
       passwordSignIn: Boolean(await readKey("OWNER_PASSWORD_HASH")),
+      /** The art store's public URL entered in Settings → Keys (ADR 0012); the web build's VITE_ASSET_BASE otherwise. */
+      assetBase: (await readKey("ASSET_BASE")) || null,
       passkeySignIn: (await prisma.passkey.count()) > 0,
       devLogin: config.devLoginEnabled,
     };

@@ -25,6 +25,8 @@ export interface Me {
   passwordSignIn: boolean;
   /** A passkey exists to sign in with (ADR 0010). */
   passkeySignIn: boolean;
+  /** The art store's public URL entered in Settings → Keys (ADR 0012). */
+  assetBase: string | null;
   devLogin: boolean;
 }
 

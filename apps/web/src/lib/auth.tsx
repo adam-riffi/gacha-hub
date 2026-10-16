@@ -3,6 +3,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { PublicKeyCredentialRequestOptionsJSON } from "@simplewebauthn/browser";
 import { api } from "./api";
 import type { Me } from "./types";
+import { setAssetBase } from "./assets";
 
 interface AuthValue {
   currentUser: Me | null;
@@ -22,7 +23,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const queryClient = useQueryClient();
   const { data, isLoading } = useQuery({
     queryKey: ["me"],
-    queryFn: () => api.get<Me>("/api/me"),
+    queryFn: async () => {
+      const current = await api.get<Me>("/api/me");
+      setAssetBase(current.assetBase);
+      return current;
+    },
   });
 
   const value: AuthValue = {

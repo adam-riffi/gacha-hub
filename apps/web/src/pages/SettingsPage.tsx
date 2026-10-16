@@ -8,6 +8,7 @@ import { useToast } from "../lib/toast";
 import { masked } from "../components/hub/HubHeader";
 import { RemindersPanel } from "../components/tasks/RemindersPanel";
 import { AdminPage } from "./AdminPage";
+import { KeysSettings } from "../components/settings/KeysSettings";
 import type { InstanceListItem, ReminderRule } from "../lib/types";
 import type { PublicKeyCredentialCreationOptionsJSON } from "@simplewebauthn/browser";
 
@@ -42,6 +43,7 @@ const TABS = [
   { path: "pulls", label: "Pull history" },
   { path: "notifications", label: "Notifications" },
   { path: "account", label: "Account and data" },
+  { path: "keys", label: "Keys", owner: true },
   { path: "data", label: "Data sources", owner: true },
 ];
 
@@ -101,6 +103,7 @@ export function SettingsPage() {
             <AccountData />
           </>
         )}
+        {tab === "keys" && <KeysSettings />}
         {tab === "data" && <AdminPage />}
       </div>
     </div>
