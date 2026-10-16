@@ -69,11 +69,13 @@ describe("linking HoYoLAB (ADR 0005)", () => {
     expect((await link({ ltuid: "12ab", ltoken: "v2_x" })).status).toBe(400);
   });
 
-  it("stays off until the server has its key", async () => {
+  // ADR 0012: linking no longer waits for LINK_SECRET_KEY; the key derived from the session secret seals the cookie.
+  it("links without LINK_SECRET_KEY, sealed under the key derived from the session secret", async () => {
     delete process.env.LINK_SECRET_KEY;
     const r = await link();
-    expect(r.status).toBe(503);
-    expect(r.json).toEqual({ error: "linking_off" });
-    expect(asked).toEqual([]);
+    expect(r.status).toBe(200);
+    const row = await prisma.linkedAccount.findFirstOrThrow();
+    expect(row.keyVersion).toBe(0);
+    expect(row.secret).not.toContain("SECRETTOKEN");
   });
 });
