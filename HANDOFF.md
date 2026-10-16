@@ -1,49 +1,43 @@
-# Handoff — 2026-10-15 · claude (deployed)
+# Handoff — 2026-10-16 · claude (round 12 deployed)
 
 ## State
-- `main` at #336: round 11 (#315–#329), ADR 0010 (#330–#333, amended in #335) and the gear fixes (#331, #336) merged. CI green.
-- Open PR: #337 (this handoff). #334 (Discord sign-in removed) was closed unmerged at Georges's word.
-- **Production serves #336** (deployed 2026-10-15 at Georges's word, after #333 the same day; every migration since #186 ran, `passkeys` the newest; the smoke checks pass). Sign-in there: Discord, a passkey once added in Settings, and the owner password once `OWNER_PASSWORD_HASH` is set. Merges do not deploy (#189).
-- Every milestone in DESIGN.md §9 is built, V through F13, and eleven feedback rounds (2026-10-10 to 2026-10-15) are done or under way. What is left needs Georges's secrets, real data or a decision (below), a source for a few details (Next), or is in DESIGN.md §4 "Later".
+- `main` at #344: rounds 1–12 merged. CI green. **Production serves #344** (deployed 2026-10-16 at Georges's word, "deploy into production your work for me to see in the morning"; the smoke checks pass).
+- No open PRs. Merges do not deploy (#189): deploy only at Georges's word or a milestone.
+- Every milestone in DESIGN.md §9 is built, V through F13, and twelve feedback rounds (2026-10-10 to 2026-10-16) are done. What is left needs Georges's secrets, real data or a decision (below), or a source (the audits list what was searched and not found).
 
-## Done this session (round 11, `docs/AUDIT-2026-10-15-round11.md`)
-- Georges's list: the sheet's **banners card** across the sheet and **last seen** on every card with a sort (#316); **All · Owned · Not owned · Wishlist** on Characters and Weapons, weapons' last seen (#317); a **banner-history importer** (Genshin and Star Rail from samsara-web at a pinned commit, #318).
-- The review of every page ("I don't need to go around X websites"): the battle pass card's height, **materials with icons and the needed ones first**, the wallet's icons, a **dupes filter** (#319); each game's **redeem codes** with rewards, Copy, the official page and a Redeemed tick (#320); Home's banners with their **featured units, yours ticked, and your chance** with your pulls (#326); the Timeline's units as **icons**, each once, on the bars and in Selected (#328, one `FeaturedUnits` component with Home).
-- **ADR 0011** (accepted by Georges): explicit names in the shared package (#321), the server (#322) and the web app (#323), `id-length` in every package; CSS utilities named for what they do (#324); the first **objects**: `GearPiece`, `CharacterBuild` (#325), `PullBudget` (#326); the first **services**: `TeamService`, `OwnershipService`, `DomainError`, `instanceOrThrow` (#327).
-- Found on the way: a card-stat save lost on reload (#315); two references a rename would have rebound (a reminder time's Remove filter, the gear form's slot), caught by comparing the shadowed names before and after each pass.
-- **ADR 0010** (decided with Georges): Supabase and Vercel stay; sign-in is Discord, a **passkey** (#333, `@simplewebauthn` v14, a `Passkey` table) or the **owner password** (#332, `npm run password:hash`); Discord sign-in stays (#334 closed). A gear piece moved to the bag no longer shows twice (#331). Deployed.
-- **Gear page** (Georges, 2026-10-15): a piece's substats are typed in place, in the bag or on a build; Equip on is typed or picked from every character you own, a build made where none is (#336). The card-stat journey's fake slow server now lives at the browser context (it flaked about 1 run in 15).
+## Done this session (round 12, `docs/AUDIT-2026-10-16-round12.md`)
+- **Visuals first** (Georges is visually impaired, on a 24-inch and a 32-inch screen): a drawn **emblem per game** and plain-picture **rail icons** (#338); the whole UI **scales with the window** (×1.22 at 1800 px, ×1.55 at 2400 px), base type up (#339).
+- **Gear screen remade**: every tile names its set in words, larger art, "Crit value" spelled out (#340).
+- **Currency icons** for five games from Enka / Yatta / Hakushin / wuthery, every URL checked by hand; drawn fallbacks stay (#341).
+- **Hero art** (a hand-checked splash per game) on the library cards, the battle pass card and the idle banners card (#342).
+- **Last seen** state-coloured; a dated rerun says "back in 7 d" (#343). On the way: the weapons journey got its own unit and weapon (an ordering flake).
+- Docs: the round's audit, ASSETS.md's found sources, this handoff (#344).
 
-## Decisions taken (2026-10-15; Georges: "take every decision")
-- Banner history from samsara-web (MIT) at a pinned commit; ZZZ, WuWa, Endfield and NTE have no dated source yet.
-- Redeem codes from seria's hoyo-codes API (Genshin, Star Rail, Zenless); listing and linking to the official page only (DESIGN.md §2: no writing to game accounts).
-- ADR 0011: names first (area by area, each pass replayed from a clean tree until the shadowed names equal the baseline), then objects and services area by area; React stays function components; the chart marks' short class names (`.gl`, `.rg`, `.lb`) stay as the design's vocabulary.
-- A banner's chance counts its own tickets where the game has some (Endfield's Arsenal, ZZZ's Bangboo), else the limited pulls.
-- The Planner's "days of stamina" waits for a source: no dataset gives drops per run or run costs, and catalog data is never typed by hand.
+## Decisions taken (2026-10-16; Georges: "you are free to take any decision")
+- Game identity is a **drawn emblem** (ours, committable), not a hotlinked logo: no stable public logo URL was worth pinning; the owner's real logos still win once dropped into the store.
+- Wide screens scale by **zoom** (one property over a rem rework of a px-built system); journeys keep running at 1440.
+- The gear page keeps its three-column skeleton (round 10's pick); the fix was the information on the tiles.
+- **Storage: Cloudflare R2** (ADR 0006): free 10 GB, no egress fees; until the owner sets it up the app hotlinks the community CDNs with drawn fallbacks.
+- Banner history for ZZZ / WuWa / Endfield / NTE: still **no dated machine-readable source** (searched again: Hakushin has no gacha endpoint; trackers publish no dataset). Genshin + Star Rail stay on samsara-web.
 
 ## Verified
-- `npm run check` before each PR and CI green on each merged one: 690 tests and 128 journeys at #328; initial JavaScript under 154 KB of 200 KB.
-- Checked in the browser at 1440, art blocked for the PRs' screenshots: Home's banners and the Timeline on real feed data (Genshin, Star Rail, Zenless imported locally), the type utilities after their rename.
-- Each stacked branch's tree was checked equal to the one CI passed before merging.
+- `npm run check` on every PR and CI green on each; the journeys count 135+ with the new ones (emblems, zoom, gear tile words, wallet icon, hero art, last-seen states).
+- Checked in the browser at 1440, 1920 and 2560; screenshots on the PRs (art blocked there).
 
 ## Next
-1. ADR 0011, area by area: the characters and weapons routes behind services, then pulls, tasks, planning; a game's reset clock and the planner's costs as objects.
-2. Round 11's last item: Teams' "who you lack" (low).
-3. When Georges shares them: replace the fixtures built from documentation with real answers (PROJECT-GUIDE §14.1 step 8).
-4. Each game version: refresh the catalogs, the endgame enemies and the banner history (move `SAMSARA_COMMIT`), then mirror-art.
-5. Sources still missing: drops per run (the Planner's stamina days), dated banner history for ZZZ, WuWa, Endfield and NTE, redeem codes for WuWa, Endfield and NTE.
-6. The assets: `docs/ASSETS.md` lists every icon still missing; pick a source with Georges, then the R2 mirror.
+1. ADR 0011's remaining services (characters, weapons, pulls, tasks, planning); the reset clock and planner costs as objects.
+2. When a dated source appears: banner history for the other four games; Endfield item icons.
+3. Each game version: refresh catalogs, endgame enemies, banner history; mirror art once R2 exists.
 
 ## Needs from Georges
-- **Sign-in (ADR 0010):** sign in with Discord, then add a passkey in Settings → Account and data. For the password way in, run `npm run password:hash` on your computer and set the printed `OWNER_PASSWORD_HASH` in Vercel (optional). Set `CRON_SECRET`: the hourly cron also keeps Supabase's free plan from pausing after a week idle.
-- **Secrets:** `LINK_SECRET_KEY`; the R2 bucket and its four `R2_*` Actions secrets, then mirror-art and `VITE_ASSET_BASE` (DEPLOY.md §7); `CRON_SECRET`; `DISCORD_BOT_TOKEN` and the bot; `BLOB_READ_WRITE_TOKEN` in Vercel if it is not set.
-- **Real data, with tokens removed** (PROJECT-GUIDE §14.1 step 8): an Endfield records page; a ZZZ UID; HoYoLAB answers; one gacha log page; one WuWa convene answer; in-game details pages for the `~` values.
-- The `main` ruleset, the `sample-*` banners (they have no featured units; the feed's do), the README demo GIF, and the stale remote branches (§14.1 step 10).
+- **R2** (the storage pick): create the bucket, set the four `R2_*` Actions secrets and `VITE_ASSET_BASE` (DEPLOY.md §7); then `npm run assets:mirror` per game.
+- **Secrets:** `LINK_SECRET_KEY`; `CRON_SECRET` (reminders + hourly feed import; also keeps Supabase's free plan awake); `DISCORD_BOT_TOKEN` and the bot; `BLOB_READ_WRITE_TOKEN` if unset; `OWNER_PASSWORD_HASH` (optional password sign-in; `npm run password:hash`).
+- A passkey: sign in with Discord, Settings → Account and data → Add a passkey.
+- **Real data, with tokens removed** (PROJECT-GUIDE §14.1 step 8): an Endfield records page; a ZZZ UID; HoYoLAB answers; one gacha log page; one WuWa convene answer.
+- The `main` ruleset, the `sample-*` banners (no featured units; the feed's have them), the README demo GIF, the stale remote branches.
 - Overrule any decision above by saying so.
 
 ## Notes
-- The previous handoffs' notes stand (HoYoLAB read-only, art never committed, E2E's shared database, pickers as comboboxes, Prettier not enforced, the log's roll-over, owner files, Git Bash paths, squash-merged stacks, Genshin profiles before `smoke.spec.ts`, a journey's weapon held by no other build, icon sizes read with `expect.poll`, the last hour before a reset, heredocs eating backslashes). New ones:
-- Do not run Prettier over the code: the repository is not Prettier-formatted as a whole, and a run rewrites thousands of lines.
-- A journey reading Home's banners carousel hovers it first (the pointer holds it), and features a unit no other journey owns (Blade in Star Rail).
-- Renames go through TypeScript's language service; after each pass compare `@typescript-eslint/no-shadow` (JSON report; ESLint 9 has no `unix` format) with the baseline: a new shadow can rebind a reference, which the type check may not catch.
-- `ERR_NO_BUFFER_SPACE` in a journey is a Windows socket flake; rerun.
+- The previous handoffs' notes stand (HoYoLAB read-only, art never committed, E2E's shared database and its unique-unit rule, Prettier not enforced, the log's roll-over, owner files, Git Bash paths, squash-merged stacks, heredocs eating backslashes, renames via the TS language service with the no-shadow baseline).
+- Community art hosts in use: enka.network, sr.yatta.moe, static.nanoka.cc, files.wuthery.com, raw.githubusercontent.com (Endaxis pinned commit). All accept URL-encoded slashes in keys. Every hand-picked key was checked 200 on 2026-10-16; `HeroArt`/`CurrencyIcon` fall back silently when one goes down.
+- `zoom` stretches vh: the rail divides its height back per media query (tokens.css).

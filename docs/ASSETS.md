@@ -31,8 +31,8 @@ Each of these is a glyph or text today; a real icon per item would replace it.
 
 | What | Where it shows | Items |
 | --- | --- | --- |
-| **Game icon and background** | the strip, Home, the hub's header | `apps/web/public/games/<key>/icon.png` and `background.jpg` for the six games: **none present** |
-| **Currencies** | Home, a game's dashboard, Pulls, Activities, the DM | Genshin: Original Resin, Condensed Resin, Primogems, Intertwined Fate, Acquaint Fate, Mora · Star Rail: Trailblaze Power, Reserved Trailblaze Power, Stellar Jade, Star Rail Special Pass, Star Rail Pass, Credits · ZZZ: Battery Charge, Backup Battery Charge, Polychrome, Encrypted Master Tape, Master Tape, Boopon, Denny · WuWa: Waveplate, Waveplate Crystals, Astrite, Radiant Tide, Lustrous Tide, Forging Tide, Shell Credits · Endfield: Sanity, Oroberyl, Arsenal Tickets, AIC lines running, Stock Bills · NTE: Character Pixels, Annulith, Solid Dice, Fabricated Dice, Fons, Tycoon Level, City Stamina |
+| **Game icon and background** | the strip, Home, the hub's header | round 12: every game has a drawn emblem (`GameMark`) and a hand-checked hero splash (`art.hero`); the owner's `icon.png`/`background.jpg` still win once dropped in |
+| **Currencies** | Home, a game's dashboard, Pulls, Activities, the DM | round 12: **sourced** for Genshin (Enka), Star Rail (Yatta), ZZZ + NTE (Hakushin), WuWa (wuthery) — the keys live in each game module's `currencies`; Endfield has no item-icon source |
 | **Top-up currency** | the Top-ups card | Genesis Crystal, Oneiric Shard, Monochrome, Lunite |
 | **30-day passes** | the dashboard's pass card | Blessing of the Welkin Moon, Express Supply Pass, Inter-Knot Membership, Lunite Subscription, Riftcrystal Mining Permit |
 | **Battle passes** | the dashboard, the timeline | Gnostic Hymn, Nameless Honor, New Eridu City Fund, Pioneer Podcast, Protocol Pass, Circle Bounty |
