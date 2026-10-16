@@ -41,14 +41,29 @@ export function BannerFlagIcon({ label }: { label: string }) {
   );
 }
 
-/** A unit's last banner on its card: on one now, how long ago the last ended, or when the first comes. */
+/** In how many days a date comes: "tomorrow", "in 7 d". */
+const inDays = (isoDate: string, now = Date.now()): string => {
+  const days = Math.max(0, Math.round((Date.parse(isoDate) - now) / DAY_MS));
+  return days <= 1 ? "tomorrow" : `in ${days} d`;
+};
+
+/**
+ * A unit's last banner on its card, its state colouring the chip (round 12: readable at a glance): on a banner NOW in
+ * the accent, a dated return ("back in 7 d") next, then how long ago the last ended, or a first banner coming.
+ */
 export function LastSeenChip({ appearance }: { appearance: UnitAppearanceDto | undefined }) {
   if (!appearance) return null;
-  const text = appearance.current ? "on a banner now" : appearance.lastEnded ? timeAgo(appearance.lastEnded.endsAt) : appearance.next ? "first banner soon" : null;
+  const [state, text] = appearance.current
+    ? ["now", "on a banner now"]
+    : appearance.next
+      ? ["returning", `back ${inDays(appearance.next.startsAt)}`]
+      : appearance.lastEnded
+        ? ["seen", timeAgo(appearance.lastEnded.endsAt)]
+        : [null, null];
   if (!text) return null;
-  const banner = appearance.current ?? appearance.lastEnded ?? appearance.next;
+  const banner = appearance.current ?? appearance.next ?? appearance.lastEnded;
   return (
-    <span className="last-seen-chip font-mono" title={banner ? `${banner.name} · ${appearance.runs} run${appearance.runs === 1 ? "" : "s"}` : undefined}>
+    <span className="last-seen-chip font-mono" data-state={state} title={banner ? `${banner.name} · ${appearance.runs} run${appearance.runs === 1 ? "" : "s"}` : undefined}>
       <BannerFlagIcon label="Last banner" />
       {text}
     </span>

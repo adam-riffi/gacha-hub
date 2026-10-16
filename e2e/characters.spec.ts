@@ -508,8 +508,11 @@ test("Characters: each character's last banner on its card, sorted by it; the sh
     await page.goto(`/games/${id}/characters`);
     const saber = page.getByRole("article", { name: "Saber" });
     await expect(saber.getByRole("img", { name: "Last banner" })).toBeVisible();
-    await expect(saber).toContainText("2 mo ago");
+    // Round 12: a rerun already dated says when she is back, which beats how long she has been gone.
+    await expect(saber).toContainText("back in 7 d");
+    await expect(saber.locator(".last-seen-chip")).toHaveAttribute("data-state", "returning");
     await expect(page.getByRole("article", { name: "Archer" })).toContainText("1 wk ago");
+    await expect(page.getByRole("article", { name: "Archer" }).locator(".last-seen-chip")).toHaveAttribute("data-state", "seen");
 
     // Sorted by it, the longest unseen first.
     await page.getByLabel("Sort").selectOption({ label: "Last seen" });

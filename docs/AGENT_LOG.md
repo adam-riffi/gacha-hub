@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-16 · claude · stack/r18/06-last-seen · #343
+- Done: round 12 ("fix all of the ui features you feel are lacking ... such as the 'last seen feature'"). The chip reads at a glance now: ON A BANNER NOW in the accent with a filled flag; a dated rerun says "back in 7 d" on a paper chip — when a unit returns beats how long it has been gone; how long ago otherwise; and it grew a step (13 px, more padding). Its state rides in `data-state` for the colours.
+- Tests: written first: Saber (rerun dated in 7 days) reads "back in 7 d" with `data-state="returning"`; Archer keeps "1 wk ago" with `data-state="seen"`.
+- Scope/decisions: on the way, the weapons journey built the same Kafka wearing the same light cone as the characters journey, which doubled a card when the files landed on workers in the wrong order — it has its own unit and weapon now (the handoff's own rule).
+- Next: the round's docs: ASSETS.md's new sources, the storage answer, the handoff; then the deploy.
+
 ## 2026-10-16 · claude · stack/r18/05-card-art · #342
 - Done: round 12 ("add game art to everything you can"; "add assets to banner cards, BP cards, game cards"). Each game's manifest names a hero — a splash key of its own catalog, the URL checked by hand (Furina, Kafka, Miyabi, Jinhsi, Laevatain, Sakiri's gacha art) — and `HeroArt` draws it from our store first, then the community source, and nothing at all when both are missing, so a card never shows a placeholder. The library card fades it in from the right under its figures; Home's battle pass card carries it under the band; the banners card shows it dimmed when no banner runs.
 - Tests: written first: a library card carries its hero art (`img.hero-art[src*='1005']` on Star Rail's).
@@ -248,9 +254,3 @@ Entry format:
 - Tests: written first: Musketeer picked from the list opens its group and panel (add, equip); Farm from the first set of the list; filters by slot, where and main stat; two sets at once after searching the list, then Reset clears the search, the sets and where, and disables itself; a piece added with its set's icon heading its group; the panel opens over the page without moving the groups; NTE's Console sets from the list; the accessibility sweep picks and opens a set.
 - Scope/decisions: the old Pieces | Sets switch and the set cards are gone (the list and the groups do both jobs); a piece no longer opens its set (its group's Open does).
 - Next: art framing for Endfield and Qiuyuan.
-
-## 2026-10-14 · claude · stack/r11/04-stat-cards · #302
-- Done: the sheet's stats (Georges, round 8: "the highlighted stat in the character screen shouldn't be an extra row: just make all the stats into such cards, colour the ascension stat and have a box to highlight them on the cards"). The row of highlighted tiles and the header's Card stats button are gone. Combat stats lists every stat the sheet shows (`sheetStats`: Crit value where a role reads it, HP, ATK, DEF, each KPI's stats, then any typed) as a card: its icon and name, its value typed over the base (in italics while it is the base), its target and how far off, and a box ticked when the character's card shows it (a pair like CRIT Rate / CRIT DMG ticks both halves; a fourth drops the oldest; Default returns to the game's). The growth stat's card is in the character's colour. Targets now take any stat the sheet shows (HP, ATK, DEF and a pair's halves among them).
-- Tests: written first: `sheetStats` for Star Rail; targets for ATK and CRIT Rate kept; the sheet has no KPIs row, CRIT Rate typed 50 in its card; SPD's target 134 shows 4 short and stays after a reload; SPD's card is marked base until typed; Kafka's ATK card is the growth stat, ATK and CRIT Rate ticked, HP ticked drops ATK.
-- Scope/decisions: the box flips at once (an optimistic update) and the server's answer follows.
-- Next: the gear screen rebuilt.

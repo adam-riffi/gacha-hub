@@ -11,23 +11,23 @@ test("Weapons: every copy its own card with its level and refinement and who wie
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
-  const build = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1005", doc: { level: 80, lightCone: { catalogId: "23006", name: "Patience Is All You Need", level: 80, superimposition: 2 } } } })).json()) as { id: string };
+  const build = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1217", doc: { level: 80, lightCone: { catalogId: "23002", name: "Something Irreplaceable", level: 80, superimposition: 2 } } } })).json()) as { id: string };
   await page.request.put(`/api/characters/${build.id}`, { data: { isDefault: true } });
   await clearCopies(page, id);
-  await page.request.put(`/api/instances/${id}/wishlist`, { data: { kind: "weapon", catalogId: "23006", wished: false } });
+  await page.request.put(`/api/instances/${id}/wishlist`, { data: { kind: "weapon", catalogId: "23002", wished: false } });
 
   await page.goto(`/games/${id}/characters`);
   await page.getByRole("navigation", { name: "Game screens" }).getByRole("link", { name: "Weapons" }).click();
   await expect(page).toHaveURL(new RegExp(`/games/${id}/weapons$`));
-  await page.getByRole("searchbox", { name: "Search" }).fill("Patience");
+  await page.getByRole("searchbox", { name: "Search" }).fill("Something Irre");
   const grid = page.getByRole("region", { name: "Weapons" });
-  const cards = grid.getByRole("article", { name: "Patience Is All You Need" });
+  const cards = grid.getByRole("article", { name: "Something Irreplaceable" });
 
-  // Kafka's sheet names it: that is a copy, at her sheet's Lv 80 S2 (round 6: every sheet's weapon is a copy). One card, which opens the weapon's panel.
+  // Huohuo's sheet names it: that is a copy, at her sheet's Lv 80 S2 (round 6: every sheet's weapon is a copy). One card, which opens the weapon's panel.
   await expect(cards).toHaveCount(1);
   await expect(cards.first()).toContainText("Lv 80 · S2");
   await cards.click();
-  const panel = page.getByRole("complementary", { name: "Patience Is All You Need" });
+  const panel = page.getByRole("complementary", { name: "Something Irreplaceable" });
   await panel.getByRole("button", { name: "Add a copy" }).click();
   await expect(cards).toHaveCount(2);
 
@@ -37,19 +37,19 @@ test("Weapons: every copy its own card with its level and refinement and who wie
   await first.getByRole("spinbutton", { name: "Superimposition" }).fill("3");
   await first.getByRole("spinbutton", { name: "Superimposition" }).blur();
   await expect(cards.first()).toContainText("Lv 80 · S3");
-  // Kafka wields one: her icon on the first copy's card.
-  await expect(cards.first().getByRole("img", { name: "Kafka" })).toBeVisible();
+  // Huohuo wields one: her icon on the first copy's card.
+  await expect(cards.first().getByRole("img", { name: "Huohuo" })).toBeVisible();
   // Larger cards (Georges, round 7: "very small cards that are hard to identify their rarity and see the character icons"):
   // the art at least 88 px, the rarity as a band in its colour, the wielder at least 36 px.
-  await expect.poll(async () => (await cards.first().getByRole("img", { name: "Patience Is All You Need" }).boundingBox())?.width ?? 0).toBeGreaterThanOrEqual(88);
+  await expect.poll(async () => (await cards.first().getByRole("img", { name: "Something Irreplaceable" }).boundingBox())?.width ?? 0).toBeGreaterThanOrEqual(88);
   await expect(cards.first().locator(".wp-rarity")).toHaveAttribute("data-rarity", "5");
   expect(await cards.first().locator(".wp-rarity").evaluate((el) => getComputedStyle(el).backgroundColor)).not.toBe("rgba(0, 0, 0, 0)");
-  await expect.poll(async () => (await cards.first().getByRole("img", { name: "Kafka" }).boundingBox())?.width ?? 0).toBeGreaterThanOrEqual(36);
+  await expect.poll(async () => (await cards.first().getByRole("img", { name: "Huohuo" }).boundingBox())?.width ?? 0).toBeGreaterThanOrEqual(36);
 
   await panel.getByRole("button", { name: "Wishlist" }).click();
   await expect(panel.getByRole("button", { name: "Wishlist" })).toHaveAttribute("aria-pressed", "true");
   await panel.getByRole("button", { name: "Farm" }).click();
-  await expect(page.getByRole("region", { name: "Farm Patience Is All You Need" })).toBeVisible();
+  await expect(page.getByRole("region", { name: "Farm Something Irreplaceable" })).toBeVisible();
 
   await panel.getByRole("group", { name: "Copy 2" }).getByRole("button", { name: "Remove" }).click();
   await expect(cards).toHaveCount(1);
