@@ -20,6 +20,7 @@ export async function resetDb() {
     prisma.auditLog.deleteMany(),
     prisma.importRun.deleteMany(),
     prisma.linkedAccount.deleteMany(),
+    prisma.appSecret.deleteMany(),
     prisma.pullEntry.deleteMany(),
     prisma.cycleResult.deleteMany(),
     prisma.passState.deleteMany(),

@@ -1,4 +1,5 @@
-import { createCipheriv, createDecipheriv, randomBytes } from "node:crypto";
+import { createCipheriv, createDecipheriv, hkdfSync, randomBytes } from "node:crypto";
+import { config } from "../config.js";
 
 /**
  * Tokens users give us to sync their game accounts (ADR 0005), encrypted at
@@ -8,18 +9,18 @@ import { createCipheriv, createDecipheriv, randomBytes } from "node:crypto";
 export type LinkKeys = { current: number; keys: Map<number, Buffer> };
 
 /**
- * Reads LINK_SECRET_KEY: one base64 key (version 1), or "2:key,1:key" while
- * rotating. The highest version seals; every listed version opens.
+ * Version 0 is derived from the session secret (ADR 0012), so sealing needs no
+ * variable of its own; LINK_SECRET_KEY adds one base64 key (version 1), or
+ * "2:key,1:key" while rotating. The highest version seals; every version opens.
  */
-export function linkKeys(raw: string | undefined = process.env.LINK_SECRET_KEY): LinkKeys {
-  const keys = new Map<number, Buffer>();
+export function linkKeys(raw: string | undefined = process.env.LINK_SECRET_KEY, root: string = config.sessionSecret): LinkKeys {
+  const keys = new Map<number, Buffer>([[0, Buffer.from(hkdfSync("sha256", root, "", "gacha-hub link key v0", 32))]]);
   for (const part of (raw ?? "").split(",").map((segment) => segment.trim()).filter(Boolean)) {
     const match = /^(\d+):(.+)$/.exec(part);
     const key = Buffer.from(match ? match[2]! : part, "base64");
     if (key.length !== 32) throw new Error("LINK_SECRET_KEY: each key must be 32 bytes, base64");
     keys.set(match ? Number(match[1]) : 1, key);
   }
-  if (!keys.size) throw new Error("LINK_SECRET_KEY is not set");
   return { current: Math.max(...keys.keys()), keys };
 }
 

@@ -25,7 +25,6 @@ describe("Settings → Keys", () => {
   });
   beforeEach(async () => {
     await resetDb();
-    await prisma.appSecret.deleteMany();
     owner = await login(app, `10.1.0.${++ipCounter}`);
   });
   afterEach(() => {
