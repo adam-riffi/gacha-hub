@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-16 · claude · stack/r19/04-keys-tab · #348
+- Done: ADR 0012's screen. Settings → Keys (owner only) lists Sign-in, Discord bot, Schedule and Art store as cards, each key with its state in a chip (In the app, On the host, Missing), a field to enter or replace it, Clear, and Generate for the cron secret; a key on the host is locked. Values that are not secrets show once saved. The art store's public URL reaches the web app through `/api/me` at once (no rebuild); it must be an `r2.dev` or Vercel Blob host, the ones the image policy allows.
+- Tests: written first: the Keys journey (a public value shown, a secret emptied from its field and absent from the page, a malformed value refused, Generate, the public URL in `/api/me`, Clear); the HoYoLAB card's journey now expects HoYoLAB's own answer, since linking no longer waits for a key.
+- Scope/decisions: the labels come from the server's key list, the hints per service from the tab.
+- Next: art where a banner or event has none.
+
 ## 2026-10-16 · claude · stack/r19/03-github-oidc · #347
 - Done: ADR 0012's third part. `isGithubWorkflow` checks a bearer token is GitHub's OIDC proof: RS256 only, a key from GitHub's published set (kept an hour, fetched again at most once a minute for an unknown key id), GitHub's issuer, the app's URL as the audience, within its lifetime, our repository, `main`, and the named workflow file. The tick accepts it for `cron-tick.yml` (and the cron secret still, for other schedulers); `POST /api/cron/art-store` hands the R2 keys the owner entered to `mirror-art.yml` alone. Both workflows ask GitHub for the token (`id-token: write`) and need no repository secret.
 - Tests: written first: the verifier's unit test (another workflow, branch, repository, audience or issuer; expired or not yet valid; a forged signature, `alg: none`, a changed claim, an unknown key, garbage: all refused) and the routes' integration test; actionlint on both workflows.
@@ -248,9 +254,3 @@ Entry format:
 - Tests: written first: a set opened from the picker (add, equip on Seele) and its piece's card with its icon; Farm from the picker's first set; Pela's Hunter body with its set's icon and Body; filters by slot, where, main stat and two set chips (with their icons); Reset clears them and disables itself; the search finds Pela's piece; a piece added shows its set's icon and opens the panel without moving the cards; NTE's sets in the picker; the accessibility sweep opens a set from it. The journeys run at 1440 × 900, the app's one layout since #305.
 - Scope/decisions: round 8's list of every set and its groups are gone (the picker opens any set); set chips list the sets you hold only.
 - Next: the weapon panel's toggle and a visible close.
-
-## 2026-10-14 · claude · stack/r11/09-assets-hosting · #307
-- Done: two documents (Georges, round 8: "make a list as well of all the assets/icons you need to populate everything, like currency icons etc. … we'll redo the deployment and database to make sure to find relevant solutions for all of that; this project is one user only, so we'll need to find better sign in"). `docs/ASSETS.md`: per game, how many characters, splash arts, weapons, sets, materials and skills have art and from where (the gaps: skill icons for Star Rail, ZZZ, WuWa and NTE; Star Rail's splash art; Endfield's larger portraits and its 14 gifts; NTE's per-set icons); then the app's own lists drawn as glyphs today (game icons and backgrounds, every currency by name, top-up currencies, passes, battle passes, endgame modes, elements, weapon types, shops, tasks, banner kinds), and how to add them (the R2 mirror, a folder per game, the public folder). AGENTS.md points to it. `docs/adr/0010-hosting-database-signin.md`, proposed: the options for the database (keep Postgres; one SQLite everywhere on Turso; a file on Georges's machine), hosting (keep Vercel; one host) and sign-in for one user (Discord limited to his id; a passkey; an owner password; access in front), with a recommendation to discuss (Turso, Vercel, a passkey with a password as recovery) and what each choice changes.
-- Tests: none (documents).
-- Scope/decisions: nothing in ADR 0010 is built until Georges picks; the counts in ASSETS.md were taken from today's catalogs.
-- Next: the full check over PRs 6 to 9; round 8's audit and the handoff.
