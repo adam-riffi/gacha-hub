@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-16 · claude · stack/r19/06-docs · #350
+- Done: Georges, 2026-10-16: "make me a list of all the artless cards that needs to be filled i'll find you art to put on them". ASSETS.md lists the 47 pictures still missing, checked screen by screen: 6 game logos, 14 endgame modes, 6 battle passes, 5 30-day passes, 5 standard banners, 5 monthly shops, 6 currencies no source has; each with its shape, size and a file name to hand it over by. DESIGN.md §13, DEPLOY.md, the guide, the README, AGENTS.md's rule 7 and `.env.example` say what stays on the host and what goes in the app (ADR 0012). The handoff is rewritten.
+- Tests: docs only.
+- Scope/decisions: what a source has (elements, weapon types, the top-up currencies) stays off Georges's list: claude fills those.
+- Next: deploy at Georges's word; the art he finds goes into the store when he sends it.
+
 ## 2026-10-16 · claude · stack/r19/05-art-fallback · #349
 - Done: Home's banners card went blank for a banner without featured units (an event's phase, the sample banners), and the timeline's Selected panel showed a gamepad for every event. Both show the game's hero art now.
 - Tests: written first: the timeline journey expects Star Rail's hero (Kafka) in Selected for an event without art.
@@ -248,9 +254,3 @@ Entry format:
 - Tests: written first: integration: a build with own false leaves Amber unowned. Journey: Lynx unowned has a bright card with its stats, no Not owned chip, Owned only hides her and shows her again, Start a build opens her sheet and she stays unowned.
 - Scope/decisions: own false only from an unowned card's Start a build; everything else keeps owning on build, as before.
 - Next: the Overview with the banners first.
-
-## 2026-10-14 · claude · stack/r12/02-panel-toggle · #309
-- Done: panels (Georges, round 9: "when I click on a weapon I have the bar appearing on the side, and when I click again on the same weapon the screen flickers instead of closing; I am visually impaired: the small x to close is barely visible"). The flicker: a press outside a window closed it (`useDismiss`), then the card's click opened it again. A window's opener now carries `data-opens-panel`, which the dismiss leaves alone, and the weapon's card toggles its panel (a gear piece's card already did). Every window's Close (a weapon's and a set's panel, the weapon window, Quick build, the timeline's Selected) is a 40 px button with a heavy border reading ✕ CLOSE.
-- Tests: written first: Arrows's card opens its panel, a second click closes it and it stays closed; its Close says Close, at least 36 px high, and closes it.
-- Scope/decisions: one fix in the dismiss hook for every window rather than per screen.
-- Next: the characters' cards the same owned or not.
