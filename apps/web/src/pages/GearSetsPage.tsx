@@ -261,13 +261,15 @@ export function GearSetsPage() {
                     <CatalogIcon gameKey={game.key} kind="gear" icon={pieceIcon(set, piece.slot)} name={piece.set} className="gb-art" />
                     <span className="gb-lv font-mono">+{piece.level ?? 0}</span>
                     {piece.wearer?.catalogId ? <UnitIcon gameKey={game.key} unit={{ kind: "character", catalogId: piece.wearer.catalogId }} className="gb-who" /> : <span className="gb-bag font-mono">{piece.wearer ? piece.wearer.name : "Bag"}</span>}
+                    {/* The set in words (round 12: readable without knowing the art), then the stat, then the slot. */}
+                    <strong className="gb-set">{piece.set}</strong>
                     <span className="gb-main font-display">
                       {piece.mainStat && <StatIcon stat={piece.mainStat} />}
-                      {piece.mainStat || "—"}
+                      {piece.mainStat || slotLabel(piece.slot)}
                     </span>
                     <span className="gb-type font-mono">
-                      {slotLabel(piece.slot)}
-                      {critValue > 0 && ` · CV ${Math.round(critValue * 10) / 10}`}
+                      {piece.mainStat ? slotLabel(piece.slot) : `+${piece.level ?? 0}`}
+                      {critValue > 0 && ` · Crit value ${Math.round(critValue * 10) / 10}`}
                     </span>
                   </article>
                 );

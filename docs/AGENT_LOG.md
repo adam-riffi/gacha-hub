@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-16 · claude · stack/r18/03-gear-remake · #340
+- Done: round 12 ("fix the gear screen once and for all. it needs to be readable understandable and easy to use"). Every tile names its set in words (up to two lines) — it was only knowable from the art — with the art up from 92 to 118 px, the main stat large (or the slot where none is typed, never a bare dash), the slot and "Crit value n" spelled out (no more "CV 42"), a paper Bag chip and a larger wearer portrait. The chosen-piece column widens to 420 px.
+- Tests: written first: the tile journey reads the set from `.gb-set`, the art at 100 px and up, "Crit value" in words and no "CV n" anywhere on it.
+- Scope/decisions: the three-column skeleton (filters · tiles · chosen piece) stays: round 10 picked it; the failure was the information on the tiles, not the layout.
+- Next: each currency's own icon.
+
 ## 2026-10-16 · claude · stack/r18/02-readability · #339
 - Done: round 12 ("i am visually impaired and some things are hard for me to read"; a 24-inch and a 32-inch screen). The whole shell zooms with the window: ×1.22 from 1800 px, ×1.55 from 2400 px, so wider never means smaller type (the rail divides its height back, zoom stretching vh). Body text goes 15 → 16 px, the kpi labels 12 → 13 px, muted text brightens a step (#bebebe → #c9c9c9).
 - Tests: a journey reads the computed zoom at 1440, 1920 and 2560.
@@ -248,9 +254,3 @@ Entry format:
 - Tests: written first: on Star Rail, 980 + 110 shows 6 pulls, 6480 + 1600 50, the pass 18; the card sits below Pulls available and the planner and history.
 - Scope/decisions: a pack under one pull shows 0; the pass's pulls assume its full 30 days.
 - Next: three stats on a character's card.
-
-## 2026-10-14 · claude · stack/r11/01-team-window · #299
-- Done: endgame teams and icons (Georges, round 8: "adding characters to an endgame team is a pain: I have to click on the box, then click out for it to refresh, and click again; I'd rather have a window with all the characters open and choose them; it also lacks difficulty icons"). Each stage's + Team opens `TeamWindow`: every character of the game as a large card with its icon, a click adding or removing one up to the party size (the slot's number on the card), the window staying open; saved teams fill it in one click; a search narrows the list; Done or a click outside closes it. Each mode's result has its metric's icon (`MetricIcon`: stars, difficulty, seals, crests, acts, rank, points, each its colour), and a mode whose maximum is 12 or less shows the full row of icons filled to the result (Stygian's six skulls, Pure Fiction's twelve stars). Round 8's audit opens (`docs/AUDIT-2026-10-14-round8.md`).
-- Tests: written first: Memory of Chaos's First half gets Kafka and Silver Wolf in one window, the count 2 / 4 then 1 / 4 after a second click, Kafka on the saved stage; its result shows the star icon; Pure Fiction at 9 shows nine of twelve stars filled. The Abyss and Shiyu journeys pick their teams in the window.
-- Scope/decisions: "difficulty icons" read as each mode's metric by its icon, the game's word beside it.
-- Next: the top-up card at the bottom, each pack in pulls.
