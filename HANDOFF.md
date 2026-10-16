@@ -1,43 +1,42 @@
-# Handoff — 2026-10-16 · claude (round 12 deployed)
+# Handoff — 2026-10-16 · claude (round 13 merged, not deployed)
 
 ## State
-- `main` at #344: rounds 1–12 merged. CI green. **Production serves #344** (deployed 2026-10-16 at Georges's word, "deploy into production your work for me to see in the morning"; the smoke checks pass).
-- No open PRs. Merges do not deploy (#189): deploy only at Georges's word or a milestone.
-- Every milestone in DESIGN.md §9 is built, V through F13, and twelve feedback rounds (2026-10-10 to 2026-10-16) are done. What is left needs Georges's secrets, real data or a decision (below), or a source (the audits list what was searched and not found).
+- `main` at #350: rounds 1–13 merged. CI green. **Production still serves #344** (round 12, deployed 2026-10-16). Round 13 waits for Georges's word to deploy (AGENTS.md: deploys only at his command); until then the new reminder-tick workflow warns "the app refused GitHub's proof" on each run instead of failing.
+- No open PRs. Merges do not deploy (#189).
+- Every milestone in DESIGN.md §9 is built, V through F13, and thirteen feedback rounds (2026-10-10 to 2026-10-16) are done.
 
-## Done this session (round 12, `docs/AUDIT-2026-10-16-round12.md`)
-- **Visuals first** (Georges is visually impaired, on a 24-inch and a 32-inch screen): a drawn **emblem per game** and plain-picture **rail icons** (#338); the whole UI **scales with the window** (×1.22 at 1800 px, ×1.55 at 2400 px), base type up (#339).
-- **Gear screen remade**: every tile names its set in words, larger art, "Crit value" spelled out (#340).
-- **Currency icons** for five games from Enka / Yatta / Hakushin / wuthery, every URL checked by hand; drawn fallbacks stay (#341).
-- **Hero art** (a hand-checked splash per game) on the library cards, the battle pass card and the idle banners card (#342).
-- **Last seen** state-coloured; a dated rerun says "back in 7 d" (#343). On the way: the weapons journey got its own unit and weapon (an ordering flake).
-- Docs: the round's audit, ASSETS.md's found sources, this handoff (#344).
+## Done this session (round 13)
+- **Keys in the app (ADR 0012, accepted):** Settings → Keys (owner only) takes the owner password, the Discord bot, a cron secret and the R2 art store; each sealed in the database (AES-256-GCM), never sent back, audited by name; the host's environment wins (#345, #346, #348).
+- **No secret on GitHub:** the reminder tick and the art mirror prove who they are with GitHub's OIDC token; the mirror takes the R2 keys from the app (#347).
+- **Linking needs no key:** version 0 of the sealing key is derived from `SESSION_SECRET`, so HoYoLAB linking works in production once deployed (#345).
+- **Art:** a banner or event without art shows its game's hero (#349); ASSETS.md lists the **47 pictures** still missing, with sizes and file names, for Georges to find (#350).
 
 ## Decisions taken (2026-10-16; Georges: "you are free to take any decision")
-- Game identity is a **drawn emblem** (ours, committable), not a hotlinked logo: no stable public logo URL was worth pinning; the owner's real logos still win once dropped into the store.
-- Wide screens scale by **zoom** (one property over a rem rework of a px-built system); journeys keep running at 1440.
-- The gear page keeps its three-column skeleton (round 10's pick); the fix was the information on the tiles.
-- **Storage: Cloudflare R2** (ADR 0006): free 10 GB, no egress fees; until the owner sets it up the app hotlinks the community CDNs with drawn fallbacks.
-- Banner history for ZZZ / WuWa / Endfield / NTE: still **no dated machine-readable source** (searched again: Hakushin has no gacha endpoint; trackers publish no dataset). Genshin + Star Rail stay on samsara-web.
+- What stays on the host: the database URLs, `SESSION_SECRET`, `APP_BASE_URL`, the Discord sign-in client, `ADMIN_DISCORD_IDS`, `COOKIE_SECURE`, Vercel's `BLOB_READ_WRITE_TOKEN`: the app needs them before anyone can sign in or decrypt.
+- No separate master key for the store: whoever reads the host's environment already holds `SESSION_SECRET`. Rotating `SESSION_SECRET` means entering the app's keys again.
+- The host wins over the app (the escape hatch if an entered value breaks something).
+- GitHub's OIDC over a shared secret; JWT checked by hand with `node:crypto` (RS256, one issuer).
+- The art store's public URL must be an `r2.dev` or Vercel Blob host (the image policy's).
 
 ## Verified
-- `npm run check` on every PR and CI green on each; the journeys count 135+ with the new ones (emblems, zoom, gear tile words, wallet icon, hero art, last-seen states).
-- Checked in the browser at 1440, 1920 and 2560; screenshots on the PRs (art blocked there).
+- `npm run check` on every PR and CI green on each; 720+ unit and integration tests, 135+ journeys with the new ones (the Keys tab, the hero fallback).
+- Checked in the browser at 1440: the Keys tab, Home's banner card.
 
 ## Next
-1. ADR 0011's remaining services (characters, weapons, pulls, tasks, planning); the reset clock and planner costs as objects.
-2. When a dated source appears: banner history for the other four games; Endfield item icons.
-3. Each game version: refresh catalogs, endgame enemies, banner history; mirror art once R2 exists.
+1. Deploy at Georges's word; then run reminder-tick by hand once (Actions) and expect `ok: true`.
+2. When Georges sends the art: an owner upload per card (Vercel Blob is set up), so nothing is committed (ADR 0006).
+3. Source what a source has: elements and weapon types, the top-up currencies.
+4. ADR 0011's remaining services.
 
 ## Needs from Georges
-- **R2** (the storage pick): create the bucket, set the four `R2_*` Actions secrets and `VITE_ASSET_BASE` (DEPLOY.md §7); then `npm run assets:mirror` per game.
-- **Secrets:** `LINK_SECRET_KEY`; `CRON_SECRET` (reminders + hourly feed import; also keeps Supabase's free plan awake); `DISCORD_BOT_TOKEN` and the bot; `BLOB_READ_WRITE_TOKEN` if unset; `OWNER_PASSWORD_HASH` (optional password sign-in; `npm run password:hash`).
-- A passkey: sign in with Discord, Settings → Account and data → Add a passkey.
-- **Real data, with tokens removed** (PROJECT-GUIDE §14.1 step 8): an Endfield records page; a ZZZ UID; HoYoLAB answers; one gacha log page; one WuWa convene answer.
-- The `main` ruleset, the `sample-*` banners (no featured units; the feed's have them), the README demo GIF, the stale remote branches.
+- **Say "deploy"** for round 13.
+- Then, in the app: **Settings → Keys**: the owner password (optional), the Discord bot (application id, bot token, public key), the R2 art store (account id, access key id, secret, bucket, public URL). Settings → Linked accounts: HoYoLAB.
+- Delete the old GitHub repository secrets `CRON_URL` / `CRON_SECRET` (unused now).
+- **The 47 pictures** in ASSETS.md, named as listed.
+- Real data (PROJECT-GUIDE §14.1 step 8), the `main` ruleset, the `sample-*` banners, the README GIF.
 - Overrule any decision above by saying so.
 
 ## Notes
 - The previous handoffs' notes stand (HoYoLAB read-only, art never committed, E2E's shared database and its unique-unit rule, Prettier not enforced, the log's roll-over, owner files, Git Bash paths, squash-merged stacks, heredocs eating backslashes, renames via the TS language service with the no-shadow baseline).
-- Community art hosts in use: enka.network, sr.yatta.moe, static.nanoka.cc, files.wuthery.com, raw.githubusercontent.com (Endaxis pinned commit). All accept URL-encoded slashes in keys. Every hand-picked key was checked 200 on 2026-10-16; `HeroArt`/`CurrencyIcon` fall back silently when one goes down.
-- `zoom` stretches vh: the rail divides its height back per media query (tokens.css).
+- Keys journeys must clear what they set (`DELETE /api/settings/keys/:name` in `finally`): the E2E database is shared.
+- `readKey` reads the environment first: a test that sets a key in the app must make sure the variable is not set (the test env sets `DISCORD_PUBLIC_KEY`).
