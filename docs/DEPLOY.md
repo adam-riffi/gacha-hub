@@ -57,12 +57,14 @@ Mode in Discord (Settings → Advanced), right-click your name → Copy User ID
    | `APP_BASE_URL` | your Vercel URL, e.g. `https://gacha-hub.vercel.app` (no trailing slash) |
    | `SESSION_SECRET` | a long random string (`openssl rand -hex 32`) |
    | `COOKIE_SECURE` | `true` |
-   | `CRON_SECRET` | another random string (step 6); the hourly cron also keeps Supabase's free plan from pausing (ADR 0010) |
-   | `OWNER_PASSWORD_HASH` | the line `npm run password:hash` prints, run on your own computer (ADR 0010: the owner password; only its hash goes to Vercel) |
    | `ADMIN_DISCORD_IDS` | your Discord user id (comma-separated for more) |
    | `DISCORD_CLIENT_ID` / `DISCORD_CLIENT_SECRET` | step 2 |
    | `DISCORD_OAUTH_REDIRECT` | `${APP_BASE_URL}/api/auth/discord/callback` |
-   | `DISCORD_APP_ID` / `DISCORD_BOT_TOKEN` / `DISCORD_PUBLIC_KEY` | step 2 |
+
+   Everything else goes in the app once you are signed in: **Settings → Keys** (ADR 0012) takes the owner password, the
+   Discord bot (`DISCORD_APP_ID`, `DISCORD_BOT_TOKEN`, `DISCORD_PUBLIC_KEY`), a cron secret for schedulers other than
+   GitHub, and the R2 art store. Each is sealed in the database and never shown again. A variable of the same name set
+   here on Vercel wins over the app's value, and shows as "On the host" there.
 
    **Never set `NODE_ENV`**: Vercel's `npm ci` would then skip dev dependencies the
    build needs. `DEV_LOGIN_ENABLED=false` and `COOKIE_SECURE=true` are what make
@@ -84,9 +86,7 @@ Mode in Discord (Settings → Advanced), right-click your name → Copy User ID
 
 - Visit `APP_BASE_URL` → the app loads (dev-login is off in production; you sign
   in with Discord in the next step).
-- `curl https://<app>/api/cron/tick` → **401** (the secret guard works).
-- `curl -X POST https://<app>/api/cron/tick -H "x-cron-secret: <CRON_SECRET>"`
-  → `{"ok":true,...}`.
+- `curl -X POST https://<app>/api/cron/tick` → **401** (the guard works).
 
 ## 5. Wire Discord to the deployed URL
 
@@ -116,14 +116,16 @@ Back in the Discord application:
 ## 6. Reminders (GitHub Actions cron)
 
 The `.github/workflows/cron-tick.yml` workflow (named **reminder-tick**) calls
-the tick every 10 minutes. In the GitHub repo → Settings → Secrets and variables
-→ Actions, add:
-
-- `CRON_URL` = `${APP_BASE_URL}/api/cron/tick`
-- `CRON_SECRET` = the same value you set on Vercel
+the tick every 10 minutes. It needs **no secret** (ADR 0012): it proves who it is
+with GitHub's OIDC token, which the app checks (this repository, this file, on
+`main`, the app's URL as the audience). Another URL than the production one goes
+in the repository variable `APP_URL`. The old `CRON_URL` / `CRON_SECRET`
+repository secrets can be deleted.
 
 Trigger it once manually (Actions tab → reminder-tick → Run workflow) to confirm
-it returns 200.
+it returns 200. Another scheduler (a self-hosted cron) sends a cron secret
+instead: make one in Settings → Keys → Schedule → Generate, and send it as the
+`x-cron-secret` header.
 
 ---
 
@@ -132,16 +134,16 @@ it returns 200.
 Optional: without it the app hotlinks Enka and Yatta, then shows placeholders.
 
 1. Create a Cloudflare account and an **R2 bucket** (free tier: 10 GB, free egress).
-2. In the bucket's settings, allow **public access** through its `r2.dev` URL (or a custom domain).
-   **→ save the public URL as `VITE_ASSET_BASE`** (no trailing slash).
+2. In the bucket's settings, allow **public access** through its `r2.dev` URL.
+   **→ save the public URL** (no trailing slash).
 3. Create an **R2 API token** with read and write on that bucket.
    **→ save** the account id, the access key id and the secret access key.
-4. In GitHub → Settings → Secrets → Actions, add `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`,
-   `R2_SECRET_ACCESS_KEY` and `R2_BUCKET` (the bucket's name).
-5. Run the **mirror-art** workflow (Actions → mirror-art → Run workflow, game `all`).
-   Each later run uploads only what changed; run it after each catalog refresh.
-6. In Vercel, set `VITE_ASSET_BASE` to the public URL and redeploy.
-   A custom domain also needs adding to the CSP's `img-src` (`apps/server/src/lib/securityHeaders.ts` and `vercel.json`); `*.r2.dev` is already allowed.
+4. In the app, **Settings → Keys → Art store**: enter the account id, the access key id, the
+   secret access key, the bucket's name and the public URL. Nothing goes to GitHub or Vercel (ADR 0012).
+5. Run the **mirror-art** workflow (Actions → mirror-art → Run workflow, game `all`): it takes
+   the keys from the app with GitHub's OIDC proof. Each later run uploads only what changed;
+   run it after each catalog refresh. The app reads the public URL at once, no redeploy.
+   The public URL must be an `r2.dev` (or Vercel Blob) host, the ones the CSP's `img-src` allows.
 
 ## Redeploys and migrations
 

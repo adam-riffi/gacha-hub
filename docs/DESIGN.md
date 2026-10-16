@@ -173,9 +173,9 @@ Vercel project `gacha-hub` (framework preset "Other", functions in `dub1` next t
 
 - Initial JavaScript at most 200 KB gzipped (`npm run budget`, enforced in CI's `build` job; 149 KB on 2026-10-06); catalogs load lazily per game.
 - Every view has loading, empty and error states.
-- Inputs validated with zod at the boundary; admin routes rate-limited and audited; the cron endpoint requires `CRON_SECRET`.
-- No secrets in the client bundle; credentials are entered by the owner only.
-- Linked-account tokens are encrypted at rest (AES-256-GCM, `LINK_SECRET_KEY`), never logged, never sent to the browser and never exported (ADR 0005).
+- Inputs validated with zod at the boundary; admin routes rate-limited and audited; the cron endpoints require GitHub's OIDC proof for their workflow, or `CRON_SECRET` (ADR 0012).
+- No secrets in the client bundle; credentials are entered by the owner only: on the host for what the app needs before sign-in (the database, `SESSION_SECRET`, the Discord sign-in client), in Settings → Keys for the rest, sealed in the database and never sent back (ADR 0012). GitHub holds no secret.
+- Linked-account tokens and the keys entered in the app are encrypted at rest (AES-256-GCM; version 0 of the key derived from `SESSION_SECRET`, `LINK_SECRET_KEY` adding later versions), never logged, never sent to the browser and never exported (ADR 0005, ADR 0012).
 - Every response carries a Content-Security-Policy (own scripts only; images from the app, Enka, Yatta, Discord avatars, Vercel Blob and, from F12, the art store), `frame-ancestors 'none'`, `nosniff`, a strict referrer policy and a minimal permissions policy (`apps/server/src/lib/securityHeaders.ts`, mirrored in `vercel.json`).
 
 ## 14. Risks and open questions

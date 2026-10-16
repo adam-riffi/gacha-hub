@@ -45,8 +45,106 @@ Each of these is a glyph or text today; a real icon per item would replace it.
 | **Daily and weekly tasks** | the dashboards, Activities | each game's `defaultTasks` (Daily Commissions, Weekly Bosses, Simulated Universe, Notorious Hunt…) |
 | **Banner kinds** | Pulls | character, weapon, standard, bangboo, chronicled, the Arsenal… (a glyph per kind today) |
 
+## Cards still waiting for art (2026-10-16)
+
+Georges, 2026-10-16: "make me a list of all the artless cards that needs to be filled i'll find you art to put on them."
+
+Checked screen by screen on 2026-10-16. Already filled and not on this list: characters, weapons, gear, materials and enemies (the catalogs' community art), the currencies of five games, and one hero splash per game, which also fills any banner or event without art of its own. Name each file as below (PNG or WebP); square pictures on a transparent background where it says "icon".
+
+**47 pictures in all.** In order of what helps most:
+
+### 1. Game logos — 6 icons, square, 256 × 256 or larger
+
+The big square at the top of every game page, each card in Games, the chips along the top. A drawn emblem stands in today.
+
+| Game | File |
+| --- | --- |
+| Genshin Impact | `genshin-logo.png` |
+| Honkai: Star Rail | `hsr-logo.png` |
+| Zenless Zone Zero | `zzz-logo.png` |
+| Wuthering Waves | `wuwa-logo.png` |
+| Arknights: Endfield | `endfield-logo.png` |
+| Neverness to Everness | `nte-logo.png` |
+
+### 2. Endgame modes — 14 icons, square, 256 × 256 or larger
+
+Each mode's card on Endgame, the rows of Home's "Endgame · next resets" and each game's "Cycles · Endgame". A drawn metric icon stands in today.
+
+| Game | Modes | Files |
+| --- | --- | --- |
+| Genshin | Spiral Abyss, Imaginarium Theater, Stygian Onslaught | `genshin-mode-abyss.png`, `genshin-mode-theater.png`, `genshin-mode-stygian.png` |
+| Star Rail | Memory of Chaos, Pure Fiction, Apocalyptic Shadow, Anomaly Arbitration | `hsr-mode-moc.png`, `hsr-mode-pf.png`, `hsr-mode-as.png`, `hsr-mode-arbitration.png` |
+| Zenless | Shiyu Defense, Deadly Assault, Lost Void | `zzz-mode-shiyu.png`, `zzz-mode-assault.png`, `zzz-mode-lost-void.png` |
+| Wuthering Waves | Tower of Adversity, Whimpering Wastes | `wuwa-mode-tower.png`, `wuwa-mode-wastes.png` |
+| Endfield | Echoes of War | `endfield-mode-echoes.png` |
+| NTE | Beyond the Rails | `nte-mode-rails.png` |
+
+### 3. Battle passes — 6 pictures, wide, 1280 × 720 or larger
+
+The battle pass on each game's Activities (the version card) and on Home, where the game's hero stands in today.
+
+| Game | Pass | File |
+| --- | --- | --- |
+| Genshin | Gnostic Hymn | `genshin-battle-pass.png` |
+| Star Rail | Nameless Honor | `hsr-battle-pass.png` |
+| Zenless | New Eridu City Fund | `zzz-battle-pass.png` |
+| Wuthering Waves | Pioneer Podcast | `wuwa-battle-pass.png` |
+| Endfield | Protocol Pass | `endfield-battle-pass.png` |
+| NTE | Circle Bounty | `nte-battle-pass.png` |
+
+### 4. 30-day passes — 5 icons, square, 256 × 256 or larger
+
+The Monthly card's pass row on Activities and the forecast on Pulls; text only today.
+
+| Game | Pass | File |
+| --- | --- | --- |
+| Genshin | Blessing of the Welkin Moon | `genshin-monthly-pass.png` |
+| Star Rail | Express Supply Pass | `hsr-monthly-pass.png` |
+| Zenless | Inter-Knot Membership | `zzz-monthly-pass.png` |
+| Wuthering Waves | Lunite Subscription | `wuwa-monthly-pass.png` |
+| NTE | Riftcrystal Mining Permit | `nte-monthly-pass.png` |
+
+### 5. Standard banners — 5 pictures, wide, 1280 × 720 or larger
+
+The Pulls page's card for the always-on banner, which shows a star while no event banner runs.
+
+| Game | Banner | File |
+| --- | --- | --- |
+| Genshin | Standard wish (Wanderlust Invocation) | `genshin-banner-standard.png` |
+| Star Rail | Stellar warp | `hsr-banner-standard.png` |
+| Zenless | Stable channel | `zzz-banner-standard.png` |
+| Wuthering Waves | Standard convene | `wuwa-banner-standard.png` |
+| Endfield | Basic headhunting | `endfield-banner-standard.png` |
+
+### 6. Monthly shops — 5 icons, square, 256 × 256 or larger
+
+The Monthly card's shop rows on Activities; text only today.
+
+| Game | Shop | File |
+| --- | --- | --- |
+| Genshin | Paimon's Bargains | `genshin-shop.png` |
+| Star Rail | Embers Exchange | `hsr-shop.png` |
+| Zenless | Signal Shop | `zzz-shop.png` |
+| Wuthering Waves | Coral Shop | `wuwa-shop.png` |
+| NTE | Lost Exchange | `nte-shop.png` |
+
+### 7. Currencies no source has — 6 icons, square, 128 × 128 or larger
+
+The wallet on Profile, the dashboards and the reminder DMs; a drawn line icon stands in today.
+
+| Game | Currency | File |
+| --- | --- | --- |
+| Endfield | Sanity | `endfield-sanity.png` |
+| Endfield | Oroberyl | `endfield-oroberyl.png` |
+| Endfield | Arsenal Tickets | `endfield-arsenal-ticket.png` |
+| Endfield | Stock Bills | `endfield-stock-bills.png` |
+| NTE | City Stamina | `nte-city-stamina.png` |
+| NTE | Tycoon Level | `nte-tycoon-level.png` |
+
+Not on the list because a source has them, so claude fills them: elements and weapon types for the HoYoverse games and Wuthering Waves, the top-up currencies (Genesis Crystal, Oneiric Shard, Monochrome, Lunite). The daily and weekly task icons (Daily Commissions, Expeditions…) are optional: there are about 60, and the task names read well without them.
+
 ## How to add them
 
-1. The best: the R2 mirror (DEPLOY.md §7). Set the bucket and its four `R2_*` secrets, then `npm run assets:mirror -- --game <key>` copies every catalog key's art into our own store, and `VITE_ASSET_BASE` points the app at it.
+1. The best: the R2 mirror (DEPLOY.md §7). Enter the bucket's keys and its public URL in Settings → Keys (ADR 0012), then run the `mirror-art` workflow on GitHub (it takes the keys from the app; no GitHub secret), or `npm run assets:mirror -- --game <key>` with the `R2_*` variables in your shell. Every catalog key's art lands in our own store, and the app reads the public URL at once.
 2. For the app's own lists (currencies, passes, modes, elements…): a folder per game in the bucket (`<game>/ui/<kind>/<key>.png`) and a key per item in the game module; this is the next step once a source for them is chosen.
 3. Game icons and backgrounds: drop `icon.png` and `background.jpg` in `apps/web/public/games/<key>/` (they are the owner's to choose; nothing is committed without them).
