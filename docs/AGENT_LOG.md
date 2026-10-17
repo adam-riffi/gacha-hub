@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-16 · claude · stack/r19/05-art-fallback · #349
+- Done: Home's banners card went blank for a banner without featured units (an event's phase, the sample banners), and the timeline's Selected panel showed a gamepad for every event. Both show the game's hero art now.
+- Tests: written first: the timeline journey expects Star Rail's hero (Kafka) in Selected for an event without art.
+- Scope/decisions: found while surveying every screen for the list of cards still waiting for art (#350); these two needed no new art.
+- Next: the list and the docs.
+
 ## 2026-10-16 · claude · stack/r19/04-keys-tab · #348
 - Done: ADR 0012's screen. Settings → Keys (owner only) lists Sign-in, Discord bot, Schedule and Art store as cards, each key with its state in a chip (In the app, On the host, Missing), a field to enter or replace it, Clear, and Generate for the cron secret; a key on the host is locked. Values that are not secrets show once saved. The art store's public URL reaches the web app through `/api/me` at once (no rebuild); it must be an `r2.dev` or Vercel Blob host, the ones the image policy allows.
 - Tests: written first: the Keys journey (a public value shown, a secret emptied from its field and absent from the page, a malformed value refused, Generate, the public URL in `/api/me`, Clear); the HoYoLAB card's journey now expects HoYoLAB's own answer, since linking no longer waits for a key.
@@ -248,9 +254,3 @@ Entry format:
 - Tests: written first: Arrows's card opens its panel, a second click closes it and it stays closed; its Close says Close, at least 36 px high, and closes it.
 - Scope/decisions: one fix in the dismiss hook for every window rather than per screen.
 - Next: the characters' cards the same owned or not.
-
-## 2026-10-14 · claude · stack/r12/01-gear-pieces · #308
-- Done: the gear screen, again (Georges, round 9: "the artifact/gear screen is still bad: make it so I see all of my pieces, I can see the set icon and the type of piece + its stats, and that I can filter my artifacts the same way I can filter characters"). Every piece you have is a card again: its set's icon (64 px) and name, its type as a tag (Flower of Life, Head…), its main stat and level, its substats by their icons, and its wearer's icon or Bag; a click on it opens its set's panel. The filters are the Characters screen's: a search (sets, stats, wearers), chips for the sets you hold (each with its icon), the slots and the main stats (several at once), a sort (set, slot, level); then Where as counts (All, Equipped, Bag), Reset filters, Open a set (any set of the catalog, for adding or farming one you have none of) and Add a piece. A set's panel shows its bonuses.
-- Tests: written first: a set opened from the picker (add, equip on Seele) and its piece's card with its icon; Farm from the picker's first set; Pela's Hunter body with its set's icon and Body; filters by slot, where, main stat and two set chips (with their icons); Reset clears them and disables itself; the search finds Pela's piece; a piece added shows its set's icon and opens the panel without moving the cards; NTE's sets in the picker; the accessibility sweep opens a set from it. The journeys run at 1440 × 900, the app's one layout since #305.
-- Scope/decisions: round 8's list of every set and its groups are gone (the picker opens any set); set chips list the sets you hold only.
-- Next: the weapon panel's toggle and a visible close.

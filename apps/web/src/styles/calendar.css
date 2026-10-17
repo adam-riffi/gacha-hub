@@ -68,7 +68,7 @@
 .cal-sel { position: sticky; top: 16px; }
 .cal-sel .spread { display: flex; align-items: flex-start; justify-content: space-between; }
 .cal-art { display: grid; place-items: center; height: 160px; margin-bottom: 14px; overflow: hidden; background: var(--surface-2) center / cover no-repeat; }
-.cal-art .gicon { width: 100%; height: 100%; object-fit: cover; }
+.cal-art .gicon, .cal-art .hero-art { width: 100%; height: 100%; object-fit: cover; }
 .cal-art .gicon-ph { display: grid; place-items: center; background: transparent; border: 0; color: var(--hairline-strong); font: 600 40px/1 var(--font-display); letter-spacing: 0.06em; }
 .cal-sel h2 { margin: 0 0 6px; font-size: 26px; letter-spacing: 0.02em; text-transform: none; }
 .cal-meta { margin-bottom: 12px; color: var(--text-muted); font: 400 11px/1.4 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }

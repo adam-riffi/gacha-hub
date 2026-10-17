@@ -54,6 +54,8 @@ export function BannersCarousel({ roster, carousel }: { roster: RosterEntry[]; c
                 className="is-weapon"
               />
             )}
+            {/* A banner without featured units (an event's phase) shows its game's hero. */}
+            {!lead && <HeroArt gameKey={banner.gameKey} className="carousel-hero" />}
             {lead && lead.kind !== "weapon" && (
               <GameIcon
                 src={assetUrl(banner.gameKey, "splash", splashKey(banner.gameKey, lead.icon, lead.splash))}
