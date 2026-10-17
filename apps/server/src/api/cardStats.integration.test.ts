@@ -45,6 +45,26 @@ describe("the character cards' stats, per game", () => {
     expect((await put(null)).json.cardStats).toBeNull();
   });
 
+  // #345's CI: three quick picks, then the page left: the last pick's save landed first and the first pick's, still on its
+  // way, landed after it. Each save carries its pick's order on its page; an older one from the same page lands no more.
+  it("keeps a page's latest pick whatever order its saves land in, the game's and a build's; another page's applies as before", async () => {
+    const build = (await c.req<{ id: string }>("POST", `/api/instances/${gid}/characters`, { catalogId: "10000032" })).json.id;
+    for (const url of [`/api/instances/${gid}`, `/api/characters/${build}`]) {
+      const pick = (cardStats: string[], page: string, seq: number) => c.req<{ cardStats?: unknown }>("PUT", url, { cardStats, cardStatsOrder: { page, seq } });
+      const kept = async () => (await c.req<{ cardStats: unknown }>("GET", url)).json.cardStats;
+      await pick(["HP", "ATK", "DEF"], "page-one-0001", 3);
+      expect((await pick(["HP"], "page-one-0001", 1)).json.cardStats).toEqual(["HP", "ATK", "DEF"]);
+      expect(await kept()).toEqual(["HP", "ATK", "DEF"]);
+      // Another page (a reload, another tab): its first pick applies.
+      await pick(["DEF"], "page-two-0002", 1);
+      expect(await kept()).toEqual(["DEF"]);
+      // A save without an order applies as before.
+      await c.req("PUT", url, { cardStats: ["ATK"] });
+      expect(await kept()).toEqual(["ATK"]);
+    }
+    expect((await c.req("PUT", `/api/instances/${gid}`, { cardStats: ["HP"], cardStatsOrder: { page: "bad page!", seq: 1 } })).status).toBe(400);
+  });
+
   // Georges, round 6: "a misc part for each character where non-upgradable talents, skins and other things are included,
   // or where I could write notes or add pictures".
   it("keeps a build's notes, skins and pictures; refuses a picture that is not an upload; clears them with null", async () => {
