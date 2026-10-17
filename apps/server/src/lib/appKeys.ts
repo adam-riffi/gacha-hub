@@ -27,7 +27,8 @@ export const APP_KEYS = {
   R2_ACCESS_KEY_ID: { group: "Art store", label: "Access key ID", pattern: /^[0-9a-f]{32}$/i },
   R2_SECRET_ACCESS_KEY: { group: "Art store", label: "Secret access key", pattern: /^[0-9a-f]{64}$/i },
   R2_BUCKET: { group: "Art store", label: "Bucket", pattern: /^[a-z0-9][a-z0-9-]{1,61}[a-z0-9]$/, shown: true },
-  ASSET_BASE: { group: "Art store", label: "Public URL", pattern: /^https:\/\/[^\s"'<>\\]+$/, shown: true },
+  // Only hosts the Content-Security-Policy lets images come from (vercel.json): an R2 public bucket or Vercel Blob.
+  ASSET_BASE: { group: "Art store", label: "Public URL", pattern: /^https:\/\/[a-z0-9-]+\.(r2\.dev|public\.blob\.vercel-storage\.com)(\/[\w./-]*)?$/, shown: true },
 } satisfies Record<string, KeyDefinition>;
 
 export type AppKeyName = keyof typeof APP_KEYS;
@@ -56,7 +57,7 @@ export async function listKeys() {
     (Object.entries(APP_KEYS) as [AppKeyName, KeyDefinition][]).map(async ([name, definition]) => {
       const source = process.env[name] ? "host" : rows.has(name) ? "app" : null;
       const value = definition.shown && source ? await readKey(name) : undefined;
-      return { name, group: definition.group, label: definition.label, source, ...(value === undefined ? {} : { value }), updatedAt: source === "app" ? rows.get(name)!.updatedAt : null };
+      return { name, group: definition.group, label: definition.label, shown: Boolean(definition.shown), source, ...(value === undefined ? {} : { value }), updatedAt: source === "app" ? rows.get(name)!.updatedAt : null };
     }),
   );
 }

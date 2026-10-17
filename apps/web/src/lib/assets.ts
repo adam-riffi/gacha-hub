@@ -13,13 +13,18 @@ import { assetPath, type ArtKind } from "@gacha/shared";
  * handled at render time by <GameIcon>, which falls back to a placeholder tile —
  * so the UI is fully functional before a single real asset exists.
  */
-const BASE = (import.meta.env.VITE_ASSET_BASE ?? "/assets").replace(/\/+$/, "");
+let base = (import.meta.env.VITE_ASSET_BASE ?? "/assets").replace(/\/+$/, "");
+
+/** The art store's public URL entered in Settings → Keys (ADR 0012) wins over the build's, without a rebuild. */
+export const setAssetBase = (url: string | null | undefined) => {
+  if (url) base = url.replace(/\/+$/, "");
+};
 
 /** character = square avatar, portrait = large art, gear = artifact / relic / disc set. */
 export type AssetKind = ArtKind;
 
 /** Resolve a catalog asset key to a URL in our store, or null (see `assetPath`). */
-export const assetUrl = (gameKey: string, kind: AssetKind, key?: string | null): string | null => assetPath(BASE, gameKey, kind, key);
+export const assetUrl = (gameKey: string, kind: AssetKind, key?: string | null): string | null => assetPath(base, gameKey, kind, key);
 
 /** The key of a unit's full art where the community CDN names it apart from its icon (Genshin gacha splashes). */
 
