@@ -311,7 +311,7 @@ function Wallet({ instance, game }: Props) {
           return (
             <div key={currency.key}>
               <span className="kpi-label pf-currency">
-                <CurrencyIcon kind={currencyKind(game, currency)} gameKey={game.key} icon={currency.icon} />
+                <CurrencyIcon kind={currencyKind(game, currency)} gameKey={game.key} currencyKey={currency.key} />
                 {currency.label}
               </span>
               <span className="pf-val">

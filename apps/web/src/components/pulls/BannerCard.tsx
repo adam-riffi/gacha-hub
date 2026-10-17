@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { featuredWithin, fiveStarDistribution, rateAt, savingsPlan, topStar, type BannerDto, type PullBannerLogDto } from "@gacha/shared";
+import { artSlotKey, featuredWithin, fiveStarDistribution, rateAt, savingsPlan, topStar, type BannerDto, type PullBannerLogDto } from "@gacha/shared";
 import { assetUrl, communityAssetUrl } from "../../lib/assets";
 import { GameIcon } from "../GameIcon";
 import { Glyph, artGlyph, bannerGlyph } from "../Glyph";
 import { Segmented } from "../ui";
 import { PullCurve } from "./PullCurve";
+import { SlotArt } from "../SlotArt";
 
 export type Unit = { id: string; name: string; icon?: string; kind: "character" | "weapon" };
 export type AddBody = { bannerKey: string; count: number; fiveStarAt?: number; featured?: boolean; catalogId?: string };
@@ -87,7 +88,7 @@ export function BannerCard(props: {
         {featured ? (
           <GameIcon src={assetUrl(props.gameKey, featured.kind, featured.icon)} fallback={communityAssetUrl(props.gameKey, featured.kind, featured.icon)} alt={featured.name ?? featured.catalogId} glyph={artGlyph(featured.kind)} className="pl-art" />
         ) : (
-          <Glyph kind={bannerGlyph(banner.key)} label={banner.label} className="pl-art" />
+          <SlotArt slot={artSlotKey(props.gameKey, "banner", banner.key)} className="pl-art" fallback={<Glyph kind={bannerGlyph(banner.key)} label={banner.label} className="pl-art" />} />
         )}
         <div>
           <h3>{banner.label}</h3>

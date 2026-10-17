@@ -1,7 +1,7 @@
 import { Fragment, useState, type ReactNode } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { currencyKind, endgameNow, getGame, goalSteps, hubResets, listedGoal, passView, pullsFor, skillsField, weaponHolder, type CharacterDto, type CycleResultsDto, type GameDefinition, type PassesDto, type TaskDto } from "@gacha/shared";
+import { artSlotKey, currencyKind, endgameNow, getGame, goalSteps, hubResets, listedGoal, passView, pullsFor, skillsField, weaponHolder, type CharacterDto, type CycleResultsDto, type GameDefinition, type PassesDto, type TaskDto } from "@gacha/shared";
 import { LoadError } from "../LoadError";
 import { api } from "../../lib/api";
 import { formatRemaining } from "../../lib/time";
@@ -17,6 +17,7 @@ import { CurrencyIcon } from "../CurrencyIcon";
 import { SegmentedBar } from "../charts/SegmentedBar";
 import { TickBox, TickRow, tickColumn } from "../TickControl";
 import type { DashboardData, InstanceDetail } from "../../lib/types";
+import { SlotArt } from "../SlotArt";
 
 type DashGame = DashboardData["games"][number];
 
@@ -126,7 +127,7 @@ function PullsCard({ dashGame, game, instanceId }: { dashGame: DashGame; game: G
         {rows.map((row) => (
           <div className="rw" key={row.key}>
             <span>
-              <CurrencyIcon kind={currencyKind(game, row)} gameKey={game.key} icon={game.currencies.find((currency) => currency.key === row.key)?.icon} />
+              <CurrencyIcon kind={currencyKind(game, row)} gameKey={game.key} currencyKey={row.key} />
               {row.pullCost! > 1 ? `From ${row.label}` : row.label}
             </span>
             <span className="font-mono">{Math.floor(row.value / row.pullCost!)}</span>
@@ -345,7 +346,7 @@ function StaminaCard({ dashGame, game, instance }: { dashGame: DashGame; game: G
       }
     >
       <div className="pulls-head">
-        <CurrencyIcon kind="stamina" className="is-big" gameKey={game.key} icon={staminaCurrency?.icon} />
+        <CurrencyIcon kind="stamina" className="is-big" gameKey={game.key} currencyKey={staminaCurrency.key} />
         <div className="font-display pulls-total" data-testid="stamina">
           {Math.floor(dashGame.stamina.value)}
           <small> / {dashGame.stamina.cap}</small>
@@ -358,7 +359,7 @@ function StaminaCard({ dashGame, game, instance }: { dashGame: DashGame; game: G
         <div className="lst">
           <div className="rw">
             <span>
-              <CurrencyIcon kind="reserve" gameKey={game.key} icon={reserveDef?.icon} />
+              <CurrencyIcon kind="reserve" gameKey={game.key} currencyKey={reserveDef.key} />
               {reserveDef.label}
             </span>
             <span className="font-mono">
@@ -457,7 +458,10 @@ function EndgameCard({ instanceId, game, region, cycles }: { instanceId: string;
             const days = Math.ceil((at.getTime() - now.getTime()) / DAY);
             return (
               <tr key={mode.mode.key}>
-                <td>{mode.mode.name}</td>
+                <td>
+                  <SlotArt slot={artSlotKey(game.key, "mode", mode.mode.key)} className="list-art" />
+                  {mode.mode.name}
+                </td>
                 <td className="font-mono">{mode.result === null ? "—" : `${mode.result}${mode.mode.metric.max !== undefined ? `/${mode.mode.metric.max}` : ""}${unit(mode.mode.metric.label)}`}</td>
                 <td>
                   <span className={`chip ${days <= 1 ? "hot" : ""}`}>

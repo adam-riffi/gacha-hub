@@ -1,7 +1,7 @@
 import { useState, type FormEvent, type ReactNode } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { cadenceWindow, endgameNow, getGame, hubResets, isUrgent, passView, type CycleResultsDto, type GameDefinition, type PassesDto, type TaskDto } from "@gacha/shared";
+import { artSlotKey, cadenceWindow, endgameNow, getGame, hubResets, isUrgent, passView, type CycleResultsDto, type GameDefinition, type PassesDto, type TaskDto } from "@gacha/shared";
 import { api } from "../lib/api";
 import { formatRemaining } from "../lib/time";
 import type { DashboardData, InstanceDetail } from "../lib/types";
@@ -11,12 +11,24 @@ import { SegmentedBar } from "../components/charts/SegmentedBar";
 import { useReminderFlag } from "../lib/reminder";
 import { TickRow, tickColumn } from "../components/TickControl";
 import { RedeemCodesCard } from "../components/hub/RedeemCodesCard";
+import { SlotArt } from "../components/SlotArt";
 
 const DATE = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
 const CLOCK = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit" });
 const ordinal = (value: number) => `${value}${value % 10 === 1 && value !== 11 ? "st" : value % 10 === 2 && value !== 12 ? "nd" : value % 10 === 3 && value !== 13 ? "rd" : "th"}`;
 
 /** A date that matters, as a chip: paper within 48 hours (VISUAL-DESIGN.md §7). */
+/** A task's picture slot: its shop's or mode's when it resets with one, its own for a game's default task, none for the owner's own. */
+function taskSlot(game: GameDefinition, task: TaskDto): string | null {
+  if (task.anchorKey) {
+    if (game.manifest.monthlyShops.some((shop) => shop.key === task.anchorKey)) return artSlotKey(game.key, "shop", task.anchorKey);
+    if (game.manifest.endgame.some((mode) => mode.key === task.anchorKey)) return artSlotKey(game.key, "mode", task.anchorKey);
+    return null;
+  }
+  const seed = game.defaultTasks.find((candidate) => candidate.title === task.title && !candidate.anchorKey);
+  return seed ? artSlotKey(game.key, "task", seed.key) : null;
+}
+
 function DateChip({ at, prefix = "" }: { at: Date; prefix?: string }) {
   return (
     <span className={`chip ${isUrgent(at.toISOString(), "deadline") ? "hot" : ""}`}>
@@ -68,7 +80,7 @@ export function ActivitiesPage() {
           <CadenceList instanceId={id!} game={game} cadence="daily" title="Daily" items={recurring.filter((task) => (task.cadence ?? "daily") === "daily")} resetsAt={resets.daily} />
           <CadenceList instanceId={id!} game={game} cadence="weekly" title="Weekly" items={recurring.filter((task) => task.cadence === "weekly")} resetsAt={resets.weekly} />
           <CadenceList instanceId={id!} game={game} cadence="monthly" title="Monthly" items={recurring.filter((task) => task.cadence === "monthly")} resetsAt={monthlyEnd}>
-            {game.manifest.monthlyPass && <MonthlyPass instanceId={id!} name={game.manifest.monthlyPass.name} daysLeft={passState.monthlyDaysLeft} />}
+            {game.manifest.monthlyPass && <MonthlyPass instanceId={id!} gameKey={game.key} name={game.manifest.monthlyPass.name} daysLeft={passState.monthlyDaysLeft} />}
           </CadenceList>
         </div>
         <div className="act-bottom">
@@ -184,7 +196,7 @@ function CadenceList({
       <div className="act-rows" style={tickColumn(items)}>
         {/* One tick control everywhere (round 7): a counted daily by its steps. */}
         {items.map((item) => (
-          <TickRow key={item.id} instanceId={instanceId} task={item}>
+          <TickRow key={item.id} instanceId={instanceId} task={item} icon={<SlotArt slot={taskSlot(game, item)} className="list-art" />}>
             {cadence === "monthly" && item.anchorKey && anchors.find((anchor) => anchor.key === item.anchorKey)?.name !== item.title && <span className="font-mono text-muted">{anchors.find((anchor) => anchor.key === item.anchorKey)?.name}</span>}
           </TickRow>
         ))}
@@ -239,7 +251,10 @@ function Cycles({ game, modes, instanceId }: { game: GameDefinition; modes: Retu
         {modes.map(({ mode: endgameMode, result, closes, open, end }) => (
           // A mode that closes before its next cycle (Stygian Onslaught) counts down to its close.
           <div key={endgameMode.key} className="act-row">
-            <span className="act-title">{endgameMode.name}</span>
+            <span className="act-title">
+              <SlotArt slot={artSlotKey(game.key, "mode", endgameMode.key)} className="list-art" />
+              {endgameMode.name}
+            </span>
             <span className="font-mono text-muted">
               {result ?? "—"} / {endgameMode.metric.max ?? "—"} {endgameMode.metric.label}
             </span>
@@ -269,7 +284,7 @@ function usePassSave(instanceId: string, path: string, close: () => void) {
 }
 
 /** The 30-day pass under the monthly items: its days left, typed in place. */
-function MonthlyPass({ instanceId, name, daysLeft }: { instanceId: string; name: string; daysLeft: number | null }) {
+function MonthlyPass({ instanceId, gameKey, name, daysLeft }: { instanceId: string; gameKey: string; name: string; daysLeft: number | null }) {
   const [editing, setEditing] = useState(false);
   const save = usePassSave(instanceId, "monthly", () => setEditing(false));
   const submit = (event: FormEvent<HTMLFormElement>) => {
@@ -292,7 +307,10 @@ function MonthlyPass({ instanceId, name, daysLeft }: { instanceId: string; name:
     </form>
   ) : (
     <div className="act-row act-pass-row">
-      <span className="act-title">{name}</span>
+      <span className="act-title">
+        <SlotArt slot={artSlotKey(gameKey, "monthly-pass")} className="list-art" />
+        {name}
+      </span>
       <span className="font-mono">{daysLeft === null ? "not tracked" : `${daysLeft} days left`}</span>
       <button type="button" className="btn" aria-label={`Update ${name}`} onClick={() => setEditing(true)}>
         Update
@@ -321,7 +339,8 @@ function Version({ instanceId, game, passState, endsAt, events }: { instanceId: 
           <div className="spread act-pass-head">
             <div className="kpi-label">Battle pass</div>
             {pass && (
-              <span className="font-mono text-muted">
+              <span className="font-mono text-muted row">
+                <SlotArt slot={artSlotKey(game.key, "battle-pass")} className="pass-art" />
                 {pass.name}
               </span>
             )}

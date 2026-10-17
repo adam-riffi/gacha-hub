@@ -71,7 +71,7 @@ export function TopUpHistory({ instanceId, game }: { instanceId: string; game: G
             onClick={() => add.mutate({ label: buy.label, amount: buy.amount, price: buy.price, ...(at ? { at } : {}), ...(buy.pass ? { pass: true } : {}) })}
           >
             <span className="pl-tops-pulls font-display">
-              <CurrencyIcon kind="premium" gameKey={game.key} icon={game.currencies.find((currency) => (currency.pullCost ?? 0) > 1)?.icon} />
+              <CurrencyIcon kind="premium" gameKey={game.key} currencyKey={game.currencies.find((currency) => (currency.pullCost ?? 0) > 1)?.key} />
               {pullsOf(buy)} pulls
             </span>
             <strong>{buy.pass ? `${buy.label} · ${pass?.days ?? 30} days` : buy.label}</strong>

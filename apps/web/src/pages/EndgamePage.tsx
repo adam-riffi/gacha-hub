@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { endgameNow, enemiesFor, gameDay, getGame, modeCycles, modeStages, premiumCurrency, versionAt, type CycleResultsDto, type GameDefinition, type GameRegion, type TeamDto } from "@gacha/shared";
+import { artSlotKey, endgameNow, enemiesFor, gameDay, getGame, modeCycles, modeStages, premiumCurrency, versionAt, type CycleResultsDto, type GameDefinition, type GameRegion, type TeamDto } from "@gacha/shared";
 import { api } from "../lib/api";
 import { assetUrl, communityAssetUrl } from "../lib/assets";
 import { useCatalog } from "../lib/catalog";
@@ -14,6 +14,7 @@ import { GameTabs } from "../components/GameTabs";
 import { EndgameHistory, TeamIcons, cycleSpan, minutesSeconds, type UnitOf } from "../components/hub/EndgameHistory";
 import { StageLines } from "../components/hub/StageLines";
 import { useReminderFlag } from "../lib/reminder";
+import { SlotArt } from "../components/SlotArt";
 
 const NUMBER_FORMAT = new Intl.NumberFormat("en-GB");
 const DATE = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" });
@@ -232,7 +233,10 @@ function ModeCard({
   return (
     <section className={`card eg-mode ${shown.current ? "" : "is-past"}`} aria-label={mode.name} id={`eg-${mode.key}`}>
       <div className="spread">
-        <h3>{mode.name}</h3>
+        <h3 className="row eg-mode-title">
+          <SlotArt slot={artSlotKey(game.key, "mode", mode.key)} className="mode-art" />
+          {mode.name}
+        </h3>
         <span className="badge">{cadenceLabel(mode)}</span>
       </div>
       <div className="eg-cycle-nav">

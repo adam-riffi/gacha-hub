@@ -4,8 +4,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   LIMITS,
   elementColor,
-  elementIconUrl,
-  weaponTypeIconUrl,
   CharacterBuild,
   cardStatLabels,
   cardStatOptions,
@@ -252,8 +250,8 @@ export function CharactersPage() {
         </label>
         {catalog && (
           <>
-            <Chips label="Element" value={element} onChange={setElement} options={options((card) => (card.tag === "None" ? null : card.tag))} color={(tag) => elementColor(game.key, tag)} icon={(tag) => elementIconUrl(game.key, tag)} />
-            <Chips label="Weapon" value={weapon} onChange={setWeapon} options={options((card) => card.weaponType)} icon={(type) => weaponTypeIconUrl(game.key, type)} />
+            <Chips label="Element" value={element} onChange={setElement} options={options((card) => (card.tag === "None" ? null : card.tag))} color={(tag) => elementColor(game.key, tag)} icons={{ gameKey: game.key, kind: "element" }} />
+            <Chips label="Weapon" value={weapon} onChange={setWeapon} options={options((card) => card.weaponType)} icons={{ gameKey: game.key, kind: "weapon-type" }} />
             <Chips label="Rarity" value={rarity} onChange={setRarity} options={options((card) => (card.rarity ? String(card.rarity) : null)).reverse()} text={(rarityValue) => `★${rarityValue}`} />
             <Chips label={characterDupes.label} value={dupeCount} onChange={setDupeCount} options={Array.from({ length: characterDupes.max + 1 }, (_, count) => String(count))} text={(count) => `${dupeLetter(characterDupes.field)}${count}`} />
           </>
@@ -377,13 +375,13 @@ export function CharactersPage() {
                   {card.rarity && <span className="badge">★{card.rarity}</span>}
                   {card.tag && card.tag !== "None" && (
                     <span className="badge ch-el">
-                      <TagIcon src={elementIconUrl(game.key, card.tag)} />
+                      <TagIcon gameKey={game.key} kind="element" name={card.tag} />
                       {card.tag}
                     </span>
                   )}
                   {card.weaponType && (
                     <span className="badge">
-                      <TagIcon src={weaponTypeIconUrl(game.key, card.weaponType)} />
+                      <TagIcon gameKey={game.key} kind="weapon-type" name={card.weaponType} />
                       {card.weaponType}
                     </span>
                   )}
