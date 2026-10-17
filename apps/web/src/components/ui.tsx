@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from "react";
+import { useState, type CSSProperties, type ReactNode } from "react";
 import { isUrgent } from "@gacha/shared";
 import { formatRemaining } from "../lib/time";
 
@@ -53,8 +53,15 @@ export function Segmented<T extends string>({
   );
 }
 
-export /** A filter as toggle chips: one pressed at a time, pressed again to clear; an element's chip carries its colour. */
-function Chips({ label, value, onChange, options, color, text = (option) => option }: { label: string; value: string; onChange: (value: string) => void; options: string[]; color?: (option: string) => string | null; text?: (option: string) => string }) {
+/** An element's or a weapon type's icon beside its name; gone, not broken, when the source fails. */
+export function TagIcon({ src }: { src: string | null }) {
+  const [failed, setFailed] = useState(false);
+  if (!src || failed) return null;
+  return <img className="tag-icon" src={src} alt="" loading="lazy" onError={() => setFailed(true)} />;
+}
+
+export /** A filter as toggle chips: one pressed at a time, pressed again to clear; an element's chip carries its colour and its icon. */
+function Chips({ label, value, onChange, options, color, icon, text = (option) => option }: { label: string; value: string; onChange: (value: string) => void; options: string[]; color?: (option: string) => string | null; icon?: (option: string) => string | null; text?: (option: string) => string }) {
   // A filter with nothing to pick (NTE's characters have no weapon type) shows nothing.
   if (options.length === 0) return null;
   return (
@@ -63,7 +70,8 @@ function Chips({ label, value, onChange, options, color, text = (option) => opti
       <div>
         {options.map((option) => (
           <button key={option} type="button" className="ch-chip" aria-pressed={value === option} aria-label={text(option)} title={text(option)} onClick={() => onChange(value === option ? "" : option)} style={color?.(option) ? ({ "--el": color(option) } as CSSProperties) : undefined}>
-            {color && <i aria-hidden="true" />}
+            {color && !icon?.(option) && <i aria-hidden="true" />}
+            <TagIcon src={icon?.(option) ?? null} />
             {text(option)}
           </button>
         ))}

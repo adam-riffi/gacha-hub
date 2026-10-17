@@ -120,6 +120,9 @@
 .ch-chipset > div { display: flex; flex-wrap: wrap; gap: 6px; }
 .ch-chip { --el: var(--text-muted); display: inline-flex; align-items: center; gap: 6px; padding: 6px 9px; border: 1px solid var(--hairline); background: transparent; color: var(--text-muted); font: 400 12px/1 var(--font-mono); cursor: pointer; }
 .ch-chip i { width: 10px; height: 10px; border-radius: 50%; background: var(--el); }
+/* An element's or a weapon type's own icon beside its name (Georges: names shown as icons). */
+.tag-icon { width: 20px; height: 20px; flex: none; object-fit: contain; }
+.badge .tag-icon { width: 18px; height: 18px; margin: -3px 0; }
 .ch-chip:hover { color: var(--text); border-color: var(--hairline-strong); }
 .ch-chip[aria-pressed="true"] { border-color: var(--el); color: var(--text); background: color-mix(in srgb, var(--el) 18%, transparent); }
 /* Select mode: the card is the checkbox's label; a picked card lights up whole (round 5), the box itself unseen. */

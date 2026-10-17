@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-17 · claude · stack/r21/01-tag-icons · #352
+- Done: round 14 (Georges, 2026-10-17: "work on what you can for now and make me an exhaustive list of assets you need"). Every element and weapon type shows its game's own icon in the Characters and Weapons filters and on the cards (Georges: names shown as icons): 54 icons from sources, each URL checked by hand on 2026-10-17. Genshin's elements from Yatta (Enka has no Cryo) and weapon types from Enka; Star Rail's elements and paths from StarRailRes at a pinned commit; Zenless's attributes and specialties and NTE's elements (the `element_icon` paths of its character data) from the Hakushin assets; Wuthering Waves' elements from wuthery (keys from WutheringData's ElementInfo). `TagIcon` drops itself if a source fails. The image policy allows gi.yatta.moe.
+- Tests: written first: a unit test that every element and weapon type in the sourced games' catalogs maps to an icon (and none for Endfield's, WuWa's weapon types); a journey for the chips and Kafka's card.
+- Scope/decisions: no source has WuWa's weapon types or Endfield's elements and weapon types: they join the list of pictures needed.
+- Next: the art store.
+
 ## 2026-10-17 · claude · stack/r20/01-card-stat-flake · #351
 - Done: the flaky journey "card-stat picks made quickly are all kept, even when the page is left at once" (failed CI on #345 with "Route is already handled!" and only the first pick kept) was a real bug. Three quick picks, then the page left: the latest pick's save went at once while the first pick's was still on its way, and the first landed after it and overwrote it. The journey had passed locally only by catching the right value in between. Calling the older save back does not work once the page is going (Chromium keeps a keepalive request), so each pick now carries its order on its page (`nextWriteOrder`: a random page id and a count), and the server drops a pick older than the last it applied from that page, in one conditional update for the game's and a build's card stats. Two columns per table remember the last applied pick (migration `card_stats_order`).
 - Tests: written first: the journey now waits for every held save to land, then checks the kept value again (it failed 20 of 20 runs before the fix, passes 20 of 20 after); the server test sends a page's picks out of order, from another page, and without an order.
@@ -248,9 +254,3 @@ Entry format:
 - Tests: written first: Gepard, unowned and unbuilt, opens his unit page with the Character, Traces, Weapon, Combat stats, Relics, Banners and Plan farming cards, ATK's stat card, Own (not pressed) and Wishlist; Level 50 then Save makes a build at level 50 and he stays unowned; his unit page then shows that build, with the Builds tabs. Welt's journey saves from his unit page instead of Start a build.
 - Scope/decisions: the unit URL stays (links from banners, the timeline and the pull history keep working) and shows the default build in place, rather than redirecting. Owned now reads the ownership alone on the sheet, so a try reads Not owned.
 - Next: the gear screen, redesigned with Georges from the proposals.
-
-## 2026-10-14 · claude · stack/r12/04-overview-banners · #311
-- Done: the Overview's order (Georges, round 9: "for the all games overview I don't care that much about the battle pass, I want to see the banners first"). The banners carousel takes the battle pass's place in the top row, beside the dailies and as tall; the battle pass moves below, with the pulls and stamina. Round 9's audit (`docs/AUDIT-2026-10-14-round9.md`) and the handoff.
-- Tests: written first: on Home the Banners heading sits level with Dailies & weeklies, above the battle pass and the heatmap.
-- Scope/decisions: the game dashboards keep their order (their banners already sit beside their dailies).
-- Next: the full check over round 9, then the merges.

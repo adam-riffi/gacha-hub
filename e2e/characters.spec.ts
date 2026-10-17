@@ -617,3 +617,19 @@ test("Characters: a dupes filter, E0 to E6 for Star Rail, on the owned character
     await page.request.delete(`/api/characters/${archer.id}`);
   }
 });
+
+// Georges: names shown as icons. Elements and weapon types carry their game's own icon, in the filters and on the cards.
+test("Characters: each element and weapon type shows its game's icon, in the filters and on the cards @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  await page.goto(`/games/${id}/characters`);
+  const element = page.getByRole("group", { name: "Element" });
+  await expect(element.getByRole("button", { name: "Lightning" }).locator("img.tag-icon[src$='/icon/element/Thunder.png']")).toHaveCount(1);
+  await expect(page.getByRole("group", { name: "Weapon" }).getByRole("button", { name: "The Hunt" }).locator("img.tag-icon[src$='/icon/path/Hunt.png']")).toHaveCount(1);
+  // Kafka's card: Lightning, Nihility.
+  const kafka = page.getByRole("article", { name: "Kafka" });
+  await expect(kafka.locator("img.tag-icon[src$='/icon/element/Thunder.png']")).toHaveCount(1);
+  await expect(kafka.locator("img.tag-icon[src$='/icon/path/Nihility.png']")).toHaveCount(1);
+});
