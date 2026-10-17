@@ -475,7 +475,7 @@ test("Characters: card-stat picks made quickly are all kept, even when the page 
     if (route.request().method() !== "PUT") return route.continue();
     const landing = (async () => {
       await new Promise((resolve) => setTimeout(resolve, 400));
-      // A save the page cancelled (a newer one replaced it) is gone from the browser: there is nothing left to continue.
+      // A held save the browser dropped with the page it came from (CI's "Route is already handled") has nothing left to continue.
       await route.continue().catch(() => undefined);
     })();
     held.push(landing);

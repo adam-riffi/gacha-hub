@@ -35,9 +35,10 @@ import { CardStats } from "../components/characters/CardStats";
 import { QuickBuild } from "../components/tasks/QuickBuild";
 import type { InstanceDetail } from "../lib/types";
 import { fitsOwnershipView, OwnershipFilter, type OwnershipView } from "../components/OwnershipFilter";
-import { useLatestWriteQueue } from "../lib/latestWrite";
-
+import { nextWriteOrder, useLatestWriteQueue } from "../lib/latestWrite";
 import { LastSeenChip, lastSeenSortKey, useUnitAppearances } from "../components/LastSeen";
+
+type CardStatsPick = { cardStats: string[] | null; cardStatsOrder: ReturnType<typeof nextWriteOrder> };
 
 const ENDS = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
 const STATUS_RANK: Record<BuildStatus, number> = { perfect: 0, good: 1, building: 2, none: 3 };
@@ -132,25 +133,25 @@ export function CharactersPage() {
   });
   // A card's own stats (Georges, round 6: "I can choose for each one character what I want to show"), saved per build, the latest pick
   // waiting while one is in flight, read back after the last.
-  const buildStatsWrites = useLatestWriteQueue<string[] | null>(
-    (buildId, cardStats) => api.put(`/api/characters/${buildId}`, { cardStats }),
+  const buildStatsWrites = useLatestWriteQueue<CardStatsPick>(
+    (buildId, pick) => api.put(`/api/characters/${buildId}`, pick),
     () => queryClient.invalidateQueries({ queryKey: ["characters"] }),
   );
   const saveBuildStats = (buildId: string, cardStats: string[] | null) => {
     void queryClient.cancelQueries({ queryKey: ["characters", id] });
     queryClient.setQueryData<CharacterDto[]>(["characters", id], (old) => old?.map((build) => (build.id === buildId ? { ...build, cardStats } : build)));
-    buildStatsWrites.push(buildId, cardStats);
+    buildStatsWrites.push(buildId, { cardStats, cardStatsOrder: nextWriteOrder() });
   };
   // The stats the cards show, picked for the game (Georges, round 5); none picked shows each build's role's. A read in flight would put
   // back the stats from before the picks, so it is cancelled; the game's stats are read back once the last pick is saved.
-  const gameStatsWrites = useLatestWriteQueue<string[] | null>(
-    (instanceId, cardStats) => api.put(`/api/instances/${instanceId}`, { cardStats }),
+  const gameStatsWrites = useLatestWriteQueue<CardStatsPick>(
+    (instanceId, pick) => api.put(`/api/instances/${instanceId}`, pick),
     (instanceId) => queryClient.invalidateQueries({ queryKey: ["instance", instanceId] }),
   );
   const saveGameStats = (cardStats: string[] | null) => {
     void queryClient.cancelQueries({ queryKey: ["instance", id] });
     queryClient.setQueryData<InstanceDetail>(["instance", id], (old) => (old ? { ...old, cardStats } : old));
-    gameStatsWrites.push(id!, cardStats);
+    gameStatsWrites.push(id!, { cardStats, cardStatsOrder: nextWriteOrder() });
   };
   const start = useMutation({
     mutationFn: (request: string | { name: string } | { catalogId: string; own: false }) => api.post<{ id: string }>(`/api/instances/${id}/characters`, typeof request === "string" ? { catalogId: request } : request),
