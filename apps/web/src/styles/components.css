@@ -156,6 +156,13 @@ tbody tr:hover { background: var(--surface-2); }
 /* On Home's banner card: top left, over the art. */
 .carousel-featured { position: absolute; left: 16px; top: 16px; flex-wrap: nowrap; }
 .carousel-chance { margin-top: 6px; font-size: 13px; }
+/* The owner's pictures (Settings → Art) where a card had none: list rows, mode cards, the battle pass name. */
+.slot-art { object-fit: contain; }
+.list-art { width: 26px; height: 26px; margin-right: 8px; vertical-align: middle; }
+.mode-art { width: 40px; height: 40px; }
+.pass-art { width: 34px; height: 34px; }
+.game-mark.is-art { object-fit: contain; }
+
 /* Hero art (round 12): a game's splash on its cards, never a placeholder when missing. */
 .hero-art { object-fit: cover; object-position: 50% 18%; }
 .carousel-hero { position: absolute; inset: 0; width: 100%; height: 100%; }

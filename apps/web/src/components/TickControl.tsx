@@ -40,14 +40,17 @@ export const tickColumn = (items: readonly TaskDto[]): CSSProperties =>
   ({ "--tick-col": `${Math.max(20, ...items.map((item) => ((item.target ?? 1) > 8 ? 80 : (item.target ?? 1) > 1 ? (item.target ?? 1) * 17 - 3 : 20)))}px` }) as CSSProperties;
 
 /** A recurring task's row: its boxes in one column, its title, a counted one's count, then anything the list adds. */
-export function TickRow({ instanceId, task, children }: { instanceId: string; task: TaskDto; children?: ReactNode }) {
+export function TickRow({ instanceId, task, icon, children }: { instanceId: string; task: TaskDto; icon?: ReactNode; children?: ReactNode }) {
   const targetCount = task.target ?? 1;
   return (
     <div className={`tick-row ${task.doneThisCycle ? "is-done" : ""}`}>
       <span className="tick-boxes">
         <TickBox instanceId={instanceId} task={task} />
       </span>
-      <span className="tick-title">{task.title}</span>
+      <span className="tick-title">
+        {icon}
+        {task.title}
+      </span>
       {targetCount > 1 && (
         <span className="font-mono tick-count">
           {Math.min(task.progress, targetCount)}/{targetCount}

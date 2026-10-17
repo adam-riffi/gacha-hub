@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getGame, hubResets, utcLabel } from "@gacha/shared";
+import { artSlotKey, getGame, hubResets, utcLabel } from "@gacha/shared";
+import { useSlotArt } from "../../lib/art";
 import { api } from "../../lib/api";
 import type { InstanceDetail } from "../../lib/types";
 import { Countdown } from "../ui";
@@ -30,6 +31,7 @@ export function HubHeader({ instanceId }: { instanceId: string }) {
     },
   });
   const game = data && getGame(data.gameKey);
+  const uploadedLogo = useSlotArt(data ? artSlotKey(data.gameKey, "logo") : null);
   if (!data || !game) return null;
 
   const region = game.regions.find((candidate) => candidate.key === data.regionKey) ?? game.regions[0]!;
@@ -46,7 +48,10 @@ export function HubHeader({ instanceId }: { instanceId: string }) {
 
   return (
     <section className="hub-head" aria-label={data.name}>
-      {game.art?.icon && iconOk ? (
+      {uploadedLogo ? (
+        // The owner's logo (Settings → Art) stands on its own, not on the accent tile it may share a colour with.
+        <GameMark gameKey={game.key} className="hub-icon" />
+      ) : game.art?.icon && iconOk ? (
         <img className="hub-icon" src={game.art.icon} alt="" onError={() => setIconOk(false)} />
       ) : (
         // No owner art yet (ASSETS.md): the game's drawn emblem on its accent tile (round 12).

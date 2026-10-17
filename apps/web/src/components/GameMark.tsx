@@ -1,5 +1,6 @@
-import type { CSSProperties, ReactNode } from "react";
-import { getGame } from "@gacha/shared";
+import { useState, type CSSProperties, type ReactNode } from "react";
+import { artSlotKey, getGame } from "@gacha/shared";
+import { useSlotArt } from "../lib/art";
 
 /**
  * Each game's drawn emblem (round 12; Georges: "i need icons and visuals
@@ -60,10 +61,18 @@ const FALLBACK = (
   </>
 );
 
-/** A game's emblem, tinted by its accent (or the colour given), sized by the CSS around it; `named` labels it for screen readers. */
+/**
+ * A game's emblem, tinted by its accent (or the colour given), sized by the CSS around it; `named` labels it for screen
+ * readers. The owner's logo (Settings → Art) takes its place once uploaded.
+ */
 export function GameMark({ gameKey, tint, named = false, className = "" }: { gameKey: string; tint?: string | null; named?: boolean; className?: string }) {
   const game = getGame(gameKey);
   const accent = tint ?? game?.accent;
+  const logo = useSlotArt(artSlotKey(gameKey, "logo"));
+  const [failed, setFailed] = useState<string | null>(null);
+  if (logo && failed !== logo) {
+    return <img className={`game-mark is-art ${className}`} src={logo} alt={named ? `${game?.name ?? gameKey} logo` : ""} onError={() => setFailed(logo)} />;
+  }
   return (
     <svg
       className={`game-mark ${className}`}

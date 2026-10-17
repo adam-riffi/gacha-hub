@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from "react";
-import type { CurrencyKind } from "@gacha/shared";
+import { artSlotKey, getGame, type CurrencyKind } from "@gacha/shared";
+import { useSlotArt } from "../lib/art";
 import { communityAssetUrl } from "../lib/assets";
 
 /** One line icon per kind of currency (Georges, round 7: "I need icons to understand quickly"), in the stat icons' style. */
@@ -35,13 +36,16 @@ const PATHS: Record<CurrencyKind, ReactNode> = {
 
 /**
  * A currency as its game's own icon where the game names one (round 12: the keys in each manifest, from the community
- * sources), the drawn line icon of its kind otherwise or when the picture fails to load.
+ * sources), the owner's upload before it (Settings → Art), the drawn line icon of its kind otherwise or when a picture fails.
  */
-export function CurrencyIcon({ kind, gameKey, icon, className = "" }: { kind: CurrencyKind; gameKey?: string; icon?: string; className?: string }) {
-  const [broken, setBroken] = useState(false);
-  const src = gameKey && icon ? communityAssetUrl(gameKey, "material", icon) : null;
-  if (src && !broken) {
-    return <img className={`cur-icon cur-art ${className}`} data-kind={kind} src={src} alt="" loading="lazy" onError={() => setBroken(true)} />;
+export function CurrencyIcon({ kind, gameKey, currencyKey, className = "" }: { kind: CurrencyKind; gameKey?: string; currencyKey?: string; className?: string }) {
+  const uploaded = useSlotArt(gameKey && currencyKey ? artSlotKey(gameKey, "currency", currencyKey) : null);
+  const icon = gameKey && currencyKey ? getGame(gameKey)?.currencies.find((currency) => currency.key === currencyKey)?.icon : undefined;
+  const source = gameKey && icon ? communityAssetUrl(gameKey, "material", icon) : null;
+  const [failed, setFailed] = useState<string[]>([]);
+  const src = [uploaded, source].find((candidate): candidate is string => Boolean(candidate) && !failed.includes(candidate!));
+  if (src) {
+    return <img className={`cur-icon cur-art ${className}`} data-kind={kind} src={src} alt="" loading="lazy" onError={() => setFailed([...failed, src])} />;
   }
   return (
     <svg className={`cur-icon ${className}`} data-kind={kind} viewBox="0 0 24 24" aria-hidden="true">

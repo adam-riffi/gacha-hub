@@ -1,10 +1,11 @@
-import { cadenceWindow, getGame, passView } from "@gacha/shared";
+import { artSlotKey, cadenceWindow, getGame, passView } from "@gacha/shared";
 import type { HomeCarousel } from "../../lib/carousel";
 import type { RosterEntry } from "../../lib/roster";
 import { CarouselCard } from "../Carousel";
 import { Countdown } from "../ui";
 import { SegmentedBar } from "../charts/SegmentedBar";
 import { HeroArt } from "../HeroArt";
+import { SlotArt } from "../SlotArt";
 
 /**
  * The battle pass per game (VISUAL-DESIGN.md §10): the pass's name and
@@ -40,7 +41,7 @@ export function PassCard({ roster, carousel }: { roster: RosterEntry[]; carousel
     >
       {rosterGame && game && (
         <>
-          <HeroArt gameKey={rosterGame.gameKey} className="carousel-hero" />
+          <SlotArt slot={artSlotKey(rosterGame.gameKey, "battle-pass")} className="hero-art carousel-hero" fallback={<HeroArt gameKey={rosterGame.gameKey} className="carousel-hero" />} />
           <div className="carousel-hatch is-overlay" aria-hidden="true" />
           {pass && ends && (
             <div className="carousel-tag">

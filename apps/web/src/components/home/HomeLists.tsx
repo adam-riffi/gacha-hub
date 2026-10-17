@@ -1,5 +1,6 @@
-import { expiringSoon, getGame, isUrgent, nextResets, type HomeGame } from "@gacha/shared";
+import { artSlotKey, expiringSoon, getGame, isUrgent, nextResets, type HomeGame } from "@gacha/shared";
 import type { DashboardData } from "../../lib/types";
+import { SlotArt } from "../SlotArt";
 
 type DashGame = DashboardData["games"][number];
 const WHEN = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
@@ -45,7 +46,10 @@ export function EndgameNextCard({ games }: { games: HomeGame[] }) {
         {rows.map((row) => (
           <div className="rw" key={`${row.gameKey}:${row.mode}`}>
             <span className="font-mono text-muted home-list-game">{row.game}</span>
-            <span className="home-list-name">{row.mode}</span>
+            <span className="home-list-name">
+              <SlotArt slot={artSlotKey(row.gameKey, "mode", row.modeKey)} className="list-art" />
+              {row.mode}
+            </span>
             <span className="font-mono home-list-what">
               {row.result ?? "—"}/{row.max ?? "—"}
               {row.unclaimed ? ` · ${NUMBER_FORMAT.format(row.unclaimed)} left` : ""}

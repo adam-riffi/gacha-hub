@@ -24,6 +24,7 @@ export function nextResets(games: readonly HomeGame[], now: Date, limit = 5) {
           gameKey: homeGame.game.key,
           game: short(homeGame.game),
           mode: modeView.mode.name,
+          modeKey: modeView.mode.key,
           closes: modeView.closes,
           result: modeView.result,
           max: modeView.mode.metric.max ?? null,
