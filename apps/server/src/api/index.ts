@@ -17,6 +17,7 @@ import { registerUigfRoutes } from "./uigf.js";
 import { registerAccountRoutes } from "./account.js";
 import { registerHoyolabRoutes } from "./hoyolab.js";
 import { registerAppKeyRoutes } from "./appKeys.js";
+import { registerArtRoutes } from "./art.js";
 import { registerEnkaRoutes } from "./enka.js";
 import { registerTimelineRoutes } from "./timeline.js";
 import { registerAdminRoutes } from "./admin.js";
@@ -52,6 +53,7 @@ export async function registerApi(app: FastifyInstance) {
   await registerAccountRoutes(app);
   await registerHoyolabRoutes(app);
   await registerAppKeyRoutes(app);
+  await registerArtRoutes(app);
   await registerEnkaRoutes(app);
   await registerTimelineRoutes(app);
   await registerAdminRoutes(app);

@@ -1,16 +1,6 @@
-import { randomBytes } from "node:crypto";
-import { mkdir, writeFile } from "node:fs/promises";
-import { resolve } from "node:path";
 import type { FastifyInstance } from "fastify";
-import { config } from "../config.js";
 import { requireUser } from "../auth/plugin.js";
-
-const ALLOWED = new Map<string, string>([
-  ["image/png", ".png"],
-  ["image/jpeg", ".jpg"],
-  ["image/webp", ".webp"],
-  ["image/gif", ".gif"],
-]);
+import { IMAGE_TYPES, storeImage } from "../lib/images.js";
 
 /**
  * Accept an image upload and return its URL. Uses Vercel Blob when
@@ -25,30 +15,12 @@ export async function registerUploadRoutes(app: FastifyInstance) {
     const data = await req.file();
     if (!data) return reply.code(400).send({ error: "no_file" });
 
-    const ext = ALLOWED.get(data.mimetype);
-    if (!ext) return reply.code(415).send({ error: "unsupported_type" });
+    if (!IMAGE_TYPES.has(data.mimetype)) return reply.code(415).send({ error: "unsupported_type" });
 
     const fileBuffer = await data.toBuffer();
     if (data.file.truncated) return reply.code(413).send({ error: "file_too_large" });
 
-    const name = randomBytes(16).toString("hex") + ext;
-
-    if (config.blobToken) {
-      const { put } = await import("@vercel/blob");
-      const blob = await put(`uploads/${name}`, fileBuffer, {
-        access: "public",
-        contentType: data.mimetype,
-        token: config.blobToken,
-      });
-      return { url: blob.url };
-    }
-
-    // resolve() already starts from the working directory. Spelling out
-    // process.cwd() makes Vercel's file trace ship the whole repository.
-    const dir = resolve(config.uploadDir);
-    await mkdir(dir, { recursive: true });
-    await writeFile(resolve(dir, name), fileBuffer);
-    return { url: `/uploads/${name}` };
+    return { url: await storeImage(fileBuffer, data.mimetype) };
     },
   );
 }

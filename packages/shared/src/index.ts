@@ -34,4 +34,5 @@ export * from "./builds.js";
 export * from "./appearances.js";
 export * from "./codes.js";
 export * from "./elements.js";
+export * from "./artSlots.js";
 export * from "./goals.js";

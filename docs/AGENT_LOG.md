@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-17 · claude · stack/r21/02-art-store · #353
+- Done: `artSlots` (shared) lists a game's pictures no catalog names, most visible first: logo, endgame modes, battle pass, 30-day pass, banners, monthly shops, currencies, tasks (a task that resets with a shop or a mode uses that one's picture), then its catalog's elements and weapon types, each saying whether a source has it. `GET /api/art` gives every game's slots with the owner's picture; `PUT /api/art/<slot>` takes a picture (owner only, rate-limited, audited) into Vercel Blob or the upload folder, never the repository (ADR 0006); `DELETE` removes it. The upload code is shared with `/api/uploads` (`lib/images.ts`). Migration: the `ArtSlot` table, with row level security.
+- Tests: written first: the slots of each kind, sourced or not; an upload shown, replaced and removed, audited; a slot no game has, a file that is not a picture and another account refused.
+- Scope/decisions: slots key by game, kind and a slug of the item (`genshin/mode/abyss`); elements and weapon types come from each catalog, the rest from the game modules.
+- Next: the Art tab.
+
 ## 2026-10-17 · claude · stack/r21/01-tag-icons · #352
 - Done: round 14 (Georges, 2026-10-17: "work on what you can for now and make me an exhaustive list of assets you need"). Every element and weapon type shows its game's own icon in the Characters and Weapons filters and on the cards (Georges: names shown as icons): 54 icons from sources, each URL checked by hand on 2026-10-17. Genshin's elements from Yatta (Enka has no Cryo) and weapon types from Enka; Star Rail's elements and paths from StarRailRes at a pinned commit; Zenless's attributes and specialties and NTE's elements (the `element_icon` paths of its character data) from the Hakushin assets; Wuthering Waves' elements from wuthery (keys from WutheringData's ElementInfo). `TagIcon` drops itself if a source fails. The image policy allows gi.yatta.moe.
 - Tests: written first: a unit test that every element and weapon type in the sourced games' catalogs maps to an icon (and none for Endfield's, WuWa's weapon types); a journey for the chips and Kafka's card.
@@ -247,10 +253,3 @@ Entry format:
 - Tests: written first: Luka's Hunter body as a tile (its art at least 80 px, Luka's face, CRIT DMG, Body); the filters left of the tiles, the tiles left of the chosen piece; chosen, it is marked current and its column shows the set, Body · +14, CRIT DMG, SPD, 2pc and Luka's link; To bag puts it in the bag, Equip on puts it back on Luka. Round 9's journeys read the substats and Open the set from the column.
 - Scope/decisions: the column always holds a piece (no Close: it is a column, not a window, so nothing moves). Editing a piece's stats stays on the wearer's sheet.
 - Next: the filters fitted to every game's sets (the tweak).
-
-## 2026-10-14 · claude · stack/r13/01-unit-sheet · #312
-- Done: the same sheet for every character (Georges, round 10: "my issue with characters is still the same: on the not owned characters, if I get on their screen there's almost nothing; I want to have the same thing as owned characters"). A unit's page now opens its default build's sheet, or, with no build, the very same sheet unsaved, seeded from the catalog the way the server seeds a new build: level, ascension and dupes, skills, the weapon window, the stat cards with their base values, the gear block, the misc, the gifts, plan farming and the teams. Its first save (or a target, a card stat, a note) makes the build, a try that leaves the character unowned (`own: false`), and moves to that build's sheet. Owning, the wishlist, the banners with your chance and what each dupe does, which only the unit page had, are on every sheet now. The build tabs and Delete build show once there is a build.
-- Fixed in passing: a default target left as it was (focused, then left) was saved as the build's own target; it now saves only when changed.
-- Tests: written first: Gepard, unowned and unbuilt, opens his unit page with the Character, Traces, Weapon, Combat stats, Relics, Banners and Plan farming cards, ATK's stat card, Own (not pressed) and Wishlist; Level 50 then Save makes a build at level 50 and he stays unowned; his unit page then shows that build, with the Builds tabs. Welt's journey saves from his unit page instead of Start a build.
-- Scope/decisions: the unit URL stays (links from banners, the timeline and the pull history keep working) and shows the default build in place, rather than redirecting. Owned now reads the ownership alone on the sheet, so a try reads Not owned.
-- Next: the gear screen, redesigned with Georges from the proposals.
