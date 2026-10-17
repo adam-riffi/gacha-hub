@@ -65,7 +65,7 @@ test("Settings: a tab each for linked accounts, pull history from a UIGF file an
   await expect(account).toContainText("That is not your username.");
 });
 
-test("Settings: the HoYoLAB card links with two cookies, and says so while the server has no key @smoke", async ({ page }) => {
+test("Settings: the HoYoLAB card links with two cookies, and says what HoYoLAB answered @smoke", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
@@ -75,8 +75,8 @@ test("Settings: the HoYoLAB card links with two cookies, and says so while the s
   await card.getByLabel("Account ID (ltuid_v2)").fill("123456789");
   await card.getByLabel("Token (ltoken_v2)").fill("v2_abcdef");
   await card.getByRole("button", { name: "Link HoYoLAB" }).click();
-  // The E2E server runs without LINK_SECRET_KEY, as production does until it is set.
-  await expect(card.getByRole("status")).toHaveText("Linking is off until the server's key is set.");
+  // ADR 0012: the server always has its sealing key now (derived from the session secret), so HoYoLAB itself answers these test cookies.
+  await expect(card.getByRole("status")).toHaveText(/^HoYoLAB (did not accept these cookies|refused the request)/);
 });
 
 test("Settings: the games you play, their server and whether they sleep, in one place @smoke", async ({ page }) => {

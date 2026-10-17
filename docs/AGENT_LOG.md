@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-16 · claude · stack/r19/01-key-store · #345
+- Done: ADR 0012, accepted (Georges, 2026-10-16: "settings where i can input my keys/secrets ... i don't have to put it on github just the app directly"). `AppSecret` holds one sealed row per key the owner enters (AES-256-GCM like linked accounts, `app:<NAME>` as the additional data); `GET /api/settings/keys` says where each key comes from and shows only the values that are not secrets; `PUT`/`DELETE` are owner-only, rate-limited and audited by name. The owner password is typed and kept as its scrypt hash. A key on the host wins and cannot be changed in the app. Version 0 of the sealing key is derived from `SESSION_SECRET` (HKDF-SHA256, its own label); `LINK_SECRET_KEY` adds versions 1 and up. HoYoLAB linking, off in production since nobody set `LINK_SECRET_KEY`, now works.
+- Tests: written first: the store's integration test (sealed at rest, never sent back, the host winning, malformed values and unknown names refused, the password hashed, cleared, owner only, audited without the value); the derived key's unit test; the HoYoLAB journey's "stays off until the server has its key" became "links without LINK_SECRET_KEY, under version 0", on purpose.
+- Scope/decisions: in ADR 0012: no separate master key (whoever reads the host's environment already holds SESSION_SECRET); what needs to exist before sign-in stays on the host.
+- Next: the server reads its keys through the store.
+
 ## 2026-10-16 · claude · stack/r18/07-docs · #344
 - Done: round 12's docs. The audit (`docs/AUDIT-2026-10-16-round12.md`): Georges's ten asks against what shipped (#338–#343), the sources found (currency icons for five games) and not found (no dated banner history for ZZZ / WuWa / Endfield / NTE; no Endfield item icons; no stable official logo URLs), and the storage answer: Cloudflare R2 (free 10 GB, no egress fees; the mirror is ready, the owner sets the bucket and secrets). ASSETS.md says what is sourced now; the handoff is rewritten for the deploy.
 - Tests: docs only.
@@ -248,9 +254,3 @@ Entry format:
 - Tests: written first: Star Rail's Characters grid has as many columns at 1100 px as at 1440 px, and the page is at least 1440 px wide.
 - Scope/decisions: "not responsive" taken over a fix, Georges using the app on a desktop (round 5: "forget about phone"); 1440 px is the size of every screenshot and check since round 1.
 - Next: gift items for NTE and Endfield.
-
-## 2026-10-14 · claude · stack/r11/06-art-framing · #304
-- Done: art framing (Georges, round 8: "Endfield character arts are way too zoomed in; also Qiuyuan from WuWa too"). Qiuyuan: the game's path names her card art `T_IconRole_Pile_qiuyuan_UI`, the art host has it as `…_Qiuyuan_UI`, so it answered with an error and her small head icon stood in, enlarged by WuWa's raised framing. The WuWa importer now checks each card art's name with the host and keeps the one it answers to (the game's otherwise, and when the host is unreachable); only Qiuyuan differed of the 50. Endfield: its portraits are 152 × 212, so filling a card enlarged and cropped them; cards, sheets and unit pages now show them whole, at the foot of the frame (`object-fit: contain`); the other games keep filling theirs.
-- Tests: written first: WuWa's catalog keeps Qiuyuan's capitalised card art and Jiyan's as it was; an Endfield card's art is contained, a Star Rail card's still covers.
-- Scope/decisions: checked in the browser with the art loaded (Qiuyuan's 696 × 960 card art, Endfield's busts whole); no PR screenshot, PR screenshots blocking outside art.
-- Next: one fixed desktop layout.

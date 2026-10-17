@@ -506,6 +506,14 @@ model WishlistItem {
 
 /// A user's link to a game-account provider (ADR 0005): read-only, opt-in,
 /// revoked by deleting the row. The secret never leaves the server.
+/// A key the owner entered in Settings → Keys (ADR 0012), sealed like a linked account's token, for "app:<name>".
+model AppSecret {
+  name       String   @id
+  secret     String
+  keyVersion Int
+  updatedAt  DateTime @updatedAt
+}
+
 model LinkedAccount {
   id         String    @id @default(cuid())
   userId     String

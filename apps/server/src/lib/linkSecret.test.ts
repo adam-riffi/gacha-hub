@@ -34,8 +34,20 @@ describe("link secrets (ADR 0005)", () => {
     expect(() => openSecret(old.secret, 1, ROW, linkKeys(`2:${K2}`))).toThrow(/key version 1/);
   });
 
-  it("needs a 32-byte key", () => {
-    expect(() => linkKeys("")).toThrow(/LINK_SECRET_KEY/);
+  // ADR 0012: no LINK_SECRET_KEY needed; version 0 comes from the session secret.
+  it("without LINK_SECRET_KEY, seals under version 0, derived from the session secret, which another secret cannot open", () => {
+    const derived = linkKeys("", "a-session-secret-of-at-least-32-chars");
+    const sealed = sealSecret("t", ROW, derived);
+    expect(sealed.keyVersion).toBe(0);
+    expect(openSecret(sealed.secret, 0, ROW, linkKeys(undefined, "a-session-secret-of-at-least-32-chars"))).toBe("t");
+    expect(() => openSecret(sealed.secret, 0, ROW, linkKeys("", "another-session-secret-of-32-chars!"))).toThrow();
+    // A LINK_SECRET_KEY added later seals the new rows and still opens version 0's.
+    const both = linkKeys(K1, "a-session-secret-of-at-least-32-chars");
+    expect(sealSecret("t", ROW, both).keyVersion).toBe(1);
+    expect(openSecret(sealed.secret, 0, ROW, both)).toBe("t");
+  });
+
+  it("needs each LINK_SECRET_KEY to be 32 bytes", () => {
     expect(() => linkKeys(Buffer.alloc(16).toString("base64"))).toThrow(/32 bytes/);
   });
 });
