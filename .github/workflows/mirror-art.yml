@@ -1,5 +1,7 @@
 # Mirrors game art into the R2 bucket the web app reads (ADR 0006). Run by hand
-# after a catalog refresh; the R2 credentials are repository secrets set by Georges.
+# after a catalog refresh. No repository secret (ADR 0012): the job proves who it
+# is with GitHub's OIDC token and takes the R2 keys the owner entered in the app
+# (Settings, Keys). Optional repository variable: APP_URL.
 name: mirror-art
 
 on:
@@ -12,6 +14,7 @@ on:
 
 permissions:
   contents: read
+  id-token: write
 
 jobs:
   mirror:
@@ -24,10 +27,17 @@ jobs:
           node-version-file: .nvmrc
       - run: npm ci
       - run: npm --prefix scripts/assets ci
-      - run: npm --prefix scripts/assets run mirror -- --game "${GAME}"
+      - name: Mirror with the art store's keys from the app
         env:
           GAME: ${{ inputs.game }}
-          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
-          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
-          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
-          R2_BUCKET: ${{ secrets.R2_BUCKET }}
+          APP_URL: ${{ vars.APP_URL || 'https://gacha-hub-two.vercel.app' }}
+        run: |
+          token=$(curl -fsS -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=$APP_URL" | jq -r .value)
+          keys=$(curl -fsS -X POST "$APP_URL/api/cron/art-store" -H "Authorization: Bearer $token")
+          for field in accountId accessKeyId secretAccessKey; do echo "::add-mask::$(jq -r ".$field" <<<"$keys")"; done
+          R2_ACCOUNT_ID=$(jq -r .accountId <<<"$keys")
+          R2_ACCESS_KEY_ID=$(jq -r .accessKeyId <<<"$keys")
+          R2_SECRET_ACCESS_KEY=$(jq -r .secretAccessKey <<<"$keys")
+          R2_BUCKET=$(jq -r .bucket <<<"$keys")
+          export R2_ACCOUNT_ID R2_ACCESS_KEY_ID R2_SECRET_ACCESS_KEY R2_BUCKET
+          npm --prefix scripts/assets run mirror -- --game "$GAME"

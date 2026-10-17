@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-16 · claude · stack/r19/03-github-oidc · #347
+- Done: ADR 0012's third part. `isGithubWorkflow` checks a bearer token is GitHub's OIDC proof: RS256 only, a key from GitHub's published set (kept an hour, fetched again at most once a minute for an unknown key id), GitHub's issuer, the app's URL as the audience, within its lifetime, our repository, `main`, and the named workflow file. The tick accepts it for `cron-tick.yml` (and the cron secret still, for other schedulers); `POST /api/cron/art-store` hands the R2 keys the owner entered to `mirror-art.yml` alone. Both workflows ask GitHub for the token (`id-token: write`) and need no repository secret.
+- Tests: written first: the verifier's unit test (another workflow, branch, repository, audience or issuer; expired or not yet valid; a forged signature, `alg: none`, a changed claim, an unknown key, garbage: all refused) and the routes' integration test; actionlint on both workflows.
+- Scope/decisions: hand-written with `node:crypto` (no JWT library: one algorithm, one issuer).
+- Next: the Keys tab.
+
 ## 2026-10-16 · claude · stack/r19/02-read-through · #346
 - Done: ADR 0012's second part. `readKey` (host first, then the owner's sealed entry) replaces the config fields for `DISCORD_BOT_TOKEN`, `DISCORD_APP_ID`, `DISCORD_PUBLIC_KEY`, `CRON_SECRET` and `OWNER_PASSWORD_HASH`, read on each use, so a key entered in Settings works without a redeploy. The interactions route is always there and answers 404 while no public key is set; `hasDiscordBot` moves to `lib/appKeys`.
 - Tests: written first: the cron secret, the owner password, the bot's DMs and the interactions' public key each work from the app's entry (and stop when cleared); the reminder-preview test mocks `hasDiscordBot` where it lives now.
@@ -248,9 +254,3 @@ Entry format:
 - Tests: none (documents).
 - Scope/decisions: nothing in ADR 0010 is built until Georges picks; the counts in ASSETS.md were taken from today's catalogs.
 - Next: the full check over PRs 6 to 9; round 8's audit and the handoff.
-
-## 2026-10-14 · claude · stack/r11/08-gifts · #306
-- Done: gifts (Georges, round 8: "for relevant games I want a gift/intimacy item list, like for NTE or Endfield"). A catalog character gains `gifts`, the strongest first. NTE: each character's preferred gifts from Hakushin with their affinity points (A Handwritten Letter +2000, then +400, +200…); the gift items join the catalog's materials as Gifts with their names and icons; 18 of 23 characters have some. Endfield: an operator's two hobbies (CharacterTagTable) and the gifts whose text names one of them ("[Lifestyle] and/or [Culture]"), those matching both first; the 14 gifts join its materials (it had none); 26 of 29 operators (the Endministrators' hobbies are a secret). A Gifts card on the sheet and on the character's page: each gift's icon, name and points or matched hobbies, the strongest outlined; Endfield's operator's hobbies head it.
-- Tests: written first: Sakiri's first gift is the letter at 2000, her ticket, bunny box and flower among them, each a named Gift; Perlica's hobbies are Lifestyle and Creative, her gifts each match one, sorted by matches, Eureka Teabox for Lifestyle; no gifts for the Endministrator; Sakiri's page or sheet lists the letter first with 2000 and the ticket's icon.
-- Scope/decisions: NTE's food gifts are not named in the dataset, so they stay out (three of Sakiri's eight); the hobby tags are mapped to the words the gifts use in the importer (like its weapon kinds); no other game here has gifts.
-- Next: the assets list and the hosting, database and sign-in proposal.

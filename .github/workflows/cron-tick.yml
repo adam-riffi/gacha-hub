@@ -3,9 +3,9 @@
 # about once an hour). The endpoint is idempotent per reset
 # boundary, so best-effort timing and duplicate runs are safe.
 #
-# Repo secrets required:
-#   CRON_URL    e.g. https://your-app.vercel.app/api/cron/tick
-#   CRON_SECRET must match the CRON_SECRET env var on the deployment
+# No repository secret (ADR 0012): the job proves who it is with GitHub's OIDC
+# token, which the app checks (this repository, this file, on main).
+# Optional repository variable: APP_URL (defaults to the production URL).
 name: reminder-tick
 
 on:
@@ -15,6 +15,7 @@ on:
 
 permissions:
   contents: read
+  id-token: write
 
 concurrency:
   group: reminder-tick
@@ -27,10 +28,11 @@ jobs:
     steps:
       - name: Call cron tick
         env:
-          CRON_URL: ${{ secrets.CRON_URL }}
-          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          APP_URL: ${{ vars.APP_URL || 'https://gacha-hub-two.vercel.app' }}
         run: |
-          if [ -z "$CRON_URL" ] || [ -z "$CRON_SECRET" ]; then
-            echo "CRON_URL / CRON_SECRET secrets not set; skipping."; exit 0
-          fi
-          curl -fsS -X POST "$CRON_URL" -H "x-cron-secret: $CRON_SECRET"
+          token=$(curl -fsS -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=$APP_URL" | jq -r .value)
+          code=$(curl -sS -o tick.json -w "%{http_code}" -X POST "$APP_URL/api/cron/tick" -H "Authorization: Bearer $token")
+          # A deployment older than ADR 0012 refuses the proof: a warning on the run, not a failure every ten minutes.
+          if [ "$code" = 401 ]; then echo "::warning::The app refused GitHub's proof: deploy main, or check APP_URL."; exit 0; fi
+          cat tick.json
+          [ "$code" = 200 ]
