@@ -1,4 +1,4 @@
-# Handoff — 2026-10-16 · claude (round 13 merged, not deployed)
+# Handoff — 2026-10-17 · claude (round 13 and the card-stat fix merged, not deployed)
 
 ## State
 - `main` at #350: rounds 1–13 merged. CI green. **Production still serves #344** (round 12, deployed 2026-10-16). Round 13 waits for Georges's word to deploy (AGENTS.md: deploys only at his command); until then the new reminder-tick workflow warns "the app refused GitHub's proof" on each run instead of failing.
@@ -10,6 +10,7 @@
 - **No secret on GitHub:** the reminder tick and the art mirror prove who they are with GitHub's OIDC token; the mirror takes the R2 keys from the app (#347).
 - **Linking needs no key:** version 0 of the sealing key is derived from `SESSION_SECRET`, so HoYoLAB linking works in production once deployed (#345).
 - **Art:** a banner or event without art shows its game's hero (#349); ASSETS.md lists the **47 pictures** still missing, with sizes and file names, for Georges to find (#350).
+- **The flaky card-stat journey was a real bug** (#351): a slower first save could overwrite the latest pick when the page was left at once. Each pick now carries its order on its page and the server drops older ones (migration `card_stats_order`, runs at the next deploy).
 
 ## Decisions taken (2026-10-16; Georges: "you are free to take any decision")
 - What stays on the host: the database URLs, `SESSION_SECRET`, `APP_BASE_URL`, the Discord sign-in client, `ADMIN_DISCORD_IDS`, `COOKIE_SECURE`, Vercel's `BLOB_READ_WRITE_TOKEN`: the app needs them before anyone can sign in or decrypt.

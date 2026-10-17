@@ -15,7 +15,7 @@ import {
 import { prisma } from "../lib/prisma.js";
 import { requireUser } from "../auth/plugin.js";
 import { Prisma } from "../generated/prisma/client.js";
-import { gameOrThrow, loadInstance, numericKpis, type PrismaJson } from "./util.js";
+import { cardStatsWrite, gameOrThrow, loadInstance, numericKpis, type PrismaJson } from "./util.js";
 import { allCurrencies } from "../lib/currencies.js";
 
 /** Attach the game module's display info to an instance row. */
@@ -133,7 +133,7 @@ export async function registerGameRoutes(app: FastifyInstance) {
     async (req, reply) => {
       const gameInstance = await loadInstance(req.user!.id, req.params.id);
       if (!gameInstance) return reply.code(404).send({ error: "not_found" });
-      const { regionKey, sleeping, uid, accountLevel, worldLevel, kpiTargets, hiddenBanners, cardStats } = updateInstanceInput.parse(req.body);
+      const { regionKey, sleeping, uid, accountLevel, worldLevel, kpiTargets, hiddenBanners, cardStats, cardStatsOrder } = updateInstanceInput.parse(req.body);
       const game = gameOrThrow(gameInstance.gameKey);
       if (regionKey !== undefined && !game.regions.some((region) => region.key === regionKey)) {
         return reply.code(400).send({ error: "unknown_region" });
@@ -146,6 +146,10 @@ export async function registerGameRoutes(app: FastifyInstance) {
       if (kpiTargets && Object.keys(kpiTargets).some((kpiTarget) => !numeric.has(kpiTarget))) return reply.code(400).send({ error: "unknown_kpi" });
       if (hiddenBanners?.some((hiddenBanner) => !shownBanners(game).some((banner) => banner.key === hiddenBanner))) return reply.code(400).send({ error: "unknown_banner" });
       if (cardStats && new Set(cardStats).size < cardStats.length) return reply.code(400).send({ error: "duplicate_stat" });
+      if (cardStats !== undefined) {
+        const write = cardStatsWrite(cardStats, cardStatsOrder);
+        await prisma.gameInstance.updateMany({ where: { id: gameInstance.id, ...write.where }, data: write.data });
+      }
       const updated = await prisma.gameInstance.update({
         where: { id: gameInstance.id },
         data: {
@@ -156,7 +160,6 @@ export async function registerGameRoutes(app: FastifyInstance) {
           ...(worldLevel !== undefined ? { worldLevel } : {}),
           ...(kpiTargets !== undefined ? { kpiTargets: kpiTargets === null ? Prisma.DbNull : (kpiTargets as PrismaJson) } : {}),
           ...(hiddenBanners !== undefined ? { hiddenBanners: hiddenBanners === null ? Prisma.DbNull : [...new Set(hiddenBanners)] } : {}),
-          ...(cardStats !== undefined ? { cardStats: cardStats === null ? Prisma.DbNull : cardStats } : {}),
         },
       });
       return withGame(instanceDto.parse(updated));

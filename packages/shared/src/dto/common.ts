@@ -29,6 +29,9 @@ export const nonNegInt = z.number().int().min(0);
 export const jsonValue = z.unknown();
 
 /** A target per numeric KPI, for a build or as a game's defaults (checked against the game's KPIs on save). */
+/** A card-stat pick's order on its page (a random id per page load, then a count of its picks): the server keeps a page's latest pick whatever order its saves land in. */
+export const cardStatsOrderInput = z.object({ page: z.string().regex(/^[\w-]{8,40}$/), seq: z.number().int().min(1).max(1_000_000_000) });
+
 export const kpiTargetsInput = z
   .record(z.string().max(60), z.number().min(0).max(LIMITS.kpiTarget))
   .refine((targets) => Object.keys(targets).length <= 12);

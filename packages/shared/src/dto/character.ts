@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { LIMITS, buildStatusSchema } from "../common.js";
-import { catalogIdSchema, idSchema, isoDate, jsonValue, kpiTargetsInput } from "./common.js";
+import { cardStatsOrderInput, catalogIdSchema, idSchema, isoDate, jsonValue, kpiTargetsInput } from "./common.js";
 
 /**
  * A tracked character build. `catalogId` links to the game's catalog entry
@@ -99,5 +99,6 @@ export type CreateCharacterInput = z.infer<typeof createCharacterInput>;
 export const updateCharacterInput = createCharacterInput.partial().extend({
   /** Make this the build its character opens on; the others of that unit stop being it. */
   isDefault: z.literal(true).optional(),
+  cardStatsOrder: cardStatsOrderInput.optional(),
 });
 export type UpdateCharacterInput = z.infer<typeof updateCharacterInput>;

@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-17 · claude · stack/r20/01-card-stat-flake · #351
+- Done: the flaky journey "card-stat picks made quickly are all kept, even when the page is left at once" (failed CI on #345 with "Route is already handled!" and only the first pick kept) was a real bug. Three quick picks, then the page left: the latest pick's save went at once while the first pick's was still on its way, and the first landed after it and overwrote it. The journey had passed locally only by catching the right value in between. Calling the older save back does not work once the page is going (Chromium keeps a keepalive request), so each pick now carries its order on its page (`nextWriteOrder`: a random page id and a count), and the server drops a pick older than the last it applied from that page, in one conditional update for the game's and a build's card stats. Two columns per table remember the last applied pick (migration `card_stats_order`).
+- Tests: written first: the journey now waits for every held save to land, then checks the kept value again (it failed 20 of 20 runs before the fix, passes 20 of 20 after); the server test sends a page's picks out of order, from another page, and without an order.
+- Scope/decisions: no web unit tests exist, so the journey is the queue's test. A save without an order, or from another page (a reload, another tab or device), applies as before: last arrival wins there.
+- Next: deploy at Georges's word (the migration runs then).
+
 ## 2026-10-16 · claude · stack/r19/06-docs · #350
 - Done: Georges, 2026-10-16: "make me a list of all the artless cards that needs to be filled i'll find you art to put on them". ASSETS.md lists the 47 pictures still missing, checked screen by screen: 6 game logos, 14 endgame modes, 6 battle passes, 5 30-day passes, 5 standard banners, 5 monthly shops, 6 currencies no source has; each with its shape, size and a file name to hand it over by. DESIGN.md §13, DEPLOY.md, the guide, the README, AGENTS.md's rule 7 and `.env.example` say what stays on the host and what goes in the app (ADR 0012). The handoff is rewritten.
 - Tests: docs only.
@@ -248,9 +254,3 @@ Entry format:
 - Tests: written first: on Home the Banners heading sits level with Dailies & weeklies, above the battle pass and the heatmap.
 - Scope/decisions: the game dashboards keep their order (their banners already sit beside their dailies).
 - Next: the full check over round 9, then the merges.
-
-## 2026-10-14 · claude · stack/r12/03-characters-one-card · #310
-- Done: one card for every character (Georges, round 9: "for the characters, not owning them shouldn't prevent me from having the full card or setting trying builds; don't make a different screen for owned/not owned, same screen, just a toggle for all characters to see which ones I have already"). An unowned character's card is no longer dashed and dimmed: the same art, stats and chips as an owned one, its badge saying Not owned. Every card without a build offers Start a build; from an unowned card it is a build to try (`own: false` on the create route), the character staying unowned; a build still owns its character otherwise (imports, owned cards). The count chips All / Owned / Not owned become one toggle, Owned only n / total; Wishlist stays.
-- Tests: written first: integration: a build with own false leaves Amber unowned. Journey: Lynx unowned has a bright card with its stats, no Not owned chip, Owned only hides her and shows her again, Start a build opens her sheet and she stays unowned.
-- Scope/decisions: own false only from an unowned card's Start a build; everything else keeps owning on build, as before.
-- Next: the Overview with the banners first.

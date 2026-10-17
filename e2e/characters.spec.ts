@@ -459,24 +459,38 @@ test("Characters: an unowned character without a build opens the same sheet as a
 });
 
 // Main's CI after #313: three quick card-stat picks, then a reload, kept only two; the queued last save left with the page.
+// Then #345's CI: the last save, sent as the page was left, landed first, and the slower first save landed after it and
+// overwrote it. The check passed locally only by catching the right value in between; it now waits for every held save.
 test("Characters: card-stat picks made quickly are all kept, even when the page is left at once @smoke", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "zzz" } })).json()) as { id: string };
   await page.request.put(`/api/instances/${id}`, { data: { cardStats: null } });
+  const cardStats = async () => ((await (await page.request.get(`/api/instances/${id}`)).json()) as { cardStats: string[] | null }).cardStats;
   // A slow server: every save of the game takes 400 ms to reach it. Held by the browser context, not the page: the
   // last save is a keepalive request that outlives the page's navigation, which cancels a page's held requests.
-  await page.context().route(`**/api/instances/${id}`, async (route) => {
-    if (route.request().method() === "PUT") await new Promise((resolve) => setTimeout(resolve, 400));
-    await route.continue();
+  const held: Promise<void>[] = [];
+  await page.context().route(`**/api/instances/${id}`, (route) => {
+    if (route.request().method() !== "PUT") return route.continue();
+    const landing = (async () => {
+      await new Promise((resolve) => setTimeout(resolve, 400));
+      // A held save the browser dropped with the page it came from (CI's "Route is already handled") has nothing left to continue.
+      await route.continue().catch(() => undefined);
+    })();
+    held.push(landing);
+    return landing;
   });
   try {
     await page.goto(`/games/${id}/characters`);
     const pick = page.getByRole("group", { name: "Card stats" });
     for (const stat of ["HP", "ATK", "DEF"]) await pick.getByRole("button", { name: stat, exact: true }).click();
     await page.goto("/");
-    await expect.poll(async () => ((await (await page.request.get(`/api/instances/${id}`)).json()) as { cardStats: string[] | null }).cardStats, { timeout: 5000 }).toEqual(["HP", "ATK", "DEF"]);
+    await expect.poll(cardStats, { timeout: 5000 }).toEqual(["HP", "ATK", "DEF"]);
+    // Every held save has landed or was cancelled, and the server has had time to apply it: the last pick is still kept.
+    await Promise.all(held);
+    await page.waitForTimeout(1000);
+    expect(await cardStats()).toEqual(["HP", "ATK", "DEF"]);
   } finally {
     await page.context().unroute(`**/api/instances/${id}`);
     await page.request.put(`/api/instances/${id}`, { data: { cardStats: null } });
