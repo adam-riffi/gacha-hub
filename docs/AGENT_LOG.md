@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-16 · claude · stack/r19/02-read-through · #346
+- Done: ADR 0012's second part. `readKey` (host first, then the owner's sealed entry) replaces the config fields for `DISCORD_BOT_TOKEN`, `DISCORD_APP_ID`, `DISCORD_PUBLIC_KEY`, `CRON_SECRET` and `OWNER_PASSWORD_HASH`, read on each use, so a key entered in Settings works without a redeploy. The interactions route is always there and answers 404 while no public key is set; `hasDiscordBot` moves to `lib/appKeys`.
+- Tests: written first: the cron secret, the owner password, the bot's DMs and the interactions' public key each work from the app's entry (and stop when cleared); the reminder-preview test mocks `hasDiscordBot` where it lives now.
+- Scope/decisions: a database read per use, no cache: each is a rare call (sign-in, a DM, a tick every 10 minutes).
+- Next: GitHub's workflows without secrets.
+
 ## 2026-10-16 · claude · stack/r19/01-key-store · #345
 - Done: ADR 0012, accepted (Georges, 2026-10-16: "settings where i can input my keys/secrets ... i don't have to put it on github just the app directly"). `AppSecret` holds one sealed row per key the owner enters (AES-256-GCM like linked accounts, `app:<NAME>` as the additional data); `GET /api/settings/keys` says where each key comes from and shows only the values that are not secrets; `PUT`/`DELETE` are owner-only, rate-limited and audited by name. The owner password is typed and kept as its scrypt hash. A key on the host wins and cannot be changed in the app. Version 0 of the sealing key is derived from `SESSION_SECRET` (HKDF-SHA256, its own label); `LINK_SECRET_KEY` adds versions 1 and up. HoYoLAB linking, off in production since nobody set `LINK_SECRET_KEY`, now works.
 - Tests: written first: the store's integration test (sealed at rest, never sent back, the host winning, malformed values and unknown names refused, the password hashed, cleared, owner only, audited without the value); the derived key's unit test; the HoYoLAB journey's "stays off until the server has its key" became "links without LINK_SECRET_KEY, under version 0", on purpose.
@@ -248,9 +254,3 @@ Entry format:
 - Tests: written first: Sakiri's first gift is the letter at 2000, her ticket, bunny box and flower among them, each a named Gift; Perlica's hobbies are Lifestyle and Creative, her gifts each match one, sorted by matches, Eureka Teabox for Lifestyle; no gifts for the Endministrator; Sakiri's page or sheet lists the letter first with 2000 and the ticket's icon.
 - Scope/decisions: NTE's food gifts are not named in the dataset, so they stay out (three of Sakiri's eight); the hobby tags are mapped to the words the gifts use in the importer (like its weapon kinds); no other game here has gifts.
 - Next: the assets list and the hosting, database and sign-in proposal.
-
-## 2026-10-14 · claude · stack/r11/07-fixed-layout · #305
-- Done: one desktop layout (Georges, round 8: "the responsivity of the app is pretty mediocre overall; I'd rather have it not responsive or find a way to fix it"). The shell has a minimum width of 1440 px, the width every screen is designed and checked at: a narrower window scrolls sideways instead of rearranging the screens. The width breakpoints are gone (Home's side column at 1500 px, the Characters grid's three columns under 1280 px, the timeline, Overview and dashboard collapses under 1100 px, the hub's under 900 px); Home keeps the one-column layout it had at 1440 px. Wider windows still give the grids more room. Reduced-motion preferences stay.
-- Tests: written first: Star Rail's Characters grid has as many columns at 1100 px as at 1440 px, and the page is at least 1440 px wide.
-- Scope/decisions: "not responsive" taken over a fix, Georges using the app on a desktop (round 5: "forget about phone"); 1440 px is the size of every screenshot and check since round 1.
-- Next: gift items for NTE and Endfield.

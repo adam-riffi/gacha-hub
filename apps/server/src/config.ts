@@ -50,8 +50,6 @@ export const config = {
   /** Vercel Blob token; when set, uploads go to Blob instead of local disk. */
   blobToken: envString("BLOB_READ_WRITE_TOKEN"),
 
-  /** Shared secret the external cron (GitHub Actions) sends to /api/cron/tick. */
-  cronSecret: envString("CRON_SECRET"),
   /** Run node-cron in-process (only for always-on hosts like Docker). */
   inProcessCron: bool("ENABLE_INPROCESS_CRON", false),
   /** Discord user ids granted the admin role (comma-separated). */
@@ -67,16 +65,7 @@ export const config = {
       "DISCORD_OAUTH_REDIRECT",
       "http://localhost:3000/api/auth/discord/callback",
     ),
-    botToken: envString("DISCORD_BOT_TOKEN"),
-    appId: envString("DISCORD_APP_ID"),
-    /** Application public key — verifies HTTP Interactions signatures. */
-    publicKey: envString("DISCORD_PUBLIC_KEY"),
     devGuildId: envString("DISCORD_DEV_GUILD_ID"),
-  },
-
-  /** The owner password's scrypt hash (ADR 0010; made by `npm run password:hash`), read on each use; empty: no password sign-in. */
-  get ownerPasswordHash(): string {
-    return envString("OWNER_PASSWORD_HASH");
   },
 
   /** Dev-only shortcut login (no Discord app needed). Never on in production. */
@@ -85,8 +74,4 @@ export const config = {
 
 export const hasDiscordOAuth = () =>
   Boolean(config.discord.clientId && config.discord.clientSecret);
-/** Bot token + app id: needed for REST (DMs) and slash-command registration. */
-export const hasDiscordBot = () =>
-  Boolean(config.discord.botToken && config.discord.appId);
-/** Public key: needed to accept slash commands over HTTP Interactions. */
-export const hasDiscordInteractions = () => Boolean(config.discord.publicKey);
+

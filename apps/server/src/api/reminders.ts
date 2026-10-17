@@ -1,6 +1,6 @@
 import type { FastifyInstance } from "fastify";
 import { reminderPreviewDto, reminderRuleDto, setReminderInput } from "@gacha/shared";
-import { hasDiscordBot } from "../config.js";
+import { hasDiscordBot } from "../lib/appKeys.js";
 import { sendDirectMessage } from "../discord/rest.js";
 import { previewReminders } from "../scheduler/reminders.js";
 import { prisma } from "../lib/prisma.js";
@@ -17,7 +17,7 @@ export async function registerReminderRoutes(app: FastifyInstance) {
 
   // Send that preview to yourself, once the Discord bot is set up.
   app.post("/api/reminders/test", { preHandler: requireUser }, async (req) => {
-    if (!hasDiscordBot()) return { sent: false, reason: "no_bot" };
+    if (!(await hasDiscordBot())) return { sent: false, reason: "no_bot" };
     const previews = await previewReminders(req.user!.id);
     if (!previews.length) return { sent: false, reason: "no_rules" };
     return { sent: await sendDirectMessage(req.user!.discordId, previews.map((preview) => preview.text).join("\n\n")) };

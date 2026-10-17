@@ -1,4 +1,4 @@
-import { config, hasDiscordBot } from "../config.js";
+import { hasDiscordBot, readKey } from "../lib/appKeys.js";
 
 /**
  * Minimal Discord REST client (no gateway). Enough for DMs and slash-command
@@ -10,7 +10,7 @@ export async function discordFetch(path: string, init: RequestInit = {}) {
   return fetch(`${API}${path}`, {
     ...init,
     headers: {
-      Authorization: `Bot ${config.discord.botToken}`,
+      Authorization: `Bot ${await readKey("DISCORD_BOT_TOKEN")}`,
       "content-type": "application/json",
       ...(init.headers ?? {}),
     },
@@ -22,7 +22,7 @@ export async function sendDirectMessage(
   discordId: string,
   content: string,
 ): Promise<boolean> {
-  if (!hasDiscordBot()) return false;
+  if (!(await hasDiscordBot())) return false;
   try {
     const channelRes = await discordFetch("/users/@me/channels", {
       method: "POST",

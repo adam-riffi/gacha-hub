@@ -5,7 +5,7 @@ import {
   InteractionType,
   verifyKey,
 } from "discord-interactions";
-import { config, hasDiscordInteractions } from "../config.js";
+import { readKey } from "../lib/appKeys.js";
 import { handleCommand, type CommandOptions } from "./commands.js";
 
 /**
@@ -44,8 +44,6 @@ function normalizeOptions(payload: InteractionPayload): CommandOptions {
 }
 
 export async function registerDiscordInteractions(app: FastifyInstance) {
-  if (!hasDiscordInteractions()) return;
-
   // Scoped plugin so we can keep the raw JSON body for signature checks
   // without changing the parser for the rest of the app.
   await app.register(async (scope) => {
@@ -66,6 +64,9 @@ export async function registerDiscordInteractions(app: FastifyInstance) {
       "/api/discord/interactions",
       { config: { rateLimit: { max: 120, timeWindow: "1 minute" } } },
       async (req, reply) => {
+      // The public key may be entered in the app (ADR 0012): no key, no interactions.
+      const publicKey = await readKey("DISCORD_PUBLIC_KEY");
+      if (!publicKey) return reply.code(404).send({ error: "not_found" });
       const { raw, json } = req.body as { raw: string; json: InteractionPayload };
       const signature = req.headers["x-signature-ed25519"];
       const timestamp = req.headers["x-signature-timestamp"];
@@ -73,7 +74,7 @@ export async function registerDiscordInteractions(app: FastifyInstance) {
         raw,
         typeof signature === "string" ? signature : undefined,
         typeof timestamp === "string" ? timestamp : undefined,
-        config.discord.publicKey,
+        publicKey,
       );
       if (!ok) return reply.code(401).send({ error: "bad_signature" });
 

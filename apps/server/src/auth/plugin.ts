@@ -20,6 +20,7 @@ import {
 import { registerPasskeyRoutes } from "./passkeys.js";
 import { prisma } from "../lib/prisma.js";
 import { OwnerPassword } from "./ownerPassword.js";
+import { readKey } from "../lib/appKeys.js";
 
 const passwordSignInInput = z.object({ password: z.string().max(200) });
 
@@ -125,7 +126,7 @@ export async function registerAuth(app: FastifyInstance) {
       user: req.user,
       isAdmin: req.isAdmin,
       oauth: hasDiscordOAuth(),
-      passwordSignIn: Boolean(config.ownerPasswordHash),
+      passwordSignIn: Boolean(await readKey("OWNER_PASSWORD_HASH")),
       passkeySignIn: (await prisma.passkey.count()) > 0,
       devLogin: config.devLoginEnabled,
     };
@@ -133,7 +134,7 @@ export async function registerAuth(app: FastifyInstance) {
 
   // ---- The owner password (ADR 0010): five tries a minute from one address ----
   app.post("/api/auth/password", { config: { rateLimit: { max: 5, timeWindow: "1 minute" } } }, async (req, reply) => {
-    const stored = config.ownerPasswordHash;
+    const stored = await readKey("OWNER_PASSWORD_HASH");
     if (!stored) return reply.code(404).send({ error: "password_sign_in_off" });
     const { password } = passwordSignInInput.parse(req.body);
     if (!(await OwnerPassword.matches(password, stored))) return reply.code(401).send({ error: "wrong_password" });

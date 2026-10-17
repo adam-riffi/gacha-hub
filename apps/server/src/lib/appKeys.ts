@@ -77,6 +77,12 @@ export async function setKey(name: AppKeyName, value: string, actorUserId: strin
   return "saved";
 }
 
+/** Bot token + application id: needed for DMs and slash-command registration. */
+export async function hasDiscordBot(): Promise<boolean> {
+  const [token, appId] = await Promise.all([readKey("DISCORD_BOT_TOKEN"), readKey("DISCORD_APP_ID")]);
+  return Boolean(token && appId);
+}
+
 export async function clearKey(name: AppKeyName, actorUserId: string): Promise<void> {
   await prisma.$transaction([
     prisma.appSecret.deleteMany({ where: { name } }),
