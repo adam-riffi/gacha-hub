@@ -1,43 +1,43 @@
-# Handoff — 2026-10-17 · claude (round 13 and the card-stat fix merged, not deployed)
+# Handoff — 2026-10-18 · claude (rounds 13 and 14 merged, not deployed)
 
 ## State
-- `main` at #350: rounds 1–13 merged. CI green. **Production still serves #344** (round 12, deployed 2026-10-16). Round 13 waits for Georges's word to deploy (AGENTS.md: deploys only at his command); until then the new reminder-tick workflow warns "the app refused GitHub's proof" on each run instead of failing.
+- `main` at #357: rounds 1–14 merged. CI green. **Production still serves #344** (round 12, deployed 2026-10-16). Rounds 13 and 14 wait for Georges's word to deploy (AGENTS.md: deploys only at his command); the deploy runs three migrations (`app_secrets`, `card_stats_order`, `art_slots`). Until then the reminder-tick workflow warns "the app refused GitHub's proof" on each run instead of failing.
 - No open PRs. Merges do not deploy (#189).
-- Every milestone in DESIGN.md §9 is built, V through F13, and thirteen feedback rounds (2026-10-10 to 2026-10-16) are done.
 
-## Done this session (round 13)
-- **Keys in the app (ADR 0012, accepted):** Settings → Keys (owner only) takes the owner password, the Discord bot, a cron secret and the R2 art store; each sealed in the database (AES-256-GCM), never sent back, audited by name; the host's environment wins (#345, #346, #348).
-- **No secret on GitHub:** the reminder tick and the art mirror prove who they are with GitHub's OIDC token; the mirror takes the R2 keys from the app (#347).
-- **Linking needs no key:** version 0 of the sealing key is derived from `SESSION_SECRET`, so HoYoLAB linking works in production once deployed (#345).
-- **Art:** a banner or event without art shows its game's hero (#349); ASSETS.md lists the **47 pictures** still missing, with sizes and file names, for Georges to find (#350).
-- **The flaky card-stat journey was a real bug** (#351): a slower first save could overwrite the latest pick when the page was left at once. Each pick now carries its order on its page and the server drops older ones (migration `card_stats_order`, runs at the next deploy).
+## Done this session
+- **Round 13 (ADR 0012):** keys entered in the app (Settings → Keys, sealed, the host winning), GitHub's workflows on OIDC with no secret, linking without `LINK_SECRET_KEY` (#345–#350). The flaky card-stat journey was a real race; each pick now carries its order (#351).
+- **Round 14 (Georges, 2026-10-17: "work on what you can for now and make me an exhaustive list of assets you need"):**
+  - 54 element and weapon-type icons from sources, in the filters and on the cards (#352).
+  - An art store: every game's picture slots (`artSlots`), the owner's upload per slot into Vercel Blob, never committed (#353).
+  - **Settings → Art**: the exhaustive list, live, with Upload / Replace / Remove per tile (#354).
+  - Each upload shows on the cards of its slot (#355); the catalogs' own gaps are slots too (#356).
+  - ASSETS.md: the exhaustive list, **144 of 229 slots needed** (#357).
 
-## Decisions taken (2026-10-16; Georges: "you are free to take any decision")
-- What stays on the host: the database URLs, `SESSION_SECRET`, `APP_BASE_URL`, the Discord sign-in client, `ADMIN_DISCORD_IDS`, `COOKIE_SECURE`, Vercel's `BLOB_READ_WRITE_TOKEN`: the app needs them before anyone can sign in or decrypt.
-- No separate master key for the store: whoever reads the host's environment already holds `SESSION_SECRET`. Rotating `SESSION_SECRET` means entering the app's keys again.
-- The host wins over the app (the escape hatch if an entered value breaks something).
-- GitHub's OIDC over a shared secret; JWT checked by hand with `node:crypto` (RS256, one issuer).
-- The art store's public URL must be an `r2.dev` or Vercel Blob host (the image policy's).
+## Decisions taken (2026-10-17; Georges: "you are free to take any decision")
+- Owner art lives in Vercel Blob through the app (Settings → Art), not R2 or the repository: Blob is already set up, and uploads need no console.
+- The slot list is generated from the game modules and catalogs, so a new game or mode adds its slots by itself.
+- An upload wins over a source's icon; the source stays the fallback.
+- Settings → Art opens on the pictures no source has; a tile stays in place once filled.
+- Element and weapon-type icons: StarRailRes pinned at a commit; Yatta's Genshin host added to the image policy.
 
 ## Verified
-- `npm run check` on every PR and CI green on each; 720+ unit and integration tests, 135+ journeys with the new ones (the Keys tab, the hero fallback).
-- Checked in the browser at 1440: the Keys tab, Home's banner card.
+- `npm run check` on every PR and CI green on each.
+- Checked in the browser at 1440: the icons on Characters (Star Rail, Genshin), the Art tab, an uploaded logo and mode icon on the Endgame page.
 
 ## Next
-1. Deploy at Georges's word; then run reminder-tick by hand once (Actions) and expect `ok: true`.
-2. When Georges sends the art: an owner upload per card (Vercel Blob is set up), so nothing is committed (ADR 0006).
-3. Source what a source has: elements and weapon types, the top-up currencies.
-4. ADR 0011's remaining services.
+1. Deploy at Georges's word; then run reminder-tick by hand once and expect `ok: true`.
+2. As Georges uploads pictures: check them on their cards; the battle pass and mode art may want larger spots once real pictures exist.
+3. ADR 0011's remaining services.
 
 ## Needs from Georges
-- **Say "deploy"** for round 13.
-- Then, in the app: **Settings → Keys**: the owner password (optional), the Discord bot (application id, bot token, public key), the R2 art store (account id, access key id, secret, bucket, public URL). Settings → Linked accounts: HoYoLAB.
-- Delete the old GitHub repository secrets `CRON_URL` / `CRON_SECRET` (unused now).
-- **The 47 pictures** in ASSETS.md, named as listed.
+- **Say "deploy"** for rounds 13 and 14.
+- Then in the app: **Settings → Keys** (the Discord bot, R2 if wanted, an owner password if wanted), **Settings → Linked accounts** (HoYoLAB), and **Settings → Art**: the 144 pictures as he finds them (the full list is also in docs/ASSETS.md).
+- Delete the old GitHub repository secrets `CRON_URL` / `CRON_SECRET`.
 - Real data (PROJECT-GUIDE §14.1 step 8), the `main` ruleset, the `sample-*` banners, the README GIF.
 - Overrule any decision above by saying so.
 
 ## Notes
 - The previous handoffs' notes stand (HoYoLAB read-only, art never committed, E2E's shared database and its unique-unit rule, Prettier not enforced, the log's roll-over, owner files, Git Bash paths, squash-merged stacks, heredocs eating backslashes, renames via the TS language service with the no-shadow baseline).
-- Keys journeys must clear what they set (`DELETE /api/settings/keys/:name` in `finally`): the E2E database is shared.
-- `readKey` reads the environment first: a test that sets a key in the app must make sure the variable is not set (the test env sets `DISCORD_PUBLIC_KEY`).
+- Journeys that set keys or upload art must clear them in `finally`: the E2E database is shared.
+- Never put token-shaped values in tests (GitHub push protection rejects them): use obviously fake strings.
+- The dev SQLite database needs `npm run db:sqlite` after each schema change, or the API fails at the new columns.

@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-17 · claude · stack/r21/06-docs · #357
+- Done: ASSETS.md lists every picture still needed, 144 of 229 slots, by kind then game, generated from the app's own slot list so it matches Settings → Art: 6 logos, 14 endgame modes, 6 battle passes, 5 30-day passes, 27 banners, 5 shops, 35 tasks, 7 currencies, 5 elements, 10 weapon types, 9 gear sets, 14 materials, 1 Bangboo; the 85 a source covers counted apart. The handoff is rewritten.
+- Tests: docs only.
+- Scope/decisions: none.
+- Next: deploy at Georges's word (migrations `card_stats_order` and `art_slots` run then); Georges uploads pictures as he finds them.
+
 ## 2026-10-17 · claude · stack/r21/05-catalog-gaps · #356
 - Done: a catalog entry without an icon key, or of a kind its game has no art source for, joins its game's slots under its catalog kind: NTE's 9 gear sets (one shared placeholder in the data), Endfield's 14 gift materials and Zenless's Bangboo Eous. `CatalogIcon` shows the owner's picture first, then the store's and the source's as before.
 - Tests: written first: the slots list those 24 and none a source has; a journey uploads an Endfield gift and finds it on Materials.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: Jing Yuan owned and Luocha not: the four views with counts, Not owned shows Luocha only, Owned Jing Yuan only, All both; on Weapons, a copy of Night on the Milky Way and a past banner of In the Night: Not owned shows In the Night with its last banner ("1 mo ago") and hides the copy, Owned the reverse. Round 9's Owned only steps now press Owned in the same group.
 - Scope/decisions: round 9's test asserted no Not owned button, meaning no screen of its own for unowned characters; Not owned is a filter on the same cards, which round 11 asks for. The team window keeps its owned-first order.
 - Next: the banner history importer.
-
-## 2026-10-15 · claude · stack/r14/01-last-seen · #316
-- Done: round 11's first items (Georges: "there's a wild banner card on the character screen"; "I'd like to have a 'last seen' info on characters to see their last banners"). A route gives each unit's banners from every banner on record, through `UnitBannerAppearances` in the shared package (newest first, the last ended, the one on now, the next, the runs so far). Character cards show their last banner by a flag icon ("2 mo ago", "on a banner now"); Sort: Last seen puts the longest unseen first. The sheet's banners card spans the sheet, spaced from the next card: on now (with your chance while unowned), next, last seen, runs, then every banner in a table; the dupes' texts have their own card. Round 11's audit (`docs/AUDIT-2026-10-15-round11.md`: every page reviewed against "I don't need to go around X websites", and the order of work) and ADR 0011, accepted by Georges the same day (objects for the domain, explicit names, `id-length`), noted in DESIGN.md §6.
-- Tests: written first: integration: Amber's banners newest first, her last ended, current and next, three runs; other games' banners and banners without her left out; 404 for an unknown game. Journey: Saber seen two months ago and back next week, Archer a week ago, on their cards; Sort: Last seen puts Saber first; Saber's sheet lists both banners in a table, the card over 1000 px wide and 12 px or more above Misc.
-- Scope/decisions: "last seen" reads the banners the app holds (uploads and the official feeds); a history importer comes next (samsara-web, MIT, for Genshin and Star Rail; no dated source found yet for the other games). New code follows ADR 0011 already.
-- Next: All · Owned · Not owned wherever units are listed; weapons' last seen.
