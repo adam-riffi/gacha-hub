@@ -7,12 +7,22 @@ import { getCatalog } from "./util.js";
 
 const distinct = (values: (string | undefined)[]) => [...new Set(values.filter((value): value is string => Boolean(value) && value !== "None"))].sort();
 
-/** Every game's slots, its catalog's elements and weapon types included. */
+type Entry = { name: string; icon?: string | null };
+
+/** Every game's slots: its catalog's elements and weapon types, and its entries without an icon or of a kind it has no source for. */
 async function allSlots(): Promise<ArtSlot[]> {
   const perGame = await Promise.all(
     gameList.map(async (game) => {
-      const characters = (await getCatalog(game))?.catalog.characters ?? [];
-      return artSlots(game, { elements: distinct(characters.map((character) => character.tag)), weaponTypes: distinct(characters.map((character) => character.weaponType)) });
+      const catalog = (await getCatalog(game))?.catalog;
+      const characters = catalog?.characters ?? [];
+      const lists: [ArtSlot["kind"] & ("character" | "weapon" | "gear" | "material"), Entry[]][] = [
+        ["character", [...characters, ...((catalog as { companions?: Entry[] } | undefined)?.companions ?? [])]],
+        ["weapon", catalog?.weapons ?? []],
+        ["gear", catalog?.gear ?? []],
+        ["material", catalog?.materials ?? []],
+      ];
+      const gaps = lists.flatMap(([kind, entries]) => entries.filter((entry) => !entry.icon || !game.manifest.art[kind]).map((entry) => ({ kind, name: entry.name })));
+      return artSlots(game, { elements: distinct(characters.map((character) => character.tag)), weaponTypes: distinct(characters.map((character) => character.weaponType)), gaps });
     }),
   );
   return perGame.flat();

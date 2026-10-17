@@ -17,6 +17,10 @@ const KIND: Record<ArtSlotKind, string> = {
   task: "Task",
   element: "Element",
   "weapon-type": "Weapon type",
+  character: "Character",
+  weapon: "Weapon",
+  gear: "Gear set",
+  material: "Material",
 };
 const SIZE = { square: "256 × 256", wide: "1280 × 720" } as const;
 /** Vercel takes a request of 4.5 MB at most. */
