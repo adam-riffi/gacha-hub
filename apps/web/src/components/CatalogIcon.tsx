@@ -1,12 +1,18 @@
-import { elementColor, type ArtKind, type FarmUnit } from "@gacha/shared";
+import { artSlotKey, elementColor, type ArtKind, type ArtSlotKind, type FarmUnit } from "@gacha/shared";
+import { useSlotArt } from "../lib/art";
 import { assetUrl, communityAssetUrl } from "../lib/assets";
 import { useCatalog } from "../lib/catalog";
 import { GameIcon } from "./GameIcon";
 import { artGlyph } from "./Glyph";
 
-/** A catalog entry's icon (character, weapon, gear set, material…), named for hover and screen readers, tinted to its element. */
+/**
+ * A catalog entry's icon (character, weapon, gear set, material…), named for hover and screen readers, tinted to its
+ * element; the owner's picture first where no source has one (Settings → Art).
+ */
 export function CatalogIcon({ gameKey, kind, icon, name, tag, className }: { gameKey: string; kind: ArtKind; icon?: string | null; name: string; tag?: string | null; className?: string }) {
-  return <GameIcon src={assetUrl(gameKey, kind, icon)} fallback={communityAssetUrl(gameKey, kind, icon)} alt={name} tint={elementColor(gameKey, tag) ?? undefined} glyph={artGlyph(kind)} className={className} />;
+  const uploaded = useSlotArt(artSlotKey(gameKey, kind as ArtSlotKind, name));
+  const sources = [assetUrl(gameKey, kind, icon), communityAssetUrl(gameKey, kind, icon)];
+  return <GameIcon src={uploaded ?? sources[0] ?? null} fallback={uploaded ? sources.filter((source): source is string => Boolean(source)) : sources[1]} alt={name} tint={elementColor(gameKey, tag) ?? undefined} glyph={artGlyph(kind)} className={className} />;
 }
 
 /** A character, weapon or gear set of the catalog by its id, as its icon. */

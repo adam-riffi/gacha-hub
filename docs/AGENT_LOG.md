@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-17 · claude · stack/r21/05-catalog-gaps · #356
+- Done: a catalog entry without an icon key, or of a kind its game has no art source for, joins its game's slots under its catalog kind: NTE's 9 gear sets (one shared placeholder in the data), Endfield's 14 gift materials and Zenless's Bangboo Eous. `CatalogIcon` shows the owner's picture first, then the store's and the source's as before.
+- Tests: written first: the slots list those 24 and none a source has; a journey uploads an Endfield gift and finds it on Materials.
+- Scope/decisions: none.
+- Next: the list in the docs.
+
 ## 2026-10-17 · claude · stack/r21/04-slot-art · #355
 - Done: `SlotArt` shows the owner's picture for a slot, or what the spot showed before. A logo replaces its game's drawn emblem everywhere (in the game's header it stands on its own, not on the accent tile); endgame modes on their cards, Home's next resets, the activities' cycles and the dashboard; the battle pass on Home's card (over the hero) and the version card; the 30-day pass on the monthly list; banners on Pulls where no featured unit shows; each task on its row; currencies, elements and weapon types before their source's icon. `CurrencyIcon` takes the currency's key, so Endfield's currencies can take an upload.
 - Tests: written first: a journey uploads a logo, a mode, a currency, an element, a banner and a task, and finds each on its page.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: integration: Amber's banners newest first, her last ended, current and next, three runs; other games' banners and banners without her left out; 404 for an unknown game. Journey: Saber seen two months ago and back next week, Archer a week ago, on their cards; Sort: Last seen puts Saber first; Saber's sheet lists both banners in a table, the card over 1000 px wide and 12 px or more above Misc.
 - Scope/decisions: "last seen" reads the banners the app holds (uploads and the official feeds); a history importer comes next (samsara-web, MIT, for Genshin and Star Rail; no dated source found yet for the other games). New code follows ADR 0011 already.
 - Next: All · Owned · Not owned wherever units are listed; weapons' last seen.
-
-## 2026-10-14 · claude · stack/r14/00-card-stat-saves · #315
-- Done: main's CI went red after #313 on the card-stat journey: three quick picks of the game's card stats, then a reload, kept two. Not the gear: the picks were queued one at a time (to keep their order), and a reload dropped the queue's tail. Now every small write is `keepalive` (under 60 KB; browsers cap them at 64 KB), so a save in flight outlives the page, and card-stat picks go through a `LatestWriteQueue`: one save in flight per key, only the latest pick waiting, sent at once when the page is hidden or left. The build's own card stats use the same queue.
-- Tests: written first: on Zenless with every game save slowed to 400 ms, HP, ATK and DEF picked quickly, then leaving the page: the game keeps HP, ATK, DEF (it kept nothing before). Five repeats of it and of the card-stat journey pass.
-- Scope/decisions: the sheet's own card-stat box saves once per click with its optimistic tick, unchanged.
-- Next: round 11.

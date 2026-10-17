@@ -1,7 +1,11 @@
 import type { GameDefinition } from "./games/types.js";
 import { elementIconUrl, weaponTypeIconUrl } from "./elements.js";
 
-export type ArtSlotKind = "logo" | "mode" | "battle-pass" | "monthly-pass" | "banner" | "shop" | "currency" | "task" | "element" | "weapon-type";
+/** The app's own lists, then the catalog kinds an entry without a source falls under. */
+export type ArtSlotKind = "logo" | "mode" | "battle-pass" | "monthly-pass" | "banner" | "shop" | "currency" | "task" | "element" | "weapon-type" | "character" | "weapon" | "gear" | "material";
+
+/** What a game's catalog adds to its slots: its elements and weapon types, and its entries no source has. */
+export type CatalogSlots = { elements: string[]; weaponTypes: string[]; gaps?: { kind: "character" | "weapon" | "gear" | "material"; name: string }[] };
 
 /** A picture a game's cards can show that no catalog names: the owner uploads it unless a source has it. */
 export interface ArtSlot {
@@ -26,9 +30,10 @@ export const artSlotKey = (gameKey: string, kind: ArtSlotKind, item?: string) =>
 /**
  * Every picture slot of a game, most visible first (Georges, 2026-10-17: "an exhaustive list of assets you need"):
  * its logo, endgame modes, battle pass, 30-day pass, banners, monthly shops, currencies, tasks, then its catalog's
- * elements and weapon types. A task that resets with a shop or a mode shows that one's picture.
+ * elements and weapon types, and its entries without an icon or of a kind its game has no source for. A task that resets
+ * with a shop or a mode shows that one's picture.
  */
-export function artSlots(game: GameDefinition, tags: { elements: string[]; weaponTypes: string[] } = { elements: [], weaponTypes: [] }): ArtSlot[] {
+export function artSlots(game: GameDefinition, tags: CatalogSlots = { elements: [], weaponTypes: [] }): ArtSlot[] {
   const { manifest } = game;
   const slot = (kind: ArtSlotKind, name: string, item?: string, sourced = false, shape: ArtSlot["shape"] = "square"): ArtSlot => ({ key: artSlotKey(game.key, kind, item), gameKey: game.key, kind, name, shape, sourced });
   return [
@@ -42,5 +47,6 @@ export function artSlots(game: GameDefinition, tags: { elements: string[]; weapo
     ...game.defaultTasks.filter((task) => !task.anchorKey).map((task) => slot("task", task.title, task.key)),
     ...tags.elements.map((tag) => slot("element", tag, tag, Boolean(elementIconUrl(game.key, tag)))),
     ...tags.weaponTypes.map((type) => slot("weapon-type", type, type, Boolean(weaponTypeIconUrl(game.key, type)))),
+    ...(tags.gaps ?? []).map((gap) => slot(gap.kind, gap.name, gap.name)),
   ];
 }

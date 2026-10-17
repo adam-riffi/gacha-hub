@@ -61,6 +61,19 @@ describe("the art slots", () => {
     expect(slot("endfield/monthly-pass")).toBeUndefined();
   });
 
+  // The catalogs' own gaps: an entry without an icon, or of a kind its game has no source for.
+  it("lists the catalog entries no source has: NTE's gear sets, Endfield's gift materials, Zenless's Eous", async () => {
+    const all = await slots();
+    const slot = (key: string) => all.find((candidate) => candidate.key === key);
+    expect(slot("nte/gear/diabolos")).toMatchObject({ kind: "gear", name: "Diabolos", sourced: false });
+    expect(slot("endfield/material/eureka-teabox")).toMatchObject({ kind: "material", name: "Eureka Teabox", sourced: false });
+    expect(slot("zzz/character/eous")).toMatchObject({ kind: "character", name: "Eous" });
+    expect(all.filter((candidate) => candidate.gameKey === "nte" && candidate.kind === "gear")).toHaveLength(9);
+    expect(all.filter((candidate) => candidate.gameKey === "endfield" && candidate.kind === "material")).toHaveLength(14);
+    // Entries a source has stay off the list.
+    expect(all.some((candidate) => candidate.gameKey === "genshin" && candidate.kind === "gear")).toBe(false);
+  });
+
   it("takes the owner's picture for a slot, shows it, and removes it", async () => {
     const saved = await upload("genshin/logo");
     expect(saved.statusCode).toBe(200);
