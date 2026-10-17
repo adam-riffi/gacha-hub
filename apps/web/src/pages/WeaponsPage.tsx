@@ -1,7 +1,7 @@
 import { useRef, useState, type CSSProperties, type FormEvent } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { dupeLetter, elementColor, getGame, weaponHolder, type CatalogWeapon, type CharacterDto, type WeaponCopyDto, type WishlistItemDto } from "@gacha/shared";
+import { dupeLetter, elementColor, getGame, weaponHolder, weaponTypeIconUrl, type CatalogWeapon, type CharacterDto, type WeaponCopyDto, type WishlistItemDto } from "@gacha/shared";
 import { LoadError } from "../components/LoadError";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
@@ -164,7 +164,7 @@ export function WeaponsPage() {
               Search
               <input type="search" aria-label="Search" placeholder="Name" value={query} onChange={(event) => setQuery(event.target.value)} />
             </label>
-            <Chips label="Type" value={type} onChange={setType} options={values((weapon) => weapon.type)} />
+            <Chips label="Type" value={type} onChange={setType} options={values((weapon) => weapon.type)} icon={(weaponType) => weaponTypeIconUrl(game.key, weaponType)} />
             <Chips label="Rarity" value={rarity} onChange={setRarity} options={values((weapon) => String(weapon.rarity)).reverse()} text={(rarityValue) => `★${rarityValue}`} />
             <Chips label="Main stat" value={mainStat} onChange={setMainStat} options={values((weapon) => weapon.mainStat)} />
             <label>

@@ -4,6 +4,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   LIMITS,
   elementColor,
+  elementIconUrl,
+  weaponTypeIconUrl,
   CharacterBuild,
   cardStatLabels,
   cardStatOptions,
@@ -28,7 +30,7 @@ import { assetUrl, communityAssetUrl, splashKey } from "../lib/assets";
 import { GameTabs } from "../components/GameTabs";
 import { CatalogIcon } from "../components/CatalogIcon";
 import { GameIcon } from "../components/GameIcon";
-import { Chips, Segmented } from "../components/ui";
+import { Chips, Segmented, TagIcon } from "../components/ui";
 
 import { BuildsTable } from "../components/characters/BuildsTable";
 import { CardStats } from "../components/characters/CardStats";
@@ -250,8 +252,8 @@ export function CharactersPage() {
         </label>
         {catalog && (
           <>
-            <Chips label="Element" value={element} onChange={setElement} options={options((card) => (card.tag === "None" ? null : card.tag))} color={(tag) => elementColor(game.key, tag)} />
-            <Chips label="Weapon" value={weapon} onChange={setWeapon} options={options((card) => card.weaponType)} />
+            <Chips label="Element" value={element} onChange={setElement} options={options((card) => (card.tag === "None" ? null : card.tag))} color={(tag) => elementColor(game.key, tag)} icon={(tag) => elementIconUrl(game.key, tag)} />
+            <Chips label="Weapon" value={weapon} onChange={setWeapon} options={options((card) => card.weaponType)} icon={(type) => weaponTypeIconUrl(game.key, type)} />
             <Chips label="Rarity" value={rarity} onChange={setRarity} options={options((card) => (card.rarity ? String(card.rarity) : null)).reverse()} text={(rarityValue) => `★${rarityValue}`} />
             <Chips label={characterDupes.label} value={dupeCount} onChange={setDupeCount} options={Array.from({ length: characterDupes.max + 1 }, (_, count) => String(count))} text={(count) => `${dupeLetter(characterDupes.field)}${count}`} />
           </>
@@ -373,8 +375,18 @@ export function CharactersPage() {
                 />
                 <div className="ch-chips">
                   {card.rarity && <span className="badge">★{card.rarity}</span>}
-                  {card.tag && card.tag !== "None" && <span className="badge ch-el">{card.tag}</span>}
-                  {card.weaponType && <span className="badge">{card.weaponType}</span>}
+                  {card.tag && card.tag !== "None" && (
+                    <span className="badge ch-el">
+                      <TagIcon src={elementIconUrl(game.key, card.tag)} />
+                      {card.tag}
+                    </span>
+                  )}
+                  {card.weaponType && (
+                    <span className="badge">
+                      <TagIcon src={weaponTypeIconUrl(game.key, card.weaponType)} />
+                      {card.weaponType}
+                    </span>
+                  )}
                 </div>
                 <span className={`ch-dupes ${card.owned ? "" : "is-off"}`}>{card.owned ? build.dupeBadge : "Not owned"}</span>
                 <div className="ch-namebox">

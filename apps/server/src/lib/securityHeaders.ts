@@ -16,6 +16,7 @@ const CSP: Record<string, string[]> = {
     "blob:",
     "https://enka.network",
     "https://sr.yatta.moe",
+    "https://gi.yatta.moe",
     "https://files.wuthery.com",
     "https://static.nanoka.cc",
     "https://cdn.discordapp.com",
