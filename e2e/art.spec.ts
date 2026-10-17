@@ -71,3 +71,20 @@ test("Settings → Art: each uploaded picture shows on its cards, in place of wh
     for (const slot of slots) await page.request.delete(`/api/art/${slot}`);
   }
 });
+
+// A catalog entry no source has (Endfield's gift materials) takes the owner's picture where its icon shows.
+test("Settings → Art: a catalog entry no source has shows the owner's picture @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const games = (await (await page.request.get("/api/instances")).json()) as { id: string; gameKey: string }[];
+  const endfield = games.find((game) => game.gameKey === "endfield")?.id ?? ((await (await page.request.post("/api/instances", { data: { gameKey: "endfield" } })).json()) as { id: string }).id;
+  try {
+    const saved = await page.request.put("/api/art/endfield/material/eureka-teabox", { multipart: { file: { name: "art.png", mimeType: "image/png", buffer: PNG } } });
+    const url = ((await saved.json()) as { url: string }).url;
+    await page.goto(`/games/${endfield}/materials`);
+    await expect(page.locator(`img[src='${url}']`).first()).toBeVisible();
+  } finally {
+    await page.request.delete("/api/art/endfield/material/eureka-teabox");
+  }
+});
