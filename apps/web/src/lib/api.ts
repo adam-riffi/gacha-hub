@@ -42,11 +42,12 @@ export const api = {
   put: <T>(path: string, body?: unknown) => request<T>("PUT", path, body),
   patch: <T>(path: string, body?: unknown) => request<T>("PATCH", path, body),
   del: <T>(path: string, body?: unknown) => request<T>("DELETE", path, body),
-  async upload(file: File): Promise<{ url: string }> {
+  /** A picture, to /api/uploads by default, or to an art slot (`PUT /api/art/<slot>`). */
+  async upload(file: File, path = "/api/uploads", method = "POST"): Promise<{ url: string }> {
     const form = new FormData();
     form.append("file", file);
-    const response = await fetch(BASE + "/api/uploads", {
-      method: "POST",
+    const response = await fetch(BASE + path, {
+      method,
       credentials: "include",
       body: form,
     });

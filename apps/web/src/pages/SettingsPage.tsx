@@ -9,6 +9,7 @@ import { masked } from "../components/hub/HubHeader";
 import { RemindersPanel } from "../components/tasks/RemindersPanel";
 import { AdminPage } from "./AdminPage";
 import { KeysSettings } from "../components/settings/KeysSettings";
+import { ArtSettings } from "../components/settings/ArtSettings";
 import type { InstanceListItem, ReminderRule } from "../lib/types";
 import type { PublicKeyCredentialCreationOptionsJSON } from "@simplewebauthn/browser";
 
@@ -44,6 +45,7 @@ const TABS = [
   { path: "notifications", label: "Notifications" },
   { path: "account", label: "Account and data" },
   { path: "keys", label: "Keys", owner: true },
+  { path: "art", label: "Art", owner: true },
   { path: "data", label: "Data sources", owner: true },
 ];
 
@@ -104,6 +106,7 @@ export function SettingsPage() {
           </>
         )}
         {tab === "keys" && <KeysSettings />}
+        {tab === "art" && <ArtSettings />}
         {tab === "data" && <AdminPage />}
       </div>
     </div>
