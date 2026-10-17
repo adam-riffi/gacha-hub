@@ -41,7 +41,7 @@ Operating manual for coding agents in this repository. Codex and Copilot read th
 | New migration (offline) | `npx prisma migrate diff --from-schema <before> --to-schema prisma/schema.prisma --script` |
 | E2E smoke (Playwright; `npx playwright install chromium` once) | `npm run build -w @gacha/web && npm run e2e` |
 | Bundle harnesses (throwaway SQLite database) | `npm run harness` |
-| Make the owner password's hash for `OWNER_PASSWORD_HASH` (ADR 0010; only the hash is printed) | `npm run password:hash` |
+| Make the owner password's hash for `OWNER_PASSWORD_HASH` on the host (ADR 0010; only the hash is printed; Settings → Keys takes the password itself, ADR 0012) | `npm run password:hash` |
 | Smoke-check a deployment (no sign-in) | `npm run smoke -- https://gacha-hub-two.vercel.app` |
 | Lint workflows (actionlint 1.7+ on PATH) | `actionlint` |
 | Check all | `npm run check` |
@@ -56,7 +56,7 @@ Keep this table accurate: when you add or change a script, update the table in t
 4. **Conventional Commits** for commit messages and PR titles; PR bodies follow `.github/pull_request_template.md`.
 5. **Scope.** Build what `docs/DESIGN.md` specifies for the current milestone. If the design is ambiguous, wrong or incomplete, do not invent scope: propose the change in the PR and add a draft ADR in `docs/adr/` (copy `0000-template.md`).
 6. **Dependencies.** Only the libraries allowed in `docs/DESIGN.md` §6, plus development tooling. Anything else needs a one-line justification in the PR, and an ADR if it touches the hand-written core.
-7. **Secrets.** Never commit secrets or `.env` files other than `.env.example`; never print secret values in logs, tests or PR text. The owner enters credentials in Vercel, Supabase and GitHub themselves.
+7. **Secrets.** Never commit secrets or `.env` files other than `.env.example`; never print secret values in logs, tests or PR text. The owner enters credentials himself: in Settings → Keys (ADR 0012), or on the host for what the app needs before sign-in. GitHub holds none.
 8. **Verify before review.** Run "Check all" locally. Open PRs as drafts; mark them ready only when CI is green. The owner merges.
 9. **Log and hand off.** End every PR with a new entry at the top of `docs/AGENT_LOG.md`, and every session by rewriting `HANDOFF.md`, both in the formats of `docs/ENGINEERING.md` §5.
 10. **Reviewing another agent's PR.** Check correctness, that tests came first and test behavior, scope against DESIGN.md, security, and the budgets in DESIGN.md §13; post findings as a PR review.

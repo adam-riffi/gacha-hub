@@ -32,7 +32,7 @@
 - **Who:** one user per deployment, self-hosted (Georges, round 4). Code is public: `adam-riffi/gacha-hub`. Owner: Georges.
 - **Where:** live at https://gacha-hub-two.vercel.app (Vercel Hobby + Supabase Postgres eu-west-1 + GitHub Actions as the cron).
 - **State:** every milestone in `docs/DESIGN.md` §9 is built, V through F12. CI, the production smoke check and the security headers are in place.
-- **What blocks "done":** secrets only the owner can set: `CRON_SECRET` (reminders, the feed import and the HoYoLAB sync), `LINK_SECRET_KEY` (linking), the R2 bucket (our art store) and the Discord bot (§14.1).
+- **What blocks "done":** keys only the owner can enter, in Settings → Keys since ADR 0012: the R2 art store and the Discord bot (§14.1). The cron and linking need none.
 - **Next agent work:** §14.2.
 
 ## 2. What it is: purpose, goals, scope
@@ -94,12 +94,12 @@ Every game is a bespoke module and sheet · sign-in with Discord, a passkey or t
 | `SESSION_SECRET`, `COOKIE_SECURE=true`, `APP_BASE_URL` | sessions | set |
 | `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET`, `DISCORD_OAUTH_REDIRECT` | web sign-in | set (`/api/me` reports `oauth: true`) |
 | `DISCORD_APP_ID`, `DISCORD_PUBLIC_KEY` | bot interactions | check |
-| `DISCORD_BOT_TOKEN` | sending DMs, registering commands | **not set** |
+| `DISCORD_BOT_TOKEN` | sending DMs, registering commands | **not set**: enter it in Settings → Keys (ADR 0012) |
 | `ADMIN_DISCORD_IDS` | the owner's Discord id: who sees Data sources | set |
-| `CRON_SECRET` (Vercel) | guards `/api/cron/tick` | unknown: set it together with the GitHub one |
+| `CRON_SECRET` | other schedulers only; GitHub's tick uses its OIDC token (ADR 0012) | not needed |
 | `BLOB_READ_WRITE_TOKEN` | image uploads | injected by the Blob store |
 | `DEV_LOGIN_ENABLED=false` | dev shortcut off | set (`devLogin: false`) |
-| GitHub secrets `CRON_URL`, `CRON_SECRET` | the tick workflow | `CRON_URL` set, **`CRON_SECRET` empty**: every tick logs "secrets not set; skipping" |
+| GitHub secrets | none since ADR 0012; `CRON_URL` and `CRON_SECRET` can be deleted | — |
 
 **Production data** (checked during the 2026-10-07 audit): Banner and Event tables hold only the "Seed sample data" rows (2 per game, from 2026-10-04) and no `hoyo-` feed rows; `PullEntry` exists and is empty.
 
@@ -567,7 +567,7 @@ So the host app stays generic over what all games share (profiles, currencies, r
 - **Export.** `GET /api/export`, round-trips every user-owned table.
 - **Limits.** Every number has a hard limit (`LIMITS`), enforced by the zod DTOs.
 - **Art.** Our own copy first (`VITE_ASSET_BASE`: the R2 bucket the `mirror-art` workflow fills, ADR 0006; unset until Georges creates it), then the community fallback (`communityArtUrl` in `packages/shared/src/art.ts`: Enka for Genshin, Yatta for HSR), then initials. Source-internal paths (WuWa Unreal paths) are skipped instead of requested.
-- **Security.** Discord-only auth, signed session cookie, admin routes rate-limited and audited, cron endpoint behind `CRON_SECRET`, CSP and hardening headers, RLS on every table.
+- **Security.** Sign-in with Discord, a passkey or the owner password, signed session cookie, admin routes rate-limited and audited, cron endpoints behind GitHub's OIDC proof or `CRON_SECRET`, keys sealed in the database (ADR 0012), CSP and hardening headers, RLS on every table.
 
 ## 11. API map
 
@@ -585,7 +585,8 @@ All under `/api`, JSON, session cookie. Inputs and outputs are zod DTOs from `pa
 | Tasks | `GET/POST /tasks`, `PUT/DELETE /tasks/:id`, `POST /tasks/:id/complete` (an event goal applies or reverses its effects), `POST /tasks/:id/progress`, `PUT /tasks/:id/checklist`, `POST /events/:id/goal` (make or re-pick an event goal, ADR 0008), `GET /rewards` (open roster rewards with each option's step and the goal), `GET /farm-today` (per profile: materials open on its game day for each farming goal, weeklies left), `GET /reminders/preview` (the DM each game would send now), `POST /reminders/test` (send it to yourself) |
 | Teams | `GET/POST /instances/:id/teams`, `PUT/DELETE /instances/:id/teams/:teamId` |
 | Pulls | `GET/POST /instances/:id/pulls`, `DELETE /instances/:id/pulls/:entryId`, `POST /instances/:id/pulls/calibrate`, `POST/GET /instances/:id/pulls/uigf` (UIGF v4.2 import, `?uid=` to pick an account; export), `POST /instances/:id/pulls/history-link` (`{url, next?}`: pages the official log, returns `next` to call again with) |
-| Linked accounts | `GET /links` (never the secret), `DELETE /links/:id` (revoke), `POST /links/hoyolab` (`{ltuid, ltoken}`: checked with HoYoLAB, sealed, fills the profiles it plays; 503 without `LINK_SECRET_KEY`), `POST /links/:id/sync` (real-time notes now; the cron does it every 30 minutes) |
+| Linked accounts | `GET /links` (never the secret), `DELETE /links/:id` (revoke), `POST /links/hoyolab` (`{ltuid, ltoken}`: checked with HoYoLAB, sealed, fills the profiles it plays; 503 only with a malformed `LINK_SECRET_KEY`), `POST /links/:id/sync` (real-time notes now; the cron does it every 30 minutes) |
+| Keys (ADR 0012, owner only) | `GET /settings/keys` (each key's state; a secret's value never), `PUT /settings/keys/:name` (`{value}`: sealed, audited; the owner password kept as its hash; 409 when the host has it), `DELETE /settings/keys/:name`; `POST /cron/art-store` hands the R2 keys to the mirror workflow on GitHub's OIDC proof |
 | Account | `GET /imports` (latest imports and syncs), `DELETE /me` (`{confirm: username}`) |
 | Showcase | `POST /instances/:id/enka` (Genshin builds from the Enka showcase by the profile's UID) |
 | Home, calendar, export | `GET /dashboard`, `GET /timeline?from&to`, `GET /export` |
@@ -621,23 +622,17 @@ Every milestone in DESIGN.md §9 is built, V through F12. What is left waits on 
 
 ### 14.1 Needs the owner (an agent cannot do these)
 
-1. **Turn on the cron:**
-   1. Create one random secret.
-   2. Set it as `CRON_SECRET` in Vercel (Production) and as the GitHub Actions secret `CRON_SECRET`. `CRON_URL` is already set.
-   3. Redeploy.
-
-   The next tick then runs reminders, the HoYoLAB sync and, hourly, the official feed import.
+1. **The cron** needs nothing since ADR 0012: GitHub's workflow proves who it is with its OIDC token. Each tick runs reminders, the HoYoLAB sync and, hourly, the official feed import.
 2. **Turn on DMs** (`docs/DEPLOY.md` has the steps):
-   1. Set `DISCORD_BOT_TOKEN` in Vercel, and check `DISCORD_APP_ID` and `DISCORD_PUBLIC_KEY`.
+   1. Enter the application id, the bot token and the public key in Settings → Keys → Discord bot.
    2. Invite the bot to a server you share with the users. A bot can only DM people it shares a server with.
-   3. Register the slash commands: `npm run discord:register -w @gacha/server`, with the bot variables set.
+   3. Register the slash commands: `npm run discord:register -w @gacha/server`, with the bot variables set in your shell, or `DATABASE_URL` and `SESSION_SECRET` so it reads the keys from the app.
    4. Set the Interactions Endpoint URL to `https://gacha-hub-two.vercel.app/api/discord/interactions`.
-3. **Turn on linking:** set `LINK_SECRET_KEY` in Vercel (32 random bytes, base64). Until then, linking answers "off" (ADR 0005).
+3. **Linking** needs nothing since ADR 0012: tokens are sealed with a key derived from `SESSION_SECRET`. Link HoYoLAB in Settings → Linked accounts.
 4. **Turn on the art store** (`docs/DEPLOY.md` §7):
    1. Create the R2 bucket with public `r2.dev` access, and an API token.
-   2. Add `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY` and `R2_BUCKET` as Actions secrets.
+   2. Enter its keys and public URL in Settings → Keys → Art store.
    3. Run the **mirror-art** workflow.
-   4. Set `VITE_ASSET_BASE` in Vercel and redeploy.
 
    F12's acceptance ("every game shows art from our store") is checked after this.
 5. **Clean production banners and events:** in Settings' Data sources, delete the `sample-*` rows for each game. Then import the official feed, or wait for the hourly tick after step 1.
@@ -704,8 +699,8 @@ Every milestone in DESIGN.md §9 is built, V through F12. What is left waits on 
 
 | Issue | Where | Fix |
 | --- | --- | --- |
-| Reminders and the feed import never run in production | GitHub secret `CRON_SECRET` empty | §14.1 step 1 |
-| Linking answers "off" in production | `LINK_SECRET_KEY` unset | §14.1 step 3 |
+| Reminders and the feed import never run in production | the reminder-tick workflow failing: its run log on GitHub says why (the app answers 401 when GitHub's proof does not check) | DEPLOY.md §6 |
+| Linking answers "off" | a malformed `LINK_SECRET_KEY` on the host (ADR 0012 needs none) | remove it or fix it |
 | Art is hotlinked from community CDNs | `VITE_ASSET_BASE` unset | §14.1 step 4 |
 | Production calendar shows only sample banners | Prod data | §14.1 step 5 |
 | Rate limiter is in memory per serverless instance | `@fastify/rate-limit` | Best effort; accepted |
