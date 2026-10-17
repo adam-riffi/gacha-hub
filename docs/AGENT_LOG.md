@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-17 · claude · stack/r21/04-slot-art · #355
+- Done: `SlotArt` shows the owner's picture for a slot, or what the spot showed before. A logo replaces its game's drawn emblem everywhere (in the game's header it stands on its own, not on the accent tile); endgame modes on their cards, Home's next resets, the activities' cycles and the dashboard; the battle pass on Home's card (over the hero) and the version card; the 30-day pass on the monthly list; banners on Pulls where no featured unit shows; each task on its row; currencies, elements and weapon types before their source's icon. `CurrencyIcon` takes the currency's key, so Endfield's currencies can take an upload.
+- Tests: written first: a journey uploads a logo, a mode, a currency, an element, a banner and a task, and finds each on its page.
+- Scope/decisions: a task row finds its slot by the game's default task with the same title (tasks keep no seed key).
+- Next: the catalogs' own gaps.
+
 ## 2026-10-17 · claude · stack/r21/03-art-tab · #354
 - Done: Settings → Art (owner only): counts the pictures needed, uploaded and from a source, then each game's slots as tiles: the empty frame at its size (256 × 256 icons, 1280 × 720 wide pictures), the name, the kind and the state in a chip, with Upload, Replace and Remove. It opens on the pictures no source has (a tile stays in place once filled); All adds the sourced ones, which an upload also replaces. A file over 4 MB (Vercel's limit) or not a picture is refused with the reason.
 - Tests: written first: the journey opens the tab, finds the Genshin logo Needed and Primogems only under All, uploads a picture in place, sees it kept, removes it.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: on Zenless with every game save slowed to 400 ms, HP, ATK and DEF picked quickly, then leaving the page: the game keeps HP, ATK, DEF (it kept nothing before). Five repeats of it and of the card-stat journey pass.
 - Scope/decisions: the sheet's own card-stat box saves once per click with its optimistic tick, unchanged.
 - Next: round 11.
-
-## 2026-10-14 · claude · stack/r13/03-gear-filters · #314
-- Done: the tweak Georges asked of version A ("this one but with some tweaks: filters might not be suited for all of the different sets"). The games hold 9 to 63 sets, Star Rail's in two kinds (relics; planar ornaments for the sphere and rope), and Wuthering Waves', Endfield's and NTE's slots are positions, not types. So: the sets come from a **Pick sets** window (held first with their counts, All a click away, a search, the game's kinds apart, Clear and Show n pieces), the picked ones staying in the filters as chips with their own remove; **Slot** shows only where slots have main stats of their own, with a piece's art where the catalog has it; **Main stat** lists only the main stats your pieces have, of the picked slots. Round 10's audit (`docs/AUDIT-2026-10-14-round10.md`) and the handoff.
-- Tests: written first: Tingyun's Genius body and a Pan-Cosmic sphere in the bag; the Main stat chips equal the main stats on the profile's pieces, and Body's alone with Body picked; the window shows held sets only (no "none yet"), then all of them in two groups, Head · Hands · Body · Feet and Planar Sphere · Link Rope; the search narrows it; Pan-Cosmic picked shows its sphere and hides the body; Wuthering Waves has Pick sets but no Slot filter. Round 9's set-chip steps now pick from the window and remove from the filters.
-- Scope/decisions: in the audit.
-- Next: Georges's call on ADR 0010, then a deploy.
