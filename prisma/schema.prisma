@@ -90,6 +90,9 @@ model GameInstance {
   hiddenBanners Json?
   /// The stats the character cards show (["HP", "Elemental Mastery", "DEF"]), up to six; null shows each build's role's.
   cardStats    Json?
+  /// The page and the pick count of the last card-stat pick applied: an older pick of that page, landing late, is dropped.
+  cardStatsPage String?
+  cardStatsSeq  Int?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -303,6 +306,9 @@ model Character {
   isDefault      Boolean      @default(false)
   /// The stats its card shows (Georges, round 6: per character), up to six; null shows the game's.
   cardStats      Json?
+  /// The page and the pick count of the last card-stat pick applied: an older pick of that page, landing late, is dropped.
+  cardStatsPage  String?
+  cardStatsSeq   Int?
   /// Its notes, skins and pictures (Georges, round 6: a misc part per character).
   misc           Json?
   createdAt      DateTime     @default(now())

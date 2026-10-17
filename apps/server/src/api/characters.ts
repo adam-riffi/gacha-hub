@@ -5,7 +5,7 @@ import { characterDto, createCharacterInput, updateCharacterInput, weaponHolder,
 import { prisma } from "../lib/prisma.js";
 import { migrateDoc } from "../lib/docMigrations.js";
 import { requireUser } from "../auth/plugin.js";
-import { gameOrThrow, getCatalog, loadCharacter, loadInstance, numericKpis, validateDoc, type PrismaJson } from "./util.js";
+import { cardStatsWrite, gameOrThrow, getCatalog, loadCharacter, loadInstance, numericKpis, validateDoc, type PrismaJson } from "./util.js";
 import { syncHolders } from "./weapons.js";
 
 /** Bring a stored document up to the game's current shape, persisting lazily. */
@@ -141,6 +141,10 @@ export async function registerCharacterRoutes(app: FastifyInstance) {
       if (body.isDefault) {
         await prisma.character.updateMany({ where: { gameInstanceId: character.gameInstanceId, catalogId: character.catalogId, NOT: { id: character.id } }, data: { isDefault: false } });
       }
+      if (body.cardStats !== undefined) {
+        const write = cardStatsWrite(body.cardStats, body.cardStatsOrder);
+        await prisma.character.updateMany({ where: { id: character.id, ...write.where }, data: write.data });
+      }
       const updated = await prisma.character.update({
         where: { id: character.id },
         data: {
@@ -152,7 +156,6 @@ export async function registerCharacterRoutes(app: FastifyInstance) {
           ...(body.buildStatus !== undefined ? { buildStatus: body.buildStatus } : {}),
           ...(body.role !== undefined ? { role: body.role } : {}),
           ...(body.targets !== undefined ? { targets: body.targets === null ? Prisma.DbNull : (body.targets as PrismaJson) } : {}),
-          ...(body.cardStats !== undefined ? { cardStats: body.cardStats === null ? Prisma.DbNull : body.cardStats } : {}),
           ...(body.misc !== undefined ? { misc: body.misc === null ? Prisma.DbNull : body.misc } : {}),
         },
       });

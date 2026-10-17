@@ -1,4 +1,4 @@
-import type { GameInstance, Prisma } from "../generated/prisma/client.js";
+import { Prisma, type GameInstance } from "../generated/prisma/client.js";
 import { getGame, indexCatalog, sheetStats, type Catalog, type GameDefinition } from "@gacha/shared";
 import { prisma } from "../lib/prisma.js";
 import { toRegionReset, type RegionReset } from "../lib/resets.js";
@@ -45,6 +45,21 @@ export function getCatalog(game: GameDefinition): Promise<LoadedCatalog | null> 
     catalogCache.set(game.key, cachedLoad);
   }
   return cachedLoad;
+}
+
+/**
+ * A card-stat pick's write, and which rows it may land on: none older than the last pick applied from the same page (a save
+ * still on its way when a newer one was sent, #345's CI). Without an order, or from another page, it applies as before.
+ */
+type CardStatsRows = { OR?: ({ cardStatsPage: null } | { cardStatsPage: { not: string } } | { cardStatsSeq: null } | { cardStatsSeq: { lt: number } })[] };
+export function cardStatsWrite(
+  cardStats: string[] | null,
+  order?: { page: string; seq: number },
+): { data: { cardStats: string[] | typeof Prisma.DbNull; cardStatsPage?: string; cardStatsSeq?: number }; where: CardStatsRows } {
+  return {
+    data: { cardStats: cardStats === null ? Prisma.DbNull : cardStats, ...(order ? { cardStatsPage: order.page, cardStatsSeq: order.seq } : {}) },
+    where: order ? { OR: [{ cardStatsPage: null }, { cardStatsPage: { not: order.page } }, { cardStatsSeq: null }, { cardStatsSeq: { lt: order.seq } }] } : {},
+  };
 }
 
 export function loadInstance(userId: string, id: string) {

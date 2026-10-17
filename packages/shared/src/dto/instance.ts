@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { LIMITS } from "../common.js";
-import { gameKeySchema, idSchema, isoDate, kpiTargetsInput } from "./common.js";
+import { cardStatsOrderInput, gameKeySchema, idSchema, isoDate, kpiTargetsInput } from "./common.js";
 
 /** A user's profile for one game (exactly one per user per game). */
 export const instanceDto = z.object({
@@ -43,5 +43,6 @@ export const updateInstanceInput = z.object({
   hiddenBanners: z.array(z.string().min(1).max(40)).max(20).nullable().optional(),
   /** The stats the character cards show, in order, up to six; null goes back to each build's role's. */
   cardStats: z.array(z.string().trim().min(1).max(40)).min(1).max(LIMITS.cardStats).nullable().optional(),
+  cardStatsOrder: cardStatsOrderInput.optional(),
 });
 export type UpdateInstanceInput = z.infer<typeof updateInstanceInput>;
