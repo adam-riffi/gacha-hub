@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-17 · claude · stack/r21/03-art-tab · #354
+- Done: Settings → Art (owner only): counts the pictures needed, uploaded and from a source, then each game's slots as tiles: the empty frame at its size (256 × 256 icons, 1280 × 720 wide pictures), the name, the kind and the state in a chip, with Upload, Replace and Remove. It opens on the pictures no source has (a tile stays in place once filled); All adds the sourced ones, which an upload also replaces. A file over 4 MB (Vercel's limit) or not a picture is refused with the reason.
+- Tests: written first: the journey opens the tab, finds the Genshin logo Needed and Primogems only under All, uploads a picture in place, sees it kept, removes it.
+- Scope/decisions: the Needed view keeps uploaded tiles (a tile vanishing on upload read as a failure).
+- Next: the pictures on the cards.
+
 ## 2026-10-17 · claude · stack/r21/02-art-store · #353
 - Done: `artSlots` (shared) lists a game's pictures no catalog names, most visible first: logo, endgame modes, battle pass, 30-day pass, banners, monthly shops, currencies, tasks (a task that resets with a shop or a mode uses that one's picture), then its catalog's elements and weapon types, each saying whether a source has it. `GET /api/art` gives every game's slots with the owner's picture; `PUT /api/art/<slot>` takes a picture (owner only, rate-limited, audited) into Vercel Blob or the upload folder, never the repository (ADR 0006); `DELETE` removes it. The upload code is shared with `/api/uploads` (`lib/images.ts`). Migration: the `ArtSlot` table, with row level security.
 - Tests: written first: the slots of each kind, sourced or not; an upload shown, replaced and removed, audited; a slot no game has, a file that is not a picture and another account refused.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: Tingyun's Genius body and a Pan-Cosmic sphere in the bag; the Main stat chips equal the main stats on the profile's pieces, and Body's alone with Body picked; the window shows held sets only (no "none yet"), then all of them in two groups, Head · Hands · Body · Feet and Planar Sphere · Link Rope; the search narrows it; Pan-Cosmic picked shows its sphere and hides the body; Wuthering Waves has Pick sets but no Slot filter. Round 9's set-chip steps now pick from the window and remove from the filters.
 - Scope/decisions: in the audit.
 - Next: Georges's call on ADR 0010, then a deploy.
-
-## 2026-10-14 · claude · stack/r13/02-gear-bag · #313
-- Done: the gear screen rebuilt as version A of four proposals (Georges, round 10: "propose me other versions of the gear system, it is always atrocious, let's refine it together"; then, of A, a bag of tiles beside the chosen piece: "this one, but with some tweaks"). Three columns: the filters on the left; every piece a tile with the piece's own art (Genshin's per slot, the set's elsewhere), its level, its wearer's face or Bag, its main stat by its icon, its type and its crit value; the chosen piece in full on the right (the first shown until one is picked): its art, set, type, level and piece name, its main stat large, its substats by their icons, its crit value, its set's bonuses lit as its wearer has them, its wearer, then To bag (worn) or Equip on and Delete (bag), and Open the set (adding and farming stay in the set's panel). Sort by crit value added. Round 9's `.gp` card rule, which also reached the graph panels' `.gp`, is gone.
-- Tests: written first: Luka's Hunter body as a tile (its art at least 80 px, Luka's face, CRIT DMG, Body); the filters left of the tiles, the tiles left of the chosen piece; chosen, it is marked current and its column shows the set, Body · +14, CRIT DMG, SPD, 2pc and Luka's link; To bag puts it in the bag, Equip on puts it back on Luka. Round 9's journeys read the substats and Open the set from the column.
-- Scope/decisions: the column always holds a piece (no Close: it is a column, not a window, so nothing moves). Editing a piece's stats stays on the wearer's sheet.
-- Next: the filters fitted to every game's sets (the tweak).
