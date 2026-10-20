@@ -26,7 +26,8 @@
 .pl-banner-side { display: flex; flex-direction: column; flex: 1; }
 .pl-banner-side > .pl-actions { margin-top: auto; }
 .pl-banners > .pl-banner:last-child:nth-child(odd) { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 40px; align-items: start; }
-.pl-key-art { display: block; width: 100%; height: 150px; margin-bottom: 14px; object-fit: cover; background: var(--surface-2); }
+/* The running banner's official key art (round 16), its title kept in view: the wish art names itself at the top. */
+.pl-key-art { display: block; width: 100%; height: 180px; margin-bottom: 14px; object-fit: cover; object-position: 50% 25%; background: var(--surface-2); }
 .pl-banner-head { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
 .pl-banner-head h3 { margin-bottom: 10px; }
 .pl-banner-head .font-mono { font-size: 12px; }
