@@ -1,6 +1,6 @@
 import { useState, type CSSProperties, type ReactNode } from "react";
 import { artSlotKey, getGame } from "@gacha/shared";
-import { useSlotArt } from "../lib/art";
+import { useSlotArt, useSlotInverted } from "../lib/art";
 
 /**
  * Each game's drawn emblem (round 12; Georges: "i need icons and visuals
@@ -69,9 +69,10 @@ export function GameMark({ gameKey, tint, named = false, className = "" }: { gam
   const game = getGame(gameKey);
   const accent = tint ?? game?.accent;
   const logo = useSlotArt(artSlotKey(gameKey, "logo"));
+  const inverted = useSlotInverted(artSlotKey(gameKey, "logo"));
   const [failed, setFailed] = useState<string | null>(null);
   if (logo && failed !== logo) {
-    return <img className={`game-mark is-art ${className}`} src={logo} alt={named ? `${game?.name ?? gameKey} logo` : ""} onError={() => setFailed(logo)} />;
+    return <img className={`game-mark is-art ${inverted ? "is-inverted" : ""} ${className}`} src={logo} alt={named ? `${game?.name ?? gameKey} logo` : ""} onError={() => setFailed(logo)} />;
   }
   return (
     <svg

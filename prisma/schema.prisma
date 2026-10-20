@@ -516,6 +516,8 @@ model WishlistItem {
 model ArtSlot {
   key       String   @id
   url       String
+  /// A dark-on-transparent icon from a source, shown inverted on the dark UI (`art/sources.json`).
+  invert    Boolean  @default(false)
   updatedAt DateTime @updatedAt
 }
 

@@ -37,9 +37,33 @@ const STATE = { uploaded: "Uploaded", sourced: "From a source", needed: "Needed"
  */
 export function ArtSettings() {
   const { data } = useArtSlots();
+  const queryClient = useQueryClient();
   const [view, setView] = useState<"needed" | "all">("needed");
+  const [progress, setProgress] = useState<{ fetched: number; failed: string[]; running: boolean } | null>(null);
   const slots = data?.slots ?? [];
   const count = (state: ReturnType<typeof stateOf>) => slots.filter((slot) => stateOf(slot) === state).length;
+  const fetchable = slots.filter((slot) => slot.fetchable && !slot.url).length;
+  const nameOf = (key: string) => slots.find((slot) => slot.key === key)?.name ?? key;
+  // The pictures found on the sources (Georges, 2026-10-20: "find me all of the assets"), fetched by the server in batches.
+  const fetchAll = async () => {
+    const tally = { fetched: 0, failed: [] as string[], running: true };
+    setProgress({ ...tally });
+    for (let batch = 0; batch < 40; batch++) {
+      let result: { fetched: { key: string }[]; failed: { key: string; error: string }[]; left: number };
+      try {
+        result = await api.post("/api/art/fetch", { limit: 8 });
+      } catch {
+        tally.failed.push("the server");
+        break;
+      }
+      tally.fetched += result.fetched.length;
+      tally.failed.push(...result.failed.map((failure) => nameOf(failure.key)));
+      setProgress({ ...tally });
+      await queryClient.invalidateQueries({ queryKey: ["art"] });
+      if (result.left === 0 || result.fetched.length === 0) break;
+    }
+    setProgress({ ...tally, running: false });
+  };
   return (
     <>
       <section className="card art-intro" aria-label="About art">
@@ -52,6 +76,20 @@ export function ArtSettings() {
           ))}
         </div>
         <p className="text-muted">PNG, JPEG, WebP or GIF · up to 4 MB · icons {SIZE.square}, wide pictures {SIZE.wide}</p>
+        {(fetchable > 0 || progress) && (
+          <div className="row art-fetch">
+            {fetchable > 0 && (
+              <button type="button" className="btn primary" disabled={progress?.running} onClick={() => void fetchAll()}>
+                {progress?.running ? "Fetching…" : `Fetch ${fetchable} from the sources`}
+              </button>
+            )}
+            {progress && (
+              <span role="status" className="art-fetch-status">
+                {progress.fetched} fetched · {progress.failed.length} failed{progress.failed.length ? `: ${progress.failed.join(", ")}` : ""}
+              </span>
+            )}
+          </div>
+        )}
         <Segmented
           label="Show"
           value={view}
