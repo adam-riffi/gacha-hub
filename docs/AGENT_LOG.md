@@ -253,9 +253,3 @@ Entry format:
 - Tests: written first: a journey (a banner featuring Blade, March 7th owned and Asta: three icons, Blade (the 5★) first and "not owned", March 7th "owned", "N% with 13 pulls") and unit tests for `PullBudget` (13 warps from 1,600 Jade and 3 passes, the pity read, a guarantee raising the chance, Endfield's Arsenal tickets only on its weapon banner).
 - Scope/decisions: the local sample banners have no featured units; the official feed's do (imported locally to check: Genshin, Star Rail and Zenless banners all list theirs). Five units at most, then "+n".
 - Next: the Pulls page's banner cards and history with the featured units as icons; the Timeline's featured icons.
-
-## 2026-10-15 · claude · stack/r15/05-build-objects · #325
-- Done: ADR 0011's first domain objects after the renames. `GearPiece` holds a piece's set and substats and answers its crit value; `CharacterBuild` holds a build's document with its game and answers what the cards and the sheet show: its stats with their set bonuses (`statKpis`), its role's `kpis`, `completedSets` and `gearSetLabel`, the `offSetSlots` to farm, its name-box `line`, its `dupeBadge` and its `baseStats`. They replace eleven `(game, doc)` helpers in `builds.ts`; the web's twenty callers build one object per build and ask it. DESIGN.md §6's code structure lists the objects so far.
-- Tests: written first: the build tests ask the objects (they failed with "CharacterBuild is not a constructor"), plus two new ones: completed sets with their sizes, and base stats (character plus weapon, the weapon's ATK% applied, level 1 when none is typed). 684 tests; shadowed names unchanged.
-- Scope/decisions: the game-level rules (`buildRole`, `skillsField`, `weaponHolder`, `cardStatLabels`, `sheetStats`, `cardStatOptions`, `statKind`) stay functions: they read a game, not a build.
-- Next: the pull budget and pity, a game's reset clock, the planner's costs as objects; the server's routes thin over services.
