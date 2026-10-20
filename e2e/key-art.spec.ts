@@ -16,14 +16,21 @@ test("a banner's official key art is its picture on Home, Pulls and the timeline
     data: {
       kind: "banners",
       gameKey: "hsr",
-      items: [{ key: "e2e-key-art", name: "E2E key art warp", kind: "character", startsAt: new Date(Date.now() - day).toISOString(), endsAt: new Date(Date.now() + 5 * day).toISOString(), payload: { source: "hoyoverse", annId: 1, image: IMAGE } }],
+      // Ends after every banner the other journeys seed on the shared database, so their carousel order holds; removed at the end.
+      items: [{ key: "e2e-key-art", name: "E2E key art warp", kind: "character", startsAt: new Date(Date.now() - day).toISOString(), endsAt: new Date(Date.now() + 30 * day).toISOString(), payload: { source: "hoyoverse", annId: 1, image: IMAGE } }],
     },
   });
   expect(upload.ok()).toBe(true);
 
-  await page.goto("/");
+  await page.goto("/?game=hsr");
   const banners = page.locator("section", { has: page.getByRole("heading", { name: "Banners", exact: true }) });
-  await expect(banners.locator(`img.key-art[src="${IMAGE}"]`)).toBeVisible();
+  const art = banners.locator(`img.key-art[src="${IMAGE}"]`);
+  // The card shows the nearest deadline first: step to this banner past the ones other journeys left.
+  for (let step = 0; step < 8; step += 1) {
+    if (await art.waitFor({ state: "visible", timeout: 2000 }).then(() => true, () => false)) break;
+    await banners.getByRole("button", { name: "Next banner" }).click();
+  }
+  await expect(art).toBeVisible();
 
   await page.goto(`/games/${id}/pulls`);
   await expect(page.locator(`section.pl-banner img.key-art[src="${IMAGE}"]`).first()).toBeVisible();
@@ -31,4 +38,5 @@ test("a banner's official key art is its picture on Home, Pulls and the timeline
   await page.goto("/timeline");
   await page.locator(".cal-name", { hasText: "E2E key art warp" }).first().click();
   await expect(page.getByRole("complementary", { name: "Selected" }).locator(`img.key-art[src="${IMAGE}"]`)).toBeVisible();
+  expect((await page.request.delete("/api/admin/banners/hsr/e2e-key-art")).ok()).toBe(true);
 });
