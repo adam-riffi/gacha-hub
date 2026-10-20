@@ -61,6 +61,15 @@ describe("the art slots fetched from their sources", () => {
     expect(sources.length).toBeGreaterThanOrEqual(85);
   });
 
+  // Round 16 (Georges: "sites like game8 have all the assets you might need"): the standard banners' own art, not a wiki screenshot.
+  it("takes the standard and beginner banners' pictures from Game8", () => {
+    for (const slot of ["genshin/banner/standard", "wuwa/banner/standard", "wuwa/banner/novice", "endfield/banner/standard", "endfield/banner/beginner"]) {
+      const entry = sources.find((candidate) => candidate.slot === slot);
+      expect(entry, slot).toMatchObject({ source: "Game8" });
+      expect(entry!.url, slot).toMatch(/^https:\/\/img\.game8\.co\/\d+\/[0-9a-f]+\.png\/show$/);
+    }
+  });
+
   it("fetches the named slots into the store, keeps the inversion flag, audits each, and counts what is left", async () => {
     const result = await fetchSlots({ keys: ["genshin/logo", "zzz/shop/signal"] });
     expect(result.status).toBe(200);

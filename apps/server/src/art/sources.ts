@@ -3,6 +3,8 @@
  * use): each picked by eye from a contact sheet on 2026-10-20, from the game wikis (Fandom and wiki.gg, through
  * `Special:FilePath`, resolved by the wiki API when fetched), StarRailRes at a pinned commit, Enka and Hakushin. A credit
  * each (NOTICE). `invert`: a dark-on-transparent icon shown inverted on the dark UI. Never committed as pictures (ADR 0006).
+ * Round 16 (Georges: "sites like game8 have all the assets you might need"): the standard and beginner banners' own art
+ * from Game8's banner pages (`/show` serves the picture; the bare URL does not).
  */
 export type ArtSource = { slot: string; url: string; source: string; invert?: boolean };
 
@@ -13,7 +15,7 @@ export const ART_SOURCES: ArtSource[] = [
   { slot: "genshin/mode/stygian", url: "https://genshin-impact.fandom.com/wiki/Special:FilePath/Stygian_Onslaught_Emblem.png", source: "Genshin Impact Wiki" },
   { slot: "genshin/battle-pass", url: "https://genshin-impact.fandom.com/wiki/Special:FilePath/Icon_Gnostic_Hymn.png", source: "Genshin Impact Wiki" },
   { slot: "genshin/monthly-pass", url: "https://genshin-impact.fandom.com/wiki/Special:FilePath/Item_Blessing_of_the_Welkin_Moon.png", source: "Genshin Impact Wiki" },
-  { slot: "genshin/banner/standard", url: "https://genshin-impact.fandom.com/wiki/Special:FilePath/Wanderlust_Invocation_2020-11-11.png", source: "Genshin Impact Wiki" },
+  { slot: "genshin/banner/standard", url: "https://img.game8.co/3353533/f0ae59be63abf2efc176dbda4228510c.png/show", source: "Game8" },
   { slot: "genshin/banner/beginner", url: "https://genshin-impact.fandom.com/wiki/Special:FilePath/Beginners%27_Wish.png", source: "Genshin Impact Wiki" },
   { slot: "genshin/banner/weapon", url: "https://genshin-impact.fandom.com/wiki/Special:FilePath/Epitome_Invocation.png", source: "Genshin Impact Wiki" },
   { slot: "genshin/shop/bargains", url: "https://genshin-impact.fandom.com/wiki/Special:FilePath/Icon_Shop.png", source: "Genshin Impact Wiki" },
@@ -50,10 +52,10 @@ export const ART_SOURCES: ArtSource[] = [
   { slot: "wuwa/mode/wastes", url: "https://wutheringwaves.fandom.com/wiki/Special:FilePath/Icon_Whimpering_Wastes.png", source: "Wuthering Waves Wiki" },
   { slot: "wuwa/battle-pass", url: "https://wutheringwaves.fandom.com/wiki/Special:FilePath/Icon_Pioneer_Podcast.png", source: "Wuthering Waves Wiki" },
   { slot: "wuwa/monthly-pass", url: "https://wutheringwaves.fandom.com/wiki/Special:FilePath/Item_Lunite_Subscription.png", source: "Wuthering Waves Wiki" },
-  { slot: "wuwa/banner/standard", url: "https://wutheringwaves.fandom.com/wiki/Special:FilePath/Tidal_Chorus.jpg", source: "Wuthering Waves Wiki" },
+  { slot: "wuwa/banner/standard", url: "https://img.game8.co/3891428/f1532e019b1ba2bcc95cd357436a9c0c.png/show", source: "Game8" },
   { slot: "wuwa/banner/standard-weapon", url: "https://wutheringwaves.fandom.com/wiki/Special:FilePath/Standard_Weapon_Convene.jpg", source: "Wuthering Waves Wiki" },
   { slot: "wuwa/banner/beginner", url: "https://wutheringwaves.fandom.com/wiki/Special:FilePath/Beginner%27s_Choice_Convene.png", source: "Wuthering Waves Wiki" },
-  { slot: "wuwa/banner/novice", url: "https://wutheringwaves.fandom.com/wiki/Special:FilePath/Utterance_of_Marvels.jpg", source: "Wuthering Waves Wiki" },
+  { slot: "wuwa/banner/novice", url: "https://img.game8.co/3889481/e380109cd8fb4b935e46127a6d64cde6.png/show", source: "Game8" },
   { slot: "wuwa/shop/coral", url: "https://wutheringwaves.fandom.com/wiki/Special:FilePath/Icon_Store.png", source: "Wuthering Waves Wiki" },
   { slot: "wuwa/weapon-type/broadblade", url: "https://wutheringwaves.fandom.com/wiki/Special:FilePath/Broadblade_Icon.png", source: "Wuthering Waves Wiki" },
   { slot: "wuwa/weapon-type/gauntlets", url: "https://wutheringwaves.fandom.com/wiki/Special:FilePath/Gauntlets_Icon.png", source: "Wuthering Waves Wiki" },
@@ -65,6 +67,8 @@ export const ART_SOURCES: ArtSource[] = [
   { slot: "endfield/battle-pass", url: "https://endfield.fandom.com/wiki/Special:FilePath/Item_Protocol_Pass_EXP.png", source: "Arknights: Endfield Wiki" },
   { slot: "endfield/banner/character", url: "https://endfield.wiki.gg/wiki/Special:FilePath/Chartered_HH_Permit.png", source: "Arknights: Endfield Wiki (wiki.gg)" },
   { slot: "endfield/banner/weapon", url: "https://endfield.fandom.com/wiki/Special:FilePath/Item_Arsenal_Ticket.png", source: "Arknights: Endfield Wiki" },
+  { slot: "endfield/banner/standard", url: "https://img.game8.co/4387878/cf35680619ce5c3e1904870c6c679a09.png/show", source: "Game8" },
+  { slot: "endfield/banner/beginner", url: "https://img.game8.co/4387880/5645ddd0c53b3e3a695946c7cbb47f35.png/show", source: "Game8" },
   { slot: "endfield/currency/sanity", url: "https://endfield.wiki.gg/wiki/Special:FilePath/Sanity.png", source: "Arknights: Endfield Wiki (wiki.gg)" },
   { slot: "endfield/currency/oroberyl", url: "https://endfield.wiki.gg/wiki/Special:FilePath/Oroberyl.png", source: "Arknights: Endfield Wiki (wiki.gg)" },
   { slot: "endfield/currency/arsenal", url: "https://endfield.fandom.com/wiki/Special:FilePath/Item_Arsenal_Ticket.png", source: "Arknights: Endfield Wiki" },

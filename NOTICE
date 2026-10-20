@@ -58,8 +58,9 @@ apps/server/src/art/sources.ts, fetched into the store by the owner at one click
   file by name through the wiki's API; their text is CC BY-SA, the pictures
   are the games' own, © their publishers. StarRailRes
   (https://github.com/Mar-7th/StarRailRes) at a pinned commit; Enka.Network;
-  the Hakushin assets. Used, credited here, for a private non-commercial tool;
-  removed on request.
+  the Hakushin assets; Game8 (https://game8.co), its banner pages' pictures of
+  the standard and beginner banners. Used, credited here, for a private
+  non-commercial tool; removed on request.
 
 Star Rail relic stat tables
   Enka.Network's published store (https://github.com/EnkaNetwork/API-docs,
