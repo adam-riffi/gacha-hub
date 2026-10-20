@@ -45,7 +45,7 @@ export const ART_SOURCES: ArtSource[] = [
   { slot: "zzz/task/hunt", url: "https://zenless-zone-zero.fandom.com/wiki/Special:FilePath/Icon_Map_Notorious_Hunt.png", source: "Zenless Zone Zero Wiki" },
   { slot: "zzz/task/coffee", url: "https://zenless-zone-zero.fandom.com/wiki/Special:FilePath/Icon_Map_Coff_Cafe.png", source: "Zenless Zone Zero Wiki" },
   { slot: "zzz/task/videostore", url: "https://zenless-zone-zero.fandom.com/wiki/Special:FilePath/Icon_Map_Video_Store_Branch.png", source: "Zenless Zone Zero Wiki" },
-  { slot: "wuwa/logo", url: "https://wutheringwaves.fandom.com/wiki/Special:FilePath/Site-logo.svg", source: "Wuthering Waves Wiki", invert: true },
+  { slot: "wuwa/logo", url: "https://wutheringwaves.fandom.com/wiki/Special:FilePath/Site-logo.png", source: "Wuthering Waves Wiki" },
   { slot: "wuwa/mode/tower", url: "https://wutheringwaves.fandom.com/wiki/Special:FilePath/Icon_Tower_of_Adversity.png", source: "Wuthering Waves Wiki" },
   { slot: "wuwa/mode/wastes", url: "https://wutheringwaves.fandom.com/wiki/Special:FilePath/Icon_Whimpering_Wastes.png", source: "Wuthering Waves Wiki" },
   { slot: "wuwa/battle-pass", url: "https://wutheringwaves.fandom.com/wiki/Special:FilePath/Icon_Pioneer_Podcast.png", source: "Wuthering Waves Wiki" },
