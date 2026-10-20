@@ -47,20 +47,22 @@ export function ArtSettings() {
   // The pictures found on the sources (Georges, 2026-10-20: "find me all of the assets"), fetched by the server in batches.
   const fetchAll = async () => {
     const tally = { fetched: 0, failed: [] as string[], running: true };
+    const failedKeys: string[] = [];
     setProgress({ ...tally });
     for (let batch = 0; batch < 40; batch++) {
       let result: { fetched: { key: string }[]; failed: { key: string; error: string }[]; left: number };
       try {
-        result = await api.post("/api/art/fetch", { limit: 8 });
+        result = await api.post("/api/art/fetch", { limit: 8, skip: failedKeys });
       } catch {
         tally.failed.push("the server");
         break;
       }
       tally.fetched += result.fetched.length;
+      failedKeys.push(...result.failed.map((failure) => failure.key));
       tally.failed.push(...result.failed.map((failure) => nameOf(failure.key)));
       setProgress({ ...tally });
       await queryClient.invalidateQueries({ queryKey: ["art"] });
-      if (result.left === 0 || result.fetched.length === 0) break;
+      if (result.left <= failedKeys.length || result.fetched.length === 0) break;
     }
     setProgress({ ...tally, running: false });
   };

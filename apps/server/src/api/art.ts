@@ -38,7 +38,7 @@ async function fetchSource(url: string): Promise<{ bytes: Buffer; type: string }
   return { bytes: Buffer.from(await response.arrayBuffer()), type };
 }
 
-const fetchInput = z.object({ keys: z.array(z.string().max(120)).max(50).optional(), limit: z.number().int().min(1).max(20).default(8) });
+const fetchInput = z.object({ keys: z.array(z.string().max(120)).max(50).optional(), skip: z.array(z.string().max(120)).max(200).default([]), limit: z.number().int().min(1).max(20).default(8) });
 
 const distinct = (values: (string | undefined)[]) => [...new Set(values.filter((value): value is string => Boolean(value) && value !== "None"))].sort();
 
@@ -76,11 +76,12 @@ export async function registerArtRoutes(app: FastifyInstance) {
     return { slots: (await allSlots()).map((slot) => ({ ...slot, url: uploads.get(slot.key)?.url ?? null, invert: uploads.get(slot.key)?.invert ?? false, fetchable: SOURCE_KEYS.has(slot.key) })) };
   });
 
-  // The pictures found for the slots, fetched into the store at one click: the named keys, or the next batch not yet held.
+  // The pictures found for the slots, fetched into the store at one click: the named keys, or the next batch not yet held
+  // (the keys to skip are the ones that failed earlier in the run, so a run ends instead of asking them again).
   app.post("/api/art/fetch", { preHandler: requireAdmin, config: { rateLimit: { max: 60, timeWindow: "1 minute" } } }, async (req) => {
-    const { keys, limit } = fetchInput.parse(req.body ?? {});
+    const { keys, skip, limit } = fetchInput.parse(req.body ?? {});
     const held = new Set((await prisma.artSlot.findMany({ select: { key: true } })).map((row) => row.key));
-    const wanted = keys ?? SOURCES.filter((source) => !held.has(source.slot)).slice(0, limit).map((source) => source.slot);
+    const wanted = keys ?? SOURCES.filter((source) => !held.has(source.slot) && !skip.includes(source.slot)).slice(0, limit).map((source) => source.slot);
     const fetched: { key: string; url: string }[] = [];
     const failed: { key: string; error: string }[] = [];
     for (const key of wanted) {
