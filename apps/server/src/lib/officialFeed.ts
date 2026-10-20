@@ -26,7 +26,14 @@ const FEEDS: Record<string, Feed> = {
 };
 export const FEED_GAMES = Object.keys(FEEDS);
 
-type Ann = { ann_id: number; type: number; subtitle: string; start_time: string; end_time: string };
+type Ann = { ann_id: number; type: number; subtitle: string; banner?: string; start_time: string; end_time: string };
+
+/** What a banner or event remembers of its announcement: the feed, the notice and its key art (round 16: the official picture on the cards). */
+const origin = (announcement: { ann_id: number; banner?: string; img?: string }) => ({
+  source: "hoyoverse",
+  annId: announcement.ann_id,
+  ...(announcement.banner || announcement.img ? { image: announcement.banner || announcement.img } : {}),
+});
 export type AnnList = { timezone: number; list: { type_id: number; list: Ann[] }[] };
 
 const EVENT_TYPE = 1; // "Event" tab: wishes + time-limited events
@@ -66,7 +73,7 @@ export function parseFeed(data: AnnList, contents: Map<number, string>, catalog:
       key: `hoyo-${announcement.ann_id}`,
       startsAt: isoWithOffset(announcement.start_time, data.timezone),
       endsAt: isoWithOffset(announcement.end_time, data.timezone),
-      payload: { source: "hoyoverse", annId: announcement.ann_id },
+      payload: origin(announcement),
     };
     if (WISH.test(title)) {
       const kind = /Epitome Invocation/.test(title) ? "weapon" : /^Chronicled/.test(title) ? "other" : "character";
@@ -86,7 +93,7 @@ export function parseFeed(data: AnnList, contents: Map<number, string>, catalog:
   return { banners, events };
 }
 
-type HsrAnn = { ann_id: number; title: string; start_time: string; end_time: string };
+type HsrAnn = { ann_id: number; title: string; img?: string; banner?: string; start_time: string; end_time: string };
 export type HsrAnnList = { timezone: number; list: unknown[]; pic_list: { type_list: { list: HsrAnn[] }[] }[] };
 
 const WARP = /During (?:the )?"([^"]+)" (Character|Light Cone) Event Warp/g;
@@ -106,7 +113,7 @@ function sectionBanner(announcement: HsrAnn, name: string, kind: "character" | "
     startsAt: dates.length >= 2 ? dates[0] : isoWithOffset(announcement.start_time, timezoneHours),
     endsAt: dates.at(-1) ?? isoWithOffset(announcement.end_time, timezoneHours),
     featured: named(pool, text).map((unit) => ({ catalogId: unit.id, kind })),
-    payload: { source: "hoyoverse", annId: announcement.ann_id },
+    payload: origin(announcement),
   });
   return parsed.success ? [parsed.data] : [];
 }
@@ -157,7 +164,7 @@ function picFeed(banner: RegExp, split: typeof warps) {
           name: shortName(title),
           startsAt: isoWithOffset(announcement.start_time, data.timezone),
           endsAt: isoWithOffset(announcement.end_time, data.timezone),
-          payload: { source: "hoyoverse", annId: announcement.ann_id },
+          payload: origin(announcement),
         });
         if (parsed.success) events.push(parsed.data);
       }

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { PullBudget, getGame } from "@gacha/shared";
 import type { HomeCarousel } from "../lib/carousel";
 import type { RosterEntry } from "../lib/roster";
-import { assetUrl, communityAssetUrl, splashKey } from "../lib/assets";
+import { assetUrl, communityAssetUrl, officialArt, splashKey } from "../lib/assets";
 import { CarouselCard } from "./Carousel";
 import { FeaturedUnits, distinctFeatured } from "./FeaturedUnits";
 import { GameIcon } from "./GameIcon";
@@ -12,7 +12,7 @@ import { HeroArt } from "./HeroArt";
 /**
  * The Banners card on Home: one running banner at a time, its featured unit's art under a dark layer; it steps per banner
  * on the shared clock. Round 11: its featured units as icons, the top ones larger and the ones you own ticked, and your
- * chance at its top unit with the pulls you hold.
+ * chance at its top unit with the pulls you hold. Round 16: a banner that came with its official key art shows that.
  */
 export function BannersCarousel({ roster, carousel }: { roster: RosterEntry[]; carousel: HomeCarousel }) {
   const counts = roster.map((rosterEntry) => Math.max(1, rosterEntry.banners.length));
@@ -25,6 +25,7 @@ export function BannersCarousel({ roster, carousel }: { roster: RosterEntry[]; c
   const lead = featured[0];
   const budget = entry && game ? new PullBudget(game.pullBanners ?? [], entry.game.currencies, entry.game.pity) : null;
   const chance = banner && lead && budget ? budget.chanceOn(banner.kind) : null;
+  const keyArt = banner ? officialArt(banner.payload) : undefined;
 
   return (
     <CarouselCard
@@ -44,8 +45,9 @@ export function BannersCarousel({ roster, carousel }: { roster: RosterEntry[]; c
       {banner ? (
         <>
           <div className="carousel-art">
+            {keyArt && <img className="key-art" src={keyArt} alt="" onError={(event) => (event.currentTarget.hidden = true)} />}
             {/* A weapon banner's art is its top weapon, whole, on the right: weapons have no splash. */}
-            {lead?.kind === "weapon" && (
+            {!keyArt && lead?.kind === "weapon" && (
               <GameIcon
                 src={assetUrl(banner.gameKey, "weapon", lead.icon)}
                 fallback={communityAssetUrl(banner.gameKey, "weapon", lead.icon)}
@@ -55,8 +57,8 @@ export function BannersCarousel({ roster, carousel }: { roster: RosterEntry[]; c
               />
             )}
             {/* A banner without featured units (an event's phase) shows its game's hero. */}
-            {!lead && <HeroArt gameKey={banner.gameKey} className="carousel-hero" />}
-            {lead && lead.kind !== "weapon" && (
+            {!keyArt && !lead && <HeroArt gameKey={banner.gameKey} className="carousel-hero" />}
+            {!keyArt && lead && lead.kind !== "weapon" && (
               <GameIcon
                 src={assetUrl(banner.gameKey, "splash", splashKey(banner.gameKey, lead.icon, lead.splash))}
                 fallback={[communityAssetUrl(banner.gameKey, "splash", splashKey(banner.gameKey, lead.icon, lead.splash)), communityAssetUrl(banner.gameKey, "portrait", lead.icon)]}
