@@ -88,3 +88,24 @@ test("Settings → Art: a catalog entry no source has shows the owner's picture 
     await page.request.delete("/api/art/endfield/material/eureka-teabox");
   }
 });
+
+// Round 15 (Georges, 2026-10-20: "find me all of the assets"): the pictures found on the wikis and the data repositories
+// come into the store at one click, in batches, with a count of what came and what is left.
+test("Settings → Art: one click fetches the pictures found on the sources, in batches, counting them in @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  // The sources answer through the server; here each batch is answered by hand, so no wiki is reached.
+  let calls = 0;
+  await page.route("**/api/art/fetch", async (route) => {
+    calls += 1;
+    const fetched = calls === 1 ? [{ key: "genshin/logo", url: "/uploads/a.png" }, { key: "hsr/logo", url: "/uploads/b.png" }] : [{ key: "zzz/logo", url: "/uploads/c.png" }];
+    await route.fulfill({ json: { fetched, failed: calls === 2 ? [{ key: "wuwa/logo", error: "not_a_picture" }] : [], left: calls === 1 ? 2 : 0 } });
+  });
+  await page.goto("/settings/art");
+  const fetchAll = page.getByRole("button", { name: /^Fetch \d+ from the sources$/ });
+  await expect(fetchAll).toBeVisible();
+  await fetchAll.click();
+  await expect(page.getByRole("status")).toContainText("3 fetched · 1 failed");
+  expect(calls).toBe(2);
+});
