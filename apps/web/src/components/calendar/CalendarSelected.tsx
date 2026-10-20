@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getGame, rewardOptions, type RewardDto, type RosterChange, type WishlistItemDto } from "@gacha/shared";
 import { api } from "../../lib/api";
-import { assetUrl, communityAssetUrl, splashKey } from "../../lib/assets";
+import { assetUrl, communityAssetUrl, officialArt, splashKey } from "../../lib/assets";
 import { FeaturedUnits } from "../FeaturedUnits";
 import { GameIcon } from "../GameIcon";
 import { HeroArt } from "../HeroArt";
@@ -24,7 +24,8 @@ function serverTime(instantMs: number, offsetMinutes: number) {
 }
 
 /**
- * The calendar's selected item (WIREFRAMES.md A4): art, end in your time and
+ * The calendar's selected item (WIREFRAMES.md A4): art (the official key art
+ * when the banner or event came with one, round 16), end in your time and
  * server time, progress, and for a reward event a picker with one row per
  * choice and its effect, then Make goal and a reminder 48 h before it ends.
  */
@@ -59,6 +60,7 @@ export function CalendarSelected({ item, reward, now, onClose }: { item: CalItem
   const game = getGame(item.gameKey);
   const featured = (item.banners ?? []).flatMap((banner) => banner.featured).filter((featuredUnit) => (featuredUnit.rarity ?? 0) >= 5 || featuredUnit.kind === "character");
   const art = featured[0];
+  const keyArt = [...(item.banners ?? []).map((banner) => officialArt(banner.payload)), officialArt(item.event?.payload)].find(Boolean);
   const option = pick === null ? undefined : reward?.options[pick];
   const others = reward ? [...reward.others, ...(option?.others ?? [])] : game && item.event ? rewardOptions(item.event.effects ?? [], game, EMPTY).others : [];
   const goal = reward?.goal;
@@ -73,7 +75,9 @@ export function CalendarSelected({ item, reward, now, onClose }: { item: CalItem
         </button>
       </div>
       <div className="cal-art">
-        {art ? (
+        {keyArt ? (
+          <img className="key-art" src={keyArt} alt="" onError={(event) => (event.currentTarget.hidden = true)} />
+        ) : art ? (
           <GameIcon
             src={assetUrl(item.gameKey, "splash", splashKey(item.gameKey, art.icon, art.splash))}
             fallback={[communityAssetUrl(item.gameKey, "splash", splashKey(item.gameKey, art.icon, art.splash)), communityAssetUrl(item.gameKey, "character", art.icon)]}

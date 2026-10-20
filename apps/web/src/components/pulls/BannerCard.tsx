@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { artSlotKey, featuredWithin, fiveStarDistribution, rateAt, savingsPlan, topStar, type BannerDto, type PullBannerLogDto } from "@gacha/shared";
-import { assetUrl, communityAssetUrl } from "../../lib/assets";
+import { assetUrl, communityAssetUrl, officialArt } from "../../lib/assets";
 import { GameIcon } from "../GameIcon";
 import { Glyph, artGlyph, bannerGlyph } from "../Glyph";
 import { Segmented } from "../ui";
@@ -20,7 +20,8 @@ const split = (rate: number) => `${Math.round(rate * 100)}/${100 - Math.round(ra
  * One banner on Pulls (WIREFRAMES.md G3), every banner type the same: an
  * event banner's status as a two-state switch with the reason, the 5★ pity
  * with soft pity marked, the odds (estimates), the curve, the headline chance
- * with your pulls (and with a simulated top-up), and the actions.
+ * with your pulls (and with a simulated top-up), and the actions. Round 16: the
+ * official key art of the running banner across the top, when it came with one.
  */
 export function BannerCard(props: {
   banner: PullBannerLogDto;
@@ -52,6 +53,7 @@ export function BannerCard(props: {
   const stars = running.flatMap((liveBanner) => liveBanner.featured.filter((featuredUnit) => (featuredUnit.rarity ?? 0) >= 5));
   const star = topStar(props.gameKey);
   const target = featured?.name ?? `the featured ${star}`;
+  const keyArt = running.map((liveBanner) => officialArt(liveBanner.payload)).find(Boolean);
 
   const actions = (
     <div className="pl-actions">
@@ -84,6 +86,7 @@ export function BannerCard(props: {
   return (
     <section className="card pl-banner" aria-label={banner.label}>
       <div className="pl-banner-main">
+      {keyArt && <img className="key-art pl-key-art" src={keyArt} alt="" onError={(event) => (event.currentTarget.hidden = true)} />}
       <div className="pl-banner-head">
         {featured ? (
           <GameIcon src={assetUrl(props.gameKey, featured.kind, featured.icon)} fallback={communityAssetUrl(props.gameKey, featured.kind, featured.icon)} alt={featured.name ?? featured.catalogId} glyph={artGlyph(featured.kind)} className="pl-art" />

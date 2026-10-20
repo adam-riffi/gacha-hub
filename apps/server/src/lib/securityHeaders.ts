@@ -14,6 +14,8 @@ const CSP: Record<string, string[]> = {
     "'self'",
     "data:",
     "blob:",
+    // The banner and event key art that comes with HoYoverse's announcements (round 16).
+    "https://sdk.hoyoverse.com",
     "https://enka.network",
     "https://sr.yatta.moe",
     "https://gi.yatta.moe",

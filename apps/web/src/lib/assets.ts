@@ -28,5 +28,11 @@ export const assetUrl = (gameKey: string, kind: AssetKind, key?: string | null):
 
 /** The key of a unit's full art where the community CDN names it apart from its icon (Genshin gacha splashes). */
 
+/** The key art a banner or event came with (its HoYoverse announcement, round 16), when it has one. */
+export const officialArt = (payload: unknown): string | undefined => {
+  const image = (payload as { image?: unknown } | null | undefined)?.image;
+  return typeof image === "string" && image.startsWith("https://") ? image : undefined;
+};
+
 /** Fallback when we host no copy (<GameIcon fallback>): Enka for Genshin, Yatta for HSR. */
 export { communityArtUrl as communityAssetUrl, splashKey } from "@gacha/shared";
