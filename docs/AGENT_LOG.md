@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-20 · claude · stack/r23/02-game8-sources · #365
+- Done: round 16 (Georges: "sites like game8 have all the assets you might need"). The standard and beginner banners get their own art from Game8's banner pages instead of wiki screenshots: Genshin's Wanderlust Invocation, Wuthering Waves' Tidal Chorus and Utterance of Marvels, Endfield's Basic Headhunting and New Horizons (the last two had no picture). Game8's `/show` URLs serve the picture to the fetcher as it is (either referer passes), so `POST /api/art/fetch` needed no change; NOTICE credits Game8. 93 pictures now come at one click.
+- Tests: written first: the five slots' sources are Game8 `/show` pictures; the sources test still checks every entry is a real slot with a credit.
+- Scope/decisions: Game8's own composites (the "Convenes", "Warps" and "All Banners Schedule" headers) were rejected on sight: they carry Game8's text, not the game's art. The wiki's Standard Weapon Convene picture stays.
+- Next: the order fixes.
+
 ## 2026-10-20 · claude · stack/r23/01-feed-art · #364
 - Done: round 16 (Georges, 2026-10-20: "for banners or game cards you can use real game art like these… the whole concept of this project's UI design is ICONS FIRST text second"). The official feeds' announcements carry their key art (`banner` on Genshin's list items, `img` or `banner` on Star Rail's and Zenless's picture notices); the parser keeps it as `payload.image` on every banner and event it makes, and the cards show it: Home's Banners card full-bleed (anchored on its characters, under a lighter veil than a splash gets), the Pulls card across its top (180 px, the title in view), the timeline's selected panel in place of the splash. The picture host (`sdk.hoyoverse.com`) joins the image policy. Checked in dev against the live feeds: Skirk's "Void Star's Advent" on all three.
 - Tests: written first: the three parsers keep each notice's picture on its banners and events (every warp of a split notice gets it); the policy test names the host; a journey seeds a banner with a picture and finds it on Home, Pulls and the timeline.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: no behaviour change: types clean; the shadowed names (`@typescript-eslint/no-shadow`, JSON report) are the eight from before. A first pass had made 65 new shadows, one of which rebound a reference (a reminder time's Remove filter had become `atTime !== atTime`, always false), so each got a distinct name and the pass was replayed from a clean tree; the full suite passes.
 - Scope/decisions: props and object keys renamed only where the app owns the shape; DTO fields and SVG's `d` stay. Prettier was not run over the files (the repository is not prettier-formatted as a whole; a run would rewrite 18,000 lines).
 - Next: CSS utilities named for what they do (`.mu`, `.mn`, `.cd`, `.sf`), then objects for the domain, area by area.
-
-## 2026-10-15 · claude · stack/r15/02-server-names · #322
-- Done: ADR 0011's second area, the server. 492 one- and two-letter declarations named (`gi` → `gameInstance` 74 times, `tx` → `transaction`, `r` → `row`/`result`/`record` by what it holds), and the abbreviations spelled out: `cat` → `loadedCatalog` (20), `ctx` → `regionContext`, `res` → `response`, `cfg` → `reminderConfig`, `str`/`num` → `stringOption`/`numberOption`, `esc` → `escapeRegExp`, `iso` → `isoWithOffset`, and the rest. `id-length` now holds `apps/server/src` too. A helper proposes most names from their code (the singular of the collection a callback walks); each was reviewed by hand.
-- Tests: no behaviour change: types clean; the shadowed names (`@typescript-eslint/no-shadow`, read from a JSON report) are exactly the eight there were before ADR 0011, so no reference moved to another variable; the full suite passes. Found on the way: the earlier shadow check used ESLint's `unix` format, which ESLint 9 no longer ships, so it had read nothing; the real check found five harmless new shadows in #321, given distinct names there.
-- Scope/decisions: Fastify's `req` and `reply` stay (the framework's names); three-letter words stay.
-- Next: the web (1,593 short names, page by page), then objects for the domain.
