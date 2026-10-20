@@ -14,10 +14,13 @@ const catalog = {
   ],
 } as unknown as Catalog;
 
+// Every announcement carries its key art (round 16: the official picture on the banner and event cards).
+const art = (ann_id: number) => `https://sdk.hoyoverse.com/upload/ann/2026/09/20/${ann_id}.jpg`;
 const ann = (ann_id: number, type: number, subtitle: string) => ({
   ann_id,
   type,
   subtitle,
+  banner: art(ann_id),
   start_time: "2026-09-21 12:00:00",
   end_time: "2026-10-13 17:59:00",
 });
@@ -53,6 +56,11 @@ describe("parseFeed", () => {
     expect(banners[0]!.featured.map((f) => f.catalogId)).toEqual(["vesna", "diona"]);
     // weapon banners only feature weapons, even when a character is named
     expect(banners[1]!.featured.map((f) => f.catalogId)).toEqual(["chrysalis", "bane"]);
+  });
+
+  it("keeps each announcement's key art for its banner or event", () => {
+    expect(banners[0]!.payload).toEqual({ source: "hoyoverse", annId: 10, image: art(10) });
+    expect(events[0]!.payload).toEqual({ source: "hoyoverse", annId: 12, image: art(12) });
   });
 
   it("reads times as server time (UTC+timezone)", () => {
@@ -108,7 +116,7 @@ const hsrCatalog = {
   ],
 } as unknown as Catalog;
 
-const hsrAnn = (ann_id: number, title: string) => ({ ann_id, title, start_time: "2026-09-27 14:00:00", end_time: "2026-10-21 11:59:00" });
+const hsrAnn = (ann_id: number, title: string) => ({ ann_id, title, img: art(ann_id), start_time: "2026-09-27 14:00:00", end_time: "2026-10-21 11:59:00" });
 const t = (date: string) => `&lt;t class="t_lc"&gt;${date}&lt;/t&gt;`;
 
 const hsrList: HsrAnnList = {
@@ -160,6 +168,11 @@ describe("parseHsrFeed", () => {
     expect(byKey.get("hoyo-100-an-ocean-in-a-pearl")!.featured.map((f) => f.catalogId)).toEqual(["pearl", "qingque", "misha"]);
     expect(byKey.get("hoyo-100-brilliant-fixation-colors-for-tomorrow")!.featured.map((f) => f.catalogId)).toEqual(["colors", "choreo"]);
     expect(byKey.get("hoyo-100-the-demoiselle-in-charge")!.featured.map((f) => f.catalogId)).toEqual(["evanescia", "misha"]);
+  });
+
+  it("gives every warp of a notice, and each event, the notice's key art", () => {
+    expect(banners.map((b) => b.payload)).toEqual(Array(3).fill({ source: "hoyoverse", annId: 100, image: art(100) }));
+    expect(events[0]!.payload).toEqual({ source: "hoyoverse", annId: 101, image: art(101) });
   });
 
   it("gives each warp its own period (notice start when only the end is stated)", () => {
@@ -245,6 +258,10 @@ describe("parseZzzFeed", () => {
     expect(byKey.get("hoyo-243-cindernight-respite")!.featured.map((f) => f.catalogId)).toEqual(["roxy", "corin", "billy"]);
     expect(byKey.get("hoyo-243-crimson-moon-casket")!.featured.map((f) => f.catalogId)).toEqual(["casket", "housekeeper"]);
     expect(byKey.get("hoyo-243-cold-rain-wanes-in-the-night")!.featured.map((f) => f.catalogId)).toEqual(["promeia", "corin"]);
+  });
+
+  it("gives every channel the notice's key art", () => {
+    expect(byKey.get("hoyo-243-crimson-moon-casket")!.payload).toEqual({ source: "hoyoverse", annId: 243, image: art(243) });
   });
 
   it("gives each channel its own period, in server time", () => {
