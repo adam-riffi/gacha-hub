@@ -72,8 +72,15 @@
   background: var(--hairline-strong); pointer-events: none;
   clip-path: polygon(0 0, 100% 0, 100% 100%, calc(100% - 4px) 100%, calc(100% - 4px) 4px, 0 4px);
 }
-.strip-icon { width: 26px; height: 26px; flex: none; font-size: 8px; }
-.strip-game.on .strip-icon { width: 30px; height: 30px; }
+.strip-icon { width: 30px; height: 30px; flex: none; font-size: 8px; }
+.strip-game.on .strip-icon { width: 34px; height: 34px; }
+/* A logo (Settings → Art) keeps its shape: wordmarks are wide (round 15, Georges: "make every game icon more visible"). */
+.strip-icon.is-art { width: auto; max-width: 130px; object-fit: contain; }
+/* A wordmark says the name itself: the chip sizes to it and drops the text (the name stays for screen readers and hover). */
+.strip-icon.is-wide { height: 36px; max-width: 160px; }
+.strip-game.on .strip-icon.is-wide { height: 40px; max-width: 180px; }
+.strip-game:has(.game-mark.is-wide) { width: auto; padding: 0 14px; }
+.strip-game:has(.game-mark.is-wide) .strip-name { display: none; }
 
 /* A game's drawn emblem (round 12): a line mark tinted by its accent, anywhere a game is named. */
 .game-mark { display: block; fill: none; stroke: var(--mark, currentColor); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }

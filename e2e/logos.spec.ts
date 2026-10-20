@@ -31,9 +31,10 @@ test("a game's logo shows at a readable size in the strip, the games list, the g
     const head = await box(page.getByRole("region", { name: "Honkai: Star Rail" }).locator("img.game-mark.is-art"));
     expect(head.height).toBeGreaterThanOrEqual(95);
     expect(head.width).toBeGreaterThan(head.height * 2);
-    // Home: the game's mark beside its name on the Dailies card and in the lists.
-    await page.goto("/?game=hsr");
-    await expect(page.getByRole("region", { name: "Dailies & weeklies" }).locator(".game-mark").first()).toBeVisible();
+    // Home, all games: the game's mark beside its name on the Dailies card and in the lists.
+    await page.goto("/");
+    const dailies = page.locator("section", { has: page.getByRole("heading", { name: "Dailies & weeklies" }) });
+    await expect(dailies.locator(".game-mark").first()).toBeVisible();
     await expect(page.getByRole("region", { name: "Stamina" }).locator(".game-mark").first()).toBeVisible();
   } finally {
     await page.request.delete("/api/art/hsr/logo");

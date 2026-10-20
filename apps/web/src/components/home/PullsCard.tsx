@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { dayOf } from "@gacha/shared";
 import { pullsFor } from "../../lib/format";
 import type { DashGame } from "../../lib/roster";
+import { GameMark } from "../GameMark";
 
 type Kind = "limited" | "permanent" | "special";
 
@@ -64,7 +65,10 @@ export function PullsCard({ games, day = null }: { games: DashGame[]; day?: stri
         {rows.map(({ dashGame, limited: lim, standard, special, hasSpecial }) => (
           <div key={dashGame.instanceId}>
             <div className="rw">
-              <span>{dashGame.name}</span>
+              <span>
+                <GameMark gameKey={dashGame.gameKey} className="list-mark" />
+                {dashGame.name}
+              </span>
               <span className="font-mono pull-counts">
                 <Count count={lim} kind="limited" />
                 <Count count={standard} kind="permanent" />

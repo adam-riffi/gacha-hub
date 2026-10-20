@@ -161,7 +161,12 @@ tbody tr:hover { background: var(--surface-2); }
 .list-art { width: 26px; height: 26px; margin-right: 8px; vertical-align: middle; }
 .mode-art { width: 40px; height: 40px; }
 .pass-art { width: 34px; height: 34px; }
-.game-mark.is-art { object-fit: contain; }
+.game-mark.is-art { object-fit: contain; width: auto; }
+/* Home names its games with their mark (round 15): beside the Dailies card's name, in the lists' rows. */
+.band-mark { width: 44px; height: 44px; margin-right: 12px; vertical-align: middle; }
+.band-mark.is-art { max-width: 190px; }
+.list-mark { width: 22px; height: 22px; margin-right: 8px; vertical-align: middle; }
+.list-mark.is-art { max-width: 80px; }
 /* A dark-on-transparent icon from a source, inverted for the dark UI (Settings → Art). */
 .is-inverted { filter: invert(1); }
 
