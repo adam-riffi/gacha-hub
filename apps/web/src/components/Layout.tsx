@@ -112,7 +112,7 @@ export function Layout({ children }: { children: ReactNode }) {
                   >
                     {/* Its emblem, and its whole name once picked (Georges, round 7). */}
                     <GameMark gameKey={gameInstance.gameKey} tint={gameInstance.accent} className="strip-icon" />
-                    {on ? gameInstance.name : (getGame(gameInstance.gameKey)?.shortName ?? gameInstance.name)}
+                    <span className="strip-name">{on ? gameInstance.name : (getGame(gameInstance.gameKey)?.shortName ?? gameInstance.name)}</span>
                   </Link>
                 );
               })}

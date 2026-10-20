@@ -4,6 +4,7 @@ import type { RosterEntry } from "../../lib/roster";
 import { CarouselCard } from "../Carousel";
 import { Ring } from "../charts/Ring";
 import { Countdown } from "../ui";
+import { GameMark } from "../GameMark";
 
 /**
  * Dailies and weeklies per game (VISUAL-DESIGN.md §10): the game's name, its
@@ -41,7 +42,10 @@ export function DailiesCard({ roster, carousel, day = null }: { roster: RosterEn
       {rosterGame && (
         <div className="dailies-body">
           <div className="dailies-head">
-            <span className="font-display dailies-game">{rosterGame.name}</span>
+            <span className="font-display dailies-game">
+              <GameMark gameKey={rosterGame.gameKey} className="band-mark" />
+              {rosterGame.name}
+            </span>
             {past ? (
               <span className="chip">
                 <i aria-hidden="true" />

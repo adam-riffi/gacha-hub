@@ -4,7 +4,8 @@
  * accent bar like a panel title's.
  */
 .hub-head { display: flex; align-items: center; gap: 24px; padding: 8px 0 20px; }
-.hub-icon { width: 72px; height: 72px; flex: 0 0 72px; object-fit: cover; clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%); }
+.hub-icon { width: 96px; height: 96px; flex: 0 0 96px; object-fit: cover; clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%); }
+.hub-icon.is-art { width: auto; max-width: 280px; flex: 0 0 auto; object-fit: contain; clip-path: none; }
 .hub-icon-ph { display: block; background: var(--accent); }
 .hub-id { min-width: 0; }
 .hub-name { margin: 0; font: 600 44px/1 var(--font-display); letter-spacing: 0.04em; text-transform: uppercase; }

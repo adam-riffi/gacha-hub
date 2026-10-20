@@ -71,8 +71,18 @@ export function GameMark({ gameKey, tint, named = false, className = "" }: { gam
   const logo = useSlotArt(artSlotKey(gameKey, "logo"));
   const inverted = useSlotInverted(artSlotKey(gameKey, "logo"));
   const [failed, setFailed] = useState<string | null>(null);
+  // A wordmark (wider than twice its height) says the game's name itself: the strip hides the name beside it.
+  const [wide, setWide] = useState(false);
   if (logo && failed !== logo) {
-    return <img className={`game-mark is-art ${inverted ? "is-inverted" : ""} ${className}`} src={logo} alt={named ? `${game?.name ?? gameKey} logo` : ""} onError={() => setFailed(logo)} />;
+    return (
+      <img
+        className={`game-mark is-art ${inverted ? "is-inverted" : ""} ${wide ? "is-wide" : ""} ${className}`}
+        src={logo}
+        alt={named ? `${game?.name ?? gameKey} logo` : ""}
+        onLoad={(event) => setWide(event.currentTarget.naturalWidth > event.currentTarget.naturalHeight * 2)}
+        onError={() => setFailed(logo)}
+      />
+    );
   }
   return (
     <svg

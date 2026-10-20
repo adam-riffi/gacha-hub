@@ -1,6 +1,7 @@
 import { getGame } from "@gacha/shared";
 import { formatRemaining } from "../../lib/time";
 import type { DashGame } from "../../lib/roster";
+import { GameMark } from "../GameMark";
 
 const DAY = 86_400_000;
 
@@ -14,7 +15,7 @@ function fullLabel(fullAt: string, now = Date.now()): string {
 export function StaminaCard({ games }: { games: DashGame[] }) {
   const rows = games.filter((game) => game.stamina);
   return (
-    <section className="card table-card stamina-card">
+    <section className="card table-card stamina-card" aria-label="Stamina">
       <div className="ph">
         <h3>Stamina</h3>
       </div>
@@ -31,7 +32,10 @@ export function StaminaCard({ games }: { games: DashGame[] }) {
           const reserve = dashGame.currencies.find((currency) => currency.key === getGame(dashGame.gameKey)?.manifest.stamina.reserve?.currency);
           return (
             <div className="rw" key={dashGame.instanceId}>
-              <span>{dashGame.name}</span>
+              <span>
+                <GameMark gameKey={dashGame.gameKey} className="list-mark" />
+                {dashGame.name}
+              </span>
               <span className="font-mono col-110">
                 {stamina.value}
                 <span className="text-muted"> / {stamina.cap}</span>
