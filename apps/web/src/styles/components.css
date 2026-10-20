@@ -163,7 +163,7 @@ tbody tr:hover { background: var(--surface-2); }
 /* The owner's pictures (Settings → Art) where a card had none: list rows, mode cards, the battle pass name. */
 .slot-art { object-fit: contain; }
 /* Pictures of mixed padding and size sit in one tile each, whole, so a list's icons line up (round 16: "crooked or out of place"). */
-.list-art { box-sizing: border-box; width: 28px; height: 28px; padding: 2px; margin-right: 8px; vertical-align: middle; object-fit: contain; background: var(--surface-2); border: 1px solid var(--edge); }
+.list-art { box-sizing: border-box; display: inline-block; width: 28px; height: 28px; padding: 2px; margin-right: 8px; vertical-align: middle; object-fit: contain; background: var(--surface-2); border: 1px solid var(--edge); }
 .mode-art { box-sizing: border-box; width: 44px; height: 44px; padding: 4px; object-fit: contain; background: var(--surface-2); border: 1px solid var(--edge); }
 .pass-art { width: 34px; height: 34px; }
 .game-mark.is-art { object-fit: contain; width: auto; }
