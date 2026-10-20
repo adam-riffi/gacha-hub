@@ -162,12 +162,13 @@ tbody tr:hover { background: var(--surface-2); }
 .carousel-chance { margin-top: 6px; font-size: 13px; }
 /* The owner's pictures (Settings → Art) where a card had none: list rows, mode cards, the battle pass name. */
 .slot-art { object-fit: contain; }
-.list-art { width: 26px; height: 26px; margin-right: 8px; vertical-align: middle; }
-.mode-art { width: 40px; height: 40px; }
+/* Pictures of mixed padding and size sit in one tile each, whole, so a list's icons line up (round 16: "crooked or out of place"). */
+.list-art { box-sizing: border-box; display: inline-block; width: 28px; height: 28px; padding: 2px; margin-right: 8px; vertical-align: middle; object-fit: contain; background: var(--surface-2); border: 1px solid var(--edge); }
+.mode-art { box-sizing: border-box; width: 44px; height: 44px; padding: 4px; object-fit: contain; background: var(--surface-2); border: 1px solid var(--edge); }
 .pass-art { width: 34px; height: 34px; }
 .game-mark.is-art { object-fit: contain; width: auto; }
 /* Home names its games with their mark (round 15): beside the Dailies card's name, in the lists' rows. */
-.band-mark { width: 44px; height: 44px; margin-right: 12px; vertical-align: middle; }
+.band-mark { width: 44px; height: 44px; flex: none; }
 .band-mark.is-art { max-width: 190px; }
 .list-mark { width: 22px; height: 22px; margin-right: 8px; vertical-align: middle; }
 .list-mark.is-art { max-width: 80px; }
