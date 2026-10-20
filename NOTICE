@@ -48,8 +48,18 @@ Artwork
   Neverness to Everness art: the Hakushin assets (https://static.nanoka.cc/assets/nte/).
   Content: © Perfect World / Hotta Studio.
   The app hotlinks these sources, or reads a copy mirrored into our own
-  bucket (scripts/assets/mirror.ts, ADR 0006) for a non-commercial tool used
-  by a few friends; art is removed on request.
+  store (scripts/assets/mirror.ts, ADR 0006, ADR 0013) for a non-commercial
+  tool used by a few friends; art is removed on request.
+
+Pictures for the app's own lists (logos, modes, passes, banners, shops, tasks;
+apps/server/src/art/sources.ts, fetched into the store by the owner at one click)
+  The game wikis on Fandom (genshin-impact, honkai-star-rail, zenless-zone-zero,
+  wutheringwaves, endfield, neverness-to-everness) and endfield.wiki.gg, each
+  file by name through the wiki's API; their text is CC BY-SA, the pictures
+  are the games' own, © their publishers. StarRailRes
+  (https://github.com/Mar-7th/StarRailRes) at a pinned commit; Enka.Network;
+  the Hakushin assets. Used, credited here, for a private non-commercial tool;
+  removed on request.
 
 Star Rail relic stat tables
   Enka.Network's published store (https://github.com/EnkaNetwork/API-docs,
