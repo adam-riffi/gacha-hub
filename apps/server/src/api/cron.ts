@@ -1,5 +1,7 @@
 import type { FastifyInstance } from "fastify";
-import { readKey } from "../lib/appKeys.js";
+import { APP_KEYS, readKey, setKey } from "../lib/appKeys.js";
+import { config } from "../config.js";
+import { ownerAccount } from "../auth/sessions.js";
 import { isGithubWorkflow } from "../lib/githubOidc.js";
 import { runReminderTick } from "../scheduler/reminders.js";
 import { importFeedsIfStale } from "../lib/officialFeed.js";
@@ -29,11 +31,20 @@ export async function registerCronRoutes(app: FastifyInstance) {
     return { ok: true, ms: Date.now() - started, feeds, links };
   });
 
-  // The art mirror workflow (run by hand on GitHub) takes the R2 keys the owner entered in the app.
+  // The art mirror workflow (run by hand on GitHub) takes the store's token from the host (ADR 0013) and the base it last reported.
+  const mirrorProof = (req: { headers: { authorization?: string } }) => isGithubWorkflow(req.headers.authorization?.replace(/^Bearer\s+/i, ""), "mirror-art.yml");
   app.post("/api/cron/art-store", { config: { rateLimit: { max: 10, timeWindow: "1 minute" } } }, async (req, reply) => {
-    if (!(await isGithubWorkflow(req.headers.authorization?.replace(/^Bearer\s+/i, ""), "mirror-art.yml"))) return reply.code(401).send({ error: "unauthorized" });
-    const [accountId, accessKeyId, secretAccessKey, bucket] = await Promise.all((["R2_ACCOUNT_ID", "R2_ACCESS_KEY_ID", "R2_SECRET_ACCESS_KEY", "R2_BUCKET"] as const).map(readKey));
-    if (!accountId || !accessKeyId || !secretAccessKey || !bucket) return reply.code(404).send({ error: "art_store_not_set" });
-    return { accountId, accessKeyId, secretAccessKey, bucket };
+    if (!(await mirrorProof(req))) return reply.code(401).send({ error: "unauthorized" });
+    if (!config.blobToken) return reply.code(404).send({ error: "art_store_not_set" });
+    return { blobToken: config.blobToken, base: (await readKey("ASSET_BASE")) || null };
+  });
+
+  // Where the mirror put the pictures: kept as ASSET_BASE, so the web app reads our copy at once (a value on the host wins).
+  app.post("/api/cron/art-base", { config: { rateLimit: { max: 10, timeWindow: "1 minute" } } }, async (req, reply) => {
+    if (!(await mirrorProof(req))) return reply.code(401).send({ error: "unauthorized" });
+    const base = String((req.body as { base?: unknown } | null)?.base ?? "");
+    if (!APP_KEYS.ASSET_BASE.pattern.test(base)) return reply.code(400).send({ error: "bad_value" });
+    const result = await setKey("ASSET_BASE", base, (await ownerAccount()).id);
+    return { ok: true, kept: result === "saved" };
   });
 }
