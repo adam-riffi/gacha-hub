@@ -129,21 +129,20 @@ instead: make one in Settings → Keys → Schedule → Generate, and send it as
 
 ---
 
-## 7. Game art store (Cloudflare R2, ADR 0006)
+## 7. Game art store (Vercel Blob, ADR 0013)
 
-Optional: without it the app hotlinks Enka and Yatta, then shows placeholders.
+Optional: without it the app hotlinks the community CDNs (Enka, Yatta, Hakushin, wuthery), then shows placeholders.
 
-1. Create a Cloudflare account and an **R2 bucket** (free tier: 10 GB, free egress).
-2. In the bucket's settings, allow **public access** through its `r2.dev` URL.
-   **→ save the public URL** (no trailing slash).
-3. Create an **R2 API token** with read and write on that bucket.
-   **→ save** the account id, the access key id and the secret access key.
-4. In the app, **Settings → Keys → Art store**: enter the account id, the access key id, the
-   secret access key, the bucket's name and the public URL. Nothing goes to GitHub or Vercel (ADR 0012).
-5. Run the **mirror-art** workflow (Actions → mirror-art → Run workflow, game `all`): it takes
-   the keys from the app with GitHub's OIDC proof. Each later run uploads only what changed;
-   run it after each catalog refresh. The app reads the public URL at once, no redeploy.
-   The public URL must be an `r2.dev` (or Vercel Blob) host, the ones the CSP's `img-src` allows.
+Nothing to create: the Blob store the app's uploads use (made through the Vercel connector, its
+`BLOB_READ_WRITE_TOKEN` injected by Vercel) is the art store too. The Hobby plan's 1 GB of storage
+and 10 GB of monthly transfer hold everything the app can show (about 250 MB).
+
+1. Run the **mirror-art** workflow (Actions → mirror-art → Run workflow, game `all`): it takes the
+   store's token from the app with GitHub's OIDC proof (ADR 0012), uploads every catalog's art it
+   does not hold yet, and reports back where the pictures landed. The app keeps that as `ASSET_BASE`
+   (Settings → Keys → Art store) and reads our copy at once, no redeploy.
+2. After each catalog refresh, run it again: only what the store lacks is uploaded (`--force` in
+   the script uploads everything again).
 
 ## Redeploys and migrations
 

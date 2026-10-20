@@ -23,12 +23,8 @@ const tokenFor = (workflow: string) => {
   return `${head}.${body}.${sign("RSA-SHA256", Buffer.from(`${head}.${body}`), privateKey).toString("base64url")}`;
 };
 
-const R2 = {
-  R2_ACCOUNT_ID: "a".repeat(32),
-  R2_ACCESS_KEY_ID: "b".repeat(32),
-  R2_SECRET_ACCESS_KEY: "c".repeat(64),
-  R2_BUCKET: "gacha-art",
-};
+const BLOB_TOKEN = "vercel_blob_rw_test_only_not_a_real_token_0123456789";
+const BLOB_BASE = "https://abc123.public.blob.vercel-storage.com/assets";
 
 let ipCounter = 0;
 
@@ -59,13 +55,26 @@ describe("GitHub's workflows call the app with their OIDC proof", () => {
     expect((await post("/api/cron/tick", tokenFor("ci.yml"))).statusCode).toBe(401);
   });
 
-  it("hands the art store's keys to the mirror workflow only, once the owner has entered them", async () => {
+  // ADR 0013: the art store is Vercel Blob; its token lives on the host and goes to the mirror workflow alone.
+  it("hands the art store's token to the mirror workflow only, and takes the public base the mirror reports", async () => {
+    delete process.env.BLOB_READ_WRITE_TOKEN;
     expect((await post("/api/cron/art-store", tokenFor("mirror-art.yml"))).statusCode).toBe(404);
-    for (const [name, value] of Object.entries(R2)) await owner.req("PUT", `/api/settings/keys/${name}`, { value });
-    const keys = await post("/api/cron/art-store", tokenFor("mirror-art.yml"));
-    expect(keys.statusCode).toBe(200);
-    expect(keys.json()).toEqual({ accountId: R2.R2_ACCOUNT_ID, accessKeyId: R2.R2_ACCESS_KEY_ID, secretAccessKey: R2.R2_SECRET_ACCESS_KEY, bucket: R2.R2_BUCKET });
-    expect((await post("/api/cron/art-store", tokenFor("cron-tick.yml"))).statusCode).toBe(401);
-    expect((await app.inject({ method: "POST", url: "/api/cron/art-store" })).statusCode).toBe(401);
+    process.env.BLOB_READ_WRITE_TOKEN = BLOB_TOKEN;
+    try {
+      const store = await post("/api/cron/art-store", tokenFor("mirror-art.yml"));
+      expect(store.statusCode).toBe(200);
+      expect(store.json()).toEqual({ blobToken: BLOB_TOKEN, base: null });
+      expect((await post("/api/cron/art-store", tokenFor("cron-tick.yml"))).statusCode).toBe(401);
+      expect((await app.inject({ method: "POST", url: "/api/cron/art-store" })).statusCode).toBe(401);
+      // The mirror reports where the pictures landed: the app reads them from there at once (Settings → Keys, ASSET_BASE).
+      const reported = await app.inject({ method: "POST", url: "/api/cron/art-base", headers: { authorization: `Bearer ${tokenFor("mirror-art.yml")}`, "content-type": "application/json" }, payload: JSON.stringify({ base: BLOB_BASE }) });
+      expect(reported.statusCode).toBe(200);
+      expect((await owner.req<{ assetBase: string | null }>("GET", "/api/me")).json.assetBase).toBe(BLOB_BASE);
+      expect((await post("/api/cron/art-store", tokenFor("mirror-art.yml"))).json()).toEqual({ blobToken: BLOB_TOKEN, base: BLOB_BASE });
+      expect((await app.inject({ method: "POST", url: "/api/cron/art-base", headers: { authorization: `Bearer ${tokenFor("cron-tick.yml")}`, "content-type": "application/json" }, payload: JSON.stringify({ base: BLOB_BASE }) })).statusCode).toBe(401);
+      expect((await app.inject({ method: "POST", url: "/api/cron/art-base", headers: { authorization: `Bearer ${tokenFor("mirror-art.yml")}`, "content-type": "application/json" }, payload: JSON.stringify({ base: "https://elsewhere.example/x" }) })).statusCode).toBe(400);
+    } finally {
+      delete process.env.BLOB_READ_WRITE_TOKEN;
+    }
   });
 });

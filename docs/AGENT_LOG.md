@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-20 · claude · stack/r22/03-blob-mirror · #361
+- Done: ADR 0013, accepted (Georges: a hosting solution with a Claude connector). Vercel Blob is the art store: the store the uploads already use, made through the Vercel connector, its token on the host. The mirror script writes there with `@vercel/blob` (`assets/{game}/{kind}/{key}.webp`, skipping what the store holds, `--force` for all) and prints the public base last; `/api/cron/art-store` hands the mirror workflow the token (404 while none is set) and `POST /api/cron/art-base` keeps the reported base as `ASSET_BASE`, so the web app reads our copy at once. The R2 keys leave Settings → Keys; DEPLOY.md §7, AGENTS.md's table and the README say so. Dry run: Star Rail lists 660 images.
+- Tests: written first: the cron test takes the token with the mirror's proof only, 404 without one on the host, the base reported and read back through `/api/me`, a bad base refused; actionlint on the workflow.
+- Scope/decisions: Blob's list gives no content hash, so the mirror skips a held path rather than comparing bytes. `config.blobToken` became a getter so a token set later is seen.
+- Next: the docs and the handoff.
+
 ## 2026-10-20 · claude · stack/r22/02-icons-bigger · #360
 - Done: round 15 (Georges: "make every game icon more visible"). A logo keeps its shape: in the strip a wordmark (wider than twice its height, tagged on load) stands at 36 px and the chip sizes to it, dropping the name it already says (kept for screen readers and hover); the games list gives the logo its own grid column at 56 px; the game's header shows it at 96 px on its own; Settings → Art at 32 px. The drawn emblems grow the same way. Home's Dailies card, the Stamina and Pulls tables and the next-resets rows carry each game's mark beside its name.
 - Tests: written first: a journey uploads a wide logo and measures it in the strip (at least 29 px high, wider than twice its height), the list (56) and the header (96), and finds the mark on Home's Dailies card and Stamina table; the emblem's sizes too.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: integration with the source stubbed: the working codes only, their rewards in words and their official page, nothing redeemed; a code ticked then unticked; one request for two visits; a source down and a game without a source answer unavailable. Journey: two codes served to the page, rewards, Copy and the Redeem link's address; ticked, one moves under Redeemed 1.
 - Scope/decisions: DESIGN.md §2 keeps writing to game accounts out (no redeeming for the player); listing codes and linking to the official page reads only. The API is called, its code not used (GPL-3.0 applies to its code, not to its answers). WuWa, Endfield and NTE: no source found.
 - Next: ADR 0011's renames, the shared package first.
-
-## 2026-10-15 · claude · stack/r14/04-review-fixes · #319
-- Done: the first fixes of round 11's page-by-page review. Home: since round 9 moved it beside the pulls, the battle pass carousel had no height and showed only its title; it has 300 px now. Materials: every material with its icon, Needed only on by default while goals need some (the needed were lost among 300 rows). Profile: the wallet's currencies with their icons. Characters: a dupes filter in the game's terms (E0–E6, C0–C6), on the owned characters' builds. Filter chips are named by what they show (E2, ★5) rather than their raw value, for screen readers.
-- Tests: written first: Home's battle pass card at least 220 px high with its game band inside; Materials after a plan for Kafka: Needed only ticked, Credit with its icon, every row needed, a row needing 0 once unticked; every wallet row with its currency icon; Saber at E2 and Archer at E0: E0 to E6 listed, E2 shows Saber only.
-- Scope/decisions: the current banners' featured units (Home's banner art, the Pulls cards) come from the official feed's announcements; one Genshin banner in the local data lacks them, to look at with the feed.
-- Next: redeem codes per game (seria's hoyo-codes API, Genshin, Star Rail and Zenless), then ADR 0011's renames, the shared package first.

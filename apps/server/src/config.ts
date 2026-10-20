@@ -47,8 +47,10 @@ export const config = {
   cookieSecure: bool("COOKIE_SECURE", isProd),
   databaseUrl: envString("DATABASE_URL"),
   uploadDir: envString("UPLOAD_DIR", "./uploads"),
-  /** Vercel Blob token; when set, uploads go to Blob instead of local disk. */
-  blobToken: envString("BLOB_READ_WRITE_TOKEN"),
+  /** Vercel Blob token (the art store, ADR 0013), read on each use; when set, uploads go to Blob instead of local disk. */
+  get blobToken(): string {
+    return envString("BLOB_READ_WRITE_TOKEN");
+  },
 
   /** The repository whose workflows may call the cron routes with GitHub's OIDC proof (ADR 0012). */
   githubRepository: envString("GITHUB_REPOSITORY", "adam-riffi/gacha-hub"),
