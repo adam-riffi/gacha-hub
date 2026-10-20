@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-20 · claude · stack/r22/04-docs · #362
+- Done: ASSETS.md counts what the sources now cover (91 fetched at one click) and lists the 53 pictures still only Georges can give, by kind and game; NOTICE credits the wikis and StarRailRes for the slot pictures; the handoff is rewritten for the deploy.
+- Tests: docs only.
+- Scope/decisions: none.
+- Next: deploy at Georges's word, then press "Fetch 91 from the sources" in Settings → Art and run the mirror-art workflow once; round 16 (history data and sections).
+
 ## 2026-10-20 · claude · stack/r22/03-blob-mirror · #361
 - Done: ADR 0013, accepted (Georges: a hosting solution with a Claude connector). Vercel Blob is the art store: the store the uploads already use, made through the Vercel connector, its token on the host. The mirror script writes there with `@vercel/blob` (`assets/{game}/{kind}/{key}.webp`, skipping what the store holds, `--force` for all) and prints the public base last; `/api/cron/art-store` hands the mirror workflow the token (404 while none is set) and `POST /api/cron/art-base` keeps the reported base as `ASSET_BASE`, so the web app reads our copy at once. The R2 keys leave Settings → Keys; DEPLOY.md §7, AGENTS.md's table and the README say so. Dry run: Star Rail lists 660 images.
 - Tests: written first: the cron test takes the token with the mirror's proof only, 404 without one on the host, the base reported and read back through `/api/me`, a bad base refused; actionlint on the workflow.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: no behaviour changes: type check clean, the shadowed names (`@typescript-eslint/no-shadow`, read from a JSON report) are the same as before ADR 0011, once five harmless new ones were given distinct names (so no reference moved to another variable), and the full suite passes.
 - Scope/decisions: `x` and `y` stay where they are coordinates (charts, series); words of three letters (`doc`, `key`, `now`, `row`) stay. Objects for the shared domain come next with the server's services, area by area.
 - Next: the server's names (`gi`, `qc`-style), then the web's lib and CSS utilities, then each page.
-
-## 2026-10-15 · claude · stack/r14/05-redeem-codes · #320
-- Done: each game's redeem codes on its Activities page (round 11's review: the codes sites are the first of the "X websites"). The working codes come from seria's hoyo-codes API (Genshin, Star Rail and Zenless; it checks them), asked at most once an hour per game through a `RedeemCodeFeed`; each code shows its rewards in words ("Primogem ×60 · Mora ×20000"), Copy, Redeem ↗ on HoYoverse's own page, and a Redeemed tick kept in a new `RedeemedCode` table (row level security on), the redeemed ones moving below. Games without a source show no card; a source that is down says so.
-- Tests: written first: integration with the source stubbed: the working codes only, their rewards in words and their official page, nothing redeemed; a code ticked then unticked; one request for two visits; a source down and a game without a source answer unavailable. Journey: two codes served to the page, rewards, Copy and the Redeem link's address; ticked, one moves under Redeemed 1.
-- Scope/decisions: DESIGN.md §2 keeps writing to game accounts out (no redeeming for the player); listing codes and linking to the official page reads only. The API is called, its code not used (GPL-3.0 applies to its code, not to its answers). WuWa, Endfield and NTE: no source found.
-- Next: ADR 0011's renames, the shared package first.

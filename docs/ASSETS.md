@@ -44,118 +44,52 @@ Since 2026-10-17 each item is a slot of Settings → Art: an upload replaces the
 | **Daily and weekly tasks** | the dashboards, Activities | each game's `defaultTasks` (Daily Commissions, Weekly Bosses, Simulated Universe, Notorious Hunt…) |
 | **Banner kinds** | Pulls | character, weapon, standard, bangboo, chronicled, the Arsenal… (a glyph per kind today) |
 
-## Every picture still needed (2026-10-17, exhaustive)
+## Every picture still needed (2026-10-20)
 
-Georges, 2026-10-17: "make me an exhaustive list of assets you need". This is the whole of it, checked screen by screen and generated from the app's own list of picture slots (`artSlots` in @gacha/shared). The same list lives in the app: **Settings → Art** shows each slot with its state and takes an upload in place (PNG, JPEG, WebP or GIF, up to 4 MB), stored in Vercel Blob, never committed (ADR 0006). No file names are needed any more: upload straight into the right tile.
+Georges, 2026-10-17: "make me an exhaustive list of assets you need"; 2026-10-20: "find me all of the assets". Found on 2026-10-20: 91 of the 144 pictures, on the game wikis (Genshin, Star Rail, Zenless, Wuthering Waves, Endfield on Fandom and wiki.gg, NTE), StarRailRes, Enka and Hakushin, each checked by eye on a contact sheet (`apps/server/src/art/sources.ts`, a credit each in NOTICE). They come into the store at one click: **Settings → Art → "Fetch from the sources"**. The same tab takes an upload for the rest, in place (PNG, JPEG, WebP or GIF, up to 4 MB; icons 256 × 256, wide pictures 1280 × 720), stored in Vercel Blob, never committed (ADR 0006, ADR 0013).
 
-**229 slots: 85 come from a source already, 144 need a picture from Georges.** Most visible first:
+**229 slots: 85 come from a source the app reads live, 91 were found on the wikis and data repositories and come in at one click (Settings → Art, "Fetch from the sources"), 53 still need a picture from Georges.** The 53, by kind then game:
 
-| Kind | Needed | Shape | Where it shows |
-| --- | --- | --- | --- |
-| Game logos | 6 | icon, square, 256 × 256 or larger | the big square at the top of each game page, its card in Games, the chips along the top (a drawn emblem today) |
-| Endgame modes | 14 | icon, square, 256 × 256 | each mode's card on Endgame, Home's next resets, each game's Cycles (no picture today) |
-| Battle passes | 6 | wide, 1280 × 720 | Home's battle pass card (the game's hero today) and the version card |
-| 30-day passes | 5 | icon, square, 256 × 256 | the Monthly list on Activities |
-| Banners | 27 | wide, 1280 × 720 | the Pulls page's card for each banner while no featured unit shows (a star today) |
-| Monthly shops | 5 | icon, square, 256 × 256 | the Monthly list on Activities |
-| Daily and weekly tasks | 35 | icon, square, 256 × 256 | each task's row on Activities (text only today) |
-| Currencies no source has | 7 | icon, square, 128 × 128 or larger | the wallet, the dashboards, the reminder DMs (a drawn icon today) |
-| Elements no source has | 5 | icon, square, 128 × 128 | the Characters filters and cards (the name only today) |
-| Weapon types no source has | 10 | icon, square, 128 × 128 | the Characters and Weapons filters and cards (the name only today) |
-| Gear sets no source has | 9 | icon, square, 256 × 256 | the gear pages (a placeholder today) |
-| Materials no source has | 14 | icon, square, 128 × 128 | Materials and the planner (a placeholder today) |
-| Characters and Bangboo no source has | 1 | icon, square, 256 × 256 | Teams and the pickers |
+### Game logos — 1
 
-### Game logos — 6
-
-- **Genshin Impact** (1): Genshin Impact logo
-- **Honkai: Star Rail** (1): Honkai: Star Rail logo
-- **Zenless Zone Zero** (1): Zenless Zone Zero logo
-- **Wuthering Waves** (1): Wuthering Waves logo
 - **Arknights: Endfield** (1): Arknights: Endfield logo
-- **Neverness to Everness** (1): Neverness to Everness logo
 
-### Endgame modes — 14
+### Endgame modes — 2
 
-- **Genshin Impact** (3): Spiral Abyss, Imaginarium Theater, Stygian Onslaught
-- **Honkai: Star Rail** (4): Memory of Chaos, Pure Fiction, Apocalyptic Shadow, Anomaly Arbitration
-- **Zenless Zone Zero** (3): Shiyu Defense, Deadly Assault, Lost Void
-- **Wuthering Waves** (2): Tower of Adversity, Whimpering Wastes
 - **Arknights: Endfield** (1): Echoes of War
 - **Neverness to Everness** (1): Beyond the Rails
 
-### Battle passes — 6
+### Banners — 16
 
-- **Genshin Impact** (1): Gnostic Hymn
-- **Honkai: Star Rail** (1): Nameless Honor
-- **Zenless Zone Zero** (1): New Eridu City Fund
-- **Wuthering Waves** (1): Pioneer Podcast
-- **Arknights: Endfield** (1): Protocol Pass
-- **Neverness to Everness** (1): Circle Bounty
-
-### 30-day passes — 5
-
-- **Genshin Impact** (1): Blessing of the Welkin Moon
-- **Honkai: Star Rail** (1): Express Supply Pass
-- **Zenless Zone Zero** (1): Inter-Knot Membership
-- **Wuthering Waves** (1): Lunite Subscription
-- **Neverness to Everness** (1): Riftcrystal Mining Permit
-
-### Banners — 27
-
-- **Genshin Impact** (5): Character event wish, Weapon event wish, Chronicled wish, Standard wish, Beginners' wish
-- **Honkai: Star Rail** (6): Character event warp, Light cone event warp, Collaboration character warp, Collaboration light cone warp, Stellar warp, Departure warp
+- **Genshin Impact** (2): Character event wish, Chronicled wish
+- **Honkai: Star Rail** (4): Character event warp, Light cone event warp, Collaboration character warp, Collaboration light cone warp
 - **Zenless Zone Zero** (4): Exclusive channel, W-Engine channel, Stable channel, Bangboo channel
-- **Wuthering Waves** (6): Featured resonator convene, Featured weapon convene, Standard convene, Standard weapon convene, Novice convene, Beginner's Choice convene
-- **Arknights: Endfield** (5): Chartered headhunting, Arsenal, Joint headhunting, Basic headhunting, Beginner headhunting
+- **Wuthering Waves** (2): Featured resonator convene, Featured weapon convene
+- **Arknights: Endfield** (3): Joint headhunting, Basic headhunting, Beginner headhunting
 - **Neverness to Everness** (1): Limited Board
 
-### Monthly shops — 5
+### Monthly shops — 1
 
-- **Genshin Impact** (1): Paimon's Bargains
-- **Honkai: Star Rail** (1): Embers Exchange
-- **Zenless Zone Zero** (1): Signal Shop
-- **Wuthering Waves** (1): Coral Shop
 - **Neverness to Everness** (1): Lost Exchange
 
-### Daily and weekly tasks — 35
+### Daily and weekly tasks — 23
 
-- **Genshin Impact** (6): Daily Commissions, Weekly Bosses, Commission reward, Spend Resin, Check-in, Parametric Transformer
-- **Honkai: Star Rail** (5): Daily Training, Assignments, Simulated Universe, Check-in, Echo of War
-- **Zenless Zone Zero** (5): Daily Missions, Scratch Card, Coffee, Video store, Notorious Hunt
-- **Wuthering Waves** (3): Daily Activity, Nightmare Nests, Weekly Bosses
+- **Genshin Impact** (3): Weekly Bosses, Commission reward, Check-in
+- **Honkai: Star Rail** (1): Check-in
+- **Zenless Zone Zero** (2): Daily Missions, Scratch Card
+- **Wuthering Waves** (1): Nightmare Nests
 - **Arknights: Endfield** (8): Daily Tasks, AIC output collected, Depot delivery, Outpost trades, Spend Sanity, Credit store, Weekly missions, Severe Energy Alluvium
 - **Neverness to Everness** (8): Daily quests, Café income, Anomaly Pilgrimage, Nakupenda Pool, Fortune reading, Gifts, Auction House, Old Mailbox commission
 
-### Currencies no source has — 7
+### Currencies — 1
 
-- **Arknights: Endfield** (5): Sanity, Oroberyl, Arsenal Tickets, AIC lines running, Stock Bills
-- **Neverness to Everness** (2): Tycoon Level, City Stamina
+- **Neverness to Everness** (1): Tycoon Level
 
-### Elements no source has — 5
-
-- **Arknights: Endfield** (5): Cryo, Electric, Heat, Nature, Physical
-
-### Weapon types no source has — 10
-
-- **Wuthering Waves** (5): Broadblade, Gauntlets, Pistols, Rectifier, Sword
-- **Arknights: Endfield** (5): Arts Unit, Greatsword, Handcannon, Polearm, Sword
-
-### Gear sets no source has — 9
+### Gear sets — 9
 
 - **Neverness to Everness** (9): Fireflies and the Forest, Lost Radiance, Street Boxer, Crimson: Twin Butterflies, Devil's Blood: Curse, Diabolos, Kingdom's Guard, Shadow Creed, Speedy Hedgehog
 
-### Materials no source has — 14
-
-- **Arknights: Endfield** (14): Eureka Teabox, Yinglung Dumbbells, Woven Aggelos, Scrimshaw of the Pack, Chubby Lung: Fangxing Memorabilia, Fin-n-Chips, Bizarro Cupcake, Aurylene Camera, Cosmic Gate Puzzle, Surfing Festival Ticket, Breeze of Kjersch, Tidestone Specimen, Simonch Shawl, Frontiers Watch
-
-### Characters and Bangboo no source has — 1
-
-- **Zenless Zone Zero** (1): Eous
-
-### Already from a source — 85
-
-Currencies (31: every game but Endfield's and two of NTE's), elements (33: every game but Endfield) and weapon types (21: Genshin, Star Rail's paths, Zenless's specialties), each URL checked by hand; an upload replaces any of them. Beyond the slots, every character, weapon, gear set and material of the catalogs has art from a source except the ones listed above, and each game has a hand-checked hero splash.
+Not found anywhere: the Endfield logo and Echoes of War (the wiki has only its own badge and character art), Beyond the Rails and NTE's gear sets (NTE's data holds one placeholder for all nine, its wiki nothing), the event-kind banners (each shows its featured unit's art already, so a picture only matters while none runs), and the task icons (in-game UI the wikis do not carry). The 85 a source reads live: currencies of five games, elements of five, weapon types of three, each URL checked by hand; an upload replaces any of them.
 
 ## How to add them
 
