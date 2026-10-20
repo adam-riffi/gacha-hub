@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-20 · claude · stack/r22/01-art-sources · #359
+- Done: round 15 (Georges, 2026-10-20: "find me all of the assets, this is a private project i do not intend to have any commercial use"). 91 pictures found for the slots and checked by eye on contact sheets: the game wikis (Genshin, Star Rail, Zenless, Wuthering Waves, Endfield on Fandom and wiki.gg, NTE), StarRailRes at a pinned commit, Enka, Hakushin; listed in `apps/server/src/art/sources.ts` with a credit each. `POST /api/art/fetch` takes the named slots, or the next batch not yet held, resolves a wiki file through the wiki's API and fetches it with a browser's own headers (the static hosts challenge a bare client), checks it is a picture, stores it like an upload and audits it; what fails is reported by name and skipped in the next batch. Settings → Art gets "Fetch n from the sources", eight at a time with a running count. Two dark-on-transparent icons carry an inversion flag (new column) and show inverted. Checked against the live wikis in dev: 91 of 91 in about four minutes.
+- Tests: written first: the fetch route (named keys, the next batch, a skip list, a failure reported and skipped, no source, owner only, audited by name) and the Art tab's journey (batches answered by hand, the count); every source entry is a real slot with an https URL and a credit.
+- Scope/decisions: rejected on sight: the Endfield wiki's own badge as a logo, character art for Echoes of War, screenshots for Chronicled wish, Beyond the Rails and Anomaly Pilgrimage; SVG stays refused by the store, so the Wuthering Waves logo comes from the wiki's PNG wordmark. The sources are a TypeScript module: the base tsconfig turns JSON imports off on purpose.
+- Next: the icons at a readable size.
+
 ## 2026-10-17 · claude · stack/r21/06-docs · #357
 - Done: ASSETS.md lists every picture still needed, 144 of 229 slots, by kind then game, generated from the app's own slot list so it matches Settings → Art: 6 logos, 14 endgame modes, 6 battle passes, 5 30-day passes, 27 banners, 5 shops, 35 tasks, 7 currencies, 5 elements, 10 weapon types, 9 gear sets, 14 materials, 1 Bangboo; the 85 a source covers counted apart. The handoff is rewritten.
 - Tests: docs only.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: each history starts with its game's first banner, runs in date order, holds over 100 banners, every featured id in the catalog; ZZZ, WuWa, Endfield and NTE have none. Integration: Venti's runs reach back to 2020-09-28, six or more; a stored "Ballad in Goblets" on that run replaces it without adding one.
 - Scope/decisions: no dated source was found for ZZZ, WuWa, Endfield or NTE (searched GitHub and the web; guides only), so their last seen reads the stored banners. The history is server-side only; the timeline's paging back still reads stored banners.
 - Next: the high items of round 11's review (Home's banners and battle pass, Pulls' featured units, Materials' icons and needed-first, a dupes filter).
-
-## 2026-10-15 · claude · stack/r14/02-ownership-filters · #317
-- Done: round 11's ownership filters (Georges: "there should be some common sense features like filtering characters or anything on ownership/non ownership"). One `OwnershipFilter` (All · Owned · Not owned · Wishlist, each with its count, one pressed, the pressed one back to All) on Characters, in place of round 9's Owned only, and on Weapons, which had no Not owned. Weapons also show their last banner on their cards, as characters do, and gain a Sort: rarity, name, or last seen.
-- Tests: written first: Jing Yuan owned and Luocha not: the four views with counts, Not owned shows Luocha only, Owned Jing Yuan only, All both; on Weapons, a copy of Night on the Milky Way and a past banner of In the Night: Not owned shows In the Night with its last banner ("1 mo ago") and hides the copy, Owned the reverse. Round 9's Owned only steps now press Owned in the same group.
-- Scope/decisions: round 9's test asserted no Not owned button, meaning no screen of its own for unowned characters; Not owned is a filter on the same cards, which round 11 asks for. The team window keeps its owned-first order.
-- Next: the banner history importer.

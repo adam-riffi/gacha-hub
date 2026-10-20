@@ -12,6 +12,8 @@
 .art-count b { font-size: 32px; margin-right: 6px; }
 .art-count.is-needed b { color: var(--accent); }
 .art-intro p { margin: 0 0 12px; font-size: 15px; }
+.art-fetch { gap: 14px; margin: 0 0 12px; }
+.art-fetch-status { font-size: 15px; }
 .art-game h3 { gap: 10px; }
 .art-mark { width: 28px; height: 28px; }
 .art-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
