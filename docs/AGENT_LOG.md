@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-20 · claude · stack/r23/04-docs · #367
+- Done: ASSETS.md counts round 16 (235 slots, 93 at one click, the 6 key-art slots and the rest still from Georges), the #363 entry the merge job left out, the handoff for round 16 (merged, waiting for the word to deploy).
+- Tests: docs only.
+- Scope/decisions: none.
+- Next: deploy at Georges's word; the history round.
+
 ## 2026-10-20 · claude · stack/r23/03-order · #366
 - Done: round 16 (Georges: "so many assets are crooked or out of place/order. you can do better UI wise… ICONS FIRST text second"). The strip: any logo, wordmark or square, stands alone at one height (36 px, 40 px picked) and the chip sizes to it, the name kept for screen readers and hover; emblem chips keep their name. The games list: the mark's column is fixed at 190 px, so every title starts at the same place. Home's Dailies card: a logo stands 56 px high with the game's name small under it; an emblem sits beside the name. Mode and task icons sit in one tile each (28 px in lists, 44 px on the Endgame cards; contained, on a surface with an edge), so pictures of mixed padding line up, and a task without its picture keeps an empty tile so the names line up; a banner's wide art (Game8, the wikis) shows at its shape on Pulls, not squeezed into the square. A **key-art slot per game** (Settings → Art, wide): the hero of its cards (the games list's row, Home's idle Banners card, the timeline's panel) when the owner has put one, the character splash otherwise.
 - Tests: written first: a journey uploads a square logo and a key art, finds the logo alone in the strip at 34 px or more, the title of a game with a logo level with one without, and the key art as the row's hero; the logos and art journeys still pass.
@@ -31,6 +37,12 @@ Entry format:
 - Tests: written first: the three parsers keep each notice's picture on its banners and events (every warp of a split notice gets it); the policy test names the host; a journey seeds a banner with a picture and finds it on Home, Pulls and the timeline.
 - Scope/decisions: a banner without a picture (admin uploads, the Game8 and wiki banners) shows what it did; the picture is hotlinked from HoYoverse's own CDN (the app already reads their feed), not copied to the store. The Home card's veil over key art is 0.18 (0.4 over a splash): the band carries the text.
 - Next: the standard banners' own art from Game8 (02), then the order fixes (03).
+
+## 2026-10-20 · claude · fix/mirror-fresh-token · #363
+- Done: the mirror-art workflow's report of where the pictures landed failed with 401: GitHub's OIDC token had expired during the ten-minute mirror. The workflow asks for a fresh proof before `POST /api/cron/art-base`. Re-run in production: 3,315 images in the store, `assetBase` read back from `/api/me` as the Blob base.
+- Tests: actionlint; the re-run.
+- Scope/decisions: none.
+- Next: round 16.
 
 ## 2026-10-20 · claude · stack/r22/04-docs · #362
 - Done: ASSETS.md counts what the sources now cover (91 fetched at one click) and lists the 53 pictures still only Georges can give, by kind and game; NOTICE credits the wikis and StarRailRes for the slot pictures; the handoff is rewritten for the deploy.
@@ -241,15 +253,3 @@ Entry format:
 - Tests: written first: a journey (a banner featuring Blade, March 7th owned and Asta: three icons, Blade (the 5★) first and "not owned", March 7th "owned", "N% with 13 pulls") and unit tests for `PullBudget` (13 warps from 1,600 Jade and 3 passes, the pity read, a guarantee raising the chance, Endfield's Arsenal tickets only on its weapon banner).
 - Scope/decisions: the local sample banners have no featured units; the official feed's do (imported locally to check: Genshin, Star Rail and Zenless banners all list theirs). Five units at most, then "+n".
 - Next: the Pulls page's banner cards and history with the featured units as icons; the Timeline's featured icons.
-
-## 2026-10-15 · claude · stack/r15/05-build-objects · #325
-- Done: ADR 0011's first domain objects after the renames. `GearPiece` holds a piece's set and substats and answers its crit value; `CharacterBuild` holds a build's document with its game and answers what the cards and the sheet show: its stats with their set bonuses (`statKpis`), its role's `kpis`, `completedSets` and `gearSetLabel`, the `offSetSlots` to farm, its name-box `line`, its `dupeBadge` and its `baseStats`. They replace eleven `(game, doc)` helpers in `builds.ts`; the web's twenty callers build one object per build and ask it. DESIGN.md §6's code structure lists the objects so far.
-- Tests: written first: the build tests ask the objects (they failed with "CharacterBuild is not a constructor"), plus two new ones: completed sets with their sizes, and base stats (character plus weapon, the weapon's ATK% applied, level 1 when none is typed). 684 tests; shadowed names unchanged.
-- Scope/decisions: the game-level rules (`buildRole`, `skillsField`, `weaponHolder`, `cardStatLabels`, `sheetStats`, `cardStatOptions`, `statKind`) stay functions: they read a game, not a build.
-- Next: the pull budget and pity, a game's reset clock, the planner's costs as objects; the server's routes thin over services.
-
-## 2026-10-15 · claude · stack/r15/04-css-utilities · #324
-- Done: ADR 0011's CSS utilities named for what they do: `.mu` → `.text-muted`, `.mn` → `.font-mono`, `.cd` → `.font-display`, `.sf` → `.font-serif`. 436 uses in the styles, the components and four journeys' selectors, renamed as whole class words only (a script over the CSS selectors and the class strings).
-- Tests: no behaviour change: same rules in the same order; the full suite passes; Home's screenshot shows the mono labels, condensed figures, serif banner title and muted text as before.
-- Scope/decisions: the chart marks ported from the dashboard design (`.gl`, `.rg`, `.mk`, `.lb`…) keep their names for now; they are the design's own vocabulary, documented in `charts.css`.
-- Next: objects for the domain: a gear piece and a character build first (ADR 0011's list).

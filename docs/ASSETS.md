@@ -31,7 +31,7 @@ Since 2026-10-17 each item is a slot of Settings → Art: an upload replaces the
 
 | What | Where it shows | Items |
 | --- | --- | --- |
-| **Game icon and background** | the strip, Home, the hub's header | round 12: every game has a drawn emblem (`GameMark`) and a hand-checked hero splash (`art.hero`); the owner's `icon.png`/`background.jpg` still win once dropped in |
+| **Game icon and background** | the strip, Home, the hub's header | round 12: every game has a drawn emblem (`GameMark`) and a hand-checked hero splash (`art.hero`); the owner's `icon.png`/`background.jpg` still win once dropped in. Round 16: a **key-art slot per game** (Settings → Art, wide): the hero of its cards (the games list's row, Home's idle Banners card, the timeline's panel) once put, the splash until then |
 | **Currencies** | Home, a game's dashboard, Pulls, Activities, the DM | round 12: **sourced** for Genshin (Enka), Star Rail (Yatta), ZZZ + NTE (Hakushin), WuWa (wuthery) — the keys live in each game module's `currencies`; Endfield has no item-icon source |
 | **30-day passes** | the dashboard's pass card | Blessing of the Welkin Moon, Express Supply Pass, Inter-Knot Membership, Lunite Subscription, Riftcrystal Mining Permit |
 | **Battle passes** | the dashboard, the timeline | Gnostic Hymn, Nameless Honor, New Eridu City Fund, Pioneer Podcast, Protocol Pass, Circle Bounty |
@@ -46,26 +46,30 @@ Since 2026-10-17 each item is a slot of Settings → Art: an upload replaces the
 
 ## Every picture still needed (2026-10-20)
 
-Georges, 2026-10-17: "make me an exhaustive list of assets you need"; 2026-10-20: "find me all of the assets". Found on 2026-10-20: 91 of the 144 pictures, on the game wikis (Genshin, Star Rail, Zenless, Wuthering Waves, Endfield on Fandom and wiki.gg, NTE), StarRailRes, Enka and Hakushin, each checked by eye on a contact sheet (`apps/server/src/art/sources.ts`, a credit each in NOTICE). They come into the store at one click: **Settings → Art → "Fetch from the sources"**. The same tab takes an upload for the rest, in place (PNG, JPEG, WebP or GIF, up to 4 MB; icons 256 × 256, wide pictures 1280 × 720), stored in Vercel Blob, never committed (ADR 0006, ADR 0013).
+Georges, 2026-10-17: "make me an exhaustive list of assets you need"; 2026-10-20: "find me all of the assets". Found on 2026-10-20: 93 of the 144 pictures, on Game8's banner pages (round 16, the standard and beginner banners), the game wikis (Genshin, Star Rail, Zenless, Wuthering Waves, Endfield on Fandom and wiki.gg, NTE), StarRailRes, Enka and Hakushin, each checked by eye on a contact sheet (`apps/server/src/art/sources.ts`, a credit each in NOTICE). They come into the store at one click: **Settings → Art → "Fetch from the sources"**. The same tab takes an upload for the rest, in place (PNG, JPEG, WebP or GIF, up to 4 MB; icons 256 × 256, wide pictures 1280 × 720), stored in Vercel Blob, never committed (ADR 0006, ADR 0013).
 
-**229 slots: 85 come from a source the app reads live, 91 were found on the wikis and data repositories and come in at one click (Settings → Art, "Fetch from the sources"), 53 still need a picture from Georges.** The 53, by kind then game:
+**235 slots: 85 come from a source the app reads live, 93 were found on Game8, the wikis and the data repositories and come in at one click (Settings → Art, "Fetch from the sources"), 57 still need a picture from Georges.** The 57, by kind then game:
 
 ### Game logos — 1
 
 - **Arknights: Endfield** (1): Arknights: Endfield logo
+
+### Key art — 6
+
+One official picture per game, wide (round 16, Georges: "for banners or game cards you can use real game art like these"): the hero of its cards. Genshin Impact, Honkai: Star Rail, Zenless Zone Zero, Wuthering Waves, Arknights: Endfield, Neverness to Everness. The key visuals on the games' own sites are the pictures to take.
 
 ### Endgame modes — 2
 
 - **Arknights: Endfield** (1): Echoes of War
 - **Neverness to Everness** (1): Beyond the Rails
 
-### Banners — 16
+### Banners — 14
 
 - **Genshin Impact** (2): Character event wish, Chronicled wish
 - **Honkai: Star Rail** (4): Character event warp, Light cone event warp, Collaboration character warp, Collaboration light cone warp
 - **Zenless Zone Zero** (4): Exclusive channel, W-Engine channel, Stable channel, Bangboo channel
 - **Wuthering Waves** (2): Featured resonator convene, Featured weapon convene
-- **Arknights: Endfield** (3): Joint headhunting, Basic headhunting, Beginner headhunting
+- **Arknights: Endfield** (1): Joint headhunting
 - **Neverness to Everness** (1): Limited Board
 
 ### Monthly shops — 1
