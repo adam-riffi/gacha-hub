@@ -85,6 +85,14 @@ describe("the art slots fetched from their sources", () => {
     expect(second.left).toBe(sources.length - 6);
   });
 
+  it("leaves the keys it is told to skip out of the next batch, so a source that failed is not asked again", async () => {
+    const first = (await fetchSlots({ limit: 2 })).json;
+    const skipped = sources.filter((entry) => !first.fetched.some((row) => row.key === entry.slot)).slice(0, 2).map((entry) => entry.slot);
+    const second = (await fetchSlots({ limit: 2, skip: skipped })).json;
+    for (const key of skipped) expect(second.fetched.map((row) => row.key)).not.toContain(key);
+    expect(second.fetched).toHaveLength(2);
+  });
+
   it("reports a source that fails or is not a picture, saves nothing for it, and goes on with the rest", async () => {
     await prisma.$executeRaw`SELECT 1`;
     const sourcesWithBad = [...sources];
