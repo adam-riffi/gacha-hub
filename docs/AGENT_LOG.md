@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-20 · claude · stack/r23/01-feed-art · #364
+- Done: round 16 (Georges, 2026-10-20: "for banners or game cards you can use real game art like these… the whole concept of this project's UI design is ICONS FIRST text second"). The official feeds' announcements carry their key art (`banner` on Genshin's list items, `img` or `banner` on Star Rail's and Zenless's picture notices); the parser keeps it as `payload.image` on every banner and event it makes, and the cards show it: Home's Banners card full-bleed (anchored on its characters, under a lighter veil than a splash gets), the Pulls card across its top (180 px, the title in view), the timeline's selected panel in place of the splash. The picture host (`sdk.hoyoverse.com`) joins the image policy. Checked in dev against the live feeds: Skirk's "Void Star's Advent" on all three.
+- Tests: written first: the three parsers keep each notice's picture on its banners and events (every warp of a split notice gets it); the policy test names the host; a journey seeds a banner with a picture and finds it on Home, Pulls and the timeline.
+- Scope/decisions: a banner without a picture (admin uploads, the Game8 and wiki banners) shows what it did; the picture is hotlinked from HoYoverse's own CDN (the app already reads their feed), not copied to the store. The Home card's veil over key art is 0.18 (0.4 over a splash): the band carries the text.
+- Next: the standard banners' own art from Game8 (02), then the order fixes (03).
+
 ## 2026-10-20 · claude · stack/r22/04-docs · #362
 - Done: ASSETS.md counts what the sources now cover (91 fetched at one click) and lists the 53 pictures still only Georges can give, by kind and game; NOTICE credits the wikis and StarRailRes for the slot pictures; the handoff is rewritten for the deploy.
 - Tests: docs only.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: no behaviour change: types clean; the shadowed names (`@typescript-eslint/no-shadow`, read from a JSON report) are exactly the eight there were before ADR 0011, so no reference moved to another variable; the full suite passes. Found on the way: the earlier shadow check used ESLint's `unix` format, which ESLint 9 no longer ships, so it had read nothing; the real check found five harmless new shadows in #321, given distinct names there.
 - Scope/decisions: Fastify's `req` and `reply` stay (the framework's names); three-letter words stay.
 - Next: the web (1,593 short names, page by page), then objects for the domain.
-
-## 2026-10-15 · claude · stack/r15/01-shared-names · #321
-- Done: ADR 0011's first area, the shared package. 449 one- and two-letter declarations named for what they hold (`(b) =>` became `build`, `(a, b)` comparators `first, second`, `cx, cy, r` `centerX, centerY, radius`, `gi`-style abbreviations spelled out), plus the abbreviations `num` (`numberOrNull`), `pct`, `deg`, `tau`, `hBase`, `hMax` and the four `L` imports (the games' `*_LIMITS`). Every rename went through TypeScript's language service (a small script in the scratchpad: list the short declarations, name each by its code, apply), so every reference followed; two collisions it allowed (`amount`, `version`) were named apart by hand. ESLint's `id-length` (3 at least; `id`, `to`, `x`, `y` and a few words allowed) now holds the shared package.
-- Tests: no behaviour changes: type check clean, the shadowed names (`@typescript-eslint/no-shadow`, read from a JSON report) are the same as before ADR 0011, once five harmless new ones were given distinct names (so no reference moved to another variable), and the full suite passes.
-- Scope/decisions: `x` and `y` stay where they are coordinates (charts, series); words of three letters (`doc`, `key`, `now`, `row`) stay. Objects for the shared domain come next with the server's services, area by area.
-- Next: the server's names (`gi`, `qc`-style), then the web's lib and CSS utilities, then each page.
