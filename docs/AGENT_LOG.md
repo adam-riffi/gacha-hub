@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-20 · claude · stack/r23/03-order · #366
+- Done: round 16 (Georges: "so many assets are crooked or out of place/order. you can do better UI wise… ICONS FIRST text second"). The strip: any logo, wordmark or square, stands alone at one height (36 px, 40 px picked) and the chip sizes to it, the name kept for screen readers and hover; emblem chips keep their name. The games list: the mark's column is fixed at 190 px, so every title starts at the same place. Home's Dailies card: a logo stands 56 px high with the game's name small under it; an emblem sits beside the name. Mode and task icons sit in one tile each (28 px in lists, 44 px on the Endgame cards; contained, on a surface with an edge), so pictures of mixed padding line up, and a task without its picture keeps an empty tile so the names line up; a banner's wide art (Game8, the wikis) shows at its shape on Pulls, not squeezed into the square. A **key-art slot per game** (Settings → Art, wide): the hero of its cards (the games list's row, Home's idle Banners card, the timeline's panel) when the owner has put one, the character splash otherwise.
+- Tests: written first: a journey uploads a square logo and a key art, finds the logo alone in the strip at 34 px or more, the title of a game with a logo level with one without, and the key art as the row's hero; the logos and art journeys still pass.
+- Scope/decisions: the tiles are square with an edge, like every surface here (no radius anywhere in the design). The key art goes through HeroArt, so every spot that shows a game's hero takes it, with no new component.
+- Next: the docs and the handoff.
+
 ## 2026-10-20 · claude · stack/r23/02-game8-sources · #365
 - Done: round 16 (Georges: "sites like game8 have all the assets you might need"). The standard and beginner banners get their own art from Game8's banner pages instead of wiki screenshots: Genshin's Wanderlust Invocation, Wuthering Waves' Tidal Chorus and Utterance of Marvels, Endfield's Basic Headhunting and New Horizons (the last two had no picture). Game8's `/show` URLs serve the picture to the fetcher as it is (either referer passes), so `POST /api/art/fetch` needed no change; NOTICE credits Game8. 93 pictures now come at one click.
 - Tests: written first: the five slots' sources are Game8 `/show` pictures; the sources test still checks every entry is a real slot with a credit.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: no behaviour change: same rules in the same order; the full suite passes; Home's screenshot shows the mono labels, condensed figures, serif banner title and muted text as before.
 - Scope/decisions: the chart marks ported from the dashboard design (`.gl`, `.rg`, `.mk`, `.lb`…) keep their names for now; they are the design's own vocabulary, documented in `charts.css`.
 - Next: objects for the domain: a gear piece and a character build first (ADR 0011's list).
-
-## 2026-10-15 · claude · stack/r15/03-web-names · #323
-- Done: ADR 0011's third area, the web app. 1,614 one- and two-letter declarations named for what they hold (`(e) =>` → `event`, `qc` → `queryClient`, `(a, b)` comparators → `first, second`, `gi` → `gameInstance`), 92 abbreviations spelled out (`num` → `numberOrNull` / `numberField` by what it reads, `pct` → `percentText`, `cfg` → `config`, `res` → `response`, `ctx` → `context`, `nav` → `navigate`, `setQ` → `setQuery`, `cid` → `catalogId`, `NUM` → `NUMBER_FORMAT`), and the short properties of the app's own shapes (component props `g`, `b`, `c`, `gi`, `pv`, `useAuth`'s `me` → `currentUser`, `PADDING`'s `l, r, t, b` → `left, right, top, bottom`). `id-length` now holds `apps/web/src` too: the whole codebase.
-- Tests: no behaviour change: types clean; the shadowed names (`@typescript-eslint/no-shadow`, JSON report) are the eight from before. A first pass had made 65 new shadows, one of which rebound a reference (a reminder time's Remove filter had become `atTime !== atTime`, always false), so each got a distinct name and the pass was replayed from a clean tree; the full suite passes.
-- Scope/decisions: props and object keys renamed only where the app owns the shape; DTO fields and SVG's `d` stay. Prettier was not run over the files (the repository is not prettier-formatted as a whole; a run would rewrite 18,000 lines).
-- Next: CSS utilities named for what they do (`.mu`, `.mn`, `.cd`, `.sf`), then objects for the domain, area by area.
