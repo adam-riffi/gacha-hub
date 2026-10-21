@@ -1,0 +1,3294 @@
+{
+  "source": "zenless-zone-zero.fandom.com (CC BY-SA), 146 pages, newest revision 191620 on 2026-10-21",
+  "banners": [
+    {
+      "key": "history-character-2024-07-04-mellow-waveride",
+      "name": "Mellow Waveride",
+      "kind": "character",
+      "startsAt": "2024-07-04T10:00:00+08:00",
+      "endsAt": "2024-07-24T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1191",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1111",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1131",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-07-04-dissonant-sonata",
+      "name": "Dissonant Sonata",
+      "kind": "weapon",
+      "startsAt": "2024-07-04T10:00:00+08:00",
+      "endsAt": "2024-07-24T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14119",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13113",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13111",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2024-07-24-unswerving-bullet",
+      "name": "Unswerving Bullet",
+      "kind": "character",
+      "startsAt": "2024-07-24T12:00:00+08:00",
+      "endsAt": "2024-08-13T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1241",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1031",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-07-24-dissonant-sonata",
+      "name": "Dissonant Sonata",
+      "kind": "weapon",
+      "startsAt": "2024-07-24T12:00:00+08:00",
+      "endsAt": "2024-08-13T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14124",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13112",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13103",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2024-08-14-untainted-jade",
+      "name": "Untainted Jade",
+      "kind": "character",
+      "startsAt": "2024-08-14T10:00:00+08:00",
+      "endsAt": "2024-09-04T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1251",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1081",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1061",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-08-14-dissonant-sonata",
+      "name": "Dissonant Sonata",
+      "kind": "weapon",
+      "startsAt": "2024-08-14T10:00:00+08:00",
+      "endsAt": "2024-09-04T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14125",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13106",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13108",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2024-09-04-no-match-found",
+      "name": "(No Match Found)",
+      "kind": "character",
+      "startsAt": "2024-09-04T12:00:00+08:00",
+      "endsAt": "2024-09-24T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1261",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1011",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1271",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-09-04-dissonant-sonata",
+      "name": "Dissonant Sonata",
+      "kind": "weapon",
+      "startsAt": "2024-09-04T12:00:00+08:00",
+      "endsAt": "2024-09-24T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14126",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13101",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13127",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-09-25-dissonant-sonata",
+      "name": "Dissonant Sonata",
+      "kind": "weapon",
+      "startsAt": "2024-09-25T04:00:00+08:00",
+      "endsAt": "2024-10-16T17:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14107",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13111",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13128",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2024-09-25-ember-crowned-overlord",
+      "name": "Ember-Crowned Overlord",
+      "kind": "character",
+      "startsAt": "2024-09-25T10:00:00+08:00",
+      "endsAt": "2024-10-16T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1071",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1111",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1281",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2024-10-16-born-to-burn",
+      "name": "Born to Burn",
+      "kind": "character",
+      "startsAt": "2024-10-16T12:00:00+08:00",
+      "endsAt": "2024-11-05T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1171",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1031",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-10-16-dissonant-sonata",
+      "name": "Dissonant Sonata",
+      "kind": "weapon",
+      "startsAt": "2024-10-16T18:00:00+08:00",
+      "endsAt": "2024-11-05T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14117",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13115",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13103",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-11-06-dissonant-sonata",
+      "name": "Dissonant Sonata",
+      "kind": "weapon",
+      "startsAt": "2024-11-06T04:00:00+08:00",
+      "endsAt": "2024-11-27T17:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14122",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13101",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13108",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2024-11-06-moonlit-serenity",
+      "name": "Moonlit Serenity",
+      "kind": "character",
+      "startsAt": "2024-11-06T10:00:00+08:00",
+      "endsAt": "2024-11-27T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1221",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1011",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1081",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2024-11-27-champion-of-embers",
+      "name": "Champion of Embers",
+      "kind": "character",
+      "startsAt": "2024-11-27T12:00:00+08:00",
+      "endsAt": "2024-12-17T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1161",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1061",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-11-27-dissonant-sonata",
+      "name": "Dissonant Sonata",
+      "kind": "weapon",
+      "startsAt": "2024-11-27T12:00:00+08:00",
+      "endsAt": "2024-12-17T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14116",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13112",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13106",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2024-12-18-honed-blade-of-reflection",
+      "name": "Honed Blade of Reflection",
+      "kind": "character",
+      "startsAt": "2024-12-18T11:00:00+08:00",
+      "endsAt": "2025-01-21T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1091",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1281",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1131",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2024-12-18-per-aspera",
+      "name": "Per Aspera",
+      "kind": "character",
+      "startsAt": "2024-12-18T11:00:00+08:00",
+      "endsAt": "2025-01-21T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1201",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1271",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-12-18-dazzling-choir",
+      "name": "Dazzling Choir",
+      "kind": "weapon",
+      "startsAt": "2024-12-18T11:00:00+08:00",
+      "endsAt": "2025-01-21T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14120",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13115",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13127",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-12-18-dissonant-sonata",
+      "name": "Dissonant Sonata",
+      "kind": "weapon",
+      "startsAt": "2024-12-18T11:00:00+08:00",
+      "endsAt": "2025-01-21T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14109",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13128",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13113",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-01-22-mellow-waveride",
+      "name": "Mellow Waveride",
+      "kind": "character",
+      "startsAt": "2025-01-22T10:00:00+08:00",
+      "endsAt": "2025-02-12T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1191",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1011",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1061",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-01-22-thousand-melodies",
+      "name": "Thousand Melodies",
+      "kind": "character",
+      "startsAt": "2025-01-22T10:00:00+08:00",
+      "endsAt": "2025-02-12T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1311",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1011",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1061",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-01-22-dazzling-choir",
+      "name": "Dazzling Choir",
+      "kind": "weapon",
+      "startsAt": "2025-01-22T10:00:00+08:00",
+      "endsAt": "2025-02-12T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14119",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13101",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13106",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-01-22-dissonant-sonata",
+      "name": "Dissonant Sonata",
+      "kind": "weapon",
+      "startsAt": "2025-01-22T10:00:00+08:00",
+      "endsAt": "2025-02-12T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14131",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13101",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13106",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-02-12-untainted-jade",
+      "name": "Untainted Jade",
+      "kind": "character",
+      "startsAt": "2025-02-12T12:00:00+08:00",
+      "endsAt": "2025-03-11T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1251",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1111",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1031",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-02-12-web-of-light-and-shadow",
+      "name": "Web of Light and Shadow",
+      "kind": "character",
+      "startsAt": "2025-02-12T12:00:00+08:00",
+      "endsAt": "2025-03-11T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1321",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1111",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1031",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-02-12-dazzling-choir",
+      "name": "Dazzling Choir",
+      "kind": "weapon",
+      "startsAt": "2025-02-12T12:00:00+08:00",
+      "endsAt": "2025-03-11T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14125",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13111",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13103",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-02-12-dissonant-sonata",
+      "name": "Dissonant Sonata",
+      "kind": "weapon",
+      "startsAt": "2025-02-12T12:00:00+08:00",
+      "endsAt": "2025-03-11T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14132",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13111",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13103",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-03-12-born-to-burn",
+      "name": "Born to Burn",
+      "kind": "character",
+      "startsAt": "2025-03-12T10:00:00+08:00",
+      "endsAt": "2025-04-02T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1171",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1351",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-03-12-electric-reflection",
+      "name": "Electric Reflection",
+      "kind": "character",
+      "startsAt": "2025-03-12T10:00:00+08:00",
+      "endsAt": "2025-04-02T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1381",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1351",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-03-12-dissonant-sonata",
+      "name": "Dissonant Sonata",
+      "kind": "weapon",
+      "startsAt": "2025-03-12T10:00:00+08:00",
+      "endsAt": "2025-04-02T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14138",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13135",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13112",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-03-12-vibrant-resonance",
+      "name": "Vibrant Resonance",
+      "kind": "weapon",
+      "startsAt": "2025-03-12T10:00:00+08:00",
+      "endsAt": "2025-04-02T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14117",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13135",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13112",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-04-02-sights-of-asphodel",
+      "name": "Sights of Asphodel",
+      "kind": "character",
+      "startsAt": "2025-04-02T12:00:00+08:00",
+      "endsAt": "2025-04-22T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1361",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1081",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-04-02-unswerving-bullet",
+      "name": "Unswerving Bullet",
+      "kind": "character",
+      "startsAt": "2025-04-02T12:00:00+08:00",
+      "endsAt": "2025-04-22T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1241",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1081",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-04-02-dazzling-choir",
+      "name": "Dazzling Choir",
+      "kind": "weapon",
+      "startsAt": "2025-04-02T12:00:00+08:00",
+      "endsAt": "2025-04-22T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14136",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13115",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13108",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-04-02-dazzling-melody",
+      "name": "Dazzling Melody",
+      "kind": "weapon",
+      "startsAt": "2025-04-02T12:00:00+08:00",
+      "endsAt": "2025-04-22T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14124",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13115",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13108",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-04-23-no-match-found",
+      "name": "(No Match Found)",
+      "kind": "character",
+      "startsAt": "2025-04-23T10:00:00+08:00",
+      "endsAt": "2025-05-14T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1261",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1281",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1271",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-04-23-soar-into-the-gentle-night",
+      "name": "Soar Into the Gentle Night",
+      "kind": "character",
+      "startsAt": "2025-04-23T10:00:00+08:00",
+      "endsAt": "2025-05-14T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1331",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1281",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1271",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-04-23-dissonant-sonata",
+      "name": "Dissonant Sonata",
+      "kind": "weapon",
+      "startsAt": "2025-04-23T10:00:00+08:00",
+      "endsAt": "2025-05-14T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14133",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13127",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13128",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-04-23-vibrant-resonance",
+      "name": "Vibrant Resonance",
+      "kind": "weapon",
+      "startsAt": "2025-04-23T10:00:00+08:00",
+      "endsAt": "2025-05-14T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14126",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13127",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13128",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-05-14-dazzling-choir",
+      "name": "Dazzling Choir",
+      "kind": "weapon",
+      "startsAt": "2025-05-14T12:00:00+08:00",
+      "endsAt": "2025-06-03T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14129",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13113",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13111",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-05-14-dazzling-melody",
+      "name": "Dazzling Melody",
+      "kind": "weapon",
+      "startsAt": "2025-05-14T12:00:00+08:00",
+      "endsAt": "2025-06-03T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14116",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13113",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13111",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-05-14-as-yesterday-dies",
+      "name": "As Yesterday Dies",
+      "kind": "character",
+      "startsAt": "2025-05-14T17:59:00+08:00",
+      "endsAt": "2025-06-05T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1291",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1111",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1131",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-05-14-champion-of-embers",
+      "name": "Champion of Embers",
+      "kind": "character",
+      "startsAt": "2025-05-14T17:59:00+08:00",
+      "endsAt": "2025-06-05T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1161",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1111",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1131",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-06-06-lonely-wayfarer-beyond",
+      "name": "Lonely Wayfarer Beyond",
+      "kind": "character",
+      "startsAt": "2025-06-06T11:00:00+08:00",
+      "endsAt": "2025-06-25T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1371",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1421",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1351",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-06-06-thousand-melodies",
+      "name": "Thousand Melodies",
+      "kind": "character",
+      "startsAt": "2025-06-06T11:00:00+08:00",
+      "endsAt": "2025-06-25T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1311",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1421",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1351",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-06-06-dissonant-sonata",
+      "name": "Dissonant Sonata",
+      "kind": "weapon",
+      "startsAt": "2025-06-06T11:00:00+08:00",
+      "endsAt": "2025-06-25T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14137",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13142",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13135",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-06-06-vibrant-resonance",
+      "name": "Vibrant Resonance",
+      "kind": "weapon",
+      "startsAt": "2025-06-06T11:00:00+08:00",
+      "endsAt": "2025-06-25T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14131",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13142",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13135",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-06-25-ember-crowned-overlord",
+      "name": "Ember-Crowned Overlord",
+      "kind": "character",
+      "startsAt": "2025-06-25T11:00:00+08:00",
+      "endsAt": "2025-07-15T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1071",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1061",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-06-25-fu-rocious-feline",
+      "name": "Fu-rocious Feline",
+      "kind": "character",
+      "startsAt": "2025-06-25T11:00:00+08:00",
+      "endsAt": "2025-07-15T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1391",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1061",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-06-25-dazzling-choir",
+      "name": "Dazzling Choir",
+      "kind": "weapon",
+      "startsAt": "2025-06-25T11:00:00+08:00",
+      "endsAt": "2025-07-15T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14139",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13112",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13106",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-06-25-dazzling-melody",
+      "name": "Dazzling Melody",
+      "kind": "weapon",
+      "startsAt": "2025-06-25T11:00:00+08:00",
+      "endsAt": "2025-07-15T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14107",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13112",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13106",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-07-16-honed-blade-of-reflection",
+      "name": "Honed Blade of Reflection",
+      "kind": "character",
+      "startsAt": "2025-07-16T11:00:00+08:00",
+      "endsAt": "2025-08-06T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1091",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1281",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1081",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-07-16-whispered-tales",
+      "name": "Whispered Tales",
+      "kind": "character",
+      "startsAt": "2025-07-16T11:00:00+08:00",
+      "endsAt": "2025-08-06T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1411",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1281",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1081",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-07-16-dissonant-sonata",
+      "name": "Dissonant Sonata",
+      "kind": "weapon",
+      "startsAt": "2025-07-16T11:00:00+08:00",
+      "endsAt": "2025-08-06T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14141",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13128",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13108",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-07-16-vibrant-resonance",
+      "name": "Vibrant Resonance",
+      "kind": "weapon",
+      "startsAt": "2025-07-16T11:00:00+08:00",
+      "endsAt": "2025-08-06T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14109",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13128",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13108",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-08-06-moonlit-serenity",
+      "name": "Moonlit Serenity",
+      "kind": "character",
+      "startsAt": "2025-08-06T12:00:00+08:00",
+      "endsAt": "2025-09-03T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1221",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1131",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1271",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-08-06-sworn-to-noble-courage",
+      "name": "Sworn to Noble Courage",
+      "kind": "character",
+      "startsAt": "2025-08-06T12:00:00+08:00",
+      "endsAt": "2025-09-03T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1401",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1131",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1271",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-08-06-dazzling-choir",
+      "name": "Dazzling Choir",
+      "kind": "weapon",
+      "startsAt": "2025-08-06T12:00:00+08:00",
+      "endsAt": "2025-09-03T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14140",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13113",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13127",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-08-06-dazzling-melody",
+      "name": "Dazzling Melody",
+      "kind": "weapon",
+      "startsAt": "2025-08-06T12:00:00+08:00",
+      "endsAt": "2025-09-03T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14122",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13113",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13127",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-09-04-dissonant-sonata",
+      "name": "Dissonant Sonata",
+      "kind": "weapon",
+      "startsAt": "2025-09-04T11:00:00+08:00",
+      "endsAt": "2025-09-24T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14146",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13101",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13103",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-09-04-vibrant-resonance",
+      "name": "Vibrant Resonance",
+      "kind": "weapon",
+      "startsAt": "2025-09-04T11:00:00+08:00",
+      "endsAt": "2025-09-24T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14136",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13101",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13103",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-09-24-web-of-light-and-shadow",
+      "name": "Web of Light and Shadow",
+      "kind": "character",
+      "startsAt": "2025-09-24T12:00:00+08:00",
+      "endsAt": "2025-10-14T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1321",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1111",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-09-24-wrathborn-duo",
+      "name": "Wrathborn Duo",
+      "kind": "character",
+      "startsAt": "2025-09-24T12:00:00+08:00",
+      "endsAt": "2025-10-14T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1301",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1111",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-09-24-dazzling-choir",
+      "name": "Dazzling Choir",
+      "kind": "weapon",
+      "startsAt": "2025-09-24T12:00:00+08:00",
+      "endsAt": "2025-10-14T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14130",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13115",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13111",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-09-24-dazzling-melody",
+      "name": "Dazzling Melody",
+      "kind": "weapon",
+      "startsAt": "2025-09-24T12:00:00+08:00",
+      "endsAt": "2025-10-14T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14132",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13115",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13111",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-10-15-soar-into-the-gentle-night",
+      "name": "Soar Into the Gentle Night",
+      "kind": "character",
+      "startsAt": "2025-10-15T11:00:00+08:00",
+      "endsAt": "2025-11-05T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1331",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1441",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1281",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-10-15-wandering-night-lantern",
+      "name": "Wandering Night Lantern",
+      "kind": "character",
+      "startsAt": "2025-10-15T11:00:00+08:00",
+      "endsAt": "2025-11-05T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1451",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1441",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1281",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-10-15-dissonant-sonata",
+      "name": "Dissonant Sonata",
+      "kind": "weapon",
+      "startsAt": "2025-10-15T11:00:00+08:00",
+      "endsAt": "2025-11-05T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14145",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13144",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13128",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-10-15-vibrant-resonance",
+      "name": "Vibrant Resonance",
+      "kind": "weapon",
+      "startsAt": "2025-10-15T11:00:00+08:00",
+      "endsAt": "2025-11-05T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14133",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13144",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13128",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-11-05-alone-in-a-shared-dream",
+      "name": "Alone in a Shared Dream",
+      "kind": "character",
+      "startsAt": "2025-11-05T12:00:00+08:00",
+      "endsAt": "2025-11-25T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1051",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1421",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1351",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-11-05-fu-rocious-feline",
+      "name": "Fu-rocious Feline",
+      "kind": "character",
+      "startsAt": "2025-11-05T12:00:00+08:00",
+      "endsAt": "2025-11-25T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1391",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1421",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1351",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-11-05-dazzling-choir",
+      "name": "Dazzling Choir",
+      "kind": "weapon",
+      "startsAt": "2025-11-05T12:00:00+08:00",
+      "endsAt": "2025-11-25T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14105",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13142",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13135",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-11-05-dazzling-melody",
+      "name": "Dazzling Melody",
+      "kind": "weapon",
+      "startsAt": "2025-11-05T12:00:00+08:00",
+      "endsAt": "2025-11-25T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14139",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13142",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13135",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-11-26-as-yesterday-dies",
+      "name": "As Yesterday Dies",
+      "kind": "character",
+      "startsAt": "2025-11-26T11:00:00+08:00",
+      "endsAt": "2025-12-17T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1291",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1061",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1081",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-11-26-voice-of-the-once-spoken",
+      "name": "Voice of the Once-Spoken",
+      "kind": "character",
+      "startsAt": "2025-11-26T11:00:00+08:00",
+      "endsAt": "2025-12-17T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1481",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1061",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1081",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-11-26-dissonant-sonata",
+      "name": "Dissonant Sonata",
+      "kind": "weapon",
+      "startsAt": "2025-11-26T11:00:00+08:00",
+      "endsAt": "2025-12-17T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14148",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13106",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13108",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-11-26-vibrant-resonance",
+      "name": "Vibrant Resonance",
+      "kind": "weapon",
+      "startsAt": "2025-11-26T11:00:00+08:00",
+      "endsAt": "2025-12-17T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14129",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13106",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13108",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-12-17-mellow-waveride",
+      "name": "Mellow Waveride",
+      "kind": "character",
+      "startsAt": "2025-12-17T12:00:00+08:00",
+      "endsAt": "2025-12-29T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1191",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1131",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1271",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-12-17-through-night-s-inferno",
+      "name": "Through Night's Inferno",
+      "kind": "character",
+      "startsAt": "2025-12-17T12:00:00+08:00",
+      "endsAt": "2025-12-29T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1471",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1131",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1271",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-12-17-dazzling-choir",
+      "name": "Dazzling Choir",
+      "kind": "weapon",
+      "startsAt": "2025-12-17T12:00:00+08:00",
+      "endsAt": "2025-12-29T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14147",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13113",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13127",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-12-17-dazzling-melody",
+      "name": "Dazzling Melody",
+      "kind": "weapon",
+      "startsAt": "2025-12-17T12:00:00+08:00",
+      "endsAt": "2025-12-29T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14119",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13113",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13127",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-12-30-light-upon-fingertips",
+      "name": "Light Upon Fingertips",
+      "kind": "character",
+      "startsAt": "2025-12-30T11:00:00+08:00",
+      "endsAt": "2026-02-05T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1431",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1031",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-12-30-priceless-heart",
+      "name": "Priceless Heart",
+      "kind": "character",
+      "startsAt": "2025-12-30T11:00:00+08:00",
+      "endsAt": "2026-02-05T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1341",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1011",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-12-30-dazzling-choir",
+      "name": "Dazzling Choir",
+      "kind": "weapon",
+      "startsAt": "2025-12-30T11:00:00+08:00",
+      "endsAt": "2026-02-05T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14134",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13101",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13112",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-12-30-dissonant-sonata",
+      "name": "Dissonant Sonata",
+      "kind": "weapon",
+      "startsAt": "2025-12-30T11:00:00+08:00",
+      "endsAt": "2026-02-05T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14143",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13103",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13115",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-01-21-exclusive-rescreening",
+      "name": "Exclusive Rescreening",
+      "kind": "character",
+      "startsAt": "2026-01-21T12:00:00+08:00",
+      "endsAt": "2026-02-05T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1401",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1381",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1311",
+          "kind": "character",
+          "rarity": 5
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-01-21-w-engine-reverberation",
+      "name": "W-Engine Reverberation",
+      "kind": "weapon",
+      "startsAt": "2026-01-21T12:00:00+08:00",
+      "endsAt": "2026-02-05T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14140",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "14138",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "14131",
+          "kind": "weapon",
+          "rarity": 5
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-02-06-lonely-wayfarer-beyond",
+      "name": "Lonely Wayfarer Beyond",
+      "kind": "character",
+      "startsAt": "2026-02-06T11:00:00+08:00",
+      "endsAt": "2026-03-04T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1371",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1061",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1081",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-02-06-whimsy-in-triple-meter",
+      "name": "Whimsy in Triple Meter",
+      "kind": "character",
+      "startsAt": "2026-02-06T11:00:00+08:00",
+      "endsAt": "2026-03-04T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1491",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1061",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1081",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-02-06-dissonant-sonata",
+      "name": "Dissonant Sonata",
+      "kind": "weapon",
+      "startsAt": "2026-02-06T11:00:00+08:00",
+      "endsAt": "2026-03-04T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14149",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13106",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13108",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-02-06-vibrant-resonance",
+      "name": "Vibrant Resonance",
+      "kind": "weapon",
+      "startsAt": "2026-02-06T11:00:00+08:00",
+      "endsAt": "2026-03-04T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14137",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13106",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13108",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-03-04-neon-angel",
+      "name": "Neon Angel",
+      "kind": "character",
+      "startsAt": "2026-03-04T12:00:00+08:00",
+      "endsAt": "2026-03-23T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1501",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1111",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1271",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-03-04-whispered-tales",
+      "name": "Whispered Tales",
+      "kind": "character",
+      "startsAt": "2026-03-04T12:00:00+08:00",
+      "endsAt": "2026-03-23T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1411",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1111",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1271",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-03-04-dazzling-choir",
+      "name": "Dazzling Choir",
+      "kind": "weapon",
+      "startsAt": "2026-03-04T12:00:00+08:00",
+      "endsAt": "2026-03-23T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14150",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13111",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13127",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-03-04-dazzling-melody",
+      "name": "Dazzling Melody",
+      "kind": "weapon",
+      "startsAt": "2026-03-04T12:00:00+08:00",
+      "endsAt": "2026-03-23T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14141",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13111",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13127",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-03-24-alone-in-a-shared-dream",
+      "name": "Alone in a Shared Dream",
+      "kind": "character",
+      "startsAt": "2026-03-24T11:00:00+08:00",
+      "endsAt": "2026-04-15T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1051",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1031",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1281",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-03-24-axiom-of-captivation",
+      "name": "Axiom of Captivation",
+      "kind": "character",
+      "startsAt": "2026-03-24T11:00:00+08:00",
+      "endsAt": "2026-04-15T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1511",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1031",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1281",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-03-24-kraken-s-cradle",
+      "name": "Kraken's Cradle",
+      "kind": "weapon",
+      "startsAt": "2026-03-24T11:00:00+08:00",
+      "endsAt": "2026-04-15T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14105",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13103",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13128",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-03-24-neon-fantasies",
+      "name": "Neon Fantasies",
+      "kind": "weapon",
+      "startsAt": "2026-03-24T11:00:00+08:00",
+      "endsAt": "2026-04-15T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14151",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13103",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13128",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-04-15-evolution-of-gluttony",
+      "name": "Evolution of Gluttony",
+      "kind": "character",
+      "startsAt": "2026-04-15T12:00:00+08:00",
+      "endsAt": "2026-05-05T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1521",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1351",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-04-15-tearforged-blossoms",
+      "name": "Tearforged Blossoms",
+      "kind": "character",
+      "startsAt": "2026-04-15T12:00:00+08:00",
+      "endsAt": "2026-05-05T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1461",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1351",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-04-15-cordis-germina",
+      "name": "Cordis Germina",
+      "kind": "weapon",
+      "startsAt": "2026-04-15T12:00:00+08:00",
+      "endsAt": "2026-05-05T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14146",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13135",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13112",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-04-15-serpentine-seeker",
+      "name": "Serpentine Seeker",
+      "kind": "weapon",
+      "startsAt": "2026-04-15T12:00:00+08:00",
+      "endsAt": "2026-05-05T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14152",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13135",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13112",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-05-06-cold-rain-wanes-in-the-night",
+      "name": "Cold Rain Wanes in the Night",
+      "kind": "character",
+      "startsAt": "2026-05-06T11:00:00+08:00",
+      "endsAt": "2026-05-27T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1541",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1131",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-05-06-wandering-night-lantern",
+      "name": "Wandering Night Lantern",
+      "kind": "character",
+      "startsAt": "2026-05-06T11:00:00+08:00",
+      "endsAt": "2026-05-27T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1451",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1131",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-05-06-dreamlit-hearth",
+      "name": "Dreamlit Hearth",
+      "kind": "weapon",
+      "startsAt": "2026-05-06T11:00:00+08:00",
+      "endsAt": "2026-05-27T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14145",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13113",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13115",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-05-06-frostfall-sickle",
+      "name": "Frostfall Sickle",
+      "kind": "weapon",
+      "startsAt": "2026-05-06T11:00:00+08:00",
+      "endsAt": "2026-05-27T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14154",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13113",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13115",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-05-27-starlight-shine-bright",
+      "name": "Starlight, Shine Bright!",
+      "kind": "character",
+      "startsAt": "2026-05-27T12:00:00+08:00",
+      "endsAt": "2026-06-16T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1531",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1441",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1421",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-05-27-wrathborn-duo",
+      "name": "Wrathborn Duo",
+      "kind": "character",
+      "startsAt": "2026-05-27T12:00:00+08:00",
+      "endsAt": "2026-06-16T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1301",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1441",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1421",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-05-27-bellicose-blaze",
+      "name": "Bellicose Blaze",
+      "kind": "weapon",
+      "startsAt": "2026-05-27T12:00:00+08:00",
+      "endsAt": "2026-06-16T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14130",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13144",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13142",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-05-27-starlight-rider-faceplate",
+      "name": "Starlight Rider Faceplate",
+      "kind": "weapon",
+      "startsAt": "2026-05-27T12:00:00+08:00",
+      "endsAt": "2026-06-16T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14153",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13144",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13142",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-06-17-graceful-gale",
+      "name": "Graceful Gale",
+      "kind": "character",
+      "startsAt": "2026-06-17T11:00:00+08:00",
+      "endsAt": "2026-07-08T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1561",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1031",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1281",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-06-17-light-upon-fingertips",
+      "name": "Light Upon Fingertips",
+      "kind": "character",
+      "startsAt": "2026-06-17T11:00:00+08:00",
+      "endsAt": "2026-07-08T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1431",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1031",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1281",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-06-17-cloudcleave-radiance",
+      "name": "Cloudcleave Radiance",
+      "kind": "weapon",
+      "startsAt": "2026-06-17T11:00:00+08:00",
+      "endsAt": "2026-07-08T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14143",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13103",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13128",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-06-17-joyau-dore",
+      "name": "Joyau Dore",
+      "kind": "weapon",
+      "startsAt": "2026-06-17T11:00:00+08:00",
+      "endsAt": "2026-07-08T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14156",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13103",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13128",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-07-08-outlier-of-prodigies",
+      "name": "Outlier of Prodigies",
+      "kind": "character",
+      "startsAt": "2026-07-08T12:00:00+08:00",
+      "endsAt": "2026-07-28T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1571",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1351",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-07-08-whimsy-in-triple-meter",
+      "name": "Whimsy in Triple Meter",
+      "kind": "character",
+      "startsAt": "2026-07-08T12:00:00+08:00",
+      "endsAt": "2026-07-28T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1491",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1351",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-07-08-chief-sidekick",
+      "name": "Chief Sidekick",
+      "kind": "weapon",
+      "startsAt": "2026-07-08T12:00:00+08:00",
+      "endsAt": "2026-07-28T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14157",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13135",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13112",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-07-08-thoughtbop",
+      "name": "Thoughtbop",
+      "kind": "weapon",
+      "startsAt": "2026-07-08T12:00:00+08:00",
+      "endsAt": "2026-07-28T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14149",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13135",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13112",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-07-29-neon-angel",
+      "name": "Neon Angel",
+      "kind": "character",
+      "startsAt": "2026-07-29T11:00:00+08:00",
+      "endsAt": "2026-08-19T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1501",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1281",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1271",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-07-29-paradise-regained",
+      "name": "Paradise Regained",
+      "kind": "character",
+      "startsAt": "2026-07-29T11:00:00+08:00",
+      "endsAt": "2026-09-08T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1581",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1281",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1271",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-07-29-angel-in-the-shell",
+      "name": "Angel in the Shell",
+      "kind": "weapon",
+      "startsAt": "2026-07-29T11:00:00+08:00",
+      "endsAt": "2026-08-19T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14150",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13128",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13127",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-07-29-ode-of-resurrected-wings",
+      "name": "Ode of Resurrected Wings",
+      "kind": "weapon",
+      "startsAt": "2026-07-29T11:00:00+08:00",
+      "endsAt": "2026-09-08T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14158",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13128",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13127",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-08-19-till-the-ends-of-the-sky",
+      "name": "'Till the Ends of the Sky",
+      "kind": "character",
+      "startsAt": "2026-08-19T12:00:00+08:00",
+      "endsAt": "2026-09-08T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1591",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1131",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-08-19-exclusive-rescreening",
+      "name": "Exclusive Rescreening",
+      "kind": "character",
+      "startsAt": "2026-08-19T12:00:00+08:00",
+      "endsAt": "2026-09-08T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1481",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1411",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1201",
+          "kind": "character",
+          "rarity": 5
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-08-19-knight-s-extolment",
+      "name": "Knight's Extolment",
+      "kind": "weapon",
+      "startsAt": "2026-08-19T12:00:00+08:00",
+      "endsAt": "2026-09-08T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14159",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13113",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13115",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-08-19-w-engine-reverberation",
+      "name": "W-Engine Reverberation",
+      "kind": "weapon",
+      "startsAt": "2026-08-19T12:00:00+08:00",
+      "endsAt": "2026-09-08T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14148",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "14141",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "14120",
+          "kind": "weapon",
+          "rarity": 5
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-09-09-axiom-of-captivation",
+      "name": "Axiom of Captivation",
+      "kind": "character",
+      "startsAt": "2026-09-09T11:00:00+08:00",
+      "endsAt": "2026-09-30T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1511",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1111",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1031",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-09-09-bloodmoon-rising",
+      "name": "Bloodmoon Rising",
+      "kind": "character",
+      "startsAt": "2026-09-09T11:00:00+08:00",
+      "endsAt": "2026-09-30T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1611",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1111",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1031",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-09-09-crimson-thirst",
+      "name": "Crimson Thirst",
+      "kind": "weapon",
+      "startsAt": "2026-09-09T11:00:00+08:00",
+      "endsAt": "2026-09-30T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14161",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13111",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13103",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-09-09-neon-fantasies",
+      "name": "Neon Fantasies",
+      "kind": "weapon",
+      "startsAt": "2026-09-09T11:00:00+08:00",
+      "endsAt": "2026-09-30T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14151",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13111",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13103",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-09-30-cindernight-respite",
+      "name": "Cindernight Respite",
+      "kind": "character",
+      "startsAt": "2026-09-30T12:00:00+08:00",
+      "endsAt": "2026-10-20T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1621",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1061",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1081",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-09-30-cold-rain-wanes-in-the-night",
+      "name": "Cold Rain Wanes in the Night",
+      "kind": "character",
+      "startsAt": "2026-09-30T12:00:00+08:00",
+      "endsAt": "2026-10-20T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1541",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1061",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1081",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-09-30-crimson-moon-casket",
+      "name": "Crimson Moon Casket",
+      "kind": "weapon",
+      "startsAt": "2026-09-30T12:00:00+08:00",
+      "endsAt": "2026-10-20T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14162",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13106",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13108",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-09-30-frostfall-sickle",
+      "name": "Frostfall Sickle",
+      "kind": "weapon",
+      "startsAt": "2026-09-30T12:00:00+08:00",
+      "endsAt": "2026-10-20T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14154",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13106",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13108",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-10-21-graceful-gale",
+      "name": "Graceful Gale",
+      "kind": "character",
+      "startsAt": "2026-10-21T11:00:00+08:00",
+      "endsAt": "2026-11-11T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1561",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1441",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1271",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-10-21-into-the-flames-of-life",
+      "name": "Into the Flames of Life",
+      "kind": "character",
+      "startsAt": "2026-10-21T11:00:00+08:00",
+      "endsAt": "2026-11-11T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1441",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1271",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-10-21-joyau-dore",
+      "name": "Joyau Dore",
+      "kind": "weapon",
+      "startsAt": "2026-10-21T11:00:00+08:00",
+      "endsAt": "2026-11-11T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14156",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "13144",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13127",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-10-21-plume-of-rebirth",
+      "name": "Plume of Rebirth",
+      "kind": "weapon",
+      "startsAt": "2026-10-21T11:00:00+08:00",
+      "endsAt": "2026-11-11T11:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "13144",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "13127",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-11-11-answers-in-the-wind",
+      "name": "Answers in the Wind",
+      "kind": "character",
+      "startsAt": "2026-11-11T12:00:00+08:00",
+      "endsAt": "2026-12-01T14:59:59+08:00",
+      "featured": []
+    },
+    {
+      "key": "history-character-2026-11-11-outlier-of-prodigies",
+      "name": "Outlier of Prodigies",
+      "kind": "character",
+      "startsAt": "2026-11-11T12:00:00+08:00",
+      "endsAt": "2026-12-01T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1571",
+          "kind": "character",
+          "rarity": 5
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-11-11-chief-sidekick",
+      "name": "Chief Sidekick",
+      "kind": "weapon",
+      "startsAt": "2026-11-11T12:00:00+08:00",
+      "endsAt": "2026-12-01T14:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "14157",
+          "kind": "weapon",
+          "rarity": 5
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-11-11-incarcerating-grip",
+      "name": "Incarcerating Grip",
+      "kind": "weapon",
+      "startsAt": "2026-11-11T12:00:00+08:00",
+      "endsAt": "2026-12-01T14:59:59+08:00",
+      "featured": []
+    }
+  ]
+}

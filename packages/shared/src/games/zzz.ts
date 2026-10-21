@@ -2,7 +2,7 @@ import { endgameEnemiesSchema } from "../enemies.js";
 import { z } from "zod";
 import { statRowSchema } from "../common.js";
 import type { GameDefinition } from "./types.js";
-import type { Catalog } from "../catalog/types.js";
+import { bannerHistorySchema, type Catalog } from "../catalog/types.js";
 import { hoyoRegions } from "./regions.js";
 
 export const ZZZ_ATTRIBUTES = [
@@ -156,6 +156,8 @@ export const zzz: GameDefinition = {
   emptyDoc: (): ZzzDoc => ({ discs: {}, skills: {}, wEngine: {}, stats: {} }),
   docVersion: 1,
   loadCatalog: async () => (await import("./zzz/catalog.js")).default as Catalog,
+  // Every past Signal Search from the wiki's banner pages (round 17, `npm run catalog:banners-wiki`).
+  loadBannerHistory: async () => bannerHistorySchema.parse((await import("./zzz/banner-history.js")).default),
   // Shiyu Defense's frontiers and Deadly Assault's bosses per cycle (`npm run catalog:endgame`).
   loadEndgame: async () => endgameEnemiesSchema.parse((await import("./zzz/endgame.js")).default),
 };

@@ -1,0 +1,356 @@
+{
+  "source": "neverness-to-everness.fandom.com (CC BY-SA), 14 pages, newest revision 12291 on 2026-10-21",
+  "banners": [
+    {
+      "key": "history-character-2026-04-29-the-ichi-daime",
+      "name": "The Ichi-daime",
+      "kind": "character",
+      "startsAt": "2026-04-29T11:00:00+08:00",
+      "endsAt": "2026-05-13T17:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1010",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1021",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1019",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1033",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-05-13-misty-tipsy-style",
+      "name": "Misty Tipsy Style",
+      "kind": "character",
+      "startsAt": "2026-05-13T11:00:00+08:00",
+      "endsAt": "2026-06-03T17:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1052",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1020",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1070",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1008",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-06-03-fading-reverie",
+      "name": "Fading Reverie",
+      "kind": "character",
+      "startsAt": "2026-06-03T11:00:00+08:00",
+      "endsAt": "2026-06-24T17:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1004",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1021",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1019",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1033",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-06-24-forsaken-path",
+      "name": "Forsaken Path",
+      "kind": "character",
+      "startsAt": "2026-06-24T11:00:00+08:00",
+      "endsAt": "2026-07-08T17:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1071",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1020",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1070",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1008",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-07-08-before-the-dawn",
+      "name": "Before the Dawn",
+      "kind": "character",
+      "startsAt": "2026-07-08T11:00:00+08:00",
+      "endsAt": "2026-07-29T17:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1076",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1021",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1019",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1033",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-07-29-the-lifeline",
+      "name": "The Lifeline",
+      "kind": "character",
+      "startsAt": "2026-07-29T11:00:00+08:00",
+      "endsAt": "2026-08-19T05:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1075",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1020",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1070",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1008",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-08-19-alluring-shadows",
+      "name": "Alluring Shadows",
+      "kind": "character",
+      "startsAt": "2026-08-19T11:00:00+08:00",
+      "endsAt": "2026-09-09T05:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1036",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1021",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1019",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1033",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-08-19-the-ichi-daime",
+      "name": "The Ichi-daime",
+      "kind": "character",
+      "startsAt": "2026-08-19T11:00:00+08:00",
+      "endsAt": "2026-09-09T05:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1010",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1021",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1019",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1033",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-09-09-misty-tipsy-style",
+      "name": "Misty Tipsy Style",
+      "kind": "character",
+      "startsAt": "2026-09-09T11:00:00+08:00",
+      "endsAt": "2026-09-30T05:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1052",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1020",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1070",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1008",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-09-09-surfing-all-channels",
+      "name": "Surfing All Channels!",
+      "kind": "character",
+      "startsAt": "2026-09-09T11:00:00+08:00",
+      "endsAt": "2026-09-30T05:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1072",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1020",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1070",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1008",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-09-30-fading-reverie",
+      "name": "Fading Reverie",
+      "kind": "character",
+      "startsAt": "2026-09-30T11:00:00+08:00",
+      "endsAt": "2026-10-21T05:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1004",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1021",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1019",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1033",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-09-30-foretold-finale",
+      "name": "Foretold Finale",
+      "kind": "character",
+      "startsAt": "2026-09-30T11:00:00+08:00",
+      "endsAt": "2026-10-21T05:59:59+08:00",
+      "featured": [
+        {
+          "catalogId": "1021",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1019",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1033",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-10-21-dazzling-star",
+      "name": "Dazzling Star",
+      "kind": "character",
+      "startsAt": "2026-10-21T11:00:00+08:00",
+      "endsAt": "2026-11-11T05:59:59+08:00",
+      "featured": []
+    }
+  ]
+}

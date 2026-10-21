@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { bannerHistorySchema, type Catalog } from "./types.js";
-import { WIKI_BANNER_SOURCES, historyFromWikiPages, parseTemplate } from "./wikiBanners.js";
+import { bannerHistorySchema, getGame, historyFromWikiPages, parseTemplate, WIKI_BANNER_SOURCES, type Catalog } from "@gacha/shared";
 
 // Round 17 (Georges: "still no banner history"): the game wikis keep one page per banner run, "<name>/<start date>", with an
 // infobox (type, start, end) and an item pool (the featured units); that is the dated history for Zenless, Wuthering
@@ -11,6 +10,7 @@ const zzzCatalog = {
     { id: "1171", name: "Burnice", rarity: 5 },
     { id: "1031", name: "Nicole", rarity: 4 },
     { id: "1011", name: "Anby", rarity: 4 },
+    { id: "1091", name: "Miyabi", rarity: 5 },
   ],
   weapons: [
     { id: "14115", name: "Flamemaker Shaker", rarity: 5 },
@@ -31,7 +31,7 @@ const bornToBurn = `{{Signal Search Infobox
 {{Lead/Signal Search|Born to Burn/2024-10-16}}
 ===Item Pool===
 {{Signal Search Pool
-|agent_S_F    = Burnice White
+|agent_S_F    = Burnice White;Hoshimi Miyabi
 |agent_A_F    = Luciana de Montefio;Nicole Demara
 |agent_S      = Alexandrina Sebastiane;Grace Howard
 |agent_A      = Anby Demara;Anton Ivanov
@@ -80,9 +80,10 @@ describe("historyFromWikiPages", () => {
     ]);
   });
 
-  it("features the pool's rate-up units only, matched to the catalog by name or first name, top rarity first", () => {
+  it("features the pool's rate-up units only, matched to the catalog by name or by the one word they share, top rarity first", () => {
     expect(history[0]!.featured).toEqual([
       { catalogId: "1171", kind: "character", rarity: 5 },
+      { catalogId: "1091", kind: "character", rarity: 5 },
       { catalogId: "1031", kind: "character", rarity: 4 },
     ]);
     expect(history[1]!.featured).toEqual([
@@ -113,5 +114,18 @@ describe("historyFromWikiPages", () => {
       { characters: [{ id: "1024", name: "Akane Rin", rarity: 5 }], weapons: [] } as unknown as Catalog,
     ).history;
     expect(nte).toEqual([{ key: "history-character-2026-10-21-dazzling-star", name: "Dazzling Star", kind: "character", startsAt: "2026-10-21T11:00:00+08:00", endsAt: "2026-11-11T05:59:59+08:00", featured: [{ catalogId: "1024", kind: "character", rarity: 5 }] }]);
+  });
+});
+
+describe("the histories the importer wrote", () => {
+  it.each([
+    ["zzz", 100],
+    ["wuwa", 100],
+    ["nte", 10],
+  ])("%s loads at least %i banners, dated, in order, each with its featured units", async (gameKey, atLeast) => {
+    const history = await getGame(gameKey)!.loadBannerHistory!();
+    expect(history.banners.length).toBeGreaterThanOrEqual(atLeast);
+    expect(history.banners.map((banner) => banner.startsAt)).toEqual([...history.banners.map((banner) => banner.startsAt)].sort());
+    expect(history.banners.filter((banner) => banner.featured.length === 0).length).toBeLessThan(history.banners.length / 10);
   });
 });

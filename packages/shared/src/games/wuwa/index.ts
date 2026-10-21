@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { statRowSchema } from "../../common.js";
-import type { Catalog } from "../../catalog/types.js";
+import { bannerHistorySchema, type Catalog } from "../../catalog/types.js";
 import type { GameDefinition } from "../types.js";
 import { hoyoRegions } from "../regions.js";
 import { WUWA_LIMITS } from "./limits.js";
@@ -157,4 +157,6 @@ export const wuwa: GameDefinition = {
     (WUWA_ELEMENTS as readonly string[]).includes(character.tag ?? "") ? { element: character.tag } : {},
   loadCatalog: async () =>
     (await import("./catalog.js")).default as Catalog,
+  // Every past Convene from the wiki's banner pages (round 17, `npm run catalog:banners-wiki`).
+  loadBannerHistory: async () => bannerHistorySchema.parse((await import("./banner-history.js")).default),
 };

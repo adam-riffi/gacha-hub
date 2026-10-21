@@ -11,7 +11,8 @@
     "zzz": "tsx zzz.ts",
     "nte": "tsx nte.ts",
     "endgame": "tsx endgame.ts",
-    "banners": "tsx banners.ts"
+    "banners": "tsx banners.ts",
+    "banners-wiki": "tsx banners-wiki.ts"
   },
   "dependencies": {
     "adm-zip": "^0.5.16",
