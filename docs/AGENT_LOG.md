@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-21 · claude · stack/r24/03-preview-icons · #370
+- Done: round 17 (Georges: "the preview card is unreadable for me no icons just text. the banners windows has the same issues"). The timeline: each game's icon (36 px) heads its rows; every banner's and event's bar opens with its official picture (52×28) and the bars grew to 32 px; the selected panel names the game with its icon. Home: the expiring list names each game with its icon; the Pulls table's icon and name sit on one line. Activities: the version card's events carry their pictures (72×40). `E2E_PORT` lets a second checkout run its journeys at the same time (the checks now run in `../gacha-check` while the next branch is built).
+- Tests: written first: a journey uploads an icon, seeds a banner with a picture and an event ending soon, and finds the icon at the game's row head, the picture on the bar and the icon in Home's expiring list; the calendar, Home and key-art journeys still pass.
+- Scope/decisions: the pictures are the feeds' (`payload.image`); a banner without one shows its featured units as before. Nothing new is hotlinked.
+- Next: the banner history for the four games without one.
+
 ## 2026-10-21 · claude · stack/r24/02-key-art · #369
 - Done: round 17 (Georges: "the pieces of art you've chosen for the top game cards and game window game cards are extremely underwhelming"). Every game's key-art slot has a source: its wiki's splash screen of the current version (2560 px wide: Genshin 7.1 "A Rekviem for the Underworld", Star Rail 4.6 "Dance With the Beast Before Moonrise", Zenless 3.2 "Their Secret Histories", Wuthering Waves 3.7 "We Who See the Stars", Endfield "Zeroth Directive", NTE's 1.4 program picture), fetched at one click. The hub header carries it across its whole width behind the logo, the name and the resets (which keep a dark panel); the games list's row shows it across its right 60 %, bright, the figures on their own surface.
 - Tests: written first: every game's key art names a wiki `Special:FilePath` source; a journey uploads a key art and finds it across the hub header (180 px or more) and the games-list row.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: docs only; the full check passes.
 - Scope/decisions: none new; the round's decisions are in the handoff.
 - Next: ADR 0011's next services (characters, weapons), then pulls, tasks and planning; a game's reset clock and the planner's costs as objects.
-
-## 2026-10-15 · claude · stack/r15/08-timeline-featured · #328
-- Done: round 11's review, Timeline: a banner phase's featured units are icons, each once however many of its banners feature it (Genshin's phase listed Candace, Mika and Dahlia twice in words): its top-rarity units small at the start of its bar, and all of them in Selected, the top rarity larger, the ones you own ticked, a top one you lack ringed, a character opening its page, then "+n" and the link to Pulls. One `FeaturedUnits` component now serves Home's banner card (#326) and the Timeline.
-- Tests: written first: a journey with two banners sharing a phase (Fu Xuan with Asta, Jingliu with Asta, Asta owned): the bar shows the two 5★s, Selected lists three units, Fu Xuan "not owned", Asta "owned". The journey where a featured unit opens its page passes unchanged.
-- Scope/decisions: the bar's icons are hidden from screen readers (Selected names the units; the bar keeps its name and dates). The audit's "placeholder picture" was the sample banners, which have no units; the feed's show their art.
-- Next: the handoff and round 11's audit status; then ADR 0011's next services (characters, weapons).
