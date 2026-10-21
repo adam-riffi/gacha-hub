@@ -2,7 +2,8 @@
 .sh-top { display: grid; grid-template-columns: minmax(280px, 1fr) minmax(0, 2fr); gap: 24px; align-items: start; margin-bottom: 24px; }
 .sh-art { position: relative; height: 100%; min-height: 560px; overflow: hidden; background: var(--surface-2); border: 1px solid var(--edge); }
 .sh-art .gicon { width: 100%; height: 100%; object-fit: cover; object-position: top; }
-.sh-art[data-game="endfield"] .gicon { object-fit: contain; object-position: center bottom; }
+/* Endfield's 2048 px splash art (round 17) fills the sheet's panel like every game's, from the top. */
+.sh-art[data-game="endfield"] .gicon { object-fit: cover; object-position: center top; }
 .sh-art .gicon-ph { display: grid; place-items: center; border: 0; background: transparent; color: var(--hairline-strong); font: 600 64px/1 var(--font-display); }
 .sh-upload { position: absolute; left: 12px; top: 12px; background: var(--bg); }
 .sh-main { display: grid; gap: 18px; min-width: 0; }

@@ -110,12 +110,15 @@ export const endfield: GameDefinition = {
     },
     kpis: { damage: ["ATK", "Crit value", "Attribute"], support: ["Ultimate gain", "HP", "Attribute"], defense: ["HP", "DEF", "Attribute"] },
     dupes: { character: { field: "potential", label: "Potential", max: ENDFIELD_LIMITS.maxPotential } },
-    // The Endaxis timeline tool's public folders, pinned to the commit the importer read (scripts/catalog/endfield.ts, round 7).
+    // Round 17 (Georges: "Endfield is missing a lot of art and the character's splash art are cropped and low res"): operator
+    // and weapon icons from endfieldtools.dev by the game's own ids (198 px), the operators' splash art from the Endfield wiki by
+    // its file name (2048 px, served plain at /images/<file>); gear sets still from the Endaxis timeline tool at a pinned commit
+    // (scripts/catalog/endfield.ts, round 7). The importer keys a unit only where the file is there.
     art: {
-      character: "https://raw.githubusercontent.com/Lieyuan621/Endaxis/1cd67de1e45099f6676396012e134d97ff035d8b/public/{key}.webp",
-      portrait: "https://raw.githubusercontent.com/Lieyuan621/Endaxis/1cd67de1e45099f6676396012e134d97ff035d8b/public/{key}.webp",
-      splash: "https://raw.githubusercontent.com/Lieyuan621/Endaxis/1cd67de1e45099f6676396012e134d97ff035d8b/public/{key}.webp",
-      weapon: "https://raw.githubusercontent.com/Lieyuan621/Endaxis/1cd67de1e45099f6676396012e134d97ff035d8b/public/{key}.webp",
+      character: "https://endfieldtools.dev/assets/images/endfield/charremoteicon/icon_{key}.png",
+      portrait: "https://endfieldtools.dev/assets/images/endfield/charremoteicon/icon_{key}.png",
+      splash: "https://endfield.wiki.gg/images/{key}_Splash_Art.png",
+      weapon: "https://endfieldtools.dev/assets/images/endfield/itemicon/{key}.png",
       gear: "https://raw.githubusercontent.com/Lieyuan621/Endaxis/1cd67de1e45099f6676396012e134d97ff035d8b/public/{key}.webp",
     },
     accountLevel: { label: "AL", name: "Authority Level" },

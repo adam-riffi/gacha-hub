@@ -10,8 +10,7 @@
       "tag": "Physical",
       "weaponType": "Sword",
       "maxLevel": 80,
-      "icon": "operators/endministrator/avatar",
-      "splash": "operators/endministrator/portrait",
+      "icon": "chr_0002_endminm",
       "ascension": [],
       "talents": {
         "keys": [],
@@ -33,8 +32,7 @@
       "tag": "Physical",
       "weaponType": "Sword",
       "maxLevel": 80,
-      "icon": "operators/endministrator/avatar",
-      "splash": "operators/endministrator/portrait",
+      "icon": "chr_0003_endminf",
       "ascension": [],
       "talents": {
         "keys": [],
@@ -56,8 +54,8 @@
       "tag": "Electric",
       "weaponType": "Arts Unit",
       "maxLevel": 80,
-      "icon": "operators/perlica/avatar",
-      "splash": "operators/perlica/portrait",
+      "icon": "chr_0004_pelica",
+      "splash": "Perlica",
       "ascension": [],
       "talents": {
         "keys": [],
@@ -127,8 +125,8 @@
       "tag": "Physical",
       "weaponType": "Sword",
       "maxLevel": 80,
-      "icon": "operators/chen-qianyu/avatar",
-      "splash": "operators/chen-qianyu/portrait",
+      "icon": "chr_0005_chen",
+      "splash": "Chen_Qianyu",
       "ascension": [],
       "talents": {
         "keys": [],
@@ -193,8 +191,8 @@
       "tag": "Heat",
       "weaponType": "Handcannon",
       "maxLevel": 80,
-      "icon": "operators/wulfgard/avatar",
-      "splash": "operators/wulfgard/portrait",
+      "icon": "chr_0006_wolfgd",
+      "splash": "Wulfgard",
       "ascension": [],
       "talents": {
         "keys": [],
@@ -258,8 +256,8 @@
       "tag": "Electric",
       "weaponType": "Sword",
       "maxLevel": 80,
-      "icon": "operators/arclight/avatar",
-      "splash": "operators/arclight/portrait",
+      "icon": "chr_0007_ikut",
+      "splash": "Arclight",
       "ascension": [],
       "talents": {
         "keys": [],
@@ -318,8 +316,8 @@
       "tag": "Heat",
       "weaponType": "Greatsword",
       "maxLevel": 80,
-      "icon": "operators/ember/avatar",
-      "splash": "operators/ember/portrait",
+      "icon": "chr_0009_azrila",
+      "splash": "Ember",
       "ascension": [],
       "talents": {
         "keys": [],
@@ -377,8 +375,8 @@
       "tag": "Cryo",
       "weaponType": "Arts Unit",
       "maxLevel": 80,
-      "icon": "operators/xaihi/avatar",
-      "splash": "operators/xaihi/portrait",
+      "icon": "chr_0011_seraph",
+      "splash": "Xaihi",
       "ascension": [],
       "talents": {
         "keys": [],
@@ -430,8 +428,8 @@
       "tag": "Electric",
       "weaponType": "Polearm",
       "maxLevel": 80,
-      "icon": "operators/avywenna/avatar",
-      "splash": "operators/avywenna/portrait",
+      "icon": "chr_0012_avywen",
+      "splash": "Avywenna",
       "ascension": [],
       "talents": {
         "keys": [],
@@ -495,8 +493,8 @@
       "tag": "Nature",
       "weaponType": "Arts Unit",
       "maxLevel": 80,
-      "icon": "operators/gilberta/avatar",
-      "splash": "operators/gilberta/portrait",
+      "icon": "chr_0013_aglina",
+      "splash": "Gilberta",
       "ascension": [],
       "talents": {
         "keys": [],
@@ -566,8 +564,8 @@
       "tag": "Cryo",
       "weaponType": "Greatsword",
       "maxLevel": 80,
-      "icon": "operators/snowshine/avatar",
-      "splash": "operators/snowshine/portrait",
+      "icon": "chr_0014_aurora",
+      "splash": "Snowshine",
       "ascension": [],
       "talents": {
         "keys": [],
@@ -625,8 +623,8 @@
       "tag": "Physical",
       "weaponType": "Polearm",
       "maxLevel": 80,
-      "icon": "operators/lifeng/avatar",
-      "splash": "operators/lifeng/portrait",
+      "icon": "chr_0015_lifeng",
+      "splash": "Lifeng",
       "ascension": [],
       "talents": {
         "keys": [],
@@ -685,8 +683,8 @@
       "tag": "Heat",
       "weaponType": "Sword",
       "maxLevel": 80,
-      "icon": "operators/laevatain/avatar",
-      "splash": "operators/laevatain/portrait",
+      "icon": "chr_0016_laevat",
+      "splash": "Laevatain",
       "ascension": [],
       "talents": {
         "keys": [],
@@ -756,8 +754,8 @@
       "tag": "Cryo",
       "weaponType": "Handcannon",
       "maxLevel": 80,
-      "icon": "operators/yvonne/avatar",
-      "splash": "operators/yvonne/portrait",
+      "icon": "chr_0017_yvonne",
+      "splash": "Yvonne",
       "ascension": [],
       "talents": {
         "keys": [],
@@ -809,8 +807,8 @@
       "tag": "Physical",
       "weaponType": "Greatsword",
       "maxLevel": 80,
-      "icon": "operators/da-pan/avatar",
-      "splash": "operators/da-pan/portrait",
+      "icon": "chr_0018_dapan",
+      "splash": "Da_Pan",
       "ascension": [],
       "talents": {
         "keys": [],
@@ -874,8 +872,8 @@
       "tag": "Heat",
       "weaponType": "Sword",
       "maxLevel": 80,
-      "icon": "operators/akekuri/avatar",
-      "splash": "operators/akekuri/portrait",
+      "icon": "chr_0019_karin",
+      "splash": "Akekuri",
       "ascension": [],
       "talents": {
         "keys": [],
@@ -933,8 +931,8 @@
       "tag": "Physical",
       "weaponType": "Greatsword",
       "maxLevel": 80,
-      "icon": "operators/catcher/avatar",
-      "splash": "operators/catcher/portrait",
+      "icon": "chr_0020_meurs",
+      "splash": "Catcher",
       "ascension": [],
       "talents": {
         "keys": [],
@@ -999,8 +997,8 @@
       "tag": "Cryo",
       "weaponType": "Polearm",
       "maxLevel": 80,
-      "icon": "operators/estella/avatar",
-      "splash": "operators/estella/portrait",
+      "icon": "chr_0021_whiten",
+      "splash": "Estella",
       "ascension": [],
       "talents": {
         "keys": [],
@@ -1052,8 +1050,8 @@
       "tag": "Nature",
       "weaponType": "Handcannon",
       "maxLevel": 80,
-      "icon": "operators/fluorite/avatar",
-      "splash": "operators/fluorite/portrait",
+      "icon": "chr_0022_bounda",
+      "splash": "Fluorite",
       "ascension": [],
       "talents": {
         "keys": [],
@@ -1117,8 +1115,8 @@
       "tag": "Electric",
       "weaponType": "Arts Unit",
       "maxLevel": 80,
-      "icon": "operators/antal/avatar",
-      "splash": "operators/antal/portrait",
+      "icon": "chr_0023_antal",
+      "splash": "Antal",
       "ascension": [],
       "talents": {
         "keys": [],
@@ -1171,8 +1169,8 @@
       "tag": "Cryo",
       "weaponType": "Sword",
       "maxLevel": 80,
-      "icon": "operators/alesh/avatar",
-      "splash": "operators/alesh/portrait",
+      "icon": "chr_0024_deepfin",
+      "splash": "Alesh",
       "ascension": [],
       "talents": {
         "keys": [],
@@ -1248,8 +1246,8 @@
       "tag": "Nature",
       "weaponType": "Arts Unit",
       "maxLevel": 80,
-      "icon": "operators/ardelia/avatar",
-      "splash": "operators/ardelia/portrait",
+      "icon": "chr_0025_ardelia",
+      "splash": "Ardelia",
       "ascension": [],
       "talents": {
         "keys": [],
@@ -1319,8 +1317,8 @@
       "tag": "Cryo",
       "weaponType": "Greatsword",
       "maxLevel": 80,
-      "icon": "operators/last-rite/avatar",
-      "splash": "operators/last-rite/portrait",
+      "icon": "chr_0026_lastrite",
+      "splash": "Last_Rite",
       "ascension": [],
       "talents": {
         "keys": [],
@@ -1372,8 +1370,8 @@
       "tag": "Cryo",
       "weaponType": "Handcannon",
       "maxLevel": 80,
-      "icon": "operators/tangtang/avatar",
-      "splash": "operators/tangtang/portrait",
+      "icon": "chr_0027_tangtang",
+      "splash": "Tangtang",
       "ascension": [],
       "talents": {
         "keys": [],
@@ -1437,8 +1435,8 @@
       "tag": "Physical",
       "weaponType": "Sword",
       "maxLevel": 80,
-      "icon": "operators/rossi/avatar",
-      "splash": "operators/rossi/portrait",
+      "icon": "chr_0028_wulfa",
+      "splash": "Rossi",
       "ascension": [],
       "talents": {
         "keys": [],
@@ -1497,8 +1495,8 @@
       "tag": "Physical",
       "weaponType": "Sword",
       "maxLevel": 80,
-      "icon": "operators/pogranichnik/avatar",
-      "splash": "operators/pogranichnik/portrait",
+      "icon": "chr_0029_pograni",
+      "splash": "Pogranichnik",
       "ascension": [],
       "talents": {
         "keys": [],
@@ -1563,8 +1561,8 @@
       "tag": "Electric",
       "weaponType": "Arts Unit",
       "maxLevel": 80,
-      "icon": "operators/zhuang-fangyi/avatar",
-      "splash": "operators/zhuang-fangyi/portrait",
+      "icon": "chr_0030_zhuangfy",
+      "splash": "Zhuang_Fangyi",
       "ascension": [],
       "talents": {
         "keys": [],
@@ -1629,8 +1627,7 @@
       "tag": "Physical",
       "weaponType": "Greatsword",
       "maxLevel": 80,
-      "icon": "operators/mifu/avatar",
-      "splash": "operators/mifu/portrait",
+      "icon": "chr_0031_mifu",
       "ascension": [],
       "talents": {
         "keys": [],
@@ -1695,8 +1692,6 @@
       "tag": "Physical",
       "weaponType": "Sword",
       "maxLevel": 80,
-      "icon": "operators/endministrator/avatar",
-      "splash": "operators/endministrator/portrait",
       "ascension": [],
       "talents": {
         "keys": [],
@@ -1719,7 +1714,7 @@
       "rarity": 4,
       "type": "Greatsword",
       "maxLevel": 80,
-      "icon": "weapons/claym/wpn_claym_0003",
+      "icon": "wpn_claym_0003",
       "ascension": []
     },
     {
@@ -1729,7 +1724,7 @@
       "rarity": 6,
       "type": "Greatsword",
       "maxLevel": 80,
-      "icon": "weapons/claym/wpn_claym_0004",
+      "icon": "wpn_claym_0004",
       "ascension": []
     },
     {
@@ -1739,7 +1734,7 @@
       "rarity": 6,
       "type": "Greatsword",
       "maxLevel": 80,
-      "icon": "weapons/claym/wpn_claym_0006",
+      "icon": "wpn_claym_0006",
       "ascension": []
     },
     {
@@ -1749,7 +1744,7 @@
       "rarity": 6,
       "type": "Greatsword",
       "maxLevel": 80,
-      "icon": "weapons/claym/wpn_claym_0007",
+      "icon": "wpn_claym_0007",
       "ascension": []
     },
     {
@@ -1759,7 +1754,7 @@
       "rarity": 6,
       "type": "Greatsword",
       "maxLevel": 80,
-      "icon": "weapons/claym/wpn_claym_0008",
+      "icon": "wpn_claym_0008",
       "ascension": []
     },
     {
@@ -1769,7 +1764,7 @@
       "rarity": 4,
       "type": "Greatsword",
       "maxLevel": 80,
-      "icon": "weapons/claym/wpn_claym_0009",
+      "icon": "wpn_claym_0009",
       "ascension": []
     },
     {
@@ -1779,7 +1774,7 @@
       "rarity": 3,
       "type": "Greatsword",
       "maxLevel": 80,
-      "icon": "weapons/claym/wpn_claym_0010",
+      "icon": "wpn_claym_0010",
       "ascension": []
     },
     {
@@ -1789,7 +1784,7 @@
       "rarity": 5,
       "type": "Greatsword",
       "maxLevel": 80,
-      "icon": "weapons/claym/wpn_claym_0011",
+      "icon": "wpn_claym_0011",
       "ascension": []
     },
     {
@@ -1799,7 +1794,7 @@
       "rarity": 5,
       "type": "Greatsword",
       "maxLevel": 80,
-      "icon": "weapons/claym/wpn_claym_0012",
+      "icon": "wpn_claym_0012",
       "ascension": []
     },
     {
@@ -1809,7 +1804,7 @@
       "rarity": 6,
       "type": "Greatsword",
       "maxLevel": 80,
-      "icon": "weapons/claym/wpn_claym_0013",
+      "icon": "wpn_claym_0013",
       "ascension": []
     },
     {
@@ -1819,7 +1814,7 @@
       "rarity": 5,
       "type": "Greatsword",
       "maxLevel": 80,
-      "icon": "weapons/claym/wpn_claym_0014",
+      "icon": "wpn_claym_0014",
       "ascension": []
     },
     {
@@ -1829,7 +1824,7 @@
       "rarity": 5,
       "type": "Greatsword",
       "maxLevel": 80,
-      "icon": "weapons/claym/wpn_claym_0015",
+      "icon": "wpn_claym_0015",
       "ascension": []
     },
     {
@@ -1839,7 +1834,7 @@
       "rarity": 6,
       "type": "Greatsword",
       "maxLevel": 80,
-      "icon": "weapons/claym/wpn_claym_0016",
+      "icon": "wpn_claym_0016",
       "ascension": []
     },
     {
@@ -1849,7 +1844,7 @@
       "rarity": 6,
       "type": "Greatsword",
       "maxLevel": 80,
-      "icon": "weapons/claym/wpn_claym_0017",
+      "icon": "wpn_claym_0017",
       "ascension": []
     },
     {
@@ -1859,7 +1854,7 @@
       "rarity": 4,
       "type": "Arts Unit",
       "maxLevel": 80,
-      "icon": "weapons/funnel/wpn_funnel_0001",
+      "icon": "wpn_funnel_0001",
       "ascension": []
     },
     {
@@ -1869,7 +1864,7 @@
       "rarity": 3,
       "type": "Arts Unit",
       "maxLevel": 80,
-      "icon": "weapons/funnel/wpn_funnel_0002",
+      "icon": "wpn_funnel_0002",
       "ascension": []
     },
     {
@@ -1879,7 +1874,7 @@
       "rarity": 4,
       "type": "Arts Unit",
       "maxLevel": 80,
-      "icon": "weapons/funnel/wpn_funnel_0003",
+      "icon": "wpn_funnel_0003",
       "ascension": []
     },
     {
@@ -1889,7 +1884,7 @@
       "rarity": 5,
       "type": "Arts Unit",
       "maxLevel": 80,
-      "icon": "weapons/funnel/wpn_funnel_0004",
+      "icon": "wpn_funnel_0004",
       "ascension": []
     },
     {
@@ -1899,7 +1894,7 @@
       "rarity": 5,
       "type": "Arts Unit",
       "maxLevel": 80,
-      "icon": "weapons/funnel/wpn_funnel_0005",
+      "icon": "wpn_funnel_0005",
       "ascension": []
     },
     {
@@ -1909,7 +1904,7 @@
       "rarity": 6,
       "type": "Arts Unit",
       "maxLevel": 80,
-      "icon": "weapons/funnel/wpn_funnel_0006",
+      "icon": "wpn_funnel_0006",
       "ascension": []
     },
     {
@@ -1919,7 +1914,7 @@
       "rarity": 5,
       "type": "Arts Unit",
       "maxLevel": 80,
-      "icon": "weapons/funnel/wpn_funnel_0007",
+      "icon": "wpn_funnel_0007",
       "ascension": []
     },
     {
@@ -1929,7 +1924,7 @@
       "rarity": 6,
       "type": "Arts Unit",
       "maxLevel": 80,
-      "icon": "weapons/funnel/wpn_funnel_0008",
+      "icon": "wpn_funnel_0008",
       "ascension": []
     },
     {
@@ -1939,7 +1934,7 @@
       "rarity": 6,
       "type": "Arts Unit",
       "maxLevel": 80,
-      "icon": "weapons/funnel/wpn_funnel_0009",
+      "icon": "wpn_funnel_0009",
       "ascension": []
     },
     {
@@ -1949,7 +1944,7 @@
       "rarity": 6,
       "type": "Arts Unit",
       "maxLevel": 80,
-      "icon": "weapons/funnel/wpn_funnel_0010",
+      "icon": "wpn_funnel_0010",
       "ascension": []
     },
     {
@@ -1959,7 +1954,7 @@
       "rarity": 6,
       "type": "Arts Unit",
       "maxLevel": 80,
-      "icon": "weapons/funnel/wpn_funnel_0011",
+      "icon": "wpn_funnel_0011",
       "ascension": []
     },
     {
@@ -1969,7 +1964,7 @@
       "rarity": 5,
       "type": "Arts Unit",
       "maxLevel": 80,
-      "icon": "weapons/funnel/wpn_funnel_0012",
+      "icon": "wpn_funnel_0012",
       "ascension": []
     },
     {
@@ -1979,7 +1974,7 @@
       "rarity": 6,
       "type": "Arts Unit",
       "maxLevel": 80,
-      "icon": "weapons/funnel/wpn_funnel_0013",
+      "icon": "wpn_funnel_0013",
       "ascension": []
     },
     {
@@ -1989,7 +1984,7 @@
       "rarity": 5,
       "type": "Arts Unit",
       "maxLevel": 80,
-      "icon": "weapons/funnel/wpn_funnel_0014",
+      "icon": "wpn_funnel_0014",
       "ascension": []
     },
     {
@@ -1999,7 +1994,7 @@
       "rarity": 6,
       "type": "Arts Unit",
       "maxLevel": 80,
-      "icon": "weapons/funnel/wpn_funnel_0015",
+      "icon": "wpn_funnel_0015",
       "ascension": []
     },
     {
@@ -2009,7 +2004,7 @@
       "rarity": 6,
       "type": "Arts Unit",
       "maxLevel": 80,
-      "icon": "weapons/funnel/wpn_funnel_0017",
+      "icon": "wpn_funnel_0017",
       "ascension": []
     },
     {
@@ -2019,7 +2014,7 @@
       "rarity": 4,
       "type": "Polearm",
       "maxLevel": 80,
-      "icon": "weapons/lance/wpn_lance_0003",
+      "icon": "wpn_lance_0003",
       "ascension": []
     },
     {
@@ -2029,7 +2024,7 @@
       "rarity": 5,
       "type": "Polearm",
       "maxLevel": 80,
-      "icon": "weapons/lance/wpn_lance_0004",
+      "icon": "wpn_lance_0004",
       "ascension": []
     },
     {
@@ -2039,7 +2034,7 @@
       "rarity": 5,
       "type": "Polearm",
       "maxLevel": 80,
-      "icon": "weapons/lance/wpn_lance_0006",
+      "icon": "wpn_lance_0006",
       "ascension": []
     },
     {
@@ -2049,7 +2044,7 @@
       "rarity": 6,
       "type": "Polearm",
       "maxLevel": 80,
-      "icon": "weapons/lance/wpn_lance_0007",
+      "icon": "wpn_lance_0007",
       "ascension": []
     },
     {
@@ -2059,7 +2054,7 @@
       "rarity": 4,
       "type": "Polearm",
       "maxLevel": 80,
-      "icon": "weapons/lance/wpn_lance_0008",
+      "icon": "wpn_lance_0008",
       "ascension": []
     },
     {
@@ -2069,7 +2064,7 @@
       "rarity": 3,
       "type": "Polearm",
       "maxLevel": 80,
-      "icon": "weapons/lance/wpn_lance_0009",
+      "icon": "wpn_lance_0009",
       "ascension": []
     },
     {
@@ -2079,7 +2074,7 @@
       "rarity": 6,
       "type": "Polearm",
       "maxLevel": 80,
-      "icon": "weapons/lance/wpn_lance_0010",
+      "icon": "wpn_lance_0010",
       "ascension": []
     },
     {
@@ -2089,7 +2084,7 @@
       "rarity": 6,
       "type": "Polearm",
       "maxLevel": 80,
-      "icon": "weapons/lance/wpn_lance_0011",
+      "icon": "wpn_lance_0011",
       "ascension": []
     },
     {
@@ -2099,7 +2094,7 @@
       "rarity": 6,
       "type": "Polearm",
       "maxLevel": 80,
-      "icon": "weapons/lance/wpn_lance_0012",
+      "icon": "wpn_lance_0012",
       "ascension": []
     },
     {
@@ -2109,7 +2104,7 @@
       "rarity": 5,
       "type": "Polearm",
       "maxLevel": 80,
-      "icon": "weapons/lance/wpn_lance_0013",
+      "icon": "wpn_lance_0013",
       "ascension": []
     },
     {
@@ -2119,7 +2114,7 @@
       "rarity": 3,
       "type": "Handcannon",
       "maxLevel": 80,
-      "icon": "weapons/pistol/wpn_pistol_0001",
+      "icon": "wpn_pistol_0001",
       "ascension": []
     },
     {
@@ -2129,7 +2124,7 @@
       "rarity": 4,
       "type": "Handcannon",
       "maxLevel": 80,
-      "icon": "weapons/pistol/wpn_pistol_0002",
+      "icon": "wpn_pistol_0002",
       "ascension": []
     },
     {
@@ -2139,7 +2134,7 @@
       "rarity": 4,
       "type": "Handcannon",
       "maxLevel": 80,
-      "icon": "weapons/pistol/wpn_pistol_0003",
+      "icon": "wpn_pistol_0003",
       "ascension": []
     },
     {
@@ -2149,7 +2144,7 @@
       "rarity": 5,
       "type": "Handcannon",
       "maxLevel": 80,
-      "icon": "weapons/pistol/wpn_pistol_0004",
+      "icon": "wpn_pistol_0004",
       "ascension": []
     },
     {
@@ -2159,7 +2154,7 @@
       "rarity": 6,
       "type": "Handcannon",
       "maxLevel": 80,
-      "icon": "weapons/pistol/wpn_pistol_0005",
+      "icon": "wpn_pistol_0005",
       "ascension": []
     },
     {
@@ -2169,7 +2164,7 @@
       "rarity": 5,
       "type": "Handcannon",
       "maxLevel": 80,
-      "icon": "weapons/pistol/wpn_pistol_0006",
+      "icon": "wpn_pistol_0006",
       "ascension": []
     },
     {
@@ -2179,7 +2174,7 @@
       "rarity": 6,
       "type": "Handcannon",
       "maxLevel": 80,
-      "icon": "weapons/pistol/wpn_pistol_0007",
+      "icon": "wpn_pistol_0007",
       "ascension": []
     },
     {
@@ -2189,7 +2184,7 @@
       "rarity": 6,
       "type": "Handcannon",
       "maxLevel": 80,
-      "icon": "weapons/pistol/wpn_pistol_0008",
+      "icon": "wpn_pistol_0008",
       "ascension": []
     },
     {
@@ -2199,7 +2194,7 @@
       "rarity": 6,
       "type": "Handcannon",
       "maxLevel": 80,
-      "icon": "weapons/pistol/wpn_pistol_0009",
+      "icon": "wpn_pistol_0009",
       "ascension": []
     },
     {
@@ -2209,7 +2204,7 @@
       "rarity": 6,
       "type": "Handcannon",
       "maxLevel": 80,
-      "icon": "weapons/pistol/wpn_pistol_0010",
+      "icon": "wpn_pistol_0010",
       "ascension": []
     },
     {
@@ -2219,7 +2214,7 @@
       "rarity": 6,
       "type": "Handcannon",
       "maxLevel": 80,
-      "icon": "weapons/pistol/wpn_pistol_0011",
+      "icon": "wpn_pistol_0011",
       "ascension": []
     },
     {
@@ -2229,7 +2224,7 @@
       "rarity": 5,
       "type": "Handcannon",
       "maxLevel": 80,
-      "icon": "weapons/pistol/wpn_pistol_0012",
+      "icon": "wpn_pistol_0012",
       "ascension": []
     },
     {
@@ -2239,7 +2234,7 @@
       "rarity": 3,
       "type": "Sword",
       "maxLevel": 80,
-      "icon": "weapons/sword/wpn_sword_0003",
+      "icon": "wpn_sword_0003",
       "ascension": []
     },
     {
@@ -2249,7 +2244,7 @@
       "rarity": 5,
       "type": "Sword",
       "maxLevel": 80,
-      "icon": "weapons/sword/wpn_sword_0005",
+      "icon": "wpn_sword_0005",
       "ascension": []
     },
     {
@@ -2259,7 +2254,7 @@
       "rarity": 6,
       "type": "Sword",
       "maxLevel": 80,
-      "icon": "weapons/sword/wpn_sword_0006",
+      "icon": "wpn_sword_0006",
       "ascension": []
     },
     {
@@ -2269,7 +2264,7 @@
       "rarity": 5,
       "type": "Sword",
       "maxLevel": 80,
-      "icon": "weapons/sword/wpn_sword_0007",
+      "icon": "wpn_sword_0007",
       "ascension": []
     },
     {
@@ -2279,7 +2274,7 @@
       "rarity": 4,
       "type": "Sword",
       "maxLevel": 80,
-      "icon": "weapons/sword/wpn_sword_0008",
+      "icon": "wpn_sword_0008",
       "ascension": []
     },
     {
@@ -2289,7 +2284,7 @@
       "rarity": 4,
       "type": "Sword",
       "maxLevel": 80,
-      "icon": "weapons/sword/wpn_sword_0009",
+      "icon": "wpn_sword_0009",
       "ascension": []
     },
     {
@@ -2299,7 +2294,7 @@
       "rarity": 6,
       "type": "Sword",
       "maxLevel": 80,
-      "icon": "weapons/sword/wpn_sword_0010",
+      "icon": "wpn_sword_0010",
       "ascension": []
     },
     {
@@ -2309,7 +2304,7 @@
       "rarity": 6,
       "type": "Sword",
       "maxLevel": 80,
-      "icon": "weapons/sword/wpn_sword_0011",
+      "icon": "wpn_sword_0011",
       "ascension": []
     },
     {
@@ -2319,7 +2314,7 @@
       "rarity": 6,
       "type": "Sword",
       "maxLevel": 80,
-      "icon": "weapons/sword/wpn_sword_0012",
+      "icon": "wpn_sword_0012",
       "ascension": []
     },
     {
@@ -2329,7 +2324,7 @@
       "rarity": 6,
       "type": "Sword",
       "maxLevel": 80,
-      "icon": "weapons/sword/wpn_sword_0013",
+      "icon": "wpn_sword_0013",
       "ascension": []
     },
     {
@@ -2339,7 +2334,7 @@
       "rarity": 6,
       "type": "Sword",
       "maxLevel": 80,
-      "icon": "weapons/sword/wpn_sword_0014",
+      "icon": "wpn_sword_0014",
       "ascension": []
     },
     {
@@ -2349,7 +2344,7 @@
       "rarity": 5,
       "type": "Sword",
       "maxLevel": 80,
-      "icon": "weapons/sword/wpn_sword_0015",
+      "icon": "wpn_sword_0015",
       "ascension": []
     },
     {
@@ -2359,7 +2354,7 @@
       "rarity": 6,
       "type": "Sword",
       "maxLevel": 80,
-      "icon": "weapons/sword/wpn_sword_0016",
+      "icon": "wpn_sword_0016",
       "ascension": []
     },
     {
@@ -2369,7 +2364,7 @@
       "rarity": 6,
       "type": "Sword",
       "maxLevel": 80,
-      "icon": "weapons/sword/wpn_sword_0017",
+      "icon": "wpn_sword_0017",
       "ascension": []
     },
     {
@@ -2379,7 +2374,7 @@
       "rarity": 5,
       "type": "Sword",
       "maxLevel": 80,
-      "icon": "weapons/sword/wpn_sword_0018",
+      "icon": "wpn_sword_0018",
       "ascension": []
     },
     {
@@ -2389,7 +2384,7 @@
       "rarity": 5,
       "type": "Sword",
       "maxLevel": 80,
-      "icon": "weapons/sword/wpn_sword_0019",
+      "icon": "wpn_sword_0019",
       "ascension": []
     },
     {
@@ -2399,7 +2394,7 @@
       "rarity": 5,
       "type": "Sword",
       "maxLevel": 80,
-      "icon": "weapons/sword/wpn_sword_0020",
+      "icon": "wpn_sword_0020",
       "ascension": []
     },
     {
@@ -2409,7 +2404,7 @@
       "rarity": 6,
       "type": "Sword",
       "maxLevel": 80,
-      "icon": "weapons/sword/wpn_sword_0021",
+      "icon": "wpn_sword_0021",
       "ascension": []
     },
     {
@@ -2419,7 +2414,7 @@
       "rarity": 6,
       "type": "Sword",
       "maxLevel": 80,
-      "icon": "weapons/sword/wpn_sword_0022",
+      "icon": "wpn_sword_0022",
       "ascension": []
     }
   ],
