@@ -12,7 +12,11 @@
 .cal-board { padding: 8px 8px 12px; }
 .cal-scroll { overflow-x: auto; }
 .cal-grid { min-width: 600px; overflow-x: clip; }
-.cal-r { display: grid; grid-template-columns: 170px minmax(0, 1fr); }
+.cal-r { display: grid; grid-template-columns: 210px minmax(0, 1fr); }
+/* The game's icon beside its name at the head of its rows (round 17). */
+.cal-game-head { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.cal-game-icon { width: 36px; height: 36px; flex: none; }
+.cal-game-text { display: flex; flex-direction: column; min-width: 0; }
 .cal-label { display: flex; flex-direction: column; justify-content: center; min-width: 0; padding: 0 10px 0 4px; }
 .cal-wk { border-bottom: 1px solid var(--hairline); }
 .cal-wk .cal-label { font-size: 12px; }
@@ -35,13 +39,15 @@
   background-size: calc(100% / 6) 100%, calc(100% / 42) 100%, calc(100% / 6) 100%;
 }
 .cal-bar {
-  position: absolute; top: 4px; display: flex; align-items: center; gap: 6px; height: 20px; min-width: 4px; padding: 0 8px;
+  position: absolute; top: 3px; display: flex; align-items: center; gap: 6px; height: 32px; min-width: 4px; padding: 0 8px;
   overflow: hidden; border: 0; cursor: pointer; text-align: left; white-space: nowrap;
   font: 400 12px/1 var(--font-mono);
 }
 /* A banner phase's top units at the start of its bar (round 11). */
 .cal-units { display: inline-flex; flex: 0 0 auto; gap: 2px; margin-left: -6px; }
-.cal-units .gicon { display: block; width: 24px; height: 24px; border: 0; background: color-mix(in srgb, #000 25%, transparent); }
+.cal-units .gicon { display: block; width: 28px; height: 28px; border: 0; background: color-mix(in srgb, #000 25%, transparent); }
+/* A banner's or event's official picture at the start of its bar (round 17: pictures first). */
+.cal-thumb { flex: none; width: 52px; height: 28px; margin-left: -6px; object-fit: cover; }
 /* Selected's featured units: the icons, then the link to Pulls. */
 .cal-sel-featured { display: flex; flex-direction: column; gap: 8px; }
 .cal-bar.is-banner { background: var(--c, var(--accent)); color: #000; }
@@ -71,7 +77,8 @@
 .cal-art .gicon, .cal-art .hero-art, .cal-art .key-art { width: 100%; height: 100%; object-fit: cover; }
 .cal-art .gicon-ph { display: grid; place-items: center; background: transparent; border: 0; color: var(--hairline-strong); font: 600 40px/1 var(--font-display); letter-spacing: 0.06em; }
 .cal-sel h2 { margin: 0 0 6px; font-size: 26px; letter-spacing: 0.02em; text-transform: none; }
-.cal-meta { margin-bottom: 12px; color: var(--text-muted); font: 400 11px/1.4 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
+.cal-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; color: var(--text-muted); font: 400 12px/1.4 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
+.cal-sel-icon { width: 32px; height: 32px; flex: none; }
 .cal-dl { display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 10px 12px; margin: 0; padding: 12px 0; border-top: 1px solid var(--surface-3); }
 .cal-dl dt { color: var(--text-muted); font: 400 12px/1.5 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
 .cal-dl dd { margin: 0; }

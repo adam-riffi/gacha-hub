@@ -1,6 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
-const PORT = 3100;
+// E2E_PORT lets a second checkout run its journeys beside this one's (each has its own database file).
+const PORT = Number(process.env.E2E_PORT ?? 3100);
 
 /** Smoke journeys against the built app on a throwaway SQLite database (DESIGN.md §10). */
 export default defineConfig({
