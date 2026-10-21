@@ -41,16 +41,20 @@ export function PassCard({ roster, carousel }: { roster: RosterEntry[]; carousel
     >
       {rosterGame && game && (
         <>
-          <SlotArt slot={artSlotKey(rosterGame.gameKey, "battle-pass")} className="hero-art carousel-hero" fallback={<HeroArt gameKey={rosterGame.gameKey} className="carousel-hero" />} />
+          {/* The game's key art behind (round 18, Georges: "BP cards"): the pass's own picture is an icon, kept small in the band. */}
+          <HeroArt gameKey={rosterGame.gameKey} className="carousel-hero" />
           <div className="carousel-hatch is-overlay" aria-hidden="true" />
           {pass && ends && (
             <div className="carousel-tag">
               <Countdown at={ends.toISOString()} prefix="ends in" variant="tag" />
             </div>
           )}
-          <div className="band carousel-band">
-            <div className="font-display pass-game">{rosterGame.name}</div>
-            <div className="font-mono carousel-sub">{pass ? `${pass.name} · version ${game.manifest.version.name}` : "No battle pass on record"}</div>
+          <div className="band carousel-band pass-band">
+            <SlotArt slot={artSlotKey(rosterGame.gameKey, "battle-pass")} className="pass-art" />
+            <div>
+              <div className="font-display pass-game">{rosterGame.name}</div>
+              <div className="font-mono carousel-sub">{pass ? `${pass.name} · version ${game.manifest.version.name}` : "No battle pass on record"}</div>
+            </div>
           </div>
           {pass && passState && (
             <div className="pass-level">
