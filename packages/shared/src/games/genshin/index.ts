@@ -167,6 +167,13 @@ export const genshin: GameDefinition = {
     { key: "transformer", title: "Parametric Transformer", cadence: "weekly" },
     // Paimon's Bargains: 5 Intertwined and 5 Acquaint Fates for Masterless Starglitter each month (docs/games/genshin.md).
     { key: "bargains", title: "Paimon's Bargains", cadence: "monthly", target: 10, anchorKey: "bargains" },
+    // Round 17 (Georges: "a lot of tasks are missing too"): the rest of what the game resets (sources in docs/games/genshin.md).
+    { key: "expeditions", title: "Expeditions", cadence: "daily", target: 5 },
+    { key: "realmCurrency", title: "Realm Currency", cadence: "daily" },
+    { key: "bpDailies", title: "Battle Pass dailies", cadence: "daily", target: 4 },
+    { key: "repBounties", title: "Reputation bounties", cadence: "weekly", target: 3 },
+    { key: "repRequests", title: "Reputation requests", cadence: "weekly", target: 3 },
+    { key: "bpWeeklies", title: "Battle Pass weeklies", cadence: "weekly", target: 3 },
   ],
   docSchema: genshinDocSchema,
   emptyDoc: (): GenshinDoc => ({ artifacts: {}, talents: {}, weapon: {}, stats: {} }),

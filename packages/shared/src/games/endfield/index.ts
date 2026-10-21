@@ -134,6 +134,10 @@ export const endfield: GameDefinition = {
     { key: "creditStore", title: "Credit store", cadence: "daily" },
     { key: "weeklyMissions", title: "Weekly missions", cadence: "weekly" },
     { key: "alluvium", title: "Severe Energy Alluvium", cadence: "weekly" },
+    // Round 17 (Georges: "a lot of tasks are missing too"): the rest of what the game resets (sources in docs/games/endfield.md).
+    { key: "signIn", title: "Daily sign-in", cadence: "daily" },
+    { key: "gift", title: "Gift an operator", cadence: "daily" },
+    { key: "bpWeeklies", title: "Protocol Pass weeklies", cadence: "weekly", target: 3 },
   ],
   docSchema: endfieldDocSchema,
   emptyDoc: (): EndfieldDoc => ({ gear: {}, skills: {}, weapon: {}, stats: {} }),

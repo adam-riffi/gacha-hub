@@ -170,6 +170,10 @@ export const hsr: GameDefinition = {
     { key: "echo", title: "Echo of War", cadence: "weekly", target: 3 },
     // Embers Exchange: 5 Star Rail Special Passes and 5 Star Rail Passes for Undying Embers each month (docs/games/hsr.md).
     { key: "embers", title: "Embers Exchange", cadence: "monthly", target: 10, anchorKey: "embers" },
+    // Round 17 (Georges: "a lot of tasks are missing too"): the rest of what the game resets (sources in docs/games/hsr.md).
+    { key: "power", title: "Spend Trailblaze Power", cadence: "daily" },
+    { key: "bpDailies", title: "Nameless Honor dailies", cadence: "daily", target: 4 },
+    { key: "bpWeeklies", title: "Nameless Honor weeklies", cadence: "weekly", target: 3 },
   ],
   docSchema: hsrDocSchema,
   emptyDoc: (): HsrDoc => ({ relics: {}, traces: {}, lightCone: {}, stats: {} }),

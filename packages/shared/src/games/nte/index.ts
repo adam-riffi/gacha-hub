@@ -101,6 +101,11 @@ export const nte: GameDefinition = {
     { key: "mailbox", title: "Old Mailbox commission", cadence: "weekly" },
     // The Lost Exchange each month; one tick, its stock not on record (docs/games/nte.md).
     { key: "lost", title: "Lost Exchange", cadence: "monthly", anchorKey: "lost" },
+    // Round 17 (Georges: "a lot of tasks are missing too"): the rest of what the game resets (sources in docs/games/nte.md).
+    { key: "greed", title: "Realm of Greed", cadence: "weekly" },
+    { key: "heist", title: "Pink Paws Heist", cadence: "weekly" },
+    { key: "bountyWeeklies", title: "Circle Bounty weeklies", cadence: "weekly" },
+    { key: "cityStamina", title: "City Stamina", cadence: "weekly" },
   ],
   docSchema: nteDocSchema,
   emptyDoc: (): NteDoc => ({ arc: {}, console: {}, skills: {}, stats: {} }),

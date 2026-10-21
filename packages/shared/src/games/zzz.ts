@@ -151,6 +151,11 @@ export const zzz: GameDefinition = {
     { key: "hunt", title: "Notorious Hunt", cadence: "weekly", target: 3 },
     // Signal Shop: 5 Encrypted Master Tapes and 5 Master Tapes for Fading Signal each month (docs/games/zzz.md).
     { key: "signal", title: "Signal Shop", cadence: "monthly", target: 10, anchorKey: "signal" },
+    // Round 17 (Georges: "a lot of tasks are missing too"): the rest of what the game resets (sources in docs/games/zzz.md).
+    { key: "battery", title: "Spend Battery", cadence: "daily" },
+    { key: "hollowZero", title: "Hollow Zero", cadence: "weekly" },
+    { key: "riduWeekly", title: "Ridu Weekly", cadence: "weekly" },
+    { key: "bpWeeklies", title: "City Fund weeklies", cadence: "weekly", target: 3 },
   ],
   docSchema: zzzDocSchema,
   emptyDoc: (): ZzzDoc => ({ discs: {}, skills: {}, wEngine: {}, stats: {} }),
