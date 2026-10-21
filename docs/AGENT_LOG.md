@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-21 · claude · stack/r24/02-key-art · #369
+- Done: round 17 (Georges: "the pieces of art you've chosen for the top game cards and game window game cards are extremely underwhelming"). Every game's key-art slot has a source: its wiki's splash screen of the current version (2560 px wide: Genshin 7.1 "A Rekviem for the Underworld", Star Rail 4.6 "Dance With the Beast Before Moonrise", Zenless 3.2 "Their Secret Histories", Wuthering Waves 3.7 "We Who See the Stars", Endfield "Zeroth Directive", NTE's 1.4 program picture), fetched at one click. The hub header carries it across its whole width behind the logo, the name and the resets (which keep a dark panel); the games list's row shows it across its right 60 %, bright, the figures on their own surface.
+- Tests: written first: every game's key art names a wiki `Special:FilePath` source; a journey uploads a key art and finds it across the hub header (180 px or more) and the games-list row.
+- Scope/decisions: the version splash is the picture the game itself opens on; the sources move on with the versions (a line each in `sources.ts`). The official sites' `og:image` were the alternative; the wikis keep every version's, so the next one is a name change.
+- Next: icons and pictures on the timeline, the selected panel and Home's lists.
+
 ## 2026-10-21 · claude · stack/r24/01-game-icons · #368
 - Done: round 17 (Georges, 2026-10-21: "Give each game a game Icon as well; having the Wuthering Waves title card as the game's logo doesn't help me read anything. Icons are cool but should be bigger"). A square icon slot per game, its source the App Store's listing art (512 px, all six games), fetched at one click. `GameMark` shows the icon for every small mark (the strip, Home's tables, tasks, Settings → Art) and the logo for the big spots (hub header, games list, Dailies card), each falling back to the other, then to the emblem; the strip shows icon and name, never the wordmark alone. Every icon size up: strip 44/48 px in 56/62 px chips, list marks 32, tiles 36 and 56, featured units 56/84, hub 120, games list 72, Pulls art 64. The plan for the round is `docs/AUDIT-2026-10-21-round17.md`.
 - Tests: written first: a journey uploads an icon and a wordmark, finds the icon square at 40 px or more beside the name in the strip and at 32 px in Home's Pulls table, and the wordmark in the hub header; the logos journey (round 15) now expects the emblem and the name in the strip for a game with a logo but no icon, and the order journey (round 16) uploads the icon it measures: the strip's rule changed at Georges's word, the big spots' assertions stand.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: a journey with two banners sharing a phase (Fu Xuan with Asta, Jingliu with Asta, Asta owned): the bar shows the two 5★s, Selected lists three units, Fu Xuan "not owned", Asta "owned". The journey where a featured unit opens its page passes unchanged.
 - Scope/decisions: the bar's icons are hidden from screen readers (Selected names the units; the bar keeps its name and dates). The audit's "placeholder picture" was the sample banners, which have no units; the feed's show their art.
 - Next: the handoff and round 11's audit status; then ADR 0011's next services (characters, weapons).
-
-## 2026-10-15 · claude · stack/r15/07-services · #327
-- Done: ADR 0011's thin routes, first two areas. `TeamService` and `OwnershipService` (in `apps/server/src/services`) hold a profile's Prisma calls and their checks (members and companion of the game's, catalog ids, a weapon's meta). A refusal is a `DomainError` (status, code, details) that the error handler answers as the routes did inline, `{ error: code, ...details }`; `instanceOrThrow` finds the user's profile or answers not found. The team and ownership routes are a line each. DESIGN.md §6 lists the objects and services so far.
-- Tests: written first: each service on the test database (teams created, listed in order, edited, removed; members, companions and another profile's team refused as domain errors; ownership owned and dropped in bulk, unknown ids and an out-of-bounds weapon meta refused with nothing saved). The routes' own integration tests pass unchanged.
-- Scope/decisions: the other route files keep their inline Prisma calls for now; each moves behind a service as its area is next touched (`instanceOrThrow` replaces their 52 `loadInstance` + 404 pairs as they move).
-- Next: the characters and weapons routes behind services; then the pulls.

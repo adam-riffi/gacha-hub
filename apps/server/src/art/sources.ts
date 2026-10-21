@@ -9,6 +9,15 @@
 export type ArtSource = { slot: string; url: string; source: string; invert?: boolean };
 
 export const ART_SOURCES: ArtSource[] = [
+  // Each game's key art: its wiki's splash screen of the current version, the picture the game itself opens on (round 17,
+  // Georges: "the pieces of art you've chosen for the top game cards and game window game cards are extremely underwhelming").
+  // Move these on with the versions.
+  { slot: "genshin/key-art", url: "https://genshin-impact.fandom.com/wiki/Special:FilePath/Splashscreen_A_Rekviem_for_the_Underworld.png", source: "Genshin Impact Wiki" },
+  { slot: "hsr/key-art", url: "https://honkai-star-rail.fandom.com/wiki/Special:FilePath/Splash_Screen_Dance_With_the_Beast_Before_Moonrise.png", source: "Honkai: Star Rail Wiki" },
+  { slot: "zzz/key-art", url: "https://zenless-zone-zero.fandom.com/wiki/Special:FilePath/Splashscreen_Their_Secret_Histories.png", source: "Zenless Zone Zero Wiki" },
+  { slot: "wuwa/key-art", url: "https://wutheringwaves.fandom.com/wiki/Special:FilePath/We_Who_See_the_Stars_Splashscreen.jpg", source: "Wuthering Waves Wiki" },
+  { slot: "endfield/key-art", url: "https://endfield.fandom.com/wiki/Special:FilePath/Splashscreen_Zeroth_Directive.png", source: "Arknights: Endfield Wiki" },
+  { slot: "nte/key-art", url: "https://neverness-to-everness.fandom.com/wiki/Special:FilePath/Version_1.4_Preview_Special_Program_Announcement.png", source: "Neverness to Everness Wiki" },
   // The games' own app icons, from the App Store's listings (round 17, Georges: "Give each game a game Icon").
   { slot: "genshin/icon", url: "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/5c/e2/13/5ce21317-a08a-24ac-cc5f-2b25a4d71fa6/AppIcon-0-0-1x_U007epad-0-1-85-220.png/512x512bb.jpg", source: "App Store" },
   { slot: "hsr/icon", url: "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/fd/65/dc/fd65dc18-c4b6-7b64-8266-a423f3f113e0/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/512x512bb.jpg", source: "App Store" },

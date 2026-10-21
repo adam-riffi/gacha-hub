@@ -16,9 +16,12 @@
 .lib-icon { width: 72px; height: 72px; flex: none; z-index: 1; }
 .lib-icon.is-art { width: auto; max-width: 230px; max-height: 88px; object-fit: contain; justify-self: start; }
 /* The game's hero across the card's right, fading into the card (round 12). */
-.lib-hero { position: absolute; right: 0; top: 0; bottom: 0; width: 46%; mask-image: linear-gradient(90deg, transparent, #000 55%); opacity: 0.6; pointer-events: none; }
+/* The key art across the row's right (round 17: "the top game cards"), brighter and wider than the splash was. */
+.lib-hero { position: absolute; right: 0; top: 0; bottom: 0; width: 60%; object-position: 50% 30%; mask-image: linear-gradient(90deg, transparent, #000 45%); opacity: 0.9; pointer-events: none; }
 .lib-row { position: relative; overflow: hidden; }
 .lib-row > :not(.lib-hero) { position: relative; z-index: 1; }
+/* The figures keep a surface of their own over the key art. */
+.lib-row .kpi { background: color-mix(in srgb, var(--card) 88%, transparent); }
 .lib-name h2 { margin: 0 0 4px; font-size: 22px; }
 .lib-name .font-mono { font-size: 12px; }
 .lib-name .badge { margin-top: 6px; }
