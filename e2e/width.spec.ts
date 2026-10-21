@@ -16,3 +16,18 @@ test("every screen fits an 1100 px window: Home, the library, the timeline, a ga
     expect(width, path).toBeLessThanOrEqual(1100);
   }
 });
+
+test.describe("a 2560 px window", () => {
+  test.use({ viewport: { width: 2560, height: 1400 } });
+  test("Home and a game's Activities fill it without a horizontal scroll @smoke", async ({ page }) => {
+    await page.goto("/");
+    await page.getByRole("button", { name: "Continue" }).click();
+    await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+    const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+    for (const path of ["/", `/games/${id}`]) {
+      await page.goto(path);
+      await page.waitForLoadState("networkidle");
+      expect(await page.evaluate(() => document.documentElement.scrollWidth), path).toBeLessThanOrEqual(2560);
+    }
+  });
+});

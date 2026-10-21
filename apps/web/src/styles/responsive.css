@@ -1,0 +1,20 @@
+/* The narrow-window rules, loaded last so they win over each screen's own sheet. */
+/* Desktop windows from 1100 px (Georges, round 15: no phones): below 1440 the widest panels and grids give a column. */
+@media (max-width: 1439px) {
+  /* Home's top row and heatmap are drawings at fixed sizes (496 + 240 + 424 px charts, an 868 px heatmap): they zoom down
+     to the window as the whole shell zooms up on wide ones (tokens.css). */
+  .home-top { zoom: 0.78; }
+  .home-heat { zoom: 0.8; }
+  .home-lists { grid-template-columns: minmax(0, 1fr); }
+  .gd-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ch-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .eg-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cal-page { grid-template-columns: minmax(0, 1fr) 300px; }
+  .cal-r { grid-template-columns: 170px minmax(0, 1fr); }
+  /* The games list: the figures take the row's width, today's line and the move buttons go under them. */
+  .lib-row { grid-template-columns: 20px 170px 180px minmax(0, 1fr); }
+  .lib-cells { grid-column: 4; flex-wrap: wrap; }
+  .lib-today { grid-column: 4; grid-row: 2; flex-direction: row; align-items: center; gap: 16px; }
+  .lib-actions { grid-column: 3; }
+  .lib-page { grid-template-columns: minmax(0, 1fr) 260px; }
+}
