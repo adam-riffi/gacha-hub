@@ -16,6 +16,8 @@ const CSP: Record<string, string[]> = {
     "blob:",
     // The banner and event key art that comes with HoYoverse's announcements (round 16).
     "https://sdk.hoyoverse.com",
+    // Game8's banner and event pictures for Endfield (round 18).
+    "https://img.game8.co",
     // The Wuthering Waves wiki's banner and event pictures, by file path, which redirects to Fandom's static host (round 17).
     "https://wutheringwaves.fandom.com",
     "https://static.wikia.nocookie.net",
