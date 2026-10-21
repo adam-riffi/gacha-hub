@@ -32,8 +32,10 @@ export function HubHeader({ instanceId }: { instanceId: string }) {
     },
   });
   const game = data && getGame(data.gameKey);
-  // The owner's logo, or its icon (round 17): either beats the placeholder.
-  const uploadedLogo = useSlotArt(data ? artSlotKey(data.gameKey, "logo") : null) || useSlotArt(data ? artSlotKey(data.gameKey, "icon") : null);
+  // The owner's logo, or its icon (round 17): either beats the placeholder (both hooks every render).
+  const logoSlot = useSlotArt(data ? artSlotKey(data.gameKey, "logo") : null);
+  const iconSlot = useSlotArt(data ? artSlotKey(data.gameKey, "icon") : null);
+  const uploadedLogo = logoSlot || iconSlot;
   if (!data || !game) return null;
 
   const region = game.regions.find((candidate) => candidate.key === data.regionKey) ?? game.regions[0]!;
