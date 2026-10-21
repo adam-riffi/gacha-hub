@@ -25,4 +25,6 @@ test("a game's key art is the backdrop of its hub header and its games-list row 
   expect((await row.boundingBox())!.width).toBeGreaterThan(500);
 
   await page.request.delete("/api/art/nte/key-art");
+  // The NTE journey adds the game from the library itself: leave none behind.
+  await page.request.delete(`/api/instances/${id}`);
 });
