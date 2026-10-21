@@ -61,6 +61,17 @@ describe("the art slots fetched from their sources", () => {
     expect(sources.length).toBeGreaterThanOrEqual(85);
   });
 
+  // Round 17 (Georges: "the pieces of art you've chosen for the top game cards and game window game cards are extremely
+  // underwhelming"): every game's key art is its wiki's splash screen of the current version, 1920 px wide or more.
+  it("gives every game's key art a source: its wiki's current version splash", () => {
+    for (const gameKey of ["genshin", "hsr", "zzz", "wuwa", "endfield", "nte"]) {
+      const entry = sources.find((candidate) => candidate.slot === `${gameKey}/key-art`);
+      expect(entry, gameKey).toBeDefined();
+      expect(entry!.source, gameKey).toMatch(/Wiki/);
+      expect(entry!.url, gameKey).toMatch(/fandom\.com\/wiki\/Special:FilePath\//);
+    }
+  });
+
   // Round 16 (Georges: "sites like game8 have all the assets you might need"): the standard banners' own art, not a wiki screenshot.
   it("takes the standard and beginner banners' pictures from Game8", () => {
     for (const slot of ["genshin/banner/standard", "wuwa/banner/standard", "wuwa/banner/novice", "endfield/banner/standard", "endfield/banner/beginner"]) {
