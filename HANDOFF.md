@@ -28,7 +28,7 @@
 
 ## Next (the plan)
 1. **Deploy** at Georges's word; then in production: Settings → Art → "Fetch 117 from the sources"; the cron's next tick fills Wuthering Waves' banners and events.
-2. **Catalog refresh** for Wuthering Waves and NTE (`npm run catalog:wuwa`, `catalog:nte` after deleting their caches): their wikis name units the catalogs lack (Hsin, Denia, Hiyuki…; Akane Rin, Blackbird); then `catalog:banners-wiki` again so their runs get their featured units.
+2. **Catalog refresh** for Wuthering Waves and NTE waits on their sources: Dimbreath/WutheringData was last updated on 2026-03-13 (version 3.1) and Hakushin's NTE data is at 1.3, so a regeneration (tried 2026-10-21) changes nothing; their wikis name units the catalogs lack (Hsin, Denia, Hiyuki…; Akane Rin, Blackbird). Either a newer dataset (the wikis' character pages, or wuthering.gg's data) or a second source for the newest units; then `catalog:banners-wiki` again so their runs get their featured units.
 3. **History for Endfield** from Game8's "All Gacha Banners Schedule" table (524215); **events for Endfield and NTE** from Game8's event pages (535443; NTE's hub) if their dates are reliable.
 4. **Audits round**: features end to end (each sync, reminders, planner, codes, export), UI at 1100/1440/1920/2560 (text under 13 px, hover-only information, truncated names, small buttons; the `min-width: 1440px` rule), then the fixes.
 5. ADR 0011's remaining services; the `main` ruleset; the sample banners; the README GIF.
