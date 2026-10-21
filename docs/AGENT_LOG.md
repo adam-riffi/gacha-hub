@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-21 · claude · stack/r24/08-docs · #375
+- Done: round 17's docs. Sources for the chores' icons where a wiki draws one (twelve: Realm Currency, Gnostic Hymn, Trailblaze Power, Nameless Glory, Battery, Hollow Zero, City Fund, Waveplate, Tacet Field, Pioneer Podcast), fetched at one click; ASSETS.md regenerated from the live slot list (266 slots: 85 live, 117 at one click, 64 from Georges, by kind and game); NOTICE credits the App Store listings, the wikis' version splashes, endfieldtools.dev, the Endfield wiki and the Wuthering Waves wiki's pictures; the audit records what shipped; the handoff rewritten for the deploy.
+- Tests: the sources test (every entry a real slot with a credit).
+- Scope/decisions: none.
+- Next: deploy at Georges's word; a catalog refresh for Wuthering Waves and NTE; Endfield's banner dates from Game8.
+
 ## 2026-10-21 · claude · stack/r24/07-wiki-feed · #374
 - Done: round 17 (Georges: "setup a pipeline to ingest any data like banner cards, event cards"). Wuthering Waves has no official feed; its wiki keeps a page per convene and per event, each with an infobox (type, server-time dates, picture) and, for a convene, the rate-up pool. The cron tick now reads the newest 60 pages of both categories through the wiki's API, parses them with the history parser (branch 04) and an event parser of the same shape, swaps each picture's file path for the static URL the API gives (Fandom's file paths refuse a browser on another site; its static host serves it), and upserts banners (featured units by catalog id) and events like the HoYoverse feeds, at most hourly. The feed upsert is one function both feeds share. Fandom's hosts join the image policy.
 - Tests: written first: the parser (a banner per convene page keyed to the wiki, its units, its picture; an event per in-game page named by its infobox, web events left out) and the picture resolver (static URLs by file name, unknown files keep their path); the official feed's tests and the cron's still pass.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: docs only.
 - Scope/decisions: Discord sign-in stays as it was (anyone with Discord can sign in to their own account; admins in `ADMIN_DISCORD_IDS`); limiting it to Georges's account stays an option.
 - Next: Georges adds a passkey after signing in with Discord, and sets `OWNER_PASSWORD_HASH` and `CRON_SECRET`; ADR 0011's next services.
-
-## 2026-10-15 · claude · stack/r16/04-passkeys · #333
-- Done: ADR 0010's passkeys. `OwnerPasskeys` (in `apps/server/src/auth/passkeys.ts`, with `@simplewebauthn/server` v14) offers a resident passkey for the app's host (excluding the ones already made), keeps the one the browser proves (its public key, counter and transports in a new `Passkey` table, row level security on), signs its owner in (the authenticator's counter kept), and removes the owner's own. The challenge rides in a signed five-minute cookie scoped to the passkey routes; sign-in takes ten tries a minute. Settings' Account tab lists the passkeys (device and day, added, last used, Remove) with Add a passkey; the login page shows "Sign in with a passkey" once one exists. `@simplewebauthn/browser` loads only when a passkey is used.
-- Tests: written first: the service on the test database with the signature checks stubbed (the offer, the passkey kept and named, an unproven one refused, the sign-in with the counter, an unknown passkey refused, another account's not removable, the sign-in page told, no challenge refused) and a journey with Chrome's test authenticator (added in Settings, signed out, signed in with it, removed). The journey first expected Home after the passkey sign-in; the app keeps you on the page you left (Settings), so it expects that.
-- Scope/decisions: in development the passkey routes accept the local ports (5173, 3000, 3100); in production only `APP_BASE_URL`'s origin. v14 of the library needs Node 22 (the project runs 24).
-- Next: Discord sign-in removed; admin means the owner.

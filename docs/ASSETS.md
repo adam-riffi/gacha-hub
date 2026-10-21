@@ -31,7 +31,7 @@ Since 2026-10-17 each item is a slot of Settings → Art: an upload replaces the
 
 | What | Where it shows | Items |
 | --- | --- | --- |
-| **Game icon and background** | the strip, Home, the hub's header | round 12: every game has a drawn emblem (`GameMark`) and a hand-checked hero splash (`art.hero`); the owner's `icon.png`/`background.jpg` still win once dropped in. Round 16: a **key-art slot per game** (Settings → Art, wide): the hero of its cards (the games list's row, Home's idle Banners card, the timeline's panel) once put, the splash until then |
+| **Game icon, logo, key art** | the strip and every small mark (icon), the hub header, the games list and the Dailies card (logo), behind the hub header and across the games-list row (key art) | round 17: an **icon slot** per game, sourced from the App Store's listing; the logo slot (the wikis' wordmarks); a **key-art slot** per game, sourced from the wiki's current version splash. `GameMark` shows the icon at small sizes and the logo at big ones; `HeroArt` the key art |
 | **Currencies** | Home, a game's dashboard, Pulls, Activities, the DM | round 12: **sourced** for Genshin (Enka), Star Rail (Yatta), ZZZ + NTE (Hakushin), WuWa (wuthery) — the keys live in each game module's `currencies`; Endfield has no item-icon source |
 | **30-day passes** | the dashboard's pass card | Blessing of the Welkin Moon, Express Supply Pass, Inter-Knot Membership, Lunite Subscription, Riftcrystal Mining Permit |
 | **Battle passes** | the dashboard, the timeline | Gnostic Hymn, Nameless Honor, New Eridu City Fund, Pioneer Podcast, Protocol Pass, Circle Bounty |
@@ -44,19 +44,15 @@ Since 2026-10-17 each item is a slot of Settings → Art: an upload replaces the
 | **Daily and weekly tasks** | the dashboards, Activities | each game's `defaultTasks` (Daily Commissions, Weekly Bosses, Simulated Universe, Notorious Hunt…) |
 | **Banner kinds** | Pulls | character, weapon, standard, bangboo, chronicled, the Arsenal… (a glyph per kind today) |
 
-## Every picture still needed (2026-10-20)
+## Every picture still needed (2026-10-21)
 
-Georges, 2026-10-17: "make me an exhaustive list of assets you need"; 2026-10-20: "find me all of the assets". Found on 2026-10-20: 93 of the 144 pictures, on Game8's banner pages (round 16, the standard and beginner banners), the game wikis (Genshin, Star Rail, Zenless, Wuthering Waves, Endfield on Fandom and wiki.gg, NTE), StarRailRes, Enka and Hakushin, each checked by eye on a contact sheet (`apps/server/src/art/sources.ts`, a credit each in NOTICE). They come into the store at one click: **Settings → Art → "Fetch from the sources"**. The same tab takes an upload for the rest, in place (PNG, JPEG, WebP or GIF, up to 4 MB; icons 256 × 256, wide pictures 1280 × 720), stored in Vercel Blob, never committed (ADR 0006, ADR 0013).
+Georges, 2026-10-17: "make me an exhaustive list of assets you need"; 2026-10-20: "find me all of the assets"; 2026-10-21: "you're lacking a lot of other icons for all the games". Found so far: 117 pictures, on the App Store's listings (the games' icons), the game wikis (Genshin, Star Rail, Zenless, Wuthering Waves, Endfield on Fandom and wiki.gg, NTE: the slot pictures and each game's current version splash as its key art), Game8 (the standard banners), StarRailRes, Enka and Hakushin, each checked by eye on a contact sheet (ADR 0006: fetched into the store, never committed). The sources are `apps/server/src/art/sources.ts`.
 
-**235 slots: 85 come from a source the app reads live, 93 were found on Game8, the wikis and the data repositories and come in at one click (Settings → Art, "Fetch from the sources"), 57 still need a picture from Georges.** The 57, by kind then game:
+**266 slots: 85 come from a source the app reads live, 117 come in at one click (Settings → Art, "Fetch from the sources"), 64 still need a picture from Georges.** The 64, by kind then game:
 
 ### Game logos — 1
 
 - **Arknights: Endfield** (1): Arknights: Endfield logo
-
-### Key art — 6
-
-One official picture per game, wide (round 16, Georges: "for banners or game cards you can use real game art like these"): the hero of its cards. Genshin Impact, Honkai: Star Rail, Zenless Zone Zero, Wuthering Waves, Arknights: Endfield, Neverness to Everness. The key visuals on the games' own sites are the pictures to take.
 
 ### Endgame modes — 2
 
@@ -76,24 +72,28 @@ One official picture per game, wide (round 16, Georges: "for banners or game car
 
 - **Neverness to Everness** (1): Lost Exchange
 
-### Daily and weekly tasks — 23
+### Daily and weekly tasks — 35
 
-- **Genshin Impact** (3): Weekly Bosses, Commission reward, Check-in
+- **Genshin Impact** (6): Weekly Bosses, Commission reward, Check-in, Expeditions, Reputation bounties, Reputation requests
 - **Honkai: Star Rail** (1): Check-in
-- **Zenless Zone Zero** (2): Daily Missions, Scratch Card
-- **Wuthering Waves** (1): Nightmare Nests
-- **Arknights: Endfield** (8): Daily Tasks, AIC output collected, Depot delivery, Outpost trades, Spend Sanity, Credit store, Weekly missions, Severe Energy Alluvium
-- **Neverness to Everness** (8): Daily quests, Café income, Anomaly Pilgrimage, Nakupenda Pool, Fortune reading, Gifts, Auction House, Old Mailbox commission
+- **Zenless Zone Zero** (3): Daily Missions, Scratch Card, Ridu Weekly
+- **Wuthering Waves** (2): Nightmare Nests, Illusive Realm
+- **Arknights: Endfield** (11): Daily Tasks, AIC output collected, Depot delivery, Outpost trades, Spend Sanity, Credit store, Weekly missions, Severe Energy Alluvium, Daily sign-in, Gift an operator, Protocol Pass weeklies
+- **Neverness to Everness** (12): Daily quests, Café income, Anomaly Pilgrimage, Nakupenda Pool, Fortune reading, Gifts, Auction House, Old Mailbox commission, Realm of Greed, Pink Paws Heist, Circle Bounty weeklies, City Stamina
 
 ### Currencies — 1
 
 - **Neverness to Everness** (1): Tycoon Level
 
+### Characters — 1
+
+- **Arknights: Endfield** (1): Endministrator
+
 ### Gear sets — 9
 
 - **Neverness to Everness** (9): Fireflies and the Forest, Lost Radiance, Street Boxer, Crimson: Twin Butterflies, Devil's Blood: Curse, Diabolos, Kingdom's Guard, Shadow Creed, Speedy Hedgehog
 
-Not found anywhere: the Endfield logo and Echoes of War (the wiki has only its own badge and character art), Beyond the Rails and NTE's gear sets (NTE's data holds one placeholder for all nine, its wiki nothing), the event-kind banners (each shows its featured unit's art already, so a picture only matters while none runs), and the task icons (in-game UI the wikis do not carry). The 85 a source reads live: currencies of five games, elements of five, weapon types of three, each URL checked by hand; an upload replaces any of them.
+Not found anywhere: the Endfield logo (its wiki has only its own badge), Echoes of War, Beyond the Rails, NTE's gear sets (one placeholder for all nine in its data) and Tycoon Level, the event banners (the official pictures come with each run: round 16), the Endministrators (no file on endfieldtools.dev or the Endfield wiki), and the chores the wikis draw no icon for. The chores' icons found (Realm Currency, Gnostic Hymn, Trailblaze Power, Nameless Glory, Battery, Hollow Zero, City Fund, Waveplate, Tacet Field, Pioneer Podcast) come at one click.
 
 ## How to add them
 
