@@ -50,7 +50,7 @@ const comparableName = (name: string) => name.toLowerCase().replace(/&/g, "and")
 const slug = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
 /** "2026-11-11 5:59:59" or "2026-09-30 11:00" in the wiki's server time (UTC+8 unless the page says otherwise) as ISO. */
-function serverTime(value: string, offsetField: string | undefined): string | undefined {
+export function wikiServerTime(value: string, offsetField: string | undefined): string | undefined {
   const match = /^(\d{4}-\d{2}-\d{2})\s+(\d{1,2}):(\d{2})(?::(\d{2}))?$/.exec(value.trim());
   if (!match) return undefined;
   const offset = /GMT([+-]\d{1,2})/.exec(offsetField ?? "")?.[1] ?? "+8";
@@ -93,8 +93,8 @@ export function historyFromWikiPages(pages: WikiPage[], source: WikiBannerSource
     const infobox = parseTemplate(page.wikitext, source.infobox);
     if (!infobox || NOT_A_RUN.test(infobox.type ?? "")) continue;
     const kind = KIND_OF_TYPE.find(([pattern]) => pattern.test(infobox.type ?? ""))?.[1];
-    const startsAt = serverTime(infobox.time_start ?? "", infobox.time_start_offset);
-    const endsAt = serverTime(infobox.time_end ?? "", infobox.time_end_offset || infobox.time_start_offset);
+    const startsAt = wikiServerTime(infobox.time_start ?? "", infobox.time_start_offset);
+    const endsAt = wikiServerTime(infobox.time_end ?? "", infobox.time_end_offset || infobox.time_start_offset);
     if (!kind || !startsAt || !endsAt) continue;
     const featured: BannerHistory["banners"][number]["featured"] = [];
     for (const [field, value] of Object.entries(parseTemplate(page.wikitext, source.pool) ?? {})) {

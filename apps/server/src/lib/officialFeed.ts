@@ -217,8 +217,13 @@ export async function importOfficialFeed(gameKey: string) {
     getCatalog(game),
   ]);
   const contents = new Map([...content.list, ...(content.pic_list ?? [])].map((contentEntry) => [contentEntry.ann_id, contentEntry.content]));
-  const { banners, events } = feed.parse(list, contents, cat?.catalog ?? null);
+  const parsed = feed.parse(list, contents, cat?.catalog ?? null);
+  const counts = await upsertFeed(gameKey, parsed);
+  return { gameKey, banners: parsed.banners.length, events: parsed.events.length, ...counts };
+}
 
+/** Writes a feed's banners and events, keeping the earlier of a 7-hour-shifted pair of times (`settle`); counts what was new. */
+export async function upsertFeed(gameKey: string, { banners, events }: Parsed): Promise<{ created: number; updated: number }> {
   let created = 0;
   let updated = 0;
   const select = { startsAt: true, endsAt: true };
@@ -237,7 +242,7 @@ export async function importOfficialFeed(gameKey: string) {
     const data = { name: event.name, payload: event.payload as PrismaJson, ...times(await prisma.event.findUnique({ where, select }), event) };
     await prisma.event.upsert({ where, create: { gameKey, key: event.key, ...data }, update: data });
   }
-  return { gameKey, banners: banners.length, events: events.length, created, updated };
+  return { created, updated };
 }
 
 /** Cron hook: re-import each feed at most hourly (upserts bump updatedAt). */

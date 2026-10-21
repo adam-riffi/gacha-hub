@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { Catalog } from "@gacha/shared";
-import { parseWikiFeed, WIKI_FEEDS } from "./wikiFeed.js";
+import { parseWikiFeed, WIKI_FEEDS, withStaticPictures } from "./wikiFeed.js";
 
 // Round 17 (Georges: "setup a pipeline to ingest any data like banner cards, event cards"): Wuthering Waves has no official
 // feed; its wiki keeps a page per convene and per event with an infobox (type, server-time dates, picture), so the cron
@@ -91,6 +91,16 @@ describe("parseWikiFeed (Wuthering Waves)", () => {
       image: "https://wutheringwaves.fandom.com/wiki/Special:FilePath/As_Full_as_Tonight,_Forever_2026-09-30.jpg",
     });
     expect(banners[1]!.payload).toEqual({ source: "wiki", page: "Absolute Pulsation: Azure Oath/2026-09-30" });
+  });
+
+  it("swaps each picture's file path for the static URL the wiki's API gives, which a browser on another site may load; unknown files keep the path", async () => {
+    const resolved = await withStaticPictures("wutheringwaves", [...banners, ...events], async (titles) => {
+      expect(titles).toEqual(["As_Full_as_Tonight,_Forever_2026-09-30.jpg", "Alloy_Smelt_1.2.jpg"]);
+      return new Map([["Alloy_Smelt_1.2.jpg", "https://static.wikia.nocookie.net/wutheringwaves/images/9/9a/Alloy_Smelt_1.2.jpg/revision/latest?cb=20240808185629"]]);
+    });
+    expect((resolved[2]!.payload as { image: string }).image).toBe("https://static.wikia.nocookie.net/wutheringwaves/images/9/9a/Alloy_Smelt_1.2.jpg/revision/latest?cb=20240808185629");
+    expect((resolved[0]!.payload as { image: string }).image).toBe("https://wutheringwaves.fandom.com/wiki/Special:FilePath/As_Full_as_Tonight,_Forever_2026-09-30.jpg");
+    expect(resolved[1]!.payload).toEqual({ source: "wiki", page: "Absolute Pulsation: Azure Oath/2026-09-30" });
   });
 
   it("makes an event per in-game event page, named by its infobox, dated in server time, its picture through the wiki; web events left out", () => {
