@@ -28,7 +28,8 @@ test("a game's Activities tab: stamina, the daily, weekly and monthly lists, cyc
   // A counted daily by its steps here too (round 7): the last step completes it.
   await daily.getByRole("group", { name: "Daily Missions" }).getByRole("button", { name: "4 of 4" }).click();
   // ZZZ's four dailies: Daily Missions, Scratch Card, and the design's Coffee and Video store.
-  await expect(daily.getByRole("heading")).toContainText("1 / 4");
+  // Round 17 added Star Rail's Trailblaze Power and Nameless Honor dailies: five a day.
+  await expect(daily.getByRole("heading")).toContainText("1 / 5");
 
   // A monthly item follows its shop's reset.
   const monthly = page.getByRole("region", { name: "Monthly" });
