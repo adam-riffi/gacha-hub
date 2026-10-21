@@ -14,10 +14,9 @@
   /* The games list: the figures take the row's width, today's line and the move buttons go under them. */
   .lib-row { grid-template-columns: 20px 170px 180px minmax(0, 1fr) auto; }
   .lib-cells { grid-column: 4 / 6; flex-wrap: wrap; }
-  .lib-today { grid-column: 4; grid-row: 2; flex-direction: row; align-items: center; gap: 16px; }
+  .lib-actions { grid-column: 3 / 6; grid-row: 2; }
+  .lib-today { grid-column: 3 / 6; grid-row: 3; flex-direction: row; align-items: center; gap: 16px; }
   .lib-today .kpi-label { display: none; } /* the line says "Dailies 0/7 · reset…" itself */
-  .lib-move { grid-column: 5; grid-row: 2; }
   .lib-hero { width: 45%; opacity: 0.7; mask-image: linear-gradient(90deg, transparent, #000 60%); }
-  .lib-actions { grid-column: 3; }
   .lib-page { grid-template-columns: minmax(0, 1fr) 260px; }
 }
