@@ -65,7 +65,7 @@ export function PullsCard({ games, day = null }: { games: DashGame[]; day?: stri
         {rows.map(({ dashGame, limited: lim, standard, special, hasSpecial }) => (
           <div key={dashGame.instanceId}>
             <div className="rw">
-              <span>
+              <span className="pull-game">
                 <GameMark gameKey={dashGame.gameKey} className="list-mark" />
                 {dashGame.name}
               </span>

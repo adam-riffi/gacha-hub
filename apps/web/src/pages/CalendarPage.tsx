@@ -19,6 +19,8 @@ import { Segmented } from "../components/ui";
 import { CalendarSelected } from "../components/calendar/CalendarSelected";
 import { RosterRewards } from "../components/calendar/RosterRewards";
 import { CatalogIcon } from "../components/CatalogIcon";
+import { GameMark } from "../components/GameMark";
+import { officialArt } from "../lib/assets";
 import { distinctFeatured } from "../components/FeaturedUnits";
 
 const DAY = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" });
@@ -427,16 +429,20 @@ export function CalendarPage() {
                         <div className="cal-r" key={rowIndex}>
                           <div className="cal-label">
                             {rowIndex === 0 && (
-                              <>
-                                <Link
-                                  className="cal-game-name"
-                                  to={`/games/${block.dashGame.instanceId}`}
-                                  style={{ ["--c" as string]: block.dashGame.accent }}
-                                >
-                                  {block.dashGame.name}
-                                </Link>
-                                <span className="font-mono text-muted cal-src">{/^\d/.test(block.versionName) ? `v${block.versionName}` : block.versionName}</span>
-                              </>
+                              // The game's icon before its name (round 17: "the banners window… no icons just text").
+                              <div className="cal-game-head">
+                                <GameMark gameKey={block.dashGame.gameKey} className="cal-game-icon" />
+                                <div className="cal-game-text">
+                                  <Link
+                                    className="cal-game-name"
+                                    to={`/games/${block.dashGame.instanceId}`}
+                                    style={{ ["--c" as string]: block.dashGame.accent }}
+                                  >
+                                    {block.dashGame.name}
+                                  </Link>
+                                  <span className="font-mono text-muted cal-src">{/^\d/.test(block.versionName) ? `v${block.versionName}` : block.versionName}</span>
+                                </div>
+                              </div>
                             )}
                             {row.name && <span className="cal-lane-name">{row.name}</span>}
                           </div>
@@ -462,6 +468,11 @@ export function CalendarPage() {
                                   </b>
                                 )}
                                 {item.tag && <b className="cal-tag">{item.tag}</b>}
+                                {/* The official picture at the start of a banner's or event's bar (round 17). */}
+                                {(() => {
+                                  const thumb = [...(item.banners ?? []).map((banner) => officialArt(banner.payload)), officialArt(item.event?.payload)].find(Boolean);
+                                  return thumb ? <img className="cal-thumb" src={thumb} alt="" loading="lazy" /> : null;
+                                })()}
                                 {/* A banner phase's top units on its bar (round 11); Selected names them. */}
                                 {item.kind === "banner" && <BarUnits gameKey={item.gameKey} banners={item.banners ?? []} />}
                                 <span className="cal-name">{item.name}</span>

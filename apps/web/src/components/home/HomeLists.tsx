@@ -78,7 +78,10 @@ export function ExpiringSoonCard({ games }: { games: HomeGame[] }) {
       <div className="lst">
         {rows.map((row) => (
           <div className="rw" key={`${row.gameKey}:${row.label}`}>
-            <span className="font-mono text-muted home-list-game">{row.game}</span>
+            <span className="font-mono text-muted home-list-game">
+              <GameMark gameKey={row.gameKey} className="list-mark" />
+              {row.game}
+            </span>
             <span className="home-list-name">{row.label}</span>
             <Due at={row.endsAt} />
           </div>

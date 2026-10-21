@@ -12,6 +12,7 @@ import { useReminderFlag } from "../lib/reminder";
 import { TickRow, tickColumn } from "../components/TickControl";
 import { RedeemCodesCard } from "../components/hub/RedeemCodesCard";
 import { SlotArt } from "../components/SlotArt";
+import { officialArt } from "../lib/assets";
 
 const DATE = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
 const CLOCK = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit" });
@@ -402,6 +403,8 @@ function Version({ instanceId, game, passState, endsAt, events }: { instanceId: 
           <div className="act-rows">
             {events.map((event) => (
               <div key={event.id} className="act-row">
+                {/* The event's official picture (round 17), when its feed gave one. */}
+                {officialArt(event.payload) && <img className="act-thumb" src={officialArt(event.payload)} alt="" loading="lazy" />}
                 <span className="act-title">{event.name}</span>
                 <DateChip at={new Date(event.endsAt)} />
               </div>

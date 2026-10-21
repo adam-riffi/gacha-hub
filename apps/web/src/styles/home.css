@@ -36,7 +36,9 @@
 /* Endgame · next resets and Expiring soon (WIREFRAMES.md A1): two list cards under the heatmap. */
 .home-lists { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 36px; }
 .home-list .rw { display: flex; align-items: center; gap: 12px; }
-.table-card.home-list .rw > span.home-list-game { flex: 0 0 104px; text-align: left; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+.table-card.home-list .rw > span.home-list-game { flex: 0 0 160px; display: inline-flex; align-items: center; gap: 8px; text-align: left; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+/* The game's icon beside its name on one line (round 17). */
+.table-card .rw > span.pull-game { display: inline-flex; align-items: center; gap: 10px; }
 .table-card.home-list .rw > span.home-list-name { flex: 1; min-width: 0; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .home-list-what { font-size: 13px; white-space: nowrap; }
 

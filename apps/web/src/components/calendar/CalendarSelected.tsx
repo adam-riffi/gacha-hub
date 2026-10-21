@@ -6,6 +6,7 @@ import { api } from "../../lib/api";
 import { assetUrl, communityAssetUrl, officialArt, splashKey } from "../../lib/assets";
 import { FeaturedUnits } from "../FeaturedUnits";
 import { GameIcon } from "../GameIcon";
+import { GameMark } from "../GameMark";
 import { HeroArt } from "../HeroArt";
 import type { CalItem } from "../../pages/CalendarPage";
 
@@ -95,7 +96,10 @@ export function CalendarSelected({ item, reward, now, onClose }: { item: CalItem
         </button>
       )}
       <div className="cal-meta">
-        {game?.name ?? item.gameKey} · {KIND[item.kind]}
+        <GameMark gameKey={item.gameKey} className="cal-sel-icon" />
+        <span>
+          {game?.name ?? item.gameKey} · {KIND[item.kind]}
+        </span>
       </div>
       <dl className="cal-dl">
         {item.start > now && (
