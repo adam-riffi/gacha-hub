@@ -13,8 +13,11 @@ test("the battle pass card shows the game's key art behind and the pass icon in 
   await put("hsr/key-art");
   await put("hsr/battle-pass");
   try {
-    await page.goto("/?game=hsr");
+    // Home's pass carousel (the single-game dashboard has a card of its own): step to Star Rail's.
+    await page.goto("/");
     const card = page.locator(".pass-card");
+    for (let step = 0; step < 8 && (await card.locator(".pass-game").textContent()) !== "Honkai: Star Rail"; step += 1) await card.getByRole("button", { name: "Next battle pass" }).click();
+    await expect(card.locator(".pass-game")).toHaveText("Honkai: Star Rail");
     await expect(card.locator("img.hero-art")).toHaveAttribute("src", /\/uploads\//);
     const icon = card.locator(".band img.pass-art");
     await expect(icon).toBeVisible();
