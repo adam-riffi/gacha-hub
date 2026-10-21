@@ -38,4 +38,6 @@ test("a game's icon stands beside its name in the strip and in Home's tables; it
   expect(logoBox.width).toBeGreaterThan(logoBox.height * 2);
 
   for (const slot of ["nte/icon", "nte/logo"]) await page.request.delete(`/api/art/${slot}`);
+  // The NTE journey adds the game from the library itself: leave none behind.
+  await page.request.delete(`/api/instances/${id}`);
 });
