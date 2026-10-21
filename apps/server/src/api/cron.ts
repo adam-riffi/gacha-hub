@@ -5,6 +5,7 @@ import { ownerAccount } from "../auth/sessions.js";
 import { isGithubWorkflow } from "../lib/githubOidc.js";
 import { runReminderTick } from "../scheduler/reminders.js";
 import { importFeedsIfStale } from "../lib/officialFeed.js";
+import { importWikiFeedsIfStale } from "../lib/wikiFeed.js";
 import { syncDueLinks } from "../lib/hoyolabSync.js";
 
 /**
@@ -26,7 +27,7 @@ export async function registerCronRoutes(app: FastifyInstance) {
     }
     const started = Date.now();
     await runReminderTick();
-    const feeds = await importFeedsIfStale().catch((err: Error) => [{ error: err.message }]);
+    const feeds = [...(await importFeedsIfStale().catch((err: Error) => [{ error: err.message }])), ...(await importWikiFeedsIfStale().catch((err: Error) => [{ error: err.message }]))];
     const links = await syncDueLinks(new Date()).catch(() => 0);
     return { ok: true, ms: Date.now() - started, feeds, links };
   });
