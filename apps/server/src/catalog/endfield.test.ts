@@ -44,16 +44,19 @@ describe("endfield catalog", () => {
 
   // Georges, round 7: "add the weapons tracking and character art and everything else related to Endfield": the art from
   // the Endaxis timeline tool's public folders, each key one the repository holds (its tree read by the importer).
-  it("has art: each operator's avatar and portrait, each weapon's and gear set's icon, from Endaxis", async () => {
+  // Round 17: icons by id from endfieldtools.dev, splash art by name from the Endfield wiki, gear sets still from Endaxis.
+  it("has art: each operator's icon by id and splash by the wiki's file name, each weapon's icon by id, each gear set's from Endaxis", async () => {
     const catalog = catalogSchema.parse(await endfield.loadCatalog!());
     const perlica = catalog.characters.find((c) => c.key === "perlica")!;
-    expect(perlica).toMatchObject({ icon: "operators/perlica/avatar", splash: "operators/perlica/portrait" });
-    expect(catalog.characters.find((c) => c.id === "chr_0003_endminf")!.icon).toBe("operators/endministrator/avatar");
+    expect(perlica).toMatchObject({ icon: "chr_0004_pelica", splash: "Perlica" });
+    expect(catalog.characters.find((c) => c.id === "chr_0005_chen")!.splash).toBe("Chen_Qianyu");
     expect(catalog.characters.filter((c) => c.icon).length).toBeGreaterThanOrEqual(28);
-    expect(catalog.weapons.find((w) => w.id === "wpn_claym_0003")!.icon).toBe("weapons/claym/wpn_claym_0003");
+    expect(catalog.characters.filter((c) => c.splash).length).toBeGreaterThanOrEqual(25);
+    expect(catalog.weapons.find((w) => w.id === "wpn_claym_0003")!.icon).toBe("wpn_claym_0003");
     expect(catalog.weapons.filter((w) => w.icon).length).toBeGreaterThanOrEqual(60);
-    expect(catalog.gear.find((g) => g.id === "suit_agi01")!.icon).toMatch(/^equipment\/agi01\//);
-    expect(communityArtUrl("endfield", "character", perlica.icon)).toMatch(/^https:\/\/raw\.githubusercontent\.com\/Lieyuan621\/Endaxis\/[0-9a-f]{40}\/public\/operators%2Fperlica%2Favatar\.webp$/);
+    expect(catalog.gear.find((g) => g.id === "suit_agi01")!.icon).toMatch(/^equipment[/]agi01[/]/);
+    expect(communityArtUrl("endfield", "character", perlica.icon)).toBe("https://endfieldtools.dev/assets/images/endfield/charremoteicon/icon_chr_0004_pelica.png");
+    expect(communityArtUrl("endfield", "splash", perlica.splash)).toBe("https://endfield.wiki.gg/images/Perlica_Splash_Art.png");
   });
 
   // Georges, round 8: "for relevant games I want a gift/intimacy item list". Endfield's gifts suit operators by their hobbies.
