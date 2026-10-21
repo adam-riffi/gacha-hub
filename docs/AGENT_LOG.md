@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-21 · claude · stack/r24/01-game-icons · #368
+- Done: round 17 (Georges, 2026-10-21: "Give each game a game Icon as well; having the Wuthering Waves title card as the game's logo doesn't help me read anything. Icons are cool but should be bigger"). A square icon slot per game, its source the App Store's listing art (512 px, all six games), fetched at one click. `GameMark` shows the icon for every small mark (the strip, Home's tables, tasks, Settings → Art) and the logo for the big spots (hub header, games list, Dailies card), each falling back to the other, then to the emblem; the strip shows icon and name, never the wordmark alone. Every icon size up: strip 44/48 px in 56/62 px chips, list marks 32, tiles 36 and 56, featured units 56/84, hub 120, games list 72, Pulls art 64. The plan for the round is `docs/AUDIT-2026-10-21-round17.md`.
+- Tests: written first: a journey uploads an icon and a wordmark, finds the icon square at 40 px or more beside the name in the strip and at 32 px in Home's Pulls table, and the wordmark in the hub header; the logos journey (round 15) now expects the emblem and the name in the strip for a game with a logo but no icon, and the order journey (round 16) uploads the icon it measures: the strip's rule changed at Georges's word, the big spots' assertions stand.
+- Scope/decisions: icons at small sizes, logos at big sizes: a wordmark at 30 px reads as nothing. The store listing art is the icon the games themselves show.
+- Next: the key art sources and the hub header's backdrop.
+
 ## 2026-10-20 · claude · stack/r23/04-docs · #367
 - Done: ASSETS.md counts round 16 (235 slots, 93 at one click, the 6 key-art slots and the rest still from Georges), the #363 entry the merge job left out, the handoff for round 16 (merged, waiting for the word to deploy).
 - Tests: docs only.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: each service on the test database (teams created, listed in order, edited, removed; members, companions and another profile's team refused as domain errors; ownership owned and dropped in bulk, unknown ids and an out-of-bounds weapon meta refused with nothing saved). The routes' own integration tests pass unchanged.
 - Scope/decisions: the other route files keep their inline Prisma calls for now; each moves behind a service as its area is next touched (`instanceOrThrow` replaces their 52 `loadInstance` + 404 pairs as they move).
 - Next: the characters and weapons routes behind services; then the pulls.
-
-## 2026-10-15 · claude · stack/r15/06-banner-featured · #326
-- Done: round 11's review, Home: each banner on the Banners card shows its featured units as icons (the top rarity larger, a top unit you lack ringed in the accent, the ones you own ticked; a character opens its page) and your chance at its top unit with the pulls you hold ("67% with 90 pulls"). The chance comes from a new `PullBudget` object (ADR 0011: a game's pulls on hand and pity per banner type; `pullsOn(kind)` counts a banner's own tickets where the game has some, `chanceOn(kind)` reads the pity and the 50/50 guarantee). A weapon banner's art is its weapon, whole on the right (weapons have no splash; the broken picture showed its name). A long title's band leaves the next arrow visible.
-- Tests: written first: a journey (a banner featuring Blade, March 7th owned and Asta: three icons, Blade (the 5★) first and "not owned", March 7th "owned", "N% with 13 pulls") and unit tests for `PullBudget` (13 warps from 1,600 Jade and 3 passes, the pity read, a guarantee raising the chance, Endfield's Arsenal tickets only on its weapon banner).
-- Scope/decisions: the local sample banners have no featured units; the official feed's do (imported locally to check: Genshin, Star Rail and Zenless banners all list theirs). Five units at most, then "+n".
-- Next: the Pulls page's banner cards and history with the featured units as icons; the Timeline's featured icons.
