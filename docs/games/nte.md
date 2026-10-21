@@ -21,6 +21,7 @@
 | Version | 1.4 "For Whom the Verses Mourn", 30 Sep – 11 Nov 2026 (42 days) | [official news](https://nte.perfectworld.com/en/article/news/) |
 | Counted tasks | Daily quests, 4 a day; Anomaly Pilgrimage, 3 reward claims a week ~ | research notes |
 | Tasks from the design | Daily: Nakupenda Pool, Fortune reading, Gifts; weekly: Auction House, Old Mailbox commission | Georges's design (2026-10-11); research notes |
+| Reset chores (round 17) | Realm of Greed, Pink Paws Heist, Circle Bounty weeklies and a City Stamina bar, once a week ~ | [allthings.how weeklies](https://allthings.how/nte-weekly-activities-guide-every-reset-task-in-neverness-to-everness/), [GameWith dailies](https://gamewith.net/nte/74144) |
 
 ## Research notes (2026-10-09)
 

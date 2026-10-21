@@ -38,7 +38,7 @@ describe("day record (routes)", () => {
     await c.req("PUT", `/api/instances/${gid}/currencies/acquaintFate`, { value: 5 }); // standard tickets: not counted
     const rows = await prisma.dayRecord.findMany({ where: { gameInstanceId: gid } });
     // Genshin's four dailies: Daily Commissions, and the design's Commission reward, Spend Resin and Check-in.
-    expect(rows).toEqual([expect.objectContaining({ day: gameDay(), dailiesDone: 1, dailiesTotal: 4, goalsOpen: 1, pulls: 13 })]);
+    expect(rows).toEqual([expect.objectContaining({ day: gameDay(), dailiesDone: 1, dailiesTotal: 7, goalsOpen: 1, pulls: 13 })]);
   });
 
   it("leaves the record alone when a change is rejected", async () => {
@@ -55,7 +55,7 @@ describe("day record (routes)", () => {
     expect(dash.json.games[0]!.gameDay).toBe(gameDay()); // today's cell on the heatmap is live, under this day
     expect(dash.json.games[0]!.days).toEqual([
       { day: gameDay(1), dailiesDone: 1, dailiesTotal: 1, goalsOpen: 0, pulls: 4 },
-      { day: gameDay(), dailiesDone: 0, dailiesTotal: 4, goalsOpen: 0, pulls: 10 },
+      { day: gameDay(), dailiesDone: 0, dailiesTotal: 7, goalsOpen: 0, pulls: 10 },
     ]);
   });
 });

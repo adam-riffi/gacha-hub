@@ -149,6 +149,11 @@ export const wuwa: GameDefinition = {
     { key: "weeklyBosses", title: "Weekly Bosses", cadence: "weekly", target: 3 },
     // The Coral Shop's tides each month; one tick, the sources disagreeing on its limits (docs/games/wuwa.md).
     { key: "coral", title: "Coral Shop", cadence: "monthly", anchorKey: "coral" },
+    // Round 17 (Georges: "a lot of tasks are missing too"): the rest of what the game resets (sources in docs/games/wuwa.md).
+    { key: "waveplates", title: "Spend Waveplates", cadence: "daily" },
+    { key: "tacetField", title: "Tacet Field", cadence: "daily" },
+    { key: "illusiveRealm", title: "Illusive Realm", cadence: "weekly" },
+    { key: "bpWeeklies", title: "Pioneer Podcast weeklies", cadence: "weekly", target: 3 },
   ],
   docSchema: wuwaDocSchema,
   emptyDoc: (): WuwaDoc => ({ echoes: {}, skills: {}, weapon: {}, stats: {} }),
