@@ -22,7 +22,11 @@ describe.each([
 });
 
 describe("games without a dated source", () => {
-  it.each(["zzz", "wuwa", "endfield", "nte"])("%s has no banner history yet", (gameKey) => {
+  // Round 17: Zenless, Wuthering Waves and NTE read theirs from their wikis' banner pages (`npm run catalog:banners-wiki`).
+  it.each(["endfield"])("%s has no banner history yet", (gameKey) => {
     expect(getGame(gameKey)!.loadBannerHistory).toBeUndefined();
+  });
+  it.each(["zzz", "wuwa", "nte"])("%s has one from its wiki", async (gameKey) => {
+    expect((await getGame(gameKey)!.loadBannerHistory!()).banners.length).toBeGreaterThan(10);
   });
 });
