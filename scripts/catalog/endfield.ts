@@ -59,9 +59,34 @@ const tree = await fetchJson<{ tree: { path: string }[] }>(`https://api.github.c
 const art = [...new Set(tree.tree.map((n) => n.path).filter((p) => p.startsWith("public/") && p.endsWith(".webp")).map((p) => p.slice("public/".length, -".webp".length)))].sort();
 const have = (key: string) => (art.includes(key) ? key : undefined);
 
+// Round 17 (Georges: "Endfield is missing a lot of art… find some other"): icons by id from endfieldtools.dev, the operators'
+// splash art by name from the Endfield wiki (2048 px, served plain at /images/<file name>); a key only where the file is there.
+const TOOLS = "https://endfieldtools.dev/assets/images/endfield";
+async function onTools(ids: string[], path: (id: string) => string): Promise<Set<string>> {
+  const found = new Set<string>();
+  for (let at = 0; at < ids.length; at += 10) {
+    await Promise.all(ids.slice(at, at + 10).map(async (id) => {
+      const res = await fetch(`${TOOLS}/${path(id)}`, { method: "HEAD", headers: { "user-agent": "gacha-hub catalog importer (+https://github.com/adam-riffi/gacha-hub)" } });
+      if (res.ok) found.add(id);
+    }));
+  }
+  return found;
+}
+async function onWiki(names: string[]): Promise<Set<string>> {
+  const found = new Set<string>();
+  for (let at = 0; at < names.length; at += 50) {
+    const titles = names.slice(at, at + 50).map((name) => `File:${name.replace(/ /g, "_")}_Splash_Art.png`).join("|");
+    const result = await fetchJson<{ query: { pages: Record<string, { title: string; imageinfo?: unknown[] }> } }>(`https://endfield.wiki.gg/api.php?action=query&prop=imageinfo&format=json&titles=${encodeURIComponent(titles)}`, { cacheKey: "endfield-art" });
+    for (const page of Object.values(result.query.pages)) if (page.imageinfo) found.add(page.title.replace(/^File:/, "").replace(/ Splash Art\.png$/, ""));
+  }
+  return found;
+}
+
 const table = parseInt64Safe<Record<string, Character>>(read("tables/CharacterTable.json"));
-const characters: CatalogCharacter[] = Object.values(table)
-  .filter((c) => c.charId && (c.engName || t(c.name)))
+const charRows = Object.values(table).filter((c) => c.charId && (c.engName || t(c.name)));
+const toolChars = await onTools(charRows.map((c) => c.charId), (id) => `charremoteicon/icon_${id}.png`);
+const wikiSplash = await onWiki(charRows.map((c) => c.engName || t(c.name)));
+const characters: CatalogCharacter[] = charRows
   .map((c) => {
     const name = c.engName || t(c.name);
     return {
@@ -73,9 +98,9 @@ const characters: CatalogCharacter[] = Object.values(table)
       // The weapon kind, which the sheet's weapon picker filters by; the profession seeds the build's class.
       weaponType: c.weaponType !== undefined ? WEAPON_KIND[c.weaponType] : undefined,
       maxLevel: 80,
-      // Endaxis names each operator's folder by its English name ("Last Rite" → last-rite; both Endministrators share one).
-      icon: have(`operators/${slugify(name)}/avatar`),
-      splash: have(`operators/${slugify(name)}/portrait`),
+      icon: toolChars.has(c.charId) ? c.charId : undefined,
+      // The wiki's file name: "Chen Qianyu" → Chen_Qianyu_Splash_Art.png.
+      splash: wikiSplash.has(name) ? name.replace(/ /g, "_") : undefined,
       ascension: [],
       talents: { keys: [], costs: [] },
       extra: {
@@ -91,12 +116,12 @@ const characters: CatalogCharacter[] = Object.values(table)
 // ---- Weapons: the weapon items (type 5), their kind from the id ----
 type Item = { id: string; name: TextRef; rarity: number; type: number };
 const items = parseInt64Safe<Record<string, Item>>(read("tables/ItemTable.json"));
-const weapons: CatalogWeapon[] = Object.values(items)
-  .filter((i) => i.type === 5 && i.id.startsWith("wpn_") && t(i.name))
-  .map((i) => {
-    const name = t(i.name);
-    return { id: i.id, key: slugify(name), name, rarity: Math.min(6, Math.max(1, i.rarity)), type: KIND_OF_ID[i.id.split("_")[1] ?? ""], maxLevel: 80, icon: have(`weapons/${i.id.split("_")[1]}/${i.id}`), ascension: [] };
-  });
+const weaponRows = Object.values(items).filter((i) => i.type === 5 && i.id.startsWith("wpn_") && t(i.name));
+const toolWeapons = await onTools(weaponRows.map((i) => i.id), (id) => `itemicon/${id}.png`);
+const weapons: CatalogWeapon[] = weaponRows.map((i) => {
+  const name = t(i.name);
+  return { id: i.id, key: slugify(name), name, rarity: Math.min(6, Math.max(1, i.rarity)), type: KIND_OF_ID[i.id.split("_")[1] ?? ""], maxLevel: 80, icon: toolWeapons.has(i.id) ? i.id : undefined, ascension: [] };
+});
 
 // ---- Gear sets: pieces sharing a suit; body, hands, then two kits in the four slots ----
 type Equip = { itemId: string; partType: number; suitID?: string };

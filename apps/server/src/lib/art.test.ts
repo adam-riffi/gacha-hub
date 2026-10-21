@@ -40,7 +40,7 @@ describe("communityArtUrl", () => {
   it("serves Endfield's operator icons and weapons from endfieldtools.dev by id, and the operators' splash art from the Endfield wiki by name, 2048 px", () => {
     expect(communityArtUrl("endfield", "character", "chr_0004_pelica")).toBe("https://endfieldtools.dev/assets/images/endfield/charremoteicon/icon_chr_0004_pelica.png");
     expect(communityArtUrl("endfield", "splash", "Chen_Qianyu")).toBe("https://endfield.wiki.gg/images/Chen_Qianyu_Splash_Art.png");
-    expect(communityArtUrl("endfield", "portrait", "Chen_Qianyu")).toBe("https://endfield.wiki.gg/images/Chen_Qianyu_Splash_Art.png");
+    expect(communityArtUrl("endfield", "portrait", "chr_0004_pelica")).toBe("https://endfieldtools.dev/assets/images/endfield/charremoteicon/icon_chr_0004_pelica.png");
     expect(communityArtUrl("endfield", "weapon", "wpn_claym_0003")).toBe("https://endfieldtools.dev/assets/images/endfield/itemicon/wpn_claym_0003.png");
   });
 

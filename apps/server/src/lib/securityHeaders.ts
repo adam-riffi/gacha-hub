@@ -16,6 +16,9 @@ const CSP: Record<string, string[]> = {
     "blob:",
     // The banner and event key art that comes with HoYoverse's announcements (round 16).
     "https://sdk.hoyoverse.com",
+    // Endfield's icons and splash art (round 17).
+    "https://endfieldtools.dev",
+    "https://endfield.wiki.gg",
     "https://enka.network",
     "https://sr.yatta.moe",
     "https://gi.yatta.moe",
