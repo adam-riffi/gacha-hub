@@ -6,6 +6,7 @@ import { api } from "../../lib/api";
 import type { InstanceDetail } from "../../lib/types";
 import { Countdown } from "../ui";
 import { GameMark } from "../GameMark";
+import { HeroArt } from "../HeroArt";
 
 const DATE = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
 const SHORT = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" });
@@ -48,6 +49,8 @@ export function HubHeader({ instanceId }: { instanceId: string }) {
 
   return (
     <section className="hub-head" aria-label={data.name}>
+      {/* The game's key art across the whole header (round 17), its right half under the resets. */}
+      <HeroArt gameKey={game.key} className="hub-hero" />
       {uploadedLogo ? (
         // The owner's logo (Settings → Art) stands on its own, not on the accent tile it may share a colour with.
         <GameMark gameKey={game.key} art="logo" className="hub-icon" />
