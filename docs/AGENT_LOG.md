@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-21 · claude · stack/r25/03-width-1100 · #378
+- Done: round 18, the audits round (Georges, round 15: desktop windows from 1100 to 2560 px, no phones). Every screen toured at 1100, 1920 and 2560: at 1100 the shell's 1440 px floor cut Home's right third off. The floor drops to 1100; below 1440 (`responsive.css`, loaded last so it wins over each screen's sheet) Home's top row and heatmap, drawings at fixed sizes (496 + 240 + 424 px charts, an 868 px heatmap), zoom down to the window the way the whole shell zooms up on wide ones; Home's lists take one column; Characters show three cards a row, Endgame two tiles, the timeline a 300 px panel and 170 px row heads; the games list's figures take the row's width with today's line and the move buttons under them, the key art narrower. Nothing changes at 1440 and above.
+- Tests: written first: a journey at 1100 px opens Home, the single-game dashboard, the library, the timeline and a game's Activities, Characters, Pulls and Endgame and finds no horizontal scroll on any; another at 2560 px the same for Home and Activities. A script in the session listed the elements reaching past the window on each screen (the Goal types bars, the heatmap's readout, the games list's buttons) until none did.
+- Scope/decisions: zoom over re-flow for the fixed-size drawings: their labels sit at pixel positions, so shrinking the boxes would misplace them; a zoom keeps every drawing whole. Below 1100 is out of scope.
+- Next: the docs and the handoff.
+
 ## 2026-10-21 · claude · stack/r25/02-bp-card · #377
 - Done: round 18 (Georges, round 17: "BP cards"; the Home audit). The battle pass card showed the pass's small wiki icon blown up as its backdrop: it stands on the game's key art now (the hero every card uses), the pass icon 44 px in the band beside its name. The Stamina table stacked each game's icon over its name; icon and name sit on one line like the Pulls table's. `HeroArt` takes the first source that has not failed instead of a position: the key art arrives after the first render, and a position skipped it once a splash had failed before it came.
 - Tests: written first: a journey uploads a key art and a pass icon, steps Home's pass carousel to Star Rail, finds the key art behind and the icon in the band (64 px or less, not the backdrop), and the Stamina row's icon on one line with the name; the hero, order and Home journeys still pass.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the Library journey expects the named emblem (never a letter); the strip journey reads the emblem as each game's icon.
 - Scope/decisions: the emblems are ours (drawn SVG, committable; ADR 0006 keeps game art out of the repo); a real logo the owner drops into the store later still wins in the hub header.
 - Next: the whole UI scaled to Georges's screens.
-
-## 2026-10-15 · claude · stack/r17/02-handoff · #337
-- Done: production deployed at #336 at Georges's word ("deploy this version"), the gear page's typed substats and Equip on included; the handoff says so.
-- Tests: docs only; the deploy's smoke checks pass.
-- Scope/decisions: none.
-- Next: Georges adds a passkey after signing in with Discord, and sets `OWNER_PASSWORD_HASH` (optional) and `CRON_SECRET`; ADR 0011's next services.

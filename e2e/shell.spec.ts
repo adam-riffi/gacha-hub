@@ -114,8 +114,10 @@ test("the selected game spells its full name, each game with its icon; the rail'
   expect(await home.evaluate((el) => getComputedStyle(el).backgroundColor)).not.toBe("rgba(0, 0, 0, 0)");
 });
 
-// Georges, round 8: "the responsivity of the app is pretty mediocre overall; I'd rather have it not responsive".
-test("One desktop layout: a narrow window scrolls sideways instead of rearranging the screens @smoke", async ({ page }) => {
+// Georges, round 8: "the responsivity of the app is pretty mediocre overall; I'd rather have it not responsive"; round 15:
+// desktop windows from 1100 to 2560 px, no phones. So: one layout from 1440 up, a narrower one from 1100 to 1439 (round 18),
+// and below 1100 the window scrolls sideways at the 1100 px floor instead of rearranging further.
+test("One desktop layout: four character columns from 1440, three from 1100, and a narrower window scrolls sideways @smoke", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
@@ -125,9 +127,13 @@ test("One desktop layout: a narrow window scrolls sideways instead of rearrangin
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto(`/games/${id}/characters`);
   await expect(page.locator(".ch-grid article").first()).toBeVisible();
-  const wide = await columns();
+  expect(await columns()).toBe(4);
 
   await page.setViewportSize({ width: 1100, height: 800 });
-  await expect.poll(columns).toBe(wide);
-  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeGreaterThanOrEqual(1440);
+  await expect.poll(columns).toBe(3);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(1100);
+
+  await page.setViewportSize({ width: 900, height: 800 });
+  await expect.poll(columns).toBe(3);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeGreaterThanOrEqual(1100);
 });

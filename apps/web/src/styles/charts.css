@@ -79,6 +79,8 @@
 
 /* Home's top row: the hero gauge, then the goals strip over the charts. */
 .home-top { display: flex; gap: 24px; }
+.home-top-hero { flex: 0 0 496px; width: 496px; height: 476px; }
+.home-top-goals { flex: 0 0 240px; width: 240px; }
 .home-top-side { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 24px; }
 .home-top-strip { display: flex; gap: 24px; height: 192px; }
 

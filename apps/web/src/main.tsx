@@ -19,6 +19,8 @@ import "./styles/pulls.css";
 import "./styles/characters.css";
 import "./styles/sheet.css";
 import "./styles/settings.css";
+// Last: the narrow-window rules win over each screen's own sheet (round 18).
+import "./styles/responsive.css";
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: false, refetchOnWindowFocus: false } },

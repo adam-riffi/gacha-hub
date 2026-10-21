@@ -122,12 +122,12 @@ export function HomeTop({
 
   return (
     <div className="home-top">
-      <GraphPanel className="home-top-hero" style={{ width: 496, flex: "0 0 496px", height: 476 }} head={<PeriodSwitch value={period} onChange={setPeriod} />}>
+      <GraphPanel className="home-top-hero" head={<PeriodSwitch value={period} onChange={setPeriod} />}>
         <HeroGauge done={hero.done} total={hero.total} label={hero.label} />
       </GraphPanel>
       <div className="home-top-side">
         <div className="home-top-strip">
-          <GraphPanel title="Goals" style={{ width: 240, flex: "0 0 240px" }} head={<Link to="/tasks?new=1" className="ph-link">+ New goal</Link>}>
+          <GraphPanel title="Goals" className="home-top-goals" head={<Link to="/tasks?new=1" className="ph-link">+ New goal</Link>}>
             <SmallGauge done={goalsDone} total={goals.length} label="Overall goal completion" />
           </GraphPanel>
           <GraphPanel title="Goal types" style={{ flex: 1, minWidth: 0 }}>
