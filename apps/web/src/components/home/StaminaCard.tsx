@@ -32,7 +32,7 @@ export function StaminaCard({ games }: { games: DashGame[] }) {
           const reserve = dashGame.currencies.find((currency) => currency.key === getGame(dashGame.gameKey)?.manifest.stamina.reserve?.currency);
           return (
             <div className="rw" key={dashGame.instanceId}>
-              <span>
+              <span className="pull-game">
                 <GameMark gameKey={dashGame.gameKey} className="list-mark" />
                 {dashGame.name}
               </span>

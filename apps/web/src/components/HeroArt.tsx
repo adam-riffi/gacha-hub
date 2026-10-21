@@ -14,8 +14,10 @@ export function HeroArt({ gameKey, className = "" }: { gameKey: string; classNam
   const keyArt = useSlotArt(artSlotKey(gameKey, "key-art"));
   const hero = getGame(gameKey)?.art?.hero;
   const sources = [keyArt, assetUrl(gameKey, "splash", hero), communityAssetUrl(gameKey, "splash", hero)].filter((source): source is string => Boolean(source));
-  const [at, setAt] = useState(0);
-  const src = sources[at];
+  // The first source that has not failed: the key art arrives after the first render, so a position would skip it once a
+  // splash had failed before it came (round 18).
+  const [failed, setFailed] = useState<string[]>([]);
+  const src = sources.find((source) => !failed.includes(source));
   if (!src) return null;
-  return <img className={`hero-art ${className}`} src={src} alt="" loading="lazy" onError={() => setAt(at + 1)} />;
+  return <img className={`hero-art ${className}`} src={src} alt="" loading="lazy" onError={() => setFailed([...failed, src])} />;
 }

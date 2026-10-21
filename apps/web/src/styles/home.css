@@ -25,6 +25,9 @@
 /* Battle pass: hatching where the art goes until F8 tracks passes. */
 .carousel-hatch { position: absolute; inset: 0; background: repeating-linear-gradient(45deg, var(--surface-3) 0 2px, var(--surface-2) 2px 14px); }
 .pass-game { font-size: 26px; font-weight: 600; line-height: 1.1; letter-spacing: 0.04em; text-transform: uppercase; }
+/* The pass icon beside its name in the band (round 18). */
+.pass-band { display: flex; align-items: center; gap: 14px; }
+.pass-band .pass-art { flex: none; }
 
 /* Battle pass level: a dark box at the bottom right, Barlow over the segmented bar. */
 .pass-level { position: absolute; right: 16px; bottom: 28px; padding: 12px 16px 14px; background: #000; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 9px), calc(100% - 9px) 100%, 0 100%); }
