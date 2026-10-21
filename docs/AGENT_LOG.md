@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-21 · claude · stack/r25/04-docs · #379
+- Done: round 18's handoff: Endfield's Game8 feed, the battle pass card, the 1100 px floor; what waits for Georges's word and what comes next (the features audit with his keys, a source for NTE's banners and events, the rest of the narrow-window pass).
+- Tests: docs only.
+- Scope/decisions: none.
+- Next: deploy at Georges's word.
+
 ## 2026-10-21 · claude · stack/r25/03-width-1100 · #378
 - Done: round 18, the audits round (Georges, round 15: desktop windows from 1100 to 2560 px, no phones). Every screen toured at 1100, 1920 and 2560: at 1100 the shell's 1440 px floor cut Home's right third off. The floor drops to 1100; below 1440 (`responsive.css`, loaded last so it wins over each screen's sheet) Home's top row and heatmap, drawings at fixed sizes (496 + 240 + 424 px charts, an 868 px heatmap), zoom down to the window the way the whole shell zooms up on wide ones; Home's lists take one column; Characters show three cards a row, Endgame two tiles, the timeline a 300 px panel and 170 px row heads; the games list's figures take the row's width with today's line and the move buttons under them, the key art narrower. Nothing changes at 1440 and above.
 - Tests: written first: a journey at 1100 px opens Home, the single-game dashboard, the library, the timeline and a game's Activities, Characters, Pulls and Endgame and finds no horizontal scroll on any; another at 2560 px the same for Home and Activities. A script in the session listed the elements reaching past the window on each screen (the Goal types bars, the heatmap's readout, the games list's buttons) until none did.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: a journey reads the computed zoom at 1440, 1920 and 2560.
 - Scope/decisions: `zoom` over a rem rework: one property scales a px-built system cleanly (Chrome and Firefox 126+ both carry it); the journeys keep running at 1440 where zoom is 1.
 - Next: the gear screen.
-
-## 2026-10-16 · claude · stack/r18/01-nav · #338
-- Done: round 12 (Georges: "i need icons and visuals first"; "make the navbar better"; "find me some assets artifacts to fill some icons like the nav bar ones"). Every game gets a drawn emblem (`GameMark`: a primogem, a warp star in orbit, a bolt on a screen, a sound wave, a hexagon core, a die), tinted by its accent and named for screen readers where it stands alone; it replaces the boxed gamepad placeholder in the scope strip, the Library, the goal cards, the task chips and the hub header. The rail's icons are plain pictures now (grid, gamepad, ticked box, flag, sliders) at 28 px over 12 px labels; the strip and its chips grow to 44–50 px.
-- Tests: written first: the Library journey expects the named emblem (never a letter); the strip journey reads the emblem as each game's icon.
-- Scope/decisions: the emblems are ours (drawn SVG, committable; ADR 0006 keeps game art out of the repo); a real logo the owner drops into the store later still wins in the hub header.
-- Next: the whole UI scaled to Georges's screens.
