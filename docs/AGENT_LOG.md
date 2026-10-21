@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-21 · claude · stack/r25/01-game8-feed · #376
+- Done: round 18 (Georges, round 17: "setup a pipeline to ingest any data like banner cards, event cards… check out websites like game8"). Endfield has no official feed and its wiki no dates; Game8's banner schedule page is a table with a cell per banner (picture, name, version phase, M/D/Y dates, the featured operators' icons by alt text) under a heading per kind, and its events page two tables (a cell or a row per event with its picture and dates). The cron tick reads both like a feed, at most hourly: banners keyed `game8-<kind>-<start>-<name>` with the featured operators matched to the catalog by name, events `game8-<start>-<name>`, dates at the game's reset hour in its Americas/Europe server time, a run with a "TBD" end left out until it has one; Game8's picture host joins the image policy. The three feeds (HoYoverse, the Wuthering Waves wiki, Game8) share one upsert.
+- Tests: written first: the banner table (a banner per dated cell under each kind's heading, server time, picture, version, featured by catalog id, unknown names left out, TBD not a run) and the event tables (a cell or a row each, named by its link, undated ones left out); the policy test's host.
+- Scope/decisions: Game8's tables are its own layout, read with patterns like samsara's YAML; a layout change breaks the parser loudly (no banners), not quietly. The featured operators Game8 names and the catalog lacks (Si, Typhoeus, Liino: newer than EndFieldGameData v0.3.0) are left out, the banner kept.
+- Next: the UI audit at 1100–2560 px.
+
 ## 2026-10-21 · claude · stack/r24/08-docs · #375
 - Done: round 17's docs. Sources for the chores' icons where a wiki draws one (twelve: Realm Currency, Gnostic Hymn, Trailblaze Power, Nameless Glory, Battery, Hollow Zero, City Fund, Waveplate, Tacet Field, Pioneer Podcast), fetched at one click; ASSETS.md regenerated from the live slot list (266 slots: 85 live, 117 at one click, 64 from Georges, by kind and game); NOTICE credits the App Store listings, the wikis' version splashes, endfieldtools.dev, the Endfield wiki and the Wuthering Waves wiki's pictures; the audit records what shipped; the handoff rewritten for the deploy.
 - Tests: the sources test (every entry a real slot with a credit).
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: a journey (Musketeer hands in the bag: CRIT Rate 10.5 and CRIT DMG 21 typed, crit value 42, kept after a reload; Equip on lists Bailu and Fu Xuan, Fu Xuan without a build picked and wearing it; a third substat typed on the worn piece, kept). The two journeys that picked from the old list type the name now; two that read substats as text read their fields.
 - Scope/decisions: substat names offered are the game's main-stat names (as on the sheet), any other typed. Owned characters come from the ownership list and the builds.
 - Next: merge #335 and this on green CI; deploy at Georges's word.
-
-## 2026-10-15 · claude · stack/r16/06-adr-discord-kept · #335
-- Done: ADR 0010 amended at Georges's word ("Let's get back the discord sign in actually"): Discord sign-in stays beside the passkey and the owner password; #334, which removed it, was closed unmerged. DESIGN.md §6, AGENTS.md and PROJECT-GUIDE.md say "Discord, a passkey or the owner password"; DEPLOY.md adds the passkey step and its troubleshooting row. Production deployed at #333 at Georges's word (every migration since #186 ran; the smoke checks pass; `/api/me` reports Discord on, the password off until its hash is set, no passkey yet). The handoff says so.
-- Tests: docs only.
-- Scope/decisions: Discord sign-in stays as it was (anyone with Discord can sign in to their own account; admins in `ADMIN_DISCORD_IDS`); limiting it to Georges's account stays an option.
-- Next: Georges adds a passkey after signing in with Discord, and sets `OWNER_PASSWORD_HASH` and `CRON_SECRET`; ADR 0011's next services.
