@@ -41,7 +41,7 @@ describe("farm today (WIREFRAMES.md A3)", () => {
     // What the card shows as icons (Georges, 2026-10-11): who it is for, the materials, their days (Sunday, open to all, left out).
     const days = book.availability!.length > 1 ? book.availability!.filter((d) => d !== 7) : book.availability!;
     expect(today!.lines[0]).toMatchObject({ unit: { kind: "character", catalogId: "10000021" }, materials: [book.id], days });
-    expect(today!.lines[1]!.text).toBe("2 weekly tasks left");
+    expect(today!.lines[1]!.text).toBe("5 weekly tasks left");
 
     await c.req("PUT", `/api/instances/${gid}`, { sleeping: true });
     expect((await c.req<FarmTodayDto>("GET", "/api/farm-today")).json).toEqual([]);
