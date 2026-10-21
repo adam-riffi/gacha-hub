@@ -34,7 +34,7 @@ test("Home is the dashboard: its panels, the dailies card per game, the pulls an
   const tiles = dailies.locator(".kpi");
   await expect(tiles.nth(0)).toContainText("0 / 5"); // five Star Rail dailies since round 17
   await expect(tiles.nth(1)).toContainText("0 / 0");
-  await expect(tiles.nth(2)).toContainText("0 / 2");
+  await expect(tiles.nth(2)).toContainText("0 / 3"); // three weeklies with Nameless Honor's
   await expect(dailies.getByRole("img", { name: /0 of 5 recurring items done/ })).toBeVisible();
 
   // Pulls: 1600 jade is 10 warps, limited; nothing permanent yet.
