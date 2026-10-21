@@ -9,6 +9,13 @@
 export type ArtSource = { slot: string; url: string; source: string; invert?: boolean };
 
 export const ART_SOURCES: ArtSource[] = [
+  // The games' own app icons, from the App Store's listings (round 17, Georges: "Give each game a game Icon").
+  { slot: "genshin/icon", url: "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/5c/e2/13/5ce21317-a08a-24ac-cc5f-2b25a4d71fa6/AppIcon-0-0-1x_U007epad-0-1-85-220.png/512x512bb.jpg", source: "App Store" },
+  { slot: "hsr/icon", url: "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/fd/65/dc/fd65dc18-c4b6-7b64-8266-a423f3f113e0/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/512x512bb.jpg", source: "App Store" },
+  { slot: "zzz/icon", url: "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/43/64/6a/43646a64-9712-9da1-4c8a-14f95be9e413/AppIcon-1x_U007emarketing-0-8-0-85-220-0.png/512x512bb.jpg", source: "App Store" },
+  { slot: "wuwa/icon", url: "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/cd/8a/a7/cd8aa70c-a4e4-e303-37e3-5d7e735f0834/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/512x512bb.jpg", source: "App Store" },
+  { slot: "endfield/icon", url: "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/5e/a4/53/5ea453a8-f819-f42e-aae4-28f21b8c7166/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/512x512bb.jpg", source: "App Store" },
+  { slot: "nte/icon", url: "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/1a/c8/10/1ac810d0-d997-13f8-0f0e-adb3a9d961c8/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/512x512bb.jpg", source: "App Store" },
   { slot: "genshin/logo", url: "https://genshin-impact.fandom.com/wiki/Special:FilePath/Genshin-Impact-Logo.png", source: "Genshin Impact Wiki" },
   { slot: "genshin/mode/abyss", url: "https://genshin-impact.fandom.com/wiki/Special:FilePath/UI_Spiral_Abyss.png", source: "Genshin Impact Wiki" },
   { slot: "genshin/mode/theater", url: "https://genshin-impact.fandom.com/wiki/Special:FilePath/Imaginarium_Theater_Emblem.png", source: "Genshin Impact Wiki" },

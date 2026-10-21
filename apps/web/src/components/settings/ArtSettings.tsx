@@ -8,6 +8,7 @@ import { Segmented } from "../ui";
 
 const KIND: Record<ArtSlotKind, string> = {
   logo: "Logo",
+  icon: "Icon",
   "key-art": "Key art",
   mode: "Endgame mode",
   "battle-pass": "Battle pass",

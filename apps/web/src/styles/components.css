@@ -150,8 +150,8 @@ tbody tr:hover { background: var(--surface-2); }
 .carousel-sub { margin-top: 4px; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
 /* A banner's featured units (round 11): the top ones larger, the ones you own ticked, a top one you lack ringed. */
 .featured-units { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px; margin: 0; padding: 0; list-style: none; }
-.featured-unit { position: relative; width: 48px; height: 48px; }
-.featured-unit.is-top { width: 72px; height: 72px; }
+.featured-unit { position: relative; width: 56px; height: 56px; }
+.featured-unit.is-top { width: 84px; height: 84px; }
 .featured-unit a { display: block; width: 100%; height: 100%; }
 .featured-unit .gicon { width: 100%; height: 100%; background: var(--surface-2); border: 1px solid var(--hairline-strong); }
 .featured-unit.is-top:not(.is-owned) .gicon { border: 2px solid var(--accent); }
@@ -163,15 +163,15 @@ tbody tr:hover { background: var(--surface-2); }
 /* The owner's pictures (Settings → Art) where a card had none: list rows, mode cards, the battle pass name. */
 .slot-art { object-fit: contain; }
 /* Pictures of mixed padding and size sit in one tile each, whole, so a list's icons line up (round 16: "crooked or out of place"). */
-.list-art { box-sizing: border-box; display: inline-block; width: 28px; height: 28px; padding: 2px; margin-right: 8px; vertical-align: middle; object-fit: contain; background: var(--surface-2); border: 1px solid var(--edge); }
-.mode-art { box-sizing: border-box; width: 44px; height: 44px; padding: 4px; object-fit: contain; background: var(--surface-2); border: 1px solid var(--edge); }
-.pass-art { width: 34px; height: 34px; }
+.list-art { box-sizing: border-box; display: inline-block; width: 36px; height: 36px; padding: 3px; margin-right: 8px; vertical-align: middle; object-fit: contain; background: var(--surface-2); border: 1px solid var(--edge); }
+.mode-art { box-sizing: border-box; width: 56px; height: 56px; padding: 5px; object-fit: contain; background: var(--surface-2); border: 1px solid var(--edge); }
+.pass-art { width: 44px; height: 44px; }
 .game-mark.is-art { object-fit: contain; width: auto; }
 /* Home names its games with their mark (round 15): beside the Dailies card's name, in the lists' rows. */
-.band-mark { width: 44px; height: 44px; flex: none; }
+.band-mark { width: 56px; height: 56px; flex: none; }
 .band-mark.is-art { max-width: 190px; }
-.list-mark { width: 22px; height: 22px; margin-right: 8px; vertical-align: middle; }
-.list-mark.is-art { max-width: 80px; }
+.list-mark { width: 32px; height: 32px; margin-right: 10px; vertical-align: middle; }
+.game-mark.list-mark.is-art { width: 32px; height: 32px; object-fit: cover; }
 /* A dark-on-transparent icon from a source, inverted for the dark UI (Settings → Art). */
 .is-inverted { filter: invert(1); }
 

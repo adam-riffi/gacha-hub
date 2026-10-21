@@ -17,12 +17,12 @@ test("a game's logo shows at a readable size in the strip, the games list, the g
     const strip = page.getByRole("navigation", { name: "Scope" });
     const chip = strip.getByRole("link", { name: /Star Rail/ });
     await page.goto("/library");
-    // The strip: the logo at 30 px high and wider than high; an emblem (Zenless, no logo) at 30 px too.
-    const logo = await box(chip.locator("img.game-mark.is-art"));
-    expect(logo.height).toBeGreaterThanOrEqual(29);
-    expect(logo.width).toBeGreaterThan(logo.height * 2);
-    const emblem = await box(strip.getByRole("link", { name: /Zenless/ }).locator("svg.game-mark"));
-    expect(emblem.height).toBeGreaterThanOrEqual(29);
+    // The strip (round 17: icons there, not wordmarks): the emblem at 44 px, the name beside it, for a game with a logo
+    // but no icon (Star Rail here) as for one with neither (Zenless).
+    for (const link of [chip, strip.getByRole("link", { name: /Zenless/ })]) {
+      expect((await box(link.locator("svg.game-mark"))).height).toBeGreaterThanOrEqual(43);
+      await expect(link.locator(".strip-name")).toBeVisible();
+    }
     // The games list: 56 px high.
     expect((await box(page.getByRole("article", { name: "Honkai: Star Rail" }).locator("img.game-mark.is-art"))).height).toBeGreaterThanOrEqual(55);
     expect((await box(page.getByRole("article", { name: "Zenless Zone Zero" }).locator("svg.game-mark"))).height).toBeGreaterThanOrEqual(55);

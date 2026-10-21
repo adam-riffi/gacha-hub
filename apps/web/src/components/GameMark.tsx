@@ -63,24 +63,28 @@ const FALLBACK = (
 
 /**
  * A game's emblem, tinted by its accent (or the colour given), sized by the CSS around it; `named` labels it for screen
- * readers. The owner's logo (Settings → Art) takes its place once uploaded.
+ * readers. The owner's pictures (Settings → Art) take its place: small marks show the game's icon (`art="icon"`, the
+ * default), big spots its logo (`art="logo"`, the icon when there is none). Round 17 (Georges): a wordmark at 30 px reads
+ * as nothing; the app icon is what he recognises.
  */
-export function GameMark({ gameKey, tint, named = false, className = "" }: { gameKey: string; tint?: string | null; named?: boolean; className?: string }) {
+export function GameMark({ gameKey, tint, named = false, className = "", art = "icon" }: { gameKey: string; tint?: string | null; named?: boolean; className?: string; art?: "icon" | "logo" }) {
   const game = getGame(gameKey);
   const accent = tint ?? game?.accent;
+  const icon = useSlotArt(artSlotKey(gameKey, "icon"));
   const logo = useSlotArt(artSlotKey(gameKey, "logo"));
-  const inverted = useSlotInverted(artSlotKey(gameKey, "logo"));
+  const picture = art === "logo" ? (logo ?? icon) : icon;
+  const inverted = useSlotInverted(artSlotKey(gameKey, picture && picture === logo ? "logo" : "icon"));
   const [failed, setFailed] = useState<string | null>(null);
-  // A wordmark (wider than twice its height) says the game's name itself: the strip hides the name beside it.
+  // A wordmark (wider than twice its height) is tagged, for the spots that size to it.
   const [wide, setWide] = useState(false);
-  if (logo && failed !== logo) {
+  if (picture && failed !== picture) {
     return (
       <img
         className={`game-mark is-art ${inverted ? "is-inverted" : ""} ${wide ? "is-wide" : ""} ${className}`}
-        src={logo}
+        src={picture}
         alt={named ? `${game?.name ?? gameKey} logo` : ""}
         onLoad={(event) => setWide(event.currentTarget.naturalWidth > event.currentTarget.naturalHeight * 2)}
-        onError={() => setFailed(logo)}
+        onError={() => setFailed(picture)}
       />
     );
   }
