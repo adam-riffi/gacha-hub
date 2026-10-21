@@ -12,11 +12,11 @@
   .cal-page { grid-template-columns: minmax(0, 1fr) 300px; }
   .cal-r { grid-template-columns: 170px minmax(0, 1fr); }
   /* The games list: the figures take the row's width, today's line and the move buttons go under them. */
-  .lib-row { grid-template-columns: 20px 170px 180px minmax(0, 1fr); }
-  .lib-cells { grid-column: 4; flex-wrap: wrap; }
+  .lib-row { grid-template-columns: 20px 170px 180px minmax(0, 1fr) auto; }
+  .lib-cells { grid-column: 4 / 6; flex-wrap: wrap; }
   .lib-today { grid-column: 4; grid-row: 2; flex-direction: row; align-items: center; gap: 16px; }
   .lib-today .kpi-label { display: none; } /* the line says "Dailies 0/7 · reset…" itself */
-  .lib-today .lib-move { order: 2; margin-left: auto; }
+  .lib-move { grid-column: 5; grid-row: 2; }
   .lib-hero { width: 45%; opacity: 0.7; mask-image: linear-gradient(90deg, transparent, #000 60%); }
   .lib-actions { grid-column: 3; }
   .lib-page { grid-template-columns: minmax(0, 1fr) 260px; }
