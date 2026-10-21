@@ -9,7 +9,7 @@ test("the timeline names each game with its icon and shows a banner's picture on
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
-  await page.request.post("/api/instances", { data: { gameKey: "nte" } });
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "nte" } })).json()) as { id: string };
   expect((await page.request.put("/api/art/nte/icon", { multipart: { file: { name: "art.png", mimeType: "image/png", buffer: PNG } } })).ok()).toBe(true);
   const day = 86_400_000;
   const at = (days: number) => new Date(Date.now() + days * day).toISOString();
@@ -36,4 +36,5 @@ test("the timeline names each game with its icon and shows a banner's picture on
   await page.request.delete("/api/admin/banners/nte/e2e-picture");
   await page.request.delete("/api/admin/events/nte/e2e-ending");
   await page.request.delete("/api/art/nte/icon");
+  await page.request.delete(`/api/instances/${id}`);
 });
