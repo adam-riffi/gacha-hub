@@ -1,0 +1,4448 @@
+{
+  "source": "wutheringwaves.fandom.com (CC BY-SA), 182 pages, newest revision 146168 on 2026-10-21",
+  "banners": [
+    {
+      "key": "history-character-2024-05-23-prevail-the-lasting-night",
+      "name": "Prevail the Lasting Night",
+      "kind": "character",
+      "startsAt": "2024-05-23T10:00:00+08:00",
+      "endsAt": "2024-06-13T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1404",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1602",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1202",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1204",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-05-23-absolute-pulsation-verdant-summit",
+      "name": "Absolute Pulsation: Verdant Summit",
+      "kind": "weapon",
+      "startsAt": "2024-05-23T10:00:00+08:00",
+      "endsAt": "2024-06-13T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21010016",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21010044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21050024",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21040064",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2024-06-06-when-thunder-pours",
+      "name": "When Thunder Pours",
+      "kind": "character",
+      "startsAt": "2024-06-06T10:00:00+08:00",
+      "endsAt": "2024-06-26T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1302",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1601",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1403",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1303",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-06-06-absolute-pulsation-stringmaster",
+      "name": "Absolute Pulsation: Stringmaster",
+      "kind": "weapon",
+      "startsAt": "2024-06-06T10:00:00+08:00",
+      "endsAt": "2024-06-26T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21050016",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21050044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21030024",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21020064",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2024-06-28-thawborn-renewal",
+      "name": "Thawborn Renewal",
+      "kind": "character",
+      "startsAt": "2024-06-28T10:00:00+08:00",
+      "endsAt": "2024-07-22T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1304",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1102",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1602",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1402",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-06-28-absolute-pulsation-ages-of-harvest",
+      "name": "Absolute Pulsation: Ages of Harvest",
+      "kind": "weapon",
+      "startsAt": "2024-06-28T10:00:00+08:00",
+      "endsAt": "2024-07-22T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21010026",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21010024",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21020044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21040044",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2024-07-22-vermillion-s-ploy",
+      "name": "Vermillion's Ploy",
+      "kind": "character",
+      "startsAt": "2024-07-22T10:00:00+08:00",
+      "endsAt": "2024-08-14T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1205",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1601",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1103",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1204",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-07-22-absolute-pulsation-blazing-brilliance",
+      "name": "Absolute Pulsation: Blazing Brilliance",
+      "kind": "weapon",
+      "startsAt": "2024-07-22T10:00:00+08:00",
+      "endsAt": "2024-08-14T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21020016",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21050064",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21020024",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21030044",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2024-08-15-chromatic-prose",
+      "name": "Chromatic Prose",
+      "kind": "character",
+      "startsAt": "2024-08-15T10:00:00+08:00",
+      "endsAt": "2024-09-07T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1105",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1202",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1103",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1102",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-08-15-absolute-pulsation-rime-draped-sprouts",
+      "name": "Absolute Pulsation: Rime-Draped Sprouts",
+      "kind": "weapon",
+      "startsAt": "2024-08-15T10:00:00+08:00",
+      "endsAt": "2024-09-07T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21050026",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21010044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21050044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21040064",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2024-09-07-celestial-revelation",
+      "name": "Celestial Revelation",
+      "kind": "character",
+      "startsAt": "2024-09-07T10:00:00+08:00",
+      "endsAt": "2024-09-28T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1305",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1602",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1403",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1303",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-09-07-absolute-pulsation-verity-s-handle",
+      "name": "Absolute Pulsation: Verity's Handle",
+      "kind": "weapon",
+      "startsAt": "2024-09-07T10:00:00+08:00",
+      "endsAt": "2024-09-28T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21040016",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21040024",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010064",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21030064",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2024-09-29-till-the-sea-turns-clear",
+      "name": "Till the Sea Turns Clear",
+      "kind": "character",
+      "startsAt": "2024-09-29T11:00:00+08:00",
+      "endsAt": "2024-10-24T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1505",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1601",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1402",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1202",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-09-29-absolute-pulsation-stellar-symphony",
+      "name": "Absolute Pulsation: Stellar Symphony",
+      "kind": "weapon",
+      "startsAt": "2024-09-29T11:00:00+08:00",
+      "endsAt": "2024-10-24T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21050036",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21020084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010024",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21050064",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2024-10-24-prevail-the-lasting-night",
+      "name": "Prevail the Lasting Night",
+      "kind": "character",
+      "startsAt": "2024-10-24T10:00:00+08:00",
+      "endsAt": "2024-11-13T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1404",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1106",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1102",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1204",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-10-24-absolute-pulsation-verdant-summit",
+      "name": "Absolute Pulsation: Verdant Summit",
+      "kind": "weapon",
+      "startsAt": "2024-10-24T11:00:00+08:00",
+      "endsAt": "2024-11-13T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21010016",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21040084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21050024",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010064",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2024-11-14-end-of-lost-trail",
+      "name": "End of Lost Trail",
+      "kind": "character",
+      "startsAt": "2024-11-14T11:00:00+08:00",
+      "endsAt": "2024-12-12T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1603",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1602",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1402",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1403",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-11-14-absolute-pulsation-red-spring",
+      "name": "Absolute Pulsation: Red Spring",
+      "kind": "weapon",
+      "startsAt": "2024-11-14T11:00:00+08:00",
+      "endsAt": "2024-12-12T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21020026",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21020044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21030064",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21050084",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2024-12-12-celestial-revelation",
+      "name": "Celestial Revelation",
+      "kind": "character",
+      "startsAt": "2024-12-12T10:00:00+08:00",
+      "endsAt": "2025-01-01T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1305",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1504",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1103",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1303",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2024-12-12-when-thunder-pours",
+      "name": "When Thunder Pours",
+      "kind": "character",
+      "startsAt": "2024-12-12T10:00:00+08:00",
+      "endsAt": "2025-01-01T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1302",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1504",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1103",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1303",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-12-12-absolute-pulsation-stringmaster",
+      "name": "Absolute Pulsation: Stringmaster",
+      "kind": "weapon",
+      "startsAt": "2024-12-12T10:00:00+08:00",
+      "endsAt": "2025-01-01T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21050016",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21010084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21050044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21040064",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2024-12-12-absolute-pulsation-verity-s-handle",
+      "name": "Absolute Pulsation: Verity's Handle",
+      "kind": "weapon",
+      "startsAt": "2024-12-12T10:00:00+08:00",
+      "endsAt": "2025-01-01T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21040016",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21010084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21050044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21040064",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-01-02-chromatic-prose",
+      "name": "Chromatic Prose",
+      "kind": "character",
+      "startsAt": "2025-01-02T10:00:00+08:00",
+      "endsAt": "2025-01-23T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1105",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1202",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1102",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1204",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-01-02-when-silence-tolls",
+      "name": "When Silence Tolls",
+      "kind": "character",
+      "startsAt": "2025-01-02T10:00:00+08:00",
+      "endsAt": "2025-01-23T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1107",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1202",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1102",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1204",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-01-02-absolute-pulsation-rime-draped-sprouts",
+      "name": "Absolute Pulsation: Rime-Draped Sprouts",
+      "kind": "weapon",
+      "startsAt": "2025-01-02T10:00:00+08:00",
+      "endsAt": "2025-01-23T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21050026",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21030084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21050084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21040044",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-01-02-absolute-pulsation-the-last-dance",
+      "name": "Absolute Pulsation: The Last Dance",
+      "kind": "weapon",
+      "startsAt": "2025-01-02T10:00:00+08:00",
+      "endsAt": "2025-01-23T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21030016",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21030084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21050084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21040044",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-01-23-stage-in-the-box",
+      "name": "Stage in the Box",
+      "kind": "character",
+      "startsAt": "2025-01-23T10:00:00+08:00",
+      "endsAt": "2025-02-12T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1606",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1602",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1106",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1303",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-01-23-thawborn-renewal",
+      "name": "Thawborn Renewal",
+      "kind": "character",
+      "startsAt": "2025-01-23T10:00:00+08:00",
+      "endsAt": "2025-02-12T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1304",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1602",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1106",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1303",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-01-23-absolute-pulsation-ages-of-harvest",
+      "name": "Absolute Pulsation: Ages of Harvest",
+      "kind": "weapon",
+      "startsAt": "2025-01-23T10:00:00+08:00",
+      "endsAt": "2025-02-12T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21010026",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21040084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21050024",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-01-23-absolute-pulsation-tragicomedy",
+      "name": "Absolute Pulsation: Tragicomedy",
+      "kind": "weapon",
+      "startsAt": "2025-01-23T10:00:00+08:00",
+      "endsAt": "2025-02-12T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21040026",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21040084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21050024",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-02-13-with-hushed-whispers",
+      "name": "With Hushed Whispers",
+      "kind": "character",
+      "startsAt": "2025-02-13T10:00:00+08:00",
+      "endsAt": "2025-03-06T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1506",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1504",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1202",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1403",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-02-13-absolute-pulsation-luminous-hymn",
+      "name": "Absolute Pulsation: Luminous Hymn",
+      "kind": "weapon",
+      "startsAt": "2025-02-13T10:00:00+08:00",
+      "endsAt": "2025-03-06T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21050046",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21050044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010024",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21030064",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-03-06-blaze-across-the-deep",
+      "name": "Blaze Across the Deep",
+      "kind": "character",
+      "startsAt": "2025-03-06T10:00:00+08:00",
+      "endsAt": "2025-03-26T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1206",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1106",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1601",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1204",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-03-06-vermillion-s-ploy",
+      "name": "Vermillion's Ploy",
+      "kind": "character",
+      "startsAt": "2025-03-06T10:00:00+08:00",
+      "endsAt": "2025-03-26T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1205",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1106",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1601",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1204",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-03-06-absolute-pulsation-blazing-brilliance",
+      "name": "Absolute Pulsation: Blazing Brilliance",
+      "kind": "weapon",
+      "startsAt": "2025-03-06T10:00:00+08:00",
+      "endsAt": "2025-03-26T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21020016",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21010084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21050064",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21040024",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-03-06-absolute-pulsation-unflickering-valor",
+      "name": "Absolute Pulsation: Unflickering Valor",
+      "kind": "weapon",
+      "startsAt": "2025-03-06T10:00:00+08:00",
+      "endsAt": "2025-03-26T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21020036",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21010084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21050064",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21040024",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-03-27-end-of-lost-trail",
+      "name": "End of Lost Trail",
+      "kind": "character",
+      "startsAt": "2025-03-27T10:00:00+08:00",
+      "endsAt": "2025-04-17T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1603",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1602",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1202",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1303",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-03-27-neptune-s-lullaby",
+      "name": "Neptune's Lullaby",
+      "kind": "character",
+      "startsAt": "2025-03-27T10:00:00+08:00",
+      "endsAt": "2025-04-17T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1607",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1602",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1202",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1303",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-03-27-absolute-pulsation-red-spring",
+      "name": "Absolute Pulsation: Red Spring",
+      "kind": "weapon",
+      "startsAt": "2025-03-27T10:00:00+08:00",
+      "endsAt": "2025-04-17T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21020026",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21050084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21020064",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21030024",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-03-27-absolute-pulsation-whispers-of-sirens",
+      "name": "Absolute Pulsation: Whispers of Sirens",
+      "kind": "weapon",
+      "startsAt": "2025-03-27T10:00:00+08:00",
+      "endsAt": "2025-04-17T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21050056",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21050084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21020064",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21030024",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-04-17-till-the-sea-turns-clear",
+      "name": "Till the Sea Turns Clear",
+      "kind": "character",
+      "startsAt": "2025-04-17T10:00:00+08:00",
+      "endsAt": "2025-04-28T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1505",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1103",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1102",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1403",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-04-17-absolute-pulsation-stellar-symphony",
+      "name": "Absolute Pulsation: Stellar Symphony",
+      "kind": "weapon",
+      "startsAt": "2025-04-17T10:00:00+08:00",
+      "endsAt": "2025-04-28T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21050036",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21050064",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21020084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21030044",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-04-29-between-light-and-shadow",
+      "name": "Between Light and Shadow",
+      "kind": "character",
+      "startsAt": "2025-04-29T10:00:00+08:00",
+      "endsAt": "2025-05-22T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1507",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1504",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1601",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1303",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-04-29-absolute-pulsation-blazing-justice",
+      "name": "Absolute Pulsation: Blazing Justice",
+      "kind": "weapon",
+      "startsAt": "2025-04-29T10:00:00+08:00",
+      "endsAt": "2025-05-22T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21040036",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21010044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21020024",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21040064",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-05-22-through-verses-and-rhythms",
+      "name": "Through Verses and Rhythms",
+      "kind": "character",
+      "startsAt": "2025-05-22T10:00:00+08:00",
+      "endsAt": "2025-06-11T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1407",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1602",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1402",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1204",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-05-22-absolute-pulsation-woodland-aria",
+      "name": "Absolute Pulsation: Woodland Aria",
+      "kind": "weapon",
+      "startsAt": "2025-05-22T10:00:00+08:00",
+      "endsAt": "2025-06-11T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21030026",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21030044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21050024",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21030084",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-06-12-dance-in-the-storm-s-wake",
+      "name": "Dance in the Storm's Wake",
+      "kind": "character",
+      "startsAt": "2025-06-12T10:00:00+08:00",
+      "endsAt": "2025-07-03T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1409",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1403",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1103",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1106",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-06-12-absolute-pulsation-defier-s-thorn",
+      "name": "Absolute Pulsation: Defier's Thorn",
+      "kind": "weapon",
+      "startsAt": "2025-06-12T10:00:00+08:00",
+      "endsAt": "2025-07-03T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21020056",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21020084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21040024",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21040044",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-07-03-roar-of-triumph",
+      "name": "Roar of Triumph",
+      "kind": "character",
+      "startsAt": "2025-07-03T10:00:00+08:00",
+      "endsAt": "2025-07-23T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1207",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1102",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1601",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1202",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-07-03-absolute-pulsation-wildfire-mark",
+      "name": "Absolute Pulsation: Wildfire Mark",
+      "kind": "weapon",
+      "startsAt": "2025-07-03T10:00:00+08:00",
+      "endsAt": "2025-07-23T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21010036",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21010064",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21020044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21050044",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-07-24-requiem-without-end",
+      "name": "Requiem Without End",
+      "kind": "character",
+      "startsAt": "2025-07-24T10:00:00+08:00",
+      "endsAt": "2025-08-14T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1608",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1601",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1504",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1303",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-07-24-stage-in-the-box",
+      "name": "Stage in the Box",
+      "kind": "character",
+      "startsAt": "2025-07-24T10:00:00+08:00",
+      "endsAt": "2025-08-14T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1606",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1601",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1504",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1303",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-07-24-absolute-pulsation-lethean-elegy",
+      "name": "Absolute Pulsation: Lethean Elegy",
+      "kind": "weapon",
+      "startsAt": "2025-07-24T10:00:00+08:00",
+      "endsAt": "2025-08-14T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21050066",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21050044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21040084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21020064",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-07-24-absolute-pulsation-tragicomedy",
+      "name": "Absolute Pulsation: Tragicomedy",
+      "kind": "weapon",
+      "startsAt": "2025-07-24T10:00:00+08:00",
+      "endsAt": "2025-08-14T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21040026",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21050044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21040084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21020064",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-08-14-blaze-across-the-deep",
+      "name": "Blaze Across the Deep",
+      "kind": "character",
+      "startsAt": "2025-08-14T10:00:00+08:00",
+      "endsAt": "2025-08-27T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1206",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1602",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1402",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1204",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-08-14-neptune-s-lullaby",
+      "name": "Neptune's Lullaby",
+      "kind": "character",
+      "startsAt": "2025-08-14T10:00:00+08:00",
+      "endsAt": "2025-08-27T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1607",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1602",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1402",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1204",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-08-14-absolute-pulsation-unflickering-valor",
+      "name": "Absolute Pulsation: Unflickering Valor",
+      "kind": "weapon",
+      "startsAt": "2025-08-14T10:00:00+08:00",
+      "endsAt": "2025-08-27T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21020036",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21050024",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21020024",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21030064",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-08-14-absolute-pulsation-whispers-of-sirens",
+      "name": "Absolute Pulsation: Whispers of Sirens",
+      "kind": "weapon",
+      "startsAt": "2025-08-14T10:00:00+08:00",
+      "endsAt": "2025-08-27T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21050056",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21050024",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21020024",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21030064",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-08-28-eternal-radiance-on-the-crown",
+      "name": "Eternal Radiance on the Crown",
+      "kind": "character",
+      "startsAt": "2025-08-28T10:00:00+08:00",
+      "endsAt": "2025-09-17T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1306",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1202",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1106",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1303",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-08-28-till-the-sea-turns-clear",
+      "name": "Till the Sea Turns Clear",
+      "kind": "character",
+      "startsAt": "2025-08-28T10:00:00+08:00",
+      "endsAt": "2025-09-17T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1505",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1202",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1106",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1303",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-08-28-when-silence-tolls",
+      "name": "When Silence Tolls",
+      "kind": "character",
+      "startsAt": "2025-08-28T10:00:00+08:00",
+      "endsAt": "2025-09-17T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1107",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1202",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1106",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1303",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-08-28-absolute-pulsation-stellar-symphony",
+      "name": "Absolute Pulsation: Stellar Symphony",
+      "kind": "weapon",
+      "startsAt": "2025-08-28T10:00:00+08:00",
+      "endsAt": "2025-09-17T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21050036",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21010084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21030044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21050064",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-08-28-absolute-pulsation-the-last-dance",
+      "name": "Absolute Pulsation: The Last Dance",
+      "kind": "weapon",
+      "startsAt": "2025-08-28T10:00:00+08:00",
+      "endsAt": "2025-09-17T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21030016",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21010084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21030044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21050064",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-08-28-absolute-pulsation-thunderflare-dominion",
+      "name": "Absolute Pulsation: Thunderflare Dominion",
+      "kind": "weapon",
+      "startsAt": "2025-08-28T10:00:00+08:00",
+      "endsAt": "2025-09-17T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21010046",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21010084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21030044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21050064",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-09-17-across-time-s-waxes-and-wanes",
+      "name": "Across Time's Waxes and Wanes",
+      "kind": "character",
+      "startsAt": "2025-09-17T10:00:00+08:00",
+      "endsAt": "2025-10-08T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1410",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1403",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1103",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1601",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-09-17-through-verses-and-rhythms",
+      "name": "Through Verses and Rhythms",
+      "kind": "character",
+      "startsAt": "2025-09-17T10:00:00+08:00",
+      "endsAt": "2025-10-08T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1407",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1403",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1103",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1601",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-09-17-absolute-pulsation-moongazer-s-sigil",
+      "name": "Absolute Pulsation: Moongazer's Sigil",
+      "kind": "weapon",
+      "startsAt": "2025-09-17T10:00:00+08:00",
+      "endsAt": "2025-10-08T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21040046",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21030084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21040084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21050084",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-09-17-absolute-pulsation-woodland-aria",
+      "name": "Absolute Pulsation: Woodland Aria",
+      "kind": "weapon",
+      "startsAt": "2025-09-17T10:00:00+08:00",
+      "endsAt": "2025-10-08T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21030026",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21030084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21040084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21050084",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-10-09-from-ashes",
+      "name": "From Ashes",
+      "kind": "character",
+      "startsAt": "2025-10-09T10:00:00+08:00",
+      "endsAt": "2025-10-30T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1208",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1102",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1204",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1504",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-10-09-roar-of-triumph",
+      "name": "Roar of Triumph",
+      "kind": "character",
+      "startsAt": "2025-10-09T10:00:00+08:00",
+      "endsAt": "2025-10-30T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1207",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1102",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1204",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1504",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-10-09-absolute-pulsation-lux-umbra",
+      "name": "Absolute Pulsation: Lux & Umbra",
+      "kind": "weapon",
+      "startsAt": "2025-10-09T10:00:00+08:00",
+      "endsAt": "2025-10-30T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21030036",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21030064",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010064",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21050084",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-10-09-absolute-pulsation-wildfire-mark",
+      "name": "Absolute Pulsation: Wildfire Mark",
+      "kind": "weapon",
+      "startsAt": "2025-10-09T10:00:00+08:00",
+      "endsAt": "2025-10-30T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21010036",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21030064",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010064",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21050084",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-10-30-between-light-and-shadow",
+      "name": "Between Light and Shadow",
+      "kind": "character",
+      "startsAt": "2025-10-30T10:00:00+08:00",
+      "endsAt": "2025-11-19T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1507",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1402",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1601",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1602",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-10-30-wanderer-knows-no-far-and-near",
+      "name": "Wanderer Knows No Far and Near",
+      "kind": "character",
+      "startsAt": "2025-10-30T10:00:00+08:00",
+      "endsAt": "2025-11-19T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1411",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1402",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1601",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1602",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-10-30-absolute-pulsation-blazing-justice",
+      "name": "Absolute Pulsation: Blazing Justice",
+      "kind": "weapon",
+      "startsAt": "2025-10-30T10:00:00+08:00",
+      "endsAt": "2025-11-19T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21040036",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21020084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21040064",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010044",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-10-30-absolute-pulsation-emerald-sentence",
+      "name": "Absolute Pulsation: Emerald Sentence",
+      "kind": "weapon",
+      "startsAt": "2025-10-30T10:00:00+08:00",
+      "endsAt": "2025-11-19T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21020066",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21020084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21040064",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010044",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-11-20-horizon-of-dawnbreak",
+      "name": "Horizon of Dawnbreak",
+      "kind": "character",
+      "startsAt": "2025-11-20T10:30:00+08:00",
+      "endsAt": "2025-12-11T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1508",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1601",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1303",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1403",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-11-20-with-hushed-whispers",
+      "name": "With Hushed Whispers",
+      "kind": "character",
+      "startsAt": "2025-11-20T10:30:00+08:00",
+      "endsAt": "2025-12-11T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1506",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1601",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1303",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1403",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-11-20-absolute-pulsation-kumokiri",
+      "name": "Absolute Pulsation: Kumokiri",
+      "kind": "weapon",
+      "startsAt": "2025-11-20T10:30:00+08:00",
+      "endsAt": "2025-12-11T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21010056",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21020044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21050084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010064",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-11-20-absolute-pulsation-luminous-hymn",
+      "name": "Absolute Pulsation: Luminous Hymn",
+      "kind": "weapon",
+      "startsAt": "2025-11-20T10:30:00+08:00",
+      "endsAt": "2025-12-11T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21050046",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21020044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21050084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010064",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-12-11-neptune-s-lullaby",
+      "name": "Neptune's Lullaby",
+      "kind": "character",
+      "startsAt": "2025-12-11T10:00:00+08:00",
+      "endsAt": "2025-12-24T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1607",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1307",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1602",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1202",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-12-11-requiem-without-end",
+      "name": "Requiem Without End",
+      "kind": "character",
+      "startsAt": "2025-12-11T10:00:00+08:00",
+      "endsAt": "2025-12-24T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1608",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1307",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1602",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1202",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-12-11-absolute-pulsation-lethean-elegy",
+      "name": "Absolute Pulsation: Lethean Elegy",
+      "kind": "weapon",
+      "startsAt": "2025-12-11T10:00:00+08:00",
+      "endsAt": "2025-12-24T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21050066",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21050044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21040084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21020064",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-12-11-absolute-pulsation-whispers-of-sirens",
+      "name": "Absolute Pulsation: Whispers of Sirens",
+      "kind": "weapon",
+      "startsAt": "2025-12-11T10:00:00+08:00",
+      "endsAt": "2025-12-24T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21050056",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21050044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21040084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21020064",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-12-25-dance-in-the-storm-s-wake",
+      "name": "Dance in the Storm's Wake",
+      "kind": "character",
+      "startsAt": "2025-12-25T10:45:00+08:00",
+      "endsAt": "2026-01-15T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1409",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1402",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1106",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1103",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-12-25-through-verses-and-rhythms",
+      "name": "Through Verses and Rhythms",
+      "kind": "character",
+      "startsAt": "2025-12-25T10:45:00+08:00",
+      "endsAt": "2026-01-15T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1407",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1402",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1106",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1103",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2025-12-25-undefined-spectrum",
+      "name": "Undefined Spectrum",
+      "kind": "character",
+      "startsAt": "2025-12-25T10:45:00+08:00",
+      "endsAt": "2026-01-15T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1509",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1402",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1106",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1103",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-12-25-absolute-pulsation-defier-s-thorn",
+      "name": "Absolute Pulsation: Defier's Thorn",
+      "kind": "weapon",
+      "startsAt": "2025-12-25T10:45:00+08:00",
+      "endsAt": "2026-01-15T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21020056",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21030084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21020084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21030044",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-12-25-absolute-pulsation-spectrum-blaster",
+      "name": "Absolute Pulsation: Spectrum Blaster",
+      "kind": "weapon",
+      "startsAt": "2025-12-25T10:45:00+08:00",
+      "endsAt": "2026-01-15T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21030046",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21030084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21020084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21030044",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2025-12-25-absolute-pulsation-woodland-aria",
+      "name": "Absolute Pulsation: Woodland Aria",
+      "kind": "weapon",
+      "startsAt": "2025-12-25T10:45:00+08:00",
+      "endsAt": "2026-01-15T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21030026",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21030084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21020084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21030044",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-01-15-across-time-s-waxes-and-wanes",
+      "name": "Across Time's Waxes and Wanes",
+      "kind": "character",
+      "startsAt": "2026-01-15T10:00:00+08:00",
+      "endsAt": "2026-02-04T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1410",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1202",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1102",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1602",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-01-15-distant-may-the-starlights-be",
+      "name": "Distant May the Starlights Be",
+      "kind": "character",
+      "startsAt": "2026-01-15T10:00:00+08:00",
+      "endsAt": "2026-02-04T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1209",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1202",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1102",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1602",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-01-15-eternal-radiance-on-the-crown",
+      "name": "Eternal Radiance on the Crown",
+      "kind": "character",
+      "startsAt": "2026-01-15T10:00:00+08:00",
+      "endsAt": "2026-02-04T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1306",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1202",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1102",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1602",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-01-15-absolute-pulsation-moongazer-s-sigil",
+      "name": "Absolute Pulsation: Moongazer's Sigil",
+      "kind": "weapon",
+      "startsAt": "2026-01-15T10:00:00+08:00",
+      "endsAt": "2026-02-04T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21040046",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21010024",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21040084",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-01-15-absolute-pulsation-starfield-calibrator",
+      "name": "Absolute Pulsation: Starfield Calibrator",
+      "kind": "weapon",
+      "startsAt": "2026-01-15T10:00:00+08:00",
+      "endsAt": "2026-02-04T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21010066",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21010024",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21040084",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-01-15-absolute-pulsation-thunderflare-dominion",
+      "name": "Absolute Pulsation: Thunderflare Dominion",
+      "kind": "weapon",
+      "startsAt": "2026-01-15T10:00:00+08:00",
+      "endsAt": "2026-02-04T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21010046",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21010024",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21040084",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-02-05-horizon-of-dawnbreak",
+      "name": "Horizon of Dawnbreak",
+      "kind": "character",
+      "startsAt": "2026-02-05T08:55:00+08:00",
+      "endsAt": "2026-02-26T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1508",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1204",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1601",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1403",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-02-05-roar-of-triumph",
+      "name": "Roar of Triumph",
+      "kind": "character",
+      "startsAt": "2026-02-05T08:55:00+08:00",
+      "endsAt": "2026-02-26T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1207",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1204",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1601",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1403",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-02-05-take-flight-in-spring",
+      "name": "Take Flight in Spring",
+      "kind": "character",
+      "startsAt": "2026-02-05T08:55:00+08:00",
+      "endsAt": "2026-02-26T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1210",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1204",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1601",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1403",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-02-05-absolute-pulsation-everbright-polestar",
+      "name": "Absolute Pulsation: Everbright Polestar",
+      "kind": "weapon",
+      "startsAt": "2026-02-05T08:55:00+08:00",
+      "endsAt": "2026-02-26T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21020076",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21020044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21030024",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-02-05-absolute-pulsation-kumokiri",
+      "name": "Absolute Pulsation: Kumokiri",
+      "kind": "weapon",
+      "startsAt": "2026-02-05T08:55:00+08:00",
+      "endsAt": "2026-02-26T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21010056",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21020044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21030024",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-02-05-absolute-pulsation-wildfire-mark",
+      "name": "Absolute Pulsation: Wildfire Mark",
+      "kind": "weapon",
+      "startsAt": "2026-02-05T08:55:00+08:00",
+      "endsAt": "2026-02-26T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21010036",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21020044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21030024",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-02-26-from-ashes",
+      "name": "From Ashes",
+      "kind": "character",
+      "startsAt": "2026-02-26T10:00:00+08:00",
+      "endsAt": "2026-03-18T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1208",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1102",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1303",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1504",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-02-26-when-winter-thaws",
+      "name": "When Winter Thaws",
+      "kind": "character",
+      "startsAt": "2026-02-26T10:00:00+08:00",
+      "endsAt": "2026-03-18T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1510",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1504",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1102",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1303",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-02-26-absolute-pulsation-daybreaker-s-spine",
+      "name": "Absolute Pulsation: Daybreaker's Spine",
+      "kind": "weapon",
+      "startsAt": "2026-02-26T10:00:00+08:00",
+      "endsAt": "2026-03-18T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21040056",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21040064",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21050044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21020024",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-02-26-absolute-pulsation-lux-umbra",
+      "name": "Absolute Pulsation: Lux & Umbra",
+      "kind": "weapon",
+      "startsAt": "2026-02-26T10:00:00+08:00",
+      "endsAt": "2026-03-18T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21030036",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21040064",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21050044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21020024",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-03-19-wanderer-knows-no-far-and-near",
+      "name": "Wanderer Knows No Far and Near",
+      "kind": "character",
+      "startsAt": "2026-03-19T11:00:00+08:00",
+      "endsAt": "2026-04-09T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1411",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1402",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1102",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1307",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-03-19-when-the-runes-glitter",
+      "name": "When the Runes Glitter",
+      "kind": "character",
+      "startsAt": "2026-03-19T11:00:00+08:00",
+      "endsAt": "2026-04-09T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1402",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1102",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1307",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-03-19-absolute-pulsation-emerald-sentence",
+      "name": "Absolute Pulsation: Emerald Sentence",
+      "kind": "weapon",
+      "startsAt": "2026-03-19T11:00:00+08:00",
+      "endsAt": "2026-04-09T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21020066",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21020084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21040084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21020064",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-03-19-absolute-pulsation-solsworn-ciphers",
+      "name": "Absolute Pulsation: Solsworn Ciphers",
+      "kind": "weapon",
+      "startsAt": "2026-03-19T11:00:00+08:00",
+      "endsAt": "2026-04-09T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21020084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21040084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21020064",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-04-09-between-light-and-shadow",
+      "name": "Between Light and Shadow",
+      "kind": "character",
+      "startsAt": "2026-04-09T10:00:00+08:00",
+      "endsAt": "2026-04-29T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1507",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1601",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1106",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1602",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-04-09-undefined-spectrum",
+      "name": "Undefined Spectrum",
+      "kind": "character",
+      "startsAt": "2026-04-09T10:00:00+08:00",
+      "endsAt": "2026-04-29T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1509",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1601",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1106",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1602",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-04-09-with-hushed-whispers",
+      "name": "With Hushed Whispers",
+      "kind": "character",
+      "startsAt": "2026-04-09T10:00:00+08:00",
+      "endsAt": "2026-04-29T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1506",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1601",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1106",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1602",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-04-09-absolute-pulsation-blazing-justice",
+      "name": "Absolute Pulsation: Blazing Justice",
+      "kind": "weapon",
+      "startsAt": "2026-04-09T10:00:00+08:00",
+      "endsAt": "2026-04-29T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21040036",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21030084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21040024",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21050024",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-04-09-absolute-pulsation-luminous-hymn",
+      "name": "Absolute Pulsation: Luminous Hymn",
+      "kind": "weapon",
+      "startsAt": "2026-04-09T10:00:00+08:00",
+      "endsAt": "2026-04-29T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21050046",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21030084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21040024",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21050024",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-04-09-absolute-pulsation-spectrum-blaster",
+      "name": "Absolute Pulsation: Spectrum Blaster",
+      "kind": "weapon",
+      "startsAt": "2026-04-09T10:00:00+08:00",
+      "endsAt": "2026-04-29T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21030046",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21030084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21040024",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21050024",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-04-30-absolute-pulsation-frostburn",
+      "name": "Absolute Pulsation: Frostburn",
+      "kind": "weapon",
+      "startsAt": "2026-04-30T00:00:00+08:00",
+      "endsAt": "2026-05-21T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21020044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010024",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21030044",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-04-30-absolute-pulsation-moongazer-s-sigil",
+      "name": "Absolute Pulsation: Moongazer's Sigil",
+      "kind": "weapon",
+      "startsAt": "2026-04-30T00:00:00+08:00",
+      "endsAt": "2026-05-21T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21040046",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21020044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010024",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21030044",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-04-30-absolute-pulsation-starfield-calibrator",
+      "name": "Absolute Pulsation: Starfield Calibrator",
+      "kind": "weapon",
+      "startsAt": "2026-04-30T00:00:00+08:00",
+      "endsAt": "2026-05-21T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21010066",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21020044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010024",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21030044",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-05-21-false-promise-for-tomorrow",
+      "name": "False Promise for Tomorrow",
+      "kind": "character",
+      "startsAt": "2026-05-21T10:00:00+08:00",
+      "endsAt": "2026-06-07T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1202",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1307",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1402",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-05-21-horizon-of-dawnbreak",
+      "name": "Horizon of Dawnbreak",
+      "kind": "character",
+      "startsAt": "2026-05-21T10:00:00+08:00",
+      "endsAt": "2026-06-07T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1508",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1202",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1307",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1402",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-05-21-requiem-without-end",
+      "name": "Requiem Without End",
+      "kind": "character",
+      "startsAt": "2026-05-21T10:00:00+08:00",
+      "endsAt": "2026-06-07T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1608",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1202",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1307",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1402",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-05-21-absolute-pulsation-forged-dwarf-star",
+      "name": "Absolute Pulsation: Forged Dwarf Star",
+      "kind": "weapon",
+      "startsAt": "2026-05-21T10:00:00+08:00",
+      "endsAt": "2026-06-07T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21050084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21030064",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-05-21-absolute-pulsation-kumokiri",
+      "name": "Absolute Pulsation: Kumokiri",
+      "kind": "weapon",
+      "startsAt": "2026-05-21T10:00:00+08:00",
+      "endsAt": "2026-06-07T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21010056",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21050084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21030064",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-05-21-absolute-pulsation-lethean-elegy",
+      "name": "Absolute Pulsation: Lethean Elegy",
+      "kind": "weapon",
+      "startsAt": "2026-05-21T10:00:00+08:00",
+      "endsAt": "2026-06-07T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21050066",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21050084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21030064",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-06-08-absolute-pulsation-spectral-trigger",
+      "name": "Absolute Pulsation: Spectral Trigger",
+      "kind": "weapon",
+      "startsAt": "2026-06-08T00:00:00+08:00",
+      "endsAt": "2026-07-09T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21030084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21030024",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21050084",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-06-08-absolute-pulsation-skull-thrasher",
+      "name": "Absolute Pulsation: Skull Thrasher",
+      "kind": "weapon",
+      "startsAt": "2026-06-08T10:00:00+08:00",
+      "endsAt": "2026-07-09T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21030084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21030024",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21050084",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-06-13-tomorrow-in-the-frame",
+      "name": "Tomorrow in the Frame",
+      "kind": "character",
+      "startsAt": "2026-06-13T10:00:00+08:00",
+      "endsAt": "2026-07-09T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1504",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1106",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1601",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-06-13-absolute-pulsation-freeze-frame",
+      "name": "Absolute Pulsation: Freeze Frame",
+      "kind": "weapon",
+      "startsAt": "2026-06-13T10:00:00+08:00",
+      "endsAt": "2026-07-09T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21030084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21030024",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21050084",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-06-18-dance-in-the-storm-s-wake",
+      "name": "Dance in the Storm's Wake",
+      "kind": "character",
+      "startsAt": "2026-06-18T10:00:00+08:00",
+      "endsAt": "2026-07-09T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1409",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1402",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1303",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1204",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-06-18-absolute-pulsation-defier-s-thorn",
+      "name": "Absolute Pulsation: Defier's Thorn",
+      "kind": "weapon",
+      "startsAt": "2026-06-18T10:00:00+08:00",
+      "endsAt": "2026-07-09T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21020056",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21020084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21040024",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21040044",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-07-10-undefined-spectrum",
+      "name": "Undefined Spectrum",
+      "kind": "character",
+      "startsAt": "2026-07-10T09:10:00+08:00",
+      "endsAt": "2026-07-30T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1509",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1602",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1202",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1403",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-07-10-voices-on-azure-feathers",
+      "name": "Voices on Azure Feathers",
+      "kind": "character",
+      "startsAt": "2026-07-10T09:10:00+08:00",
+      "endsAt": "2026-07-30T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1402",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1602",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1202",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1403",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-07-10-when-winter-thaws",
+      "name": "When Winter Thaws",
+      "kind": "character",
+      "startsAt": "2026-07-10T09:10:00+08:00",
+      "endsAt": "2026-07-30T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1510",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1602",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1202",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1403",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-07-10-absolute-pulsation-azure-oath",
+      "name": "Absolute Pulsation: Azure Oath",
+      "kind": "weapon",
+      "startsAt": "2026-07-10T09:10:00+08:00",
+      "endsAt": "2026-07-30T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21020044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21040064",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010024",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-07-10-absolute-pulsation-daybreaker-s-spine",
+      "name": "Absolute Pulsation: Daybreaker's Spine",
+      "kind": "weapon",
+      "startsAt": "2026-07-10T09:10:00+08:00",
+      "endsAt": "2026-07-30T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21040056",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21020044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21040064",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010024",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-07-10-absolute-pulsation-spectrum-blaster",
+      "name": "Absolute Pulsation: Spectrum Blaster",
+      "kind": "weapon",
+      "startsAt": "2026-07-10T09:10:00+08:00",
+      "endsAt": "2026-07-30T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21030046",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21020044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21040064",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010024",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-07-30-blessings-from-dewy-winds",
+      "name": "Blessings From Dewy Winds",
+      "kind": "character",
+      "startsAt": "2026-07-30T10:00:00+08:00",
+      "endsAt": "2026-08-19T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1103",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1204",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1504",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-07-30-take-flight-in-spring",
+      "name": "Take Flight in Spring",
+      "kind": "character",
+      "startsAt": "2026-07-30T10:00:00+08:00",
+      "endsAt": "2026-08-19T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1210",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1103",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1204",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1504",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-07-30-absolute-pulsation-everbright-polestar",
+      "name": "Absolute Pulsation: Everbright Polestar",
+      "kind": "weapon",
+      "startsAt": "2026-07-30T10:00:00+08:00",
+      "endsAt": "2026-08-19T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21020076",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21050024",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21020084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21030084",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-07-30-absolute-pulsation-firstlight-s-herald",
+      "name": "Absolute Pulsation: Firstlight's Herald",
+      "kind": "weapon",
+      "startsAt": "2026-07-30T10:00:00+08:00",
+      "endsAt": "2026-08-19T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21050024",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21020084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21030084",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-08-20-false-promise-for-tomorrow",
+      "name": "False Promise for Tomorrow",
+      "kind": "character",
+      "startsAt": "2026-08-20T10:00:00+08:00",
+      "endsAt": "2026-09-10T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1103",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1402",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1102",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-08-20-wind-of-transcendence",
+      "name": "Wind of Transcendence",
+      "kind": "character",
+      "startsAt": "2026-08-20T10:00:00+08:00",
+      "endsAt": "2026-09-10T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1103",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1402",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1102",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-08-20-absolute-pulsation-forged-dwarf-star",
+      "name": "Absolute Pulsation: Forged Dwarf Star",
+      "kind": "weapon",
+      "startsAt": "2026-08-20T10:00:00+08:00",
+      "endsAt": "2026-09-10T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21020044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21050084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21020064",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-08-20-absolute-pulsation-glint-of-clouds",
+      "name": "Absolute Pulsation: Glint of Clouds",
+      "kind": "weapon",
+      "startsAt": "2026-08-20T10:00:00+08:00",
+      "endsAt": "2026-09-10T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21020044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21050084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21020064",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-09-10-distant-may-the-starlights-be",
+      "name": "Distant May the Starlights Be",
+      "kind": "character",
+      "startsAt": "2026-09-10T10:00:00+08:00",
+      "endsAt": "2026-09-29T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1209",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1204",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1403",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1303",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-09-10-thousand-futures-mirrored-in-snow",
+      "name": "Thousand Futures Mirrored in Snow",
+      "kind": "character",
+      "startsAt": "2026-09-10T10:00:00+08:00",
+      "endsAt": "2026-09-29T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1204",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1403",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1303",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-09-10-where-santu-beckons",
+      "name": "Where Santu Beckons",
+      "kind": "character",
+      "startsAt": "2026-09-10T10:00:00+08:00",
+      "endsAt": "2026-09-29T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1204",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1403",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1303",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-09-10-absolute-pulsation-frostburn",
+      "name": "Absolute Pulsation: Frostburn",
+      "kind": "weapon",
+      "startsAt": "2026-09-10T10:00:00+08:00",
+      "endsAt": "2026-09-29T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21010084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010024",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21030064",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-09-10-absolute-pulsation-starfield-calibrator",
+      "name": "Absolute Pulsation: Starfield Calibrator",
+      "kind": "weapon",
+      "startsAt": "2026-09-10T10:00:00+08:00",
+      "endsAt": "2026-09-29T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21010066",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21010084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010024",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21030064",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-09-10-absolute-pulsation-thousandfold-deliverance",
+      "name": "Absolute Pulsation: Thousandfold Deliverance",
+      "kind": "weapon",
+      "startsAt": "2026-09-10T10:00:00+08:00",
+      "endsAt": "2026-09-29T11:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21010084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010024",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21030064",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-09-30-across-time-s-waxes-and-wanes",
+      "name": "Across Time's Waxes and Wanes",
+      "kind": "character",
+      "startsAt": "2026-09-30T11:00:00+08:00",
+      "endsAt": "2026-10-22T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1410",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1307",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1601",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1106",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-09-30-as-full-as-tonight-forever",
+      "name": "As Full as Tonight, Forever",
+      "kind": "character",
+      "startsAt": "2026-09-30T11:00:00+08:00",
+      "endsAt": "2026-10-22T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1307",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1601",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1106",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-character-2026-09-30-horizon-of-dawnbreak",
+      "name": "Horizon of Dawnbreak",
+      "kind": "character",
+      "startsAt": "2026-09-30T11:00:00+08:00",
+      "endsAt": "2026-10-22T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "1508",
+          "kind": "character",
+          "rarity": 5
+        },
+        {
+          "catalogId": "1307",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1601",
+          "kind": "character",
+          "rarity": 4
+        },
+        {
+          "catalogId": "1106",
+          "kind": "character",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-09-30-absolute-pulsation-blooming-jadehaven",
+      "name": "Absolute Pulsation: Blooming Jadehaven",
+      "kind": "weapon",
+      "startsAt": "2026-09-30T11:00:00+08:00",
+      "endsAt": "2026-10-22T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21050084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21020044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010044",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-09-30-absolute-pulsation-kumokiri",
+      "name": "Absolute Pulsation: Kumokiri",
+      "kind": "weapon",
+      "startsAt": "2026-09-30T11:00:00+08:00",
+      "endsAt": "2026-10-22T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21010056",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21050084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21020044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010044",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    },
+    {
+      "key": "history-weapon-2026-09-30-absolute-pulsation-moongazer-s-sigil",
+      "name": "Absolute Pulsation: Moongazer's Sigil",
+      "kind": "weapon",
+      "startsAt": "2026-09-30T11:00:00+08:00",
+      "endsAt": "2026-10-22T09:59:00+08:00",
+      "featured": [
+        {
+          "catalogId": "21040046",
+          "kind": "weapon",
+          "rarity": 5
+        },
+        {
+          "catalogId": "21050084",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21020044",
+          "kind": "weapon",
+          "rarity": 4
+        },
+        {
+          "catalogId": "21010044",
+          "kind": "weapon",
+          "rarity": 4
+        }
+      ]
+    }
+  ]
+}

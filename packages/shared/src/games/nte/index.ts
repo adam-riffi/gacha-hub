@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { statRowSchema } from "../../common.js";
 import type { GameDefinition, GameRegion } from "../types.js";
-import type { Catalog } from "../../catalog/types.js";
+import { bannerHistorySchema, type Catalog } from "../../catalog/types.js";
 
 /**
  * Neverness to Everness (Perfect World), the sixth game, scaffolded by
@@ -106,4 +106,6 @@ export const nte: GameDefinition = {
   emptyDoc: (): NteDoc => ({ arc: {}, console: {}, skills: {}, stats: {} }),
   docVersion: 1,
   loadCatalog: async () => (await import("./catalog.js")).default as Catalog,
+  // Every past Board from the wiki's banner pages (round 17, `npm run catalog:banners-wiki`).
+  loadBannerHistory: async () => bannerHistorySchema.parse((await import("./banner-history.js")).default),
 };
