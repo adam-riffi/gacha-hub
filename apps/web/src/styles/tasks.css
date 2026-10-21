@@ -21,7 +21,7 @@
 .tk-chips { display: flex; flex-wrap: wrap; gap: 10px; }
 .tk-chip { --gc: var(--accent); display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px 6px 8px; border: 1px solid var(--hairline); border-left: 4px solid var(--gc); background: color-mix(in srgb, var(--gc) 8%, transparent); color: var(--text); font: 400 14px/1.2 var(--font-mono); }
 .tk-chip .gicon { width: 44px; height: 44px; font-size: 11px; flex: none; }
-.tk-chip .tk-chip-game { width: 28px; height: 28px; font-size: 9px; }
+.tk-chip .tk-chip-game { width: 36px; height: 36px; font-size: 9px; }
 .mat-icons { display: inline-flex; align-items: center; gap: 3px; }
 .mat-icons .gicon { width: 26px; height: 26px; font-size: 8px; }
 .tk-chip .mat-icons { gap: 4px; }
@@ -30,7 +30,7 @@
 .tk-card { min-width: 0; padding: 12px 14px; border: 1px solid var(--edge); background: var(--surface-2); }
 .tk-card.is-open { border-color: var(--hairline-strong); }
 .tk-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
-.tk-thumb { width: 40px; height: 40px; flex: none; }
+.tk-thumb { width: 48px; height: 48px; flex: none; }
 .tk-title { flex: 1; min-width: 160px; }
 .tk-title .font-mono { font-size: 12px; }
 .tk-prog { display: flex; align-items: center; gap: 8px; }
@@ -76,7 +76,7 @@
 .tk-link { width: 260px; }
 .tk-title-row { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 .tk-title-row .tk-for { width: 22px; height: 22px; font-size: 8px; }
-.tk-title-row .tk-game { width: 16px; height: 16px; font-size: 7px; }
+.tk-title-row .tk-game { width: 24px; height: 24px; font-size: 7px; }
 .tk-mat-name { display: inline-flex; align-items: center; gap: 8px; }
 .tk-mat-name .gicon { width: 24px; height: 24px; font-size: 8px; flex: none; }
 /* Round 7: goals two by two, an open one across; priority in one click; Farm today larger, and the week. */

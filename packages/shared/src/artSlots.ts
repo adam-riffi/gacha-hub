@@ -2,7 +2,7 @@ import type { GameDefinition } from "./games/types.js";
 import { elementIconUrl, weaponTypeIconUrl } from "./elements.js";
 
 /** The app's own lists, then the catalog kinds an entry without a source falls under. */
-export type ArtSlotKind = "logo" | "key-art" | "mode" | "battle-pass" | "monthly-pass" | "banner" | "shop" | "currency" | "task" | "element" | "weapon-type" | "character" | "weapon" | "gear" | "material";
+export type ArtSlotKind = "logo" | "icon" | "key-art" | "mode" | "battle-pass" | "monthly-pass" | "banner" | "shop" | "currency" | "task" | "element" | "weapon-type" | "character" | "weapon" | "gear" | "material";
 
 /** What a game's catalog adds to its slots: its elements and weapon types, and its entries no source has. */
 export type CatalogSlots = { elements: string[]; weaponTypes: string[]; gaps?: { kind: "character" | "weapon" | "gear" | "material"; name: string }[] };
@@ -38,6 +38,8 @@ export function artSlots(game: GameDefinition, tags: CatalogSlots = { elements: 
   const slot = (kind: ArtSlotKind, name: string, item?: string, sourced = false, shape: ArtSlot["shape"] = "square"): ArtSlot => ({ key: artSlotKey(game.key, kind, item), gameKey: game.key, kind, name, shape, sourced });
   return [
     slot("logo", `${game.name} logo`),
+    // Its app icon, square (round 17, Georges: "Give each game a game Icon"): every small mark, beside the name.
+    slot("icon", `${game.name} icon`),
     // Its official key art (round 16, Georges: "for banners or game cards you can use real game art"): the hero of its cards.
     slot("key-art", `${game.name} key art`, undefined, false, "wide"),
     ...manifest.endgame.map((mode) => slot("mode", mode.name, mode.key)),

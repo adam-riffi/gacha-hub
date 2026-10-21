@@ -50,7 +50,7 @@ export function HubHeader({ instanceId }: { instanceId: string }) {
     <section className="hub-head" aria-label={data.name}>
       {uploadedLogo ? (
         // The owner's logo (Settings → Art) stands on its own, not on the accent tile it may share a colour with.
-        <GameMark gameKey={game.key} className="hub-icon" />
+        <GameMark gameKey={game.key} art="logo" className="hub-icon" />
       ) : game.art?.icon && iconOk ? (
         <img className="hub-icon" src={game.art.icon} alt="" onError={() => setIconOk(false)} />
       ) : (

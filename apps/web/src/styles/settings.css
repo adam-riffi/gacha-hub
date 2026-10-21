@@ -15,8 +15,8 @@
 .art-fetch { gap: 14px; margin: 0 0 12px; }
 .art-fetch-status { font-size: 15px; }
 .art-game h3 { gap: 10px; }
-.art-mark { width: 32px; height: 32px; }
-.art-mark.is-art { max-width: 120px; }
+.art-mark { width: 40px; height: 40px; }
+.game-mark.art-mark.is-art { width: 40px; height: 40px; object-fit: cover; }
 .art-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
 .art-slot { display: grid; gap: 6px; align-content: start; padding: 12px; border: 1px solid var(--edge); background: var(--surface-2); }
 .art-frame { display: grid; place-items: center; height: 120px; border: 1px dashed var(--hairline-strong); color: var(--text-muted); font-size: 13px; overflow: hidden; }

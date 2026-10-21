@@ -156,7 +156,7 @@ function GameRow(props: {
     >
       <HeroArt gameKey={dashGame.gameKey} className="lib-hero" />
       <span className="lib-grip" aria-hidden="true">≡</span>
-      <GameMark gameKey={dashGame.gameKey} named className="lib-icon" />
+      <GameMark gameKey={dashGame.gameKey} named art="logo" className="lib-icon" />
       <div className="lib-name">
         <h2 style={{ ["--c" as string]: dashGame.accent }}>{dashGame.name}</h2>
         <div className="font-mono text-muted">

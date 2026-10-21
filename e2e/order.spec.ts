@@ -11,14 +11,15 @@ test("order: a square logo stands alone in the strip, the games list's titles li
   for (const gameKey of ["nte", "endfield"]) await page.request.post("/api/instances", { data: { gameKey } });
   const put = async (slot: string) => expect((await page.request.put(`/api/art/${slot}`, { multipart: { file: { name: "art.png", mimeType: "image/png", buffer: PNG } } })).ok(), slot).toBe(true);
   await put("nte/logo");
+  await put("nte/icon");
   await put("nte/key-art");
 
   await page.goto("/library");
-  // The strip: a square logo stands alone at the wordmarks' height; the name stays for screen readers and hover.
+  // The strip (round 17): the game's icon, square, beside its name.
   const chip = page.locator(".strip-game[aria-label='Neverness to Everness']");
   await expect(chip.locator("img.strip-icon")).toBeVisible();
-  await expect(chip.locator(".strip-name")).toBeHidden();
-  expect((await chip.locator("img.strip-icon").boundingBox())!.height).toBeGreaterThanOrEqual(34);
+  await expect(chip.locator(".strip-name")).toBeVisible();
+  expect((await chip.locator("img.strip-icon").boundingBox())!.height).toBeGreaterThanOrEqual(40);
 
   // The games list: the title of a game with a logo starts where the title of a game without one does.
   const titleX = async (name: string) => (await page.locator(".lib-row", { has: page.getByRole("heading", { name }) }).getByRole("heading", { name }).boundingBox())!.x;
@@ -27,5 +28,5 @@ test("order: a square logo stands alone in the strip, the games list's titles li
   // Its key art is the row's hero.
   await expect(page.locator(".lib-row", { has: page.getByRole("heading", { name: "Neverness to Everness" }) }).locator("img.lib-hero")).toHaveAttribute("src", /\/uploads\//);
 
-  for (const slot of ["nte/logo", "nte/key-art"]) await page.request.delete(`/api/art/${slot}`);
+  for (const slot of ["nte/logo", "nte/icon", "nte/key-art"]) await page.request.delete(`/api/art/${slot}`);
 });
