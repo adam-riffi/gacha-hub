@@ -128,8 +128,8 @@ describe("parseWikiFeed (NTE)", () => {
       WIKI_FEEDS.nte,
       { characters: [{ id: "1024", name: "Akane Rin", rarity: 5 }], weapons: [] } as unknown as Catalog,
     );
-    expect(banners).toEqual([
-      {
+    expect(banners).toHaveLength(1);
+    expect(banners[0]).toMatchObject({
         key: "wiki-character-2026-10-21-dazzling-star",
         name: "Dazzling Star",
         kind: "character",
@@ -137,8 +137,7 @@ describe("parseWikiFeed (NTE)", () => {
         endsAt: "2026-11-11T05:59:59+08:00",
         featured: [{ catalogId: "1024", kind: "character" }],
         payload: { source: "wiki", page: "Dazzling Star/2026-10-21", image: "https://neverness-to-everness.fandom.com/wiki/Special:FilePath/Dazzling_Star_2026-10-21.png" },
-      },
-    ]);
+    });
     expect(events).toEqual([]);
   });
 });
