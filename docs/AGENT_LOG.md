@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-22 · claude · stack/r26/02-width-rest · #381
+- Done: round 19, the rest of the narrow-window pass. The remaining screens (Tasks, Settings and its tabs, and a game's Teams, Weapons, Gear, Materials, Planner, Profile and Ownership) were measured at 1100 px with the session's overflow script: none reaches past the window, so no rule was needed; the width journey now opens all nineteen screens and finds no horizontal scroll on any.
+- Tests: the width journey, extended; it passes as the screens stand.
+- Scope/decisions: a journey without a code change, on purpose: it pins the narrow-window pass so a later screen cannot quietly undo it.
+- Next: the docs and the handoff.
+
 ## 2026-10-22 · claude · stack/r26/01-nte-wiki-feed · #380
 - Done: round 19 (the handoff's next items on Georges's "continue"). NTE has no official feed either; its wiki keeps a page per Board ("Fair" infobox with server-time dates, a "Board Pool" with the rate-up units), so the wiki feed (round 17) reads NTE's boards too, hourly, pictures through the wiki's static host; its event pages carry no dates, so its events wait for a dated source. Run in dev: 13 boards, Dazzling Star among them.
 - Tests: written first: a Board page read like a convene (a banner keyed to the wiki with its featured unit, no events); the policy test names the wiki's host.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the wallet journey finds Stellar Jade's own icon (`img.cur-art[src*='900001']`); the older icon journeys accept art or glyph.
 - Scope/decisions: Endfield has no item-icon source (Endaxis's tree holds none), so its glyphs stay; the research is in ASSETS.md.
 - Next: hero art on the cards.
-
-## 2026-10-16 · claude · stack/r18/03-gear-remake · #340
-- Done: round 12 ("fix the gear screen once and for all. it needs to be readable understandable and easy to use"). Every tile names its set in words (up to two lines) — it was only knowable from the art — with the art up from 92 to 118 px, the main stat large (or the slot where none is typed, never a bare dash), the slot and "Crit value n" spelled out (no more "CV 42"), a paper Bag chip and a larger wearer portrait. The chosen-piece column widens to 420 px.
-- Tests: written first: the tile journey reads the set from `.gb-set`, the art at 100 px and up, "Crit value" in words and no "CV n" anywhere on it.
-- Scope/decisions: the three-column skeleton (filters · tiles · chosen piece) stays: round 10 picked it; the failure was the information on the tiles, not the layout.
-- Next: each currency's own icon.

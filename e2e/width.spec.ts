@@ -4,12 +4,13 @@ import { expect, test } from "@playwright/test";
 // an 1100 px window without a horizontal scroll, and still at 2560.
 test.use({ viewport: { width: 1100, height: 900 } });
 
-test("every screen fits an 1100 px window: Home, the library, the timeline, a game's Activities, Characters, Pulls and Endgame @smoke", async ({ page }) => {
+test("every screen fits an 1100 px window: Home, the library, the timeline, Tasks, Settings and each of a game's tabs @smoke", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
-  for (const path of ["/", "/?game=hsr", "/library", "/timeline", `/games/${id}`, `/games/${id}/characters`, `/games/${id}/pulls`, `/games/${id}/endgame`]) {
+  const tabs = ["", "/characters", "/pulls", "/endgame", "/teams", "/weapons", "/gear", "/materials", "/planner", "/profile", "/ownership"];
+  for (const path of ["/", "/?game=hsr", "/library", "/timeline", "/tasks", "/settings", "/settings/data", "/settings/art", "/settings/keys", ...tabs.map((tab) => `/games/${id}${tab}`)]) {
     await page.goto(path);
     await page.waitForLoadState("networkidle");
     const width = await page.evaluate(() => document.documentElement.scrollWidth);
