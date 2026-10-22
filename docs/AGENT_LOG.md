@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-22 · claude · stack/r26/01-nte-wiki-feed · #380
+- Done: round 19 (the handoff's next items on Georges's "continue"). NTE has no official feed either; its wiki keeps a page per Board ("Fair" infobox with server-time dates, a "Board Pool" with the rate-up units), so the wiki feed (round 17) reads NTE's boards too, hourly, pictures through the wiki's static host; its event pages carry no dates, so its events wait for a dated source. Run in dev: 13 boards, Dazzling Star among them.
+- Tests: written first: a Board page read like a convene (a banner keyed to the wiki with its featured unit, no events); the policy test names the wiki's host.
+- Scope/decisions: one line in `WIKI_FEEDS`; nothing else moved. EndFieldGameData's newest release (v0.4.0) carries no tables, so Endfield's catalog stays at v0.3.0, like Wuthering Waves' and NTE's at their sources' last versions.
+- Next: the rest of the screens in the width journey.
+
 ## 2026-10-21 · claude · stack/r25/04-docs · #379
 - Done: round 18's handoff: Endfield's Game8 feed, the battle pass card, the 1100 px floor; what waits for Georges's word and what comes next (the features audit with his keys, a source for NTE's banners and events, the rest of the narrow-window pass).
 - Tests: docs only.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the tile journey reads the set from `.gb-set`, the art at 100 px and up, "Crit value" in words and no "CV n" anywhere on it.
 - Scope/decisions: the three-column skeleton (filters · tiles · chosen piece) stays: round 10 picked it; the failure was the information on the tiles, not the layout.
 - Next: each currency's own icon.
-
-## 2026-10-16 · claude · stack/r18/02-readability · #339
-- Done: round 12 ("i am visually impaired and some things are hard for me to read"; a 24-inch and a 32-inch screen). The whole shell zooms with the window: ×1.22 from 1800 px, ×1.55 from 2400 px, so wider never means smaller type (the rail divides its height back, zoom stretching vh). Body text goes 15 → 16 px, the kpi labels 12 → 13 px, muted text brightens a step (#bebebe → #c9c9c9).
-- Tests: a journey reads the computed zoom at 1440, 1920 and 2560.
-- Scope/decisions: `zoom` over a rem rework: one property scales a px-built system cleanly (Chrome and Firefox 126+ both carry it); the journeys keep running at 1440 where zoom is 1.
-- Next: the gear screen.
