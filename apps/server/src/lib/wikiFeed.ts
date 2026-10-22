@@ -11,8 +11,10 @@ import { getCatalog } from "../api/util.js";
  */
 
 export type WikiFeed = WikiBannerSource & { events: string; eventInfobox: string };
-export const WIKI_FEEDS: Record<"wuwa", WikiFeed> = {
+export const WIKI_FEEDS: Record<"wuwa" | "nte", WikiFeed> = {
   wuwa: { ...WIKI_BANNER_SOURCES.wuwa, events: "Events", eventInfobox: "Event" },
+  // NTE's event pages carry no dates (round 19): its boards come through, its events wait for a dated source.
+  nte: { ...WIKI_BANNER_SOURCES.nte, events: "Events", eventInfobox: "Event" },
 };
 export const WIKI_FEED_GAMES = Object.keys(WIKI_FEEDS);
 const feedOf = (gameKey: string): WikiFeed | undefined => (WIKI_FEEDS as Record<string, WikiFeed | undefined>)[gameKey];
