@@ -115,3 +115,30 @@ describe("parseWikiFeed (Wuthering Waves)", () => {
     ]);
   });
 });
+
+// Round 19: NTE has no official feed either; its wiki keeps a page per Board ("Fair" infobox, "Board Pool") with dates. Its
+// event pages carry no dates, so only the boards come through.
+describe("parseWikiFeed (NTE)", () => {
+  it("reads a Board page like a convene: a banner keyed to the wiki with its featured units, no events", () => {
+    const { banners, events } = parseWikiFeed(
+      {
+        banners: [{ title: "Dazzling Star/2026-10-21", wikitext: "{{Fair\n|name = Dazzling Star 2026-10-21\n|image = Dazzling Star 2026-10-21.png\n|type = Limited\n|time_start = 2026-10-21 11:00:00\n|time_start_offset = GMT+8\n|time_end = 2026-11-11 5:59:59\n}}\n{{Board Pool\n|character_S_F = Akane Rin\n|Item_S_F = Shining Idol*Shining Idol\n}}" }],
+        events: [{ title: "Tiger Special", wikitext: "{{Event\n|name = Tiger Special\n}}" }],
+      },
+      WIKI_FEEDS.nte,
+      { characters: [{ id: "1024", name: "Akane Rin", rarity: 5 }], weapons: [] } as unknown as Catalog,
+    );
+    expect(banners).toEqual([
+      {
+        key: "wiki-character-2026-10-21-dazzling-star",
+        name: "Dazzling Star",
+        kind: "character",
+        startsAt: "2026-10-21T11:00:00+08:00",
+        endsAt: "2026-11-11T05:59:59+08:00",
+        featured: [{ catalogId: "1024", kind: "character" }],
+        payload: { source: "wiki", page: "Dazzling Star/2026-10-21", image: "https://neverness-to-everness.fandom.com/wiki/Special:FilePath/Dazzling_Star_2026-10-21.png" },
+      },
+    ]);
+    expect(events).toEqual([]);
+  });
+});
