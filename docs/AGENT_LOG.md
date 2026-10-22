@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-22 · claude · stack/r26/03-docs · #382
+- Done: round 19's handoff: NTE's boards, the width journey complete, what waits for Georges's word and what comes next. The `main` ruleset was created on GitHub through the API (a plan item since round 11): a pull request and green `lint`, `typecheck`, `test`, `test-postgres`, `build` and `e2e` before a merge, no force push, no deletion, the admin role able to bypass.
+- Tests: docs only; the merge of this stack goes through the ruleset.
+- Scope/decisions: the ruleset lists the CI jobs by name, not the meme job: a missing meme must never block a merge.
+- Next: deploy at Georges's word.
+
 ## 2026-10-22 · claude · stack/r26/02-width-rest · #381
 - Done: round 19, the rest of the narrow-window pass. The remaining screens (Tasks, Settings and its tabs, and a game's Teams, Weapons, Gear, Materials, Planner, Profile and Ownership) were measured at 1100 px with the session's overflow script: none reaches past the window, so no rule was needed; the width journey now opens all nineteen screens and finds no horizontal scroll on any.
 - Tests: the width journey, extended; it passes as the screens stand.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: a library card carries its hero art (`img.hero-art[src*='1005']` on Star Rail's).
 - Scope/decisions: the game dashboard's pass card stays plain figures (art behind KPIs hurts reading); the strip keeps emblems (a 26 px splash reads as noise).
 - Next: the last-seen chip.
-
-## 2026-10-16 · claude · stack/r18/04-currency-icons · #341
-- Done: round 12 ("find some game sources/data to populate static informations such as icons"). Every currency of five games shows its game's own icon: each names a key of its manifest's material art source, every URL checked 200 by hand on 2026-10-16 — Genshin from Enka's item icons (resin 210, condensed 211, primogems 201, the fates 223/224, mora 202), Star Rail from Yatta's (ids read from StarRailRes: power 11/12, jade 900001, passes 101/102, credits 2), Zenless and NTE from Hakushin (IconStamina, IconCurrency, the GachaTickets, the dice, Annulith, Fons), Wuthering Waves from wuthery (keys from WutheringData's item table: Waveplate, Astrite, the Tides, Shell Credits). `CurrencyIcon` shows the picture and keeps its drawn line icon as the fallback when a source is down; the wallet, the dashboards, the Pulls table and the top-up packs pick it up.
-- Tests: written first: the wallet journey finds Stellar Jade's own icon (`img.cur-art[src*='900001']`); the older icon journeys accept art or glyph.
-- Scope/decisions: Endfield has no item-icon source (Endaxis's tree holds none), so its glyphs stay; the research is in ASSETS.md.
-- Next: hero art on the cards.
