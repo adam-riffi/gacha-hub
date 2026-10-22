@@ -20,6 +20,7 @@ const CSP: Record<string, string[]> = {
     "https://img.game8.co",
     // The Wuthering Waves wiki's banner and event pictures, by file path, which redirects to Fandom's static host (round 17).
     "https://wutheringwaves.fandom.com",
+    "https://neverness-to-everness.fandom.com",
     "https://static.wikia.nocookie.net",
     // Endfield's icons and splash art (round 17).
     "https://endfieldtools.dev",
