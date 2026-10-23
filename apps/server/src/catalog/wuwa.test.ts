@@ -2,14 +2,21 @@ import { describe, expect, it } from "vitest";
 import { catalogSchema, wuwa } from "@gacha/shared";
 
 describe("wuwa catalog", () => {
-  it("is schema-valid with real coverage", async () => {
+  // Round 20: WutheringData stopped at 3.1 (March 2026); the Hakushin data (the source of Zenless's and NTE's catalogs) carries
+  // the live version, so the catalog reads it, the same ids and art keys as before.
+  it("is schema-valid with real coverage: the live version from the Hakushin data", async () => {
     const catalog = catalogSchema.parse(await wuwa.loadCatalog!());
     expect(catalog.gameKey).toBe("wuwa");
-    expect(catalog.source).toMatch(/^WutheringData@/);
-    expect(catalog.characters.length).toBeGreaterThanOrEqual(40);
-    expect(catalog.weapons.length).toBeGreaterThanOrEqual(90);
-    expect(catalog.gear.length).toBeGreaterThanOrEqual(15);
+    expect(catalog.source).toMatch(/^hakushin@static\.nanoka\.cc\/ww\/3\.[7-9]/);
+    expect(catalog.characters.length).toBeGreaterThanOrEqual(64);
+    expect(catalog.weapons.length).toBeGreaterThanOrEqual(130);
+    expect(catalog.gear.length).toBeGreaterThanOrEqual(30);
     expect(catalog.materials.length).toBeGreaterThanOrEqual(40);
+    // A 3.6 resonator, with her card art, her costs and her forte skills like the first ones.
+    const hsin = catalog.characters.find((c) => c.name === "Hsin")!;
+    expect(hsin).toMatchObject({ id: "1311", rarity: 5, splash: "T_IconRole_Pile_Xin_UI", maxLevel: 90 });
+    expect(hsin.ascension.at(-1)?.atLevel).toBe(90);
+    expect(hsin.talents.keys).toEqual(["basic", "skill", "forte", "liberation", "intro"]);
   });
 
   it("every cost references a catalog material", async () => {
