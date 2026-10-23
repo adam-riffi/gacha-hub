@@ -1,8 +1,9 @@
 /**
- * Wuthering Waves importer — maps the raw Kuro datamine tables published in
- * Dimbreath/WutheringData (ConfigDB + TextMap/en/MultiText; content © Kuro
- * Games) into the normalized catalog. Only the tables we need are downloaded
- * (never the 1 GB repo) and cached on disk. Run from scripts/catalog: `npm run wuwa`.
+ * Wuthering Waves importer: the Hakushin dataset (static.nanoka.cc, the community database behind ww.hakush.in; the source of
+ * Zenless's and NTE's catalogs, credited in NOTICE, removed on request; content © Kuro Games) mapped into the normalized
+ * catalog. Round 20: Dimbreath/WutheringData, the source until then, stopped at 3.1 (March 2026); the Hakushin data carries
+ * the live version with the same ids and the same Unreal texture paths, so every stored build, pull and art key keeps
+ * meaning. Only the live version is read (`--version 3.8` reads another). Run from scripts/catalog: `npm run wuwa`.
  */
 import type {
   Catalog,
@@ -12,249 +13,360 @@ import type {
   CatalogWeapon,
   CostStep,
 } from "../../packages/shared/src/catalog/types.js";
-import { byId, fetchJson, slugify, stripTags, uniqueKeys, writeCatalog } from "./common.js";
+import {
+  byId,
+  fetchJson,
+  hakushinVersion,
+  mapLimit,
+  slugify,
+  stripTags,
+  uniqueKeys,
+  writeCatalog,
+} from "./common.js";
 
-const BASE = "https://raw.githubusercontent.com/Dimbreath/WutheringData/master";
-const table = <T>(name: string) => fetchJson<T[]>(`${BASE}/ConfigDB/${name}.json`, { cacheKey: "wuwa" });
+const BASE = "https://static.nanoka.cc";
+const version = await hakushinVersion("ww");
+const get = <T>(path: string) =>
+  fetchJson<T>(`${BASE}/ww/${version}${path}`, { cacheKey: `wuwa/${version}` });
+console.log(`[catalog:wuwa] Hakushin data, version ${version}`);
 
-type KV = { Key: number; Value: number };
-type RoleInfo = {
-  Id: number; QualityId: number; RoleType: number; IsTrial: boolean; Name: string; NickName?: string;
-  ElementId: number; WeaponType: number; MaxLevel?: number; BreachId: number; SkillTreeGroupId: number;
-  RoleHeadIcon?: string; Icon?: string; RoleHeadIconLarge?: string; FormationRoleCard?: string;
+type Cost = { key: number; value: number };
+type CharIndex = Record<
+  string,
+  {
+    icon: string;
+    background: string;
+    rank: number;
+    weapon: number;
+    element: number;
+    en: string;
+    nickname?: string;
+  }
+>;
+/** A forte tree node: a levelable skill (node_type 1 and 2, costs per level 1–10), a one-shot skill (3: inherent, outro, tune break) or a stat bonus (4). */
+type TreeNode = {
+  node_type: number;
+  consume: Cost[] | null;
+  skill?: {
+    name: string;
+    type?: string;
+    simple_desc?: string;
+    simple_param?: string[];
+    consume?: Record<string, Cost[]> | null;
+  };
 };
-type RoleBreach = { BreachGroupId: number; BreachLevel: number; MaxLevel: number; BreachConsume: KV[] | null };
-type SkillTreeNode = { Id: number; NodeGroup: number; NodeType: number; SkillId: number; Consume: KV[] | null; PropertyNodeTitle?: string; Property?: { Id: number }[] | null };
-type Skill = { Id: number; SkillType: number; SkillName?: string; SkillLevelGroupId: number; MaxSkillLevel?: number; SkillResume?: string; SkillResumeNum?: string[] | null };
-type SkillLevel = { SkillLevelGroupId: number; SkillId: number; Consume: KV[] | null };
-type WeaponConf = { ItemId: number; WeaponName: string; QualityId: number; WeaponType: number; BreachId: number; Icon?: string; IconMiddle?: string; SecondPropId?: { Id: number }; Desc?: string; DescParams?: { ArrayString: string[] }[] };
+type CharDetail = {
+  id: number;
+  name: string;
+  nick_name?: string;
+  rarity: number;
+  weapon: number;
+  element: number;
+  icon: string;
+  background: string;
+  stats: Record<string, Record<string, unknown>>;
+  skill_trees: Record<string, TreeNode>;
+  ascensions: Record<string, Cost[]>;
+};
+type WeaponIndex = Record<
+  string,
+  { icon: string; rank: number; type: number; en: string; sub?: string }
+>;
+type WeaponDetail = {
+  id: number;
+  name: string;
+  rarity: number;
+  type: number;
+  effect?: string;
+  effect_name?: string;
+  param?: string[][];
+  stats: Record<string, Record<string, unknown>>;
+  ascensions: Record<string, Cost[]>;
+};
+type Sonata = {
+  id: number;
+  name: string;
+  icon?: string;
+  set: Record<string, { desc: string; param?: string[] }>;
+};
+type Item = { icon?: string; rank?: number; tag?: string[]; name: string };
+
 /** An Unreal texture path's file name ("/Game/…/T_X_UI.T_X_UI" → "T_X_UI"): the art key the manifest's sources take (ADR 0006). */
 const artKey = (path?: string) => path?.split("/").at(-1)?.split(".")[0] || undefined;
 /** An image under Common/Image as "Folder/File" ("/Game/…/Common/Image/IconMout/T_X.T_X" → "IconMout/T_X"): materials and Sonata sets span folders. */
 const imageKey = (path?: string) => path?.match(/\/Common\/Image\/([\w-]+\/[\w-]+)\./)?.[1];
-type WeaponBreach = { BreachId: number; Level: number; LevelLimit: number; Consume: KV[] | null; GoldConsume: number };
-type PhantomFetter = { Id: number; Name: string; EffectDescription: string; EffectDescriptionParam: string[] | null; FetterIcon?: string };
-type ItemInfo = { Id: number; Name: string; QualityId: number; ItemType: number; MainTypeId: number; Icon?: string };
-type ItemMainType = { Id: number; Name?: string; TypeName?: string };
-/** A Sonata set's own icon (its PhantomFetter rows all carry the same placeholder). */
-type FetterGroup = { Id: number; FetterGroupName: string; FetterElementPath?: string };
 
-console.log("[catalog:wuwa] downloading tables (cached after first run)…");
-const mt = await fetchJson<Record<string, string>>(`${BASE}/TextMap/en/MultiText.json`, { cacheKey: "wuwa" });
-const text = (key: string | undefined | null) => (key ? (mt[key] ?? "") : "");
+const ELEMENT: Record<number, string> = {
+  0: "Physical",
+  1: "Glacio",
+  2: "Fusion",
+  3: "Electro",
+  4: "Aero",
+  5: "Spectro",
+  6: "Havoc",
+};
+const WEAPON: Record<number, string> = {
+  1: "Broadblade",
+  2: "Sword",
+  3: "Pistols",
+  4: "Gauntlets",
+  5: "Rectifier",
+};
+/** A skill's type, as the data names it → forte key; the one-shot kinds (inherent, outro, tune break) are forte nodes. */
+const SKILL_KEY: Record<string, string> = {
+  "Normal Attack": "basic",
+  "Resonance Skill": "skill",
+  "Forte Circuit": "forte",
+  "Resonance Liberation": "liberation",
+  "Intro Skill": "intro",
+};
+const SKILL_ORDER = ["basic", "skill", "forte", "liberation", "intro"];
+
+const mats = (costs: Cost[] | null | undefined) =>
+  (costs ?? [])
+    .filter((cost) => cost.value > 0)
+    .map((cost) => ({ materialId: String(cost.key), qty: cost.value }));
+/** The level a stats block ends at: the cap each ascension opens (characters and weapons alike, blocks 0–6 for levels 1–90). */
+const capOf = (stats: Record<string, Record<string, unknown>> | undefined, block: string) =>
+  Math.max(...Object.keys(stats?.[block] ?? {}).map(Number));
+const maxLevelOf = (stats: Record<string, Record<string, unknown>> | undefined) => {
+  const top = Math.max(
+    ...Object.values(stats ?? {}).flatMap((block) => Object.keys(block).map(Number)),
+  );
+  return Number.isFinite(top) ? top : 90;
+};
+/** Ascension k's cost, paid to reach block k's cap; a trailing step without materials (the data's empty "6" on weapons) is left out. */
+const ascensionSteps = (
+  ascensions: Record<string, Cost[]> | undefined,
+  stats: Record<string, Record<string, unknown>> | undefined,
+): CostStep[] =>
+  Object.entries(ascensions ?? {})
+    .map(([block, costs]) => ({ atLevel: capOf(stats, block), materials: mats(costs) }))
+    .filter((step) => step.materials.length > 0 && Number.isFinite(step.atLevel))
+    .sort((first, second) => first.atLevel - second.atLevel);
 /**
- * A skill's short text: its {n} filled from SkillResumeNum (fixed counts, not level numbers),
- * input tokens in their PC wording, plurals by the number before them, tags dropped, a line per section.
+ * A skill's short text: its {n} filled from the short text's parameters (fixed counts, not level numbers), input tokens in
+ * their PC wording, plurals by the number before them, tags dropped, a line per section.
  */
-const resume = (sk: Skill) =>
-  text(sk.SkillResume)
-    .replace(/\{(\d+)\}/g, (m, i: string) => sk.SkillResumeNum?.[Number(i)] ?? m)
+const resume = (skill: { simple_desc?: string; simple_param?: string[] } | undefined) =>
+  (skill?.simple_desc ?? "")
+    .replace(/\{(\d+)\}/g, (match, index: string) => skill?.simple_param?.[Number(index)] ?? match)
     .replace(/\{Cus:Ipt,[^}]*PC=([^\s}]+)[^}]*\}/g, "$1")
-    .replace(/\{Cus:Sap,S=([^\s}]+) P=([^\s}]+)[^}]*\}/g, (_m, one: string, many: string, at: number, all: string) =>
-      all.slice(0, at).match(/(\d+(?:\.\d+)?)\D*$/)?.[1] === "1" ? one : many,
+    .replace(
+      /\{Cus:Sap,S=([^\s}]+) P=([^\s}]+)[^}]*\}/g,
+      (_match, one: string, many: string, at: number, all: string) =>
+        all.slice(0, at).match(/(\d+(?:\.\d+)?)\D*$/)?.[1] === "1" ? one : many,
     )
     .replace(/<[^>]+>/g, "")
     .split("\n")
-    .map((l) => l.trim())
+    .map((line) => line.trim())
     .filter(Boolean)
     .join("\n");
-
-const [roles, breaches, tree, skills, skillLevels, weaponConfs, weaponBreaches, fetters, items, mainTypes] =
-  await Promise.all([
-    table<RoleInfo>("RoleInfo"),
-    table<RoleBreach>("RoleBreach"),
-    table<SkillTreeNode>("SkillTree"),
-    table<Skill>("Skill"),
-    table<SkillLevel>("SkillLevel"),
-    table<WeaponConf>("WeaponConf"),
-    table<WeaponBreach>("WeaponBreach"),
-    table<PhantomFetter>("PhantomFetter"),
-    table<ItemInfo>("ItemInfo"),
-    table<ItemMainType>("ItemMainType").catch(() => [] as ItemMainType[]),
-  ]);
-const groupIcon = new Map((await table<FetterGroup>("PhantomFetterGroup")).map((g) => [g.FetterGroupName, imageKey(g.FetterElementPath)]));
-
-const ELEMENT: Record<number, string> = { 0: "Physical", 1: "Glacio", 2: "Fusion", 3: "Electro", 4: "Aero", 5: "Spectro", 6: "Havoc" };
-const WEAPON: Record<number, string> = { 1: "Broadblade", 2: "Sword", 3: "Pistols", 4: "Gauntlets", 5: "Rectifier" };
-/** Skill.SkillType → forte key, levelable skills only (types 4/11/12 are one-shot passives). */
-const SKILL_KEY: Record<number, string> = { 1: "basic", 2: "skill", 3: "liberation", 5: "intro", 6: "forte" };
-/** ConfigDB's PropertyIndex, in the game's words: 22–27 an element's DMG bonus (DamageChangeElement1–6), 10000 + n the percentage of n. */
-const PROPERTY: Record<number, string> = { 8: "Crit. Rate", 9: "Crit. DMG", 11: "Energy Regen", 35: "Healing Bonus", 10002: "HP", 10007: "ATK", 10010: "DEF" };
-const propertyName = (id: number) => PROPERTY[id] ?? (id >= 22 && id <= 27 ? `${ELEMENT[id - 21]} DMG Bonus` : undefined);
-const SKILL_ORDER = ["basic", "skill", "forte", "liberation", "intro"];
-const SHELL_CREDIT = "2";
-
-function groupBy<T, K>(arr: T[], key: (x: T) => K): Map<K, T[]> {
-  const m = new Map<K, T[]>();
-  for (const x of arr) {
-    const k = key(x);
-    const list = m.get(k);
-    if (list) list.push(x);
-    else m.set(k, [x]);
-  }
-  return m;
-}
-const mats = (kv: KV[] | null | undefined) =>
-  (kv ?? []).filter((x) => x.Value > 0).map((x) => ({ materialId: String(x.Key), qty: x.Value }));
-
-const breachByGroup = groupBy(breaches, (b) => b.BreachGroupId);
-const skillById = new Map(skills.map((s) => [s.Id, s]));
-const levelsByGroup = groupBy(skillLevels, (l) => l.SkillLevelGroupId);
-const nodesByGroup = groupBy(tree, (n) => n.NodeGroup);
-const weaponBreachById = groupBy(weaponBreaches, (w) => w.BreachId);
+/** A stat node's bonus, as the game names the stat: "Fusion DMG Bonus+" and "Crit. Rate Up" → "Fusion DMG Bonus", "Crit. Rate". */
+const statOf = (name: string) => name.replace(/\s*(\+|Up)$/, "").trim();
 
 // ---- Resonators ----
-const playable = roles.filter((r) => r.RoleType === 1 && !r.IsTrial && text(r.Name));
-const characters: CatalogCharacter[] = playable.map((r) => {
-  const ascension: CostStep[] = (breachByGroup.get(r.BreachId) ?? [])
-    .sort((a, b) => a.BreachLevel - b.BreachLevel)
-    .map((b) => ({ atLevel: b.MaxLevel, materials: mats(b.BreachConsume) }))
-    .filter((s) => s.materials.length > 0);
-
+const charIndex = await get<CharIndex>("/character.json");
+const characters: CatalogCharacter[] = await mapLimit(Object.keys(charIndex), 4, async (id) => {
+  const detail = await get<CharDetail>(`/en/character/${id}.json`);
   const costsByKey: Record<string, CostStep[]> = {};
   const skillNames: Record<string, string> = {};
   const skillTexts: Record<string, string> = {};
-  const forteNodes: { id: number; title: string; materials: { materialId: string; qty: number }[] }[] = [];
-  for (const node of nodesByGroup.get(r.SkillTreeGroupId) ?? []) {
-    const sk = node.SkillId ? skillById.get(node.SkillId) : undefined;
-    const key = sk ? SKILL_KEY[sk.SkillType] : undefined;
-    if (sk && key) {
-      const steps = (levelsByGroup.get(sk.SkillLevelGroupId) ?? [])
-        .sort((a, b) => a.SkillId - b.SkillId)
-        .map((l) => ({ atLevel: l.SkillId, materials: mats(l.Consume) }))
-        .filter((s) => s.atLevel >= 2 && s.materials.length > 0);
+  const forteNodes: {
+    id: number;
+    title: string;
+    materials: { materialId: string; qty: number }[];
+  }[] = [];
+  const bonusNames: string[] = [];
+  for (const [nodeId, node] of Object.entries(detail.skill_trees)) {
+    const key = node.skill?.type ? SKILL_KEY[node.skill.type] : undefined;
+    if (node.skill && key && node.skill.consume) {
+      const steps = Object.entries(node.skill.consume)
+        .map(([level, costs]) => ({ atLevel: Number(level), materials: mats(costs) }))
+        .filter((step) => step.atLevel >= 2 && step.materials.length > 0)
+        .sort((first, second) => first.atLevel - second.atLevel);
       if (steps.length) {
         costsByKey[key] = steps;
-        skillNames[key] = text(sk.SkillName);
-        skillTexts[key] = resume(sk);
+        skillNames[key] = node.skill.name;
+        skillTexts[key] = resume(node.skill);
       }
-    } else {
-      const m = mats(node.Consume);
-      if (m.length) forteNodes.push({ id: node.Id, title: text(node.PropertyNodeTitle) || text(sk?.SkillName), materials: m });
+      continue;
     }
+    if (node.node_type === 4 && node.skill?.name) bonusNames.push(statOf(node.skill.name));
+    const materials = mats(node.consume);
+    if (materials.length && node.skill?.name)
+      forteNodes.push({ id: Number(nodeId), title: node.skill.name, materials });
   }
-  const keys = SKILL_ORDER.filter((k) => costsByKey[k]);
+  const keys = SKILL_ORDER.filter((key) => costsByKey[key]);
   // The forte tree's bonus stats (round 6): its own (an element's DMG, Crit., Healing) before ATK, HP or DEF.
   const flat = new Set(["ATK", "HP", "DEF"]);
-  const bonusStats = [...new Set((nodesByGroup.get(r.SkillTreeGroupId) ?? []).flatMap((n) => (n.Property ?? []).map((p) => propertyName(p.Id)).filter((s): s is string => Boolean(s))))].sort(
-    (a, b) => Number(flat.has(a)) - Number(flat.has(b)),
+  const bonusStats = [...new Set(bonusNames)].sort(
+    (first, second) => Number(flat.has(first)) - Number(flat.has(second)),
   );
-  const name = text(r.Name);
+  const name = stripTags(detail.name);
+  const ascension = ascensionSteps(detail.ascensions, detail.stats);
   return {
-    id: String(r.Id),
+    id: String(detail.id),
     key: slugify(name),
     name,
-    rarity: r.QualityId,
-    tag: ELEMENT[r.ElementId] ?? String(r.ElementId),
-    weaponType: WEAPON[r.WeaponType] ?? String(r.WeaponType),
-    maxLevel: ascension.at(-1)?.atLevel ?? r.MaxLevel ?? 90,
-    icon: artKey(r.RoleHeadIconLarge) ?? r.RoleHeadIcon ?? r.Icon,
-    splash: artKey(r.FormationRoleCard),
+    rarity: detail.rarity,
+    tag: ELEMENT[detail.element] ?? String(detail.element),
+    weaponType: WEAPON[detail.weapon] ?? String(detail.weapon),
+    maxLevel: maxLevelOf(detail.stats),
+    icon: artKey(detail.icon),
+    splash: artKey(detail.background),
     ascension,
-    talents: { keys, costs: costsByKey.skill ?? costsByKey.basic ?? [], costsByKey, info: keys.flatMap((key) => (skillNames[key] ? [{ key, name: skillNames[key], ...(skillTexts[key] ? { description: skillTexts[key] } : {}) }] : [])) },
+    talents: {
+      keys,
+      costs: costsByKey.skill ?? costsByKey.basic ?? [],
+      costsByKey,
+      info: keys.flatMap((key) =>
+        skillNames[key]
+          ? [
+              {
+                key,
+                name: skillNames[key],
+                ...(skillTexts[key] ? { description: skillTexts[key] } : {}),
+              },
+            ]
+          : [],
+      ),
+    },
     ...(bonusStats.length ? { bonusStats } : {}),
-    extra: { nickname: text(r.NickName) || null, skillNames, forteNodes },
+    extra: {
+      nickname: charIndex[id]?.nickname || stripTags(detail.nick_name ?? "") || null,
+      skillNames,
+      forteNodes,
+    },
   };
 });
 
-// The art host's names (round 8): a resonator's card art can carry a capital where the game's path has none (Qiuyuan), so the
-// name the host answers to is kept; the game's otherwise, and when the host cannot be reached.
+// The art host's names (round 8): a resonator's card art can carry a capital where the game's path has none (Qiuyuan), or none
+// where the path has one, so the name the host answers to is kept; the game's otherwise, and when the host cannot be reached.
 const PILE = "https://files.wuthery.com/p/GameData/UIResources/Common/Image/IconRolePile/";
-const answers = async (key: string) => (await fetch(`${PILE}${key}.png`, { method: "HEAD" }).catch(() => null))?.ok ?? false;
-for (const c of characters) {
-  if (!c.splash || (await answers(c.splash))) continue;
-  const capital = c.splash.replace(/_Pile_([a-z])/, (_, ch: string) => `_Pile_${ch.toUpperCase()}`);
-  if (capital !== c.splash && (await answers(capital))) c.splash = capital;
+const answers = async (key: string) =>
+  (await fetch(`${PILE}${key}.png`, { method: "HEAD" }).catch(() => null))?.ok ?? false;
+for (const character of characters) {
+  if (!character.splash || (await answers(character.splash))) continue;
+  const variants = [
+    character.splash.replace(
+      /_Pile_([a-z])/,
+      (_match, letter: string) => `_Pile_${letter.toUpperCase()}`,
+    ),
+    character.splash.replace(
+      /_Pile_([A-Za-z]+)_UI$/,
+      (_match, word: string) => `_Pile_${word.toLowerCase()}_UI`,
+    ),
+  ];
+  for (const variant of variants) {
+    if (variant === character.splash || !(await answers(variant))) continue;
+    character.splash = variant;
+    break;
+  }
 }
 
-const chixia = characters.find((c) => c.id === "1202");
+const chixia = characters.find((character) => character.id === "1202");
 console.log("[catalog:wuwa] Chixia skill mapping:", JSON.stringify(chixia?.extra?.skillNames));
 
 // ---- Weapons ----
-const weapons: CatalogWeapon[] = weaponConfs
-  .filter((w) => text(w.WeaponName) && w.QualityId >= 1 && w.QualityId <= 6)
-  .map((w) => {
-    const ascension: CostStep[] = (weaponBreachById.get(w.BreachId) ?? [])
-      .sort((a, b) => a.Level - b.Level)
-      .map((b) => {
-        const m = mats(b.Consume);
-        if (b.GoldConsume > 0) m.push({ materialId: SHELL_CREDIT, qty: b.GoldConsume });
-        return { atLevel: b.LevelLimit, materials: m };
-      })
-      .filter((s) => s.materials.length > 0);
-    const name = text(w.WeaponName);
-    return {
-      id: String(w.ItemId),
-      key: slugify(name),
-      name,
-      rarity: w.QualityId,
-      type: WEAPON[w.WeaponType] ?? String(w.WeaponType),
-      maxLevel: ascension.at(-1)?.atLevel ?? 90,
-      icon: artKey(w.IconMiddle) ?? w.Icon,
-      ascension,
-      ...(w.SecondPropId && propertyName(w.SecondPropId.Id) ? { mainStat: propertyName(w.SecondPropId.Id) } : {}),
-      // "{0}" from each rank's column of DescParams.
-      ...(text(w.Desc) ? { effect: { ranks: [0, 1, 2, 3, 4].map((r) => stripTags(text(w.Desc).replace(/\{(\d+)\}/g, (_, j: string) => w.DescParams?.[Number(j)]?.ArrayString[r] ?? ""))) } } : {}),
-    };
-  });
+const weaponIndex = await get<WeaponIndex>("/weapon.json");
+// The "Projection" weapons of trials and events (ids 8008…) have no secondary stat, no effect and no levels: not a weapon one owns.
+const ownable = Object.keys(weaponIndex).filter((id) => weaponIndex[id]?.sub);
+const weapons: CatalogWeapon[] = await mapLimit(ownable, 4, async (id) => {
+  const detail = await get<WeaponDetail>(`/en/weapon/${id}.json`);
+  const name = stripTags(detail.name);
+  const ascension = ascensionSteps(detail.ascensions, detail.stats);
+  const sub = weaponIndex[id]?.sub;
+  return {
+    id: String(detail.id),
+    key: slugify(name),
+    name,
+    rarity: detail.rarity,
+    type: WEAPON[detail.type] ?? String(detail.type),
+    maxLevel: maxLevelOf(detail.stats),
+    // The 160 px icon the manifest's weapon source serves, named by the weapon's id like the small one the data gives.
+    icon: `T_IconWeapon160_${detail.id}_UI`,
+    ascension,
+    ...(sub ? { mainStat: sub } : {}),
+    // "{n}" from the n-th parameter's column at each rank.
+    ...(detail.effect
+      ? {
+          effect: {
+            ...(detail.effect_name ? { name: stripTags(detail.effect_name) } : {}),
+            ranks: [0, 1, 2, 3, 4].map((rank) =>
+              stripTags(
+                detail.effect!.replace(
+                  /\{(\d+)\}/g,
+                  (_match, index: string) => detail.param?.[Number(index)]?.[rank] ?? "",
+                ),
+              ),
+            ),
+          },
+        }
+      : {}),
+  };
+});
 
-// ---- Sonata (echo) sets: rows sharing a Name key are one set (2pc, 5pc) ----
-const gear: CatalogGearSet[] = [...groupBy(fetters, (f) => f.Name).entries()]
-  .filter(([nameKey]) => text(nameKey))
-  .map(([nameKey, rows]) => {
-    rows.sort((a, b) => a.Id - b.Id);
-    const bonuses = rows.map((f, i) => {
-      let d = text(f.EffectDescription);
-      (f.EffectDescriptionParam ?? []).forEach((p, j) => {
-        d = d.replace(new RegExp(`\\{${j}\\}`, "g"), p);
-      });
-      return `${i === 0 ? "2pc" : "5pc"}: ${stripTags(d)}`;
-    });
-    return {
-      id: String(rows[0]!.Id),
-      key: slugify(text(nameKey)),
-      name: text(nameKey),
-      slots: ["slot1", "slot2", "slot3", "slot4", "slot5"],
-      bonuses,
-      icon: groupIcon.get(nameKey) ?? imageKey(rows[0]!.FetterIcon),
-      extra: { fetterIds: rows.map((r) => r.Id) },
-    };
-  });
+// ---- Sonata (echo) sets: a 2-piece and a 5-piece effect each ----
+const sonatas = await get<Record<string, Sonata>>("/en/sonata.json");
+const gear: CatalogGearSet[] = Object.values(sonatas)
+  .filter((sonata) => sonata.name)
+  .map((sonata) => ({
+    id: String(sonata.id),
+    key: slugify(sonata.name),
+    name: sonata.name,
+    slots: ["slot1", "slot2", "slot3", "slot4", "slot5"],
+    bonuses: Object.entries(sonata.set)
+      .sort(([first], [second]) => Number(first) - Number(second))
+      .map(
+        ([pieces, bonus]) =>
+          `${pieces}pc: ${stripTags(bonus.desc.replace(/\{(\d+)\}/g, (_match, index: string) => bonus.param?.[Number(index)] ?? ""))}`,
+      ),
+    icon: imageKey(sonata.icon),
+  }));
 
 // ---- Materials: everything referenced by any cost table ----
 const referenced = new Set<string>();
-for (const c of characters) {
-  for (const s of [...c.ascension, ...Object.values(c.talents.costsByKey ?? {}).flat()]) for (const m of s.materials) referenced.add(m.materialId);
-  for (const n of (c.extra?.forteNodes as { materials: { materialId: string }[] }[]) ?? []) for (const m of n.materials) referenced.add(m.materialId);
+for (const character of characters) {
+  for (const step of [
+    ...character.ascension,
+    ...Object.values(character.talents.costsByKey ?? {}).flat(),
+  ])
+    for (const material of step.materials) referenced.add(material.materialId);
+  for (const node of (character.extra?.forteNodes as { materials: { materialId: string }[] }[]) ??
+    [])
+    for (const material of node.materials) referenced.add(material.materialId);
 }
-for (const w of weapons) for (const s of w.ascension) for (const m of s.materials) referenced.add(m.materialId);
+for (const weapon of weapons)
+  for (const step of weapon.ascension)
+    for (const material of step.materials) referenced.add(material.materialId);
 
-const mainTypeName = new Map(mainTypes.map((m) => [m.Id, text(m.Name ?? m.TypeName)]));
-const materials: CatalogMaterial[] = items
-  .filter((i) => referenced.has(String(i.Id)) && text(i.Name))
-  .map((i) => ({
-    id: String(i.Id),
-    key: slugify(text(i.Name)),
-    name: text(i.Name),
-    category: mainTypeName.get(i.MainTypeId) || "Material",
-    rarity: i.QualityId >= 1 && i.QualityId <= 6 ? i.QualityId : undefined,
-    icon: imageKey(i.Icon) ?? i.Icon,
-    extra: { itemType: i.ItemType, mainTypeId: i.MainTypeId },
-  }));
+const items = await get<Record<string, Item>>("/en/item.json");
+const materials: CatalogMaterial[] = [...referenced].flatMap((id): CatalogMaterial[] => {
+  const item = items[id];
+  if (!item?.name) return [];
+  const rarity = item.rank && item.rank >= 1 && item.rank <= 6 ? item.rank : undefined;
+  return [
+    {
+      id,
+      key: slugify(item.name),
+      name: item.name,
+      category: item.tag?.[0] || "Material",
+      ...(rarity ? { rarity } : {}),
+      icon: imageKey(item.icon),
+    },
+  ];
+});
 
-const missing = [...referenced].filter((id) => !materials.some((m) => m.id === id));
-if (missing.length) console.warn(`[catalog:wuwa] ${missing.length} referenced ids not in ItemInfo: ${missing.slice(0, 10).join(", ")}`);
-
-// Pin the upstream commit so the output only changes when the data does.
-const head = await fetch("https://api.github.com/repos/Dimbreath/WutheringData/commits/master", {
-  headers: { "user-agent": "gacha-hub catalog importer", accept: "application/vnd.github+json" },
-})
-  .then((r) => (r.ok ? (r.json() as Promise<{ sha: string }>) : null))
-  .catch(() => null);
+const missing = [...referenced].filter((id) => !materials.some((material) => material.id === id));
+if (missing.length)
+  console.warn(
+    `[catalog:wuwa] ${missing.length} referenced ids without an item: ${missing.slice(0, 10).join(", ")}`,
+  );
 
 const catalog: Catalog = {
   gameKey: "wuwa",
-  source: `WutheringData@${head?.sha?.slice(0, 7) ?? "master"}`,
+  source: `hakushin@static.nanoka.cc/ww/${version}`,
   characters: uniqueKeys(characters.sort(byId)),
   weapons: uniqueKeys(weapons.sort(byId)),
   gear: uniqueKeys(gear.sort(byId)),

@@ -14,7 +14,13 @@ export function slugify(name: string): string {
 }
 
 const WEEKDAYS: Record<string, number> = {
-  monday: 1, tuesday: 2, wednesday: 3, thursday: 4, friday: 5, saturday: 6, sunday: 7,
+  monday: 1,
+  tuesday: 2,
+  wednesday: 3,
+  thursday: 4,
+  friday: 5,
+  saturday: 6,
+  sunday: 7,
 };
 
 /** Weekday names → ISO numbers (1 = Monday … 7 = Sunday). Unknown names dropped. */
@@ -44,7 +50,10 @@ export function uniqueKeys<T extends { id: string; key: string }>(list: T[]): T[
 
 /** Strip the <color>/<unbreak>/<i> markup game text uses. */
 export function stripTags(s: string | null | undefined): string {
-  return (s ?? "").replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
+  return (s ?? "")
+    .replace(/<[^>]+>/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -85,7 +94,9 @@ export async function fetchJson<T = unknown>(
   const retries = opts.retries ?? 3;
   for (let attempt = 0; ; attempt++) {
     const res = await fetch(url, {
-      headers: { "user-agent": "gacha-hub catalog importer (+https://github.com/adam-riffi/gacha-hub)" },
+      headers: {
+        "user-agent": "gacha-hub catalog importer (+https://github.com/adam-riffi/gacha-hub)",
+      },
     });
     if (res.ok) {
       const json = (await res.json()) as T;
@@ -98,6 +109,23 @@ export async function fetchJson<T = unknown>(
   }
 }
 
+/**
+ * The version of a game's Hakushin data to read (round 20): `--version <v>` on the command line, else the manifest's live
+ * version. The manifest is read once a day, so a re-run the same day is free and the next sees a new version.
+ */
+export async function hakushinVersion(game: "gi" | "hsr" | "ww" | "zzz" | "nte"): Promise<string> {
+  const flag = process.argv.indexOf("--version");
+  if (flag !== -1 && process.argv[flag + 1]) return process.argv[flag + 1]!;
+  const day = new Date().toISOString().slice(0, 10);
+  const manifest = await fetchJson<Record<string, { live: string }>>(
+    "https://static.nanoka.cc/manifest.json",
+    { cacheKey: `hakushin-manifest/${day}` },
+  );
+  const live = manifest[game]?.live;
+  if (!live) throw new Error(`the Hakushin manifest names no live version for ${game}`);
+  return live;
+}
+
 /** GET a binary asset (e.g. a release zip) with the same on-disk cache. */
 export async function fetchBuffer(url: string, opts: { cacheKey?: string } = {}): Promise<Buffer> {
   const dir = resolve(CACHE_ROOT, opts.cacheKey ?? "default");
@@ -105,7 +133,9 @@ export async function fetchBuffer(url: string, opts: { cacheKey?: string } = {})
   const file = resolve(dir, createHash("sha1").update(url).digest("hex") + ".bin");
   if (existsSync(file)) return readFileSync(file);
   const res = await fetch(url, {
-    headers: { "user-agent": "gacha-hub catalog importer (+https://github.com/adam-riffi/gacha-hub)" },
+    headers: {
+      "user-agent": "gacha-hub catalog importer (+https://github.com/adam-riffi/gacha-hub)",
+    },
   });
   if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
   const buf = Buffer.from(await res.arrayBuffer());

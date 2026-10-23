@@ -9,12 +9,19 @@ describe("wuwa catalog", () => {
     expect(catalog.gameKey).toBe("wuwa");
     expect(catalog.source).toMatch(/^hakushin@static\.nanoka\.cc\/ww\/3\.[7-9]/);
     expect(catalog.characters.length).toBeGreaterThanOrEqual(64);
-    expect(catalog.weapons.length).toBeGreaterThanOrEqual(130);
+    // The trials' and events' "Projection" weapons (no stat, no levels) are left out.
+    expect(catalog.weapons.length).toBeGreaterThanOrEqual(120);
+    expect(catalog.weapons.some((w) => w.name.startsWith("Projection"))).toBe(false);
     expect(catalog.gear.length).toBeGreaterThanOrEqual(30);
     expect(catalog.materials.length).toBeGreaterThanOrEqual(40);
     // A 3.6 resonator, with her card art, her costs and her forte skills like the first ones.
     const hsin = catalog.characters.find((c) => c.name === "Hsin")!;
-    expect(hsin).toMatchObject({ id: "1311", rarity: 5, splash: "T_IconRole_Pile_Xin_UI", maxLevel: 90 });
+    expect(hsin).toMatchObject({
+      id: "1311",
+      rarity: 5,
+      splash: "T_IconRole_Pile_Xin_UI",
+      maxLevel: 90,
+    });
     expect(hsin.ascension.at(-1)?.atLevel).toBe(90);
     expect(hsin.talents.keys).toEqual(["basic", "skill", "forte", "liberation", "intro"]);
   });
@@ -55,21 +62,36 @@ describe("wuwa catalog", () => {
   // Georges, round 6: a resonator's bonus stats (its forte tree's) highlighted; weapons filtered by their secondary stat.
   it("keeps each resonator's bonus stats and each weapon's secondary stat", async () => {
     const catalog = catalogSchema.parse(await wuwa.loadCatalog!());
-    expect(catalog.characters.find((c) => c.name === "Chixia")?.bonusStats).toEqual(["Fusion DMG Bonus", "ATK"]);
-    expect(new Set(catalog.weapons.map((w) => w.mainStat))).toEqual(new Set(["Crit. Rate", "Crit. DMG", "Energy Regen", "ATK", "DEF", "HP"]));
+    expect(catalog.characters.find((c) => c.name === "Chixia")?.bonusStats).toEqual([
+      "Fusion DMG Bonus",
+      "ATK",
+    ]);
+    expect(new Set(catalog.weapons.map((w) => w.mainStat))).toEqual(
+      new Set(["Crit. Rate", "Crit. DMG", "Energy Regen", "ATK", "DEF", "HP"]),
+    );
   });
 
   it("names each resonator's forte skills, which the sheet shows instead of the keys", async () => {
     const catalog = catalogSchema.parse(await wuwa.loadCatalog!());
     const chixia = catalog.characters.find((c) => c.id === "1202")!;
-    expect(chixia.talents.info?.map((i) => [i.key, i.name])).toEqual([["basic", "POW POW"], ["skill", "Whizzing Fight Spirit"], ["forte", "Heroic Bullets"], ["liberation", "Blazing Flames"], ["intro", "Grand Entrance"]]);
+    expect(chixia.talents.info?.map((i) => [i.key, i.name])).toEqual([
+      ["basic", "POW POW"],
+      ["skill", "Whizzing Fight Spirit"],
+      ["forte", "Heroic Bullets"],
+      ["liberation", "Blazing Flames"],
+      ["intro", "Grand Entrance"],
+    ]);
   });
 
   // Georges, round 8: "Qiuyuan from WuWa is way too zoomed in": the art host names her card art with a capital (Qiuyuan) where the
   // game's path has none, so the icon stood in, enlarged; the importer keeps the name the host answers to.
   it("keeps each resonator's card art under the name the art host has: Qiuyuan's capitalised", async () => {
     const catalog = catalogSchema.parse(await wuwa.loadCatalog!());
-    expect(catalog.characters.find((c) => c.name === "Qiuyuan")!.splash).toBe("T_IconRole_Pile_Qiuyuan_UI");
-    expect(catalog.characters.find((c) => c.name === "Jiyan")!.splash).toBe("T_IconRole_Pile_jiyan_UI");
+    expect(catalog.characters.find((c) => c.name === "Qiuyuan")!.splash).toBe(
+      "T_IconRole_Pile_Qiuyuan_UI",
+    );
+    expect(catalog.characters.find((c) => c.name === "Jiyan")!.splash).toBe(
+      "T_IconRole_Pile_jiyan_UI",
+    );
   });
 });
