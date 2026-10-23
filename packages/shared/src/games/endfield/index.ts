@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { statRowSchema } from "../../common.js";
-import type { Catalog } from "../../catalog/types.js";
+import { bannerHistorySchema, type Catalog } from "../../catalog/types.js";
 import type { GameDefinition, GameRegion } from "../types.js";
 import { ENDFIELD_LIMITS } from "./limits.js";
 
@@ -148,6 +148,8 @@ export const endfield: GameDefinition = {
     ...((ENDFIELD_ELEMENTS as readonly string[]).includes(character.tag ?? "") ? { element: character.tag } : {}),
   }),
   // Ownership-only catalog: the public data has no upgrade costs.
+  // Every past banner from the wiki's banner table (round 20, `npm run catalog:banners-wiki`).
+  loadBannerHistory: async () => bannerHistorySchema.parse((await import("./banner-history.js")).default),
   loadCatalog: async () =>
     (await import("./catalog.js")).default as Catalog,
 };
