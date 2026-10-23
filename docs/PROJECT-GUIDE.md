@@ -532,7 +532,7 @@ So the host app stays generic over what all games share (profiles, currencies, r
 
 | | Genshin | HSR | ZZZ | WuWa | Endfield | NTE |
 | --- | --- | --- | --- | --- | --- | --- |
-| Catalog (chars / weapons / sets / materials) | 122 / 255 / 63 / 536 (genshin-db) | 98 / 170 / 62 / 134 (Project Yatta) | 60 / 100 / 30 / 65 (Hakushin) | 64 / 124 / 37 / 148 (Hakushin) | 29 / 71 / 22 / 0 (EndFieldGameData, round 4) | 23 / 49 / 0 / 53 (Hakushin, round 4) |
+| Catalog (chars / weapons / sets / materials) | 122 / 255 / 63 / 536 (genshin-db) | 98 / 170 / 62 / 134 (Project Yatta) | 60 / 100 / 30 / 65 (Hakushin) | 64 / 124 / 37 / 148 (Hakushin) | 35 / 83 / 30 / 20 (the Endfield wiki, round 20) | 23 / 49 / 0 / 53 (Hakushin, round 4) |
 | Hub tabs besides Activities, Endgame, Pulls, Characters, Profile | Artifacts, Planner | Relics, Planner | Drive discs, Planner | Echoes, Planner | Gear (round 4) | Teams, Planner |
 | Character sheet | the shared sheet: catalog weapon picker, main stats per slot, sets, KPIs, splash art | same | same | same, with the echo cost cap | same, operator list | same; Console cartridges typed |
 | Plan farming (levels, talents → tasks) | yes | yes | yes | yes | no costs in the dataset | yes |

@@ -119,7 +119,7 @@ export const endfield: GameDefinition = {
       portrait: "https://endfieldtools.dev/assets/images/endfield/charremoteicon/icon_{key}.png",
       splash: "https://endfield.wiki.gg/images/{key}_Splash_Art.png",
       weapon: "https://endfieldtools.dev/assets/images/endfield/itemicon/{key}.png",
-      gear: "https://raw.githubusercontent.com/Lieyuan621/Endaxis/1cd67de1e45099f6676396012e134d97ff035d8b/public/{key}.webp",
+      gear: "https://endfield.wiki.gg/images/{key}",
     },
     accountLevel: { label: "AL", name: "Authority Level" },
     version: { name: "Dreamscape of Wind and Snow", start: "2026-09-02", days: 43 },

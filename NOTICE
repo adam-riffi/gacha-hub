@@ -23,8 +23,12 @@ Wuthering Waves
   Content: © Kuro Games.
 
 Arknights: Endfield
-  Source:  3aKHP/EndFieldGameData release tables (MIT wrapper). Ownership-only:
-           the public tables carry no upgrade costs or weapon table.
+  Source:  the Endfield wiki on wiki.gg (https://endfield.wiki.gg), its data
+           tables (Cargo: Operators, Weapons, Gears, GearStats, GearSets, Items,
+           Gifts) read through its API at import time; text CC BY-SA 4.0
+           (round 20, 2026-10-23; 3aKHP/EndFieldGameData, the source until
+           then, stopped at v0.3.0). Ownership-only: no public data carries
+           upgrade costs.
   Content: © Hypergryph / Gryphline.
 
 Zenless Zone Zero
@@ -66,10 +70,10 @@ apps/server/src/art/sources.ts, fetched into the store by the owner at one click
   icon); the wikis' version splash screens as each game's key art. Used,
   credited here, for a private non-commercial tool; removed on request.
 
-Endfield art (round 17)
+Endfield art (rounds 17 and 20)
   endfieldtools.dev (operator and weapon icons by the game's ids) and the
-  Endfield wiki on wiki.gg (operators' splash art, CC BY-SA text, the pictures
-  © Hypergryph / Gryphline); the Wuthering Waves wiki's banner and event
+  Endfield wiki on wiki.gg (operators' splash art and the gear pieces'
+  pictures, CC BY-SA text, the pictures © Hypergryph / Gryphline); the Wuthering Waves wiki's banner and event
   pictures, read with its feed, © Kuro Games.
 
 Star Rail relic stat tables

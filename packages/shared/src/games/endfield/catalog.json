@@ -1,6 +1,6 @@
 {
   "gameKey": "endfield",
-  "source": "EndFieldGameData@v0.3.0 (no cost data published)",
+  "source": "endfield.wiki.gg (Cargo tables, CC BY-SA 4.0) on 2026-10-23; no cost data published",
   "characters": [
     {
       "id": "chr_0002_endminm",
@@ -18,10 +18,10 @@
       },
       "extra": {
         "profession": "Guard",
-        "charTypeId": "Physical",
-        "weaponTypeId": 1,
-        "defaultWeaponId": "wpn_sword_0003",
-        "costsAvailable": false
+        "costsAvailable": false,
+        "hobbies": [
+          "???"
+        ]
       }
     },
     {
@@ -40,10 +40,10 @@
       },
       "extra": {
         "profession": "Guard",
-        "charTypeId": "Physical",
-        "weaponTypeId": 1,
-        "defaultWeaponId": "wpn_sword_0003",
-        "costsAvailable": false
+        "costsAvailable": false,
+        "hobbies": [
+          "???"
+        ]
       }
     },
     {
@@ -64,6 +64,18 @@
       "gifts": [
         {
           "itemId": "item_gift_jinlong_1",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_10",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_13",
           "hobbies": [
             "Lifestyle"
           ]
@@ -107,9 +119,6 @@
       ],
       "extra": {
         "profession": "Caster",
-        "charTypeId": "Pulse",
-        "weaponTypeId": 2,
-        "defaultWeaponId": "wpn_funnel_0002",
         "costsAvailable": false,
         "hobbies": [
           "Lifestyle",
@@ -147,7 +156,25 @@
           ]
         },
         {
+          "itemId": "item_gift_jinlong_11",
+          "hobbies": [
+            "Charity"
+          ]
+        },
+        {
           "itemId": "item_gift_jinlong_6",
+          "hobbies": [
+            "Culture"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_8",
+          "hobbies": [
+            "Charity"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_9",
           "hobbies": [
             "Culture"
           ]
@@ -173,9 +200,6 @@
       ],
       "extra": {
         "profession": "Guard",
-        "charTypeId": "Physical",
-        "weaponTypeId": 1,
-        "defaultWeaponId": "wpn_sword_0003",
         "costsAvailable": false,
         "hobbies": [
           "Culture",
@@ -200,6 +224,18 @@
       },
       "gifts": [
         {
+          "itemId": "item_gift_jinlong_10",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_13",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
           "itemId": "item_gift_jinlong_2",
           "hobbies": [
             "Nature"
@@ -215,6 +251,12 @@
           "itemId": "item_gift_jinlong_7",
           "hobbies": [
             "Creative"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_8",
+          "hobbies": [
+            "Nature"
           ]
         },
         {
@@ -238,9 +280,6 @@
       ],
       "extra": {
         "profession": "Caster",
-        "charTypeId": "Fire",
-        "weaponTypeId": 6,
-        "defaultWeaponId": "wpn_pistol_0001",
         "costsAvailable": false,
         "hobbies": [
           "Nature",
@@ -272,9 +311,27 @@
           ]
         },
         {
+          "itemId": "item_gift_jinlong_10",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_13",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
           "itemId": "item_gift_jinlong_4",
           "hobbies": [
             "Sports"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_8",
+          "hobbies": [
+            "Nature"
           ]
         },
         {
@@ -298,9 +355,6 @@
       ],
       "extra": {
         "profession": "Vanguard",
-        "charTypeId": "Pulse",
-        "weaponTypeId": 1,
-        "defaultWeaponId": "wpn_sword_0003",
         "costsAvailable": false,
         "hobbies": [
           "Nature",
@@ -357,9 +411,6 @@
       ],
       "extra": {
         "profession": "Defender",
-        "charTypeId": "Fire",
-        "weaponTypeId": 3,
-        "defaultWeaponId": "wpn_claym_0010",
         "costsAvailable": false,
         "hobbies": [
           "Sports",
@@ -383,6 +434,12 @@
         "costs": []
       },
       "gifts": [
+        {
+          "itemId": "item_gift_jinlong_12",
+          "hobbies": [
+            "Mind Honing"
+          ]
+        },
         {
           "itemId": "item_gift_jinlong_3",
           "hobbies": [
@@ -410,9 +467,6 @@
       ],
       "extra": {
         "profession": "Supporter",
-        "charTypeId": "Cryst",
-        "weaponTypeId": 2,
-        "defaultWeaponId": "wpn_funnel_0002",
         "costsAvailable": false,
         "hobbies": [
           "Technology",
@@ -438,6 +492,24 @@
       "gifts": [
         {
           "itemId": "item_gift_jinlong_1",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_10",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_12",
+          "hobbies": [
+            "Fashion"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_13",
           "hobbies": [
             "Lifestyle"
           ]
@@ -475,9 +547,6 @@
       ],
       "extra": {
         "profession": "Striker",
-        "charTypeId": "Pulse",
-        "weaponTypeId": 5,
-        "defaultWeaponId": "wpn_lance_0009",
         "costsAvailable": false,
         "hobbies": [
           "Lifestyle",
@@ -508,6 +577,12 @@
           ]
         },
         {
+          "itemId": "item_gift_jinlong_12",
+          "hobbies": [
+            "Fashion"
+          ]
+        },
+        {
           "itemId": "item_gift_jinlong_5",
           "hobbies": [
             "Culture"
@@ -523,6 +598,12 @@
           "itemId": "item_gift_jinlong_7",
           "hobbies": [
             "Fashion"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_9",
+          "hobbies": [
+            "Culture"
           ]
         },
         {
@@ -546,9 +627,6 @@
       ],
       "extra": {
         "profession": "Supporter",
-        "charTypeId": "Natural",
-        "weaponTypeId": 2,
-        "defaultWeaponId": "wpn_funnel_0002",
         "costsAvailable": false,
         "hobbies": [
           "Fashion",
@@ -573,6 +651,12 @@
       },
       "gifts": [
         {
+          "itemId": "item_gift_jinlong_11",
+          "hobbies": [
+            "Charity"
+          ]
+        },
+        {
           "itemId": "item_gift_jinlong_2",
           "hobbies": [
             "Sports"
@@ -586,6 +670,12 @@
         },
         {
           "itemId": "item_gift_jinlong_5",
+          "hobbies": [
+            "Charity"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_8",
           "hobbies": [
             "Charity"
           ]
@@ -605,9 +695,6 @@
       ],
       "extra": {
         "profession": "Defender",
-        "charTypeId": "Cryst",
-        "weaponTypeId": 3,
-        "defaultWeaponId": "wpn_claym_0010",
         "costsAvailable": false,
         "hobbies": [
           "Sports",
@@ -639,9 +726,27 @@
           ]
         },
         {
+          "itemId": "item_gift_jinlong_10",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_13",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
           "itemId": "item_gift_jinlong_4",
           "hobbies": [
             "Sports"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_8",
+          "hobbies": [
+            "Nature"
           ]
         },
         {
@@ -665,9 +770,6 @@
       ],
       "extra": {
         "profession": "Guard",
-        "charTypeId": "Physical",
-        "weaponTypeId": 5,
-        "defaultWeaponId": "wpn_lance_0009",
         "costsAvailable": false,
         "hobbies": [
           "Sports",
@@ -693,6 +795,18 @@
       "gifts": [
         {
           "itemId": "item_gift_jinlong_1",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_10",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_13",
           "hobbies": [
             "Lifestyle"
           ]
@@ -736,9 +850,6 @@
       ],
       "extra": {
         "profession": "Striker",
-        "charTypeId": "Fire",
-        "weaponTypeId": 1,
-        "defaultWeaponId": "wpn_sword_0003",
         "costsAvailable": false,
         "hobbies": [
           "Creative",
@@ -762,6 +873,12 @@
         "costs": []
       },
       "gifts": [
+        {
+          "itemId": "item_gift_jinlong_12",
+          "hobbies": [
+            "Fashion"
+          ]
+        },
         {
           "itemId": "item_gift_jinlong_7",
           "hobbies": [
@@ -789,9 +906,6 @@
       ],
       "extra": {
         "profession": "Striker",
-        "charTypeId": "Cryst",
-        "weaponTypeId": 6,
-        "defaultWeaponId": "wpn_pistol_0001",
         "costsAvailable": false,
         "hobbies": [
           "Fashion",
@@ -822,6 +936,24 @@
           ]
         },
         {
+          "itemId": "item_gift_jinlong_10",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_11",
+          "hobbies": [
+            "Charity"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_13",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
           "itemId": "item_gift_jinlong_4",
           "hobbies": [
             "Lifestyle"
@@ -840,6 +972,12 @@
           ]
         },
         {
+          "itemId": "item_gift_jinlong_8",
+          "hobbies": [
+            "Charity"
+          ]
+        },
+        {
           "itemId": "item_gift_tundra_6",
           "hobbies": [
             "Lifestyle"
@@ -854,9 +992,6 @@
       ],
       "extra": {
         "profession": "Striker",
-        "charTypeId": "Physical",
-        "weaponTypeId": 3,
-        "defaultWeaponId": "wpn_claym_0010",
         "costsAvailable": false,
         "hobbies": [
           "Lifestyle",
@@ -881,6 +1016,12 @@
       },
       "gifts": [
         {
+          "itemId": "item_gift_jinlong_11",
+          "hobbies": [
+            "Charity"
+          ]
+        },
+        {
           "itemId": "item_gift_jinlong_2",
           "hobbies": [
             "Sports"
@@ -894,6 +1035,12 @@
         },
         {
           "itemId": "item_gift_jinlong_5",
+          "hobbies": [
+            "Charity"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_8",
           "hobbies": [
             "Charity"
           ]
@@ -913,9 +1060,6 @@
       ],
       "extra": {
         "profession": "Vanguard",
-        "charTypeId": "Fire",
-        "weaponTypeId": 1,
-        "defaultWeaponId": "wpn_sword_0003",
         "costsAvailable": false,
         "hobbies": [
           "Charity",
@@ -953,6 +1097,18 @@
           ]
         },
         {
+          "itemId": "item_gift_jinlong_10",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_13",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
           "itemId": "item_gift_jinlong_2",
           "hobbies": [
             "Sports"
@@ -979,9 +1135,6 @@
       ],
       "extra": {
         "profession": "Defender",
-        "charTypeId": "Physical",
-        "weaponTypeId": 3,
-        "defaultWeaponId": "wpn_claym_0010",
         "costsAvailable": false,
         "hobbies": [
           "Lifestyle",
@@ -1006,9 +1159,27 @@
       },
       "gifts": [
         {
+          "itemId": "item_gift_jinlong_11",
+          "hobbies": [
+            "Fine Arts"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_12",
+          "hobbies": [
+            "Mind Honing"
+          ]
+        },
+        {
           "itemId": "item_gift_jinlong_3",
           "hobbies": [
             "Mind Honing"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_9",
+          "hobbies": [
+            "Fine Arts"
           ]
         },
         {
@@ -1032,9 +1203,6 @@
       ],
       "extra": {
         "profession": "Guard",
-        "charTypeId": "Cryst",
-        "weaponTypeId": 5,
-        "defaultWeaponId": "wpn_lance_0009",
         "costsAvailable": false,
         "hobbies": [
           "Fine Arts",
@@ -1059,6 +1227,18 @@
       },
       "gifts": [
         {
+          "itemId": "item_gift_jinlong_10",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_13",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
           "itemId": "item_gift_jinlong_2",
           "hobbies": [
             "Nature"
@@ -1074,6 +1254,12 @@
           "itemId": "item_gift_jinlong_7",
           "hobbies": [
             "Creative"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_8",
+          "hobbies": [
+            "Nature"
           ]
         },
         {
@@ -1097,9 +1283,6 @@
       ],
       "extra": {
         "profession": "Caster",
-        "charTypeId": "Natural",
-        "weaponTypeId": 6,
-        "defaultWeaponId": "wpn_pistol_0001",
         "costsAvailable": false,
         "hobbies": [
           "Nature",
@@ -1131,6 +1314,12 @@
           ]
         },
         {
+          "itemId": "item_gift_jinlong_12",
+          "hobbies": [
+            "Mind Honing"
+          ]
+        },
+        {
           "itemId": "item_gift_jinlong_7",
           "hobbies": [
             "Creative"
@@ -1151,9 +1340,6 @@
       ],
       "extra": {
         "profession": "Supporter",
-        "charTypeId": "Pulse",
-        "weaponTypeId": 2,
-        "defaultWeaponId": "wpn_funnel_0002",
         "costsAvailable": false,
         "hobbies": [
           "Mind Honing",
@@ -1208,6 +1394,12 @@
           ]
         },
         {
+          "itemId": "item_gift_jinlong_9",
+          "hobbies": [
+            "Culture"
+          ]
+        },
+        {
           "itemId": "item_gift_tundra_2",
           "hobbies": [
             "Culture"
@@ -1228,9 +1420,6 @@
       ],
       "extra": {
         "profession": "Vanguard",
-        "charTypeId": "Cryst",
-        "weaponTypeId": 1,
-        "defaultWeaponId": "wpn_sword_0003",
         "costsAvailable": false,
         "hobbies": [
           "Culture",
@@ -1254,6 +1443,20 @@
         "costs": []
       },
       "gifts": [
+        {
+          "itemId": "item_gift_jinlong_10",
+          "hobbies": [
+            "Lifestyle",
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_13",
+          "hobbies": [
+            "Lifestyle",
+            "Nature"
+          ]
+        },
         {
           "itemId": "item_gift_jinlong_1",
           "hobbies": [
@@ -1279,6 +1482,12 @@
           ]
         },
         {
+          "itemId": "item_gift_jinlong_8",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
           "itemId": "item_gift_tundra_1",
           "hobbies": [
             "Nature"
@@ -1299,9 +1508,6 @@
       ],
       "extra": {
         "profession": "Supporter",
-        "charTypeId": "Natural",
-        "weaponTypeId": 2,
-        "defaultWeaponId": "wpn_funnel_0002",
         "costsAvailable": false,
         "hobbies": [
           "Lifestyle",
@@ -1326,6 +1532,18 @@
       },
       "gifts": [
         {
+          "itemId": "item_gift_jinlong_11",
+          "hobbies": [
+            "Charity"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_12",
+          "hobbies": [
+            "Mind Honing"
+          ]
+        },
+        {
           "itemId": "item_gift_jinlong_3",
           "hobbies": [
             "Mind Honing"
@@ -1333,6 +1551,12 @@
         },
         {
           "itemId": "item_gift_jinlong_5",
+          "hobbies": [
+            "Charity"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_8",
           "hobbies": [
             "Charity"
           ]
@@ -1352,9 +1576,6 @@
       ],
       "extra": {
         "profession": "Striker",
-        "charTypeId": "Cryst",
-        "weaponTypeId": 3,
-        "defaultWeaponId": "wpn_claym_0010",
         "costsAvailable": false,
         "hobbies": [
           "Mind Honing",
@@ -1379,6 +1600,18 @@
       },
       "gifts": [
         {
+          "itemId": "item_gift_jinlong_10",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_13",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
           "itemId": "item_gift_jinlong_2",
           "hobbies": [
             "Nature"
@@ -1394,6 +1627,12 @@
           "itemId": "item_gift_jinlong_7",
           "hobbies": [
             "Creative"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_8",
+          "hobbies": [
+            "Nature"
           ]
         },
         {
@@ -1417,9 +1656,6 @@
       ],
       "extra": {
         "profession": "Caster",
-        "charTypeId": "Cryst",
-        "weaponTypeId": 6,
-        "defaultWeaponId": "wpn_pistol_0001",
         "costsAvailable": false,
         "hobbies": [
           "Nature",
@@ -1451,9 +1687,27 @@
           ]
         },
         {
+          "itemId": "item_gift_jinlong_10",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_13",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
           "itemId": "item_gift_jinlong_4",
           "hobbies": [
             "Sports"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_8",
+          "hobbies": [
+            "Nature"
           ]
         },
         {
@@ -1477,9 +1731,6 @@
       ],
       "extra": {
         "profession": "Guard",
-        "charTypeId": "Physical",
-        "weaponTypeId": 1,
-        "defaultWeaponId": "wpn_sword_0003",
         "costsAvailable": false,
         "hobbies": [
           "Nature",
@@ -1517,6 +1768,12 @@
           ]
         },
         {
+          "itemId": "item_gift_jinlong_12",
+          "hobbies": [
+            "Mind Honing"
+          ]
+        },
+        {
           "itemId": "item_gift_jinlong_3",
           "hobbies": [
             "Mind Honing"
@@ -1535,6 +1792,12 @@
           ]
         },
         {
+          "itemId": "item_gift_jinlong_9",
+          "hobbies": [
+            "Culture"
+          ]
+        },
+        {
           "itemId": "item_gift_tundra_5",
           "hobbies": [
             "Culture"
@@ -1543,9 +1806,6 @@
       ],
       "extra": {
         "profession": "Vanguard",
-        "charTypeId": "Physical",
-        "weaponTypeId": 1,
-        "defaultWeaponId": "wpn_sword_0003",
         "costsAvailable": false,
         "hobbies": [
           "Culture",
@@ -1583,7 +1843,25 @@
           ]
         },
         {
+          "itemId": "item_gift_jinlong_11",
+          "hobbies": [
+            "Charity"
+          ]
+        },
+        {
           "itemId": "item_gift_jinlong_6",
+          "hobbies": [
+            "Culture"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_8",
+          "hobbies": [
+            "Charity"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_9",
           "hobbies": [
             "Culture"
           ]
@@ -1609,9 +1887,6 @@
       ],
       "extra": {
         "profession": "Striker",
-        "charTypeId": "Pulse",
-        "weaponTypeId": 2,
-        "defaultWeaponId": "wpn_funnel_0002",
         "costsAvailable": false,
         "hobbies": [
           "Charity",
@@ -1621,13 +1896,14 @@
     },
     {
       "id": "chr_0031_mifu",
-      "key": "mifu",
-      "name": "Mifu",
+      "key": "mi-fu",
+      "name": "Mi Fu",
       "rarity": 6,
       "tag": "Physical",
       "weaponType": "Greatsword",
       "maxLevel": 80,
       "icon": "chr_0031_mifu",
+      "splash": "Mi_Fu",
       "ascension": [],
       "talents": {
         "keys": [],
@@ -1637,12 +1913,24 @@
         {
           "itemId": "item_gift_jinlong_4",
           "hobbies": [
-            "Sports",
-            "Lifestyle"
+            "Lifestyle",
+            "Sports"
           ]
         },
         {
           "itemId": "item_gift_jinlong_1",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_10",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_13",
           "hobbies": [
             "Lifestyle"
           ]
@@ -1674,35 +1962,517 @@
       ],
       "extra": {
         "profession": "Guard",
-        "charTypeId": "Physical",
-        "weaponTypeId": 3,
-        "defaultWeaponId": "wpn_claym_0010",
         "costsAvailable": false,
         "hobbies": [
-          "Sports",
-          "Lifestyle"
+          "Lifestyle",
+          "Sports"
         ]
       }
     },
     {
-      "id": "chr_9000_endmin",
-      "key": "endministrator-chr_9000_endmin",
-      "name": "Endministrator",
+      "id": "chr_0032_lizhiyan",
+      "key": "arcane",
+      "name": "Arcane",
       "rarity": 6,
-      "tag": "Physical",
-      "weaponType": "Sword",
+      "tag": "Nature",
+      "weaponType": "Arts Unit",
       "maxLevel": 80,
+      "icon": "chr_0032_lizhiyan",
+      "splash": "Arcane",
       "ascension": [],
       "talents": {
         "keys": [],
         "costs": []
       },
+      "gifts": [
+        {
+          "itemId": "item_gift_jinlong_8",
+          "hobbies": [
+            "Nature",
+            "Charity"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_10",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_11",
+          "hobbies": [
+            "Charity"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_13",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_2",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_5",
+          "hobbies": [
+            "Charity"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_1",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_5",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_7",
+          "hobbies": [
+            "Charity"
+          ]
+        }
+      ],
+      "extra": {
+        "profession": "Caster",
+        "costsAvailable": false,
+        "hobbies": [
+          "Nature",
+          "Charity"
+        ]
+      }
+    },
+    {
+      "id": "chr_0033_camille",
+      "key": "camille",
+      "name": "Camille",
+      "rarity": 6,
+      "tag": "Heat",
+      "weaponType": "Polearm",
+      "maxLevel": 80,
+      "icon": "chr_0033_camille",
+      "splash": "Camille",
+      "ascension": [],
+      "talents": {
+        "keys": [],
+        "costs": []
+      },
+      "gifts": [
+        {
+          "itemId": "item_gift_jinlong_3",
+          "hobbies": [
+            "Creative"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_7",
+          "hobbies": [
+            "Creative"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_1",
+          "hobbies": [
+            "Technology"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_4",
+          "hobbies": [
+            "Creative"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_7",
+          "hobbies": [
+            "Technology"
+          ]
+        }
+      ],
+      "extra": {
+        "profession": "Vanguard",
+        "costsAvailable": false,
+        "hobbies": [
+          "Creative",
+          "Technology"
+        ]
+      }
+    },
+    {
+      "id": "chr_0034_typhoea",
+      "key": "typhoeus",
+      "name": "Typhoeus",
+      "rarity": 6,
+      "tag": "Nature",
+      "weaponType": "Arts Unit",
+      "maxLevel": 80,
+      "icon": "chr_0034_typhoea",
+      "splash": "Typhoeus",
+      "ascension": [],
+      "talents": {
+        "keys": [],
+        "costs": []
+      },
+      "gifts": [
+        {
+          "itemId": "item_gift_jinlong_10",
+          "hobbies": [
+            "Lifestyle",
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_13",
+          "hobbies": [
+            "Lifestyle",
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_1",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_2",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_4",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_6",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_8",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_1",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_5",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_6",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        }
+      ],
+      "extra": {
+        "profession": "Striker",
+        "costsAvailable": false,
+        "hobbies": [
+          "Lifestyle",
+          "Nature"
+        ]
+      }
+    },
+    {
+      "id": "chr_0035_liino",
+      "key": "liino",
+      "name": "Liino",
+      "rarity": 6,
+      "tag": "Electric",
+      "weaponType": "Polearm",
+      "maxLevel": 80,
+      "icon": "chr_0035_liino",
+      "splash": "Liino",
+      "ascension": [],
+      "talents": {
+        "keys": [],
+        "costs": []
+      },
+      "gifts": [
+        {
+          "itemId": "item_gift_jinlong_11",
+          "hobbies": [
+            "Fine Arts"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_3",
+          "hobbies": [
+            "Creative"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_7",
+          "hobbies": [
+            "Creative"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_9",
+          "hobbies": [
+            "Fine Arts"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_3",
+          "hobbies": [
+            "Fine Arts"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_4",
+          "hobbies": [
+            "Creative"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_6",
+          "hobbies": [
+            "Fine Arts"
+          ]
+        }
+      ],
+      "extra": {
+        "profession": "Supporter",
+        "costsAvailable": false,
+        "hobbies": [
+          "Creative",
+          "Fine Arts"
+        ]
+      }
+    },
+    {
+      "id": "chr_0036_jsspsi",
+      "key": "si",
+      "name": "Si",
+      "rarity": 6,
+      "tag": "Cryo",
+      "weaponType": "Greatsword",
+      "maxLevel": 80,
+      "icon": "chr_0036_jsspsi",
+      "splash": "Si",
+      "ascension": [],
+      "talents": {
+        "keys": [],
+        "costs": []
+      },
+      "gifts": [
+        {
+          "itemId": "item_gift_jinlong_12",
+          "hobbies": [
+            "Fashion"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_7",
+          "hobbies": [
+            "Fashion"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_1",
+          "hobbies": [
+            "Technology"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_4",
+          "hobbies": [
+            "Fashion"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_7",
+          "hobbies": [
+            "Technology"
+          ]
+        }
+      ],
+      "extra": {
+        "profession": "Supporter",
+        "costsAvailable": false,
+        "hobbies": [
+          "Technology",
+          "Fashion"
+        ]
+      }
+    },
+    {
+      "id": "chr_0038_purrche",
+      "key": "purrchena",
+      "name": "Purrchena",
+      "rarity": 5,
+      "tag": "Physical",
+      "weaponType": "Sword",
+      "maxLevel": 80,
+      "icon": "chr_0038_purrche",
+      "splash": "Purrchena",
+      "ascension": [],
+      "talents": {
+        "keys": [],
+        "costs": []
+      },
+      "gifts": [
+        {
+          "itemId": "item_gift_jinlong_11",
+          "hobbies": [
+            "Fine Arts",
+            "Charity"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_5",
+          "hobbies": [
+            "Charity"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_8",
+          "hobbies": [
+            "Charity"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_9",
+          "hobbies": [
+            "Fine Arts"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_3",
+          "hobbies": [
+            "Fine Arts"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_6",
+          "hobbies": [
+            "Fine Arts"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_7",
+          "hobbies": [
+            "Charity"
+          ]
+        }
+      ],
+      "extra": {
+        "profession": "Defender",
+        "costsAvailable": false,
+        "hobbies": [
+          "Fine Arts",
+          "Charity"
+        ]
+      }
+    },
+    {
+      "id": "wiki-argent-flow",
+      "key": "argent-flow",
+      "name": "Argent Flow",
+      "rarity": 6,
+      "tag": "Electric",
+      "weaponType": "Sword",
+      "maxLevel": 80,
+      "splash": "Argent_Flow",
+      "ascension": [],
+      "talents": {
+        "keys": [],
+        "costs": []
+      },
+      "gifts": [
+        {
+          "itemId": "item_gift_jinlong_10",
+          "hobbies": [
+            "Lifestyle",
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_13",
+          "hobbies": [
+            "Lifestyle",
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_1",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_2",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_4",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_6",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        },
+        {
+          "itemId": "item_gift_jinlong_8",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_1",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_5",
+          "hobbies": [
+            "Nature"
+          ]
+        },
+        {
+          "itemId": "item_gift_tundra_6",
+          "hobbies": [
+            "Lifestyle"
+          ]
+        }
+      ],
       "extra": {
         "profession": "Guard",
-        "charTypeId": "Physical",
-        "weaponTypeId": 1,
-        "defaultWeaponId": "wpn_sword_0003",
-        "costsAvailable": false
+        "costsAvailable": false,
+        "hobbies": [
+          "Lifestyle",
+          "Nature"
+        ],
+        "provisionalId": true
       }
     }
   ],
@@ -1845,6 +2615,26 @@
       "type": "Greatsword",
       "maxLevel": 80,
       "icon": "wpn_claym_0017",
+      "ascension": []
+    },
+    {
+      "id": "wpn_claym_0018",
+      "key": "jade-vessel",
+      "name": "Jade Vessel",
+      "rarity": 6,
+      "type": "Greatsword",
+      "maxLevel": 80,
+      "icon": "wpn_claym_0018",
+      "ascension": []
+    },
+    {
+      "id": "wpn_claym_0019",
+      "key": "long-heritage",
+      "name": "Long Heritage",
+      "rarity": 6,
+      "type": "Greatsword",
+      "maxLevel": 80,
+      "icon": "wpn_claym_0019",
       "ascension": []
     },
     {
@@ -1998,6 +2788,16 @@
       "ascension": []
     },
     {
+      "id": "wpn_funnel_0016",
+      "key": "type-42-solemn-phalanx",
+      "name": "Type 42: Solemn Phalanx",
+      "rarity": 6,
+      "type": "Arts Unit",
+      "maxLevel": 80,
+      "icon": "wpn_funnel_0016",
+      "ascension": []
+    },
+    {
       "id": "wpn_funnel_0017",
       "key": "flickers-in-the-mist",
       "name": "Flickers in the Mist",
@@ -2005,6 +2805,36 @@
       "type": "Arts Unit",
       "maxLevel": 80,
       "icon": "wpn_funnel_0017",
+      "ascension": []
+    },
+    {
+      "id": "wpn_funnel_0018",
+      "key": "junction-point",
+      "name": "Junction Point",
+      "rarity": 6,
+      "type": "Arts Unit",
+      "maxLevel": 80,
+      "icon": "wpn_funnel_0018",
+      "ascension": []
+    },
+    {
+      "id": "wpn_funnel_0019",
+      "key": "umbra-of-frigid-eventide",
+      "name": "Umbra of Frigid Eventide",
+      "rarity": 6,
+      "type": "Arts Unit",
+      "maxLevel": 80,
+      "icon": "wpn_funnel_0019",
+      "ascension": []
+    },
+    {
+      "id": "wpn_funnel_0020",
+      "key": "sufferings-end",
+      "name": "Suffering's End",
+      "rarity": 6,
+      "type": "Arts Unit",
+      "maxLevel": 80,
+      "icon": "wpn_funnel_0020",
       "ascension": []
     },
     {
@@ -2105,6 +2935,36 @@
       "type": "Polearm",
       "maxLevel": 80,
       "icon": "wpn_lance_0013",
+      "ascension": []
+    },
+    {
+      "id": "wpn_lance_0014",
+      "key": "bedazzling-night-debut",
+      "name": "Bedazzling Night Debut",
+      "rarity": 6,
+      "type": "Polearm",
+      "maxLevel": 80,
+      "icon": "wpn_lance_0014",
+      "ascension": []
+    },
+    {
+      "id": "wpn_lance_0015",
+      "key": "blessing-of-lustrous-carmine",
+      "name": "Blessing of Lustrous Carmine",
+      "rarity": 6,
+      "type": "Polearm",
+      "maxLevel": 80,
+      "icon": "wpn_lance_0015",
+      "ascension": []
+    },
+    {
+      "id": "wpn_lance_0016",
+      "key": "golden-age",
+      "name": "Golden Age",
+      "rarity": 6,
+      "type": "Polearm",
+      "maxLevel": 80,
+      "icon": "wpn_lance_0016",
       "ascension": []
     },
     {
@@ -2416,9 +3276,200 @@
       "maxLevel": 80,
       "icon": "wpn_sword_0022",
       "ascension": []
+    },
+    {
+      "id": "wpn_sword_0023",
+      "key": "dessert-moment",
+      "name": "Dessert Moment",
+      "rarity": 5,
+      "type": "Sword",
+      "maxLevel": 80,
+      "icon": "wpn_sword_0023",
+      "ascension": []
+    },
+    {
+      "id": "wpn_sword_0024",
+      "key": "complexed-industry",
+      "name": "Complexed Industry",
+      "rarity": 6,
+      "type": "Sword",
+      "maxLevel": 80,
+      "icon": "wpn_sword_0024",
+      "ascension": []
+    },
+    {
+      "id": "wpn_sword_0026",
+      "key": "farsight",
+      "name": "Farsight",
+      "rarity": 6,
+      "type": "Sword",
+      "maxLevel": 80,
+      "icon": "wpn_sword_0026",
+      "ascension": []
     }
   ],
   "gear": [
+    {
+      "id": "aic-fieldwork",
+      "key": "aic-fieldwork",
+      "name": "AIC Fieldwork",
+      "slots": [
+        "slot1",
+        "slot2",
+        "slot3",
+        "slot4"
+      ],
+      "bonuses": [
+        "3pc: Wearer gain DMG Dealt +20% for all types of DMG, +10% DMG Reduction against all types of DMG, and Ultimate Gain Efficiency +10%."
+      ],
+      "icon": "AIC_Fieldwork_Armor.png",
+      "extra": {
+        "rarityList": [
+          5
+        ],
+        "pieces": [
+          "item_equip_t4_parts_wuling00_body_01",
+          "item_equip_t4_parts_wuling00_body_02",
+          "item_equip_t4_parts_wuling00_body_03",
+          "item_equip_t4_parts_wuling00_body_04",
+          "item_equip_t4_parts_wuling00_body_05",
+          "item_equip_t4_parts_wuling00_body_06",
+          "item_equip_t4_parts_wuling00_edc_01",
+          "item_equip_t4_parts_wuling00_edc_02",
+          "item_equip_t4_parts_wuling00_edc_03",
+          "item_equip_t4_parts_wuling00_edc_04",
+          "item_equip_t4_parts_wuling00_edc_05",
+          "item_equip_t4_parts_wuling00_edc_06",
+          "item_equip_t4_parts_wuling00_hand_01",
+          "item_equip_t4_parts_wuling00_hand_02",
+          "item_equip_t4_parts_wuling00_hand_03",
+          "item_equip_t4_parts_wuling00_hand_04",
+          "item_equip_t4_parts_wuling00_hand_05",
+          "item_equip_t4_parts_wuling00_hand_06"
+        ],
+        "level": 60
+      }
+    },
+    {
+      "id": "basic",
+      "key": "basic",
+      "name": "Basic",
+      "slots": [
+        "slot1",
+        "slot2",
+        "slot3",
+        "slot4"
+      ],
+      "bonuses": [
+        "3pc: No Set Effects"
+      ],
+      "icon": "Endfield_Industries_manufacturer_icon.png",
+      "extra": {
+        "rarityList": [],
+        "pieces": [],
+        "level": 10
+      }
+    },
+    {
+      "id": "miner-alpha",
+      "key": "miner-miner-alpha",
+      "name": "Miner α",
+      "slots": [
+        "slot1",
+        "slot2",
+        "slot3",
+        "slot4"
+      ],
+      "bonuses": [
+        "3pc: No Set Effects"
+      ],
+      "icon": "Endfield_Industries_manufacturer_icon.png",
+      "extra": {
+        "rarityList": [],
+        "pieces": [],
+        "level": 20
+      }
+    },
+    {
+      "id": "miner-beta",
+      "key": "miner-miner-beta",
+      "name": "Miner β",
+      "slots": [
+        "slot1",
+        "slot2",
+        "slot3",
+        "slot4"
+      ],
+      "bonuses": [
+        "3pc: No Set Effects"
+      ],
+      "icon": "Endfield_Industries_manufacturer_icon.png",
+      "extra": {
+        "rarityList": [],
+        "pieces": [],
+        "level": 36
+      }
+    },
+    {
+      "id": "miner-gamma",
+      "key": "miner-miner-gamma",
+      "name": "Miner γ",
+      "slots": [
+        "slot1",
+        "slot2",
+        "slot3",
+        "slot4"
+      ],
+      "bonuses": [
+        "3pc: No Set Effects"
+      ],
+      "icon": "Endfield_Industries_manufacturer_icon.png",
+      "extra": {
+        "rarityList": [],
+        "pieces": [],
+        "level": 50
+      }
+    },
+    {
+      "id": "redeemer",
+      "key": "redeemer",
+      "name": "Redeemer",
+      "slots": [
+        "slot1",
+        "slot2",
+        "slot3",
+        "slot4"
+      ],
+      "bonuses": [
+        "3pc: No Set Effects"
+      ],
+      "icon": "Hongshan_Swordmancers_manufacturer_icon.png",
+      "extra": {
+        "rarityList": [],
+        "pieces": [],
+        "level": 70
+      }
+    },
+    {
+      "id": "rift-trekker",
+      "key": "rift-trekker",
+      "name": "Rift Trekker",
+      "slots": [
+        "slot1",
+        "slot2",
+        "slot3",
+        "slot4"
+      ],
+      "bonuses": [
+        "3pc: No Set Effects"
+      ],
+      "icon": "Hongshan_Swordmancers_manufacturer_icon.png",
+      "extra": {
+        "rarityList": [],
+        "pieces": [],
+        "level": 70
+      }
+    },
     {
       "id": "suit_agi01",
       "key": "roving-msgr",
@@ -2429,8 +3480,10 @@
         "slot3",
         "slot4"
       ],
-      "bonuses": [],
-      "icon": "equipment/agi01/item_equip_t2_suit_agi01_body_01",
+      "bonuses": [
+        "3pc: Wearer's Agility +50. When the wearer's HP is above 80%, Physical DMG +20%."
+      ],
+      "icon": "Roving_MSGR_Jacket.png",
       "extra": {
         "rarityList": [
           3,
@@ -2446,7 +3499,8 @@
           "item_equip_t3_suit_agi01_edc_02",
           "item_equip_t3_suit_agi01_edc_03",
           "item_equip_t3_suit_agi01_hand_01"
-        ]
+        ],
+        "level": 36
       }
     },
     {
@@ -2459,8 +3513,10 @@
         "slot3",
         "slot4"
       ],
-      "bonuses": [],
-      "icon": "equipment/atb01/item_equip_t4_suit_atb01_body_01",
+      "bonuses": [
+        "3pc: Wearer's Combo Skill Cooldown Reduction +15%. After the wearer's skill recovers SP, the team gains DMG +16% for 15s. This effect cannot stack."
+      ],
+      "icon": "Frontiers_Armor.png",
       "extra": {
         "rarityList": [
           5
@@ -2480,21 +3536,24 @@
           "item_equip_t4_suit_atb01_hand_01",
           "item_equip_t4_suit_atb01_hand_02",
           "item_equip_t4_suit_atb01_hand_03"
-        ]
+        ],
+        "level": 70
       }
     },
     {
       "id": "suit_atk01",
-      "key": "aburrey-heavy",
-      "name": "Aburrey Heavy",
+      "key": "aburreys-legacy",
+      "name": "Aburrey's Legacy",
       "slots": [
         "slot1",
         "slot2",
         "slot3",
         "slot4"
       ],
-      "bonuses": [],
-      "icon": "equipment/atk01/item_equip_t3_suit_atk01_body_01",
+      "bonuses": [
+        "3pc: Wearer's Skill DMG +24%. When the wearer casts a battle skill, combo skill, or ultimate, the wearer gains ATK +5% for 15s. The buff from each of the three skill types is unique and does not stack with itself."
+      ],
+      "icon": "Aburrey_Heavy_Armor.png",
       "extra": {
         "rarityList": [
           4
@@ -2511,21 +3570,24 @@
           "item_equip_t3_suit_atk01_edc_05",
           "item_equip_t3_suit_atk01_edc_06",
           "item_equip_t3_suit_atk01_hand_01"
-        ]
+        ],
+        "level": 50
       }
     },
     {
       "id": "suit_atk02",
-      "key": "type-50-yinglung-heavy",
-      "name": "Type 50 Yinglung Heavy",
+      "key": "type-50-yinglung",
+      "name": "Type 50 Yinglung",
       "slots": [
         "slot1",
         "slot2",
         "slot3",
         "slot4"
       ],
-      "bonuses": [],
-      "icon": "equipment/atk02/item_equip_t4_suit_atk02_body_01",
+      "bonuses": [
+        "3pc: Wearer's ATK +15%. When any operator in the team casts a battle skill, the wearer gains 1 stack of Yinglung's Edge that gives DMG +20% to the wearer's next combo skill. Yinglung's Edge can stack 3 time(s)."
+      ],
+      "icon": "Type_50_Yinglung_Heavy_Armor.png",
       "extra": {
         "rarityList": [
           5
@@ -2535,28 +3597,34 @@
           "item_equip_t4_suit_atk02_body_02",
           "item_equip_t4_suit_atk02_body_03",
           "item_equip_t4_suit_atk02_body_04",
+          "item_equip_t4_suit_atk02_body_05",
           "item_equip_t4_suit_atk02_edc_01",
           "item_equip_t4_suit_atk02_edc_02",
           "item_equip_t4_suit_atk02_edc_03",
           "item_equip_t4_suit_atk02_edc_04",
           "item_equip_t4_suit_atk02_edc_05",
+          "item_equip_t4_suit_atk02_edc_06",
           "item_equip_t4_suit_atk02_hand_01",
-          "item_equip_t4_suit_atk02_hand_02"
-        ]
+          "item_equip_t4_suit_atk02_hand_02",
+          "item_equip_t4_suit_atk02_hand_03"
+        ],
+        "level": 70
       }
     },
     {
       "id": "suit_attri01",
-      "key": "bonekrusha-heavy",
-      "name": "Bonekrusha Heavy",
+      "key": "bonekrusha",
+      "name": "Bonekrusha",
       "slots": [
         "slot1",
         "slot2",
         "slot3",
         "slot4"
       ],
-      "bonuses": [],
-      "icon": "equipment/attri01/item_equip_t4_suit_attri01_body_01",
+      "bonuses": [
+        "3pc: Wearer's ATK +15%. When the wearer casts a combo skill, the wearer gains 1 stack of Bonekrushing Smash that grants the wearer's next battle skill DMG Dealt +30%. Bonekrushing Smash can stack 2 time(s)."
+      ],
+      "icon": "Bonekrusha_Heavy_Armor.png",
       "extra": {
         "rarityList": [
           5
@@ -2576,45 +3644,55 @@
           "item_equip_t4_suit_attri01_hand_01",
           "item_equip_t4_suit_attri01_hand_02",
           "item_equip_t4_suit_attri01_hand_03"
-        ]
+        ],
+        "level": 70
       }
     },
     {
       "id": "suit_burst01",
-      "key": "tide-fall-light",
-      "name": "Tide Fall Light",
+      "key": "tide-surge",
+      "name": "Tide Surge",
       "slots": [
         "slot1",
         "slot2",
         "slot3",
         "slot4"
       ],
-      "bonuses": [],
-      "icon": "equipment/burst01/item_equip_t4_suit_burst01_body_01",
+      "bonuses": [
+        "3pc: Wearer's Skill DMG Dealt +20%. After the wearer applies 2 or more stacks of Arts Infliction on the enemy, the wearer gains Arts DMG Dealt +35% for 15s. This effect cannot stack."
+      ],
+      "icon": "Tide_Fall_Light_Armor.png",
       "extra": {
         "rarityList": [
           5
         ],
         "pieces": [
           "item_equip_t4_suit_burst01_body_01",
+          "item_equip_t4_suit_burst01_body_02",
+          "item_equip_t4_suit_burst01_body_03",
           "item_equip_t4_suit_burst01_edc_01",
           "item_equip_t4_suit_burst01_edc_02",
-          "item_equip_t4_suit_burst01_hand_01"
-        ]
+          "item_equip_t4_suit_burst01_edc_03",
+          "item_equip_t4_suit_burst01_hand_01",
+          "item_equip_t4_suit_burst01_hand_02"
+        ],
+        "level": 70
       }
     },
     {
       "id": "suit_combo_cd01",
-      "key": "qingbo-heavy",
-      "name": "Qingbo Heavy",
+      "key": "qingbo",
+      "name": "Qingbo",
       "slots": [
         "slot1",
         "slot2",
         "slot3",
         "slot4"
       ],
-      "bonuses": [],
-      "icon": "equipment/combo_cd01/item_equip_t4_suit_combo_cd01_body_01",
+      "bonuses": [
+        "3pc: Wearer's Combo Skill Cooldown Reduction +15%. When the wearer casts a combo skill, the wearer gains Skill DMG Dealt +20% (for every skill) for 15s. This effect can reach 2 stacks. Duration of each stack is counted separately."
+      ],
+      "icon": "Qingbo_Heavy_Armor.png",
       "extra": {
         "rarityList": [
           5
@@ -2628,7 +3706,8 @@
           "item_equip_t4_suit_combo_cd01_edc_04",
           "item_equip_t4_suit_combo_cd01_hand_01",
           "item_equip_t4_suit_combo_cd01_hand_02"
-        ]
+        ],
+        "level": 70
       }
     },
     {
@@ -2641,8 +3720,10 @@
         "slot3",
         "slot4"
       ],
-      "bonuses": [],
-      "icon": "equipment/criti01/item_equip_t4_suit_criti01_body_01",
+      "bonuses": [
+        "3pc: Wearer's Critical Rate +5%. After the wearer scores a critical hit, the wearer gains ATK +5% for 5s. This effect can reach 5 stacks. At max stacks, grant an additional Critical Rate +5%. This effect cannot stack."
+      ],
+      "icon": "MI_Security_Armor.png",
       "extra": {
         "rarityList": [
           5
@@ -2663,7 +3744,8 @@
           "item_equip_t4_suit_criti01_hand_02",
           "item_equip_t4_suit_criti01_hand_03",
           "item_equip_t4_suit_criti01_hand_04"
-        ]
+        ],
+        "level": 70
       }
     },
     {
@@ -2676,8 +3758,10 @@
         "slot3",
         "slot4"
       ],
-      "bonuses": [],
-      "icon": "equipment/crush_fracture/item_equip_t4_suit_crush_fracture_body_01",
+      "bonuses": [
+        "3pc: Wearer's ATK +8%. When the wearer applies [[File:Crush icon.png|15px|link=]]Crush or [[File:Breach icon.png|15px|link=]]Breach, the wearer gains Physical DMG Dealt +[6% × Max number of [[File:Vulnerable icon.png|15px|link=]]Vulnerability stacks consumed from one enemy] for 20s. If the target already has [[File:Physical Susceptibility icon.png|15px|link=]]Physical Susceptibility, is Staggered, or has attached Originium Crystals, increase the aforementioned buff to 1.5 times. This buff cannot stack."
+      ],
+      "icon": "Grizzled_Edge_Armor.png",
       "extra": {
         "rarityList": [
           5
@@ -2689,21 +3773,24 @@
           "item_equip_t4_suit_crush_fracture_edc_02",
           "item_equip_t4_suit_crush_fracture_hand_01",
           "item_equip_t4_suit_crush_fracture_hand_02"
-        ]
+        ],
+        "level": 70
       }
     },
     {
       "id": "suit_expend_spell01",
-      "key": "xiranflow-light",
-      "name": "Xiranflow Light",
+      "key": "xiranflow",
+      "name": "Xiranflow",
       "slots": [
         "slot1",
         "slot2",
         "slot3",
         "slot4"
       ],
-      "bonuses": [],
-      "icon": "equipment/expend_spell01/item_equip_t4_suit_expend_spell01_body_02",
+      "bonuses": [
+        "3pc: Wearer's ATK +10%. Whenever the wearer consumes [[File:Electrification icon.png|15px|link=]]Electrification or [[File:Corrosion icon.png|15px|link=]]Corrosion, the wearer gains a number of buff stacks equal to the Status Level of the Arts Reaction consumed, with each buff stack giving Electric DMG Dealt and Nature DMG Dealt +15% for 25s. The number of buff stacks maxes out at 3 stacks. Duration of each stack is counted separately."
+      ],
+      "icon": "Xiranflow_Light_Armor.png",
       "extra": {
         "rarityList": [
           5
@@ -2712,7 +3799,8 @@
           "item_equip_t4_suit_expend_spell01_body_02",
           "item_equip_t4_suit_expend_spell01_edc_02",
           "item_equip_t4_suit_expend_spell01_hand_02"
-        ]
+        ],
+        "level": 70
       }
     },
     {
@@ -2725,8 +3813,10 @@
         "slot3",
         "slot4"
       ],
-      "bonuses": [],
-      "icon": "equipment/fire_natr01/item_equip_t4_suit_fire_natr01_body_01",
+      "bonuses": [
+        "3pc: Wearer's Arts Intensity +30. After the wearer applies [[File:Combustion icon.png|15px|link=]]Combustion, the wearer gains Heat DMG +50% for 10s. After the wearer applies [[File:Corrosion icon.png|15px|link=]]Corrosion, the wearer gains Nature DMG +50% for 10s. The aforementioned effects cannot stack."
+      ],
+      "icon": "Hot_Work_Exoskeleton.png",
       "extra": {
         "rarityList": [
           5
@@ -2737,24 +3827,29 @@
           "item_equip_t4_suit_fire_natr01_edc_01",
           "item_equip_t4_suit_fire_natr01_edc_02",
           "item_equip_t4_suit_fire_natr01_edc_03",
+          "item_equip_t4_suit_fire_natr01_edc_04",
           "item_equip_t4_suit_fire_natr01_hand_01",
           "item_equip_t4_suit_fire_natr01_hand_02",
-          "item_equip_t4_suit_fire_natr01_hand_03"
-        ]
+          "item_equip_t4_suit_fire_natr01_hand_03",
+          "item_equip_t4_suit_fire_natr01_hand_04"
+        ],
+        "level": 70
       }
     },
     {
       "id": "suit_heal01",
-      "key": "lynx-heavy",
-      "name": "LYNX Heavy",
+      "key": "lynx",
+      "name": "LYNX",
       "slots": [
         "slot1",
         "slot2",
         "slot3",
         "slot4"
       ],
-      "bonuses": [],
-      "icon": "equipment/heal01/item_equip_t4_suit_heal01_body_01",
+      "bonuses": [
+        "3pc: Wearer's HP Treatment Efficiency +20%. After the wearer gives HP treatment to an allied target, that target also gains 15% DMG Reduction against all types of DMG for 10s. If the said treatment exceeds the target's Max HP, the target gains 30% DMG Reduction against all types of DMG. The aforementioned effects cannot stack."
+      ],
+      "icon": "LYNX_Heavy_Armor.png",
       "extra": {
         "rarityList": [
           5
@@ -2762,28 +3857,33 @@
         "pieces": [
           "item_equip_t4_suit_heal01_body_01",
           "item_equip_t4_suit_heal01_body_02",
+          "item_equip_t4_suit_heal01_body_03",
           "item_equip_t4_suit_heal01_edc_01",
           "item_equip_t4_suit_heal01_edc_02",
           "item_equip_t4_suit_heal01_edc_03",
           "item_equip_t4_suit_heal01_edc_04",
           "item_equip_t4_suit_heal01_edc_05",
           "item_equip_t4_suit_heal01_hand_01",
-          "item_equip_t4_suit_heal01_hand_02"
-        ]
+          "item_equip_t4_suit_heal01_hand_02",
+          "item_equip_t4_suit_heal01_hand_03"
+        ],
+        "level": 70
       }
     },
     {
       "id": "suit_phy01",
-      "key": "swordmancer-light",
-      "name": "Swordmancer Light",
+      "key": "swordmancer",
+      "name": "Swordmancer",
       "slots": [
         "slot1",
         "slot2",
         "slot3",
         "slot4"
       ],
-      "bonuses": [],
-      "icon": "equipment/phy01/item_equip_t4_suit_phy01_body_01",
+      "bonuses": [
+        "3pc: Wearer's Stagger Efficiency Bonus +20%. After the wearer applies a Physical Status, the wearer also performs 1 hit that deals 250% ATK of Physical DMG and [10 Stagger]. Effect trigger cooldown: 15s."
+      ],
+      "icon": "Swordmancer_Light_Armor.png",
       "extra": {
         "rarityList": [
           5
@@ -2800,7 +3900,8 @@
           "item_equip_t4_suit_phy01_hand_01",
           "item_equip_t4_suit_phy01_hand_02",
           "item_equip_t4_suit_phy01_hand_03"
-        ]
+        ],
+        "level": 70
       }
     },
     {
@@ -2813,8 +3914,10 @@
         "slot3",
         "slot4"
       ],
-      "bonuses": [],
-      "icon": "equipment/poise01/item_equip_t4_suit_poise01_body_01",
+      "bonuses": [
+        "3pc: Wearer's ATK +8%. After the wearer applies [[File:Vulnerable icon.png|15px|link=]]Vulnerability, the wearer gains Physical DMG +8% for 15s. This effect can reach 4 stacks. If the target already has 4 stack(s) of [[File:Vulnerable icon.png|15px|link=]]Vulnerability, the wearer gains an additional Physical DMG +16% for 10s. This effect cannot stack."
+      ],
+      "icon": "Æthertech_Plating.png",
       "extra": {
         "rarityList": [
           5
@@ -2827,32 +3930,65 @@
           "item_equip_t4_suit_poise01_edc_04",
           "item_equip_t4_suit_poise01_hand_01",
           "item_equip_t4_suit_poise01_hand_02"
-        ]
+        ],
+        "level": 70
       }
     },
     {
       "id": "suit_pulse_cryst01",
-      "key": "pulser-labs-disruptor",
-      "name": "Pulser Labs Disruptor",
+      "key": "pulser-labs",
+      "name": "Pulser Labs",
       "slots": [
         "slot1",
         "slot2",
         "slot3",
         "slot4"
       ],
-      "bonuses": [],
-      "icon": "equipment/pulse_cryst01/item_equip_t4_suit_pulse_cryst01_body_01",
+      "bonuses": [
+        "3pc: Wearer's Arts Intensity +30. After the wearer applies [[File:Electrification icon.png|15px|link=]]Electrification, the wearer gains Electric DMG +50% for 10s. After the wearer applies [[File:Solidification icon.png|15px|link=]]Solidification, the wearer gains Cryo DMG +50% for 10s. The aforementioned effects cannot stack."
+      ],
+      "icon": "Pulser_Labs_Disruptor_Suit.png",
       "extra": {
         "rarityList": [
           5
         ],
         "pieces": [
           "item_equip_t4_suit_pulse_cryst01_body_01",
+          "item_equip_t4_suit_pulse_cryst01_body_02",
           "item_equip_t4_suit_pulse_cryst01_edc_01",
           "item_equip_t4_suit_pulse_cryst01_edc_02",
           "item_equip_t4_suit_pulse_cryst01_edc_03",
-          "item_equip_t4_suit_pulse_cryst01_hand_01"
-        ]
+          "item_equip_t4_suit_pulse_cryst01_edc_04",
+          "item_equip_t4_suit_pulse_cryst01_hand_01",
+          "item_equip_t4_suit_pulse_cryst01_hand_02"
+        ],
+        "level": 70
+      }
+    },
+    {
+      "id": "suit_spellburst",
+      "key": "deep-rampart",
+      "name": "Deep Rampart",
+      "slots": [
+        "slot1",
+        "slot2",
+        "slot3",
+        "slot4"
+      ],
+      "bonuses": [
+        "3pc: Wearer's Arts DMG Dealt +16%. When the wearer applies Nature Burst or Cryo Burst, the wearer gains Arts Intensity +16 for 20s. Max stacks for this effect: 3. Duration of each stack is counted separately. Effect only triggers once every 0.1s."
+      ],
+      "icon": "Engineering_Division_manufacturer_icon.png",
+      "extra": {
+        "rarityList": [
+          5
+        ],
+        "pieces": [
+          "item_equip_t4_suit_spellburst_body_01",
+          "item_equip_t4_suit_spellburst_edc_01",
+          "item_equip_t4_suit_spellburst_hand_01"
+        ],
+        "level": 70
       }
     },
     {
@@ -2865,8 +4001,10 @@
         "slot3",
         "slot4"
       ],
-      "bonuses": [],
-      "icon": "equipment/str01/item_equip_t2_suit_str01_body_01",
+      "bonuses": [
+        "3pc: Wearer's Strength +50. When the wearer's HP is below 50%, the wearer gains 30% DMG Reduction against all types of DMG."
+      ],
+      "icon": "Armored_MSGR_Jacket.png",
       "extra": {
         "rarityList": [
           3,
@@ -2882,7 +4020,8 @@
           "item_equip_t3_suit_str01_edc_02",
           "item_equip_t3_suit_str01_hand_01",
           "item_equip_t3_suit_str01_hand_02"
-        ]
+        ],
+        "level": 36
       }
     },
     {
@@ -2895,8 +4034,10 @@
         "slot3",
         "slot4"
       ],
-      "bonuses": [],
-      "icon": "equipment/stragi01/item_equip_t1_suit_stragi01_body_01",
+      "bonuses": [
+        "3pc: Wearer's HP +500. After the wearer defeats an enemy, the wearer restores 100 HP. Effect trigger cooldown: 5s."
+      ],
+      "icon": "AIC_Heavy_Armor.png",
       "extra": {
         "rarityList": [
           2
@@ -2906,21 +4047,24 @@
           "item_equip_t1_suit_stragi01_edc_01",
           "item_equip_t1_suit_stragi01_edc_02",
           "item_equip_t1_suit_stragi01_hand_01"
-        ]
+        ],
+        "level": 28
       }
     },
     {
       "id": "suit_usp01",
-      "key": "catastrophe-heavy",
-      "name": "Catastrophe Heavy",
+      "key": "catastrophe",
+      "name": "Catastrophe",
       "slots": [
         "slot1",
         "slot2",
         "slot3",
         "slot4"
       ],
-      "bonuses": [],
-      "icon": "equipment/usp01/item_equip_t3_suit_usp01_body_01",
+      "bonuses": [
+        "3pc: Wearer's Ultimate Gain Efficiency +20%. The wearer casts a battle skill, the action returns 50 SP. This effect only triggers 1 time per battle."
+      ],
+      "icon": "Catastrophe_Heavy_Armor.png",
       "extra": {
         "rarityList": [
           4
@@ -2932,7 +4076,8 @@
           "item_equip_t3_suit_usp01_edc_02",
           "item_equip_t3_suit_usp01_edc_03",
           "item_equip_t3_suit_usp01_hand_01"
-        ]
+        ],
+        "level": 50
       }
     },
     {
@@ -2945,20 +4090,34 @@
         "slot3",
         "slot4"
       ],
-      "bonuses": [],
-      "icon": "equipment/usp02/item_equip_t4_suit_usp02_body_01",
+      "bonuses": [
+        "3pc: Wearer's HP +1000. After the wearer applies [[File:Amp icon.png|15px|link=]]Amp, [[File:Protect icon.png|15px|link=]]Protected, [[File:Susceptibility icon.png|15px|link=]]Susceptibility, or [[File:Weaken icon.png|15px|link=]]Weakened, other teammates gain DMG Dealt +16% for 15s. This effect cannot stack."
+      ],
+      "icon": "Eternal_Xiranite_Armor.png",
       "extra": {
         "rarityList": [
           5
         ],
         "pieces": [
           "item_equip_t4_suit_usp02_body_01",
+          "item_equip_t4_suit_usp02_body_03",
+          "item_equip_t4_suit_usp02_body_04",
+          "item_equip_t4_suit_usp02_body_05",
+          "item_equip_t4_suit_usp02_body_06",
           "item_equip_t4_suit_usp02_edc_01",
           "item_equip_t4_suit_usp02_edc_02",
           "item_equip_t4_suit_usp02_edc_03",
+          "item_equip_t4_suit_usp02_edc_04",
+          "item_equip_t4_suit_usp02_edc_05",
+          "item_equip_t4_suit_usp02_edc_06",
+          "item_equip_t4_suit_usp02_edc_07",
           "item_equip_t4_suit_usp02_hand_01",
-          "item_equip_t4_suit_usp02_hand_02"
-        ]
+          "item_equip_t4_suit_usp02_hand_02",
+          "item_equip_t4_suit_usp02_hand_03",
+          "item_equip_t4_suit_usp02_hand_04",
+          "item_equip_t4_suit_usp02_hand_05"
+        ],
+        "level": 70
       }
     },
     {
@@ -2971,8 +4130,10 @@
         "slot3",
         "slot4"
       ],
-      "bonuses": [],
-      "icon": "equipment/will01/item_equip_t2_suit_will01_body_01",
+      "bonuses": [
+        "3pc: Wearer's Will +50. When the wearer's HP is below 50%, Treatment Effect +30%."
+      ],
+      "icon": "Mordvolt_Resistant_Vest.png",
       "extra": {
         "rarityList": [
           3,
@@ -2987,7 +4148,8 @@
           "item_equip_t3_suit_will01_edc_01",
           "item_equip_t3_suit_will01_edc_02",
           "item_equip_t3_suit_will01_hand_01"
-        ]
+        ],
+        "level": 38
       }
     },
     {
@@ -3000,8 +4162,10 @@
         "slot3",
         "slot4"
       ],
-      "bonuses": [],
-      "icon": "equipment/wisd01/item_equip_t2_suit_wisd01_body_01",
+      "bonuses": [
+        "3pc: Wearer's Intellect +50. When the wearer's HP is above 80%, Arts DMG +20%."
+      ],
+      "icon": "Mordvolt_Insulation_Vest.png",
       "extra": {
         "rarityList": [
           3,
@@ -3018,7 +4182,8 @@
           "item_equip_t3_suit_wisd01_edc_01",
           "item_equip_t3_suit_wisd01_edc_02",
           "item_equip_t3_suit_wisd01_hand_01"
-        ]
+        ],
+        "level": 38
       }
     },
     {
@@ -3031,8 +4196,10 @@
         "slot3",
         "slot4"
       ],
-      "bonuses": [],
-      "icon": "equipment/wisdwill01/item_equip_t1_suit_wisdwill01_body_01",
+      "bonuses": [
+        "3pc: Wearer's HP +500. After the wearer defeats an enemy, the wearer gains ATK +20 for 5s."
+      ],
+      "icon": "AIC_Light_Armor.png",
       "extra": {
         "rarityList": [
           2
@@ -3042,7 +4209,8 @@
           "item_equip_t1_suit_wisdwill01_edc_01",
           "item_equip_t1_suit_wisdwill01_edc_02",
           "item_equip_t1_suit_wisdwill01_hand_01"
-        ]
+        ],
+        "level": 28
       }
     }
   ],
@@ -3051,6 +4219,34 @@
       "id": "item_gift_jinlong_1",
       "key": "eureka-teabox",
       "name": "Eureka Teabox",
+      "category": "Gift",
+      "rarity": 5
+    },
+    {
+      "id": "item_gift_jinlong_10",
+      "key": "myrkwood-berry-preserve",
+      "name": "Myrkwood Berry Preserve",
+      "category": "Gift",
+      "rarity": 5
+    },
+    {
+      "id": "item_gift_jinlong_11",
+      "key": "miracle-cake",
+      "name": "Miracle Cake",
+      "category": "Gift",
+      "rarity": 5
+    },
+    {
+      "id": "item_gift_jinlong_12",
+      "key": "yuanyuan-manor-jigsaw",
+      "name": "Yuanyuan Manor Jigsaw",
+      "category": "Gift",
+      "rarity": 5
+    },
+    {
+      "id": "item_gift_jinlong_13",
+      "key": "wooden-sword",
+      "name": "Wooden Sword",
       "category": "Gift",
       "rarity": 5
     },
@@ -3093,6 +4289,20 @@
       "id": "item_gift_jinlong_7",
       "key": "bizarro-cupcake",
       "name": "Bizarro Cupcake",
+      "category": "Gift",
+      "rarity": 5
+    },
+    {
+      "id": "item_gift_jinlong_8",
+      "key": "fowlbeast-paper-kite",
+      "name": "Fowlbeast Paper Kite",
+      "category": "Gift",
+      "rarity": 5
+    },
+    {
+      "id": "item_gift_jinlong_9",
+      "key": "der-schwingende-gentleman-classical-album",
+      "name": "Der Schwingende Gentleman Classical Album",
       "category": "Gift",
       "rarity": 5
     },
