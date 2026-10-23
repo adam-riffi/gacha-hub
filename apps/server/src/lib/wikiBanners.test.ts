@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { bannerHistorySchema, getGame, historyFromWikiPages, parseTemplate, WIKI_BANNER_SOURCES, type Catalog } from "@gacha/shared";
+import { bannerHistorySchema, getGame, historyFromWikiPages, historyFromWikiTable, parseTemplate, WIKI_BANNER_SOURCES, type Catalog } from "@gacha/shared";
 
 // Round 17 (Georges: "still no banner history"): the game wikis keep one page per banner run, "<name>/<start date>", with an
 // infobox (type, start, end) and an item pool (the featured units); that is the dated history for Zenless, Wuthering
@@ -117,11 +117,59 @@ describe("historyFromWikiPages", () => {
   });
 });
 
+// Round 20: Endfield's wiki (wiki.gg) keeps its banners in a data table instead of pages: a row per run with the rate-up
+// operator, the limited roster and each server group's times. The Americas/Europe times are kept (the Game8 feed's clock).
+describe("historyFromWikiTable (Endfield)", () => {
+  const catalog = {
+    characters: [
+      { id: "chr_0036_jsspsi", name: "Si", rarity: 6 },
+      { id: "chr_0040_typhoeus", name: "Typhoeus", rarity: 6 },
+      { id: "chr_0041_liino", name: "Liino", rarity: 6 },
+      { id: "chr_0030_xaihi", name: "Xaihi", rarity: 5 },
+      { id: "chr_0033_yvonne", name: "Yvonne", rarity: 6 },
+    ],
+    weapons: [],
+  } as unknown as Catalog;
+  const { history, unmatched } = historyFromWikiTable(
+    [
+      { Banner: "Resplendent Spectrum", RateUpOperator: "", LimitedOperators: "Yvonne", QuotaOperator: "Alesh", AmeuStartTime: "2026-09-24 17:00:00", AmeuEndTime: "2026-10-14 21:59:59" },
+      { Banner: "Rejuvenation", RateUpOperator: "Si", LimitedOperators: "Si;Typhoeus;Liino", QuotaOperator: "Xaihi", AmeuStartTime: "2026-10-15 04:00:00", AmeuEndTime: "2026-11-05 16:59:59" },
+      { Banner: "Ancestral Spring Flows Anew", RateUpOperator: "", LimitedOperators: "Tangtang", QuotaOperator: "", AmeuStartTime: "2026-10-29 17:00:00", AmeuEndTime: "2026-11-19 03:59:59" },
+      { Banner: "Not dated yet", RateUpOperator: "Si", LimitedOperators: "Si", QuotaOperator: "", AmeuStartTime: "2026-12-01 04:00:00", AmeuEndTime: "" },
+    ],
+    catalog,
+  );
+
+  it("makes one character banner per dated row, in Americas/Europe server time (UTC-5), in date order", () => {
+    expect(history.map((banner) => [banner.key, banner.name, banner.kind, banner.startsAt, banner.endsAt])).toEqual([
+      ["history-character-2026-09-24-resplendent-spectrum", "Resplendent Spectrum", "character", "2026-09-24T17:00:00-05:00", "2026-10-14T21:59:59-05:00"],
+      ["history-character-2026-10-15-rejuvenation", "Rejuvenation", "character", "2026-10-15T04:00:00-05:00", "2026-11-05T16:59:59-05:00"],
+      ["history-character-2026-10-29-ancestral-spring-flows-anew", "Ancestral Spring Flows Anew", "character", "2026-10-29T17:00:00-05:00", "2026-11-19T03:59:59-05:00"],
+    ]);
+  });
+
+  it("features the rate-up operator first, then the rest of the limited roster, each once, with the catalog's rarity; the quota pick is not featured", () => {
+    expect(history[1]!.featured).toEqual([
+      { catalogId: "chr_0036_jsspsi", kind: "character", rarity: 6 },
+      { catalogId: "chr_0040_typhoeus", kind: "character", rarity: 6 },
+      { catalogId: "chr_0041_liino", kind: "character", rarity: 6 },
+    ]);
+    expect(history[0]!.featured).toEqual([{ catalogId: "chr_0033_yvonne", kind: "character", rarity: 6 }]);
+  });
+
+  it("names the operators the catalog does not know, and is a banner history the app reads", () => {
+    expect(unmatched).toEqual(["character Tangtang"]);
+    expect(history[2]!.featured).toEqual([]);
+    expect(() => bannerHistorySchema.parse({ source: "test", banners: history })).not.toThrow();
+  });
+});
+
 describe("the histories the importer wrote", () => {
   it.each([
     ["zzz", 100],
     ["wuwa", 100],
     ["nte", 10],
+    ["endfield", 15],
   ])("%s loads at least %i banners, dated, in order, each with its featured units", async (gameKey, atLeast) => {
     const history = await getGame(gameKey)!.loadBannerHistory!();
     expect(history.banners.length).toBeGreaterThanOrEqual(atLeast);

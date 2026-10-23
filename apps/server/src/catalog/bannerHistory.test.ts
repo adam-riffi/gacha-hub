@@ -21,12 +21,18 @@ describe.each([
   });
 });
 
-describe("games without a dated source", () => {
-  // Round 17: Zenless, Wuthering Waves and NTE read theirs from their wikis' banner pages (`npm run catalog:banners-wiki`).
-  it.each(["endfield"])("%s has no banner history yet", (gameKey) => {
-    expect(getGame(gameKey)!.loadBannerHistory).toBeUndefined();
-  });
-  it.each(["zzz", "wuwa", "nte"])("%s has one from its wiki", async (gameKey) => {
+describe("the games whose history comes from a wiki", () => {
+  // Round 17: Zenless, Wuthering Waves and NTE read theirs from their wikis' banner pages; round 20: Endfield from its wiki's
+  // banner table (both `npm run catalog:banners-wiki`). Every game has a dated history now.
+  it.each(["zzz", "wuwa", "nte", "endfield"])("%s has one from its wiki", async (gameKey) => {
     expect((await getGame(gameKey)!.loadBannerHistory!()).banners.length).toBeGreaterThan(10);
+  });
+  it("Endfield's features the catalog's operators and runs in date order", async () => {
+    const history = await getGame("endfield")!.loadBannerHistory!();
+    const catalog = (await getGame("endfield")!.loadCatalog!()) as Catalog;
+    const ids = new Set(catalog.characters.map((character) => character.id));
+    expect(history.banners.map((banner) => banner.startsAt)).toEqual([...history.banners.map((banner) => banner.startsAt)].sort());
+    for (const banner of history.banners) for (const featured of banner.featured) expect(ids.has(featured.catalogId), `${banner.key}: ${featured.catalogId}`).toBe(true);
+    expect(history.banners.find((banner) => banner.name === "Rejuvenation")?.featured.map((featured) => featured.catalogId)).toEqual(["chr_0036_jsspsi", expect.any(String), expect.any(String)]);
   });
 });

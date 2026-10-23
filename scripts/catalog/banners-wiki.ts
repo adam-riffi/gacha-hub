@@ -1,5 +1,6 @@
 /**
- * Banner history from the game wikis (round 17, Georges: "still no banner history"): Zenless, Wuthering Waves and NTE keep
+ * Banner history from the game wikis (round 17, Georges: "still no banner history"; round 20: Endfield from its wiki's banner
+ * table, below). Zenless, Wuthering Waves and NTE keep
  * one page per banner run ("<banner>/<start date>") in a category; each page's infobox gives the run's type and dates, its
  * item pool the rate-up units. Read through each wiki's API, matched to the catalog by name (`wikiBanners.ts`), written
  * like the samsara history (`banners.ts`). The source line records the newest revision read, so a re-run that changes
@@ -10,7 +11,7 @@
 import { writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { bannerHistorySchema, type BannerHistory, type Catalog } from "../../packages/shared/src/catalog/types.js";
-import { WIKI_BANNER_SOURCES, historyFromWikiPages, type WikiPage } from "../../packages/shared/src/catalog/wikiBanners.js";
+import { WIKI_BANNER_SOURCES, historyFromWikiPages, historyFromWikiTable, type WikiBannerRow, type WikiPage } from "../../packages/shared/src/catalog/wikiBanners.js";
 import { fetchJson } from "./common.js";
 
 type GameKey = keyof typeof WIKI_BANNER_SOURCES;
@@ -58,4 +59,26 @@ async function importGame(gameKey: GameKey): Promise<void> {
   if (unmatched.length) console.log(`  not in the catalog (left out): ${unmatched.join(", ")}`);
 }
 
-for (const gameKey of Object.keys(WIKI_BANNER_SOURCES) as GameKey[]) await importGame(gameKey);
+/**
+ * Endfield (round 20): its wiki on wiki.gg keeps the banners in a data table (Cargo "Banners"), a row per run with the rate-up
+ * operator, the limited roster and each server group's times; read through the API like the catalog's tables.
+ */
+async function importEndfield(): Promise<void> {
+  const rows: WikiBannerRow[] = [];
+  for (let offset = 0; ; offset += 500) {
+    const page = await fetchJson<{ cargoquery: { title: WikiBannerRow }[] }>(`https://endfield.wiki.gg/api.php?action=cargoquery&format=json&limit=500&offset=${offset}&tables=Banners&fields=_pageName,Banner,RateUpOperator,LimitedOperators,QuotaOperator,AmeuStartTime,AmeuEndTime&order_by=AmeuStartTime`, { cacheKey: `banner-history-wiki/${DAY}` });
+    rows.push(...page.cargoquery.map((entry) => entry.title));
+    if (page.cargoquery.length < 500) break;
+  }
+  const catalog = (await import("../../packages/shared/src/games/endfield/catalog.json", { with: { type: "json" } })).default as Catalog;
+  const { history, unmatched } = historyFromWikiTable(rows, catalog);
+  const output: BannerHistory = bannerHistorySchema.parse({ source: `endfield.wiki.gg (Cargo table Banners, CC BY-SA 4.0), ${rows.length} rows on ${DAY}`, banners: history });
+  writeFileSync(fileURLToPath(new URL("../../packages/shared/src/games/endfield/banner-history.json", import.meta.url)), JSON.stringify(output, null, 2) + "\n");
+  console.log(`[catalog:banners-wiki] endfield: ${output.banners.length} banners from ${rows.length} rows, ${output.banners[0]?.startsAt.slice(0, 10)} to ${output.banners.at(-1)?.startsAt.slice(0, 10)}`);
+  if (unmatched.length) console.log(`  not in the catalog (left out): ${unmatched.join(", ")}`);
+}
+
+// The games named on the command line (`npm run catalog:banners-wiki -- endfield`), else every one.
+const wanted = process.argv.slice(2).filter((argument) => !argument.startsWith("-"));
+const games = ["endfield", ...Object.keys(WIKI_BANNER_SOURCES)].filter((gameKey) => !wanted.length || wanted.includes(gameKey));
+for (const gameKey of games) await (gameKey === "endfield" ? importEndfield() : importGame(gameKey as GameKey));
