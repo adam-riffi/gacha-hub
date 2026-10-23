@@ -1,26 +1,35 @@
 import { describe, expect, it } from "vitest";
 import { catalogSchema, communityArtUrl, endfield } from "@gacha/shared";
 
-// Endfield's public tables have no upgrade costs: characters, weapons and gear sets, no materials.
-// Georges, round 4: "try to populate Endfield and NTE for data on them".
+// Endfield's public data has no upgrade costs: characters, weapons and gear sets, no materials.
+// Georges, round 4: "try to populate Endfield and NTE for data on them". Round 20: EndFieldGameData stopped at v0.3.0 (June
+// 2026) and its newest release carries no tables, so the catalog reads the Endfield wiki's data tables (Cargo: Operators,
+// Weapons, Gears, GearStats, GearSets, Items, Gifts), which carry the game's own ids.
 describe("endfield catalog", () => {
-  it("is schema-valid with characters, weapons and gear sets", async () => {
+  it("is schema-valid with characters, weapons and gear sets from the wiki's tables", async () => {
     const catalog = catalogSchema.parse(await endfield.loadCatalog!());
     expect(catalog.gameKey).toBe("endfield");
-    expect(catalog.source).toMatch(/^EndFieldGameData/);
-    expect(catalog.characters.length).toBeGreaterThanOrEqual(25);
-    expect(catalog.weapons.length).toBeGreaterThanOrEqual(60);
+    expect(catalog.source).toMatch(/^endfield\.wiki\.gg/);
+    expect(catalog.characters.length).toBeGreaterThanOrEqual(35);
+    // The 1.4 and 1.5 operators Game8's banners name (round 18 left them out of the feed's featured units).
+    expect(catalog.characters.map((c) => c.name)).toEqual(expect.arrayContaining(["Si", "Typhoeus", "Liino", "Argent Flow", "Tangtang"]));
+    expect(catalog.characters.find((c) => c.name === "Si")).toMatchObject({ id: "chr_0036_jsspsi", rarity: 6, tag: "Cryo", weaponType: "Greatsword", extra: { profession: "Supporter" } });
+    expect(catalog.weapons.length).toBeGreaterThanOrEqual(80);
     expect(new Set(catalog.weapons.map((w) => w.type))).toEqual(new Set(["Sword", "Greatsword", "Polearm", "Handcannon", "Arts Unit"]));
-    expect(catalog.gear.length).toBeGreaterThanOrEqual(15);
+    expect(catalog.gear.length).toBeGreaterThanOrEqual(25);
     expect(catalog.gear.every((g) => g.slots.join() === "slot1,slot2,slot3,slot4" && g.name.length > 1)).toBe(true);
     expect(new Set(catalog.gear.map((g) => g.name)).size).toBe(catalog.gear.length);
     // No cost data: its only items are its gifts (round 8).
     expect(catalog.materials.every((m) => m.category === "Gift")).toBe(true);
   });
 
-  it("names a gear set from its body piece: Roving MSGR", async () => {
+  it("names each gear set as the game does (Roving MSGR, Aburrey's Legacy) and lists its pieces", async () => {
     const catalog = catalogSchema.parse(await endfield.loadCatalog!());
-    expect(catalog.gear.map((g) => g.name)).toContain("Roving MSGR");
+    expect(catalog.gear.map((g) => g.name)).toEqual(expect.arrayContaining(["Roving MSGR", "Aburrey's Legacy", "Type 50 Yinglung"]));
+    const aburrey = catalog.gear.find((g) => g.name === "Aburrey's Legacy")!;
+    expect(aburrey.id).toBe("suit_atk01");
+    expect(aburrey.extra?.pieces).toEqual(expect.arrayContaining(["item_equip_t3_suit_atk01_body_01"]));
+    expect(aburrey.bonuses[0]).toMatch(/^3pc: Wearer's Skill DMG \+24%/);
   });
 
   it("resolves names, professions and damage types; keys unique", async () => {
@@ -44,19 +53,23 @@ describe("endfield catalog", () => {
 
   // Georges, round 7: "add the weapons tracking and character art and everything else related to Endfield": the art from
   // the Endaxis timeline tool's public folders, each key one the repository holds (its tree read by the importer).
-  // Round 17: icons by id from endfieldtools.dev, splash art by name from the Endfield wiki, gear sets still from Endaxis.
-  it("has art: each operator's icon by id and splash by the wiki's file name, each weapon's icon by id, each gear set's from Endaxis", async () => {
+  // Round 17: icons by id from endfieldtools.dev, splash art by name from the Endfield wiki. Round 20: a gear set's picture is
+  // its armour piece's on the wiki (Endaxis, pinned to a commit, stopped at the first sets).
+  it("has art: each operator's icon by id and splash by the wiki's file name, each weapon's icon by id, each gear set's armour from the wiki", async () => {
     const catalog = catalogSchema.parse(await endfield.loadCatalog!());
     const perlica = catalog.characters.find((c) => c.key === "perlica")!;
     expect(perlica).toMatchObject({ icon: "chr_0004_pelica", splash: "Perlica" });
     expect(catalog.characters.find((c) => c.id === "chr_0005_chen")!.splash).toBe("Chen_Qianyu");
-    expect(catalog.characters.filter((c) => c.icon).length).toBeGreaterThanOrEqual(28);
-    expect(catalog.characters.filter((c) => c.splash).length).toBeGreaterThanOrEqual(25);
+    expect(catalog.characters.filter((c) => c.icon).length).toBeGreaterThanOrEqual(33);
+    expect(catalog.characters.filter((c) => c.splash).length).toBeGreaterThanOrEqual(30);
     expect(catalog.weapons.find((w) => w.id === "wpn_claym_0003")!.icon).toBe("wpn_claym_0003");
-    expect(catalog.weapons.filter((w) => w.icon).length).toBeGreaterThanOrEqual(60);
-    expect(catalog.gear.find((g) => g.id === "suit_agi01")!.icon).toMatch(/^equipment[/]agi01[/]/);
+    expect(catalog.weapons.filter((w) => w.icon).length).toBeGreaterThanOrEqual(75);
+    const aburrey = catalog.gear.find((g) => g.id === "suit_atk01")!;
+    expect(aburrey.icon).toBe("Aburrey_Heavy_Armor.png");
+    expect(catalog.gear.filter((g) => g.icon).length).toBeGreaterThanOrEqual(25);
     expect(communityArtUrl("endfield", "character", perlica.icon)).toBe("https://endfieldtools.dev/assets/images/endfield/charremoteicon/icon_chr_0004_pelica.png");
     expect(communityArtUrl("endfield", "splash", perlica.splash)).toBe("https://endfield.wiki.gg/images/Perlica_Splash_Art.png");
+    expect(communityArtUrl("endfield", "gear", aburrey.icon)).toBe("https://endfield.wiki.gg/images/Aburrey_Heavy_Armor.png");
   });
 
   // Georges, round 8: "for relevant games I want a gift/intimacy item list". Endfield's gifts suit operators by their hobbies.
