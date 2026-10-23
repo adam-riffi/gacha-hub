@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-23 · claude · stack/r27/02-endfield-wiki · #384
+- Done: round 20, the second stale catalog. EndFieldGameData stopped at v0.3.0 in June and its newest release carries no tables; the Endfield wiki on wiki.gg keeps data tables (Cargo: Operators, Weapons, Gears, GearStats, GearSets, Items, Gifts) with the game's own ids, read through its API at import time. 35 operators (Si, Typhoeus, Liino, Tangtang, Argent Flow among the six new), 83 weapons, 30 gear sets with the wiki's names and set effects (Aburrey's Legacy, Type 50 Yinglung, instead of a name cut from a body piece), their pieces through each piece's stats row, their id from the pieces' suit (the same `suit_…` ids as before), 20 gifts; a set's picture is its armour piece's on the wiki (the manifest's gear source moves from Endaxis, pinned to a commit and stopped at the first sets, to the wiki). An announced operator without a wiki id yet (Argent Flow) gets a provisional `wiki-<name>` id so the feeds match her.
+- Tests: written first: the wiki source, the 1.4 and 1.5 operators Game8's banners name (Si with her class, weapon kind and damage type), the sets named as the game does with their pieces and effect, the gear pictures from the wiki; the art-slot test counts the wiki's 20 gifts.
+- Scope/decisions: the wiki's text is CC BY-SA 4.0 (NOTICE); the pictures stay the publisher's, hotlinked or mirrored as before. The wiki rate-limits anonymous calls: the importers send the project's user agent. The Gifts table's "Prefer" (each operator's favourite gift) is not read yet.
+- Next: Endfield's banner history from the same wiki's banner table.
+
 ## 2026-10-23 · claude · stack/r27/01-wuwa-hakushin · #383
 - Done: round 20 (the handoff's next items on Georges's "go": newer datasets for the three stale catalogs). WutheringData stopped at 3.1 in March; the Hakushin data (static.nanoka.cc, Zenless's and NTE's source) carries 3.7 with the same ids and the same Unreal texture paths, so every stored build, pull and art key keeps meaning. The importer rewritten over it: 64 resonators (14 new), 124 weapons (the trials' Projection weapons, without a stat or levels, left out), 37 Sonata sets, 148 materials; the fifty resonators of before identical on every compared field; a weapon's max level from its stats (90) rather than its last ascension's level; the skill texts fill their numbers from the data's parameter list. `hakushinVersion()` in the importers' helpers reads the manifest's live version (cached a day) or `--version <v>`; NTE's importer takes it too (a live re-run changes nothing).
 - Tests: written first: the catalog test asks for the Hakushin source, 64 resonators, Hsin with her card art, costs and five forte skills; the weapon-effect, talent-text and art tests hold on the new data (Chixia's mapping, Qiuyuan's capitalised art, every set its own icon).
@@ -247,9 +253,3 @@ Entry format:
 - Tests: docs only.
 - Scope/decisions: in the audit.
 - Next: deploy at Georges's word (given: "deploy into production your work for me to see in the morning").
-
-## 2026-10-16 · claude · stack/r18/06-last-seen · #343
-- Done: round 12 ("fix all of the ui features you feel are lacking ... such as the 'last seen feature'"). The chip reads at a glance now: ON A BANNER NOW in the accent with a filled flag; a dated rerun says "back in 7 d" on a paper chip — when a unit returns beats how long it has been gone; how long ago otherwise; and it grew a step (13 px, more padding). Its state rides in `data-state` for the colours.
-- Tests: written first: Saber (rerun dated in 7 days) reads "back in 7 d" with `data-state="returning"`; Archer keeps "1 wk ago" with `data-state="seen"`.
-- Scope/decisions: on the way, the weapons journey built the same Kafka wearing the same light cone as the characters journey, which doubled a card when the files landed on workers in the wrong order — it has its own unit and weapon now (the handoff's own rule).
-- Next: the round's docs: ASSETS.md's new sources, the storage answer, the handoff; then the deploy.
