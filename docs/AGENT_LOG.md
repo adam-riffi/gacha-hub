@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-23 · claude · stack/r27/05-ci-e2e-timeout · #387
+- Done: round 20's merges showed the e2e job timing out on the first run after each push (15 min 16 s against a 15-minute limit; the cached re-run takes 7 min), reported by GitHub as "cancelled" (#380 in round 19 was the same). The job's limit is 25 minutes now, and its traces are uploaded when it times out as well as when it fails, so a slow run can be read instead of re-run blind.
+- Tests: none to write: a workflow setting; this PR's own run exercises it.
+- Scope/decisions: the limit rather than the cause for now: the slow first runs happen with the same code and the same cache keys, so the next slow one's traces say where the time goes.
+- Next: deploy at Georges's word.
+
 ## 2026-10-23 · claude · stack/r27/04-docs · #386
 - Done: round 20's handoff: the three catalogs refreshed (Wuthering Waves at 3.7 from Hakushin, Endfield from its wiki's tables, NTE held at 1.3 until Hakushin's live pointer moves), Endfield's history, what waits for Georges's word and what comes next (the features audit with his keys, GameWith's NTE schedule as the candidate dated source for its events, ADR 0011's services, the sample banners' retirement).
 - Tests: docs only.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the verifier's unit test (another workflow, branch, repository, audience or issuer; expired or not yet valid; a forged signature, `alg: none`, a changed claim, an unknown key, garbage: all refused) and the routes' integration test; actionlint on both workflows.
 - Scope/decisions: hand-written with `node:crypto` (no JWT library: one algorithm, one issuer).
 - Next: the Keys tab.
-
-## 2026-10-16 · claude · stack/r19/02-read-through · #346
-- Done: ADR 0012's second part. `readKey` (host first, then the owner's sealed entry) replaces the config fields for `DISCORD_BOT_TOKEN`, `DISCORD_APP_ID`, `DISCORD_PUBLIC_KEY`, `CRON_SECRET` and `OWNER_PASSWORD_HASH`, read on each use, so a key entered in Settings works without a redeploy. The interactions route is always there and answers 404 while no public key is set; `hasDiscordBot` moves to `lib/appKeys`.
-- Tests: written first: the cron secret, the owner password, the bot's DMs and the interactions' public key each work from the app's entry (and stop when cleared); the reminder-preview test mocks `hasDiscordBot` where it lives now.
-- Scope/decisions: a database read per use, no cache: each is a rare call (sign-in, a DM, a tick every 10 minutes).
-- Next: GitHub's workflows without secrets.
