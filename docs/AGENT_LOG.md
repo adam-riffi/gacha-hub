@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-23 · claude · stack/r27/01-wuwa-hakushin · #383
+- Done: round 20 (the handoff's next items on Georges's "go": newer datasets for the three stale catalogs). WutheringData stopped at 3.1 in March; the Hakushin data (static.nanoka.cc, Zenless's and NTE's source) carries 3.7 with the same ids and the same Unreal texture paths, so every stored build, pull and art key keeps meaning. The importer rewritten over it: 64 resonators (14 new), 124 weapons (the trials' Projection weapons, without a stat or levels, left out), 37 Sonata sets, 148 materials; the fifty resonators of before identical on every compared field; a weapon's max level from its stats (90) rather than its last ascension's level; the skill texts fill their numbers from the data's parameter list. `hakushinVersion()` in the importers' helpers reads the manifest's live version (cached a day) or `--version <v>`; NTE's importer takes it too (a live re-run changes nothing).
+- Tests: written first: the catalog test asks for the Hakushin source, 64 resonators, Hsin with her card art, costs and five forte skills; the weapon-effect, talent-text and art tests hold on the new data (Chixia's mapping, Qiuyuan's capitalised art, every set its own icon).
+- Scope/decisions: NTE stays at 1.3: Hakushin's 1.4 build is a pre-release extraction with untranslated names (Akane Rin as 明音凛), so `--version 1.4.13` waits for the day it reads clean. NOTICE credits Hakushin for Wuthering Waves.
+- Next: Endfield's catalog from its wiki's data tables.
+
 ## 2026-10-22 · claude · stack/r26/03-docs · #382
 - Done: round 19's handoff: NTE's boards, the width journey complete, what waits for Georges's word and what comes next. The `main` ruleset was created on GitHub through the API (a plan item since round 11): a pull request and green `lint`, `typecheck`, `test`, `test-postgres`, `build` and `e2e` before a merge, no force push, no deletion, the admin role able to bypass.
 - Tests: docs only; the merge of this stack goes through the ruleset.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: Saber (rerun dated in 7 days) reads "back in 7 d" with `data-state="returning"`; Archer keeps "1 wk ago" with `data-state="seen"`.
 - Scope/decisions: on the way, the weapons journey built the same Kafka wearing the same light cone as the characters journey, which doubled a card when the files landed on workers in the wrong order — it has its own unit and weapon now (the handoff's own rule).
 - Next: the round's docs: ASSETS.md's new sources, the storage answer, the handoff; then the deploy.
-
-## 2026-10-16 · claude · stack/r18/05-card-art · #342
-- Done: round 12 ("add game art to everything you can"; "add assets to banner cards, BP cards, game cards"). Each game's manifest names a hero — a splash key of its own catalog, the URL checked by hand (Furina, Kafka, Miyabi, Jinhsi, Laevatain, Sakiri's gacha art) — and `HeroArt` draws it from our store first, then the community source, and nothing at all when both are missing, so a card never shows a placeholder. The library card fades it in from the right under its figures; Home's battle pass card carries it under the band; the banners card shows it dimmed when no banner runs.
-- Tests: written first: a library card carries its hero art (`img.hero-art[src*='1005']` on Star Rail's).
-- Scope/decisions: the game dashboard's pass card stays plain figures (art behind KPIs hurts reading); the strip keeps emblems (a 26 px splash reads as noise).
-- Next: the last-seen chip.

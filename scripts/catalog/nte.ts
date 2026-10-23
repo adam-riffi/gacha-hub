@@ -4,17 +4,16 @@
  * NOTICE, removed on request; content © Perfect World / Hotta Studio) mapped
  * into the normalized catalog. Georges asked for it in round 4, which settles
  * ADR 0005's open question: a public dataset read at build time, no account
- * and no game client touched. Only the live version is read.
+ * and no game client touched. Only the live version is read (`--version 1.4.13` reads another; round 20).
  * Run from scripts/catalog: `npm run nte`.
  */
 import type { Catalog, CatalogCharacter, CatalogGearSet, CatalogMaterial, CatalogWeapon, CostStep } from "../../packages/shared/src/catalog/types.js";
-import { byId, fetchJson, mapLimit, slugify, stripTags, uniqueKeys, writeCatalog } from "./common.js";
+import { byId, fetchJson, hakushinVersion, mapLimit, slugify, stripTags, uniqueKeys, writeCatalog } from "./common.js";
 
 const BASE = "https://static.nanoka.cc";
 const get = <T>(path: string) => fetchJson<T>(`${BASE}${path}`, { cacheKey: "nte" });
 
-type Manifest = { nte: { live: string } };
-const version = (await get<Manifest>("/manifest.json")).nte.live;
+const version = await hakushinVersion("nte");
 console.log(`[catalog:nte] Hakushin data, live version ${version}`);
 
 type Cost = { level: string; items_id: string[]; amount: number[] };
