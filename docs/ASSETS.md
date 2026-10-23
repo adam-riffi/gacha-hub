@@ -14,7 +14,7 @@ Counts checked on 2026-10-14 against the catalogs in `packages/shared/src/games/
 | Star Rail | 98 / 98 | none: the icon stands in | 170 / 170 | 62 / 62 | 134 / 134 | **0 / 392** | Yatta |
 | ZZZ | 60 / 60 | 60 / 60 | 100 / 100 | 30 / 30 | 92 / 92 | **0 / 300** | Hakushin |
 | WuWa | 50 / 50 | 50 / 50 | 112 / 112 | 29 / 29 | 128 / 128 | **0 / 250** | wuthery |
-| Endfield | 29 / 29 | 29 / 29 (small, 152 × 212) | 71 / 71 | 22 / 22 | its 14 gifts: **0 / 14** | none in its data | Endaxis (round 7) |
+| Endfield | 34 / 35 | 33 / 35 (the wiki, 2048 px) | 83 / 83 | 30 / 30 (24 armour pieces, 6 manufacturer marks) | its 20 gifts: **0 / 20** | none in its data | endfieldtools.dev, the Endfield wiki (round 20) |
 | NTE | 23 / 23 | 23 / 23 | 49 / 49 | 9 series, one icon per series | 117 / 117 (gifts among them) | **0 / 92** | Hakushin |
 
 Missing there, worth a source:

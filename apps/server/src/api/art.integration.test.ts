@@ -69,7 +69,8 @@ describe("the art slots", () => {
     expect(slot("endfield/material/eureka-teabox")).toMatchObject({ kind: "material", name: "Eureka Teabox", sourced: false });
     expect(slot("zzz/character/eous")).toMatchObject({ kind: "character", name: "Eous" });
     expect(all.filter((candidate) => candidate.gameKey === "nte" && candidate.kind === "gear")).toHaveLength(9);
-    expect(all.filter((candidate) => candidate.gameKey === "endfield" && candidate.kind === "material")).toHaveLength(14);
+    // Round 20: the wiki lists 20 gifts (the game tables had 14).
+    expect(all.filter((candidate) => candidate.gameKey === "endfield" && candidate.kind === "material")).toHaveLength(20);
     // Entries a source has stay off the list.
     expect(all.some((candidate) => candidate.gameKey === "genshin" && candidate.kind === "gear")).toBe(false);
   });
