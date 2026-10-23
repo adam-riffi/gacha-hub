@@ -1,7 +1,7 @@
 # Handoff — 2026-10-23 · claude (round 20 merged, not deployed)
 
 ## State
-- `main` at #386: rounds 1–20 merged. CI green. **Production serves #358** (round 15 and the dependency bumps, deployed 2026-10-20 at Georges's word; #363's mirror fix ran from GitHub). Rounds 16–20 wait for the word (no migration in any).
+- `main` at #387: rounds 1–20 merged, plus the e2e job's 25-minute limit (#387). CI green. **Production serves #358** (round 15 and the dependency bumps, deployed 2026-10-20 at Georges's word; #363's mirror fix ran from GitHub). Rounds 16–20 wait for the word (no migration in any).
 - In production since the last deploy: the mirror ran (3,315 images in the Blob store), `assetBase` is the Blob base; the slot pictures wait for one click in Settings → Art (117). After this deploy the mirror wants a run for the new units' art (`mirror-art` workflow, or `npm run assets:mirror -- --game wuwa` and `--game endfield`).
 - Round 17's plan and what shipped: `docs/AUDIT-2026-10-21-round17.md`; rounds 18–20 took the plan's next items on Georges's "go", "continue" and "go".
 
