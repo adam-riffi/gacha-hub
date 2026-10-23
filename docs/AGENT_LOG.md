@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-23 · claude · stack/r27/04-docs · #386
+- Done: round 20's handoff: the three catalogs refreshed (Wuthering Waves at 3.7 from Hakushin, Endfield from its wiki's tables, NTE held at 1.3 until Hakushin's live pointer moves), Endfield's history, what waits for Georges's word and what comes next (the features audit with his keys, GameWith's NTE schedule as the candidate dated source for its events, ADR 0011's services, the sample banners' retirement).
+- Tests: docs only.
+- Scope/decisions: none.
+- Next: deploy at Georges's word; the mirror for the new units' art.
+
 ## 2026-10-23 · claude · stack/r27/03-endfield-history · #385
 - Done: round 20, the last game without a dated history (Georges, round 17: "still no banner history"). The Endfield wiki keeps its banners in a Cargo table, a row per run with the rate-up operator, the limited roster, the quota pick and each server group's times; `historyFromWikiTable` reads it into the same history the Fandom wikis' pages give the other games (`historyFromWikiPages`; the name matcher shared between the two): 16 runs from Scars of the Forge (January 2026) to The Hearth Fire Beckons the Starry Flow (November), in Americas/Europe time (the Game8 feed's clock), the rate-up operator first, then the limited roster, the quota pick not featured. `npm run catalog:banners-wiki -- endfield` re-reads one wiki alone. Every game has a dated history now: the last-seen flags on Endfield's Characters and Weapons fill from it. Wuthering Waves' history re-read against the 3.7 catalog: 163 runs, six new, twenty-two with the units the 3.1 catalog did not know.
 - Tests: written first: the table reader (a run per dated row at UTC-5, the rate-up operator then the roster each once with the catalog's rarity, the quota pick not featured, unknown names apart, an undated row left out); the loaded history features the catalog's operators in date order; Endfield joins the games with a wiki history.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the cron secret, the owner password, the bot's DMs and the interactions' public key each work from the app's entry (and stop when cleared); the reminder-preview test mocks `hasDiscordBot` where it lives now.
 - Scope/decisions: a database read per use, no cache: each is a rare call (sign-in, a DM, a tick every 10 minutes).
 - Next: GitHub's workflows without secrets.
-
-## 2026-10-16 · claude · stack/r19/01-key-store · #345
-- Done: ADR 0012, accepted (Georges, 2026-10-16: "settings where i can input my keys/secrets ... i don't have to put it on github just the app directly"). `AppSecret` holds one sealed row per key the owner enters (AES-256-GCM like linked accounts, `app:<NAME>` as the additional data); `GET /api/settings/keys` says where each key comes from and shows only the values that are not secrets; `PUT`/`DELETE` are owner-only, rate-limited and audited by name. The owner password is typed and kept as its scrypt hash. A key on the host wins and cannot be changed in the app. Version 0 of the sealing key is derived from `SESSION_SECRET` (HKDF-SHA256, its own label); `LINK_SECRET_KEY` adds versions 1 and up. HoYoLAB linking, off in production since nobody set `LINK_SECRET_KEY`, now works.
-- Tests: written first: the store's integration test (sealed at rest, never sent back, the host winning, malformed values and unknown names refused, the password hashed, cleared, owner only, audited without the value); the derived key's unit test; the HoYoLAB journey's "stays off until the server has its key" became "links without LINK_SECRET_KEY, under version 0", on purpose.
-- Scope/decisions: in ADR 0012: no separate master key (whoever reads the host's environment already holds SESSION_SECRET); what needs to exist before sign-in stays on the host.
-- Next: the server reads its keys through the store.
