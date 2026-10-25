@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-25 · claude · stack/r27/06-deployed · #388
+- Done: production deployed at Georges's word ("continue where you left off then deploy"): `main` at #387 (rounds 16–20: official and wiki feeds, the Game8 feed, the 1100 px floor, the three catalogs refreshed, Endfield's history) replaced #358 through the Vercel connector (a Git deployment of `main`, target production; no migration since #358). The smoke checks passed; a first cron tick filled the wiki and Game8 feeds in production (Wuthering Waves 46 banners and 38 events, NTE 13 boards, Endfield 4 banners and 7 events). The mirror run for the new art found the Vercel Blob store suspended (every upload refused, every read 403; a Hobby limit): catalog art falls back to the community CDNs, the owner's slot pictures are unavailable until the store is back. HANDOFF.md says so.
+- Tests: the smoke script against the live URL (`npm run smoke`); the smoke workflow on the deployment event.
+- Scope/decisions: nothing changed in the app for the suspended store: the fallback chain (ADR 0013) is what it is for; the store's state is Georges's to settle in Vercel, and Settings → Keys lets him clear the base meanwhile.
+- Next: the Blob store, then the mirror and the one click in Settings → Art; his keys; the features audit.
+
 ## 2026-10-23 · claude · stack/r27/05-ci-e2e-timeout · #387
 - Done: round 20's merges showed the e2e job timing out on the first run after each push (15 min 16 s against a 15-minute limit; the cached re-run takes 7 min), reported by GitHub as "cancelled" (#380 in round 19 was the same). The job's limit is 25 minutes now, and its traces are uploaded when it times out as well as when it fails, so a slow run can be read instead of re-run blind.
 - Tests: none to write: a workflow setting; this PR's own run exercises it.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the Keys journey (a public value shown, a secret emptied from its field and absent from the page, a malformed value refused, Generate, the public URL in `/api/me`, Clear); the HoYoLAB card's journey now expects HoYoLAB's own answer, since linking no longer waits for a key.
 - Scope/decisions: the labels come from the server's key list, the hints per service from the tab.
 - Next: art where a banner or event has none.
-
-## 2026-10-16 · claude · stack/r19/03-github-oidc · #347
-- Done: ADR 0012's third part. `isGithubWorkflow` checks a bearer token is GitHub's OIDC proof: RS256 only, a key from GitHub's published set (kept an hour, fetched again at most once a minute for an unknown key id), GitHub's issuer, the app's URL as the audience, within its lifetime, our repository, `main`, and the named workflow file. The tick accepts it for `cron-tick.yml` (and the cron secret still, for other schedulers); `POST /api/cron/art-store` hands the R2 keys the owner entered to `mirror-art.yml` alone. Both workflows ask GitHub for the token (`id-token: write`) and need no repository secret.
-- Tests: written first: the verifier's unit test (another workflow, branch, repository, audience or issuer; expired or not yet valid; a forged signature, `alg: none`, a changed claim, an unknown key, garbage: all refused) and the routes' integration test; actionlint on both workflows.
-- Scope/decisions: hand-written with `node:crypto` (no JWT library: one algorithm, one issuer).
-- Next: the Keys tab.
