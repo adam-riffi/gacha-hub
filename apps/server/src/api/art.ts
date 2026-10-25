@@ -3,6 +3,7 @@ import { z } from "zod";
 import { artSlots, gameList, type ArtSlot } from "@gacha/shared";
 import { requireAdmin, requireUser } from "../auth/plugin.js";
 import { IMAGE_TYPES, storeImage } from "../lib/images.js";
+import { loadArtStore } from "../lib/artStoreKeys.js";
 import { prisma } from "../lib/prisma.js";
 import { getCatalog } from "./util.js";
 import { ART_SOURCES as SOURCES } from "../art/sources.js";
@@ -78,10 +79,19 @@ export async function registerArtRoutes(app: FastifyInstance) {
 
   // The pictures found for the slots, fetched into the store at one click: the named keys, or the next batch not yet held
   // (the keys to skip are the ones that failed earlier in the run, so a run ends instead of asking them again).
-  app.post("/api/art/fetch", { preHandler: requireAdmin, config: { rateLimit: { max: 60, timeWindow: "1 minute" } } }, async (req) => {
+  app.post("/api/art/fetch", { preHandler: requireAdmin, config: { rateLimit: { max: 60, timeWindow: "1 minute" } } }, async (req, reply) => {
     const { keys, skip, limit } = fetchInput.parse(req.body ?? {});
     const held = new Set((await prisma.artSlot.findMany({ select: { key: true } })).map((row) => row.key));
     const wanted = keys ?? SOURCES.filter((source) => !held.has(source.slot) && !skip.includes(source.slot)).slice(0, limit).map((source) => source.slot);
+    // The whole batch against the month's budget before the first write (ADR 0014; the store checks each write again, from the same reading).
+    const store = await loadArtStore();
+    if (store) {
+      try {
+        await store.assertBudget({ classA: wanted.length, bytes: wanted.length * 500_000 });
+      } catch (error) {
+        return reply.code(503).send({ error: "art_store_budget", detail: (error as Error).message });
+      }
+    }
     const fetched: { key: string; url: string }[] = [];
     const failed: { key: string; error: string }[] = [];
     for (const key of wanted) {

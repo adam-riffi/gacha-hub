@@ -23,8 +23,16 @@ const tokenFor = (workflow: string) => {
   return `${head}.${body}.${sign("RSA-SHA256", Buffer.from(`${head}.${body}`), privateKey).toString("base64url")}`;
 };
 
-const BLOB_TOKEN = "vercel_blob_rw_test_only_not_a_real_token_0123456789";
-const BLOB_BASE = "https://abc123.public.blob.vercel-storage.com/assets";
+// The R2 art store's keys (ADR 0014), as the host would set them; test values only, not a real account or token.
+const R2 = {
+  R2_ACCOUNT_ID: "0123456789abcdef0123456789abcdef",
+  R2_BUCKET: "gacha-hub-art",
+  R2_ACCESS_KEY_ID: "fedcba9876543210fedcba9876543210",
+  R2_SECRET_ACCESS_KEY: "0".repeat(64),
+  R2_PUBLIC_URL: "https://pub-test0000.r2.dev",
+  CF_ANALYTICS_TOKEN: "test-only-analytics-token-not-real-00000",
+};
+const OVERRIDE_BASE = "https://pub-elsewhere.r2.dev/assets";
 
 let ipCounter = 0;
 
@@ -55,26 +63,31 @@ describe("GitHub's workflows call the app with their OIDC proof", () => {
     expect((await post("/api/cron/tick", tokenFor("ci.yml"))).statusCode).toBe(401);
   });
 
-  // ADR 0013: the art store is Vercel Blob; its token lives on the host and goes to the mirror workflow alone.
-  it("hands the art store's token to the mirror workflow only, and takes the public base the mirror reports", async () => {
-    delete process.env.BLOB_READ_WRITE_TOKEN;
+  // ADR 0014: the art store is an R2 bucket; its keys live in Settings → Keys (or on the host) and go to the mirror workflow alone.
+  it("hands the art store's keys to the mirror workflow only; the web reads the art at the bucket's public address unless an override is reported", async () => {
+    for (const name of Object.keys(R2)) delete process.env[name];
     expect((await post("/api/cron/art-store", tokenFor("mirror-art.yml"))).statusCode).toBe(404);
-    process.env.BLOB_READ_WRITE_TOKEN = BLOB_TOKEN;
+    expect((await owner.req<{ assetBase: string | null }>("GET", "/api/me")).json.assetBase).toBeNull();
+    Object.assign(process.env, R2);
     try {
       const store = await post("/api/cron/art-store", tokenFor("mirror-art.yml"));
       expect(store.statusCode).toBe(200);
-      expect(store.json()).toEqual({ blobToken: BLOB_TOKEN, base: null });
+      expect(store.json()).toEqual({
+        r2: { accountId: R2.R2_ACCOUNT_ID, bucket: R2.R2_BUCKET, accessKeyId: R2.R2_ACCESS_KEY_ID, secretAccessKey: R2.R2_SECRET_ACCESS_KEY, publicUrl: R2.R2_PUBLIC_URL, analyticsToken: R2.CF_ANALYTICS_TOKEN },
+        base: "https://pub-test0000.r2.dev/assets",
+      });
+      expect((await owner.req<{ assetBase: string | null }>("GET", "/api/me")).json.assetBase).toBe("https://pub-test0000.r2.dev/assets");
       expect((await post("/api/cron/art-store", tokenFor("cron-tick.yml"))).statusCode).toBe(401);
       expect((await app.inject({ method: "POST", url: "/api/cron/art-store" })).statusCode).toBe(401);
-      // The mirror reports where the pictures landed: the app reads them from there at once (Settings → Keys, ASSET_BASE).
-      const reported = await app.inject({ method: "POST", url: "/api/cron/art-base", headers: { authorization: `Bearer ${tokenFor("mirror-art.yml")}`, "content-type": "application/json" }, payload: JSON.stringify({ base: BLOB_BASE }) });
+      // An override the mirror reports (another address for the pictures): the app reads them from there at once (Settings → Keys, ASSET_BASE).
+      const reported = await app.inject({ method: "POST", url: "/api/cron/art-base", headers: { authorization: `Bearer ${tokenFor("mirror-art.yml")}`, "content-type": "application/json" }, payload: JSON.stringify({ base: OVERRIDE_BASE }) });
       expect(reported.statusCode).toBe(200);
-      expect((await owner.req<{ assetBase: string | null }>("GET", "/api/me")).json.assetBase).toBe(BLOB_BASE);
-      expect((await post("/api/cron/art-store", tokenFor("mirror-art.yml"))).json()).toEqual({ blobToken: BLOB_TOKEN, base: BLOB_BASE });
-      expect((await app.inject({ method: "POST", url: "/api/cron/art-base", headers: { authorization: `Bearer ${tokenFor("cron-tick.yml")}`, "content-type": "application/json" }, payload: JSON.stringify({ base: BLOB_BASE }) })).statusCode).toBe(401);
+      expect((await owner.req<{ assetBase: string | null }>("GET", "/api/me")).json.assetBase).toBe(OVERRIDE_BASE);
+      expect((await post("/api/cron/art-store", tokenFor("mirror-art.yml"))).json()).toMatchObject({ base: OVERRIDE_BASE });
+      expect((await app.inject({ method: "POST", url: "/api/cron/art-base", headers: { authorization: `Bearer ${tokenFor("cron-tick.yml")}`, "content-type": "application/json" }, payload: JSON.stringify({ base: OVERRIDE_BASE }) })).statusCode).toBe(401);
       expect((await app.inject({ method: "POST", url: "/api/cron/art-base", headers: { authorization: `Bearer ${tokenFor("mirror-art.yml")}`, "content-type": "application/json" }, payload: JSON.stringify({ base: "https://elsewhere.example/x" }) })).statusCode).toBe(400);
     } finally {
-      delete process.env.BLOB_READ_WRITE_TOKEN;
+      for (const name of Object.keys(R2)) delete process.env[name];
     }
   });
 });

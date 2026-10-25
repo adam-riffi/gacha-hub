@@ -1,6 +1,6 @@
 import type { FastifyInstance } from "fastify";
 import { APP_KEYS, readKey, setKey } from "../lib/appKeys.js";
-import { config } from "../config.js";
+import { artStoreSettings, assetBase } from "../lib/artStoreKeys.js";
 import { ownerAccount } from "../auth/sessions.js";
 import { isGithubWorkflow } from "../lib/githubOidc.js";
 import { runReminderTick } from "../scheduler/reminders.js";
@@ -33,15 +33,17 @@ export async function registerCronRoutes(app: FastifyInstance) {
     return { ok: true, ms: Date.now() - started, feeds, links };
   });
 
-  // The art mirror workflow (run by hand on GitHub) takes the store's token from the host (ADR 0013) and the base it last reported.
+  // The art mirror workflow (run by hand on GitHub) takes the store's keys from the app (ADR 0014: the R2 bucket, its S3
+  // credentials, its public address, the analytics token of the budget check) and where the web app reads the art now.
   const mirrorProof = (req: { headers: { authorization?: string } }) => isGithubWorkflow(req.headers.authorization?.replace(/^Bearer\s+/i, ""), "mirror-art.yml");
   app.post("/api/cron/art-store", { config: { rateLimit: { max: 10, timeWindow: "1 minute" } } }, async (req, reply) => {
     if (!(await mirrorProof(req))) return reply.code(401).send({ error: "unauthorized" });
-    if (!config.blobToken) return reply.code(404).send({ error: "art_store_not_set" });
-    return { blobToken: config.blobToken, base: (await readKey("ASSET_BASE")) || null };
+    const settings = await artStoreSettings();
+    if (!settings) return reply.code(404).send({ error: "art_store_not_set" });
+    return { r2: settings, base: await assetBase() };
   });
 
-  // Where the mirror put the pictures: kept as ASSET_BASE, so the web app reads our copy at once (a value on the host wins).
+  // Where the mirror put the pictures: kept as ASSET_BASE, the override the web app reads at once (a value on the host wins).
   app.post("/api/cron/art-base", { config: { rateLimit: { max: 10, timeWindow: "1 minute" } } }, async (req, reply) => {
     if (!(await mirrorProof(req))) return reply.code(401).send({ error: "unauthorized" });
     const base = String((req.body as { base?: unknown } | null)?.base ?? "");

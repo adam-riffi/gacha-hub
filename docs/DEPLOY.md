@@ -129,20 +129,27 @@ instead: make one in Settings → Keys → Schedule → Generate, and send it as
 
 ---
 
-## 7. Game art store (Vercel Blob, ADR 0013)
+## 7. Game art store (Cloudflare R2, ADR 0014)
 
-Optional: without it the app hotlinks the community CDNs (Enka, Yatta, Hakushin, wuthery), then shows placeholders.
+Optional: without it the app hotlinks the community CDNs (Enka, Yatta, Hakushin, wuthery), then shows placeholders;
+the owner's own pictures (Settings → Art) need it. R2's free tier (10 GB-month stored, a million writes and ten
+million reads a month, egress free) holds everything the app can show (about 0.3 GB) forty times over; past it R2
+bills instead of suspending, so the app checks the month's usage before every write and refuses past 80 %.
 
-Nothing to create: the Blob store the app's uploads use (made through the Vercel connector, its
-`BLOB_READ_WRITE_TOKEN` injected by Vercel) is the art store too. The Hobby plan's 1 GB of storage
-and 10 GB of monthly transfer hold everything the app can show (about 250 MB).
-
-1. Run the **mirror-art** workflow (Actions → mirror-art → Run workflow, game `all`): it takes the
-   store's token from the app with GitHub's OIDC proof (ADR 0012), uploads every catalog's art it
-   does not hold yet, and reports back where the pictures landed. The app keeps that as `ASSET_BASE`
-   (Settings → Keys → Art store) and reads our copy at once, no redeploy.
-2. After each catalog refresh, run it again: only what the store lacks is uploaded (`--force` in
-   the script uploads everything again).
+1. Cloudflare → **R2 Object Storage** → enable R2 (a card on file; nothing is charged inside the free tier).
+2. A bucket (`gacha-hub-art`; the agent creates it through the Cloudflare connector) → **Settings** →
+   **Public Development URL** → Enable; copy the `https://pub-….r2.dev` address.
+3. **Manage R2 API Tokens** → a token with **Object Read & Write** on that bucket; copy its Access Key ID and
+   Secret Access Key (shown once).
+4. **Manage Account → Account API Tokens** → a token with **Account Analytics: Read** (the budget check).
+5. Settings → Keys → **Art store**: the account ID, the bucket, the two S3 values, the public URL, the analytics
+   token. The web app reads the mirrored art at `<public URL>/assets` from then on; `Public URL override`
+   (`ASSET_BASE`) points it elsewhere if ever needed.
+6. Run the **mirror-art** workflow (Actions → mirror-art → Run workflow, game `all`): it takes the store's keys from
+   the app with GitHub's OIDC proof (ADR 0012), prints the month's usage against the free tier, lists what the bucket
+   holds (one request a thousand pictures), uploads the rest, and prints the usage again.
+7. After each catalog refresh, run it again: only what the store lacks is uploaded (`--force` in the script uploads
+   everything again, after the same check).
 
 ## Redeploys and migrations
 

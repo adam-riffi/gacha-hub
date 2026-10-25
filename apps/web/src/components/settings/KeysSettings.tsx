@@ -10,7 +10,7 @@ const GROUPS: Record<string, { what: string; where?: { text: string; href: strin
   "Sign-in": { what: "Password sign-in" },
   "Discord bot": { what: "Reminder DMs, slash commands", where: { text: "Discord developer portal", href: "https://discord.com/developers/applications" } },
   Schedule: { what: "Other schedulers only: GitHub needs no key" },
-  "Art store": { what: "Where our copy of the games' art lives: set by the mirror (Vercel Blob, ADR 0013); typed here only to override it", where: { text: "Vercel storage", href: "https://vercel.com/dashboard/stores" } },
+  "Art store": { what: "Our copy of the games' art and your pictures, in a Cloudflare R2 bucket (ADR 0014): the account, the bucket, its API token's two values, its public URL, and an analytics token for the budget check before each write", where: { text: "Cloudflare R2", href: "https://dash.cloudflare.com/?to=/:account/r2/overview" } },
 };
 
 const STATE = { app: "In the app", host: "On the host", missing: "Missing" } as const;
