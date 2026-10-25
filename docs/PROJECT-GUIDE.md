@@ -97,7 +97,7 @@ Every game is a bespoke module and sheet · sign-in with Discord, a passkey or t
 | `DISCORD_BOT_TOKEN` | sending DMs, registering commands | **not set**: enter it in Settings → Keys (ADR 0012) |
 | `ADMIN_DISCORD_IDS` | the owner's Discord id: who sees Data sources | set |
 | `CRON_SECRET` | other schedulers only; GitHub's tick uses its OIDC token (ADR 0012) | not needed |
-| `BLOB_READ_WRITE_TOKEN` | image uploads | injected by the Blob store |
+| `R2_*`, `CF_ANALYTICS_TOKEN` | the art store and its budget check (ADR 0014) | Settings → Keys, Art store |
 | `DEV_LOGIN_ENABLED=false` | dev shortcut off | set (`devLogin: false`) |
 | GitHub secrets | none since ADR 0012; `CRON_URL` and `CRON_SECRET` can be deleted | — |
 
@@ -122,7 +122,7 @@ flowchart LR
   DC["Discord<br/>OAuth · REST · interactions"]
   HOYO["HoYoverse announcement API<br/>(Genshin, HSR)"]
   ART["Enka (Genshin) · Yatta (HSR)<br/>hotlinked art"]
-  BLOB["Vercel Blob<br/>uploaded portraits"]
+  BLOB["Cloudflare R2<br/>our copy of the art, uploaded pictures"]
 
   W -- "/api/*" --> F
   W --> STATIC
@@ -141,7 +141,7 @@ flowchart LR
 - **Catalogs** are normalized JSON per game (`packages/shared/src/games/<key>/catalog.json`, about 4 MB for Genshin), loaded lazily per game on both sides and indexed once. They are typed `unknown` behind `catalog.js` + `catalog.d.ts` shims because literal inference over the JSON ran `tsc` out of memory.
 - **Pure core** (unit and property tested, no I/O): reset math (`apps/server/src/lib/resets.ts`), game day and domains today (`packages/shared/src/domains.ts`), reminder due logic (`apps/server/src/scheduler/due.ts`), planning and cost math (`packages/shared/src/planning`), currency and pull math (`apps/server/src/lib/currencies.ts`), pity (`packages/shared/src/pity.ts`), feed parsing (`apps/server/src/lib/officialFeed.ts`), build-document migrations (`apps/server/src/lib/docMigrations.ts`).
 - **Serverless.** Production is one Vercel function plus static files. `api/index.mjs` imports the esbuild bundle in `dist-server/` (ESM; a `.ts` entry compiled to CJS crashed with `ERR_REQUIRE_ESM`). `apps/server/src/index.ts` is the always-on entry for local dev and E2E.
-- **Security headers** on every response: CSP (own scripts; images from the app, Enka, Yatta, Discord avatars, Vercel Blob), `frame-ancestors 'none'`, `nosniff`, strict referrer and permissions policies. Defined in `apps/server/src/lib/securityHeaders.ts`, mirrored in `vercel.json` for static files, and a test keeps the two equal.
+- **Security headers** on every response: CSP (own scripts; images from the app, Enka, Yatta, Discord avatars, the R2 bucket), `frame-ancestors 'none'`, `nosniff`, strict referrer and permissions policies. Defined in `apps/server/src/lib/securityHeaders.ts`, mirrored in `vercel.json` for static files, and a test keeps the two equal.
 
 **Repository layout**
 

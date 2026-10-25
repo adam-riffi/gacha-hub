@@ -12,7 +12,6 @@ Set `VITE_ASSET_BASE` (build-time, web app):
 | Value | Serves from |
 | --- | --- |
 | _unset_ / `/assets` | `apps/web/public/assets` → your CDN in prod (default) |
-| `https://<blob>.public.blob.vercel-storage.com/assets` | Vercel Blob |
 | `https://<bucket>.r2.dev/assets` | Cloudflare R2 / S3 / any CDN |
 
 Layout and key conventions: see
