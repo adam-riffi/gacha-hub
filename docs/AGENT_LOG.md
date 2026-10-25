@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-25 · claude · stack/r28/01-art-store-r2 · #389
+- Done: round 21 (Georges: "go R2", then "before doing any kind of operation with the bucket to avoid paying over limits check yourself from now"). Vercel Blob suspended the art store on the Hobby limit until 19 November; the store moves to a Cloudflare R2 bucket (`gacha-hub-art`, created through the Cloudflare connector; ADR 0014). One module (`apps/server/src/lib/artStore.ts`) writes through R2's S3 API with `aws4fetch` signing, lists a thousand keys a request, reads the month's usage from Cloudflare's GraphQL analytics (operations by class, the newest storage reading) and refuses any write that would take storage, class A or class B past 80 % of the free tier; a reading serves ten minutes of checks; no analytics token, no write. The app's uploads and the slot fetch (its whole batch checked first) go through it; Settings → Keys takes the six values (account, bucket, Access Key ID, Secret Access Key, public URL, analytics token); the web reads the art at the bucket's `/assets` unless `ASSET_BASE` overrides; the mirror workflow's endpoint hands out the keys. `@vercel/blob` left the server; DESIGN.md §6 lists `aws4fetch` in its place; ADR 0013 superseded.
+- Tests: written first: the operation classes, the usage from an analytics answer (an empty month too), the budget verdicts (a plan under the share with the three meters' lines; past it on each meter, named), the signed PUT to the bucket's address with its headers, the paged list following the continuation token, the usage request with the token from the first of the month, the refusals (no token; over the budget), the ten-minute reading. The cron OIDC test hands the R2 keys to the mirror workflow and derives the asset base.
+- Scope/decisions: R2 over Vercel Pro, over waiting, over a second account and over Supabase Storage (ADR 0014); 80 % as the ceiling; an operation the pricing list does not name counts as class A.
+- Next: the mirror on the same store.
+
 ## 2026-10-25 · claude · stack/r27/06-deployed · #388
 - Done: production deployed at Georges's word ("continue where you left off then deploy"): `main` at #387 (rounds 16–20: official and wiki feeds, the Game8 feed, the 1100 px floor, the three catalogs refreshed, Endfield's history) replaced #358 through the Vercel connector (a Git deployment of `main`, target production; no migration since #358). The smoke checks passed; a first cron tick filled the wiki and Game8 feeds in production (Wuthering Waves 46 banners and 38 events, NTE 13 boards, Endfield 4 banners and 7 events). The mirror run for the new art found the Vercel Blob store suspended (every upload refused, every read 403; a Hobby limit): catalog art falls back to the community CDNs, the owner's slot pictures are unavailable until the store is back. HANDOFF.md says so.
 - Tests: the smoke script against the live URL (`npm run smoke`); the smoke workflow on the deployment event.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the timeline journey expects Star Rail's hero (Kafka) in Selected for an event without art.
 - Scope/decisions: found while surveying every screen for the list of cards still waiting for art (#350); these two needed no new art.
 - Next: the list and the docs.
-
-## 2026-10-16 · claude · stack/r19/04-keys-tab · #348
-- Done: ADR 0012's screen. Settings → Keys (owner only) lists Sign-in, Discord bot, Schedule and Art store as cards, each key with its state in a chip (In the app, On the host, Missing), a field to enter or replace it, Clear, and Generate for the cron secret; a key on the host is locked. Values that are not secrets show once saved. The art store's public URL reaches the web app through `/api/me` at once (no rebuild); it must be an `r2.dev` or Vercel Blob host, the ones the image policy allows.
-- Tests: written first: the Keys journey (a public value shown, a secret emptied from its field and absent from the page, a malformed value refused, Generate, the public URL in `/api/me`, Clear); the HoYoLAB card's journey now expects HoYoLAB's own answer, since linking no longer waits for a key.
-- Scope/decisions: the labels come from the server's key list, the hints per service from the tab.
-- Next: art where a banner or event has none.
