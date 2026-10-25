@@ -34,8 +34,8 @@ const STATE = { uploaded: "Uploaded", sourced: "From a source", needed: "Needed"
 
 /**
  * Settings → Art (Georges, 2026-10-17: "make me an exhaustive list of assets you need"): every picture a card can show
- * that no catalog names, game by game, most visible first; each takes the owner's upload in place, stored in Vercel
- * Blob, never committed (ADR 0006). It opens on the pictures no source has.
+ * that no catalog names, game by game, most visible first; each takes the owner's upload in place, stored in the
+ * R2 bucket (ADR 0014), never committed (ADR 0006). It opens on the pictures no source has.
  */
 export function ArtSettings() {
   const { data } = useArtSlots();

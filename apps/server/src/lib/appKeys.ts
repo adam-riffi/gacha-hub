@@ -23,8 +23,17 @@ export const APP_KEYS = {
   DISCORD_BOT_TOKEN: { group: "Discord bot", label: "Bot token", pattern: /^[\w.-]{50,100}$/ },
   DISCORD_PUBLIC_KEY: { group: "Discord bot", label: "Public key", pattern: /^[0-9a-f]{64}$/i, shown: true },
   CRON_SECRET: { group: "Schedule", label: "Cron secret", pattern: /^[\x21-\x7e]{24,200}$/ },
-  // Only hosts the Content-Security-Policy lets images come from (vercel.json): an R2 public bucket or Vercel Blob.
-  ASSET_BASE: { group: "Art store", label: "Public URL", pattern: /^https:\/\/[a-z0-9-]+\.(r2\.dev|public\.blob\.vercel-storage\.com)(\/[\w./-]*)?$/, shown: true },
+  // The art store on Cloudflare R2 (ADR 0014): the bucket, its S3 credentials, its public address, and the analytics token
+  // the budget check reads the month's usage with (no token, no write).
+  R2_ACCOUNT_ID: { group: "Art store", label: "Cloudflare account ID", pattern: /^[0-9a-f]{32}$/, shown: true },
+  R2_BUCKET: { group: "Art store", label: "Bucket", pattern: /^[a-z0-9][a-z0-9-]{1,62}$/, shown: true },
+  R2_ACCESS_KEY_ID: { group: "Art store", label: "Access Key ID", pattern: /^[0-9a-f]{32}$/ },
+  R2_SECRET_ACCESS_KEY: { group: "Art store", label: "Secret Access Key", pattern: /^[0-9a-f]{64}$/ },
+  R2_PUBLIC_URL: { group: "Art store", label: "Bucket public URL", pattern: /^https:\/\/[a-z0-9-]+\.r2\.dev$/, shown: true },
+  CF_ANALYTICS_TOKEN: { group: "Art store", label: "Analytics token", pattern: /^[\w-]{40}$/ },
+  // Only hosts the Content-Security-Policy lets images come from (vercel.json): an R2 public bucket or Vercel Blob. An override
+  // of where the mirrored art is read; unset, the bucket's `/assets`.
+  ASSET_BASE: { group: "Art store", label: "Public URL override", pattern: /^https:\/\/[a-z0-9-]+\.(r2\.dev|public\.blob\.vercel-storage\.com)(\/[\w./-]*)?$/, shown: true },
 } satisfies Record<string, KeyDefinition>;
 
 export type AppKeyName = keyof typeof APP_KEYS;

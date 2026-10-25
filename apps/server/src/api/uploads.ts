@@ -3,8 +3,8 @@ import { requireUser } from "../auth/plugin.js";
 import { IMAGE_TYPES, storeImage } from "../lib/images.js";
 
 /**
- * Accept an image upload and return its URL. Uses Vercel Blob when
- * BLOB_READ_WRITE_TOKEN is set (serverless has no persistent disk); otherwise
+ * Accept an image upload and return its URL. Uses the R2 art store when
+ * Settings → Keys names one (ADR 0014; serverless has no persistent disk); otherwise
  * writes to the local upload directory served by the always-on server.
  */
 export async function registerUploadRoutes(app: FastifyInstance) {

@@ -21,6 +21,7 @@ import { registerPasskeyRoutes } from "./passkeys.js";
 import { prisma } from "../lib/prisma.js";
 import { OwnerPassword } from "./ownerPassword.js";
 import { readKey } from "../lib/appKeys.js";
+import { assetBase } from "../lib/artStoreKeys.js";
 
 const passwordSignInInput = z.object({ password: z.string().max(200) });
 
@@ -127,8 +128,8 @@ export async function registerAuth(app: FastifyInstance) {
       isAdmin: req.isAdmin,
       oauth: hasDiscordOAuth(),
       passwordSignIn: Boolean(await readKey("OWNER_PASSWORD_HASH")),
-      /** The art store's public URL entered in Settings → Keys (ADR 0012); the web build's VITE_ASSET_BASE otherwise. */
-      assetBase: (await readKey("ASSET_BASE")) || null,
+      /** Where the mirrored art is read: the override in Settings → Keys, else the R2 bucket's public address (ADR 0014); the web build's VITE_ASSET_BASE otherwise. */
+      assetBase: await assetBase(),
       passkeySignIn: (await prisma.passkey.count()) > 0,
       devLogin: config.devLoginEnabled,
     };

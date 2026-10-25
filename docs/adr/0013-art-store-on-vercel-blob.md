@@ -1,6 +1,6 @@
 # 0013 — The art store on Vercel Blob
 
-- Status: Accepted (2026-10-20, Georges: "all ok go on")
+- Status: Superseded by 0014 on 2026-10-25 (the store suspended on the Hobby limit); accepted 2026-10-20 (Georges: "all ok go on")
 - Date: 2026-10-20
 - Proposed by: claude; decided by: Georges
 
