@@ -42,7 +42,7 @@ genshin/gear/UI_RelicIcon_15035_4.webp
 Pick one — the resolver doesn't care (set `VITE_ASSET_BASE`):
 
 1. **Local (default)** — drop files here; served by the CDN in production.
-2. **Vercel Blob / any CDN** — set `VITE_ASSET_BASE` to the public base URL.
+2. **Cloudflare R2 / any CDN** — set `VITE_ASSET_BASE` to the public base URL (the app's Settings → Keys sets it at run time, ADR 0014).
 3. **Google Drive → static** — keep originals in a Drive folder and pull them
    into this tree with [`scripts/assets/sync-drive.mjs`](../../../../scripts/assets/README.md).
    Drive is the drop-box; the runtime still serves static files.

@@ -92,7 +92,7 @@ docs/                             DESIGN · VISUAL-DESIGN · WIREFRAMES · desig
 ## Limitations and next steps
 
 - Reminders need the owner's Discord bot token and cron secret in production.
-- Art comes from our Vercel Blob store once the mirror has run (ADR 0013), else from Enka (Genshin), Yatta (HSR), the Hakushin assets (ZZZ, NTE) and Wuthery (WuWa); Endfield shows initials.
+- Art comes from our Cloudflare R2 bucket once the mirror has run (ADR 0014; every write checked against the free tier first), else from Enka (Genshin), Yatta (HSR), the Hakushin assets (ZZZ, NTE), Wuthery (WuWa), endfieldtools.dev and the Endfield wiki.
 - Account linking (HoYoLAB, Enka, pull-history links) works with no extra key: tokens are sealed with a key derived from `SESSION_SECRET` (ADR 0012); HoYoLAB stays read-only (ADR 0005). Service keys (the Discord bot, the art store, the owner password) are entered in Settings → Keys.
 - No mobile layout (desktop only, by decision).
 - Next milestone: paging the calendar back through ended banners and events (docs/DESIGN.md §9).
