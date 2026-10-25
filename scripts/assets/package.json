@@ -7,7 +7,6 @@
     "mirror": "tsx mirror.ts"
   },
   "dependencies": {
-    "@vercel/blob": "^2.8.1",
     "sharp": "^0.33.5"
   },
   "devDependencies": {

@@ -1,8 +1,9 @@
-# Mirrors game art into the Vercel Blob store the web app reads (ADR 0013). Run
+# Mirrors game art into the Cloudflare R2 bucket the web app reads (ADR 0014). Run
 # by hand after a catalog refresh. No repository secret (ADR 0012): the job
-# proves who it is with GitHub's OIDC token, takes the store's token from the
-# app and reports back where the pictures landed. Optional repository variable:
-# APP_URL.
+# proves who it is with GitHub's OIDC token, takes the store's keys from the
+# app and reports back where the pictures landed. The mirror checks the month's
+# usage against the free tier before its first request and refuses past 80 %.
+# Optional repository variable: APP_URL.
 name: mirror-art
 
 on:
@@ -28,16 +29,19 @@ jobs:
           node-version-file: .nvmrc
       - run: npm ci
       - run: npm --prefix scripts/assets ci
-      - name: Mirror with the art store's token from the app, then report where the pictures landed
+      - name: Mirror with the art store's keys from the app, then report where the pictures landed
         env:
           GAME: ${{ inputs.game }}
           APP_URL: ${{ vars.APP_URL || 'https://gacha-hub-two.vercel.app' }}
         run: |
           token=$(curl -fsS -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=$APP_URL" | jq -r .value)
           store=$(curl -fsS -X POST "$APP_URL/api/cron/art-store" -H "Authorization: Bearer $token")
-          BLOB_READ_WRITE_TOKEN=$(jq -r .blobToken <<<"$store")
-          echo "::add-mask::$BLOB_READ_WRITE_TOKEN"
-          export BLOB_READ_WRITE_TOKEN
+          # The R2 keys (ADR 0014), each masked in the log before it is exported.
+          for pair in accountId:R2_ACCOUNT_ID bucket:R2_BUCKET accessKeyId:R2_ACCESS_KEY_ID secretAccessKey:R2_SECRET_ACCESS_KEY publicUrl:R2_PUBLIC_URL analyticsToken:CF_ANALYTICS_TOKEN; do
+            value=$(jq -r ".r2.${pair%%:*} // empty" <<<"$store")
+            [ -n "$value" ] && echo "::add-mask::$value"
+            export "${pair##*:}=$value"
+          done
           npm --prefix scripts/assets run mirror -- --game "$GAME" | tee mirror.log
           base=$(grep -oE '^\[mirror\] base .*' mirror.log | tail -1 | cut -d' ' -f3-)
           if [ -n "$base" ]; then

@@ -38,7 +38,7 @@ Operating manual for coding agents in this repository. Codex and Copilot read th
 | Regenerate the endgame enemies (ZZZ's Shiyu Defense and Deadly Assault, Genshin's Stygian Onslaught; delete `scripts/catalog/.cache/zzz-endgame` first) | `npm run catalog:endgame` |
 | Regenerate the banner history (Genshin and Star Rail, from samsara-web at a pinned commit; move `SAMSARA_COMMIT` in `scripts/catalog/banners.ts` for newer banners) | `npm run catalog:banners` |
 | Regenerate the banner history of Zenless, Wuthering Waves and NTE from their wikis' banner pages, and Endfield's from its wiki's banner table (one cache folder a day under `scripts/catalog/.cache/banner-history-wiki/`; name games to read only those: `-- endfield`) | `npm run catalog:banners-wiki` |
-| Mirror game art to the Vercel Blob store (ADR 0013; `BLOB_READ_WRITE_TOKEN` in the environment, or `--dry-run`, or `--out DIR`; the `mirror-art` workflow does it with the token from the app) | `npm run assets:install` then `npm run assets:mirror -- --game <key>` |
+| Mirror game art to the Cloudflare R2 bucket (ADR 0014; the six `R2_*`/`CF_ANALYTICS_TOKEN` values in the environment, or `--dry-run`, or `--out DIR`; the `mirror-art` workflow does it with the keys from the app, after the budget check against the free tier) | `npm run assets:install` then `npm run assets:mirror -- --game <key>` |
 | New migration (offline) | `npx prisma migrate diff --from-schema <before> --to-schema prisma/schema.prisma --script` |
 | E2E smoke (Playwright; `npx playwright install chromium` once) | `npm run build -w @gacha/web && npm run e2e` |
 | Bundle harnesses (throwaway SQLite database) | `npm run harness` |
