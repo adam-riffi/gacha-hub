@@ -1,8 +1,8 @@
-# Handoff — 2026-10-23 · claude (round 20 merged, not deployed)
+# Handoff — 2026-10-25 · claude (round 20 merged and deployed)
 
 ## State
-- `main` at #387: rounds 1–20 merged, plus the e2e job's 25-minute limit (#387). CI green. **Production serves #358** (round 15 and the dependency bumps, deployed 2026-10-20 at Georges's word; #363's mirror fix ran from GitHub). Rounds 16–20 wait for the word (no migration in any).
-- In production since the last deploy: the mirror ran (3,315 images in the Blob store), `assetBase` is the Blob base; the slot pictures wait for one click in Settings → Art (117). After this deploy the mirror wants a run for the new units' art (`mirror-art` workflow, or `npm run assets:mirror -- --game wuwa` and `--game endfield`).
+- `main` at #387: rounds 1–20 merged, plus the e2e job's 25-minute limit (#387). CI green. **Production serves #387** (rounds 16–20 and the e2e job's limit, deployed 2026-10-25 at Georges's word through the Vercel connector; no migration since #358; the smoke checks and the smoke workflow green).
+- In production: the cron tick fills the wiki and Game8 feeds (a first tick run by hand after the deploy: Wuthering Waves 46 banners and 38 events, NTE 13 boards, Endfield 4 banners and 7 events). **The Vercel Blob store is suspended** (found by the mirror run after the deploy: "This store has been suspended" on every upload, 403 on every read; a Hobby limit, no charges on the team): catalog art falls back to the community CDNs picture by picture, the owner's slot pictures (logos, key art, task icons) are unavailable, and the mirror cannot write until the store is back. `assetBase` still points at it (Settings → Keys, Art store → Public URL).
 - Round 17's plan and what shipped: `docs/AUDIT-2026-10-21-round17.md`; rounds 18–20 took the plan's next items on Georges's "go", "continue" and "go".
 
 ## Done this session (round 20)
@@ -22,14 +22,14 @@
 - In the browser: Wuthering Waves' Characters and Weapons with the 3.7 roster and art; Endfield's Characters, Gear sets (the wiki's pictures) and Pulls (the history behind last seen).
 
 ## Next (the plan)
-1. **Deploy** at Georges's word; then in production: Settings → Art → "Fetch 117 from the sources"; the mirror for the new units' art; the cron's next tick fills Wuthering Waves', Endfield's and NTE's banners and events.
-2. **Features audit** end to end with Georges's keys in place (HoYoLAB, Enka, the records links, Discord): each sync, reminders, planner, codes, export.
-3. **NTE's events** from GameWith's schedule page (a parser like Game8's, with its own test) if its markup holds; NTE's catalog at 1.4 once Hakushin's pointer moves.
-4. ADR 0011's remaining services; the sample banners' retirement now that every game has a feed and a history; the README GIF; the Gifts table's "Prefer" (each Endfield operator's favourite gift).
+1. **Features audit** end to end with Georges's keys in place (HoYoLAB, Enka, the records links, Discord): each sync, reminders, planner, codes, export.
+2. **NTE's events** from GameWith's schedule page (a parser like Game8's, with its own test) if its markup holds; NTE's catalog at 1.4 once Hakushin's pointer moves.
+3. ADR 0011's remaining services; the sample banners' retirement now that every game has a feed and a history; the README GIF; the Gifts table's "Prefer" (each Endfield operator's favourite gift).
 
 ## Needs from Georges
-- Say **"deploy"** for rounds 16–20.
-- The 64 pictures ASSETS.md lists, in Settings → Art as he finds them.
+- In production, one click: Settings → Art → "Fetch 117 from the sources".
+- **The Blob store**: in Vercel → Storage → the store, see why it is suspended (usage past the Hobby allowance, most likely) and either wait for the cycle, trim the store, or upgrade; meanwhile, clearing Art store → Public URL in Settings → Keys makes every picture load from the community CDNs directly. Then the `mirror-art` workflow again for Wuthering Waves and Endfield.
+- The 64 pictures ASSETS.md lists, in Settings → Art as he finds them (once the store is back).
 - His keys in Settings → Keys, HoYoLAB in Linked accounts; delete the old GitHub secrets `CRON_URL` / `CRON_SECRET` / `R2_*` if any remain.
 
 ## Notes
