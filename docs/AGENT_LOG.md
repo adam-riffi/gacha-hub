@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-25 · claude · stack/r28/03-docs · #391
+- Done: round 21's docs: DEPLOY.md §7 is the R2 setup (enable R2, the bucket's public development URL, the API token, the analytics token, the six keys, the mirror), the guide's environment table and diagram, the READMEs name the bucket instead of Blob, and the handoff: production at #387, round 21 waiting for the word, the bucket created, Georges's steps, the budget rule.
+- Tests: docs only.
+- Scope/decisions: none.
+- Next: Georges's R2 steps, then "deploy", then the keys and the first mirror run with its budget lines.
+
 ## 2026-10-25 · claude · stack/r28/02-mirror-r2 · #390
 - Done: round 21: the mirror (`scripts/assets/mirror.ts`) writes to the R2 bucket through the server's store module. Before its first request it prints the month's storage, class A and class B against the free tier with the run's plan added (every listing, at worst every picture) and stops past 80 %; it lists what the bucket holds once per game (one class A request a thousand keys) instead of a HEAD per picture, writes the rest as WebP under the decoded key (so the web's encoded request resolves to it), and prints the usage again at the end. The `mirror-art` workflow takes the six keys from the app's `/api/cron/art-store`, each masked before it is exported; `@vercel/blob` left the asset tools; the READMEs and AGENTS.md's command row describe it.
 - Tests: the store's unit tests cover the writes, the listing and the budget; the mirror's dry run through the new import chain (the store from `apps/server`, `aws4fetch` from the root install) lists Endfield's 212 images; `actionlint` on the workflow.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the journey now waits for every held save to land, then checks the kept value again (it failed 20 of 20 runs before the fix, passes 20 of 20 after); the server test sends a page's picks out of order, from another page, and without an order.
 - Scope/decisions: no web unit tests exist, so the journey is the queue's test. A save without an order, or from another page (a reload, another tab or device), applies as before: last arrival wins there.
 - Next: deploy at Georges's word (the migration runs then).
-
-## 2026-10-16 · claude · stack/r19/06-docs · #350
-- Done: Georges, 2026-10-16: "make me a list of all the artless cards that needs to be filled i'll find you art to put on them". ASSETS.md lists the 47 pictures still missing, checked screen by screen: 6 game logos, 14 endgame modes, 6 battle passes, 5 30-day passes, 5 standard banners, 5 monthly shops, 6 currencies no source has; each with its shape, size and a file name to hand it over by. DESIGN.md §13, DEPLOY.md, the guide, the README, AGENTS.md's rule 7 and `.env.example` say what stays on the host and what goes in the app (ADR 0012). The handoff is rewritten.
-- Tests: docs only.
-- Scope/decisions: what a source has (elements, weapon types, the top-up currencies) stays off Georges's list: claude fills those.
-- Next: deploy at Georges's word; the art he finds goes into the store when he sends it.
