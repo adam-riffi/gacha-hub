@@ -3,7 +3,11 @@ import { blockOutsideArt } from "./outside-art";
 
 /** A wide white picture, as a wordmark logo is. */
 const WIDE = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAACgAAAAKCAYAAADGmhxQAAAAK0lEQVR4nM3OQQEAIACEMKR/5zOCT1mCnW0jTOIkTuIkTuIkTuIkzt+BlwtLhwQQqnm2VgAAAABJRU5ErkJggg==", "base64");
-const box = async (locator: ReturnType<import("@playwright/test").Page["locator"]>) => (await locator.first().boundingBox())!;
+// The mark is measured once it shows: a source's picture gives way to the drawn emblem only after it has failed (round 22).
+const box = async (locator: ReturnType<import("@playwright/test").Page["locator"]>) => {
+  await expect(locator.first()).toBeVisible();
+  return (await locator.first().boundingBox())!;
+};
 
 // Round 15 (Georges, 2026-10-20: "make every game icon more visible"): a logo keeps its shape and takes real room; the drawn
 // emblem grows the same way where no logo is uploaded.
