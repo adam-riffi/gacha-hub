@@ -72,19 +72,21 @@ export function GameMark({ gameKey, tint, named = false, className = "", art = "
   const accent = tint ?? game?.accent;
   const icon = useSlotArt(artSlotKey(gameKey, "icon"));
   const logo = useSlotArt(artSlotKey(gameKey, "logo"));
-  const picture = art === "logo" ? (logo ?? icon) : icon;
+  // The big spots take the logo, then the icon; the small marks the icon. A picture whose host does not answer gives way
+  // to the next, and the drawn emblem comes only when none is left (round 22: a source shown straight from its host).
+  const [failed, setFailed] = useState<string[]>([]);
+  const picture = (art === "logo" ? [logo, icon] : [icon]).find((candidate): candidate is string => Boolean(candidate) && !failed.includes(candidate!));
   const inverted = useSlotInverted(artSlotKey(gameKey, picture && picture === logo ? "logo" : "icon"));
-  const [failed, setFailed] = useState<string | null>(null);
   // A wordmark (wider than twice its height) is tagged, for the spots that size to it.
   const [wide, setWide] = useState(false);
-  if (picture && failed !== picture) {
+  if (picture) {
     return (
       <img
         className={`game-mark is-art ${inverted ? "is-inverted" : ""} ${wide ? "is-wide" : ""} ${className}`}
         src={picture}
         alt={named ? `${game?.name ?? gameKey} logo` : ""}
         onLoad={(event) => setWide(event.currentTarget.naturalWidth > event.currentTarget.naturalHeight * 2)}
-        onError={() => setFailed(picture)}
+        onError={() => setFailed([...failed, picture])}
       />
     );
   }

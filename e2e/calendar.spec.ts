@@ -185,7 +185,7 @@ test("an event is wishlisted from its Selected panel, and Only what I wishlisted
   const timeline = page.getByRole("region", { name: "Timeline" });
   await timeline.getByRole("button", { name: /E2E event to wish/ }).click();
   // An event without art of its own shows its game's hero (round 22: Star Rail's key art from its wiki), never an empty placeholder.
-  await expect(page.getByRole("complementary", { name: "Selected" }).locator(".cal-art img.hero-art[src*='fandom.com']")).toHaveCount(1);
+  await expect(page.getByRole("complementary", { name: "Selected" }).locator(".cal-art img.hero-art:is([src*='fandom.com'], [src*='wikia.nocookie.net'])")).toHaveCount(1);
   const wish = page.getByRole("complementary", { name: "Selected" }).getByRole("button", { name: "Wishlist" });
   await wish.click();
   await expect(wish).toHaveAttribute("aria-pressed", "true");
