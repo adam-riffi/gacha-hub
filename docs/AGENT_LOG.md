@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-27 · claude · fix/analytics-token-format · #393
+- Done: Georges's analytics token is one of Cloudflare's account API tokens (`cfat_…`, 53 characters); the Analytics token field in Settings → Keys took the classic 40-character format only and would have refused it as "Not valid". The field takes 40 to 100 characters of either format now.
+- Tests: written first: a 40-character and a 53-character token both saved, a short one refused.
+- Scope/decisions: a length range rather than a `cfat_` prefix, so a classic token still goes in.
+- Next: deploy, then Georges's six values, then the mirror with its budget check.
+
 ## 2026-10-25 · claude · stack/r28/03-docs · #391
 - Done: round 21's docs: DEPLOY.md §7 is the R2 setup (enable R2, the bucket's public development URL, the API token, the analytics token, the six keys, the mirror), the guide's environment table and diagram, the READMEs name the bucket instead of Blob, and the handoff: production at #387, round 21 waiting for the word, the bucket created, Georges's steps, the budget rule.
 - Tests: docs only.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: a unit test that every element and weapon type in the sourced games' catalogs maps to an icon (and none for Endfield's, WuWa's weapon types); a journey for the chips and Kafka's card.
 - Scope/decisions: no source has WuWa's weapon types or Endfield's elements and weapon types: they join the list of pictures needed.
 - Next: the art store.
-
-## 2026-10-17 · claude · stack/r20/01-card-stat-flake · #351
-- Done: the flaky journey "card-stat picks made quickly are all kept, even when the page is left at once" (failed CI on #345 with "Route is already handled!" and only the first pick kept) was a real bug. Three quick picks, then the page left: the latest pick's save went at once while the first pick's was still on its way, and the first landed after it and overwrote it. The journey had passed locally only by catching the right value in between. Calling the older save back does not work once the page is going (Chromium keeps a keepalive request), so each pick now carries its order on its page (`nextWriteOrder`: a random page id and a count), and the server drops a pick older than the last it applied from that page, in one conditional update for the game's and a build's card stats. Two columns per table remember the last applied pick (migration `card_stats_order`).
-- Tests: written first: the journey now waits for every held save to land, then checks the kept value again (it failed 20 of 20 runs before the fix, passes 20 of 20 after); the server test sends a page's picks out of order, from another page, and without an order.
-- Scope/decisions: no web unit tests exist, so the journey is the queue's test. A save without an order, or from another page (a reload, another tab or device), applies as before: last arrival wins there.
-- Next: deploy at Georges's word (the migration runs then).

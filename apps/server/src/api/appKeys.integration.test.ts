@@ -63,6 +63,18 @@ describe("Settings → Keys", () => {
     expect(await prisma.appSecret.count()).toBe(0);
   });
 
+  // Round 21 (2026-10-27): Cloudflare's account API tokens are longer than its classic 40-character user tokens; both go in.
+  it("takes an analytics token of either Cloudflare format, and refuses a short one", async () => {
+    const classic = "analytics-token-test-value-not-real-0001";
+    const account = "analytics-token-test-value-not-real-account-00000001x";
+    expect(classic).toHaveLength(40);
+    expect(account).toHaveLength(53);
+    expect((await owner.req("PUT", "/api/settings/keys/CF_ANALYTICS_TOKEN", { value: classic })).json).toEqual({ ok: true });
+    expect((await owner.req("PUT", "/api/settings/keys/CF_ANALYTICS_TOKEN", { value: account })).json).toEqual({ ok: true });
+    expect((await owner.req("PUT", "/api/settings/keys/CF_ANALYTICS_TOKEN", { value: "too-short" })).json).toEqual({ error: "bad_value" });
+    expect(await status("CF_ANALYTICS_TOKEN")).toMatchObject({ source: "app" });
+  });
+
   it("lets the host's environment win: shown as on the host, not changeable in the app", async () => {
     await owner.req("PUT", "/api/settings/keys/DISCORD_BOT_TOKEN", { value: BOT_TOKEN });
     process.env.DISCORD_BOT_TOKEN = "host-token";
