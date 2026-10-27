@@ -28,7 +28,9 @@ describe("security headers", () => {
   it("allow the image hosts the app really uses", () => {
     // R2's public bucket hosts serve our own copy of the game art (ADR 0006); Endfield's comes from a GitHub repository (round 7);
     // the banner and event key art comes with HoYoverse's announcements (round 16).
-    for (const host of ["https://sdk.hoyoverse.com", "https://img.game8.co", "https://wutheringwaves.fandom.com", "https://neverness-to-everness.fandom.com", "https://static.wikia.nocookie.net", "https://endfieldtools.dev", "https://endfield.wiki.gg", "https://enka.network", "https://sr.yatta.moe", "https://files.wuthery.com", "https://static.nanoka.cc", "https://cdn.discordapp.com", "https://*.public.blob.vercel-storage.com", "https://*.r2.dev", "https://raw.githubusercontent.com"]) {
+    // Round 22: every picture slot shows its source while the store is empty: the six game wikis (one wildcard) and the App
+    // Store's image host for the games' icons.
+    for (const host of ["https://sdk.hoyoverse.com", "https://img.game8.co", "https://*.fandom.com", "https://is1-ssl.mzstatic.com", "https://static.wikia.nocookie.net", "https://endfieldtools.dev", "https://endfield.wiki.gg", "https://enka.network", "https://sr.yatta.moe", "https://files.wuthery.com", "https://static.nanoka.cc", "https://cdn.discordapp.com", "https://*.public.blob.vercel-storage.com", "https://*.r2.dev", "https://raw.githubusercontent.com"]) {
       expect(directive("img-src")).toContain(host);
     }
   });
