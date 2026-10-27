@@ -18,9 +18,10 @@ const CSP: Record<string, string[]> = {
     "https://sdk.hoyoverse.com",
     // Game8's banner and event pictures for Endfield (round 18).
     "https://img.game8.co",
-    // The Wuthering Waves wiki's banner and event pictures, by file path, which redirects to Fandom's static host (round 17).
-    "https://wutheringwaves.fandom.com",
-    "https://neverness-to-everness.fandom.com",
+    // The game wikis' pictures by file path (banners and events since round 17; every art slot's source while the store is
+    // empty since round 22), which redirect to Fandom's static host; the games' icons from the App Store's image host.
+    "https://*.fandom.com",
+    "https://is1-ssl.mzstatic.com",
     "https://static.wikia.nocookie.net",
     // Endfield's icons and splash art (round 17).
     "https://endfieldtools.dev",

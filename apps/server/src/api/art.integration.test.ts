@@ -84,7 +84,7 @@ describe("the art slots", () => {
     expect(slot("genshin/icon")).toMatchObject({ url: null, source: expect.stringContaining("mzstatic.com"), invert: false });
     expect(slot("genshin/key-art")).toMatchObject({ url: null, source: expect.stringContaining("fandom.com") });
     expect(slot("zzz/shop/signal")).toMatchObject({ url: null, source: expect.stringContaining("Icon_Signal_Shop"), invert: true });
-    expect(slot("genshin/logo")).toMatchObject({ url: null, source: null, invert: false });
+    expect(slot("nte/gear/diabolos")).toMatchObject({ url: null, source: null, invert: false });
     expect((await upload("zzz/shop/signal")).statusCode).toBe(200);
     expect((await slots()).find((candidate) => candidate.key === "zzz/shop/signal")).toMatchObject({ url: expect.stringMatching(/^\/uploads\//), invert: false });
   });

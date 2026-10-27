@@ -1,5 +1,7 @@
 import { expect, test } from "@playwright/test";
 
+const PNG = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==", "base64");
+
 test("Games library: owned characters, pulls, energy, goals and backlog per game, each opening its screen; today, sleep, and moving a game in the strip @smoke", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
@@ -39,13 +41,15 @@ test("Games library: owned characters, pulls, energy, goals and backlog per game
   await expect(hsr).not.toContainText("Asleep");
 });
 
-// Round 12 (Georges: "add game art to everything you can"): each game's card carries its hero art, from the community source.
+// Round 12 (Georges: "add game art to everything you can"): each game's card carries its hero art; round 22: the game's own key
+// art from its wiki, straight from the source while the store is empty (the character's splash is the fallback).
 test("a game's card in the library carries its hero art @smoke", async ({ page }) => {
+  await page.route(/fandom\.com|wikia\.nocookie\.net/, (route) => route.fulfill({ body: PNG, contentType: "image/png" }));
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   await page.request.post("/api/instances", { data: { gameKey: "hsr" } });
   await page.goto("/library");
   const card = page.getByRole("article", { name: "Honkai: Star Rail" });
-  await expect(card.locator("img.hero-art[src*='1005']")).toHaveCount(1);
+  await expect(card.locator("img.hero-art[src*='fandom.com']")).toHaveCount(1);
 });
