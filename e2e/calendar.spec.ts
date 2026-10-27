@@ -1,5 +1,7 @@
 import { expect, test } from "@playwright/test";
 
+const PNG = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==", "base64");
+
 const iso = (days: number) => new Date(Date.now() + days * 86_400_000).toISOString();
 
 test("paging the calendar back shows what already ended @smoke", async ({ page }) => {
@@ -169,6 +171,7 @@ test("a banner phase's featured units are icons on its bar and in Selected, each
 });
 
 test("an event is wishlisted from its Selected panel, and Only what I wishlisted keeps it @smoke", async ({ page }) => {
+  await page.route(/fandom\.com|wikia\.nocookie\.net/, (route) => route.fulfill({ body: PNG, contentType: "image/png" }));
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
@@ -181,8 +184,8 @@ test("an event is wishlisted from its Selected panel, and Only what I wishlisted
   await page.goto("/timeline?game=hsr");
   const timeline = page.getByRole("region", { name: "Timeline" });
   await timeline.getByRole("button", { name: /E2E event to wish/ }).click();
-  // An event without art of its own shows its game's hero (Star Rail's: Kafka), never an empty placeholder.
-  await expect(page.getByRole("complementary", { name: "Selected" }).locator(".cal-art img.hero-art[src*='1005']")).toHaveCount(1);
+  // An event without art of its own shows its game's hero (round 22: Star Rail's key art from its wiki), never an empty placeholder.
+  await expect(page.getByRole("complementary", { name: "Selected" }).locator(".cal-art img.hero-art[src*='fandom.com']")).toHaveCount(1);
   const wish = page.getByRole("complementary", { name: "Selected" }).getByRole("button", { name: "Wishlist" });
   await wish.click();
   await expect(wish).toHaveAttribute("aria-pressed", "true");
