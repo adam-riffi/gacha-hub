@@ -1,7 +1,8 @@
 import type { FastifyInstance } from "fastify";
 import { z } from "zod";
 import { requireAdmin } from "../auth/plugin.js";
-import { clearKey, isAppKey, listKeys, setKey } from "../lib/appKeys.js";
+import { clearKey, isAppKey, listKeys, readKey, setKey } from "../lib/appKeys.js";
+import { parseKeyPaste, type PasteKeyName } from "../lib/keysPaste.js";
 
 const keyInput = z.object({ value: z.string().max(4096) });
 const writes = { preHandler: requireAdmin, config: { rateLimit: { max: 20, timeWindow: "1 minute" } } };
@@ -25,4 +26,28 @@ export async function registerAppKeyRoutes(app: FastifyInstance) {
     await clearKey(name, req.user!.id);
     return { ok: true };
   });
+
+  // One paste for the Art store's values (Georges, 2026-10-27): placed by shape and label, saved in the page's order;
+  // a Blob address left in the override is cleared with them, so the new bucket is read at once. No value is echoed.
+  app.post("/api/settings/keys/paste", writes, async (req) => {
+    const { values, unplaced } = parseKeyPaste(pasteInput.parse(req.body).text);
+    const saved: PasteKeyName[] = [];
+    const skipped: { name: PasteKeyName; reason: string }[] = [];
+    for (const name of PASTE_ORDER) {
+      const value = values[name];
+      if (!value) continue;
+      const result = await setKey(name, value, req.user!.id);
+      if (result === "saved") saved.push(name);
+      else skipped.push({ name, reason: result });
+    }
+    let overrideCleared = false;
+    if (saved.includes("R2_PUBLIC_URL") && /\.public\.blob\.vercel-storage\.com\//.test(await readKey("ASSET_BASE"))) {
+      await clearKey("ASSET_BASE", req.user!.id);
+      overrideCleared = true;
+    }
+    return { saved, skipped, unplaced, overrideCleared };
+  });
 }
+
+const pasteInput = z.object({ text: z.string().max(20_000) });
+const PASTE_ORDER: PasteKeyName[] = ["R2_ACCOUNT_ID", "R2_BUCKET", "R2_ACCESS_KEY_ID", "R2_SECRET_ACCESS_KEY", "R2_PUBLIC_URL", "CF_ANALYTICS_TOKEN"];
