@@ -1,8 +1,8 @@
-# Handoff — 2026-10-27 · claude (round 22 open: a zoomed browser, the art sources standing in; not merged, not deployed)
+# Handoff — 2026-10-28 · claude (round 22 merged and deployed: a zoomed browser, the art sources standing in)
 
 ## State
-- `main` at #394: rounds 1–21 and the keys' one-paste box merged. CI green. **Production serves #394** (deployed 2026-10-27 at Georges's word through the Vercel connector; smoke green). The Vercel Blob store stays suspended until 19 November; the R2 bucket `gacha-hub-art` exists, its six values are in Georges's hands (he has not yet said "keys are in").
-- **Open PRs, round 22 (`stack/r29/`):** #395 `01-no-zoom` on `main`, **ready for review, CI green, "Check all" green in the second checkout** (one local run lost the passkey journey once: Chrome's virtual authenticator, green in CI); #396 `02-art-from-source` on #395, **ready for review, CI green, "Check all" green** (the same passkey journey lost once locally, green in CI). The auto-mode classifier refuses a merge without Georges's word: **he says "merge", the agent runs the merge script** (`restack-merge.sh` in the scratchpad: #395 then #396, retargeting #396 to `main` before deleting #395's branch).
+- `main` at #397: rounds 1–22 merged. CI green. **Production serves #397** (deployed 2026-10-28 at Georges's word "merge and deploy" through the Vercel connector, `dpl_9Awyz5cyEebQQbK2GAMkWhKd3LCZ`; smoke green; the image policy in production names the wikis and the App Store host). The Vercel Blob store stays suspended until 19 November; the R2 bucket `gacha-hub-art` exists, its six values are in Georges's hands (he has not yet said "keys are in").
+- **No open PR.** Round 22 merged on 2026-10-28: #395 (`stack/r29/01-no-zoom`) and #397 (`stack/r29/02-art-from-source`; #396 held the same commits and was closed by GitHub when its base branch was deleted before the retarget, the merge script having been given a branch name where it takes the next PR's number; the branch, rebased on `main`, was opened again as #397). Both had CI green and "Check all" green in the second checkout (one local run lost the passkey journey once: Chrome's virtual authenticator, green in CI).
 - Round 17's plan and what shipped: `docs/AUDIT-2026-10-21-round17.md`; rounds 18–22 took the plan's next items and Georges's words.
 
 ## Done this session (round 22, Georges, 2026-10-27: "still no game icons why is a star the icon for GI instead of the original game icon or paimon? why is the game card furina? why are game cards crooked? the responsiveness make the whole app unreadable")
@@ -20,18 +20,18 @@
 - Not verified: production (not deployed); the sources' pictures from Vercel's side are the browser's requests, not the function's, so nothing new runs on Vercel except the wiki API calls (six wikis, once an hour per instance).
 
 ## Next (the plan)
-1. Georges: **"merge"** (#395, then #396), then **"deploy"**; then his one paste of the six values in Settings → Keys → Art store → "Save all" and the word "keys are in".
+1. Georges: his one paste of the six values in Settings → Keys → Art store → "Save all" and the word "keys are in".
 2. The agent: the public URL check, the **mirror-art** workflow (budget lines in the report), Georges's click on Settings → Art → "Fetch 117 from the sources"; then he rolls both tokens and re-pastes.
 3. **Features audit** end to end with Georges's keys (HoYoLAB, Enka, the records links, Discord): each sync, reminders, planner, codes, export.
 4. NTE's events from GameWith's schedule page (https://gamewith.net/nte/74811) if its markup holds; NTE's catalog at 1.4 once Hakushin's pointer moves; ADR 0011's remaining services; the sample banners' retirement; the README GIF.
 
 ## Needs from Georges
-- The words above: "merge", "deploy", "keys are in"; his screen width and browser zoom (asked 2026-10-27, no answer yet: the fixes cover 960 to 2560).
+- The word "keys are in" after the paste; his screen width and browser zoom (asked 2026-10-27, no answer yet: the fixes cover 960 to 2560).
 - His keys in Settings → Keys, HoYoLAB in Linked accounts; delete the old GitHub secrets `CRON_URL` / `CRON_SECRET` / `R2_*` if any remain.
 - The pictures ASSETS.md still lists, in Settings → Art as he finds them (once the store is up).
 
 ## Notes
 - The previous handoffs' notes stand (HoYoLAB read-only, art never committed, E2E's shared database and its unique-unit rule, Prettier not enforced, the log's roll-over, owner files, Git Bash paths and `MSYS_NO_PATHCONV`, squash-merged stacks, Fandom's static host, the e2e job's 25-minute limit, port 3000's stale bundle in dev, R2's decoded keys).
 - `../gacha-check` is a **git worktree** of this repository: a branch checked out there cannot be checked out here (the check scripts detach: `git checkout --detach origin/<branch>`).
-- The auto-mode classifier refuses `gh pr merge` and a production deployment unless Georges's latest message says the word; a PR is marked ready (`gh pr ready`) when CI is green and the report ends with the words to say.
+- The auto-mode classifier refuses `gh pr merge` and a production deployment unless Georges's latest message says the word; a PR is marked ready (`gh pr ready`) when CI is green and the report ends with the words to say. `restack-merge.sh`'s specs are `"N HEAD PREV NEXT"` with NEXT the next PR's **number**: a branch name there skips the retarget, and deleting the merged branch then closes the dependent PR for good.
 - Scratchpad tours for this round (`r29/`): `tour-paths.mjs <out> <width> name=path…` (`{hsr}` stands for the Star Rail instance id; `click:<path>|<selector>` follows a card; `WAIT_MS`), `measure.mjs <width>` (Home's boxes), `r25/overflow.mjs <width> <paths…>` (what reaches past the window; pass a `C:/` script path with `MSYS_NO_PATHCONV=1`).
