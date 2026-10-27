@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-27 · claude · feat/keys-paste · #394
+- Done: Georges asked for the six Cloudflare values to go in with one paste rather than six fields; the agent may not type secrets into a live service, so his part became one paste. Settings → Keys → Art store has a box ("Or paste all six at once"): the block of values as he has it, labels in his own words, any order, one or several a line; `parseKeyPaste` places each by its shape and the words around it (32 hex: account or Access Key ID by "account"/"access", else the page's order; 64 hex: the secret; a `pub-….r2.dev` host; a `cfat_…` or 40-character token on a line saying "analytics"; the bucket after "bucket"), `POST /api/settings/keys/paste` saves them in the page's order, clears a Blob address left in the override, and answers what it kept, what the host locks and which lines it could not place, by number and reason only. Large type, a wide box.
+- Tests: written first: the parser (six cases), the endpoint (saved, skipped on the host, unplaced, the override cleared, no value echoed) and the journey (the block pasted once, every field In the app, the secret nowhere on the page, the asset base derived).
+- Scope/decisions: a token on a line without "analytics" is reported, not placed: the R2 token's own value looks the same and the app does not use it.
+- Next: deploy, Georges's one paste, the mirror with its budget check.
+
 ## 2026-10-27 · claude · fix/analytics-token-format · #393
 - Done: Georges's analytics token is one of Cloudflare's account API tokens (`cfat_…`, 53 characters); the Analytics token field in Settings → Keys took the classic 40-character format only and would have refused it as "Not valid". The field takes 40 to 100 characters of either format now.
 - Tests: written first: a 40-character and a 53-character token both saved, a short one refused.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the slots of each kind, sourced or not; an upload shown, replaced and removed, audited; a slot no game has, a file that is not a picture and another account refused.
 - Scope/decisions: slots key by game, kind and a slug of the item (`genshin/mode/abyss`); elements and weapon types come from each catalog, the rest from the game modules.
 - Next: the Art tab.
-
-## 2026-10-17 · claude · stack/r21/01-tag-icons · #352
-- Done: round 14 (Georges, 2026-10-17: "work on what you can for now and make me an exhaustive list of assets you need"). Every element and weapon type shows its game's own icon in the Characters and Weapons filters and on the cards (Georges: names shown as icons): 54 icons from sources, each URL checked by hand on 2026-10-17. Genshin's elements from Yatta (Enka has no Cryo) and weapon types from Enka; Star Rail's elements and paths from StarRailRes at a pinned commit; Zenless's attributes and specialties and NTE's elements (the `element_icon` paths of its character data) from the Hakushin assets; Wuthering Waves' elements from wuthery (keys from WutheringData's ElementInfo). `TagIcon` drops itself if a source fails. The image policy allows gi.yatta.moe.
-- Tests: written first: a unit test that every element and weapon type in the sourced games' catalogs maps to an icon (and none for Endfield's, WuWa's weapon types); a journey for the chips and Kafka's card.
-- Scope/decisions: no source has WuWa's weapon types or Endfield's elements and weapon types: they join the list of pictures needed.
-- Next: the art store.
