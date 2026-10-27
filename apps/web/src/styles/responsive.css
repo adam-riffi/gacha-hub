@@ -1,13 +1,35 @@
 /* The narrow-window rules, loaded last so they win over each screen's own sheet. */
-/* Desktop windows from 1100 px (Georges, round 15: no phones): below 1440 the widest panels and grids give a column. */
+/* Desktop windows (Georges, round 15: no phones), and a zoomed browser (round 22, Georges: "the responsiveness make the
+   whole app unreadable"): a 1920 px screen at 150 % zoom is 1280 CSS px, at 200 % it is 960. Nothing shrinks: a panel keeps
+   its drawn size (its labels sit at pixel positions) and wraps onto the next row, a drawing wider than its card scrolls
+   inside it, and the page floor is 900 px. */
 @media (max-width: 1439px) {
-  /* Home's top row and heatmap are drawings at fixed sizes (496 + 240 + 424 px charts, an 868 px heatmap): they zoom down
-     to the window as the whole shell zooms up on wide ones (tokens.css). */
-  .home-top { zoom: 0.78; }
-  .home-heat { zoom: 0.8; }
+  /* Home's top row: the hero gauge (496 px drawn, centred in its panel) and the goals column share the row when both fit,
+     else each takes a row whole. Inside the column every panel keeps its drawing's width (bars 424, lines 328, plus the
+     panel's padding) and wraps onto the next row instead of shrinking. */
+  .home-top { flex-wrap: wrap; }
+  .home-top-hero { flex: 1 1 496px; }
+  .home-top-side { flex: 1 1 760px; }
+  .home-top-strip, .home-top-charts { flex-wrap: wrap; height: auto; }
+  .home-top-goals { min-height: 192px; }
+  .home-top-strip > .graph:last-child { flex: 1 1 440px; min-width: 440px; min-height: 192px; }
+  .home-top-charts > .graph { flex: 1 1 360px; min-width: 360px; min-height: 260px; }
+  /* The heatmap keeps its 868 px drawing: its readout wraps under it, and the drawing scrolls sideways inside the card when the card is narrower. */
+  .home-heat { height: auto; min-height: 232px; }
+  .heat { flex-wrap: wrap; overflow-x: auto; row-gap: 16px; padding-bottom: 8px; }
+  .heat-readout { margin-left: 24px; }
   .home-lists { grid-template-columns: minmax(0, 1fr); }
+  /* The banners and the dailies cards (352 px tall) side by side while each keeps 520 px, else one under the other.
+     Below that the dailies card's name wrapped into its tiles (Georges, 2026-10-27: "why are game cards crooked"). */
+  .home-carousels { flex-wrap: wrap; height: auto; }
+  .home-carousels > .carousel, .home-carousels > .carousel.banner-card { flex: 1 1 520px; height: 352px; }
+  /* Activities: the daily, weekly and monthly cards at 320 px or more each; the cycles and version cards at 420 px, the
+     version card's battle pass and events one above the other below 600 px. */
+  .act-cadences { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+  .act-bottom { grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); }
+  .act-version-body { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
   .gd-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .ch-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .ch-grid { grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); } /* three cards at 1439, two from 1280 down */
   .eg-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .cal-page { grid-template-columns: minmax(0, 1fr) 300px; }
   .cal-r { grid-template-columns: 170px minmax(0, 1fr); }
@@ -19,4 +41,25 @@
   .lib-today .kpi-label { display: none; } /* the line says "Dailies 0/7 · reset…" itself */
   .lib-hero { width: 45%; opacity: 0.7; mask-image: linear-gradient(90deg, transparent, #000 60%); }
   .lib-page { grid-template-columns: minmax(0, 1fr) 260px; }
+  /* A character sheet: the character, traces and weapon cards at 240 px or more each (three beside the art from 1440, two below). */
+  .sh-cards { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+  /* Gear: the pieces take the room beside the filters; the set's panel is a drawer over the right edge anyway. */
+  .gb { grid-template-columns: 280px minmax(0, 1fr); }
+}
+
+/* Below 1100 px (a browser at 175–200 % zoom): one column everywhere, the game strip scrolls sideways, narrower gutters. */
+@media (max-width: 1099px) {
+  .content { padding: 8px 16px 24px; }
+  .topbar { padding: 0 16px; }
+  .strip { overflow-x: auto; scrollbar-width: thin; }
+  .eg-tiles, .cal-page, .lib-page { grid-template-columns: minmax(0, 1fr); }
+  /* A game's dashboard: its dailies and banners cards one under the other; its cards stay two a row (a card spanning
+     two columns would open a second, ragged column in a one-column grid). */
+  .gd-row { grid-template-columns: minmax(0, 1fr); height: auto; }
+  .gd-row > * { height: 352px; }
+  .cal-r { grid-template-columns: 130px minmax(0, 1fr); }
+  .gb { grid-template-columns: minmax(0, 1fr); } /* the filters above the pieces */
+  .lib-row { grid-template-columns: 20px 150px minmax(0, 1fr) auto; }
+  .lib-cells { grid-column: 3 / 5; }
+  .lib-actions, .lib-today { grid-column: 2 / 5; }
 }

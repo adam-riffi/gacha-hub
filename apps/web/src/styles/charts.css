@@ -83,6 +83,7 @@
 .home-top-goals { flex: 0 0 240px; width: 240px; }
 .home-top-side { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 24px; }
 .home-top-strip { display: flex; gap: 24px; height: 192px; }
+.home-top-strip > .graph:last-child, .home-top-charts > .graph { flex: 1; min-width: 0; }
 
 /* Labels laid over charts. */
 .lb { position: absolute; font: 400 13px/13px var(--font-mono); color: var(--text-muted); white-space: nowrap; }

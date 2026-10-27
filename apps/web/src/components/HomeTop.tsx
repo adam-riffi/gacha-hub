@@ -130,17 +130,16 @@ export function HomeTop({
           <GraphPanel title="Goals" className="home-top-goals" head={<Link to="/tasks?new=1" className="ph-link">+ New goal</Link>}>
             <SmallGauge done={goalsDone} total={goals.length} label="Overall goal completion" />
           </GraphPanel>
-          <GraphPanel title="Goal types" style={{ flex: 1, minWidth: 0 }}>
+          <GraphPanel title="Goal types">
             <PercentBars items={byType} label="Goal completion by type" />
           </GraphPanel>
         </div>
         <div className="home-top-charts">
-          <GraphPanel title="Backlog" style={{ flex: 1, minWidth: 0 }}>
+          <GraphPanel title="Backlog">
             <LineChart values={backlog.values} labels={backlog.labels} label="Open goals over time" />
           </GraphPanel>
           <GraphPanel
             title="Pull history"
-            style={{ flex: 1, minWidth: 0 }}
             head={
               <>
                 <span className="sp" />
