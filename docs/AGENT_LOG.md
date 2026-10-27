@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-28 · claude · docs/r22-deployed · #398
+- Done: round 22 merged (#395; #397, the reopening of #396, which GitHub closed when its base branch was deleted before the retarget) and deployed at Georges's word (`dpl_9Awyz5cyEebQQbK2GAMkWhKd3LCZ`, smoke green; the image policy in production names the wikis and the App Store host). The handoff rewritten: production at #397, no open PR, Georges's one paste of the six values next.
+- Tests: docs only; the smoke checks against production.
+- Scope/decisions: none. Lesson in the handoff: the merge script's specs take the next PR's number, not its branch.
+- Next: Georges's paste and "keys are in"; the mirror with its budget lines; the features audit with his keys.
+
 ## 2026-10-27 · claude · stack/r29/02-art-from-source · #396
 - Done: round 22 PR 2 (Georges: "still no game icons why is a star the icon for GI instead of the original game icon", "why is the game card furina"). While the store holds nothing for a slot, the app shows the picture straight from its source: `/api/art` carries each slot's source address and invert beside the owner's upload, the web's slot hook falls back to it, and the image policy names the six game wikis (one wildcard) and the App Store's image host. A wiki's `Special:FilePath` answers a browser with 403, so the list resolves every wiki source through its wiki's API (fifty titles a call, one call per wiki, kept an hour in the process, four seconds at most per list) and gives the direct static address. A big spot falls from a failed logo to the icon before the drawn emblem. In the empty-store journeys: the App Store icons in the strip, the real logos and the wikis' key art on the game cards and hub headers, the wiki icons on tasks and modes.
 - Tests: written first: the slots carry the source and invert and an upload takes over; the policy allows the wiki wildcard and the App Store host; the resolver groups by wiki, chunks by fifty, maps through normalised titles and leaves out what a wiki does not answer; the strip shows the App Store icon and the library card the key art with an empty store; a big spot whose logo fails shows the icon. The two journeys that pinned a hero to Kafka's splash expect the key art now; the slots test's no-source case moved to a slot without one.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the slots list those 24 and none a source has; a journey uploads an Endfield gift and finds it on Materials.
 - Scope/decisions: none.
 - Next: the list in the docs.
-
-## 2026-10-17 · claude · stack/r21/04-slot-art · #355
-- Done: `SlotArt` shows the owner's picture for a slot, or what the spot showed before. A logo replaces its game's drawn emblem everywhere (in the game's header it stands on its own, not on the accent tile); endgame modes on their cards, Home's next resets, the activities' cycles and the dashboard; the battle pass on Home's card (over the hero) and the version card; the 30-day pass on the monthly list; banners on Pulls where no featured unit shows; each task on its row; currencies, elements and weapon types before their source's icon. `CurrencyIcon` takes the currency's key, so Endfield's currencies can take an upload.
-- Tests: written first: a journey uploads a logo, a mode, a currency, an element, a banner and a task, and finds each on its page.
-- Scope/decisions: a task row finds its slot by the game's default task with the same title (tasks keep no seed key).
-- Next: the catalogs' own gaps.
