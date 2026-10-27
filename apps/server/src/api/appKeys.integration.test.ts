@@ -75,6 +75,49 @@ describe("Settings → Keys", () => {
     expect(await status("CF_ANALYTICS_TOKEN")).toMatchObject({ source: "app" });
   });
 
+  // Georges, 2026-10-27 (one paste instead of six fields): one paste of the whole block of
+  // Cloudflare values, labels in his own words, sorted into the Art store's fields; the stale override cleared with it.
+  it("takes the Art store's values in one paste, says which it kept and which lines it could not place, clears a Blob override, and echoes no value", async () => {
+    const values = {
+      R2_ACCOUNT_ID: "f1300000000000000000000000000152",
+      R2_BUCKET: "gacha-hub-art",
+      R2_ACCESS_KEY_ID: "de550000000000000000000000002294",
+      R2_SECRET_ACCESS_KEY: "fad5000000000000000000000000000000000000000000000000000000009505",
+      R2_PUBLIC_URL: "https://pub-37780000000000000000000000087ac.r2.dev",
+      CF_ANALYTICS_TOKEN: "cfat_testOnlyNotARealTokenValue000000000000e16b",
+    };
+    await owner.req("PUT", "/api/settings/keys/ASSET_BASE", { value: "https://old0000.public.blob.vercel-storage.com/assets" });
+    const text = `here is the token cfat_theStoreTokenItselfNotNeeded0000000000a1
+account id: ${values.R2_ACCOUNT_ID}
+bucket: ${values.R2_BUCKET}
+Access Key ID ${values.R2_ACCESS_KEY_ID}
+Secret Access Key ${values.R2_SECRET_ACCESS_KEY}
+public url ${values.R2_PUBLIC_URL}/
+analytics token: ${values.CF_ANALYTICS_TOKEN}`;
+    const pasted = await owner.req<{ saved: string[]; skipped: { name: string; reason: string }[]; unplaced: string[]; overrideCleared: boolean }>("POST", "/api/settings/keys/paste", { text });
+    expect(pasted.status).toBe(200);
+    expect(pasted.json).toEqual({
+      saved: ["R2_ACCOUNT_ID", "R2_BUCKET", "R2_ACCESS_KEY_ID", "R2_SECRET_ACCESS_KEY", "R2_PUBLIC_URL", "CF_ANALYTICS_TOKEN"],
+      skipped: [],
+      unplaced: ["line 1: a token without the word analytics in its label"],
+      overrideCleared: true,
+    });
+    for (const value of Object.values(values)) expect(JSON.stringify(pasted.json)).not.toContain(value.slice(-10));
+    for (const name of Object.keys(values)) expect(await status(name)).toMatchObject({ source: "app" });
+    expect(await status("ASSET_BASE")).toMatchObject({ source: null });
+    expect(await readKey("R2_PUBLIC_URL")).toBe(values.R2_PUBLIC_URL);
+    expect((await owner.req<{ assetBase: string | null }>("GET", "/api/me")).json.assetBase).toBe(`${values.R2_PUBLIC_URL}/assets`);
+
+    // A value the host sets is left alone and named; a paste with nothing readable saves nothing.
+    process.env.R2_BUCKET = "host-bucket";
+    try {
+      expect((await owner.req("POST", "/api/settings/keys/paste", { text: "bucket: other-bucket" })).json).toEqual({ saved: [], skipped: [{ name: "R2_BUCKET", reason: "set_on_host" }], unplaced: [], overrideCleared: false });
+    } finally {
+      delete process.env.R2_BUCKET;
+    }
+    expect((await owner.req("POST", "/api/settings/keys/paste", { text: "nothing here" })).json).toEqual({ saved: [], skipped: [], unplaced: ["line 1: no value of a known shape"], overrideCleared: false });
+  });
+
   it("lets the host's environment win: shown as on the host, not changeable in the app", async () => {
     await owner.req("PUT", "/api/settings/keys/DISCORD_BOT_TOKEN", { value: BOT_TOKEN });
     process.env.DISCORD_BOT_TOKEN = "host-token";
