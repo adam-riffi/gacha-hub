@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-27 · claude · stack/r29/01-no-zoom · #395
+- Done: round 22, a zoomed browser (Georges: "the responsiveness make the whole app unreadable", "why are game cards crooked"). A 1920 px screen at 150 % zoom is 1280 CSS px, at 200 % it is 960; the narrow-window rules shrank Home's top row and heatmap with CSS zoom, the dailies card's tiles slid under its name below 1200 px, and the game dashboard, Activities, the character grid, the gear page and the sheet squeezed their columns. The zooms are gone and the page floor is 900 px; every panel keeps its drawing's width (bars 424, lines 328, the heatmap 868) and wraps onto the next row or scrolls inside its card; the hero gauge takes a row of its own when the goals column does not fit beside it; the carousels, Activities' rows, a game dashboard's row, the character grid, the sheet's cards and the gear page wrap at a minimum card width. 1440 and up unchanged.
+- Tests: written first: at 1280 px nothing on Home carries a CSS zoom and the page has no horizontal scroll; at 960 px every screen, a game's dashboard and a character sheet included, fits without a horizontal page scroll; the 1100 px journey opens the sheet too. They failed on `.home-top` zoom 0.78 and on the sheet at 992 px.
+- Scope/decisions: the hero panel stretches across its row (gauge centred) rather than leaving 450 px empty; the game dashboard's cards stay two a row below 1100 px (one column would open a ragged second column under its spanning cards); the graph panels' hover tilt is untouched unless "crooked" meant that.
+- Next: PR 2 of the round: the hero art falls back to the game's official banner picture while the art store is empty (Genshin shows key art, not Furina); Georges's one paste of the six values, then the mirror.
+
 ## 2026-10-27 · claude · feat/keys-paste · #394
 - Done: Georges asked for the six Cloudflare values to go in with one paste rather than six fields; the agent may not type secrets into a live service, so his part became one paste. Settings → Keys → Art store has a box ("Or paste all six at once"): the block of values as he has it, labels in his own words, any order, one or several a line; `parseKeyPaste` places each by its shape and the words around it (32 hex: account or Access Key ID by "account"/"access", else the page's order; 64 hex: the secret; a `pub-….r2.dev` host; a `cfat_…` or 40-character token on a line saying "analytics"; the bucket after "bucket"), `POST /api/settings/keys/paste` saves them in the page's order, clears a Blob address left in the override, and answers what it kept, what the host locks and which lines it could not place, by number and reason only. Large type, a wide box.
 - Tests: written first: the parser (six cases), the endpoint (saved, skipped on the host, unplaced, the override cleared, no value echoed) and the journey (the block pasted once, every field In the app, the secret nowhere on the page, the asset base derived).
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the journey opens the tab, finds the Genshin logo Needed and Primogems only under All, uploads a picture in place, sees it kept, removes it.
 - Scope/decisions: the Needed view keeps uploaded tiles (a tile vanishing on upload read as a failure).
 - Next: the pictures on the cards.
-
-## 2026-10-17 · claude · stack/r21/02-art-store · #353
-- Done: `artSlots` (shared) lists a game's pictures no catalog names, most visible first: logo, endgame modes, battle pass, 30-day pass, banners, monthly shops, currencies, tasks (a task that resets with a shop or a mode uses that one's picture), then its catalog's elements and weapon types, each saying whether a source has it. `GET /api/art` gives every game's slots with the owner's picture; `PUT /api/art/<slot>` takes a picture (owner only, rate-limited, audited) into Vercel Blob or the upload folder, never the repository (ADR 0006); `DELETE` removes it. The upload code is shared with `/api/uploads` (`lib/images.ts`). Migration: the `ArtSlot` table, with row level security.
-- Tests: written first: the slots of each kind, sourced or not; an upload shown, replaced and removed, audited; a slot no game has, a file that is not a picture and another account refused.
-- Scope/decisions: slots key by game, kind and a slug of the item (`genshin/mode/abyss`); elements and weapon types come from each catalog, the rest from the game modules.
-- Next: the Art tab.
