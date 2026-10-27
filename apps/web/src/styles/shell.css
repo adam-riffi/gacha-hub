@@ -1,7 +1,7 @@
 /* The shell: rail, top bar with the scope strip, content (docs/VISUAL-DESIGN.md §5, §7). */
 
 /* One desktop layout (Georges, round 8: "I'd rather have it not responsive"): a narrower window scrolls sideways. */
-.shell { display: flex; min-height: 100vh; min-width: 1100px; }
+.shell { display: flex; min-height: 100vh; min-width: 900px; }
 .shell-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 .content { padding: 8px 32px 32px; min-width: 0; }
 
