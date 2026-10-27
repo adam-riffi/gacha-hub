@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { ArtSlot } from "@gacha/shared";
 import { api } from "./api";
 
-export type ArtSlotItem = ArtSlot & { url: string | null; invert: boolean; fetchable: boolean };
+export type ArtSlotItem = ArtSlot & { url: string | null; source: string | null; invert: boolean; fetchable: boolean };
 
 const fetchSlots = () => api.get<{ slots: ArtSlotItem[] }>("/api/art");
 
@@ -15,8 +15,11 @@ export function useSlotInverted(key: string | null): boolean {
   return Boolean(key && data?.has(key));
 }
 
-/** The owner's picture for a slot (`artSlotKey`), or null: the card keeps what it shows without one. */
+/**
+ * The owner's picture for a slot (`artSlotKey`), else its source's while the store holds none (round 22, Georges: "still no
+ * game icons"), or null: the card keeps what it shows without one.
+ */
 export function useSlotArt(key: string | null): string | null {
-  const { data } = useQuery({ queryKey: ["art"], queryFn: fetchSlots, staleTime: 5 * 60_000, select: (result) => new Map(result.slots.map((slot) => [slot.key, slot.url])) });
+  const { data } = useQuery({ queryKey: ["art"], queryFn: fetchSlots, staleTime: 5 * 60_000, select: (result) => new Map(result.slots.map((slot) => [slot.key, slot.url ?? slot.source])) });
   return (key && data?.get(key)) || null;
 }

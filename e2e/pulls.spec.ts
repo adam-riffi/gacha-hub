@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { blockOutsideArt } from "./outside-art";
 
 test("Pulls: what you have and what is coming, an event banner's status, pity and odds, logging a 5★ @smoke", async ({ page }) => {
   await page.goto("/");
@@ -178,6 +179,8 @@ test("Pulls: by the end of the version, each target by its icon with its chance 
 
 // One grid whose rows line up, whatever is hidden; no beginner banner; a banner without art by its kind's icon (Georges, round 6).
 test("Pulls: one grid of banners whose rows line up, their odds tables whole, no beginner banner @smoke", async ({ page }) => {
+  // Round 22: the slots' sources stand in while the store is empty; refused here, so the marks below are the drawn ones.
+  await blockOutsideArt(page);
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();

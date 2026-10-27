@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { blockOutsideArt } from "./outside-art";
 
 test("the app uses its self-hosted type and the dark tokens @smoke", async ({ page }) => {
   const fontHosts: string[] = [];
@@ -76,6 +77,8 @@ test("deadlines within 48 hours are paper chips; view switches expose their stat
 // A missing image falls back to a tile (GameIcon; #217 dropped its base rule with the old sheets' CSS), drawn as its kind's icon
 // rather than letters (Georges, round 6: "you're still using squares with letters on it, use icons instead").
 test("an icon without its image is a tile with its kind's icon, centred @smoke", async ({ page }) => {
+  // Round 22: the slots' sources stand in while the store is empty; refused here, so the marks below are the drawn ones.
+  await blockOutsideArt(page);
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();

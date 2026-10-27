@@ -1,10 +1,13 @@
 import { expect, test } from "@playwright/test";
+import { blockOutsideArt } from "./outside-art";
 
 const PNG = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==", "base64");
 
 // Round 18 (Georges, round 17: "BP cards"): the battle pass card stands on the game's key art, the pass's own picture small
 // in the band beside its name, never blown up as the backdrop; Home's tables keep each game's icon beside its name.
 test("the battle pass card shows the game's key art behind and the pass icon in the band; Home's Stamina table keeps the icon beside the name @smoke", async ({ page }) => {
+  // Round 22: the slots' sources stand in while the store is empty; refused here, so the marks below are the drawn ones.
+  await blockOutsideArt(page);
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
@@ -28,7 +31,9 @@ test("the battle pass card shows the game's key art behind and the pass icon in 
 
     await page.goto("/");
     const stamina = page.getByRole("region", { name: "Stamina" });
-    const mark = stamina.locator("img.list-mark, svg.list-mark").first();
+    // Outside art refused above: the mark is the drawn emblem once the source's picture has given way.
+    const mark = stamina.locator("svg.list-mark").first();
+    await expect(mark).toBeVisible();
     const name = stamina.locator(".rw").first().locator("span").first();
     const markBox = (await mark.boundingBox())!;
     const nameBox = (await name.boundingBox())!;

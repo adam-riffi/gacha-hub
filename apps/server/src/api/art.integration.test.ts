@@ -1,10 +1,10 @@
-import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import type { FastifyInstance } from "fastify";
 import { login, makeApp, resetDb, type Client } from "../test/helpers.js";
 import { prisma } from "../lib/prisma.js";
 import { createSession, SESSION_COOKIE } from "../auth/sessions.js";
 
-type Slot = { key: string; gameKey: string; kind: string; name: string; shape: "square" | "wide"; sourced: boolean; url: string | null };
+type Slot = { key: string; gameKey: string; kind: string; name: string; shape: "square" | "wide"; sourced: boolean; url: string | null; source: string | null; invert: boolean };
 
 const PNG = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==", "base64");
 const BOUNDARY = "----art-test";
@@ -32,7 +32,17 @@ describe("the art slots", () => {
   beforeEach(async () => {
     await resetDb();
     owner = await login(app, `10.4.0.${++ipCounter}`);
+    // The wikis' API (round 22): Genshin's key art resolves to its direct address; every other title is unknown.
+    vi.stubGlobal("fetch", async (input: string | URL | Request) => {
+      const titles = decodeURIComponent(new URL(String(input)).searchParams.get("titles") ?? "").split("|");
+      const pages: Record<string, unknown> = {};
+      titles.forEach((title, index) => {
+        pages[String(index + 1)] = title === "File:Splashscreen_A_Rekviem_for_the_Underworld.png" ? { ns: 6, title, imageinfo: [{ url: "https://static.wikia.nocookie.net/gensin-impact/images/9/98/Splashscreen_A_Rekviem_for_the_Underworld.png/revision/latest" }] } : { ns: 6, title, missing: "" };
+      });
+      return new Response(JSON.stringify({ query: { pages } }), { status: 200, headers: { "content-type": "application/json" } });
+    });
   });
+  afterEach(() => vi.unstubAllGlobals());
 
   const slots = async () => (await owner.req<{ slots: Slot[] }>("GET", "/api/art")).json.slots;
   const upload = (key: string, file = PNG, type = "image/png", cookie = owner.cookie) =>
@@ -73,6 +83,22 @@ describe("the art slots", () => {
     expect(all.filter((candidate) => candidate.gameKey === "endfield" && candidate.kind === "material")).toHaveLength(20);
     // Entries a source has stay off the list.
     expect(all.some((candidate) => candidate.gameKey === "genshin" && candidate.kind === "gear")).toBe(false);
+  });
+
+  // Round 22 (Georges, 2026-10-27: "still no game icons", "why is the game card furina"): while the store holds nothing for
+  // a slot, the app shows the picture straight from its source, so the list carries each source's address and whether
+  // that picture is a dark icon to invert; an upload takes over both.
+  it("carries each slot's source address and invert while the store has no picture; an upload takes over", async () => {
+    const all = await slots();
+    const slot = (key: string) => all.find((candidate) => candidate.key === key);
+    expect(slot("genshin/icon")).toMatchObject({ url: null, source: expect.stringContaining("mzstatic.com"), invert: false });
+    // A wiki file by its direct address, the one a browser is served (its Special:FilePath answers 403); an unresolved one as listed.
+    expect(slot("genshin/key-art")).toMatchObject({ url: null, source: "https://static.wikia.nocookie.net/gensin-impact/images/9/98/Splashscreen_A_Rekviem_for_the_Underworld.png/revision/latest" });
+    expect(slot("hsr/key-art")).toMatchObject({ url: null, source: expect.stringContaining("honkai-star-rail.fandom.com/wiki/Special:FilePath/") });
+    expect(slot("zzz/shop/signal")).toMatchObject({ url: null, source: expect.stringContaining("Icon_Signal_Shop"), invert: true });
+    expect(slot("nte/gear/diabolos")).toMatchObject({ url: null, source: null, invert: false });
+    expect((await upload("zzz/shop/signal")).statusCode).toBe(200);
+    expect((await slots()).find((candidate) => candidate.key === "zzz/shop/signal")).toMatchObject({ url: expect.stringMatching(/^\/uploads\//), invert: false });
   });
 
   it("takes the owner's picture for a slot, shows it, and removes it", async () => {

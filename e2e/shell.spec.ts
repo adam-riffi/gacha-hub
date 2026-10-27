@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
+import { blockOutsideArt } from "./outside-art";
 
 const accent = (page: Page) =>
   page
@@ -111,6 +112,8 @@ test("another game in the strip opens the same tab, or its first where it has no
 test("the selected game spells its full name, each game with its icon; the rail's icons larger, the current one filled @smoke", async ({
   page,
 }) => {
+  // Round 22: the slots' sources stand in while the store is empty; refused here, so the marks below are the drawn ones.
+  await blockOutsideArt(page);
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();

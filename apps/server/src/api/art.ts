@@ -7,7 +7,7 @@ import { loadArtStore } from "../lib/artStoreKeys.js";
 import { prisma } from "../lib/prisma.js";
 import { getCatalog } from "./util.js";
 import { ART_SOURCES as SOURCES } from "../art/sources.js";
-const SOURCE_KEYS = new Set(SOURCES.map((source) => source.slot));
+import { resolvedWikiFiles } from "../art/resolve.js";
 
 const WIKI_FILE = /^(https:\/\/[^/]+)\/wiki\/Special:FilePath\/(.+)$/;
 const PLAIN_AGENT = "gacha-hub/1.0 (private project)";
@@ -74,7 +74,21 @@ const writes = { preHandler: requireAdmin, config: { rateLimit: { max: 30, timeW
 export async function registerArtRoutes(app: FastifyInstance) {
   app.get("/api/art", { preHandler: requireUser }, async () => {
     const uploads = new Map((await prisma.artSlot.findMany()).map((row) => [row.key, row]));
-    return { slots: (await allSlots()).map((slot) => ({ ...slot, url: uploads.get(slot.key)?.url ?? null, invert: uploads.get(slot.key)?.invert ?? false, fetchable: SOURCE_KEYS.has(slot.key) })) };
+    // Round 22 (Georges: "still no game icons"): while the store holds nothing for a slot, the web shows the picture straight
+    // from its source, so the source's address and invert go with the slot; an upload takes over both. A wiki file goes by
+    // its direct address (its Special:FilePath answers a browser with 403), resolved once an hour; a slow wiki is not waited
+    // for beyond four seconds, the list goes out with the addresses as written and the next list has the answer.
+    const sourceOf = new Map(SOURCES.map((source) => [source.slot, source]));
+    let timer: NodeJS.Timeout | undefined;
+    const direct = await Promise.race([resolvedWikiFiles(SOURCES.map((source) => source.url)), new Promise<Map<string, string>>((resolve) => (timer = setTimeout(() => resolve(new Map()), 4000)))]);
+    clearTimeout(timer);
+    return {
+      slots: (await allSlots()).map((slot) => {
+        const upload = uploads.get(slot.key);
+        const source = sourceOf.get(slot.key);
+        return { ...slot, url: upload?.url ?? null, source: source ? (direct.get(source.url) ?? source.url) : null, invert: upload ? upload.invert : Boolean(source?.invert), fetchable: Boolean(source) };
+      }),
+    };
   });
 
   // The pictures found for the slots, fetched into the store at one click: the named keys, or the next batch not yet held
