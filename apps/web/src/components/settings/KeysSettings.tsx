@@ -48,6 +48,7 @@ export function KeysSettings() {
             )}
           </div>
           <p className="text-muted">{GROUPS[group]?.what}</p>
+          {group === "Art store" && <PasteBox labels={new Map(keys.map((key) => [key.name, key.label]))} />}
           {keys
             .filter((key) => key.group === group)
             .map((key) => (
@@ -56,6 +57,79 @@ export function KeysSettings() {
         </section>
       ))}
     </>
+  );
+}
+
+type PasteOutcome = { saved: string[]; skipped: { name: string; reason: string }[]; unplaced: string[]; overrideCleared: boolean };
+
+/**
+ * One paste for the Art store (Georges, 2026-10-27: one paste instead of six fields): the
+ * whole block of Cloudflare values as he has it, labels in his words, any order; the app sorts them into the fields and
+ * says what it kept. Nothing pasted comes back.
+ */
+function PasteBox({ labels }: { labels: Map<string, string> }) {
+  const queryClient = useQueryClient();
+  const [text, setText] = useState("");
+  const [outcome, setOutcome] = useState<PasteOutcome | null>(null);
+  const paste = useMutation({
+    mutationFn: (pasted: string) => api.post<PasteOutcome>("/api/settings/keys/paste", { text: pasted }),
+    onSuccess: (result) => {
+      setOutcome(result);
+      setText("");
+      void queryClient.invalidateQueries({ queryKey: ["app-keys"] });
+      void queryClient.invalidateQueries({ queryKey: ["me"] });
+    },
+  });
+  const name = (key: string) => labels.get(key) ?? key;
+  return (
+    <form
+      className="st-paste"
+      role="group"
+      aria-label="Paste all the Art store values"
+      onSubmit={(event) => {
+        event.preventDefault();
+        if (text.trim()) paste.mutate(text);
+      }}
+    >
+      <label className="st-key-name" htmlFor="st-paste-text">
+        Or paste all six at once
+      </label>
+      <textarea
+        id="st-paste-text"
+        rows={7}
+        placeholder={"account id: …\nbucket: …\naccess key id: …\nsecret access key: …\npublic url: …\nanalytics token: …"}
+        value={text}
+        onChange={(event) => setText(event.target.value)}
+        spellCheck={false}
+        autoComplete="off"
+      />
+      <span className="row">
+        <button type="submit" className="btn primary" disabled={!text.trim() || paste.isPending}>
+          Save all
+        </button>
+        <span className="text-muted">Labels in your own words, any order; nothing you paste is shown again.</span>
+      </span>
+      {paste.isError && (
+        <span role="alert" className="st-bad">
+          Not saved
+        </span>
+      )}
+      {outcome && (
+        <ul role="status" className="st-paste-outcome">
+          {outcome.saved.length > 0 && <li>Saved: {outcome.saved.map(name).join(", ")}</li>}
+          {outcome.overrideCleared && <li>Public URL override cleared</li>}
+          {outcome.skipped.map((entry) => (
+            <li key={entry.name}>
+              {name(entry.name)}: {SAVE_ERROR[entry.reason] ?? entry.reason}
+            </li>
+          ))}
+          {outcome.unplaced.map((line) => (
+            <li key={line}>Not placed, {line}</li>
+          ))}
+          {outcome.saved.length === 0 && outcome.skipped.length === 0 && outcome.unplaced.length === 0 && <li>Nothing to save</li>}
+        </ul>
+      )}
+    </form>
   );
 }
 
