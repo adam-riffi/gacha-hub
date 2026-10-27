@@ -4,7 +4,7 @@ import { login, makeApp, resetDb, type Client } from "../test/helpers.js";
 import { prisma } from "../lib/prisma.js";
 import { createSession, SESSION_COOKIE } from "../auth/sessions.js";
 
-type Slot = { key: string; gameKey: string; kind: string; name: string; shape: "square" | "wide"; sourced: boolean; url: string | null };
+type Slot = { key: string; gameKey: string; kind: string; name: string; shape: "square" | "wide"; sourced: boolean; url: string | null; source: string | null; invert: boolean };
 
 const PNG = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==", "base64");
 const BOUNDARY = "----art-test";
@@ -73,6 +73,20 @@ describe("the art slots", () => {
     expect(all.filter((candidate) => candidate.gameKey === "endfield" && candidate.kind === "material")).toHaveLength(20);
     // Entries a source has stay off the list.
     expect(all.some((candidate) => candidate.gameKey === "genshin" && candidate.kind === "gear")).toBe(false);
+  });
+
+  // Round 22 (Georges, 2026-10-27: "still no game icons", "why is the game card furina"): while the store holds nothing for
+  // a slot, the app shows the picture straight from its source, so the list carries each source's address and whether
+  // that picture is a dark icon to invert; an upload takes over both.
+  it("carries each slot's source address and invert while the store has no picture; an upload takes over", async () => {
+    const all = await slots();
+    const slot = (key: string) => all.find((candidate) => candidate.key === key);
+    expect(slot("genshin/icon")).toMatchObject({ url: null, source: expect.stringContaining("mzstatic.com"), invert: false });
+    expect(slot("genshin/key-art")).toMatchObject({ url: null, source: expect.stringContaining("fandom.com") });
+    expect(slot("zzz/shop/signal")).toMatchObject({ url: null, source: expect.stringContaining("Icon_Signal_Shop"), invert: true });
+    expect(slot("genshin/logo")).toMatchObject({ url: null, source: null, invert: false });
+    expect((await upload("zzz/shop/signal")).statusCode).toBe(200);
+    expect((await slots()).find((candidate) => candidate.key === "zzz/shop/signal")).toMatchObject({ url: expect.stringMatching(/^\/uploads\//), invert: false });
   });
 
   it("takes the owner's picture for a slot, shows it, and removes it", async () => {
