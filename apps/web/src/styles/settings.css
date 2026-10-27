@@ -72,3 +72,9 @@
 .st-link p { grid-column: 1 / -1; margin: 0; }
 .st-link label { display: grid; gap: 4px; margin: 0; }
 .st-buttons { margin-top: 12px; gap: 8px; }
+
+/* One paste for the Art store (Georges, 2026-10-27): a wide box, large type, the outcome in words. */
+.st-paste { display: grid; gap: 8px; padding: 12px 0; border-top: 1px solid var(--hairline); }
+.st-paste textarea { width: 100%; max-width: 900px; min-height: 160px; font-size: 16px; font-family: var(--font-mono, monospace); resize: vertical; }
+.st-paste .row { gap: 12px; align-items: center; }
+.st-paste-outcome { margin: 0; padding-left: 20px; font-size: 16px; }
