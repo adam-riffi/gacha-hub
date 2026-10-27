@@ -57,3 +57,41 @@ test("Settings → Keys: the owner enters each key, sees where it comes from, an
     for (const name of KEYS) await page.request.delete(`/api/settings/keys/${name}`);
   }
 });
+
+const R2_KEYS = ["R2_ACCOUNT_ID", "R2_BUCKET", "R2_ACCESS_KEY_ID", "R2_SECRET_ACCESS_KEY", "R2_PUBLIC_URL", "CF_ANALYTICS_TOKEN", "ASSET_BASE"];
+const SECRET = "fad5000000000000000000000000000000000000000000000000000000009505";
+
+// Georges, 2026-10-27 (one paste instead of six fields): the Art store's six values in one paste.
+test("Settings → Keys: the owner pastes the whole block of Cloudflare values once; the app sorts them into the fields and says what it kept @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  try {
+    await page.goto("/settings/keys");
+    const art = page.getByRole("region", { name: "Art store" });
+    const box = art.getByRole("group", { name: "Paste all the Art store values" });
+    await box.getByLabel("Or paste all six at once").fill(
+      [
+        "here is the token cfat_theStoreTokenItselfNotNeeded0000000000a1",
+        "account id: f1300000000000000000000000000152",
+        "bucket: gacha-hub-art",
+        "Access Key ID de550000000000000000000000002294",
+        `Secret Access Key ${SECRET}`,
+        "public url https://pub-37780000000000000000000000087ac.r2.dev/",
+        "analytics token: cfat_testOnlyNotARealTokenValue000000000000e16b",
+      ].join("\n"),
+    );
+    await box.getByRole("button", { name: "Save all" }).click();
+    const outcome = box.getByRole("status");
+    await expect(outcome).toContainText("Saved: Cloudflare account ID, Bucket, Access Key ID, Secret Access Key, Bucket public URL, Analytics token");
+    await expect(outcome).toContainText("Not placed, line 1");
+    for (const label of ["Cloudflare account ID", "Bucket", "Access Key ID", "Secret Access Key", "Bucket public URL", "Analytics token"]) {
+      await expect(art.getByRole("group", { name: label, exact: true })).toContainText("In the app");
+    }
+    await expect(box.getByLabel("Or paste all six at once")).toHaveValue("");
+    await expect(page.locator("body")).not.toContainText(SECRET.slice(-12));
+    expect(((await (await page.request.get("/api/me")).json()) as { assetBase: string | null }).assetBase).toBe("https://pub-37780000000000000000000000087ac.r2.dev/assets");
+  } finally {
+    for (const name of R2_KEYS) await page.request.delete(`/api/settings/keys/${name}`);
+  }
+});
