@@ -4,13 +4,14 @@ import { expect, test } from "@playwright/test";
 // an 1100 px window without a horizontal scroll, and still at 2560.
 test.use({ viewport: { width: 1100, height: 900 } });
 
-test("every screen fits an 1100 px window: Home, the library, the timeline, Tasks, Settings and each of a game's tabs @smoke", async ({ page }) => {
+test("every screen fits an 1100 px window: Home, the library, the timeline, Tasks, Settings, each of a game's tabs and a character sheet @smoke", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  const build = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1005" } })).json()) as { id: string };
   const tabs = ["", "/characters", "/pulls", "/endgame", "/teams", "/weapons", "/gear", "/materials", "/planner", "/profile", "/ownership"];
-  for (const path of ["/", "/?game=hsr", "/library", "/timeline", "/tasks", "/settings", "/settings/data", "/settings/art", "/settings/keys", ...tabs.map((tab) => `/games/${id}${tab}`)]) {
+  for (const path of ["/", "/?game=hsr", "/library", "/timeline", "/tasks", "/settings", "/settings/data", "/settings/art", "/settings/keys", ...tabs.map((tab) => `/games/${id}${tab}`), `/characters/${build.id}`]) {
     await page.goto(path);
     await page.waitForLoadState("networkidle");
     const width = await page.evaluate(() => document.documentElement.scrollWidth);
@@ -45,8 +46,9 @@ test.describe("a 960 px window (200 % zoom on a 1920 px screen)", () => {
     await page.getByRole("button", { name: "Continue" }).click();
     await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
     const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+    const build = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1005" } })).json()) as { id: string };
     const tabs = ["", "/characters", "/pulls", "/endgame", "/teams", "/weapons", "/gear", "/materials", "/planner", "/profile", "/ownership"];
-    for (const path of ["/", "/?game=hsr", "/library", "/timeline", "/tasks", "/settings", "/settings/keys", ...tabs.map((tab) => `/games/${id}${tab}`)]) {
+    for (const path of ["/", "/?game=hsr", "/library", "/timeline", "/tasks", "/settings", "/settings/keys", ...tabs.map((tab) => `/games/${id}${tab}`), `/characters/${build.id}`]) {
       await page.goto(path);
       await page.waitForLoadState("networkidle");
       expect(await page.evaluate(() => document.documentElement.scrollWidth), path).toBeLessThanOrEqual(960);
