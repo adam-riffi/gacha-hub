@@ -2,7 +2,7 @@
 
 ## State
 - `main` at #394: rounds 1–21 and the keys' one-paste box merged. CI green. **Production serves #394** (deployed 2026-10-27 at Georges's word through the Vercel connector; smoke green). The Vercel Blob store stays suspended until 19 November; the R2 bucket `gacha-hub-art` exists, its six values are in Georges's hands (he has not yet said "keys are in").
-- **Open PRs, round 22 (`stack/r29/`):** #395 `01-no-zoom` on `main`, **ready for review, CI green, "Check all" green in the second checkout** (one local run lost the passkey journey once: Chrome's virtual authenticator, green in CI); #396 `02-art-from-source` on #395, draft, its "Check all" was running when this was written (see `docs/AGENT_LOG.md`'s newest entry if it is not updated here). The auto-mode classifier refuses a merge without Georges's word: **he says "merge", the agent runs the merge script** (`restack-merge.sh` in the scratchpad: #395 then #396, retargeting #396 to `main` before deleting #395's branch).
+- **Open PRs, round 22 (`stack/r29/`):** #395 `01-no-zoom` on `main`, **ready for review, CI green, "Check all" green in the second checkout** (one local run lost the passkey journey once: Chrome's virtual authenticator, green in CI); #396 `02-art-from-source` on #395, **ready for review, CI green, "Check all" green** (the same passkey journey lost once locally, green in CI). The auto-mode classifier refuses a merge without Georges's word: **he says "merge", the agent runs the merge script** (`restack-merge.sh` in the scratchpad: #395 then #396, retargeting #396 to `main` before deleting #395's branch).
 - Round 17's plan and what shipped: `docs/AUDIT-2026-10-21-round17.md`; rounds 18–22 took the plan's next items and Georges's words.
 
 ## Done this session (round 22, Georges, 2026-10-27: "still no game icons why is a star the icon for GI instead of the original game icon or paimon? why is the game card furina? why are game cards crooked? the responsiveness make the whole app unreadable")
@@ -15,7 +15,7 @@
 - Two journeys that pinned a game's hero to Kafka's splash expect the key art now (its host answered locally with a one-pixel picture); the desktop-layout journey follows the new breakpoints (Prettier reflowed the rest of `e2e/shell.spec.ts` on the way: formatting only).
 
 ## Verified
-- The width journeys at 1100, 1280 (no CSS zoom), 960 (every screen, a game dashboard and a character sheet) and 2560; the art, library, timeline, icon and desktop-layout journeys; the resolver's unit tests and the slots' integration tests; the full server suite in "Check all".
+- "Check all" green on both PRs in the second checkout and CI green on both: the width journeys at 1100, 1280 (no CSS zoom), 960 (every screen, a game dashboard and a character sheet) and 2560; the art, library, timeline, icon, logo and desktop-layout journeys; the resolver's unit tests and the slots' integration tests; the full server suite. Five journeys about the drawn emblems and tiles now refuse outside pictures through `e2e/outside-art.ts` (the sources would stand in otherwise).
 - Screenshots on both PRs: 960 and 1280 px tours; the empty-store library, Home and hub at 1440 with the real sources.
 - Not verified: production (not deployed); the sources' pictures from Vercel's side are the browser's requests, not the function's, so nothing new runs on Vercel except the wiki API calls (six wikis, once an hour per instance).
 
