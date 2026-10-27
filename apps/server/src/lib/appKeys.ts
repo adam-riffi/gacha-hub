@@ -30,7 +30,8 @@ export const APP_KEYS = {
   R2_ACCESS_KEY_ID: { group: "Art store", label: "Access Key ID", pattern: /^[0-9a-f]{32}$/ },
   R2_SECRET_ACCESS_KEY: { group: "Art store", label: "Secret Access Key", pattern: /^[0-9a-f]{64}$/ },
   R2_PUBLIC_URL: { group: "Art store", label: "Bucket public URL", pattern: /^https:\/\/[a-z0-9-]+\.r2\.dev$/, shown: true },
-  CF_ANALYTICS_TOKEN: { group: "Art store", label: "Analytics token", pattern: /^[\w-]{40}$/ },
+  // Cloudflare's classic user tokens are 40 characters; its account API tokens (`cfat_…`) are longer.
+  CF_ANALYTICS_TOKEN: { group: "Art store", label: "Analytics token", pattern: /^[\w-]{40,100}$/ },
   // Only hosts the Content-Security-Policy lets images come from (vercel.json): an R2 public bucket or Vercel Blob. An override
   // of where the mirrored art is read; unset, the bucket's `/assets`.
   ASSET_BASE: { group: "Art store", label: "Public URL override", pattern: /^https:\/\/[a-z0-9-]+\.(r2\.dev|public\.blob\.vercel-storage\.com)(\/[\w./-]*)?$/, shown: true },
