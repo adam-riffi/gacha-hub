@@ -51,5 +51,5 @@ test("a game's card in the library carries its hero art @smoke", async ({ page }
   await page.request.post("/api/instances", { data: { gameKey: "hsr" } });
   await page.goto("/library");
   const card = page.getByRole("article", { name: "Honkai: Star Rail" });
-  await expect(card.locator("img.hero-art[src*='fandom.com']")).toHaveCount(1);
+  await expect(card.locator("img.hero-art:is([src*='fandom.com'], [src*='wikia.nocookie.net'])")).toHaveCount(1);
 });
