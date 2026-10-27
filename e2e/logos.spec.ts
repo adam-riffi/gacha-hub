@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { blockOutsideArt } from "./outside-art";
 
 /** A wide white picture, as a wordmark logo is. */
 const WIDE = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAACgAAAAKCAYAAADGmhxQAAAAK0lEQVR4nM3OQQEAIACEMKR/5zOCT1mCnW0jTOIkTuIkTuIkTuIkzt+BlwtLhwQQqnm2VgAAAABJRU5ErkJggg==", "base64");
@@ -7,6 +8,8 @@ const box = async (locator: ReturnType<import("@playwright/test").Page["locator"
 // Round 15 (Georges, 2026-10-20: "make every game icon more visible"): a logo keeps its shape and takes real room; the drawn
 // emblem grows the same way where no logo is uploaded.
 test("a game's logo shows at a readable size in the strip, the games list, the game's header and Home; the emblem grows too @smoke", async ({ page }) => {
+  // Round 22: the slots' sources stand in while the store is empty; refused here, so the marks below are the drawn ones.
+  await blockOutsideArt(page);
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
