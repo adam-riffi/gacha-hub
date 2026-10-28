@@ -2,11 +2,12 @@
 .lib-head { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
 .lib-head h1 { margin: 0; }
 .lib-hint { margin-left: auto; font-size: 12px; }
-.lib-page { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 24px; align-items: start; }
+/* Round 23: one column; the "Add a game" note takes a row under the list rather than a column that squeezed the rows' figures. */
+.lib-page { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; align-items: start; }
 .lib-list, .lib-side { display: grid; gap: 14px; min-width: 0; }
 .lib-row {
   /* The mark's column is fixed, so every title starts at the same place whatever the logo's width (round 16). */
-  display: grid; grid-template-columns: 20px 230px 200px auto minmax(100px, 1fr); grid-template-rows: auto auto;
+  display: grid; grid-template-columns: 20px 230px 200px minmax(0, 1fr) auto; grid-template-rows: auto auto;
   column-gap: 16px; row-gap: 12px; align-items: center; cursor: grab;
 }
 .lib-row.is-asleep { opacity: 0.55; }
@@ -17,7 +18,7 @@
 .lib-icon.is-art { width: auto; max-width: 230px; max-height: 88px; object-fit: contain; justify-self: start; }
 /* The game's hero across the card's right, fading into the card (round 12). */
 /* The key art across the row's right (round 17: "the top game cards"), brighter and wider than the splash was. */
-.lib-hero { position: absolute; right: 0; top: 0; bottom: 0; width: 60%; object-position: 50% 30%; mask-image: linear-gradient(90deg, transparent, #000 45%); opacity: 0.9; pointer-events: none; }
+.lib-hero { position: absolute; right: 0; top: 0; bottom: 0; width: 60%; object-position: 50% 45%; mask-image: linear-gradient(90deg, transparent, #000 45%); opacity: 0.9; pointer-events: none; }
 .lib-row { position: relative; overflow: hidden; }
 .lib-row > :not(.lib-hero) { position: relative; z-index: 1; }
 /* The figures keep a surface of their own over the key art. */
@@ -25,7 +26,7 @@
 .lib-name h2 { margin: 0 0 4px; font-size: 22px; }
 .lib-name .font-mono { font-size: 12px; }
 .lib-name .badge { margin-top: 6px; }
-.lib-cells { display: flex; gap: 8px; }
+.lib-cells { display: flex; flex-wrap: wrap; gap: 8px; } /* the figures wrap rather than run past the row (round 23) */
 .lib-cell { display: flex; flex-direction: column; gap: 6px; width: 88px; padding: 8px 10px; border: 1px solid var(--hairline); color: var(--text); font: 600 18px/1 var(--font-display); text-decoration: none; }
 .lib-cell:hover { border-color: var(--accent); }
 .lib-cell.is-energy { width: 136px; }

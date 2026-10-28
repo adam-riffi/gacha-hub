@@ -40,7 +40,6 @@
   .lib-today { grid-column: 3 / 6; grid-row: 3; flex-direction: row; align-items: center; gap: 16px; }
   .lib-today .kpi-label { display: none; } /* the line says "Dailies 0/7 · reset…" itself */
   .lib-hero { width: 45%; opacity: 0.7; mask-image: linear-gradient(90deg, transparent, #000 60%); }
-  .lib-page { grid-template-columns: minmax(0, 1fr) 260px; }
   /* A character sheet: the character, traces and weapon cards at 240 px or more each (three beside the art from 1440, two below). */
   .sh-cards { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
   /* Gear: the pieces take the room beside the filters; the set's panel is a drawer over the right edge anyway. */
@@ -52,7 +51,8 @@
   .content { padding: 8px 16px 24px; }
   .topbar { padding: 0 16px; }
   .strip { overflow-x: auto; scrollbar-width: thin; }
-  .eg-tiles, .cal-page, .lib-page { grid-template-columns: minmax(0, 1fr); }
+  .hub-tabs { flex-wrap: wrap; row-gap: 0; overflow-x: visible; } /* nine tabs at 15 px wrap onto a second line (round 23) */
+  .eg-tiles, .cal-page { grid-template-columns: minmax(0, 1fr); }
   /* A game's dashboard: its dailies and banners cards one under the other; its cards stay two a row (a card spanning
      two columns would open a second, ragged column in a one-column grid). */
   .gd-row { grid-template-columns: minmax(0, 1fr); height: auto; }
