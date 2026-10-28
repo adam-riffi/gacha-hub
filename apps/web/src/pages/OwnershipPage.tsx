@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { Rarity } from "../components/Rarity";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { CatalogCharacter, CatalogWeapon, OwnershipDto } from "@gacha/shared";
@@ -192,8 +193,8 @@ export function OwnershipPage() {
               </button>
               <div className="rtile-name" title={entry.name}>{entry.name}</div>
               <div className="rtile-meta">
-                {stars(entry.rarity)}
-                {tagOf(entry) ? ` · ${tagOf(entry)}` : ""}
+                <Rarity value={entry.rarity} />
+                {tagOf(entry) ? <span>{tagOf(entry)}</span> : null}
               </div>
               {kind === "character" && isOwned &&
                 (buildId ? (

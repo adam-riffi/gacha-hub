@@ -1,4 +1,5 @@
 import { useState, type CSSProperties } from "react";
+import { Rarity } from "../components/Rarity";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -294,7 +295,7 @@ export function CharacterEditor({ data }: { data: CharacterDetail }) {
             </div>
             <div className="sh-title">
               <h1>{entry?.name ?? state.name}</h1>
-              {entry && <span className="badge">★{entry.rarity}</span>}
+              {entry && <Rarity value={entry.rarity} className="badge" />}
               {entry?.tag && entry.tag !== "None" && <span className="badge">{entry.tag}</span>}
               {entry?.weaponType && <span className="badge">{entry.weaponType}</span>}
               <span className="badge">{characterBuild.dupeBadge}</span>
