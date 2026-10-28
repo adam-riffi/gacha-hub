@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { BannerKind } from "../components/BannerKind";
+import { bannerGlyph } from "../components/Glyph";
 import { Link, useSearchParams } from "react-router-dom";
 import { keepPreviousData, useQueries, useQuery } from "@tanstack/react-query";
 import {
@@ -468,6 +470,7 @@ export function CalendarPage() {
                                   </b>
                                 )}
                                 {item.tag && <b className="cal-tag">{item.tag}</b>}
+                                {item.kind === "banner" && [...new Set((item.banners ?? []).map((banner) => banner.kind))].map((kind) => <BannerKind key={kind} kind={bannerGlyph(kind)} className="cal-kind" />)}
                                 {/* The official picture at the start of a banner's or event's bar (round 17). */}
                                 {(() => {
                                   const thumb = [...(item.banners ?? []).map((banner) => officialArt(banner.payload)), officialArt(item.event?.payload)].find(Boolean);

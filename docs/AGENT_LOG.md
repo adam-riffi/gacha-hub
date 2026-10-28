@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-28 · claude · stack/r30/02-banner-kinds · #400
+- Done: round 23 PR 2 (Georges: "add a character/weapon icon to the banner to better differentiate them"). `BannerKind`: the kind's glyph on a tile in the kind's colour (character in the game's accent, weapon in steel blue, standard on paper, Bangboo in green; tokens `--k-weapon`, `--k-bangboo`), named for screen readers; 48 px beside each Pulls card's art, 44 px beside Home's countdown, 28 px at the start of each timeline bar (one per kind a phase holds).
+- Tests: written first: a character and a light cone warp seeded for one phase; the Pulls cards' three marks in two colours at 32 px or more, Home's banner card's mark, the phase bar's two marks.
+- Scope/decisions: a drawn glyph rather than the featured unit's icon, which already sits beside it.
+- Next: PR 3.
+
 ## 2026-10-28 · claude · stack/r30/01-rhythm · #399
 - Done: round 23 PR 1 (Georges: "the layout of certain pages is weird. the big game cards are too close to the activities endgame pulls etc panels"). The hub's header card keeps 20 px from the tab row, the tabs read at 15 px, the first panel starts 32 px under them. The games list drops its 300 px side column (it squeezed each row's figure tiles past the row's edge): one column, the figures wrap inside the row, "Add a game" under the list.
 - Tests: written first: the header's gaps and the tabs' size on Activities; every figure tile inside its row and the add-a-game card under the list.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: docs only.
 - Scope/decisions: none.
 - Next: deploy at Georges's word (migrations `card_stats_order` and `art_slots` run then); Georges uploads pictures as he finds them.
-
-## 2026-10-17 · claude · stack/r21/05-catalog-gaps · #356
-- Done: a catalog entry without an icon key, or of a kind its game has no art source for, joins its game's slots under its catalog kind: NTE's 9 gear sets (one shared placeholder in the data), Endfield's 14 gift materials and Zenless's Bangboo Eous. `CatalogIcon` shows the owner's picture first, then the store's and the source's as before.
-- Tests: written first: the slots list those 24 and none a source has; a journey uploads an Endfield gift and finds it on Materials.
-- Scope/decisions: none.
-- Next: the list in the docs.
