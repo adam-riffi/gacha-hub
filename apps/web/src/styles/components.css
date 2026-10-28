@@ -175,6 +175,15 @@ tbody tr:hover { background: var(--surface-2); }
 /* A dark-on-transparent icon from a source, inverted for the dark UI (Settings → Art). */
 .is-inverted { filter: invert(1); }
 
+/* A rarity as a row of stars in its colour (round 23), the same size wherever it stands. */
+.rarity { --r: var(--text-muted); display: inline-flex; align-items: center; gap: 1px; color: var(--r); }
+.rarity svg { width: 16px; height: 16px; fill: currentColor; }
+.rarity[data-rarity="3"] { --r: var(--rarity-3); }
+.rarity[data-rarity="4"] { --r: var(--rarity-4); }
+.rarity[data-rarity="5"] { --r: var(--rarity-5); }
+.rarity[data-rarity="6"] { --r: var(--rarity-6); }
+.rarity.badge { padding: 3px 6px; border-color: var(--r); }
+
 /* A banner's kind as a mark (round 23): the glyph on a tile in the kind's colour, the same size wherever it stands. */
 .kind-mark { --k: var(--surface-3); display: inline-grid; flex: none; place-items: center; width: 40px; height: 40px; background: var(--k); color: #000; clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%); }
 .kind-mark .kind-glyph { width: 62%; height: 62%; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
