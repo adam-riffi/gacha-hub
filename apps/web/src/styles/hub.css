@@ -3,7 +3,9 @@
  * type: the name in Barlow, labels and chips in mono, the current tab under an
  * accent bar like a panel title's.
  */
-.hub-head { position: relative; display: flex; align-items: center; gap: 24px; min-height: 200px; padding: 20px 24px; overflow: hidden; background: var(--card); border: 1px solid var(--edge); }
+/* Round 23 (Georges: "the big game cards are too close to the activities endgame pulls etc panels"): the header keeps
+   20 px from the tab row, the tabs read at 15 px, and the first panel starts 32 px under them. */
+.hub-head { position: relative; display: flex; align-items: center; gap: 24px; min-height: 200px; margin-bottom: 20px; padding: 20px 24px; overflow: hidden; background: var(--card); border: 1px solid var(--edge); }
 .hub-head > :not(.hub-hero) { position: relative; z-index: 1; }
 /* The key art behind the header, whole on the right, fading under the name (round 17: "the game window game cards"). */
 .hub-hero { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% 30%; mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.55) 40%, #000 65%); }
@@ -25,10 +27,10 @@
 .hub-resets dd .chip:not(.hot) { color: var(--text); }
 .hub-resets dd .chip > i { display: none; }
 
-.hub-tabs { display: flex; gap: 32px; margin-bottom: 24px; border-bottom: 1px solid var(--hairline); overflow-x: auto; }
+.hub-tabs { display: flex; gap: 36px; margin-bottom: 32px; border-bottom: 1px solid var(--hairline); overflow-x: auto; }
 .hub-tabs a {
-  position: relative; padding: 4px 0 14px; white-space: nowrap; text-decoration: none;
-  color: var(--text-muted); font: 400 12px/1 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase;
+  position: relative; padding: 8px 0 14px; white-space: nowrap; text-decoration: none;
+  color: var(--text-muted); font: 400 15px/1 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase;
   transition: color 0.2s;
 }
 .hub-tabs a:hover, .hub-tabs a[aria-current="page"] { color: var(--text); }

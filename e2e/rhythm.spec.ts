@@ -15,7 +15,12 @@ test("the game header keeps its distance: a gap before the tabs, tabs at 15 px o
   const tabsBox = (await tabs.boundingBox())!;
   expect(tabsBox.y - (head.y + head.height), "header to tabs").toBeGreaterThanOrEqual(16);
   expect(parseFloat(await tabs.getByRole("link").first().evaluate((el) => getComputedStyle(el).fontSize)), "tab size").toBeGreaterThanOrEqual(15);
-  const firstPanelTop = await tabs.evaluate((el) => el.nextElementSibling!.getBoundingClientRect().top);
+  // The first panel: whatever follows the tabs (or their wrapper) in the page.
+  const firstPanelTop = await tabs.evaluate((el) => {
+    let node: Element | null = el;
+    while (node && !node.nextElementSibling) node = node.parentElement;
+    return node!.nextElementSibling!.getBoundingClientRect().top;
+  });
   expect(firstPanelTop - (tabsBox.y + tabsBox.height), "tabs to the first panel").toBeGreaterThanOrEqual(28);
 });
 
