@@ -1,4 +1,5 @@
 import { useRef, useState, type CSSProperties, type FormEvent } from "react";
+import { Rarity } from "../components/Rarity";
 import { Link, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { dupeLetter, elementColor, getGame, weaponHolder, type CatalogWeapon, type CharacterDto, type WeaponCopyDto, type WishlistItemDto } from "@gacha/shared";
@@ -229,7 +230,7 @@ export function WeaponsPage() {
                 {/* Larger cards (Georges, round 7): the art on a band in its rarity's colour, the level big, the main stat by its icon. */}
                 <span className="wp-rarity" data-rarity={weapon.rarity ?? ""}>
                   <CatalogIcon gameKey={game.key} kind="weapon" icon={weapon.icon} name={weapon.name} className="wp-art" />
-                  {weapon.rarity ? <span className="font-mono wp-stars">★{weapon.rarity}</span> : null}
+                  <Rarity value={weapon.rarity} className="wp-stars" />
                 </span>
                 <div className="wp-body">
                   <strong>{weapon.name}</strong>
@@ -265,7 +266,7 @@ export function WeaponsPage() {
               />
               <span className="wp-rarity" data-rarity={weapon.rarity ?? ""}>
                 <CatalogIcon gameKey={game.key} kind="weapon" icon={weapon.icon} name={weapon.name} className="wp-art" />
-                {weapon.rarity ? <span className="font-mono wp-stars">★{weapon.rarity}</span> : null}
+                <Rarity value={weapon.rarity} className="wp-stars" />
               </span>
               <div className="wp-body">
                 <strong>{weapon.name}</strong>

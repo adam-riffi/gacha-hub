@@ -53,8 +53,9 @@
 label.act-remind { display: flex; align-items: center; gap: 10px; margin: 12px 0 0; color: var(--text); font: 400 15px/1.3 var(--font-body); letter-spacing: 0; text-transform: none; cursor: pointer; }
 .eg-next label.act-remind { margin: 0 0 14px; }
 .act-label { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: -12px; }
-.act-cadences { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: start; }
-.act-bottom { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 24px; align-items: start; }
+/* Cards in one row stand the same height (round 23, Georges: "try to have every box the same size"). */
+.act-cadences { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: stretch; }
+.act-bottom { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 24px; align-items: stretch; }
 .act-list .spread, .act-version .spread { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
 .act-list h3 .text-muted, .act-cycles h3 .text-muted { font-size: 16px; }
 .act-rows { display: flex; flex-direction: column; }
@@ -93,7 +94,7 @@ label.act-row { margin: 0; cursor: pointer; color: var(--text); font: 400 15px/1
 .eg-next { min-width: 320px; }
 .eg-next-mode { margin: 8px 0 4px; font: 600 24px/1.1 var(--font-display); letter-spacing: 0.04em; text-transform: uppercase; }
 .eg-next .font-mono { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
-.eg-modes { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; align-items: start; }
+.eg-modes { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; align-items: stretch; }
 .eg-mode .spread { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
 .eg-window-bar { position: relative; height: 6px; background: var(--surface-3); }
 .eg-window-bar > span { display: block; height: 100%; background: var(--hairline-strong); }
