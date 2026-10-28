@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import { BannerKind } from "./BannerKind";
+import { bannerGlyph } from "./Glyph";
 import { PullBudget, getGame } from "@gacha/shared";
 import type { HomeCarousel } from "../lib/carousel";
 import type { RosterEntry } from "../lib/roster";
@@ -68,6 +70,7 @@ export function BannersCarousel({ roster, carousel }: { roster: RosterEntry[]; c
             )}
           </div>
           <div className="carousel-tag">
+            <BannerKind kind={bannerGlyph(banner.kind)} className="carousel-kind" />
             <Countdown at={banner.endsAt} variant="tag" />
           </div>
           <div className="band carousel-band">

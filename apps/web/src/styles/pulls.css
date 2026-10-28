@@ -32,6 +32,7 @@
 .pl-banner-head h3 { margin-bottom: 10px; }
 .pl-banner-head .font-mono { font-size: 12px; }
 .pl-art { width: 64px; height: 64px; flex: none; }
+.pl-kind { width: 48px; height: 48px; }
 /* A banner's own art is wide (Game8, the wikis): shown at its shape, not squeezed into the square (round 16). */
 .slot-art.pl-art { width: auto; max-width: 150px; }
 .pl-status { display: flex; align-items: center; gap: 14px; }

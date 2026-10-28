@@ -28,6 +28,10 @@
   --on-paper: #080808;
   --wave: #303030;            /* page pattern */
   --accent: #ff2d95;          /* the Overview; a scope sets its own */
+  /* The banner kinds' colours (round 23): a character banner in the game's accent, a weapon banner in steel blue, the
+     standard banner on paper, a Bangboo banner in green. */
+  --k-weapon: #4fb3ff;
+  --k-bangboo: #9ad94a;
 
   --font-display: "Barlow Condensed", sans-serif;
   --font-mono: "IBM Plex Mono", monospace;

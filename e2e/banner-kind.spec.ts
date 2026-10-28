@@ -35,11 +35,11 @@ test("every banner carries its kind's mark, character and weapon in two colours:
     await page.goto("/");
     await expect(page.locator(".banner-card").getByRole("img", { name: /(Character|Weapon) banner/ })).toBeVisible();
 
-    // The timeline: each banner bar carries the mark too.
+    // The timeline: the two banners share a phase, so one bar carries both marks.
     await page.goto("/timeline?game=hsr");
-    const timeline = page.getByRole("region", { name: "Timeline" });
-    await expect(timeline.getByRole("button", { name: /E2E kind character warp/ }).getByRole("img", { name: "Character banner" })).toBeVisible();
-    await expect(timeline.getByRole("button", { name: /E2E kind light cone warp/ }).getByRole("img", { name: "Weapon banner" })).toBeVisible();
+    const bar = page.getByRole("region", { name: "Timeline" }).getByRole("button", { name: /E2E kind character warp \+1/ });
+    await expect(bar.getByRole("img", { name: "Character banner" })).toBeVisible();
+    await expect(bar.getByRole("img", { name: "Weapon banner" })).toBeVisible();
   } finally {
     for (const key of ["e2e-kind-char", "e2e-kind-cone"]) await page.request.delete(`/api/admin/banners/hsr/${key}`);
   }

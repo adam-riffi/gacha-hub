@@ -4,6 +4,7 @@ import { artSlotKey, featuredWithin, fiveStarDistribution, rateAt, savingsPlan, 
 import { assetUrl, communityAssetUrl, officialArt } from "../../lib/assets";
 import { GameIcon } from "../GameIcon";
 import { Glyph, artGlyph, bannerGlyph } from "../Glyph";
+import { BannerKind } from "../BannerKind";
 import { Segmented } from "../ui";
 import { PullCurve } from "./PullCurve";
 import { SlotArt } from "../SlotArt";
@@ -88,6 +89,7 @@ export function BannerCard(props: {
       <div className="pl-banner-main">
       {keyArt && <img className="key-art pl-key-art" src={keyArt} alt="" onError={(event) => (event.currentTarget.hidden = true)} />}
       <div className="pl-banner-head">
+        <BannerKind kind={bannerGlyph(banner.key)} className="pl-kind" />
         {featured ? (
           <GameIcon src={assetUrl(props.gameKey, featured.kind, featured.icon)} fallback={communityAssetUrl(props.gameKey, featured.kind, featured.icon)} alt={featured.name ?? featured.catalogId} glyph={artGlyph(featured.kind)} className="pl-art" />
         ) : (
