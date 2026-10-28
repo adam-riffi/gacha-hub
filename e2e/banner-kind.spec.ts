@@ -8,14 +8,16 @@ test("every banner carries its kind's mark, character and weapon in two colours:
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  // One pair of dates for both banners: the timeline groups banners into a phase by their exact start and end.
   const iso = (days: number) => new Date(Date.now() + days * 86_400_000).toISOString();
+  const [startsAt, endsAt] = [iso(-1), iso(5)];
   const upload = await page.request.post("/api/admin/payload", {
     data: {
       kind: "banners",
       gameKey: "hsr",
       items: [
-        { key: "e2e-kind-char", name: "E2E kind character warp", kind: "character", startsAt: iso(-1), endsAt: iso(5), featured: [{ catalogId: "1014", kind: "character" }] },
-        { key: "e2e-kind-cone", name: "E2E kind light cone warp", kind: "weapon", startsAt: iso(-1), endsAt: iso(5), featured: [{ catalogId: "23001", kind: "weapon" }] },
+        { key: "e2e-kind-char", name: "E2E kind character warp", kind: "character", startsAt, endsAt, featured: [{ catalogId: "1014", kind: "character" }] },
+        { key: "e2e-kind-cone", name: "E2E kind light cone warp", kind: "weapon", startsAt, endsAt, featured: [{ catalogId: "23001", kind: "weapon" }] },
       ],
     },
   });
@@ -35,9 +37,9 @@ test("every banner carries its kind's mark, character and weapon in two colours:
     await page.goto("/");
     await expect(page.locator(".banner-card").getByRole("img", { name: /(Character|Weapon) banner/ })).toBeVisible();
 
-    // The timeline: the two banners share a phase, so one bar carries both marks.
+    // The timeline: the two banners share a phase, so one bar (named after whichever the API lists first) carries both marks.
     await page.goto("/timeline?game=hsr");
-    const bar = page.getByRole("region", { name: "Timeline" }).getByRole("button", { name: /E2E kind character warp \+1/ });
+    const bar = page.getByRole("region", { name: "Timeline" }).getByRole("button", { name: /E2E kind (character|light cone) warp \+1/ });
     await expect(bar.getByRole("img", { name: "Character banner" })).toBeVisible();
     await expect(bar.getByRole("img", { name: "Weapon banner" })).toBeVisible();
   } finally {
