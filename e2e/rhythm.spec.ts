@@ -30,7 +30,8 @@ test("the games list keeps every figure tile inside its row and the add-a-game c
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
-  for (const gameKey of ["genshin", "hsr"]) await page.request.post("/api/instances", { data: { gameKey } });
+  // Not Genshin: the smoke journey, which runs after this one, adds it from the list and needs it absent.
+  for (const gameKey of ["hsr", "zzz"]) await page.request.post("/api/instances", { data: { gameKey } });
   await page.goto("/library");
   const rows = page.getByRole("article");
   await expect(rows.first()).toBeVisible();
