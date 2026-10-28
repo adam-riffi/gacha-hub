@@ -51,6 +51,7 @@
   .content { padding: 8px 16px 24px; }
   .topbar { padding: 0 16px; }
   .strip { overflow-x: auto; scrollbar-width: thin; }
+  .hub-tabs { flex-wrap: wrap; row-gap: 0; overflow-x: visible; } /* nine tabs at 15 px wrap onto a second line (round 23) */
   .eg-tiles, .cal-page { grid-template-columns: minmax(0, 1fr); }
   /* A game's dashboard: its dailies and banners cards one under the other; its cards stay two a row (a card spanning
      two columns would open a second, ragged column in a one-column grid). */
