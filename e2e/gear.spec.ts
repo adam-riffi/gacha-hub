@@ -186,8 +186,8 @@ test("Gear: a piece added from the pieces, its card readable with its set's and 
   }
 });
 
-// Georges, round 10, picking version A of four: "this one" (a bag of tiles like the games' own, the filters on the left, the chosen piece in full on the right).
-test("Gear: every piece a tile with its art; the chosen piece in full beside them, sent to the bag and equipped from there @smoke", async ({ page }) => {
+// Georges, round 10, picking version A of four: "this one" (a bag of tiles like the games' own); round 24: the filters on top, the chosen piece in a drawer.
+test("Gear: every piece a card with its art; the chosen piece in full in its drawer, sent to the bag and equipped from there @smoke", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
@@ -209,12 +209,11 @@ test("Gear: every piece a tile with its art; the chosen piece in full beside the
     await expect(tile()).toContainText("Crit value");
     await expect(tile()).not.toContainText(/CV \d/);
 
-    // The filters on the left, the tiles, the chosen piece on the right.
+    // Round 24 (Georges: "redo the artifacts"): the filters across the top, the chosen piece in a drawer over the page (artifacts.spec.ts).
     const filters = (await page.getByRole("region", { name: "Filters" }).boundingBox())!;
     const grid = (await pieces.boundingBox())!;
     const column = page.getByRole("region", { name: "Chosen piece" });
-    expect(filters.x + filters.width).toBeLessThanOrEqual(grid.x);
-    expect(grid.x + grid.width).toBeLessThanOrEqual((await column.boundingBox())!.x);
+    expect(filters.y + filters.height).toBeLessThanOrEqual(grid.y);
 
     // Chosen: its set, type and level, its main stat and substats, the set's bonuses, its wearer.
     await tile().getByRole("button", { name: "Show Hunter of Glacial Forest · Body" }).click();

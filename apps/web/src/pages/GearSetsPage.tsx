@@ -158,8 +158,8 @@ export function GearSetsPage() {
             ? slotIndex(first.slot) - slotIndex(second.slot) || first.set.localeCompare(second.set)
             : first.set.localeCompare(second.set) || slotIndex(first.slot) - slotIndex(second.slot) || (second.level ?? 0) - (first.level ?? 0),
     );
-  // The chosen piece, else the first shown: the column always holds one.
-  const picked = shown.find((piece) => piece.key === chosen) ?? shown[0];
+  // The chosen piece opens in a drawer over the page (round 24); nothing is chosen until a click.
+  const picked = shown.find((piece) => piece.key === chosen);
   const held = new Map([...owned].map(([name, list]) => [name, list.length]));
   // A slot's art from the set you hold most of, where the catalog has art per slot (Genshin).
   const artSet = setsByName.get([...held].sort((first, second) => second[1] - first[1])[0]?.[0] ?? "") ?? sets[0];
@@ -256,21 +256,43 @@ export function GearSetsPage() {
                 const critValue = new GearPiece(piece).critValue;
                 const name = `${piece.set} · ${slotLabel(piece.slot)}`;
                 return (
+                  // A big card (round 24, Georges: "redo the artifacts"): the set's icon on its band with the level and the slot, the set in
+                  // words, the main stat large, the substats with their values, the wearer by face and name (or the bag).
                   <article key={piece.key} className="card gb-tile" aria-label={name} aria-current={piece === picked ? true : undefined}>
                     <button type="button" className="gb-show" aria-label={`Show ${name}`} onClick={() => setChosen(piece.key)} />
-                    <CatalogIcon gameKey={game.key} kind="gear" icon={pieceIcon(set, piece.slot)} name={piece.set} className="gb-art" />
-                    <span className="gb-lv font-mono">+{piece.level ?? 0}</span>
-                    {piece.wearer?.catalogId ? <UnitIcon gameKey={game.key} unit={{ kind: "character", catalogId: piece.wearer.catalogId }} className="gb-who" /> : <span className="gb-bag font-mono">{piece.wearer ? piece.wearer.name : "Bag"}</span>}
-                    {/* The set in words (round 12: readable without knowing the art), then the stat, then the slot. */}
+                    <div className="gb-band">
+                      <CatalogIcon gameKey={game.key} kind="gear" icon={pieceIcon(set, piece.slot)} name={piece.set} className="gb-art" />
+                      <span className="gb-lv font-mono">+{piece.level ?? 0}</span>
+                      <span className="gb-slot font-mono">{slotLabel(piece.slot)}</span>
+                    </div>
                     <strong className="gb-set">{piece.set}</strong>
                     <span className="gb-main font-display">
                       {piece.mainStat && <StatIcon stat={piece.mainStat} />}
-                      {piece.mainStat || slotLabel(piece.slot)}
+                      {piece.mainStat || "—"}
                     </span>
-                    <span className="gb-type font-mono">
-                      {piece.mainStat ? slotLabel(piece.slot) : `+${piece.level ?? 0}`}
-                      {critValue > 0 && ` · Crit value ${Math.round(critValue * 10) / 10}`}
-                    </span>
+                    <ul className="gb-subs" aria-label="Substats">
+                      {(piece.substats ?? []).filter((substat) => substat.stat).map((substat, substatIndex) => (
+                        <li key={substatIndex}>
+                          <span className="gb-sub-stat">
+                            <StatIcon stat={substat.stat} />
+                            {substat.stat}
+                          </span>
+                          <span className="gb-sub-value font-mono">{substat.value === "" ? "—" : substat.value}</span>
+                        </li>
+                      ))}
+                      {(piece.substats ?? []).filter((substat) => substat.stat).length === 0 && <li className="text-muted">No substats yet</li>}
+                    </ul>
+                    <div className="gb-foot">
+                      {piece.wearer?.catalogId ? (
+                        <span className="gb-who">
+                          <UnitIcon gameKey={game.key} unit={{ kind: "character", catalogId: piece.wearer.catalogId }} className="gb-who-face" />
+                          <span>{wearerName(piece)}</span>
+                        </span>
+                      ) : (
+                        <span className="gb-bag font-mono">{piece.wearer ? piece.wearer.name : "Bag"}</span>
+                      )}
+                      {critValue > 0 && <span className="gb-cv font-mono">Crit value {Math.round(critValue * 10) / 10}</span>}
+                    </div>
                   </article>
                 );
               })}
@@ -278,11 +300,7 @@ export function GearSetsPage() {
             </section>
           </div>
 
-          {picked ? (
-            <PieceColumn key={picked.key} instanceId={id!} game={game} piece={picked} set={setsByName.get(picked.set)} slotLabel={slotLabel(picked.slot)} builds={builds} onOpenSet={setOpenId} />
-          ) : (
-            <section className="card gb-col" aria-label="Chosen piece" />
-          )}
+          {picked && <PieceColumn key={picked.key} instanceId={id!} game={game} piece={picked} set={setsByName.get(picked.set)} slotLabel={slotLabel(picked.slot)} builds={builds} onOpenSet={setOpenId} onClose={() => setChosen(null)} />}
           {picking && <SetsWindow game={game} sets={sets} held={held} picked={setsPicked} onToggle={toggle(setSetsPicked)} onClear={() => setSetsPicked(new Set())} count={shown.length} onClose={() => setPicking(false)} />}
           {open && <SetPanel key={open.id} instanceId={id!} game={game} set={open} pieces={owned.get(open.name) ?? []} builds={builds} onClose={() => setOpenId(null)} />}
         </div>
@@ -480,7 +498,7 @@ function EquipOn({ instanceId, game, builds, onEquip }: { instanceId: string; ga
 }
 
 /** The chosen piece in full (round 10): its art, set and type, main stat and substats, crit value, its set's bonuses (lit as its wearer has them), its wearer; To bag or Equip on, Delete, Open the set. */
-function PieceColumn({ instanceId, game, piece, set, slotLabel, builds, onOpenSet }: { instanceId: string; game: GameDefinition; piece: Piece; set?: CatalogGearSet; slotLabel: string; builds: CharacterDto[]; onOpenSet: (id: string) => void }) {
+function PieceColumn({ instanceId, game, piece, set, slotLabel, builds, onOpenSet, onClose }: { instanceId: string; game: GameDefinition; piece: Piece; set?: CatalogGearSet; slotLabel: string; builds: CharacterDto[]; onOpenSet: (id: string) => void; onClose: () => void }) {
   const queryClient = useQueryClient();
   const toast = useToast();
   const { index } = useCatalog(game.key);
@@ -494,8 +512,13 @@ function PieceColumn({ instanceId, game, piece, set, slotLabel, builds, onOpenSe
   const unit = piece.wearer?.catalogId ? index?.characters.get(piece.wearer.catalogId) : undefined;
   const pieceName = (set?.extra?.pieceNames as Record<string, string> | undefined)?.[piece.slot];
   return (
-    <section className="card gb-col" aria-label="Chosen piece">
-      <CatalogIcon gameKey={game.key} kind="gear" icon={pieceIcon(set, piece.slot)} name={piece.set} className="gb-col-art" />
+    <section className="card gs-panel gb-col" aria-label="Chosen piece">
+      <div className="spread">
+        <CatalogIcon gameKey={game.key} kind="gear" icon={pieceIcon(set, piece.slot)} name={piece.set} className="gb-col-art" />
+        <button type="button" className="btn panel-close" aria-label="Close" onClick={onClose}>
+          ✕ Close
+        </button>
+      </div>
       <h3>{piece.set}</h3>
       <p className="gb-col-type">
         {slotLabel} · +{piece.level ?? 0}
