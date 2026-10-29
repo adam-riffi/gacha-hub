@@ -33,7 +33,7 @@
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   height: 28px; padding: 0 12px; white-space: nowrap; cursor: pointer;
   background: transparent; border: 1px solid var(--hairline); color: var(--text-muted);
-  font: 400 12px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none;
+  font: 400 13px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none;
   transition: background-color 0.2s, border-color 0.2s, color 0.2s;
 }
 .btn:hover { background: var(--surface-2); border-color: var(--text); color: var(--text); }
@@ -48,7 +48,7 @@
 .seg { display: inline-flex; border: 1px solid var(--hairline); }
 .seg > button {
   height: 26px; padding: 0 12px; background: transparent; border: 0; color: var(--text-muted); cursor: pointer;
-  font: 400 12px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap;
+  font: 400 13px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap;
   transition: background-color 0.2s, color 0.2s;
 }
 .seg > button + button { border-left: 1px solid var(--hairline); }
@@ -56,7 +56,7 @@
 .seg > button[aria-pressed="true"] { background: var(--paper); color: var(--on-paper); }
 
 /* ---- Form controls (Proposed): square, a hairline on surface-2, mono labels above. ---- */
-label { display: block; margin-bottom: 6px; color: var(--text-muted); font: 400 12px/1.3 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
+label { display: block; margin-bottom: 6px; color: var(--text-muted); font: 400 13px/1.3 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
 input, select, textarea {
   width: 100%; padding: 6px 10px; min-height: 32px; border-radius: 0;
   background: var(--surface-2); border: 1px solid var(--hairline); color: var(--text);
@@ -75,14 +75,14 @@ input[type="checkbox"]:checked { background: var(--accent); border-color: var(--
 .cut { clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%); }
 .chip {
   display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;
-  color: var(--text-muted); font: 400 12px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--text-muted); font: 400 13px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase;
 }
 .chip > i { display: block; width: 8px; height: 8px; flex: 0 0 8px; background: var(--paper); }
 .chip.hot { padding: 5px 16px 6px 9px; background: var(--paper); color: var(--on-paper); clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%); }
 .chip.hot > i { background: var(--on-paper); }
 .tag {
   display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px 4px 8px;
-  background: #000; color: var(--text); font: 400 11px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase;
+  background: #000; color: var(--text); font: 400 13px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase;
   clip-path: polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%);
 }
 .tag::before { content: ""; width: 6px; height: 6px; background: var(--paper); }
@@ -93,7 +93,7 @@ input[type="checkbox"]:checked { background: var(--accent); border-color: var(--
 .badge {
   display: inline-flex; align-items: center; gap: 6px; padding: 3px 8px;
   border: 1px solid var(--hairline); color: var(--text-muted);
-  font: 400 11px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase;
+  font: 400 13px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase;
 }
 .badge.todo, .badge.official { background: var(--paper); border-color: var(--paper); color: var(--on-paper); }
 .badge.done { color: var(--text); }
@@ -111,7 +111,7 @@ input[type="checkbox"]:checked { background: var(--accent); border-color: var(--
 
 /* ---- Lists and tables: 34 px rows on surface-3 rules, mono headers, numbers right. ---- */
 table { width: 100%; border-collapse: collapse; }
-th { height: 28px; padding: 0 8px; text-align: left; border-bottom: 1px solid var(--hairline); color: var(--text-muted); font: 400 11px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
+th { height: 28px; padding: 0 8px; text-align: left; border-bottom: 1px solid var(--hairline); color: var(--text-muted); font: 400 13px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
 td { height: 34px; padding: 0 8px; border-top: 1px solid var(--surface-3); }
 tbody tr:hover { background: var(--surface-2); }
 .num { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
@@ -147,7 +147,7 @@ tbody tr:hover { background: var(--surface-2); }
 .carousel-tag .tag { padding: 8px 14px 8px 12px; font-size: 13px; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 9px), calc(100% - 9px) 100%, 0 100%); }
 .carousel-band { position: absolute; left: 0; bottom: 28px; min-width: 210px; max-width: calc(100% - 72px); }
 .carousel-title { font-size: 26px; line-height: 1.1; }
-.carousel-sub { margin-top: 4px; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+.carousel-sub { margin-top: 4px; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; }
 /* A banner's featured units (round 11): the top ones larger, the ones you own ticked, a top one you lack ringed. */
 .featured-units { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px; margin: 0; padding: 0; list-style: none; }
 .featured-unit { position: relative; width: 56px; height: 56px; }
@@ -257,7 +257,7 @@ img.cur-art.is-big { width: 44px; height: 44px; }
 .pk { position: relative; width: 100%; }
 .pk input { width: 100%; }
 .pk.has-icon input { padding-left: 40px; }
-.pk-current { position: absolute; top: 50%; left: 6px; width: 26px; height: 26px; transform: translateY(-50%); font-size: 10px; pointer-events: none; }
+.pk-current { position: absolute; top: 50%; left: 6px; width: 26px; height: 26px; transform: translateY(-50%); font-size: 13px; pointer-events: none; }
 .pk-list { position: absolute; top: 100%; left: 0; right: 0; z-index: 40; max-height: 300px; margin: 2px 0 0; padding: 4px 0; overflow-y: auto; list-style: none; background: var(--card); border: 1px solid var(--hairline-strong); box-shadow: 0 12px 28px rgba(0, 0, 0, 0.55); }
 .pk-list li { display: flex; align-items: center; gap: 10px; padding: 6px 10px; cursor: pointer; font-size: 13px; }
 .pk-list li.is-active { background: var(--surface-2); }

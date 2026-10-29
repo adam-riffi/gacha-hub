@@ -22,7 +22,7 @@
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px;
   border-left: 3px solid transparent;
   color: var(--text-muted); text-decoration: none;
-  font: 500 12px/1 var(--font-mono); letter-spacing: 0.05em;
+  font: 500 13px/1 var(--font-mono); letter-spacing: 0.05em;
 }
 .rail-item svg path, .rail-item svg rect, .rail-item svg circle { fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 .rail-item:hover { color: var(--text); background: var(--surface-2); }
@@ -32,11 +32,11 @@
 
 /* Top bar: the Overview pinned, a rule, then the games; the current card grows and takes a corner brace. */
 .topbar { height: 68px; flex: 0 0 68px; padding: 0 32px; display: flex; align-items: center; gap: 16px; }
-.topbar-date { font-size: 12px; letter-spacing: 0.08em; white-space: nowrap; }
+.topbar-date { font-size: 13px; letter-spacing: 0.08em; white-space: nowrap; }
 /* A pinned past day (VISUAL-DESIGN.md §10): the paper VIEWING chip and BACK TO TODAY, before the date. */
 .topbar-view { margin-left: auto; display: flex; align-items: center; gap: 12px; }
 .viewing {
-  background: var(--paper); color: var(--on-paper); font: 400 12px/1 var(--font-mono); letter-spacing: 0.06em; white-space: nowrap;
+  background: var(--paper); color: var(--on-paper); font: 400 13px/1 var(--font-mono); letter-spacing: 0.06em; white-space: nowrap;
   padding: 7px 16px 8px 12px; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
 }
 .strip { flex: 1; min-width: 0; height: 68px; display: flex; align-items: center; gap: 14px; }
