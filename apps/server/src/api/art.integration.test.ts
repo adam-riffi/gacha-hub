@@ -97,6 +97,10 @@ describe("the art slots", () => {
     expect(slot("hsr/key-art")).toMatchObject({ url: null, source: expect.stringContaining("honkai-star-rail.fandom.com/wiki/Special:FilePath/") });
     expect(slot("zzz/shop/signal")).toMatchObject({ url: null, source: expect.stringContaining("Icon_Signal_Shop"), invert: true });
     expect(slot("nte/gear/diabolos")).toMatchObject({ url: null, source: null, invert: false });
+    // Round 25: three more task icons from the wikis (Georges: "try to find icons for iconless tasks").
+    expect(slot("genshin/task/commissionreward")).toMatchObject({ source: expect.stringContaining("Icon_Commission") });
+    expect(slot("zzz/task/riduweekly")).toMatchObject({ source: expect.stringContaining("Icon_Ridu_Chronicles") });
+    expect(slot("wuwa/task/nests")).toMatchObject({ source: expect.stringContaining("Icon_Nightmare_Purification") });
     expect((await upload("zzz/shop/signal")).statusCode).toBe(200);
     expect((await slots()).find((candidate) => candidate.key === "zzz/shop/signal")).toMatchObject({ url: expect.stringMatching(/^\/uploads\//), invert: false });
   });
