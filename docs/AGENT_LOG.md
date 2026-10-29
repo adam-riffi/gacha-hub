@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-29 · claude · stack/r31/01-banner-featured · #402
+- Done: Round 24 PR 1 (Georges: "i don't need to know the name of the banner just the featured characters … skirk escoffier mika candace dahlia tue nov 3rd"). The Pulls card's head: the kind's mark, the banner type, "Ends Tue 3 Nov" on paper, every featured unit of the running banners with its name under its icon (top rarity 72 px, others 52); Home's banner card titled by its top featured units (`topNames`); the phase's name only where it features none.
+- Tests: written first: three units seeded on one warp, each named on the Pulls card, Blade larger, the end day, no banner name; Home titled "Blade"; the overview journey reads the unit's name.
+- Scope/decisions: the units come from every running banner of the card's kind.
+- Next: PR 2, the odds tiles.
+
 ## 2026-10-28 · claude · stack/r30/03-rarity-boxes · #401
 - Done: round 23 PR 3 (Georges: "use icons as well for rarity, try to have every box the same size and add colors"). `Rarity`: a row of stars in the rarity's colour (blue three, purple four, gold five, orange six; tokens `--rarity-3`…`--rarity-6`), named "5 stars", on the character cards, the sheet's title, the ownership tiles and the weapon cards, where "★5" stood; the weapon band reads the same tokens. The Activities cadences, its cycles and version cards and the endgame modes stretch to their row's height.
 - Tests: written first: Kafka's five gold stars and Sushang's four purple on the cards, the sheet, the ownership tile and a weapon card, no "★5" or "★★★★★" left; the three card rows within 1 px.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: a journey uploads a wide logo and measures it in the strip (at least 29 px high, wider than twice its height), the list (56) and the header (96), and finds the mark on Home's Dailies card and Stamina table; the emblem's sizes too.
 - Scope/decisions: the per-spot sizes are explicit CSS, no generic cap (the strip's 8 px icon font had capped an `em` rule at 36 px). The journey looks at the all-games Home: the single-game scope shows the dashboard's card, which names no game.
 - Next: the art store on Vercel Blob.
-
-## 2026-10-20 · claude · stack/r22/01-art-sources · #359
-- Done: round 15 (Georges, 2026-10-20: "find me all of the assets, this is a private project i do not intend to have any commercial use"). 91 pictures found for the slots and checked by eye on contact sheets: the game wikis (Genshin, Star Rail, Zenless, Wuthering Waves, Endfield on Fandom and wiki.gg, NTE), StarRailRes at a pinned commit, Enka, Hakushin; listed in `apps/server/src/art/sources.ts` with a credit each. `POST /api/art/fetch` takes the named slots, or the next batch not yet held, resolves a wiki file through the wiki's API and fetches it with a browser's own headers (the static hosts challenge a bare client), checks it is a picture, stores it like an upload and audits it; what fails is reported by name and skipped in the next batch. Settings → Art gets "Fetch n from the sources", eight at a time with a running count. Two dark-on-transparent icons carry an inversion flag (new column) and show inverted. Checked against the live wikis in dev: 91 of 91 in about four minutes.
-- Tests: written first: the fetch route (named keys, the next batch, a skip list, a failure reported and skipped, no source, owner only, audited by name) and the Art tab's journey (batches answered by hand, the count); every source entry is a real slot with an https URL and a credit.
-- Scope/decisions: rejected on sight: the Endfield wiki's own badge as a logo, character art for Echoes of War, screenshots for Chronicled wish, Beyond the Rails and Anomaly Pilgrimage; SVG stays refused by the store, so the Wuthering Waves logo comes from the wiki's PNG wordmark. The sources are a TypeScript module: the base tsconfig turns JSON imports off on purpose.
-- Next: the icons at a readable size.
