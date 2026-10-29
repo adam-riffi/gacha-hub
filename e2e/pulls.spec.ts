@@ -194,7 +194,8 @@ test("Pulls: one grid of banners whose rows line up, their odds tables whole, no
   const [a, b] = [(await cards.nth(0).boundingBox())!, (await cards.nth(1).boundingBox())!];
   expect(Math.abs(a.y - b.y)).toBeLessThan(2);
   expect(Math.abs(a.height - b.height)).toBeLessThan(2);
-  await expect(cards.first().locator("table.pl-odds")).toHaveCSS("display", "table");
+  // Round 24: the odds are three tiles of one size (odds.spec.ts), no table.
+  await expect(cards.first().getByRole("group", { name: "Odds" }).locator(".odds-tile")).toHaveCount(3);
   // A banner without a featured unit shows its kind as an icon, not letters.
   await expect(page.getByRole("region", { name: "Stellar warp" }).locator(".pl-banner-head svg.glyph")).toBeVisible();
 });
