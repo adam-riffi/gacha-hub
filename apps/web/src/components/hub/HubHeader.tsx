@@ -33,7 +33,7 @@ export function HubHeader({ instanceId }: { instanceId: string }) {
   });
   const game = data && getGame(data.gameKey);
   // The owner's logo, or its icon (round 17): either beats the placeholder (both hooks every render).
-  const logoSlot = useSlotArt(data ? artSlotKey(data.gameKey, "logo") : null);
+  const logoSlot = useSlotArt(data ? artSlotKey(data.gameKey, "logo") : null, { sources: false });
   const iconSlot = useSlotArt(data ? artSlotKey(data.gameKey, "icon") : null);
   const uploadedLogo = logoSlot || iconSlot;
   if (!data || !game) return null;
