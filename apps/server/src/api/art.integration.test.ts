@@ -3,6 +3,7 @@ import type { FastifyInstance } from "fastify";
 import { login, makeApp, resetDb, type Client } from "../test/helpers.js";
 import { prisma } from "../lib/prisma.js";
 import { createSession, SESSION_COOKIE } from "../auth/sessions.js";
+import { forgetWikiFiles } from "../art/resolve.js";
 
 type Slot = { key: string; gameKey: string; kind: string; name: string; shape: "square" | "wide"; sourced: boolean; url: string | null; source: string | null; invert: boolean };
 
@@ -32,6 +33,7 @@ describe("the art slots", () => {
   beforeEach(async () => {
     await resetDb();
     owner = await login(app, `10.4.0.${++ipCounter}`);
+    forgetWikiFiles();
     // The wikis' API (round 22): Genshin's key art resolves to its direct address; every other title is unknown.
     vi.stubGlobal("fetch", async (input: string | URL | Request) => {
       const titles = decodeURIComponent(new URL(String(input)).searchParams.get("titles") ?? "").split("|");
@@ -94,7 +96,8 @@ describe("the art slots", () => {
     expect(slot("genshin/icon")).toMatchObject({ url: null, source: expect.stringContaining("mzstatic.com"), invert: false });
     // A wiki file by its direct address, the one a browser is served (its Special:FilePath answers 403); an unresolved one as listed.
     expect(slot("genshin/key-art")).toMatchObject({ url: null, source: "https://static.wikia.nocookie.net/gensin-impact/images/9/98/Splashscreen_A_Rekviem_for_the_Underworld.png/revision/latest" });
-    expect(slot("hsr/key-art")).toMatchObject({ url: null, source: expect.stringContaining("honkai-star-rail.fandom.com/wiki/Special:FilePath/") });
+    // A wiki file the API does not know gets no address at all (round 25): its Special:FilePath would answer a browser 403.
+    expect(slot("hsr/key-art")).toMatchObject({ url: null, source: null });
     expect(slot("zzz/shop/signal")).toMatchObject({ url: null, source: expect.stringContaining("Icon_Signal_Shop"), invert: true });
     expect(slot("nte/gear/diabolos")).toMatchObject({ url: null, source: null, invert: false });
     // Round 25: three more task icons from the wikis (Georges: "try to find icons for iconless tasks").
@@ -103,6 +106,23 @@ describe("the art slots", () => {
     expect(slot("wuwa/task/nests")).toMatchObject({ source: expect.stringContaining("Icon_Nightmare_Purification") });
     expect((await upload("zzz/shop/signal")).statusCode).toBe(200);
     expect((await slots()).find((candidate) => candidate.key === "zzz/shop/signal")).toMatchObject({ url: expect.stringMatching(/^\/uploads\//), invert: false });
+  });
+
+  // Round 25 (an empty tile on every wiki task on a cold function): while the wikis have not answered, a wiki file is listed
+  // with no address rather than one a browser cannot load; the sources off the wikis stand; the wait is the env's.
+  it("lists wiki files with no address while the wikis have not answered, within the configured wait", async () => {
+    vi.stubGlobal("fetch", () => new Promise<Response>(() => undefined));
+    process.env.ART_RESOLVE_WAIT_MS = "50";
+    try {
+      const started = Date.now();
+      const all = await slots();
+      expect(Date.now() - started).toBeLessThan(2000);
+      const slot = (key: string) => all.find((candidate) => candidate.key === key);
+      expect(slot("genshin/key-art")).toMatchObject({ source: null });
+      expect(slot("genshin/icon")).toMatchObject({ source: expect.stringContaining("mzstatic.com") });
+    } finally {
+      delete process.env.ART_RESOLVE_WAIT_MS;
+    }
   });
 
   it("takes the owner's picture for a slot, shows it, and removes it", async () => {
