@@ -39,7 +39,7 @@ test("the games list keeps every figure tile inside its row and the add-a-game c
     const rowBox = (await row.boundingBox())!;
     for (const cell of await row.locator(".lib-cell").all()) {
       const cellBox = (await cell.boundingBox())!;
-      expect(cellBox.x + cellBox.width, `${await row.getAttribute("aria-label")}: ${await cell.locator(".kpi-label").textContent()}`).toBeLessThanOrEqual(rowBox.x + rowBox.width - 4);
+      expect(cellBox.x + cellBox.width, `${await row.getAttribute("aria-label")}: ${await cell.locator(".kpi-label").textContent()}`).toBeLessThanOrEqual(rowBox.x + rowBox.width); // round 24: the tiles run edge to edge inside the card
     }
   }
   const list = (await page.locator(".lib-list").boundingBox())!;
