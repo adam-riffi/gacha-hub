@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-29 · claude · stack/r31/06-no-card-stat-filter · #407
+- Done: Round 24 PR 6 (Georges: "i don't really need to filter by card stat"). The page-level "Card stats" chip row and its write queue are gone from the Characters filters; each card picks its own stats as before; the game's API-set stats still stand where a build picked none.
+- Tests: the two journeys that picked through the row pick on the card (the set-bonus picks across a reload; the quick-picks race on a build under a slow server).
+- Scope/decisions: the game-level field and API stay.
+- Next: PR 7, Farm today's icons.
+
 ## 2026-10-29 · claude · stack/r31/05-goals-page · #406
 - Done: Round 24 PR 5 (Georges: "the reminder and preview are taking too much real estate at the top. those two should be in settings"). Tasks drops its 360 px side column; Settings → Notifications already holds both panels.
 - Tests: written first: no Reminders or Preview on Tasks, its main column across the page; the reminder journey in Settings → Notifications.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the five slots' sources are Game8 `/show` pictures; the sources test still checks every entry is a real slot with a credit.
 - Scope/decisions: Game8's own composites (the "Convenes", "Warps" and "All Banners Schedule" headers) were rejected on sight: they carry Game8's text, not the game's art. The wiki's Standard Weapon Convene picture stays.
 - Next: the order fixes.
-
-## 2026-10-20 · claude · stack/r23/01-feed-art · #364
-- Done: round 16 (Georges, 2026-10-20: "for banners or game cards you can use real game art like these… the whole concept of this project's UI design is ICONS FIRST text second"). The official feeds' announcements carry their key art (`banner` on Genshin's list items, `img` or `banner` on Star Rail's and Zenless's picture notices); the parser keeps it as `payload.image` on every banner and event it makes, and the cards show it: Home's Banners card full-bleed (anchored on its characters, under a lighter veil than a splash gets), the Pulls card across its top (180 px, the title in view), the timeline's selected panel in place of the splash. The picture host (`sdk.hoyoverse.com`) joins the image policy. Checked in dev against the live feeds: Skirk's "Void Star's Advent" on all three.
-- Tests: written first: the three parsers keep each notice's picture on its banners and events (every warp of a split notice gets it); the policy test names the host; a journey seeds a banner with a picture and finds it on Home, Pulls and the timeline.
-- Scope/decisions: a banner without a picture (admin uploads, the Game8 and wiki banners) shows what it did; the picture is hotlinked from HoYoverse's own CDN (the app already reads their feed), not copied to the store. The Home card's veil over key art is 0.18 (0.4 over a splash): the band carries the text.
-- Next: the standard banners' own art from Game8 (02), then the order fixes (03).

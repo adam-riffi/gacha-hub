@@ -143,17 +143,6 @@ export function CharactersPage() {
     queryClient.setQueryData<CharacterDto[]>(["characters", id], (old) => old?.map((build) => (build.id === buildId ? { ...build, cardStats } : build)));
     buildStatsWrites.push(buildId, { cardStats, cardStatsOrder: nextWriteOrder() });
   };
-  // The stats the cards show, picked for the game (Georges, round 5); none picked shows each build's role's. A read in flight would put
-  // back the stats from before the picks, so it is cancelled; the game's stats are read back once the last pick is saved.
-  const gameStatsWrites = useLatestWriteQueue<CardStatsPick>(
-    (instanceId, pick) => api.put(`/api/instances/${instanceId}`, pick),
-    (instanceId) => queryClient.invalidateQueries({ queryKey: ["instance", instanceId] }),
-  );
-  const saveGameStats = (cardStats: string[] | null) => {
-    void queryClient.cancelQueries({ queryKey: ["instance", id] });
-    queryClient.setQueryData<InstanceDetail>(["instance", id], (old) => (old ? { ...old, cardStats } : old));
-    gameStatsWrites.push(id!, { cardStats, cardStatsOrder: nextWriteOrder() });
-  };
   const start = useMutation({
     mutationFn: (request: string | { name: string } | { catalogId: string; own: false }) => api.post<{ id: string }>(`/api/instances/${id}/characters`, typeof request === "string" ? { catalogId: request } : request),
     onSuccess: (created) => navigate(`/characters/${created.id}`),
@@ -231,13 +220,10 @@ export function CharactersPage() {
   const holder = weaponHolder(game);
   const dupeField = game.manifest.dupes.weapon?.field;
   const gearSets = new Map((catalog?.gear ?? []).map((gearSet) => [gearSet.name, gearSet]));
+  // The game's own card stats (set through its API) stand where a build picked none; the page-level pick row went in round 24
+  // (Georges: "i don't really need to filter by card stat"): each card picks its own.
   const cardStats = instance.data.cardStats ?? null;
   const statOptions = cardStatOptions(game, builds.data.map((build) => build.doc as Record<string, unknown>));
-  const toggleStat = (stat: string) => {
-    const now = cardStats ?? [];
-    const next = now.includes(stat) ? now.filter((chosen) => chosen !== stat) : [...now, stat].slice(-LIMITS.cardStats);
-    saveGameStats(next.length ? next : null);
-  };
 
   return (
     <>
@@ -275,19 +261,6 @@ export function CharactersPage() {
             onChange={setKind}
           />
         )}
-        <div className="ch-chipset ch-stats">
-          <span className="kpi-label">Card stats</span>
-          <div role="group" aria-label="Card stats">
-            <button type="button" className="ch-chip" aria-pressed={!cardStats} onClick={() => saveGameStats(null)}>
-              Role
-            </button>
-            {statOptions.map((statOption) => (
-              <button key={statOption} type="button" className="ch-chip" aria-pressed={cardStats?.includes(statOption) ?? false} onClick={() => toggleStat(statOption)}>
-                {statOption}
-              </button>
-            ))}
-          </div>
-        </div>
       </section>
 
       {kind === "builds" ? (
