@@ -141,8 +141,12 @@ test("Characters: the stats the cards show, picked for the game; a set's bonus a
   await page.goto(`/games/${id}/characters`);
   await page.getByRole("searchbox", { name: "Search" }).fill("Qingque");
   const card = page.getByRole("article", { name: "Qingque" });
-  const pick = page.getByRole("group", { name: "Card stats" });
+  // Round 24 (Georges: "i don't really need to filter by card stat"): the page-level row is gone; the stats are picked on the card.
+  await card.getByRole("button", { name: "Stats shown on Qingque" }).click();
+  const pick = page.getByRole("group", { name: "Qingque's card stats" });
   for (const stat of ["HP", "CRIT DMG", "SPD"]) await pick.getByRole("button", { name: stat, exact: true }).click();
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("group", { name: "Card stats" })).toHaveCount(0);
   await expect(card.locator(".ch-kpis .kpi-label")).toHaveText(["HP", "CRIT DMG", "SPD"]);
   const crit = card.getByRole("button", { name: /^CRIT DMG 125%/ });
   await expect(crit).toHaveAttribute("title", "100% + 25% · Hunter of Glacial Forest 4pc");
@@ -152,16 +156,18 @@ test("Characters: the stats the cards show, picked for the game; a set's bonus a
   await expect(card.locator(".ch-set").getByRole("img", { name: "Hunter of Glacial Forest" })).toBeVisible();
   await expect(card.locator(".ch-set")).toContainText("4");
 
-  // Saved for the game.
+  // Saved on the build.
   await page.reload();
   await page.getByRole("searchbox", { name: "Search" }).fill("Qingque");
-  await expect(page.getByRole("article", { name: "Qingque" }).locator(".ch-kpis .kpi-label")).toHaveText(["HP", "CRIT DMG", "SPD"]);
+  const again = page.getByRole("article", { name: "Qingque" });
+  await expect(again.locator(".ch-kpis .kpi-label")).toHaveText(["HP", "CRIT DMG", "SPD"]);
   // Three at most (round 8): a fourth pick drops the oldest.
-  await page.getByRole("group", { name: "Card stats" }).getByRole("button", { name: "ATK", exact: true }).click();
-  await expect(page.getByRole("article", { name: "Qingque" }).locator(".ch-kpis .kpi-label")).toHaveText(["CRIT DMG", "SPD", "ATK"]);
-  // Back to the role's stats, for the journeys after this one.
-  await page.getByRole("group", { name: "Card stats" }).getByRole("button", { name: "Role" }).click();
-  await expect.poll(async () => ((await (await page.request.get(`/api/instances/${id}`)).json()) as { cardStats: unknown }).cardStats).toBeNull();
+  await again.getByRole("button", { name: "Stats shown on Qingque" }).click();
+  await page.getByRole("group", { name: "Qingque's card stats" }).getByRole("button", { name: "ATK", exact: true }).click();
+  await expect(again.locator(".ch-kpis .kpi-label")).toHaveText(["CRIT DMG", "SPD", "ATK"]);
+  // Back to the game's stats, for the journeys after this one.
+  await page.getByRole("group", { name: "Qingque's card stats" }).getByRole("button", { name: "Game's" }).click();
+  await expect.poll(async () => ((await (await page.request.get(`/api/characters/${build}`)).json()) as { cardStats: unknown }).cardStats).toBeNull();
 });
 
 // Ownership apart from builds, and the selection's actions doing what they say (Georges, round 6: "I cannot change the status
@@ -466,12 +472,13 @@ test("Characters: card-stat picks made quickly are all kept, even when the page 
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "zzz" } })).json()) as { id: string };
-  await page.request.put(`/api/instances/${id}`, { data: { cardStats: null } });
-  const cardStats = async () => ((await (await page.request.get(`/api/instances/${id}`)).json()) as { cardStats: string[] | null }).cardStats;
-  // A slow server: every save of the game takes 400 ms to reach it. Held by the browser context, not the page: the
+  // Round 24: the picks are a card's own (the page-level row is gone); Nekomata, whom no other journey builds.
+  const build = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1021" } })).json()) as { id: string };
+  const cardStats = async () => ((await (await page.request.get(`/api/characters/${build.id}`)).json()) as { cardStats: string[] | null }).cardStats;
+  // A slow server: every save of the build takes 400 ms to reach it. Held by the browser context, not the page: the
   // last save is a keepalive request that outlives the page's navigation, which cancels a page's held requests.
   const held: Promise<void>[] = [];
-  await page.context().route(`**/api/instances/${id}`, (route) => {
+  await page.context().route(`**/api/characters/${build.id}`, (route) => {
     if (route.request().method() !== "PUT") return route.continue();
     const landing = (async () => {
       await new Promise((resolve) => setTimeout(resolve, 400));
@@ -483,7 +490,9 @@ test("Characters: card-stat picks made quickly are all kept, even when the page 
   });
   try {
     await page.goto(`/games/${id}/characters`);
-    const pick = page.getByRole("group", { name: "Card stats" });
+    await page.getByRole("searchbox", { name: "Search" }).fill("Nekomata");
+    await page.getByRole("article", { name: "Nekomata" }).getByRole("button", { name: "Stats shown on Nekomata" }).click();
+    const pick = page.getByRole("group", { name: "Nekomata's card stats" });
     for (const stat of ["HP", "ATK", "DEF"]) await pick.getByRole("button", { name: stat, exact: true }).click();
     await page.goto("/");
     await expect.poll(cardStats, { timeout: 5000 }).toEqual(["HP", "ATK", "DEF"]);
@@ -492,8 +501,8 @@ test("Characters: card-stat picks made quickly are all kept, even when the page 
     await page.waitForTimeout(1000);
     expect(await cardStats()).toEqual(["HP", "ATK", "DEF"]);
   } finally {
-    await page.context().unroute(`**/api/instances/${id}`);
-    await page.request.put(`/api/instances/${id}`, { data: { cardStats: null } });
+    await page.context().unroute(`**/api/characters/${build.id}`);
+    await page.request.delete(`/api/characters/${build.id}`);
   }
 });
 
