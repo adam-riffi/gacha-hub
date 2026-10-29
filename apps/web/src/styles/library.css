@@ -31,7 +31,7 @@
 .lib-cell .kpi-label { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .lib-cell .pull-n { min-width: 0; justify-content: flex-start; }
 .lib-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 16px; padding: 12px 18px 14px; }
-.lib-today { display: flex; align-items: center; gap: 10px; font-size: 15px; }
+.lib-today { display: flex; align-items: baseline; gap: 10px; font-size: 15px; } /* the label on the line's baseline (round 25) */
 .lib-today .kpi-label { font-size: 13px; }
 .lib-actions { display: flex; align-items: center; gap: 14px; }
 .lib-sleep { display: inline-flex; align-items: center; margin: 0; color: var(--text); cursor: pointer; }
