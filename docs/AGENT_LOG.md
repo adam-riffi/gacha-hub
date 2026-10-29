@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-29 · claude · stack/r31/07-farm-icons · #408
+- Done: Round 24 PR 7 (Georges: "planner as main icons too small … i'd rather click on it and then check what's left to do"). A Farm today chip is the unit at 64 px with its days and a +N count; a click unfolds its materials (the week view and unit-less lines keep theirs in view); the goal cards' unit icon 48 → 72 px on Tasks and the planner.
+- Tests: written first: Seele's chip large with no material, open after a click; her planner card's icon 64 px or more; the two Farm today journeys click first.
+- Scope/decisions: the planner's materials table and Farm today card untouched.
+- Next: PR 8, the type floor.
+
 ## 2026-10-29 · claude · stack/r31/06-no-card-stat-filter · #407
 - Done: Round 24 PR 6 (Georges: "i don't really need to filter by card stat"). The page-level "Card stats" chip row and its write queue are gone from the Characters filters; each card picks its own stats as before; the game's API-set stats still stand where a build picked none.
 - Tests: the two journeys that picked through the row pick on the card (the set-bonus picks across a reload; the quick-picks race on a build under a slow server).
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: a journey uploads a square logo and a key art, finds the logo alone in the strip at 34 px or more, the title of a game with a logo level with one without, and the key art as the row's hero; the logos and art journeys still pass.
 - Scope/decisions: the tiles are square with an edge, like every surface here (no radius anywhere in the design). The key art goes through HeroArt, so every spot that shows a game's hero takes it, with no new component.
 - Next: the docs and the handoff.
-
-## 2026-10-20 · claude · stack/r23/02-game8-sources · #365
-- Done: round 16 (Georges: "sites like game8 have all the assets you might need"). The standard and beginner banners get their own art from Game8's banner pages instead of wiki screenshots: Genshin's Wanderlust Invocation, Wuthering Waves' Tidal Chorus and Utterance of Marvels, Endfield's Basic Headhunting and New Horizons (the last two had no picture). Game8's `/show` URLs serve the picture to the fetcher as it is (either referer passes), so `POST /api/art/fetch` needed no change; NOTICE credits Game8. 93 pictures now come at one click.
-- Tests: written first: the five slots' sources are Game8 `/show` pictures; the sources test still checks every entry is a real slot with a credit.
-- Scope/decisions: Game8's own composites (the "Convenes", "Warps" and "All Banners Schedule" headers) were rejected on sight: they carry Game8's text, not the game's art. The wiki's Standard Weapon Convene picture stays.
-- Next: the order fixes.
