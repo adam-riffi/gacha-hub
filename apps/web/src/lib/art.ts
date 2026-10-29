@@ -19,7 +19,8 @@ export function useSlotInverted(key: string | null): boolean {
  * The owner's picture for a slot (`artSlotKey`), else its source's while the store holds none (round 22, Georges: "still no
  * game icons"), or null: the card keeps what it shows without one.
  */
-export function useSlotArt(key: string | null): string | null {
-  const { data } = useQuery({ queryKey: ["art"], queryFn: fetchSlots, staleTime: 5 * 60_000, select: (result) => new Map(result.slots.map((slot) => [slot.key, slot.url ?? slot.source])) });
-  return (key && data?.get(key)) || null;
+export function useSlotArt(key: string | null, { sources = true }: { sources?: boolean } = {}): string | null {
+  const { data } = useQuery({ queryKey: ["art"], queryFn: fetchSlots, staleTime: 5 * 60_000, select: (result) => new Map(result.slots.map((slot) => [slot.key, [slot.url, slot.source] as const])) });
+  const [url, source] = (key && data?.get(key)) ?? [null, null];
+  return url || (sources ? source : null) || null;
 }

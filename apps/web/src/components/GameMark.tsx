@@ -71,7 +71,9 @@ export function GameMark({ gameKey, tint, named = false, className = "", art = "
   const game = getGame(gameKey);
   const accent = tint ?? game?.accent;
   const icon = useSlotArt(artSlotKey(gameKey, "icon"));
-  const logo = useSlotArt(artSlotKey(gameKey, "logo"));
+  // A logo only from the owner's upload (round 25, Georges: "not a fan of the genshin icon", the wiki's wordmark): a source's
+  // wordmark never stands in, the game's icon does.
+  const logo = useSlotArt(artSlotKey(gameKey, "logo"), { sources: false });
   // The big spots take the logo, then the icon; the small marks the icon. A picture whose host does not answer gives way
   // to the next, and the drawn emblem comes only when none is left (round 22: a source shown straight from its host).
   const [failed, setFailed] = useState<string[]>([]);
