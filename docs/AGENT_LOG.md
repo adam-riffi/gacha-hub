@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-29 · claude · stack/r31/09-game-cards · #410
+- Done: Round 24 PR 9 (Georges: "the game cards for their main menu are also weird, you can find better cards for them"). The games list is a grid of cards two a row: a 180 px key-art band with the icon and the name at 28 px over a dark gradient, five figure tiles of one width at 26 px, today's line and the actions in a foot; one a row under 1200 px.
+- Tests: written first: two cards a row at 1440, the band's size, the name over it, five tiles of one width, the figure at 24 px or more; the library journeys stand (the rhythm journey's tile margin relaxed: the tiles run edge to edge).
+- Scope/decisions: Endfield's band is plain until the store holds its key art.
+- Next: Georges's look at the round, "merge" and "deploy"; his words on the unaligned text and the art centring; the paste of the six values.
+
 ## 2026-10-29 · claude · stack/r31/08-type-floor · #409
 - Done: Round 24 PR 8 (Georges: "avoid small text as well"). Every 10, 11 or 12 px text rule in the stylesheets is 13 px (89 rules: the rail, the date, labels, table heads, badges, tags, chips, the hub, the activity rows, the endgame cards, the pulls lines, the sheet's notes, the library cells, the tasks' lines, the heatmap readout); the chart drawings' own labels and the icon placeholder letters left alone.
 - Tests: written first: a journey over eleven screens lists every visible text under 13 px (the drawings excepted); 30 offenders before, none after; the width journeys still pass.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: a journey uploads an icon and a wordmark, finds the icon square at 40 px or more beside the name in the strip and at 32 px in Home's Pulls table, and the wordmark in the hub header; the logos journey (round 15) now expects the emblem and the name in the strip for a game with a logo but no icon, and the order journey (round 16) uploads the icon it measures: the strip's rule changed at Georges's word, the big spots' assertions stand.
 - Scope/decisions: icons at small sizes, logos at big sizes: a wordmark at 30 px reads as nothing. The store listing art is the icon the games themselves show.
 - Next: the key art sources and the hub header's backdrop.
-
-## 2026-10-20 · claude · stack/r23/04-docs · #367
-- Done: ASSETS.md counts round 16 (235 slots, 93 at one click, the 6 key-art slots and the rest still from Georges), the #363 entry the merge job left out, the handoff for round 16 (merged, waiting for the word to deploy).
-- Tests: docs only.
-- Scope/decisions: none.
-- Next: deploy at Georges's word; the history round.

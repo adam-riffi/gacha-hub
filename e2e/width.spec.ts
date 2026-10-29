@@ -51,7 +51,9 @@ test.describe("a 960 px window (200 % zoom on a 1920 px screen)", () => {
     for (const path of ["/", "/?game=hsr", "/library", "/timeline", "/tasks", "/settings", "/settings/keys", ...tabs.map((tab) => `/games/${id}${tab}`), `/characters/${build.id}`]) {
       await page.goto(path);
       await page.waitForLoadState("networkidle");
-      expect(await page.evaluate(() => document.documentElement.scrollWidth), path).toBeLessThanOrEqual(960);
+      // On a failure the message names what reaches past the window.
+      const past = await page.evaluate(() => [...document.querySelectorAll("body *")].filter((el) => !el.closest(".strip") && el.getBoundingClientRect().right > 960 && el.getBoundingClientRect().width > 0).slice(0, 6).map((el) => `${el.tagName.toLowerCase()}.${[...el.classList].join(".")} right ${Math.round(el.getBoundingClientRect().right)} "${(el.textContent ?? "").trim().slice(0, 30)}"`));
+      expect(await page.evaluate(() => document.documentElement.scrollWidth), [path, ...past].join(" | ")).toBeLessThanOrEqual(960);
     }
   });
 });
