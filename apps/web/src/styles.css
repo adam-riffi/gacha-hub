@@ -260,27 +260,42 @@ p a { text-decoration: underline; text-underline-offset: 2px; }
 .gs-bonuses { display: grid; gap: 6px; }
 .gs-bonus { margin: 0; font-size: 14px; line-height: 1.4; color: var(--text-muted); }
 .gs-bonus b { color: var(--accent); font-family: var(--font-mono); font-weight: 500; }
-/* The gear as the games' bags (Georges, round 10, version A): filters, tiles, the chosen piece. */
-.gb { display: grid; grid-template-columns: 280px minmax(0, 1fr) 420px; gap: 16px; align-items: start; }
-.gb-filters { display: grid; gap: 16px; }
-.gb-filters h3 { margin-bottom: 6px; }
-.gb-filters .row { flex-wrap: wrap; gap: 8px; }
+/* The artifacts (round 24, Georges: "redo the artifacts"): the filters across the top, every piece a big card that says what
+   it is without a click, the chosen piece in a drawer over the page. */
+.gb { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; align-items: start; }
+.gb-filters { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 14px 28px; }
+.gb-filters h3 { flex: 1 1 100%; margin-bottom: 0; }
+.gb-filters > input[type="search"] { flex: 0 1 260px; }
+.gb-filters .ch-chipset { flex: 0 1 auto; }
+.gb-filters .row { flex-wrap: wrap; gap: 8px; align-self: flex-end; }
 .gb-filters select { width: auto; }
 .gb-mid { display: grid; gap: 12px; min-width: 0; }
 .gb-bar { display: flex; align-items: center; gap: 10px; }
-.gb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(172px, 1fr)); gap: 12px; align-content: start; }
-.card.gb-tile { position: relative; display: grid; justify-items: center; gap: 5px; padding: 12px 10px 14px; text-align: center; }
-/* The set's name in words on every tile (round 12), up to two lines. */
-.gb-set { font: 600 14.5px/1.25 var(--font-body); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 2.2em; }
-.gb-tile[aria-current="true"] { border: 3px solid var(--accent); padding: 8px 6px; }
+.gb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; align-content: start; }
+.card.gb-tile { position: relative; display: flex; flex-direction: column; gap: 10px; padding: 0 0 14px; }
+.gb-tile[aria-current="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 2px var(--accent); }
 .gb-show { position: absolute; inset: 0; z-index: 1; padding: 0; border: 0; background: transparent; cursor: pointer; }
-.gb-art { width: 118px; height: 118px; font-size: 16px; background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 22%, var(--surface-2)), var(--surface-2)); }
-.gb-lv { position: absolute; left: 6px; top: 6px; padding: 3px 5px; background: var(--paper); color: var(--on-paper); font-size: 13px; }
-.gb-tile .gb-who { position: absolute; right: 6px; top: 6px; width: 42px; height: 42px; font-size: 9px; border-radius: 50%; }
-.gb-bag { position: absolute; right: 6px; top: 6px; padding: 4px 7px; background: var(--paper); color: var(--on-paper); font-size: 12px; font-weight: 500; }
-.gb-main { display: inline-flex; align-items: center; gap: 4px; max-width: 100%; font-size: 20px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.gb-type { color: var(--text-muted); font-size: 12px; }
-.card.gb-col { position: sticky; top: 16px; display: grid; gap: 10px; align-content: start; min-height: 200px; }
+/* The band: the set's icon large on the accent's tint, the level and the slot on paper at its corners. */
+.gb-band { position: relative; display: grid; place-items: center; height: 136px; background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 22%, var(--surface-2)), var(--surface-2)); }
+.gb-art { width: 104px; height: 104px; font-size: 16px; border: 0; background: transparent; }
+.gb-lv { position: absolute; left: 10px; top: 10px; padding: 4px 8px; background: var(--paper); color: var(--on-paper); font-size: 15px; font-weight: 600; }
+.gb-slot { position: absolute; right: 10px; top: 10px; padding: 4px 8px; background: var(--bg); color: var(--text); font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; }
+/* The set's name in words on every card (round 12), up to two lines. */
+.gb-set { padding: 0 14px; font: 600 16px/1.25 var(--font-body); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.gb-main { display: inline-flex; align-items: center; gap: 8px; padding: 0 14px; font-size: 26px; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gb-main .stat-icon { width: 24px; height: 24px; }
+/* The substats, each with its icon, its name and its value, on their own lines. */
+.gb-subs { list-style: none; margin: 0; padding: 0 14px; display: grid; }
+.gb-subs li { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 6px 0; border-top: 1px solid var(--surface-3); font-size: 15px; }
+.gb-sub-stat { display: inline-flex; align-items: center; gap: 8px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gb-sub-value { font-size: 16px; font-variant-numeric: tabular-nums; }
+.gb-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: auto; padding: 8px 14px 0; border-top: 1px solid var(--surface-3); }
+.gb-who { display: inline-flex; align-items: center; gap: 10px; font-size: 15px; }
+.gb-who-face { width: 44px; height: 44px; font-size: 9px; border-radius: 50%; }
+.gb-bag { padding: 4px 8px; background: var(--paper); color: var(--on-paper); font-size: 13px; font-weight: 500; }
+.gb-cv { color: var(--text-muted); font-size: 13px; }
+/* The chosen piece: a drawer over the page (the set's panel's), closed with its button. */
+.card.gb-col { display: grid; gap: 10px; align-content: start; min-height: 200px; }
 .gb-col-art { width: 120px; height: 120px; font-size: 20px; background: var(--surface-2); }
 .gb-col h3 { margin: 6px 0 4px; white-space: normal; font-size: 24px; line-height: 1.1; }
 .gb-col-type { margin: 0; font-size: 16px; }
