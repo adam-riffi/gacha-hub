@@ -28,9 +28,13 @@
 .pl-banners > .pl-banner:last-child:nth-child(odd) { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 40px; align-items: start; }
 /* The running banner's official key art (round 16), its title kept in view: the wish art names itself at the top. */
 .pl-key-art { display: block; width: 100%; height: 180px; margin-bottom: 14px; object-fit: cover; object-position: 50% 25%; background: var(--surface-2); }
-.pl-banner-head { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.pl-banner-head { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-bottom: 14px; }
 .pl-banner-head > div { min-width: 0; }
-.pl-banner-head h3 { margin-bottom: 10px; white-space: normal; } /* the title wraps beside the kind mark and the art (round 23) */
+.pl-banner-title { display: flex; flex-direction: column; gap: 8px; }
+.pl-banner-head h3 { margin-bottom: 0; white-space: normal; } /* the title wraps beside the kind mark and the art (round 23) */
+/* The day it ends, on paper, large (round 24); the featured units take the next line, whole. */
+.pl-ends { align-self: flex-start; padding: 6px 10px; background: var(--paper); color: var(--on-paper); font: 600 15px/1 var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; }
+.pl-featured { flex: 1 1 100%; }
 .pl-banner-head .font-mono { font-size: 12px; }
 .pl-art { width: 64px; height: 64px; flex: none; }
 .pl-kind { width: 48px; height: 48px; }
