@@ -154,15 +154,18 @@ function GameRow(props: {
         props.onDrop();
       }}
     >
-      <HeroArt gameKey={dashGame.gameKey} className="lib-hero" />
-      <span className="lib-grip" aria-hidden="true">≡</span>
-      <GameMark gameKey={dashGame.gameKey} named art="logo" className="lib-icon" />
-      <div className="lib-name">
-        <h2 style={{ ["--c" as string]: dashGame.accent }}>{dashGame.name}</h2>
-        <div className="font-mono text-muted">
-          {region ? `${region.label} · ${offset(region.utcOffsetMinutes)}` : dashGame.regionKey} · version {game?.manifest.version.name}
+      {/* A card (round 24, Georges: "you can find better cards"): the key art across the top, the icon and the name over it. */}
+      <div className="lib-art">
+        <HeroArt gameKey={dashGame.gameKey} className="lib-hero" />
+        <span className="lib-grip" aria-hidden="true">≡</span>
+        <GameMark gameKey={dashGame.gameKey} named art="logo" className="lib-icon" />
+        <div className="lib-name">
+          <h2 style={{ ["--c" as string]: dashGame.accent }}>{dashGame.name}</h2>
+          <div className="font-mono lib-meta">
+            {region ? `${region.label} · ${offset(region.utcOffsetMinutes)}` : dashGame.regionKey} · version {game?.manifest.version.name}
+          </div>
+          {dashGame.sleeping && <span className="badge">Asleep</span>}
         </div>
-        {dashGame.sleeping && <span className="badge">Asleep</span>}
       </div>
       <div className="lib-cells">
         <Link className="lib-cell" to={`/games/${dashGame.instanceId}/characters`}>
@@ -196,6 +199,7 @@ function GameRow(props: {
           <span>{props.goals.backlog}</span>
         </Link>
       </div>
+      <div className="lib-foot">
       <div className="lib-today">
         <span className="kpi-label">Today</span>
         <span>{today}</span>
@@ -210,6 +214,7 @@ function GameRow(props: {
           <button className="btn icon" aria-label={`Move ${dashGame.name} up`} disabled={props.first} onClick={props.onUp}>↑</button>
           <button className="btn icon" aria-label={`Move ${dashGame.name} down`} disabled={props.last} onClick={props.onDown}>↓</button>
         </span>
+      </div>
       </div>
     </article>
   );
