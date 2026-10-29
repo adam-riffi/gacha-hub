@@ -128,7 +128,7 @@ test("Characters: every build in one table, and several characters at once @smok
 
 // The stats each card shows, picked for the game (Georges, round 5: "if i wanna see my HP EM and DEF for example i should be able to"),
 // and a set's bonus on top "in another colour", the stat and the bonus on hover or click.
-test("Characters: the stats the cards show, picked for the game; a set's bonus added in another colour @smoke", async ({ page }) => {
+test("Characters: the stats a card shows, picked on the card; a set's bonus added in another colour @smoke", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
