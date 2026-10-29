@@ -15,19 +15,21 @@
 .hub-id { min-width: 0; }
 .hub-name { margin: 0; font: 600 44px/1 var(--font-display); letter-spacing: 0.04em; text-transform: uppercase; }
 .hub-chips, .hub-edit { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 12px; }
-.hub-chips .badge { height: 24px; font-size: 13px; }
+/* Round 25 (Georges: "some info on transparent cards isn't readable"): the chips and the reset box stand on a solid ground over the key art. */
+.hub-chips .badge { height: 26px; font-size: 13px; background: var(--bg); border-color: var(--hairline-strong); color: var(--text); }
 .hub-edit { align-items: flex-end; gap: 12px; }
 .hub-edit label { display: flex; flex-direction: column; gap: 6px; color: var(--text-muted); font: 400 13px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
 .hub-edit input, .hub-edit select { width: 160px; }
 .hub-error { color: var(--text); font: 400 13px/1 var(--font-mono); }
-.hub-resets { display: flex; gap: 40px; margin: 0 0 0 auto; padding: 12px 16px; background: color-mix(in srgb, var(--bg) 55%, transparent); }
+.hub-resets { display: flex; gap: 40px; margin: 0 0 0 auto; padding: 12px 16px; background: color-mix(in srgb, var(--bg) 90%, transparent); }
 .hub-resets dt { color: var(--text-muted); font: 400 13px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
 .hub-resets dd { margin: 10px 0 0; font: 600 24px/1 var(--font-display); letter-spacing: 0.04em; text-transform: uppercase; font-variant-numeric: tabular-nums; }
 .hub-resets dd .chip { font: inherit; letter-spacing: inherit; }
 .hub-resets dd .chip:not(.hot) { color: var(--text); }
 .hub-resets dd .chip > i { display: none; }
 
-.hub-tabs { display: flex; gap: 36px; margin-bottom: 32px; border-bottom: 1px solid var(--hairline); overflow-x: auto; }
+/* The tabs wrap onto a second line rather than scroll (round 25: "weird slider on the games panel"). */
+.hub-tabs { display: flex; flex-wrap: wrap; gap: 0 36px; margin-bottom: 32px; border-bottom: 1px solid var(--hairline); }
 .hub-tabs a {
   position: relative; padding: 8px 0 14px; white-space: nowrap; text-decoration: none;
   color: var(--text-muted); font: 400 15px/1 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase;
@@ -46,6 +48,9 @@
 .act-stamina .ph h3 { margin-bottom: 0; }
 .act-stamina .sp, .act-list .sp { flex: 1; }
 .act-full { font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; }
+/* The FULL mark beside the figure, large (round 25: "the resin full is very small and far"). */
+.act-full-mark { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; background: var(--accent); color: #000; font: 600 16px/1 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%); }
+.act-full-at { font-size: 14px; }
 .act-stamina-body { display: flex; align-items: center; gap: 32px; margin-top: 18px; }
 .act-meter { flex: 1; height: 10px; background: var(--surface-3); clip-path: polygon(0 0, 100% 0, calc(100% - 6px) 100%, 0 100%); }
 .act-meter > span { display: block; height: 100%; background: var(--accent); }

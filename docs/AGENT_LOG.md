@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-29 · claude · stack/r32/01-hub-readable · #411
+- Done: Round 25 PR 1 (Georges: "some info on transparent cards isn't readable", "weird slider on the games panel", "the resin full is very small and far", "some alignment issues"). The hub header's chips opaque and the reset box on a 90 % ground; the tab row wraps, never scrolls; FULL is a 16 px accent mark right after the stamina figure ("full at …" there too); the games cards' TODAY label on its baseline.
+- Tests: written first: the chips' and box's background alpha ≥ 0.8; the tabs' overflow not auto/scroll; FULL ≥ 15 px within 120 px of the figure on its line; TODAY's bottom within 3 px of its line's.
+- Scope/decisions: none.
+- Next: PR 2, the task rows.
+
 ## 2026-10-29 · claude · stack/r31/09-game-cards · #410
 - Done: Round 24 PR 9 (Georges: "the game cards for their main menu are also weird, you can find better cards for them"). The games list is a grid of cards two a row: a 180 px key-art band with the icon and the name at 28 px over a dark gradient, five figure tiles of one width at 26 px, today's line and the actions in a foot; one a row under 1200 px.
 - Tests: written first: two cards a row at 1440, the band's size, the name over it, five tiles of one width, the figure at 24 px or more; the library journeys stand (the rhythm journey's tile margin relaxed: the tiles run edge to edge).
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: every game's key art names a wiki `Special:FilePath` source; a journey uploads a key art and finds it across the hub header (180 px or more) and the games-list row.
 - Scope/decisions: the version splash is the picture the game itself opens on; the sources move on with the versions (a line each in `sources.ts`). The official sites' `og:image` were the alternative; the wikis keep every version's, so the next one is a name change.
 - Next: icons and pictures on the timeline, the selected panel and Home's lists.
-
-## 2026-10-21 · claude · stack/r24/01-game-icons · #368
-- Done: round 17 (Georges, 2026-10-21: "Give each game a game Icon as well; having the Wuthering Waves title card as the game's logo doesn't help me read anything. Icons are cool but should be bigger"). A square icon slot per game, its source the App Store's listing art (512 px, all six games), fetched at one click. `GameMark` shows the icon for every small mark (the strip, Home's tables, tasks, Settings → Art) and the logo for the big spots (hub header, games list, Dailies card), each falling back to the other, then to the emblem; the strip shows icon and name, never the wordmark alone. Every icon size up: strip 44/48 px in 56/62 px chips, list marks 32, tiles 36 and 56, featured units 56/84, hub 120, games list 72, Pulls art 64. The plan for the round is `docs/AUDIT-2026-10-21-round17.md`.
-- Tests: written first: a journey uploads an icon and a wordmark, finds the icon square at 40 px or more beside the name in the strip and at 32 px in Home's Pulls table, and the wordmark in the hub header; the logos journey (round 15) now expects the emblem and the name in the strip for a game with a logo but no icon, and the order journey (round 16) uploads the icon it measures: the strip's rule changed at Georges's word, the big spots' assertions stand.
-- Scope/decisions: icons at small sizes, logos at big sizes: a wordmark at 30 px reads as nothing. The store listing art is the icon the games themselves show.
-- Next: the key art sources and the hub header's backdrop.
