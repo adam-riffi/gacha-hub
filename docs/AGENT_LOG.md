@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-29 · claude · stack/r31/03-artifacts · #404
+- Done: Round 24 PR 3 (Georges: "please redo the artifacts, i'm at a loss for words how bad it is"). The filters across the top; every piece a 280 px card with its band (set icon, level, slot), the set in words, the main stat at 26 px, each substat with icon, name and value, the wearer's face and name or Bag; nothing chosen until a click, then the piece in a drawer over the page (the set panel's) with a Close button.
+- Tests: written first: Sampo's Hunter body card with three substats; filters above the cards; the card's size and type; the drawer only after a click, fixed, closed by its button. The gear journey's three-column check became filters-above.
+- Scope/decisions: the substats read on the card, typed in the drawer.
+- Next: PR 4, the banners tab.
+
 ## 2026-10-29 · claude · stack/r31/02-odds-tiles · #403
 - Done: Round 24 PR 2 (Georges: "the odds/estimate thing is a bit weird"). The odds table is three tiles of one size: the next pull, by soft pity (past it, the next ten), with your pulls (a simulated top-up as a second figure).
 - Tests: written first: three tiles of one width and height, the figure at 26 px or more, no table.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: docs only.
 - Scope/decisions: none.
 - Next: deploy at Georges's word, then press "Fetch 91 from the sources" in Settings → Art and run the mirror-art workflow once; round 16 (history data and sections).
-
-## 2026-10-20 · claude · stack/r22/03-blob-mirror · #361
-- Done: ADR 0013, accepted (Georges: a hosting solution with a Claude connector). Vercel Blob is the art store: the store the uploads already use, made through the Vercel connector, its token on the host. The mirror script writes there with `@vercel/blob` (`assets/{game}/{kind}/{key}.webp`, skipping what the store holds, `--force` for all) and prints the public base last; `/api/cron/art-store` hands the mirror workflow the token (404 while none is set) and `POST /api/cron/art-base` keeps the reported base as `ASSET_BASE`, so the web app reads our copy at once. The R2 keys leave Settings → Keys; DEPLOY.md §7, AGENTS.md's table and the README say so. Dry run: Star Rail lists 660 images.
-- Tests: written first: the cron test takes the token with the mirror's proof only, 404 without one on the host, the base reported and read back through `/api/me`, a bad base refused; actionlint on the workflow.
-- Scope/decisions: Blob's list gives no content hash, so the mirror skips a held path rather than comparing bytes. `config.blobToken` became a getter so a token set later is seen.
-- Next: the docs and the handoff.
