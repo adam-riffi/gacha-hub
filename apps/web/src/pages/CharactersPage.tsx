@@ -1,4 +1,5 @@
 import { useState, type CSSProperties } from "react";
+import { Rarity } from "../components/Rarity";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -372,7 +373,7 @@ export function CharactersPage() {
                   glyph="character"
                 />
                 <div className="ch-chips">
-                  {card.rarity && <span className="badge">★{card.rarity}</span>}
+                  <Rarity value={card.rarity} className="badge" />
                   {card.tag && card.tag !== "None" && (
                     <span className="badge ch-el">
                       <TagIcon gameKey={game.key} kind="element" name={card.tag} />

@@ -14,6 +14,30 @@ Entry format:
 
 ---
 
+## 2026-10-29 · claude · stack/r31/01-banner-featured · #402
+- Done: Round 24 PR 1 (Georges: "i don't need to know the name of the banner just the featured characters … skirk escoffier mika candace dahlia tue nov 3rd"). The Pulls card's head: the kind's mark, the banner type, "Ends Tue 3 Nov" on paper, every featured unit of the running banners with its name under its icon (top rarity 72 px, others 52); Home's banner card titled by its top featured units (`topNames`); the phase's name only where it features none.
+- Tests: written first: three units seeded on one warp, each named on the Pulls card, Blade larger, the end day, no banner name; Home titled "Blade"; the overview journey reads the unit's name.
+- Scope/decisions: the units come from every running banner of the card's kind.
+- Next: PR 2, the odds tiles.
+
+## 2026-10-28 · claude · stack/r30/03-rarity-boxes · #401
+- Done: round 23 PR 3 (Georges: "use icons as well for rarity, try to have every box the same size and add colors"). `Rarity`: a row of stars in the rarity's colour (blue three, purple four, gold five, orange six; tokens `--rarity-3`…`--rarity-6`), named "5 stars", on the character cards, the sheet's title, the ownership tiles and the weapon cards, where "★5" stood; the weapon band reads the same tokens. The Activities cadences, its cycles and version cards and the endgame modes stretch to their row's height.
+- Tests: written first: Kafka's five gold stars and Sushang's four purple on the cards, the sheet, the ownership tile and a weapon card, no "★5" or "★★★★★" left; the three card rows within 1 px.
+- Scope/decisions: the ownership page's rarity filter keeps star text (a select's options cannot hold a drawing).
+- Next: Georges's look at the round, his "merge" and "deploy"; the art-centring pass he named ("there's still a lot of art centering to do") once he points at the cards he means; his one paste of the six values.
+
+## 2026-10-28 · claude · stack/r30/02-banner-kinds · #400
+- Done: round 23 PR 2 (Georges: "add a character/weapon icon to the banner to better differentiate them"). `BannerKind`: the kind's glyph on a tile in the kind's colour (character in the game's accent, weapon in steel blue, standard on paper, Bangboo in green; tokens `--k-weapon`, `--k-bangboo`), named for screen readers; 48 px beside each Pulls card's art, 44 px beside Home's countdown, 28 px at the start of each timeline bar (one per kind a phase holds).
+- Tests: written first: a character and a light cone warp seeded for one phase; the Pulls cards' three marks in two colours at 32 px or more, Home's banner card's mark, the phase bar's two marks.
+- Scope/decisions: a drawn glyph rather than the featured unit's icon, which already sits beside it.
+- Next: PR 3.
+
+## 2026-10-28 · claude · stack/r30/01-rhythm · #399
+- Done: round 23 PR 1 (Georges: "the layout of certain pages is weird. the big game cards are too close to the activities endgame pulls etc panels"). The hub's header card keeps 20 px from the tab row, the tabs read at 15 px, the first panel starts 32 px under them. The games list drops its 300 px side column (it squeezed each row's figure tiles past the row's edge): one column, the figures wrap inside the row, "Add a game" under the list.
+- Tests: written first: the header's gaps and the tabs' size on Activities; every figure tile inside its row and the add-a-game card under the list.
+- Scope/decisions: the side column goes rather than shrinks.
+- Next: PR 2, the banner kind marks; PR 3, rarity stars and equal rows.
+
 ## 2026-10-27 · claude · stack/r29/02-art-from-source · #396
 - Done: round 22 PR 2 (Georges: "still no game icons why is a star the icon for GI instead of the original game icon", "why is the game card furina"). While the store holds nothing for a slot, the app shows the picture straight from its source: `/api/art` carries each slot's source address and invert beside the owner's upload, the web's slot hook falls back to it, and the image policy names the six game wikis (one wildcard) and the App Store's image host. A wiki's `Special:FilePath` answers a browser with 403, so the list resolves every wiki source through its wiki's API (fifty titles a call, one call per wiki, kept an hour in the process, four seconds at most per list) and gives the direct static address. A big spot falls from a failed logo to the icon before the drawn emblem. In the empty-store journeys: the App Store icons in the strip, the real logos and the wikis' key art on the game cards and hub headers, the wiki icons on tasks and modes.
 - Tests: written first: the slots carry the source and invert and an upload takes over; the policy allows the wiki wildcard and the App Store host; the resolver groups by wiki, chunks by fifty, maps through normalised titles and leaves out what a wiki does not answer; the strip shows the App Store icon and the library card the key art with an empty store; a big spot whose logo fails shows the icon. The two journeys that pinned a hero to Kafka's splash expect the key art now; the slots test's no-source case moved to a slot without one.
@@ -229,27 +253,3 @@ Entry format:
 - Tests: written first: a journey uploads a wide logo and measures it in the strip (at least 29 px high, wider than twice its height), the list (56) and the header (96), and finds the mark on Home's Dailies card and Stamina table; the emblem's sizes too.
 - Scope/decisions: the per-spot sizes are explicit CSS, no generic cap (the strip's 8 px icon font had capped an `em` rule at 36 px). The journey looks at the all-games Home: the single-game scope shows the dashboard's card, which names no game.
 - Next: the art store on Vercel Blob.
-
-## 2026-10-20 · claude · stack/r22/01-art-sources · #359
-- Done: round 15 (Georges, 2026-10-20: "find me all of the assets, this is a private project i do not intend to have any commercial use"). 91 pictures found for the slots and checked by eye on contact sheets: the game wikis (Genshin, Star Rail, Zenless, Wuthering Waves, Endfield on Fandom and wiki.gg, NTE), StarRailRes at a pinned commit, Enka, Hakushin; listed in `apps/server/src/art/sources.ts` with a credit each. `POST /api/art/fetch` takes the named slots, or the next batch not yet held, resolves a wiki file through the wiki's API and fetches it with a browser's own headers (the static hosts challenge a bare client), checks it is a picture, stores it like an upload and audits it; what fails is reported by name and skipped in the next batch. Settings → Art gets "Fetch n from the sources", eight at a time with a running count. Two dark-on-transparent icons carry an inversion flag (new column) and show inverted. Checked against the live wikis in dev: 91 of 91 in about four minutes.
-- Tests: written first: the fetch route (named keys, the next batch, a skip list, a failure reported and skipped, no source, owner only, audited by name) and the Art tab's journey (batches answered by hand, the count); every source entry is a real slot with an https URL and a credit.
-- Scope/decisions: rejected on sight: the Endfield wiki's own badge as a logo, character art for Echoes of War, screenshots for Chronicled wish, Beyond the Rails and Anomaly Pilgrimage; SVG stays refused by the store, so the Wuthering Waves logo comes from the wiki's PNG wordmark. The sources are a TypeScript module: the base tsconfig turns JSON imports off on purpose.
-- Next: the icons at a readable size.
-
-## 2026-10-17 · claude · stack/r21/06-docs · #357
-- Done: ASSETS.md lists every picture still needed, 144 of 229 slots, by kind then game, generated from the app's own slot list so it matches Settings → Art: 6 logos, 14 endgame modes, 6 battle passes, 5 30-day passes, 27 banners, 5 shops, 35 tasks, 7 currencies, 5 elements, 10 weapon types, 9 gear sets, 14 materials, 1 Bangboo; the 85 a source covers counted apart. The handoff is rewritten.
-- Tests: docs only.
-- Scope/decisions: none.
-- Next: deploy at Georges's word (migrations `card_stats_order` and `art_slots` run then); Georges uploads pictures as he finds them.
-
-## 2026-10-17 · claude · stack/r21/05-catalog-gaps · #356
-- Done: a catalog entry without an icon key, or of a kind its game has no art source for, joins its game's slots under its catalog kind: NTE's 9 gear sets (one shared placeholder in the data), Endfield's 14 gift materials and Zenless's Bangboo Eous. `CatalogIcon` shows the owner's picture first, then the store's and the source's as before.
-- Tests: written first: the slots list those 24 and none a source has; a journey uploads an Endfield gift and finds it on Materials.
-- Scope/decisions: none.
-- Next: the list in the docs.
-
-## 2026-10-17 · claude · stack/r21/04-slot-art · #355
-- Done: `SlotArt` shows the owner's picture for a slot, or what the spot showed before. A logo replaces its game's drawn emblem everywhere (in the game's header it stands on its own, not on the accent tile); endgame modes on their cards, Home's next resets, the activities' cycles and the dashboard; the battle pass on Home's card (over the hero) and the version card; the 30-day pass on the monthly list; banners on Pulls where no featured unit shows; each task on its row; currencies, elements and weapon types before their source's icon. `CurrencyIcon` takes the currency's key, so Endfield's currencies can take an upload.
-- Tests: written first: a journey uploads a logo, a mode, a currency, an element, a banner and a task, and finds each on its page.
-- Scope/decisions: a task row finds its slot by the game's default task with the same title (tasks keep no seed key).
-- Next: the catalogs' own gaps.

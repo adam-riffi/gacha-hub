@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
+import { BannerKind } from "./BannerKind";
+import { bannerGlyph } from "./Glyph";
 import { PullBudget, getGame } from "@gacha/shared";
 import type { HomeCarousel } from "../lib/carousel";
 import type { RosterEntry } from "../lib/roster";
 import { assetUrl, communityAssetUrl, officialArt, splashKey } from "../lib/assets";
 import { CarouselCard } from "./Carousel";
-import { FeaturedUnits, distinctFeatured } from "./FeaturedUnits";
+import { FeaturedUnits, distinctFeatured, topNames } from "./FeaturedUnits";
 import { GameIcon } from "./GameIcon";
 import { Countdown } from "./ui";
 import { HeroArt } from "./HeroArt";
@@ -68,10 +70,12 @@ export function BannersCarousel({ roster, carousel }: { roster: RosterEntry[]; c
             )}
           </div>
           <div className="carousel-tag">
+            <BannerKind kind={bannerGlyph(banner.kind)} className="carousel-kind" />
             <Countdown at={banner.endsAt} variant="tag" />
           </div>
           <div className="band carousel-band">
-            <div className="font-serif carousel-title">{banner.name}</div>
+            {/* Titled by its top featured units, the banner's own name only when it features none (round 24). */}
+            <div className="font-serif carousel-title">{topNames(banner.featured) || banner.name}</div>
             <div className="font-mono carousel-sub">{game?.name ?? banner.gameKey}</div>
             {chance !== null && budget && lead && (
               <div className="font-mono carousel-chance" data-testid="banner-chance" title={`Your chance at ${lead.name ?? "its top unit"} with the pulls you hold, from your pity`}>

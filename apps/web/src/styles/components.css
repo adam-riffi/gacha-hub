@@ -157,6 +157,15 @@ tbody tr:hover { background: var(--surface-2); }
 .featured-unit.is-top:not(.is-owned) .gicon { border: 2px solid var(--accent); }
 .featured-unit.is-owned::after { content: "✓"; position: absolute; right: -5px; top: -5px; width: 20px; height: 20px; display: grid; place-items: center; background: var(--paper); color: var(--on-paper); font: 600 13px/1 var(--font-mono); pointer-events: none; }
 .featured-more { align-self: center; padding: 4px 8px; background: var(--surface-2); font-size: 13px; }
+/* With names (round 24): each unit's name under its icon, the top rarity at 72 px, the others at 52. */
+.featured-units.is-named { align-items: flex-start; gap: 10px 12px; }
+.featured-units.is-named .featured-unit { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 76px; height: auto; }
+.featured-units.is-named .featured-unit.is-top { width: 92px; }
+.featured-units.is-named .featured-unit .gicon, .featured-units.is-named .featured-unit a { width: 52px; height: 52px; }
+.featured-units.is-named .featured-unit.is-top .gicon, .featured-units.is-named .featured-unit.is-top a { width: 72px; height: 72px; }
+.featured-units.is-named .featured-unit.is-owned::after { right: 4px; top: -5px; }
+.featured-name { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: center; color: var(--text); font: 400 13px/1.2 var(--font-mono); }
+.featured-units.is-named .is-top .featured-name { font-size: 15px; font-weight: 500; }
 /* On Home's banner card: top left, over the art. */
 .carousel-featured { position: absolute; left: 16px; top: 16px; flex-wrap: nowrap; }
 .carousel-chance { margin-top: 6px; font-size: 13px; }
@@ -174,6 +183,25 @@ tbody tr:hover { background: var(--surface-2); }
 .game-mark.list-mark.is-art { width: 32px; height: 32px; object-fit: cover; }
 /* A dark-on-transparent icon from a source, inverted for the dark UI (Settings → Art). */
 .is-inverted { filter: invert(1); }
+
+/* A rarity as a row of stars in its colour (round 23), the same size wherever it stands. */
+.rarity { --r: var(--text-muted); display: inline-flex; align-items: center; gap: 1px; color: var(--r); }
+.rarity svg { width: 16px; height: 16px; fill: currentColor; }
+.rarity[data-rarity="3"] { --r: var(--rarity-3); }
+.rarity[data-rarity="4"] { --r: var(--rarity-4); }
+.rarity[data-rarity="5"] { --r: var(--rarity-5); }
+.rarity[data-rarity="6"] { --r: var(--rarity-6); }
+.rarity.badge { padding: 3px 6px; border-color: var(--r); }
+
+/* A banner's kind as a mark (round 23): the glyph on a tile in the kind's colour, the same size wherever it stands. */
+.kind-mark { --k: var(--surface-3); display: inline-grid; flex: none; place-items: center; width: 40px; height: 40px; background: var(--k); color: #000; clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%); }
+.kind-mark .kind-glyph { width: 62%; height: 62%; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.kind-mark.is-character { --k: var(--accent); }
+.kind-mark.is-weapon { --k: var(--k-weapon); }
+.kind-mark.is-standard { --k: var(--paper); }
+.kind-mark.is-bangboo { --k: var(--k-bangboo); }
+.carousel-tag { display: flex; align-items: center; gap: 8px; }
+.carousel-kind { width: 44px; height: 44px; }
 
 /* Hero art (round 12): a game's splash on its cards, never a placeholder when missing. */
 .hero-art { object-fit: cover; object-position: 50% 18%; }

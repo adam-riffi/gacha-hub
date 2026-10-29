@@ -3,7 +3,9 @@
  * type: the name in Barlow, labels and chips in mono, the current tab under an
  * accent bar like a panel title's.
  */
-.hub-head { position: relative; display: flex; align-items: center; gap: 24px; min-height: 200px; padding: 20px 24px; overflow: hidden; background: var(--card); border: 1px solid var(--edge); }
+/* Round 23 (Georges: "the big game cards are too close to the activities endgame pulls etc panels"): the header keeps
+   20 px from the tab row, the tabs read at 15 px, and the first panel starts 32 px under them. */
+.hub-head { position: relative; display: flex; align-items: center; gap: 24px; min-height: 200px; margin-bottom: 20px; padding: 20px 24px; overflow: hidden; background: var(--card); border: 1px solid var(--edge); }
 .hub-head > :not(.hub-hero) { position: relative; z-index: 1; }
 /* The key art behind the header, whole on the right, fading under the name (round 17: "the game window game cards"). */
 .hub-hero { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% 30%; mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.55) 40%, #000 65%); }
@@ -25,10 +27,10 @@
 .hub-resets dd .chip:not(.hot) { color: var(--text); }
 .hub-resets dd .chip > i { display: none; }
 
-.hub-tabs { display: flex; gap: 32px; margin-bottom: 24px; border-bottom: 1px solid var(--hairline); overflow-x: auto; }
+.hub-tabs { display: flex; gap: 36px; margin-bottom: 32px; border-bottom: 1px solid var(--hairline); overflow-x: auto; }
 .hub-tabs a {
-  position: relative; padding: 4px 0 14px; white-space: nowrap; text-decoration: none;
-  color: var(--text-muted); font: 400 12px/1 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase;
+  position: relative; padding: 8px 0 14px; white-space: nowrap; text-decoration: none;
+  color: var(--text-muted); font: 400 15px/1 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase;
   transition: color 0.2s;
 }
 .hub-tabs a:hover, .hub-tabs a[aria-current="page"] { color: var(--text); }
@@ -51,8 +53,9 @@
 label.act-remind { display: flex; align-items: center; gap: 10px; margin: 12px 0 0; color: var(--text); font: 400 15px/1.3 var(--font-body); letter-spacing: 0; text-transform: none; cursor: pointer; }
 .eg-next label.act-remind { margin: 0 0 14px; }
 .act-label { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: -12px; }
-.act-cadences { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: start; }
-.act-bottom { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 24px; align-items: start; }
+/* Cards in one row stand the same height (round 23, Georges: "try to have every box the same size"). */
+.act-cadences { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: stretch; }
+.act-bottom { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 24px; align-items: stretch; }
 .act-list .spread, .act-version .spread { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
 .act-list h3 .text-muted, .act-cycles h3 .text-muted { font-size: 16px; }
 .act-rows { display: flex; flex-direction: column; }
@@ -91,7 +94,7 @@ label.act-row { margin: 0; cursor: pointer; color: var(--text); font: 400 15px/1
 .eg-next { min-width: 320px; }
 .eg-next-mode { margin: 8px 0 4px; font: 600 24px/1.1 var(--font-display); letter-spacing: 0.04em; text-transform: uppercase; }
 .eg-next .font-mono { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
-.eg-modes { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; align-items: start; }
+.eg-modes { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; align-items: stretch; }
 .eg-mode .spread { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
 .eg-window-bar { position: relative; height: 6px; background: var(--surface-3); }
 .eg-window-bar > span { display: block; height: 100%; background: var(--hairline-strong); }

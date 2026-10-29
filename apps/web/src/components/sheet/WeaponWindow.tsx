@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { Rarity } from "../Rarity";
 import { dupeLetter, type CatalogWeapon, type GameDefinition, type WeaponCopyDto } from "@gacha/shared";
 import { useDismiss } from "../../lib/dismiss";
 import { CatalogIcon } from "../CatalogIcon";
@@ -80,7 +81,7 @@ function WeaponTile({ game, weapon, copy, holders = [], onPick }: { game: GameDe
       <button type="button" className="wp-open" aria-label={`Equip ${weapon.name}`} onClick={onPick} />
       <span className="wp-rarity" data-rarity={weapon.rarity}>
         <CatalogIcon gameKey={game.key} kind="weapon" icon={weapon.icon} name={weapon.name} className="wp-art" />
-        <span className="font-mono wp-stars">★{weapon.rarity}</span>
+        <Rarity value={weapon.rarity} className="wp-stars" />
         {ranks.length > 0 && (
           <button type="button" className="wpw-info" aria-label={`${weapon.name}: effect`} aria-expanded={info} onClick={() => setInfo(!info)}>
             i

@@ -28,6 +28,15 @@
   --on-paper: #080808;
   --wave: #303030;            /* page pattern */
   --accent: #ff2d95;          /* the Overview; a scope sets its own */
+  /* The banner kinds' colours (round 23): a character banner in the game's accent, a weapon banner in steel blue, the
+     standard banner on paper, a Bangboo banner in green. */
+  --k-weapon: #4fb3ff;
+  --k-bangboo: #9ad94a;
+  /* The rarities' colours (round 23): blue, purple, gold, orange, the gacha convention. */
+  --rarity-3: #4f8fd6;
+  --rarity-4: #a06fe0;
+  --rarity-5: #e0a33a;
+  --rarity-6: #e8673a;
 
   --font-display: "Barlow Condensed", sans-serif;
   --font-mono: "IBM Plex Mono", monospace;
