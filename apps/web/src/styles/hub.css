@@ -15,13 +15,13 @@
 .hub-id { min-width: 0; }
 .hub-name { margin: 0; font: 600 44px/1 var(--font-display); letter-spacing: 0.04em; text-transform: uppercase; }
 .hub-chips, .hub-edit { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 12px; }
-.hub-chips .badge { height: 24px; font-size: 12px; }
+.hub-chips .badge { height: 24px; font-size: 13px; }
 .hub-edit { align-items: flex-end; gap: 12px; }
-.hub-edit label { display: flex; flex-direction: column; gap: 6px; color: var(--text-muted); font: 400 11px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
+.hub-edit label { display: flex; flex-direction: column; gap: 6px; color: var(--text-muted); font: 400 13px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
 .hub-edit input, .hub-edit select { width: 160px; }
-.hub-error { color: var(--text); font: 400 12px/1 var(--font-mono); }
+.hub-error { color: var(--text); font: 400 13px/1 var(--font-mono); }
 .hub-resets { display: flex; gap: 40px; margin: 0 0 0 auto; padding: 12px 16px; background: color-mix(in srgb, var(--bg) 55%, transparent); }
-.hub-resets dt { color: var(--text-muted); font: 400 12px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
+.hub-resets dt { color: var(--text-muted); font: 400 13px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
 .hub-resets dd { margin: 10px 0 0; font: 600 24px/1 var(--font-display); letter-spacing: 0.04em; text-transform: uppercase; font-variant-numeric: tabular-nums; }
 .hub-resets dd .chip { font: inherit; letter-spacing: inherit; }
 .hub-resets dd .chip:not(.hot) { color: var(--text); }
@@ -45,14 +45,14 @@
 .act-stamina .ph { display: flex; align-items: center; gap: 12px; padding-top: 8px; }
 .act-stamina .ph h3 { margin-bottom: 0; }
 .act-stamina .sp, .act-list .sp { flex: 1; }
-.act-full { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+.act-full { font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; }
 .act-stamina-body { display: flex; align-items: center; gap: 32px; margin-top: 18px; }
 .act-meter { flex: 1; height: 10px; background: var(--surface-3); clip-path: polygon(0 0, 100% 0, calc(100% - 6px) 100%, 0 100%); }
 .act-meter > span { display: block; height: 100%; background: var(--accent); }
 .act-reserve { min-width: 220px; }
 label.act-remind { display: flex; align-items: center; gap: 10px; margin: 12px 0 0; color: var(--text); font: 400 15px/1.3 var(--font-body); letter-spacing: 0; text-transform: none; cursor: pointer; }
 .eg-next label.act-remind { margin: 0 0 14px; }
-.act-label { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: -12px; }
+.act-label { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: -12px; }
 /* Cards in one row stand the same height (round 23, Georges: "try to have every box the same size"). */
 .act-cadences { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: stretch; }
 .act-bottom { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 24px; align-items: stretch; }
@@ -65,23 +65,23 @@ label.act-row { margin: 0; cursor: pointer; color: var(--text); font: 400 15px/1
 .act-title { flex: 1; min-width: 0; font: 400 15px/1.3 var(--font-body); }
 .act-thumb { flex: none; width: 72px; height: 40px; object-fit: cover; }
 .act-row.done .act-title { color: var(--text-muted); text-decoration: line-through; }
-.act-row .tag { font-size: 10px; }
-.act-row .font-mono { font-size: 12px; white-space: nowrap; }
+.act-row .tag { font-size: 13px; }
+.act-row .font-mono { font-size: 13px; white-space: nowrap; }
 .act-empty { margin: 10px 0; font-size: 14px; }
 .act-add-btn { margin-top: 16px; }
 .act-add { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px; margin-top: 16px; }
-.act-add label { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 140px; color: var(--text-muted); font: 400 11px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
+.act-add label { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 140px; color: var(--text-muted); font: 400 13px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
 .act-version-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; }
 .act-pass { margin: 10px 0 0; font: 600 24px/1.1 var(--font-display); letter-spacing: 0.04em; text-transform: uppercase; }
 .act-version .kpi-label { margin-bottom: 6px; }
 .act-pass-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.act-pass-head .tag { margin-left: 8px; font-size: 10px; }
+.act-pass-head .tag { margin-left: 8px; font-size: 13px; }
 .act-pass-level { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 8px 0 10px; }
-.act-pass-level .font-mono { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+.act-pass-level .font-mono { font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; }
 .act-xp { display: flex; align-items: center; justify-content: space-between; margin: 18px 0 8px; }
 .act-meter-thin { flex: none; height: 6px; }
 .act-pass-row { margin-top: 12px; border-top: 1px solid var(--hairline); border-bottom: 0; }
-.act-pass-row .font-mono { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+.act-pass-row .font-mono { font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; }
 
 /* ---- Endgame (G2): this cycle across the top, a card per mode, upcoming resets. ---- */
 .endgame { display: flex; flex-direction: column; gap: 24px; }
@@ -93,13 +93,13 @@ label.act-row { margin: 0; cursor: pointer; color: var(--text); font: 400 15px/1
 .eg-claimed .act-meter { flex: none; }
 .eg-next { min-width: 320px; }
 .eg-next-mode { margin: 8px 0 4px; font: 600 24px/1.1 var(--font-display); letter-spacing: 0.04em; text-transform: uppercase; }
-.eg-next .font-mono { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+.eg-next .font-mono { font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; }
 .eg-modes { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; align-items: stretch; }
 .eg-mode .spread { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
 .eg-window-bar { position: relative; height: 6px; background: var(--surface-3); }
 .eg-window-bar > span { display: block; height: 100%; background: var(--hairline-strong); }
 .eg-window-bar > i { position: absolute; top: -4px; width: 2px; height: 14px; background: var(--accent); }
-.eg-window-dates { display: flex; justify-content: space-between; margin-top: 8px; font-size: 12px; }
+.eg-window-dates { display: flex; justify-content: space-between; margin-top: 8px; font-size: 13px; }
 .eg-result { margin: 18px 0 6px; }
 .eg-result small { text-transform: none; }
 .eg-rewards .act-xp { margin-top: 8px; }
@@ -118,7 +118,7 @@ label.act-row { margin: 0; cursor: pointer; color: var(--text); font: 400 15px/1
 .eg-detail { margin: 12px 0 0; color: var(--text-muted); }
 /* A card's cycle: older and newer a step away, back to now (round 6). */
 .eg-cycle-nav { display: flex; align-items: center; gap: 8px; margin: -6px 0 12px; }
-.eg-cycle-nav .font-mono { font-size: 12px; }
+.eg-cycle-nav .font-mono { font-size: 13px; }
 .eg-cycle-nav > .btn:last-child { margin-left: auto; }
 .eg-mode.is-past { border-color: var(--hairline-strong); }
 .eg-last > button[aria-pressed="true"] { background: var(--accent); }
@@ -126,7 +126,7 @@ label.act-row { margin: 0; cursor: pointer; color: var(--text); font: 400 15px/1
 .eg-none { font-size: 14px; align-self: center; }
 .eg-clears { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 8px; }
 .eg-clears li { display: grid; grid-template-columns: 96px 1fr auto; align-items: center; gap: 12px; }
-.eg-clears .text-muted { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+.eg-clears .text-muted { font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; }
 .eg-team { display: inline-flex; gap: 4px; }
 .eg-team .gicon { width: 32px; height: 32px; font-size: 10px; }
 .eg-table .eg-clears { margin: 0; gap: 4px; }
@@ -135,7 +135,7 @@ label.act-row { margin: 0; cursor: pointer; color: var(--text); font: 400 15px/1
 .eg-clear-edit legend { float: left; width: 96px; padding: 0; }
 .eg-clear-edit .pk { flex: 1; min-width: 160px; }
 .eg-clear-edit label input { width: 72px; }
-.eg-upcoming .act-row .font-mono { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+.eg-upcoming .act-row .font-mono { font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; }
 .eg-history-head { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
 .eg-history-head h3 { margin-bottom: 0; }
 .eg-history-head .sp { flex: 1; }
@@ -149,15 +149,15 @@ label.act-row { margin: 0; cursor: pointer; color: var(--text); font: 400 15px/1
 .eg-part { fill: var(--bg); stroke: var(--accent); stroke-width: 2; }
 .eg-ring { fill: none; stroke: var(--paper); stroke-width: 1.5; }
 .eg-axis { fill: var(--text-muted); font: 400 13px var(--font-mono); }
-.eg-legend { display: flex; gap: 24px; margin-top: 8px; font-size: 12px; }
+.eg-legend { display: flex; gap: 24px; margin-top: 8px; font-size: 13px; }
 .eg-key { display: inline-block; width: 10px; height: 10px; margin-right: 6px; border: 2px solid var(--accent); border-radius: 50%; vertical-align: -1px; }
 .eg-key.full { background: var(--accent); }
 .eg-table { width: 100%; border-collapse: collapse; }
-.eg-table th { height: 28px; padding: 0 12px 0 0; border-bottom: 1px solid var(--hairline); text-align: left; color: var(--text-muted); font: 400 11px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
+.eg-table th { height: 28px; padding: 0 12px 0 0; border-bottom: 1px solid var(--hairline); text-align: left; color: var(--text-muted); font: 400 13px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
 .eg-table td { height: 34px; padding: 0 12px 0 0; border-bottom: 1px solid var(--surface-3); font: 400 15px/1.2 var(--font-body); }
 .eg-table .num { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
 .eg-table tr:hover td { background: var(--surface-2); }
-.eg-now { margin-left: 10px; font-size: 10px; }
+.eg-now { margin-left: 10px; font-size: 13px; }
 .eg-dot { display: inline-block; width: 8px; height: 8px; margin-right: 8px; border-radius: 50%; background: var(--accent); }
 .act-cycles .spread { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
 
@@ -186,10 +186,10 @@ input.tick-check:checked { background: var(--accent); border-color: var(--accent
 .eg-line-row:hover, .eg-line.is-open .eg-line-row { background: var(--surface-2); }
 .eg-line-open { position: absolute; inset: 0; z-index: 1; background: transparent; border: 0; cursor: pointer; }
 .eg-line-open:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
-.eg-stage { font-size: 12px; line-height: 1.3; }
+.eg-stage { font-size: 13px; line-height: 1.3; }
 .eg-stage-name { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .eg-stage-name b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; font-weight: 600; }
-.eg-stage-name small { font-size: 11px; }
+.eg-stage-name small { font-size: 13px; }
 .eg-score { font-size: 20px; text-align: right; }
 .eg-time { font-size: 13px; text-align: right; }
 .eg-main .gicon { width: 40px; height: 40px; }
@@ -199,7 +199,7 @@ input.tick-check:checked { background: var(--accent); border-color: var(--accent
 .eg-detail-enemies li { display: flex; flex-wrap: wrap; gap: 10px; padding-left: 10px; border-left: 2px solid var(--surface-3); }
 .eg-detail-enemies .eg-enemy { display: inline-flex; align-items: center; gap: 6px; }
 .eg-detail-enemies .gicon { width: 32px; height: 32px; }
-.eg-detail-enemies .font-mono { font-size: 12px; }
+.eg-detail-enemies .font-mono { font-size: 13px; }
 .eg-detail-builds li { display: flex; align-items: center; gap: 10px; }
 .eg-detail-builds .gicon { width: 32px; height: 32px; }
 .eg-build-name { min-width: 120px; font-weight: 600; }
