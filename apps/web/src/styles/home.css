@@ -32,14 +32,14 @@
 /* Battle pass level: a dark box at the bottom right, Barlow over the segmented bar. */
 .pass-level { position: absolute; right: 16px; bottom: 28px; padding: 12px 16px 14px; background: #000; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 9px), calc(100% - 9px) 100%, 0 100%); }
 .pass-level-figure { display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px; }
-.pass-level-figure .font-mono { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); }
+.pass-level-figure .font-mono { font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); }
 .pass-level-figure .font-display { font-size: 32px; font-weight: 600; line-height: 1; }
 .pass-level-figure .font-display.text-muted { font-size: 18px; }
 
 /* Endgame · next resets and Expiring soon (WIREFRAMES.md A1): two list cards under the heatmap. */
 .home-lists { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 36px; }
 .home-list .rw { display: flex; align-items: center; gap: 12px; }
-.table-card.home-list .rw > span.home-list-game { flex: 0 0 160px; display: inline-flex; align-items: center; gap: 8px; text-align: left; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+.table-card.home-list .rw > span.home-list-game { flex: 0 0 160px; display: inline-flex; align-items: center; gap: 8px; text-align: left; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; }
 /* The game's icon beside its name on one line (round 17). */
 .table-card .rw > span.pull-game { display: inline-flex; align-items: center; gap: 10px; }
 .table-card.home-list .rw > span.home-list-name { flex: 1; min-width: 0; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -55,7 +55,7 @@
 .pulls-total { font-size: 56px; font-weight: 600; line-height: 1; }
 .pulls-split { font-size: 13px; line-height: 1.7; text-align: right; text-transform: uppercase; letter-spacing: 0.04em; }
 .pulls-split .text-muted { margin-right: 12px; }
-.thead { display: flex; align-items: center; height: 28px; flex: 0 0 28px; padding: 0 26px 0 16px; border-top: 1px solid var(--hairline); color: var(--text-muted); font: 400 11px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
+.thead { display: flex; align-items: center; height: 28px; flex: 0 0 28px; padding: 0 26px 0 16px; border-top: 1px solid var(--hairline); color: var(--text-muted); font: 400 13px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
 .thead > span, .table-card .rw > span { flex: 0 0 auto; text-align: right; }
 .thead > span:first-child, .table-card .rw > span:first-child { flex: 1; text-align: left; }
 .table-card .rw { padding-right: 26px; font-size: 15px; }
@@ -68,7 +68,7 @@
 .table-empty { margin: 0; padding: 12px 16px; color: var(--text-muted); }
 
 /* Pity under a game, kept from F5 until the Pulls card decision. */
-.pull-row-pity { display: block; padding: 0 26px 8px 16px; margin-top: -4px; font-size: 12px; letter-spacing: 0.04em; color: var(--text-muted); text-decoration: none; }
+.pull-row-pity { display: block; padding: 0 26px 8px 16px; margin-top: -4px; font-size: 13px; letter-spacing: 0.04em; color: var(--text-muted); text-decoration: none; }
 .pull-row-pity:hover { color: var(--text); }
 /* Home's pulls by type (Georges, 2026-10-10): a number and its icon each. */
 .pull-counts { display: inline-flex; gap: 18px; }
@@ -116,7 +116,7 @@
 .gd-goals .lst { flex: 1; }
 .gd-scroll { max-height: 240px; }
 .gd-table { width: 100%; border-collapse: collapse; }
-.gd-table th { padding: 0 16px 8px; font: 400 12px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); text-align: left; }
+.gd-table th { padding: 0 16px 8px; font: 400 13px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); text-align: left; }
 .gd-table td { padding: 7px 16px; border-top: 1px solid var(--surface-3); vertical-align: middle; }
 .gd-table tr:hover td { background: var(--surface-2); }
 .gd-table td a { color: var(--text); }

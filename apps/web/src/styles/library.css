@@ -1,7 +1,7 @@
 /* Games (WIREFRAMES.md A2), in the dashboard's look (VISUAL-DESIGN.md). */
 .lib-head { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
 .lib-head h1 { margin: 0; }
-.lib-hint { margin-left: auto; font-size: 12px; }
+.lib-hint { margin-left: auto; font-size: 13px; }
 /* Round 23: one column; the "Add a game" note takes a row under the list rather than a column that squeezed the rows' figures. */
 .lib-page { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; align-items: start; }
 .lib-list, .lib-side { display: grid; gap: 14px; min-width: 0; }
@@ -24,16 +24,16 @@
 /* The figures keep a surface of their own over the key art. */
 .lib-row .kpi { background: color-mix(in srgb, var(--card) 88%, transparent); }
 .lib-name h2 { margin: 0 0 4px; font-size: 22px; }
-.lib-name .font-mono { font-size: 12px; }
+.lib-name .font-mono { font-size: 13px; }
 .lib-name .badge { margin-top: 6px; }
 .lib-cells { display: flex; flex-wrap: wrap; gap: 8px; } /* the figures wrap rather than run past the row (round 23) */
 .lib-cell { display: flex; flex-direction: column; gap: 6px; width: 88px; padding: 8px 10px; border: 1px solid var(--hairline); color: var(--text); font: 600 18px/1 var(--font-display); text-decoration: none; }
 .lib-cell:hover { border-color: var(--accent); }
 .lib-cell.is-energy { width: 136px; }
-.lib-cell .kpi-label { font-size: 10px; white-space: nowrap; }
+.lib-cell .kpi-label { font-size: 13px; white-space: nowrap; }
 .lib-cell .pull-n { min-width: 0; justify-content: flex-start; }
 .lib-today { display: flex; flex-direction: column; gap: 6px; font-size: 14px; }
-.lib-today .kpi-label { font-size: 10px; }
+.lib-today .kpi-label { font-size: 13px; }
 .lib-actions { grid-column: 3 / -1; display: flex; align-items: center; gap: 14px; }
 .lib-sleep { display: inline-flex; align-items: center; margin: 0; color: var(--text); cursor: pointer; }
 .lib-move { display: inline-flex; gap: 4px; margin-left: auto; }

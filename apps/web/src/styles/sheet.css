@@ -13,7 +13,7 @@
 .sh-inline select { width: auto; }
 .sh-title { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 12px; }
 .sh-title h1 { margin: 0 8px 0 0; font-size: 40px; letter-spacing: 0.02em; text-transform: none; }
-.sh-note { font-size: 12px; }
+.sh-note { font-size: 13px; }
 .sh-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
 .sh-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 40px; border-top: 1px solid var(--surface-3); }
 .sh-row label { margin: 0; }
@@ -37,9 +37,9 @@
 .sh-piece-icon { width: 64px; height: 64px; }
 .sh-piece-name { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
 .sh-stat-row { display: grid; grid-template-columns: 18px minmax(0, 1fr); align-items: center; gap: 6px; }
-.sh-fixed { font-size: 12px; }
+.sh-fixed { font-size: 13px; }
 .sh-plan { margin-bottom: 24px; }
-.sh-more summary { cursor: pointer; color: var(--text-muted); font: 400 12px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
+.sh-more summary { cursor: pointer; color: var(--text-muted); font: 400 13px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
 .sh-more[open] summary { margin-bottom: 14px; }
 
 /* Gear (WIREFRAMES.md G6) */
@@ -64,7 +64,7 @@
 .pn-goal .tk-prog { flex: 1; }
 .pn-goal .tk-prog .tk-meter { flex: 1; width: auto; }
 .pn-goal .spread { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-.pn-goal .font-mono { font-size: 12px; }
+.pn-goal .font-mono { font-size: 13px; }
 .pn-bar { display: flex; align-items: center; gap: 8px; }
 .pn-bar .tk-meter { flex: 1; width: auto; }
 .pn-main { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 24px; align-items: start; min-width: 0; }
@@ -107,7 +107,7 @@
 .pf-status p { flex: 1; margin: 0; }
 
 /* KPI targets and Used in (WIREFRAMES.md G5) */
-.sh-target { display: flex; align-items: center; gap: 8px; margin-top: 6px; font-size: 12px; }
+.sh-target { display: flex; align-items: center; gap: 8px; margin-top: 6px; font-size: 13px; }
 .sh-target label { display: inline-flex; align-items: center; gap: 4px; margin: 0; letter-spacing: 0; text-transform: none; }
 .sh-target input { width: 72px; min-height: 24px; padding: 1px 6px; }
 .sh-used { margin-top: 24px; }
@@ -116,7 +116,7 @@
 .pf-wallet .pf-rows .kpi-label { flex: 0 0 220px; }
 /* Builds as tabs, the default starred (Georges, 2026-10-11). */
 .sh-builds { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 16px; }
-.sh-build-tab { padding: 7px 12px; border: 1px solid var(--hairline); color: var(--text-muted); font: 400 12px/1 var(--font-mono); letter-spacing: 0.06em; text-decoration: none; text-transform: uppercase; }
+.sh-build-tab { padding: 7px 12px; border: 1px solid var(--hairline); color: var(--text-muted); font: 400 13px/1 var(--font-mono); letter-spacing: 0.06em; text-decoration: none; text-transform: uppercase; }
 .sh-build-tab:hover { color: var(--text); border-color: var(--hairline-strong); }
 .sh-build-tab[aria-selected="true"] { background: var(--paper); border-color: var(--paper); color: var(--on-paper); }
 .sh-build-name { width: 180px; margin-left: auto; }
@@ -182,4 +182,4 @@
 .gf-icon { grid-row: 1 / 3; width: 52px; height: 52px; font-size: 11px; }
 .gf-name { font-weight: 600; }
 .gf-points { grid-row: 1 / 3; grid-column: 3; font-size: 22px; color: var(--accent); }
-.gf-match { grid-column: 2; font-size: 12px; color: var(--text-muted); }
+.gf-match { grid-column: 2; font-size: 13px; color: var(--text-muted); }

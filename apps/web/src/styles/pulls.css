@@ -5,17 +5,17 @@
 .pl-chances { list-style: none; margin: 14px 0 0; padding: 12px 0 0; border-top: 1px solid var(--surface-3); display: grid; gap: 10px; }
 .pl-chances li { display: grid; grid-template-columns: 40px minmax(0, 1fr) 120px 120px; align-items: center; gap: 12px; }
 .pl-chances .gicon { width: 40px; height: 40px; font-size: 11px; }
-.pl-chances-head { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; }
+.pl-chances-head { font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; }
 .pl-chances-name { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .pl-chances-name strong, .pl-chances-name .font-mono { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.pl-chances-name .font-mono { font-size: 11px; }
+.pl-chances-name .font-mono { font-size: 13px; }
 .pl-chances-v { display: grid; grid-template-columns: minmax(0, 1fr) 40px; align-items: center; gap: 8px; }
 /* The top-up to a sure featured 5★ (round 6): each running target, its chance by its banner's end, the cheapest packs. */
 .pl-topup { margin-bottom: 28px; }
 .pl-topup-list { grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); }
 .pl-chances li.pl-topup-row { grid-template-columns: 40px minmax(0, 1fr) auto; }
 .pl-topup-buy { display: flex; align-items: center; gap: 12px; justify-content: flex-end; text-align: right; }
-.pl-topup-buy .font-mono { font-size: 12px; }
+.pl-topup-buy .font-mono { font-size: 13px; }
 .pl-chances-v .act-meter { flex: none; }
 .pl-chances-v .act-meter.is-now > span { background: var(--text-muted); }
 .pl-chances-v .font-mono { text-align: right; font-size: 13px; }
@@ -35,7 +35,7 @@
 /* The day it ends, on paper, large (round 24); the featured units take the next line, whole. */
 .pl-ends { align-self: flex-start; padding: 6px 10px; background: var(--paper); color: var(--on-paper); font: 600 15px/1 var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; }
 .pl-featured { flex: 1 1 100%; }
-.pl-banner-head .font-mono { font-size: 12px; }
+.pl-banner-head .font-mono { font-size: 13px; }
 .pl-art { width: 64px; height: 64px; flex: none; }
 .pl-kind { width: 48px; height: 48px; }
 /* A banner's own art is wide (Game8, the wikis): shown at its shape, not squeezed into the square (round 16). */
@@ -50,7 +50,7 @@
 /* The odds tiles (round 24): three of one size, the figure large, a small arrow figure for a simulated top-up. */
 .odds { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-bottom: 12px; }
 .odds-tile { display: flex; flex-direction: column; justify-content: space-between; gap: 8px; min-height: 92px; padding: 10px 12px; background: var(--surface-2); }
-.odds-tile .kpi-label { font-size: 12px; }
+.odds-tile .kpi-label { font-size: 13px; }
 .odds-figure { font-size: 30px; line-height: 1; font-variant-numeric: tabular-nums; }
 .odds-figure small { color: var(--accent); font-size: 16px; font-weight: 500; }
 .pl-curve { display: block; width: 100%; height: auto; overflow: visible; }
@@ -81,7 +81,7 @@
 .pl-mark.is-all text { fill: var(--text); }
 .pl-mark.is-top line { stroke: var(--text-muted); stroke-dasharray: 3 3; }
 .pl-mark.is-top circle { fill: var(--bg); stroke: var(--text-muted); stroke-dasharray: 2 2; }
-.pl-legend { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; font-size: 12px; }
+.pl-legend { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; font-size: 13px; }
 .pl-legend span { display: flex; align-items: center; gap: 8px; }
 .pl-legend i { width: 10px; height: 10px; border-radius: 50%; flex: none; }
 .pl-legend .is-you i { background: var(--accent); }
@@ -96,8 +96,8 @@
 .pl-target > :nth-child(2) { grid-area: name; }
 .pl-target > .pl-needs { grid-area: needs; justify-self: end; font-size: 13px; }
 .pl-target > .badge { grid-area: chip; justify-self: end; }
-.pl-target > :last-child:not(.badge):not(.pl-needs) { grid-area: fc; justify-self: end; font-size: 12px; }
-.pl-note { margin: 10px 0 0; font-size: 12px; }
+.pl-target > :last-child:not(.badge):not(.pl-needs) { grid-area: fc; justify-self: end; font-size: 13px; }
+.pl-note { margin: 10px 0 0; font-size: 13px; }
 /* History corrections and Banner history (Georges, 2026-10-11). */
 .pl-bhistory { margin-bottom: 24px; }
 .pl-bhistory td.font-mono { white-space: nowrap; }
