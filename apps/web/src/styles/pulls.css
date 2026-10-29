@@ -125,3 +125,5 @@
 .pl-tops-buy strong { font-size: 13px; font-weight: 500; color: var(--text-muted); }
 .pl-tops-pulls { display: flex; align-items: center; font-size: 22px; line-height: 1; color: var(--text); }
 .pl-tops-price { font-size: 15px; color: var(--accent); }
+/* The History card (the logged pulls: date, banner, 5★, pity, result) scrolls inside itself when its table is wider than a 960 px window allows (round 24). */
+.pl-history { overflow-x: auto; }
