@@ -23,6 +23,13 @@ test("a task without a picture shows a drawn tile; the shop note wraps; the vers
       const title = (await row.locator(".tick-title").boundingBox())!;
       expect(title.height, (await row.locator(".tick-title").textContent()) ?? "").toBeLessThanOrEqual(40);
     }
+    // A task whose title was recased since (an older profile's "Realm currency") still finds its icon.
+    const tasks = (await (await page.request.get(`/api/tasks?scope=game&refId=${id}`)).json()) as { id: string; title: string }[];
+    const training = tasks.find((task) => task.title === "Daily Training")!;
+    await page.request.put(`/api/tasks/${training.id}`, { data: { title: "Daily training" } });
+    await page.reload();
+    await expect(page.locator(".tick-row", { hasText: "Daily training" }).first().locator("img.list-art")).toHaveCount(1);
+    await page.request.put(`/api/tasks/${training.id}`, { data: { title: "Daily Training" } });
     const eventRow = page.locator(".act-version .act-row", { hasText: "E2E rows event" });
     await expect(eventRow).toBeVisible();
     expect((await eventRow.boundingBox())!.height).toBeGreaterThanOrEqual(56);
