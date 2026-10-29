@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-29 · claude · stack/r31/02-odds-tiles · #403
+- Done: Round 24 PR 2 (Georges: "the odds/estimate thing is a bit weird"). The odds table is three tiles of one size: the next pull, by soft pity (past it, the next ten), with your pulls (a simulated top-up as a second figure).
+- Tests: written first: three tiles of one width and height, the figure at 26 px or more, no table.
+- Scope/decisions: none.
+- Next: PR 3, the artifacts.
+
 ## 2026-10-29 · claude · stack/r31/01-banner-featured · #402
 - Done: Round 24 PR 1 (Georges: "i don't need to know the name of the banner just the featured characters … skirk escoffier mika candace dahlia tue nov 3rd"). The Pulls card's head: the kind's mark, the banner type, "Ends Tue 3 Nov" on paper, every featured unit of the running banners with its name under its icon (top rarity 72 px, others 52); Home's banner card titled by its top featured units (`topNames`); the phase's name only where it features none.
 - Tests: written first: three units seeded on one warp, each named on the Pulls card, Blade larger, the end day, no banner name; Home titled "Blade"; the overview journey reads the unit's name.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the cron test takes the token with the mirror's proof only, 404 without one on the host, the base reported and read back through `/api/me`, a bad base refused; actionlint on the workflow.
 - Scope/decisions: Blob's list gives no content hash, so the mirror skips a held path rather than comparing bytes. `config.blobToken` became a getter so a token set later is seen.
 - Next: the docs and the handoff.
-
-## 2026-10-20 · claude · stack/r22/02-icons-bigger · #360
-- Done: round 15 (Georges: "make every game icon more visible"). A logo keeps its shape: in the strip a wordmark (wider than twice its height, tagged on load) stands at 36 px and the chip sizes to it, dropping the name it already says (kept for screen readers and hover); the games list gives the logo its own grid column at 56 px; the game's header shows it at 96 px on its own; Settings → Art at 32 px. The drawn emblems grow the same way. Home's Dailies card, the Stamina and Pulls tables and the next-resets rows carry each game's mark beside its name.
-- Tests: written first: a journey uploads a wide logo and measures it in the strip (at least 29 px high, wider than twice its height), the list (56) and the header (96), and finds the mark on Home's Dailies card and Stamina table; the emblem's sizes too.
-- Scope/decisions: the per-spot sizes are explicit CSS, no generic cap (the strip's 8 px icon font had capped an `em` rule at 36 px). The journey looks at the all-games Home: the single-game scope shows the dashboard's card, which names no game.
-- Next: the art store on Vercel Blob.
