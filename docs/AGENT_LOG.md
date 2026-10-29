@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-29 · claude · stack/r31/08-type-floor · #409
+- Done: Round 24 PR 8 (Georges: "avoid small text as well"). Every 10, 11 or 12 px text rule in the stylesheets is 13 px (89 rules: the rail, the date, labels, table heads, badges, tags, chips, the hub, the activity rows, the endgame cards, the pulls lines, the sheet's notes, the library cells, the tasks' lines, the heatmap readout); the chart drawings' own labels and the icon placeholder letters left alone.
+- Tests: written first: a journey over eleven screens lists every visible text under 13 px (the drawings excepted); 30 offenders before, none after; the width journeys still pass.
+- Scope/decisions: a floor, not a scale; "unaligned text" needs the screens he means.
+- Next: PR 9, the game cards.
+
 ## 2026-10-29 · claude · stack/r31/07-farm-icons · #408
 - Done: Round 24 PR 7 (Georges: "planner as main icons too small … i'd rather click on it and then check what's left to do"). A Farm today chip is the unit at 64 px with its days and a +N count; a click unfolds its materials (the week view and unit-less lines keep theirs in view); the goal cards' unit icon 48 → 72 px on Tasks and the planner.
 - Tests: written first: Seele's chip large with no material, open after a click; her planner card's icon 64 px or more; the two Farm today journeys click first.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: docs only.
 - Scope/decisions: none.
 - Next: deploy at Georges's word; the history round.
-
-## 2026-10-20 · claude · stack/r23/03-order · #366
-- Done: round 16 (Georges: "so many assets are crooked or out of place/order. you can do better UI wise… ICONS FIRST text second"). The strip: any logo, wordmark or square, stands alone at one height (36 px, 40 px picked) and the chip sizes to it, the name kept for screen readers and hover; emblem chips keep their name. The games list: the mark's column is fixed at 190 px, so every title starts at the same place. Home's Dailies card: a logo stands 56 px high with the game's name small under it; an emblem sits beside the name. Mode and task icons sit in one tile each (28 px in lists, 44 px on the Endgame cards; contained, on a surface with an edge), so pictures of mixed padding line up, and a task without its picture keeps an empty tile so the names line up; a banner's wide art (Game8, the wikis) shows at its shape on Pulls, not squeezed into the square. A **key-art slot per game** (Settings → Art, wide): the hero of its cards (the games list's row, Home's idle Banners card, the timeline's panel) when the owner has put one, the character splash otherwise.
-- Tests: written first: a journey uploads a square logo and a key art, finds the logo alone in the strip at 34 px or more, the title of a game with a logo level with one without, and the key art as the row's hero; the logos and art journeys still pass.
-- Scope/decisions: the tiles are square with an edge, like every surface here (no radius anywhere in the design). The key art goes through HeroArt, so every spot that shows a game's hero takes it, with no new component.
-- Next: the docs and the handoff.
