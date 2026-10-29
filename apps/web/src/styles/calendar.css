@@ -19,18 +19,20 @@
 .cal-game-text { display: flex; flex-direction: column; min-width: 0; }
 .cal-label { display: flex; flex-direction: column; justify-content: center; min-width: 0; padding: 0 10px 0 4px; }
 .cal-wk { border-bottom: 1px solid var(--hairline); }
-.cal-wk .cal-label { font-size: 12px; }
+.cal-wk .cal-label { font-size: 13px; }
 .cal-wk .cal-track { height: 30px; }
-.cal-wk .cal-track span { position: absolute; top: 0; height: 100%; padding: 8px 0 0 8px; color: var(--text-muted); font: 400 12px/1 var(--font-mono); }
+.cal-wk .cal-track span { position: absolute; top: 0; height: 100%; padding: 8px 0 0 8px; color: var(--text-muted); font: 400 13px/1 var(--font-mono); }
+.cal-days .cal-track { height: 30px; }
 .cal-today { position: absolute; bottom: 4px; transform: translateX(4px); color: var(--accent); font: 500 10px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
 .cal-block { padding: 6px 0; border-bottom: 1px solid var(--surface-3); }
-.cal-game-name { overflow: hidden; color: var(--text); font: 600 16px/1.2 var(--font-display); letter-spacing: 0.04em; text-decoration: none; text-overflow: ellipsis; text-transform: uppercase; white-space: nowrap; }
+.cal-game-name { overflow: hidden; color: var(--text); font: 600 20px/1.2 var(--font-display); letter-spacing: 0.04em; text-decoration: none; text-overflow: ellipsis; text-transform: uppercase; white-space: nowrap; }
 .cal-game-name:hover { color: var(--c, var(--accent)); }
-.cal-src { font-size: 11px; }
-.cal-lane-name { color: var(--text-muted); font: 400 11px/1.4 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
+.cal-src { font-size: 12px; }
+.cal-lane-name { color: var(--text-muted); font: 400 13px/1.4 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
 
 .cal-track {
-  position: relative; height: 28px;
+  /* 52 px a lane (round 24, Georges: "the banners tab is a bit catastrophic"): bars of 48 px with 15 px text. */
+  position: relative; height: 52px;
   /* Weeks, then days, then weekends shaded (the window always starts on a Monday). */
   background-image:
     linear-gradient(to right, var(--surface-3) 1px, transparent 1px),
@@ -39,17 +41,17 @@
   background-size: calc(100% / 6) 100%, calc(100% / 42) 100%, calc(100% / 6) 100%;
 }
 .cal-bar {
-  position: absolute; top: 3px; display: flex; align-items: center; gap: 6px; height: 32px; min-width: 4px; padding: 0 8px;
+  position: absolute; top: 2px; display: flex; align-items: center; gap: 8px; height: 48px; min-width: 4px; padding: 0 10px;
   overflow: hidden; border: 0; cursor: pointer; text-align: left; white-space: nowrap;
-  font: 400 12px/1 var(--font-mono);
+  font: 500 15px/1 var(--font-mono);
 }
 /* A banner phase's top units at the start of its bar (round 11). */
 .cal-units { display: inline-flex; flex: 0 0 auto; gap: 2px; margin-left: -6px; }
-.cal-units .gicon { display: block; width: 28px; height: 28px; border: 0; background: color-mix(in srgb, #000 25%, transparent); }
+.cal-units .gicon { display: block; width: 40px; height: 40px; border: 0; background: color-mix(in srgb, #000 25%, transparent); }
 /* A banner's or event's official picture at the start of its bar (round 17: pictures first). */
-.cal-thumb { flex: none; width: 52px; height: 28px; margin-left: -6px; object-fit: cover; }
+.cal-thumb { flex: none; width: 80px; height: 44px; margin-left: -6px; object-fit: cover; }
 /* The banner's kind at the start of its bar (round 23), before its picture. */
-.cal-kind { width: 28px; height: 28px; margin-left: -6px; clip-path: none; }
+.cal-kind { width: 40px; height: 40px; margin-left: -6px; clip-path: none; }
 .cal-bar .cal-kind + .cal-thumb, .cal-bar .cal-kind + .cal-units { margin-left: 0; }
 /* Selected's featured units: the icons, then the link to Pulls. */
 .cal-sel-featured { display: flex; flex-direction: column; gap: 8px; }
@@ -59,19 +61,32 @@
 .cal-bar.is-pass { background: repeating-linear-gradient(135deg, color-mix(in srgb, var(--k-pass) 24%, transparent) 0 6px, transparent 6px 12px); border: 1px solid var(--k-pass); border-left-width: 4px; color: var(--text); }
 /* A wish in gold, whatever its kind (round 7: "wishlisted events should be more visible"). */
 .cal-bar.is-wished { border-left: 4px solid var(--k-wish); box-shadow: inset 0 0 0 2px var(--k-wish); }
-.cal-star { flex: none; padding: 1px 4px; background: #000; color: var(--k-wish); font-size: 13px; line-height: 1; }
+.cal-star { flex: none; padding: 2px 5px; background: #000; color: var(--k-wish); font-size: 15px; line-height: 1; }
 .cal-bar.is-ended { opacity: 0.45; }
 .cal-bar:hover { filter: brightness(1.15); }
 .cal-bar[aria-pressed="true"] { z-index: 1; outline: 2px solid var(--text); outline-offset: 1px; }
-.cal-name { overflow: hidden; text-overflow: ellipsis; }
-.cal-tag { flex: none; padding: 2px 5px; background: #000; color: var(--text); font: 500 11px/1 var(--font-mono); }
+/* A short bar keeps its name: the dates give way first, then the name shortens to an ellipsis. */
+.cal-name { flex: 1 1 auto; min-width: 20px; overflow: hidden; text-overflow: ellipsis; }
+.cal-tag { flex: none; padding: 3px 6px; background: #000; color: var(--text); font: 500 12px/1 var(--font-mono); }
 .cal-now { position: absolute; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: var(--accent); pointer-events: none; }
 .cal-vtick { position: absolute; top: 0; height: 100%; padding: 0 4px 0 6px; background: linear-gradient(var(--bg), var(--bg)) no-repeat 0 50% / 100% 16px; border-left: 2px solid var(--accent); color: var(--accent); font: 400 11px/28px var(--font-mono); white-space: nowrap; pointer-events: none; }
 .cal-vtick.is-left { transform: translateX(-100%); padding: 0 6px 0 4px; border-left: 0; border-right: 2px solid var(--accent); }
 .cal-foot { margin: 12px 0 0; font-size: 13px; }
-.cal-list td button { all: unset; cursor: pointer; }
-.cal-list td button:hover { color: var(--accent); }
-.cal-list td button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+/* The List view (round 24): big rows, each the game, the kind, the picture or the featured units, the title, the day it ends. */
+.cal-rows { display: grid; gap: 8px; }
+.cal-row { display: flex; align-items: center; gap: 14px; min-height: 72px; padding: 10px 14px; border: 1px solid var(--edge); border-left: 6px solid var(--c, var(--accent)); background: var(--surface-2); color: var(--text); text-align: left; cursor: pointer; }
+.cal-row:hover { filter: brightness(1.12); }
+.cal-row.is-ended { opacity: 0.5; }
+.cal-row[aria-pressed="true"] { outline: 2px solid var(--text); outline-offset: 1px; }
+.cal-row-game { width: 36px; height: 36px; flex: none; }
+.cal-row-kind { width: 40px; height: 40px; }
+.cal-row-thumb { flex: none; width: 96px; height: 54px; object-fit: cover; }
+.cal-row .cal-units { margin-left: 0; }
+.cal-row .cal-units .gicon { width: 44px; height: 44px; }
+.cal-row-text { display: flex; flex: 1; flex-direction: column; gap: 4px; min-width: 0; }
+.cal-row-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 600 18px/1.2 var(--font-display); letter-spacing: 0.02em; }
+.cal-row-sub { font-size: 13px; }
+.cal-row-ends { flex: none; padding: 6px 10px; background: var(--paper); color: var(--on-paper); font: 600 15px/1 var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; }
 
 /* Selected item */
 .cal-sel { position: sticky; top: 16px; }
@@ -106,11 +121,11 @@
 /* Readability (Georges, 2026-10-10): a tick per day, each bar's dates, and the month view. */
 .cal-days { border-bottom: 1px solid var(--hairline); }
 .cal-days .cal-track { height: 20px; }
-.cal-day { position: absolute; top: 0; height: 100%; display: grid; place-items: center; color: var(--text-muted); font: 400 10px/1 var(--font-mono); }
+.cal-day { position: absolute; top: 0; height: 100%; display: grid; place-items: center; color: var(--text-muted); font: 400 12px/1 var(--font-mono); }
 .cal-day.is-weekend { color: var(--hairline-strong); }
 .cal-day.is-today { color: var(--accent); font-weight: 600; }
 /* In a short bar the dates give way before the name. */
-.cal-dates { min-width: 0; overflow: hidden; flex-shrink: 1000; margin-left: auto; padding-left: 8px; opacity: 0.75; font-size: 10px; }
+.cal-dates { min-width: 0; overflow: hidden; flex-shrink: 1000; margin-left: auto; padding-left: 8px; opacity: 0.75; font-size: 13px; }
 .cal-month h3 { margin-bottom: 12px; }
 .cal-mgrid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 1px; background: var(--surface-3); border: 1px solid var(--surface-3); }
 .cal-mhead { padding: 6px 8px; background: var(--card); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; }

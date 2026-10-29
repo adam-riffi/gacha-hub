@@ -23,7 +23,7 @@ import { RosterRewards } from "../components/calendar/RosterRewards";
 import { CatalogIcon } from "../components/CatalogIcon";
 import { GameMark } from "../components/GameMark";
 import { officialArt } from "../lib/assets";
-import { distinctFeatured } from "../components/FeaturedUnits";
+import { distinctFeatured, topNames } from "../components/FeaturedUnits";
 
 const DAY = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" });
 const MONTH = new Intl.DateTimeFormat("en-GB", { month: "long", year: "numeric" });
@@ -96,6 +96,10 @@ function lanes(items: CalItem[]): CalItem[][] {
  * characters; the rewards that update your roster. Timeline, Month (what
  * starts and ends each day; Georges, 2026-10-10) or List.
  */
+/** What a bar or a row calls an item (round 24, Georges: "just the featured characters"): a banner by its top featured units, else its name. */
+const itemTitle = (item: CalItem) => (item.kind === "banner" ? topNames((item.banners ?? []).flatMap((banner) => banner.featured)) || item.name : item.name);
+const ENDS = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
+
 /** A banner phase's top-rarity featured units as small icons on its bar (round 11); hidden from screen readers, Selected names them. */
 function BarUnits({ gameKey, banners }: { gameKey: string; banners: BannerDto[] }) {
   const units = distinctFeatured(banners.flatMap((banner) => banner.featured));
@@ -478,7 +482,7 @@ export function CalendarPage() {
                                 })()}
                                 {/* A banner phase's top units on its bar (round 11); Selected names them. */}
                                 {item.kind === "banner" && <BarUnits gameKey={item.gameKey} banners={item.banners ?? []} />}
-                                <span className="cal-name">{item.name}</span>
+                                <span className="cal-name">{itemTitle(item)}</span>
                                 <span className="cal-dates">
                                   {DAY.format(item.start)} → {DAY.format(item.end)}
                                 </span>
@@ -552,35 +556,41 @@ export function CalendarPage() {
               {visible.length === 0 ? (
                 <p className="text-muted">Nothing in these six weeks.</p>
               ) : (
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Game</th>
-                      <th>Name</th>
-                      <th>Kind</th>
-                      <th>Starts</th>
-                      <th>Ends</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {[...visible]
-                      .sort((first, second) => first.start - second.start)
-                      .map((item) => (
-                        <tr key={item.id}>
-                          <td className="font-mono">{getGame(item.gameKey)?.shortName ?? item.gameKey}</td>
-                          <td>
-                            {item.tag && <b className="cal-tag">{item.tag}</b>}{" "}
-                            <button type="button" onClick={() => setSelected(item.id)}>
-                              {item.name}
-                            </button>
-                          </td>
-                          <td className="font-mono text-muted">{item.kind}</td>
-                          <td className="font-mono">{DAY.format(item.start)}</td>
-                          <td className="font-mono">{DAY.format(item.end)}</td>
-                        </tr>
-                      ))}
-                  </tbody>
-                </table>
+                // Big rows (round 24, Georges: "the banners tab is a bit catastrophic"): the game, the kind, the picture or the
+                // featured units, the title, and the day it ends, the soonest end first and the ended ones last.
+                <div className="cal-rows">
+                  {[...visible]
+                    .sort((first, second) => Number(first.end < now) - Number(second.end < now) || first.end - second.end)
+                    .map((item) => {
+                      const thumb = [...(item.banners ?? []).map((banner) => officialArt(banner.payload)), officialArt(item.event?.payload)].find(Boolean);
+                      return (
+                        <button
+                          key={item.id}
+                          type="button"
+                          className={`cal-row is-${item.kind} ${item.end < now ? "is-ended" : ""}`}
+                          style={{ ["--c" as string]: getGame(item.gameKey)?.accent }}
+                          aria-pressed={current?.id === item.id}
+                          onClick={() => setSelected(item.id)}
+                        >
+                          <GameMark gameKey={item.gameKey} className="cal-row-game" />
+                          {item.kind === "banner" && [...new Set((item.banners ?? []).map((banner) => banner.kind))].map((kind) => <BannerKind key={kind} kind={bannerGlyph(kind)} className="cal-row-kind" />)}
+                          {thumb && <img className="cal-row-thumb" src={thumb} alt="" loading="lazy" />}
+                          {item.kind === "banner" && <BarUnits gameKey={item.gameKey} banners={item.banners ?? []} />}
+                          <span className="cal-row-text">
+                            <span className="cal-row-name">
+                              {item.tag && <b className="cal-tag">{item.tag}</b>} {itemTitle(item)}
+                            </span>
+                            <span className="cal-row-sub font-mono text-muted">
+                              {getGame(item.gameKey)?.shortName ?? item.gameKey} · {item.kind} · {DAY.format(item.start)} → {DAY.format(item.end)}
+                            </span>
+                          </span>
+                          <span className="cal-row-ends font-mono">
+                            {item.end < now ? "Ended" : "Ends"} {ENDS.format(item.end)}
+                          </span>
+                        </button>
+                      );
+                    })}
+                </div>
               )}
             </section>
           )}
