@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-29 · claude · stack/r32/03-wiki-wait · #413
+- Done: Round 25 PR 3. On a cold function the first `/api/art` went out before the wikis answered, with Special:FilePath addresses a browser cannot load (403): empty tiles on every wiki task. Now a wiki file not yet answered for (within `ART_RESOLVE_WAIT_MS`, 4 s) is listed with no address (the drawn tile shows), and `buildApp` warms the resolution at boot (skipped under vitest).
+- Tests: written first: a never-answering wiki API with a 50 ms wait: the list within 2 s, wiki files null, the App Store icon kept; the stub now resolves every file but one so the resolved, the missing and the task icons are each checked.
+- Scope/decisions: the warm-up is skipped under the test runner.
+- Next: PR 4, the icon over the wordmark.
+
 ## 2026-10-29 · claude · stack/r32/02-task-rows · #412
 - Done: Round 25 PR 2 (Georges: "try to find icons for iconless tasks + having no icons and no is a bit weird", "the version card is broken and unreadable"). A task with no picture draws a ticked box in its 36 px frame; three more wiki icons (Genshin commission reward, Zenless Ridu weekly, Wuthering nightmare nests); a monthly task's shop note wraps at 38 % instead of squeezing the title; the version card's event rows 64 px with 96 px pictures. Plus the real cause of empty tiles on tasks that have icons: `taskSlot` matched titles case-sensitively, and profiles made before a manifest recased a title ("Realm currency") found nothing.
 - Tests: written first: Check-in's drawn tile and no empty one; every task title on one line; a seeded event's row ≥ 56 px; the three new sources; a task recased to "Daily training" still shows its icon.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the wiki parser (a template's fields, one-line fields, kinds from the type, server time to ISO, rate-up units only, matching by name or word, short words never, permanent pools left out, the schema) and the written histories (each loads, dated, in order, featured on nearly every run); a journey finds the Banner history section on Pulls for Zenless and Wuthering Waves. The parser tests live in the server package: the shared package has no test runner.
 - Scope/decisions: Endfield's wiki has three dated pages and no dates in them, so Endfield stays without history (Game8's table is the next source). The units the wikis name and the catalogs lack (Wuthering Waves 3.5+, NTE 1.3+) are left out and listed by the importer: the catalogs need a refresh, the next PR.
 - Next: a catalog refresh for the games whose wikis outran them, then Endfield's art.
-
-## 2026-10-21 · claude · stack/r24/03-preview-icons · #370
-- Done: round 17 (Georges: "the preview card is unreadable for me no icons just text. the banners windows has the same issues"). The timeline: each game's icon (36 px) heads its rows; every banner's and event's bar opens with its official picture (52×28) and the bars grew to 32 px; the selected panel names the game with its icon. Home: the expiring list names each game with its icon; the Pulls table's icon and name sit on one line. Activities: the version card's events carry their pictures (72×40). `E2E_PORT` lets a second checkout run its journeys at the same time (the checks now run in `../gacha-check` while the next branch is built).
-- Tests: written first: a journey uploads an icon, seeds a banner with a picture and an event ending soon, and finds the icon at the game's row head, the picture on the bar and the icon in Home's expiring list; the calendar, Home and key-art journeys still pass.
-- Scope/decisions: the pictures are the feeds' (`payload.image`); a banner without one shows its featured units as before. Nothing new is hotlinked.
-- Next: the banner history for the four games without one.
