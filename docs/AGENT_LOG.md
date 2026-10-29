@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-29 · claude · stack/r31/05-goals-page · #406
+- Done: Round 24 PR 5 (Georges: "the reminder and preview are taking too much real estate at the top. those two should be in settings"). Tasks drops its 360 px side column; Settings → Notifications already holds both panels.
+- Tests: written first: no Reminders or Preview on Tasks, its main column across the page; the reminder journey in Settings → Notifications.
+- Scope/decisions: none.
+- Next: PR 6, the card-stat row.
+
 ## 2026-10-29 · claude · stack/r31/04-banners-tab · #405
 - Done: Round 24 PR 4 (Georges: "the banners tab is a bit catastrophic"). The timeline: 52 px lanes, 48 px bars at 15 px, 40 px unit icons and kind marks, 80 px pictures, 20 px game names; a banner's bar and Selected read its top featured units (the phase's name is the bar's title). The List view: rows of 72 px or more with the game, the kind, the picture or the units, the title and "Ends …" on paper, soonest end first, the ended ones last.
 - Tests: written first: the bar's height and type, "Blade" not the phase; the list row's height, the end day, the order, the click to Selected. The journeys that found a bar by the phase's name use its title.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the three parsers keep each notice's picture on its banners and events (every warp of a split notice gets it); the policy test names the host; a journey seeds a banner with a picture and finds it on Home, Pulls and the timeline.
 - Scope/decisions: a banner without a picture (admin uploads, the Game8 and wiki banners) shows what it did; the picture is hotlinked from HoYoverse's own CDN (the app already reads their feed), not copied to the store. The Home card's veil over key art is 0.18 (0.4 over a splash): the band carries the text.
 - Next: the standard banners' own art from Game8 (02), then the order fixes (03).
-
-## 2026-10-20 · claude · fix/mirror-fresh-token · #363
-- Done: the mirror-art workflow's report of where the pictures landed failed with 401: GitHub's OIDC token had expired during the ten-minute mirror. The workflow asks for a fresh proof before `POST /api/cron/art-base`. Re-run in production: 3,315 images in the store, `assetBase` read back from `/api/me` as the Blob base.
-- Tests: actionlint; the re-run.
-- Scope/decisions: none.
-- Next: round 16.

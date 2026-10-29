@@ -55,13 +55,24 @@ test("Tasks: farm today, goals with their steps, filtering, and an event goal cl
   await expect(event).toHaveCount(0);
 });
 
-test("Tasks: reminder rules across games, quiet hours, and the DM preview @smoke", async ({ page }) => {
+// Round 24 (Georges, 2026-10-29: "for the goals screen the reminder and preview are taking too much real estate at the
+// top. those two should be in settings"): Tasks is the goals alone, across the page; the rules and the DM preview live in
+// Settings → Notifications.
+test("Tasks: reminder rules across games, quiet hours, and the DM preview, in Settings; the goals page keeps them out @smoke", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   await page.request.post("/api/instances", { data: { gameKey: "hsr" } });
 
   await page.goto("/tasks?game=hsr");
+  await expect(page.getByRole("heading", { name: "Tasks and reminders" })).toBeVisible();
+  await expect(page.getByRole("complementary", { name: "Reminders" })).toHaveCount(0);
+  await expect(page.getByRole("region", { name: "Preview" })).toHaveCount(0);
+  const main = (await page.locator(".tk-main").boundingBox())!;
+  const content = (await page.locator(".content").boundingBox())!;
+  expect(main.width, "the goals take the page").toBeGreaterThanOrEqual(content.width * 0.9);
+
+  await page.goto("/settings/notifications");
   const reminders = page.getByRole("complementary", { name: "Reminders" });
   await reminders.getByRole("checkbox", { name: "Stamina full" }).check();
   await expect(reminders.getByRole("listitem").filter({ hasText: "Stamina full" })).toContainText("ALL");
