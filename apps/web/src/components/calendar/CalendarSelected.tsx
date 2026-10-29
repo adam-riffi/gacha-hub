@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { topNames } from "../FeaturedUnits";
 import { Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getGame, rewardOptions, type RewardDto, type RosterChange, type WishlistItemDto } from "@gacha/shared";
@@ -89,7 +90,7 @@ export function CalendarSelected({ item, reward, now, onClose }: { item: CalItem
           <HeroArt gameKey={item.gameKey} />
         )}
       </div>
-      <h2 className={item.kind === "banner" ? "font-serif" : undefined}>{item.name}</h2>
+      <h2 className={item.kind === "banner" ? "font-serif" : undefined}>{item.kind === "banner" ? topNames((item.banners ?? []).flatMap((banner) => banner.featured)) || item.name : item.name}</h2>
       {wishKey && (
         <button className="btn sm cal-wish" aria-pressed={wished} disabled={wish.isPending} onClick={() => wish.mutate(!wished)}>
           Wishlist
