@@ -39,7 +39,7 @@ test("every banner carries its kind's mark, character and weapon in two colours:
 
     // The timeline: the two banners share a phase, so one bar (named after whichever the API lists first) carries both marks.
     await page.goto("/timeline?game=hsr");
-    const bar = page.getByRole("region", { name: "Timeline" }).getByRole("button", { name: /E2E kind (character|light cone) warp \+1/ });
+    const bar = page.getByRole("region", { name: "Timeline" }).getByTitle(/E2E kind (character|light cone) warp \+1/);
     await expect(bar.getByRole("img", { name: "Character banner" })).toBeVisible();
     await expect(bar.getByRole("img", { name: "Weapon banner" })).toBeVisible();
   } finally {

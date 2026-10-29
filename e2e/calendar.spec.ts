@@ -75,7 +75,7 @@ test("a reward event carries its roster tag; its pick and Make goal set the goal
   await expect(page.locator(".cal-lane-name", { hasText: "Endgame" })).toBeVisible();
 
   await page.getByRole("group", { name: "View" }).getByRole("button", { name: "List" }).click();
-  await expect(page.getByRole("cell", { name: "E2E free 4-star" })).toBeVisible();
+  await expect(page.getByRole("region", { name: "List" }).getByRole("button", { name: /E2E free 4-star/ })).toBeVisible();
 });
 
 test("Only what I wishlisted keeps the banners and events of the units you wish for @smoke", async ({ page }) => {
@@ -99,10 +99,11 @@ test("Only what I wishlisted keeps the banners and events of the units you wish 
 
   await page.goto("/timeline?game=hsr");
   const timeline = page.getByRole("region", { name: "Timeline" });
-  await expect(timeline.getByRole("button", { name: /E2E unwished warp/ })).toBeVisible();
+  // Round 24: a bar reads its featured units; the phase's name is its title.
+  await expect(timeline.getByTitle(/E2E unwished warp/)).toBeVisible();
   await page.getByRole("checkbox", { name: "Only what I wishlisted" }).check();
-  await expect(timeline.getByRole("button", { name: /E2E wished warp/ })).toBeVisible();
-  await expect(timeline.getByRole("button", { name: /E2E unwished warp/ })).toHaveCount(0);
+  await expect(timeline.getByTitle(/E2E wished warp/)).toBeVisible();
+  await expect(timeline.getByTitle(/E2E unwished warp/)).toHaveCount(0);
 });
 
 test("Banners: a tick for every day and each bar's dates, a month view of what starts and ends each day, and a featured unit opens its page @smoke", async ({ page }) => {
@@ -119,7 +120,7 @@ test("Banners: a tick for every day and each bar's dates, a month view of what s
   await page.goto("/timeline?game=hsr");
   const timeline = page.getByRole("region", { name: "Timeline" });
   await expect(timeline.locator(".cal-day")).toHaveCount(42);
-  await expect(timeline.getByRole("button", { name: /E2E month warp/ })).toContainText("→");
+  await expect(timeline.getByTitle(/E2E month warp/)).toContainText("→");
 
   // The month view lists what starts and what ends on each day.
   await page.getByRole("group", { name: "View" }).getByRole("button", { name: "Month" }).click();
@@ -160,7 +161,8 @@ test("a banner phase's featured units are icons on its bar and in Selected, each
   expect(upload.ok()).toBe(true);
 
   await page.goto("/timeline?game=hsr");
-  const bar = page.getByRole("region", { name: "Timeline" }).getByRole("button", { name: /E2E phase warp \+1/ });
+  // Round 24: the bar reads its featured units; the phase's name is its title.
+  const bar = page.getByRole("region", { name: "Timeline" }).getByTitle(/E2E phase warp \+1/);
   // The phase's two 5★s on its bar.
   await expect(bar.locator(".cal-units .gicon")).toHaveCount(2);
   await bar.click();
