@@ -1,8 +1,12 @@
 import { expect, test } from "@playwright/test";
 
+/** The alpha of a computed colour: "rgb(…)", "rgba(…, a)" or "color(srgb … / a)" (what color-mix computes to). */
 const alpha = (color: string) => {
-  const match = /rgba?\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*(?:,\s*([\d.]+))?\s*\)/.exec(color);
-  return match ? (match[1] === undefined ? 1 : Number(match[1])) : 0;
+  const slash = /\/\s*([\d.]+%?)\s*\)$/.exec(color);
+  if (slash) return slash[1]!.endsWith("%") ? Number(slash[1]!.slice(0, -1)) / 100 : Number(slash[1]);
+  const comma = /^rgba\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*,\s*([\d.]+)\s*\)$/.exec(color);
+  if (comma) return Number(comma[1]);
+  return /^(rgb|color)\(/.test(color) ? 1 : 0;
 };
 
 // Round 25 (Georges, 2026-10-29: "some info on transparent cards isn't readable", "weird slider on the games panel for
@@ -30,7 +34,7 @@ test("the hub header reads over its art, its tabs never scroll, FULL stands larg
     const full = stamina.getByText("Full", { exact: true });
     await expect(full).toBeVisible();
     expect(parseFloat(await full.evaluate((el) => getComputedStyle(el).fontSize)), "FULL large").toBeGreaterThanOrEqual(15);
-    const figure = (await stamina.locator(".kpi-value").boundingBox())!;
+    const figure = (await stamina.locator(".kpi-value").first().boundingBox())!;
     const mark = (await full.boundingBox())!;
     expect(mark.x - (figure.x + figure.width), "FULL beside the figure").toBeLessThanOrEqual(120);
     expect(Math.abs(mark.y + mark.height / 2 - (figure.y + figure.height / 2)), "on the figure's line").toBeLessThanOrEqual(24);
