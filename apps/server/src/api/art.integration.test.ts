@@ -98,7 +98,8 @@ describe("the art slots", () => {
     expect(slot("genshin/key-art")).toMatchObject({ url: null, source: "https://static.wikia.nocookie.net/gensin-impact/images/9/98/Splashscreen_A_Rekviem_for_the_Underworld.png/revision/latest" });
     // A wiki file the API does not know gets no address at all (round 25): its Special:FilePath would answer a browser 403.
     expect(slot("hsr/key-art")).toMatchObject({ url: null, source: null });
-    expect(slot("zzz/shop/signal")).toMatchObject({ url: null, source: expect.stringContaining("Icon_Signal_Shop"), invert: true });
+    // A wiki file the stubbed API does not know carries no address (round 25) but its invert still.
+    expect(slot("zzz/shop/signal")).toMatchObject({ url: null, source: null, invert: true });
     expect(slot("nte/gear/diabolos")).toMatchObject({ url: null, source: null, invert: false });
     // Round 25: three more task icons from the wikis (Georges: "try to find icons for iconless tasks").
     expect(slot("genshin/task/commissionreward")).toMatchObject({ source: expect.stringContaining("Icon_Commission") });

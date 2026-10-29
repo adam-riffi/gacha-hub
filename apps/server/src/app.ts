@@ -1,4 +1,6 @@
 import Fastify, { type FastifyError, type FastifyInstance } from "fastify";
+import { ART_SOURCES } from "./art/sources.js";
+import { resolvedWikiFiles } from "./art/resolve.js";
 import fastifyMultipart from "@fastify/multipart";
 import rateLimit from "@fastify/rate-limit";
 import { ZodError } from "zod";
@@ -67,6 +69,9 @@ export async function buildApp(): Promise<FastifyInstance> {
 
   await registerAuth(app);
   await registerApi(app);
+
+  // The wiki files' direct addresses, resolved while the function is still waking up (round 25), so the first list has them.
+  if (!process.env.VITEST) void resolvedWikiFiles(ART_SOURCES.map((source) => source.url));
 
   return app;
 }
