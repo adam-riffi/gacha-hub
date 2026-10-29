@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { artSlotKey, featuredWithin, fiveStarDistribution, rateAt, savingsPlan, topStar, type BannerDto, type PullBannerLogDto } from "@gacha/shared";
-import { assetUrl, communityAssetUrl, officialArt } from "../../lib/assets";
-import { GameIcon } from "../GameIcon";
-import { Glyph, artGlyph, bannerGlyph } from "../Glyph";
+import { officialArt } from "../../lib/assets";
+import { FeaturedUnits } from "../FeaturedUnits";
+import { Glyph, bannerGlyph } from "../Glyph";
 import { BannerKind } from "../BannerKind";
 import { Segmented } from "../ui";
 import { PullCurve } from "./PullCurve";
@@ -51,7 +50,8 @@ export function BannerCard(props: {
   const hasFeatured = banner.featuredRate < 1;
   const featured = live?.featured.find((featuredUnit) => (featuredUnit.rarity ?? 0) >= 5);
   const running = props.running ?? (live ? [live] : []);
-  const stars = running.flatMap((liveBanner) => liveBanner.featured.filter((featuredUnit) => (featuredUnit.rarity ?? 0) >= 5));
+  // Every featured unit of the running banners (round 24, Georges: "just the featured characters"), the top rarity first.
+  const featuredUnits = running.flatMap((liveBanner) => liveBanner.featured);
   const star = topStar(props.gameKey);
   const target = featured?.name ?? `the featured ${star}`;
   const keyArt = running.map((liveBanner) => officialArt(liveBanner.payload)).find(Boolean);
@@ -88,32 +88,20 @@ export function BannerCard(props: {
     <section className="card pl-banner" aria-label={banner.label}>
       <div className="pl-banner-main">
       {keyArt && <img className="key-art pl-key-art" src={keyArt} alt="" onError={(event) => (event.currentTarget.hidden = true)} />}
+      {/* The head (round 24): the kind's mark, the banner type, the day it ends, then its featured units with their names; never the
+          phase's own name (Georges: "just the featured characters"). */}
       <div className="pl-banner-head">
         <BannerKind kind={bannerGlyph(banner.key)} className="pl-kind" />
-        {featured ? (
-          <GameIcon src={assetUrl(props.gameKey, featured.kind, featured.icon)} fallback={communityAssetUrl(props.gameKey, featured.kind, featured.icon)} alt={featured.name ?? featured.catalogId} glyph={artGlyph(featured.kind)} className="pl-art" />
-        ) : (
-          <SlotArt slot={artSlotKey(props.gameKey, "banner", banner.key)} className="pl-art" fallback={<Glyph kind={bannerGlyph(banner.key)} label={banner.label} className="pl-art" />} />
-        )}
-        <div>
+        {!featuredUnits.length && <SlotArt slot={artSlotKey(props.gameKey, "banner", banner.key)} className="pl-art" fallback={<Glyph kind={bannerGlyph(banner.key)} label={banner.label} className="pl-art" />} />}
+        <div className="pl-banner-title">
           <h3>{banner.label}</h3>
-          <div className="font-mono text-muted">
-            {running.length ? (
-              <>
-                {running.map((liveBanner) => liveBanner.name).join(" · ")}
-                {stars.map((featuredUnit) => (
-                  <span key={featuredUnit.catalogId}>
-                    {" · "}
-                    {featuredUnit.kind === "character" && props.instanceId ? <Link to={`/games/${props.instanceId}/units/${featuredUnit.catalogId}`}>{featuredUnit.name ?? featuredUnit.catalogId}</Link> : (featuredUnit.name ?? featuredUnit.catalogId)}
-                  </span>
-                ))}
-                {` · ends ${ENDS.format(new Date(Math.min(...running.map((liveBanner) => Date.parse(liveBanner.endsAt)))))}`}
-              </>
-            ) : (
-              "not running"
-            )}
-          </div>
+          {running.length ? (
+            <span className="pl-ends">Ends {ENDS.format(new Date(Math.min(...running.map((liveBanner) => Date.parse(liveBanner.endsAt)))))}</span>
+          ) : (
+            <span className="font-mono text-muted">not running</span>
+          )}
         </div>
+        {featuredUnits.length > 0 && <FeaturedUnits gameKey={props.gameKey} instanceId={props.instanceId ?? ""} units={featuredUnits} shown={8} names className="pl-featured" />}
       </div>
 
       {hasFeatured && (
