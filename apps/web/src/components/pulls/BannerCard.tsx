@@ -125,18 +125,32 @@ export function BannerCard(props: {
         {pity}
       </div>
 
-      <table className="pl-odds">
-        <thead>
-          <tr><th>Odds · estimates</th><th className="num">{star}</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Next pull</td><td className="num">{percentText(rateAt(banner, savedState.pity + 1))}</td></tr>
-          <tr><td>Next 10 pulls</td><td className="num">{percentText(within(10))}</td></tr>
-          {soft && <tr><td>By {banner.softPity}</td><td className="num">{percentText(within(banner.softPity! - savedState.pity))}</td></tr>}
-          <tr><td>With {available}</td><td className="num">{percentText(featuredWithin(banner, state, available))}</td></tr>
-          {extra > 0 && <tr><td>+{extra}</td><td className="num">{percentText(featuredWithin(banner, state, available + extra))}</td></tr>}
-        </tbody>
-      </table>
+      {/* The odds as three tiles of one size (round 24, Georges: "the odds/estimate thing is a bit weird"): the next pull, by soft
+          pity (past it, the next ten), with the pulls you hold (and with a top-up, when one is simulated). */}
+      <div className="odds" role="group" aria-label="Odds">
+        <div className="odds-tile">
+          <span className="kpi-label">Next pull</span>
+          <span className="odds-figure font-display">{percentText(rateAt(banner, savedState.pity + 1))}</span>
+        </div>
+        {soft ? (
+          <div className="odds-tile">
+            <span className="kpi-label">By soft pity · {banner.softPity}</span>
+            <span className="odds-figure font-display">{percentText(within(banner.softPity! - savedState.pity))}</span>
+          </div>
+        ) : (
+          <div className="odds-tile">
+            <span className="kpi-label">Next 10 pulls</span>
+            <span className="odds-figure font-display">{percentText(within(10))}</span>
+          </div>
+        )}
+        <div className="odds-tile">
+          <span className="kpi-label">With {available}{extra > 0 ? ` · +${extra}` : ""}</span>
+          <span className="odds-figure font-display">
+            {percentText(featuredWithin(banner, state, available))}
+            {extra > 0 && <small> → {percentText(featuredWithin(banner, state, available + extra))}</small>}
+          </span>
+        </div>
+      </div>
       </div>
 
       <div className="pl-banner-side">
