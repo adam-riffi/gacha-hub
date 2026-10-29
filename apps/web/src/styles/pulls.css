@@ -47,7 +47,12 @@
 .pl-meter > span { display: block; height: 100%; background: var(--accent); }
 .pl-meter > i { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--text); }
 .pl-pity { font-size: 15px; }
-.pl-odds { margin-bottom: 10px; }
+/* The odds tiles (round 24): three of one size, the figure large, a small arrow figure for a simulated top-up. */
+.odds { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-bottom: 12px; }
+.odds-tile { display: flex; flex-direction: column; justify-content: space-between; gap: 8px; min-height: 92px; padding: 10px 12px; background: var(--surface-2); }
+.odds-tile .kpi-label { font-size: 12px; }
+.odds-figure { font-size: 30px; line-height: 1; font-variant-numeric: tabular-nums; }
+.odds-figure small { color: var(--accent); font-size: 16px; font-weight: 500; }
 .pl-curve { display: block; width: 100%; height: auto; overflow: visible; }
 .pl-curve text { fill: var(--text-muted); font: 400 10px var(--font-mono); }
 .pl-curve .pl-grid { stroke: var(--surface-3); }
