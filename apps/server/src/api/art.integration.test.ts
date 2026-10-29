@@ -34,12 +34,12 @@ describe("the art slots", () => {
     await resetDb();
     owner = await login(app, `10.4.0.${++ipCounter}`);
     forgetWikiFiles();
-    // The wikis' API (round 22): Genshin's key art resolves to its direct address; every other title is unknown.
+    // The wikis' API (round 22): every file resolves to a direct address on the static host, but the Signal Shop icon, unknown.
     vi.stubGlobal("fetch", async (input: string | URL | Request) => {
       const titles = decodeURIComponent(new URL(String(input)).searchParams.get("titles") ?? "").split("|");
       const pages: Record<string, unknown> = {};
       titles.forEach((title, index) => {
-        pages[String(index + 1)] = title === "File:Splashscreen_A_Rekviem_for_the_Underworld.png" ? { ns: 6, title, imageinfo: [{ url: "https://static.wikia.nocookie.net/gensin-impact/images/9/98/Splashscreen_A_Rekviem_for_the_Underworld.png/revision/latest" }] } : { ns: 6, title, missing: "" };
+        pages[String(index + 1)] = title === "File:Icon_Signal_Shop.png" ? { ns: 6, title, missing: "" } : { ns: 6, title, imageinfo: [{ url: `https://static.wikia.nocookie.net/w/images/${title.slice(5)}/revision/latest` }] };
       });
       return new Response(JSON.stringify({ query: { pages } }), { status: 200, headers: { "content-type": "application/json" } });
     });
@@ -95,10 +95,9 @@ describe("the art slots", () => {
     const slot = (key: string) => all.find((candidate) => candidate.key === key);
     expect(slot("genshin/icon")).toMatchObject({ url: null, source: expect.stringContaining("mzstatic.com"), invert: false });
     // A wiki file by its direct address, the one a browser is served (its Special:FilePath answers 403); an unresolved one as listed.
-    expect(slot("genshin/key-art")).toMatchObject({ url: null, source: "https://static.wikia.nocookie.net/gensin-impact/images/9/98/Splashscreen_A_Rekviem_for_the_Underworld.png/revision/latest" });
-    // A wiki file the API does not know gets no address at all (round 25): its Special:FilePath would answer a browser 403.
-    expect(slot("hsr/key-art")).toMatchObject({ url: null, source: null });
-    // A wiki file the stubbed API does not know carries no address (round 25) but its invert still.
+    expect(slot("genshin/key-art")).toMatchObject({ url: null, source: "https://static.wikia.nocookie.net/w/images/Splashscreen_A_Rekviem_for_the_Underworld.png/revision/latest" });
+    expect(slot("hsr/key-art")).toMatchObject({ url: null, source: expect.stringContaining("static.wikia.nocookie.net") });
+    // A wiki file the API does not know gets no address at all (round 25: its Special:FilePath would answer a browser 403) but its invert still.
     expect(slot("zzz/shop/signal")).toMatchObject({ url: null, source: null, invert: true });
     expect(slot("nte/gear/diabolos")).toMatchObject({ url: null, source: null, invert: false });
     // Round 25: three more task icons from the wikis (Georges: "try to find icons for iconless tasks").
