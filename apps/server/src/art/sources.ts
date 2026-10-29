@@ -18,6 +18,10 @@ export const ART_SOURCES: ArtSource[] = [
   { slot: "wuwa/key-art", url: "https://wutheringwaves.fandom.com/wiki/Special:FilePath/We_Who_See_the_Stars_Splashscreen.jpg", source: "Wuthering Waves Wiki" },
   { slot: "endfield/key-art", url: "https://endfield.fandom.com/wiki/Special:FilePath/Splashscreen_Zeroth_Directive.png", source: "Arknights: Endfield Wiki" },
   { slot: "nte/key-art", url: "https://neverness-to-everness.fandom.com/wiki/Special:FilePath/Version_1.4_Preview_Special_Program_Announcement.png", source: "Neverness to Everness Wiki" },
+  // Round 25 (Georges: "try to find icons for iconless tasks"): three more from the wikis.
+  { slot: "genshin/task/commissionreward", url: "https://genshin-impact.fandom.com/wiki/Special:FilePath/Icon_Commission.svg", source: "Genshin Impact Wiki" },
+  { slot: "zzz/task/riduweekly", url: "https://zenless-zone-zero.fandom.com/wiki/Special:FilePath/Icon_Ridu_Chronicles.png", source: "Zenless Zone Zero Wiki" },
+  { slot: "wuwa/task/nests", url: "https://wutheringwaves.fandom.com/wiki/Special:FilePath/Icon_Nightmare_Purification.png", source: "Wuthering Waves Wiki" },
   // The new chores' icons (round 17, "a lot of tasks are missing"), where a wiki has one.
   { slot: "genshin/task/realmcurrency", url: "https://genshin-impact.fandom.com/wiki/Special:FilePath/Item_Realm_Currency.png", source: "Genshin Impact Wiki" },
   { slot: "genshin/task/bpdailies", url: "https://genshin-impact.fandom.com/wiki/Special:FilePath/Icon_Gnostic_Hymn.png", source: "Genshin Impact Wiki" },
