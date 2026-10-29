@@ -27,7 +27,8 @@ function taskSlot(game: GameDefinition, task: TaskDto): string | null {
     if (game.manifest.endgame.some((mode) => mode.key === task.anchorKey)) return artSlotKey(game.key, "mode", task.anchorKey);
     return null;
   }
-  const seed = game.defaultTasks.find((candidate) => candidate.title === task.title && !candidate.anchorKey);
+  // By title, case aside: a profile made before a manifest recased a title ("Realm currency") keeps its own (round 25).
+  const seed = game.defaultTasks.find((candidate) => candidate.title.toLowerCase() === task.title.toLowerCase() && !candidate.anchorKey);
   return seed ? artSlotKey(game.key, "task", seed.key) : null;
 }
 
