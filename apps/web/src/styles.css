@@ -163,7 +163,7 @@ select.prio.build-none { color: var(--muted); }
 .gs-slots { list-style: none; margin: 0; padding: 0; display: grid; }
 .gs-slots > li { display: grid; gap: 6px; padding: 8px 0; border-top: 1px solid var(--surface-3); }
 .gs-piece { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
-.gs-piece select { min-height: 26px; padding: 2px 6px; font-size: 12px; }
+.gs-piece select { min-height: 26px; padding: 2px 6px; font-size: 13px; }
 .gs-wearer { display: inline-flex; align-items: center; gap: 6px; color: var(--text); }
 .gs-wearer .gicon { width: 24px; height: 24px; font-size: 8px; }
 .gs-add { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px; }
@@ -324,8 +324,8 @@ p a { text-decoration: underline; text-underline-offset: 2px; }
 .gb-col-acts select { width: auto; }
 /* Sets picked from a window (round 10): the field, the picked sets, the window. */
 .gb-setfield { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 44px; padding: 0 12px; border: 2px solid var(--text); background: transparent; color: var(--text); font: 500 15px/1 var(--font-body); cursor: pointer; }
-.gb-setfield .text-muted { margin-left: auto; font: 400 12px/1 var(--font-mono); }
-.gb-pk { display: inline-flex; align-items: center; gap: 6px; max-width: 100%; min-height: 36px; padding: 2px 8px 2px 4px; border: 0; background: var(--paper); color: var(--on-paper); font: 400 12px/1.2 var(--font-mono); text-align: left; cursor: pointer; }
+.gb-setfield .text-muted { margin-left: auto; font: 400 13px/1 var(--font-mono); }
+.gb-pk { display: inline-flex; align-items: center; gap: 6px; max-width: 100%; min-height: 36px; padding: 2px 8px 2px 4px; border: 0; background: var(--paper); color: var(--on-paper); font: 400 13px/1.2 var(--font-mono); text-align: left; cursor: pointer; }
 .gb-pk b { margin-left: 4px; font: 600 15px/1 var(--font-display); }
 .gb-win-back { position: fixed; inset: 0; z-index: 50; display: grid; justify-items: center; align-items: start; padding-top: 72px; background: rgba(0, 0, 0, 0.6); }
 .card.gb-win { display: grid; gap: 12px; width: min(1120px, 92vw); max-height: calc(100vh - 110px); overflow: auto; border: 2px solid var(--hairline-strong); }
