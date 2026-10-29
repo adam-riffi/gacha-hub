@@ -21,8 +21,12 @@ test("order: a square logo stands alone in the strip, the games list's titles li
   await expect(chip.locator(".strip-name")).toBeVisible();
   expect((await chip.locator("img.strip-icon").boundingBox())!.height).toBeGreaterThanOrEqual(40);
 
-  // The games list: the title of a game with a logo starts where the title of a game without one does.
-  const titleX = async (name: string) => (await page.locator(".lib-row", { has: page.getByRole("heading", { name }) }).getByRole("heading", { name }).boundingBox())!.x;
+  // The games list (cards two a row since round 24): the title of a game with a logo starts at the same place in its card as
+  // the title of a game without one.
+  const titleX = async (name: string) => {
+    const card = page.locator(".lib-row", { has: page.getByRole("heading", { name }) });
+    return (await card.getByRole("heading", { name }).boundingBox())!.x - (await card.boundingBox())!.x;
+  };
   expect(Math.abs((await titleX("Neverness to Everness")) - (await titleX("Arknights: Endfield")))).toBeLessThan(2);
 
   // Its key art is the row's hero.
