@@ -46,7 +46,9 @@
   min-width: 0; height: 100%; padding: 0; /* no inset: the first card's snap point is scrollLeft 0 */
   display: flex; align-items: center; gap: 8px;
   overflow-x: auto; scrollbar-width: none; scroll-snap-type: x mandatory; scroll-behavior: smooth;
+  cursor: grab; user-select: none; touch-action: pan-y;
 }
+.strip-games:active { cursor: grabbing; }
 .strip-games::-webkit-scrollbar { display: none; }
 .strip-arrow { flex: none; display: grid; place-items: center; width: 40px; height: 56px; padding: 0; background: var(--card); border: 1px solid var(--edge); color: var(--text); cursor: pointer; }
 .strip-arrow svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }

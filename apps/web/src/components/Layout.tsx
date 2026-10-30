@@ -88,6 +88,38 @@ export function Layout({ children }: { children: ReactNode }) {
     return () => watcher.disconnect();
   }, [instances.length]);
   const turn = (direction: -1 | 1) => row.current?.scrollBy({ left: direction * row.current.clientWidth, behavior: "smooth" });
+  // A drag across the row scrolls it (round 27, Georges: "the top carousel should be draggable not just pressing arrows");
+  // the card under the pointer does not open after a drag. The wheel scrolls it too.
+  const drag = useRef<{ x: number; left: number; moved: boolean } | null>(null);
+  const dragStart = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (event.pointerType === "mouse" && event.button !== 0) return;
+    drag.current = { x: event.clientX, left: event.currentTarget.scrollLeft, moved: false };
+    event.currentTarget.style.scrollBehavior = "auto";
+  };
+  const dragMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    const state = drag.current;
+    if (!state) return;
+    const shift = event.clientX - state.x;
+    if (!state.moved && Math.abs(shift) > 4) {
+      state.moved = true;
+      event.currentTarget.setPointerCapture(event.pointerId);
+    }
+    if (state.moved) event.currentTarget.scrollLeft = state.left - shift;
+  };
+  const dragEnd = (event: React.PointerEvent<HTMLDivElement>) => {
+    const moved = drag.current?.moved ?? false;
+    drag.current = null;
+    event.currentTarget.style.scrollBehavior = "";
+    if (moved) {
+      // The click that follows the release would open the card under the pointer: swallow that one.
+      const swallow = (click: Event) => {
+        click.preventDefault();
+        click.stopPropagation();
+      };
+      event.currentTarget.addEventListener("click", swallow, { capture: true, once: true });
+      setTimeout(() => event.currentTarget?.removeEventListener("click", swallow, { capture: true }), 0);
+    }
+  };
   const chevron = (direction: -1 | 1) => (
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d={direction < 0 ? "M15 5l-7 7 7 7" : "M9 5l7 7-7 7"} />
@@ -119,7 +151,19 @@ export function Layout({ children }: { children: ReactNode }) {
             <button type="button" className="strip-arrow" aria-label="Earlier games" disabled={!reach.back} onClick={() => turn(-1)}>
               {chevron(-1)}
             </button>
-            <div className="strip-games" ref={row} onScroll={(event) => setReach(reachOf(event.currentTarget))}>
+            <div
+              className="strip-games"
+              ref={row}
+              onScroll={(event) => setReach(reachOf(event.currentTarget))}
+              onPointerDown={dragStart}
+              onPointerMove={dragMove}
+              onPointerUp={dragEnd}
+              onPointerCancel={dragEnd}
+              onDragStart={(event) => event.preventDefault()} // a card is a link: its own drag would cut the pointer sequence short
+              onWheel={(event) => {
+                if (Math.abs(event.deltaY) > Math.abs(event.deltaX)) event.currentTarget.scrollLeft += event.deltaY;
+              }}
+            >
               {instances.map((gameInstance) => {
                 const on = gameInstance.gameKey === scope?.key;
                 return (
