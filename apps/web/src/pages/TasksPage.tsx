@@ -187,8 +187,22 @@ export function TasksPage() {
                 </section>
               </div>
             ) : (
-              <div className="tk-chips">
-                {lines.flatMap((gameFarm) => gameFarm.lines.map((line, lineIndex) => <FarmChip key={`${gameFarm.instanceId}:${lineIndex}`} gameKey={gameFarm.gameKey} line={line} showGame={!scope} />))}
+              <div className="tk-chips-all">
+                {(scope ? lines : lines.filter((gameFarm) => gameFarm.lines.length > 0)).map((gameFarm) => (
+                  <div role="group" key={gameFarm.instanceId} className="tk-game-block" aria-label={scope ? undefined : `${byId.get(gameFarm.instanceId)?.name ?? gameFarm.gameKey} farm`}>
+                    {!scope && (
+                      <h4 className="tk-game-head">
+                        <GameMark gameKey={gameFarm.gameKey} className="tk-game-mark" />
+                        {byId.get(gameFarm.instanceId)?.name}
+                      </h4>
+                    )}
+                    <div className="tk-chips">
+                      {gameFarm.lines.map((line, lineIndex) => (
+                        <FarmChip key={`${gameFarm.instanceId}:${lineIndex}`} gameKey={gameFarm.gameKey} line={line} showGame={false} />
+                      ))}
+                    </div>
+                  </div>
+                ))}
                 {farm.data && lines.every((gameFarm) => gameFarm.lines.length === 0) && (
                   <p className="text-muted">
                     Nothing to farm today. Plan a character from its sheet to see what its materials
@@ -207,20 +221,31 @@ export function TasksPage() {
                 {top.filter((task) => task.backlog).length} in backlog
               </span>
             </div>
-            <div className="tk-goal-grid">
-            {goals.map((goal) => (
-              <GoalCard
-                key={goal.id}
-                goal={goal}
-                tasks={tasks.data}
-                linkable={top.filter((candidate) => candidate.id !== goal.id && candidate.refId === goal.refId && candidate.type === "goal" && !candidate.parentId && !candidate.backlog)}
-                gameInstance={byId.get(goal.refId)!}
-                reward={rewards.data?.find((reward) => reward.goal?.id === goal.id)}
-                weekday={lines.find((gameFarm) => gameFarm.instanceId === goal.refId)?.weekday}
-                showGame={!scope}
-              />
+            {/* A block per game (round 27, Georges: "each game should be separated"), one block without a name on a game's own page. */}
+            {(scope ? [{ gameInstance: null, list: goals }] : games.map((gameInstance) => ({ gameInstance, list: goals.filter((goal) => goal.refId === gameInstance.id) })).filter((group) => group.list.length > 0)).map((group) => (
+              <div role="group" key={group.gameInstance?.id ?? "all"} className="tk-game-block" aria-label={group.gameInstance ? `${group.gameInstance.name} goals` : undefined}>
+                {group.gameInstance && (
+                  <h4 className="tk-game-head">
+                    <GameMark gameKey={group.gameInstance.gameKey} className="tk-game-mark" />
+                    {group.gameInstance.name}
+                  </h4>
+                )}
+                <div className="tk-goal-grid">
+                  {group.list.map((goal) => (
+                    <GoalCard
+                      key={goal.id}
+                      goal={goal}
+                      tasks={tasks.data}
+                      linkable={top.filter((candidate) => candidate.id !== goal.id && candidate.refId === goal.refId && candidate.type === "goal" && !candidate.parentId && !candidate.backlog)}
+                      gameInstance={byId.get(goal.refId)!}
+                      reward={rewards.data?.find((reward) => reward.goal?.id === goal.id)}
+                      weekday={lines.find((gameFarm) => gameFarm.instanceId === goal.refId)?.weekday}
+                      showGame={false}
+                    />
+                  ))}
+                </div>
+              </div>
             ))}
-            </div>
             {goals.length === 0 && (
               <p className="text-muted">
                 {needle

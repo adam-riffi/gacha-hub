@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-30 · claude · stack/r34/10-tasks-by-game · #433
+- Done: Round 27 PR 10 (Georges: "overview task screen is crowded each games should be separated"). With no game picked, the Tasks page stands in a block per game for the goals and for the farm chips, each under the game's icon and name; no game mark on the cards.
+- Tests: written first: with goals on two games each block holds its own; no `.tk-game` mark; every farm chip in a game's block.
+- Scope/decisions: on a game's own page the one block has no name.
+- Next: PR 11, the game day note.
+
 ## 2026-10-30 · claude · stack/r34/09-strip-drag · #432
 - Done: Round 27 PR 9 (Georges: "the top carousel should be draggable not just pressing arrows"). Pointer drag scrolls the strip's row (capture after 4 px, smooth scrolling off while dragging, the click after a drag swallowed); the wheel scrolls it too.
 - Tests: written first: a 200 px drag scrolls past 50 px and the page stays.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: docs only.
 - Scope/decisions: none.
 - Next: Georges's R2 steps, then "deploy", then the keys and the first mirror run with its budget lines.
-
-## 2026-10-25 · claude · stack/r28/02-mirror-r2 · #390
-- Done: round 21: the mirror (`scripts/assets/mirror.ts`) writes to the R2 bucket through the server's store module. Before its first request it prints the month's storage, class A and class B against the free tier with the run's plan added (every listing, at worst every picture) and stops past 80 %; it lists what the bucket holds once per game (one class A request a thousand keys) instead of a HEAD per picture, writes the rest as WebP under the decoded key (so the web's encoded request resolves to it), and prints the usage again at the end. The `mirror-art` workflow takes the six keys from the app's `/api/cron/art-store`, each masked before it is exported; `@vercel/blob` left the asset tools; the READMEs and AGENTS.md's command row describe it.
-- Tests: the store's unit tests cover the writes, the listing and the budget; the mirror's dry run through the new import chain (the store from `apps/server`, `aws4fetch` from the root install) lists Endfield's 212 images; `actionlint` on the workflow.
-- Scope/decisions: the plan counts every picture as a write at 120 KB, generous on purpose; the first real run against the bucket is the proof, its budget lines in the report.
-- Next: the docs and the handoff.

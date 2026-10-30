@@ -120,3 +120,7 @@ button.tk-chip:hover, button.tk-chip.is-open { border-color: var(--hairline-stro
 .tk-goal-grid .tk-prog .tk-meter { flex: 1; width: auto; }
 .tk-goal-grid .tk-prio, .tk-goal-grid .tk-row > .badge { grid-area: prio; justify-self: end; }
 .tk-goal-grid .tk-notify { grid-area: notify; }
+/* A block per game on the all-games Tasks page (round 27: "each game should be separated"). */
+.tk-game-block + .tk-game-block { margin-top: 20px; }
+.tk-game-head { display: flex; align-items: center; gap: 10px; margin: 14px 0 4px; font: 600 17px/1 var(--font-display); letter-spacing: 0.04em; text-transform: uppercase; }
+.tk-game-mark { width: 28px; height: 28px; flex: none; }
