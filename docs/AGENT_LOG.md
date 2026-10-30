@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-30 · claude · stack/r33/08-strip-carousel · #422
+- Done: Round 26 PR 8 (Georges: "THE TOP CARDS SHOULD BE A CAROUSEL TOO"). Every strip card is 200 × 56 px (44 px icon, short name), the picked one too, no growth or lift; two arrows page the row by its width with scroll snapping and rest when nothing lies their way (a `ResizeObserver` and the scroll event keep them honest).
+- Tests: written first: with five games every card measures the same; at 1000 px Later is live and Earlier rests; Later scrolls the row, Earlier brings it back.
+- Scope/decisions: the picked card shows its short name like the others; the arrows stay visible, resting, when every card fits.
+- Next: PR 9, the square frames.
+
 ## 2026-10-30 · claude · stack/r33/07-goal-window · #421
 - Done: Round 26 PR 7 (Georges: "the new goal window is unusable it is way too small you can't do anything in it"). The quick build is 1180 px wide (or the screen less 48), its form in two columns, 48 px controls with 18 px type, 15 px labels, 72 px faces, 16 px picker lists.
 - Tests: written first: from the Planner's New goal the dialog is 1000 px or wider; the ascension select, a skill spinbutton, the weapon and set pickers and Make goal are 44 px or taller; the labels 15 px.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: a Board page read like a convene (a banner keyed to the wiki with its featured unit, no events); the policy test names the wiki's host.
 - Scope/decisions: one line in `WIKI_FEEDS`; nothing else moved. EndFieldGameData's newest release (v0.4.0) carries no tables, so Endfield's catalog stays at v0.3.0, like Wuthering Waves' and NTE's at their sources' last versions.
 - Next: the rest of the screens in the width journey.
-
-## 2026-10-21 · claude · stack/r25/04-docs · #379
-- Done: round 18's handoff: Endfield's Game8 feed, the battle pass card, the 1100 px floor; what waits for Georges's word and what comes next (the features audit with his keys, a source for NTE's banners and events, the rest of the narrow-window pass).
-- Tests: docs only.
-- Scope/decisions: none.
-- Next: deploy at Georges's word.
