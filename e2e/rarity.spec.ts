@@ -42,11 +42,26 @@ test("a rarity is its figure and one coloured star on the cards, the sheet, the 
   await expect(page.getByRole("heading", { level: 1, name: "Kafka" })).toBeVisible();
   await expect(page.locator(".sh-title").getByRole("img", { name: "5 stars" })).toBeVisible();
 
-  // The ownership grid.
+  // The ownership grid. Round 27 (Georges: "the owned icon should be colored and not grey out a frame + the frame colour
+  // should be the rarity"): the frame in the rarity's colour; an owned unit's picture in full colour, one not owned greyed.
   await page.goto(`/games/${id}/ownership`);
   const tile = page.locator(".rtile", { hasText: "Kafka" }).first();
   await expect(tile.getByRole("img", { name: "5 stars" })).toBeVisible();
   await expect(tile).not.toContainText("★★★★★");
+  await expect(tile).not.toHaveClass(/\boff\b/);
+  const gold = await tile.evaluate((el) => {
+    const probe = document.createElement("i");
+    probe.style.color = "var(--rarity-5)";
+    el.appendChild(probe);
+    const value = getComputedStyle(probe).color;
+    probe.remove();
+    return value;
+  });
+  expect(await tile.locator(".rtile-art").evaluate((el) => getComputedStyle(el).borderTopColor)).toBe(gold);
+  expect(await tile.locator(".rtile-art .gicon").evaluate((el) => getComputedStyle(el).filter)).toBe("none");
+  const off = page.locator(".rtile.off").first();
+  await expect(off).toBeVisible();
+  expect(await off.locator(".rtile-art .gicon").evaluate((el) => getComputedStyle(el).filter)).toMatch(/grayscale/);
 
   // The weapon cards.
   await page.goto(`/games/${id}/weapons`);
