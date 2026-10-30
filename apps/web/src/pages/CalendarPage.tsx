@@ -39,10 +39,11 @@ const WHEN = new Intl.DateTimeFormat("en-GB", {
 const ZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
 const WEEKS = 6;
 
-type Layer = "banners" | "events" | "versions" | "cycles" | "passes";
+/* Two screens (round 27, Georges: "separate banners and events into two screens for readability"): Banners, and Events
+   with the versions, the endgame cycles and the battle passes as its layers. */
+type Show = "banners" | "events";
+type Layer = "versions" | "cycles" | "passes";
 const LAYERS: { key: Layer; label: string; on: boolean }[] = [
-  { key: "banners", label: "Banners", on: true },
-  { key: "events", label: "Events", on: true },
   { key: "versions", label: "Versions", on: true },
   { key: "cycles", label: "Endgame cycles", on: false },
   { key: "passes", label: "Battle passes", on: false },
@@ -116,7 +117,9 @@ function BarUnits({ gameKey, banners }: { gameKey: string; banners: BannerDto[] 
 }
 
 export function CalendarPage() {
-  const scope = useSearchParams()[0].get("game");
+  const [params, setParams] = useSearchParams();
+  const scope = params.get("game");
+  const show: Show = params.get("show") === "events" ? "events" : "banners";
   const [now] = useState(() => Date.now());
   const [offset, setOffset] = useState(0);
   const [monthOffset, setMonthOffset] = useState(0);
@@ -279,19 +282,19 @@ export function CalendarPage() {
       ];
 
       const rows: { name?: string; items: CalItem[] }[] = [
-        ...(layers.has("banners")
+        ...(show === "banners"
           ? lanes(banners.filter(inWindow).filter(keep)).map((items) => ({ items }))
           : []),
-        ...(layers.has("events")
+        ...(show === "events"
           ? lanes(events.filter(inWindow).filter(keep)).map((items) => ({ items }))
           : []),
-        ...(layers.has("cycles")
+        ...(show === "events" && layers.has("cycles")
           ? lanes(cycles.filter(inWindow)).map((items, laneIndex) => ({
               name: laneIndex === 0 ? "Endgame" : undefined,
               items,
             }))
           : []),
-        ...(layers.has("passes")
+        ...(show === "events" && layers.has("passes")
           ? lanes(passes.filter(inWindow)).map((items, laneIndex) => ({
               name: laneIndex === 0 ? "Passes" : undefined,
               items,
@@ -300,7 +303,7 @@ export function CalendarPage() {
       ];
       const all = [...banners, ...events, ...cycles, ...passes];
       const tick =
-        layers.has("versions") && version.end.getTime() > start && version.end.getTime() < end
+        show === "events" && layers.has("versions") && version.end.getTime() > start && version.end.getTime() < end
           ? version.end.getTime()
           : null;
       return [
@@ -328,6 +331,21 @@ export function CalendarPage() {
       <div className="cal-head">
         <h1>Banners and events</h1>
         <div className="row">
+          <Segmented
+            label="Show"
+            options={[
+              { value: "banners", label: "Banners" },
+              { value: "events", label: "Events" },
+            ]}
+            value={show}
+            onChange={(value) =>
+              setParams((current) => {
+                if (value === "events") current.set("show", "events");
+                else current.delete("show");
+                return current;
+              })
+            }
+          />
           <Segmented
             label="View"
             options={[
@@ -367,7 +385,8 @@ export function CalendarPage() {
       </div>
       {/* One box per layer in its colour (round 7): banners in their games' colours, events edged in them, then endgames, passes, wishes. */}
       <div className="cal-layers" style={{ ["--games" as string]: `linear-gradient(90deg, ${blocks.map((block) => block.dashGame.accent).join(", ")})` }}>
-        {LAYERS.map((layer) => (
+        {show === "events" &&
+          LAYERS.map((layer) => (
           <label key={layer.key}>
             <input
               type="checkbox"

@@ -35,10 +35,13 @@ test("the banners tab reads: tall bars named by their featured units, and a list
     expect((await warp.boundingBox())!.height).toBeGreaterThanOrEqual(64);
     await expect(warp).toContainText(`Ends ${ENDS.format(new Date(endsAt))}`);
     await expect(warp).not.toContainText("E2E tab warp");
+    // The events on their own screen (round 27): its list holds the event and not the warp.
+    const show = page.getByRole("group", { name: "Show" });
+    await show.getByRole("button", { name: "Events" }).click();
     const event = rows.filter({ hasText: "E2E tab event" }).first();
     await expect(event).toBeVisible();
-    // Soonest end first: the event (4 days) before the warp (5 days).
-    expect(await event.evaluate((el, other) => el.compareDocumentPosition(other) & Node.DOCUMENT_POSITION_FOLLOWING, await warp.elementHandle())).toBeTruthy();
+    await expect(rows.filter({ hasText: "Blade" })).toHaveCount(0);
+    await show.getByRole("button", { name: "Banners" }).click();
     await warp.click();
     await expect(page.getByRole("complementary", { name: "Selected" })).toContainText("Blade");
   } finally {
