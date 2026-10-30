@@ -13,7 +13,6 @@ import {
   getGame,
   pullsFor,
   weaponHolder,
-  type BuildStatus,
   type CatalogCharacter,
   type CharacterDto,
   type DashboardDto,
@@ -42,7 +41,6 @@ import { LastSeenChip, lastSeenSortKey, useUnitAppearances } from "../components
 type CardStatsPick = { cardStats: string[] | null; cardStatsOrder: ReturnType<typeof nextWriteOrder> };
 
 const ENDS = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
-const STATUS_RANK: Record<BuildStatus, number> = { perfect: 0, good: 1, building: 2, none: 3 };
 
 type Card = {
   id: string;
@@ -80,8 +78,7 @@ export function CharactersPage() {
   const [ownershipView, setOwnershipView] = useState<OwnershipView>("all");
   // A dupe count picked (round 11), as text for the chips; empty for any.
   const [dupeCount, setDupeCount] = useState("");
-  const [status, setStatus] = useState<"" | BuildStatus>("");
-  const [sort, setSort] = useState<"status" | "name" | "rarity" | "level" | "lastSeen">("status");
+  const [sort, setSort] = useState<"owned" | "name" | "rarity" | "level" | "lastSeen">("owned");
   const [kind, setKind] = useState<"characters" | "builds">("characters");
   // Several units at once (Georges, 2026-10-10): in Select, a click picks the card, and the whole card lights up (round 5).
   const [selecting, setSelecting] = useState(false);
@@ -120,10 +117,6 @@ export function CharactersPage() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["wishlist", id] }),
   });
   // Ownership is the owned list alone: a build stays when its character is marked not owned (Georges, round 6).
-  const setBuildStatus = useMutation({
-    mutationFn: (change: { ids: string[]; buildStatus: BuildStatus }) => Promise.all(change.ids.map((buildId) => api.put(`/api/characters/${buildId}`, { buildStatus: change.buildStatus }))),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["characters", id] }),
-  });
   const startMany = useMutation({
     mutationFn: (ids: string[]) => Promise.all(ids.map((catalogId) => api.post(`/api/instances/${id}/characters`, { catalogId }))),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["characters", id] }),
@@ -182,7 +175,6 @@ export function CharactersPage() {
     .filter((card) => !rarity || String(card.rarity) === rarity)
     .filter((card) => fitsOwnershipView(ownershipView, card))
     .filter((card) => !dupeCount || (card.owned && dupesOf(card) === Number(dupeCount)))
-    .filter((card) => !status || (card.build?.buildStatus ?? "none") === status)
     .sort((first, second) =>
       sort === "name"
         ? first.name.localeCompare(second.name)
@@ -192,10 +184,9 @@ export function CharactersPage() {
             ? level(second) - level(first) || first.name.localeCompare(second.name)
             : sort === "lastSeen"
               ? lastSeenSortKey(appearances.data?.[first.id]) - lastSeenSortKey(appearances.data?.[second.id]) || first.name.localeCompare(second.name)
-              : // Built characters first: owned, then with a build, then by status; wishlisted before the rest.
-              Number(second.owned) - Number(first.owned) || Number(Boolean(second.build)) - Number(Boolean(first.build)) || STATUS_RANK[first.build?.buildStatus ?? "none"] - STATUS_RANK[second.build?.buildStatus ?? "none"] || Number(second.wished) - Number(first.wished) || first.name.localeCompare(second.name),
+              : // Built characters first: owned, then with a build; wishlisted before the rest (the build status left the page in round 26).
+              Number(second.owned) - Number(first.owned) || Number(Boolean(second.build)) - Number(Boolean(first.build)) || Number(second.wished) - Number(first.wished) || first.name.localeCompare(second.name),
     );
-  const count = (countedStatus: BuildStatus) => cards.filter((card) => card.owned && (card.build?.buildStatus ?? "none") === countedStatus).length;
   const options = (pick: (card: Card) => string | null) => [...new Set(cards.map(pick).filter((value): value is string => Boolean(value)))].sort();
   const unownedShown = filtered.filter((card) => !card.owned && card.entry).map((card) => card.id);
 
@@ -246,7 +237,7 @@ export function CharactersPage() {
         <label>
           Sort
           <select value={sort} onChange={(event) => setSort(event.target.value as typeof sort)}>
-            <option value="status">Build status</option>
+            <option value="owned">Owned first</option>
             <option value="name">Name</option>
             <option value="rarity">Rarity</option>
             <option value="level">Level</option>
@@ -280,12 +271,6 @@ export function CharactersPage() {
           }}
           onChange={setOwnershipView}
         />
-        <span className="ch-gap" />
-        {(["perfect", "good", "building", "none"] as const).map((statusOption) => (
-          <button key={statusOption} className="chip" aria-pressed={status === statusOption} onClick={() => setStatus(status === statusOption ? "" : statusOption)}>
-            {statusOption === "none" ? "Unbuilt" : statusOption.charAt(0).toUpperCase() + statusOption.slice(1)} {count(statusOption)}
-          </button>
-        ))}
         {!catalog && (
           <form
             className="row"
@@ -405,7 +390,6 @@ export function CharactersPage() {
                 </div>
               ) : null}
               <div className="ch-foot">
-                {card.build && <span className={`badge ${card.build.buildStatus === "perfect" ? "done" : ""}`}>{card.build.buildStatus === "none" ? "Unbuilt" : card.build.buildStatus}</span>}
                 {card.build && (
                   <span className="text-muted ch-set">
                     {/* The completed sets as their icons with their counts (Georges, round 6), the role where none is. */}
@@ -455,18 +439,6 @@ export function CharactersPage() {
           <button className="btn" disabled={startMany.isPending} onClick={() => startMany.mutate(pickedCards.filter((pickedCard) => pickedCard.owned && !pickedCard.build).map((pickedCard) => pickedCard.id))}>
             Start builds
           </button>
-          <select
-            aria-label="Build status"
-            value=""
-            disabled={setBuildStatus.isPending || !pickedCards.some((pickedCard) => pickedCard.build)}
-            onChange={(event) => event.target.value && setBuildStatus.mutate({ ids: pickedCards.flatMap((pickedCard) => (pickedCard.build ? [pickedCard.build.id] : [])), buildStatus: event.target.value as BuildStatus })}
-          >
-            <option value="">Build status…</option>
-            <option value="none">Unbuilt</option>
-            <option value="building">Building</option>
-            <option value="good">Good</option>
-            <option value="perfect">Perfect</option>
-          </select>
           <span className="ch-sp" />
           <button className="btn ghost" onClick={() => setPicked(new Set(filtered.filter((card) => card.entry).map((card) => card.id)))}>All shown</button>
           <button className="btn ghost" onClick={() => setPicked(new Set())}>Clear</button>
