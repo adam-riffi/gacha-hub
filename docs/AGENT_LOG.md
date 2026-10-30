@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-30 · claude · stack/r34/11-no-game-day-note · #434
+- Done: Round 27 PR 11 (Georges: "useless ai mention artifacts like \"game day :\""). The "game day: Friday" note left the Farm today card.
+- Tests: written first: no "game day" text on the card.
+- Scope/decisions: removal only.
+- Next: PR 12, the dashboard in the hub.
+
 ## 2026-10-30 · claude · stack/r34/10-tasks-by-game · #433
 - Done: Round 27 PR 10 (Georges: "overview task screen is crowded each games should be separated"). With no game picked, the Tasks page stands in a block per game for the goals and for the farm chips, each under the game's icon and name; no game mark on the cards.
 - Tests: written first: with goals on two games each block holds its own; no `.tk-game` mark; every farm chip in a game's block.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: a 40-character and a 53-character token both saved, a short one refused.
 - Scope/decisions: a length range rather than a `cfat_` prefix, so a classic token still goes in.
 - Next: deploy, then Georges's six values, then the mirror with its budget check.
-
-## 2026-10-25 · claude · stack/r28/03-docs · #391
-- Done: round 21's docs: DEPLOY.md §7 is the R2 setup (enable R2, the bucket's public development URL, the API token, the analytics token, the six keys, the mirror), the guide's environment table and diagram, the READMEs name the bucket instead of Blob, and the handoff: production at #387, round 21 waiting for the word, the bucket created, Georges's steps, the budget rule.
-- Tests: docs only.
-- Scope/decisions: none.
-- Next: Georges's R2 steps, then "deploy", then the keys and the first mirror run with its budget lines.

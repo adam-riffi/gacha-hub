@@ -32,6 +32,8 @@ test("Tasks: farm today, goals with their steps, filtering, and an event goal cl
   await expect(farmToday.getByRole("img", { name: "Lifeless Blade" }).first()).toBeVisible();
   await expect(farmToday).toContainText("any day");
   await expect(farmToday).not.toContainText("Star Rail");
+  // No "game day: Friday" note (round 27, Georges: "useless mention artifacts"): the week view marks today itself.
+  await expect(farmToday).not.toContainText(/game day/i);
 
   const goals = page.getByRole("region", { name: "Goals" });
   const event = goals.getByRole("article", { name: "E2E tasks reward" });
