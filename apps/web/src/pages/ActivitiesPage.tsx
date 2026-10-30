@@ -88,7 +88,8 @@ export function ActivitiesPage() {
         </div>
         <div className="act-bottom">
           <Cycles game={game} modes={endgameNow(game, region, now, (cycles?.results ?? []).map((result) => ({ ...result, cycleStart: new Date(result.cycleStart) }))).modes} instanceId={id!} />
-          <Version instanceId={id!} game={game} passState={passState} endsAt={resets.versionEnd} events={(dash?.timeline.events ?? []).filter((event) => event.gameKey === game.key && Date.parse(event.startsAt) <= now.getTime())} />
+          <BattlePass instanceId={id!} game={game} passState={passState} />
+          <Version game={game} endsAt={resets.versionEnd} events={(dash?.timeline.events ?? []).filter((event) => event.gameKey === game.key && Date.parse(event.startsAt) <= now.getTime())} />
         </div>
         <RedeemCodesCard instanceId={id!} gameKey={game.key} />
       </div>
@@ -320,7 +321,8 @@ function MonthlyPass({ instanceId, gameKey, name, daysLeft }: { instanceId: stri
   );
 }
 
-function Version({ instanceId, game, passState, endsAt, events }: { instanceId: string; game: GameDefinition; passState: PassView; endsAt: Date; events: DashboardData["timeline"]["events"] }) {
+/** The battle pass as a card of its own (round 26, Georges: "don't put BP and version in the same thing"). */
+function BattlePass({ instanceId, game, passState }: { instanceId: string; game: GameDefinition; passState: PassView }) {
   const pass = game.manifest.battlePass;
   const [editing, setEditing] = useState(false);
   const save = usePassSave(instanceId, "battle", () => setEditing(false));
@@ -330,88 +332,89 @@ function Version({ instanceId, game, passState, endsAt, events }: { instanceId: 
     save.mutate({ level: Number(formData.get("level")), weeklyXp: Number(formData.get("xp") || 0) });
   };
   return (
+    <section className="card act-pass-card" aria-label="Battle pass">
+      <div className="spread">
+        <h3>Battle pass</h3>
+        {pass && (
+          <span className="font-mono text-muted row">
+            <SlotArt slot={artSlotKey(game.key, "battle-pass")} className="pass-art" />
+            {pass.name}
+          </span>
+        )}
+      </div>
+      {!pass && <p className="text-muted act-empty">No battle pass on record.</p>}
+      {pass &&
+        (editing ? (
+          <form className="act-add" onSubmit={submit}>
+            <label>
+              <span>Level</span>
+              <input name="level" type="number" min={0} max={pass.maxLevel ?? 200} required defaultValue={passState.level} autoFocus />
+            </label>
+            <label>
+              <span>Weekly XP</span>
+              <input name="xp" type="number" min={0} max={pass.weeklyXpCap ?? 1_000_000} defaultValue={passState.weeklyXp} />
+            </label>
+            <button type="submit" className="btn primary" disabled={save.isPending}>
+              Save
+            </button>
+            <button type="button" className="btn" onClick={() => setEditing(false)}>
+              Cancel
+            </button>
+            {save.isError && <span className="hub-error">Not saved: over the pass's caps.</span>}
+          </form>
+        ) : (
+          <>
+            <div className="act-pass-level">
+              <div className="kpi-value">
+                {passState.level}
+                {passState.maxLevel !== null && <small> / {passState.maxLevel}</small>}
+              </div>
+              {passState.levelsPerDay !== null && (
+                <span className="font-mono text-muted">
+                  {passState.levelsPerDay.toFixed(1)} {passState.levelsPerDay === 1 ? "level" : "levels"} a day to finish
+                </span>
+              )}
+            </div>
+            {passState.maxLevel !== null && <SegmentedBar level={passState.level} max={passState.maxLevel} label={pass.name} />}
+            <div className="act-xp">
+              <span className="kpi-label">Weekly XP</span>
+              <span className="font-mono">
+                {NUMBER_FORMAT.format(passState.weeklyXp)}
+                {passState.weeklyXpCap !== null && ` / ${NUMBER_FORMAT.format(passState.weeklyXpCap)}`}
+              </span>
+            </div>
+            {passState.weeklyXpCap !== null && (
+              <div className="act-meter act-meter-thin" role="img" aria-label={`Weekly XP ${passState.weeklyXp} of ${passState.weeklyXpCap}`}>
+                <span style={{ width: `${Math.min(100, (passState.weeklyXp / passState.weeklyXpCap) * 100)}%` }} />
+              </div>
+            )}
+            <button type="button" className="btn act-add-btn" aria-label="Update the battle pass" onClick={() => setEditing(true)}>
+              Update
+            </button>
+          </>
+        ))}
+    </section>
+  );
+}
+
+/** The version's end and its running events, a card of their own (round 26). */
+function Version({ game, endsAt, events }: { game: GameDefinition; endsAt: Date; events: DashboardData["timeline"]["events"] }) {
+  return (
     <section className="card act-version" aria-label={`Version ${game.manifest.version.name}`}>
       <div className="spread">
         <h3>Version {game.manifest.version.name}</h3>
         <DateChip at={endsAt} prefix="ends " />
       </div>
-      <div className="act-version-body">
-        <div>
-          <div className="spread act-pass-head">
-            <div className="kpi-label">Battle pass</div>
-            {pass && (
-              <span className="font-mono text-muted row">
-                <SlotArt slot={artSlotKey(game.key, "battle-pass")} className="pass-art" />
-                {pass.name}
-              </span>
-            )}
+      <div className="act-rows">
+        {events.map((event) => (
+          <div key={event.id} className="act-row">
+            {/* The event's official picture (round 17), when its feed gave one. */}
+            {officialArt(event.payload) && <img className="act-thumb" src={officialArt(event.payload)} alt="" loading="lazy" />}
+            <span className="act-title">{event.name}</span>
+            <DateChip at={new Date(event.endsAt)} />
           </div>
-          {!pass && <p className="text-muted act-empty">No battle pass on record.</p>}
-          {pass &&
-            (editing ? (
-              <form className="act-add" onSubmit={submit}>
-                <label>
-                  <span>Level</span>
-                  <input name="level" type="number" min={0} max={pass.maxLevel ?? 200} required defaultValue={passState.level} autoFocus />
-                </label>
-                <label>
-                  <span>Weekly XP</span>
-                  <input name="xp" type="number" min={0} max={pass.weeklyXpCap ?? 1_000_000} defaultValue={passState.weeklyXp} />
-                </label>
-                <button type="submit" className="btn primary" disabled={save.isPending}>
-                  Save
-                </button>
-                <button type="button" className="btn" onClick={() => setEditing(false)}>
-                  Cancel
-                </button>
-                {save.isError && <span className="hub-error">Not saved: over the pass's caps.</span>}
-              </form>
-            ) : (
-              <>
-                <div className="act-pass-level">
-                  <div className="kpi-value">
-                    {passState.level}
-                    {passState.maxLevel !== null && <small> / {passState.maxLevel}</small>}
-                  </div>
-                  {passState.levelsPerDay !== null && (
-                    <span className="font-mono text-muted">
-                      {passState.levelsPerDay.toFixed(1)} {passState.levelsPerDay === 1 ? "level" : "levels"} a day to finish
-                    </span>
-                  )}
-                </div>
-                {passState.maxLevel !== null && <SegmentedBar level={passState.level} max={passState.maxLevel} label={pass.name} />}
-                <div className="act-xp">
-                  <span className="kpi-label">Weekly XP</span>
-                  <span className="font-mono">
-                    {NUMBER_FORMAT.format(passState.weeklyXp)}
-                    {passState.weeklyXpCap !== null && ` / ${NUMBER_FORMAT.format(passState.weeklyXpCap)}`}
-                  </span>
-                </div>
-                {passState.weeklyXpCap !== null && (
-                  <div className="act-meter act-meter-thin" role="img" aria-label={`Weekly XP ${passState.weeklyXp} of ${passState.weeklyXpCap}`}>
-                    <span style={{ width: `${Math.min(100, (passState.weeklyXp / passState.weeklyXpCap) * 100)}%` }} />
-                  </div>
-                )}
-                <button type="button" className="btn act-add-btn" aria-label="Update the battle pass" onClick={() => setEditing(true)}>
-                  Update
-                </button>
-              </>
-            ))}
-        </div>
-        <div>
-          <div className="kpi-label">Events</div>
-          <div className="act-rows">
-            {events.map((event) => (
-              <div key={event.id} className="act-row">
-                {/* The event's official picture (round 17), when its feed gave one. */}
-                {officialArt(event.payload) && <img className="act-thumb" src={officialArt(event.payload)} alt="" loading="lazy" />}
-                <span className="act-title">{event.name}</span>
-                <DateChip at={new Date(event.endsAt)} />
-              </div>
-            ))}
-            {events.length === 0 && <p className="text-muted act-empty">No event running.</p>}
-          </div>
-        </div>
+        ))}
+        {events.length === 0 && <p className="text-muted act-empty">No event running.</p>}
       </div>
     </section>
   );
