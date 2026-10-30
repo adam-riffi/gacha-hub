@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-30 · claude · stack/r34/03-no-now-tag · #426
+- Done: Round 27 PR 3 (Georges: "what's the point of a now card?"). The Now tag on the endgame cycle bar and in the History table is gone; the bar's marker and Back to now say where the cycle is.
+- Tests: written first: after Back to now, no Back button and no `.eg-now` on the card or in the history.
+- Scope/decisions: removal only.
+- Next: PR 4, the reminders.
+
 ## 2026-10-30 · claude · stack/r34/02-bigger-icons · #425
 - Done: Round 27 PR 2 (Georges: "some are useless and some are too small"). Every list picture stands 48 px; a task without one shows no frame (the round-26 empty box went).
 - Tests: written first: no frame on Check-in's row; Daily Training's picture 48 px; every title on one line measured on its words.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the wiki source, the 1.4 and 1.5 operators Game8's banners name (Si with her class, weapon kind and damage type), the sets named as the game does with their pieces and effect, the gear pictures from the wiki; the art-slot test counts the wiki's 20 gifts.
 - Scope/decisions: the wiki's text is CC BY-SA 4.0 (NOTICE); the pictures stay the publisher's, hotlinked or mirrored as before. The wiki rate-limits anonymous calls: the importers send the project's user agent. The Gifts table's "Prefer" (each operator's favourite gift) is not read yet.
 - Next: Endfield's banner history from the same wiki's banner table.
-
-## 2026-10-23 · claude · stack/r27/01-wuwa-hakushin · #383
-- Done: round 20 (the handoff's next items on Georges's "go": newer datasets for the three stale catalogs). WutheringData stopped at 3.1 in March; the Hakushin data (static.nanoka.cc, Zenless's and NTE's source) carries 3.7 with the same ids and the same Unreal texture paths, so every stored build, pull and art key keeps meaning. The importer rewritten over it: 64 resonators (14 new), 124 weapons (the trials' Projection weapons, without a stat or levels, left out), 37 Sonata sets, 148 materials; the fifty resonators of before identical on every compared field; a weapon's max level from its stats (90) rather than its last ascension's level; the skill texts fill their numbers from the data's parameter list. `hakushinVersion()` in the importers' helpers reads the manifest's live version (cached a day) or `--version <v>`; NTE's importer takes it too (a live re-run changes nothing).
-- Tests: written first: the catalog test asks for the Hakushin source, 64 resonators, Hsin with her card art, costs and five forte skills; the weapon-effect, talent-text and art tests hold on the new data (Chixia's mapping, Qiuyuan's capitalised art, every set its own icon).
-- Scope/decisions: NTE stays at 1.3: Hakushin's 1.4 build is a pre-release extraction with untranslated names (Akane Rin as 明音凛), so `--version 1.4.13` waits for the day it reads clean. NOTICE credits Hakushin for Wuthering Waves.
-- Next: Endfield's catalog from its wiki's data tables.

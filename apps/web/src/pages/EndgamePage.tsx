@@ -247,7 +247,6 @@ function ModeCard({
           {cycleSpan(shown.cycleStart, shown.end)}
           {version && <span className="text-muted"> · version {version}</span>}
         </span>
-        {shown.current ? <span className="tag eg-now">Now</span> : null}
         <button type="button" className="btn ghost sm" aria-label="Newer cycle" disabled={shownIndex === 0} onClick={() => pick(shownIndex - 1)}>
           ›
         </button>

@@ -61,9 +61,12 @@ test("Endgame: a past cycle becomes its card's, with its result, rewards, teams 
   const results = (await (await page.request.get(`/api/instances/${id}/cycles`)).json()) as { results: { modeKey: string; detail: string | null }[] };
   expect(results.results.filter((r) => r.modeKey === "shiyu").map((r) => r.detail)).toContain("e2e edited");
 
-  // Back to now; a row of the History table makes its cycle the card's.
+  // Back to now: the Back button goes, and no "Now" tag stands in (round 27, Georges: "what's the point of a now card?");
+  // the bar's marker says where the cycle is. A row of the History table makes its cycle the card's.
   await card.getByRole("button", { name: "Back to now" }).click();
-  await expect(card).toContainText("Now");
+  await expect(card.getByRole("button", { name: "Back to now" })).toHaveCount(0);
+  await expect(card.locator(".eg-now")).toHaveCount(0);
+  await expect(page.getByRole("region", { name: "History", exact: true }).locator(".eg-now")).toHaveCount(0);
   await page.getByRole("region", { name: "History", exact: true }).getByRole("button", { name: /18 Sept – 1 Oct/ }).click();
   await expect(card).toContainText("e2e older");
 });
