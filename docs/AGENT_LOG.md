@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-30 · claude · stack/r34/07-owned-tiles · #430
+- Done: Round 27 PR 7 (Georges: "the owned icon should be colored and not grey out a frame + the frame colour should be the rarity"). An ownership tile's frame is its rarity's colour, dashed while not owned; the picture in colour once owned, greyed until then (the gradients went).
+- Tests: written first: Kafka's frame is the gold of 5 stars and her picture unfiltered; an unowned tile's picture greyscale.
+- Scope/decisions: styles only.
+- Next: PR 8, the games card.
+
 ## 2026-10-30 · claude · stack/r34/06-banners-events-split · #429
 - Done: Round 27 PR 6 (Georges: "separate banners and events into two screens for readability"). A Show switch (`?show=events`) opens Banners (banners, the wishlist filter) or Events (events, versions, and cycles and passes as layers) in every view.
 - Tests: written first: Banners shows banner bars and no event, Events the reverse; the layer boxes on Events; the list view follows the switch; the event journeys open `show=events`.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: the smoke script against the live URL (`npm run smoke`); the smoke workflow on the deployment event.
 - Scope/decisions: nothing changed in the app for the suspended store: the fallback chain (ADR 0013) is what it is for; the store's state is Georges's to settle in Vercel, and Settings → Keys lets him clear the base meanwhile.
 - Next: the Blob store, then the mirror and the one click in Settings → Art; his keys; the features audit.
-
-## 2026-10-23 · claude · stack/r27/05-ci-e2e-timeout · #387
-- Done: round 20's merges showed the e2e job timing out on the first run after each push (15 min 16 s against a 15-minute limit; the cached re-run takes 7 min), reported by GitHub as "cancelled" (#380 in round 19 was the same). The job's limit is 25 minutes now, and its traces are uploaded when it times out as well as when it fails, so a slow run can be read instead of re-run blind.
-- Tests: none to write: a workflow setting; this PR's own run exercises it.
-- Scope/decisions: the limit rather than the cause for now: the slow first runs happen with the same code and the same cache keys, so the next slow one's traces say where the time goes.
-- Next: deploy at Georges's word.
