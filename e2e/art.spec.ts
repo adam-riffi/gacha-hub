@@ -64,7 +64,7 @@ test("Settings → Art: each uploaded picture shows on its cards, in place of wh
     await shows(page.getByRole("region", { name: "Wallet" }), "genshin/currency/primogems");
     await page.goto(`/games/${genshin}/pulls`);
     await shows(page.getByRole("region", { name: "Standard wish" }), "genshin/banner/standard");
-    await page.goto(`/games/${genshin}`);
+    await page.goto(`/games/${genshin}/activities`);
     await shows(page.getByRole("region", { name: "Daily" }), "genshin/task/commissions");
     await page.goto(`/games/${hsr}/characters`);
     await shows(page.getByRole("group", { name: "Element" }).getByRole("button", { name: "Lightning" }), "hsr/element/lightning");
