@@ -13,7 +13,6 @@ import type { InstanceDetail } from "../lib/types";
 import { GameTabs } from "../components/GameTabs";
 import { EndgameHistory, TeamIcons, cycleSpan, minutesSeconds, type UnitOf } from "../components/hub/EndgameHistory";
 import { StageLines } from "../components/hub/StageLines";
-import { useReminderFlag } from "../lib/reminder";
 import { SlotArt } from "../components/SlotArt";
 
 const NUMBER_FORMAT = new Intl.NumberFormat("en-GB");
@@ -51,7 +50,6 @@ export function EndgamePage() {
   const { id } = useParams<{ id: string }>();
   const { data: instance } = useQuery({ queryKey: ["instance", id], queryFn: () => api.get<InstanceDetail>(`/api/instances/${id}`) });
   const { data: cycles } = useQuery({ queryKey: ["cycles", id], queryFn: () => api.get<CycleResultsDto>(`/api/instances/${id}/cycles`) });
-  const remind = useReminderFlag(id!, "beforeEndgameReset");
   const game = instance && getGame(instance.gameKey);
   const { catalog, index } = useCatalog(instance?.gameKey);
   const teams = useQuery({ queryKey: ["teams", id], queryFn: () => api.get<TeamDto[]>(`/api/instances/${id}/teams`), enabled: Boolean(game?.loadCatalog) });
@@ -98,10 +96,6 @@ export function EndgamePage() {
             </div>
             {endgame.next && (
               <div className="eg-next">
-                <label className="act-remind">
-                  <input type="checkbox" key={String(remind.on)} defaultChecked={remind.on} disabled={remind.pending} onChange={(event) => remind.set(event.target.checked)} />
-                  Remind 24 h before reset
-                </label>
                 <div className="kpi-label">Next reset</div>
                 <div className="eg-next-mode">
                   {endgame.next.mode.name} · {WHEN.format(endgame.next.closes)}

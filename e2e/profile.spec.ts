@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("Profile: account, passes with their reminders, game reminders, status @smoke", async ({ page }) => {
+test("Profile: account, passes, status; its reminders live in Settings @smoke", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
@@ -29,26 +29,15 @@ test("Profile: account, passes with their reminders, game reminders, status @smo
   await account.getByRole("spinbutton", { name: "Equilibrium Level" }).blur();
   await expect(page.locator(".hub-chips")).toContainText("TL 62 · EQ 6");
 
-  // Passes: days left typed after a purchase, each with its reminder.
+  // Passes: days left typed after a purchase; their reminders live in Settings → Notifications (round 27).
   const passes = page.getByRole("region", { name: "Passes" });
   await passes.getByRole("button", { name: "Update Express Supply Pass" }).click();
   await passes.getByRole("spinbutton", { name: "Days left" }).fill("23");
   await passes.getByRole("button", { name: "Save" }).click();
   await expect(passes).toContainText("23 days left");
-  await passes.getByRole("checkbox", { name: "Remind 3 days before" }).check();
-  await expect.poll(async () => (await reminder())?.beforePassEnds).toBe(true);
   await expect(passes).toContainText("Lv 0 / 70");
-  await passes.getByRole("checkbox", { name: /48 h before end/ }).check();
-  await expect.poll(async () => (await reminder())?.beforeBattlePassEnds).toBe(true);
-
-  // Game reminders: this game's own switches.
-  const reminders = page.getByRole("region", { name: "Game reminders" });
-  await reminders.getByRole("checkbox", { name: "Trailblaze Power full" }).check();
-  await expect.poll(async () => (await reminder())?.whenStaminaFull).toBe(true);
-  await expect(reminders.getByRole("link", { name: /Global rules/ })).toHaveAttribute("href", "/tasks");
-  // The per-game reminder options, here since the old overview went.
-  await reminders.getByText("More reminder options").click();
-  await expect(reminders.getByLabel("Reminder time")).toBeVisible();
+  await expect(passes.getByRole("checkbox")).toHaveCount(0);
+  await expect(page.getByRole("region", { name: "Game reminders" })).toHaveCount(0);
 
   // Long-term progress: hand-typed goals of one type (exploring, events), added and ticked here (Georges, 2026-10-10).
   const progress = page.getByRole("region", { name: "Long-term progress" });

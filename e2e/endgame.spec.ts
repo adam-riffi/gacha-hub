@@ -24,10 +24,8 @@ test("a game's Endgame tab: this cycle's rewards, a card per mode to type result
   // This cycle adds up what the open cycles offer: 780 + 300.
   const thisCycle = page.getByRole("region", { name: "This cycle" });
   await expect(thisCycle).toContainText("/ 1,080");
-  const remind = thisCycle.getByRole("checkbox", { name: "Remind 24 h before reset" });
-  await remind.check();
-  await page.reload();
-  await expect(page.getByRole("region", { name: "This cycle" }).getByRole("checkbox", { name: /Remind 24 h/ })).toBeChecked();
+  // Its reminder lives in Settings → Notifications (round 27).
+  await expect(thisCycle.getByRole("checkbox")).toHaveCount(0);
   const upcoming = page.getByRole("region", { name: "Upcoming resets" });
   for (const mode of ["Shiyu Defense", "Deadly Assault"]) await expect(upcoming).toContainText(mode);
 

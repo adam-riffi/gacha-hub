@@ -78,3 +78,7 @@
 .st-paste textarea { width: 100%; max-width: 900px; min-height: 160px; font-size: 16px; font-family: var(--font-mono, monospace); resize: vertical; }
 .st-paste .row { gap: 12px; align-items: center; }
 .st-paste-outcome { margin: 0; padding-left: 20px; font-size: 16px; }
+/* Each game's reminder switches (round 27: "reminders are settings not features"). */
+.st-game-reminders { padding: 14px 0 4px; border-top: 1px solid var(--surface-3); }
+.st-game-reminders h4 { display: flex; align-items: center; gap: 10px; margin: 0 0 4px; font-size: 17px; }
+.st-game-mark { width: 28px; height: 28px; flex: none; }

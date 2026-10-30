@@ -1,16 +1,14 @@
 import { useState, type FormEvent } from "react";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { currencyKind, getGame, hubResets, passView, utcLabel, type GameDefinition, type PassesDto, type UserExport } from "@gacha/shared";
 import { LoadError } from "../components/LoadError";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
-import { useReminderFlag, type ReminderFlag } from "../lib/reminder";
 import { GameTabs } from "../components/GameTabs";
 import { masked } from "../components/hub/HubHeader";
-import { ReminderControl } from "../components/ReminderControl";
 import { CurrencyIcon } from "../components/CurrencyIcon";
-import type { InstanceDetail, ReminderRule, TaskItem } from "../lib/types";
+import type { InstanceDetail, TaskItem } from "../lib/types";
 
 const DATE = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
 const TIME = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit" });
@@ -49,7 +47,6 @@ export function ProfilePage() {
         <Account instance={instance.data} game={game} />
         <Passes instance={instance.data} game={game} />
         <LongTerm instance={instance.data} game={game} />
-        <GameReminders instance={instance.data} game={game} />
         <Wallet instance={instance.data} game={game} />
         <Status instance={instance.data} game={game} />
       </div>
@@ -123,8 +120,6 @@ function Passes({ instance, game }: Props) {
   const queryClient = useQueryClient();
   const [editing, setEditing] = useState<"monthly" | "battle" | null>(null);
   const { data } = useQuery({ queryKey: ["passes", instance.id], queryFn: () => api.get<PassesDto>(`/api/instances/${instance.id}/passes`) });
-  const remindMonthly = useReminderFlag(instance.id, "beforePassEnds");
-  const remindBattle = useReminderFlag(instance.id, "beforeBattlePassEnds");
   const save = useMutation({
     mutationFn: (request: { path: "monthly" | "battle"; body: object }) => api.put(`/api/instances/${instance.id}/passes/${request.path}`, request.body),
     onSuccess: () => {
@@ -143,7 +138,7 @@ function Passes({ instance, game }: Props) {
     save.mutate({ path, body: path === "monthly" ? { daysLeft: value } : { level: value, weeklyXp: passState.weeklyXp } });
   };
 
-  const pass = (key: "monthly" | "battle", name: string, line: string, share: number, field: { label: string; value: number | null; max: number }, remind: { on: boolean; set: (remindOn: boolean) => void; pending: boolean } | null, remindLabel: string) => (
+  const pass = (key: "monthly" | "battle", name: string, line: string, share: number, field: { label: string; value: number | null; max: number }) => (
     <div className="pf-pass">
       <div className="spread">
         <strong>{name}</strong>
@@ -164,12 +159,6 @@ function Passes({ instance, game }: Props) {
         )}
       </div>
       <span className="pf-bar"><span style={{ width: `${Math.min(1, share) * 100}%` }} /></span>
-      {remind && (
-        <label className="pf-check">
-          <input type="checkbox" key={String(remind.on)} defaultChecked={remind.on} disabled={remind.pending} onChange={(event) => remind.set(event.target.checked)} />
-          {remindLabel}
-        </label>
-      )}
     </div>
   );
 
@@ -186,8 +175,6 @@ function Passes({ instance, game }: Props) {
           passState.monthlyDaysLeft === null ? "not tracked" : `${passState.monthlyDaysLeft} days left · ends ${DATE.format(new Date(data!.monthly!.endsAt))}`,
           (passState.monthlyDaysLeft ?? 0) / monthly.days,
           { label: "Days left", value: passState.monthlyDaysLeft, max: monthly.maxDays ?? monthly.days },
-          remindMonthly,
-          "Remind 3 days before",
         )}
       {battle &&
         pass(
@@ -196,48 +183,7 @@ function Passes({ instance, game }: Props) {
           `Lv ${passState.level}${passState.maxLevel !== null ? ` / ${passState.maxLevel}` : ""} · ends ${DATE.format(hubResets(game, region, now).versionEnd)}`,
           passState.maxLevel ? passState.level / passState.maxLevel : 0,
           { label: "Level", value: passState.level, max: battle.maxLevel ?? 200 },
-          battle.maxLevel ? remindBattle : null,
-          "Remind 48 h before end",
         )}
-    </section>
-  );
-}
-
-function ReminderRow({ instanceId, flag, label }: { instanceId: string; flag: ReminderFlag; label: string }) {
-  const remind = useReminderFlag(instanceId, flag);
-  return (
-    <li className="tk-rule">
-      <label>
-        <input type="checkbox" key={String(remind.on)} defaultChecked={remind.on} disabled={remind.pending} onChange={(event) => remind.set(event.target.checked)} />
-        {label}
-      </label>
-    </li>
-  );
-}
-
-function GameReminders({ instance, game }: Props) {
-  const { data } = useQuery({ queryKey: ["reminder", instance.id], queryFn: () => api.get<ReminderRule | null>(`/api/instances/${instance.id}/reminder`) });
-  const stamina = game.currencies.find((currency) => currency.key === game.manifest.stamina.currency);
-  const lead = data?.config.leadMinutes ?? 60;
-  const rows: { flag: ReminderFlag; label: string }[] = [
-    ...(stamina?.cap && stamina.regenPerHour ? [{ flag: "whenStaminaFull" as const, label: `${stamina.label} full` }] : []),
-    { flag: "beforeReset", label: `Dailies left, ${lead % 60 ? `${lead} min` : `${lead / 60} h`} before reset` },
-    ...(game.manifest.endgame.some((mode) => mode.maxPremium !== undefined) ? [{ flag: "beforeEndgameReset" as const, label: "Endgame rewards unclaimed, 24 h before its reset" }] : []),
-    ...(game.key === "genshin" ? [{ flag: "includeDomains" as const, label: "Domains open today, in each DM" }] : []),
-  ];
-  return (
-    <section className="card pf-reminders" aria-label="Game reminders">
-      <div className="spread">
-        <h3>Game reminders</h3>
-        <Link to="/tasks">Global rules →</Link>
-      </div>
-      <ul className="tk-rules">
-        {rows.map((row) => <ReminderRow key={row.flag} instanceId={instance.id} flag={row.flag} label={row.label} />)}
-      </ul>
-      <details className="pf-more">
-        <summary>More reminder options</summary>
-        <ReminderControl instanceId={instance.id} hasDomains={game.key === "genshin"} />
-      </details>
     </section>
   );
 }
