@@ -57,3 +57,34 @@ test("Teams: the slots in the game's party size; a ZZZ team's Bangboo @smoke", a
     await page.request.delete(`/api/instances/${id}/teams/${team.id}`);
   }
 });
+
+// Round 26 (Georges, 2026-10-30: "for the teams i need bigger character icons, i only need to see the characters, and
+// their weapons and their sets, nothing more"): a member is its face at 88 px or more, under it its weapon and the sets
+// its gear completes, each with its size; no status words.
+test("Teams: a member is its face, its weapon and its sets, nothing more @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  // Arlan, whom no other journey builds, with a 4-star cone and two pieces of one set.
+  const doc = { level: 70, lightCone: { catalogId: "21012", name: "A Secret Vow", level: 70, superimposition: 1 }, relics: { head: { setName: "Hunter of Glacial Forest" }, body: { setName: "Hunter of Glacial Forest" } } };
+  const build = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1008", doc } })).json()) as { id: string };
+  const team = (await (await page.request.post(`/api/instances/${id}/teams`, { data: { name: "E2E gear team", members: ["1008"] } })).json()) as { id: string };
+  try {
+    await page.goto(`/games/${id}/teams`);
+    const slot = page.getByRole("region", { name: "E2E gear team" }).locator(".tm-slot").first();
+    const face = slot.getByRole("img", { name: "Arlan" });
+    await expect(face).toBeVisible();
+    expect((await face.boundingBox())!.width).toBeGreaterThanOrEqual(88);
+    await expect(slot.getByRole("img", { name: "A Secret Vow" })).toBeVisible();
+    await expect(slot.getByRole("img", { name: "Hunter of Glacial Forest" })).toBeVisible();
+    await expect(slot.locator(".ch-set-icon b")).toHaveText("2");
+    await expect(slot).not.toContainText(/unbuilt|no build|not owned|perfect|good|building|arlan/i);
+    // The face opens the build.
+    await slot.getByRole("link", { name: "Arlan" }).click();
+    await expect(page).toHaveURL(new RegExp(`/characters/${build.id}$`));
+  } finally {
+    await page.request.delete(`/api/instances/${id}/teams/${team.id}`);
+    await page.request.delete(`/api/characters/${build.id}`);
+  }
+});
