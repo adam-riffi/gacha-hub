@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-30 · claude · stack/r34/02-bigger-icons · #425
+- Done: Round 27 PR 2 (Georges: "some are useless and some are too small"). Every list picture stands 48 px; a task without one shows no frame (the round-26 empty box went).
+- Tests: written first: no frame on Check-in's row; Daily Training's picture 48 px; every title on one line measured on its words.
+- Scope/decisions: the row keeps its tick, title and note.
+- Next: PR 3, the Now tag.
+
 ## 2026-10-30 · claude · stack/r34/01-version-below · #424
 - Done: Round 27 PR 1 (Georges, 2026-10-30: "cards that are too big and empty"). The cycles and battle pass cards share the row; the version card stands alone under them, as wide as the row, its events in two columns.
 - Tests: written first: the version card under the row and spanning it; two cards in the row; the same-height journey covers them.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the catalog test asks for the Hakushin source, 64 resonators, Hsin with her card art, costs and five forte skills; the weapon-effect, talent-text and art tests hold on the new data (Chixia's mapping, Qiuyuan's capitalised art, every set its own icon).
 - Scope/decisions: NTE stays at 1.3: Hakushin's 1.4 build is a pre-release extraction with untranslated names (Akane Rin as 明音凛), so `--version 1.4.13` waits for the day it reads clean. NOTICE credits Hakushin for Wuthering Waves.
 - Next: Endfield's catalog from its wiki's data tables.
-
-## 2026-10-22 · claude · stack/r26/03-docs · #382
-- Done: round 19's handoff: NTE's boards, the width journey complete, what waits for Georges's word and what comes next. The `main` ruleset was created on GitHub through the API (a plan item since round 11): a pull request and green `lint`, `typecheck`, `test`, `test-postgres`, `build` and `e2e` before a merge, no force push, no deletion, the admin role able to bypass.
-- Tests: docs only; the merge of this stack goes through the ruleset.
-- Scope/decisions: the ruleset lists the CI jobs by name, not the meme job: a missing meme must never block a merge.
-- Next: deploy at Georges's word.
