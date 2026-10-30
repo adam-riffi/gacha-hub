@@ -1,6 +1,6 @@
 import { GLYPHS, type GlyphKind } from "./Glyph";
 
-const LABEL: Record<GlyphKind, string> = { character: "Character banner", weapon: "Weapon banner", standard: "Standard banner", bangboo: "Bangboo banner", gear: "Gear banner", material: "Material banner", game: "Banner", task: "Task" };
+const LABEL: Record<GlyphKind, string> = { character: "Character banner", weapon: "Weapon banner", standard: "Standard banner", bangboo: "Bangboo banner", gear: "Gear banner", material: "Material banner", game: "Banner" };
 
 /**
  * A banner's kind as a mark (round 23, Georges: "add a character/weapon icon to the banner to better differentiate

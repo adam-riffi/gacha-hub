@@ -48,7 +48,6 @@ export function DailiesCard({ roster, carousel, day = null }: { roster: RosterEn
             </span>
             {past ? (
               <span className="chip">
-                <i aria-hidden="true" />
                 Day closed
               </span>
             ) : (

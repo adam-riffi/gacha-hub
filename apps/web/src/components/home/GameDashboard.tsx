@@ -340,7 +340,6 @@ function StaminaCard({ dashGame, game, instance }: { dashGame: DashGame; game: G
       to={`/games/${instance.id}`}
       head={
         <span className={`chip ${full ? "hot" : ""}`}>
-          <i aria-hidden="true" />
           {full ? "full" : `full in ${formatRemaining(dashGame.stamina.fullAt!)}`}
         </span>
       }
@@ -465,7 +464,6 @@ function EndgameCard({ instanceId, game, region, cycles }: { instanceId: string;
                 <td className="font-mono">{mode.result === null ? "—" : `${mode.result}${mode.mode.metric.max !== undefined ? `/${mode.mode.metric.max}` : ""}${unit(mode.mode.metric.label)}`}</td>
                 <td>
                   <span className={`chip ${days <= 1 ? "hot" : ""}`}>
-                    <i aria-hidden="true" />
                     {days > 1 ? `${days}d` : formatRemaining(at.toISOString(), now.getTime())}
                   </span>
                 </td>
