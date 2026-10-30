@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-30 · claude · stack/r34/04-reminders-in-settings · #427
+- Done: Round 27 PR 4 (Georges: "reminders are settings not features"). Settings → Notifications → Game reminders: a block per game (`components/settings/GameReminders.tsx`) with the stamina, dailies, endgame, monthly pass, battle pass and domains switches and the finer options; the switches left the Activities stamina card, the Endgame cycle card and the Profile's passes and Game reminders card.
+- Tests: written first: each switch saves to the game's rule from Settings; no checkbox on the stamina card, the cycle card or the Profile's passes; no Game reminders region on Profile.
+- Scope/decisions: the rule's fields and API unchanged.
+- Next: PR 5, the hub header.
+
 ## 2026-10-30 · claude · stack/r34/03-no-now-tag · #426
 - Done: Round 27 PR 3 (Georges: "what's the point of a now card?"). The Now tag on the endgame cycle bar and in the History table is gone; the bar's marker and Back to now say where the cycle is.
 - Tests: written first: after Back to now, no Back button and no `.eg-now` on the card or in the history.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the table reader (a run per dated row at UTC-5, the rate-up operator then the roster each once with the catalog's rarity, the quota pick not featured, unknown names apart, an undated row left out); the loaded history features the catalog's operators in date order; Endfield joins the games with a wiki history.
 - Scope/decisions: two readers of one history shape rather than one reader with two modes.
 - Next: the docs and the handoff.
-
-## 2026-10-23 · claude · stack/r27/02-endfield-wiki · #384
-- Done: round 20, the second stale catalog. EndFieldGameData stopped at v0.3.0 in June and its newest release carries no tables; the Endfield wiki on wiki.gg keeps data tables (Cargo: Operators, Weapons, Gears, GearStats, GearSets, Items, Gifts) with the game's own ids, read through its API at import time. 35 operators (Si, Typhoeus, Liino, Tangtang, Argent Flow among the six new), 83 weapons, 30 gear sets with the wiki's names and set effects (Aburrey's Legacy, Type 50 Yinglung, instead of a name cut from a body piece), their pieces through each piece's stats row, their id from the pieces' suit (the same `suit_…` ids as before), 20 gifts; a set's picture is its armour piece's on the wiki (the manifest's gear source moves from Endaxis, pinned to a commit and stopped at the first sets, to the wiki). An announced operator without a wiki id yet (Argent Flow) gets a provisional `wiki-<name>` id so the feeds match her.
-- Tests: written first: the wiki source, the 1.4 and 1.5 operators Game8's banners name (Si with her class, weapon kind and damage type), the sets named as the game does with their pieces and effect, the gear pictures from the wiki; the art-slot test counts the wiki's 20 gifts.
-- Scope/decisions: the wiki's text is CC BY-SA 4.0 (NOTICE); the pictures stay the publisher's, hotlinked or mirrored as before. The wiki rate-limits anonymous calls: the importers send the project's user agent. The Gifts table's "Prefer" (each operator's favourite gift) is not read yet.
-- Next: Endfield's banner history from the same wiki's banner table.
