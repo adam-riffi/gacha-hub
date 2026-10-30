@@ -251,9 +251,6 @@ input.tick-check:checked { background: var(--accent); border-color: var(--accent
 .metric-icon.is-on[data-metric="acts"] { color: #a06fe0; }
 .metric-icon.is-on[data-metric="rank"] { color: #f2994a; }
 .metric-icon.is-on[data-metric="points"] { color: #7cc4ff; }
-.eg-pips { display: flex; flex-wrap: wrap; gap: 4px; margin: -4px 0 10px; font-size: 30px; }
-.eg-pips .metric-icon { margin: 0; opacity: 0.45; }
-.eg-pips .metric-icon.is-on { opacity: 1; }
 
 /* A game's redeem codes (round 11): the code large, its rewards, Copy, Redeem on the official page, a tick. */
 .codes-card { margin-top: 24px; display: grid; gap: 8px; }
