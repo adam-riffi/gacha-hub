@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-30 · claude · stack/r34/01-version-below · #424
+- Done: Round 27 PR 1 (Georges, 2026-10-30: "cards that are too big and empty"). The cycles and battle pass cards share the row; the version card stands alone under them, as wide as the row, its events in two columns.
+- Tests: written first: the version card under the row and spanning it; two cards in the row; the same-height journey covers them.
+- Scope/decisions: layout only.
+- Next: PR 2, the list pictures.
+
 ## 2026-10-30 · claude · stack/r33/09-square-frames · #423
 - Done: Round 26 PR 9 (Georges: "still the same issue with game cards and the Genshin logo … a more standardized format for the game cards whether it's the ones at the very top or the one from each game's view"). Every game spot is a square frame of a standard size (44 px strip, 64 px games cards, 120 px hub header); an uploaded wordmark fits inside it on a surface ground instead of taking its own width. The Genshin wordmark standing in went in #414.
 - Tests: written first: with an uploaded wide logo the games card's and the header's frames are square (56 and 96 px or more); the icons journey reads the header's frame as square.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: docs only; the merge of this stack goes through the ruleset.
 - Scope/decisions: the ruleset lists the CI jobs by name, not the meme job: a missing meme must never block a merge.
 - Next: deploy at Georges's word.
-
-## 2026-10-22 · claude · stack/r26/02-width-rest · #381
-- Done: round 19, the rest of the narrow-window pass. The remaining screens (Tasks, Settings and its tabs, and a game's Teams, Weapons, Gear, Materials, Planner, Profile and Ownership) were measured at 1100 px with the session's overflow script: none reaches past the window, so no rule was needed; the width journey now opens all nineteen screens and finds no horizontal scroll on any.
-- Tests: the width journey, extended; it passes as the screens stand.
-- Scope/decisions: a journey without a code change, on purpose: it pins the narrow-window pass so a later screen cannot quietly undo it.
-- Next: the docs and the handoff.

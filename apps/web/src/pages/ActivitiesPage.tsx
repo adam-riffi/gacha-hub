@@ -87,8 +87,8 @@ export function ActivitiesPage() {
         <div className="act-bottom">
           <Cycles game={game} modes={endgameNow(game, region, now, (cycles?.results ?? []).map((result) => ({ ...result, cycleStart: new Date(result.cycleStart) }))).modes} instanceId={id!} />
           <BattlePass instanceId={id!} game={game} passState={passState} />
-          <Version game={game} endsAt={resets.versionEnd} events={(dash?.timeline.events ?? []).filter((event) => event.gameKey === game.key && Date.parse(event.startsAt) <= now.getTime())} />
         </div>
+        <Version game={game} endsAt={resets.versionEnd} events={(dash?.timeline.events ?? []).filter((event) => event.gameKey === game.key && Date.parse(event.startsAt) <= now.getTime())} />
         <RedeemCodesCard instanceId={id!} gameKey={game.key} />
       </div>
     </>

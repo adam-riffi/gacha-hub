@@ -52,6 +52,13 @@ test("a game's Activities tab: stamina, the daily, weekly and monthly lists, cyc
   await expect(version.getByRole("region", { name: "Battle pass" })).toHaveCount(0);
   await expect(pass).not.toContainText(/Version 3\.2/);
   await expect(version).not.toContainText(/battle pass/i);
+  // Round 27 (Georges: "cards that are too big and empty"): the cycles and pass cards share the row; the version card
+  // stands alone under them, as wide as the row, its events in two columns.
+  const row = (await page.locator(".act-bottom").boundingBox())!;
+  const versionBox = (await version.boundingBox())!;
+  expect(versionBox.y, "the version card under the row").toBeGreaterThanOrEqual(row.y + row.height - 1);
+  expect(versionBox.width, "as wide as the row").toBeGreaterThanOrEqual(row.width - 2);
+  await expect(page.locator(".act-bottom > .card")).toHaveCount(2);
 
   // The battle pass and the 30-day pass, typed in place.
   await pass.getByRole("button", { name: "Update the battle pass" }).click();

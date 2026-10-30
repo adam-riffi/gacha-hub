@@ -60,8 +60,10 @@ label.act-remind { display: flex; align-items: center; gap: 10px; margin: 12px 0
 .act-label { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: -12px; }
 /* Cards in one row stand the same height (round 23, Georges: "try to have every box the same size"). */
 .act-cadences { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: stretch; }
-/* Round 26 (Georges: "the version cards are too big, split them up"): cycles, the battle pass and the version, three cards of one width. */
-.act-bottom { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: stretch; }
+/* Round 26 (Georges: "the version cards are too big, split them up"): cycles and the battle pass side by side; round 27 ("cards
+   that are too big and empty"): the version card stands alone under them, its events in two columns. */
+.act-bottom { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; align-items: stretch; }
+.act-version .act-rows { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 32px; }
 .act-list .spread, .act-version .spread, .act-pass-card .spread { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
 .act-list h3 .text-muted, .act-cycles h3 .text-muted { font-size: 16px; }
 .act-rows { display: flex; flex-direction: column; }
