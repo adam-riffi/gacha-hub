@@ -159,6 +159,11 @@
 /* A weapon's panel over the page, as a gear set's (round 7). */
 /* Larger weapon cards (round 7): the art on a band in its rarity's colour, the level big, the wielders' icons large. */
 .wp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 14px; }
+/* Round 26 (Georges: "hard to navigate"): the cards in groups by type, each under a heading with the type's icon and count. */
+.wp-groups { display: grid; gap: 26px; }
+.wp-group-head { display: flex; align-items: center; gap: 10px; margin: 0 0 12px; font-size: 20px; }
+.wp-group-head .tag-icon { width: 28px; height: 28px; }
+.wp-group-head .text-muted { font-size: 16px; }
 .wp-card { --el: var(--paper); position: relative; display: grid; grid-template-rows: auto 1fr auto; gap: 10px; padding: 0 0 12px; background: var(--card); border: 1px solid var(--edge); }
 .wp-rarity { --r: var(--surface-3); position: relative; display: grid; place-items: center; height: 124px; background-color: color-mix(in srgb, var(--r) 14%, var(--card)); background-image: linear-gradient(180deg, color-mix(in srgb, var(--r) 45%, transparent), transparent); border-bottom: 3px solid var(--r); }
 .wp-rarity[data-rarity="3"] { --r: var(--rarity-3); }
