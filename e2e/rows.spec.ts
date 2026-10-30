@@ -32,7 +32,10 @@ test("the Activities rows share one grid, the pass row too; a title or a note st
     await expect(pass).toHaveCount(1);
     const titleEdges = await rows.locator(".tick-title").evaluateAll((els) => els.map((el) => Math.round(el.getBoundingClientRect().left)));
     expect(new Set(titleEdges).size, `titles start at ${titleEdges.join(" ")}`).toBe(1);
-    for (const cell of await monthly.locator(".tick-title, .tick-row .font-mono").all()) expect(await textLines(cell), (await cell.textContent()) ?? "").toBe(1);
+    for (const cell of await monthly.locator(".tick-title, .tick-row .font-mono").all()) {
+      const words = ((await cell.textContent()) ?? "").trim();
+      if (words) expect(await textLines(cell), words).toBe(1); // a number field's wrapper has no words
+    }
     await expect(rows.filter({ hasText: "A monthly item whose long name" }).locator(".font-mono.text-muted")).toHaveText("Embers Exchange");
   } finally {
     await page.request.delete(`/api/tasks/${long.id}`);
