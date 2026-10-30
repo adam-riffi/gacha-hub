@@ -188,7 +188,6 @@ export function EndgameHistory({
                 <button type="button" className="eg-open">
                   {cycleSpan(row.cycleStart, row.end)}
                 </button>
-                {row.current && <span className="tag eg-now">Now</span>}
               </td>
               <td className="num">
                 {row.full && <i className="eg-dot" aria-label="full clear" />}
