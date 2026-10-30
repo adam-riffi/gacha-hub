@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-30 · claude · stack/r34/12-dashboard-in-hub · #435
+- Done: Round 27 PR 12 (Georges: "navigating is quite hard … each games dashboard is outside of their category"). The hub opens on its Overview (`OverviewPage`, the GameDashboard inside the hub's tabs); Activities is the second tab at `/activities`; a game in Home's strip opens its hub (`sectionHref("all", game)`); the rail's Home always shows all games; `/?game=` redirects to the hub; the dashboard's cards link to `/activities`.
+- Tests: written first: the hub's root shows the Overview tab with the Pulls region; the second tab opens Activities; the strip on Home opens the hub; `/?game=hsr` lands there; twelve journeys that read Activities at the root open `/activities`.
+- Scope/decisions: Banners and Tasks keep the game scope; Home has none.
+- Next: Georges's "merge" (rounds 23 to 27 in order) and "deploy"; the paste of the six values.
+
 ## 2026-10-30 · claude · stack/r34/11-no-game-day-note · #434
 - Done: Round 27 PR 11 (Georges: "useless ai mention artifacts like \"game day :\""). The "game day: Friday" note left the Farm today card.
 - Tests: written first: no "game day" text on the card.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the parser (six cases), the endpoint (saved, skipped on the host, unplaced, the override cleared, no value echoed) and the journey (the block pasted once, every field In the app, the secret nowhere on the page, the asset base derived).
 - Scope/decisions: a token on a line without "analytics" is reported, not placed: the R2 token's own value looks the same and the app does not use it.
 - Next: deploy, Georges's one paste, the mirror with its budget check.
-
-## 2026-10-27 · claude · fix/analytics-token-format · #393
-- Done: Georges's analytics token is one of Cloudflare's account API tokens (`cfat_…`, 53 characters); the Analytics token field in Settings → Keys took the classic 40-character format only and would have refused it as "Not valid". The field takes 40 to 100 characters of either format now.
-- Tests: written first: a 40-character and a 53-character token both saved, a short one refused.
-- Scope/decisions: a length range rather than a `cfat_` prefix, so a classic token still goes in.
-- Next: deploy, then Georges's six values, then the mirror with its budget check.
