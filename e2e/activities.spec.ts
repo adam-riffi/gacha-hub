@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("a game's Activities tab: stamina, the daily, weekly and monthly lists, cycles and version @smoke", async ({ page }) => {
+test("a game's Activities tab: stamina, the daily, weekly and monthly lists, cycles, the battle pass and the version @smoke", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
@@ -44,14 +44,22 @@ test("a game's Activities tab: stamina, the daily, weekly and monthly lists, cyc
   for (const mode of ["Shiyu Defense", "Deadly Assault"]) await expect(cycles).toContainText(mode);
   const version = page.getByRole("region", { name: /Version 3\.2/ });
   await expect(version).toContainText(/ends/i);
+  // The battle pass is a card of its own beside the version's (round 26, Georges: "the version cards are too big, split
+  // them up … don't put BP and version in the same thing"): neither holds the other.
+  const pass = page.getByRole("region", { name: "Battle pass" });
+  await expect(pass).toHaveClass(/card/);
+  await expect(version).toHaveClass(/card/);
+  await expect(version.getByRole("region", { name: "Battle pass" })).toHaveCount(0);
+  await expect(pass).not.toContainText(/Version 3\.2/);
+  await expect(version).not.toContainText(/battle pass/i);
 
   // The battle pass and the 30-day pass, typed in place.
-  await version.getByRole("button", { name: "Update the battle pass" }).click();
-  await version.getByLabel("Level").fill("20");
-  await version.getByLabel("Weekly XP").fill("4000");
-  await version.getByRole("button", { name: "Save" }).click();
-  await expect(version).toContainText("20 / 50");
-  await expect(version).toContainText(/levels? a day/i);
+  await pass.getByRole("button", { name: "Update the battle pass" }).click();
+  await pass.getByLabel("Level").fill("20");
+  await pass.getByLabel("Weekly XP").fill("4000");
+  await pass.getByRole("button", { name: "Save" }).click();
+  await expect(pass).toContainText("20 / 50");
+  await expect(pass).toContainText(/levels? a day/i);
   await monthly.getByRole("button", { name: "Update Inter-Knot Membership" }).click();
   await monthly.getByLabel("Days left").fill("23");
   await monthly.getByRole("button", { name: "Save" }).click();

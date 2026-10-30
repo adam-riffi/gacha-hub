@@ -27,7 +27,6 @@
      version card's battle pass and events one above the other below 600 px. */
   .act-cadences { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
   .act-bottom { grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); }
-  .act-version-body { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
   .gd-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .ch-grid { grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); } /* three cards at 1439, two from 1280 down */
   .eg-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }

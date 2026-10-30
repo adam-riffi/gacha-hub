@@ -60,8 +60,9 @@ label.act-remind { display: flex; align-items: center; gap: 10px; margin: 12px 0
 .act-label { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: -12px; }
 /* Cards in one row stand the same height (round 23, Georges: "try to have every box the same size"). */
 .act-cadences { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: stretch; }
-.act-bottom { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 24px; align-items: stretch; }
-.act-list .spread, .act-version .spread { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+/* Round 26 (Georges: "the version cards are too big, split them up"): cycles, the battle pass and the version, three cards of one width. */
+.act-bottom { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: stretch; }
+.act-list .spread, .act-version .spread, .act-pass-card .spread { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
 .act-list h3 .text-muted, .act-cycles h3 .text-muted { font-size: 16px; }
 .act-rows { display: flex; flex-direction: column; }
 .act-row { display: flex; align-items: center; gap: 12px; min-height: 40px; border-bottom: 1px solid var(--surface-3); cursor: default; }
@@ -83,11 +84,8 @@ label.act-row { margin: 0; cursor: pointer; color: var(--text); font: 400 15px/1
 .act-add-btn { margin-top: 16px; }
 .act-add { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px; margin-top: 16px; }
 .act-add label { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 140px; color: var(--text-muted); font: 400 13px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
-.act-version-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; }
 .act-pass { margin: 10px 0 0; font: 600 24px/1.1 var(--font-display); letter-spacing: 0.04em; text-transform: uppercase; }
-.act-version .kpi-label { margin-bottom: 6px; }
-.act-pass-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.act-pass-head .tag { margin-left: 8px; font-size: 13px; }
+.act-pass-card .kpi-label { margin-bottom: 6px; }
 .act-pass-level { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 8px 0 10px; }
 .act-pass-level .font-mono { font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; }
 .act-xp { display: flex; align-items: center; justify-content: space-between; margin: 18px 0 8px; }
