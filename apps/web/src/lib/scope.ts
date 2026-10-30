@@ -29,12 +29,12 @@ export function hubPathFor(pathname: string, game: ScopeGame, screens: string[])
   return tab && screens.includes(tab) ? `/games/${game.instanceId}/${tab}` : `/games/${game.instanceId}`;
 }
 
-/** Where a section opens for a scope (null is the Overview). Settings has no scope. */
+/** Where a section opens for a scope (null is the Overview). Settings has no scope; Home with a game is its hub (round 27). */
 export function sectionHref(section: Section, game: ScopeGame | null): string {
   const query = game ? `?game=${game.key}` : "";
   switch (section) {
     case "all":
-      return `/${query}`;
+      return game ? `/games/${game.instanceId}` : "/";
     case "games":
       return game ? `/games/${game.instanceId}` : "/library";
     case "tasks":

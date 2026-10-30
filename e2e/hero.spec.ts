@@ -12,7 +12,7 @@ test("a game's key art fills the hub header beside its block and its games-list 
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "nte" } })).json()) as { id: string };
   expect((await page.request.put("/api/art/nte/key-art", { multipart: { file: { name: "art.png", mimeType: "image/png", buffer: PNG } } })).ok()).toBe(true);
 
-  await page.goto(`/games/${id}`);
+  await page.goto(`/games/${id}/activities`);
   const hero = page.getByRole("region", { name: "Neverness to Everness" }).locator("img.hub-hero");
   await expect(hero).toHaveAttribute("src", /\/uploads\//);
   const head = (await page.getByRole("region", { name: "Neverness to Everness" }).boundingBox())!;

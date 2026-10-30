@@ -7,11 +7,17 @@ test("a game's Activities tab: stamina, the daily, weekly and monthly lists, cyc
   const created = await page.request.post("/api/instances", { data: { gameKey: "zzz" } });
   const { id } = (await created.json()) as { id: string };
 
-  // The hub opens on Activities again (Georges, round 4: its dashboard is Home's); Profile is last.
+  // The hub opens on its Overview, the game's dashboard (round 27, Georges: "each game's dashboard is outside of its
+  // category"); Activities is the second tab; Profile is last.
   await page.goto(`/games/${id}`);
   const tabs = page.getByRole("navigation", { name: "Game screens" }).getByRole("link");
-  await expect(tabs.first()).toHaveText(/activities/i);
+  await expect(tabs.first()).toHaveText(/overview/i);
   await expect(tabs.first()).toHaveAttribute("aria-current", "page");
+  await expect(page.getByRole("region", { name: "Pulls" })).toBeVisible();
+  await tabs.nth(1).click();
+  await expect(page).toHaveURL(new RegExp(`/games/${id}/activities$`));
+  await expect(tabs.nth(1)).toHaveText(/activities/i);
+  await expect(tabs.nth(1)).toHaveAttribute("aria-current", "page");
   await expect(tabs.last()).toHaveText(/profile/i);
 
   // Stamina with its reserve.
@@ -111,7 +117,7 @@ test("Activities: the game's redeem codes, each with its rewards, Copy and the o
     redeemed = Boolean((route.request().postDataJSON() as { redeemed: boolean }).redeemed);
     await route.fulfill({ json: { code: "STARRAILGIFT", redeemed } });
   });
-  await page.goto(`/games/${id}`);
+  await page.goto(`/games/${id}/activities`);
   const card = page.getByRole("region", { name: "Codes" });
   await expect(card).toContainText("2 to redeem");
   const gift = card.getByRole("group", { name: "STARRAILGIFT" });

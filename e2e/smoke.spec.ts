@@ -19,7 +19,9 @@ test.describe.serial("smoke @smoke", () => {
     await page.getByRole("button", { name: "+ Genshin Impact" }).click();
     await expect(page).toHaveURL(/\/games\/[^/]+$/);
     await expect(page.getByRole("heading", { name: "Genshin Impact" })).toBeVisible();
-    // The hub opens on Activities (round 4); the day's domains are the Planner's Farm today.
+    // The hub opens on its Overview (round 27); Activities holds the Daily list; the day's domains are the Planner's Farm today.
+    await expect(page.getByRole("navigation", { name: "Game screens" }).getByRole("link", { name: "Overview" })).toHaveAttribute("aria-current", "page");
+    await page.getByRole("navigation", { name: "Game screens" }).getByRole("link", { name: "Activities" }).click();
     await expect(page.getByRole("region", { name: "Daily" })).toBeVisible();
     await page.getByRole("navigation", { name: "Game screens" }).getByRole("link", { name: "Planner" }).click();
     await expect(page.getByRole("region", { name: /^Farm today/ })).toBeVisible();

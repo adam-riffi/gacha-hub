@@ -38,7 +38,7 @@ test("a game's mark shows at a readable size in a square frame in the strip, the
       expect(list.height, name).toBeGreaterThanOrEqual(55);
       expect(Math.abs(list.width - list.height), name).toBeLessThanOrEqual(2);
     }
-    await page.goto(`/games/${id}`);
+    await page.goto(`/games/${id}/activities`);
     const head = await box(page.getByRole("region", { name: "Honkai: Star Rail" }).locator("svg.game-mark.hub-icon"));
     expect(head.height).toBeGreaterThanOrEqual(95);
     expect(Math.abs(head.width - head.height)).toBeLessThanOrEqual(2);

@@ -224,7 +224,7 @@ function Ticks({ instanceId, items, game, cadence }: { instanceId: string; items
 function TicksCard({ dashGame, instanceId, game, region, recurring }: { dashGame: DashGame; instanceId: string; game: GameDefinition; region: GameDefinition["regions"][number]; recurring: TaskDto[] }) {
   const [weekly] = useState(() => hubResets(game, region, new Date()).weekly.toISOString());
   return (
-    <Card title="Dailies & weeklies" to={`/games/${instanceId}`} className="gd-ticks-card">
+    <Card title="Dailies & weeklies" to={`/games/${instanceId}/activities`} className="gd-ticks-card">
       <div className="gd-ticks">
         <div>
           <div className="gd-sub">
@@ -251,7 +251,7 @@ function PassCard({ instanceId, game, passState }: { instanceId: string; game: G
   const compact = (value: number) => (value >= 1000 ? `${(value / 1000).toFixed(value % 1000 ? 1 : 0)}k` : String(value));
   if (!pass && passState.weeklyXpCap === null) return null;
   return (
-    <Card title={pass?.name ?? "Weekly EXP"} to={`/games/${instanceId}`}>
+    <Card title={pass?.name ?? "Weekly EXP"} to={`/games/${instanceId}/activities`}>
       {(pass || passState.weeklyXpCap !== null) && (
         <div className="gd-kpis">
           {pass && (
@@ -300,7 +300,7 @@ function DailyPassCard({ instanceId, game, daysLeft, endsAt }: { instanceId: str
   const premium = game.currencies.find((currency) => (currency.pullCost ?? 0) > 1);
   const still = days * (pass.daily ?? 0);
   return (
-    <Card title={pass.name} to={`/games/${instanceId}`} head={<span className={`chip ${days > 0 && days <= 3 ? "hot" : ""}`}>{days > 0 && endsAt ? `ends ${ENDS.format(new Date(endsAt))}` : "off"}</span>}>
+    <Card title={pass.name} to={`/games/${instanceId}/activities`} head={<span className={`chip ${days > 0 && days <= 3 ? "hot" : ""}`}>{days > 0 && endsAt ? `ends ${ENDS.format(new Date(endsAt))}` : "off"}</span>}>
       <div className="gd-kpis">
         <div className="kpi" role="group" aria-label="Days left">
           <div className="kpi-label">Days left</div>
@@ -337,7 +337,7 @@ function StaminaCard({ dashGame, game, instance }: { dashGame: DashGame; game: G
   return (
     <Card
       title={staminaCurrency.label}
-      to={`/games/${instance.id}`}
+      to={`/games/${instance.id}/activities`}
       head={
         <span className={`chip ${full ? "hot" : ""}`}>
           {full ? "full" : `full in ${formatRemaining(dashGame.stamina.fullAt!)}`}

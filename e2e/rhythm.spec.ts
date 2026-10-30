@@ -8,7 +8,7 @@ test("the game header keeps its distance: a gap before the tabs, tabs at 15 px o
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
-  await page.goto(`/games/${id}`);
+  await page.goto(`/games/${id}/activities`);
   const tabs = page.getByRole("navigation", { name: "Game screens" });
   await expect(tabs.getByRole("link", { name: "Endgame" })).toBeVisible();
   const head = (await page.locator(".hub-head").boundingBox())!;

@@ -14,7 +14,7 @@ test("a task's picture is 48 px, a task without one has no frame; no decorative 
   const seeded = await page.request.post("/api/admin/payload", { data: { kind: "events", gameKey: "hsr", items: [{ key: "e2e-rows-event", name: "E2E rows event with a long enough name to wrap", startsAt: iso(-1), endsAt: iso(4) }] } });
   expect(seeded.ok()).toBe(true);
   try {
-    await page.goto(`/games/${id}`);
+    await page.goto(`/games/${id}/activities`);
     // Check-in has no picture in any source: no frame at all (round 27: an empty box is a useless icon).
     const checkIn = page.locator(".tick-row", { hasText: "Check-in" }).first();
     await expect(checkIn).toBeVisible();

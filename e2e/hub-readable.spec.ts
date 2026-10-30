@@ -20,7 +20,7 @@ test("the hub header reads over its art, its tabs never scroll, FULL stands larg
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
   await page.request.put(`/api/instances/${id}/currencies/trailblazePower`, { data: { value: 300 } });
   try {
-    await page.goto(`/games/${id}`);
+    await page.goto(`/games/${id}/activities`);
     const head = page.getByRole("region", { name: "Honkai: Star Rail" });
     // Round 27 (Georges: "i wanna be able to see [the art] as well as see the info + i don't need my region + UID at all
     // times, use the top icons"): the icon, the name and the resets on a solid block at the left; the key art whole on
