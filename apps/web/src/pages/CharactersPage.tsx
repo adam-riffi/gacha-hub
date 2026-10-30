@@ -345,18 +345,17 @@ export function CharactersPage() {
                   alt={card.name}
                   glyph="character"
                 />
+                {/* Rarity, weapon type, element: three tiles of one size down the left edge (round 26, Georges: "all 3 stacked on top of each other"). */}
                 <div className="ch-chips">
-                  <Rarity value={card.rarity} className="badge" />
-                  {card.tag && card.tag !== "None" && (
-                    <span className="badge ch-el">
-                      <TagIcon gameKey={game.key} kind="element" name={card.tag} />
-                      {card.tag}
+                  <Rarity value={card.rarity} className="badge ch-tile" />
+                  {card.weaponType && (
+                    <span className="badge ch-tile" role="img" aria-label={card.weaponType} title={card.weaponType}>
+                      <TagIcon gameKey={game.key} kind="weapon-type" name={card.weaponType} fallback={<span className="ch-tile-text">{card.weaponType.slice(0, 3)}</span>} />
                     </span>
                   )}
-                  {card.weaponType && (
-                    <span className="badge">
-                      <TagIcon gameKey={game.key} kind="weapon-type" name={card.weaponType} />
-                      {card.weaponType}
+                  {card.tag && card.tag !== "None" && (
+                    <span className="badge ch-tile ch-el" role="img" aria-label={card.tag} title={card.tag}>
+                      <TagIcon gameKey={game.key} kind="element" name={card.tag} fallback={<span className="ch-tile-text">{card.tag.slice(0, 3)}</span>} />
                     </span>
                   )}
                 </div>
