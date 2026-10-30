@@ -95,3 +95,26 @@ test("Settings: the games you play, their server and whether they sleep, in one 
   await games.getByRole("checkbox", { name: "Honkai: Star Rail awake" }).check();
   await page.request.put(`/api/instances/${id}`, { data: { regionKey: "eu" } });
 });
+
+// Round 27 (Georges, 2026-10-30: "reminders are settings not features"): every game's reminder switches, which stood on the
+// Activities, Endgame and Profile screens, live in Settings → Notifications, each saved to the game's rule.
+test("Settings → Notifications: each game's reminder switches, saved to its rule @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  const reminder = async () => ((await (await page.request.get(`/api/instances/${id}/reminder`)).json()) as { config: Record<string, unknown> } | null)?.config;
+
+  await page.goto("/settings/notifications");
+  const mine = page.getByRole("region", { name: "Honkai: Star Rail reminders" });
+  await mine.getByRole("checkbox", { name: "Trailblaze Power full" }).check();
+  await expect.poll(async () => (await reminder())?.whenStaminaFull).toBe(true);
+  await mine.getByRole("checkbox", { name: /Endgame rewards unclaimed/ }).check();
+  await expect.poll(async () => (await reminder())?.beforeEndgameReset).toBe(true);
+  await mine.getByRole("checkbox", { name: /Express Supply Pass ends/ }).check();
+  await expect.poll(async () => (await reminder())?.beforePassEnds).toBe(true);
+  await mine.getByRole("checkbox", { name: /Nameless Honor ends/ }).check();
+  await expect.poll(async () => (await reminder())?.beforeBattlePassEnds).toBe(true);
+  await mine.getByText("More reminder options").click();
+  await expect(mine.getByLabel("Reminder time")).toBeVisible();
+});
