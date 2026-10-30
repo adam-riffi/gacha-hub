@@ -11,7 +11,7 @@ const box = async (locator: ReturnType<import("@playwright/test").Page["locator"
 
 // Round 15 (Georges, 2026-10-20: "make every game icon more visible"): a logo keeps its shape and takes real room; the drawn
 // emblem grows the same way where no logo is uploaded.
-test("a game's logo shows at a readable size in the strip, the games list, the game's header and Home; the emblem grows too @smoke", async ({ page }) => {
+test("a game's logo shows at a readable size in a square frame in the strip, the games list, the game's header and Home; the emblem grows too @smoke", async ({ page }) => {
   // Round 22: the slots' sources stand in while the store is empty; refused here, so the marks below are the drawn ones.
   await blockOutsideArt(page);
   await page.goto("/");
@@ -30,14 +30,17 @@ test("a game's logo shows at a readable size in the strip, the games list, the g
       expect((await box(link.locator("svg.game-mark"))).height).toBeGreaterThanOrEqual(43);
       await expect(link.locator(".strip-name")).toBeVisible();
     }
-    // The games list: 56 px high.
-    expect((await box(page.getByRole("article", { name: "Honkai: Star Rail" }).locator("img.game-mark.is-art"))).height).toBeGreaterThanOrEqual(55);
+    // The games list: a 56 px square frame, a wordmark fitted inside it (round 26, Georges: "a more standardized format
+    // for the game cards whether it's the ones at the very top or the one from each game's view").
+    const list = await box(page.getByRole("article", { name: "Honkai: Star Rail" }).locator("img.game-mark.is-art"));
+    expect(list.height).toBeGreaterThanOrEqual(55);
+    expect(Math.abs(list.width - list.height)).toBeLessThanOrEqual(2);
     expect((await box(page.getByRole("article", { name: "Zenless Zone Zero" }).locator("svg.game-mark"))).height).toBeGreaterThanOrEqual(55);
-    // The game's header: 96 px high, its shape kept.
+    // The game's header: a 96 px square frame too, never the wordmark's own width.
     await page.goto(`/games/${id}`);
     const head = await box(page.getByRole("region", { name: "Honkai: Star Rail" }).locator("img.game-mark.is-art"));
     expect(head.height).toBeGreaterThanOrEqual(95);
-    expect(head.width).toBeGreaterThan(head.height * 2);
+    expect(Math.abs(head.width - head.height)).toBeLessThanOrEqual(2);
     // Home, all games: the game's mark beside its name on the Dailies card and in the lists.
     await page.goto("/");
     const dailies = page.locator("section", { has: page.getByRole("heading", { name: "Dailies & weeklies" }) });
