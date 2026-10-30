@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-30 · claude · stack/r34/06-banners-events-split · #429
+- Done: Round 27 PR 6 (Georges: "separate banners and events into two screens for readability"). A Show switch (`?show=events`) opens Banners (banners, the wishlist filter) or Events (events, versions, and cycles and passes as layers) in every view.
+- Tests: written first: Banners shows banner bars and no event, Events the reverse; the layer boxes on Events; the list view follows the switch; the event journeys open `show=events`.
+- Scope/decisions: the address carries the screen.
+- Next: PR 7, the ownership tiles.
+
 ## 2026-10-30 · claude · stack/r34/05-hub-header · #428
 - Done: Round 27 PR 5 (Georges: "i wanna be able to see [the art] as well as see the info + i don't need my region + UID at all time, use the top icons for the games like paimon"). The hub's header: a solid block at the left with the game's icon (upload, store, emblem; never a logo), name, level and resets; the key art whole at the right (`--block: clamp(460px, 52%, 760px)`); the server and UID chips gone (the Edit form and Profile keep them); the games cards show the icon too.
 - Tests: written first: the block opaque, the art beside it 400 px or wider, no UTC chip, the icon frame square ≥ 95 px; an uploaded icon takes the header and an uploaded logo does not; the emblem in the frames when no icon is up.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: none to write: a workflow setting; this PR's own run exercises it.
 - Scope/decisions: the limit rather than the cause for now: the slow first runs happen with the same code and the same cache keys, so the next slow one's traces say where the time goes.
 - Next: deploy at Georges's word.
-
-## 2026-10-23 · claude · stack/r27/04-docs · #386
-- Done: round 20's handoff: the three catalogs refreshed (Wuthering Waves at 3.7 from Hakushin, Endfield from its wiki's tables, NTE held at 1.3 until Hakushin's live pointer moves), Endfield's history, what waits for Georges's word and what comes next (the features audit with his keys, GameWith's NTE schedule as the candidate dated source for its events, ADR 0011's services, the sample banners' retirement).
-- Tests: docs only.
-- Scope/decisions: none.
-- Next: deploy at Georges's word; the mirror for the new units' art.
