@@ -3,8 +3,9 @@ import { expect, test } from "@playwright/test";
 const PNG = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==", "base64");
 
 // Round 17 (Georges: "the pieces of art you've chosen for the top game cards and game window game cards are extremely
-// underwhelming"): a game's key art (Settings → Art) stands behind its hub header and across its games-list row.
-test("a game's key art is the backdrop of its hub header and its games-list row @smoke", async ({ page }) => {
+// underwhelming"): a game's key art (Settings → Art) fills the hub header beside its block (round 27: whole, not under the
+// words) and stands across its games-list row.
+test("a game's key art fills the hub header beside its block and its games-list row @smoke", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
@@ -16,7 +17,8 @@ test("a game's key art is the backdrop of its hub header and its games-list row 
   await expect(hero).toHaveAttribute("src", /\/uploads\//);
   const head = (await page.getByRole("region", { name: "Neverness to Everness" }).boundingBox())!;
   const art = (await hero.boundingBox())!;
-  expect(art.width).toBeGreaterThan(head.width * 0.9); // across the whole header
+  expect(art.x + art.width).toBeGreaterThanOrEqual(head.x + head.width - 2); // to the header's right edge
+  expect(art.width).toBeGreaterThan(400); // and wide enough to see
   expect(art.height).toBeGreaterThanOrEqual(180);
 
   await page.goto("/library");
