@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-30 · claude · stack/r33/01-version-split · #415
+- Done: Round 26 PR 1 (Georges, 2026-10-30: "the versions cards are too big split them up … dont put BP and version in the same thing too"). The battle pass is a card of its own (name, picture, level, bar, weekly XP, Update); the version card holds the version's end and its events; the row under the cadences is three cards of one width (Cycles, Battle pass, Version).
+- Tests: written first: a "Battle pass" region and a "Version 3.2" region, both cards, neither holding the other; the pass typed in its own card; the same-height journey covers the three.
+- Scope/decisions: no new data; the one card's content in two.
+- Next: PR 2, the rarity figure and the stacked tiles.
+
 ## 2026-10-29 · claude · stack/r32/04-icon-first · #414
 - Done: Round 25 PR 4 (Georges: "not a fan of the genshin icon", the wiki's wordmark in the big spots). `useSlotArt(key, { sources: false })` reads uploads only; `GameMark` and the hub header read the logo that way: a source's wordmark never stands in, the game's icon does, an uploaded logo still takes the spot.
 - Tests: written first: with an empty store Genshin's header and games card show the App Store icon, not the wiki's wordmark; an uploaded logo takes the header; the logo-size and art-source journeys stand.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: every game's list has each new chore with its cadence and steps, and keeps keys and titles unique; the conformance suite still passes.
 - Scope/decisions: the in-game checklists' micro-items (Wuthering Waves' 22 Daily Activity entries) stay inside the one counted task that scores them; what gets its own box is a chore with its own reset and reward. Figures marked ~ in the docs are the guides' and not yet checked in-game.
 - Next: event and battle-pass cards with their pictures.
-
-## 2026-10-21 · claude · stack/r24/05-endfield-art · #372
-- Done: round 17 (Georges: "Endfield is missing a lot of art and the character's splash art are cropped and low res find some other"). Endfield's art comes from two better sources: endfieldtools.dev serves every operator's and weapon's icon by the game's own id (198 px; 28 of 29 operators, all 71 weapons), the Endfield wiki serves each operator's splash art by its file name at 2048 px, plain at `/images/<file>` (25 of 29 operators). The importer keys a unit to them only where the file is there; the manifest's art templates point at them (gear sets stay on the Endaxis commit); both hosts join the image policy. The sheet's art panel fills from the top like every game's; the hub header takes the game's icon when no logo is uploaded (it showed the placeholder beside the key art).
-- Tests: written first: the art URLs per kind for Endfield, the catalog keyed to them (25 or more operators with a splash, 60 or more weapons by id), the policy test's hosts. Checked in dev: the characters grid, a sheet, the weapons.
-- Scope/decisions: wiki.gg's static files are plain to fetch and to hotlink (unlike Fandom's), so no header games and nothing new in the fetcher; the mirror copies them as any source. The two Endministrators have no file on either source and keep the glyph.
-- Next: the fuller task lists per game.
