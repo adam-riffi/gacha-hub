@@ -34,8 +34,14 @@
 .ch-card[data-game="endfield"] .ch-art .gicon { object-fit: contain; object-position: center bottom; }
 .ch-art .gicon-ph .glyph { width: 34%; height: 34%; opacity: 0.45; }
 .ch-art .gicon-ph { display: grid; place-items: center; border: 0; background: transparent; color: var(--hairline-strong); font: 600 44px/1 var(--font-display); }
-.ch-chips { position: absolute; top: 10px; left: 10px; right: 60px; display: flex; flex-wrap: wrap; gap: 6px; }
+/* Round 26 (Georges: "rarity + type/weapon + element icon all 3 stacked on top of each other"): a column of 40 px tiles. */
+.ch-chips { position: absolute; top: 10px; left: 10px; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
 .ch-chips .badge { background: var(--bg); }
+.ch-chips .badge.ch-tile { display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; width: 40px; height: 40px; padding: 0; }
+.ch-tile .tag-icon { width: 26px; height: 26px; margin: 0; }
+.ch-tile-text { font: 600 13px/1 var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; }
+.ch-chips .rarity.ch-tile b { font-size: 16px; }
+.ch-chips .rarity.ch-tile svg { width: 14px; height: 14px; }
 .ch-dupes { position: absolute; top: 10px; right: 10px; padding: 4px 8px; background: #000; color: var(--text); font: 500 13px/1 var(--font-mono); }
 .ch-dupes.is-off { background: var(--bg); border: 1px solid var(--hairline); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
 .ch-namebox { position: absolute; left: 10px; right: 10px; bottom: 10px; padding: 10px 12px; background: var(--el); color: var(--on-paper); clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%); }
