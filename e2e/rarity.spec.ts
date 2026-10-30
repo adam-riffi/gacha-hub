@@ -44,6 +44,7 @@ test("a rarity is its figure and one coloured star on the cards, the sheet, the 
 
   // The ownership grid. Round 27 (Georges: "the owned icon should be colored and not grey out a frame + the frame colour
   // should be the rarity"): the frame in the rarity's colour; an owned unit's picture in full colour, one not owned greyed.
+  await page.request.put(`/api/instances/${id}/ownership`, { data: { items: [{ kind: "character", catalogId: "1005", owned: true }] } });
   await page.goto(`/games/${id}/ownership`);
   const tile = page.locator(".rtile", { hasText: "Kafka" }).first();
   await expect(tile.getByRole("img", { name: "5 stars" })).toBeVisible();
