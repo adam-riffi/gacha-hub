@@ -53,3 +53,18 @@ test("a game's card in the library carries its hero art @smoke", async ({ page }
   const card = page.getByRole("article", { name: "Honkai: Star Rail" });
   await expect(card.locator("img.hero-art:is([src*='fandom.com'], [src*='wikia.nocookie.net'])")).toHaveCount(1);
 });
+
+// Round 27 (Georges, 2026-10-30: "on the overview game screen i should be able to click at a card and enter the game not
+// a small barely readable card"): a game card's whole art band, 150 px or taller, opens its hub.
+test("Games library: a card's art band opens the game's hub @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  await page.goto("/library");
+  const band = page.getByRole("article", { name: "Honkai: Star Rail" }).getByRole("link", { name: "Open Honkai: Star Rail" });
+  await expect(band).toBeVisible();
+  expect((await band.boundingBox())!.height).toBeGreaterThanOrEqual(150);
+  await band.click();
+  await expect(page).toHaveURL(new RegExp(`/games/${id}$`));
+});
