@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getGame } from "@gacha/shared";
@@ -47,6 +47,9 @@ const today = (date = new Date()) =>
 /** "MON 2026-09-14" for a YYYY-MM-DD day. */
 const dayLabel = (day: string) => `${["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"][new Date(+day.slice(0, 4), +day.slice(5, 7) - 1, +day.slice(8, 10)).getDay()]} ${day}`;
 
+/** Which way the strip's row can still move: back once scrolled, forward while cards lie past its edge. */
+const reachOf = (element: HTMLElement) => ({ back: element.scrollLeft > 1, forward: element.scrollLeft + element.clientWidth < element.scrollWidth - 1 });
+
 /** The rail of sections, the scope strip and the date (and a pinned past day on Home); the scope's game sets --accent. */
 export function Layout({ children }: { children: ReactNode }) {
   const { currentUser } = useAuth();
@@ -71,6 +74,25 @@ export function Layout({ children }: { children: ReactNode }) {
   const scope: ScopeGame | null = current ? { key: current.gameKey, instanceId: current.id } : null;
   // Settings has no scope: picking a game there opens its hub.
   const stripSection: Section = section === "settings" ? "games" : section;
+  // The strip as a carousel (round 26, Georges: "THE TOP CARDS SHOULD BE A CAROUSEL TOO"): the arrows page the row by its
+  // own width, and rest when nothing lies that way.
+  const row = useRef<HTMLDivElement>(null);
+  const [reach, setReach] = useState({ back: false, forward: false });
+  useEffect(() => {
+    const element = row.current;
+    if (!element) return;
+    const update = () => setReach(reachOf(element));
+    update();
+    const watcher = new ResizeObserver(update);
+    watcher.observe(element);
+    return () => watcher.disconnect();
+  }, [instances.length]);
+  const turn = (direction: -1 | 1) => row.current?.scrollBy({ left: direction * row.current.clientWidth, behavior: "smooth" });
+  const chevron = (direction: -1 | 1) => (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d={direction < 0 ? "M15 5l-7 7 7 7" : "M9 5l7 7-7 7"} />
+    </svg>
+  );
 
   const railItem = (railSection: Section, label: string, name: string) => (
     <Link key={railSection} to={sectionHref(railSection, railSection === "settings" ? null : scope)} className="rail-item" aria-label={name} aria-current={section === railSection ? "page" : undefined}>
@@ -94,7 +116,10 @@ export function Layout({ children }: { children: ReactNode }) {
               Overview
             </Link>
             <i className="strip-rule" aria-hidden="true" />
-            <div className="strip-games">
+            <button type="button" className="strip-arrow" aria-label="Earlier games" disabled={!reach.back} onClick={() => turn(-1)}>
+              {chevron(-1)}
+            </button>
+            <div className="strip-games" ref={row} onScroll={(event) => setReach(reachOf(event.currentTarget))}>
               {instances.map((gameInstance) => {
                 const on = gameInstance.gameKey === scope?.key;
                 return (
@@ -110,13 +135,16 @@ export function Layout({ children }: { children: ReactNode }) {
                     aria-current={on ? "page" : undefined}
                     title={gameInstance.sleeping ? `${gameInstance.name} (asleep)` : gameInstance.name}
                   >
-                    {/* Its emblem, and its whole name once picked (Georges, round 7). */}
+                    {/* Its emblem and its short name; one size for every card, the picked one too (round 26). */}
                     <GameMark gameKey={gameInstance.gameKey} tint={gameInstance.accent} className="strip-icon" />
-                    <span className="strip-name">{on ? gameInstance.name : (getGame(gameInstance.gameKey)?.shortName ?? gameInstance.name)}</span>
+                    <span className="strip-name">{getGame(gameInstance.gameKey)?.shortName ?? gameInstance.name}</span>
                   </Link>
                 );
               })}
             </div>
+            <button type="button" className="strip-arrow" aria-label="Later games" disabled={!reach.forward} onClick={() => turn(1)}>
+              {chevron(1)}
+            </button>
           </nav>
           {section === "all" && params.get("day") && (
             <div className="topbar-view" role="status" aria-label="Viewing a past day">

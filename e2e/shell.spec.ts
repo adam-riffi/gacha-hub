@@ -108,8 +108,10 @@ test("another game in the strip opens the same tab, or its first where it has no
   }
 });
 
-// Georges, round 7: "the game cards should extend a bit more when selected: Genshin becomes Genshin Impact … work on the navbar".
-test("the selected game spells its full name, each game with its icon; the rail's icons larger, the current one filled @smoke", async ({
+// Georges, round 7: "the game cards should extend a bit more when selected: Genshin becomes Genshin Impact … work on the navbar";
+// round 26 ("a more standardized format … THE TOP CARDS SHOULD BE A CAROUSEL TOO") took the growth back: every card one size,
+// the picked one with its short name too, its full name as its label.
+test("the selected game keeps its size and short name, its full name as its label; each game with its icon; the rail's icons larger, the current one filled @smoke", async ({
   page,
 }) => {
   // Round 22: the slots' sources stand in while the store is empty; refused here, so the marks below are the drawn ones.
@@ -126,15 +128,9 @@ test("the selected game spells its full name, each game with its icon; the rail'
   await expect(hsr.locator("svg.game-mark")).toHaveCount(1);
   await hsr.click();
   await expect(hsr).toHaveAttribute("aria-current", "page");
-  await expect(hsr).toContainText("Honkai: Star Rail");
-  // The whole name fits: nothing cut.
-  expect(
-    await hsr.evaluate((el) => {
-      const r = document.createRange();
-      r.selectNodeContents(el.lastChild!);
-      return r.getBoundingClientRect().right <= el.getBoundingClientRect().right;
-    }),
-  ).toBe(true);
+  await expect(hsr).toContainText("Star Rail");
+  await expect(hsr).not.toContainText("Honkai");
+  await expect(hsr).toHaveAttribute("title", "Honkai: Star Rail");
 
   const rail = page.getByRole("navigation", { name: "Sections" });
   await expect
