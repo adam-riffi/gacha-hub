@@ -30,12 +30,13 @@ test("a game's icon stands beside its name in the strip and in Home's tables; it
   await expect(mark).toBeVisible();
   expect((await mark.boundingBox())!.height).toBeGreaterThanOrEqual(32);
 
-  // The hub's header keeps the logo: the wordmark, wider than twice its height.
+  // The hub's header keeps the logo, fitted in its square frame (round 26: one frame shape for every game spot).
   await page.goto(`/games/${id}`);
   const logo = page.locator("img.hub-icon");
   await expect(logo).toBeVisible();
   const logoBox = (await logo.boundingBox())!;
-  expect(logoBox.width).toBeGreaterThan(logoBox.height * 2);
+  expect(logoBox.height).toBeGreaterThanOrEqual(95);
+  expect(Math.abs(logoBox.width - logoBox.height)).toBeLessThanOrEqual(2);
 
   for (const slot of ["nte/icon", "nte/logo"]) await page.request.delete(`/api/art/${slot}`);
   // The NTE journey adds the game from the library itself: leave none behind.
