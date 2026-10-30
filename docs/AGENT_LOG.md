@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-30 · claude · stack/r33/09-square-frames · #423
+- Done: Round 26 PR 9 (Georges: "still the same issue with game cards and the Genshin logo … a more standardized format for the game cards whether it's the ones at the very top or the one from each game's view"). Every game spot is a square frame of a standard size (44 px strip, 64 px games cards, 120 px hub header); an uploaded wordmark fits inside it on a surface ground instead of taking its own width. The Genshin wordmark standing in went in #414.
+- Tests: written first: with an uploaded wide logo the games card's and the header's frames are square (56 and 96 px or more); the icons journey reads the header's frame as square.
+- Scope/decisions: one shape for the frame whatever is in it.
+- Next: Georges's "merge" (rounds 23, 24, 25, 26 in order) and "deploy"; the paste of the six values.
+
 ## 2026-10-30 · claude · stack/r33/08-strip-carousel · #422
 - Done: Round 26 PR 8 (Georges: "THE TOP CARDS SHOULD BE A CAROUSEL TOO"). Every strip card is 200 × 56 px (44 px icon, short name), the picked one too, no growth or lift; two arrows page the row by its width with scroll snapping and rest when nothing lies their way (a `ResizeObserver` and the scroll event keep them honest).
 - Tests: written first: with five games every card measures the same; at 1000 px Later is live and Earlier rests; Later scrolls the row, Earlier brings it back.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: the width journey, extended; it passes as the screens stand.
 - Scope/decisions: a journey without a code change, on purpose: it pins the narrow-window pass so a later screen cannot quietly undo it.
 - Next: the docs and the handoff.
-
-## 2026-10-22 · claude · stack/r26/01-nte-wiki-feed · #380
-- Done: round 19 (the handoff's next items on Georges's "continue"). NTE has no official feed either; its wiki keeps a page per Board ("Fair" infobox with server-time dates, a "Board Pool" with the rate-up units), so the wiki feed (round 17) reads NTE's boards too, hourly, pictures through the wiki's static host; its event pages carry no dates, so its events wait for a dated source. Run in dev: 13 boards, Dazzling Star among them.
-- Tests: written first: a Board page read like a convene (a banner keyed to the wiki with its featured unit, no events); the policy test names the wiki's host.
-- Scope/decisions: one line in `WIKI_FEEDS`; nothing else moved. EndFieldGameData's newest release (v0.4.0) carries no tables, so Endfield's catalog stays at v0.3.0, like Wuthering Waves' and NTE's at their sources' last versions.
-- Next: the rest of the screens in the width journey.
