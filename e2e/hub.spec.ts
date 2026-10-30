@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("a game hub's header shows the server, UID, account level and next resets, and edits them @smoke", async ({ page }) => {
+test("a game hub's header shows the account level and next resets, edits the profile, and keeps the server and UID off it @smoke", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
@@ -10,7 +10,7 @@ test("a game hub's header shows the server, UID, account level and next resets, 
   await page.goto(`/games/${id}`);
   const head = page.getByRole("region", { name: "Wuthering Waves" });
   await expect(head.getByRole("heading", { level: 1, name: "Wuthering Waves" })).toBeVisible();
-  await expect(head).toContainText(/Europe · UTC\+1/i);
+  await expect(head).not.toContainText(/UTC\+1/); // the server and UID live in the Edit form and on Profile (round 27)
   await expect(head).not.toContainText(/manual/i); // the leftover tag is gone (Georges, 2026-10-10)
   for (const label of [/daily reset/i, /weekly reset/i, /version 3\.7/i]) await expect(head).toContainText(label);
 
@@ -19,7 +19,7 @@ test("a game hub's header shows the server, UID, account level and next resets, 
   await head.getByLabel("Union Level").fill("58");
   await head.getByRole("button", { name: "Save" }).click();
   await expect(head).toContainText(/UL 58/i);
-  await expect(head).toContainText("7•••••••6");
+  await expect(head).not.toContainText("7•••••••6");
 
   // The hub's screens, as tabs under the header.
   const tabs = page.getByRole("navigation", { name: "Game screens" });

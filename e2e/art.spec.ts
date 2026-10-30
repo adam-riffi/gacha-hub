@@ -46,7 +46,8 @@ test("Settings → Art: each uploaded picture shows on its cards, in place of wh
   const games = (await (await page.request.get("/api/instances")).json()) as { id: string; gameKey: string }[];
   const genshin = games.find((game) => game.gameKey === "genshin")?.id ?? ((await (await page.request.post("/api/instances", { data: { gameKey: "genshin" } })).json()) as { id: string }).id;
   const hsr = games.find((game) => game.gameKey === "hsr")?.id ?? ((await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string }).id;
-  const slots = ["genshin/logo", "genshin/mode/abyss", "genshin/currency/primogems", "hsr/element/lightning", "genshin/banner/standard", "genshin/task/commissions"];
+  // The games card shows the game's icon, never its logo (round 27): the uploaded icon is what stands in for it.
+  const slots = ["genshin/icon", "genshin/mode/abyss", "genshin/currency/primogems", "hsr/element/lightning", "genshin/banner/standard", "genshin/task/commissions"];
   const urls = new Map<string, string>();
   try {
     for (const slot of slots) {
@@ -56,7 +57,7 @@ test("Settings → Art: each uploaded picture shows on its cards, in place of wh
     const shows = (scope: ReturnType<typeof page.locator>, slot: string) => expect(scope.locator(`img[src='${urls.get(slot)}']`).first()).toBeVisible();
 
     await page.goto("/library");
-    await shows(page.getByRole("article", { name: "Genshin Impact" }), "genshin/logo");
+    await shows(page.getByRole("article", { name: "Genshin Impact" }), "genshin/icon");
     await page.goto(`/games/${genshin}/endgame`);
     await shows(page.getByRole("region", { name: "Spiral Abyss" }), "genshin/mode/abyss");
     await page.goto(`/games/${genshin}/profile`);

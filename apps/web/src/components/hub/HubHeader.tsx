@@ -1,7 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { artSlotKey, getGame, hubResets, utcLabel } from "@gacha/shared";
-import { useSlotArt } from "../../lib/art";
+import { getGame, hubResets, utcLabel } from "@gacha/shared";
 import { api } from "../../lib/api";
 import type { InstanceDetail } from "../../lib/types";
 import { Countdown } from "../ui";
@@ -14,16 +13,17 @@ const SHORT = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" 
 export const masked = (uid: string) => (uid.length > 2 ? `${uid[0]}${"•".repeat(uid.length - 2)}${uid.at(-1)}` : uid);
 
 /**
- * The game hub's header (WIREFRAMES.md, Game hub): the game's icon and name;
- * its server and UTC offset, UID, account level and source; the next daily
- * and weekly resets and the version's end, on the profile's server. Edit sets
- * the server, UID and account level.
+ * The game hub's header (WIREFRAMES.md, Game hub): the game's icon, its name
+ * and account level, the next daily and weekly resets and the version's end
+ * on the profile's server, on a solid block at the left; the key art whole on
+ * the right (round 27, Georges: "i wanna be able to see it as well as see the
+ * info + i don't need my region + UID at all times"). Edit sets the server,
+ * UID and account level.
  */
 export function HubHeader({ instanceId }: { instanceId: string }) {
   const queryClient = useQueryClient();
   const { data } = useQuery({ queryKey: ["instance", instanceId], queryFn: () => api.get<InstanceDetail>(`/api/instances/${instanceId}`) });
   const [editing, setEditing] = useState(false);
-  const [iconOk, setIconOk] = useState(true);
   const save = useMutation({
     mutationFn: (body: { regionKey?: string; uid: string | null; accountLevel: number | null }) => api.put(`/api/instances/${instanceId}`, body),
     onSuccess: () => {
@@ -32,10 +32,6 @@ export function HubHeader({ instanceId }: { instanceId: string }) {
     },
   });
   const game = data && getGame(data.gameKey);
-  // The owner's logo, or its icon (round 17): either beats the placeholder (both hooks every render).
-  const logoSlot = useSlotArt(data ? artSlotKey(data.gameKey, "logo") : null, { sources: false });
-  const iconSlot = useSlotArt(data ? artSlotKey(data.gameKey, "icon") : null);
-  const uploadedLogo = logoSlot || iconSlot;
   if (!data || !game) return null;
 
   const region = game.regions.find((candidate) => candidate.key === data.regionKey) ?? game.regions[0]!;
@@ -52,20 +48,12 @@ export function HubHeader({ instanceId }: { instanceId: string }) {
 
   return (
     <section className="hub-head" aria-label={data.name}>
-      {/* The game's key art across the whole header (round 17), its right half under the resets. */}
+      {/* The key art whole on the right half (round 27), beside the block, not under it. */}
       <HeroArt gameKey={game.key} className="hub-hero" />
-      {uploadedLogo ? (
-        // The owner's logo (Settings → Art) stands on its own, not on the accent tile it may share a colour with.
-        <GameMark gameKey={game.key} art="logo" className="hub-icon" />
-      ) : game.art?.icon && iconOk ? (
-        <img className="hub-icon" src={game.art.icon} alt="" onError={() => setIconOk(false)} />
-      ) : (
-        // No owner art yet (ASSETS.md): the game's drawn emblem on its accent tile (round 12).
-        <span className="hub-icon hub-icon-ph" aria-hidden="true">
-          <GameMark gameKey={game.key} tint="#080808" />
-        </span>
-      )}
-      <div className="hub-id">
+      <div className="hub-block">
+        {/* The game's icon (round 27: "use the top icons for the games like paimon"): the owner's, else the store's, else the emblem. */}
+        <GameMark gameKey={game.key} className="hub-icon" />
+        <div className="hub-id">
         <h1 className="hub-name">{data.name}</h1>
         {editing ? (
           <form className="hub-edit" onSubmit={submit}>
@@ -99,10 +87,7 @@ export function HubHeader({ instanceId }: { instanceId: string }) {
           </form>
         ) : (
           <div className="hub-chips">
-            <span className="badge">
-              {region.label} · {utcLabel(region.utcOffsetMinutes)}
-            </span>
-            {data.uid && <span className="badge">UID {masked(data.uid)}</span>}
+            {/* The server and UID live in the form and on Profile (round 27); the level stays. */}
             {data.accountLevel !== null && (
               <span className="badge" title={level.name}>
                 {level.label} {data.accountLevel}
@@ -114,23 +99,24 @@ export function HubHeader({ instanceId }: { instanceId: string }) {
             </button>
           </div>
         )}
+        </div>
+        <dl className="hub-resets">
+          <div>
+            <dt>Daily reset</dt>
+            <dd>
+              <Countdown at={resets.daily.toISOString()} kind="reset" prefix="in" />
+            </dd>
+          </div>
+          <div>
+            <dt>Weekly reset</dt>
+            <dd>{DATE.format(resets.weekly)}</dd>
+          </div>
+          <div>
+            <dt>Version {game.manifest.version.name}</dt>
+            <dd>ends {SHORT.format(resets.versionEnd)}</dd>
+          </div>
+        </dl>
       </div>
-      <dl className="hub-resets">
-        <div>
-          <dt>Daily reset</dt>
-          <dd>
-            <Countdown at={resets.daily.toISOString()} kind="reset" prefix="in" />
-          </dd>
-        </div>
-        <div>
-          <dt>Weekly reset</dt>
-          <dd>{DATE.format(resets.weekly)}</dd>
-        </div>
-        <div>
-          <dt>Version {game.manifest.version.name}</dt>
-          <dd>ends {SHORT.format(resets.versionEnd)}</dd>
-        </div>
-      </dl>
     </section>
   );
 }
