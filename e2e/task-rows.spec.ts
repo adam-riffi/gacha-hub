@@ -1,10 +1,11 @@
 import { expect, test } from "@playwright/test";
 
 // Round 25 (Georges, 2026-10-29: "try to find icons for iconless tasks … maybe 0 icons can be justified", "the version
-// card is broken and unreadable"), then round 26 ("some weird useless icons here and there"): a task without a picture
-// keeps its frame and draws nothing in it; the date chips carry no square; the games cards no grip; a monthly task's
-// shop note wraps rather than squeezing the title; the version card's event rows stand 56 px or taller.
-test("a task without a picture keeps an empty frame; no decorative squares or grips; the shop note wraps; the event rows read @smoke", async ({ page }) => {
+// card is broken and unreadable"), round 26 ("some weird useless icons here and there"), round 27 ("some are useless and
+// some are too small"): a task's picture stands 48 px; a task without one shows no frame at all; the date chips carry no
+// square; the games cards no grip; a task's title stays on one line beside its note; the version card's event rows
+// stand 56 px or taller.
+test("a task's picture is 48 px, a task without one has no frame; no decorative squares or grips; titles on one line; the event rows read @smoke", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
@@ -14,18 +15,22 @@ test("a task without a picture keeps an empty frame; no decorative squares or gr
   expect(seeded.ok()).toBe(true);
   try {
     await page.goto(`/games/${id}`);
-    // Check-in has no picture in any source: its frame stays, empty, so the rows keep one shape; nothing drawn in it.
+    // Check-in has no picture in any source: no frame at all (round 27: an empty box is a useless icon).
     const checkIn = page.locator(".tick-row", { hasText: "Check-in" }).first();
     await expect(checkIn).toBeVisible();
-    await expect(checkIn.locator("span.list-art:empty")).toHaveCount(1);
-    await expect(checkIn.locator(".list-art svg")).toHaveCount(0);
-    expect((await checkIn.locator("span.list-art").boundingBox())!.width).toBeGreaterThanOrEqual(36);
+    await expect(checkIn.locator(".list-art")).toHaveCount(0);
+    // Daily Training has one, at 48 px.
+    expect((await page.locator(".tick-row", { hasText: "Daily Training" }).first().locator("img.list-art").boundingBox())!.width).toBeGreaterThanOrEqual(48);
     // The date chips (the version's end, the resets) are their words alone: no square before them.
     await expect(page.locator(".chip > i")).toHaveCount(0);
-    // Every task row's title stays on one line beside its note.
+    // Every task row's title stays on one line beside its note (its words in one box, whatever the picture's height).
     for (const row of await page.locator(".act-list .tick-row").all()) {
-      const title = (await row.locator(".tick-title").boundingBox())!;
-      expect(title.height, (await row.locator(".tick-title").textContent()) ?? "").toBeLessThanOrEqual(40);
+      const lines = await row.locator(".tick-title").evaluate((el) => {
+        const range = document.createRange();
+        range.selectNodeContents(el.lastChild!);
+        return range.getClientRects().length;
+      });
+      expect(lines, (await row.locator(".tick-title").textContent()) ?? "").toBe(1);
     }
     // A task whose title was recased since (an older profile's "Realm currency") still finds its icon.
     const tasks = (await (await page.request.get(`/api/tasks?scope=game&refId=${id}`)).json()) as { id: string; title: string }[];
