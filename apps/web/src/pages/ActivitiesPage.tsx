@@ -8,7 +8,6 @@ import type { DashboardData, InstanceDetail } from "../lib/types";
 import { GameTabs } from "../components/GameTabs";
 import { Countdown } from "../components/ui";
 import { SegmentedBar } from "../components/charts/SegmentedBar";
-import { useReminderFlag } from "../lib/reminder";
 import { TickRow, tickColumn } from "../components/TickControl";
 import { RedeemCodesCard } from "../components/hub/RedeemCodesCard";
 import { SlotArt } from "../components/SlotArt";
@@ -96,7 +95,6 @@ export function ActivitiesPage() {
 }
 
 function Stamina({ game, instance, projection }: { game: GameDefinition; instance: InstanceDetail; projection: DashboardData["games"][number]["stamina"] }) {
-  const remind = useReminderFlag(instance.id, "whenStaminaFull");
   const staminaCurrency = game.currencies.find((currency) => currency.key === game.manifest.stamina.currency);
   const reserveDef = game.currencies.find((currency) => currency.key === game.manifest.stamina.reserve?.currency);
   if (!staminaCurrency) return null;
@@ -109,10 +107,6 @@ function Stamina({ game, instance, projection }: { game: GameDefinition; instanc
         <h3>{staminaCurrency.label}</h3>
         <span className="sp" />
       </div>
-      <label className="act-remind">
-        <input type="checkbox" key={String(remind.on)} defaultChecked={remind.on} disabled={remind.pending} onChange={(event) => remind.set(event.target.checked)} />
-        Remind when full
-      </label>
       <div className="act-stamina-body">
         <div className="kpi-value">
           {Math.floor(value)}

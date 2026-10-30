@@ -7,6 +7,7 @@ import { useAuth } from "../lib/auth";
 import { useToast } from "../lib/toast";
 import { masked } from "../components/hub/HubHeader";
 import { RemindersPanel } from "../components/tasks/RemindersPanel";
+import { GameReminders } from "../components/settings/GameReminders";
 import { AdminPage } from "./AdminPage";
 import { KeysSettings } from "../components/settings/KeysSettings";
 import { ArtSettings } from "../components/settings/ArtSettings";
@@ -99,6 +100,7 @@ export function SettingsPage() {
             <RemindersPanel games={mine} />
           </div>
         )}
+        {tab === "notifications" && <GameReminders games={mine} />}
         {tab === "account" && (
           <>
             <Passkeys />
