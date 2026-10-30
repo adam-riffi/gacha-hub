@@ -26,4 +26,16 @@ test("the strip is a carousel: cards of one size, arrows that page them @smoke",
   await expect(earlier).toBeEnabled();
   await earlier.click();
   await expect.poll(() => row.evaluate((el) => el.scrollLeft)).toBe(0);
+
+  // Round 27 (Georges: "the top carousel should be draggable not just pressing arrows"): a drag across the row scrolls
+  // it; the card under the pointer does not open.
+  const before = page.url();
+  const rowBox = (await row.boundingBox())!;
+  const [x, y] = [rowBox.x + rowBox.width - 40, rowBox.y + rowBox.height / 2];
+  await page.mouse.move(x, y);
+  await page.mouse.down();
+  await page.mouse.move(x - 200, y, { steps: 12 });
+  await page.mouse.up();
+  await expect.poll(() => row.evaluate((el) => el.scrollLeft)).toBeGreaterThan(50);
+  expect(page.url()).toBe(before);
 });

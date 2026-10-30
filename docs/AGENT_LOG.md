@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-30 · claude · stack/r34/09-strip-drag · #432
+- Done: Round 27 PR 9 (Georges: "the top carousel should be draggable not just pressing arrows"). Pointer drag scrolls the strip's row (capture after 4 px, smooth scrolling off while dragging, the click after a drag swallowed); the wheel scrolls it too.
+- Tests: written first: a 200 px drag scrolls past 50 px and the page stays.
+- Scope/decisions: pointer events, no library.
+- Next: PR 10, the Tasks blocks.
+
 ## 2026-10-30 · claude · stack/r34/08-card-opens-game · #431
 - Done: Round 27 PR 8 (Georges: "i should be able to click at a card and enter the game"). A games card's whole art band is a link to the hub (`draggable={false}` so the card still reorders).
 - Tests: written first: the band is a 150 px link named after the game and opens the hub.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: the store's unit tests cover the writes, the listing and the budget; the mirror's dry run through the new import chain (the store from `apps/server`, `aws4fetch` from the root install) lists Endfield's 212 images; `actionlint` on the workflow.
 - Scope/decisions: the plan counts every picture as a write at 120 KB, generous on purpose; the first real run against the bucket is the proof, its budget lines in the report.
 - Next: the docs and the handoff.
-
-## 2026-10-25 · claude · stack/r28/01-art-store-r2 · #389
-- Done: round 21 (Georges: "go R2", then "before doing any kind of operation with the bucket to avoid paying over limits check yourself from now"). Vercel Blob suspended the art store on the Hobby limit until 19 November; the store moves to a Cloudflare R2 bucket (`gacha-hub-art`, created through the Cloudflare connector; ADR 0014). One module (`apps/server/src/lib/artStore.ts`) writes through R2's S3 API with `aws4fetch` signing, lists a thousand keys a request, reads the month's usage from Cloudflare's GraphQL analytics (operations by class, the newest storage reading) and refuses any write that would take storage, class A or class B past 80 % of the free tier; a reading serves ten minutes of checks; no analytics token, no write. The app's uploads and the slot fetch (its whole batch checked first) go through it; Settings → Keys takes the six values (account, bucket, Access Key ID, Secret Access Key, public URL, analytics token); the web reads the art at the bucket's `/assets` unless `ASSET_BASE` overrides; the mirror workflow's endpoint hands out the keys. `@vercel/blob` left the server; DESIGN.md §6 lists `aws4fetch` in its place; ADR 0013 superseded.
-- Tests: written first: the operation classes, the usage from an analytics answer (an empty month too), the budget verdicts (a plan under the share with the three meters' lines; past it on each meter, named), the signed PUT to the bucket's address with its headers, the paged list following the continuation token, the usage request with the token from the first of the month, the refusals (no token; over the budget), the ten-minute reading. The cron OIDC test hands the R2 keys to the mirror workflow and derives the asset base.
-- Scope/decisions: R2 over Vercel Pro, over waiting, over a second account and over Supabase Storage (ADR 0014); 80 % as the ceiling; an operation the pricing list does not name counts as class A.
-- Next: the mirror on the same store.
