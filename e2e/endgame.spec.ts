@@ -7,7 +7,7 @@ test("a game's Endgame tab: this cycle's rewards, a card per mode to type result
   const created = await page.request.post("/api/instances", { data: { gameKey: "zzz" } });
   const { id } = (await created.json()) as { id: string };
 
-  await page.goto(`/games/${id}`);
+  await page.goto(`/games/${id}/activities`);
   await page.getByRole("navigation", { name: "Game screens" }).getByRole("link", { name: "Endgame" }).click();
   await expect(page).toHaveURL(new RegExp(`/games/${id}/endgame$`));
 

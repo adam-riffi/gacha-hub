@@ -84,7 +84,7 @@ test("cards in one row stand the same height: Activities' cadences, its cycles a
   };
   const same = (values: number[], what: string) => expect(Math.max(...values) - Math.min(...values), `${what}: ${values.join(", ")}`).toBeLessThanOrEqual(1);
 
-  await page.goto(`/games/${id}`);
+  await page.goto(`/games/${id}/activities`);
   await expect(page.getByRole("heading", { name: "Daily" })).toBeVisible();
   same(await heights(".act-cadences > .card"), "cadences");
   same(await heights(".act-bottom > .card"), "cycles and version");

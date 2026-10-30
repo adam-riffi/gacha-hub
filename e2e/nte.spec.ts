@@ -50,7 +50,7 @@ test("Neverness to Everness: the Console tab lists the cartridge series as its s
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "nte" } })).json()) as { id: string };
-  await page.goto(`/games/${id}`);
+  await page.goto(`/games/${id}/activities`);
   await page.getByRole("navigation", { name: "Game screens" }).getByRole("link", { name: "Console" }).click();
   await expect(page).toHaveURL(new RegExp(`/games/${id}/gear$`));
   await page.getByRole("combobox", { name: "Open a set" }).click();

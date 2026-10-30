@@ -12,7 +12,7 @@ test("the big spots show the game's icon, never a logo; an uploaded icon takes t
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "genshin" } })).json()) as { id: string };
   try {
-    await page.goto(`/games/${id}`);
+    await page.goto(`/games/${id}/activities`);
     const headMark = page.getByRole("region", { name: "Genshin Impact" }).locator("img.game-mark.is-art").first();
     await expect(headMark).toHaveAttribute("src", /mzstatic\.com/);
     await page.goto("/library");
@@ -20,10 +20,10 @@ test("the big spots show the game's icon, never a logo; an uploaded icon takes t
 
     // The owner's own icon, uploaded, takes the header; an uploaded logo does not.
     expect((await page.request.put("/api/art/genshin/logo", { multipart: { file: { name: "logo.png", mimeType: "image/png", buffer: PNG } } })).ok()).toBe(true);
-    await page.goto(`/games/${id}`);
+    await page.goto(`/games/${id}/activities`);
     await expect(page.getByRole("region", { name: "Genshin Impact" }).locator("img.game-mark.is-art").first()).toHaveAttribute("src", /mzstatic\.com/);
     expect((await page.request.put("/api/art/genshin/icon", { multipart: { file: { name: "icon.png", mimeType: "image/png", buffer: PNG } } })).ok()).toBe(true);
-    await page.goto(`/games/${id}`);
+    await page.goto(`/games/${id}/activities`);
     await expect(page.getByRole("region", { name: "Genshin Impact" }).locator("img.game-mark.is-art").first()).toHaveAttribute("src", /\/uploads\//);
   } finally {
     await page.request.delete("/api/art/genshin/logo");

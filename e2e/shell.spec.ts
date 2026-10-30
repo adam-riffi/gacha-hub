@@ -36,14 +36,15 @@ test("the rail moves between sections and the strip sets the scope @smoke", asyn
   // One user, self-hosted (round 4): no Admin section in the rail.
   await expect(rail.getByRole("link", { name: "Admin" })).toHaveCount(0);
 
-  // On Home a game shows the same page for that game: only the accent changes.
+  // On Home a game in the strip opens its hub, where its dashboard lives (round 27, Georges: "each game's dashboard is
+  // outside of its category"); the accent follows.
   await expect(strip.getByRole("link", { name: "Overview" })).toHaveAttribute(
     "aria-current",
     "page",
   );
   expect(await accent(page)).toBe("#ff2d95");
   await strip.getByRole("link", { name: "Honkai: Star Rail" }).click();
-  await expect(page).toHaveURL(/\/\?game=hsr$/);
+  await expect(page).toHaveURL(new RegExp(`/games/${id}$`));
   await expect(strip.getByRole("link", { name: "Honkai: Star Rail" })).toHaveAttribute(
     "aria-current",
     "page",

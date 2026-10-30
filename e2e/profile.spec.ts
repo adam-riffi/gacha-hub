@@ -11,8 +11,8 @@ test("Profile: account, passes, status; its reminders live in Settings @smoke", 
   await page.goto(`/games/${id}/profile`);
   const tabs = page.getByRole("navigation", { name: "Game screens" });
   await expect(tabs.getByRole("link", { name: "Profile" })).toHaveAttribute("aria-current", "page");
-  // Activities is the hub's first tab again (round 4); an old link to the hub's overview lands on it.
-  await expect(tabs.getByRole("link").first()).toHaveText(/activities/i);
+  // The Overview (the game's dashboard) is the hub's first tab (round 27); an old link to it lands on the hub's root.
+  await expect(tabs.getByRole("link").first()).toHaveText(/overview/i);
   await page.goto(`/games/${id}/overview`);
   await expect(page).toHaveURL(new RegExp(`/games/${id}$`));
   await page.goto(`/games/${id}/profile`);

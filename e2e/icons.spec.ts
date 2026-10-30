@@ -31,7 +31,7 @@ test("a game's icon stands beside its name in the strip and in Home's tables; it
   expect((await mark.boundingBox())!.height).toBeGreaterThanOrEqual(32);
 
   // The hub's header keeps the logo, fitted in its square frame (round 26: one frame shape for every game spot).
-  await page.goto(`/games/${id}`);
+  await page.goto(`/games/${id}/activities`);
   const logo = page.locator("img.hub-icon");
   await expect(logo).toBeVisible();
   const logoBox = (await logo.boundingBox())!;

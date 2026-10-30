@@ -7,7 +7,7 @@ test("a game hub's header shows the account level and next resets, edits the pro
   const created = await page.request.post("/api/instances", { data: { gameKey: "wuwa" } });
   const { id } = (await created.json()) as { id: string };
 
-  await page.goto(`/games/${id}`);
+  await page.goto(`/games/${id}/activities`);
   const head = page.getByRole("region", { name: "Wuthering Waves" });
   await expect(head.getByRole("heading", { level: 1, name: "Wuthering Waves" })).toBeVisible();
   await expect(head).not.toContainText(/UTC\+1/); // the server and UID live in the Edit form and on Profile (round 27)
@@ -32,9 +32,9 @@ test("Endfield's hub has a Gear tab but no Planner: its tables publish gear sets
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "endfield" } })).json()) as { id: string };
   try {
-    await page.goto(`/games/${id}`);
+    await page.goto(`/games/${id}/activities`);
     const tabs = page.getByRole("navigation", { name: "Game screens" }).getByRole("link");
-    await expect(tabs).toHaveText(["Activities", "Endgame", "Pulls", "Characters", "Teams", "Weapons", "Gear", "Profile"]);
+    await expect(tabs).toHaveText(["Overview", "Activities", "Endgame", "Pulls", "Characters", "Teams", "Weapons", "Gear", "Profile"]);
   } finally {
     await page.request.delete(`/api/instances/${id}`);
   }

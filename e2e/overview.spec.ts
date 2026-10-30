@@ -2,8 +2,9 @@ import { expect, test } from "@playwright/test";
 
 const iso = (days: number) => new Date(Date.now() + days * 86_400_000).toISOString();
 
-// Home with a game picked is that game's dashboard (Georges's designs, 2026-10-11; on Home since round 4).
-test("Home with a game picked shows its dashboard: pulls, pity and banners at a glance, each opening its screen @smoke", async ({ page }) => {
+// A game's dashboard (Georges's designs, 2026-10-11): on Home with the game picked since round 4, the hub's Overview tab
+// since round 27 ("each game's dashboard is outside of its category"); the old Home link lands there.
+test("a game's hub opens on its dashboard: pulls, pity and banners at a glance, each opening its screen @smoke", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
@@ -13,7 +14,9 @@ test("Home with a game picked shows its dashboard: pulls, pity and banners at a 
   await page.request.post("/api/admin/payload", { data: { kind: "banners", gameKey: "hsr", items: [{ key: "e2e-overview", name: "E2E overview warp", kind: "character", startsAt: iso(-1), endsAt: iso(20) }] } });
 
   await page.goto("/?game=hsr");
+  await expect(page).toHaveURL(new RegExp(`/games/${id}$`));
   await expect(page.getByRole("navigation", { name: "Scope" }).getByRole("link", { name: "Honkai: Star Rail" })).toHaveAttribute("aria-current", "page");
+  await expect(page.getByRole("navigation", { name: "Game screens" }).getByRole("link", { name: "Overview" })).toHaveAttribute("aria-current", "page");
 
   // 1,600 Stellar Jade make 10 warps, and 3 passes: 13.
   const pulls = page.getByRole("region", { name: "Pulls" });
