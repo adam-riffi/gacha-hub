@@ -256,3 +256,37 @@ test("Tasks: priority in one click; goals two by two; Farm today large, and the 
   await expect(week.getByRole("region", { name: "Any day" }).getByRole("img", { name: "Slime Condensate" }).first()).toBeVisible();
   await page.request.delete(`/api/tasks/${side.id}`);
 });
+
+// Round 27 (Georges, 2026-10-30: "overview task screen is crowded, each game should be separated"): with no game picked,
+// the goals and the farm chips stand in a block per game under the game's name; no game mark repeated on every card.
+test("Tasks across games: a block per game for the goals and for the farm chips @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id: hsr } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  const { id: zzz } = (await (await page.request.post("/api/instances", { data: { gameKey: "zzz" } })).json()) as { id: string };
+  // Gepard and Soldier 11, whom no other journey plans.
+  for (const [id, catalogId] of [[hsr, "1104"], [zzz, "1041"]] as const) {
+    const plan = await page.request.post(`/api/instances/${id}/plans/generate`, { data: { kind: "character", catalogId, level: { from: 1, to: 40 } } });
+    expect(plan.ok()).toBe(true);
+  }
+  try {
+    await page.goto("/tasks");
+    const goals = page.getByRole("region", { name: "Goals" });
+    const hsrBlock = goals.getByRole("region", { name: "Honkai: Star Rail goals" });
+    const zzzBlock = goals.getByRole("region", { name: "Zenless Zone Zero goals" });
+    await expect(hsrBlock.getByRole("article", { name: "Farm Gepard" })).toBeVisible();
+    await expect(zzzBlock.getByRole("article", { name: "Farm Soldier 11" })).toBeVisible();
+    await expect(hsrBlock.getByRole("article", { name: "Farm Soldier 11" })).toHaveCount(0);
+    await expect(goals.locator(".tk-game")).toHaveCount(0);
+    // The farm chips in blocks per game too.
+    const farmToday = page.getByRole("region", { name: "Farm today" });
+    const chips = await farmToday.locator(".tk-chip").count();
+    await expect(farmToday.locator(".tk-game-block .tk-chip")).toHaveCount(chips);
+  } finally {
+    for (const id of [hsr, zzz]) {
+      const tasks = (await (await page.request.get(`/api/tasks?scope=game&refId=${id}`)).json()) as { id: string; title: string; materialId: string | null }[];
+      for (const task of tasks.filter((candidate) => /^Farm (Gepard|Soldier 11)$/.test(candidate.title) && !candidate.materialId)) await page.request.delete(`/api/tasks/${task.id}`);
+    }
+  }
+});
