@@ -170,7 +170,7 @@ test("Tasks: a character goal shows its plan (each ascension, each talent), and 
   await page.request.delete(`/api/tasks/${weapon.id}`);
 });
 
-test("Tasks: Farm today shows who it is for, its materials on a click; the game as an icon on the overview only @smoke", async ({ page }) => {
+test("Tasks: Farm today shows who it is for, its materials on a click; the game as its block's heading on the overview @smoke", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
@@ -187,11 +187,14 @@ test("Tasks: Farm today shows who it is for, its materials on a click; the game 
   await expect(farm).not.toContainText("Genshin");
   await expect(farm).not.toContainText("for Lisa");
 
+  // Across games (round 27: a block per game), the game is the block's heading, not a mark on every chip.
   await page.goto("/tasks");
-  await expect(page.getByRole("region", { name: "Farm today" }).getByRole("img", { name: "Genshin Impact" }).first()).toBeVisible();
+  const block = page.getByRole("region", { name: "Farm today" }).getByRole("group", { name: "Genshin Impact farm" });
+  await expect(block.getByRole("img", { name: "Lisa" }).first()).toBeVisible();
+  await expect(block.locator(".tk-chip-game")).toHaveCount(0);
 });
 
-test("Tasks: a goal shows its own unit as its icon and who it is for; the game as an icon on the overview only @smoke", async ({ page }) => {
+test("Tasks: a goal shows its own unit as its icon and who it is for; the game as its block's heading on the overview @smoke", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
@@ -210,8 +213,11 @@ test("Tasks: a goal shows its own unit as its icon and who it is for; the game a
   await expect(card.getByRole("img", { name: "Genshin Impact" })).toHaveCount(0);
   await expect(card).not.toContainText("Genshin");
 
+  // Across games (round 27: a block per game), the game is the block's heading, not a mark on the card.
   await page.goto("/tasks");
-  await expect(page.getByRole("region", { name: "Goals" }).getByRole("article", { name: "E2E farm a set" }).getByRole("img", { name: "Genshin Impact" })).toBeVisible();
+  const block = page.getByRole("region", { name: "Goals" }).getByRole("group", { name: "Genshin Impact goals" });
+  await expect(block.getByRole("article", { name: "E2E farm a set" })).toBeVisible();
+  await expect(block.getByRole("article", { name: "E2E farm a set" }).getByRole("img", { name: "Genshin Impact" })).toHaveCount(0);
   await page.request.delete(`/api/tasks/${goal.id}`);
 });
 
@@ -273,8 +279,8 @@ test("Tasks across games: a block per game for the goals and for the farm chips 
   try {
     await page.goto("/tasks");
     const goals = page.getByRole("region", { name: "Goals" });
-    const hsrBlock = goals.getByRole("region", { name: "Honkai: Star Rail goals" });
-    const zzzBlock = goals.getByRole("region", { name: "Zenless Zone Zero goals" });
+    const hsrBlock = goals.getByRole("group", { name: "Honkai: Star Rail goals" });
+    const zzzBlock = goals.getByRole("group", { name: "Zenless Zone Zero goals" });
     await expect(hsrBlock.getByRole("article", { name: "Farm Gepard" })).toBeVisible();
     await expect(zzzBlock.getByRole("article", { name: "Farm Soldier 11" })).toBeVisible();
     await expect(hsrBlock.getByRole("article", { name: "Farm Soldier 11" })).toHaveCount(0);
