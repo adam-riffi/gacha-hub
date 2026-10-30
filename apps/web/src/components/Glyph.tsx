@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 /** The kinds a thing without art can be drawn as. */
-export type GlyphKind = "character" | "weapon" | "standard" | "bangboo" | "gear" | "material" | "game" | "task";
+export type GlyphKind = "character" | "weapon" | "standard" | "bangboo" | "gear" | "material" | "game";
 
 export const GLYPHS: Record<GlyphKind, ReactNode> = {
   character: (
@@ -24,13 +24,6 @@ export const GLYPHS: Record<GlyphKind, ReactNode> = {
     <>
       <rect x="3" y="7" width="18" height="11" rx="5" />
       <path d="M7.5 12.5h3M9 11v3M15 12h0M17 14h0" />
-    </>
-  ),
-  // A task without a picture (round 25): a ticked box.
-  task: (
-    <>
-      <rect x="4" y="4" width="16" height="16" rx="3" />
-      <path d="m8 12 3 3 5-6" />
     </>
   ),
 };

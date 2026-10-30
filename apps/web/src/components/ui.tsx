@@ -25,7 +25,6 @@ export function Countdown({
   }
   return (
     <span className={`chip ${hot ? "hot" : ""}`}>
-      <i aria-hidden="true" />
       {prefix} {formatRemaining(at)}
     </span>
   );

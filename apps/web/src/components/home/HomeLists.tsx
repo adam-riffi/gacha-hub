@@ -30,7 +30,6 @@ export function homeGames(games: DashGame[], events: DashboardData["timeline"]["
 
 const Due = ({ at }: { at: Date }) => (
   <span className={`chip ${isUrgent(at.toISOString(), "deadline") ? "hot" : ""}`}>
-    <i aria-hidden="true" />
     {WHEN.format(at)}
   </span>
 );

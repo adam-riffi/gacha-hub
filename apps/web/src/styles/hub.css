@@ -26,7 +26,6 @@
 .hub-resets dd { margin: 10px 0 0; font: 600 24px/1 var(--font-display); letter-spacing: 0.04em; text-transform: uppercase; font-variant-numeric: tabular-nums; }
 .hub-resets dd .chip { font: inherit; letter-spacing: inherit; }
 .hub-resets dd .chip:not(.hot) { color: var(--text); }
-.hub-resets dd .chip > i { display: none; }
 
 /* The tabs wrap onto a second line rather than scroll (round 25: "weird slider on the games panel"). */
 .hub-tabs { display: flex; flex-wrap: wrap; gap: 0 36px; margin-bottom: 32px; border-bottom: 1px solid var(--hairline); }
@@ -77,9 +76,6 @@ label.act-row { margin: 0; cursor: pointer; color: var(--text); font: 400 15px/1
 .act-row.done .act-title { color: var(--text-muted); text-decoration: line-through; }
 .act-row .tag { font-size: 13px; }
 .act-row .font-mono { font-size: 13px; white-space: nowrap; }
-/* A task without a picture: a drawn tile in the same frame (round 25). */
-.list-art-glyph { display: inline-flex; align-items: center; justify-content: center; color: var(--text-muted); }
-.list-art-glyph .glyph { width: 20px; height: 20px; stroke: currentColor; }
 .act-empty { margin: 10px 0; font-size: 14px; }
 .act-add-btn { margin-top: 16px; }
 .act-add { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px; margin-top: 16px; }
