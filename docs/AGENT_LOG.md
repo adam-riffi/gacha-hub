@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-30 · claude · stack/r33/03-build-status-off · #417
+- Done: Round 26 PR 3 (Georges: "let's remove the built/unbuilt for now it cause too much confusion i'd rather have it as a simple tag within the character screen itself"). Gone from the Characters page: the status chips, the "Build status" sort (now "Owned first"), the card badge, the selection's status select; the sheet keeps its select, the Builds table its column.
+- Tests: written first: no status combobox in the selection, no chips, no sort option, no "Unbuilt" on the card; the sheet still saves the status.
+- Scope/decisions: removal only; the field stays in the data and the API.
+- Next: PR 4, the decorative glyphs.
+
 ## 2026-10-30 · claude · stack/r33/02-rarity-tiles · #416
 - Done: Round 26 PR 2 (Georges: "i'd rather have 5 then a star and also have icons like rarity + type/weapon + element icon all 3 stacked on top of each other"). `Rarity` renders the figure and one star in its colour everywhere; a character card's rarity, weapon type and element are three 40 px icon tiles down its top-left edge, named for screen readers, a three-letter stand-in where a game has no icon.
 - Tests: written first: Kafka's rarity holds one star and "5"; her three tiles share a left edge, follow one another, square at 36 px or more; the characters journey reads her path from the tile's label.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: the sources test (every entry a real slot with a credit).
 - Scope/decisions: none.
 - Next: deploy at Georges's word; a catalog refresh for Wuthering Waves and NTE; Endfield's banner dates from Game8.
-
-## 2026-10-21 · claude · stack/r24/07-wiki-feed · #374
-- Done: round 17 (Georges: "setup a pipeline to ingest any data like banner cards, event cards"). Wuthering Waves has no official feed; its wiki keeps a page per convene and per event, each with an infobox (type, server-time dates, picture) and, for a convene, the rate-up pool. The cron tick now reads the newest 60 pages of both categories through the wiki's API, parses them with the history parser (branch 04) and an event parser of the same shape, swaps each picture's file path for the static URL the API gives (Fandom's file paths refuse a browser on another site; its static host serves it), and upserts banners (featured units by catalog id) and events like the HoYoverse feeds, at most hourly. The feed upsert is one function both feeds share. Fandom's hosts join the image policy.
-- Tests: written first: the parser (a banner per convene page keyed to the wiki, its units, its picture; an event per in-game page named by its infobox, web events left out) and the picture resolver (static URLs by file name, unknown files keep their path); the official feed's tests and the cron's still pass.
-- Scope/decisions: Wuthering Waves only: Zenless has the official feed, and the Endfield and NTE wikis' event pages carry no dates. Pictures are hotlinked from Fandom's static host like HoYoverse's, not copied; the Home card, the Pulls card, the timeline and the version card already show them.
-- Next: the sources for the new chores' icons, the docs, the handoff.
