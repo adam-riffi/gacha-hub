@@ -164,7 +164,6 @@ export function TasksPage() {
             <div className="spread">
               <h3>Farm today</h3>
               <span className="row tk-farm-tools">
-                {weekdays.length === 1 && <span className="font-mono text-muted">game day: {WEEKDAY[weekdays[0]!]}</span>}
                 <Segmented label="Farm view" value={week ? "week" : "today"} onChange={(value) => setWeek(value === "week")} options={[{ value: "today", label: "Today" }, { value: "week", label: "Week" }]} />
               </span>
             </div>
