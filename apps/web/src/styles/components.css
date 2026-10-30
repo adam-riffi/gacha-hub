@@ -185,7 +185,8 @@ tbody tr:hover { background: var(--surface-2); }
 .is-inverted { filter: invert(1); }
 
 /* A rarity as a row of stars in its colour (round 23), the same size wherever it stands. */
-.rarity { --r: var(--text-muted); display: inline-flex; align-items: center; gap: 1px; color: var(--r); }
+.rarity { --r: var(--text-muted); display: inline-flex; align-items: center; gap: 2px; color: var(--r); }
+.rarity b { font: 700 15px/1 var(--font-display); }
 .rarity svg { width: 16px; height: 16px; fill: currentColor; }
 .rarity[data-rarity="3"] { --r: var(--rarity-3); }
 .rarity[data-rarity="4"] { --r: var(--rarity-4); }
