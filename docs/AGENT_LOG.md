@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-30 · claude · stack/r34/05-hub-header · #428
+- Done: Round 27 PR 5 (Georges: "i wanna be able to see [the art] as well as see the info + i don't need my region + UID at all time, use the top icons for the games like paimon"). The hub's header: a solid block at the left with the game's icon (upload, store, emblem; never a logo), name, level and resets; the key art whole at the right (`--block: clamp(460px, 52%, 760px)`); the server and UID chips gone (the Edit form and Profile keep them); the games cards show the icon too.
+- Tests: written first: the block opaque, the art beside it 400 px or wider, no UTC chip, the icon frame square ≥ 95 px; an uploaded icon takes the header and an uploaded logo does not; the emblem in the frames when no icon is up.
+- Scope/decisions: the level chip stays.
+- Next: PR 6, banners and events.
+
 ## 2026-10-30 · claude · stack/r34/04-reminders-in-settings · #427
 - Done: Round 27 PR 4 (Georges: "reminders are settings not features"). Settings → Notifications → Game reminders: a block per game (`components/settings/GameReminders.tsx`) with the stamina, dailies, endgame, monthly pass, battle pass and domains switches and the finer options; the switches left the Activities stamina card, the Endgame cycle card and the Profile's passes and Game reminders card.
 - Tests: written first: each switch saves to the game's rule from Settings; no checkbox on the stamina card, the cycle card or the Profile's passes; no Game reminders region on Profile.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: docs only.
 - Scope/decisions: none.
 - Next: deploy at Georges's word; the mirror for the new units' art.
-
-## 2026-10-23 · claude · stack/r27/03-endfield-history · #385
-- Done: round 20, the last game without a dated history (Georges, round 17: "still no banner history"). The Endfield wiki keeps its banners in a Cargo table, a row per run with the rate-up operator, the limited roster, the quota pick and each server group's times; `historyFromWikiTable` reads it into the same history the Fandom wikis' pages give the other games (`historyFromWikiPages`; the name matcher shared between the two): 16 runs from Scars of the Forge (January 2026) to The Hearth Fire Beckons the Starry Flow (November), in Americas/Europe time (the Game8 feed's clock), the rate-up operator first, then the limited roster, the quota pick not featured. `npm run catalog:banners-wiki -- endfield` re-reads one wiki alone. Every game has a dated history now: the last-seen flags on Endfield's Characters and Weapons fill from it. Wuthering Waves' history re-read against the 3.7 catalog: 163 runs, six new, twenty-two with the units the 3.1 catalog did not know.
-- Tests: written first: the table reader (a run per dated row at UTC-5, the rate-up operator then the roster each once with the catalog's rarity, the quota pick not featured, unknown names apart, an undated row left out); the loaded history features the catalog's operators in date order; Endfield joins the games with a wiki history.
-- Scope/decisions: two readers of one history shape rather than one reader with two modes.
-- Next: the docs and the handoff.
