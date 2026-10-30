@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-30 · claude · stack/r33/07-goal-window · #421
+- Done: Round 26 PR 7 (Georges: "the new goal window is unusable it is way too small you can't do anything in it"). The quick build is 1180 px wide (or the screen less 48), its form in two columns, 48 px controls with 18 px type, 15 px labels, 72 px faces, 16 px picker lists.
+- Tests: written first: from the Planner's New goal the dialog is 1000 px or wider; the ascension select, a skill spinbutton, the weapon and set pickers and Make goal are 44 px or taller; the labels 15 px.
+- Scope/decisions: styles only.
+- Next: PR 8, the carousel.
+
 ## 2026-10-30 · claude · stack/r33/06-weapons-groups · #420
 - Done: Round 26 PR 6 (Georges: "the weapons screen needs some more too it's hard to navigate"). The cards stand in groups by weapon type, each under a heading with the type's icon and count; owned copies first within a group; a type filter leaves one group; hand-named weapons in an unnamed group.
 - Tests: written first: Star Rail's page has seven or more group headings; Destruction's holds Something Irreplaceable and not In the Night, with its count; picking Nihility leaves one heading.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: docs only.
 - Scope/decisions: none.
 - Next: deploy at Georges's word.
-
-## 2026-10-21 · claude · stack/r25/03-width-1100 · #378
-- Done: round 18, the audits round (Georges, round 15: desktop windows from 1100 to 2560 px, no phones). Every screen toured at 1100, 1920 and 2560: at 1100 the shell's 1440 px floor cut Home's right third off. The floor drops to 1100; below 1440 (`responsive.css`, loaded last so it wins over each screen's sheet) Home's top row and heatmap, drawings at fixed sizes (496 + 240 + 424 px charts, an 868 px heatmap), zoom down to the window the way the whole shell zooms up on wide ones; Home's lists take one column; Characters show three cards a row, Endgame two tiles, the timeline a 300 px panel and 170 px row heads; the games list's figures take the row's width with today's line and the move buttons under them, the key art narrower. Nothing changes at 1440 and above.
-- Tests: written first: a journey at 1100 px opens Home, the single-game dashboard, the library, the timeline and a game's Activities, Characters, Pulls and Endgame and finds no horizontal scroll on any; another at 2560 px the same for Home and Activities. A script in the session listed the elements reaching past the window on each screen (the Goal types bars, the heatmap's readout, the games list's buttons) until none did.
-- Scope/decisions: zoom over re-flow for the fixed-size drawings: their labels sit at pixel positions, so shrinking the boxes would misplace them; a zoom keeps every drawing whole. Below 1100 is out of scope.
-- Next: the docs and the handoff.
