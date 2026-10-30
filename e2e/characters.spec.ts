@@ -172,8 +172,10 @@ test("Characters: the stats a card shows, picked on the card; a set's bonus adde
 });
 
 // Ownership apart from builds, and the selection's actions doing what they say (Georges, round 6: "I cannot change the status
-// from owned to not owned; selecting multiple characters achieves nothing, I should be able to change their status").
-test("Characters: a built character can be marked not owned; the selection sets owned and build status @smoke", async ({ page }) => {
+// from owned to not owned; selecting multiple characters achieves nothing, I should be able to change their status"); the
+// build status itself left the page in round 26 ("remove the built/unbuilt for now, it causes too much confusion, i'd
+// rather have it as a simple tag within the character screen itself"): the sheet alone keeps it.
+test("Characters: a built character can be marked not owned; the selection sets owned; the build status lives on the sheet alone @smoke", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
@@ -194,10 +196,18 @@ test("Characters: a built character can be marked not owned; the selection sets 
     // The build stays.
     await expect(card).toContainText("Lv 60");
 
-    await selection.getByRole("combobox", { name: "Build status" }).selectOption("good");
-    await expect.poll(async () => ((await (await page.request.get(`/api/characters/${build.id}`)).json()) as { buildStatus: string }).buildStatus).toBe("good");
+    // No status on the page: not in the selection, not as chips, not as a sort, not on the card.
+    await expect(selection.getByRole("combobox", { name: "Build status" })).toHaveCount(0);
+    await expect(page.getByRole("button", { name: /^(Unbuilt|Perfect|Good|Building) \d/ })).toHaveCount(0);
+    await expect(page.getByRole("combobox", { name: "Sort" }).getByRole("option", { name: "Build status" })).toHaveCount(0);
+    await expect(card).not.toContainText(/unbuilt/i);
     await selection.getByRole("button", { name: "Own", exact: true }).click();
     await expect(card).not.toContainText("Not owned");
+    // The sheet keeps the tag.
+    await page.goto(`/characters/${build.id}`);
+    await page.getByRole("combobox", { name: "Build status" }).selectOption("good");
+    await page.getByRole("button", { name: "Save" }).click();
+    await expect.poll(async () => ((await (await page.request.get(`/api/characters/${build.id}`)).json()) as { buildStatus: string }).buildStatus).toBe("good");
   } finally {
     await page.request.delete(`/api/characters/${build.id}`);
   }
