@@ -22,10 +22,19 @@ test("the hub header reads over its art, its tabs never scroll, FULL stands larg
   try {
     await page.goto(`/games/${id}`);
     const head = page.getByRole("region", { name: "Honkai: Star Rail" });
-    await expect(head.getByText(/UTC\+1/)).toBeVisible();
-    for (const locator of [head.locator(".hub-chips .badge").first(), head.locator(".hub-resets")]) {
-      expect(alpha(await locator.evaluate((el) => getComputedStyle(el).backgroundColor)), "a solid ground").toBeGreaterThanOrEqual(0.8);
-    }
+    // Round 27 (Georges: "i wanna be able to see [the art] as well as see the info + i don't need my region + UID at all
+    // times, use the top icons"): the icon, the name and the resets on a solid block at the left; the key art whole on
+    // the right of it; no server or UID chip.
+    const block = head.locator(".hub-block");
+    expect(alpha(await block.evaluate((el) => getComputedStyle(el).backgroundColor)), "a solid block").toBeGreaterThanOrEqual(0.95);
+    const [blockBox, artBox] = [(await block.boundingBox())!, (await head.locator(".hub-hero").boundingBox())!];
+    expect(artBox.x, "the art beside the block").toBeGreaterThanOrEqual(blockBox.x + blockBox.width - 40);
+    expect(artBox.width, "the art wide enough to see").toBeGreaterThanOrEqual(400);
+    await expect(block.locator(".hub-resets")).toBeVisible();
+    await expect(head.getByText(/UTC\+1/)).toHaveCount(0);
+    const icon = (await head.locator(".hub-icon").boundingBox())!;
+    expect(Math.abs(icon.width - icon.height)).toBeLessThanOrEqual(2);
+    expect(icon.height).toBeGreaterThanOrEqual(95);
     const tabs = page.getByRole("navigation", { name: "Game screens" });
     expect(await tabs.evaluate((el) => getComputedStyle(el).overflowX)).not.toMatch(/auto|scroll/);
     expect(await tabs.evaluate((el) => el.scrollWidth <= el.clientWidth + 1)).toBe(true);
