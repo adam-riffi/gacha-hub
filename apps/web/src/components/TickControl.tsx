@@ -47,7 +47,7 @@ export function TickRow({ instanceId, task, icon, children }: { instanceId: stri
       <span className="tick-boxes">
         <TickBox instanceId={instanceId} task={task} />
       </span>
-      <span className="tick-title">
+      <span className="tick-title" title={task.title}>
         {icon}
         {task.title}
       </span>
