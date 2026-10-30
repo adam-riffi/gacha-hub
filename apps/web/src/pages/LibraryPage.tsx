@@ -157,7 +157,6 @@ function GameRow(props: {
       {/* A card (round 24, Georges: "you can find better cards"): the key art across the top, the icon and the name over it. */}
       <div className="lib-art">
         <HeroArt gameKey={dashGame.gameKey} className="lib-hero" />
-        <span className="lib-grip" aria-hidden="true">≡</span>
         <GameMark gameKey={dashGame.gameKey} named art="logo" className="lib-icon" />
         <div className="lib-name">
           <h2 style={{ ["--c" as string]: dashGame.accent }}>{dashGame.name}</h2>
