@@ -41,3 +41,22 @@ test("the Activities rows share one grid, the pass row too; a title or a note st
     await page.request.delete(`/api/tasks/${long.id}`);
   }
 });
+
+// Round 28 (Georges: "daily weekly missions rectangular while everything else is square"): a counted task's steps are
+// squares, like every other box on the lists.
+test("a counted task's steps are squares @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  // Zenless: its Daily Missions count four.
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "zzz" } })).json()) as { id: string };
+  await page.goto(`/games/${id}/activities`);
+  const steps = page.getByRole("region", { name: "Daily" }).getByRole("group", { name: "Daily Missions" }).locator(".tick-step");
+  await expect(steps.first()).toBeVisible();
+  const sizes = await steps.evaluateAll((els) => els.map((el) => [Math.round(el.getBoundingClientRect().width), Math.round(el.getBoundingClientRect().height)]));
+  expect(sizes.length).toBeGreaterThanOrEqual(2);
+  for (const [width, height] of sizes) {
+    expect(width, `${width}x${height}`).toBeGreaterThanOrEqual(20);
+    expect(Math.abs(width! - height!), `${width}x${height}`).toBeLessThanOrEqual(1);
+  }
+});
