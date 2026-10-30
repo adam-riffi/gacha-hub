@@ -1,7 +1,7 @@
 import { useState, type CSSProperties } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { elementColor, getGame, type CharacterDto, type OwnershipDto, type TeamDto } from "@gacha/shared";
+import { CharacterBuild, elementColor, getGame, weaponHolder, type CharacterDto, type OwnershipDto, type TeamDto } from "@gacha/shared";
 import { LoadError } from "../components/LoadError";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
@@ -17,9 +17,11 @@ import type { InstanceDetail } from "../lib/types";
 /**
  * A game's Teams (Georges, 2026-10-10: "no obvious way to make teams, look at
  * teams, delete teams or manage teams"): every team as a card of its members,
- * each tinted to its element and opening its build or its page; add members
- * from the units you own (then the rest), remove them, rename the team in
- * place, delete it; a new team by name at the top.
+ * each its face (round 26: "bigger character icons, i only need to see the
+ * characters, and their weapons and their sets, nothing more") tinted to its
+ * element and opening its build or its page, its weapon and its completed sets
+ * under it; add members from the units you own (then the rest), remove them,
+ * rename the team in place, delete it; a new team by name at the top.
  */
 export function TeamsPage() {
   const { id } = useParams<{ id: string }>();
@@ -61,6 +63,14 @@ export function TeamsPage() {
   for (const build of builds.data ?? []) if (build.catalogId) ownedIds.add(build.catalogId);
   const units = [...(catalog?.characters ?? [])].sort((first, second) => Number(ownedIds.has(second.id)) - Number(ownedIds.has(first.id)) || first.name.localeCompare(second.name));
   const buildOf = (catalogId: string) => (builds.data ?? []).find((build) => build.catalogId === catalogId);
+  // The build's weapon, from the catalog by its id or by the name the sheet gave it; and the sets its gear completes.
+  const holder = weaponHolder(game);
+  const weaponOf = (build: CharacterDto | undefined) => {
+    const held = build && holder ? ((build.doc as Record<string, unknown>)[holder] as { catalogId?: string; name?: string } | undefined) : undefined;
+    const entry = held?.catalogId ? index?.weapons.get(held.catalogId) : undefined;
+    return entry ? { name: entry.name, icon: entry.icon } : held?.name ? { name: held.name, icon: undefined } : null;
+  };
+  const gearSets = new Map((catalog?.gear ?? []).map((gearSet) => [gearSet.name, gearSet]));
 
   return (
     <>
@@ -97,12 +107,24 @@ export function TeamsPage() {
                 const unit = index?.characters.get(member);
                 const build = buildOf(member);
                 const elementTint = elementColor(game.key, unit?.tag);
+                const weapon = weaponOf(build);
+                const sets = build ? new CharacterBuild(game, build.doc as Record<string, unknown>).completedSets : [];
                 return (
                   <div key={member} className="tm-slot" style={elementTint ? ({ "--el": elementTint } as CSSProperties) : undefined}>
-                    <GameIcon src={assetUrl(game.key, "character", unit?.icon)} fallback={communityAssetUrl(game.key, "character", unit?.icon)} alt={unit?.name ?? member} glyph="character" />
-                    <Link to={build ? `/characters/${build.id}` : `/games/${id}/units/${member}`}>{unit?.name ?? member}</Link>
-                    <span className="font-mono text-muted">{build ? (build.buildStatus === "none" ? "unbuilt" : build.buildStatus) : ownedIds.has(member) ? "no build" : "not owned"}</span>
-                    <button className="btn ghost sm" aria-label={`Remove ${unit?.name ?? member} from ${team.name}`} onClick={() => update.mutate({ teamId: team.id, members: team.members.filter((other) => other !== member) })}>
+                    <Link className="tm-face" to={build ? `/characters/${build.id}` : `/games/${id}/units/${member}`} title={unit?.name ?? member}>
+                      <GameIcon src={assetUrl(game.key, "character", unit?.icon)} fallback={communityAssetUrl(game.key, "character", unit?.icon)} alt={unit?.name ?? member} glyph="character" />
+                    </Link>
+                    {/* Its weapon and its sets, nothing more (round 26). */}
+                    <span className="tm-gear">
+                      {weapon && <CatalogIcon gameKey={game.key} kind="weapon" icon={weapon.icon} name={weapon.name} />}
+                      {sets.map((completedSet) => (
+                        <span key={completedSet.name} className="ch-set-icon" title={`${completedSet.name} ${completedSet.size}pc`}>
+                          <CatalogIcon gameKey={game.key} kind="gear" icon={gearSets.get(completedSet.name)?.icon} name={completedSet.name} />
+                          <b className="font-mono">{completedSet.size}</b>
+                        </span>
+                      ))}
+                    </span>
+                    <button className="btn ghost sm tm-remove" aria-label={`Remove ${unit?.name ?? member} from ${team.name}`} onClick={() => update.mutate({ teamId: team.id, members: team.members.filter((other) => other !== member) })}>
                       ×
                     </button>
                   </div>
