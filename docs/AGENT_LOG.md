@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-30 · claude · stack/r33/02-rarity-tiles · #416
+- Done: Round 26 PR 2 (Georges: "i'd rather have 5 then a star and also have icons like rarity + type/weapon + element icon all 3 stacked on top of each other"). `Rarity` renders the figure and one star in its colour everywhere; a character card's rarity, weapon type and element are three 40 px icon tiles down its top-left edge, named for screen readers, a three-letter stand-in where a game has no icon.
+- Tests: written first: Kafka's rarity holds one star and "5"; her three tiles share a left edge, follow one another, square at 36 px or more; the characters journey reads her path from the tile's label.
+- Scope/decisions: icons alone on the tiles; the sheet keeps its word badges.
+- Next: PR 3, the build status off the page.
+
 ## 2026-10-30 · claude · stack/r33/01-version-split · #415
 - Done: Round 26 PR 1 (Georges, 2026-10-30: "the versions cards are too big split them up … dont put BP and version in the same thing too"). The battle pass is a card of its own (name, picture, level, bar, weekly XP, Update); the version card holds the version's end and its events; the row under the cadences is three cards of one width (Cycles, Battle pass, Version).
 - Tests: written first: a "Battle pass" region and a "Version 3.2" region, both cards, neither holding the other; the pass typed in its own card; the same-height journey covers the three.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the parser (a banner per convene page keyed to the wiki, its units, its picture; an event per in-game page named by its infobox, web events left out) and the picture resolver (static URLs by file name, unknown files keep their path); the official feed's tests and the cron's still pass.
 - Scope/decisions: Wuthering Waves only: Zenless has the official feed, and the Endfield and NTE wikis' event pages carry no dates. Pictures are hotlinked from Fandom's static host like HoYoverse's, not copied; the Home card, the Pulls card, the timeline and the version card already show them.
 - Next: the sources for the new chores' icons, the docs, the handoff.
-
-## 2026-10-21 · claude · stack/r24/06-tasks · #373
-- Done: round 17 (Georges: "a lot of tasks are missing too"). Each game's default tasks list the rest of what it resets, with its cadence and steps: Genshin's expeditions (5), Realm Currency, Battle Pass dailies (4) and weeklies (3), reputation bounties and requests (3 each); Star Rail's Trailblaze Power, Nameless Honor dailies (4) and weeklies (3); Zenless's Battery, Hollow Zero, Ridu Weekly, City Fund weeklies (3); Wuthering Waves' Waveplates, a Tacet Field, Illusive Realm, Pioneer Podcast weeklies (3); Endfield's sign-in, a gift, Protocol Pass weeklies (3); NTE's Realm of Greed, Pink Paws Heist, Circle Bounty weeklies, City Stamina. Twenty-four tasks, each cited in `docs/games/<key>.md` (Game8, GameWith, the wikis, allthings.how). A profile made before takes them through the existing missing-defaults sync by title.
-- Tests: written first: every game's list has each new chore with its cadence and steps, and keeps keys and titles unique; the conformance suite still passes.
-- Scope/decisions: the in-game checklists' micro-items (Wuthering Waves' 22 Daily Activity entries) stay inside the one counted task that scores them; what gets its own box is a chore with its own reset and reward. Figures marked ~ in the docs are the guides' and not yet checked in-game.
-- Next: event and battle-pass cards with their pictures.
