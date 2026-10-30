@@ -112,11 +112,15 @@
 .tm-companion-pick { display: inline-flex; align-items: center; gap: 8px; }
 .tm-companion .gicon { width: 40px; height: 40px; font-size: 10px; }
 .tm-companion .pk { flex: 1; }
-.tm-slot { --el: var(--paper); display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; grid-template-rows: auto auto; column-gap: 10px; align-items: center; min-width: 0; padding: 8px; border: 1px solid var(--hairline); border-left: 3px solid var(--el); background: color-mix(in srgb, var(--el) 8%, var(--card)); }
-.tm-slot a { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.tm-slot .gicon { grid-row: span 2; width: 44px; height: 44px; }
-.tm-slot a { color: var(--text); font-weight: 600; }
-.tm-slot .btn { grid-row: 1 / span 2; grid-column: 3; }
+/* A member (round 26, Georges: "bigger character icons … the characters, their weapons and their sets, nothing more"):
+   its face at 96 px on its element's tint, its weapon and its sets at 40 px under it, the remove cross in the corner. */
+.tm-slot { --el: var(--paper); position: relative; display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 0; padding: 12px 8px 10px; border: 1px solid var(--hairline); border-top: 3px solid var(--el); background: color-mix(in srgb, var(--el) 8%, var(--card)); }
+.tm-face { display: block; line-height: 0; }
+.tm-face .gicon { width: 96px; height: 96px; font-size: 16px; }
+.tm-gear { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 40px; }
+.tm-gear .gicon { width: 40px; height: 40px; font-size: 12px; }
+.tm-gear .ch-set-icon b { font-size: 12px; }
+.tm-remove { position: absolute; top: 2px; right: 2px; }
 .tm-add { align-self: center; }
 .sh-used-add { margin-top: 12px; gap: 10px; }
 .sh-used-add select { width: auto; }
