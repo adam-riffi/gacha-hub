@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-30 · claude · stack/r34/08-card-opens-game · #431
+- Done: Round 27 PR 8 (Georges: "i should be able to click at a card and enter the game"). A games card's whole art band is a link to the hub (`draggable={false}` so the card still reorders).
+- Tests: written first: the band is a 150 px link named after the game and opens the hub.
+- Scope/decisions: Open hub stays in the foot.
+- Next: PR 9, the strip drag.
+
 ## 2026-10-30 · claude · stack/r34/07-owned-tiles · #430
 - Done: Round 27 PR 7 (Georges: "the owned icon should be colored and not grey out a frame + the frame colour should be the rarity"). An ownership tile's frame is its rarity's colour, dashed while not owned; the picture in colour once owned, greyed until then (the gradients went).
 - Tests: written first: Kafka's frame is the gold of 5 stars and her picture unfiltered; an unowned tile's picture greyscale.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the operation classes, the usage from an analytics answer (an empty month too), the budget verdicts (a plan under the share with the three meters' lines; past it on each meter, named), the signed PUT to the bucket's address with its headers, the paged list following the continuation token, the usage request with the token from the first of the month, the refusals (no token; over the budget), the ten-minute reading. The cron OIDC test hands the R2 keys to the mirror workflow and derives the asset base.
 - Scope/decisions: R2 over Vercel Pro, over waiting, over a second account and over Supabase Storage (ADR 0014); 80 % as the ceiling; an operation the pricing list does not name counts as class A.
 - Next: the mirror on the same store.
-
-## 2026-10-25 · claude · stack/r27/06-deployed · #388
-- Done: production deployed at Georges's word ("continue where you left off then deploy"): `main` at #387 (rounds 16–20: official and wiki feeds, the Game8 feed, the 1100 px floor, the three catalogs refreshed, Endfield's history) replaced #358 through the Vercel connector (a Git deployment of `main`, target production; no migration since #358). The smoke checks passed; a first cron tick filled the wiki and Game8 feeds in production (Wuthering Waves 46 banners and 38 events, NTE 13 boards, Endfield 4 banners and 7 events). The mirror run for the new art found the Vercel Blob store suspended (every upload refused, every read 403; a Hobby limit): catalog art falls back to the community CDNs, the owner's slot pictures are unavailable until the store is back. HANDOFF.md says so.
-- Tests: the smoke script against the live URL (`npm run smoke`); the smoke workflow on the deployment event.
-- Scope/decisions: nothing changed in the app for the suspended store: the fallback chain (ADR 0013) is what it is for; the store's state is Georges's to settle in Vercel, and Settings → Keys lets him clear the base meanwhile.
-- Next: the Blob store, then the mirror and the one click in Settings → Art; his keys; the features audit.

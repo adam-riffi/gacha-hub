@@ -154,8 +154,9 @@ function GameRow(props: {
         props.onDrop();
       }}
     >
-      {/* A card (round 24, Georges: "you can find better cards"): the key art across the top, the icon and the name over it. */}
-      <div className="lib-art">
+      {/* A card (round 24, Georges: "you can find better cards"): the key art across the top, the icon and the name over it;
+          the whole band opens the hub (round 27: "i should be able to click at a card and enter the game"). */}
+      <Link className="lib-art" to={`/games/${dashGame.instanceId}`} aria-label={`Open ${dashGame.name}`} draggable={false}>
         <HeroArt gameKey={dashGame.gameKey} className="lib-hero" />
         <GameMark gameKey={dashGame.gameKey} named className="lib-icon" />
         <div className="lib-name">
@@ -165,7 +166,7 @@ function GameRow(props: {
           </div>
           {dashGame.sleeping && <span className="badge">Asleep</span>}
         </div>
-      </div>
+      </Link>
       <div className="lib-cells">
         <Link className="lib-cell" to={`/games/${dashGame.instanceId}/characters`}>
           <span className="kpi-label">Owned</span>

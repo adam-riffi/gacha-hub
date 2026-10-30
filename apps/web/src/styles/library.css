@@ -12,7 +12,8 @@
 .lib-row.is-asleep { opacity: 0.55; }
 .lib-row.is-dragging { opacity: 0.4; }
 .lib-row.is-over { border-color: var(--accent); }
-.lib-art { position: relative; display: flex; align-items: flex-end; gap: 16px; height: 180px; padding: 16px 18px; background: var(--surface-2); }
+.lib-art { position: relative; display: flex; align-items: flex-end; gap: 16px; height: 180px; padding: 16px 18px; background: var(--surface-2); color: inherit; text-decoration: none; }
+.lib-art:hover .lib-name h2 { color: var(--accent); }
 .lib-art > :not(.lib-hero) { position: relative; z-index: 1; }
 .lib-hero { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
 /* The name reads over any picture: a dark gradient up from the band's foot. */
