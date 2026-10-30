@@ -170,7 +170,8 @@ tbody tr:hover { background: var(--surface-2); }
 /* The owner's pictures (Settings → Art) where a card had none: list rows, mode cards, the battle pass name. */
 .slot-art { object-fit: contain; }
 /* Pictures of mixed padding and size sit in one tile each, whole, so a list's icons line up (round 16: "crooked or out of place"). */
-.list-art { box-sizing: border-box; display: inline-block; width: 36px; height: 36px; padding: 3px; margin-right: 8px; vertical-align: middle; object-fit: contain; background: var(--surface-2); border: 1px solid var(--edge); }
+/* Round 27 (Georges: "some are too small"): a list's picture stands 48 px. */
+.list-art { box-sizing: border-box; display: inline-block; width: 48px; height: 48px; padding: 4px; margin-right: 10px; vertical-align: middle; object-fit: contain; background: var(--surface-2); border: 1px solid var(--edge); }
 .mode-art { box-sizing: border-box; width: 56px; height: 56px; padding: 5px; object-fit: contain; background: var(--surface-2); border: 1px solid var(--edge); }
 .pass-art { width: 44px; height: 44px; }
 .game-mark.is-art { object-fit: contain; width: auto; }

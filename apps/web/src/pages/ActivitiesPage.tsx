@@ -196,7 +196,7 @@ function CadenceList({
       <div className="act-rows" style={tickColumn(items)}>
         {/* One tick control everywhere (round 7): a counted daily by its steps. */}
         {items.map((item) => (
-          <TickRow key={item.id} instanceId={instanceId} task={item} icon={<SlotArt slot={taskSlot(game, item)} className="list-art" fallback={<span className="list-art" aria-hidden="true" />} />}>
+          <TickRow key={item.id} instanceId={instanceId} task={item} icon={<SlotArt slot={taskSlot(game, item)} className="list-art" />}>
             {cadence === "monthly" && item.anchorKey && anchors.find((anchor) => anchor.key === item.anchorKey)?.name !== item.title && <span className="font-mono text-muted">{anchors.find((anchor) => anchor.key === item.anchorKey)?.name}</span>}
           </TickRow>
         ))}
