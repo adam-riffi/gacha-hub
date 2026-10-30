@@ -1,5 +1,5 @@
-import { lazy, useMemo } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useMemo } from "react";
+import { Link, useSearchParams, Navigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { LoadError } from "../components/LoadError";
 import { api } from "../lib/api";
@@ -15,15 +15,12 @@ import { StaminaCard } from "../components/home/StaminaCard";
 import { EndgameNextCard, ExpiringSoonCard, homeGames } from "../components/home/HomeLists";
 import type { DashboardData, InstanceListItem, TaskItem } from "../lib/types";
 
-// A game's dashboard loads when a game is picked: Home's first paint stays as light as it was.
-const GameDashboard = lazy(() => import("../components/home/GameDashboard").then((module) => ({ default: module.GameDashboard })));
-
 /**
  * Home is the dashboard (VISUAL-DESIGN.md §10): the gauges and charts, the
  * dailies and battle-pass carousels and the heatmap in the main column; the
- * banners carousel, pulls and stamina in the side column. A game picked in
- * the strip shows that game's own dashboard instead (Georges's designs,
- * WIREFRAMES.md G0), in its accent.
+ * banners carousel, pulls and stamina in the side column. A game's own
+ * dashboard (Georges's designs, WIREFRAMES.md G0) is its hub's Overview since
+ * round 27; an old link with the game picked lands there.
  */
 export function DashboardPage() {
   const [params, setParams] = useSearchParams();
@@ -49,14 +46,7 @@ export function DashboardPage() {
 
   if (isError) return <LoadError what="Home" retry={refetch} />;
   if (isLoading) return <div className="muted">Loading…</div>;
-  if (picked) {
-    return (
-      <>
-        <h1 className="sr-only">Home</h1>
-        <GameDashboard instanceId={picked.id} />
-      </>
-    );
-  }
+  if (picked) return <Navigate to={`/games/${picked.id}`} replace />;
   if (!view || view.games.length === 0) {
     return (
       <>

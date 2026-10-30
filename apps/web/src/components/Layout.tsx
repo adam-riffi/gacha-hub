@@ -127,7 +127,7 @@ export function Layout({ children }: { children: ReactNode }) {
   );
 
   const railItem = (railSection: Section, label: string, name: string) => (
-    <Link key={railSection} to={sectionHref(railSection, railSection === "settings" ? null : scope)} className="rail-item" aria-label={name} aria-current={section === railSection ? "page" : undefined}>
+    <Link key={railSection} to={sectionHref(railSection, railSection === "settings" || railSection === "all" ? null : scope)} className="rail-item" aria-label={name} aria-current={section === railSection ? "page" : undefined}>
       <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true">{ICONS[railSection]}</svg>
       <span>{label}</span>
     </Link>

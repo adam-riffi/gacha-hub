@@ -141,7 +141,10 @@ test("the selected game keeps its size and short name, its full name as its labe
           ?.width ?? 0,
     )
     .toBeGreaterThanOrEqual(22);
+  // Back on Home from the hub (round 27: a game in the strip opens its hub): the rail's Home is current and filled.
   const home = rail.getByRole("link", { name: "Home, all games" });
+  await home.click();
+  await expect(page).toHaveURL(/\/$/);
   await expect(home).toHaveAttribute("aria-current", "page");
   expect(await home.evaluate((el) => getComputedStyle(el).backgroundColor)).not.toBe(
     "rgba(0, 0, 0, 0)",

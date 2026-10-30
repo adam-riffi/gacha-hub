@@ -1,6 +1,6 @@
 import { getGame } from "@gacha/shared";
 
-export type Screen = "activities" | "endgame" | "ownership" | "characters" | "teams" | "weapons" | "gear" | "materials" | "planner" | "pulls" | "profile";
+export type Screen = "overview" | "activities" | "endgame" | "ownership" | "characters" | "teams" | "weapons" | "gear" | "materials" | "planner" | "pulls" | "profile";
 
 /** What each game calls its gear sets. */
 const GEAR_LABEL: Record<string, string> = {
@@ -16,14 +16,16 @@ const NO_COSTS = new Set(["endfield"]);
 
 /**
  * The hub's tabs a game has, in order, each with its path under the hub
- * (Activities is the hub itself): Pulls needs pull rules, Teams a catalog,
- * the gear tab and the Planner a catalog with gear and costs.
+ * (the Overview, the game's dashboard, is the hub itself since round 27):
+ * Pulls needs pull rules, Teams a catalog, the gear tab and the Planner a
+ * catalog with gear and costs.
  */
 export function hubScreens(gameKey: string, instanceId: string): { key: Screen; label: string; to: string }[] {
   const hasCatalog = Boolean(getGame(gameKey)?.loadCatalog);
   return [
-    // Activities opens the hub; each game's dashboard is Home with the game picked (Georges, round 4).
-    { key: "activities", label: "Activities", to: `/games/${instanceId}` },
+    // The dashboard opens the hub (round 27, Georges: "each game's dashboard is outside of its category"); Activities follows.
+    { key: "overview", label: "Overview", to: `/games/${instanceId}` },
+    { key: "activities", label: "Activities", to: `/games/${instanceId}/activities` },
     { key: "endgame", label: "Endgame", to: `/games/${instanceId}/endgame` },
     // The board's order (WIREFRAMES.md Game hub): Pulls, then Characters (which replaces Ownership).
     ...(gameKey && getGame(gameKey)?.pullBanners?.length ? [{ key: "pulls" as const, label: "Pulls", to: `/games/${instanceId}/pulls` }] : []),

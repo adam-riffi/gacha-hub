@@ -8,6 +8,7 @@ import { DashboardPage } from "./pages/DashboardPage";
 const page = <K extends string>(load: () => Promise<Record<K, ComponentType>>, name: K) => lazy(() => load().then((module) => ({ default: module[name] })));
 const LibraryPage = page(() => import("./pages/LibraryPage"), "LibraryPage");
 const ActivitiesPage = page(() => import("./pages/ActivitiesPage"), "ActivitiesPage");
+const OverviewPage = page(() => import("./pages/OverviewPage"), "OverviewPage");
 const EndgamePage = page(() => import("./pages/EndgamePage"), "EndgamePage");
 const OwnershipPage = page(() => import("./pages/OwnershipPage"), "OwnershipPage");
 const CharactersPage = page(() => import("./pages/CharactersPage"), "CharactersPage");
@@ -40,8 +41,8 @@ export function App() {
       <Routes>
         <Route path="/" element={<DashboardPage />} />
         <Route path="/library" element={<LibraryPage />} />
-        <Route path="/games/:id" element={<ActivitiesPage />} />
-        <Route path="/games/:id/activities" element={<Navigate to=".." relative="path" replace />} />
+        <Route path="/games/:id" element={<OverviewPage />} />
+        <Route path="/games/:id/activities" element={<ActivitiesPage />} />
         <Route path="/games/:id/overview" element={<Navigate to=".." relative="path" replace />} />
         <Route path="/games/:id/endgame" element={<EndgamePage />} />
         <Route path="/games/:id/ownership" element={<OwnershipPage />} />
