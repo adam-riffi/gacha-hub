@@ -55,7 +55,7 @@ test("a reward event carries its roster tag; its pick and Make goal set the goal
   });
   expect(upload.ok()).toBe(true);
 
-  await page.goto("/timeline?game=hsr");
+  await page.goto("/timeline?game=hsr&show=events");
   const bar = page.getByRole("region", { name: "Timeline" }).getByRole("button", { name: /E2E free 4-star/ });
   await expect(bar).toContainText("+1 E");
   await bar.click();
@@ -183,7 +183,7 @@ test("an event is wishlisted from its Selected panel, and Only what I wishlisted
   });
   await page.request.put(`/api/instances/${id}/wishlist`, { data: { kind: "event", catalogId: "e2e-wish-me", wished: false } });
 
-  await page.goto("/timeline?game=hsr");
+  await page.goto("/timeline?game=hsr&show=events");
   const timeline = page.getByRole("region", { name: "Timeline" });
   await timeline.getByRole("button", { name: /E2E event to wish/ }).click();
   // An event without art of its own shows its game's hero (round 22: Star Rail's key art from its wiki), never an empty placeholder.
@@ -198,7 +198,7 @@ test("an event is wishlisted from its Selected panel, and Only what I wishlisted
 
 // Georges, round 7: "a visual language: banners of the colour of the game, BPs a certain colour/tint, the same for endgames
 // and another for wishlist; wishlisted events should be more visible; fix the crooked boxes: there are two, one always on".
-test("Banners: each kind its colour, a wishlisted event starred in gold; one box per layer, in line @smoke", async ({ page }) => {
+test("Banners and Events are two screens; each kind its colour, a wishlisted event starred in gold; one box per layer, in line @smoke", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
@@ -210,25 +210,34 @@ test("Banners: each kind its colour, a wishlisted event starred in gold; one box
 
   await page.goto("/timeline?game=hsr");
   const timeline = page.getByRole("region", { name: "Timeline" });
+  // Two screens (round 27, Georges: "separate banners and events into two screens for readability"): Banners first, the
+  // banners alone; Events with the events, the versions and, ticked, the endgame cycles and battle passes.
+  const show = page.getByRole("group", { name: "Show" });
+  await expect(show.getByRole("button", { name: "Banners" })).toHaveAttribute("aria-pressed", "true");
+  await expect(timeline.locator(".cal-bar.is-banner").first()).toBeVisible();
+  await expect(timeline.getByRole("button", { name: /E2E plain event/ })).toHaveCount(0);
+  await expect(page.getByRole("checkbox", { name: "Banners" })).toHaveCount(0);
+  const colour = (sel: string, prop: string) => page.locator(sel).first().evaluate((el, p) => getComputedStyle(el).getPropertyValue(p), prop);
+  const banner = await colour(".cal-bar.is-banner", "background-color");
+  await show.getByRole("button", { name: "Events" }).click();
   await expect(timeline.getByRole("button", { name: /E2E plain event/ })).toBeVisible();
+  await expect(timeline.locator(".cal-bar.is-banner")).toHaveCount(0);
   // One box per layer, the layer's own, centred on its words.
   await expect(page.locator(".cal-layers .cal-key")).toHaveCount(0);
-  const banners = page.getByRole("checkbox", { name: "Banners" });
-  const [box, words] = [(await banners.boundingBox())!, (await page.locator(".cal-layers label", { hasText: "Banners" }).boundingBox())!];
+  const cycles = page.getByRole("checkbox", { name: "Endgame cycles" });
+  const [box, words] = [(await cycles.boundingBox())!, (await page.locator(".cal-layers label", { hasText: "Endgame cycles" }).boundingBox())!];
   expect(Math.abs(box.y + box.height / 2 - (words.y + words.height / 2))).toBeLessThan(3);
-  await page.getByRole("checkbox", { name: "Endgame cycles" }).check();
+  await cycles.check();
   await page.getByRole("checkbox", { name: "Battle passes" }).check();
 
   const gold = timeline.getByRole("button", { name: /E2E gold event/ });
   await expect(gold.getByLabel("Wishlisted")).toBeVisible();
   await expect(timeline.getByRole("button", { name: /E2E plain event/ }).getByLabel("Wishlisted")).toHaveCount(0);
-  const colour = (sel: string, prop: string) => page.locator(sel).first().evaluate((el, p) => getComputedStyle(el).getPropertyValue(p), prop);
-  const [event, wished, cycle, pass, banner] = [
+  const [event, wished, cycle, pass] = [
     await colour(".cal-bar.is-event:not(.is-wished)", "border-left-color"),
     await colour(".cal-bar.is-wished", "border-left-color"),
     await colour(".cal-bar.is-cycle", "border-left-color"),
     await colour(".cal-bar.is-pass", "border-left-color"),
-    await colour(".cal-bar.is-banner", "background-color"),
   ];
   // Events edged in the game's colour, as banners are filled with it; wishes, endgames and passes each their own.
   expect(new Set([wished, cycle, pass, event]).size).toBe(4);
