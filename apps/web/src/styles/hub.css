@@ -194,7 +194,7 @@ input.tick-check { appearance: none; display: block; flex: none; width: 20px; he
 input.tick-check:checked { background: var(--accent); border-color: var(--accent); }
 .tick-check:focus-visible, .tick-step:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
 .tick-steps { display: inline-flex; gap: 3px; }
-.tick-step { width: 14px; height: 20px; padding: 0; background: transparent; border: 2px solid color-mix(in srgb, var(--accent) 75%, transparent); cursor: pointer; }
+.tick-step { width: 20px; height: 20px; padding: 0; background: transparent; border: 2px solid color-mix(in srgb, var(--accent) 75%, transparent); cursor: pointer; }
 .tick-step[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); }
 .tick-count-in input { width: 72px; }
 /* A mode's stages, one line each (round 7): the stage, team, score, time, main enemy and weaknesses; a click opens the stage. */
