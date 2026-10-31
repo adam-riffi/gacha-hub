@@ -199,7 +199,7 @@ select.prio.build-none { color: var(--muted); }
 /* ---- Ownership roster: compact art tiles ---- */
 .toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 16px; }
 .toolbar select, .toolbar input { width: auto; }
-.roster { display: grid; grid-template-columns: repeat(auto-fill, minmax(124px, 1fr)); gap: 14px 12px; }
+.roster { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px 12px; }
 .rtile { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
 .rtile-meta { display: flex; align-items: center; gap: 6px; }
 /* Round 27 (Georges: "the owned icon should be colored and not grey out a frame + the frame colour should be the rarity"):
@@ -228,6 +228,12 @@ select.prio.build-none { color: var(--muted); }
 .rtile-name { font-size: 0.85rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .rtile.off .rtile-name { color: var(--muted); }
 .rtile-meta { font-size: 0.72rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* A weapon's stats (round 28), one a line: the icon, the figure, the name. */
+.rtile-stats { display: flex; flex-direction: column; gap: 2px; font-size: 13px; color: var(--text); }
+.rtile-stat { display: flex; align-items: center; gap: 5px; min-width: 0; white-space: nowrap; }
+.rtile-stat .stat-icon { flex: none; width: 16px; height: 16px; }
+.rtile-stat b { font-weight: 600; }
+.rtile-stat small { overflow: hidden; text-overflow: ellipsis; font-size: 12px; color: var(--muted); }
 .rtile-build { align-self: flex-start; padding: 0; border: none; background: none; color: var(--accent); font-size: 0.78rem; cursor: pointer; }
 .rtile-build:hover { color: var(--accent); }
 .badge.prio-high { background: var(--paper); color: var(--on-paper); border-color: var(--paper); }
