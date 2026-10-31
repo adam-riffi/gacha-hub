@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-31 · claude · stack/r35/04-endgame-cards · #439
+- Done: Round 28 PR 4 (Georges: "end game cards inconsistency; useless icons in endgame; useful icons too small"). No pip row under a result; the mode's emblem 80 px.
+- Tests: written first: no pip row or "9 of 12 stars" image after a save; the emblem a 72 px square once its picture is up.
+- Scope/decisions: the result keeps its metric icon.
+- Next: PR 5, the games cards.
+
 ## 2026-10-31 · claude · stack/r35/03-square-steps · #438
 - Done: Round 28 PR 3 (Georges: "daily weekly missions rectangular while everything else is square"). A counted task's steps are 20 px squares; the box column widens to fit.
 - Tests: written first: Zenless's Daily Missions steps square and 20 px.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: a character and a light cone warp seeded for one phase; the Pulls cards' three marks in two colours at 32 px or more, Home's banner card's mark, the phase bar's two marks.
 - Scope/decisions: a drawn glyph rather than the featured unit's icon, which already sits beside it.
 - Next: PR 3.
-
-## 2026-10-28 · claude · stack/r30/01-rhythm · #399
-- Done: round 23 PR 1 (Georges: "the layout of certain pages is weird. the big game cards are too close to the activities endgame pulls etc panels"). The hub's header card keeps 20 px from the tab row, the tabs read at 15 px, the first panel starts 32 px under them. The games list drops its 300 px side column (it squeezed each row's figure tiles past the row's edge): one column, the figures wrap inside the row, "Add a game" under the list.
-- Tests: written first: the header's gaps and the tabs' size on Activities; every figure tile inside its row and the add-a-game card under the list.
-- Scope/decisions: the side column goes rather than shrinks.
-- Next: PR 2, the banner kind marks; PR 3, rarity stars and equal rows.
