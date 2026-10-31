@@ -203,21 +203,24 @@ select.prio.build-none { color: var(--muted); }
 .rtile { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
 .rtile-meta { display: flex; align-items: center; gap: 6px; }
 /* Round 27 (Georges: "the owned icon should be colored and not grey out a frame + the frame colour should be the rarity"):
-   the frame in the rarity's colour (dashed while not owned); the picture in full colour once owned, greyed until then. */
+   the frame in the rarity's colour (dashed while not owned); the picture in full colour once owned, greyed until then.
+   Round 28 ("the background of the weapons makes it hard to look at the weapons"): the picture on the rarity's tint, and
+   one not owned still at 72 %. */
+.rtile { --rt: var(--hairline); }
+.rtile.r3 { --rt: var(--rarity-3); }
+.rtile.r4 { --rt: var(--rarity-4); }
+.rtile.r5 { --rt: var(--rarity-5); }
+.rtile.r6 { --rt: var(--rarity-6); }
 .rtile-art {
   position: relative; aspect-ratio: 1; padding: 0; overflow: hidden; cursor: pointer;
-  border: 3px solid var(--hairline); border-radius: var(--radius-sm); background: var(--surface-2);
+  border: 3px solid var(--rt); border-radius: var(--radius-sm); background: color-mix(in srgb, var(--rt) 22%, var(--surface-3));
 }
-.rtile.r3 .rtile-art { border-color: var(--rarity-3); }
-.rtile.r4 .rtile-art { border-color: var(--rarity-4); }
-.rtile.r5 .rtile-art { border-color: var(--rarity-5); }
-.rtile.r6 .rtile-art { border-color: var(--rarity-6); }
 .rtile-art:hover { filter: brightness(1.12); }
 .rtile-art .gicon { width: 100%; height: 100%; }
 .rtile-art .gicon-ph { background: transparent; border: none; color: rgba(255, 255, 255, 0.85); font-size: 1.5rem; }
 .rtile.off .rtile-art { border-style: dashed; }
-.rtile.off .rtile-art .gicon { filter: grayscale(1); opacity: 0.45; }
-.rtile.off .rtile-art:hover .gicon { opacity: 0.8; }
+.rtile.off .rtile-art .gicon { filter: grayscale(1); opacity: 0.72; }
+.rtile.off .rtile-art:hover .gicon { opacity: 1; }
 .rtile-check {
   position: absolute; top: 6px; right: 6px; width: 20px; height: 20px; border-radius: 50%;
   display: grid; place-items: center; font-size: 0.7rem; background: var(--accent); color: var(--on-paper);
