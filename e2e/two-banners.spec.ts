@@ -23,11 +23,12 @@ test("two running banners of one kind each get their block on the Pulls card @sm
     const runs = card.locator(".pl-run");
     // Two at least: another journey's character banner may run beside these on the shared database.
     await expect.poll(() => runs.count()).toBeGreaterThanOrEqual(2);
-    const first = runs.filter({ hasText: "Blade" });
+    // By their units alone (another journey's banner on the shared database may feature Blade and Asta too).
+    const first = runs.filter({ hasText: "March 7th" }).filter({ hasNotText: "Asta" });
     await expect(first.getByRole("list", { name: "Featured units" }).getByRole("listitem")).toHaveCount(2);
     await expect(first).toContainText("March 7th");
     await expect(first).not.toContainText("Asta");
-    const second = runs.filter({ hasText: "Asta" });
+    const second = runs.filter({ hasText: "Himeko" });
     await expect(second).toContainText("Himeko");
     for (const run of [first, second]) await expect(run.getByText(/^Ends /)).toBeVisible();
     // The kind's mark and the banner type once, on the topmost block; the blocks stack, one under the other.
