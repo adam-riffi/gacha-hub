@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-31 · claude · stack/r35/05-bigger-cards · #440
+- Done: Round 28 PR 5 (Georges: "cards are better but it should be bigger still"). The games cards: a 260 px band, a 96 px icon, a 36 px name, 32 px figures.
+- Tests: written first: band ≥ 240, icon ≥ 90, name ≥ 34.
+- Scope/decisions: two a row stays.
+- Next: PR 6, the strip.
+
 ## 2026-10-31 · claude · stack/r35/04-endgame-cards · #439
 - Done: Round 28 PR 4 (Georges: "end game cards inconsistency; useless icons in endgame; useful icons too small"). No pip row under a result; the mode's emblem 80 px.
 - Tests: written first: no pip row or "9 of 12 stars" image after a save; the emblem a 72 px square once its picture is up.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: Kafka's five gold stars and Sushang's four purple on the cards, the sheet, the ownership tile and a weapon card, no "★5" or "★★★★★" left; the three card rows within 1 px.
 - Scope/decisions: the ownership page's rarity filter keeps star text (a select's options cannot hold a drawing).
 - Next: Georges's look at the round, his "merge" and "deploy"; the art-centring pass he named ("there's still a lot of art centering to do") once he points at the cards he means; his one paste of the six values.
-
-## 2026-10-28 · claude · stack/r30/02-banner-kinds · #400
-- Done: round 23 PR 2 (Georges: "add a character/weapon icon to the banner to better differentiate them"). `BannerKind`: the kind's glyph on a tile in the kind's colour (character in the game's accent, weapon in steel blue, standard on paper, Bangboo in green; tokens `--k-weapon`, `--k-bangboo`), named for screen readers; 48 px beside each Pulls card's art, 44 px beside Home's countdown, 28 px at the start of each timeline bar (one per kind a phase holds).
-- Tests: written first: a character and a light cone warp seeded for one phase; the Pulls cards' three marks in two colours at 32 px or more, Home's banner card's mark, the phase bar's two marks.
-- Scope/decisions: a drawn glyph rather than the featured unit's icon, which already sits beside it.
-- Next: PR 3.

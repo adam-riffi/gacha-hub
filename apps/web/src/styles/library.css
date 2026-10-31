@@ -6,32 +6,33 @@
 .lib-page { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; align-items: start; }
 .lib-side { display: grid; gap: 14px; min-width: 0; }
 /* The games as cards, two a row (round 24, Georges: "you can find better cards for them"): the key art across the top with
-   the icon and the name over it, five figure tiles of one width, then today's line and the actions. */
+   the icon and the name over it, five figure tiles of one width, then today's line and the actions. Round 28 ("cards are
+   better but it should be bigger still"): a 260 px band, a 96 px icon, a 36 px name, 32 px figures. */
 .lib-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; min-width: 0; }
 .card.lib-row { display: flex; flex-direction: column; padding: 0; overflow: hidden; cursor: grab; }
 .lib-row.is-asleep { opacity: 0.55; }
 .lib-row.is-dragging { opacity: 0.4; }
 .lib-row.is-over { border-color: var(--accent); }
-.lib-art { position: relative; display: flex; align-items: flex-end; gap: 16px; height: 180px; padding: 16px 18px; background: var(--surface-2); color: inherit; text-decoration: none; }
+.lib-art { position: relative; display: flex; align-items: flex-end; gap: 18px; height: 260px; padding: 20px 22px; background: var(--surface-2); color: inherit; text-decoration: none; }
 .lib-art:hover .lib-name h2 { color: var(--accent); }
 .lib-art > :not(.lib-hero) { position: relative; z-index: 1; }
 .lib-hero { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
 /* The name reads over any picture: a dark gradient up from the band's foot. */
 .lib-art::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8, 8, 8, 0.1) 30%, rgba(8, 8, 8, 0.88)); }
-.lib-icon { width: 64px; height: 64px; flex: none; }
-.lib-icon.is-art { width: 64px; object-fit: contain; background: var(--surface-2); } /* the same square frame as the header's and the strip's (round 26) */
+.lib-icon { width: 96px; height: 96px; flex: none; }
+.lib-icon.is-art { width: 96px; object-fit: contain; background: var(--surface-2); } /* the same square frame as the header's and the strip's (round 26) */
 .lib-name { min-width: 0; }
-.lib-name h2 { margin: 0 0 4px; font-size: 28px; line-height: 1; text-shadow: 0 1px 8px rgba(0, 0, 0, 0.8); }
-.lib-meta { color: var(--text); font-size: 13px; opacity: 0.85; }
+.lib-name h2 { margin: 0 0 6px; font-size: 36px; line-height: 1; text-shadow: 0 1px 8px rgba(0, 0, 0, 0.8); }
+.lib-meta { color: var(--text); font-size: 15px; opacity: 0.85; }
 .lib-name .badge { margin-top: 6px; }
 .lib-cells { display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); border-bottom: 1px solid var(--surface-3); }
-.lib-cell { display: flex; flex-direction: column; gap: 8px; min-width: 0; padding: 12px 14px; border-right: 1px solid var(--surface-3); color: var(--text); font: 600 26px/1 var(--font-display); text-decoration: none; }
+.lib-cell { display: flex; flex-direction: column; gap: 10px; min-width: 0; padding: 16px; border-right: 1px solid var(--surface-3); color: var(--text); font: 600 32px/1 var(--font-display); text-decoration: none; }
 .lib-cell:last-child { border-right: 0; }
 .lib-cell:hover { background: var(--surface-2); }
-.lib-cell .kpi-label { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lib-cell .kpi-label { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .lib-cell .pull-n { min-width: 0; justify-content: flex-start; }
-.lib-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 16px; padding: 12px 18px 14px; }
-.lib-today { display: flex; align-items: baseline; gap: 10px; font-size: 15px; } /* the label on the line's baseline (round 25) */
+.lib-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 16px; padding: 16px 22px 18px; }
+.lib-today { display: flex; align-items: baseline; gap: 10px; font-size: 17px; } /* the label on the line's baseline (round 25) */
 .lib-today .kpi-label { font-size: 13px; }
 .lib-actions { display: flex; align-items: center; gap: 14px; }
 .lib-sleep { display: inline-flex; align-items: center; margin: 0; color: var(--text); cursor: pointer; }
