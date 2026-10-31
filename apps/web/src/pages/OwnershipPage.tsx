@@ -85,13 +85,16 @@ export function OwnershipPage() {
   const tags = [...new Set(entries.map(tagOf).filter((tagValue): tagValue is string => Boolean(tagValue)))].sort();
   const rarities = [...new Set(entries.map((entry) => entry.rarity))].sort((first, second) => second - first);
 
-  const shown = entries.filter(
-    (entry) =>
-      (!search || entry.name.toLowerCase().includes(search.toLowerCase())) &&
-      (rarity === null || entry.rarity === rarity) &&
-      (tag === null || tagOf(entry) === tag) &&
-      (ownState === "all" || (ownState === "owned") === ownedIds.has(entry.id)),
-  );
+  // Owned first (round 28, Georges: "owned things should come on top every time whether its chars or weapons"), the catalog's order within.
+  const shown = entries
+    .filter(
+      (entry) =>
+        (!search || entry.name.toLowerCase().includes(search.toLowerCase())) &&
+        (rarity === null || entry.rarity === rarity) &&
+        (tag === null || tagOf(entry) === tag) &&
+        (ownState === "all" || (ownState === "owned") === ownedIds.has(entry.id)),
+    )
+    .sort((first, second) => Number(ownedIds.has(second.id)) - Number(ownedIds.has(first.id)));
 
   if (isError) return <LoadError what="Owned units" retry={refetch} />;
   if (!instance) return <div className="muted">Loading…</div>;
