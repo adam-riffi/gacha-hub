@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-31 · claude · stack/r35/03-square-steps · #438
+- Done: Round 28 PR 3 (Georges: "daily weekly missions rectangular while everything else is square"). A counted task's steps are 20 px squares; the box column widens to fit.
+- Tests: written first: Zenless's Daily Missions steps square and 20 px.
+- Scope/decisions: styles and the column arithmetic.
+- Next: PR 4, the endgame cards.
+
 ## 2026-10-31 · claude · stack/r35/02-task-rows · #437
 - Done: Round 28 PR 2 (Georges: "monthly cards grossly misaligned … stacking same line text is unacceptable"). The 30-day pass row stands on the cadence list's grid (an empty box column); titles and notes never wrap (ellipsis, whole on hover).
 - Tests: written first: the pass row is a tick row at the items' x; every title and note of the Monthly card on one line.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the header's gaps and the tabs' size on Activities; every figure tile inside its row and the add-a-game card under the list.
 - Scope/decisions: the side column goes rather than shrinks.
 - Next: PR 2, the banner kind marks; PR 3, rarity stars and equal rows.
-
-## 2026-10-27 · claude · stack/r29/02-art-from-source · #396
-- Done: round 22 PR 2 (Georges: "still no game icons why is a star the icon for GI instead of the original game icon", "why is the game card furina"). While the store holds nothing for a slot, the app shows the picture straight from its source: `/api/art` carries each slot's source address and invert beside the owner's upload, the web's slot hook falls back to it, and the image policy names the six game wikis (one wildcard) and the App Store's image host. A wiki's `Special:FilePath` answers a browser with 403, so the list resolves every wiki source through its wiki's API (fifty titles a call, one call per wiki, kept an hour in the process, four seconds at most per list) and gives the direct static address. A big spot falls from a failed logo to the icon before the drawn emblem. In the empty-store journeys: the App Store icons in the strip, the real logos and the wikis' key art on the game cards and hub headers, the wiki icons on tasks and modes.
-- Tests: written first: the slots carry the source and invert and an upload takes over; the policy allows the wiki wildcard and the App Store host; the resolver groups by wiki, chunks by fifty, maps through normalised titles and leaves out what a wiki does not answer; the strip shows the App Store icon and the library card the key art with an empty store; a big spot whose logo fails shows the icon. The two journeys that pinned a hero to Kafka's splash expect the key art now; the slots test's no-source case moved to a slot without one.
-- Scope/decisions: hosts stay an allowlist; Settings → Art keeps showing only what the store holds (no 117 third-party previews on one page); the store stays first, the source is the stand-in.
-- Next: Georges says "merge" for #395 and #396 (the classifier refuses a merge without his word), then "deploy"; his one paste of the six values in Settings → Keys; the mirror with its budget lines.
