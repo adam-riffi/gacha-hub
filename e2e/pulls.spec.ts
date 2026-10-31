@@ -57,7 +57,7 @@ test("Pulls: what you have and what is coming, an event banner's status, pity an
 
   // Home shows the pity next to the game's pulls.
   await page.goto("/");
-  await expect(page.locator(".pull-row-pity", { hasText: "Character 3/90" })).toContainText("guaranteed");
+  await expect(page.locator(".pull-pity-tile", { has: page.locator(".pull-pity-fig", { hasText: /^3\/90$/ }) }).first()).toContainText("guaranteed");
 });
 
 test("Pulls: the savings planner plans each event banner's featured 5★ in order, worst case or on average @smoke", async ({ page }) => {
