@@ -38,4 +38,8 @@ test("the strip is a carousel: cards of one size, arrows that page them @smoke",
   await page.mouse.up();
   await expect.poll(() => row.evaluate((el) => el.scrollLeft)).toBeGreaterThan(50);
   expect(page.url()).toBe(before);
+  // Round 28 (Georges: "card carousel dragging is too robotic, i need it smooth"): nothing snaps, and the row keeps
+  // gliding after the release, past where the drag left it.
+  expect(await row.evaluate((el) => getComputedStyle(el).scrollSnapType)).toBe("none");
+  await expect.poll(() => row.evaluate((el) => el.scrollLeft), { timeout: 3000 }).toBeGreaterThan(240);
 });
