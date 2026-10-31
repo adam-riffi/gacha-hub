@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { Rarity } from "../components/Rarity";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import type { CatalogCharacter, CatalogWeapon, OwnershipDto } from "@gacha/shared";
+import { baseStatsAt, isPercent, type CatalogCharacter, type CatalogWeapon, type OwnershipDto } from "@gacha/shared";
 import { LoadError } from "../components/LoadError";
 import { api } from "../lib/api";
 import { useToast } from "../lib/toast";
@@ -13,6 +13,18 @@ import { artGlyph } from "../components/Glyph";
 import { assetUrl, communityAssetUrl } from "../lib/assets";
 import type { InstanceDetail } from "../lib/types";
 import { Segmented } from "../components/ui";
+import { StatIcon } from "../components/StatIcon";
+
+/**
+ * A weapon's stats at its top level (round 28, Georges: "the main stats like the atk and crit damage should be shown
+ * explicitly on each weapon"): the catalog's base stats, each rounded, a percent where the game says so; its second stat
+ * by name alone when the catalog has no figures (Wuthering Waves).
+ */
+function weaponStats(gameKey: string, weapon: CatalogWeapon): { name: string; value: string }[] {
+  const at = baseStatsAt(weapon, weapon.maxLevel);
+  const rows = at ? Object.entries(at).map(([name, value]) => ({ name, value: `${Math.round(value)}${isPercent(gameKey, name) ? "%" : ""}` })) : [];
+  return weapon.mainStat && !rows.some((row) => row.name === weapon.mainStat) ? [...rows, { name: weapon.mainStat, value: "" }] : rows;
+}
 
 type Kind = "character" | "weapon";
 const stars = (count: number) => "★".repeat(Math.max(0, Math.min(6, count)));
@@ -199,6 +211,17 @@ export function OwnershipPage() {
                 <Rarity value={entry.rarity} />
                 {tagOf(entry) ? <span>{tagOf(entry)}</span> : null}
               </div>
+              {kind === "weapon" && (
+                <div className="rtile-stats font-mono">
+                  {weaponStats(instance.gameKey, entry as CatalogWeapon).map((stat) => (
+                    <span key={stat.name} className="rtile-stat" title={`${stat.name} ${stat.value}`.trim()}>
+                      <StatIcon stat={stat.name} />
+                      {stat.value && <b>{stat.value}</b>}
+                      <small>{stat.name}</small>
+                    </span>
+                  ))}
+                </div>
+              )}
               {kind === "character" && isOwned &&
                 (buildId ? (
                   <Link className="rtile-build" to={`/characters/${buildId}`}>Build →</Link>
