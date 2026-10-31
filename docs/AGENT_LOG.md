@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-31 · claude · stack/r35/08-owned-first · #443
+- Done: Round 28 PR 8 (Georges: "owned things should come on top every time … the background of the weapons makes it hard to look at the weapons"). Owned tiles first on the ownership grid; the picture on the rarity's tint, an unowned one at 72 %.
+- Tests: written first: no owned tile after an unowned one for characters and weapons; backdrops differ by rarity; unowned opacity ≥ 0.6.
+- Scope/decisions: the characters and weapons pages already list owned first.
+- Next: PR 9, weapon stats.
+
 ## 2026-10-31 · claude · stack/r35/07-pulls-runs · #442
 - Done: Round 28 PR 7 (Georges: "standardize the way you do banners … the way you did the weapons banner was perfect"). Every Pulls banner card in one shape: key art across, the kind's mark and type, the day it ends, the featured units; a second running banner of the kind stacks under the first; a running banner with no units gets no block; Standard and Chronicled show their own art across the top and no placeholder glyph.
 - Tests: written first: two running character banners each get a block, the mark and type once, the second under the first; the standard card shows the mark and no placeholder.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: Sampo's Hunter body card with three substats; filters above the cards; the card's size and type; the drawer only after a click, fixed, closed by its button. The gear journey's three-column check became filters-above.
 - Scope/decisions: the substats read on the card, typed in the drawer.
 - Next: PR 4, the banners tab.
-
-## 2026-10-29 · claude · stack/r31/02-odds-tiles · #403
-- Done: Round 24 PR 2 (Georges: "the odds/estimate thing is a bit weird"). The odds table is three tiles of one size: the next pull, by soft pity (past it, the next ten), with your pulls (a simulated top-up as a second figure).
-- Tests: written first: three tiles of one width and height, the figure at 26 px or more, no table.
-- Scope/decisions: none.
-- Next: PR 3, the artifacts.
