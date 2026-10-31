@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-31 · claude · stack/r35/11-farm-chips · #446
+- Done: Round 28 PR 11 (Georges: "the uncollapsing decollapsing thing … is weird; that +X thing"). A Farm today chip shows its unit, materials and days at once; nothing folds.
+- Tests: written first: the chip is not a button; the materials are visible without a click; the tasks journeys read them without clicking.
+- Scope/decisions: round 24's fold went.
+- Next: PR 12, the weekly line.
+
 ## 2026-10-31 · claude · stack/r35/10-no-fold · #445
 - Done: Round 28 PR 10 (Georges: "the 'two rows' thing is idiotic … audit the front"). The Planner shows every goal; the instruction hints left the ownership grid and the games list.
 - Tests: written first: all seven planned goals show, no All or Two rows button; no instruction sentence on the two screens.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: the two journeys that picked through the row pick on the card (the set-bonus picks across a reload; the quick-picks race on a build under a slow server).
 - Scope/decisions: the game-level field and API stay.
 - Next: PR 7, Farm today's icons.
-
-## 2026-10-29 · claude · stack/r31/05-goals-page · #406
-- Done: Round 24 PR 5 (Georges: "the reminder and preview are taking too much real estate at the top. those two should be in settings"). Tasks drops its 360 px side column; Settings → Notifications already holds both panels.
-- Tests: written first: no Reminders or Preview on Tasks, its main column across the page; the reminder journey in Settings → Notifications.
-- Scope/decisions: none.
-- Next: PR 6, the card-stat row.
