@@ -2,7 +2,7 @@ import { useState } from "react";
 import { artSlotKey, featuredWithin, fiveStarDistribution, rateAt, savingsPlan, topStar, type BannerDto, type PullBannerLogDto } from "@gacha/shared";
 import { officialArt } from "../../lib/assets";
 import { FeaturedUnits } from "../FeaturedUnits";
-import { Glyph, bannerGlyph } from "../Glyph";
+import { bannerGlyph } from "../Glyph";
 import { BannerKind } from "../BannerKind";
 import { Segmented } from "../ui";
 import { PullCurve } from "./PullCurve";
@@ -22,6 +22,9 @@ const split = (rate: number) => `${Math.round(rate * 100)}/${100 - Math.round(ra
  * with soft pity marked, the odds (estimates), the curve, the headline chance
  * with your pulls (and with a simulated top-up), and the actions. Round 16: the
  * official key art of the running banner across the top, when it came with one.
+ * Round 28 (Georges: "standardize the way you do banners … the way you did the
+ * weapons banner was perfect"): one shape for every card; a second running
+ * banner of the kind repeats art, end and units under the first.
  */
 export function BannerCard(props: {
   banner: PullBannerLogDto;
@@ -50,11 +53,13 @@ export function BannerCard(props: {
   const hasFeatured = banner.featuredRate < 1;
   const featured = live?.featured.find((featuredUnit) => (featuredUnit.rarity ?? 0) >= 5);
   const running = props.running ?? (live ? [live] : []);
-  // Every featured unit of the running banners (round 24, Georges: "just the featured characters"), the top rarity first.
-  const featuredUnits = running.flatMap((liveBanner) => liveBanner.featured);
+  // The running banners shown, the soonest to end first: the ones with featured units (round 24, Georges: "just the featured
+  // characters") or with their own key art; one with neither adds nothing (round 28's empty "ends Wed 4 Nov" block), unless it
+  // runs alone, when its end still shows.
+  const withSomething = running.filter((liveBanner) => liveBanner.featured.length > 0 || officialArt(liveBanner.payload));
+  const runs = [...(withSomething.length ? withSomething : running.slice(0, 1))].sort((first, second) => Date.parse(first.endsAt) - Date.parse(second.endsAt));
   const star = topStar(props.gameKey);
   const target = featured?.name ?? `the featured ${star}`;
-  const keyArt = running.map((liveBanner) => officialArt(liveBanner.payload)).find(Boolean);
 
   const actions = (
     <div className="pl-actions">
@@ -87,22 +92,37 @@ export function BannerCard(props: {
   return (
     <section className="card pl-banner" aria-label={banner.label}>
       <div className="pl-banner-main">
-      {keyArt && <img className="key-art pl-key-art" src={keyArt} alt="" onError={(event) => (event.currentTarget.hidden = true)} />}
-      {/* The head (round 24): the kind's mark, the banner type, the day it ends, then its featured units with their names; never the
-          phase's own name (Georges: "just the featured characters"). */}
-      <div className="pl-banner-head">
-        <BannerKind kind={bannerGlyph(banner.key)} className="pl-kind" />
-        {!featuredUnits.length && <SlotArt slot={artSlotKey(props.gameKey, "banner", banner.key)} className="pl-art" fallback={<Glyph kind={bannerGlyph(banner.key)} label={banner.label} className="pl-art" />} />}
-        <div className="pl-banner-title">
-          <h3>{banner.label}</h3>
-          {running.length ? (
-            <span className="pl-ends">Ends {ENDS.format(new Date(Math.min(...running.map((liveBanner) => Date.parse(liveBanner.endsAt)))))}</span>
-          ) : (
-            <span className="font-mono text-muted">not running</span>
-          )}
-        </div>
-        {featuredUnits.length > 0 && <FeaturedUnits gameKey={props.gameKey} instanceId={props.instanceId ?? ""} units={featuredUnits} shown={8} names className="pl-featured" />}
-      </div>
+      {/* One shape for every card (round 28): the key art across the top, the kind's mark, the banner type, the day it ends, then the
+          featured units with their names (never the phase's own name, round 24); a second running banner of the kind repeats art, end
+          and units under the first; a banner without a picture shows none. */}
+      {runs.length === 0 && (
+        <>
+          <SlotArt slot={artSlotKey(props.gameKey, "banner", banner.key)} className="pl-key-art" />
+          <div className="pl-banner-head">
+            <BannerKind kind={bannerGlyph(banner.key)} className="pl-kind" />
+            <div className="pl-banner-title">
+              <h3>{banner.label}</h3>
+              <span className="font-mono text-muted">not running</span>
+            </div>
+          </div>
+        </>
+      )}
+      {runs.map((run, runIndex) => {
+        const art = officialArt(run.payload);
+        return (
+          <div key={run.key} className="pl-run">
+            {art ? <img className="key-art pl-key-art" src={art} alt="" onError={(event) => (event.currentTarget.hidden = true)} /> : runIndex === 0 && <SlotArt slot={artSlotKey(props.gameKey, "banner", banner.key)} className="pl-key-art" />}
+            <div className="pl-banner-head">
+              {runIndex === 0 && <BannerKind kind={bannerGlyph(banner.key)} className="pl-kind" />}
+              <div className="pl-banner-title">
+                {runIndex === 0 && <h3>{banner.label}</h3>}
+                <span className="pl-ends">Ends {ENDS.format(new Date(run.endsAt))}</span>
+              </div>
+              {run.featured.length > 0 && <FeaturedUnits gameKey={props.gameKey} instanceId={props.instanceId ?? ""} units={run.featured} shown={8} names className="pl-featured" />}
+            </div>
+          </div>
+        );
+      })}
 
       {hasFeatured && (
         <div className="pl-status">
