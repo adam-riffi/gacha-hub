@@ -6,7 +6,7 @@ import type { HomeCarousel } from "../lib/carousel";
 import type { RosterEntry } from "../lib/roster";
 import { assetUrl, communityAssetUrl, officialArt, splashKey } from "../lib/assets";
 import { CarouselCard } from "./Carousel";
-import { FeaturedUnits, distinctFeatured, topNames } from "./FeaturedUnits";
+import { FeaturedUnits, distinctFeatured } from "./FeaturedUnits";
 import { GameIcon } from "./GameIcon";
 import { Countdown } from "./ui";
 import { HeroArt } from "./HeroArt";
@@ -15,6 +15,8 @@ import { HeroArt } from "./HeroArt";
  * The Banners card on Home: one running banner at a time, its featured unit's art under a dark layer; it steps per banner
  * on the shared clock. Round 11: its featured units as icons, the top ones larger and the ones you own ticked, and your
  * chance at its top unit with the pulls you hold. Round 16: a banner that came with its official key art shows that.
+ * Round 28 (Georges: "just showing the banner art and it should be clickable"): no title band; the art opens the game's
+ * Pulls, the chance stands as a tag at the foot.
  */
 export function BannersCarousel({ roster, carousel }: { roster: RosterEntry[]; carousel: HomeCarousel }) {
   const counts = roster.map((rosterEntry) => Math.max(1, rosterEntry.banners.length));
@@ -69,20 +71,16 @@ export function BannersCarousel({ roster, carousel }: { roster: RosterEntry[]; c
               />
             )}
           </div>
+          {entry && <Link className="carousel-open" to={`/games/${entry.game.instanceId}/pulls`} aria-label={`Open ${game?.name ?? banner.gameKey} pulls`} />}
           <div className="carousel-tag">
             <BannerKind kind={bannerGlyph(banner.kind)} className="carousel-kind" />
             <Countdown at={banner.endsAt} variant="tag" />
           </div>
-          <div className="band carousel-band">
-            {/* Titled by its top featured units, the banner's own name only when it features none (round 24). */}
-            <div className="font-serif carousel-title">{topNames(banner.featured) || banner.name}</div>
-            <div className="font-mono carousel-sub">{game?.name ?? banner.gameKey}</div>
-            {chance !== null && budget && lead && (
-              <div className="font-mono carousel-chance" data-testid="banner-chance" title={`Your chance at ${lead.name ?? "its top unit"} with the pulls you hold, from your pity`}>
-                {Math.round(chance * 100)}% with {budget.pullsOn(banner.kind)} pulls
-              </div>
-            )}
-          </div>
+          {chance !== null && budget && lead && (
+            <span className="tag carousel-chance" data-testid="banner-chance" title={`Your chance at ${lead.name ?? "its top unit"} with the pulls you hold, from your pity`}>
+              {Math.round(chance * 100)}% with {budget.pullsOn(banner.kind)} pulls
+            </span>
+          )}
           {featured.length > 0 && entry && <FeaturedUnits gameKey={banner.gameKey} instanceId={entry.game.instanceId} units={featured} className="carousel-featured" />}
         </>
       ) : (
