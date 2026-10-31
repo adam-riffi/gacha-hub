@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-31 · claude · stack/r35/10-no-fold · #445
+- Done: Round 28 PR 10 (Georges: "the 'two rows' thing is idiotic … audit the front"). The Planner shows every goal; the instruction hints left the ownership grid and the games list.
+- Tests: written first: all seven planned goals show, no All or Two rows button; no instruction sentence on the two screens.
+- Scope/decisions: the rest of the copy is data or empty states.
+- Next: PR 11, the chips.
+
 ## 2026-10-31 · claude · stack/r35/09-weapon-stats · #444
 - Done: Round 28 PR 9 (Georges: "the main stats like the atk and crit damage should be shown explicitly on each weapon"). Each weapon tile lists its max-level stats, one a line with its icon; `isPercent` exported from shared; tiles 150 px.
 - Tests: written first: Post-Op Conversation's tile shows 1058, 423, 331 with three stat icons.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: no Reminders or Preview on Tasks, its main column across the page; the reminder journey in Settings → Notifications.
 - Scope/decisions: none.
 - Next: PR 6, the card-stat row.
-
-## 2026-10-29 · claude · stack/r31/04-banners-tab · #405
-- Done: Round 24 PR 4 (Georges: "the banners tab is a bit catastrophic"). The timeline: 52 px lanes, 48 px bars at 15 px, 40 px unit icons and kind marks, 80 px pictures, 20 px game names; a banner's bar and Selected read its top featured units (the phase's name is the bar's title). The List view: rows of 72 px or more with the game, the kind, the picture or the units, the title and "Ends …" on paper, soonest end first, the ended ones last.
-- Tests: written first: the bar's height and type, "Blade" not the phase; the list row's height, the end day, the order, the click to Selected. The journeys that found a bar by the phase's name use its title.
-- Scope/decisions: the Month view untouched.
-- Next: PR 5, the goals page.

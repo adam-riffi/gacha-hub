@@ -104,15 +104,13 @@ test("Planner: goals in rows of three, two rows until All; filtered and sorted; 
     await page.goto(`/games/${id}/planner`);
     const goals = page.getByRole("region", { name: "Goals" });
     const cards = goals.getByRole("article");
-    // Two rows of three, then All.
-    await expect(cards).toHaveCount(6);
+    // Every goal at once, three a row (round 28, Georges: "the 'two rows' thing is idiotic"): no fold, no All button.
+    await expect.poll(() => cards.count()).toBeGreaterThanOrEqual(7);
     const [a, c, d] = [(await cards.nth(0).boundingBox())!, (await cards.nth(2).boundingBox())!, (await cards.nth(3).boundingBox())!];
     expect(Math.abs(a.y - c.y)).toBeLessThan(2);
     expect(d.y).toBeGreaterThan(a.y + a.height - 2);
-    const all = goals.getByRole("button", { name: /^All \d+ goals$/ });
-    const count = Number((await all.textContent())!.replace(/\D/g, ""));
-    await all.click();
-    await expect(cards).toHaveCount(count);
+    await expect(goals.getByRole("button", { name: /^All \d+ goals$/ })).toHaveCount(0);
+    await expect(goals.getByRole("button", { name: "Two rows" })).toHaveCount(0);
 
     // Sorted by name, then filtered.
     await goals.getByRole("group", { name: "Sort" }).getByRole("button", { name: "Name" }).click();
