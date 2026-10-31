@@ -11,8 +11,7 @@
 .pl-chances-name .font-mono { font-size: 13px; }
 .pl-chances-v { display: grid; grid-template-columns: minmax(0, 1fr) 40px; align-items: center; gap: 8px; }
 /* The top-up to a sure featured 5★ (round 6): each running target, its chance by its banner's end, the cheapest packs. */
-.pl-topup { margin-bottom: 28px; }
-.pl-topup-list { grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); }
+.pl-tops .pl-topup-list { grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); } /* inside the Top-ups card (round 28) */
 .pl-chances li.pl-topup-row { grid-template-columns: 40px minmax(0, 1fr) auto; }
 .pl-topup-buy { display: flex; align-items: center; gap: 12px; justify-content: flex-end; text-align: right; }
 .pl-topup-buy .font-mono { font-size: 13px; }
@@ -116,9 +115,7 @@
 .pl-tops-list li { display: grid; grid-template-columns: 120px minmax(0, 1fr) 110px 90px 36px; align-items: center; gap: 12px; padding: 6px 0; border-top: 1px solid var(--surface-3); }
 .pl-tops-list li.is-pass span:nth-child(2) { color: var(--accent); }
 /* Round 8: the top-ups at the bottom, side by side; each pack in pulls first. */
-.pl-tops-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: start; margin-top: 28px; }
-.pl-tops-row .pl-topup { margin-bottom: 0; }
-.pl-tops-row .pl-topup-list { grid-template-columns: 1fr; }
+.pl-tops-row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; align-items: start; margin-top: 28px; }
 .pl-tops { display: grid; gap: 14px; }
 .pl-tops-buys { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; }
 .pl-tops-buy { display: grid; gap: 4px; padding: 10px; border: 1px solid var(--hairline); background: var(--surface-2); color: var(--text); text-align: left; cursor: pointer; }
