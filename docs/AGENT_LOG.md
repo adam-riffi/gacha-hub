@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-29 · claude · stack/r32/04-icon-first · #414
+- Done: Round 25 PR 4 (Georges: "not a fan of the genshin icon", the wiki's wordmark in the big spots). `useSlotArt(key, { sources: false })` reads uploads only; `GameMark` and the hub header read the logo that way: a source's wordmark never stands in, the game's icon does, an uploaded logo still takes the spot.
+- Tests: written first: with an empty store Genshin's header and games card show the App Store icon, not the wiki's wordmark; an uploaded logo takes the header; the logo-size and art-source journeys stand.
+- Scope/decisions: the wiki logos stay in the sources for Settings → Art.
+- Next: Georges's "merge" (rounds 23, 24, 25 in order) and "deploy"; his words on the remaining alignment spots; the paste of the six values.
+
 ## 2026-10-29 · claude · stack/r32/03-wiki-wait · #413
 - Done: Round 25 PR 3. On a cold function the first `/api/art` went out before the wikis answered, with Special:FilePath addresses a browser cannot load (403): empty tiles on every wiki task. Now a wiki file not yet answered for (within `ART_RESOLVE_WAIT_MS`, 4 s) is listed with no address (the drawn tile shows), and `buildApp` warms the resolution at boot (skipped under vitest).
 - Tests: written first: a never-answering wiki API with a 50 ms wait: the list within 2 s, wiki files null, the App Store icon kept; the stub now resolves every file but one so the resolved, the missing and the task icons are each checked.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the art URLs per kind for Endfield, the catalog keyed to them (25 or more operators with a splash, 60 or more weapons by id), the policy test's hosts. Checked in dev: the characters grid, a sheet, the weapons.
 - Scope/decisions: wiki.gg's static files are plain to fetch and to hotlink (unlike Fandom's), so no header games and nothing new in the fetcher; the mirror copies them as any source. The two Endministrators have no file on either source and keep the glyph.
 - Next: the fuller task lists per game.
-
-## 2026-10-21 · claude · stack/r24/04-history · #371
-- Done: round 17 (Georges: "still no banner history"). The wikis of Zenless, Wuthering Waves and NTE keep one page per banner run ("<banner>/<start date>": an infobox with the type and the server-time dates, an item pool with the rate-up units); `npm run catalog:banners-wiki` reads them through each wiki's API (one cache folder a day) and writes `banner-history.json` in the shape the samsara importer uses: 144 Signal Searches, 157 Convenes and 13 Boards, each with its featured units matched to the catalog by name or by the one word they share (the wiki's "Hoshimi Miyabi" is the catalog's "Miyabi"). The three modules load it, so Pulls lists the history and the characters' "last seen" works for them as for Genshin and Star Rail. `E2E_PORT` (branch 03) let this be built while the checks ran in a second checkout.
-- Tests: written first: the wiki parser (a template's fields, one-line fields, kinds from the type, server time to ISO, rate-up units only, matching by name or word, short words never, permanent pools left out, the schema) and the written histories (each loads, dated, in order, featured on nearly every run); a journey finds the Banner history section on Pulls for Zenless and Wuthering Waves. The parser tests live in the server package: the shared package has no test runner.
-- Scope/decisions: Endfield's wiki has three dated pages and no dates in them, so Endfield stays without history (Game8's table is the next source). The units the wikis name and the catalogs lack (Wuthering Waves 3.5+, NTE 1.3+) are left out and listed by the importer: the catalogs need a refresh, the next PR.
-- Next: a catalog refresh for the games whose wikis outran them, then Endfield's art.
