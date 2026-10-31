@@ -17,10 +17,13 @@ test("the games list is a grid of cards: key art on top, the icon and name over 
   expect(first.width).toBeGreaterThanOrEqual(500);
   const hsr = page.getByRole("article", { name: "Honkai: Star Rail" });
   const art = (await hsr.locator(".lib-art").boundingBox())!;
-  expect(art.height, "the key art band").toBeGreaterThanOrEqual(150);
+  // Round 28 (Georges: "cards are better but it should be bigger still"): a 240 px band, a 90 px icon, a 34 px name.
+  expect(art.height, "the key art band").toBeGreaterThanOrEqual(240);
+  expect((await hsr.locator(".lib-icon").boundingBox())!.width, "the game's icon").toBeGreaterThanOrEqual(90);
   expect(art.width).toBeGreaterThanOrEqual(first.width - 2);
   const name = (await hsr.getByRole("heading", { name: "Honkai: Star Rail" }).boundingBox())!;
   expect(name.y + name.height, "the name over the art").toBeLessThanOrEqual(art.y + art.height);
+  expect(name.height, "the name large").toBeGreaterThanOrEqual(34);
   const cells = await hsr.locator(".lib-cell").evaluateAll((els) => els.map((el) => Math.round(el.getBoundingClientRect().width)));
   expect(cells.length).toBe(5);
   expect(Math.max(...cells) - Math.min(...cells), "tiles of one width").toBeLessThanOrEqual(2);
