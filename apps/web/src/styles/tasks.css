@@ -29,7 +29,6 @@
 .mat-icons .gicon { width: 26px; height: 26px; font-size: 8px; }
 .tk-chip .mat-icons { gap: 4px; }
 .tk-chip .mat-icons .gicon { width: 40px; height: 40px; font-size: 10px; }
-.tk-chip.is-weekly { color: var(--text-muted); }
 .tk-card { min-width: 0; padding: 12px 14px; border: 1px solid var(--edge); background: var(--surface-2); }
 .tk-card.is-open { border-color: var(--hairline-strong); }
 .tk-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }

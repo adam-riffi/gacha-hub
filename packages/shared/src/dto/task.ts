@@ -102,7 +102,7 @@ export const taskChecklistInput = z.object({
 });
 
 const farmLineDto = z.object({
-  kind: z.enum(["domain", "anyday", "weekly"]),
+  kind: z.enum(["domain", "anyday"]),
   text: z.string(),
   /** Who it is for, which materials and their days: what the card shows as icons. */
   unit: z.object({ kind: z.enum(["character", "weapon", "gear"]), catalogId: z.string() }).nullable().default(null),
@@ -110,7 +110,7 @@ const farmLineDto = z.object({
   days: z.array(z.number().int().min(1).max(7)).default([]),
 });
 
-/** Farm today (WIREFRAMES.md A3), per awake profile: what its game day opens for your goals, and the weeklies left. */
+/** Farm today (WIREFRAMES.md A3), per awake profile: what its game day opens for your goals (round 28: no weeklies-left line). */
 export const farmTodayDto = z.array(
   z.object({
     gameKey: z.string(),

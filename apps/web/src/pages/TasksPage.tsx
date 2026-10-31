@@ -38,7 +38,6 @@ function FarmChip({ gameKey, line, showGame, days = true }: { gameKey: string; l
       {line.materials.length > 0 && <MaterialIcons gameKey={gameKey} ids={line.materials} max={8} />}
       {line.kind === "domain" && days && <span>{line.days.map((day) => DAY[day]).join(" ")}</span>}
       {line.kind === "anyday" && days && <span className="text-muted">any day</span>}
-      {line.kind === "weekly" && <span>{line.text}</span>}
     </span>
   );
 }
