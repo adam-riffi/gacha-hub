@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-29 · claude · stack/r32/02-task-rows · #412
+- Done: Round 25 PR 2 (Georges: "try to find icons for iconless tasks + having no icons and no is a bit weird", "the version card is broken and unreadable"). A task with no picture draws a ticked box in its 36 px frame; three more wiki icons (Genshin commission reward, Zenless Ridu weekly, Wuthering nightmare nests); a monthly task's shop note wraps at 38 % instead of squeezing the title; the version card's event rows 64 px with 96 px pictures. Plus the real cause of empty tiles on tasks that have icons: `taskSlot` matched titles case-sensitively, and profiles made before a manifest recased a title ("Realm currency") found nothing.
+- Tests: written first: Check-in's drawn tile and no empty one; every task title on one line; a seeded event's row ≥ 56 px; the three new sources; a task recased to "Daily training" still shows its icon.
+- Scope/decisions: a drawn tile keeps every row the same shape.
+- Next: PR 3, the wiki wait.
+
 ## 2026-10-29 · claude · stack/r32/01-hub-readable · #411
 - Done: Round 25 PR 1 (Georges: "some info on transparent cards isn't readable", "weird slider on the games panel", "the resin full is very small and far", "some alignment issues"). The hub header's chips opaque and the reset box on a 90 % ground; the tab row wraps, never scrolls; FULL is a 16 px accent mark right after the stamina figure ("full at …" there too); the games cards' TODAY label on its baseline.
 - Tests: written first: the chips' and box's background alpha ≥ 0.8; the tabs' overflow not auto/scroll; FULL ≥ 15 px within 120 px of the figure on its line; TODAY's bottom within 3 px of its line's.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: a journey uploads an icon, seeds a banner with a picture and an event ending soon, and finds the icon at the game's row head, the picture on the bar and the icon in Home's expiring list; the calendar, Home and key-art journeys still pass.
 - Scope/decisions: the pictures are the feeds' (`payload.image`); a banner without one shows its featured units as before. Nothing new is hotlinked.
 - Next: the banner history for the four games without one.
-
-## 2026-10-21 · claude · stack/r24/02-key-art · #369
-- Done: round 17 (Georges: "the pieces of art you've chosen for the top game cards and game window game cards are extremely underwhelming"). Every game's key-art slot has a source: its wiki's splash screen of the current version (2560 px wide: Genshin 7.1 "A Rekviem for the Underworld", Star Rail 4.6 "Dance With the Beast Before Moonrise", Zenless 3.2 "Their Secret Histories", Wuthering Waves 3.7 "We Who See the Stars", Endfield "Zeroth Directive", NTE's 1.4 program picture), fetched at one click. The hub header carries it across its whole width behind the logo, the name and the resets (which keep a dark panel); the games list's row shows it across its right 60 %, bright, the figures on their own surface.
-- Tests: written first: every game's key art names a wiki `Special:FilePath` source; a journey uploads a key art and finds it across the hub header (180 px or more) and the games-list row.
-- Scope/decisions: the version splash is the picture the game itself opens on; the sources move on with the versions (a line each in `sources.ts`). The official sites' `og:image` were the alternative; the wikis keep every version's, so the next one is a name change.
-- Next: icons and pictures on the timeline, the selected panel and Home's lists.

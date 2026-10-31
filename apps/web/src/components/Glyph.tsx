@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 /** The kinds a thing without art can be drawn as. */
-export type GlyphKind = "character" | "weapon" | "standard" | "bangboo" | "gear" | "material" | "game";
+export type GlyphKind = "character" | "weapon" | "standard" | "bangboo" | "gear" | "material" | "game" | "task";
 
 export const GLYPHS: Record<GlyphKind, ReactNode> = {
   character: (
@@ -26,6 +26,13 @@ export const GLYPHS: Record<GlyphKind, ReactNode> = {
       <path d="M7.5 12.5h3M9 11v3M15 12h0M17 14h0" />
     </>
   ),
+  // A task without a picture (round 25): a ticked box.
+  task: (
+    <>
+      <rect x="4" y="4" width="16" height="16" rx="3" />
+      <path d="m8 12 3 3 5-6" />
+    </>
+  ),
 };
 
 /** A catalog kind's glyph, for art that is missing. */
@@ -35,11 +42,11 @@ export const artGlyph = (kind: string): GlyphKind =>
 /** A banner type's glyph: weapons, Bangboos, characters, else the standard star. */
 export const bannerGlyph = (key: string): GlyphKind => (/weapon/.test(key) ? "weapon" : /bangboo/.test(key) ? "bangboo" : /character|collab|joint/.test(key) ? "character" : "standard");
 
-/** A thing without art as an icon of its kind (Georges, round 6: "use icons instead" of letters), named for screen readers. */
+/** A thing without art as an icon of its kind (Georges, round 6: "use icons instead" of letters), named for screen readers; with no label, decoration. */
 export function Glyph({ kind, label, className = "" }: { kind: GlyphKind; label: string; className?: string }) {
   return (
     <span className={`gicon glyph-box ${className}`}>
-      <svg className="glyph" viewBox="0 0 24 24" role="img" aria-label={label}>
+      <svg className="glyph" viewBox="0 0 24 24" {...(label ? { role: "img", "aria-label": label } : { "aria-hidden": true })}>
         {GLYPHS[kind]}
       </svg>
     </span>

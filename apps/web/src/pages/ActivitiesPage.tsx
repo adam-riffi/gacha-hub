@@ -12,6 +12,7 @@ import { useReminderFlag } from "../lib/reminder";
 import { TickRow, tickColumn } from "../components/TickControl";
 import { RedeemCodesCard } from "../components/hub/RedeemCodesCard";
 import { SlotArt } from "../components/SlotArt";
+import { Glyph } from "../components/Glyph";
 import { officialArt } from "../lib/assets";
 
 const DATE = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
@@ -26,7 +27,8 @@ function taskSlot(game: GameDefinition, task: TaskDto): string | null {
     if (game.manifest.endgame.some((mode) => mode.key === task.anchorKey)) return artSlotKey(game.key, "mode", task.anchorKey);
     return null;
   }
-  const seed = game.defaultTasks.find((candidate) => candidate.title === task.title && !candidate.anchorKey);
+  // By title, case aside: a profile made before a manifest recased a title ("Realm currency") keeps its own (round 25).
+  const seed = game.defaultTasks.find((candidate) => candidate.title.toLowerCase() === task.title.toLowerCase() && !candidate.anchorKey);
   return seed ? artSlotKey(game.key, "task", seed.key) : null;
 }
 
@@ -195,7 +197,7 @@ function CadenceList({
       <div className="act-rows" style={tickColumn(items)}>
         {/* One tick control everywhere (round 7): a counted daily by its steps. */}
         {items.map((item) => (
-          <TickRow key={item.id} instanceId={instanceId} task={item} icon={<SlotArt slot={taskSlot(game, item)} className="list-art" fallback={<span className="list-art" aria-hidden="true" />} />}>
+          <TickRow key={item.id} instanceId={instanceId} task={item} icon={<SlotArt slot={taskSlot(game, item)} className="list-art" fallback={<Glyph kind="task" label="" className="list-art list-art-glyph" />} />}>
             {cadence === "monthly" && item.anchorKey && anchors.find((anchor) => anchor.key === item.anchorKey)?.name !== item.title && <span className="font-mono text-muted">{anchors.find((anchor) => anchor.key === item.anchorKey)?.name}</span>}
           </TickRow>
         ))}
