@@ -150,9 +150,12 @@ test("Pulls: a logged 5★ is corrected from History, and Banner history shows y
   await expect(history.getByRole("row").filter({ hasText: "Kafka" }).first()).toContainText("7");
   await expect(page.getByRole("region", { name: "Character event warp" }).getByTestId("pity")).toHaveText("3");
 
-  // Banner history: each banner with your pulls on it; its characters open their pages.
+  // Banner history: each banner with your pulls on it, by its kind's mark and its featured units, never its name (round 28,
+  // Georges: "i do not care about banner names"); its characters open their pages.
   const past = page.getByRole("region", { name: "Banner history" });
-  const warp = past.getByRole("row").filter({ hasText: "E2E history warp" });
+  await expect(past).not.toContainText("E2E history warp");
+  const warp = past.getByRole("row").filter({ has: page.getByRole("link", { name: "Kafka" }) }).first();
+  await expect(warp.locator(".kind-mark")).toHaveCount(1);
   await expect(warp.locator(".bh-pulls")).toHaveText(/^\d+$/);
   await warp.getByRole("link", { name: "Kafka" }).click();
   await expect(page).toHaveURL(new RegExp(`/games/${id}/units/1005$`));
