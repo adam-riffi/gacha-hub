@@ -35,9 +35,9 @@ export function TickBox({ instanceId, task }: { instanceId: string; task: TaskDt
   return <input type="checkbox" className="tick-check" aria-label={task.title} key={String(task.doneThisCycle)} defaultChecked={Boolean(task.doneThisCycle)} onChange={(event) => tick.mutate(event.target.checked)} />;
 }
 
-/** The width of a list's box column: its widest boxes (a step is 14 px and 3 apart, a box 20, a number field 80). */
+/** The width of a list's box column: its widest boxes (a step is 20 px and 3 apart, a box 20, a number field 80). */
 export const tickColumn = (items: readonly TaskDto[]): CSSProperties =>
-  ({ "--tick-col": `${Math.max(20, ...items.map((item) => ((item.target ?? 1) > 8 ? 80 : (item.target ?? 1) > 1 ? (item.target ?? 1) * 17 - 3 : 20)))}px` }) as CSSProperties;
+  ({ "--tick-col": `${Math.max(20, ...items.map((item) => ((item.target ?? 1) > 8 ? 80 : (item.target ?? 1) > 1 ? (item.target ?? 1) * 23 - 3 : 20)))}px` }) as CSSProperties;
 
 /** A recurring task's row: its boxes in one column, its title, a counted one's count, then anything the list adds. */
 export function TickRow({ instanceId, task, icon, children }: { instanceId: string; task: TaskDto; icon?: ReactNode; children?: ReactNode }) {
