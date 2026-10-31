@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-30 · claude · stack/r33/05-teams-faces · #419
+- Done: Round 26 PR 5 (Georges: "for the teams i need bigger character icons i only need to see the characters, and their weapons and their sets nothing more"). A slot is the face at 96 px on its element's tint (a link to the build or the unit), its weapon and its completed sets with their sizes at 40 px under it; the name in letters and the status words are gone; the remove cross in the corner.
+- Tests: written first: Arlan's slot shows his face at 88 px or more, his cone's icon, his set's icon with 2, no status words; the face opens his build.
+- Scope/decisions: the weapon and the sets read as the Characters cards read them (`CharacterBuild.completedSets`, the weapon field).
+- Next: PR 6, the weapons groups.
+
 ## 2026-10-30 · claude · stack/r33/04-no-glyphs · #418
 - Done: Round 26 PR 4 (Georges: "some weird useless icons here and there too"; round 25: "maybe 0 icons can be justified"). A task without a picture keeps an empty 36 px frame (the round-25 drawn tile is gone, with the `task` glyph); the date and countdown chips lose the square before their words (`.chip > i`, six places); the games cards lose the "≡" grip.
 - Tests: written first: Check-in's frame is an empty span with no drawing at 36 px; no `.chip > i` on Activities or Home; no grip on the games list.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: a journey uploads a key art and a pass icon, steps Home's pass carousel to Star Rail, finds the key art behind and the icon in the band (64 px or less, not the backdrop), and the Stamina row's icon on one line with the name; the hero, order and Home journeys still pass.
 - Scope/decisions: the single-game dashboard's pass card is figures only and stays.
 - Next: the app at 1100 px.
-
-## 2026-10-21 · claude · stack/r25/01-game8-feed · #376
-- Done: round 18 (Georges, round 17: "setup a pipeline to ingest any data like banner cards, event cards… check out websites like game8"). Endfield has no official feed and its wiki no dates; Game8's banner schedule page is a table with a cell per banner (picture, name, version phase, M/D/Y dates, the featured operators' icons by alt text) under a heading per kind, and its events page two tables (a cell or a row per event with its picture and dates). The cron tick reads both like a feed, at most hourly: banners keyed `game8-<kind>-<start>-<name>` with the featured operators matched to the catalog by name, events `game8-<start>-<name>`, dates at the game's reset hour in its Americas/Europe server time, a run with a "TBD" end left out until it has one; Game8's picture host joins the image policy. The three feeds (HoYoverse, the Wuthering Waves wiki, Game8) share one upsert.
-- Tests: written first: the banner table (a banner per dated cell under each kind's heading, server time, picture, version, featured by catalog id, unknown names left out, TBD not a run) and the event tables (a cell or a row each, named by its link, undated ones left out); the policy test's host.
-- Scope/decisions: Game8's tables are its own layout, read with patterns like samsara's YAML; a layout change breaks the parser loudly (no banners), not quietly. The featured operators Game8 names and the catalog lacks (Si, Typhoeus, Liino: newer than EndFieldGameData v0.3.0) are left out, the banner kept.
-- Next: the UI audit at 1100–2560 px.
