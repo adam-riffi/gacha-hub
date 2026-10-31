@@ -105,7 +105,7 @@ test("Planner: goals in rows of three, two rows until All; filtered and sorted; 
     const goals = page.getByRole("region", { name: "Goals" });
     const cards = goals.getByRole("article");
     // Every goal at once, three a row (round 28, Georges: "the 'two rows' thing is idiotic"): no fold, no All button.
-    expect(await cards.count()).toBeGreaterThanOrEqual(7);
+    await expect.poll(() => cards.count()).toBeGreaterThanOrEqual(7);
     const [a, c, d] = [(await cards.nth(0).boundingBox())!, (await cards.nth(2).boundingBox())!, (await cards.nth(3).boundingBox())!];
     expect(Math.abs(a.y - c.y)).toBeLessThan(2);
     expect(d.y).toBeGreaterThan(a.y + a.height - 2);
