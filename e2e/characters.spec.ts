@@ -28,7 +28,8 @@ test("Characters: splash cards with their KPIs, counts, search, wishlist and own
   await expect(kafka).toContainText("60 / 150");
   await expect(page.getByRole("article")).toHaveCount(1);
   // The card shows the weapon type (Star Rail's path) and tints to the element.
-  await expect(kafka).toContainText("Nihility");
+  // Her path is a tile with the name as its label (round 26: the rarity, path and element tiles).
+  await expect(kafka.getByRole("img", { name: "Nihility" })).toBeVisible();
   // Its default build's weapon on the coloured name card, its level and refinement on the icon (Georges, round 4),
   // on the right of the name, the level top-left and the refinement bottom-right (round 5).
   const weapon = kafka.locator(".ch-namebox .ch-weapon");
