@@ -48,6 +48,9 @@
 .cal-units .gicon { display: block; width: 28px; height: 28px; border: 0; background: color-mix(in srgb, #000 25%, transparent); }
 /* A banner's or event's official picture at the start of its bar (round 17: pictures first). */
 .cal-thumb { flex: none; width: 52px; height: 28px; margin-left: -6px; object-fit: cover; }
+/* The banner's kind at the start of its bar (round 23), before its picture. */
+.cal-kind { width: 28px; height: 28px; margin-left: -6px; clip-path: none; }
+.cal-bar .cal-kind + .cal-thumb, .cal-bar .cal-kind + .cal-units { margin-left: 0; }
 /* Selected's featured units: the icons, then the link to Pulls. */
 .cal-sel-featured { display: flex; flex-direction: column; gap: 8px; }
 .cal-bar.is-banner { background: var(--c, var(--accent)); color: #000; }
