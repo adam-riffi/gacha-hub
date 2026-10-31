@@ -51,7 +51,6 @@
 .pn-goals-head { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 .pn-goals-head input[type="search"] { width: 240px; }
 .pn-goal-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-items: start; }
-.pn-all { justify-self: start; }
 .pn-goal { display: grid; min-width: 0; border: 1px solid transparent; }
 .pn-goal .tk-card { min-width: 0; overflow: hidden; }
 .pn-goal .tk-actions { flex-wrap: wrap; }

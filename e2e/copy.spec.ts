@@ -55,3 +55,18 @@ test("the screens carry no report sentences and no source labels on your own rec
     await expect(page.locator(".tag", { hasText: /^(manual|admin|feed)$/i })).toHaveCount(0);
   }
 });
+
+// Round 28 (Georges, 2026-10-31: "remove such ai generated hallucinations, audit the front"): no instruction sentences
+// either: the ownership grid says nothing about clicking portraits, the games list nothing about dragging.
+test("no instruction sentences on the ownership grid or the games list @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  await page.goto(`/games/${id}/ownership`);
+  await expect(page.locator(".roster .rtile").first()).toBeVisible();
+  await expect(page.getByText(/click a portrait/i)).toHaveCount(0);
+  await page.goto("/library");
+  await expect(page.getByRole("article").first()).toBeVisible();
+  await expect(page.getByText(/drag to reorder/i)).toHaveCount(0);
+});

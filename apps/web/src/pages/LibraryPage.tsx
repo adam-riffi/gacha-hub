@@ -68,7 +68,6 @@ export function LibraryPage() {
       <div className="lib-head">
         <h1>Games</h1>
         <span className="badge">{rows.length} installed</span>
-        <span className="font-mono text-muted lib-hint">Drag to reorder</span>
       </div>
       <div className="lib-page">
         <div className="lib-list">
