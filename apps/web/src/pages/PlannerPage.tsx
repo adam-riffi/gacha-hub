@@ -16,13 +16,11 @@ import type { InstanceDetail, InstanceListItem, TaskItem } from "../lib/types";
 const DAY = ["", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const WEEKDAY = ["", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 const NUMBER_FORMAT = new Intl.NumberFormat("en-GB");
-/** Two rows of three goals until All (Georges, round 6). */
-const SHOWN = 6;
 type Sort = "priority" | "progress" | "name";
 
 /**
- * A game's Planner (WIREFRAMES.md G7): the farming goals in rows of three
- * (two rows until All), filtered and sorted, each opening in its own card;
+ * A game's Planner (WIREFRAMES.md G7): every farming goal in rows of three
+ * (round 28: no fold), filtered and sorted, each opening in its own card;
  * below, the materials of the picked goal (its linked goals' too) or of all
  * goals, with where they drop, the days they can be farmed (today outlined),
  * what you have (typed here), what you need and what is missing, beside what
@@ -36,7 +34,6 @@ export function PlannerPage() {
   const [scope, setScope] = useState<"goal" | "all">("goal");
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState<Sort>("priority");
-  const [all, setAll] = useState(false);
   const [making, setMaking] = useState(false);
   const instance = useQuery({ queryKey: ["instance", id], queryFn: () => api.get<InstanceDetail>(`/api/instances/${id}`) });
   const tasks = useQuery({ queryKey: ["tasks"], queryFn: () => api.get<TaskItem[]>("/api/tasks") });
@@ -71,7 +68,6 @@ export function PlannerPage() {
     .sort((first, second) =>
       sort === "name" ? first.title.localeCompare(second.title) : sort === "progress" ? share(second) - share(first) || first.title.localeCompare(second.title) : PRIORITY_RANK[first.priority] - PRIORITY_RANK[second.priority] || first.title.localeCompare(second.title),
     );
-  const shown = all ? listed : listed.slice(0, SHOWN);
   // The picked goal, else the first active one that still needs materials.
   const current = goals.find((goal) => goal.id === picked) ?? goals.find((goal) => !goal.backlog && kidsOf(goal).length > 0) ?? goals[0];
   const have = new Map((stock.data ?? []).map((stockItem) => [stockItem.materialId, stockItem.qty]));
@@ -117,17 +113,12 @@ export function PlannerPage() {
           {goals.length > 0 && listed.length === 0 && <p className="text-muted">No goal matches.</p>}
           {/* The Tasks goal card (Georges, round 4): priority, notify, its plan, Link to; a click also picks it for the materials. */}
           <div className="pn-goal-grid">
-            {shown.map((goal) => (
+            {listed.map((goal) => (
               <div key={goal.id} className={`pn-goal ${goal.id === current?.id ? "is-on" : ""}`} onClickCapture={() => setPicked(goal.id)}>
                 <GoalCard goal={goal} tasks={mine} linkable={goals.filter((candidate) => candidate.id !== goal.id && !candidate.parentId && !candidate.backlog)} gameInstance={gameInstance} weekday={weekday} showGame={false} materials={false} />
               </div>
             ))}
           </div>
-          {listed.length > SHOWN && (
-            <button type="button" className="btn ghost pn-all" onClick={() => setAll(!all)}>
-              {all ? "Two rows" : `All ${listed.length} goals`}
-            </button>
-          )}
         </section>
 
         {making && <QuickBuild instanceId={id!} gameKey={game.key} catalogIds={[]} onClose={() => setMaking(false)} />}
