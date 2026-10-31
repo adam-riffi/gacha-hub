@@ -56,7 +56,8 @@ test("deadlines within 48 hours are paper chips; view switches expose their stat
   await expect(countdown).toHaveClass(/hot/);
   await expect(countdown).toHaveCSS("background-color", "rgb(237, 237, 237)");
   await expect(card).toHaveAttribute("data-rotating", "true");
-  await card.getByRole("button", { name: "Next banner" }).click();
+  // The nine-days-out banner has a dark tag; other journeys' banners may sit between on the shared database: step until it shows.
+  for (let turn = 0; turn < 8 && /hot/.test((await countdown.getAttribute("class")) ?? ""); turn++) await card.getByRole("button", { name: "Next banner" }).click();
   await expect(countdown).not.toHaveClass(/hot/);
   await expect(card.locator(".tag")).toHaveCSS("background-color", "rgb(0, 0, 0)");
   // The pointer over the card, or focus inside it, holds the rotation; reduced motion stops it.
