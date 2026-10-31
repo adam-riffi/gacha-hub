@@ -54,9 +54,10 @@ export function BannerCard(props: {
   const featured = live?.featured.find((featuredUnit) => (featuredUnit.rarity ?? 0) >= 5);
   const running = props.running ?? (live ? [live] : []);
   // The running banners shown, the soonest to end first: the ones with featured units (round 24, Georges: "just the featured
-  // characters"); a lone one without any still shows its end.
-  const withUnits = running.filter((liveBanner) => liveBanner.featured.length > 0);
-  const runs = [...(withUnits.length ? withUnits : running.slice(0, 1))].sort((first, second) => Date.parse(first.endsAt) - Date.parse(second.endsAt));
+  // characters") or with their own key art; one with neither adds nothing (round 28's empty "ends Wed 4 Nov" block), unless it
+  // runs alone, when its end still shows.
+  const withSomething = running.filter((liveBanner) => liveBanner.featured.length > 0 || officialArt(liveBanner.payload));
+  const runs = [...(withSomething.length ? withSomething : running.slice(0, 1))].sort((first, second) => Date.parse(first.endsAt) - Date.parse(second.endsAt));
   const star = topStar(props.gameKey);
   const target = featured?.name ?? `the featured ${star}`;
 
