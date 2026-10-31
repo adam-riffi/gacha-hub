@@ -53,8 +53,9 @@ test("Home's banners show each banner's featured units, the ones you own marked,
   const card = page.locator(".banner-card");
   // The pointer on the card holds it on this banner (the carousel steps on its own otherwise); it ends first, so it shows first.
   await card.hover();
-  // Round 24: the card is titled by its 5★, not by the banner's name.
-  await expect(card.locator(".carousel-title")).toHaveText("Blade");
+  // Round 28 (Georges: "just showing the banner art"): no title band at all; the art is a link to the game's Pulls.
+  await expect(card.locator(".carousel-title")).toHaveCount(0);
+  await expect(card.getByRole("link", { name: "Open Honkai: Star Rail pulls" })).toHaveAttribute("href", /\/games\/[^/]+\/pulls$/);
   const featured = card.getByRole("list", { name: "Featured units" });
   await expect(featured.getByRole("listitem")).toHaveCount(3);
   // The 5★ first, then the 4★; the one you own says so.
