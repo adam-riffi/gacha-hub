@@ -245,7 +245,7 @@ function Cycles({ game, modes, instanceId }: { game: GameDefinition; modes: Retu
         {modes.map(({ mode: endgameMode, result, closes, open, end }) => (
           // A mode that closes before its next cycle (Stygian Onslaught) counts down to its close.
           <div key={endgameMode.key} className="act-row">
-            <span className="act-title">
+            <span className="act-title" title={endgameMode.name}>
               <SlotArt slot={artSlotKey(game.key, "mode", endgameMode.key)} className="list-art" />
               {endgameMode.name}
             </span>
@@ -404,7 +404,9 @@ function Version({ game, endsAt, events }: { game: GameDefinition; endsAt: Date;
           <div key={event.id} className="act-row">
             {/* The event's official picture (round 17), when its feed gave one. */}
             {officialArt(event.payload) && <img className="act-thumb" src={officialArt(event.payload)} alt="" loading="lazy" />}
-            <span className="act-title">{event.name}</span>
+            <span className="act-title" title={event.name}>
+              {event.name}
+            </span>
             <DateChip at={new Date(event.endsAt)} />
           </div>
         ))}
