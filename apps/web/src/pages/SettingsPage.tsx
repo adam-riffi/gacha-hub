@@ -8,6 +8,7 @@ import { useToast } from "../lib/toast";
 import { masked } from "../components/hub/HubHeader";
 import { RemindersPanel } from "../components/tasks/RemindersPanel";
 import { GameReminders } from "../components/settings/GameReminders";
+import { GamesList } from "../components/settings/GamesList";
 import { AdminPage } from "./AdminPage";
 import { KeysSettings } from "../components/settings/KeysSettings";
 import { ArtSettings } from "../components/settings/ArtSettings";
@@ -78,7 +79,7 @@ export function SettingsPage() {
         ))}
       </nav>
       <div className="st-main">
-        {tab === "" && <GamesSettings games={mine} />}
+        {tab === "" && <GamesList />}
         {tab === "accounts" && <LinkedAccounts links={links.data ?? []} games={mine} />}
         {tab === "pulls" && (
           <section className="card" id="pulls" aria-label="Pull history">
@@ -458,56 +459,3 @@ function AccountData() {
  * server, awake or asleep, and links to its hub and its hidden banners; add or
  * remove games in the library.
  */
-function GamesSettings({ games }: { games: InstanceListItem[] }) {
-  const queryClient = useQueryClient();
-  // Awake changes at once; the server catches up.
-  const [awake, setAwake] = useState<Record<string, boolean>>({});
-  const toast = useToast();
-  const save = useMutation({
-    mutationFn: (change: { id: string; regionKey?: string; sleeping?: boolean }) => api.put(`/api/instances/${change.id}`, { ...(change.regionKey ? { regionKey: change.regionKey } : {}), ...(change.sleeping !== undefined ? { sleeping: change.sleeping } : {}) }),
-    onSuccess: () => Promise.all(["instances", "instance", "dashboard"].map((key) => queryClient.invalidateQueries({ queryKey: [key] }))),
-    onError: () => toast("Could not save the game", "err"),
-  });
-  return (
-    <section className="card" id="games" aria-label="Games">
-      <div className="spread">
-        <h3>Games</h3>
-        <Link to="/library">Add or remove games →</Link>
-      </div>
-      <table>
-        <thead>
-          <tr><th>Game</th><th>Server</th><th>Awake</th><th>Hidden banners</th></tr>
-        </thead>
-        <tbody>
-          {games.map((gameInstance) => {
-            const game = getGame(gameInstance.gameKey);
-            return (
-              <tr key={gameInstance.id}>
-                <td><Link to={`/games/${gameInstance.id}`}>{gameInstance.name}</Link></td>
-                <td>
-                  <select aria-label={`Server for ${gameInstance.name}`} value={gameInstance.regionKey} onChange={(event) => save.mutate({ id: gameInstance.id, regionKey: event.target.value })} style={{ width: "auto" }}>
-                    {(game?.regions ?? []).map((region) => (
-                      <option key={region.key} value={region.key}>{region.label}</option>
-                    ))}
-                  </select>
-                </td>
-                <td>
-                  <input
-                    type="checkbox"
-                    aria-label={`${gameInstance.name} awake`}
-                    checked={awake[gameInstance.id] ?? !gameInstance.sleeping}
-                    onChange={(event) => {
-                      setAwake((current) => ({ ...current, [gameInstance.id]: event.target.checked }));
-                      save.mutate({ id: gameInstance.id, sleeping: !event.target.checked });
-                    }}
-                  />
-                </td>
-                <td>{gameInstance.hiddenBanners?.length ? <Link to={`/games/${gameInstance.id}/pulls`}>{gameInstance.hiddenBanners.length} hidden</Link> : <span className="text-muted">none</span>}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </section>
-  );
-}

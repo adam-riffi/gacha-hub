@@ -161,7 +161,7 @@ export function CalendarPage() {
     return (
       <div className="card">
         <p>Add a game first to see its banners and events.</p>
-        <Link className="btn primary" to="/library">
+        <Link className="btn primary" to="/settings">
           Browse games
         </Link>
       </div>

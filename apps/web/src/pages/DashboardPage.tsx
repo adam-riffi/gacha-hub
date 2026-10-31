@@ -53,7 +53,7 @@ export function DashboardPage() {
         <h1 className="sr-only">Home</h1>
         <div className="card empty">
           <p>No games yet. Add the games you play to start tracking.</p>
-          <Link className="btn primary" to="/library">Browse games</Link>
+          <Link className="btn primary" to="/settings">Browse games</Link>
         </div>
       </>
     );

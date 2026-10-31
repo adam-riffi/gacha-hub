@@ -198,7 +198,7 @@ function Status({ instance, game }: Props) {
     onSuccess: () => {
       toast("Game removed");
       void queryClient.invalidateQueries();
-      navigate("/library");
+      navigate("/settings");
     },
   });
   // The old overview's tools: recreate deleted default tasks; a hidden "to max" goal per owned, unbuilt character.

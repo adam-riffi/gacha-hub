@@ -1,6 +1,7 @@
-/* Games (WIREFRAMES.md A2), in the dashboard's look (VISUAL-DESIGN.md). */
+/* Settings → Games (round 29; the Games page, WIREFRAMES.md A2, before), in the dashboard's look (VISUAL-DESIGN.md). */
 .lib-head { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
-.lib-head h1 { margin: 0; }
+.lib-head h1, .lib-head h3 { margin: 0; }
+.lib-server { width: auto; min-height: 36px; }
 /* Round 23: one column; the "Add a game" note takes a row under the list rather than a column that squeezed the rows' figures. */
 .lib-page { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; align-items: start; }
 .lib-side { display: grid; gap: 14px; min-width: 0; }

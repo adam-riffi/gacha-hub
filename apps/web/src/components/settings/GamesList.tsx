@@ -2,28 +2,29 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getGame, listedGoal, type TaskDto } from "@gacha/shared";
-import { LoadError } from "../components/LoadError";
-import { api } from "../lib/api";
-import { useToast } from "../lib/toast";
-import { formatRemaining } from "../lib/time";
-import { pullsFor } from "../lib/format";
-import { Count } from "../components/home/PullsCard";
-import type { DashboardData, GameCatalogItem } from "../lib/types";
-import { GameMark } from "../components/GameMark";
-import { HeroArt } from "../components/HeroArt";
+import { LoadError } from "../LoadError";
+import { api } from "../../lib/api";
+import { useToast } from "../../lib/toast";
+import { formatRemaining } from "../../lib/time";
+import { pullsFor } from "../../lib/format";
+import { Count } from "../home/PullsCard";
+import type { DashboardData, GameCatalogItem } from "../../lib/types";
+import { GameMark } from "../GameMark";
+import { HeroArt } from "../HeroArt";
 
 type DashGame = DashboardData["games"][number];
 
 const offset = (minutes: number) => `UTC${minutes >= 0 ? "+" : "−"}${Math.abs(minutes / 60)}`;
 
 /**
- * Games (WIREFRAMES.md A2): one row per installed game in the strip's order,
- * dragged (or moved with its arrows) to reorder the strip; its server, offset
- * and version; what it holds (Georges, 2026-10-11): characters owned, limited
- * pulls, energy, goals and backlog, each opening its screen; today's dailies
- * and the reset; Open hub and Sleep. Beside: the games to add.
+ * Settings → Games (round 29; the Games page, WIREFRAMES.md A2, before): one
+ * card per installed game in the side bar's order, dragged (or moved with its
+ * arrows) to reorder the side bar; its server, offset and version; what it
+ * holds (Georges, 2026-10-11): characters owned, limited pulls, energy, goals
+ * and backlog, each opening its screen; today's dailies and the reset; Open
+ * hub, the server and Sleep. Under the list: the games to add.
  */
-export function LibraryPage() {
+export function GamesList() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const toast = useToast();
@@ -43,6 +44,7 @@ export function LibraryPage() {
     onError: () => toast("Couldn't add the game", "err"),
   });
   const sleep = useMutation({ mutationFn: (request: { id: string; sleeping: boolean }) => api.put(`/api/instances/${request.id}`, { sleeping: request.sleeping }), onSuccess: refresh });
+  const region = useMutation({ mutationFn: (request: { id: string; regionKey: string }) => api.put(`/api/instances/${request.id}`, { regionKey: request.regionKey }), onSuccess: () => Promise.all(["instances", "instance", "dashboard"].map((key) => queryClient.invalidateQueries({ queryKey: [key] }))), onError: () => toast("Could not save the server", "err") });
   const reorder = useMutation({ mutationFn: (ids: string[]) => api.put("/api/instances/order", { ids }), onSuccess: refresh, onError: () => toast("Couldn't reorder the games", "err") });
 
   if (dash.isError || games.isError) return <LoadError what="The games" retry={() => Promise.all([dash.refetch(), games.refetch()])} />;
@@ -64,9 +66,9 @@ export function LibraryPage() {
   const toAdd = games.data.filter((listedGame) => !installed.has(listedGame.key));
 
   return (
-    <>
+    <section className="st-games" aria-label="Games">
       <div className="lib-head">
-        <h1>Games</h1>
+        <h3>Games</h3>
         <span className="badge">{rows.length} installed</span>
       </div>
       <div className="lib-page">
@@ -86,6 +88,7 @@ export function LibraryPage() {
               onDragEnd={() => setDragging(null)}
               onDrop={() => dragging && move(dragging, rowIndex)}
               onSleep={(sleeping) => sleep.mutate({ id: row.instanceId, sleeping })}
+              onRegion={(regionKey) => region.mutate({ id: row.instanceId, regionKey })}
             />
           ))}
         </div>
@@ -106,7 +109,7 @@ export function LibraryPage() {
           </section>
         </div>
       </div>
-    </>
+    </section>
   );
 }
 
@@ -122,6 +125,7 @@ function GameRow(props: {
   onDragEnd: () => void;
   onDrop: () => void;
   onSleep: (sleeping: boolean) => void;
+  onRegion: (regionKey: string) => void;
 }) {
   const { dashGame } = props;
   const [over, setOver] = useState(false);
@@ -205,6 +209,13 @@ function GameRow(props: {
       </div>
       <div className="lib-actions">
         <Link className="btn" to={`/games/${dashGame.instanceId}`}>Open hub</Link>
+        <select className="lib-server" aria-label={`Server for ${dashGame.name}`} value={dashGame.regionKey} onChange={(event) => props.onRegion(event.target.value)}>
+          {(game?.regions ?? []).map((candidate) => (
+            <option key={candidate.key} value={candidate.key}>
+              {candidate.label}
+            </option>
+          ))}
+        </select>
         <label className="lib-sleep">
           <input type="checkbox" key={String(dashGame.sleeping)} defaultChecked={dashGame.sleeping} onChange={(event) => props.onSleep(event.target.checked)} />
           Sleep
