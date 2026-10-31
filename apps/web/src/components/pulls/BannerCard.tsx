@@ -87,7 +87,7 @@ export function BannerCard(props: {
   return (
     <section className="card pl-banner" aria-label={banner.label}>
       <div className="pl-banner-main">
-      {keyArt && <img className="key-art pl-key-art" src={keyArt} alt="" onError={(event) => (event.currentTarget.hidden = true)} />}
+      {running.length <= 1 && keyArt && <img className="key-art pl-key-art" src={keyArt} alt="" onError={(event) => (event.currentTarget.hidden = true)} />}
       {/* The head (round 24): the kind's mark, the banner type, the day it ends, then its featured units with their names; never the
           phase's own name (Georges: "just the featured characters"). */}
       <div className="pl-banner-head">
@@ -95,13 +95,26 @@ export function BannerCard(props: {
         {!featuredUnits.length && <SlotArt slot={artSlotKey(props.gameKey, "banner", banner.key)} className="pl-art" fallback={<Glyph kind={bannerGlyph(banner.key)} label={banner.label} className="pl-art" />} />}
         <div className="pl-banner-title">
           <h3>{banner.label}</h3>
-          {running.length ? (
-            <span className="pl-ends">Ends {ENDS.format(new Date(Math.min(...running.map((liveBanner) => Date.parse(liveBanner.endsAt)))))}</span>
-          ) : (
-            <span className="font-mono text-muted">not running</span>
-          )}
+          {running.length === 1 && <span className="pl-ends">Ends {ENDS.format(new Date(running[0]!.endsAt))}</span>}
+          {running.length === 0 && <span className="font-mono text-muted">not running</span>}
         </div>
-        {featuredUnits.length > 0 && <FeaturedUnits gameKey={props.gameKey} instanceId={props.instanceId ?? ""} units={featuredUnits} shown={8} names className="pl-featured" />}
+        {running.length <= 1 && featuredUnits.length > 0 && <FeaturedUnits gameKey={props.gameKey} instanceId={props.instanceId ?? ""} units={featuredUnits} shown={8} names className="pl-featured" />}
+        {/* Several banners of this kind at once (round 28, Georges: "more accommodating to multiple banners such as featured new and
+            rerun characters"): a block each, with its own key art, its units and its end. */}
+        {running.length > 1 && (
+          <div className="pl-runs">
+            {running.map((liveBanner) => {
+              const art = officialArt(liveBanner.payload);
+              return (
+                <div key={liveBanner.key} className="pl-run" role="group" aria-label={liveBanner.name}>
+                  {art && <img className="key-art pl-run-art" src={art} alt="" onError={(event) => (event.currentTarget.hidden = true)} />}
+                  <FeaturedUnits gameKey={props.gameKey} instanceId={props.instanceId ?? ""} units={liveBanner.featured} shown={6} names />
+                  <span className="pl-ends">Ends {ENDS.format(new Date(liveBanner.endsAt))}</span>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {hasFeatured && (
