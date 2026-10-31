@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-31 · claude · stack/r35/16-no-banner-names · #451
+- Done: Round 28 PR 16 (Georges: "i do not care about banner names"). The banner history by the kind's mark; the planner's targets by the banner type.
+- Tests: written first: the history holds no banner name; a row is found by its unit and carries the kind's mark.
+- Scope/decisions: the featured units stay.
+- Next: PR 17, one top-ups card.
+
 ## 2026-10-31 · claude · stack/r35/15-one-line · #450
 - Done: Round 28 PR 15 (Georges: "stacking same line text is unacceptable"). Nowrap on table heads, KPI labels and row titles; the stamina column 130 px; narrower cycle columns; a journey scans five screens at 1440 and 1280.
 - Tests: written first: the scan finds nothing wrapped (seven wraps before).
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: Check-in's drawn tile and no empty one; every task title on one line; a seeded event's row ≥ 56 px; the three new sources; a task recased to "Daily training" still shows its icon.
 - Scope/decisions: a drawn tile keeps every row the same shape.
 - Next: PR 3, the wiki wait.
-
-## 2026-10-29 · claude · stack/r32/01-hub-readable · #411
-- Done: Round 25 PR 1 (Georges: "some info on transparent cards isn't readable", "weird slider on the games panel", "the resin full is very small and far", "some alignment issues"). The hub header's chips opaque and the reset box on a 90 % ground; the tab row wraps, never scrolls; FULL is a 16 px accent mark right after the stamina figure ("full at …" there too); the games cards' TODAY label on its baseline.
-- Tests: written first: the chips' and box's background alpha ≥ 0.8; the tabs' overflow not auto/scroll; FULL ≥ 15 px within 120 px of the figure on its line; TODAY's bottom within 3 px of its line's.
-- Scope/decisions: none.
-- Next: PR 2, the task rows.
