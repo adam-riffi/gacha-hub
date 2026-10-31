@@ -36,15 +36,15 @@
 .ch-art .gicon-ph { display: grid; place-items: center; border: 0; background: transparent; color: var(--hairline-strong); font: 600 44px/1 var(--font-display); }
 .ch-chips { position: absolute; top: 10px; left: 10px; right: 60px; display: flex; flex-wrap: wrap; gap: 6px; }
 .ch-chips .badge { background: var(--bg); }
-.ch-dupes { position: absolute; top: 10px; right: 10px; padding: 4px 8px; background: #000; color: var(--text); font: 500 12px/1 var(--font-mono); }
+.ch-dupes { position: absolute; top: 10px; right: 10px; padding: 4px 8px; background: #000; color: var(--text); font: 500 13px/1 var(--font-mono); }
 .ch-dupes.is-off { background: var(--bg); border: 1px solid var(--hairline); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
 .ch-namebox { position: absolute; left: 10px; right: 10px; bottom: 10px; padding: 10px 12px; background: var(--el); color: var(--on-paper); clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%); }
 .ch-namebox h3 { margin: 0 0 4px; font-size: 22px; letter-spacing: 0.02em; text-transform: none; }
-.ch-namebox .font-mono { font-size: 12px; }
+.ch-namebox .font-mono { font-size: 13px; }
 .ch-kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-bottom: 1px solid var(--surface-3); }
 .ch-kpis > div { display: flex; flex-direction: column; gap: 6px; padding: 10px 12px; }
 .ch-kpis > div + div { border-left: 1px solid var(--surface-3); }
-.ch-kpis .kpi-label { font-size: 10px; }
+.ch-kpis .kpi-label { font-size: 13px; }
 .ch-kpis .font-display { font-size: 20px; }
 .ch-chance { grid-template-columns: 1fr; }
 /* A stat a set raises (round 5): in the element's colour, a button that writes the stat and the bonus out. */
@@ -118,7 +118,7 @@
 /* Filters as chips (Georges, 2026-10-11). */
 .ch-chipset { display: flex; flex-direction: column; gap: 6px; }
 .ch-chipset > div { display: flex; flex-wrap: wrap; gap: 6px; }
-.ch-chip { --el: var(--text-muted); display: inline-flex; align-items: center; gap: 6px; padding: 6px 9px; border: 1px solid var(--hairline); background: transparent; color: var(--text-muted); font: 400 12px/1 var(--font-mono); cursor: pointer; }
+.ch-chip { --el: var(--text-muted); display: inline-flex; align-items: center; gap: 6px; padding: 6px 9px; border: 1px solid var(--hairline); background: transparent; color: var(--text-muted); font: 400 13px/1 var(--font-mono); cursor: pointer; }
 .ch-chip i { width: 10px; height: 10px; border-radius: 50%; background: var(--el); }
 /* An element's or a weapon type's own icon beside its name (Georges: names shown as icons). */
 .tag-icon { width: 20px; height: 20px; flex: none; object-fit: contain; }
@@ -137,7 +137,7 @@
 .ch-namebox-text { flex: 1; min-width: 0; }
 .ch-weapon { position: relative; flex: none; width: 48px; height: 48px; }
 .ch-weapon .gicon { width: 48px; height: 48px; font-size: 12px; background: rgba(0, 0, 0, 0.35); }
-.ch-weapon-lv, .ch-weapon-r { position: absolute; padding: 1px 3px; background: rgba(0, 0, 0, 0.78); color: #fff; font-size: 10px; line-height: 1.2; }
+.ch-weapon-lv, .ch-weapon-r { position: absolute; padding: 1px 3px; background: rgba(0, 0, 0, 0.78); color: #fff; font-size: 13px; line-height: 1.2; }
 .ch-weapon-lv { left: 0; top: 0; }
 .ch-weapon-r { right: 0; bottom: 0; }
 /* Weapons (Georges, 2026-10-11). */
@@ -163,7 +163,7 @@
 .wp-body .font-mono { font-size: 13px; }
 .wp-level { font-size: 26px; line-height: 1; }
 .wp-level small { font-size: 18px; color: var(--text-muted); }
-.wp-holder { width: 40px; height: 40px; font-size: 11px; border-color: var(--el); }
+.wp-holder { width: 40px; height: 40px; font-size: 13px; border-color: var(--el); }
 .wp-holders { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 12px; }
 .wp-card:hover, .wp-card.is-on { border-color: var(--el); }
 .wp-card.is-unowned { border-style: dashed; }
@@ -202,7 +202,7 @@
 .un-banner-fact { display: grid; gap: 4px; align-content: start; padding: 12px; background: var(--surface-2); }
 .un-banner-fact-value { font-size: 24px; line-height: 1.1; }
 .un-banner-history { width: 100%; border-collapse: collapse; font-size: 15px; }
-.un-banner-history th { padding: 8px; border-bottom: 1px solid var(--hairline); color: var(--text-muted); font: 400 12px/1 var(--font-mono); letter-spacing: 0.06em; text-align: left; text-transform: uppercase; }
+.un-banner-history th { padding: 8px; border-bottom: 1px solid var(--hairline); color: var(--text-muted); font: 400 13px/1 var(--font-mono); letter-spacing: 0.06em; text-align: left; text-transform: uppercase; }
 .un-banner-history td { padding: 8px; border-bottom: 1px solid var(--surface-3); }
 /* A unit's last banner on its card (round 11). */
 .last-seen-chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 9px; border: 1px solid var(--hairline); color: var(--text); font-size: 13px; }

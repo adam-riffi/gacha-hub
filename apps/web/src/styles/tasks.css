@@ -38,7 +38,7 @@ button.tk-chip:hover, button.tk-chip.is-open { border-color: var(--hairline-stro
 .tk-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 .tk-thumb { width: 72px; height: 72px; flex: none; } /* the goal's own unit, large (round 24) */
 .tk-title { flex: 1; min-width: 160px; }
-.tk-title .font-mono { font-size: 12px; }
+.tk-title .font-mono { font-size: 13px; }
 .tk-prog { display: flex; align-items: center; gap: 8px; }
 .tk-meter { display: inline-block; width: 120px; height: 6px; background: var(--surface-3); }
 .tk-meter > span { display: block; height: 100%; background: var(--accent); }
@@ -52,7 +52,7 @@ button.tk-chip:hover, button.tk-chip.is-open { border-color: var(--hairline-stro
 .tk-mat { display: grid; grid-template-columns: minmax(0, 1fr) 90px 110px; align-items: center; gap: 12px; padding: 3px 0 3px 18px; color: var(--text-muted); font-size: 13px; }
 .tk-mat input { min-height: 26px; padding: 2px 8px; font-size: 13px; }
 .tk-add input { flex: 1; }
-.tk-today { padding: 3px 6px; background: var(--paper); color: var(--on-paper); font: 500 11px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
+.tk-today { padding: 3px 6px; background: var(--paper); color: var(--on-paper); font: 500 13px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
 .tk-actions { display: flex; gap: 8px; padding-top: 10px; border-top: 1px solid var(--surface-3); }
 /* The goal maker (Georges, 2026-10-10): any kind of goal from one form. */
 .tk-new-kind { flex-basis: 100%; }
@@ -70,7 +70,7 @@ button.tk-chip:hover, button.tk-chip.is-open { border-color: var(--hairline-stro
 .tk-new-items { flex: 2; min-width: 220px; }
 .tk-new-items textarea { width: 100%; }
 .tk-new-plan { flex-basis: 100%; }
-.ph-link { margin-left: auto; color: var(--text-muted); font: 400 12px var(--font-mono); letter-spacing: 0.06em; text-decoration: none; }
+.ph-link { margin-left: auto; color: var(--text-muted); font: 400 13px var(--font-mono); letter-spacing: 0.06em; text-decoration: none; }
 .ph-link:hover { color: var(--accent); }
 /* A goal opens on a click (Georges, 2026-10-11); its plan, linked goals and Link to. */
 .tk-open { display: flex; flex: 1; align-items: center; gap: 14px; min-width: 0; padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
@@ -78,7 +78,7 @@ button.tk-chip:hover, button.tk-chip.is-open { border-color: var(--hairline-stro
 .tk-open:hover strong { color: var(--accent); }
 .tk-plan, .tk-linked { display: grid; gap: 6px; margin: 0 0 10px; padding: 0; list-style: none; }
 .tk-plan li { display: flex; align-items: baseline; gap: 12px; }
-.tk-caps { font-size: 12px; }
+.tk-caps { font-size: 13px; }
 .tk-link { width: 260px; }
 .tk-title-row { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 .tk-title-row .tk-for { width: 22px; height: 22px; font-size: 8px; }

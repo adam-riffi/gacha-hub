@@ -110,21 +110,21 @@
 .heat { display: flex; align-items: center; flex: 1; min-height: 0; padding-left: 24px; }
 .heat-map { width: 868px; height: 188px; }
 .heat-tip { position: absolute; pointer-events: none; white-space: nowrap; }
-.heat-tip-date { font-size: 11px; letter-spacing: 0.06em; }
+.heat-tip-date { font-size: 13px; letter-spacing: 0.06em; }
 .heat-tip-n { font-size: 24px; font-weight: 600; line-height: 1.1; }
 .heat-tip-n span { font-size: 15px; font-weight: 500; }
 .heat-readout { margin-left: 56px; width: 268px; height: 168px; position: relative; }
 .heat-stats { height: 168px; display: flex; flex-direction: column; justify-content: space-between; }
 .heat-stat { display: flex; align-items: baseline; justify-content: space-between; border-bottom: 1px solid var(--hairline); padding-bottom: 6px; }
-.heat-stat .font-mono { font-size: 12px; }
+.heat-stat .font-mono { font-size: 13px; }
 .heat-stat .font-display { font-size: 26px; font-weight: 600; line-height: 1; }
 .heat-stat .font-display .text-muted { font-size: 14px; font-weight: 500; }
 .heat-sel { height: 168px; display: flex; flex-direction: column; }
-.heat-sel-head { display: flex; align-items: center; justify-content: space-between; height: 24px; flex: 0 0 24px; font-size: 12px; letter-spacing: 0.06em; }
+.heat-sel-head { display: flex; align-items: center; justify-content: space-between; height: 24px; flex: 0 0 24px; font-size: 13px; letter-spacing: 0.06em; }
 .heat-sel-n { display: flex; align-items: baseline; gap: 8px; margin-top: 6px; padding-bottom: 6px; border-bottom: 1px solid var(--hairline); }
 .heat-sel-n .font-display { font-size: 36px; font-weight: 600; line-height: 1; }
 .heat-sel-n .font-display .text-muted { font-size: 18px; font-weight: 500; }
-.heat-sel-n .font-mono { font-size: 12px; }
+.heat-sel-n .font-mono { font-size: 13px; }
 .xb { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; padding: 0; color: var(--text-muted); background: transparent; border: 1px solid var(--hairline); cursor: pointer; }
 .xb:hover { background: var(--surface-2); color: var(--text); border-color: var(--text); }
 .dgs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(5, 17px); grid-auto-flow: column; column-gap: 12px; margin-top: 8px; }
