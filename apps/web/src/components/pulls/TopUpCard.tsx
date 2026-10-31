@@ -13,18 +13,15 @@ const USD_FORMAT = new Intl.NumberFormat("en-US", { style: "currency", currency:
  * % of chance of getting the character by the end of the banner, and how many
  * top-ups of what kind at the lowest price would get the chances to 100%"):
  * each running banner's target, its chance with the pulls you have and the
- * dailies and pass until it ends, and the cheapest packs to its worst case.
+ * dailies and pass until it ends, and the cheapest packs to its worst case;
+ * since round 28 a list at the top of the Top-ups card (Georges: "top and top
+ * to 100% should be one thing").
  */
-export function TopUpCard({ game, region, passEnds, targets }: { game: GameDefinition; region: ServerClock; passEnds: Date | null; targets: PlannerTarget[] }) {
+export function TopUpTargets({ game, region, passEnds, targets }: { game: GameDefinition; region: ServerClock; passEnds: Date | null; targets: PlannerTarget[] }) {
   const now = new Date();
   const cost = game.currencies.find((currency) => (currency.pullCost ?? 0) > 1)?.pullCost ?? 0;
   return (
-    <section className="card pl-topup" aria-label="Top-up to 100%">
-      <div className="spread">
-        <h3>Top-up to 100%</h3>
-        <span className="font-mono text-muted">by each banner's end · cheapest packs</span>
-      </div>
-      <ul className="pl-chances pl-topup-list">
+    <ul className="pl-chances pl-topup-list" aria-label="Top-up to a sure one">
         {targets.map((target, targetIndex) => {
           const end = new Date(target.endsAt!);
           const pulls = target.available + pullForecast(game, region, now, passEnds, end).pulls;
@@ -58,7 +55,6 @@ export function TopUpCard({ game, region, passEnds, targets }: { game: GameDefin
             </li>
           );
         })}
-      </ul>
-    </section>
+    </ul>
   );
 }
