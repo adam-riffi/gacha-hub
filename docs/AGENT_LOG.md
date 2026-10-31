@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-31 · claude · stack/r35/02-task-rows · #437
+- Done: Round 28 PR 2 (Georges: "monthly cards grossly misaligned … stacking same line text is unacceptable"). The 30-day pass row stands on the cadence list's grid (an empty box column); titles and notes never wrap (ellipsis, whole on hover).
+- Tests: written first: the pass row is a tick row at the items' x; every title and note of the Monthly card on one line.
+- Scope/decisions: layout only.
+- Next: PR 3, the steps.
+
 ## 2026-10-31 · claude · stack/r35/01-pity-columns · #436
 - Done: Round 28 PR 1 (Georges, 2026-10-31: "misaligned text. guaranteed shouldn't move everything. check other cards"). The hub's Pity rows, the Activities Cycles rows and the Endgame Upcoming rows stand in fixed grid columns; a tag never shifts the figure or the meter.
 - Tests: written first: the figures share one right edge and the meters one left edge whatever the tags; the cycles rows' results and chips too.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the slots carry the source and invert and an upload takes over; the policy allows the wiki wildcard and the App Store host; the resolver groups by wiki, chunks by fifty, maps through normalised titles and leaves out what a wiki does not answer; the strip shows the App Store icon and the library card the key art with an empty store; a big spot whose logo fails shows the icon. The two journeys that pinned a hero to Kafka's splash expect the key art now; the slots test's no-source case moved to a slot without one.
 - Scope/decisions: hosts stay an allowlist; Settings → Art keeps showing only what the store holds (no 117 third-party previews on one page); the store stays first, the source is the stand-in.
 - Next: Georges says "merge" for #395 and #396 (the classifier refuses a merge without his word), then "deploy"; his one paste of the six values in Settings → Keys; the mirror with its budget lines.
-
-## 2026-10-27 · claude · stack/r29/01-no-zoom · #395
-- Done: round 22, a zoomed browser (Georges: "the responsiveness make the whole app unreadable", "why are game cards crooked"). A 1920 px screen at 150 % zoom is 1280 CSS px, at 200 % it is 960; the narrow-window rules shrank Home's top row and heatmap with CSS zoom, the dailies card's tiles slid under its name below 1200 px, and the game dashboard, Activities, the character grid, the gear page and the sheet squeezed their columns. The zooms are gone and the page floor is 900 px; every panel keeps its drawing's width (bars 424, lines 328, the heatmap 868) and wraps onto the next row or scrolls inside its card; the hero gauge takes a row of its own when the goals column does not fit beside it; the carousels, Activities' rows, a game dashboard's row, the character grid, the sheet's cards and the gear page wrap at a minimum card width. 1440 and up unchanged.
-- Tests: written first: at 1280 px nothing on Home carries a CSS zoom and the page has no horizontal scroll; at 960 px every screen, a game's dashboard and a character sheet included, fits without a horizontal page scroll; the 1100 px journey opens the sheet too. They failed on `.home-top` zoom 0.78 and on the sheet at 992 px.
-- Scope/decisions: the hero panel stretches across its row (gauge centred) rather than leaving 450 px empty; the game dashboard's cards stay two a row below 1100 px (one column would open a ragged second column under its spanning cards); the graph panels' hover tilt is untouched unless "crooked" meant that.
-- Next: PR 2 of the round: the hero art falls back to the game's official banner picture while the art store is empty (Genshin shows key art, not Furina); Georges's one paste of the six values, then the mirror.
