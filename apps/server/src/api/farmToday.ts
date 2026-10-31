@@ -38,11 +38,7 @@ export async function registerFarmTodayRoutes(app: FastifyInstance) {
               .map((step) => ({ material: materials?.get(step.row.materialId!) ?? { id: step.row.materialId!, name: step.row.materialId!, category: "" }, missing: (step.row.target ?? 0) - step.dto.progress })),
           };
         });
-      const weekly = mine.filter((task) => task.row.type === "recurring" && task.row.cadence === "weekly" && !task.dto.doneThisCycle);
-      const lines = [
-        ...farmToday(goals, weekday),
-        ...(weekly.length === 1 ? [{ kind: "weekly" as const, text: `${weekly[0]!.row.title} left` }] : weekly.length > 1 ? [{ kind: "weekly" as const, text: `${weekly.length} weekly tasks left` }] : []),
-      ];
+      const lines = farmToday(goals, weekday);
       const week = [1, 2, 3, 4, 5, 6, 7].map((dayNumber) => ({ weekday: dayNumber, lines: farmToday(goals, dayNumber).filter((line) => line.kind === "domain") }));
       out.push({ gameKey: gameInstance.gameKey, instanceId: gameInstance.id, weekday, lines, week });
     }
