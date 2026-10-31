@@ -23,9 +23,9 @@
      Below that the dailies card's name wrapped into its tiles (Georges, 2026-10-27: "why are game cards crooked"). */
   .home-carousels { flex-wrap: wrap; height: auto; }
   .home-carousels > .carousel, .home-carousels > .carousel.banner-card { flex: 1 1 520px; height: 352px; }
-  /* Activities: the daily, weekly and monthly cards at 320 px or more each; the cycles and version cards at 420 px, the
-     version card's battle pass and events one above the other below 600 px. */
-  .act-cadences { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+  /* Activities: the daily, weekly and monthly cards at 400 px or more each (round 28: a title with its 48 px picture, a count
+     and a note fit without a cut; three a row from about 1300 px, two below); the cycles and version cards at 420 px. */
+  .act-cadences { grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); }
   .act-bottom { grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); }
   .gd-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .ch-grid { grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); } /* three cards at 1439, two from 1280 down */
