@@ -107,18 +107,6 @@ function Stamina({ game, instance, projection }: { game: GameDefinition; instanc
       <div className="ph">
         <h3>{staminaCurrency.label}</h3>
         <span className="sp" />
-        {projection?.full ? (
-          <span className="chip hot">
-            <i aria-hidden="true" />
-            Full
-          </span>
-        ) : (
-          projection?.fullAt && (
-            <span className="font-mono text-muted act-full">
-              full at {CLOCK.format(new Date(projection.fullAt))} · in {formatRemaining(projection.fullAt)}
-            </span>
-          )
-        )}
       </div>
       <label className="act-remind">
         <input type="checkbox" key={String(remind.on)} defaultChecked={remind.on} disabled={remind.pending} onChange={(event) => remind.set(event.target.checked)} />
@@ -129,6 +117,16 @@ function Stamina({ game, instance, projection }: { game: GameDefinition; instanc
           {Math.floor(value)}
           <small> / {cap}</small>
         </div>
+        {/* The state beside the figure (round 25): FULL large, or when it fills. */}
+        {projection?.full ? (
+          <span className="act-full-mark">Full</span>
+        ) : (
+          projection?.fullAt && (
+            <span className="font-mono text-muted act-full act-full-at">
+              full at {CLOCK.format(new Date(projection.fullAt))} · in {formatRemaining(projection.fullAt)}
+            </span>
+          )
+        )}
         <div className="act-meter" role="img" aria-label={`${Math.floor(value)} of ${cap}`}>
           <span style={{ width: `${cap > 0 ? Math.min(100, (value / cap) * 100) : 0}%` }} />
         </div>
