@@ -143,9 +143,8 @@ tbody tr:hover { background: var(--surface-2); }
 .carousel-art::after { content: ""; position: absolute; inset: 0; background: var(--bg); opacity: 0.4; }
 .carousel-tag { position: absolute; right: 16px; top: 16px; }
 .carousel-tag .tag { padding: 8px 14px 8px 12px; font-size: 13px; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 9px), calc(100% - 9px) 100%, 0 100%); }
-.carousel-band { position: absolute; left: 0; bottom: 28px; min-width: 210px; max-width: calc(100% - 72px); }
-.carousel-title { font-size: 26px; line-height: 1.1; }
-.carousel-sub { margin-top: 4px; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; }
+/* The art is a link to the game's Pulls (round 28); the chance stands as a tag at the foot. */
+.carousel-open { position: absolute; inset: 0; }
 /* A banner's featured units (round 11): the top ones larger, the ones you own ticked, a top one you lack ringed. */
 .featured-units { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px; margin: 0; padding: 0; list-style: none; }
 .featured-unit { position: relative; width: 56px; height: 56px; }
@@ -166,7 +165,7 @@ tbody tr:hover { background: var(--surface-2); }
 .featured-units.is-named .is-top .featured-name { font-size: 15px; font-weight: 500; }
 /* On Home's banner card: top left, over the art. */
 .carousel-featured { position: absolute; left: 16px; top: 16px; flex-wrap: nowrap; }
-.carousel-chance { margin-top: 6px; font-size: 13px; }
+.carousel-chance { position: absolute; left: 16px; bottom: 28px; }
 /* The owner's pictures (Settings → Art) where a card had none: list rows, mode cards, the battle pass name. */
 .slot-art { object-fit: contain; }
 /* Pictures of mixed padding and size sit in one tile each, whole, so a list's icons line up (round 16: "crooked or out of place"). */
@@ -177,7 +176,7 @@ tbody tr:hover { background: var(--surface-2); }
 .game-mark.is-art { object-fit: contain; width: auto; }
 /* Home names its games with their mark (round 15): beside the Dailies card's name, in the lists' rows. */
 .band-mark { width: 56px; height: 56px; flex: none; }
-.band-mark.is-art { max-width: 190px; }
+.band-mark.is-art { width: 56px; height: 56px; object-fit: contain; background: var(--surface-2); }
 .list-mark { width: 32px; height: 32px; margin-right: 10px; vertical-align: middle; }
 .game-mark.list-mark.is-art { width: 32px; height: 32px; object-fit: cover; }
 /* A dark-on-transparent icon from a source, inverted for the dark UI (Settings → Art). */
