@@ -26,7 +26,7 @@ test("owned tiles first on the ownership grid, characters and weapons alike; an 
   expect(await backdrop(".rtile.r5 .rtile-art")).not.toBe(await backdrop(".rtile.r4 .rtile-art"));
   expect(await page.locator(".rtile.off .rtile-art .gicon").first().evaluate((el) => Number(getComputedStyle(el).opacity))).toBeGreaterThanOrEqual(0.6);
 
-  // Weapons: the last tile of the catalog's order, once owned, comes first.
+  // Weapons: the last tile of the catalog's order, once owned, moves up among the owned (other journeys may own others).
   await page.getByRole("group", { name: "Show" }).getByRole("button", { name: "Weapons" }).click();
   await expect(tiles.first()).toBeVisible();
   const lastName = (await tiles.last().locator(".rtile-name").textContent())!;
@@ -34,7 +34,10 @@ test("owned tiles first on the ownership grid, characters and weapons alike; an 
   await expect(tiles.filter({ hasText: lastName }).first()).not.toHaveClass(/off/);
   await page.reload();
   await page.getByRole("group", { name: "Show" }).getByRole("button", { name: "Weapons" }).click();
-  await expect(tiles.first().locator(".rtile-name")).toHaveText(lastName);
+  await expect(tiles.first()).toBeVisible();
   const weapons = await states();
+  const names = await tiles.locator(".rtile-name").allTextContents();
+  expect(weapons[names.indexOf(lastName)], lastName).toBe("on");
+  expect(names.indexOf(lastName), `${lastName} among the owned block`).toBeLessThan(weapons.includes("off") ? weapons.indexOf("off") : names.length);
   expect(ownedFirst(weapons), weapons.join(" ")).toBe(true);
 });
