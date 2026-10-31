@@ -28,7 +28,7 @@ test("Games library: owned characters, pulls, energy, goals and backlog per game
   await expect(page.getByRole("region", { name: "Capabilities" })).toHaveCount(0);
 
   // Moving the last game up swaps it with the one before, in the strip too.
-  const strip = page.getByRole("navigation", { name: "Scope" }).locator(".strip-games").getByRole("link");
+  const strip = page.getByRole("navigation", { name: "Scope" }).locator(".rail-game");
   const before = await strip.allTextContents();
   const rows = page.getByRole("article");
   const last = (await rows.last().getAttribute("aria-label"))!;

@@ -16,10 +16,10 @@ test("a game's icon stands beside its name in the strip and in Home's tables; it
 
   await page.goto("/");
   // The strip: the square icon, 40 px or more, and the name beside it; never the wordmark.
-  const chip = page.locator(".strip-game[aria-label='Neverness to Everness']");
-  const icon = chip.locator("img.strip-icon");
+  const chip = page.locator(".rail-game[aria-label='Neverness to Everness']");
+  const icon = chip.locator("img.rail-game-icon");
   await expect(icon).toBeVisible();
-  await expect(chip.locator(".strip-name")).toBeVisible();
+  await expect(chip.locator(".rail-game-name")).toBeVisible();
   const box = (await icon.boundingBox())!;
   expect(box.height).toBeGreaterThanOrEqual(40);
   expect(Math.abs(box.width - box.height)).toBeLessThan(2);

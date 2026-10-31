@@ -28,7 +28,7 @@ test("a game's mark shows at a readable size in a square frame in the strip, the
     // but no icon (Star Rail here) as for one with neither (Zenless).
     for (const link of [chip, strip.getByRole("link", { name: /Zenless/ })]) {
       expect((await box(link.locator("svg.game-mark"))).height).toBeGreaterThanOrEqual(43);
-      await expect(link.locator(".strip-name")).toBeVisible();
+      await expect(link.locator(".rail-game-name")).toBeVisible();
     }
     // The games list and the game's header show the game's icon, never its logo (round 27, Georges: "use the top icons
     // for the games like paimon for genshin"): with no icon up and the sources refused, the drawn emblem, in a 56 px and

@@ -16,10 +16,10 @@ test("order: a square logo stands alone in the strip, the games list's titles li
 
   await page.goto("/library");
   // The strip (round 17): the game's icon, square, beside its name.
-  const chip = page.locator(".strip-game[aria-label='Neverness to Everness']");
-  await expect(chip.locator("img.strip-icon")).toBeVisible();
-  await expect(chip.locator(".strip-name")).toBeVisible();
-  expect((await chip.locator("img.strip-icon").boundingBox())!.height).toBeGreaterThanOrEqual(40);
+  const chip = page.locator(".rail-game[aria-label='Neverness to Everness']");
+  await expect(chip.locator("img.rail-game-icon")).toBeVisible();
+  await expect(chip.locator(".rail-game-name")).toBeVisible();
+  expect((await chip.locator("img.rail-game-icon").boundingBox())!.height).toBeGreaterThanOrEqual(40);
 
   // The games list (cards two a row since round 24): the title of a game with a logo starts at the same place in its card as
   // the title of a game without one.

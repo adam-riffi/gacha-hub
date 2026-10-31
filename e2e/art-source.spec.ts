@@ -13,7 +13,7 @@ test("with an empty art store the strip shows each game's App Store icon and the
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   await page.request.post("/api/instances", { data: { gameKey: "genshin" } });
   await page.goto("/library");
-  await expect(page.locator(".strip-game[aria-label='Genshin Impact'] img.game-mark.is-art")).toHaveAttribute("src", /mzstatic\.com/);
+  await expect(page.locator(".rail-game[aria-label='Genshin Impact'] img.game-mark.is-art")).toHaveAttribute("src", /mzstatic\.com/);
   await expect(page.locator("img.hero-art.lib-hero").first()).toHaveAttribute("src", /fandom\.com|wikia\.nocookie\.net/);
 });
 
