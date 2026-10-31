@@ -24,7 +24,7 @@ test("a game's hub opens on its dashboard: pulls, pity and banners at a glance, 
   await expect(pulls).toContainText("From Stellar Jade");
   await expect(page.getByRole("region", { name: "Pity" })).toContainText("/90");
   // Home's carousel, for this game alone: its banners rotate, nearest deadline first.
-  await expect(page.locator(".banner-card")).toContainText("Honkai: Star Rail");
+  await expect(page.locator(".banner-card").getByRole("link", { name: "Open Honkai: Star Rail pulls" })).toBeVisible(); // the art opens Pulls (round 28)
 
   await pulls.getByRole("link", { name: "Pulls" }).click();
   await expect(page).toHaveURL(new RegExp(`/games/${id}/pulls$`));

@@ -17,7 +17,7 @@ test("Home's Banners card is its art and opens Pulls; the Dailies card shows the
     await page.goto("/");
     const card = page.locator(".banner-card");
     await card.hover();
-    const showsBlade = async () => ((await card.getByRole("list", { name: "Featured units" }).textContent().catch(() => "")) ?? "").includes("Blade");
+    const showsBlade = async () => (await card.getByRole("listitem", { name: /^Blade/ }).count()) > 0; // Home's units are icons named for screen readers
     for (let turn = 0; turn < 12 && !(await showsBlade()); turn++) await card.getByRole("button", { name: "Next banner" }).click();
     expect(await showsBlade()).toBe(true);
     await expect(card.locator(".carousel-title")).toHaveCount(0);
