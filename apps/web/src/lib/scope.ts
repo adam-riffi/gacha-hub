@@ -1,7 +1,7 @@
 /**
- * The shell's two axes (WIREFRAMES.md, Shell): the rail picks a section, the
- * top strip picks a scope, the Overview or one game. Home, Tasks and the
- * calendar take the game as `?game=<key>`; Games opens the game's hub.
+ * The shell's two axes (WIREFRAMES.md, Shell; round 29): the side bar picks the
+ * scope, ALL or one game; the top bar picks the screen of that scope. Home,
+ * Tasks and the calendar still take a game as `?game=<key>` from a link.
  */
 export type Section = "all" | "games" | "tasks" | "banners" | "settings";
 

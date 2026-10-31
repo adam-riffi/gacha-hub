@@ -7,7 +7,7 @@
    20 px from the tab row, the tabs read at 15 px, and the first panel starts 32 px under them. */
 /* Round 27 (Georges: "i wanna be able to see [the art] as well as see the info"): the info on a solid block at the left
    (the icon, the name and level, the resets under them), the key art whole on the right of it, never under the words. */
-.hub-head { --block: clamp(460px, 52%, 760px); position: relative; display: flex; min-height: 200px; margin-bottom: 20px; overflow: hidden; background: var(--card); border: 1px solid var(--edge); }
+.hub-head { --block: clamp(460px, 52%, 760px); position: relative; display: flex; min-height: 200px; margin-bottom: 32px; overflow: hidden; background: var(--card); border: 1px solid var(--edge); } /* 32 px to the first panel (round 23), the tabs being in the top bar since round 29 */
 .hub-head > :not(.hub-hero) { position: relative; z-index: 1; }
 .hub-hero { position: absolute; top: 0; bottom: 0; right: 0; left: var(--block); width: calc(100% - var(--block)); height: 100%; object-fit: cover; object-position: 50% 25%; mask-image: linear-gradient(90deg, transparent, #000 10%); }
 .hub-block { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 14px 24px; width: var(--block); min-width: 0; padding: 20px 24px; background: var(--card); }

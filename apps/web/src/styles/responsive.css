@@ -44,11 +44,10 @@
   .lib-list { grid-template-columns: minmax(0, 1fr); }
 }
 
-/* Below 1100 px (a browser at 175–200 % zoom): one column everywhere, the game strip scrolls sideways, narrower gutters. */
+/* Below 1100 px (a browser at 175–200 % zoom): one column everywhere, the top bar's screens scroll sideways, narrower gutters. */
 @media (max-width: 1099px) {
   .content { padding: 8px 16px 24px; }
   .topbar { padding: 0 16px; }
-  .strip { overflow-x: auto; scrollbar-width: thin; }
   .eg-tiles, .cal-page { grid-template-columns: minmax(0, 1fr); }
   /* A game's dashboard: its dailies and banners cards one under the other; its cards stay two a row (a card spanning
      two columns would open a second, ragged column in a one-column grid). */

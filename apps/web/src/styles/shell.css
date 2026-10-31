@@ -1,28 +1,36 @@
-/* The shell: rail, top bar with the scope strip, content (docs/VISUAL-DESIGN.md §5, §7). */
+/* The shell (docs/VISUAL-DESIGN.md §5, §7; round 29): the side bar is the scope (ALL, the games, Settings), the top bar the screens. */
 
 /* One desktop layout (Georges, round 8: "I'd rather have it not responsive"): a narrower window scrolls sideways. */
 .shell { display: flex; min-height: 100vh; min-width: 900px; }
 .shell-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 .content { padding: 8px 32px 32px; min-width: 0; }
 
-/* Rail: the logo tile, then large items with an icon over a mono label; the current one takes an accent bar (round 12: bigger). */
+/* The side bar: the logo tile, ALL, then every game as its icon over its short name, Settings at the foot; the current one takes
+   an accent bar (round 12: bigger; round 29: the games live here, the strip is gone). */
 .rail {
   position: sticky; top: 0; z-index: 3;
-  width: 88px; flex: 0 0 88px; height: 100vh;
-  display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 16px 0;
+  width: 104px; flex: 0 0 104px; height: 100vh; overflow-y: auto; scrollbar-width: none;
+  display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 14px 0;
   background: var(--bg);
 }
+.rail::-webkit-scrollbar { display: none; }
+.rail-rule { flex: none; width: 60px; height: 1px; margin: 6px 0; background: var(--hairline); }
+.rail-game-icon { width: 56px; height: 56px; flex: none; font-size: 9px; }
+.rail-game-icon.is-art { width: 56px; height: 56px; object-fit: cover; }
+.rail-game-name { max-width: 92px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-transform: uppercase; }
+.rail-game.asleep { opacity: 0.5; }
+.rail-game.asleep .game-mark { stroke: var(--text-muted); }
 .rail-logo {
   display: block; width: 40px; height: 40px; margin-bottom: 22px; flex: 0 0 auto;
   background: var(--accent);
   clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
 }
 .rail-item {
-  width: 80px; height: 76px;
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px;
+  flex: none; width: 96px; min-height: 80px; padding: 8px 0; box-sizing: border-box;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
   border-left: 3px solid transparent;
   color: var(--text-muted); text-decoration: none;
-  font: 500 13px/1 var(--font-mono); letter-spacing: 0.05em;
+  font: 500 11px/1 var(--font-mono); letter-spacing: 0.08em;
 }
 .rail-item svg path, .rail-item svg rect, .rail-item svg circle { fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 .rail-item:hover { color: var(--text); background: var(--surface-2); }
@@ -30,8 +38,20 @@
 .rail-item[aria-current="page"] { color: var(--text); border-left: 3px solid var(--accent); background: color-mix(in srgb, var(--accent) 18%, transparent); }
 .rail-gap { flex: 1; }
 
-/* Top bar: the Overview pinned, a rule, then the games; the current card grows and takes a corner brace. */
-.topbar { height: 68px; flex: 0 0 68px; padding: 0 32px; display: flex; align-items: center; gap: 16px; }
+/* Top bar: the screens of the scope (Home, Tasks, Banners; or a game's own), the date at the right. */
+.topbar { min-height: 68px; flex: none; padding: 0 32px; display: flex; align-items: center; gap: 16px; border-bottom: 1px solid var(--hairline); }
+/* The screens wrap onto a second row rather than scroll (round 25: "its tabs never scroll"). */
+.topbar-tabs { flex: 1; min-width: 0; display: flex; flex-wrap: wrap; gap: 0 32px; align-self: stretch; }
+.topbar-tabs a {
+  display: flex; align-items: center; height: 68px; padding: 0; box-sizing: border-box; white-space: nowrap; text-decoration: none;
+  color: var(--text-muted); font: 500 15px/1 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase;
+  border-bottom: 3px solid transparent; transition: color 0.2s;
+}
+.topbar-tabs a:hover, .topbar-tabs a[aria-current="page"] { color: var(--text); }
+.topbar-tabs a[aria-current="page"] { border-bottom-color: var(--accent); }
+/* The hub's tabs in the top bar keep their class for the screens' journeys, not their old underline or margin. */
+.topbar .hub-tabs { margin: 0; border: 0; gap: 0 32px; }
+.topbar .hub-tabs a[aria-current="page"]::after { display: none; }
 .topbar-date { font-size: 13px; letter-spacing: 0.08em; white-space: nowrap; }
 /* A pinned past day (VISUAL-DESIGN.md §10): the paper VIEWING chip and BACK TO TODAY, before the date. */
 .topbar-view { margin-left: auto; display: flex; align-items: center; gap: 12px; }
@@ -39,52 +59,6 @@
   background: var(--paper); color: var(--on-paper); font: 400 13px/1 var(--font-mono); letter-spacing: 0.06em; white-space: nowrap;
   padding: 7px 16px 8px 12px; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
 }
-.strip { flex: 1; min-width: 0; height: 68px; display: flex; align-items: center; gap: 14px; }
-.strip-rule { flex: 0 0 1px; width: 1px; height: 28px; background: var(--hairline); }
-/* A carousel (round 26, Georges: "THE TOP CARDS SHOULD BE A CAROUSEL TOO"): cards of one size, paged by the arrows; no
-   snapping (round 28: "too robotic"), a drag glides to a stop on its own. */
-.strip-games {
-  min-width: 0; height: 100%; padding: 0;
-  display: flex; align-items: center; gap: 8px;
-  overflow-x: auto; scrollbar-width: none; scroll-behavior: smooth;
-  cursor: grab; user-select: none; touch-action: pan-y;
-}
-.strip-games:active { cursor: grabbing; }
-.strip-games::-webkit-scrollbar { display: none; }
-.strip-arrow { flex: none; display: grid; place-items: center; width: 40px; height: 56px; padding: 0; background: var(--card); border: 1px solid var(--edge); color: var(--text); cursor: pointer; }
-.strip-arrow svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
-.strip-arrow:hover:not(:disabled) { background: var(--surface-2); border-color: var(--hairline-strong); }
-.strip-arrow:disabled { opacity: 0.35; cursor: default; }
-.strip-all, .strip-game {
-  position: relative; box-sizing: border-box;
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  background: var(--card); border: 1px solid var(--edge);
-  color: var(--text-muted); text-decoration: none; text-transform: uppercase; white-space: nowrap;
-  font-family: var(--font-mono); letter-spacing: 0.04em;
-}
-.strip-all { flex: 0 0 176px; height: 56px; font-size: 15px; transition: background-color 0.2s, border-color 0.2s, color 0.2s; }
-.strip-all:hover { background: var(--surface-2); border-color: var(--hairline); color: var(--text); }
-.strip-game {
-  flex: 0 0 200px; width: 200px; height: 56px; padding: 0 12px 0 10px; justify-content: flex-start; font-size: 15px;
-  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
-}
-.strip-game:hover { background: var(--surface-2); border-color: var(--hairline-strong); color: var(--text); }
-.strip-all.on, .strip-game.on { background: var(--surface-2); border-color: var(--hairline-strong); color: var(--text); }
-.strip-game.asleep { opacity: 0.5; }
-.strip-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
-.strip-all.on::before, .strip-game.on::before {
-  content: ""; position: absolute; right: -3px; top: -3px; z-index: 2; width: 12px; height: 10px;
-  background: var(--hairline-strong); pointer-events: none;
-  clip-path: polygon(0 0, 100% 0, 100% 100%, calc(100% - 4px) 100%, calc(100% - 4px) 4px, 0 4px);
-}
-.strip-icon { width: 44px; height: 44px; flex: none; font-size: 8px; }
-/* The game's icon (Settings → Art, fetched from the stores) beside its name, square (round 17, Georges: "Give each game a
-   game Icon… Icons are cool but should be bigger"); the wordmark logo keeps the big spots. */
-.strip-icon.is-art { width: 44px; height: 44px; object-fit: cover; }
-
-/* A game's drawn emblem (round 12): a line mark tinted by its accent, anywhere a game is named. */
-.game-mark { display: block; fill: none; stroke: var(--mark, currentColor); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
-.strip-game.asleep .game-mark { stroke: var(--text-muted); }
 
 /* Sign-in: the logo tile and the name over the card. */
 .login-brand { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 8px; font: 600 28px/1 var(--font-display); letter-spacing: 0.06em; }
