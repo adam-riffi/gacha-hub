@@ -65,9 +65,14 @@
 .stamina-full .chip.hot { padding: 3px 12px 4px 8px; }
 .table-empty { margin: 0; padding: 12px 16px; color: var(--text-muted); }
 
-/* Pity under a game, kept from F5 until the Pulls card decision. */
-.pull-row-pity { display: block; padding: 0 26px 8px 16px; margin-top: -4px; font-size: 13px; letter-spacing: 0.04em; color: var(--text-muted); text-decoration: none; }
-.pull-row-pity:hover { color: var(--text); }
+/* Pity under a game (F5, kept in #101); round 28 ("pull overview isn't readable"): a tile per banner type, the kind's mark over the figure. */
+.pull-pity-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(88px, 1fr)); gap: 8px; padding: 0 26px 12px 16px; color: var(--text); text-decoration: none; }
+.pull-pity-tile { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px 4px; background: var(--surface-2); }
+.pull-pity-tiles:hover .pull-pity-tile { background: var(--surface-3); }
+.pull-pity-kind { width: 36px; height: 36px; }
+.pull-pity-fig { font-size: 20px; line-height: 1; }
+.pull-pity-fig small { font-size: 13px; color: var(--text-muted); }
+.pull-pity-sure { padding: 2px 6px; font-size: 11px; }
 /* Home's pulls by type (Georges, 2026-10-10): a number and its icon each. */
 .pull-counts { display: inline-flex; gap: 18px; }
 .pull-n { display: inline-flex; align-items: center; gap: 5px; min-width: 52px; justify-content: flex-end; }
