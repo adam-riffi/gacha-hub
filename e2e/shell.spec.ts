@@ -39,11 +39,11 @@ test("the top bar moves between the screens and the side bar sets the scope @smo
   // On Home the scope is every game; a game in the side bar opens its hub and the accent follows.
   await sections.getByRole("link", { name: "Home, all games" }).click();
   await expect(rail.getByRole("link", { name: "All games" })).toHaveAttribute("aria-current", "page");
-  expect(await accent(page)).toBe("#ff2d95");
+  await expect.poll(() => accent(page)).toBe("#ff2d95");
   await rail.getByRole("link", { name: "Honkai: Star Rail" }).click();
   await expect(page).toHaveURL(new RegExp(`/games/${id}$`));
   await expect(rail.getByRole("link", { name: "Honkai: Star Rail" })).toHaveAttribute("aria-current", "page");
-  expect(await accent(page)).toBe("#ff8fd1");
+  await expect.poll(() => accent(page)).toBe("#ff8fd1");
 
   // From Banners a game leads to its Pulls, where its banners live; ALL brings every game back.
   await rail.getByRole("link", { name: "All games" }).click();
@@ -52,7 +52,7 @@ test("the top bar moves between the screens and the side bar sets the scope @smo
   await expect(page.locator(".cal-game-name", { hasText: "Honkai: Star Rail" })).toBeVisible();
   await rail.getByRole("link", { name: "Honkai: Star Rail" }).click();
   await expect(page).toHaveURL(new RegExp(`/games/${id}/pulls$`));
-  expect(await accent(page)).toBe("#ff8fd1");
+  await expect.poll(() => accent(page)).toBe("#ff8fd1");
 
   // Tasks holds today's dailies and the board.
   await rail.getByRole("link", { name: "All games" }).click();
