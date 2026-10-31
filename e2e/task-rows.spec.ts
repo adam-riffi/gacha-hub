@@ -23,12 +23,13 @@ test("a task's picture is 48 px, a task without one has no frame; no decorative 
     expect((await page.locator(".tick-row", { hasText: "Daily Training" }).first().locator("img.list-art").boundingBox())!.width).toBeGreaterThanOrEqual(48);
     // The date chips (the version's end, the resets) are their words alone: no square before them.
     await expect(page.locator(".chip > i")).toHaveCount(0);
-    // Every task row's title stays on one line beside its note (its words in one box, whatever the picture's height).
+    // Every task row's title stays on one line beside its note (its words on one line, whatever the picture's height; a cut
+    // title's hidden tail is a second box on the same line, so the lines are the distinct tops).
     for (const row of await page.locator(".act-list .tick-row").all()) {
       const lines = await row.locator(".tick-title").evaluate((el) => {
         const range = document.createRange();
         range.selectNodeContents(el.lastChild!);
-        return range.getClientRects().length;
+        return new Set([...range.getClientRects()].map((rect) => Math.round(rect.top))).size;
       });
       expect(lines, (await row.locator(".tick-title").textContent()) ?? "").toBe(1);
     }

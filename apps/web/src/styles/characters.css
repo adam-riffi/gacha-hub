@@ -18,6 +18,7 @@
 /* The stat the character grows (round 6): its chip filled, its label in the strip in the element's colour. */
 /* The growth stat in the stat strip, in the character's colour (round 7), on the cards and the sheet. */
 .ch-kpis .kpi-label.is-bonus, .sh-kpi .kpi-label.is-bonus { color: var(--el); }
+.ch-kpis > div { min-width: 0; } /* a nowrap label never widens the card (round 28) */
 .ch-kpis > div.is-growth { background: color-mix(in srgb, var(--el) 16%, transparent); box-shadow: inset 3px 0 0 var(--el); }
 .ch-kpis > div.is-growth .font-display { color: var(--el); }
 .ch-kpis-pickwrap { position: relative; display: contents; }
