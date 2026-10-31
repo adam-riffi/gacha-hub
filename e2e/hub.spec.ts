@@ -34,7 +34,7 @@ test("Endfield's hub has a Gear tab but no Planner: its tables publish gear sets
   try {
     await page.goto(`/games/${id}/activities`);
     const tabs = page.getByRole("navigation", { name: "Game screens" }).getByRole("link");
-    await expect(tabs).toHaveText(["Overview", "Activities", "Endgame", "Pulls", "Characters", "Teams", "Weapons", "Gear", "Profile"]);
+    await expect(tabs).toHaveText(["Overview", "Activities", "Endgame", "Pulls", "Roster", "Profile"]); // the roster's lists sit behind one screen (round 29)
   } finally {
     await page.request.delete(`/api/instances/${id}`);
   }

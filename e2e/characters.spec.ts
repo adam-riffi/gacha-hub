@@ -14,7 +14,8 @@ test("Characters: splash cards with their KPIs, counts, search, wishlist and own
   await page.request.put(`/api/instances/${id}/wishlist`, { data: { kind: "character", catalogId: "1004", wished: false } });
 
   await page.goto(`/games/${id}/characters`);
-  await expect(page.getByRole("navigation", { name: "Game screens" }).getByRole("link", { name: "Characters" })).toHaveAttribute("aria-current", "page");
+  await expect(page.getByRole("navigation", { name: "Game screens" }).getByRole("link", { name: "Roster" })).toHaveAttribute("aria-current", "page");
+  await expect(page.getByRole("navigation", { name: "Roster" }).getByRole("link", { name: "Characters" })).toHaveAttribute("aria-current", "page");
   // Every unit at once: no paging, no compact view.
   await expect(page.getByRole("article").nth(12)).toBeVisible();
   await expect(page.getByRole("button", { name: "Show more" })).toHaveCount(0);

@@ -9,7 +9,7 @@ test("Teams: a tab of its own to make, fill, rename and delete teams; the sheet'
 
   // The hub has a Teams tab (Georges, 2026-10-10: "no obvious way to make teams").
   await page.goto(`/games/${id}/characters`);
-  await page.getByRole("navigation", { name: "Game screens" }).getByRole("link", { name: "Teams" }).click();
+  await page.getByRole("navigation", { name: "Roster" }).getByRole("link", { name: "Teams" }).click();
   await expect(page).toHaveURL(new RegExp(`/games/${id}/teams$`));
 
   await page.getByRole("textbox", { name: "New team name" }).fill("E2E Teams tab");

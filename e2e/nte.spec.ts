@@ -31,7 +31,7 @@ test("Neverness to Everness works by hand on every screen @smoke", async ({ page
   await expect(board.getByTestId("pity")).toHaveText("10");
 
   // A catalog character (Hakushin's data, round 4): owned from its card, its build opens the sheet.
-  await tabs.getByRole("link", { name: "Characters" }).click();
+  await tabs.getByRole("link", { name: "Roster" }).click(); // the roster opens on its characters (round 29)
   await page.getByRole("searchbox", { name: "Search" }).fill("Sakiri");
   const sakiri = page.getByRole("article", { name: "Sakiri" });
   if (await sakiri.getByRole("button", { name: "Own" }).count()) await sakiri.getByRole("button", { name: "Own" }).click();
@@ -50,8 +50,8 @@ test("Neverness to Everness: the Console tab lists the cartridge series as its s
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "nte" } })).json()) as { id: string };
-  await page.goto(`/games/${id}/activities`);
-  await page.getByRole("navigation", { name: "Game screens" }).getByRole("link", { name: "Console" }).click();
+  await page.goto(`/games/${id}/characters`);
+  await page.getByRole("navigation", { name: "Roster" }).getByRole("link", { name: "Console" }).click();
   await expect(page).toHaveURL(new RegExp(`/games/${id}/gear$`));
   await page.getByRole("combobox", { name: "Open a set" }).click();
   const sets = page.getByRole("listbox", { name: "Open a set" });

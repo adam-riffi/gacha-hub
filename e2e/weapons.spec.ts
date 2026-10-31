@@ -17,7 +17,7 @@ test("Weapons: every copy its own card with its level and refinement and who wie
   await page.request.put(`/api/instances/${id}/wishlist`, { data: { kind: "weapon", catalogId: "23002", wished: false } });
 
   await page.goto(`/games/${id}/characters`);
-  await page.getByRole("navigation", { name: "Game screens" }).getByRole("link", { name: "Weapons" }).click();
+  await page.getByRole("navigation", { name: "Roster" }).getByRole("link", { name: "Weapons" }).click();
   await expect(page).toHaveURL(new RegExp(`/games/${id}/weapons$`));
   await page.getByRole("searchbox", { name: "Search" }).fill("Something Irre");
   const grid = page.getByRole("region", { name: "Weapons" });
@@ -68,7 +68,7 @@ test("Weapons on every game: NTE's Arcs and Endfield's weapons from their catalo
   await clearCopies(page, id);
 
   await page.goto(`/games/${id}/characters`);
-  await page.getByRole("navigation", { name: "Game screens" }).getByRole("link", { name: "Weapons" }).click();
+  await page.getByRole("navigation", { name: "Roster" }).getByRole("link", { name: "Weapons" }).click();
   await expect(page.getByRole("region", { name: "Weapons" }).getByRole("article", { name: "Exemplar" })).toBeVisible();
 
   // NTE's Arcs come from its catalog.

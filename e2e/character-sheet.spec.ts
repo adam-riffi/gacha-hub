@@ -18,7 +18,7 @@ test("Character sheet: identity, KPIs, character, skills, weapon, stats and the 
 
   await page.goto(`/characters/${build.id}`);
   await expect(page.getByRole("heading", { name: "Kafka" })).toBeVisible();
-  await expect(page.getByRole("navigation", { name: "Game screens" }).getByRole("link", { name: "Characters" })).toHaveAttribute("aria-current", "page");
+  await expect(page.getByRole("navigation", { name: "Game screens" }).getByRole("link", { name: "Roster" })).toHaveAttribute("aria-current", "page");
   // Every stat a card (round 8): no row of highlighted stats over them.
   await expect(page.getByRole("region", { name: "KPIs" })).toHaveCount(0);
   await expect(page.getByRole("region", { name: "Combat stats" }).getByRole("spinbutton", { name: "CRIT Rate", exact: true })).toHaveValue("50");
