@@ -38,7 +38,9 @@ test("a banner card names its featured units with their icons and the day it end
     await page.goto("/?game=hsr");
     const home = page.locator(".banner-card");
     await home.hover();
-    await expect(home.locator(".carousel-title")).toHaveText("Blade");
+    // Round 28: no title band; the featured units name the banner, the art opens Pulls.
+    await expect(home.locator(".carousel-title")).toHaveCount(0);
+    await expect(home.getByRole("list", { name: "Featured units" }).getByRole("listitem").first()).toHaveAccessibleName(/^Blade/);
     await expect(home).not.toContainText("E2E featured names warp");
   } finally {
     await page.request.delete("/api/admin/banners/hsr/e2e-featured-names");

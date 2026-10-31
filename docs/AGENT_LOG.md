@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-31 · claude · stack/r35/13-dashboard-cards · #448
+- Done: Round 28 PR 13 (Georges: "the banner card has useless info like the banner name instead of just showing the banner art and it should be clickable; the daily card … too close to the bottom; old logos here and there"). Home's Banners card is its art and a link to Pulls, the chance as a tag; the Dailies card shows the game's icon with 30 px under its tiles.
+- Tests: written first: no title band; the link covers the stage and opens Pulls; the dailies mark square; the head on one line; ≥ 24 px under the tiles.
+- Scope/decisions: the wordmark no longer appears anywhere.
+- Next: PR 14, the pity tiles.
+
 ## 2026-10-31 · claude · stack/r35/12-no-weekly-line · #447
 - Done: Round 28 PR 12 (Georges: "the weekly task reminder in the task view is weird too"). Farm today carries no weeklies-left line; the DTO kinds are domain and anyday.
 - Tests: written first: the server's Farm today lists only the domain line (integration test).
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: a journey over eleven screens lists every visible text under 13 px (the drawings excepted); 30 offenders before, none after; the width journeys still pass.
 - Scope/decisions: a floor, not a scale; "unaligned text" needs the screens he means.
 - Next: PR 9, the game cards.
-
-## 2026-10-29 · claude · stack/r31/07-farm-icons · #408
-- Done: Round 24 PR 7 (Georges: "planner as main icons too small … i'd rather click on it and then check what's left to do"). A Farm today chip is the unit at 64 px with its days and a +N count; a click unfolds its materials (the week view and unit-less lines keep theirs in view); the goal cards' unit icon 48 → 72 px on Tasks and the planner.
-- Tests: written first: Seele's chip large with no material, open after a click; her planner card's icon 64 px or more; the two Farm today journeys click first.
-- Scope/decisions: the planner's materials table and Farm today card untouched.
-- Next: PR 8, the type floor.
