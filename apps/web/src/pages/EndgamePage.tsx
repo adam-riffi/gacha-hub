@@ -268,14 +268,6 @@ function ModeCard({
           / {mode.metric.max ?? "—"} {mode.metric.label}
         </small>
       </div>
-      {/* A small maximum as a row of its icons, filled up to the result (round 8). */}
-      {mode.metric.max !== undefined && mode.metric.max <= 12 && (
-        <span className="eg-pips" role="img" aria-label={`${shown.result ?? 0} of ${mode.metric.max} ${mode.metric.label}`}>
-          {Array.from({ length: mode.metric.max }, (_, markIndex) => (
-            <MetricIcon key={markIndex} label={mode.metric.label} on={markIndex < (shown.result ?? 0)} />
-          ))}
-        </span>
-      )}
       {mode.maxPremium !== undefined && (
         <div className="eg-rewards">
           <div className="act-xp">

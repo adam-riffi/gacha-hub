@@ -1,5 +1,7 @@
 import { expect, test } from "@playwright/test";
 
+const PNG = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==", "base64");
+
 test("a game's Endgame tab: this cycle's rewards, a card per mode to type results in, upcoming resets @smoke", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
@@ -170,13 +172,27 @@ test("Endgame: a stage's team picked in a window of every character, several in 
   await moc.getByRole("button", { name: "Save" }).click();
   await expect(moc.getByRole("list", { name: "Stages" }).getByRole("img", { name: "Kafka" })).toBeVisible();
 
-  // The result by its icon; a small maximum as a row of them, filled up to the result.
+  // The result by its icon, and nothing repeating it (round 28, Georges: "useless icons in endgame"): no row of pips.
   await expect(moc.locator(".eg-result svg.metric-icon[data-metric=stars]")).toBeVisible();
   const pf = page.getByRole("region", { name: "Pure Fiction" });
   await pf.getByRole("button", { name: "Update Pure Fiction" }).click();
   await pf.getByLabel("Stars", { exact: true }).fill("9");
   await pf.getByRole("button", { name: "Save" }).click();
-  const pips = pf.getByRole("img", { name: "9 of 12 stars" });
-  await expect(pips.locator("svg.metric-icon.is-on")).toHaveCount(9);
-  await expect(pips.locator("svg.metric-icon")).toHaveCount(12);
+  await expect(pf.locator(".eg-result")).toContainText("9");
+  await expect(pf.locator(".eg-pips")).toHaveCount(0);
+  await expect(pf.getByRole("img", { name: "9 of 12 stars" })).toHaveCount(0);
+
+  // The mode's emblem large (Georges: "useful icons in endgame too small"): a square of 72 px or more once its picture is up.
+  const slots = (await (await page.request.get("/api/art")).json()) as { slots: { key: string }[] };
+  const modeSlots = slots.slots.filter((slot) => slot.key.startsWith("hsr/mode/")).map((slot) => slot.key);
+  expect(modeSlots.length).toBeGreaterThan(0);
+  for (const key of modeSlots) expect((await page.request.put(`/api/art/${key}`, { multipart: { file: { name: "mode.png", mimeType: "image/png", buffer: PNG } } })).ok(), key).toBe(true);
+  try {
+    await page.reload();
+    const emblem = (await moc.locator("img.mode-art").boundingBox())!;
+    expect(emblem.width, "the mode's emblem").toBeGreaterThanOrEqual(72);
+    expect(Math.abs(emblem.width - emblem.height)).toBeLessThanOrEqual(2);
+  } finally {
+    for (const key of modeSlots) await page.request.delete(`/api/art/${key}`);
+  }
 });
