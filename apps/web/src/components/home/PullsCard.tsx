@@ -82,7 +82,7 @@ export function PullsCard({ games, day = null }: { games: DashGame[]; day?: stri
               <Link to={`/games/${dashGame.instanceId}/pulls`} className="pull-pity-tiles" aria-label={`${dashGame.name} pity`}>
                 {dashGame.pity.map((pity) => (
                   <span key={pity.key} className="pull-pity-tile" title={`${pity.label}: ${pity.pity} of ${pity.hardPity}${pity.guaranteed ? ", guaranteed" : ""}`}>
-                    <BannerKind kind={bannerGlyph(pity.key)} className="pull-pity-kind" />
+                    <BannerKind kind={bannerGlyph(pity.key)} gameKey={dashGame.gameKey} className="pull-pity-kind" />
                     <span className="font-mono pull-pity-fig">
                       {pity.pity}
                       <small>/{pity.hardPity}</small>

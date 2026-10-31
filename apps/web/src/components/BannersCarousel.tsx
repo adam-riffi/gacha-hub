@@ -73,7 +73,7 @@ export function BannersCarousel({ roster, carousel }: { roster: RosterEntry[]; c
           </div>
           {entry && <Link className="carousel-open" to={`/games/${entry.game.instanceId}/pulls`} aria-label={`Open ${game?.name ?? banner.gameKey} pulls`} />}
           <div className="carousel-tag">
-            <BannerKind kind={bannerGlyph(banner.kind)} className="carousel-kind" />
+            <BannerKind kind={bannerGlyph(banner.kind)} gameKey={banner.gameKey} className="carousel-kind" />
             <Countdown at={banner.endsAt} variant="tag" />
           </div>
           {chance !== null && budget && lead && (

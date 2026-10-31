@@ -331,7 +331,7 @@ export function PullsPage() {
         </p>
       )}
 
-      <BannerHistory instanceId={instance.data.id} unitOf={nameOf} />
+      <BannerHistory instanceId={instance.data.id} gameKey={game.key} unitOf={nameOf} />
       <div className="pl-bottom">
         <SavingsPlanner targets={targets} forecast={forecast.pulls} star={star} />
         <PullHistory instanceId={instance.data.id} drops={drops} star={star} unitOf={nameOf} units={units} />
