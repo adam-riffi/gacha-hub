@@ -89,11 +89,19 @@ export function Layout({ children }: { children: ReactNode }) {
   }, [instances.length]);
   const turn = (direction: -1 | 1) => row.current?.scrollBy({ left: direction * row.current.clientWidth, behavior: "smooth" });
   // A drag across the row scrolls it (round 27, Georges: "the top carousel should be draggable not just pressing arrows");
-  // the card under the pointer does not open after a drag. The wheel scrolls it too.
-  const drag = useRef<{ x: number; left: number; moved: boolean } | null>(null);
+  // the card under the pointer does not open after a drag. The wheel scrolls it too. Round 28 ("too robotic, i need it
+  // smooth"): nothing snaps, and on the release the row keeps the drag's speed and loses six percent of it a frame.
+  const drag = useRef<{ x: number; left: number; moved: boolean; lastX: number; lastT: number; speed: number } | null>(null);
+  const glide = useRef(0);
+  const stopGlide = (element: HTMLElement) => {
+    cancelAnimationFrame(glide.current);
+    glide.current = 0;
+    element.style.scrollBehavior = "";
+  };
   const dragStart = (event: React.PointerEvent<HTMLDivElement>) => {
     if (event.pointerType === "mouse" && event.button !== 0) return;
-    drag.current = { x: event.clientX, left: event.currentTarget.scrollLeft, moved: false };
+    stopGlide(event.currentTarget);
+    drag.current = { x: event.clientX, left: event.currentTarget.scrollLeft, moved: false, lastX: event.clientX, lastT: performance.now(), speed: 0 };
     event.currentTarget.style.scrollBehavior = "auto";
   };
   const dragMove = (event: React.PointerEvent<HTMLDivElement>) => {
@@ -104,21 +112,40 @@ export function Layout({ children }: { children: ReactNode }) {
       state.moved = true;
       event.currentTarget.setPointerCapture(event.pointerId);
     }
+    const now = performance.now();
+    if (now > state.lastT) state.speed = 0.6 * state.speed + 0.4 * ((event.clientX - state.lastX) / (now - state.lastT));
+    state.lastX = event.clientX;
+    state.lastT = now;
     if (state.moved) event.currentTarget.scrollLeft = state.left - shift;
   };
   const dragEnd = (event: React.PointerEvent<HTMLDivElement>) => {
-    const moved = drag.current?.moved ?? false;
+    const state = drag.current;
+    const element = event.currentTarget;
     drag.current = null;
-    event.currentTarget.style.scrollBehavior = "";
-    if (moved) {
-      // The click that follows the release would open the card under the pointer: swallow that one.
-      const swallow = (click: Event) => {
-        click.preventDefault();
-        click.stopPropagation();
-      };
-      event.currentTarget.addEventListener("click", swallow, { capture: true, once: true });
-      setTimeout(() => event.currentTarget?.removeEventListener("click", swallow, { capture: true }), 0);
+    if (!state?.moved) {
+      element.style.scrollBehavior = "";
+      return;
     }
+    // The click that follows the release would open the card under the pointer: swallow that one.
+    const swallow = (click: Event) => {
+      click.preventDefault();
+      click.stopPropagation();
+    };
+    element.addEventListener("click", swallow, { capture: true, once: true });
+    setTimeout(() => element.removeEventListener("click", swallow, { capture: true }), 0);
+    // The glide: at most 3 px a millisecond, until it dies down or the row meets an edge.
+    let speed = Math.max(-3, Math.min(3, state.speed));
+    let last = performance.now();
+    const step = (now: number) => {
+      const elapsed = Math.min(50, now - last);
+      last = now;
+      element.scrollLeft -= speed * elapsed;
+      speed *= Math.pow(0.94, elapsed / 16);
+      const atEdge = element.scrollLeft <= 0 || element.scrollLeft + element.clientWidth >= element.scrollWidth - 1;
+      if (Math.abs(speed) < 0.05 || atEdge) stopGlide(element);
+      else glide.current = requestAnimationFrame(step);
+    };
+    glide.current = requestAnimationFrame(step);
   };
   const chevron = (direction: -1 | 1) => (
     <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -161,6 +188,7 @@ export function Layout({ children }: { children: ReactNode }) {
               onPointerCancel={dragEnd}
               onDragStart={(event) => event.preventDefault()} // a card is a link: its own drag would cut the pointer sequence short
               onWheel={(event) => {
+                stopGlide(event.currentTarget);
                 if (Math.abs(event.deltaY) > Math.abs(event.deltaX)) event.currentTarget.scrollLeft += event.deltaY;
               }}
             >

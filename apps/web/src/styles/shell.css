@@ -41,11 +41,12 @@
 }
 .strip { flex: 1; min-width: 0; height: 68px; display: flex; align-items: center; gap: 14px; }
 .strip-rule { flex: 0 0 1px; width: 1px; height: 28px; background: var(--hairline); }
-/* A carousel (round 26, Georges: "THE TOP CARDS SHOULD BE A CAROUSEL TOO"): cards of one size, snapped, paged by the arrows. */
+/* A carousel (round 26, Georges: "THE TOP CARDS SHOULD BE A CAROUSEL TOO"): cards of one size, paged by the arrows; no
+   snapping (round 28: "too robotic"), a drag glides to a stop on its own. */
 .strip-games {
-  min-width: 0; height: 100%; padding: 0; /* no inset: the first card's snap point is scrollLeft 0 */
+  min-width: 0; height: 100%; padding: 0;
   display: flex; align-items: center; gap: 8px;
-  overflow-x: auto; scrollbar-width: none; scroll-snap-type: x mandatory; scroll-behavior: smooth;
+  overflow-x: auto; scrollbar-width: none; scroll-behavior: smooth;
   cursor: grab; user-select: none; touch-action: pan-y;
 }
 .strip-games:active { cursor: grabbing; }
@@ -64,7 +65,7 @@
 .strip-all { flex: 0 0 176px; height: 56px; font-size: 15px; transition: background-color 0.2s, border-color 0.2s, color 0.2s; }
 .strip-all:hover { background: var(--surface-2); border-color: var(--hairline); color: var(--text); }
 .strip-game {
-  flex: 0 0 200px; width: 200px; height: 56px; padding: 0 12px 0 10px; justify-content: flex-start; font-size: 15px; scroll-snap-align: start;
+  flex: 0 0 200px; width: 200px; height: 56px; padding: 0 12px 0 10px; justify-content: flex-start; font-size: 15px;
   transition: background-color 0.2s, border-color 0.2s, color 0.2s;
 }
 .strip-game:hover { background: var(--surface-2); border-color: var(--hairline-strong); color: var(--text); }
