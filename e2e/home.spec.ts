@@ -17,11 +17,18 @@ test("Home is the dashboard: its panels, the dailies card per game, the pulls an
     await expect(page.getByRole("heading", { name, exact: true })).toHaveCount(0);
   }
 
-  // Pulls: every game with pull rules has its pity line under its row, zeros included (Georges, #101).
+  // Pulls: every game with pull rules has a tile per banner type under its row, zeros included (Georges, #101; round 28:
+  // "pull overview isn't readable": the kind's mark over the figure, no dot-joined line).
   const pullRows = page.locator(".pulls-card .lst > div");
   await expect(pullRows.first()).toBeVisible();
   for (const row of await pullRows.all()) {
-    await expect(row.locator(".pull-row-pity")).toHaveText(/^Character \d+\/\d+.*Weapon \d+\/\d+.*Standard \d+\/\d+/);
+    await expect(row.locator(".pull-row-pity")).toHaveCount(0);
+    const tiles = row.locator(".pull-pity-tile");
+    expect(await tiles.count()).toBeGreaterThanOrEqual(3);
+    for (const tile of await tiles.all()) {
+      await expect(tile.locator(".pull-pity-fig")).toHaveText(/^\d+\/\d+$/);
+      expect(await tile.locator("svg, img").count(), "the kind's mark").toBeGreaterThanOrEqual(1);
+    }
   }
 
   // Dailies & weeklies: the game's own items (HSR seeds three dailies, with the design's Check-in, and two weeklies, with Echo of War) apart from the ones you add.
