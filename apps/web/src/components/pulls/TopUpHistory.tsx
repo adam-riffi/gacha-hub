@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { GameDefinition, TopUpDto, TopUpInput } from "@gacha/shared";
 import { api } from "../../lib/api";
@@ -15,9 +15,9 @@ const total = (rows: TopUpDto[]) => rows.reduce((sum, row) => ({ price: sum.pric
  * The top-up history (Georges, round 7: "add a top up history system too"): each
  * pack and the 30-day pass logged in one click (today, or the day picked), the
  * month's, year's and all spending, and the purchases newest first. The pass adds
- * its days.
+ * its days. Round 28: the sure-one targets (`TopUpTargets`) at its top.
  */
-export function TopUpHistory({ instanceId, game }: { instanceId: string; game: GameDefinition }) {
+export function TopUpHistory({ instanceId, game, targets }: { instanceId: string; game: GameDefinition; targets?: ReactNode }) {
   const queryClient = useQueryClient();
   const toast = useToast();
   const [day, setDay] = useState(() => isoDate(new Date()));
@@ -60,6 +60,7 @@ export function TopUpHistory({ instanceId, game }: { instanceId: string; game: G
         <h3>Top-ups</h3>
         <input type="date" aria-label="Day bought" value={day} max={isoDate(now)} onChange={(event) => setDay(event.target.value || isoDate(now))} />
       </div>
+      {targets}
       <div className="pl-tops-buys">
         {buys.map((buy) => (
           <button

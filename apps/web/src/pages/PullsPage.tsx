@@ -25,7 +25,7 @@ import {
   type Unit,
 } from "../components/pulls/BannerCard";
 import { SavingsPlanner, percentText, type PlannerTarget } from "../components/pulls/SavingsPlanner";
-import { TopUpCard } from "../components/pulls/TopUpCard";
+import { TopUpTargets } from "../components/pulls/TopUpCard";
 import { TopUpHistory } from "../components/pulls/TopUpHistory";
 import { CurrencyIcon } from "../components/CurrencyIcon";
 import { UnitIcon } from "../components/CatalogIcon";
@@ -336,10 +336,10 @@ export function PullsPage() {
         <SavingsPlanner targets={targets} forecast={forecast.pulls} star={star} />
         <PullHistory instanceId={instance.data.id} drops={drops} star={star} unitOf={nameOf} units={units} />
       </div>
-      {/* Top-ups at the very bottom (Georges, round 8: "it takes too much space"). */}
+      {/* Top-ups at the very bottom (Georges, round 8: "it takes too much space"), one card (round 28: "top and top to 100% should be
+          one thing"): the sure-one targets, then the packs and the history. */}
       <div className="pl-tops-row">
-        <TopUpHistory instanceId={id!} game={game} />
-        {game.manifest.topUp && targets.some((target) => target.endsAt) && <TopUpCard game={game} region={region} passEnds={passEnds} targets={targets.filter((target) => target.endsAt)} />}
+        <TopUpHistory instanceId={id!} game={game} targets={targets.some((target) => target.endsAt) ? <TopUpTargets game={game} region={region} passEnds={passEnds} targets={targets.filter((target) => target.endsAt)} /> : null} />
       </div>
     </>
   );
