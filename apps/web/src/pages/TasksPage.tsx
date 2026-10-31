@@ -28,17 +28,38 @@ type FarmEntry = { gameKey: string; key: string; line: FarmLineDto };
  * icon and the talent book icon"): the game on the overview only, who it is
  * for, the materials, then their days; the words stay for hover.
  */
-function FarmChip({ gameKey, line, showGame, days = true }: { gameKey: string; line: FarmLineDto; showGame: boolean; days?: boolean }) {
+/**
+ * A Farm today line: the unit it is for, large, and its days; its materials on a click (round 24, Georges: "if i'm farming a
+ * weapon or character i'd rather only see that… i'd rather click on it and then check what's left to do"). The week view,
+ * compact, shows the materials at once; a line for no unit shows them too.
+ */
+function FarmChip({ gameKey, line, showGame, days = true, fold = true }: { gameKey: string; line: FarmLineDto; showGame: boolean; days?: boolean; fold?: boolean }) {
   const game = getGame(gameKey);
-  return (
-    <span className={`tk-chip is-${line.kind}`} title={line.text} style={game ? ({ "--gc": game.accent } as CSSProperties) : undefined}>
+  const [open, setOpen] = useState(false);
+  const folded = fold && Boolean(line.unit) && line.materials.length > 0;
+  const style = game ? ({ "--gc": game.accent } as CSSProperties) : undefined;
+  const body = (
+    <>
       {showGame && game && <GameMark gameKey={gameKey} named className="tk-chip-game" />}
-      {line.unit && <UnitIcon gameKey={gameKey} unit={line.unit} />}
-      {line.materials.length > 0 && <MaterialIcons gameKey={gameKey} ids={line.materials} />}
+      {line.unit && <UnitIcon gameKey={gameKey} unit={line.unit} className="tk-chip-unit" />}
+      {line.materials.length > 0 && (!folded || open) && <MaterialIcons gameKey={gameKey} ids={line.materials} max={8} />}
+      {folded && !open && <span className="tk-chip-more font-mono">+{line.materials.length}</span>}
       {line.kind === "domain" && days && <span>{line.days.map((day) => DAY[day]).join(" ")}</span>}
       {line.kind === "anyday" && days && <span className="text-muted">any day</span>}
       {line.kind === "weekly" && <span>{line.text}</span>}
-    </span>
+    </>
+  );
+  if (!folded) {
+    return (
+      <span className={`tk-chip is-${line.kind}`} title={line.text} style={style}>
+        {body}
+      </span>
+    );
+  }
+  return (
+    <button type="button" className={`tk-chip is-${line.kind} ${open ? "is-open" : ""}`} title={line.text} style={style} aria-expanded={open} onClick={() => setOpen(!open)}>
+      {body}
+    </button>
   );
 }
 
@@ -154,14 +175,14 @@ export function TasksPage() {
                   <section key={dayNumber} className={`tk-day ${weekdays.length === 1 && weekdays[0] === dayNumber ? "is-today" : ""}`} aria-label={WEEKDAY[dayNumber]}>
                     <h4>{DAY[dayNumber]}</h4>
                     {onDay(dayNumber).map((entry) => (
-                      <FarmChip key={entry.key} gameKey={entry.gameKey} line={entry.line} showGame={!scope} days={false} />
+                      <FarmChip key={entry.key} gameKey={entry.gameKey} line={entry.line} showGame={!scope} days={false} fold={false} />
                     ))}
                   </section>
                 ))}
                 <section className="tk-day is-any" aria-label="Any day">
                   <h4>Any</h4>
                   {anyDay.map((entry) => (
-                    <FarmChip key={entry.key} gameKey={entry.gameKey} line={entry.line} showGame={!scope} days={false} />
+                    <FarmChip key={entry.key} gameKey={entry.gameKey} line={entry.line} showGame={!scope} days={false} fold={false} />
                   ))}
                 </section>
               </div>
