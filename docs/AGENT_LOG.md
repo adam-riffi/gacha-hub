@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-31 · claude · stack/r35/09-weapon-stats · #444
+- Done: Round 28 PR 9 (Georges: "the main stats like the atk and crit damage should be shown explicitly on each weapon"). Each weapon tile lists its max-level stats, one a line with its icon; `isPercent` exported from shared; tiles 150 px.
+- Tests: written first: Post-Op Conversation's tile shows 1058, 423, 331 with three stat icons.
+- Scope/decisions: no new data: the catalog's base stats.
+- Next: PR 10, the fold.
+
 ## 2026-10-31 · claude · stack/r35/08-owned-first · #443
 - Done: Round 28 PR 8 (Georges: "owned things should come on top every time … the background of the weapons makes it hard to look at the weapons"). Owned tiles first on the ownership grid; the picture on the rarity's tint, an unowned one at 72 %.
 - Tests: written first: no owned tile after an unowned one for characters and weapons; backdrops differ by rarity; unowned opacity ≥ 0.6.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the bar's height and type, "Blade" not the phase; the list row's height, the end day, the order, the click to Selected. The journeys that found a bar by the phase's name use its title.
 - Scope/decisions: the Month view untouched.
 - Next: PR 5, the goals page.
-
-## 2026-10-29 · claude · stack/r31/03-artifacts · #404
-- Done: Round 24 PR 3 (Georges: "please redo the artifacts, i'm at a loss for words how bad it is"). The filters across the top; every piece a 280 px card with its band (set icon, level, slot), the set in words, the main stat at 26 px, each substat with icon, name and value, the wearer's face and name or Bag; nothing chosen until a click, then the piece in a drawer over the page (the set panel's) with a Close button.
-- Tests: written first: Sampo's Hunter body card with three substats; filters above the cards; the card's size and type; the drawer only after a click, fixed, closed by its button. The gear journey's three-column check became filters-above.
-- Scope/decisions: the substats read on the card, typed in the drawer.
-- Next: PR 4, the banners tab.
