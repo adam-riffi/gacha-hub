@@ -3,6 +3,8 @@ import { dayOf } from "@gacha/shared";
 import { pullsFor } from "../../lib/format";
 import type { DashGame } from "../../lib/roster";
 import { GameMark } from "../GameMark";
+import { BannerKind } from "../BannerKind";
+import { bannerGlyph } from "../Glyph";
 
 type Kind = "limited" | "permanent" | "special";
 
@@ -36,7 +38,8 @@ export function Count({ count, kind }: { count: number | null; kind: Kind }) {
  * and its icon: limited, permanent (standard tickets), and special (a
  * banner's own tickets: weapon tickets, Boopons) where the game has them,
  * which stay out of the total. Under each game, its pity on every banner type
- * (DESIGN.md F5; kept by Georges in #101), by the shared banner keys.
+ * (DESIGN.md F5; kept by Georges in #101) as tiles (round 28: "pull overview
+ * isn't readable"): the kind's mark over the figure, guaranteed as a mark.
  */
 export function PullsCard({ games, day = null }: { games: DashGame[]; day?: string | null }) {
   // A pinned past day: limited pulls on hand from its records; tickets and pity have no history.
@@ -76,8 +79,17 @@ export function PullsCard({ games, day = null }: { games: DashGame[]; day?: stri
               </span>
             </div>
             {!day && dashGame.pity.length > 0 && (
-              <Link to={`/games/${dashGame.instanceId}/pulls`} className="pull-row-pity font-mono">
-                {dashGame.pity.map((pity) => `${pity.key.charAt(0).toUpperCase()}${pity.key.slice(1).replace("-", " ")} ${pity.pity}/${pity.hardPity}${pity.guaranteed ? " · guaranteed" : ""}`).join("  ·  ")}
+              <Link to={`/games/${dashGame.instanceId}/pulls`} className="pull-pity-tiles" aria-label={`${dashGame.name} pity`}>
+                {dashGame.pity.map((pity) => (
+                  <span key={pity.key} className="pull-pity-tile" title={`${pity.label}: ${pity.pity} of ${pity.hardPity}${pity.guaranteed ? ", guaranteed" : ""}`}>
+                    <BannerKind kind={bannerGlyph(pity.key)} className="pull-pity-kind" />
+                    <span className="font-mono pull-pity-fig">
+                      {pity.pity}
+                      <small>/{pity.hardPity}</small>
+                    </span>
+                    {pity.guaranteed && <span className="tag hot pull-pity-sure">guaranteed</span>}
+                  </span>
+                ))}
               </Link>
             )}
           </div>
