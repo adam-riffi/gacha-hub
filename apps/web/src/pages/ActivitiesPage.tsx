@@ -12,7 +12,6 @@ import { useReminderFlag } from "../lib/reminder";
 import { TickRow, tickColumn } from "../components/TickControl";
 import { RedeemCodesCard } from "../components/hub/RedeemCodesCard";
 import { SlotArt } from "../components/SlotArt";
-import { Glyph } from "../components/Glyph";
 import { officialArt } from "../lib/assets";
 
 const DATE = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
@@ -35,7 +34,6 @@ function taskSlot(game: GameDefinition, task: TaskDto): string | null {
 function DateChip({ at, prefix = "" }: { at: Date; prefix?: string }) {
   return (
     <span className={`chip ${isUrgent(at.toISOString(), "deadline") ? "hot" : ""}`}>
-      <i aria-hidden="true" />
       {prefix}
       {DATE.format(at)}
     </span>
@@ -198,7 +196,7 @@ function CadenceList({
       <div className="act-rows" style={tickColumn(items)}>
         {/* One tick control everywhere (round 7): a counted daily by its steps. */}
         {items.map((item) => (
-          <TickRow key={item.id} instanceId={instanceId} task={item} icon={<SlotArt slot={taskSlot(game, item)} className="list-art" fallback={<Glyph kind="task" label="" className="list-art list-art-glyph" />} />}>
+          <TickRow key={item.id} instanceId={instanceId} task={item} icon={<SlotArt slot={taskSlot(game, item)} className="list-art" fallback={<span className="list-art" aria-hidden="true" />} />}>
             {cadence === "monthly" && item.anchorKey && anchors.find((anchor) => anchor.key === item.anchorKey)?.name !== item.title && <span className="font-mono text-muted">{anchors.find((anchor) => anchor.key === item.anchorKey)?.name}</span>}
           </TickRow>
         ))}
