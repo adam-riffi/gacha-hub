@@ -1,3 +1,5 @@
+import { BannerKind } from "../BannerKind";
+import { bannerGlyph } from "../Glyph";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -134,7 +136,7 @@ export function BannerHistory({ instanceId, unitOf }: { instanceId: string; unit
       <table>
         <thead>
           <tr>
-            <th>Banner</th>
+            <th>Kind</th>
             <th>Dates</th>
             <th>Featured</th>
             <th className="num">Pulls</th>
@@ -144,7 +146,10 @@ export function BannerHistory({ instanceId, unitOf }: { instanceId: string; unit
         <tbody>
           {historyQuery.data.map((bannerRow) => (
             <tr key={bannerRow.key}>
-              <td>{bannerRow.name}</td>
+              <td>
+                {/* The kind's mark, never the banner's name (round 28, Georges: "i do not care about banner names"). */}
+                <BannerKind kind={bannerGlyph(bannerRow.kind)} className="bh-kind" />
+              </td>
               <td className="font-mono text-muted">
                 {DAY.format(new Date(bannerRow.startsAt))} → {DAY.format(new Date(bannerRow.endsAt))}
               </td>

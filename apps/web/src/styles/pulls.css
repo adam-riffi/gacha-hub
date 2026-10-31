@@ -127,3 +127,5 @@
 .pl-tops-price { font-size: 15px; color: var(--accent); }
 /* The History card (the logged pulls: date, banner, 5★, pity, result) scrolls inside itself when its table is wider than a 960 px window allows (round 24). */
 .pl-history { overflow-x: auto; }
+/* The banner history's kind column (round 28): the mark alone, no name. */
+.bh-kind { width: 32px; height: 32px; }
