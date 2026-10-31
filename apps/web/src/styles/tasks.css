@@ -22,11 +22,8 @@
 .tk-chips { display: flex; flex-wrap: wrap; gap: 10px; }
 .tk-chip { --gc: var(--accent); display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px 6px 8px; border: 1px solid var(--hairline); border-left: 4px solid var(--gc); background: color-mix(in srgb, var(--gc) 8%, transparent); color: var(--text); font: 400 14px/1.2 var(--font-mono); }
 .tk-chip .gicon { width: 44px; height: 44px; font-size: 11px; flex: none; }
-/* The unit large (round 24); a chip is a button when its materials fold behind a click. */
+/* The unit large (round 24); its materials beside it at once (round 28: nothing folds). */
 .tk-chip .tk-chip-unit { width: 64px; height: 64px; }
-button.tk-chip { font: inherit; color: inherit; text-align: left; cursor: pointer; }
-button.tk-chip:hover, button.tk-chip.is-open { border-color: var(--hairline-strong); }
-.tk-chip-more { padding: 4px 8px; background: var(--surface-3); color: var(--text); font-size: 14px; }
 .tk-chip .tk-chip-game { width: 36px; height: 36px; font-size: 9px; }
 .mat-icons { display: inline-flex; align-items: center; gap: 3px; }
 .mat-icons .gicon { width: 26px; height: 26px; font-size: 8px; }

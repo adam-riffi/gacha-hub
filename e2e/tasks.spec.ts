@@ -172,7 +172,7 @@ test("Tasks: a character goal shows its plan (each ascension, each talent), and 
   await page.request.delete(`/api/tasks/${weapon.id}`);
 });
 
-test("Tasks: Farm today shows who it is for, its materials on a click; the game as its block's heading on the overview @smoke", async ({ page }) => {
+test("Tasks: Farm today shows who it is for with its materials; the game as its block's heading on the overview @smoke", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
@@ -183,8 +183,7 @@ test("Tasks: Farm today shows who it is for, its materials on a click; the game 
   await page.goto("/tasks?game=genshin");
   const farm = page.getByRole("region", { name: "Farm today" });
   await expect(farm.getByRole("img", { name: "Lisa" }).first()).toBeVisible();
-  // Round 24: the materials show on a click on the chip (farm-icons.spec.ts).
-  await farm.getByRole("button", { name: /Lisa/ }).first().click();
+  // Round 28: the materials stand beside the unit at once (farm-icons.spec.ts); nothing to click.
   await expect(farm.getByRole("img", { name: "Slime Condensate" }).first()).toBeVisible();
   await expect(farm).not.toContainText("Genshin");
   await expect(farm).not.toContainText("for Lisa");
@@ -238,7 +237,6 @@ test("Tasks: priority in one click; goals two by two; Farm today large, and the 
   const farm = page.getByRole("region", { name: "Farm today" });
   // Round 24: the unit large, its materials on a click.
   await expect.poll(async () => (await farm.getByRole("img", { name: "Lisa" }).first().boundingBox())?.width ?? 0).toBeGreaterThanOrEqual(56);
-  await farm.getByRole("button", { name: /Lisa/ }).first().click();
   await expect.poll(async () => (await farm.getByRole("img", { name: "Slime Condensate" }).first().boundingBox())?.width ?? 0).toBeGreaterThanOrEqual(36);
 
   const goals = page.getByRole("region", { name: "Goals" });
