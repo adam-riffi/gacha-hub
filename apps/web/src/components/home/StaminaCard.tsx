@@ -21,7 +21,7 @@ export function StaminaCard({ games }: { games: DashGame[] }) {
       </div>
       <div className="thead">
         <span>Game</span>
-        <span className="col-110">Current / cap</span>
+        <span className="col-130">Current / cap</span>
         <span className="col-70">Reserve</span>
         <span className="col-70">Full</span>
       </div>
@@ -36,7 +36,7 @@ export function StaminaCard({ games }: { games: DashGame[] }) {
                 <GameMark gameKey={dashGame.gameKey} className="list-mark" />
                 {dashGame.name}
               </span>
-              <span className="font-mono col-110">
+              <span className="font-mono col-130">
                 {stamina.value}
                 <span className="text-muted"> / {stamina.cap}</span>
               </span>
