@@ -15,7 +15,7 @@ test("the big spots show the game's icon, never a logo; an uploaded icon takes t
     await page.goto(`/games/${id}/activities`);
     const headMark = page.getByRole("region", { name: "Genshin Impact" }).locator("img.game-mark.is-art").first();
     await expect(headMark).toHaveAttribute("src", /mzstatic\.com/);
-    await page.goto("/library");
+    await page.goto("/settings");
     await expect(page.getByRole("article", { name: "Genshin Impact" }).locator("img.lib-icon")).toHaveAttribute("src", /mzstatic\.com/);
 
     // The owner's own icon, uploaded, takes the header; an uploaded logo does not.

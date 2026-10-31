@@ -12,7 +12,7 @@ test("with an empty art store the strip shows each game's App Store icon and the
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   await page.request.post("/api/instances", { data: { gameKey: "genshin" } });
-  await page.goto("/library");
+  await page.goto("/settings");
   await expect(page.locator(".rail-game[aria-label='Genshin Impact'] img.game-mark.is-art")).toHaveAttribute("src", /mzstatic\.com/);
   await expect(page.locator("img.hero-art.lib-hero").first()).toHaveAttribute("src", /fandom\.com|wikia\.nocookie\.net/);
 });
@@ -27,7 +27,7 @@ test("a big spot whose logo source does not answer shows the game's icon, not th
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   await page.request.post("/api/instances", { data: { gameKey: "genshin" } });
-  await page.goto("/library");
+  await page.goto("/settings");
   const row = page.getByRole("article", { name: "Genshin Impact" });
   await expect(row.locator("img.game-mark.is-art").first()).toHaveAttribute("src", /mzstatic\.com/);
 });

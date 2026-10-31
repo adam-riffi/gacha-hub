@@ -23,7 +23,7 @@ test("a game's mark shows at a readable size in a square frame in the strip, the
     await page.request.put("/api/art/hsr/logo", { multipart: { file: { name: "logo.png", mimeType: "image/png", buffer: WIDE } } });
     const strip = page.getByRole("navigation", { name: "Scope" });
     const chip = strip.getByRole("link", { name: /Star Rail/ });
-    await page.goto("/library");
+    await page.goto("/settings");
     // The strip (round 17: icons there, not wordmarks): the emblem at 44 px, the name beside it, for a game with a logo
     // but no icon (Star Rail here) as for one with neither (Zenless).
     for (const link of [chip, strip.getByRole("link", { name: /Zenless/ })]) {

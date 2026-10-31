@@ -48,7 +48,7 @@ test("the hub header reads over its art, its tabs never scroll, FULL stands larg
     expect(mark.x - (figure.x + figure.width), "FULL beside the figure").toBeLessThanOrEqual(120);
     expect(Math.abs(mark.y + mark.height / 2 - (figure.y + figure.height / 2)), "on the figure's line").toBeLessThanOrEqual(24);
 
-    await page.goto("/library");
+    await page.goto("/settings");
     const today = page.getByRole("article", { name: "Honkai: Star Rail" }).locator(".lib-today");
     const label = (await today.locator(".kpi-label").boundingBox())!;
     const text = (await today.locator("span").last().boundingBox())!;

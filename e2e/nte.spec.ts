@@ -6,7 +6,7 @@ test("Neverness to Everness works by hand on every screen @smoke", async ({ page
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
 
   // Added from the library, like any game; it lands on Activities.
-  await page.goto("/library");
+  await page.goto("/settings");
   await page.getByRole("button", { name: "+ Neverness to Everness" }).click();
   await expect(page).toHaveURL(/\/games\/[^/]+$/);
   await expect(page.getByRole("heading", { level: 1, name: "Neverness to Everness" })).toBeVisible();

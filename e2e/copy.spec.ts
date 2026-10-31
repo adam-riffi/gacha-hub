@@ -66,7 +66,7 @@ test("no instruction sentences on the ownership grid or the games list @smoke", 
   await page.goto(`/games/${id}/ownership`);
   await expect(page.locator(".roster .rtile").first()).toBeVisible();
   await expect(page.getByText(/click a portrait/i)).toHaveCount(0);
-  await page.goto("/library");
+  await page.goto("/settings");
   await expect(page.getByRole("article").first()).toBeVisible();
   await expect(page.getByText(/drag to reorder/i)).toHaveCount(0);
 });

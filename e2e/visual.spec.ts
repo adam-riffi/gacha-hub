@@ -86,7 +86,7 @@ test("an icon without its image is a tile with its kind's icon, centred @smoke",
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   await page.request.post("/api/instances", { data: { gameKey: "hsr" } });
-  await page.goto("/library");
+  await page.goto("/settings");
   // Round 12: a game without owner art shows its drawn emblem (GameMark), named for screen readers, never a letter.
   const mark = page.getByRole("img", { name: "Honkai: Star Rail emblem" }).first();
   await expect(mark).toBeVisible();

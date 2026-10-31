@@ -70,7 +70,7 @@ test("Profile: account, passes, status; its reminders live in Settings @smoke", 
   await expect(status.getByRole("button", { name: "Wake this game" })).toBeVisible();
   page.once("dialog", (d) => void d.accept());
   await status.getByRole("button", { name: "Remove…" }).click();
-  await expect(page).toHaveURL(/\/library$/);
+  await expect(page).toHaveURL(/\/settings$/); // the games list lives in Settings (round 29)
 });
 
 // Round 11's review: the wallet listed its currencies in words only.

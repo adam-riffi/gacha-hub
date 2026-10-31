@@ -9,7 +9,7 @@ test("the games list is a grid of cards: key art on top, the icon and name over 
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   // Not Genshin: the smoke journey adds it from the list afterwards.
   for (const gameKey of ["hsr", "zzz"]) await page.request.post("/api/instances", { data: { gameKey } });
-  await page.goto("/library");
+  await page.goto("/settings");
   const cards = page.getByRole("article");
   await expect(cards.first()).toBeVisible();
   const [first, second] = [(await cards.nth(0).boundingBox())!, (await cards.nth(1).boundingBox())!];

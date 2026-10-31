@@ -2,7 +2,8 @@ import { expect, test } from "@playwright/test";
 
 const PNG = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==", "base64");
 
-test("Games library: owned characters, pulls, energy, goals and backlog per game, each opening its screen; today, sleep, and moving a game in the strip @smoke", async ({ page }) => {
+// Round 29: the games list is Settings → Games (the side bar opens the games; Settings keeps add, sleep, server and order).
+test("Settings → Games: owned characters, pulls, energy, goals and backlog per game, each opening its screen; today, sleep, and moving a game in the side bar @smoke", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
@@ -10,8 +11,9 @@ test("Games library: owned characters, pulls, energy, goals and backlog per game
   const { id: hsrId } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
   await page.request.post("/api/instances", { data: { gameKey: "zzz" } });
 
-  await page.goto("/library");
-  await expect(page.getByRole("heading", { name: "Games", exact: true })).toBeVisible();
+  await page.goto("/settings");
+  await expect(page.getByRole("region", { name: "Games" })).toBeVisible();
+  await expect(page.getByRole("navigation", { name: "Settings sections" }).getByRole("link", { name: "Games", exact: true })).toHaveAttribute("aria-current", "page");
   const hsr = page.getByRole("article", { name: "Honkai: Star Rail" });
   // What each game holds (Georges, 2026-10-11), each opening its screen.
   const owned = hsr.getByRole("link", { name: /Owned/ });
@@ -43,25 +45,25 @@ test("Games library: owned characters, pulls, energy, goals and backlog per game
 
 // Round 12 (Georges: "add game art to everything you can"): each game's card carries its hero art; round 22: the game's own key
 // art from its wiki, straight from the source while the store is empty (the character's splash is the fallback).
-test("a game's card in the library carries its hero art @smoke", async ({ page }) => {
+test("a game's card in Settings → Games carries its hero art @smoke", async ({ page }) => {
   await page.route(/fandom\.com|wikia\.nocookie\.net/, (route) => route.fulfill({ body: PNG, contentType: "image/png" }));
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   await page.request.post("/api/instances", { data: { gameKey: "hsr" } });
-  await page.goto("/library");
+  await page.goto("/settings");
   const card = page.getByRole("article", { name: "Honkai: Star Rail" });
   await expect(card.locator("img.hero-art:is([src*='fandom.com'], [src*='wikia.nocookie.net'])")).toHaveCount(1);
 });
 
 // Round 27 (Georges, 2026-10-30: "on the overview game screen i should be able to click at a card and enter the game not
 // a small barely readable card"): a game card's whole art band, 150 px or taller, opens its hub.
-test("Games library: a card's art band opens the game's hub @smoke", async ({ page }) => {
+test("Settings → Games: a card's art band opens the game's hub @smoke", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
-  await page.goto("/library");
+  await page.goto("/settings");
   const band = page.getByRole("article", { name: "Honkai: Star Rail" }).getByRole("link", { name: "Open Honkai: Star Rail" });
   await expect(band).toBeVisible();
   expect((await band.boundingBox())!.height).toBeGreaterThanOrEqual(150);

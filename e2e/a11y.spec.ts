@@ -37,7 +37,7 @@ test("every screen has no serious accessibility violations @smoke", async ({ pag
   try {
     const pages = [
       "/",
-      "/library",
+      "/settings",
       "/timeline",
       "/settings",
       "/settings/accounts",

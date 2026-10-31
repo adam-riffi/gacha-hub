@@ -8,7 +8,7 @@ test("no text under 13 px on Home, the library, a game's tabs, Tasks, the banner
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
   const small: string[] = [];
-  for (const path of ["/", "/library", `/games/${id}`, `/games/${id}/pulls`, `/games/${id}/characters`, `/games/${id}/endgame`, `/games/${id}/weapons`, `/games/${id}/gear`, "/tasks", "/timeline", "/settings"]) {
+  for (const path of ["/", "/settings", `/games/${id}`, `/games/${id}/pulls`, `/games/${id}/characters`, `/games/${id}/endgame`, `/games/${id}/weapons`, `/games/${id}/gear`, "/tasks", "/timeline", "/settings"]) {
     await page.goto(path);
     await page.waitForLoadState("networkidle");
     const found = await page.evaluate(() => {

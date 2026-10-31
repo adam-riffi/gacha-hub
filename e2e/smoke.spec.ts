@@ -15,7 +15,7 @@ test.describe.serial("smoke @smoke", () => {
 
   test("adding Genshin opens its hub, whose planner says what to farm today", async ({ page }) => {
     await signIn(page);
-    await page.goto("/library");
+    await page.goto("/settings");
     await page.getByRole("button", { name: "+ Genshin Impact" }).click();
     await expect(page).toHaveURL(/\/games\/[^/]+$/);
     await expect(page.getByRole("heading", { name: "Genshin Impact" })).toBeVisible();

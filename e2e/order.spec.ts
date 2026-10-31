@@ -14,7 +14,7 @@ test("order: a square logo stands alone in the strip, the games list's titles li
   await put("nte/icon");
   await put("nte/key-art");
 
-  await page.goto("/library");
+  await page.goto("/settings");
   // The strip (round 17): the game's icon, square, beside its name.
   const chip = page.locator(".rail-game[aria-label='Neverness to Everness']");
   await expect(chip.locator("img.rail-game-icon")).toBeVisible();

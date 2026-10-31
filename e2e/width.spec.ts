@@ -11,7 +11,7 @@ test("every screen fits an 1100 px window: Home, the library, the timeline, Task
   const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
   const build = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1005" } })).json()) as { id: string };
   const tabs = ["", "/characters", "/pulls", "/endgame", "/teams", "/weapons", "/gear", "/materials", "/planner", "/profile", "/ownership"];
-  for (const path of ["/", "/?game=hsr", "/library", "/timeline", "/tasks", "/settings", "/settings/data", "/settings/art", "/settings/keys", ...tabs.map((tab) => `/games/${id}${tab}`), `/characters/${build.id}`]) {
+  for (const path of ["/", "/?game=hsr", "/settings", "/timeline", "/tasks", "/settings", "/settings/data", "/settings/art", "/settings/keys", ...tabs.map((tab) => `/games/${id}${tab}`), `/characters/${build.id}`]) {
     await page.goto(path);
     await page.waitForLoadState("networkidle");
     const width = await page.evaluate(() => document.documentElement.scrollWidth);
@@ -48,7 +48,7 @@ test.describe("a 960 px window (200 % zoom on a 1920 px screen)", () => {
     const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
     const build = (await (await page.request.post(`/api/instances/${id}/characters`, { data: { catalogId: "1005" } })).json()) as { id: string };
     const tabs = ["", "/characters", "/pulls", "/endgame", "/teams", "/weapons", "/gear", "/materials", "/planner", "/profile", "/ownership"];
-    for (const path of ["/", "/?game=hsr", "/library", "/timeline", "/tasks", "/settings", "/settings/keys", ...tabs.map((tab) => `/games/${id}${tab}`), `/characters/${build.id}`]) {
+    for (const path of ["/", "/?game=hsr", "/settings", "/timeline", "/tasks", "/settings", "/settings/keys", ...tabs.map((tab) => `/games/${id}${tab}`), `/characters/${build.id}`]) {
       await page.goto(path);
       await page.waitForLoadState("networkidle");
       // On a failure the message names what reaches past the window.

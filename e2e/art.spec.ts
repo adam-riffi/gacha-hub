@@ -56,7 +56,7 @@ test("Settings → Art: each uploaded picture shows on its cards, in place of wh
     }
     const shows = (scope: ReturnType<typeof page.locator>, slot: string) => expect(scope.locator(`img[src='${urls.get(slot)}']`).first()).toBeVisible();
 
-    await page.goto("/library");
+    await page.goto("/settings");
     await shows(page.getByRole("article", { name: "Genshin Impact" }), "genshin/icon");
     await page.goto(`/games/${genshin}/endgame`);
     await shows(page.getByRole("region", { name: "Spiral Abyss" }), "genshin/mode/abyss");

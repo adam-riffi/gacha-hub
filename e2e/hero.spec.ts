@@ -21,7 +21,7 @@ test("a game's key art fills the hub header beside its block and its games-list 
   expect(art.width).toBeGreaterThan(400); // and wide enough to see
   expect(art.height).toBeGreaterThanOrEqual(180);
 
-  await page.goto("/library");
+  await page.goto("/settings");
   const row = page.getByRole("article", { name: "Neverness to Everness" }).locator("img.lib-hero");
   await expect(row).toHaveAttribute("src", /\/uploads\//);
   expect((await row.boundingBox())!.width).toBeGreaterThan(500);

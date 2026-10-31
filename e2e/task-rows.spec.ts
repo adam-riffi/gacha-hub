@@ -47,7 +47,7 @@ test("a task's picture is 48 px, a task without one has no frame; no decorative 
     await page.goto("/");
     await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
     await expect(page.locator(".chip > i")).toHaveCount(0);
-    await page.goto("/library");
+    await page.goto("/settings");
     await expect(page.getByRole("article", { name: "Honkai: Star Rail" })).toBeVisible();
     await expect(page.locator(".lib-grip")).toHaveCount(0);
   } finally {

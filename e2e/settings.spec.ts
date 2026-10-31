@@ -90,9 +90,11 @@ test("Settings: the games you play, their server and whether they sleep, in one 
   const games = page.getByRole("region", { name: "Games" });
   await games.getByRole("combobox", { name: "Server for Honkai: Star Rail" }).selectOption("na");
   await expect.poll(async () => ((await (await page.request.get(`/api/instances/${id}`)).json()) as { regionKey: string }).regionKey).toBe("na");
-  await games.getByRole("checkbox", { name: "Honkai: Star Rail awake" }).uncheck();
+  // The games are the cards of the former games list (round 29): Sleep on each.
+  const hsr = games.getByRole("article", { name: "Honkai: Star Rail" });
+  await hsr.getByRole("checkbox", { name: "Sleep" }).check();
   await expect.poll(async () => ((await (await page.request.get(`/api/instances/${id}`)).json()) as { sleeping: boolean }).sleeping).toBe(true);
-  await games.getByRole("checkbox", { name: "Honkai: Star Rail awake" }).check();
+  await hsr.getByRole("checkbox", { name: "Sleep" }).uncheck();
   await page.request.put(`/api/instances/${id}`, { data: { regionKey: "eu" } });
 });
 
