@@ -11,7 +11,8 @@ const numberOrNull = (value: unknown) => (typeof value === "number" ? value : ty
 const CRIT_RATE = /^crit\.? rate$/i;
 const CRIT_DMG = /^crit\.? dmg$/i;
 /** Stats read as percentages; Zenless's Energy Regen is a rate per second. */
-const isPercent = (gameKey: string, label: string) => /rate|dmg|recharge|bonus|%|ratio|boost|hit/i.test(label) || (gameKey !== "zzz" && /regen/i.test(label));
+/** Whether a stat is a percentage in this game's words (CRIT DMG, Energy Recharge, PEN Ratio…), so its figure takes a %. */
+export const isPercent = (gameKey: string, label: string) => /rate|dmg|recharge|bonus|%|ratio|boost|hit/i.test(label) || (gameKey !== "zzz" && /regen/i.test(label));
 
 /** The build's role, or the game's first (WIREFRAMES.md G4: KPIs follow the role). */
 export const buildRole = (game: GameDefinition, role: string | null | undefined) => (role && game.manifest.kpis[role] ? role : Object.keys(game.manifest.kpis)[0]!);
