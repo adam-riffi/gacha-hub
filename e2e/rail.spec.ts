@@ -15,6 +15,7 @@ test("the side bar is the scope and the top bar the screens; the strip is gone @
   await expect(all).toHaveAttribute("aria-current", "page");
   // Every game as its icon with its short name, one size, in view at once; no arrows, no strip.
   const games = rail.locator(".rail-game");
+  await expect(games.first()).toBeVisible();
   expect(await games.count()).toBeGreaterThanOrEqual(5);
   const sizes = await games.evaluateAll((els) => els.map((el) => `${Math.round(el.getBoundingClientRect().width)}x${Math.round(el.getBoundingClientRect().height)}`));
   expect(new Set(sizes).size, sizes.join(" ")).toBe(1);
@@ -27,7 +28,7 @@ test("the side bar is the scope and the top bar the screens; the strip is gone @
   await expect(rail.getByRole("link", { name: "Settings" })).toBeVisible();
 
   // The top bar under ALL: Home, Tasks, Banners, and nothing else picks a screen.
-  const sections = page.getByRole("navigation", { name: "Sections" });
+  const sections = page.locator(".topbar").getByRole("navigation", { name: "Sections" });
   await expect(sections.getByRole("link")).toHaveCount(3);
   await expect(sections.getByRole("link", { name: "Home, all games" })).toHaveAttribute("aria-current", "page");
   await sections.getByRole("link", { name: "Tasks and goals" }).click();
@@ -47,7 +48,7 @@ test("the side bar is the scope and the top bar the screens; the strip is gone @
   // Inside a game the top bar is the game's screens: one bar, none repeated in the content.
   const screens = page.getByRole("navigation", { name: "Game screens" });
   await expect(screens.getByRole("link", { name: "Overview" })).toHaveAttribute("aria-current", "page");
-  await expect(page.getByRole("navigation", { name: "Sections" })).toHaveCount(0);
+  await expect(page.locator(".topbar").getByRole("navigation", { name: "Sections" })).toHaveCount(0);
   await expect(page.locator(".content .hub-tabs")).toHaveCount(0);
   await screens.getByRole("link", { name: "Pulls" }).click();
   await expect(page).toHaveURL(/\/pulls$/);

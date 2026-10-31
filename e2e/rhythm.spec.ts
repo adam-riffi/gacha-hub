@@ -1,9 +1,9 @@
 import { expect, test } from "@playwright/test";
 
 // Round 23 (Georges, 2026-10-28: "the layout of certain pages is weird. the big game cards are too close to the activities
-// endgame pulls etc panels"): the game's header card keeps its distance from the tab row and the tab row from the first
-// panel, and the tabs read at a size for him.
-test("the game header keeps its distance: a gap before the tabs, tabs at 15 px or more, a gap before the first panel @smoke", async ({ page }) => {
+// endgame pulls etc panels"): the game's header card keeps its distance from the bar above it and from the first panel,
+// and the tabs read at a size for him. Round 29: the tabs sit in the top bar, above the header.
+test("the game header keeps its distance: a gap under the top bar's tabs, tabs at 15 px or more, a gap before the first panel @smoke", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
@@ -11,17 +11,18 @@ test("the game header keeps its distance: a gap before the tabs, tabs at 15 px o
   await page.goto(`/games/${id}/activities`);
   const tabs = page.getByRole("navigation", { name: "Game screens" });
   await expect(tabs.getByRole("link", { name: "Endgame" })).toBeVisible();
-  const head = (await page.locator(".hub-head").boundingBox())!;
+  const head = page.locator(".hub-head");
+  const headBox = (await head.boundingBox())!;
   const tabsBox = (await tabs.boundingBox())!;
-  expect(tabsBox.y - (head.y + head.height), "header to tabs").toBeGreaterThanOrEqual(16);
+  expect(headBox.y - (tabsBox.y + tabsBox.height), "tabs to the header").toBeGreaterThanOrEqual(8);
   expect(parseFloat(await tabs.getByRole("link").first().evaluate((el) => getComputedStyle(el).fontSize)), "tab size").toBeGreaterThanOrEqual(15);
-  // The first panel: whatever follows the tabs (or their wrapper) in the page.
-  const firstPanelTop = await tabs.evaluate((el) => {
+  // The first panel: whatever follows the header (or its wrapper) in the page.
+  const firstPanelTop = await head.evaluate((el) => {
     let node: Element | null = el;
     while (node && !node.nextElementSibling) node = node.parentElement;
     return node!.nextElementSibling!.getBoundingClientRect().top;
   });
-  expect(firstPanelTop - (tabsBox.y + tabsBox.height), "tabs to the first panel").toBeGreaterThanOrEqual(28);
+  expect(firstPanelTop - (headBox.y + headBox.height), "header to the first panel").toBeGreaterThanOrEqual(28);
 });
 
 // The games list (the same complaint): every figure tile sits inside its row, none cut at the row's edge, and the

@@ -17,7 +17,7 @@ test("the top bar moves between the screens and the side bar sets the scope @smo
   ).json()) as { id: string };
   await page.goto("/");
 
-  const sections = page.getByRole("navigation", { name: "Sections" });
+  const sections = page.locator(".topbar").getByRole("navigation", { name: "Sections" }); // Settings has its own "Settings sections"
   const rail = page.getByRole("navigation", { name: "Scope" });
   for (const [name, url] of [
     ["Tasks and goals", /\/tasks$/],
