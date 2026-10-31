@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-31 · claude · stack/r35/15-one-line · #450
+- Done: Round 28 PR 15 (Georges: "stacking same line text is unacceptable"). Nowrap on table heads, KPI labels and row titles; the stamina column 130 px; narrower cycle columns; a journey scans five screens at 1440 and 1280.
+- Tests: written first: the scan finds nothing wrapped (seven wraps before).
+- Scope/decisions: long titles cut with an ellipsis, whole on hover.
+- Next: PR 16, no banner names.
+
 ## 2026-10-31 · claude · stack/r35/14-pulls-overview · #449
 - Done: Round 28 PR 14 (Georges: "pull overview isn't readable for me"). Home's Pulls card: a tile per banner type under each game, the kind's mark over the figure, guaranteed as a mark.
 - Tests: written first: three tiles or more per game, each a figure and a mark; a calibrated banner's tile says guaranteed.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the chips' and box's background alpha ≥ 0.8; the tabs' overflow not auto/scroll; FULL ≥ 15 px within 120 px of the figure on its line; TODAY's bottom within 3 px of its line's.
 - Scope/decisions: none.
 - Next: PR 2, the task rows.
-
-## 2026-10-29 · claude · stack/r31/09-game-cards · #410
-- Done: Round 24 PR 9 (Georges: "the game cards for their main menu are also weird, you can find better cards for them"). The games list is a grid of cards two a row: a 180 px key-art band with the icon and the name at 28 px over a dark gradient, five figure tiles of one width at 26 px, today's line and the actions in a foot; one a row under 1200 px.
-- Tests: written first: two cards a row at 1440, the band's size, the name over it, five tiles of one width, the figure at 24 px or more; the library journeys stand (the rhythm journey's tile margin relaxed: the tiles run edge to edge).
-- Scope/decisions: Endfield's band is plain until the store holds its key art.
-- Next: Georges's look at the round, "merge" and "deploy"; his words on the unaligned text and the art centring; the paste of the six values.

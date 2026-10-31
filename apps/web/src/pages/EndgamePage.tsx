@@ -137,7 +137,9 @@ export function EndgamePage() {
               .sort((first, second) => (first.open ? first.closes : first.end).getTime() - (second.open ? second.closes : second.end).getTime())
               .map((modeNow) => (
                 <div key={modeNow.mode.key} className="act-row">
-                  <span className="act-title">{modeNow.mode.name}</span>
+                  <span className="act-title" title={modeNow.mode.name}>
+                    {modeNow.mode.name}
+                  </span>
                   <span className="font-mono text-muted">{modeNow.open ? (modeNow.mode.openDays ? "closes" : "new cycle") : "opens"}</span>
                   <span className="font-mono">{WHEN.format(modeNow.open ? modeNow.closes : modeNow.end)}</span>
                 </div>
