@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-31 · claude · stack/r35/12-no-weekly-line · #447
+- Done: Round 28 PR 12 (Georges: "the weekly task reminder in the task view is weird too"). Farm today carries no weeklies-left line; the DTO kinds are domain and anyday.
+- Tests: written first: the server's Farm today lists only the domain line (integration test).
+- Scope/decisions: server, shared DTO and the chip's branch.
+- Next: PR 13, the dashboard cards.
+
 ## 2026-10-31 · claude · stack/r35/11-farm-chips · #446
 - Done: Round 28 PR 11 (Georges: "the uncollapsing decollapsing thing … is weird; that +X thing"). A Farm today chip shows its unit, materials and days at once; nothing folds.
 - Tests: written first: the chip is not a button; the materials are visible without a click; the tasks journeys read them without clicking.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: Seele's chip large with no material, open after a click; her planner card's icon 64 px or more; the two Farm today journeys click first.
 - Scope/decisions: the planner's materials table and Farm today card untouched.
 - Next: PR 8, the type floor.
-
-## 2026-10-29 · claude · stack/r31/06-no-card-stat-filter · #407
-- Done: Round 24 PR 6 (Georges: "i don't really need to filter by card stat"). The page-level "Card stats" chip row and its write queue are gone from the Characters filters; each card picks its own stats as before; the game's API-set stats still stand where a build picked none.
-- Tests: the two journeys that picked through the row pick on the card (the set-bonus picks across a reload; the quick-picks race on a build under a slow server).
-- Scope/decisions: the game-level field and API stay.
-- Next: PR 7, Farm today's icons.
