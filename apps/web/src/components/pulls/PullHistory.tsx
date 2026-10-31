@@ -127,7 +127,7 @@ function EditRow({ instanceId, drop, star, units, unitOf, onDone }: { instanceId
 }
 
 /** The game's banners that began, newest first: dates, your pulls and the top pulls you got, featured characters opening their pages. */
-export function BannerHistory({ instanceId, unitOf }: { instanceId: string; unitOf: (id: string | null) => Unit | undefined }) {
+export function BannerHistory({ instanceId, gameKey, unitOf }: { instanceId: string; gameKey: string; unitOf: (id: string | null) => Unit | undefined }) {
   const historyQuery = useQuery({ queryKey: ["pull-history", instanceId], queryFn: () => api.get<BannerHistoryDto>(`/api/instances/${instanceId}/pulls/history`) });
   if (!historyQuery.data?.length) return null;
   return (
@@ -148,7 +148,7 @@ export function BannerHistory({ instanceId, unitOf }: { instanceId: string; unit
             <tr key={bannerRow.key}>
               <td>
                 {/* The kind's mark, never the banner's name (round 28, Georges: "i do not care about banner names"). */}
-                <BannerKind kind={bannerGlyph(bannerRow.kind)} className="bh-kind" />
+                <BannerKind kind={bannerGlyph(bannerRow.kind)} gameKey={gameKey} className="bh-kind" />
               </td>
               <td className="font-mono text-muted">
                 {DAY.format(new Date(bannerRow.startsAt))} → {DAY.format(new Date(bannerRow.endsAt))}
