@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-31 · claude · stack/r35/14-pulls-overview · #449
+- Done: Round 28 PR 14 (Georges: "pull overview isn't readable for me"). Home's Pulls card: a tile per banner type under each game, the kind's mark over the figure, guaranteed as a mark.
+- Tests: written first: three tiles or more per game, each a figure and a mark; a calibrated banner's tile says guaranteed.
+- Scope/decisions: the counts per game unchanged.
+- Next: PR 15, one line.
+
 ## 2026-10-31 · claude · stack/r35/13-dashboard-cards · #448
 - Done: Round 28 PR 13 (Georges: "the banner card has useless info like the banner name instead of just showing the banner art and it should be clickable; the daily card … too close to the bottom; old logos here and there"). Home's Banners card is its art and a link to Pulls, the chance as a tag; the Dailies card shows the game's icon with 30 px under its tiles.
 - Tests: written first: no title band; the link covers the stage and opens Pulls; the dailies mark square; the head on one line; ≥ 24 px under the tiles.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: two cards a row at 1440, the band's size, the name over it, five tiles of one width, the figure at 24 px or more; the library journeys stand (the rhythm journey's tile margin relaxed: the tiles run edge to edge).
 - Scope/decisions: Endfield's band is plain until the store holds its key art.
 - Next: Georges's look at the round, "merge" and "deploy"; his words on the unaligned text and the art centring; the paste of the six values.
-
-## 2026-10-29 · claude · stack/r31/08-type-floor · #409
-- Done: Round 24 PR 8 (Georges: "avoid small text as well"). Every 10, 11 or 12 px text rule in the stylesheets is 13 px (89 rules: the rail, the date, labels, table heads, badges, tags, chips, the hub, the activity rows, the endgame cards, the pulls lines, the sheet's notes, the library cells, the tasks' lines, the heatmap readout); the chart drawings' own labels and the icon placeholder letters left alone.
-- Tests: written first: a journey over eleven screens lists every visible text under 13 px (the drawings excepted); 30 offenders before, none after; the width journeys still pass.
-- Scope/decisions: a floor, not a scale; "unaligned text" needs the screens he means.
-- Next: PR 9, the game cards.
