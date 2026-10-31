@@ -185,7 +185,7 @@ export function PullsPage() {
   const targets: PlannerTarget[] = [
     ...running.map(({ banner, liveBanner, featured }) => ({
       label: featured?.name ?? banner.label,
-      sub: liveBanner?.name ?? banner.label,
+      sub: banner.label,
       endsAt: liveBanner?.endsAt,
       rules: banner,
       state: stateFor(banner),
