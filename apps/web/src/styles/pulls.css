@@ -35,11 +35,11 @@
 /* The day it ends, on paper, large (round 24); the featured units take the next line, whole. */
 .pl-ends { align-self: flex-start; padding: 6px 10px; background: var(--paper); color: var(--on-paper); font: 600 15px/1 var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; }
 .pl-featured { flex: 1 1 100%; }
+/* A second running banner of the kind (round 28) repeats the shape under the first, a hairline between. */
+.pl-run + .pl-run { margin-top: 4px; padding-top: 14px; border-top: 1px solid var(--surface-3); }
 .pl-banner-head .font-mono { font-size: 13px; }
-.pl-art { width: 64px; height: 64px; flex: none; }
 .pl-kind { width: 48px; height: 48px; }
 /* A banner's own art is wide (Game8, the wikis): shown at its shape, not squeezed into the square (round 16). */
-.slot-art.pl-art { width: auto; max-width: 150px; }
 .pl-status { display: flex; align-items: center; gap: 14px; }
 .pl-reason { margin: 10px 0 14px; font-size: 14px; }
 .pl-meter-row { display: grid; grid-template-columns: 80px minmax(0, 1fr) auto; align-items: center; gap: 12px; margin-bottom: 12px; }

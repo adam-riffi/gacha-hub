@@ -196,8 +196,10 @@ test("Pulls: one grid of banners whose rows line up, their odds tables whole, no
   expect(Math.abs(a.height - b.height)).toBeLessThan(2);
   // Round 24: the odds are three tiles of one size (odds.spec.ts), no table.
   await expect(cards.first().getByRole("group", { name: "Odds" }).locator(".odds-tile")).toHaveCount(3);
-  // A banner without a featured unit shows its kind as an icon, not letters.
-  await expect(page.getByRole("region", { name: "Stellar warp" }).locator(".pl-banner-head svg.glyph")).toBeVisible();
+  // A banner without a featured unit shows its kind's mark, not letters, and no placeholder picture (round 28: one shape for every card).
+  const stellar = page.getByRole("region", { name: "Stellar warp" });
+  await expect(stellar.locator(".pl-banner-head .kind-mark")).toBeVisible();
+  await expect(stellar.locator(".pl-art")).toHaveCount(0);
 });
 
 // Georges, round 6: "a top-up suggestion … a % of chance of getting the character by the end of the banner, and how many top-ups
