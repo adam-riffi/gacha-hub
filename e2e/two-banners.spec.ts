@@ -1,8 +1,9 @@
 import { expect, test } from "@playwright/test";
 
 // Round 28 (Georges, 2026-10-31: "pull screen with banners should be more accommodating to multiple banners such as when
-// you have featured new and rerun characters"): when two banners of one kind run, the Pulls card shows a block for each,
-// with its own featured units and its own end, instead of one merged list under one picture.
+// you have featured new and rerun characters"; "standardize the way you do banners … the way you did the weapons banner
+// was perfect"): when two banners of one kind run, the Pulls card repeats the weapon card's shape for each: its key art
+// across, the kind's mark and the banner type once, then each banner's end and its featured units.
 test("two running banners of one kind each get their block on the Pulls card @smoke", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue" }).click();
@@ -28,6 +29,12 @@ test("two running banners of one kind each get their block on the Pulls card @sm
     const second = runs.filter({ hasText: "Asta" });
     await expect(second).toContainText("Himeko");
     for (const run of [first, second]) await expect(run.getByText(/^Ends /)).toBeVisible();
+    // The kind's mark and the banner type once, on the first block; the blocks stack, the first on top.
+    await expect(first.locator(".kind-mark")).toHaveCount(1);
+    await expect(first.getByRole("heading", { level: 3 })).toHaveText("Character event warp");
+    await expect(second.locator(".kind-mark")).toHaveCount(0);
+    await expect(second.getByRole("heading", { level: 3 })).toHaveCount(0);
+    expect((await second.boundingBox())!.y).toBeGreaterThan((await first.boundingBox())!.y + (await first.boundingBox())!.height - 2);
     // Never the banners' own names on the card (round 24).
     await expect(card).not.toContainText("E2E new warp");
   } finally {
