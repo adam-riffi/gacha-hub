@@ -83,7 +83,7 @@ export function GameDashboard({ instanceId: id }: { instanceId: string }) {
       <HomeHeat games={[dashGame]} today={today} pinned={day} onPin={onPin} />
       <div className="gd-grid">
         {inProgress.length > 0 && <BuildsCard instanceId={id} game={game} builds={inProgress} />}
-        <GoalsCard gameKey={game.key} tasks={tasks.data ?? []} span={inProgress.length ? undefined : "full"} />
+        <GoalsCard instanceId={id} tasks={tasks.data ?? []} span={inProgress.length ? undefined : "full"} />
         <OwnCard game={game} instance={instance.data} tasks={tasks.data ?? []} />
       </div>
     </div>
@@ -483,15 +483,15 @@ function progressOf(goal: TaskDto, all: TaskDto[]) {
 }
 const topGoals = (tasks: TaskDto[]) => tasks.filter((task) => listedGoal(task) && task.type !== "recurring");
 
-/** The game's active goals, each with its bar (the Overview's goals gauge sits on top). */
-function GoalsCard({ gameKey, tasks, span }: { gameKey: string; tasks: TaskDto[]; span?: "full" }) {
+/** The game's active goals, each with its bar (the Overview's goals gauge sits on top); they live in the Planner (round 29). */
+function GoalsCard({ instanceId, tasks, span }: { instanceId: string; tasks: TaskDto[]; span?: "full" }) {
   const goals = topGoals(tasks)
     .filter((task) => !task.backlog)
     .map((task) => ({ task, progress: progressOf(task, tasks) }))
     .sort((first, second) => second.progress - first.progress);
   if (goals.length === 0) return null;
   return (
-    <Card title="Goal progress" to={`/tasks?game=${gameKey}`} span={span}>
+    <Card title="Goal progress" to={`/games/${instanceId}/planner`} span={span}>
       <div className="gd-goals">
         <div className="lst gd-scroll">
           <table className="gd-table">
@@ -499,7 +499,7 @@ function GoalsCard({ gameKey, tasks, span }: { gameKey: string; tasks: TaskDto[]
               {goals.map(({ task: goal, progress }) => (
                 <tr key={goal.id}>
                   <td>
-                    <Link to={`/tasks?game=${gameKey}`}>{goal.title}</Link>
+                    <Link to={`/games/${instanceId}/planner`}>{goal.title}</Link>
                   </td>
                   <td className="gd-meter-cell">
                     <Meter value={progress} max={1} />

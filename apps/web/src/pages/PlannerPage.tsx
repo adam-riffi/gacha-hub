@@ -1,5 +1,5 @@
 import { Fragment, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { PRIORITY_RANK, farmableToday, gameWeekday, getGame, goalSteps, type MaterialStockDto, type TaskOrigin } from "@gacha/shared";
 import { LoadError } from "../components/LoadError";
@@ -202,7 +202,6 @@ export function PlannerPage() {
               </div>
             )}
             {open.length === 0 && <p className="text-muted">Nothing left to farm.</p>}
-            <Link className="btn" to={`/tasks?game=${game.key}`}>Open Tasks →</Link>
           </section>
         </div>
       </div>
