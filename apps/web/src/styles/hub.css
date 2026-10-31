@@ -170,6 +170,12 @@ label.act-row { margin: 0; cursor: pointer; color: var(--text); font: 400 15px/1
 .eg-table tr:hover td { background: var(--surface-2); }
 .eg-dot { display: inline-block; width: 8px; height: 8px; margin-right: 8px; border-radius: 50%; background: var(--accent); }
 .act-cycles .spread { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+/* Round 28: the Cycles and Upcoming rows in fixed columns; a result or a chip never shifts the others. */
+.act-cycles .act-row { display: grid; grid-template-columns: minmax(0, 1fr) 150px 190px; }
+.act-cycles .act-row > .font-mono { text-align: right; }
+.act-cycles .act-row > .chip { justify-self: end; }
+.eg-upcoming .act-row { display: grid; grid-template-columns: minmax(0, 1fr) 110px 220px; }
+.eg-upcoming .act-row > .font-mono { text-align: right; }
 
 
 /* A game's Overview (WIREFRAMES.md G0; Georges's designs, 2026-10-11): small cards, three to a row. */

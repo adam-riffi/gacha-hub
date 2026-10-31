@@ -97,9 +97,11 @@
 .gd-head { margin-left: auto; }
 .gd-card .rw { justify-content: space-between; gap: 12px; }
 .gd-card .pulls-total small { font-size: 22px; font-weight: 500; color: var(--text-muted); }
-.gd-pity .gd-label { flex: 1 1 auto; min-width: 0; }
-.gd-pity .gd-fig { flex: 0 0 64px; text-align: right; }
-.gd-pity .gd-tag { flex: 0 0 96px; display: flex; justify-content: flex-end; }
+/* Round 28 (Georges: "guaranteed shouldn't move everything"): fixed columns, so a row's tag never shifts its figure or its meter. */
+.gd-card .rw.gd-pity { display: grid; grid-template-columns: minmax(0, 1fr) 96px 72px 124px; align-items: center; gap: 12px; }
+.gd-pity .gd-label { min-width: 0; }
+.gd-pity .gd-fig { text-align: right; }
+.gd-pity .gd-tag { display: flex; justify-content: flex-end; }
 .gd-meter { display: block; flex: none; width: 96px; height: 4px; background: var(--surface-3); }
 .gd-meter > i { display: block; height: 100%; background: var(--accent); }
 .gd-bar { padding: 0 16px 12px; }
