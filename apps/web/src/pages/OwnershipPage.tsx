@@ -169,7 +169,6 @@ export function OwnershipPage() {
           <option value="unowned">Not owned</option>
         </select>
         <span style={{ flex: 1 }} />
-        <span className="small muted">Click a portrait to mark it owned.</span>
         <button
           className="btn sm ghost"
           disabled={setOwnership.isPending || shown.length === 0}
