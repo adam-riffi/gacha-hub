@@ -55,6 +55,10 @@ export async function resolveWikiFiles(urls: string[], fetchImpl: typeof fetch =
 }
 
 let kept: { at: number; map: Promise<Map<string, string>> } | null = null;
+/** Drops the kept resolution (tests). */
+export function forgetWikiFiles() {
+  kept = null;
+}
 /** The resolution above, shared and kept an hour; a caller in a hurry races it against its own clock. */
 export function resolvedWikiFiles(urls: string[], fetchImpl: typeof fetch = fetch, keepMs = 3_600_000): Promise<Map<string, string>> {
   if (!kept || Date.now() - kept.at > keepMs) kept = { at: Date.now(), map: resolveWikiFiles(urls, fetchImpl) };

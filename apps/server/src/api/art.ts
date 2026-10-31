@@ -7,7 +7,7 @@ import { loadArtStore } from "../lib/artStoreKeys.js";
 import { prisma } from "../lib/prisma.js";
 import { getCatalog } from "./util.js";
 import { ART_SOURCES as SOURCES } from "../art/sources.js";
-import { resolvedWikiFiles } from "../art/resolve.js";
+import { resolvedWikiFiles, wikiFile } from "../art/resolve.js";
 
 const WIKI_FILE = /^(https:\/\/[^/]+)\/wiki\/Special:FilePath\/(.+)$/;
 const PLAIN_AGENT = "gacha-hub/1.0 (private project)";
@@ -76,17 +76,19 @@ export async function registerArtRoutes(app: FastifyInstance) {
     const uploads = new Map((await prisma.artSlot.findMany()).map((row) => [row.key, row]));
     // Round 22 (Georges: "still no game icons"): while the store holds nothing for a slot, the web shows the picture straight
     // from its source, so the source's address and invert go with the slot; an upload takes over both. A wiki file goes by
-    // its direct address (its Special:FilePath answers a browser with 403), resolved once an hour; a slow wiki is not waited
-    // for beyond four seconds, the list goes out with the addresses as written and the next list has the answer.
+    // its direct address (its Special:FilePath answers a browser with 403), resolved once an hour (and warmed at boot); a
+    // slow wiki is waited for ART_RESOLVE_WAIT_MS (four seconds), then its files are listed with no address rather than
+    // one a browser cannot load (round 25: an empty tile on every wiki task on a cold function); the next list has them.
     const sourceOf = new Map(SOURCES.map((source) => [source.slot, source]));
     let timer: NodeJS.Timeout | undefined;
-    const direct = await Promise.race([resolvedWikiFiles(SOURCES.map((source) => source.url)), new Promise<Map<string, string>>((resolve) => (timer = setTimeout(() => resolve(new Map()), 4000)))]);
+    const direct = await Promise.race([resolvedWikiFiles(SOURCES.map((source) => source.url)), new Promise<Map<string, string>>((resolve) => (timer = setTimeout(() => resolve(new Map()), Number(process.env.ART_RESOLVE_WAIT_MS ?? 4000))))]);
     clearTimeout(timer);
+    const address = (url: string) => (wikiFile(url) ? (direct.get(url) ?? null) : url);
     return {
       slots: (await allSlots()).map((slot) => {
         const upload = uploads.get(slot.key);
         const source = sourceOf.get(slot.key);
-        return { ...slot, url: upload?.url ?? null, source: source ? (direct.get(source.url) ?? source.url) : null, invert: upload ? upload.invert : Boolean(source?.invert), fetchable: Boolean(source) };
+        return { ...slot, url: upload?.url ?? null, source: source ? address(source.url) : null, invert: upload ? upload.invert : Boolean(source?.invert), fetchable: Boolean(source) };
       }),
     };
   });
