@@ -191,12 +191,12 @@ function CadenceList({
         {/* One tick control everywhere (round 7): a counted daily by its steps. */}
         {items.map((item) => (
           <TickRow key={item.id} instanceId={instanceId} task={item} icon={<SlotArt slot={taskSlot(game, item)} className="list-art" />}>
-            {cadence === "monthly" && item.anchorKey && anchors.find((anchor) => anchor.key === item.anchorKey)?.name !== item.title && <span className="font-mono text-muted">{anchors.find((anchor) => anchor.key === item.anchorKey)?.name}</span>}
+            {cadence === "monthly" && item.anchorKey && anchors.find((anchor) => anchor.key === item.anchorKey)?.name !== item.title && <span className="font-mono text-muted" title={anchors.find((anchor) => anchor.key === item.anchorKey)?.name}>{anchors.find((anchor) => anchor.key === item.anchorKey)?.name}</span>}
           </TickRow>
         ))}
         {items.length === 0 && <p className="text-muted act-empty">Nothing {title.toLowerCase()} yet.</p>}
+        {children}
       </div>
-      {children}
       {adding ? (
         <form className="act-add" onSubmit={submit}>
           <label>
@@ -285,6 +285,7 @@ function MonthlyPass({ instanceId, gameKey, name, daysLeft }: { instanceId: stri
     event.preventDefault();
     save.mutate({ daysLeft: Number(new FormData(event.currentTarget).get("days")) });
   };
+  // The row on the list's grid (round 28, Georges: "monthly cards grossly misaligned"): an empty box column, then the title where the items' titles start.
   return editing ? (
     <form className="act-add" onSubmit={submit}>
       <label>
@@ -300,12 +301,13 @@ function MonthlyPass({ instanceId, gameKey, name, daysLeft }: { instanceId: stri
       {save.isError && <span className="hub-error">Not saved: over the pass's limit.</span>}
     </form>
   ) : (
-    <div className="act-row act-pass-row">
-      <span className="act-title">
+    <div className="tick-row act-pass-row">
+      <span className="tick-boxes" />
+      <span className="tick-title" title={name}>
         <SlotArt slot={artSlotKey(gameKey, "monthly-pass")} className="list-art" />
         {name}
       </span>
-      <span className="font-mono">{daysLeft === null ? "not tracked" : `${daysLeft} days left`}</span>
+      <span className="font-mono tick-count">{daysLeft === null ? "not tracked" : `${daysLeft} days left`}</span>
       <button type="button" className="btn" aria-label={`Update ${name}`} onClick={() => setEditing(true)}>
         Update
       </button>
