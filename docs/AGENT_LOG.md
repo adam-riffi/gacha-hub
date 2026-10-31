@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-31 · claude · stack/r35/06-strip-glide · #441
+- Done: Round 28 PR 6 (Georges: "card carousel dragging is too robotic i need it smooth"). No snapping; a drag glides on release (≤ 3 px/ms, −6 % a frame) until it dies down or meets an edge.
+- Tests: written first: scroll-snap none; a 200 px drag ends past 240 px.
+- Scope/decisions: pointer events and rAF.
+- Next: PR 7, the banner cards.
+
 ## 2026-10-31 · claude · stack/r35/05-bigger-cards · #440
 - Done: Round 28 PR 5 (Georges: "cards are better but it should be bigger still"). The games cards: a 260 px band, a 96 px icon, a 36 px name, 32 px figures.
 - Tests: written first: band ≥ 240, icon ≥ 90, name ≥ 34.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: three units seeded on one warp, each named on the Pulls card, Blade larger, the end day, no banner name; Home titled "Blade"; the overview journey reads the unit's name.
 - Scope/decisions: the units come from every running banner of the card's kind.
 - Next: PR 2, the odds tiles.
-
-## 2026-10-28 · claude · stack/r30/03-rarity-boxes · #401
-- Done: round 23 PR 3 (Georges: "use icons as well for rarity, try to have every box the same size and add colors"). `Rarity`: a row of stars in the rarity's colour (blue three, purple four, gold five, orange six; tokens `--rarity-3`…`--rarity-6`), named "5 stars", on the character cards, the sheet's title, the ownership tiles and the weapon cards, where "★5" stood; the weapon band reads the same tokens. The Activities cadences, its cycles and version cards and the endgame modes stretch to their row's height.
-- Tests: written first: Kafka's five gold stars and Sushang's four purple on the cards, the sheet, the ownership tile and a weapon card, no "★5" or "★★★★★" left; the three card rows within 1 px.
-- Scope/decisions: the ownership page's rarity filter keeps star text (a select's options cannot hold a drawing).
-- Next: Georges's look at the round, his "merge" and "deploy"; the art-centring pass he named ("there's still a lot of art centering to do") once he points at the cards he means; his one paste of the six values.
