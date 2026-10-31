@@ -1,10 +1,9 @@
-import type { CSSProperties, MouseEvent, ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 /**
  * A graph panel (VISUAL-DESIGN.md §6, §9): charts float on the page colour
- * between two corner marks. On hover the stage turns with the pointer and its
- * layers separate (rings, structure, data, figures, ticks); the CSS keeps the
- * tilt off under reduced motion.
+ * between two corner marks, their layers (rings, structure, data, figures,
+ * ticks) stacked in that order. Nothing moves under the pointer (round 29).
  */
 export function GraphPanel({
   title,
@@ -23,24 +22,13 @@ export function GraphPanel({
   style?: CSSProperties;
   children: ReactNode;
 }) {
-  const move = (event: MouseEvent<HTMLDivElement>) => {
-    const bounds = event.currentTarget.getBoundingClientRect();
-    const offsetX = (event.clientX - bounds.left) / bounds.width - 0.5;
-    const offsetY = (event.clientY - bounds.top) / bounds.height - 0.5;
-    event.currentTarget.style.setProperty("--ry", `${(offsetX * 16).toFixed(2)}deg`);
-    event.currentTarget.style.setProperty("--rx", `${(-offsetY * 14).toFixed(2)}deg`);
-  };
-  const leave = (event: MouseEvent<HTMLDivElement>) => {
-    event.currentTarget.style.setProperty("--ry", "0deg");
-    event.currentTarget.style.setProperty("--rx", "0deg");
-  };
   return (
     <section className={`graph ${className}`} style={style} aria-label={label ?? title}>
       <div className="ph">
         {title && <h3>{title}</h3>}
         {head}
       </div>
-      <div className="gp" onMouseMove={move} onMouseLeave={leave}>
+      <div className="gp">
         <div className="stage">{children}</div>
       </div>
     </section>
