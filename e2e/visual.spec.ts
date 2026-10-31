@@ -51,11 +51,13 @@ test("deadlines within 48 hours are paper chips; view switches expose their stat
   await page.goto("/?game=hsr");
   // The carousel shows the nearest deadline first, as a paper tag; the next banner is nine days out, a dark tag.
   const card = page.locator(".banner-card");
-  await expect(card).toContainText("E2E ends soon");
-  await expect(card.locator(".tag")).toHaveCSS("background-color", "rgb(237, 237, 237)");
+  // Round 28: the card names no banner; the countdown tag tells them apart (paper within 48 hours, dark otherwise).
+  const countdown = card.locator(".carousel-tag .tag");
+  await expect(countdown).toHaveClass(/hot/);
+  await expect(countdown).toHaveCSS("background-color", "rgb(237, 237, 237)");
   await expect(card).toHaveAttribute("data-rotating", "true");
   await card.getByRole("button", { name: "Next banner" }).click();
-  await expect(card).toContainText("E2E ends later");
+  await expect(countdown).not.toHaveClass(/hot/);
   await expect(card.locator(".tag")).toHaveCSS("background-color", "rgb(0, 0, 0)");
   // The pointer over the card, or focus inside it, holds the rotation; reduced motion stops it.
   await expect(card).toHaveAttribute("data-rotating", "false");
