@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-31 · claude · stack/r35/17-one-top-ups · #452
+- Done: Round 28 PR 17 (Georges: "top and top to 100% should be one thing + … 'by each banner's end'"). One Top-ups card with the sure-one targets at its top; the note is gone; `TopUpCard` became `TopUpTargets`.
+- Tests: written first: no Top-up to 100% region, no note; the first target row sits in Top-ups.
+- Scope/decisions: layout and naming.
+- Next: PR 18, the kind pictures.
+
 ## 2026-10-31 · claude · stack/r35/16-no-banner-names · #451
 - Done: Round 28 PR 16 (Georges: "i do not care about banner names"). The banner history by the kind's mark; the planner's targets by the banner type.
 - Tests: written first: the history holds no banner name; a row is found by its unit and carries the kind's mark.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: a never-answering wiki API with a 50 ms wait: the list within 2 s, wiki files null, the App Store icon kept; the stub now resolves every file but one so the resolved, the missing and the task icons are each checked.
 - Scope/decisions: the warm-up is skipped under the test runner.
 - Next: PR 4, the icon over the wordmark.
-
-## 2026-10-29 · claude · stack/r32/02-task-rows · #412
-- Done: Round 25 PR 2 (Georges: "try to find icons for iconless tasks + having no icons and no is a bit weird", "the version card is broken and unreadable"). A task with no picture draws a ticked box in its 36 px frame; three more wiki icons (Genshin commission reward, Zenless Ridu weekly, Wuthering nightmare nests); a monthly task's shop note wraps at 38 % instead of squeezing the title; the version card's event rows 64 px with 96 px pictures. Plus the real cause of empty tiles on tasks that have icons: `taskSlot` matched titles case-sensitively, and profiles made before a manifest recased a title ("Realm currency") found nothing.
-- Tests: written first: Check-in's drawn tile and no empty one; every task title on one line; a seeded event's row ≥ 56 px; the three new sources; a task recased to "Daily training" still shows its icon.
-- Scope/decisions: a drawn tile keeps every row the same shape.
-- Next: PR 3, the wiki wait.
