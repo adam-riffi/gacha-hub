@@ -43,7 +43,7 @@ export function DailiesCard({ roster, carousel, day = null }: { roster: RosterEn
         <div className="dailies-body">
           <div className="dailies-head">
             <span className="font-display dailies-game">
-              <GameMark gameKey={rosterGame.gameKey} art="logo" className="band-mark" />
+              <GameMark gameKey={rosterGame.gameKey} className="band-mark" />
               <span className="dailies-name">{rosterGame.name}</span>
             </span>
             {past ? (
