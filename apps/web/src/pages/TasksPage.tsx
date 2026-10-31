@@ -14,7 +14,6 @@ import { LoadError } from "../components/LoadError";
 import { api } from "../lib/api";
 import type { InstanceListItem, TaskItem } from "../lib/types";
 import { GoalCard } from "../components/tasks/GoalCard";
-import { RemindersPanel } from "../components/tasks/RemindersPanel";
 import { GoalMaker } from "../components/tasks/GoalMaker";
 import { GameMark } from "../components/GameMark";
 
@@ -210,7 +209,7 @@ export function TasksPage() {
             )}
           </section>
         </div>
-        <RemindersPanel games={games} />
+        {/* The reminder rules and the DM preview live in Settings → Notifications (round 24, Georges: "those two should be in settings"). */}
       </div>
     </>
   );

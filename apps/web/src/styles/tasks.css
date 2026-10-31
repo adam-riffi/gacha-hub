@@ -3,7 +3,8 @@
 .tk-head h1 { margin: 0; }
 .tk-filter { width: 240px; }
 .tk-backlog { display: inline-flex; align-items: center; margin: 0; color: var(--text); cursor: pointer; }
-.tk-page { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 24px; align-items: start; }
+/* One column (round 24): the goals take the page; the reminders moved to Settings → Notifications. */
+.tk-page { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; align-items: start; }
 .tk-main, .tk-side { display: grid; gap: 24px; min-width: 0; }
 .tk-rules { margin: 0; padding: 0; list-style: none; }
 .tk-rule { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 0; border-top: 1px solid var(--surface-3); }
