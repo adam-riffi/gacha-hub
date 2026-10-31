@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-31 · claude · stack/r35/01-pity-columns · #436
+- Done: Round 28 PR 1 (Georges, 2026-10-31: "misaligned text. guaranteed shouldn't move everything. check other cards"). The hub's Pity rows, the Activities Cycles rows and the Endgame Upcoming rows stand in fixed grid columns; a tag never shifts the figure or the meter.
+- Tests: written first: the figures share one right edge and the meters one left edge whatever the tags; the cycles rows' results and chips too.
+- Scope/decisions: CSS only.
+- Next: PR 2, the task rows.
+
 ## 2026-10-30 · claude · stack/r34/12-dashboard-in-hub · #435
 - Done: Round 27 PR 12 (Georges: "navigating is quite hard … each games dashboard is outside of their category"). The hub opens on its Overview (`OverviewPage`, the GameDashboard inside the hub's tabs); Activities is the second tab at `/activities`; a game in Home's strip opens its hub (`sectionHref("all", game)`); the rail's Home always shows all games; `/?game=` redirects to the hub; the dashboard's cards link to `/activities`.
 - Tests: written first: the hub's root shows the Overview tab with the Pulls region; the second tab opens Activities; the strip on Home opens the hub; `/?game=hsr` lands there; twelve journeys that read Activities at the root open `/activities`.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: at 1280 px nothing on Home carries a CSS zoom and the page has no horizontal scroll; at 960 px every screen, a game's dashboard and a character sheet included, fits without a horizontal page scroll; the 1100 px journey opens the sheet too. They failed on `.home-top` zoom 0.78 and on the sheet at 992 px.
 - Scope/decisions: the hero panel stretches across its row (gauge centred) rather than leaving 450 px empty; the game dashboard's cards stay two a row below 1100 px (one column would open a ragged second column under its spanning cards); the graph panels' hover tilt is untouched unless "crooked" meant that.
 - Next: PR 2 of the round: the hero art falls back to the game's official banner picture while the art store is empty (Genshin shows key art, not Furina); Georges's one paste of the six values, then the mirror.
-
-## 2026-10-27 · claude · feat/keys-paste · #394
-- Done: Georges asked for the six Cloudflare values to go in with one paste rather than six fields; the agent may not type secrets into a live service, so his part became one paste. Settings → Keys → Art store has a box ("Or paste all six at once"): the block of values as he has it, labels in his own words, any order, one or several a line; `parseKeyPaste` places each by its shape and the words around it (32 hex: account or Access Key ID by "account"/"access", else the page's order; 64 hex: the secret; a `pub-….r2.dev` host; a `cfat_…` or 40-character token on a line saying "analytics"; the bucket after "bucket"), `POST /api/settings/keys/paste` saves them in the page's order, clears a Blob address left in the override, and answers what it kept, what the host locks and which lines it could not place, by number and reason only. Large type, a wide box.
-- Tests: written first: the parser (six cases), the endpoint (saved, skipped on the host, unplaced, the override cleared, no value echoed) and the journey (the block pasted once, every field In the app, the secret nowhere on the page, the asset base derived).
-- Scope/decisions: a token on a line without "analytics" is reported, not placed: the R2 token's own value looks the same and the app does not use it.
-- Next: deploy, Georges's one paste, the mirror with its budget check.
