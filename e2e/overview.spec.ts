@@ -146,6 +146,9 @@ test("the Overview's last row: each goal's progress and their average, and the o
 
   await page.goto("/?game=wuwa");
   await expect(page.getByRole("region", { name: "Goal progress" }).getByRole("row", { name: /E2E overview goal/ })).toContainText("40%");
+  // A game's goals live in its Planner (round 29): the card and its rows open it, not the all-games Tasks.
+  await expect(page.getByRole("region", { name: "Goal progress" }).getByRole("link", { name: "Goal progress" })).toHaveAttribute("href", new RegExp(`/games/${id}/planner$`));
+  await expect(page.getByRole("region", { name: "Goal progress" }).getByRole("row", { name: /E2E overview goal/ }).getByRole("link")).toHaveAttribute("href", new RegExp(`/games/${id}/planner$`));
   await expect(page.getByRole("region", { name: "Goals", exact: true }).getByRole("img", { name: /^Overall goal completion/ })).toBeVisible();
   // Home's backlog chart, for this game.
   await expect(page.getByRole("region", { name: "Backlog" }).getByRole("img", { name: /Open goals over time, latest \d+/ })).toBeVisible();

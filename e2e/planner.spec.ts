@@ -104,6 +104,8 @@ test("Planner: goals in rows of three, two rows until All; filtered and sorted; 
     await page.goto(`/games/${id}/planner`);
     const goals = page.getByRole("region", { name: "Goals" });
     const cards = goals.getByRole("article");
+    // The Planner is where a game's goals live (round 29): no button out to the all-games Tasks.
+    await expect(page.getByRole("link", { name: /Open Tasks/ })).toHaveCount(0);
     // Every goal at once, three a row (round 28, Georges: "the 'two rows' thing is idiotic"): no fold, no All button.
     await expect.poll(() => cards.count()).toBeGreaterThanOrEqual(7);
     const [a, c, d] = [(await cards.nth(0).boundingBox())!, (await cards.nth(2).boundingBox())!, (await cards.nth(3).boundingBox())!];
