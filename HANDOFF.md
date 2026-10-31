@@ -1,42 +1,52 @@
-# Handoff — 2026-10-30 · claude (rounds 23 to 27 open as five stacks: thirty-seven PRs for Georges's "merge"; not deployed)
+# Handoff — 2026-10-31 · claude (rounds 23 to 28 open as six stacks: fifty-five PRs for Georges's "merge"; not deployed)
 
 ## State
 - `main` at #397: rounds 1–22 merged. CI green. **Production serves #397** (deployed 2026-10-28 at Georges's word "merge and deploy" through the Vercel connector, `dpl_9Awyz5cyEebQQbK2GAMkWhKd3LCZ`; smoke green). The Vercel Blob store stays suspended until 19 November; the R2 bucket `gacha-hub-art` exists, its six values are in Georges's hands (he has not yet said "keys are in").
 - **Round 23 (`stack/r30/`), ready, CI green:** #399 `01-rhythm` on `main`, #400, #401.
 - **Round 24 (`stack/r31/`), nine PRs on top of #401, ready, CI green:** #402 → #410.
 - **Round 25 (`stack/r32/`), four PRs on top of #410, ready, CI green:** #411 → #414.
-- **Round 26 (`stack/r33/`), nine PRs on top of #414, ready, CI green:** #415 `01-version-split` → #416 `02-rarity-tiles` → #417 `03-build-status-off` → #418 `04-no-glyphs` → #419 `05-teams-faces` → #420 `06-weapons-groups` → #421 `07-goal-window` → #422 `08-strip-carousel` → #423 `09-square-frames`. Full check on the top green (the passkey journey and one pulls journey lost locally to the virtual authenticator and a Windows socket exhaustion, both green in CI).
-- **Round 27 (`stack/r34/`), twelve PRs on top of #423:** #424 `01-version-below` → #425 `02-bigger-icons` → #426 `03-no-now-tag` → #427 `04-reminders-in-settings` → #428 `05-hub-header` → #429 `06-banners-events-split` → #430 `07-owned-tiles` → #431 `08-card-opens-game` → #432 `09-strip-drag` → #433 `10-tasks-by-game` → #434 `11-no-game-day-note` → #435 `12-dashboard-in-hub`. Full check on the top: green (789 unit tests, 174 journeys; the passkey journey lost once locally as every round; the art journey's two expectations, an uploaded logo on the games card and the Daily list at the hub's root, followed round 27's decisions in two test commits after the check, green locally). Drafts until CI is green on each (then marked ready; see the PRs' checks).
-- **The merge, at his word, in order:** `merge-r30.sh` (the old scratchpad) merges #399 → #401 and retargets #402 as it ends; `merge-r31.sh` merges #402 → #410 and retargets #411; `merge-r32.sh` merges #411 → #414 and retargets #415; `r33/merge-r33.sh` (the 2026-10-30 session's scratchpad) merges #415 → #423 and retargets #424; `r34/merge-r34.sh` merges #424 → #435 (each first PR rebased from its old parent in the previous round's branch, which must still exist locally). The classifier refuses a merge or a production deploy unless his latest message says the word.
+- **Round 26 (`stack/r33/`), nine PRs on top of #414, ready, CI green:** #415 → #423.
+- **Round 27 (`stack/r34/`), twelve PRs on top of #423, ready, CI green:** #424 → #435.
+- **Round 28 (`stack/r35/`), eighteen PRs on top of #435:** #436 `01-pity-columns` → #437 `02-task-rows` → #438 `03-square-steps` → #439 `04-endgame-cards` → #440 `05-bigger-cards` → #441 `06-strip-glide` → #442 `07-pulls-runs` → #443 `08-owned-first` → #444 `09-weapon-stats` → #445 `10-no-fold` → #446 `11-farm-chips` → #447 `12-no-weekly-line` → #448 `13-dashboard-cards` → #449 `14-pulls-overview` → #450 `15-one-line` → #451 `16-no-banner-names` → #452 `17-one-top-ups` → #453 `18-kind-pictures`. Full check on the top: 789 unit tests and 185 journeys green on 2026-10-31; only the passkey journey lost locally to the virtual authenticator (green in CI). Drafts until CI is green on each (then marked ready).
+- **The merge, at his word, in order:** `merge-r30.sh` (the old scratchpad) merges #399 → #401 and retargets #402 as it ends; `merge-r31.sh` merges #402 → #410 and retargets #411; `merge-r32.sh` merges #411 → #414 and retargets #415; `r33/merge-r33.sh` (the 2026-10-30 scratchpad) merges #415 → #423 and retargets #424; `r34/merge-r34.sh` merges #424 → #435 and retargets #436; `r35/merge-r35.sh` merges #436 → #453 (each first PR rebased from its old parent in the previous round's branch, which must still exist locally). The classifier refuses a merge or a production deploy unless his latest message says the word.
 
 ## Done this session
-**Round 26** (Georges, 2026-10-30, on production at #397: the version cards too big, BP and version apart, useless icons, "5 then a star" and stacked rarity/type/element icons, built/unbuilt off, teams as faces + weapons + sets, weapons hard to navigate, the goal window too small, standardised game cards, the top cards a carousel): #415 → #423 as listed above (see `docs/AGENT_LOG.md`).
+**Round 28** (Georges, 2026-10-31, on a build with round 27, two messages: "misaligned text. guaranteed shouldn't move everything … monthly cards grossly misaligned … daily weekly missions rectangular … end game cards inconsistency, useless icons in endgame, useful icons too small … cards should be bigger still … card carousel dragging is too robotic … pull screen more accommodating to multiple banners … weapons hard to see, the main stats shown explicitly, owned things on top … the 'two rows' thing is idiotic, audit the front … the uncollapsing decollapsing thing is weird … the weekly task reminder in the task view is weird … the daily card misaligned and too close to the bottom, the banner card just the art and clickable … pull overview isn't readable … stacking same line text is unacceptable"; then "standardize the way you do banners, the weapon banner was perfect, replicate it … i do not care about banner names … top and top to 100% should be one thing, remove 'by each banner's end' … still that +X thing … old logos here and there … dailies too close to the bottom … use game icons specifically"):
+- **#436** The pity rows, the Cycles rows and the Upcoming rows in fixed grid columns.
+- **#437** The Activities rows share one grid, the 30-day pass row too; titles and notes never wrap.
+- **#438** A counted task's steps are 20 px squares.
+- **#439** Endgame cards: no pip row, the mode's emblem 80 px.
+- **#440** Games cards: 260 px band, 96 px icon, 36 px name, 32 px figures.
+- **#441** The strip glides: no snapping, a drag keeps its speed on release.
+- **#442** Every Pulls banner card in the weapon card's shape; a second running banner of the kind stacks under the first; no placeholder glyph on Standard or Chronicled.
+- **#443** Owned first on the ownership grid; pictures on the rarity's tint, unowned at 72 %.
+- **#444** Each weapon tile shows its max-level stats, one a line with its icon (`isPercent` exported from shared).
+- **#445** The Planner shows every goal; the instruction hints left the ownership grid and the games list.
+- **#446** A Farm today chip shows its unit and its materials at once; no fold, no +N.
+- **#447** Farm today carries no weeklies-left line (shared DTO, server route, server test).
+- **#448** Home's Banners card is its art and a link to Pulls, the chance as a tag; the Dailies card shows the icon with 30 px under its tiles.
+- **#449** Home's Pulls card: a tile per banner type under each game.
+- **#450** Nowrap on heads, labels and row titles; a journey scans five screens at 1440 and 1280 for wraps (`e2e/one-line.spec.ts`, helper `e2e/lines.ts`).
+- **#451** No banner names on Pulls: the history by the kind's mark, the planner's targets by type.
+- **#452** One Top-ups card with the sure-one targets at its top; the note is gone.
+- **#453** A banner kind's mark shows the game's own ticket picture (upload first), the glyph otherwise.
 
-**Round 27** (Georges, 2026-10-30, on a build with round 26: "still a lot of inconsistencies and cards that are too big and empty, i like icons but some are useless and some are too small. what's the point of a now card? use more icons. reminders are settings not features. for the card art i wanna be able to see it as well as see the info + i don't need my region + UID at all time use the top icons for the games like paimon for genshin etc. separate banners and events into two screens for readability. the owned icon should be colored and not grey out a frame + the frame colour should be the rarity. on the overview game screen i should be able to click at a card and enter the game not a small barely readable card. the top carousel should be draggable not just pressing arrows. overview task screen is crowded each games should be separated. there are some useless ai mention artifacts like 'game day :' that needs to be removed. navigating is quite hard sometimes when i'm in overview vs in a game + each games dashboard is outside of their category"):
-- **#424** The version card stands alone under the cycles and pass cards, its events in two columns.
-- **#425** Every list picture 48 px; a task without one shows no frame.
-- **#426** No Now tag on the endgame cycle bar or in the history.
-- **#427** Every game's reminder switches in Settings → Notifications → Game reminders; none on Activities, Endgame or Profile.
-- **#428** The hub's header: a solid block (icon, name, level, resets) with the key art whole beside it; no server or UID chip; the games cards show the icon.
-- **#429** Banners and Events are two screens of the timeline (`?show=events`).
-- **#430** An ownership tile's frame is its rarity's colour; the picture in colour once owned, greyed until then.
-- **#431** A games card's whole art band opens the hub.
-- **#432** The strip's carousel drags and wheels.
-- **#433** The Tasks page across games stands in a block per game (goals and farm chips).
-- **#434** No "game day: Friday" note.
-- **#435** The hub opens on its Overview (the game's dashboard); Activities is the second tab at `/activities`; a game in Home's strip opens its hub; `/?game=` lands there.
-
-## Decisions taken (2026-10-30)
-- Round 26: "weird useless icons" = the ones carrying no data (chips' squares, the drawn task tile, the grip); the picked strip card no longer grows; the card tiles are icons alone.
-- Round 27: the icons judged "useless" again: the empty task frame (gone), the Now tag (gone); the header keeps the account-level chip (progress, not an address); an uploaded logo never takes a big spot now, only an uploaded icon; the Tasks blocks are groups, not regions, so "<game> goals" cannot shadow the Goals region; the rail's Home always shows all games while Banners and Tasks keep the game scope.
+## Decisions taken (2026-10-31)
+- The weapon card's shape is the template for every banner card; a running banner with no featured units gets no block (it was the "ends Wed 4 Nov" clutter).
+- A banner's name appears nowhere on Pulls; the kind's mark and the featured units carry the identity.
+- Weapon stats on a tile: the catalog's max-level base stats rounded, a percent where `isPercent` says so, the second stat by name alone when the catalog has no figures (Wuthering Waves).
+- "Useless icons" this round: the pip rows, the placeholder banner glyph; "useful too small": the mode emblem.
+- Nothing folds any more: the Planner's two rows, the farm chips' materials.
+- The kind marks use the ticket the kind spends (character and weapon share one in most games; the tile's colour keeps them apart).
+- The one-line scan is a standing guard: any new label that wraps at 1280 fails `one-line.spec.ts`.
 - **Still owed from round 23:** "a lot of art centering" and "banner artwork to fix": which cards?
 
 ## Verified
-- Each PR's journeys written first and red, then green on its branch; the full check on each stack's top in `../gacha-check` (round 26 green; round 27: green (789 unit tests, 174 journeys; the passkey journey lost once locally as every round; the art journey's two expectations, an uploaded logo on the games card and the Daily list at the hub's root, followed round 27's decisions in two test commits after the check, green locally)); CI on each PR.
-- Screenshots on every PR (1440 px; the strip at 1000 px; the dev database seeded with four Star Rail builds and a "Showcase" team).
+- Each PR's journeys written first and red, then green on its branch; the full check on the stack's top in `../gacha-check` (789 unit tests and 185 journeys green on 2026-10-31; only the passkey journey lost locally to the virtual authenticator (green in CI)); CI on each PR.
+- Screenshots on every PR (1440 px; the strip at 1000 px) from the dev server; the Standard card's uploaded art checked in the browser (the tour blocks `/uploads`, so the shot lacks it).
 
 ## Next (the plan)
-1. Georges: **"merge"** (rounds 23 to 27 in order), then **"deploy"**; his words on which text is still unaligned and which cards' art is off-centre.
+1. Georges: **"merge"** (rounds 23 to 28 in order), then **"deploy"**; his words on which text is still unaligned and which cards' art is off-centre.
 2. His one paste of the six values in Settings → Keys → Art store → "Save all" and the word "keys are in"; then the public URL check, the **mirror-art** workflow (budget lines in the report), his click on Settings → Art → "Fetch 117 from the sources"; then he rolls both tokens and re-pastes.
 3. **Features audit** end to end with Georges's keys (HoYoLAB, Enka, the records links, Discord).
 4. NTE's events from GameWith's schedule page if its markup holds; NTE's catalog at 1.4 once Hakushin's pointer moves; ADR 0011's remaining services; the sample banners' retirement; the README GIF.
@@ -47,9 +57,10 @@
 - The pictures ASSETS.md still lists, in Settings → Art as he finds them (once the store is up).
 
 ## Notes
-- The previous handoffs' notes stand (HoYoLAB read-only, art never committed, E2E's shared database and its unique-unit rule, Prettier not enforced, the log's roll-over, owner files, Git Bash paths and `MSYS_NO_PATHCONV`, squash-merged stacks, Fandom's static host, the e2e job's 25-minute limit, port 3000's stale bundle in dev, R2's decoded keys, `../gacha-check` as a worktree, the classifier's word for merges and deploys, the stack merger's specs with the next PR's number, one pair of dates for a seeded phase, Genshin not installed by journeys before `smoke.spec.ts`).
-- The edit scripts (`r33/lib.py`, `r33/pr*.py`, `r34/pr*.py` in the 2026-10-30 scratchpad) edit by exact match, CRLF-aware; a regex edit spells line ends as `\r?\n` and "rest of line" as `[^\r\n]*`; a shallower-indented line is a suffix of a deeper one, so replace the deeper first; a dry run (save stubbed) checks a script before its branch exists.
-- `.game-mark.is-art { width: auto }` widens every art mark: a square frame pins its own width. An absolutely placed `img` with `width: auto` keeps its intrinsic ratio: the header's art needs an explicit width.
-- The strip's row has no inset (a snap point would sit a few pixels in); its cards are links, so a drag must `preventDefault` on `dragstart` or the pointer sequence stops.
-- A journey that reads ownership must set it (the rarity journey marks Kafka owned); a group named "<game> goals" inside the Goals region must be a `group`, not a `region`.
-- The teams journey builds Arlan (1008) with cone 21012; the goal-window journey picks Welt; the strip journey installs hsr, zzz, wuwa, nte and endfield; the Tasks blocks journey plans Gepard (1104) and Soldier 11 (1041) and deletes the goals after.
+- The previous handoffs' notes stand (HoYoLAB read-only, art never committed, E2E's shared database and its unique-unit rule, Prettier not enforced, the log's roll-over, owner files, Git Bash paths and `MSYS_NO_PATHCONV` (with `cygpath -m` for the script and output paths when it is on), squash-merged stacks, Fandom's static host, the e2e job's 25-minute limit, port 3000's stale bundle in dev, R2's decoded keys, `../gacha-check` as a worktree, the classifier's word for merges and deploys, the stack merger's specs with the next PR's number, one pair of dates for a seeded phase, Genshin not installed by journeys before `smoke.spec.ts`).
+- The dev server shows whichever branch the main tree is on: leave it on the stack's top when Georges is looking.
+- The Genshin farm journeys depend on the weekday: on Wednesday, Saturday and Sunday the books' domain is open, so Lisa's first chip is the books', not the slime's; a journey that opens chips opens every Lisa chip (round 28's base) or reads the materials without a click (from #446 on).
+- Home's featured units are icons without words: a journey finds one by its accessible name (`getByRole("listitem", { name: /^Blade/ })`), never by text; `textContent()` on a missing element waits the whole action timeout, so a loop condition uses `count()` or `allTextContents()`.
+- A Playwright count check waits for nothing: `expect.poll(() => locator.count())` or an `expect(locator.first()).toBeVisible()` first.
+- The edit scripts (`r33/lib.py`, `r35/pr*.py` in the 2026-10-30 scratchpad) edit by exact match, CRLF-aware; a multi-line heredoc in Bash broke on quoting, so scripts are written as files.
+- The journeys: `columns`, `rows` (+ `lines.ts`), `two-banners`, `owned-first`, `weapon-stats`, `dashboard-cards`, `one-line`, `kind-pictures` are new; `endgame`, `game-cards`, `strip`, `planner`, `copy`, `farm-icons`, `tasks`, `home`, `pulls`, `overview`, `banner-featured` changed with the layouts.

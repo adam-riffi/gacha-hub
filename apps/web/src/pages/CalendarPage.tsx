@@ -493,7 +493,7 @@ export function CalendarPage() {
                                   </b>
                                 )}
                                 {item.tag && <b className="cal-tag">{item.tag}</b>}
-                                {item.kind === "banner" && [...new Set((item.banners ?? []).map((banner) => banner.kind))].map((kind) => <BannerKind key={kind} kind={bannerGlyph(kind)} className="cal-kind" />)}
+                                {item.kind === "banner" && [...new Set((item.banners ?? []).map((banner) => banner.kind))].map((kind) => <BannerKind key={kind} kind={bannerGlyph(kind)} gameKey={item.gameKey} className="cal-kind" />)}
                                 {/* The official picture at the start of a banner's or event's bar (round 17). */}
                                 {(() => {
                                   const thumb = [...(item.banners ?? []).map((banner) => officialArt(banner.payload)), officialArt(item.event?.payload)].find(Boolean);
@@ -592,7 +592,7 @@ export function CalendarPage() {
                           onClick={() => setSelected(item.id)}
                         >
                           <GameMark gameKey={item.gameKey} className="cal-row-game" />
-                          {item.kind === "banner" && [...new Set((item.banners ?? []).map((banner) => banner.kind))].map((kind) => <BannerKind key={kind} kind={bannerGlyph(kind)} className="cal-row-kind" />)}
+                          {item.kind === "banner" && [...new Set((item.banners ?? []).map((banner) => banner.kind))].map((kind) => <BannerKind key={kind} kind={bannerGlyph(kind)} gameKey={item.gameKey} className="cal-row-kind" />)}
                           {thumb && <img className="cal-row-thumb" src={thumb} alt="" loading="lazy" />}
                           {item.kind === "banner" && <BarUnits gameKey={item.gameKey} banners={item.banners ?? []} />}
                           <span className="cal-row-text">

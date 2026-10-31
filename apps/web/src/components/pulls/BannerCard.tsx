@@ -99,7 +99,7 @@ export function BannerCard(props: {
         <>
           <SlotArt slot={artSlotKey(props.gameKey, "banner", banner.key)} className="pl-key-art" />
           <div className="pl-banner-head">
-            <BannerKind kind={bannerGlyph(banner.key)} className="pl-kind" />
+            <BannerKind kind={bannerGlyph(banner.key)} gameKey={props.gameKey} className="pl-kind" />
             <div className="pl-banner-title">
               <h3>{banner.label}</h3>
               <span className="font-mono text-muted">not running</span>
@@ -113,7 +113,7 @@ export function BannerCard(props: {
           <div key={run.key} className="pl-run">
             {art ? <img className="key-art pl-key-art" src={art} alt="" onError={(event) => (event.currentTarget.hidden = true)} /> : runIndex === 0 && <SlotArt slot={artSlotKey(props.gameKey, "banner", banner.key)} className="pl-key-art" />}
             <div className="pl-banner-head">
-              {runIndex === 0 && <BannerKind kind={bannerGlyph(banner.key)} className="pl-kind" />}
+              {runIndex === 0 && <BannerKind kind={bannerGlyph(banner.key)} gameKey={props.gameKey} className="pl-kind" />}
               <div className="pl-banner-title">
                 {runIndex === 0 && <h3>{banner.label}</h3>}
                 <span className="pl-ends">Ends {ENDS.format(new Date(run.endsAt))}</span>

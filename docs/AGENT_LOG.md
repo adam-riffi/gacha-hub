@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-31 · claude · stack/r35/18-kind-pictures · #453
+- Done: Round 28 PR 18 (Georges: "for the icons try to use game icons specifically"). A banner kind's mark shows the game's own ticket picture (the owner's upload first), the drawn glyph otherwise.
+- Tests: written first: with the Star Rail ticket pictures up, the character and standard cards' marks and Home's pity tiles show them.
+- Scope/decisions: the tile keeps the kind's colour.
+- Next: Georges's "merge" (rounds 23 to 28 in order) and "deploy".
+
 ## 2026-10-31 · claude · stack/r35/17-one-top-ups · #452
 - Done: Round 28 PR 17 (Georges: "top and top to 100% should be one thing + … 'by each banner's end'"). One Top-ups card with the sure-one targets at its top; the note is gone; `TopUpCard` became `TopUpTargets`.
 - Tests: written first: no Top-up to 100% region, no note; the first target row sits in Top-ups.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: with an empty store Genshin's header and games card show the App Store icon, not the wiki's wordmark; an uploaded logo takes the header; the logo-size and art-source journeys stand.
 - Scope/decisions: the wiki logos stay in the sources for Settings → Art.
 - Next: Georges's "merge" (rounds 23, 24, 25 in order) and "deploy"; his words on the remaining alignment spots; the paste of the six values.
-
-## 2026-10-29 · claude · stack/r32/03-wiki-wait · #413
-- Done: Round 25 PR 3. On a cold function the first `/api/art` went out before the wikis answered, with Special:FilePath addresses a browser cannot load (403): empty tiles on every wiki task. Now a wiki file not yet answered for (within `ART_RESOLVE_WAIT_MS`, 4 s) is listed with no address (the drawn tile shows), and `buildApp` warms the resolution at boot (skipped under vitest).
-- Tests: written first: a never-answering wiki API with a 50 ms wait: the list within 2 s, wiki files null, the App Store icon kept; the stub now resolves every file but one so the resolved, the missing and the task icons are each checked.
-- Scope/decisions: the warm-up is skipped under the test runner.
-- Next: PR 4, the icon over the wordmark.
