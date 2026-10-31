@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-31 · claude · stack/r35/07-pulls-runs · #442
+- Done: Round 28 PR 7 (Georges: "standardize the way you do banners … the way you did the weapons banner was perfect"). Every Pulls banner card in one shape: key art across, the kind's mark and type, the day it ends, the featured units; a second running banner of the kind stacks under the first; a running banner with no units gets no block; Standard and Chronicled show their own art across the top and no placeholder glyph.
+- Tests: written first: two running character banners each get a block, the mark and type once, the second under the first; the standard card shows the mark and no placeholder.
+- Scope/decisions: the first cut's side-by-side blocks were dropped the same day.
+- Next: PR 8, owned first.
+
 ## 2026-10-31 · claude · stack/r35/06-strip-glide · #441
 - Done: Round 28 PR 6 (Georges: "card carousel dragging is too robotic i need it smooth"). No snapping; a drag glides on release (≤ 3 px/ms, −6 % a frame) until it dies down or meets an edge.
 - Tests: written first: scroll-snap none; a 200 px drag ends past 240 px.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: three tiles of one width and height, the figure at 26 px or more, no table.
 - Scope/decisions: none.
 - Next: PR 3, the artifacts.
-
-## 2026-10-29 · claude · stack/r31/01-banner-featured · #402
-- Done: Round 24 PR 1 (Georges: "i don't need to know the name of the banner just the featured characters … skirk escoffier mika candace dahlia tue nov 3rd"). The Pulls card's head: the kind's mark, the banner type, "Ends Tue 3 Nov" on paper, every featured unit of the running banners with its name under its icon (top rarity 72 px, others 52); Home's banner card titled by its top featured units (`topNames`); the phase's name only where it features none.
-- Tests: written first: three units seeded on one warp, each named on the Pulls card, Blade larger, the end day, no banner name; Home titled "Blade"; the overview journey reads the unit's name.
-- Scope/decisions: the units come from every running banner of the card's kind.
-- Next: PR 2, the odds tiles.
