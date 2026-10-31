@@ -14,6 +14,12 @@ Entry format:
 
 ---
 
+## 2026-10-28 · claude · stack/r30/03-rarity-boxes · #401
+- Done: round 23 PR 3 (Georges: "use icons as well for rarity, try to have every box the same size and add colors"). `Rarity`: a row of stars in the rarity's colour (blue three, purple four, gold five, orange six; tokens `--rarity-3`…`--rarity-6`), named "5 stars", on the character cards, the sheet's title, the ownership tiles and the weapon cards, where "★5" stood; the weapon band reads the same tokens. The Activities cadences, its cycles and version cards and the endgame modes stretch to their row's height.
+- Tests: written first: Kafka's five gold stars and Sushang's four purple on the cards, the sheet, the ownership tile and a weapon card, no "★5" or "★★★★★" left; the three card rows within 1 px.
+- Scope/decisions: the ownership page's rarity filter keeps star text (a select's options cannot hold a drawing).
+- Next: Georges's look at the round, his "merge" and "deploy"; the art-centring pass he named ("there's still a lot of art centering to do") once he points at the cards he means; his one paste of the six values.
+
 ## 2026-10-28 · claude · stack/r30/02-banner-kinds · #400
 - Done: round 23 PR 2 (Georges: "add a character/weapon icon to the banner to better differentiate them"). `BannerKind`: the kind's glyph on a tile in the kind's colour (character in the game's accent, weapon in steel blue, standard on paper, Bangboo in green; tokens `--k-weapon`, `--k-bangboo`), named for screen readers; 48 px beside each Pulls card's art, 44 px beside Home's countdown, 28 px at the start of each timeline bar (one per kind a phase holds).
 - Tests: written first: a character and a light cone warp seeded for one phase; the Pulls cards' three marks in two colours at 32 px or more, Home's banner card's mark, the phase bar's two marks.
@@ -247,9 +253,3 @@ Entry format:
 - Tests: written first: the fetch route (named keys, the next batch, a skip list, a failure reported and skipped, no source, owner only, audited by name) and the Art tab's journey (batches answered by hand, the count); every source entry is a real slot with an https URL and a credit.
 - Scope/decisions: rejected on sight: the Endfield wiki's own badge as a logo, character art for Echoes of War, screenshots for Chronicled wish, Beyond the Rails and Anomaly Pilgrimage; SVG stays refused by the store, so the Wuthering Waves logo comes from the wiki's PNG wordmark. The sources are a TypeScript module: the base tsconfig turns JSON imports off on purpose.
 - Next: the icons at a readable size.
-
-## 2026-10-17 · claude · stack/r21/06-docs · #357
-- Done: ASSETS.md lists every picture still needed, 144 of 229 slots, by kind then game, generated from the app's own slot list so it matches Settings → Art: 6 logos, 14 endgame modes, 6 battle passes, 5 30-day passes, 27 banners, 5 shops, 35 tasks, 7 currencies, 5 elements, 10 weapon types, 9 gear sets, 14 materials, 1 Bangboo; the 85 a source covers counted apart. The handoff is rewritten.
-- Tests: docs only.
-- Scope/decisions: none.
-- Next: deploy at Georges's word (migrations `card_stats_order` and `art_slots` run then); Georges uploads pictures as he finds them.

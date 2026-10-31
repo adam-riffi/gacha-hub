@@ -201,6 +201,7 @@ select.prio.build-none { color: var(--muted); }
 .toolbar select, .toolbar input { width: auto; }
 .roster { display: grid; grid-template-columns: repeat(auto-fill, minmax(124px, 1fr)); gap: 14px 12px; }
 .rtile { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.rtile-meta { display: flex; align-items: center; gap: 6px; }
 .rtile-art {
   position: relative; aspect-ratio: 1; padding: 0; overflow: hidden; cursor: pointer;
   border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface-2);
