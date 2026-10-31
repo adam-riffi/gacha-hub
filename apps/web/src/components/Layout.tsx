@@ -5,7 +5,7 @@ import { getGame } from "@gacha/shared";
 import { useAuth } from "../lib/auth";
 import { api } from "../lib/api";
 import { hubPathFor, sectionOf, type ScopeGame, type Section } from "../lib/scope";
-import { hubScreens, type Screen } from "../lib/hubScreens";
+import { ROSTER, hubScreens, type Screen } from "../lib/hubScreens";
 import type { CharacterDetail, InstanceListItem } from "../lib/types";
 import { GameMark } from "./GameMark";
 
@@ -32,12 +32,12 @@ const today = (date = new Date()) =>
 /** "MON 2026-09-14" for a YYYY-MM-DD day. */
 const dayLabel = (day: string) => `${["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"][new Date(+day.slice(0, 4), +day.slice(5, 7) - 1, +day.slice(8, 10)).getDay()]} ${day}`;
 
-/** The screen a hub path is on: the tab's key; a unit page or a character's sheet counts as Characters. */
+/** The screen a hub path is on: the tab's key; the roster's lists, a unit page and a character's sheet count as Roster. */
 function screenOf(pathname: string): Screen | null {
-  if (pathname.startsWith("/characters/")) return "characters";
+  if (pathname.startsWith("/characters/")) return "roster";
   const part = pathname.split("/")[3];
   if (!part) return "overview";
-  return part === "units" ? "characters" : (part as Screen);
+  return part === "units" || ROSTER.includes(part as Screen) ? "roster" : (part as Screen);
 }
 
 /**
@@ -75,7 +75,7 @@ export function Layout({ children }: { children: ReactNode }) {
   const targetFor = (gameInstance: InstanceListItem) => {
     const game: ScopeGame = { key: gameInstance.gameKey, instanceId: gameInstance.id };
     const screens = hubScreens(gameInstance.gameKey, gameInstance.id);
-    if (section === "games") return hubPathFor(pathname, game, screens.map((screen) => screen.key));
+    if (section === "games") return hubPathFor(pathname, game, screens.flatMap((screen) => screen.paths ?? [screen.key]));
     if (section === "tasks") return screens.find((screen) => screen.key === "planner")?.to ?? `/games/${gameInstance.id}`;
     if (section === "banners") return screens.find((screen) => screen.key === "pulls")?.to ?? `/games/${gameInstance.id}`;
     return `/games/${gameInstance.id}`;

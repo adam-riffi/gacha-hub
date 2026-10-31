@@ -31,6 +31,12 @@ svg.hub-icon { padding: 18px; background: var(--surface-2); }
 .hub-resets dd .chip:not(.hot) { color: var(--text); }
 
 /* The tabs wrap onto a second line rather than scroll (round 25: "weird slider on the games panel"). */
+/* The roster's switch (round 29): the four lists behind one screen, the current one on paper. */
+.roster-switch { display: inline-flex; margin: -8px 0 10px; border: 1px solid var(--hairline); }
+.roster-switch a { padding: 12px 20px; color: var(--text); font: 500 14px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; }
+.roster-switch a + a { border-left: 1px solid var(--hairline); }
+.roster-switch a:hover { background: var(--surface-2); }
+.roster-switch a[aria-current="page"] { background: var(--paper); color: var(--on-paper); }
 .hub-tabs { display: flex; flex-wrap: wrap; gap: 0 36px; margin-bottom: 32px; border-bottom: 1px solid var(--hairline); }
 .hub-tabs a {
   position: relative; padding: 8px 0 14px; white-space: nowrap; text-decoration: none;
