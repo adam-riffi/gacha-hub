@@ -244,3 +244,26 @@ test("Weapons: a second click on the weapon closes its panel, without flicker; i
   await close.click();
   await expect(panel).toHaveCount(0);
 });
+
+// Round 26 (Georges, 2026-10-30: "the weapons screen needs some more too, it's hard to navigate"): the cards grouped by
+// type, each group under a heading with the type's icon and its count; a type filter leaves one group.
+test("Weapons: grouped by type under headings with counts; a type filter leaves one group @smoke", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  const { id } = (await (await page.request.post("/api/instances", { data: { gameKey: "hsr" } })).json()) as { id: string };
+  await page.goto(`/games/${id}/weapons`);
+  const grid = page.getByRole("region", { name: "Weapons" });
+  const heads = grid.getByRole("heading", { level: 3 });
+  await expect(heads.first()).toBeVisible();
+  expect(await heads.count()).toBeGreaterThanOrEqual(7);
+  // Destruction's group holds its cones and says how many.
+  const destruction = grid.locator(".wp-group", { has: page.getByRole("heading", { name: /^Destruction/ }) });
+  await expect(destruction.getByRole("heading")).toContainText(/Destruction\s+\d+/);
+  await expect(destruction.getByRole("article", { name: "Something Irreplaceable" })).toBeVisible();
+  await expect(destruction.getByRole("article", { name: "In the Night" })).toHaveCount(0);
+  // One group once a type is picked.
+  await page.getByRole("group", { name: "Type" }).getByRole("button", { name: "Nihility" }).click();
+  await expect(heads).toHaveCount(1);
+  await expect(heads).toContainText("Nihility");
+});
