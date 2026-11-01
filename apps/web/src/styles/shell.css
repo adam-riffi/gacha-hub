@@ -41,12 +41,17 @@
 }
 .strip { flex: 1; min-width: 0; height: 68px; display: flex; align-items: center; gap: 14px; }
 .strip-rule { flex: 0 0 1px; width: 1px; height: 28px; background: var(--hairline); }
+/* A carousel (round 26, Georges: "THE TOP CARDS SHOULD BE A CAROUSEL TOO"): cards of one size, snapped, paged by the arrows. */
 .strip-games {
-  min-width: 0; height: 100%; padding: 0 10px;
-  display: flex; align-items: center; gap: 6px;
-  overflow-x: auto; scrollbar-width: none;
+  min-width: 0; height: 100%; padding: 0; /* no inset: the first card's snap point is scrollLeft 0 */
+  display: flex; align-items: center; gap: 8px;
+  overflow-x: auto; scrollbar-width: none; scroll-snap-type: x mandatory; scroll-behavior: smooth;
 }
 .strip-games::-webkit-scrollbar { display: none; }
+.strip-arrow { flex: none; display: grid; place-items: center; width: 40px; height: 56px; padding: 0; background: var(--card); border: 1px solid var(--edge); color: var(--text); cursor: pointer; }
+.strip-arrow svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.strip-arrow:hover:not(:disabled) { background: var(--surface-2); border-color: var(--hairline-strong); }
+.strip-arrow:disabled { opacity: 0.35; cursor: default; }
 .strip-all, .strip-game {
   position: relative; box-sizing: border-box;
   display: flex; align-items: center; justify-content: center; gap: 8px;
@@ -57,27 +62,22 @@
 .strip-all { flex: 0 0 176px; height: 56px; font-size: 15px; transition: background-color 0.2s, border-color 0.2s, color 0.2s; }
 .strip-all:hover { background: var(--surface-2); border-color: var(--hairline); color: var(--text); }
 .strip-game {
-  flex: 0 0 auto; width: auto; min-width: 148px; height: 56px; padding: 0 16px 0 10px; font-size: 15px;
-  transition: width 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), height 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
-    transform 0.3s cubic-bezier(0.34, 1.5, 0.64, 1), background-color 0.2s, border-color 0.2s, color 0.2s, font-size 0.3s, box-shadow 0.3s;
+  flex: 0 0 200px; width: 200px; height: 56px; padding: 0 12px 0 10px; justify-content: flex-start; font-size: 15px; scroll-snap-align: start;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
 }
-/* The system's only shadow: a card lifting under the pointer. */
-.strip-game:hover { z-index: 2; transform: scale(1.14); background: var(--surface-2); border-color: var(--hairline-strong); color: var(--text); box-shadow: 0 10px 22px rgba(0, 0, 0, 0.7); }
+.strip-game:hover { background: var(--surface-2); border-color: var(--hairline-strong); color: var(--text); }
 .strip-all.on, .strip-game.on { background: var(--surface-2); border-color: var(--hairline-strong); color: var(--text); }
-.strip-game.on { min-width: 190px; height: 62px; padding: 0 18px 0 12px; font-size: 16px; }
-.strip-game.on:hover { transform: scale(1.04); }
 .strip-game.asleep { opacity: 0.5; }
+.strip-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .strip-all.on::before, .strip-game.on::before {
   content: ""; position: absolute; right: -3px; top: -3px; z-index: 2; width: 12px; height: 10px;
   background: var(--hairline-strong); pointer-events: none;
   clip-path: polygon(0 0, 100% 0, 100% 100%, calc(100% - 4px) 100%, calc(100% - 4px) 4px, 0 4px);
 }
 .strip-icon { width: 44px; height: 44px; flex: none; font-size: 8px; }
-.strip-game.on .strip-icon { width: 48px; height: 48px; }
 /* The game's icon (Settings → Art, fetched from the stores) beside its name, square (round 17, Georges: "Give each game a
    game Icon… Icons are cool but should be bigger"); the wordmark logo keeps the big spots. */
 .strip-icon.is-art { width: 44px; height: 44px; object-fit: cover; }
-.strip-game.on .strip-icon.is-art { width: 48px; height: 48px; }
 
 /* A game's drawn emblem (round 12): a line mark tinted by its accent, anywhere a game is named. */
 .game-mark { display: block; fill: none; stroke: var(--mark, currentColor); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
